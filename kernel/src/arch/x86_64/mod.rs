@@ -1,12 +1,16 @@
 mod interrupts;
 mod keyboard;
+pub(crate) mod paging;
 mod ports;
 mod serial;
 
 use core::{arch::asm, fmt};
 
 pub(crate) const DIAGNOSTIC: Option<fn(fmt::Arguments<'_>)> = Some(serial::line);
-pub(crate) use serial::init;
+pub(crate) fn init() {
+    serial::init();
+    interrupts::install();
+}
 
 pub(crate) fn keyboard() -> Result<Option<impl FnMut() -> char>, &'static str> {
     let mut keyboard = keyboard::Keyboard::init()?;

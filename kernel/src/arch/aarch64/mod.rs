@@ -1,8 +1,14 @@
 //! Amorçage de la machine QEMU virt sous UEFI/Limine.
+mod exceptions;
+pub(crate) mod paging;
+mod serial;
 use core::{arch::asm, fmt};
 
-pub(crate) const DIAGNOSTIC: Option<fn(fmt::Arguments<'_>)> = None;
-pub(crate) use mask_interrupts as init;
+pub(crate) const DIAGNOSTIC: Option<fn(fmt::Arguments<'_>)> = Some(serial::line);
+pub(crate) fn init() {
+    mask_interrupts();
+    exceptions::install();
+}
 
 pub(crate) fn keyboard() -> Result<Option<fn() -> char>, &'static str> {
     Ok(None)

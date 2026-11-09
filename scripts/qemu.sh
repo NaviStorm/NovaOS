@@ -1,6 +1,7 @@
 #!/bin/sh
 set -eu
 . scripts/target.sh
+iso=${NOVA_ISO:-$iso}
 
 case "${NOVA_ARCH:-x86_64}" in
     x86_64)

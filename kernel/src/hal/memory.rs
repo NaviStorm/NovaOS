@@ -1,4 +1,4 @@
-//! Contrat réservé à un futur gestionnaire. Aucune cible ne le met encore en œuvre.
+//! Traductions de pages alignées dans un espace d’adressage.
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct PhysicalAddress(pub u64);
@@ -20,7 +20,7 @@ pub trait VirtualMemory {
     const PAGE_BYTES: usize;
 
     /// # Safety
-    /// L’appelant possède le cadre et garantit sa durée de vie, la cohérence de
+    /// L’appelant possède exclusivement le cadre alloué (aucun autre mappage hors HHDM) et garantit sa durée de vie, la cohérence de
     /// ses alias et la validité des références Rust pendant tout le mappage.
     unsafe fn map(
         &mut self,
@@ -33,4 +33,20 @@ pub trait VirtualMemory {
     /// La page doit avoir cessé d’être utilisée par le code, les piles et les
     /// références actives. Le succès implique l’invalidation des traductions.
     unsafe fn unmap(&mut self, page: VirtualAddress) -> Result<PhysicalAddress, Self::Error>;
+}
+
+#[derive(Clone, Copy)]
+pub(crate) enum Probe {
+    Read,
+    Write,
+    Execute,
+}
+impl Probe {
+    pub(crate) fn label(self) -> &'static str {
+        match self {
+            Self::Read => "lecture",
+            Self::Write => "ecriture",
+            Self::Execute => "execution",
+        }
+    }
 }

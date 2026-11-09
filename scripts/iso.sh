@@ -10,6 +10,15 @@ mkdir -p "$stage/root/boot" "$stage/root/EFI/BOOT"
 cp third_party/limine/limine-uefi-cd.bin "$stage/root/boot/"
 cp "third_party/limine/$efi_loader" "$stage/root/EFI/BOOT/"
 cp boot/limine.conf "$stage/root/"
+if [ "$#" -ne 0 ]; then
+    [ "$#" -eq 2 ] || exit 2
+    case "$1" in
+        mem-test|mem-ro|mem-alias|mem-page-ro|mem-nx|mem-absent) ;;
+        *) exit 2 ;;
+    esac
+    printf '    cmdline: %s\n' "$1" >> "$stage/root/limine.conf"
+    iso=$2
+fi
 cp -R licenses "$stage/root/"
 cp "target/$rust_target/release/novaos" "$stage/root/boot/novaos.elf"
 xorriso -as mkisofs -R -J -V NOVAOS -e boot/limine-uefi-cd.bin \

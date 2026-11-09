@@ -84,6 +84,7 @@ pub(super) fn install() {
     unsafe { asm!("mov {cs:x}, cs", cs = out(reg) cs, options(nostack, preserves_flags)) };
     let mut table = Idt([Gate::new(fault_entry as *const () as usize, cs); 256]);
     let master_eoi = Gate::new(acknowledge_master as *const () as usize, cs);
+    table.0[14] = Gate::new(page_fault_entry as *const () as usize, cs);
     table.0[0x21] = master_eoi;
     table.0[0x27] = Gate::new(spurious_master as *const () as usize, cs);
     table.0[0x2f] = master_eoi;
@@ -121,4 +122,34 @@ pub(super) fn sleep_until_irq() {
     // pendant la vérification du tampon. L’ombre d’interruption de sti garantit
     // que hlt s’exécute avant livraison d’une IRQ déjà pendante.
     unsafe { asm!("sti", "hlt", "cli") };
+}
+
+// Sûreté : la porte 14 fournit un code d’erreur, RIP et CS sur la pile.
+// Le traitement fatal aligne la pile SysV et ne retourne jamais via ce cadre.
+#[unsafe(naked)]
+extern "C" fn page_fault_entry() {
+    naked_asm!("mov rdi, cr2", "mov rsi, [rsp]", "mov rdx, [rsp+8]", "mov rcx, [rsp+16]",
+        "cld", "and rsp, -16", "call {}", sym page_fault);
+}
+
+extern "C" fn page_fault(address: u64, error: u64, pc: u64, cs: u64) -> ! {
+    let access = if error & 16 != 0 {
+        "execution"
+    } else if error & 2 != 0 {
+        "ecriture"
+    } else {
+        "lecture"
+    };
+    let cause = if error & 8 != 0 {
+        "reserve"
+    } else if error & 1 == 0 {
+        "absente"
+    } else {
+        "protection"
+    };
+    serial::line(format_args!(
+        "#PF adresse={address:#x} pc={pc:#x} code={error:#x} cs={cs:#x} acces={access} cause={cause} utilisateur={}",
+        error & 4 != 0
+    ));
+    hal::cpu::halt()
 }

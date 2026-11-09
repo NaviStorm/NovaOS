@@ -12,14 +12,14 @@ import time
 
 
 BUILD = Path("build")
-BANNER = b"NovaOS v0.2.0\r\n"
+BANNER = b"NovaOS v0.3.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "3585635a0d07ea155d14b55a6f966dce8cd9a7ab49b81c55642078031138e52a",
-    "demarrage": "f7895d6ba3fdaa1ed28bde65e6cb75e4a417b8dd24f332e22281644c78792a71",
-    "composition": "bb1adcbafd0ebc095229851235dc6332e5c17491afee2b57568142bce96d9b2e",
-    "frappe": "659a74e4ce6c8734be383794cb258c510cf81ba1df688f6e9604b269ba8a72da",
-    "saisie": "6172483604bfcf28e7c7d5f3f5abc0daf9dc42f18a4a6067ed624a74713114d0",
+    "demarrage-aarch64": "945019b81470f580cf628444f11230fba5262c0bd817e405f5fa2e16f0df1b81",
+    "demarrage": "59aa1536db6a85005205b29b43c002b7e3c0b0803a20be5e5407834aae98bd37",
+    "composition": "6d59c67abd1b57f4a8377c190b9303aa090632ec9c29457b47ad89fc86008a73",
+    "frappe": "d300c8e528fff9d2e5299433d35b401862eb2490c33db1e411803414e4ca1241",
+    "saisie": "cd9b226fe0683db3b7db061c51ebf7d4fff1e1e83fab6dde8be0336a0bbfbbff",
 }
 
 
@@ -146,13 +146,17 @@ def check_without_vga(vm, directory, log):
 
 def check_arm(vm, directory, log):
     expect_screen(vm, directory, "demarrage-aarch64", timeout=45)
+    wait_for_wfi(vm)
+
+
+def wait_for_wfi(vm):
     deadline = time.monotonic() + 5
     while time.monotonic() < deadline:
         code = qmp(vm, "human-monitor-command", **{"command-line": "x/2i $pc-4"})
         if re.search(r"\bwfi\b", code):
             return
         time.sleep(0.03)
-    raise RuntimeError("La bannière ARM64 est affichée mais le CPU n’a pas atteint WFI.")
+    raise RuntimeError("Le processeur ARM64 n’a pas atteint WFI.")
 
 
 def boot(name, check, **settings):
@@ -178,9 +182,77 @@ def boot(name, check, **settings):
         print(f"OK — {name}, démarrage et veille vérifiés.")
 
 
+def check_fault(report, arch, access, cause):
+    probe = re.search(r"SONDE adresse=(0x[0-9a-f]+) acces=(\w+)", report)
+    fault = re.search(r"(#PF|ABORT) adresse=(0x[0-9a-f]+) pc=(0x[0-9a-f]+) ([^\r\n]+)\n", report)
+    if not probe or not fault:
+        return False
+    tag, address, pc, detail = fault.groups()
+    valid = (probe.groups() == (address, access)
+             and f"acces={access} cause={cause}" in detail
+             and (pc == address if access == "execution" else int(pc, 16) >= 0xffffffff80000000))
+    if arch == "x86_64":
+        code = {"lecture": 0, "ecriture": 3, "execution": 17}[access]
+        valid &= tag == "#PF" and f"code={code:#x} " in detail and "utilisateur=false" in detail
+    else:
+        syndrome = re.search(r"esr=(0x[0-9a-f]+)", detail)
+        esr = int(syndrome[1], 16) if syndrome else 0
+        valid &= (tag == "ABORT" and esr >> 26 == (0x21 if access == "execution" else 0x25)
+                  and (esr & 63) in (range(4, 8) if cause == "absente" else range(12, 16))
+                  and bool(esr & 64) == (access == "ecriture"))
+    if not valid:
+        raise RuntimeError(f"Syndrome ou adresse inattendus : {fault[0]}")
+    return True
+
+
+def memory_check(arch, access, cause):
+    def verify(vm, directory, log):
+        deadline = time.monotonic() + 45
+        report = ""
+        while time.monotonic() < deadline and vm.poll() is None:
+            report = log.read_text(errors="replace") if log.exists() else ""
+            if "Panique du noyau" in report:
+                raise RuntimeError(report[-550:])
+            if ("MMU : sections et alias verifies" in report and
+                    "TEST cadres recyclage zero, map/unmap, erreurs et restitution OK" in report):
+                if access is None:
+                    passed = ("TEST racines independantes, RX=42 et epuisement transactionnel OK" in report
+                              and "Affichage prêt." in report)
+                else:
+                    passed = check_fault(report, arch, access, cause)
+                if passed:
+                    if arch == "x86_64":
+                        wait_for_halt(vm, access is None)
+                    else:
+                        wait_for_wfi(vm)
+                    return
+            time.sleep(0.05)
+        raise RuntimeError(f"Diagnostic mémoire absent ({access}, {cause})\n{report[-550:]}")
+    return verify
+
+
+def memory_scenarios(arch):
+    # Chaque VM démarre le même ELF. Seule la ligne de commande Limine change.
+    cases = [
+        ("mem-test", None, None),
+        ("mem-ro", "ecriture", "protection"),
+        ("mem-alias", "ecriture", "protection"),
+        ("mem-page-ro", "ecriture", "protection"),
+        ("mem-nx", "execution", "protection"),
+        ("mem-absent", "lecture", "absente"),
+    ]
+    for name, access, cause in cases:
+        with tempfile.TemporaryDirectory(dir=BUILD) as work:
+            iso = str(Path(work) / "sonde.iso")
+            subprocess.run(["sh", "scripts/iso.sh", name, iso], check=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            boot(f"{arch}-{name}", memory_check(arch, access, cause), NOVA_ISO=iso)
+
+
 if __name__ == "__main__":
     if os.environ.get("NOVA_ARCH", "x86_64") == "aarch64":
         boot("aarch64", check_arm)
     else:
         boot("std", check_x86, NOVA_VGA="std")
         boot("none", check_without_vga, NOVA_VGA="none")
+    memory_scenarios(os.environ.get("NOVA_ARCH", "x86_64"))

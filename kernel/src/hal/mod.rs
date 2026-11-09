@@ -1,7 +1,7 @@
 //! Interfaces utilisées par le noyau indépendamment de la machine.
 pub mod memory;
 
-pub(crate) use crate::arch::{init, keyboard};
+pub(crate) use crate::arch::{init, keyboard, paging};
 
 pub(crate) fn log(args: core::fmt::Arguments<'_>) {
     if let Some(write) = crate::arch::DIAGNOSTIC {

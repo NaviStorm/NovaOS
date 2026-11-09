@@ -8,6 +8,7 @@ mod console;
 pub mod hal;
 mod hardware;
 mod input;
+mod memory;
 
 use core::panic::PanicInfo;
 use hal::log;
@@ -19,7 +20,14 @@ const BANNER: &str = concat!("NovaOS v", env!("CARGO_PKG_VERSION"));
 #[unsafe(no_mangle)]
 pub extern "C" fn nova_start() -> ! {
     hal::init();
+    let info = boot::memory().unwrap_or_else(|reason| panic!("{reason}"));
+    // Sûreté : unique appel au point d’entrée Limine, sans AP ni allocateur antérieur.
+    let mut memory = unsafe { memory::Memory::init(info) }
+        .unwrap_or_else(|error| panic!("Initialisation mémoire : {error:?}"));
     log(format_args!("{BANNER}"));
+    memory
+        .test(boot::scenario())
+        .unwrap_or_else(|error| panic!("Autotest mémoire : {error:?}"));
     let Err(reason) = interactive();
     log(format_args!("{reason}"));
     hal::cpu::halt()

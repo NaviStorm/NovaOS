@@ -51,7 +51,6 @@ pub struct Keyboard {
 
 impl Keyboard {
     pub fn init() -> Result<Self, &'static str> {
-        interrupts::install();
         send(Port::Controller, 0xad)?; // Suspendre les deux ports avant la purge.
         send(Port::Controller, 0xa7)?;
         for _ in 0..256 {
