@@ -229,6 +229,11 @@ impl VirtualMemory for Memory {
 }
 
 impl Memory {
+    /// Nombre de cadres encore disponibles, sans exposer la liste des cadres.
+    pub(crate) fn free_pages(&self) -> u64 {
+        self.frames.available
+    }
+
     /// Réserve un cadre zéro et installe une page dans la fenêtre du noyau.
     pub fn allocate_page(&mut self, page: VirtualAddress, access: Access) -> Result<()> {
         check_page(page.0 as u64)?;

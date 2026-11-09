@@ -1,6 +1,19 @@
-# NovaOS v0.3.0
+# NovaOS v0.4.0
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.3.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.4.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+
+Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
+
+## Démarrage manuel dans QEMU
+
+Depuis la racine du dépôt, choisir une commande. Chacune compile le noyau et ouvre la fenêtre QEMU correspondante.
+
+```sh
+make ARCH=x86_64 run   # Q35, affichage et clavier PS/2 AZERTY au prompt nova>
+make ARCH=aarch64 run  # virt, bannière sur ramfb et diagnostics PL011 dans le terminal
+```
+
+Sur x86_64, cliquer dans la fenêtre pour saisir du texte. Sur AArch64, le noyau entre en veille après la bannière. Fermer la fenêtre pour quitter la VM.
 
 ## Saisie interactive
 
@@ -25,7 +38,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | --- | --- |
 | `make build` | Compile le noyau et crée l’ISO UEFI. |
 | `make run` | Ouvre l’écran QEMU et affiche COM1 dans le terminal. Fermer la fenêtre pour quitter. |
-| `make test` | Démarre les VM de régression x86_64 et les scénarios de protection mémoire. Nécessite Python 3. |
+| `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle et de tas pour la cible choisie. Nécessite Python 3. |
 | `make clean` | Supprime les produits de compilation et de test dans `build/` et `target/`. |
 
 ### Compiler pour AArch64
@@ -60,6 +73,7 @@ Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86
 | `kernel/src/main.rs` | Initialisation, bannière dérivée de la version Cargo et traitement des paniques. |
 | `kernel/src/hardware/framebuffer.rs` | Framebuffer Limine et dessin de la bannière, communs aux deux cibles. |
 | `kernel/src/memory/` | Cadres physiques de 4 Kio, espaces d’adressage, mappage, démappage et vérification des protections. |
+| `kernel/src/heap/` | Allocateur global, arbres de blocs, extension transactionnelle et sondes du tas. |
 | `kernel/src/hal/` | Interfaces communes du processeur, du masquage des interruptions et de la mémoire virtuelle. |
 | `kernel/src/arch/x86_64/` | Pagination IA-32e, #PF, instructions CPU, COM1, IDT, PIC 8259 et clavier PS/2. |
 | `kernel/src/arch/aarch64/` | MMU EL1, vecteurs d’exception, UART PL011, masquage via DAIF et veille via WFI. |
@@ -86,6 +100,8 @@ Une seconde VM démarre sans carte graphique. Le test attend le diagnostic de fr
 `make ARCH=aarch64 test` démarre QEMU virt, compare la capture complète de la bannière à sa référence 800 × 600 et contrôle l’instruction de veille `wfi`. La capture est disponible dans `build/demarrage-aarch64.png`.
 
 Six VM supplémentaires par architecture exercent l’allocateur, les espaces indépendants et cinq fautes provoquées. Les journaux portent le nom du scénario, par exemple `build/serie-x86_64-mem-nx.log` et `build/serie-aarch64-mem-absent.log`. Les ISO de test sont temporaires.
+
+Cinq VM supplémentaires par architecture testent le tas, la pénurie physique et la récupération, la détection de corruption, la page de garde et le traitement d’une allocation infaillible refusée. Les commandes `make ARCH=x86_64 test` et `make ARCH=aarch64 test` exécutent respectivement 13 et 12 démarrages avec le même ELF que le lancement manuel. Les journaux se trouvent dans `build/serie-<architecture>-heap-*.log`.
 
 ## Provenance de Limine
 

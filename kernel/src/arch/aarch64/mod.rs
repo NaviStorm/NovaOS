@@ -24,3 +24,15 @@ pub(crate) fn wait() {
     // Sûreté : WFI est exécuté par le noyau au niveau privilégié de démarrage.
     unsafe { asm!("wfi", options(nostack, preserves_flags)) };
 }
+
+pub(crate) fn save_and_mask_interrupts() -> usize {
+    let flags: usize;
+    // Sûreté : opérations locales privilégiées sur DAIF à EL1.
+    unsafe { asm!("mrs {}, daif", "msr daifset, #0xf", out(reg) flags, options(nostack)) };
+    flags
+}
+
+pub(crate) fn restore_interrupts(flags: usize) {
+    // Sûreté : image DAIF capturée sur ce CPU avant l’acquisition du verrou.
+    unsafe { asm!("msr daif, {}", in(reg) flags, options(nostack)) };
+}

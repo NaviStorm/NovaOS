@@ -2,11 +2,14 @@
 #![no_main]
 #![deny(unsafe_op_in_unsafe_fn)]
 
+extern crate alloc;
+
 mod arch;
 mod boot;
 mod console;
 pub mod hal;
 mod hardware;
+mod heap;
 mod input;
 mod memory;
 
@@ -25,9 +28,16 @@ pub extern "C" fn nova_start() -> ! {
     let mut memory = unsafe { memory::Memory::init(info) }
         .unwrap_or_else(|error| panic!("Initialisation mémoire : {error:?}"));
     log(format_args!("{BANNER}"));
-    memory
-        .test(boot::scenario())
-        .unwrap_or_else(|error| panic!("Autotest mémoire : {error:?}"));
+    let scenario = boot::scenario();
+    if !scenario.starts_with(b"heap-") {
+        memory
+            .test(scenario)
+            .unwrap_or_else(|error| panic!("Autotest mémoire : {error:?}"));
+    }
+    heap::install(memory);
+    if scenario.starts_with(b"heap-") {
+        heap::test(scenario);
+    }
     let Err(reason) = interactive();
     log(format_args!("{reason}"));
     hal::cpu::halt()
@@ -41,7 +51,7 @@ fn interactive() -> Result<core::convert::Infallible, &'static str> {
         hal::cpu::halt();
     };
     loop {
-        let _line = input::read_line(&mut next_char, &mut console);
+        let _line = input::read_line(&mut next_char, &mut console)?;
     }
 }
 

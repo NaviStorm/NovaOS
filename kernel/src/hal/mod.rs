@@ -10,6 +10,10 @@ pub(crate) fn log(args: core::fmt::Arguments<'_>) {
 }
 
 pub mod interrupts {
+    pub(crate) use crate::arch::{
+        restore_interrupts as restore, save_and_mask_interrupts as save_and_mask,
+    };
+
     /// Masque les interruptions matérielles masquables du processeur courant.
     pub fn mask() {
         crate::arch::mask_interrupts();

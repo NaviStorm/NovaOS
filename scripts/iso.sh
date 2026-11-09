@@ -13,7 +13,7 @@ cp boot/limine.conf "$stage/root/"
 if [ "$#" -ne 0 ]; then
     [ "$#" -eq 2 ] || exit 2
     case "$1" in
-        mem-test|mem-ro|mem-alias|mem-page-ro|mem-nx|mem-absent) ;;
+        mem-test|mem-ro|mem-alias|mem-page-ro|mem-nx|mem-absent|heap-test|heap-oom|heap-corrupt|heap-guard|heap-infallible) ;;
         *) exit 2 ;;
     esac
     printf '    cmdline: %s\n' "$1" >> "$stage/root/limine.conf"

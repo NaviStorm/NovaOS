@@ -27,3 +27,17 @@ pub(crate) fn wait() {
     // Sûreté : hlt est appelé en anneau 0. L’appelant gère le masque des IRQ.
     unsafe { asm!("hlt", options(nostack)) };
 }
+
+pub(crate) fn save_and_mask_interrupts() -> usize {
+    let flags: usize;
+    // Sûreté : CPL0, pile noyau valide ; pushfq/pop sont appariés.
+    unsafe { asm!("pushfq", "pop {}", "cli", out(reg) flags) };
+    flags
+}
+
+pub(crate) fn restore_interrupts(flags: usize) {
+    if flags & (1 << 9) != 0 {
+        // Sûreté : le verrou est libéré et IF était actif avant la section.
+        unsafe { asm!("sti", options(nostack)) };
+    }
+}

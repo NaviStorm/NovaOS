@@ -12,14 +12,14 @@ import time
 
 
 BUILD = Path("build")
-BANNER = b"NovaOS v0.3.0\r\n"
+BANNER = b"NovaOS v0.4.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "945019b81470f580cf628444f11230fba5262c0bd817e405f5fa2e16f0df1b81",
-    "demarrage": "59aa1536db6a85005205b29b43c002b7e3c0b0803a20be5e5407834aae98bd37",
-    "composition": "6d59c67abd1b57f4a8377c190b9303aa090632ec9c29457b47ad89fc86008a73",
-    "frappe": "d300c8e528fff9d2e5299433d35b401862eb2490c33db1e411803414e4ca1241",
-    "saisie": "cd9b226fe0683db3b7db061c51ebf7d4fff1e1e83fab6dde8be0336a0bbfbbff",
+    "demarrage-aarch64": "6c4a46bda99df848c35b1f7132ccc31f86223468767fc2549619dee0e0645364",
+    "demarrage": "dfa80d58d6a56280936488bb95e728d65c1fbc3c9071f716a0c8ea6838c7abef",
+    "composition": "ce5496ba24e5338bba3ec6b9467283f70e0a340f817bd06a7ec34542bf368c53",
+    "frappe": "499eb6cf66692b0570fa904471d26424546685d9ed8735fe318482ee221c9106",
+    "saisie": "f7ff46e22c3b4a4de422d7f27aec1b9aded2b3d683daf36327a71a5b588a7453",
 }
 
 
@@ -242,11 +242,51 @@ def memory_scenarios(arch):
         ("mem-absent", "lecture", "absente"),
     ]
     for name, access, cause in cases:
-        with tempfile.TemporaryDirectory(dir=BUILD) as work:
-            iso = str(Path(work) / "sonde.iso")
-            subprocess.run(["sh", "scripts/iso.sh", name, iso], check=True,
-                           stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-            boot(f"{arch}-{name}", memory_check(arch, access, cause), NOVA_ISO=iso)
+        scenario_vm(arch, name, memory_check(arch, access, cause))
+
+
+def scenario_vm(arch, name, check):
+    with tempfile.TemporaryDirectory(dir=BUILD) as work:
+        iso = str(Path(work) / "sonde.iso")
+        subprocess.run(["sh", "scripts/iso.sh", name, iso], check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+        boot(f"{arch}-{name}", check, NOVA_ISO=iso)
+
+
+def heap_check(arch, name):
+    markers = {
+        "heap-test": ("TAS fragmentation, fusion et reutilisation OK",
+                      "TAS alignements 1..2M, realloc et realignement OK",
+                      "TAS pointeur interieur, disposition et double liberation rejetes",
+                      "TAS 1500 operations mixtes OK", "TAS Box Vec String OK", "Affichage prêt."),
+        "heap-oom": ("TAS penurie physique, rollback, realloc conserve et reprise OK",
+                     "Affichage prêt."),
+        "heap-corrupt": ("Erreur fatale du tas : Overrun",),
+        "heap-infallible": ("SONDE allocation infaillible", "Panique du noyau",
+                            "memory allocation of 268435457 bytes failed"),
+    }
+
+    def verify(vm, directory, log):
+        deadline = time.monotonic() + (120 if name == "heap-oom" else 45)
+        report = ""
+        while vm.poll() is None and time.monotonic() < deadline:
+            if log.exists():
+                report = log.read_text(errors="replace")
+            if "Panique du noyau" in report and name != "heap-infallible":
+                raise RuntimeError(report[-700:])
+            if name == "heap-guard":
+                passed = check_fault(report, arch, "lecture", "absente")
+            else:
+                passed = all(marker in report for marker in markers[name])
+            if passed:
+                if arch == "x86_64":
+                    wait_for_halt(vm, name in ("heap-test", "heap-oom"))
+                else:
+                    wait_for_wfi(vm)
+                return
+            time.sleep(0.05)
+        raise RuntimeError(f"Diagnostic absent pour {name} : {report[-700:]}")
+    return verify
 
 
 if __name__ == "__main__":
@@ -255,4 +295,7 @@ if __name__ == "__main__":
     else:
         boot("std", check_x86, NOVA_VGA="std")
         boot("none", check_without_vga, NOVA_VGA="none")
-    memory_scenarios(os.environ.get("NOVA_ARCH", "x86_64"))
+    arch = os.environ.get("NOVA_ARCH", "x86_64")
+    memory_scenarios(arch)
+    for case in ("heap-test", "heap-oom", "heap-corrupt", "heap-guard", "heap-infallible"):
+        scenario_vm(arch, case, heap_check(arch, case))
