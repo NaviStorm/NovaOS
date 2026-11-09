@@ -1,6 +1,12 @@
-# NovaOS v0.1.0
+# NovaOS v0.2.0
 
-Premier jalon de NovaOS pour x86_64. Le firmware UEFI démarre Limine depuis le CD virtuel. Limine charge le noyau Rust, qui écrit `NovaOS v0.1.0` sur COM1 et dessine la même bannière au centre de l’écran. Le processeur entre ensuite en veille.
+Le firmware UEFI démarre Limine depuis le CD virtuel. Le noyau Rust affiche `NovaOS v0.2.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier.
+
+## Saisie interactive
+
+La disposition est **AZERTY français PC**. Les deux touches Maj permettent de saisir des majuscules et les chiffres de la rangée supérieure. Les accents directs, AltGr et les touches mortes circonflexe et tréma sont pris en charge. Par exemple, AltGr + E donne `€` et les touches `^` puis `e` donnent `ê`.
+
+**Retour arrière** efface un caractère de la ligne en cours. **Entrée** valide la ligne et présente un nouveau prompt. Une ligne peut contenir 128 caractères Unicode. Au-delà de la largeur de la fenêtre, sa fin reste visible pendant la frappe. Quand la zone de texte est pleine, les lignes défilent sous la bannière. Le jalon se termine à la remise de la ligne validée au noyau. L’interprétation des commandes est prévue pour le futur shell.
 
 ## Compiler sur un Mac Apple Silicon
 
@@ -19,12 +25,12 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | --- | --- |
 | `make build` | Compile le noyau et crée l’ISO UEFI. |
 | `make run` | Ouvre l’écran QEMU et affiche COM1 dans le terminal. Fermer la fenêtre pour quitter. |
-| `make test` | Démarre deux VM sans fenêtre et contrôle l’écran, COM1 et l’état du processeur. Nécessite Python 3. |
+| `make test` | Démarre deux VM, envoie des frappes au clavier PS/2 et vérifie les pixels affichés, COM1 et la veille. Nécessite Python 3. |
 | `make clean` | Supprime les produits de compilation et de test dans `build/` et `target/`. |
 
 ## Machine virtuelle
 
-Le lanceur utilise QEMU en émulation TCG, une machine Q35, un processeur x86_64, 256 Mio de RAM et une carte VGA standard. Il utilise le firmware EDK II fourni avec QEMU et une surcouche temporaire pour les variables UEFI. Les variables d’environnement `OVMF_CODE` et `OVMF_VARS` permettent de fournir une autre paire de fichiers de firmware.
+Le lanceur utilise QEMU en émulation TCG, une machine Q35, un processeur x86_64, 256 Mio de RAM et une carte VGA standard. Il active le contrôleur PS/2 i8042 et les PIC 8259. Il utilise le firmware EDK II fourni avec QEMU et une surcouche temporaire pour les variables UEFI. Les variables d’environnement `OVMF_CODE` et `OVMF_VARS` permettent de fournir une autre paire de fichiers de firmware.
 
 Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86_64** et **Q35**, activer le démarrage UEFI et utiliser un périphérique d’affichage VGA standard. Insérer `build/novaos.iso` dans le lecteur CD/DVD et le placer en tête de l’ordre de démarrage. [Réglages système UTM](https://docs.getutm.app/settings-qemu/system/) · [Réglages QEMU dans UTM](https://docs.getutm.app/settings-qemu/qemu/)
 
@@ -36,18 +42,24 @@ Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86
 | `kernel/linker.ld` | Point d’entrée, ordre des requêtes Limine et permissions des segments ELF. |
 | `kernel/src/boot.rs` | Vérification de la révision du protocole et récupération du framebuffer. |
 | `kernel/src/main.rs` | Initialisation, bannière dérivée de la version Cargo et traitement des paniques. |
-| `kernel/src/hardware/` | Écritures vidéo volatiles, glyphes de la bannière, pilote COM1 et mise en veille. |
+| `kernel/src/hardware/` | Framebuffer, COM1, IDT, PIC 8259 et pilote clavier PS/2. |
+| `kernel/src/console.rs` | Affichage du prompt, du curseur et des lignes dans le framebuffer. |
+| `kernel/src/input.rs` | Édition et remise d’une ligne Unicode à l’appelant via `read_line` et `Line::as_chars`. |
 | `scripts/`, `tests/` | Assemblage de l’ISO, configuration de la VM et tests de démarrage. |
 
 Le noyau cible `x86_64-unknown-none` avec Rust stable et `#![no_std]`. Il utilise la pile et les tables de pages fournies par Limine. Le script Cargo `kernel/build.rs` s’exécute sur le Mac pour sélectionner le script de liaison. [Cible bare-metal x86_64 de Rust](https://doc.rust-lang.org/rustc/platform-support/x86_64-unknown-none.html)
 
-Le pilote vidéo accepte des pixels RVB de 32 bits avec trois canaux de 8 bits alignés sur un octet. Il utilise les décalages de couleur et le pas de ligne indiqués par Limine. En cas d’erreur détectée ou de panique Rust, le noyau envoie un diagnostic sur COM1 et exécute `cli` puis `hlt`. Les interruptions matérielles masquables restent désactivées à ce stade.
+Le pilote vidéo utilise les décalages RVB et le pas de ligne indiqués par Limine pour les pixels de 32 bits. Une erreur d’initialisation ou une panique Rust envoie un diagnostic sur COM1 puis arrête le processeur avec `cli` et `hlt`.
 
-Les prochains jalons introduiront la gestion mémoire et les interruptions, puis le clavier et le shell. L’architecture prévue réserve le VFS à un service distinct du code matériel. Le RAMFS en sera le premier fournisseur. Le futur format de disque NovaOS pourra fournir les mêmes opérations.
+Le noyau conserve la GDT de Limine et installe sa propre IDT. Il remappe les PIC sur les vecteurs `0x20` à `0x2f` et démasque uniquement IRQ1. L’i8042 utilise le premier port PS/2 et transmet les scancodes du jeu 2 avec la traduction matérielle désactivée. La routine IRQ1 acquitte le PIC maître. La boucle de saisie lit les octets du contrôleur, puis `pc-keyboard` décode les appuis et les relâchements. Lorsque le tampon est vide, la séquence `sti; hlt; cli` permet d’attendre la frappe suivante sans perdre une interruption entre la vérification et la veille. [Contrôleur i8042 de QEMU](https://github.com/qemu/qemu/blob/master/hw/input/pckbd.c) · [Disposition AZERTY de pc-keyboard](https://github.com/rust-embedded-community/pc-keyboard/blob/main/src/layouts/azerty.rs)
+
+Le shell consommera les lignes remises par `read_line`. Le VFS reste prévu comme un service distinct du matériel, avec un RAMFS comme premier fournisseur.
 
 ## Vérification
 
-`make test` démarre une VM avec VGA. Le test attend le diagnostic du noyau, compare la capture complète à l’empreinte de l’écran de référence et conserve `build/demarrage.png` et `build/serie-std.log`. Une seconde VM démarre sans carte graphique. Le test attend le diagnostic correspondant dans `build/serie-none.log`. Dans les deux cas, il vérifie que le processeur a exécuté `hlt`. Une modification volontaire de la bannière demande de vérifier la nouvelle capture avant d’actualiser l’empreinte dans `tests/demarrage.py`.
+`make test` injecte les appuis et les relâchements via QMP. Il compare les captures complètes de démarrage, de composition (`êï`), de frappe (`aAzé2€x`) et d’édition après Retour arrière et Entrée. Il vérifie également la protection du prompt, la limite de 128 caractères et le défilement. Les captures PNG et le journal `serie-std.log` sont conservés dans `build/`.
+
+Une seconde VM démarre sans carte graphique. Le test attend le diagnostic de framebuffer absent dans `build/serie-none.log`. Les deux tests contrôlent l’état de veille du processeur.
 
 ## Provenance de Limine
 

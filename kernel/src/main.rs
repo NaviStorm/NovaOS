@@ -3,10 +3,12 @@
 #![deny(unsafe_op_in_unsafe_fn)]
 
 mod boot;
+mod console;
 mod hardware;
+mod input;
 
 use core::panic::PanicInfo;
-use hardware::{framebuffer, halt, serial};
+use hardware::{framebuffer, halt, keyboard::Keyboard, serial};
 
 const BANNER: &str = concat!("NovaOS v", env!("CARGO_PKG_VERSION"));
 
@@ -15,11 +17,20 @@ const BANNER: &str = concat!("NovaOS v", env!("CARGO_PKG_VERSION"));
 pub extern "C" fn nova_start() -> ! {
     serial::init();
     serial::line(BANNER);
-    match boot::framebuffer().and_then(|fb| framebuffer::show_banner(&fb, BANNER)) {
-        Ok(()) => serial::line("Affichage prêt."),
-        Err(reason) => serial::line(reason),
-    }
+    let Err(reason) = interactive();
+    serial::line(reason);
     halt()
+}
+
+fn interactive() -> Result<core::convert::Infallible, &'static str> {
+    let (screen, bottom) = framebuffer::show_banner(&boot::framebuffer()?, BANNER)?;
+    serial::line("Affichage prêt.");
+    let mut console = console::Console::new(screen, bottom)?;
+    let mut keyboard = Keyboard::init()?;
+    serial::line("Clavier PS/2 prêt (AZERTY).");
+    loop {
+        let _line = input::read_line(&mut keyboard, &mut console);
+    }
 }
 
 #[panic_handler]

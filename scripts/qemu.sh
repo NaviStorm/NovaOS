@@ -15,7 +15,7 @@ for firmware in "$OVMF_CODE" "$OVMF_VARS"; do
 done
 
 # La NVRAM du paquet reste en lecture seule ; QEMU garde les écritures en mémoire.
-exec qemu-system-x86_64 -machine q35 -accel tcg -cpu max -smp 1 -m 256M \
+exec qemu-system-x86_64 -name NovaOS -machine q35,i8042=on,pic=on -accel tcg -cpu max -smp 1 -m 256M \
     -drive "if=pflash,unit=0,format=raw,readonly=on,file=$OVMF_CODE" \
     -drive "if=pflash,unit=1,format=raw,snapshot=on,file=$OVMF_VARS" \
     -vga "${NOVA_VGA:-std}" -nic none -boot order=d -cdrom build/novaos.iso -no-reboot "$@"

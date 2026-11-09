@@ -2,10 +2,10 @@ mod font;
 
 use limine::framebuffer::{Framebuffer, MemoryModel};
 
-struct Screen {
+pub(crate) struct Screen {
     base: *mut u32,
-    width: usize,
-    height: usize,
+    pub(crate) width: usize,
+    pub(crate) height: usize,
     stride: usize,
     shifts: [u8; 3],
 }
@@ -59,12 +59,19 @@ impl Screen {
         })
     }
 
-    fn rgb(&self, r: u8, g: u8, b: u8) -> u32 {
+    pub(crate) fn rgb(&self, r: u8, g: u8, b: u8) -> u32 {
         let [rs, gs, bs] = self.shifts;
         (u32::from(r) << rs) | (u32::from(g) << gs) | (u32::from(b) << bs)
     }
 
-    fn fill(&mut self, left: usize, top: usize, width: usize, height: usize, color: u32) {
+    pub(crate) fn fill(
+        &mut self,
+        left: usize,
+        top: usize,
+        width: usize,
+        height: usize,
+        color: u32,
+    ) {
         assert!(left <= self.width && width <= self.width - left);
         assert!(top <= self.height && height <= self.height - top);
         for y in top..top + height {
@@ -77,9 +84,23 @@ impl Screen {
             }
         }
     }
+
+    pub(crate) fn scroll_up(&mut self, top: usize, bottom: usize, step: usize) {
+        assert!(top <= bottom && bottom <= self.height && step <= bottom - top);
+        for y in top..bottom - step {
+            for x in 0..self.width {
+                let dst = self.base.wrapping_add(y * self.stride + x);
+                let src = self.base.wrapping_add((y + step) * self.stride + x);
+                // Sûreté : les deux pixels sont dans les lignes visibles validées
+                // et initialisées au démarrage. La copie ascendante protège la source.
+                unsafe { dst.write_volatile(src.read_volatile()) };
+            }
+        }
+    }
 }
 
-pub fn show_banner(fb: &Framebuffer<'_>, text: &str) -> Result<(), &'static str> {
+/// Renvoie l’écran initialisé et l’ordonnée qui suit la bannière.
+pub fn show_banner(fb: &Framebuffer<'_>, text: &str) -> Result<(Screen, usize), &'static str> {
     let mut screen = Screen::from_limine(fb)?;
     let columns = text
         .len()
@@ -115,5 +136,5 @@ pub fn show_banner(fb: &Framebuffer<'_>, text: &str) -> Result<(), &'static str>
             }
         }
     }
-    Ok(())
+    Ok((screen, top + font::HEIGHT * scale))
 }
