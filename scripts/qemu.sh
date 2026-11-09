@@ -15,7 +15,7 @@ case "${NOVA_ARCH:-x86_64}" in
         code=edk2-aarch64-code.fd
         vars=edk2-arm-vars.fd
         emulator=qemu-system-aarch64
-        set -- -machine virt -cpu cortex-a72 -device ramfb \
+        set -- -machine virt,gic-version=2 -cpu cortex-a72 -device ramfb \
             -device virtio-scsi-pci -drive "if=none,id=cd,file=$iso,format=raw,readonly=on,media=cdrom" \
             -device scsi-cd,drive=cd,bootindex=1 "$@"
         ;;

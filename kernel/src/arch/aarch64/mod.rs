@@ -1,7 +1,9 @@
 //! Amorçage de la machine QEMU virt sous UEFI/Limine.
+pub(crate) mod context;
 mod exceptions;
 pub(crate) mod paging;
 mod serial;
+pub(crate) mod timer;
 use core::{arch::asm, fmt};
 
 pub(crate) const DIAGNOSTIC: Option<fn(fmt::Arguments<'_>)> = Some(serial::line);

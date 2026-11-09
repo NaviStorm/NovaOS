@@ -1,6 +1,8 @@
 use super::{interrupts, ports::Port};
 use pc_keyboard::{DecodedKey, HandleControl, KeyCode, PS2Keyboard, ScancodeSet2, layouts::Azerty};
 
+static INPUT: crate::sched::Event = crate::sched::Event::new();
+
 const OUTPUT_FULL: u8 = 1;
 const INPUT_FULL: u8 = 2;
 const AUX_DATA: u8 = 1 << 5;
@@ -51,6 +53,7 @@ pub struct Keyboard {
 
 impl Keyboard {
     pub fn init() -> Result<Self, &'static str> {
+        let _irq = crate::hal::interrupts::Guard::new();
         send(Port::Controller, 0xad)?; // Suspendre les deux ports avant la purge.
         send(Port::Controller, 0xa7)?;
         for _ in 0..256 {
@@ -123,12 +126,14 @@ impl Keyboard {
             return ch;
         }
         loop {
+            let irq = crate::hal::interrupts::Guard::new();
             let status = Port::Controller.read();
             if status & OUTPUT_FULL == 0 {
-                interrupts::sleep_until_irq();
+                INPUT.wait(&irq);
                 continue;
             }
             let byte = Port::KeyboardData.read();
+            drop(irq);
             if status & (AUX_DATA | 0xc0) != 0 {
                 continue;
             }
@@ -137,4 +142,9 @@ impl Keyboard {
             }
         }
     }
+}
+
+pub(super) extern "C" fn irq() {
+    Port::PicCommand.write(0x20);
+    INPUT.notify_one();
 }

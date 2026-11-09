@@ -12,6 +12,7 @@ mod hardware;
 mod heap;
 mod input;
 mod memory;
+mod sched;
 
 use core::panic::PanicInfo;
 use hal::log;
@@ -29,26 +30,37 @@ pub extern "C" fn nova_start() -> ! {
         .unwrap_or_else(|error| panic!("Initialisation mémoire : {error:?}"));
     log(format_args!("{BANNER}"));
     let scenario = boot::scenario();
-    if !scenario.starts_with(b"heap-") {
+    if scenario.starts_with(b"mem-") {
         memory
             .test(scenario)
             .unwrap_or_else(|error| panic!("Autotest mémoire : {error:?}"));
     }
+    let kernel_space = memory.space_id();
     heap::install(memory);
     if scenario.starts_with(b"heap-") {
         heap::test(scenario);
     }
-    let Err(reason) = interactive();
-    log(format_args!("{reason}"));
-    hal::cpu::halt()
+    sched::start(main_thread, kernel_space)
 }
 
-fn interactive() -> Result<core::convert::Infallible, &'static str> {
+fn main_thread() {
+    let scenario = boot::scenario();
+    if scenario.starts_with(b"sched-") {
+        sched::test(scenario);
+    }
+    if let Err(reason) = interactive() {
+        hal::interrupts::mask();
+        log(format_args!("{reason}"));
+        hal::cpu::halt();
+    }
+}
+
+fn interactive() -> Result<(), &'static str> {
     let (screen, bottom) = framebuffer::show_banner(&boot::framebuffer()?, BANNER)?;
     log(format_args!("Affichage prêt."));
     let mut console = console::Console::new(screen, bottom)?;
     let Some(mut next_char) = hal::keyboard()? else {
-        hal::cpu::halt();
+        return Ok(());
     };
     loop {
         let _line = input::read_line(&mut next_char, &mut console)?;
@@ -57,6 +69,7 @@ fn interactive() -> Result<core::convert::Infallible, &'static str> {
 
 #[panic_handler]
 fn panic(info: &PanicInfo<'_>) -> ! {
+    hal::interrupts::mask();
     log(format_args!("Panique du noyau : {info}"));
     hal::cpu::halt()
 }

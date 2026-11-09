@@ -88,6 +88,11 @@ impl Image {
     }
 }
 
+/// Identité opaque de la racine de traduction. La politique des threads ne
+/// manipule aucune adresse physique ni registre d’architecture.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct SpaceId(u64);
+
 pub struct Memory {
     frames: Frames,
     space: AddressSpace,
@@ -229,6 +234,10 @@ impl VirtualMemory for Memory {
 }
 
 impl Memory {
+    pub(crate) fn space_id(&self) -> SpaceId {
+        SpaceId(self.space.root)
+    }
+
     /// Nombre de cadres encore disponibles, sans exposer la liste des cadres.
     pub(crate) fn free_pages(&self) -> u64 {
         self.frames.available

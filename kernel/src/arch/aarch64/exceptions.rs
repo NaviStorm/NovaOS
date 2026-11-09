@@ -10,15 +10,21 @@ global_asm!(r#"
 .global nova_vectors
 .hidden nova_vectors
 nova_vectors:
+.set group,0
 .rept 4
     b 1f
     .balign 128
-    b 2f
+    .if group == 1
+        b nova_irq_el1h
+    .else
+        b 2f
+    .endif
     .balign 128
     b 2f
     .balign 128
     b 2f
     .balign 128
+.set group,group+1
 .endr
 1:  mov x4, #1
     b 3f
@@ -31,13 +37,58 @@ nova_vectors:
     mrs x2, elr_el1
     mrs x3, spsr_el1
     bl {handler}
+// EL1h : SP_EL1 appartient au thread. Sauver ELR/SPSR avant tout autre
+// thread, qui pourra lui aussi recevoir des exceptions. Pas de FP/SIMD.
+nova_irq_el1h:
+    sub sp,sp,#272
+    stp x0,x1,[sp,#0]
+    stp x2,x3,[sp,#16]
+    stp x4,x5,[sp,#32]
+    stp x6,x7,[sp,#48]
+    stp x8,x9,[sp,#64]
+    stp x10,x11,[sp,#80]
+    stp x12,x13,[sp,#96]
+    stp x14,x15,[sp,#112]
+    stp x16,x17,[sp,#128]
+    stp x18,x19,[sp,#144]
+    stp x20,x21,[sp,#160]
+    stp x22,x23,[sp,#176]
+    stp x24,x25,[sp,#192]
+    stp x26,x27,[sp,#208]
+    stp x28,x29,[sp,#224]
+    mrs x0,elr_el1
+    mrs x1,spsr_el1
+    stp x30,x0,[sp,#240]
+    str x1,[sp,#256]
+    bl {irq}
+    ldr x1,[sp,#256]
+    ldp x30,x0,[sp,#240]
+    msr elr_el1,x0
+    msr spsr_el1,x1
+    ldp x28,x29,[sp,#224]
+    ldp x26,x27,[sp,#208]
+    ldp x24,x25,[sp,#192]
+    ldp x22,x23,[sp,#176]
+    ldp x20,x21,[sp,#160]
+    ldp x18,x19,[sp,#144]
+    ldp x16,x17,[sp,#128]
+    ldp x14,x15,[sp,#112]
+    ldp x12,x13,[sp,#96]
+    ldp x10,x11,[sp,#80]
+    ldp x8,x9,[sp,#64]
+    ldp x6,x7,[sp,#48]
+    ldp x4,x5,[sp,#32]
+    ldp x2,x3,[sp,#16]
+    ldp x0,x1,[sp,#0]
+    add sp,sp,#272
+    eret
 .popsection
 .pushsection .bss.exception_stack,"aw",%nobits
 .balign 16
 .skip 16384
 exception_stack_end:
 .popsection
-"#, handler = sym fault);
+"#, handler = sym fault, irq = sym super::timer::irq);
 
 pub fn install() {
     // Sûreté : la cible virt démarre à EL1, DAIF masqué, la table est permanente.
@@ -49,6 +100,10 @@ pub fn install() {
 
 extern "C" fn fault(esr: u64, address: u64, pc: u64, state: u64, sync: u64) -> ! {
     let ec = (esr >> 26) & 63;
+    if sync != 0 && ec == 7 {
+        hal::log(format_args!("FPU/SIMD interdit : EC=7"));
+        hal::cpu::halt();
+    }
     let access = match ec {
         0x20 | 0x21 => "execution",
         0x24 | 0x25 if esr & 64 != 0 => "ecriture",

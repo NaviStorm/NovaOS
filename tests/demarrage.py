@@ -12,14 +12,14 @@ import time
 
 
 BUILD = Path("build")
-BANNER = b"NovaOS v0.4.0\r\n"
+BANNER = b"NovaOS v0.5.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "6c4a46bda99df848c35b1f7132ccc31f86223468767fc2549619dee0e0645364",
-    "demarrage": "dfa80d58d6a56280936488bb95e728d65c1fbc3c9071f716a0c8ea6838c7abef",
-    "composition": "ce5496ba24e5338bba3ec6b9467283f70e0a340f817bd06a7ec34542bf368c53",
-    "frappe": "499eb6cf66692b0570fa904471d26424546685d9ed8735fe318482ee221c9106",
-    "saisie": "f7ff46e22c3b4a4de422d7f27aec1b9aded2b3d683daf36327a71a5b588a7453",
+    "demarrage-aarch64": "4519b9b87def9e473dd614d35697fb00407df1cc4bf82dcbaf6f73a82624e028",
+    "demarrage": "1c8e8e7de52f012f12fcc0c13907e5dabdfa29c0c8e58f28f8cdc71e5c5141bf",
+    "composition": "0bfdda4db06254be9564cdaa0c6fe19a7126ee9231d0cde86c0df3c624223a78",
+    "frappe": "6d7030cbb973d96193698bfac113e888d4e906cbda1249c99c7ec38572b7a09b",
+    "saisie": "aa0ff47ccd1a5a0ec5cb1e1c9e4262ac74e90d50e6d73c45c6b5d6760966f396",
 }
 
 
@@ -192,7 +192,7 @@ def check_fault(report, arch, access, cause):
              and f"acces={access} cause={cause}" in detail
              and (pc == address if access == "execution" else int(pc, 16) >= 0xffffffff80000000))
     if arch == "x86_64":
-        code = {"lecture": 0, "ecriture": 3, "execution": 17}[access]
+        code = int(cause == "protection") | {"lecture": 0, "ecriture": 2, "execution": 16}[access]
         valid &= tag == "#PF" and f"code={code:#x} " in detail and "utilisateur=false" in detail
     else:
         syndrome = re.search(r"esr=(0x[0-9a-f]+)", detail)
@@ -289,6 +289,50 @@ def heap_check(arch, name):
     return verify
 
 
+def scheduler_check(arch, name):
+    def verify(vm, directory, log):
+        start = time.monotonic()
+        deadline = start + (160 if name == "sched-stress" else 45)
+        report = ""
+        while vm.poll() is None and time.monotonic() < deadline:
+            report = log.read_text(errors="replace") if log.exists() else ""
+            if "Panique du noyau" in report:
+                raise RuntimeError(report[-1200:])
+            if name == "sched-guard":
+                passed = check_fault(report, arch, "ecriture", "absente")
+            elif name == "sched-fpu":
+                passed = ("FPU/SIMD interdit : " + ("#NM" if arch == "x86_64" else "EC=7")) in report
+            else:
+                proof = re.search(r"PREEMPT ticks=(\d+) switches=(\d+) A=(\d+) B=(\d+) yields=0", report)
+                passed = (proof is not None and int(proof[1]) >= 100 and int(proof[2]) >= 80
+                          and min(int(proof[3]), int(proof[4])) > 5
+                          and "ORDONNANCEUR validation OK" in report and "Affichage prêt." in report)
+                if name == "sched-test":
+                    checks = re.search(r"THREADS compteur=40 attentes=(\d+) yields=(\d+) reveils=(\d+) collectes=(\d+) idle=(\d+)", report)
+                    passed = (passed and checks is not None and int(checks[1]) > 0
+                              and int(checks[2]) >= 40 and int(checks[3]) >= 40
+                              and int(checks[4]) >= 4 and int(checks[5]) > 0
+                              and "PILES 48 creations et restitutions OK" in report
+                              and "IRQ timer pendante masquee puis livree OK" in report
+                              and "TCB saturation, generations et affinite CPU0 OK" in report)
+                else:
+                    stats = re.search(r"STRESS ticks=(\d+) switches=(\d+) A=(\d+) B=(\d+) cycles=(\d+)", report)
+                    passed = (passed and stats is not None and int(stats[1]) >= 15000
+                              and int(stats[2]) >= 14000 and min(int(stats[3]), int(stats[4])) >= 3000
+                              and int(stats[5]) >= 50)
+            if passed:
+                if arch == "x86_64":
+                    wait_for_halt(vm, name in ("sched-test", "sched-stress"))
+                else:
+                    wait_for_wfi(vm)
+                if name == "sched-stress":
+                    print(f"{arch} : {stats[0]} ({time.monotonic()-start:.1f} s avec amorçage)")
+                return
+            time.sleep(0.05)
+        raise RuntimeError(f"Validation absente : {arch} {name}\n{report[-1200:]}")
+    return verify
+
+
 if __name__ == "__main__":
     if os.environ.get("NOVA_ARCH", "x86_64") == "aarch64":
         boot("aarch64", check_arm)
@@ -299,3 +343,5 @@ if __name__ == "__main__":
     memory_scenarios(arch)
     for case in ("heap-test", "heap-oom", "heap-corrupt", "heap-guard", "heap-infallible"):
         scenario_vm(arch, case, heap_check(arch, case))
+    for case in ("sched-test", "sched-guard", "sched-fpu", "sched-stress"):
+        scenario_vm(arch, case, scheduler_check(arch, case))

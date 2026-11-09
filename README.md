@@ -1,8 +1,10 @@
-# NovaOS v0.4.0
+# NovaOS v0.5.0
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.4.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.5.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
+
+Le noyau ordonnance ses threads en tourniquet sur CPU0 avec un timer matériel à 250 Hz. Le thread de saisie x86_64 se bloque en attente du clavier. Sur les deux cibles, le thread idle prend la main quand la file des prêts est vide. [Ordonnancement, synchronisation et validation](docs/ordonnancement.md)
 
 ## Démarrage manuel dans QEMU
 
@@ -38,7 +40,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | --- | --- |
 | `make build` | Compile le noyau et crée l’ISO UEFI. |
 | `make run` | Ouvre l’écran QEMU et affiche COM1 dans le terminal. Fermer la fenêtre pour quitter. |
-| `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle et de tas pour la cible choisie. Nécessite Python 3. |
+| `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle, de tas et de multitâche pour la cible choisie. Nécessite Python 3. |
 | `make clean` | Supprime les produits de compilation et de test dans `build/` et `target/`. |
 
 ### Compiler pour AArch64
@@ -58,8 +60,8 @@ L’ELF AArch64 se trouve dans `target/aarch64-unknown-none-softfloat/release/no
 
 Les deux configurations utilisent l’émulation TCG, un processeur, 256 Mio de RAM et une surcouche temporaire pour les variables UEFI. Le firmware EDK II est choisi selon l’architecture. Les variables d’environnement `OVMF_CODE` et `OVMF_VARS` permettent de fournir une autre paire de fichiers de firmware.
 
-- **x86_64** utilise Q35, une carte VGA standard, le contrôleur PS/2 i8042 et les PIC 8259.
-- **AArch64** utilise la machine `virt`, un Cortex-A72, un lecteur CD VirtIO SCSI et `ramfb`. Le firmware configure l’affichage et Limine transmet le framebuffer au noyau. Le noyau écrit ses diagnostics mémoire sur le PL011. Le clavier interactif reste réservé à x86_64. [Machine virt de QEMU](https://www.qemu.org/docs/master/system/arm/virt.html)
+- **x86_64** utilise Q35, une carte VGA standard, le contrôleur PS/2 i8042, les PIC 8259 et le timer PIT.
+- **AArch64** utilise la machine `virt`, un Cortex-A72, un GICv2, le timer physique générique et un lecteur CD VirtIO SCSI et `ramfb`. Le firmware configure l’affichage et Limine transmet le framebuffer au noyau. Le noyau écrit ses diagnostics mémoire sur le PL011. Le clavier interactif reste réservé à x86_64. [Machine virt de QEMU](https://www.qemu.org/docs/master/system/arm/virt.html)
 
 Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86_64** et **Q35**, activer le démarrage UEFI et utiliser un périphérique d’affichage VGA standard. Insérer `build/novaos.iso` dans le lecteur CD/DVD et le placer en tête de l’ordre de démarrage. [Réglages système UTM](https://docs.getutm.app/settings-qemu/system/) · [Réglages QEMU dans UTM](https://docs.getutm.app/settings-qemu/qemu/)
 
@@ -73,6 +75,7 @@ Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86
 | `kernel/src/main.rs` | Initialisation, bannière dérivée de la version Cargo et traitement des paniques. |
 | `kernel/src/hardware/framebuffer.rs` | Framebuffer Limine et dessin de la bannière, communs aux deux cibles. |
 | `kernel/src/memory/` | Cadres physiques de 4 Kio, espaces d’adressage, mappage, démappage et vérification des protections. |
+| `kernel/src/sched/` | Threads, piles gardées, file des prêts, sommeil, événements et mutex bloquant. |
 | `kernel/src/heap/` | Allocateur global, arbres de blocs, extension transactionnelle et sondes du tas. |
 | `kernel/src/hal/` | Interfaces communes du processeur, du masquage des interruptions et de la mémoire virtuelle. |
 | `kernel/src/arch/x86_64/` | Pagination IA-32e, #PF, instructions CPU, COM1, IDT, PIC 8259 et clavier PS/2. |
@@ -81,13 +84,13 @@ Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86
 | `kernel/src/input.rs` | Édition et remise d’une ligne Unicode à l’appelant via `read_line` et `Line::as_chars`. |
 | `scripts/`, `tests/` | Assemblage de l’ISO, configuration de la VM et tests de démarrage. |
 
-Rust stable sélectionne le module d’architecture à la compilation. La HAL expose `cpu::halt` et `interrupts::mask` sur les deux plateformes. Le gestionnaire commun implémente le trait `VirtualMemory`. Il conserve la pile de démarrage et remplace les tables de Limine. [Architecture mémoire et scénarios de validation](docs/memoire.md)
+Rust stable sélectionne le module d’architecture à la compilation. La HAL expose `cpu::halt` et `interrupts::mask` sur les deux plateformes. Le gestionnaire commun implémente le trait `VirtualMemory`. Il remplace les tables de Limine. L’ordonnanceur quitte ensuite la pile de démarrage pour la pile privée du thread principal. [Architecture mémoire et scénarios de validation](docs/memoire.md)
 
 Le script Cargo `kernel/build.rs` s’exécute sur le Mac. Les deux cibles utilisent le même agencement de sections ELF et l’éditeur de liens sélectionne la machine selon la cible. [Cible bare-metal x86_64 de Rust](https://doc.rust-lang.org/rustc/platform-support/x86_64-unknown-none.html)
 
 Le pilote vidéo utilise les décalages RVB et le pas de ligne indiqués par Limine pour les pixels de 32 bits. Sur x86_64, une erreur d’initialisation ou une panique Rust envoie un diagnostic sur COM1 puis arrête le processeur avec `cli` et `hlt`.
 
-Le noyau conserve la GDT de Limine et installe sa propre IDT. Il remappe les PIC sur les vecteurs `0x20` à `0x2f` et démasque uniquement IRQ1. L’i8042 utilise le premier port PS/2 et transmet les scancodes du jeu 2 avec la traduction matérielle désactivée. La routine IRQ1 acquitte le PIC maître. La boucle de saisie lit les octets du contrôleur, puis `pc-keyboard` décode les appuis et les relâchements. Lorsque le tampon est vide, la séquence `sti; hlt; cli` permet d’attendre la frappe suivante sans perdre une interruption entre la vérification et la veille. [Contrôleur i8042 de QEMU](https://github.com/qemu/qemu/blob/master/hw/input/pckbd.c) · [Disposition AZERTY de pc-keyboard](https://github.com/rust-embedded-community/pc-keyboard/blob/main/src/layouts/azerty.rs)
+Sur x86_64, la GDT du noyau reprend les sélecteurs de Limine et ajoute un TSS avec piles d’urgence pour les fautes de page et doubles fautes. L’IDT reçoit IRQ0 pour le PIT et IRQ1 pour l’i8042. Quand le tampon du clavier est vide, le thread de saisie s’inscrit sur un canal d’attente sous masque IRQ. L’interruption le replace dans la file des prêts. Le décodage AZERTY reste en contexte de thread. [Contrôleur i8042 de QEMU](https://github.com/qemu/qemu/blob/master/hw/input/pckbd.c) · [Disposition AZERTY de pc-keyboard](https://github.com/rust-embedded-community/pc-keyboard/blob/main/src/layouts/azerty.rs)
 
 Le shell consommera les lignes remises par `read_line`. Le VFS reste prévu comme un service distinct du matériel, avec un RAMFS comme premier fournisseur.
 
@@ -101,7 +104,9 @@ Une seconde VM démarre sans carte graphique. Le test attend le diagnostic de fr
 
 Six VM supplémentaires par architecture exercent l’allocateur, les espaces indépendants et cinq fautes provoquées. Les journaux portent le nom du scénario, par exemple `build/serie-x86_64-mem-nx.log` et `build/serie-aarch64-mem-absent.log`. Les ISO de test sont temporaires.
 
-Cinq VM supplémentaires par architecture testent le tas, la pénurie physique et la récupération, la détection de corruption, la page de garde et le traitement d’une allocation infaillible refusée. Les commandes `make ARCH=x86_64 test` et `make ARCH=aarch64 test` exécutent respectivement 13 et 12 démarrages avec le même ELF que le lancement manuel. Les journaux se trouvent dans `build/serie-<architecture>-heap-*.log`.
+Cinq VM supplémentaires par architecture testent le tas, la pénurie physique et la récupération, la détection de corruption, la page de garde et le traitement d’une allocation infaillible refusée. Les journaux se trouvent dans `build/serie-<architecture>-heap-*.log`.
+
+Quatre scénarios d’ordonnancement par architecture vérifient la préemption matérielle, la contention, la terminaison, le débordement de pile, l’interdiction du SIMD et la stabilité sur au moins 15 000 ticks. Les deux suites effectuent **17 démarrages x86_64 et 16 AArch64**. Le même ELF sert aux tests et à l’image normale. Les diagnostics se trouvent dans `build/serie-<architecture>-sched-*.log`.
 
 ## Provenance de Limine
 

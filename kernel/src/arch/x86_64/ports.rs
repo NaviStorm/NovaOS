@@ -5,6 +5,8 @@ use core::arch::asm;
 pub(super) enum Port {
     PicCommand = 0x20,
     PicMask = 0x21,
+    Pit0 = 0x40,
+    PitMode = 0x43,
     KeyboardData = 0x60,
     Controller = 0x64,
     SlaveCommand = 0xa0,
@@ -14,7 +16,7 @@ pub(super) enum Port {
 impl Port {
     pub fn read(self) -> u8 {
         let value: u8;
-        // Sûreté : seuls les ports i8042 et 8259 de la machine Q35 sont admis,
+        // Sûreté : seuls les ports i8042, PIT et 8259 de la machine Q35 sont admis,
         // depuis le noyau en anneau 0. Le contrôleur n’a qu’un lecteur.
         unsafe {
             asm!("in al, dx", in("dx") self as u16, out("al") value, options(nostack, preserves_flags))

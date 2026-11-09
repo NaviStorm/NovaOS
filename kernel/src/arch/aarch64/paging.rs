@@ -75,13 +75,6 @@ pub fn root() -> Result<u64> {
     Ok(ttbr & 0x0000_ffff_ffff_f000)
 }
 pub fn map_devices(space: &AddressSpace, frames: &mut Frames) -> Result<()> {
-    if frames.info.entries.iter().any(|e| {
-        crate::memory::mapped(e.entry_type)
-            && e.base < serial::PA + 4096
-            && e.base + e.length > serial::PA
-    }) {
-        return Err(Error::Geometry);
-    }
     let mair: u64;
     // Sûreté : lecture des attributs installés par Limine, conservés pour éviter
     // tout changement de type mémoire pendant la transition.
@@ -89,11 +82,20 @@ pub fn map_devices(space: &AddressSpace, frames: &mut Frames) -> Result<()> {
     let index = (0..8)
         .find(|i| (mair >> (i * 8)) & 255 == 0)
         .ok_or(Error::Mode)?;
-    space.insert(
-        frames,
-        serial::VA,
-        leaf(serial::PA, Access::ReadWrite, index << 2),
-    )
+    use super::timer;
+    for (va, pa) in [
+        (serial::VA, serial::PA),
+        (timer::DIST, timer::DIST_PA),
+        (timer::CPU, timer::CPU_PA),
+    ] {
+        if frames.info.entries.iter().any(|e| {
+            crate::memory::mapped(e.entry_type) && e.base < pa + 4096 && e.base + e.length > pa
+        }) {
+            return Err(Error::Geometry);
+        }
+        space.insert(frames, va, leaf(pa, Access::ReadWrite, index << 2))?;
+    }
+    Ok(())
 }
 
 // Sûreté : thunk sans pile, sans littéral et sans adresse absolue. Le code

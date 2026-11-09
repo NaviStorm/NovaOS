@@ -1,8 +1,10 @@
+pub(crate) mod context;
 mod interrupts;
 mod keyboard;
 pub(crate) mod paging;
 mod ports;
 mod serial;
+pub(crate) mod timer;
 
 use core::{arch::asm, fmt};
 
@@ -14,7 +16,7 @@ pub(crate) fn init() {
 
 pub(crate) fn keyboard() -> Result<Option<impl FnMut() -> char>, &'static str> {
     let mut keyboard = keyboard::Keyboard::init()?;
-    serial::line(format_args!("Clavier PS/2 prêt (AZERTY)."));
+    crate::hal::log(format_args!("Clavier PS/2 prêt (AZERTY)."));
     Ok(Some(move || keyboard.next_char()))
 }
 

@@ -91,6 +91,7 @@ pub(crate) fn install(pages: Memory) {
 
 pub(super) fn fatal(e: Error) -> ! {
     // Le diagnostic utilise core::fmt sur le port série et ne demande aucune allocation.
+    hal::interrupts::mask();
     hal::log(format_args!("Erreur fatale du tas : {e:?}"));
     hal::cpu::halt()
 }
@@ -131,4 +132,11 @@ unsafe impl GlobalAlloc for KernelAllocator {
         // Sûreté : le contrat de GlobalAlloc::realloc impose un bloc valide et exclusif.
         unsafe { self.resize(ptr, old, new) }
     }
+}
+
+/// Emprunt bref du gestionnaire de pages. Le code appelé doit rester sans allocation.
+pub(crate) fn with_pages<T>(
+    f: impl FnOnce(&mut Memory) -> crate::memory::Result<T>,
+) -> crate::memory::Result<T> {
+    GLOBAL.with(|slot| f(&mut slot.as_mut().ok_or(crate::memory::Error::Missing)?.pages))
 }

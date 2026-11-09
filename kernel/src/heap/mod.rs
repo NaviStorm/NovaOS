@@ -9,7 +9,7 @@ use crate::{
     memory::{self, Memory},
 };
 use core::{alloc::Layout, mem::size_of};
-pub(crate) use global::{install, realign};
+pub(crate) use global::{install, realign, with_pages};
 pub(crate) use probes::test;
 use tree::{Block, Tree};
 
