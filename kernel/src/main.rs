@@ -2,40 +2,43 @@
 #![no_main]
 #![deny(unsafe_op_in_unsafe_fn)]
 
+mod arch;
 mod boot;
 mod console;
+pub mod hal;
 mod hardware;
 mod input;
 
 use core::panic::PanicInfo;
-use hardware::{framebuffer, halt, keyboard::Keyboard, serial};
+use hal::log;
+use hardware::framebuffer;
 
 const BANNER: &str = concat!("NovaOS v", env!("CARGO_PKG_VERSION"));
 
 // Sûreté : seul symbole d’entrée, désigné par ENTRY dans le script de liaison.
 #[unsafe(no_mangle)]
 pub extern "C" fn nova_start() -> ! {
-    serial::init();
-    serial::line(BANNER);
+    hal::init();
+    log(format_args!("{BANNER}"));
     let Err(reason) = interactive();
-    serial::line(reason);
-    halt()
+    log(format_args!("{reason}"));
+    hal::cpu::halt()
 }
 
 fn interactive() -> Result<core::convert::Infallible, &'static str> {
     let (screen, bottom) = framebuffer::show_banner(&boot::framebuffer()?, BANNER)?;
-    serial::line("Affichage prêt.");
+    log(format_args!("Affichage prêt."));
     let mut console = console::Console::new(screen, bottom)?;
-    let mut keyboard = Keyboard::init()?;
-    serial::line("Clavier PS/2 prêt (AZERTY).");
+    let Some(mut next_char) = hal::keyboard()? else {
+        hal::cpu::halt();
+    };
     loop {
-        let _line = input::read_line(&mut keyboard, &mut console);
+        let _line = input::read_line(&mut next_char, &mut console);
     }
 }
 
 #[panic_handler]
 fn panic(info: &PanicInfo<'_>) -> ! {
-    use core::fmt::Write;
-    let _ = writeln!(serial::Com1, "Panique du noyau : {info}\r");
-    halt()
+    log(format_args!("Panique du noyau : {info}"));
+    hal::cpu::halt()
 }

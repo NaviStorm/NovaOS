@@ -1,11 +1,13 @@
 .PHONY: build kernel run test clean
+ARCH ?= x86_64
+export NOVA_ARCH := $(ARCH)
 
 build: kernel
 	sh scripts/iso.sh
 
 # Homebrew peut fournir un rustc distinct de celui qui possède la cible bare-metal.
 kernel:
-	RUSTC="$$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked
+	. scripts/target.sh && RUSTC="$$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$$rust_target"
 
 run: build
 	sh scripts/qemu.sh -serial stdio

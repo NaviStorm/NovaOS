@@ -1,4 +1,4 @@
-use crate::{console::Console, hardware::keyboard::Keyboard};
+use crate::console::Console;
 
 /// Une ligne Unicode validée. Ce type reste indépendant du pilote et de l’affichage.
 pub struct Line {
@@ -23,14 +23,14 @@ impl Line {
     }
 }
 
-pub fn read_line(keyboard: &mut Keyboard, console: &mut Console) -> Line {
+pub fn read_line(next_char: &mut impl FnMut() -> char, console: &mut Console) -> Line {
     let mut line = Line {
         chars: [' '; 128],
         len: 0,
     };
     loop {
         console.line(line.as_chars(), true);
-        let ch = keyboard.next_char();
+        let ch = next_char();
         if ch == '\n' {
             console.line(line.as_chars(), false);
             console.newline();

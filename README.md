@@ -1,6 +1,6 @@
 # NovaOS v0.2.0
 
-Le firmware UEFI démarre Limine depuis le CD virtuel. Le noyau Rust affiche `NovaOS v0.2.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.2.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille.
 
 ## Saisie interactive
 
@@ -28,9 +28,25 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | `make test` | Démarre deux VM, envoie des frappes au clavier PS/2 et vérifie les pixels affichés, COM1 et la veille. Nécessite Python 3. |
 | `make clean` | Supprime les produits de compilation et de test dans `build/` et `target/`. |
 
-## Machine virtuelle
+### Compiler pour AArch64
 
-Le lanceur utilise QEMU en émulation TCG, une machine Q35, un processeur x86_64, 256 Mio de RAM et une carte VGA standard. Il active le contrôleur PS/2 i8042 et les PIC 8259. Il utilise le firmware EDK II fourni avec QEMU et une surcouche temporaire pour les variables UEFI. Les variables d’environnement `OVMF_CODE` et `OVMF_VARS` permettent de fournir une autre paire de fichiers de firmware.
+Par défaut, les commandes ciblent x86_64. Pour QEMU `virt`, installer la cible AArch64 bare-metal et choisir explicitement l’architecture. La variante Rust `softfloat` convient à l’entrée du noyau, où les registres SIMD et flottants peuvent être désactivés. [Cibles AArch64 bare-metal de Rust](https://doc.rust-lang.org/rustc/platform-support/aarch64-unknown-none.html)
+
+```sh
+rustup target add --toolchain stable aarch64-unknown-none-softfloat
+make ARCH=aarch64 kernel
+make ARCH=aarch64 test
+make ARCH=aarch64 run
+```
+
+L’ELF AArch64 se trouve dans `target/aarch64-unknown-none-softfloat/release/novaos` et son ISO dans `build/novaos-aarch64.iso`. Les deux images peuvent coexister.
+
+## Machines virtuelles
+
+Les deux configurations utilisent l’émulation TCG, un processeur, 256 Mio de RAM et une surcouche temporaire pour les variables UEFI. Le firmware EDK II est choisi selon l’architecture. Les variables d’environnement `OVMF_CODE` et `OVMF_VARS` permettent de fournir une autre paire de fichiers de firmware.
+
+- **x86_64** utilise Q35, une carte VGA standard, le contrôleur PS/2 i8042 et les PIC 8259.
+- **AArch64** utilise la machine `virt`, un Cortex-A72, un lecteur CD VirtIO SCSI et `ramfb`. Le firmware configure l’affichage et Limine transmet le framebuffer au noyau. La saisie interactive, les interruptions de périphériques et la sortie série du noyau sont réservées à x86_64 dans cette version. [Machine virt de QEMU](https://www.qemu.org/docs/master/system/arm/virt.html)
 
 Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86_64** et **Q35**, activer le démarrage UEFI et utiliser un périphérique d’affichage VGA standard. Insérer `build/novaos.iso` dans le lecteur CD/DVD et le placer en tête de l’ordre de démarrage. [Réglages système UTM](https://docs.getutm.app/settings-qemu/system/) · [Réglages QEMU dans UTM](https://docs.getutm.app/settings-qemu/qemu/)
 
@@ -42,14 +58,19 @@ Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86
 | `kernel/linker.ld` | Point d’entrée, ordre des requêtes Limine et permissions des segments ELF. |
 | `kernel/src/boot.rs` | Vérification de la révision du protocole et récupération du framebuffer. |
 | `kernel/src/main.rs` | Initialisation, bannière dérivée de la version Cargo et traitement des paniques. |
-| `kernel/src/hardware/` | Framebuffer, COM1, IDT, PIC 8259 et pilote clavier PS/2. |
+| `kernel/src/hardware/framebuffer.rs` | Framebuffer Limine et dessin de la bannière, communs aux deux cibles. |
+| `kernel/src/hal/` | Interfaces communes du processeur, du masquage des interruptions et de la mémoire virtuelle. |
+| `kernel/src/arch/x86_64/` | Instructions CPU, entrées/sorties par ports, COM1, IDT, PIC 8259 et clavier PS/2. |
+| `kernel/src/arch/aarch64/` | Initialisation minimale de QEMU virt, masquage via DAIF et veille via WFI. |
 | `kernel/src/console.rs` | Affichage du prompt, du curseur et des lignes dans le framebuffer. |
 | `kernel/src/input.rs` | Édition et remise d’une ligne Unicode à l’appelant via `read_line` et `Line::as_chars`. |
 | `scripts/`, `tests/` | Assemblage de l’ISO, configuration de la VM et tests de démarrage. |
 
-Le noyau cible `x86_64-unknown-none` avec Rust stable et `#![no_std]`. Il utilise la pile et les tables de pages fournies par Limine. Le script Cargo `kernel/build.rs` s’exécute sur le Mac pour sélectionner le script de liaison. [Cible bare-metal x86_64 de Rust](https://doc.rust-lang.org/rustc/platform-support/x86_64-unknown-none.html)
+Rust stable sélectionne le module d’architecture à la compilation. La HAL expose `cpu::halt` et `interrupts::mask` sur les deux plateformes. Le trait `VirtualMemory` distingue adresses physiques et virtuelles et définit les futures opérations de mappage et de démappage. Il s’agit d’un contrat d’interface. Les deux noyaux utilisent la pile et les tables de pages établies par Limine.
 
-Le pilote vidéo utilise les décalages RVB et le pas de ligne indiqués par Limine pour les pixels de 32 bits. Une erreur d’initialisation ou une panique Rust envoie un diagnostic sur COM1 puis arrête le processeur avec `cli` et `hlt`.
+Le script Cargo `kernel/build.rs` s’exécute sur le Mac. Les deux cibles utilisent le même agencement de sections ELF et l’éditeur de liens sélectionne la machine selon la cible. [Cible bare-metal x86_64 de Rust](https://doc.rust-lang.org/rustc/platform-support/x86_64-unknown-none.html)
+
+Le pilote vidéo utilise les décalages RVB et le pas de ligne indiqués par Limine pour les pixels de 32 bits. Sur x86_64, une erreur d’initialisation ou une panique Rust envoie un diagnostic sur COM1 puis arrête le processeur avec `cli` et `hlt`.
 
 Le noyau conserve la GDT de Limine et installe sa propre IDT. Il remappe les PIC sur les vecteurs `0x20` à `0x2f` et démasque uniquement IRQ1. L’i8042 utilise le premier port PS/2 et transmet les scancodes du jeu 2 avec la traduction matérielle désactivée. La routine IRQ1 acquitte le PIC maître. La boucle de saisie lit les octets du contrôleur, puis `pc-keyboard` décode les appuis et les relâchements. Lorsque le tampon est vide, la séquence `sti; hlt; cli` permet d’attendre la frappe suivante sans perdre une interruption entre la vérification et la veille. [Contrôleur i8042 de QEMU](https://github.com/qemu/qemu/blob/master/hw/input/pckbd.c) · [Disposition AZERTY de pc-keyboard](https://github.com/rust-embedded-community/pc-keyboard/blob/main/src/layouts/azerty.rs)
 
@@ -61,6 +82,8 @@ Le shell consommera les lignes remises par `read_line`. Le VFS reste prévu comm
 
 Une seconde VM démarre sans carte graphique. Le test attend le diagnostic de framebuffer absent dans `build/serie-none.log`. Les deux tests contrôlent l’état de veille du processeur.
 
+`make ARCH=aarch64 test` démarre QEMU virt, compare la capture complète de la bannière à sa référence 800 × 600 et contrôle l’instruction de veille `wfi`. La capture est disponible dans `build/demarrage-aarch64.png`.
+
 ## Provenance de Limine
 
-Les fichiers `BOOTX64.EFI` et `limine-uefi-cd.bin` proviennent de la distribution binaire officielle **v10.8.5**, commit `7a9013f305de0bea1f6310e76e7baba30499fef0`. Leurs empreintes SHA-256 sont contrôlées à chaque création d’ISO. Le noyau utilise la révision de base 3 du protocole via la crate `limine` 0.5.0. Les licences des composants tiers sont incluses dans `licenses/` et sur l’ISO. [Distribution Limine épinglée](https://github.com/Limine-Bootloader/Limine/tree/7a9013f305de0bea1f6310e76e7baba30499fef0) · [Liaisons Rust 0.5.0](https://docs.rs/limine/0.5.0/limine/)
+Les fichiers `BOOTX64.EFI`, `BOOTAA64.EFI` et `limine-uefi-cd.bin` proviennent de la distribution binaire officielle **v10.8.5**, commit `7a9013f305de0bea1f6310e76e7baba30499fef0`. Leurs empreintes SHA-256 sont contrôlées à chaque création d’ISO. Le noyau utilise la révision de base 3 du protocole via la crate `limine` 0.5.0. Les licences des composants tiers sont incluses dans `licenses/` et sur l’ISO. [Distribution Limine épinglée](https://github.com/Limine-Bootloader/Limine/tree/7a9013f305de0bea1f6310e76e7baba30499fef0) · [Liaisons Rust 0.5.0](https://docs.rs/limine/0.5.0/limine/)

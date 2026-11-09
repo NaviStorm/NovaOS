@@ -1,4 +1,4 @@
-"""Démarrages UEFI et saisie PS/2 sur le même ISO que make run."""
+"""Démarrages UEFI sur la même image que make run pour chaque architecture."""
 
 import hashlib
 import json
@@ -15,6 +15,7 @@ BUILD = Path("build")
 BANNER = b"NovaOS v0.2.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
+    "demarrage-aarch64": "3585635a0d07ea155d14b55a6f966dce8cd9a7ab49b81c55642078031138e52a",
     "demarrage": "f7895d6ba3fdaa1ed28bde65e6cb75e4a417b8dd24f332e22281644c78792a71",
     "composition": "bb1adcbafd0ebc095229851235dc6332e5c17491afee2b57568142bce96d9b2e",
     "frappe": "659a74e4ce6c8734be383794cb258c510cf81ba1df688f6e9604b269ba8a72da",
@@ -70,9 +71,9 @@ def wait_for_halt(vm, interrupts_enabled):
     raise RuntimeError("Le processeur n’a pas atteint la veille avec l’état IF attendu.")
 
 
-def expect_screen(vm, directory, name):
+def expect_screen(vm, directory, name, timeout=5):
     ppm = directory / "courant.ppm"
-    deadline = time.monotonic() + 5
+    deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         qmp(vm, "screendump", filename=str(ppm))
         frame = ppm.read_bytes()
@@ -132,20 +133,39 @@ def test_keyboard(vm, directory):
     raise RuntimeError("Défilement incorrect de la zone de saisie.")
 
 
-def boot(vga, expected):
+def check_x86(vm, directory, log):
+    wait_for_serial(vm, log, "Affichage prêt.\r\nClavier PS/2 prêt (AZERTY).")
+    test_keyboard(vm, directory)
+    wait_for_halt(vm, True)
+
+
+def check_without_vga(vm, directory, log):
+    wait_for_serial(vm, log, "Erreur : aucun framebuffer transmis par Limine.")
+    wait_for_halt(vm, False)
+
+
+def check_arm(vm, directory, log):
+    expect_screen(vm, directory, "demarrage-aarch64", timeout=45)
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline:
+        code = qmp(vm, "human-monitor-command", **{"command-line": "x/2i $pc-4"})
+        if re.search(r"\bwfi\b", code):
+            return
+        time.sleep(0.03)
+    raise RuntimeError("La bannière ARM64 est affichée mais le CPU n’a pas atteint WFI.")
+
+
+def boot(name, check, **settings):
     with tempfile.TemporaryDirectory(dir=BUILD) as work:
         directory = Path(work)
         log = directory / "serie.log"
         args = ["sh", "scripts/qemu.sh", "-display", "none", "-monitor", "none",
                 "-serial", f"file:{log}", "-qmp", "stdio"]
         with subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                              bufsize=0, env={**os.environ, "NOVA_VGA": vga}) as vm:
+                              bufsize=0, env={**os.environ, **settings}) as vm:
             try:
-                wait_for_serial(vm, log, expected)
                 qmp(vm, "qmp_capabilities")
-                if vga == "std":
-                    test_keyboard(vm, directory)
-                wait_for_halt(vm, vga == "std")
+                check(vm, directory, log)
                 qmp(vm, "quit")
                 if vm.wait(timeout=5):
                     raise RuntimeError("Arrêt anormal de QEMU.")
@@ -154,10 +174,13 @@ def boot(vga, expected):
                     vm.kill()
                     vm.wait()
                 if log.exists():
-                    log.replace(BUILD / f"serie-{vga}.log")
-        print(f"OK — VGA {vga}, {expected} Processeur en veille.")
+                    log.replace(BUILD / f"serie-{name}.log")
+        print(f"OK — {name}, démarrage et veille vérifiés.")
 
 
 if __name__ == "__main__":
-    boot("std", "Affichage prêt.\r\nClavier PS/2 prêt (AZERTY).")
-    boot("none", "Erreur : aucun framebuffer transmis par Limine.")
+    if os.environ.get("NOVA_ARCH", "x86_64") == "aarch64":
+        boot("aarch64", check_arm)
+    else:
+        boot("std", check_x86, NOVA_VGA="std")
+        boot("none", check_without_vga, NOVA_VGA="none")

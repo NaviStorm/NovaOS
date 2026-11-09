@@ -49,7 +49,7 @@ impl fmt::Write for Com1 {
     }
 }
 
-pub fn line(text: &str) {
+pub fn line(text: fmt::Arguments<'_>) {
     use fmt::Write;
     let _ = writeln!(Com1, "{text}\r");
 }

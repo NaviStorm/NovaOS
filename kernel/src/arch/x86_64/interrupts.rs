@@ -1,4 +1,5 @@
-use super::{halt, ports::Port, serial};
+use super::{ports::Port, serial};
+use crate::hal;
 use core::{
     arch::{asm, naked_asm},
     mem::size_of,
@@ -69,15 +70,18 @@ extern "C" fn fault_entry() {
 }
 
 extern "C" fn fatal() -> ! {
-    serial::line("Erreur : interruption inattendue, arrêt du noyau.");
-    halt()
+    serial::line(format_args!(
+        "Erreur : interruption inattendue, arrêt du noyau."
+    ));
+    hal::cpu::halt()
 }
 
 pub(super) fn install() {
     let cs: u16;
+    hal::interrupts::mask();
     // Sûreté : seul le processeur d’amorçage exécute l’initialisation. La GDT
     // de Limine reste mappée et son sélecteur de code reste valide.
-    unsafe { asm!("cli", "mov {cs:x}, cs", cs = out(reg) cs, options(nostack)) };
+    unsafe { asm!("mov {cs:x}, cs", cs = out(reg) cs, options(nostack, preserves_flags)) };
     let mut table = Idt([Gate::new(fault_entry as *const () as usize, cs); 256]);
     let master_eoi = Gate::new(acknowledge_master as *const () as usize, cs);
     table.0[0x21] = master_eoi;

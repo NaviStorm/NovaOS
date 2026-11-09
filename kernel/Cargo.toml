@@ -12,5 +12,7 @@ bench = false
 
 [dependencies]
 limine = "=0.5.0"
-pc-keyboard = "0.9.0"
 font8x8 = { version = "0.3.1", default-features = false }
+
+[target.'cfg(target_arch = "x86_64")'.dependencies]
+pc-keyboard = "0.9.0"
