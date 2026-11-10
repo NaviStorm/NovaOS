@@ -11,17 +11,20 @@ mod check;
 #[cfg(feature = "check-metrics")]
 #[path = "../../lab/heap_meter.rs"]
 mod heap_meter;
+#[path = "novafs/shared.rs"]
+mod shared;
 
 const HELP: &str = concat!(
-    "NovaFS P4 v",
+    "NovaFS v",
     env!("CARGO_PKG_VERSION"),
-    " — format P0, images jetables, uniquement sur flux
+    " — formats P0 et P5, images jetables, uniquement sur flux
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
 novafs script BLOCS SECTEUR                        lit les commandes puis émet l’image sur stdout
 novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l’image sur stdin
 novafs verify BLOCS SECTEUR FS_ID LV_ID            vérifie intégralement les deux générations
 novafs check BLOCS SECTEUR FS_ID LV_ID             contrôle RO d’un LV, rapport JSON
-novafs check-pool BLOCS SECTEUR                    contrôle RO d’un catalogue P0 et de ses LV prêts
+novafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE   vérifie une branche P5 et son reçu externe
+novafs check-pool BLOCS SECTEUR                    vérifie l’intégrité du pool P0 ou P5
 novafs space BLOCS SECTEUR FS_ID LV_ID             comptabilité du FS au repos, sur un LV hors ligne
 novafs space-pool BLOCS SECTEUR                    comptabilité physique du catalogue hors ligne
 novafs salvage BLOCS SECTEUR FS_ID LV_ID SLOT NOM extrait un fichier sur stdout en lecture seule
@@ -201,13 +204,14 @@ fn commands(fs: &mut Engine<&mut FileImage>, mut input: impl BufRead) -> Result<
 }
 fn run(args: &[String]) -> Result<()> {
     if args.is_empty() || args == ["--help"] {
-        println!("{HELP}");
+        println!("{HELP}\n{}", shared::HELP);
         return Ok(());
     }
     if args.len() == 2 && args[1] == "--help" {
         let prefix = format!("novafs {} ", args[0]);
         let usage = HELP
             .lines()
+            .chain(shared::HELP.lines())
             .find(|s| s.starts_with(&prefix))
             .ok_or(Error::Invalid("commande inconnue"))?;
         println!("{usage}");
@@ -217,6 +221,9 @@ fn run(args: &[String]) -> Result<()> {
             );
         }
         return Ok(());
+    }
+    if shared::known(&args[0]) {
+        return shared::run(args);
     }
     if args.len() < 3 {
         return Err(Error::Invalid("consulter --help"));
@@ -314,16 +321,24 @@ fn main() -> std::process::ExitCode {
         return ExitCode::from(2);
     }
     let command = args.first().map(String::as_str);
-    if matches!(
+    if command.is_some_and(shared::known)
+        && !matches!(command, Some("check-export" | "list-views"))
+        && args.get(1).map(String::as_str) != Some("--help")
+        && !check::separate_binary_diagnostics().unwrap_or(false)
+    {
+        return ExitCode::from(2);
+    }
+    if (matches!(
         command,
         Some("check" | "check-pool" | "space" | "space-pool" | "verify" | "inspect" | "salvage")
-    ) && !check::separate_outputs().unwrap_or(false)
+    ) || command.is_some_and(shared::known))
+        && !check::separate_outputs().unwrap_or(false)
     {
         return ExitCode::from(2);
     }
     if matches!(
         command,
-        Some("check" | "check-pool" | "space" | "space-pool")
+        Some("check" | "check-pool" | "space" | "space-pool" | "check-export")
     ) {
         if args.get(1).map(String::as_str) == Some("--help") && args.len() == 2 {
             println!("{}", check::help(&args[0]));

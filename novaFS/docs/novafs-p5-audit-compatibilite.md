@@ -1,6 +1,6 @@
 # NovaFS P5 — audit de compatibilité avant implémentation
 
-**Base examinée** `b865c58`, NovaFS v0.9.5. **Décision en attente** pour la v0.9.6. Une référence à un bloc partagée entre deux LV change qui a le droit d’en disposer, ce que désigne l’identité du LV et quelles données un opérateur doit conserver pour vérifier une sauvegarde.
+**Base examinée** `b865c58`, NovaFS v0.9.5. **Décision ultérieure** pour la v0.9.6 : le contrat A a été validé après cet audit. Les [règles de partage et de sauvegarde implémentées](novafs-p5-partage.md) en décrivent les conséquences. Une référence à un bloc partagée entre deux LV change qui a le droit d’en disposer, ce que désigne l’identité du LV et quelles données un opérateur doit conserver pour vérifier une sauvegarde.
 
 ## Risque de perte de données
 
@@ -73,4 +73,4 @@ for cible in aarch64-apple-darwin x86_64-apple-darwin; do
 done
 ```
 
-Le [témoin de réattribution](novafs-p5-preuve-p0.md) donne les commandes de reproduction sur le commit exact. Le moteur reste en v0.9.5. Les tests de snapshots, de clones, de coupure et de corruption du futur format ainsi que ses mesures de latence, de débit et de mémoire restent à réaliser après l’arbitrage.
+Le [témoin de réattribution](novafs-p5-preuve-p0.md) donne les commandes de reproduction sur le commit exact. Le moteur examiné pendant cet audit était en v0.9.5. Les résultats obtenus après la décision A figurent dans le [rapport P5](novafs-p5-validation.md).

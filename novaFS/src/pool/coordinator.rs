@@ -44,21 +44,75 @@ impl<D: Device> Device for Volume<D> {
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
-enum Kind {
+pub(crate) enum Kind {
     Read,
     Write,
 }
 
 struct Item {
     id: u64,
-    volume: usize,
+    volume: u64,
     kind: Kind,
 }
 
-struct Queue {
+pub(crate) struct Queue {
     order: VecDeque<Item>,
     next: u64,
     publishing: Option<u64>,
+}
+
+impl Queue {
+    pub(crate) fn new() -> Result<Self> {
+        let mut order = VecDeque::new();
+        order
+            .try_reserve_exact(QUEUE_LIMIT)
+            .map_err(|_| Error::NoMemory)?;
+        Ok(Self {
+            order,
+            next: 1,
+            publishing: None,
+        })
+    }
+    pub(crate) fn admit(&mut self, volume: u64, kind: Kind) -> Result<u64> {
+        if self.order.len() == QUEUE_LIMIT {
+            return Err(Error::Busy);
+        }
+        let id = self.next;
+        self.next = id
+            .checked_add(1)
+            .ok_or(Error::Limit("numéros de requêtes épuisés"))?;
+        self.order.push_back(Item { id, volume, kind });
+        Ok(id)
+    }
+    pub(crate) fn gate(&mut self, id: u64, volume: u64, action: Action) -> Result<()> {
+        if self.publishing.is_some() {
+            return Err(Error::Busy);
+        }
+        if action == Action::Publish {
+            if self.order.front().map(|item| item.id) != Some(id) {
+                return Err(Error::Busy);
+            }
+            self.publishing = Some(id);
+        } else {
+            let mut writers = 0;
+            for earlier in self.order.iter().take_while(|item| item.id != id) {
+                if earlier.kind == Kind::Write {
+                    writers += 1;
+                    if action == Action::Read || earlier.volume == volume || writers >= PLAN_LIMIT {
+                        return Err(Error::Busy);
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+
+    pub(crate) fn finish(&mut self, id: u64) {
+        self.order.retain(|item| item.id != id);
+        if self.publishing == Some(id) {
+            self.publishing = None;
+        }
+    }
 }
 
 /// Possède l'unique PD et les moteurs des LV prêts. Les réservations de
@@ -102,18 +156,10 @@ impl<D: Device> PoolCoordinator<D> {
             fs.set_cache_budget(budget)?;
             volumes.push((ids.lv, RwLock::new(fs)));
         }
-        let mut order = VecDeque::new();
-        order
-            .try_reserve_exact(QUEUE_LIMIT)
-            .map_err(|_| Error::NoMemory)?;
         Ok(Self {
             disk,
             volumes,
-            queue: Mutex::new(Queue {
-                order,
-                next: 1,
-                publishing: None,
-            }),
+            queue: Mutex::new(Queue::new()?),
             phase: RwLock::new(()),
             health: AtomicU8::new(0),
         })
@@ -152,14 +198,7 @@ impl<D: Device> PoolCoordinator<D> {
         self.healthy()?;
         let volume = self.volume(lv)?;
         let mut q = self.queue.lock().map_err(|_| Error::Unavailable)?;
-        if q.order.len() == QUEUE_LIMIT {
-            return Err(Error::Busy);
-        }
-        let id = q.next;
-        q.next = id
-            .checked_add(1)
-            .ok_or(Error::Limit("numéros de requêtes épuisés"))?;
-        q.order.push_back(Item { id, volume, kind });
+        let id = q.admit(volume as u64, kind)?;
         Ok(Ticket {
             coordinator: self,
             volume,
@@ -233,7 +272,7 @@ struct Ticket<'a, D: Device> {
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
-enum Action {
+pub(crate) enum Action {
     Read,
     Prepare,
     Publish,
@@ -250,29 +289,7 @@ impl<D: Device> Ticket<'_, D> {
             .queue
             .lock()
             .map_err(|_| Error::Unavailable)?;
-        if q.publishing.is_some() {
-            return Err(Error::Busy);
-        }
-        if action == Action::Publish {
-            if q.order.front().map(|item| item.id) != Some(self.id) {
-                return Err(Error::Busy);
-            }
-            q.publishing = Some(self.id);
-        } else {
-            let mut writers = 0;
-            for earlier in q.order.iter().take_while(|item| item.id != self.id) {
-                if earlier.kind == Kind::Write {
-                    writers += 1;
-                    if action == Action::Read
-                        || earlier.volume == self.volume
-                        || writers >= PLAN_LIMIT
-                    {
-                        return Err(Error::Busy);
-                    }
-                }
-            }
-        }
-        Ok(())
+        q.gate(self.id, self.volume as u64, action)
     }
 
     fn finish(&mut self) {
@@ -282,10 +299,7 @@ impl<D: Device> Ticket<'_, D> {
                 .queue
                 .lock()
                 .unwrap_or_else(|e| e.into_inner());
-            q.order.retain(|item| item.id != self.id);
-            if q.publishing == Some(self.id) {
-                q.publishing = None;
-            }
+            q.finish(self.id);
             self.active = false;
         }
     }

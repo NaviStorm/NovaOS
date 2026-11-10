@@ -1,6 +1,7 @@
 //! Diagnostic hors ligne. Aucun chemin, montage écrivain, écriture de bloc ou flush.
 use novafs::device::{FileImage, Geometry};
 use novafs::pool::{Type, check_pool, inspect_usage};
+use novafs::shared::{Receipt, SharedPool, looks_like_pool};
 use novafs::{
     BLOCK_BYTES, Engine, Error, Ids, IntegrityReport, Mode, PairStatus, VolumeAccounting,
     check_image,
@@ -11,8 +12,14 @@ use std::io::{self, Write};
 use std::os::{fd::AsFd, unix::fs::MetadataExt};
 
 pub(super) fn help(command: &str) -> String {
-    let arguments = if matches!(command, "check" | "space") {
-        "BLOCS SECTEUR FS_ID LV_ID"
+    if command == "check-export" {
+        return "novafs check-export < sauvegarde.nvx\nRapport JSON de l’export autonome vérifié. Alias : novafs check --export.".into();
+    }
+    if command == "check" {
+        return "novafs check BLOCS SECTEUR FS_ID LV_ID < lv-p0.raw\nnovafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE < pool-p5.raw\nnovafs check --export < sauvegarde.nvx\nRapport JSON hors ligne. Codes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète.".into();
+    }
+    let arguments = if command == "space" {
+        "BLOCS SECTEUR FS_ID LV_ID (P0) ou BLOCS SECTEUR POOL_ID OBJET (P5)"
     } else {
         "BLOCS SECTEUR"
     };
@@ -35,6 +42,12 @@ pub(super) fn separate_outputs() -> io::Result<bool> {
         }
     }
     Ok(true)
+}
+
+pub(super) fn separate_binary_diagnostics() -> io::Result<bool> {
+    let bytes = metadata(&io::stdout())?;
+    let text = metadata(&io::stderr())?;
+    Ok((bytes.dev(), bytes.ino()) != (text.dev(), text.ino()))
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -189,8 +202,27 @@ fn fingerprint(m: &Metadata) -> (u64, i64, i64, i64, i64) {
 fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
     let usage = |e: Error| (Status::Usage, e.to_string());
     let interrupted = |e: io::Error| (Status::Incomplete, e.to_string());
+    if args == ["check-export"] || args == ["check", "--export"] {
+        super::image_stream(&io::stdin()).map_err(usage)?;
+        let before = metadata(&io::stdin()).map_err(interrupted)?;
+        let info =
+            novafs::shared_export::check_export(io::stdin().lock()).map_err(storage_failure)?;
+        if before.is_file()
+            && fingerprint(&before) != fingerprint(&metadata(&io::stdin()).map_err(interrupted)?)
+        {
+            return Err((
+                Status::Incomplete,
+                "export modifié pendant le contrôle".into(),
+            ));
+        }
+        return Ok((Status::Coherent, super::shared::archive_info(&info)));
+    }
+    if args[0] == "check-export" {
+        return Err((Status::Usage, help("check-export")));
+    }
     let is_lv = matches!(args[0].as_str(), "check" | "space");
-    if args.len() != if is_lv { 5 } else { 3 } {
+    let p5_receipt = args[0] == "check" && args.len() == 6;
+    if !p5_receipt && args.len() != if is_lv { 5 } else { 3 } {
         return Err((Status::Usage, help(&args[0])));
     }
     let blocks = super::num(&args[1]).map_err(usage)?;
@@ -198,7 +230,8 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
         .parse::<u32>()
         .map_err(|_| (Status::Usage, "secteur invalide".into()))?;
     Geometry::new(blocks, sector).map_err(usage)?;
-    let ids = if is_lv {
+    let p5_space = args[0] == "space" && args[4].len() < 32 && super::num(&args[4]).is_ok();
+    let ids = if is_lv && !p5_receipt && !p5_space {
         let ids = Ids {
             fs: super::identifier(&args[3]).map_err(usage)?,
             lv: super::identifier(&args[4]).map_err(usage)?,
@@ -235,7 +268,65 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
     }
     let dev = FileImage::from_file(fd.try_clone().map_err(interrupted)?, blocks, sector)
         .map_err(|e| (Status::Incomplete, e.to_string()))?;
+    let shared = match looks_like_pool(&dev) {
+        Ok(shared) => shared,
+        Err(error) => {
+            // Les contrôles P2 examinent les deux ancrages indépendamment, y compris
+            // lorsqu'un descripteur illisible empêche la sélection du format.
+            let mut report = match (args[0].as_str(), ids) {
+                ("check-pool", _) => diagnose_pool(&dev).1,
+                ("check", Some(ids)) => fs_report(check_image(&dev, ids)).1,
+                _ => json!({}),
+            };
+            report["format_indetermine"] = json!(error.to_string());
+            return Ok((Status::Incomplete, report));
+        }
+    };
     let result = match (args[0].as_str(), ids) {
+        (_, _) if shared => {
+            let pool = SharedPool::open(dev).map_err(storage_failure)?;
+            let mut report = json!({"domaine":"pool_partage","format":"P5","pool":super::label(&pool.pool_id()),"vues":pool.list().len()});
+            if matches!(args[0].as_str(), "space" | "space-pool") {
+                let (occupied, deferred, reserved) = pool.pool_usage().map_err(storage_failure)?;
+                report["capacite_blocs"] = json!(blocks);
+                report["occupes_blocs"] = json!(occupied);
+                report["differes_blocs"] = json!(deferred);
+                report["credit_admission_blocs"] = json!(reserved);
+                if args[0] == "space" {
+                    if !p5_space {
+                        return Err((Status::Usage, help("space")));
+                    }
+                    if super::identifier(&args[3]).map_err(usage)? != pool.pool_id() {
+                        return Err((Status::Corrupt, "identité de pool différente".into()));
+                    }
+                    let id = super::num(&args[4]).map_err(usage)?;
+                    let usage = pool.usage(id).map_err(storage_failure)?;
+                    report["objet"] = json!(id);
+                    report["logique_blocs"] = json!(usage.logical_blocks);
+                    report["exclusifs_blocs"] = json!(usage.exclusive);
+                    report["partages_blocs"] = json!(usage.shared);
+                }
+            } else if args[0] == "check" {
+                if !p5_receipt || args[5].len() != 64 {
+                    return Err((Status::Usage, help("check")));
+                }
+                let receipt = Receipt {
+                    pool: super::identifier(&args[3]).map_err(usage)?,
+                    id: super::num(&args[4]).map_err(usage)?,
+                    root: super::hex(&args[5])
+                        .map_err(usage)?
+                        .try_into()
+                        .map_err(|_| (Status::Usage, help("check")))?,
+                };
+                pool.verify_receipt(&receipt).map_err(storage_failure)?;
+                report["objet"] = json!(receipt.id);
+                report["empreinte"] = json!(super::label(&receipt.root));
+            }
+            (Status::Coherent, report)
+        }
+        ("check", _) if p5_receipt => {
+            return Err((Status::Corrupt, "format P5 attendu pour le reçu".into()));
+        }
         ("space", Some(ids)) => {
             let fs = Engine::mount(dev, ids, Mode::ReadOnly).map_err(storage_failure)?;
             let stats = fs.accounting().map_err(storage_failure)?;
@@ -279,11 +370,15 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
 
 pub(super) fn run(args: &[String]) -> u8 {
     let (status, mut result) = evaluate(args).unwrap_or_else(|(s, e)| (s, json!({"raison":e})));
-    result["schema"] = json!(if matches!(args[0].as_str(), "space" | "space-pool") {
-        "novafs-space-1"
-    } else {
-        "novafs-check-1"
-    });
+    result["schema"] = json!(
+        if args == ["check-export"] || args == ["check", "--export"] {
+            "novafs-export-1"
+        } else if matches!(args[0].as_str(), "space" | "space-pool") {
+            "novafs-space-1"
+        } else {
+            "novafs-check-1"
+        }
+    );
     result["statut"] = json!(status.name());
     let mut output = io::stdout().lock();
     if serde_json::to_writer(&mut output, &result).is_err()

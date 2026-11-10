@@ -279,6 +279,48 @@ pub struct Engine<D> {
     staging_limit: usize,
     policy: VolumePolicy,
 }
+impl<D> Engine<D> {
+    /// Le propriétaire d'une racine P5 peut conserver le cache et l'état monté entre
+    /// deux emprunts du même contenu vérifié. La clé (racine, lignée, géométrie)
+    /// doit être comparée par l'appelant avant de rattacher un périphérique.
+    pub(crate) fn replace_device<E>(self, dev: E, mode: Mode) -> (Engine<E>, D) {
+        (
+            Engine {
+                dev,
+                mode,
+                ids: self.ids,
+                head: self.head,
+                alloc: self.alloc,
+                health: self.health,
+                cache: self.cache,
+                salvage: self.salvage,
+                staging_limit: self.staging_limit,
+                policy: self.policy,
+            },
+            self.dev,
+        )
+    }
+
+    pub(crate) fn protected_lba(&self, lba: u64) -> bool {
+        self.alloc
+            .space
+            .lookup(lba)
+            .is_none_or(|run| run.age >= self.head.m.previous.max(1))
+    }
+
+    /// Transition de la paire (G−1,G) à (G,G+1). Les retraits datés G−1
+    /// viennent de sortir de la fenêtre récupérable du moteur de contenu.
+    pub(crate) fn newly_unprotected(&self) -> impl Iterator<Item = u64> + '_ {
+        let age = self.head.m.previous.checked_sub(1).filter(|&n| n > 0);
+        self.alloc
+            .space
+            .0
+            .iter()
+            .filter(move |run| Some(run.age) == age)
+            .flat_map(|run| run.start..run.end)
+    }
+}
+
 impl<D: Device> ReadTree for Engine<D> {
     fn read(&self, r: Ref, f: Family) -> Result<Node> {
         (|| {

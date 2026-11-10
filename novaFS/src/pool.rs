@@ -1,7 +1,7 @@
 //! Catalogue de volumes hôte. Le contrôle P2 demeure en lecture seule.
 use crate::{Block, Device, Error, Ids, IntegrityReport, Result, check_image};
 mod catalog;
-mod coordinator;
+pub(crate) mod coordinator;
 mod manager;
 use catalog::{Entry, load, validate_pair};
 pub use catalog::{GRAIN, Type, Uid};
@@ -50,6 +50,33 @@ impl<D: Device> Device for ReadVolume<'_, D> {
     fn flush(&mut self) -> Result<()> {
         Err(Error::ReadOnly)
     }
+}
+
+/// La migration examine les deux catalogues avant d'ouvrir des vues strictement
+/// en lecture seule. Un LV brut ou en préparation demande de garder la source P0.
+pub(crate) fn visit_ready<D: Device>(
+    dev: &D,
+    mut visit: impl FnMut(Uid, Ids, &dyn Device) -> Result<()>,
+) -> Result<()> {
+    let (mut old, mut head) = (load(dev, 0)?, load(dev, 1)?);
+    if head.0.generation < old.0.generation {
+        std::mem::swap(&mut old, &mut head);
+    }
+    validate_pair(&old.0, old.1, &head.0, head.1)?;
+    if head.0.entries.iter().any(|e| e.kind != Type::Ready) {
+        return Err(Error::Invalid("migration P5 limitée aux pools de LV prêts"));
+    }
+    for e in &head.0.entries {
+        visit(
+            e.owner,
+            Ids { fs: e.fs, lv: e.id },
+            &ReadVolume {
+                disk: dev,
+                entry: e,
+            },
+        )?;
+    }
+    Ok(())
 }
 
 /// Le type du rapport distingue les catalogues locaux, leur filiation et le

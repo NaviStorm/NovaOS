@@ -51,11 +51,9 @@ fn cli_budget_cache_et_restitution() {
 fn cli_images_anonymes_et_sauvetage() {
     let help = tool(&["--help"], b"");
     assert!(help.status.success());
-    assert!(
-        help.stdout.starts_with(
-            concat!("NovaFS P4 v", env!("CARGO_PKG_VERSION"), " — format P0").as_bytes()
-        )
-    );
+    assert!(help.stdout.starts_with(
+        concat!("NovaFS v", env!("CARGO_PKG_VERSION"), " — formats P0 et P5").as_bytes()
+    ));
     for sub in [
         "create",
         "inspect",
@@ -66,6 +64,21 @@ fn cli_images_anonymes_et_sauvetage() {
         "check-pool",
         "space",
         "space-pool",
+        "pool-format",
+        "volume-create",
+        "file-create",
+        "file-read",
+        "file-write",
+        "snapshot",
+        "clone",
+        "drop-view",
+        "advance",
+        "list-views",
+        "export",
+        "restore",
+        "check-export",
+        "migrate-pool",
+        "migrate-lv",
     ] {
         assert!(tool(&[sub, "--help"], b"").status.success())
     }

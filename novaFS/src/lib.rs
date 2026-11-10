@@ -1,4 +1,4 @@
-//! Prototype hôte NovaFS P4. Le moteur lit et écrit le format de laboratoire P0.
+//! Prototype hôte NovaFS. Moteur de contenu P0 et pools de vues CoW P5.
 mod cache;
 pub use cache::CacheStats;
 pub mod codec;
@@ -10,6 +10,9 @@ mod fs;
 #[path = "../lab/latency_probes.rs"]
 pub mod latency_probes;
 pub mod pool;
+pub mod shared;
+pub mod shared_export;
+mod shared_graph;
 mod space;
 pub mod tree;
 

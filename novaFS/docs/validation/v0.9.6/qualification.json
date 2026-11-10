@@ -1,0 +1,252 @@
+{
+  "aarch64": {
+    "standard": {
+      "succes": 120,
+      "echecs": 0,
+      "ignores": 3
+    },
+    "sondes": {
+      "succes": 121,
+      "echecs": 0,
+      "ignores": 3
+    },
+    "modele": {
+      "succes": 1,
+      "echecs": 0,
+      "ignores": 0
+    },
+    "supplement": {
+      "succes": 2,
+      "echecs": 0,
+      "ignores": 0
+    },
+    "differentiel": [
+      "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=24.532"
+    ],
+    "p5": [
+      "MIGRATION secteur=512 frontières=96",
+      "MIGRATION secteur=4096 frontières=96",
+      "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+      "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie",
+      "PERMUTATIONS secteur=512 ordres=24",
+      "PANNE Snapshot frontières=15 coupures=45 EIO=10 déchirures=1",
+      "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+      "PERMUTATIONS secteur=4096 ordres=24",
+      "PANNE Clone frontières=15 coupures=45 EIO=10 déchirures=1",
+      "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+      "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+      "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30",
+      "PANNE Ecrire frontières=39 coupures=117 EIO=26 déchirures=1",
+      "PANNE Retirer frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Retirer frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Collecter frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Snapshot frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Clone frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Ecrire frontières=39 coupures=117 EIO=26 déchirures=1",
+      "PANNE Retirer frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Retirer frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Collecter frontières=15 coupures=45 EIO=10 déchirures=1",
+      "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=162752 après=162752",
+      "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=162752 après=162752",
+      "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=162752 après=162752",
+      "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=162752 après=162752"
+    ],
+    "reprises_historiques_fichier_et_qemu": [
+      "fichier secteur=512 étape=0 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=1 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=2 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=3 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=4 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=5 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=6 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=7 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=8 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=9 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "fichier secteur=512 étape=10 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "fichier secteur=512 étape=11 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "qemu secteur=512 étape=0 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=0 flushs_QMP=0",
+      "qemu secteur=512 étape=7 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=7 flushs_QMP=0",
+      "qemu secteur=512 étape=8 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=7 flushs_QMP=1",
+      "qemu secteur=512 étape=9 F1=8 F2=10 attendu=incertain récupéré=nouveau remontages=2 écritures_QMP=8 flushs_QMP=1",
+      "qemu secteur=512 étape=10 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2 écritures_QMP=8 flushs_QMP=2",
+      "fichier secteur=4096 étape=0 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=1 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=2 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=3 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=4 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=5 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=6 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=7 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=8 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=9 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "fichier secteur=4096 étape=10 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "fichier secteur=4096 étape=11 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "qemu secteur=4096 étape=0 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=0 flushs_QMP=0",
+      "qemu secteur=4096 étape=7 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=7 flushs_QMP=0",
+      "qemu secteur=4096 étape=8 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=7 flushs_QMP=1",
+      "qemu secteur=4096 étape=9 F1=8 F2=10 attendu=incertain récupéré=nouveau remontages=2 écritures_QMP=8 flushs_QMP=1",
+      "qemu secteur=4096 étape=10 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2 écritures_QMP=8 flushs_QMP=2"
+    ]
+  },
+  "x86_64": {
+    "standard": {
+      "succes": 120,
+      "echecs": 0,
+      "ignores": 3
+    },
+    "sondes": {
+      "succes": 121,
+      "echecs": 0,
+      "ignores": 3
+    },
+    "modele": {
+      "succes": 1,
+      "echecs": 0,
+      "ignores": 0
+    },
+    "supplement": {
+      "succes": 2,
+      "echecs": 0,
+      "ignores": 0
+    },
+    "differentiel": [
+      "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=45.790"
+    ],
+    "p5": [
+      "MIGRATION secteur=512 frontières=96",
+      "MIGRATION secteur=4096 frontières=96",
+      "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+      "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie",
+      "PERMUTATIONS secteur=512 ordres=24",
+      "PANNE Snapshot frontières=15 coupures=45 EIO=10 déchirures=1",
+      "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+      "PERMUTATIONS secteur=4096 ordres=24",
+      "PANNE Clone frontières=15 coupures=45 EIO=10 déchirures=1",
+      "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+      "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+      "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30",
+      "PANNE Ecrire frontières=39 coupures=117 EIO=26 déchirures=1",
+      "PANNE Retirer frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Retirer frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Collecter frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Snapshot frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Clone frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Ecrire frontières=39 coupures=117 EIO=26 déchirures=1",
+      "PANNE Retirer frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Retirer frontières=15 coupures=45 EIO=10 déchirures=1",
+      "PANNE Collecter frontières=15 coupures=45 EIO=10 déchirures=1",
+      "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=147632 après=147632",
+      "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=147632 après=147632",
+      "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=147632 après=147632",
+      "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=147632 après=147632"
+    ],
+    "reprises_historiques_fichier_et_qemu": [
+      "fichier secteur=512 étape=0 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=1 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=2 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=3 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=4 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=5 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=6 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=7 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=8 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=512 étape=9 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "fichier secteur=512 étape=10 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "fichier secteur=512 étape=11 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "qemu secteur=512 étape=0 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=0 flushs_QMP=0",
+      "qemu secteur=512 étape=7 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=7 flushs_QMP=0",
+      "qemu secteur=512 étape=8 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=7 flushs_QMP=1",
+      "qemu secteur=512 étape=9 F1=8 F2=10 attendu=incertain récupéré=nouveau remontages=2 écritures_QMP=8 flushs_QMP=1",
+      "qemu secteur=512 étape=10 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2 écritures_QMP=8 flushs_QMP=2",
+      "fichier secteur=4096 étape=0 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=1 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=2 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=3 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=4 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=5 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=6 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=7 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=8 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2",
+      "fichier secteur=4096 étape=9 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "fichier secteur=4096 étape=10 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "fichier secteur=4096 étape=11 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2",
+      "qemu secteur=4096 étape=0 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=0 flushs_QMP=0",
+      "qemu secteur=4096 étape=7 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=7 flushs_QMP=0",
+      "qemu secteur=4096 étape=8 F1=8 F2=10 attendu=ancien récupéré=ancien remontages=2 écritures_QMP=7 flushs_QMP=1",
+      "qemu secteur=4096 étape=9 F1=8 F2=10 attendu=incertain récupéré=nouveau remontages=2 écritures_QMP=8 flushs_QMP=1",
+      "qemu secteur=4096 étape=10 F1=8 F2=10 attendu=nouveau récupéré=nouveau remontages=2 écritures_QMP=8 flushs_QMP=2"
+    ]
+  },
+  "temoin_P0": [
+    "aarch64 secteur=512 sentinelle_PD=265 blocs_remis_a_zero=256",
+    "aarch64 secteur=4096 sentinelle_PD=265 blocs_remis_a_zero=256",
+    "x86_64 secteur=512 sentinelle_PD=265 blocs_remis_a_zero=256",
+    "x86_64 secteur=4096 sentinelle_PD=265 blocs_remis_a_zero=256"
+  ],
+  "pools_P5": {
+    "images": 4,
+    "lectures_croisees": 8,
+    "refus_ecrivains_P0": 8,
+    "sha256": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad"
+  },
+  "images_historiques": {
+    "d0ba7cb": {
+      "F01": [
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+      ]
+    },
+    "38c8699": {
+      "F01": [
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+      ]
+    },
+    "6f15350": {
+      "F01": [
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+      ],
+      "catalogues": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    },
+    "1510eca": {
+      "F01": [
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+      ],
+      "catalogues": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    },
+    "0a89d23": {
+      "F01": [
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+      ],
+      "catalogues": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    },
+    "b865c58": {
+      "F01": [
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+      ],
+      "catalogues": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    }
+  }
+}
