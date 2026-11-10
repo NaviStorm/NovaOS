@@ -61,7 +61,7 @@ pub fn start(hz: u32) {
         asm!("dsb sy","msr cntp_ctl_el0,{}","isb",in(reg) 1u64,options(nostack));
     }
 }
-pub(super) extern "C" fn irq() {
+pub(super) extern "C" fn irq(state: usize) {
     let ack = read(CPU, 0x0c);
     let id = ack & 0x3ff;
     if id >= 1020 {
@@ -76,7 +76,7 @@ pub(super) extern "C" fn irq() {
         asm!("dsb sy", options(nostack));
     }
     assert_eq!(id, PPI, "IRQ GIC inattendue");
-    sched::tick();
+    sched::tick(state & 15 == 0);
 }
 
 pub fn pending() -> bool {

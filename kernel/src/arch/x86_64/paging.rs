@@ -100,3 +100,22 @@ pub unsafe fn probe(address: u64, op: crate::hal::memory::Probe) {
 pub fn lower_empty(space: &crate::memory::AddressSpace, frames: &crate::memory::Frames) -> bool {
     frames.empty_prefix(space.root, 256)
 }
+
+pub const SHARED_UPPER: bool = true;
+pub fn kernel_thread_root(kernel: u64) -> u64 {
+    kernel
+}
+pub fn user_table(frame: u64) -> u64 {
+    table(frame) | 4
+}
+pub fn user_leaf(frame: u64, access: Access, cache: u64) -> u64 {
+    leaf(frame, access, cache) | 4
+}
+pub unsafe fn switch_thread_root(root: u64) {
+    // Sûreté : racine validée par le gestionnaire ; PCID désactivé, aucune
+    // feuille NovaOS globale. CR3 invalide toutes les traductions non globales.
+    unsafe { asm!("mov cr3, {}", in(reg) root, options(nostack, preserves_flags)) };
+}
+pub fn sync_user_code(alias: u64) {
+    sync_code(alias, alias);
+}

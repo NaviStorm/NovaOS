@@ -48,6 +48,9 @@ fn main_thread() {
     if scenario.starts_with(b"sched-") {
         sched::test(scenario);
     }
+    if scenario == b"proc-test" {
+        sched::process::test();
+    }
     if let Err(reason) = interactive() {
         hal::interrupts::mask();
         log(format_args!("{reason}"));
@@ -59,7 +62,13 @@ fn interactive() -> Result<(), &'static str> {
     let (screen, bottom) = framebuffer::show_banner(&boot::framebuffer()?, BANNER)?;
     log(format_args!("Affichage prêt."));
     let mut console = console::Console::new(screen, bottom)?;
-    let Some(mut next_char) = hal::keyboard()? else {
+    let keyboard = hal::keyboard()?;
+    match boot::scenario() {
+        b"" => sched::process::boot_demo(false),
+        b"proc-boot-fault" => sched::process::boot_demo(true),
+        _ => {}
+    }
+    let Some(mut next_char) = keyboard else {
         return Ok(());
     };
     loop {

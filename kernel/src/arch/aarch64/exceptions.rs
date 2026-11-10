@@ -12,9 +12,13 @@ global_asm!(r#"
 nova_vectors:
 .set group,0
 .rept 4
-    b 1f
+    .if group == 2
+        b nova_sync_el0
+    .else
+        b 1f
+    .endif
     .balign 128
-    .if group == 1
+    .if (group == 1) || (group == 2)
         b nova_irq_el1h
     .else
         b 2f
@@ -39,8 +43,15 @@ nova_vectors:
     bl {handler}
 // EL1h : SP_EL1 appartient au thread. Sauver ELR/SPSR avant tout autre
 // thread, qui pourra lui aussi recevoir des exceptions. Pas de FP/SIMD.
+nova_sync_el0:
+    mov x4,x0
+    mrs x0,esr_el1
+    mrs x1,far_el1
+    mrs x2,elr_el1
+    mrs x3,spsr_el1
+    bl {user_handler}
 nova_irq_el1h:
-    sub sp,sp,#272
+    sub sp,sp,#288
     stp x0,x1,[sp,#0]
     stp x2,x3,[sp,#16]
     stp x4,x5,[sp,#32]
@@ -60,7 +71,14 @@ nova_irq_el1h:
     mrs x1,spsr_el1
     stp x30,x0,[sp,#240]
     str x1,[sp,#256]
+    mrs x0,sp_el0
+    mrs x2,tpidr_el0
+    stp x0,x2,[sp,#264]
+    mov x0,x1
     bl {irq}
+    ldp x0,x2,[sp,#264]
+    msr sp_el0,x0
+    msr tpidr_el0,x2
     ldr x1,[sp,#256]
     ldp x30,x0,[sp,#240]
     msr elr_el1,x0
@@ -80,7 +98,7 @@ nova_irq_el1h:
     ldp x4,x5,[sp,#32]
     ldp x2,x3,[sp,#16]
     ldp x0,x1,[sp,#0]
-    add sp,sp,#272
+    add sp,sp,#288
     eret
 .popsection
 .pushsection .bss.exception_stack,"aw",%nobits
@@ -88,7 +106,7 @@ nova_irq_el1h:
 .skip 16384
 exception_stack_end:
 .popsection
-"#, handler = sym fault, irq = sym super::timer::irq);
+"#, handler = sym fault, user_handler = sym user_fault, irq = sym super::timer::irq);
 
 pub fn install() {
     // Sûreté : la cible virt démarre à EL1, DAIF masqué, la table est permanente.
@@ -119,4 +137,49 @@ extern "C" fn fault(esr: u64, address: u64, pc: u64, state: u64, sync: u64) -> !
         "ABORT adresse={address:#x} pc={pc:#x} esr={esr:#x} ec={ec:#x} spsr={state:#x} acces={access} cause={cause} synchrone={sync}"
     ));
     hal::cpu::halt()
+}
+
+extern "C" fn user_fault(esr: u64, address: u64, pc: u64, state: u64, arg: u64) -> ! {
+    use crate::sched::process::{Fault, Outcome, finish};
+    assert_eq!(state & 31, 0, "origine EL0t");
+    let ec = esr >> 26;
+    if ec == 0x15 && esr & 0xffff == 0x51 {
+        finish(Outcome::Exit(arg), pc, "EL0");
+    }
+    let (trap, access, cause, va) = match ec {
+        0x20 | 0x24 => {
+            let access = if ec == 0x20 {
+                "execution"
+            } else if esr & 64 != 0 {
+                "ecriture"
+            } else {
+                "lecture"
+            };
+            let cause = match esr & 63 {
+                0..=3 => "adresse",
+                4..=7 => "absente",
+                8..=11 => "acces",
+                12..=15 => "protection",
+                33 => "alignement",
+                // Erreur externe synchrone ou corruption lors du parcours matériel.
+                _ => fault(esr, address, pc, state, 1),
+            };
+            ("ABORT", access, cause, address)
+        }
+        0x15 => ("SVC", "instruction", "invalide", 0),
+        7 => ("FP", "instruction", "fpu", 0),
+        0 | 0x18 => ("UNDEFINED", "instruction", "privilege", 0),
+        _ => ("exception", "instruction", "exception", 0),
+    };
+    finish(
+        Outcome::Fault(Fault {
+            trap,
+            access,
+            cause,
+            address: va,
+            syndrome: esr,
+        }),
+        pc,
+        "EL0",
+    );
 }

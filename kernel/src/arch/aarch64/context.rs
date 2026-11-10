@@ -11,7 +11,8 @@ pub fn prepare() {
     // SP garde exactement sa valeur. FPEN=0 interdit FP/Advanced SIMD à EL1.
     unsafe {
         asm!("mov x9,sp","msr spsel,#1","mov sp,x9","mrs x9,cpacr_el1",
-        "bic x9,x9,#(3<<20)","msr cpacr_el1,x9","isb",out("x9") _);
+        "bic x9,x9,#(3<<20)","msr cpacr_el1,x9","msr cntkctl_el1,xzr","mrs x9,sctlr_el1",
+        "bic x9,x9,#(1<<9)","bic x9,x9,#(1<<26)","msr sctlr_el1,x9","isb",out("x9") _);
     }
 }
 pub fn sp() -> usize {
@@ -72,4 +73,27 @@ pub fn idle_wait() {
     // WFI peut se réveiller pour une IRQ GIC pendante même avec DAIF.I=1.
     // La garde appelante restaure le masque et permet sa livraison au retour.
     super::wait();
+}
+
+// La commutation suivante restaure SP_EL1 depuis le TCB de destination.
+pub fn kernel_stack(_: usize) {}
+
+// Sûreté : EL1h, racine TTBR0 privée active et interruptions masquées. ERET
+// reçoit un SPSR EL0t fixe avec IRQ permises. Aucun registre général ni TLS
+// du contexte noyau n’est observable à la première instruction.
+#[unsafe(naked)]
+pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize) -> ! {
+    naked_asm!(
+        "mov sp,x0",
+        "msr elr_el1,x1",
+        "msr sp_el0,x2",
+        "mov x0,#0x340",
+        "msr spsr_el1,x0",
+        "msr tpidr_el0,xzr",
+        "msr tpidrro_el0,xzr",
+        ".irp n,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",
+        "mov x\\n,xzr",
+        ".endr",
+        "eret"
+    );
 }

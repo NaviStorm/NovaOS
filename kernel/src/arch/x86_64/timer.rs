@@ -9,9 +9,9 @@ pub fn start(hz: u32) {
     Port::Pit0.write((divisor >> 8) as u8);
     Port::PicMask.write(Port::PicMask.read() & !1);
 }
-pub(super) extern "C" fn tick() {
+pub(super) extern "C" fn tick(cs: usize) {
     Port::PicCommand.write(0x20);
-    sched::tick();
+    sched::tick(cs & 3 == 3);
 }
 
 /// Sonde matérielle appelée IRQ locales masquées.

@@ -1,10 +1,12 @@
-# NovaOS v0.5.1
+# NovaOS v0.6.0
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.5.1`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.6.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
 Le noyau ordonnance ses threads en tourniquet sur CPU0 avec un timer matériel à 250 Hz. Le thread de saisie x86_64 se bloque en attente du clavier. Sur les deux cibles, le thread idle prend la main quand la file des prêts est vide. [Ordonnancement, synchronisation et validation](docs/ordonnancement.md)
+
+Deux instances indépendantes du programme de démonstration démarrent en Ring 3 sur x86_64 ou en EL0 sur AArch64. Elles calculent sous préemption matérielle puis terminent avec les codes 41 et 82. Le terminal QEMU reçoit les PID et les résultats sur le port série. [Architecture des processus et validation de la v0.6.0](docs/processus.md)
 
 ## Démarrage manuel dans QEMU
 
@@ -77,6 +79,8 @@ Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86
 | `kernel/src/hardware/framebuffer.rs` | Framebuffer Limine et dessin de la bannière, communs aux deux cibles. |
 | `kernel/src/memory/` | Cadres physiques de 4 Kio, espaces d’adressage, mappage, démappage et vérification des protections. |
 | `kernel/src/sched/` | Threads, piles gardées, file des prêts, sommeil, événements et mutex bloquant. |
+| `kernel/src/sched/process.rs`, `kernel/src/memory/user.rs` | Cycle de vie des processus, espaces privés, protections et restitution. |
+| `user/` | Programme autonome de démonstration, compilé pour la cible puis embarqué dans l’image. |
 | `kernel/src/heap/` | Allocateur global, arbres de blocs, extension transactionnelle et sondes du tas. |
 | `kernel/src/hal/` | Interfaces communes du processeur, du masquage des interruptions et de la mémoire virtuelle. |
 | `kernel/src/arch/x86_64/` | Pagination IA-32e, #PF, instructions CPU, COM1, IDT, PIC 8259 et clavier PS/2. |
@@ -107,7 +111,7 @@ Six VM supplémentaires par architecture exercent l’allocateur, les espaces in
 
 Sept VM par architecture testent le tas, la pénurie physique et la récupération, les sentinelles, la cohérence de l’arbre, la réentrée du verrou, la page de garde et le traitement d’une allocation infaillible refusée. Les journaux se trouvent dans `build/serie-<architecture>-heap-*.log`.
 
-Quatre scénarios d’ordonnancement par architecture vérifient la préemption matérielle, la contention, la terminaison, le débordement de pile, l’interdiction du SIMD et la stabilité sur au moins 15 000 ticks. Un cinquième scénario combine registres, fragmentation, contention, pénurie et collecte des threads pendant au moins 15 secondes réelles. Les deux suites effectuent **20 démarrages x86_64 et 19 AArch64**. Le même ELF sert aux tests et à l’image normale. Les diagnostics se trouvent dans `build/serie-<architecture>-sched-*.log`.
+Quatre scénarios d’ordonnancement par architecture vérifient la préemption matérielle, la contention, la terminaison, le débordement de pile, l’interdiction du SIMD et la stabilité sur au moins 15 000 ticks. Un cinquième scénario combine registres, fragmentation, contention, pénurie et collecte des threads pendant au moins 15 secondes réelles. Les deux suites effectuent **22 démarrages x86_64 et 21 AArch64**, dont deux scénarios consacrés aux processus. Le même ELF sert aux tests et à l’image normale. Les diagnostics se trouvent dans `build/serie-<architecture>-sched-*.log`.
 
 Les campagnes longues réutilisent ce cinquième scénario sur une VM continue par cible. [Protocole et mesures de la v0.5.1](docs/durcissement.md)
 

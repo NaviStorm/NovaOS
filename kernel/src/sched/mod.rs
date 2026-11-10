@@ -1,6 +1,7 @@
 //! Ordonnanceur du BSP. Les accès à CORE sont courts, IRQ masquées ; aucun
 //! emprunt de la file ou d’un TCB ne traverse un changement de pile.
 mod probes;
+pub(crate) mod process;
 mod stack;
 mod sync;
 use crate::hal::{self, context, interrupts::Guard};
@@ -51,6 +52,7 @@ enum Priority {
 struct Thread {
     id: Id,
     space: SpaceId,
+    owner: Option<process::Pid>,
     state: State,
     stack: Stack,
     saved: usize,
@@ -93,6 +95,7 @@ struct Stats {
 }
 struct Core {
     kernel_space: SpaceId,
+    processes: process::Table,
     slots: Vec<Option<Thread>>,
     ready: Ready,
     current: usize,
@@ -151,7 +154,11 @@ impl Core {
                 occupied += 1;
                 terminated += u64::from(t.state == State::Terminated);
                 assert_eq!(t.id.slot, i);
-                assert_eq!(t.space, self.kernel_space);
+                assert_eq!(
+                    t.space,
+                    t.owner
+                        .map_or(self.kernel_space, |p| self.processes.space(p))
+                );
                 assert_eq!(t.cpu_mask, 1);
                 assert_eq!(t.priority == Priority::Idle, i == IDLE);
                 assert_eq!(t.state == State::Running, i == self.current);
@@ -170,7 +177,7 @@ impl Core {
     fn select(&mut self, why: Reason) -> Option<(*mut usize, usize)> {
         let old = self.current;
         let state = match why {
-            Reason::Tick => {
+            Reason::Tick(_) => {
                 let now = NOVA_TICKS.fetch_add(1, Ordering::Relaxed) + 1;
                 for i in 0..self.slots.len() {
                     if matches!(self.slots[i].as_ref().map(|t| t.state),Some(State::Blocked(Wait::Until(end))) if end<=now)
@@ -210,10 +217,16 @@ impl Core {
         if t.priority != Priority::Idle && state == State::Ready {
             self.ready.push(old);
         }
-        let next = self.ready.pop().unwrap_or(IDLE);
-        let kernel_space = self.kernel_space;
+        // Un processus terminé doit libérer ses pages même si des travailleurs
+        // restent prêts indéfiniment. Idle collecte depuis sa propre pile puis
+        // repasse immédiatement à la file normale, hors du gestionnaire IRQ.
+        let next = if matches!(why, Reason::Exit) && self.thread(old).owner.is_some() {
+            IDLE
+        } else {
+            self.ready.pop().unwrap_or(IDLE)
+        };
+        let previous_space = self.thread(old).space;
         let t = self.thread_mut(next);
-        assert_eq!(t.space, kernel_space);
         assert_eq!(t.state, State::Ready);
         assert_eq!(t.cpu_mask, 1);
         t.state = State::Running;
@@ -222,16 +235,31 @@ impl Core {
         }
         t.stack.check(t.saved);
         let load = t.saved;
+        if t.owner.is_some() {
+            context::kernel_stack(t.stack.top);
+        }
+        if previous_space != t.space {
+            // Sûreté : IRQ masquées ; les deux racines et piles restent vivantes
+            // jusqu’à la collecte sur une pile tierce. La moitié haute est commune.
+            unsafe { t.space.activate() };
+        }
         self.current = next;
-        if matches!(why, Reason::Tick) && old != IDLE && next != IDLE {
+        if matches!(why, Reason::Tick(_)) && old != IDLE && next != IDLE {
             self.stats.preemptions += 1;
+        }
+        if matches!(why, Reason::Tick(true)) {
+            let pid = self
+                .thread(old)
+                .owner
+                .expect("IRQ utilisateur sans processus");
+            self.processes.preempted(pid);
         }
         Some((&raw mut self.thread_mut(old).saved, load))
     }
 }
 #[derive(Clone, Copy)]
 enum Reason {
-    Tick,
+    Tick(bool),
     Yield,
     Block(Wait),
     Exit,
@@ -246,10 +274,10 @@ fn dispatch(why: Reason) {
         }
     }
 }
-pub(crate) fn tick() {
+pub(crate) fn tick(user: bool) {
     let irq = Guard::new();
     assert!(!irq.was_enabled(), "tick hors interruption");
-    dispatch(Reason::Tick);
+    dispatch(Reason::Tick(user));
 }
 /// Canal stable pendant l’attente. Le prédicat appartient au pilote ou au mutex.
 pub(crate) struct Event {
@@ -297,13 +325,16 @@ fn reap() {
                     .is_some_and(|t| t.state == State::Terminated)
             {
                 s.stats.reaped += 1;
-                Some(s.slots[i].take().unwrap().stack)
+                Some(s.slots[i].take().unwrap())
             } else {
                 None
             }
         });
-        if let Some(stack) = stack {
-            stack.release();
+        if let Some(thread) = stack {
+            thread.stack.release();
+            if let Some(pid) = thread.owner {
+                process::detach(pid);
+            }
         }
     }
 }
@@ -337,6 +368,7 @@ fn create(slot: usize, entry: fn(), priority: Priority, cpu_mask: u64) -> Result
         s.slots[slot] = Some(Thread {
             id,
             space: s.kernel_space,
+            owner: None,
             state: State::Ready,
             stack,
             saved,
@@ -383,8 +415,8 @@ extern "C" fn trampoline() -> ! {
 }
 fn idle() {
     loop {
-        reap();
         let _guard = Guard::new();
+        reap();
         if with(|s| s.ready.len != 0) {
             dispatch(Reason::Yield);
         } else {
@@ -402,6 +434,7 @@ pub fn start(main: fn(), kernel_space: SpaceId) -> ! {
     unsafe {
         CORE.0.get().write(Some(Core {
             kernel_space,
+            processes: process::Table::new(),
             slots,
             ready: Ready {
                 items: [0; MAX],

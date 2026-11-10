@@ -152,14 +152,8 @@ impl Memory {
 
     fn test_exhaustion(&mut self) -> Result<()> {
         let before = self.frames.available;
-        let mut held = 0;
         // Ne laisser que le cadre de données et une des trois tables nécessaires.
-        while self.frames.available > 2 {
-            let frame = self.frames.take()?;
-            // Sûreté : chaque cadre réservé à la sonde contient son lien HHDM.
-            unsafe { self.frames.direct(frame).write(held) };
-            held = frame;
-        }
+        let mut held = self.hold_for_probe(2)?;
         let result = self.allocate_page(VirtualAddress(ARENA as usize), Access::ReadWrite);
         if result != Err(Error::Exhausted)
             || self.frames.available != 2
@@ -167,15 +161,39 @@ impl Memory {
         {
             return Err(Error::Verification);
         }
-        while held != 0 {
-            let frame = held;
-            // Sûreté : lecture du lien avant restitution du cadre au gestionnaire.
-            held = unsafe { self.frames.direct(frame).read() };
-            self.frames.release(frame);
-        }
+        held.restore_to(self, before);
         if self.frames.available != before {
             return Err(Error::Verification);
         }
         Ok(())
+    }
+}
+
+/// Liste temporaire de cadres appartenant uniquement aux sondes de pénurie.
+pub(crate) struct HeldFrames(u64);
+
+impl Memory {
+    pub(crate) fn hold_for_probe(&mut self, remaining: u64) -> Result<HeldFrames> {
+        let mut held = HeldFrames(0);
+        while self.free_pages() > remaining {
+            let frame = self.frames.take().expect("compte de cadres incohérent");
+            // Sûreté : cadre exclusif, hors tables actives ; son premier mot
+            // contient le lien de la chaîne de la sonde via le HHDM.
+            unsafe { self.frames.direct(frame).write(held.0) };
+            held.0 = frame;
+        }
+        Ok(held)
+    }
+}
+impl HeldFrames {
+    pub(crate) fn restore_to(&mut self, m: &mut Memory, remaining: u64) {
+        while m.free_pages() < remaining {
+            let frame = self.0;
+            assert_ne!(frame, 0);
+            // Sûreté : frame appartient encore à la sonde. Lire le lien avant
+            // de rendre ce cadre et de permettre sa réutilisation.
+            self.0 = unsafe { m.frames.direct(frame).read() };
+            m.frames.release(frame);
+        }
     }
 }

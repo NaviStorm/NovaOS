@@ -13,14 +13,14 @@ import time
 
 
 BUILD = Path("build")
-BANNER = b"NovaOS v0.5.1\r\n"
+BANNER = b"NovaOS v0.6.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "c9c743d33a6c14fe6c035c4a3b2fefd1d8f23017973209abe5985e390d6eb4cb",
-    "demarrage": "9fea8ea19fa06fcbfab01bdcd0e0538b9a4be3bc819d1b1bc184a79cb97f91d5",
-    "composition": "d137f834269c693372b498ca613e0a9271a92710698abe0af631ce3d7995e345",
-    "frappe": "95f4f02b6b581c183f75825c6309452064d6ca55b21d6a2f0281e650c9f75154",
-    "saisie": "0c88b713a6f62f945c7645756c0d3b0f2916ff868438744703a788e8b6343643",
+    "demarrage-aarch64": "19bc20b0f107c02424c36ec69da76506b1c6814ed9ac8e4f518a9cb593d73cf5",
+    "demarrage": "0e858efacbee00f4c6a348da7d4fcf807fcfce04f2007df10a80bda062493fe1",
+    "composition": "88df8ff52b3aa81e5f04ac1b33e3a21df7de67ce4de9ca087d6f3c76348519a5",
+    "frappe": "8fde1e6c6a883ee2133cfe99c91250036e516e9dcf25b25e6a75d5ddab1fc115",
+    "saisie": "fb216d742bea84d1d421890d61e44dae7a819e44e5a1536047e88e4522446de6",
 }
 
 
@@ -134,8 +134,24 @@ def test_keyboard(vm, directory):
     raise RuntimeError("Défilement incorrect de la zone de saisie.")
 
 
+def wait_demo(vm, log, level, faulty=False):
+    deadline = time.monotonic() + 45
+    while time.monotonic() < deadline and vm.poll() is None:
+        report = log.read_text(errors="replace") if log.exists() else ""
+        if "Panique du noyau" in report:
+            raise RuntimeError(report[-800:])
+        first = "faute=" if faulty else "sortie=41"
+        if ("PROC demonstration terminee" in report
+                and re.search(rf"PROC pid=1 niveau={level} pc=0x[0-9a-f]+ {first}", report)
+                and re.search(rf"PROC pid=2 niveau={level} pc=0x[0-9a-f]+ sortie=82\b", report)):
+            return
+        time.sleep(0.05)
+    raise RuntimeError(f"Démonstration inachevée en {level}")
+
+
 def check_x86(vm, directory, log):
     wait_for_serial(vm, log, "Affichage prêt.\r\nClavier PS/2 prêt (AZERTY).")
+    wait_demo(vm, log, "Ring3")
     test_keyboard(vm, directory)
     wait_for_halt(vm, True)
 
@@ -146,6 +162,7 @@ def check_without_vga(vm, directory, log):
 
 
 def check_arm(vm, directory, log):
+    wait_demo(vm, log, "EL0")
     expect_screen(vm, directory, "demarrage-aarch64", timeout=45)
     wait_for_wfi(vm)
 
@@ -387,6 +404,75 @@ def endurance(arch, seconds):
     print(path, result, flush=True)
 
 
+def process_test(arch):
+    def verify(vm, directory, log):
+        deadline = time.monotonic() + 45
+        report = ""
+        while vm.poll() is None and time.monotonic() < deadline:
+            report = log.read_text(errors="replace") if log.exists() else ""
+            if any(marker in report for marker in ("Panique du noyau", "Exception noyau", "Erreur fatale")):
+                raise RuntimeError(report[-1500:])
+            if "Affichage prêt." in report:
+                break
+            time.sleep(0.05)
+        level = "Ring3" if arch == "x86_64" else "EL0"
+        events = re.findall(rf"PROC pid=(\d+) niveau={level} pc=(0x[0-9a-f]+) ([^\r\n]+)", report)
+        resources = re.search(r"PROC ressources avant=(\d+) apres=(\d+) blocs=(\d+) restitution OK", report)
+        runs = re.search(r"PROC concurrence preemptions=(\d+),(\d+) progressions=(\d+),(\d+) registres OK", report)
+        if (len(events) != 78 or len({pid for pid, _, _ in events}) != len(events)
+                or not resources or resources[1] != resources[2] or not runs
+                or min(map(int, runs.groups()[:2])) < 8 or min(map(int, runs.groups()[2:])) <= 0
+                or "PROC penuries 0,2,5,9,20 cadres, rollback OK" not in report
+                or "PROC orphelin collecte sous charge OK" not in report
+                or "PROC 64 creations et collectes OK" not in report or "Affichage prêt." not in report):
+            raise RuntimeError("Validation des processus incomplète\n" + report[-1800:])
+        faults = [e for e in events if "faute=" in e[2]]
+        expected = [
+            (0x600000, "lecture", "absente", 4), (0xffffffff80000000, "lecture", "protection", 5),
+            (0x600000, "ecriture", "protection", 7),
+            (0x400000, "ecriture", "protection", 7), (0x401000, "execution", "protection", 21),
+            (0x7ffff8, "ecriture", "absente", 6), (0x801000, "ecriture", "absente", 6),
+            (0, "instruction", "invalide", 0),
+            ((1 << 47), "retour", "pile", 0) if arch == "x86_64" else ((1 << 47), "ecriture", "absente", 6),
+            (0, "instruction", "privilege", 0), (0, "instruction", "fpu", 0),
+        ]
+        assert len(faults) == len(expected)
+        for (_, pc, detail), (addr, access, cause, code) in zip(faults, expected):
+            assert f"adresse={addr:#x} acces={access} cause={cause} " in detail, detail
+            syndrome = int(detail.split("syndrome=")[-1], 16)
+            if arch == "x86_64":
+                assert syndrome == code, detail
+            elif access != "instruction":
+                assert syndrome >> 26 == (0x20 if access == "execution" else 0x24), detail
+                assert (syndrome & 63) in (range(4,8) if cause == "absente" else range(12,16)), detail
+                assert bool(syndrome & 64) == (access == "ecriture"), detail
+            else:
+                assert syndrome >> 26 in {"privilege": (0, 0x18), "fpu": (7,), "invalide": (0x15,)}[cause], detail
+            assert (int(pc,16) == addr if access == "execution" else 0x400000 <= int(pc,16) < 0x401000)
+        # Les deux survivants sortent volontairement après la dernière faute.
+        exits = [(int(pid), detail) for pid, _, detail in events if "sortie=" in detail]
+        assert exits[0][1] == "sortie=23"
+        assert sorted(exits[1:3]) == [(1,"sortie=41"), (2,"sortie=82")]
+        assert all(detail == "sortie=17" for _, detail in exits[3:])
+        assert report.index("cause=fpu") < report.index("sortie=41")
+        if arch == "x86_64":
+            wait_for_halt(vm, True)
+        else:
+            wait_for_wfi(vm)
+    scenario_vm(arch, "proc-test", verify)
+
+
+def boot_fault(arch):
+    def verify(vm, directory, log):
+        wait_demo(vm, log, "Ring3" if arch == "x86_64" else "EL0", faulty=True)
+        if arch == "x86_64":
+            test_keyboard(vm, directory)
+        else:
+            expect_screen(vm, directory, "demarrage-aarch64")
+            wait_for_wfi(vm)
+    scenario_vm(arch, "proc-boot-fault", verify)
+
+
 def suite():
     if os.environ.get("NOVA_ARCH", "x86_64") == "aarch64":
         boot("aarch64", check_arm)
@@ -394,6 +480,8 @@ def suite():
         boot("std", check_x86, NOVA_VGA="std")
         boot("none", check_without_vga, NOVA_VGA="none")
     arch = os.environ.get("NOVA_ARCH", "x86_64")
+    process_test(arch)
+    boot_fault(arch)
     memory_scenarios(arch)
     for case in ("heap-test", "heap-oom", "heap-corrupt", "heap-guard", "heap-infallible", "heap-reentrant", "heap-metadata"):
         scenario_vm(arch, case, heap_check(arch, case))

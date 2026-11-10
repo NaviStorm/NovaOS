@@ -192,3 +192,43 @@ pub fn lower_empty(_: &AddressSpace, frames: &Frames) -> bool {
     unsafe { asm!("mrs {}, ttbr0_el1",out(reg) root, options(nostack)) };
     frames.covers(root, limine::memory_map::EntryType::USABLE) && frames.empty_prefix(root, 512)
 }
+
+pub const SHARED_UPPER: bool = false;
+pub fn kernel_thread_root(_: u64) -> u64 {
+    let value: u64;
+    // Sûreté : appelé à EL1 au démarrage, TTBR0 désigne la racine basse vide.
+    unsafe { asm!("mrs {},ttbr0_el1",out(reg) value,options(nostack)) };
+    value
+}
+pub fn user_table(frame: u64) -> u64 {
+    table(frame)
+}
+pub fn user_leaf(frame: u64, access: Access, cache: u64) -> u64 {
+    let el0 = (1 << 6) | (1 << 11); // AP[1], nG
+    let mut desc = leaf(frame, access, cache) | el0 | PXN;
+    if access == Access::ReadExecute {
+        desc &= !UXN;
+    }
+    desc
+}
+pub unsafe fn switch_thread_root(root: u64) {
+    // Sûreté : EL1 accède uniquement à TTBR1 ici. ASID zéro réutilisé,
+    // invalidation complète avant la prochaine instruction utilisateur.
+    unsafe {
+        asm!("dsb ishst","msr ttbr0_el1,{}","isb","tlbi vmalle1is","dsb ish","isb",
+        in(reg) root,options(nostack,preserves_flags))
+    };
+}
+pub fn sync_user_code(alias: u64) {
+    sync_code(alias, alias);
+    // Sûreté : le code a été nettoyé au PoU par son alias HHDM. La VA
+    // utilisateur est encore inactive ; invalider tous les alias I sur CPU0.
+    unsafe {
+        asm!(
+            "ic iallu",
+            "dsb ish",
+            "isb",
+            options(nostack, preserves_flags)
+        )
+    };
+}

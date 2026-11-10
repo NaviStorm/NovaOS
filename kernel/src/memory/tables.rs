@@ -4,6 +4,7 @@ use limine::memory_map::EntryType;
 
 pub struct AddressSpace {
     pub(crate) root: u64,
+    user: bool,
 }
 
 fn indices(va: u64) -> [usize; 4] {
@@ -51,11 +52,41 @@ impl AddressSpace {
     pub(crate) fn new(frames: &mut Frames) -> Result<Self> {
         Ok(Self {
             root: frames.take()?,
+            user: false,
         })
+    }
+
+    pub(super) fn user(frames: &mut Frames, kernel: &AddressSpace) -> Result<Self> {
+        let mut space = Self::new(frames)?;
+        space.user = true;
+        // Sur x86, emprunt des branches superviseur. Le PML4 de l’arène
+        // dynamique reste ancré par les piles permanentes et la table des TCB.
+        if paging::SHARED_UPPER {
+            for i in 256..512 {
+                let entry = frames.entry(kernel.root, i);
+                if entry != 0 && !paging::matches(entry, paging::table(entry & PHYS_MASK)) {
+                    frames.release(space.root);
+                    return Err(Error::Verification);
+                }
+                frames.put(space.root, i, entry);
+            }
+        }
+        Ok(space)
+    }
+
+    fn branch(&self, frame: u64) -> u64 {
+        if self.user {
+            paging::user_table(frame)
+        } else {
+            paging::table(frame)
+        }
     }
 
     /// En cas de pénurie, toute la branche provisoire est rendue avant publication.
     pub(crate) fn insert(&self, frames: &mut Frames, va: u64, desc: u64) -> Result<()> {
+        if self.user && va >= (1 << 47) {
+            return Err(Error::Reserved);
+        }
         let path = indices(va);
         let mut parent = self.root;
         for level in 0..3 {
@@ -79,11 +110,11 @@ impl AddressSpace {
                 }
             }
             for i in 1..count {
-                frames.put(children[i - 1], path[level + i], paging::table(children[i]));
+                frames.put(children[i - 1], path[level + i], self.branch(children[i]));
             }
             frames.put(children[count - 1], path[3], desc);
             paging::publish();
-            frames.put(parent, slot, paging::table(children[0]));
+            frames.put(parent, slot, self.branch(children[0]));
             return Ok(());
         }
         if frames.entry(parent, path[3]) != 0 {
@@ -94,6 +125,9 @@ impl AddressSpace {
     }
 
     fn path(&self, frames: &Frames, va: u64) -> Result<[u64; 4]> {
+        if self.user && va >= (1 << 47) {
+            return Err(Error::Reserved);
+        }
         let mut tables = [self.root; 4];
         for (level, slot) in indices(va)[..3].iter().enumerate() {
             let entry = frames.entry(tables[level], *slot);
@@ -101,7 +135,7 @@ impl AddressSpace {
                 return Err(Error::Missing);
             }
             let child = entry & PHYS_MASK;
-            if !paging::matches(entry, paging::table(child)) {
+            if !paging::matches(entry, self.branch(child)) {
                 return Err(Error::Geometry);
             }
             tables[level + 1] = child;

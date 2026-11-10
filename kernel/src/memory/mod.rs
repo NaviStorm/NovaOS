@@ -2,6 +2,7 @@
 mod frames;
 mod probes;
 mod tables;
+pub(crate) mod user;
 
 use crate::{
     boot::MemoryInfo,
@@ -92,6 +93,15 @@ impl Image {
 /// manipule aucune adresse physique ni registre d’architecture.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) struct SpaceId(u64);
+
+impl SpaceId {
+    /// Sûreté requise : racine encore possédée, IRQ masquées, pile et code
+    /// courants présents dans les branches superviseur de la racine cible.
+    pub(crate) unsafe fn activate(self) {
+        // Sûreté : le scheduler conserve les deux espaces pendant le transfert.
+        unsafe { paging::switch_thread_root(self.0) };
+    }
+}
 
 pub struct Memory {
     frames: Frames,
@@ -235,7 +245,7 @@ impl VirtualMemory for Memory {
 
 impl Memory {
     pub(crate) fn space_id(&self) -> SpaceId {
-        SpaceId(self.space.root)
+        SpaceId(paging::kernel_thread_root(self.space.root))
     }
 
     /// Nombre de cadres encore disponibles, sans exposer la liste des cadres.
