@@ -1,0 +1,279 @@
+{
+  "secteur": 512,
+  "memoire": {
+    "tas_pic": 242800,
+    "pile_travail": 2109440,
+    "pile_main_hote": 8372224,
+    "tas_et_pile_travail": 2352240,
+    "rss_pic": 3768320
+  },
+  "operations": {
+    "check": {
+      "n": 16,
+      "p50_ns": 8529166,
+      "p95_ns": 12443334,
+      "p99_ns": 12443334,
+      "max_ns": 12443334,
+      "total_ns": 145156000,
+      "F1": null,
+      "F2": null,
+      "utiles_octets": 0,
+      "ecritures_blocs": 0,
+      "synchronisations": 0,
+      "temps_sync_ns": 0,
+      "sync_moy_ns": null,
+      "debit_mio_s": null,
+      "amplification": null
+    },
+    "clone": {
+      "n": 128,
+      "p50_ns": 8092125,
+      "p95_ns": 8410000,
+      "p99_ns": 9040083,
+      "max_ns": 10223709,
+      "total_ns": 1028924541,
+      "F1": {
+        "p50_ns": 4039292,
+        "p95_ns": 4222292,
+        "p99_ns": 4568459,
+        "max_ns": 5982000
+      },
+      "F2": {
+        "p50_ns": 4080166,
+        "p95_ns": 4235875,
+        "p99_ns": 4414750,
+        "max_ns": 4741583
+      },
+      "utiles_octets": 0,
+      "ecritures_blocs": 256,
+      "synchronisations": 256,
+      "temps_sync_ns": 1018637622,
+      "sync_moy_ns": 3979053.2109375,
+      "debit_mio_s": null,
+      "amplification": null
+    },
+    "drop_clone": {
+      "n": 128,
+      "p50_ns": 7942000,
+      "p95_ns": 8424875,
+      "p99_ns": 8711250,
+      "max_ns": 8783458,
+      "total_ns": 1024516084,
+      "F1": {
+        "p50_ns": 3999625,
+        "p95_ns": 4236209,
+        "p99_ns": 4256583,
+        "max_ns": 4301292
+      },
+      "F2": {
+        "p50_ns": 4067334,
+        "p95_ns": 4237208,
+        "p99_ns": 4542667,
+        "max_ns": 4792375
+      },
+      "utiles_octets": 0,
+      "ecritures_blocs": 256,
+      "synchronisations": 256,
+      "temps_sync_ns": 1015046501,
+      "sync_moy_ns": 3965025.39453125,
+      "debit_mio_s": null,
+      "amplification": null
+    },
+    "drop_snapshot": {
+      "n": 128,
+      "p50_ns": 7983625,
+      "p95_ns": 8633208,
+      "p99_ns": 8905500,
+      "max_ns": 9033084,
+      "total_ns": 1026798213,
+      "F1": {
+        "p50_ns": 3991792,
+        "p95_ns": 4465334,
+        "p99_ns": 4651167,
+        "max_ns": 4699583
+      },
+      "F2": {
+        "p50_ns": 4000750,
+        "p95_ns": 4278958,
+        "p99_ns": 4380459,
+        "max_ns": 5172292
+      },
+      "utiles_octets": 0,
+      "ecritures_blocs": 256,
+      "synchronisations": 256,
+      "temps_sync_ns": 1019748384,
+      "sync_moy_ns": 3983392.125,
+      "debit_mio_s": null,
+      "amplification": null
+    },
+    "export": {
+      "n": 16,
+      "p50_ns": 7535709,
+      "p95_ns": 9812625,
+      "p99_ns": 9812625,
+      "max_ns": 9812625,
+      "total_ns": 122339252,
+      "F1": null,
+      "F2": null,
+      "utiles_octets": 1048576,
+      "ecritures_blocs": 0,
+      "synchronisations": 0,
+      "temps_sync_ns": 0,
+      "sync_moy_ns": null,
+      "debit_mio_s": 8.173991451247389,
+      "amplification": null
+    },
+    "read": {
+      "n": 128,
+      "p50_ns": 202542,
+      "p95_ns": 407917,
+      "p99_ns": 454917,
+      "max_ns": 558042,
+      "total_ns": 26939876,
+      "F1": null,
+      "F2": null,
+      "utiles_octets": 2097152,
+      "ecritures_blocs": 0,
+      "synchronisations": 0,
+      "temps_sync_ns": 0,
+      "sync_moy_ns": null,
+      "debit_mio_s": 74.23939145079954,
+      "amplification": null
+    },
+    "remount_advance": {
+      "n": 16,
+      "p50_ns": 16777750,
+      "p95_ns": 21409750,
+      "p99_ns": 21409750,
+      "max_ns": 21409750,
+      "total_ns": 278906458,
+      "F1": {
+        "p50_ns": 3995333,
+        "p95_ns": 4436958,
+        "p99_ns": 4436958,
+        "max_ns": 4436958
+      },
+      "F2": {
+        "p50_ns": 4017292,
+        "p95_ns": 4306458,
+        "p99_ns": 4306458,
+        "max_ns": 4306458
+      },
+      "utiles_octets": 0,
+      "ecritures_blocs": 32,
+      "synchronisations": 48,
+      "temps_sync_ns": 143093998,
+      "sync_moy_ns": 2981124.9583333335,
+      "debit_mio_s": null,
+      "amplification": null
+    },
+    "restore": {
+      "n": 16,
+      "p50_ns": 14806417,
+      "p95_ns": 18650666,
+      "p99_ns": 18650666,
+      "max_ns": 18650666,
+      "total_ns": 244652791,
+      "F1": {
+        "p50_ns": 3923625,
+        "p95_ns": 4583583,
+        "p99_ns": 4583583,
+        "max_ns": 4583583
+      },
+      "F2": {
+        "p50_ns": 4025709,
+        "p95_ns": 4202667,
+        "p99_ns": 4202667,
+        "max_ns": 4202667
+      },
+      "utiles_octets": 1048576,
+      "ecritures_blocs": 560,
+      "synchronisations": 32,
+      "temps_sync_ns": 126504421,
+      "sync_moy_ns": 3953263.15625,
+      "debit_mio_s": 4.087425268735234,
+      "amplification": 2.1875
+    },
+    "snapshot": {
+      "n": 128,
+      "p50_ns": 8002625,
+      "p95_ns": 8439208,
+      "p99_ns": 8999500,
+      "max_ns": 10277000,
+      "total_ns": 1028044581,
+      "F1": {
+        "p50_ns": 4015791,
+        "p95_ns": 4233417,
+        "p99_ns": 4560958,
+        "max_ns": 4940500
+      },
+      "F2": {
+        "p50_ns": 4035125,
+        "p95_ns": 4267083,
+        "p99_ns": 4773666,
+        "max_ns": 5962958
+      },
+      "utiles_octets": 0,
+      "ecritures_blocs": 256,
+      "synchronisations": 256,
+      "temps_sync_ns": 1017510538,
+      "sync_moy_ns": 3974650.5390625,
+      "debit_mio_s": null,
+      "amplification": null
+    },
+    "write": {
+      "n": 128,
+      "p50_ns": 9888000,
+      "p95_ns": 10936792,
+      "p99_ns": 11827833,
+      "max_ns": 16067500,
+      "total_ns": 1237821215,
+      "F1": {
+        "p50_ns": 4092292,
+        "p95_ns": 4733083,
+        "p99_ns": 4926916,
+        "max_ns": 5377333
+      },
+      "F2": {
+        "p50_ns": 3973125,
+        "p95_ns": 4179666,
+        "p99_ns": 4303416,
+        "max_ns": 10123708
+      },
+      "utiles_octets": 2097152,
+      "ecritures_blocs": 1660,
+      "synchronisations": 256,
+      "temps_sync_ns": 1020421666,
+      "sync_moy_ns": 3986022.1328125,
+      "debit_mio_s": 1.6157422217068722,
+      "amplification": 3.2421875
+    },
+    "write_cow": {
+      "n": 128,
+      "p50_ns": 10799500,
+      "p95_ns": 11638959,
+      "p99_ns": 12133666,
+      "max_ns": 12643167,
+      "total_ns": 1337337457,
+      "F1": {
+        "p50_ns": 4038833,
+        "p95_ns": 4616917,
+        "p99_ns": 4888791,
+        "max_ns": 6095417
+      },
+      "F2": {
+        "p50_ns": 4044917,
+        "p95_ns": 4242083,
+        "p99_ns": 4648041,
+        "max_ns": 5952083
+      },
+      "utiles_octets": 2097152,
+      "ecritures_blocs": 1664,
+      "synchronisations": 256,
+      "temps_sync_ns": 1028733698,
+      "sync_moy_ns": 4018491.0078125,
+      "debit_mio_s": 1.4955088482203487,
+      "amplification": 3.25
+    }
+  }
+}

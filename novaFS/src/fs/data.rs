@@ -55,6 +55,36 @@ fn file(v: &impl View, path: &str) -> Result<Stat> {
     Ok(stat)
 }
 
+/// Un chemin validé et un extent (au plus 16 empreintes), pour une seule
+/// racine P5 immuable. Le propriétaire abandonne ce curseur à toute mutation.
+#[derive(Default)]
+pub(crate) struct ReadCursor {
+    path: String,
+    stat: Option<Stat>,
+    extent: Option<(u64, Run)>,
+}
+
+impl ReadCursor {
+    fn resolve(&mut self, v: &impl View, path: &str) -> Result<Stat> {
+        if self.path == path
+            && let Some(stat) = self.stat
+        {
+            return Ok(stat);
+        }
+        let stat = file(v, path)?;
+        self.extent = None;
+        self.stat = None;
+        self.path.clear();
+        // Le nom a passé components() (1 024 octets maximum). La mémorisation
+        // reste facultative si le tas refuse d'agrandir le tampon du chemin.
+        if self.path.try_reserve_exact(path.len()).is_ok() {
+            self.path.push_str(path);
+            self.stat = Some(stat);
+        }
+        Ok(stat)
+    }
+}
+
 impl<D: Device> Engine<D> {
     pub fn extent_count(&self, path: &str) -> Result<usize> {
         self.checked_access(|| {
@@ -70,11 +100,25 @@ impl<D: Device> Engine<D> {
     }
 
     pub fn read(&self, path: &str, offset: u64, limit: usize) -> Result<Vec<u8>> {
+        self.read_with_cursor(path, offset, limit, None)
+    }
+
+    pub(crate) fn read_with_cursor(
+        &self,
+        path: &str,
+        offset: u64,
+        limit: usize,
+        cursor: Option<&mut ReadCursor>,
+    ) -> Result<Vec<u8>> {
         self.checked_access(|| {
             if limit > MAX_IO || offset > i64::MAX as u64 {
                 return Err(Error::Invalid("plage de lecture"));
             }
-            let stat = file(self, path)?;
+            let mut local = None;
+            let (stat, extent) = match cursor {
+                Some(c) => (c.resolve(self, path)?, &mut c.extent),
+                None => (file(self, path)?, &mut local),
+            };
             let length = (stat.size.saturating_sub(offset)).min(limit as u64) as usize;
             let mut output = Vec::new();
             output
@@ -84,21 +128,32 @@ impl<D: Device> Engine<D> {
                 let pos = offset + output.len() as u64;
                 let index = pos / BLOCK_BYTES;
                 let mut inside = (pos % BLOCK_BYTES) as usize;
-                let Some((first, run)) = covering(self, stat.id, index)? else {
+                let hit = extent.as_ref().is_some_and(|(first, run)| {
+                    index
+                        .checked_sub(*first)
+                        .is_some_and(|n| n < run.hashes.len() as u64)
+                });
+                if !hit {
+                    *extent = covering(self, stat.id, index)?;
+                }
+                let Some((first, run)) = extent.as_ref() else {
                     let count = (4096 - inside).min(length - output.len());
                     output.resize(output.len() + count, 0);
                     continue;
                 };
                 // La vue est stable pour cette opération. Chaque page garde sa
                 // propre référence et son contrôle d'intégrité, même dans un extent contigu.
-                for i in (index - first) as usize..run.hashes.len() {
-                    let page = checked_page(self, run.reference(i), first + i as u64, stat.size)?;
+                for i in (index - *first) as usize..run.hashes.len() {
+                    let page = checked_page(self, run.reference(i), *first + i as u64, stat.size)?;
                     let count = (4096 - inside).min(length - output.len());
                     output.extend_from_slice(&page[inside..inside + count]);
                     if output.len() == length {
                         break;
                     }
                     inside = 0;
+                }
+                if output.len() < length {
+                    *extent = None;
                 }
             }
             Ok(output)
@@ -116,6 +171,16 @@ impl<D: Device> Engine<D> {
         offset: u64,
         bytes: &[u8],
     ) -> Result<crate::PreparedWrite<'_, D>> {
+        self.prepare_write_data(path, offset, bytes)
+            .map(|(plan, _)| plan)
+    }
+
+    pub(crate) fn prepare_write_data(
+        &mut self,
+        path: &str,
+        offset: u64,
+        bytes: &[u8],
+    ) -> Result<(crate::PreparedWrite<'_, D>, Vec<Ref>)> {
         let end = offset
             .checked_add(bytes.len() as u64)
             .filter(|&v| v <= i64::MAX as u64)
@@ -129,7 +194,7 @@ impl<D: Device> Engine<D> {
                 return Err(Error::IsDirectory);
             }
             if bytes.is_empty() {
-                return Ok(());
+                return Ok(Vec::new());
             }
             let new_size = obj.stat.size.max(end);
             tx.resize_logical(obj.stat.size, new_size)?;
@@ -210,7 +275,8 @@ impl<D: Device> Engine<D> {
             }
             obj.stat.size = new_size;
             obj.stat.revision = generation(tx)?;
-            save_object(tx, &obj)
+            save_object(tx, &obj)?;
+            Ok(fresh)
         })
     }
 }

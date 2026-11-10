@@ -1,0 +1,256 @@
+{
+  "corpus_historiques": {
+    "d0ba7cb": {
+      "image_F01": {
+        "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "montages_et_lectures": {
+          "P5.1 → P5.1": 8,
+          "historique → P5.1": 8,
+          "P5.1 → historique": 8
+        }
+      }
+    },
+    "38c8699": {
+      "image_F01": {
+        "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "montages_et_lectures": {
+          "P5.1 → P5.1": 8,
+          "historique → P5.1": 8,
+          "P5.1 → historique": 8
+        }
+      }
+    },
+    "6f15350": {
+      "image_F01": {
+        "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "montages_et_lectures": {
+          "P5.1 → P5.1": 8,
+          "historique → P5.1": 8,
+          "P5.1 → historique": 8
+        }
+      },
+      "pool_16_volumes": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    },
+    "1510eca": {
+      "image_F01": {
+        "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "montages_et_lectures": {
+          "P5.1 → P5.1": 8,
+          "historique → P5.1": 8,
+          "P5.1 → historique": 8
+        }
+      },
+      "pool_16_volumes": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    },
+    "0a89d23": {
+      "image_F01": {
+        "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "montages_et_lectures": {
+          "P5.1 → P5.1": 8,
+          "historique → P5.1": 8,
+          "P5.1 → historique": 8
+        }
+      },
+      "pool_16_volumes": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    },
+    "b865c58": {
+      "image_F01": {
+        "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "montages_et_lectures": {
+          "P5.1 → P5.1": 8,
+          "historique → P5.1": 8,
+          "P5.1 → historique": 8
+        }
+      },
+      "pool_16_volumes": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    },
+    "ae508ce": {
+      "image_F01": {
+        "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0",
+        "montages_et_lectures": {
+          "P5.1 → P5.1": 8,
+          "historique → P5.1": 8,
+          "P5.1 → historique": 8
+        }
+      },
+      "pool_16_volumes": [
+        "4 images identiques, 17825792 octets, SHA-256 066acd4a384b817af1327d725ebe365b9afff2788f30e8a59b78579d82a80c6f",
+        "16 contrôles d'intégrité et 8 contrôles d'espace interarchitectures réussis"
+      ]
+    }
+  },
+  "partage_interversions": {
+    "reference": "ae508ce",
+    "echanges": [
+      {
+        "producteur": "P5",
+        "architecture": "aarch64",
+        "lecteur": "P5.1",
+        "architecture_lecteur": "x86_64",
+        "secteur": 512,
+        "sha256_pool": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad",
+        "lectures_geometries": 2,
+        "reprises_inscriptibles": 1,
+        "octets_export": 61760,
+        "sha256": "6a9ed9ea095f1540aa31e154421136970b086e0bc52c96c973504172a3ca0350",
+        "restaurations": 2,
+        "octets_fichier": 4133
+      },
+      {
+        "producteur": "P5",
+        "architecture": "aarch64",
+        "lecteur": "P5.1",
+        "architecture_lecteur": "x86_64",
+        "secteur": 4096,
+        "sha256_pool": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad",
+        "lectures_geometries": 2,
+        "reprises_inscriptibles": 1,
+        "octets_export": 61760,
+        "sha256": "e797c226a8b4988806fce6028921c386a8210068e104ae637d31c07e0a578391",
+        "restaurations": 2,
+        "octets_fichier": 4133
+      },
+      {
+        "producteur": "P5",
+        "architecture": "x86_64",
+        "lecteur": "P5.1",
+        "architecture_lecteur": "aarch64",
+        "secteur": 512,
+        "sha256_pool": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad",
+        "lectures_geometries": 2,
+        "reprises_inscriptibles": 1,
+        "octets_export": 61760,
+        "sha256": "6a9ed9ea095f1540aa31e154421136970b086e0bc52c96c973504172a3ca0350",
+        "restaurations": 2,
+        "octets_fichier": 4133
+      },
+      {
+        "producteur": "P5",
+        "architecture": "x86_64",
+        "lecteur": "P5.1",
+        "architecture_lecteur": "aarch64",
+        "secteur": 4096,
+        "sha256_pool": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad",
+        "lectures_geometries": 2,
+        "reprises_inscriptibles": 1,
+        "octets_export": 61760,
+        "sha256": "e797c226a8b4988806fce6028921c386a8210068e104ae637d31c07e0a578391",
+        "restaurations": 2,
+        "octets_fichier": 4133
+      },
+      {
+        "producteur": "P5.1",
+        "architecture": "aarch64",
+        "lecteur": "P5",
+        "architecture_lecteur": "x86_64",
+        "secteur": 512,
+        "sha256_pool": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad",
+        "lectures_geometries": 2,
+        "reprises_inscriptibles": 1,
+        "octets_export": 61760,
+        "sha256": "6a9ed9ea095f1540aa31e154421136970b086e0bc52c96c973504172a3ca0350",
+        "restaurations": 2,
+        "octets_fichier": 4133
+      },
+      {
+        "producteur": "P5.1",
+        "architecture": "aarch64",
+        "lecteur": "P5",
+        "architecture_lecteur": "x86_64",
+        "secteur": 4096,
+        "sha256_pool": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad",
+        "lectures_geometries": 2,
+        "reprises_inscriptibles": 1,
+        "octets_export": 61760,
+        "sha256": "e797c226a8b4988806fce6028921c386a8210068e104ae637d31c07e0a578391",
+        "restaurations": 2,
+        "octets_fichier": 4133
+      },
+      {
+        "producteur": "P5.1",
+        "architecture": "x86_64",
+        "lecteur": "P5",
+        "architecture_lecteur": "aarch64",
+        "secteur": 512,
+        "sha256_pool": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad",
+        "lectures_geometries": 2,
+        "reprises_inscriptibles": 1,
+        "octets_export": 61760,
+        "sha256": "6a9ed9ea095f1540aa31e154421136970b086e0bc52c96c973504172a3ca0350",
+        "restaurations": 2,
+        "octets_fichier": 4133
+      },
+      {
+        "producteur": "P5.1",
+        "architecture": "x86_64",
+        "lecteur": "P5",
+        "architecture_lecteur": "aarch64",
+        "secteur": 4096,
+        "sha256_pool": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad",
+        "lectures_geometries": 2,
+        "reprises_inscriptibles": 1,
+        "octets_export": 61760,
+        "sha256": "e797c226a8b4988806fce6028921c386a8210068e104ae637d31c07e0a578391",
+        "restaurations": 2,
+        "octets_fichier": 4133
+      }
+    ]
+  },
+  "pools_P5_1": {
+    "images": 4,
+    "lectures_croisees": 8,
+    "refus_ecrivains_P0": 8,
+    "sha256": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad"
+  },
+  "exports_P5_1": [
+    {
+      "producteur": "aarch64",
+      "lecteur": "x86_64",
+      "secteur": 512,
+      "octets_export": 61760,
+      "sha256": "6a9ed9ea095f1540aa31e154421136970b086e0bc52c96c973504172a3ca0350",
+      "restaurations": 2,
+      "octets_fichier": 4133
+    },
+    {
+      "producteur": "aarch64",
+      "lecteur": "x86_64",
+      "secteur": 4096,
+      "octets_export": 61760,
+      "sha256": "e797c226a8b4988806fce6028921c386a8210068e104ae637d31c07e0a578391",
+      "restaurations": 2,
+      "octets_fichier": 4133
+    },
+    {
+      "producteur": "x86_64",
+      "lecteur": "aarch64",
+      "secteur": 512,
+      "octets_export": 61760,
+      "sha256": "6a9ed9ea095f1540aa31e154421136970b086e0bc52c96c973504172a3ca0350",
+      "restaurations": 2,
+      "octets_fichier": 4133
+    },
+    {
+      "producteur": "x86_64",
+      "lecteur": "aarch64",
+      "secteur": 4096,
+      "octets_export": 61760,
+      "sha256": "e797c226a8b4988806fce6028921c386a8210068e104ae637d31c07e0a578391",
+      "restaurations": 2,
+      "octets_fichier": 4133
+    }
+  ],
+  "tests_rapport_latence": 2
+}

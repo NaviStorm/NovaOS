@@ -1,0 +1,594 @@
+[
+  {
+    "repetition": 1,
+    "arch": "aarch64",
+    "secteur": 512,
+    "operation": "read",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 39.24178513941458,
+        "mur_moy_us": 398.1725078125,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 398.1725078125,
+        "p95_us": 551.791,
+        "p99_us": 590.875
+      },
+      "P5": {
+        "debit_mio_s": 44.76500966297498,
+        "mur_moy_us": 349.0449375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 349.0449375,
+        "p95_us": 744.125,
+        "p99_us": 797.875
+      },
+      "P5.1": {
+        "debit_mio_s": 70.56044361068656,
+        "mur_moy_us": 221.4413515625,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 221.4413515625,
+        "p95_us": 391.375,
+        "p99_us": 458.5
+      }
+    },
+    "ratio_debit_final_sur_p5": 1.5762410003241194,
+    "ratio_debit_final_sur_p41": 1.798094642229092,
+    "delta_mur_moy_us": -127.60358593750001,
+    "delta_flush_moy_us": 0.0,
+    "delta_hors_flush_moy_us": -127.60358593750001
+  },
+  {
+    "repetition": 1,
+    "arch": "aarch64",
+    "secteur": 512,
+    "operation": "write",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 1.6653586773079223,
+        "mur_moy_us": 9382.36321875,
+        "flush_moy_us": 8302.957359375,
+        "hors_flush_moy_us": 1079.405859375,
+        "p95_us": 10103.375,
+        "p99_us": 10298.041
+      },
+      "P5": {
+        "debit_mio_s": 1.5841838230131076,
+        "mur_moy_us": 9863.1230625,
+        "flush_moy_us": 8428.914796875,
+        "hors_flush_moy_us": 1434.208265625,
+        "p95_us": 11704.292,
+        "p99_us": 12286.333
+      },
+      "P5.1": {
+        "debit_mio_s": 1.4900773380834058,
+        "mur_moy_us": 10486.03290625,
+        "flush_moy_us": 8598.5855390625,
+        "hors_flush_moy_us": 1887.4473671875,
+        "p95_us": 12225.125,
+        "p99_us": 13043.083
+      }
+    },
+    "ratio_debit_final_sur_p5": 0.9405962341221792,
+    "ratio_debit_final_sur_p41": 0.8947485958353059,
+    "delta_mur_moy_us": 622.9098437499997,
+    "delta_flush_moy_us": 169.67074218749985,
+    "delta_hors_flush_moy_us": 453.2391015625001
+  },
+  {
+    "repetition": 1,
+    "arch": "aarch64",
+    "secteur": 4096,
+    "operation": "read",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 70.10749828087651,
+        "mur_moy_us": 222.8720234375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 222.8720234375,
+        "p95_us": 382.375,
+        "p99_us": 589.417
+      },
+      "P5": {
+        "debit_mio_s": 50.89171055716219,
+        "mur_moy_us": 307.0244609375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 307.0244609375,
+        "p95_us": 531.875,
+        "p99_us": 671.125
+      },
+      "P5.1": {
+        "debit_mio_s": 167.4456938032786,
+        "mur_moy_us": 93.3138359375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 93.3138359375,
+        "p95_us": 130.208,
+        "p99_us": 158.042
+      }
+    },
+    "ratio_debit_final_sur_p5": 3.290235128080467,
+    "ratio_debit_final_sur_p41": 2.388413478005296,
+    "delta_mur_moy_us": -213.710625,
+    "delta_flush_moy_us": 0.0,
+    "delta_hors_flush_moy_us": -213.710625
+  },
+  {
+    "repetition": 1,
+    "arch": "aarch64",
+    "secteur": 4096,
+    "operation": "write",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 1.7474038892497827,
+        "mur_moy_us": 8941.8365703125,
+        "flush_moy_us": 8334.4662109375,
+        "hors_flush_moy_us": 607.370359375,
+        "p95_us": 10012.333,
+        "p99_us": 10447.041
+      },
+      "P5": {
+        "debit_mio_s": 1.5717022380184864,
+        "mur_moy_us": 9941.4505,
+        "flush_moy_us": 8661.5036171875,
+        "hors_flush_moy_us": 1279.9468828125,
+        "p95_us": 11151.125,
+        "p99_us": 12037.458
+      },
+      "P5.1": {
+        "debit_mio_s": 1.032441710185242,
+        "mur_moy_us": 15134.0263046875,
+        "flush_moy_us": 14418.9411015625,
+        "hors_flush_moy_us": 715.085203125,
+        "p95_us": 15520.875,
+        "p99_us": 154232.375
+      }
+    },
+    "ratio_debit_final_sur_p5": 0.6568939619802834,
+    "ratio_debit_final_sur_p41": 0.590843202614424,
+    "delta_mur_moy_us": 5192.5758046875,
+    "delta_flush_moy_us": 5757.437484374999,
+    "delta_hors_flush_moy_us": -564.8616796875
+  },
+  {
+    "repetition": 1,
+    "arch": "x86_64",
+    "secteur": 512,
+    "operation": "read",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 51.122900449577344,
+        "mur_moy_us": 305.6360234375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 305.6360234375,
+        "p95_us": 564.875,
+        "p99_us": 787.5
+      },
+      "P5": {
+        "debit_mio_s": 37.57895055669833,
+        "mur_moy_us": 415.79128125,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 415.79128125,
+        "p95_us": 649.875,
+        "p99_us": 815.542
+      },
+      "P5.1": {
+        "debit_mio_s": 80.59020397058264,
+        "mur_moy_us": 193.882125,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 193.882125,
+        "p95_us": 360.375,
+        "p99_us": 398.25
+      }
+    },
+    "ratio_debit_final_sur_p5": 2.144557066568153,
+    "ratio_debit_final_sur_p41": 1.5764012460534975,
+    "delta_mur_moy_us": -221.90915625,
+    "delta_flush_moy_us": 0.0,
+    "delta_hors_flush_moy_us": -221.90915625
+  },
+  {
+    "repetition": 1,
+    "arch": "x86_64",
+    "secteur": 512,
+    "operation": "write",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 1.135175812258181,
+        "mur_moy_us": 13764.3877109375,
+        "flush_moy_us": 12968.6809921875,
+        "hors_flush_moy_us": 795.70671875,
+        "p95_us": 11059.167,
+        "p99_us": 154430.167
+      },
+      "P5": {
+        "debit_mio_s": 1.4235042648333684,
+        "mur_moy_us": 10976.4335703125,
+        "flush_moy_us": 9273.227203125,
+        "hors_flush_moy_us": 1703.2063671875,
+        "p95_us": 12570.667,
+        "p99_us": 13582.708
+      },
+      "P5.1": {
+        "debit_mio_s": 1.501285665763947,
+        "mur_moy_us": 10407.746078125,
+        "flush_moy_us": 8807.3464453125,
+        "hors_flush_moy_us": 1600.3996328125,
+        "p95_us": 11640.417,
+        "p99_us": 12438.75
+      }
+    },
+    "ratio_debit_final_sur_p5": 1.0546407923405017,
+    "ratio_debit_final_sur_p41": 1.3225137899806652,
+    "delta_mur_moy_us": -568.6874921875005,
+    "delta_flush_moy_us": -465.8807578124997,
+    "delta_hors_flush_moy_us": -102.80673437500013
+  },
+  {
+    "repetition": 1,
+    "arch": "x86_64",
+    "secteur": 4096,
+    "operation": "read",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 39.64851826449634,
+        "mur_moy_us": 394.0878671875,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 394.0878671875,
+        "p95_us": 776.458,
+        "p99_us": 928.083
+      },
+      "P5": {
+        "debit_mio_s": 35.276118526347204,
+        "mur_moy_us": 442.93421875,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 442.93421875,
+        "p95_us": 655.708,
+        "p99_us": 792.958
+      },
+      "P5.1": {
+        "debit_mio_s": 85.92893127438448,
+        "mur_moy_us": 181.8363125,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 181.8363125,
+        "p95_us": 320.417,
+        "p99_us": 597.042
+      }
+    },
+    "ratio_debit_final_sur_p5": 2.4358952986906837,
+    "ratio_debit_final_sur_p41": 2.1672671523599005,
+    "delta_mur_moy_us": -261.09790625000005,
+    "delta_flush_moy_us": 0.0,
+    "delta_hors_flush_moy_us": -261.09790625000005
+  },
+  {
+    "repetition": 1,
+    "arch": "x86_64",
+    "secteur": 4096,
+    "operation": "write",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 1.6575414479344583,
+        "mur_moy_us": 9426.6119375,
+        "flush_moy_us": 8359.82121875,
+        "hors_flush_moy_us": 1066.79071875,
+        "p95_us": 10978.458,
+        "p99_us": 11749.708
+      },
+      "P5": {
+        "debit_mio_s": 1.4679224072509467,
+        "mur_moy_us": 10644.2955859375,
+        "flush_moy_us": 8828.653609375,
+        "hors_flush_moy_us": 1815.6419765625,
+        "p95_us": 12081.042,
+        "p99_us": 13079.542
+      },
+      "P5.1": {
+        "debit_mio_s": 1.4338587797491993,
+        "mur_moy_us": 10897.1679921875,
+        "flush_moy_us": 9456.340625,
+        "hors_flush_moy_us": 1440.8273671875,
+        "p95_us": 12474.25,
+        "p99_us": 12944.167
+      }
+    },
+    "ratio_debit_final_sur_p5": 0.9767946675290964,
+    "ratio_debit_final_sur_p41": 0.8650515385518711,
+    "delta_mur_moy_us": 252.8724062500005,
+    "delta_flush_moy_us": 627.6870156250006,
+    "delta_hors_flush_moy_us": -374.81460937500015
+  },
+  {
+    "repetition": 2,
+    "arch": "aarch64",
+    "secteur": 512,
+    "operation": "read",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 86.93602751560046,
+        "mur_moy_us": 179.729859375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 179.729859375,
+        "p95_us": 308.083,
+        "p99_us": 452.458
+      },
+      "P5": {
+        "debit_mio_s": 65.00392688722326,
+        "mur_moy_us": 240.37009375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 240.37009375,
+        "p95_us": 446.292,
+        "p99_us": 591.0
+      },
+      "P5.1": {
+        "debit_mio_s": 90.73719753719284,
+        "mur_moy_us": 172.2006015625,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 172.2006015625,
+        "p95_us": 293.209,
+        "p99_us": 460.041
+      }
+    },
+    "ratio_debit_final_sur_p5": 1.395872555432148,
+    "ratio_debit_final_sur_p41": 1.043723760220241,
+    "delta_mur_moy_us": -68.1694921875,
+    "delta_flush_moy_us": 0.0,
+    "delta_hors_flush_moy_us": -68.1694921875
+  },
+  {
+    "repetition": 2,
+    "arch": "aarch64",
+    "secteur": 512,
+    "operation": "write",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 1.7361950844771847,
+        "mur_moy_us": 8999.564703125,
+        "flush_moy_us": 8516.5781796875,
+        "hors_flush_moy_us": 482.9865234375,
+        "p95_us": 9937.833,
+        "p99_us": 10642.375
+      },
+      "P5": {
+        "debit_mio_s": 1.4847152286422924,
+        "mur_moy_us": 10523.903640625,
+        "flush_moy_us": 9482.4019765625,
+        "hors_flush_moy_us": 1041.5016640625,
+        "p95_us": 12108.625,
+        "p99_us": 13601.083
+      },
+      "P5.1": {
+        "debit_mio_s": 1.565240137510134,
+        "mur_moy_us": 9982.4938203125,
+        "flush_moy_us": 8547.8759921875,
+        "hors_flush_moy_us": 1434.617828125,
+        "p95_us": 11380.5,
+        "p99_us": 12509.666
+      }
+    },
+    "ratio_debit_final_sur_p5": 1.0542359284220975,
+    "ratio_debit_final_sur_p41": 0.9015347131808463,
+    "delta_mur_moy_us": -541.4098203124995,
+    "delta_flush_moy_us": -934.5259843749991,
+    "delta_hors_flush_moy_us": 393.11616406250005
+  },
+  {
+    "repetition": 2,
+    "arch": "aarch64",
+    "secteur": 4096,
+    "operation": "read",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 58.20418043959464,
+        "mur_moy_us": 268.4515078125,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 268.4515078125,
+        "p95_us": 463.542,
+        "p99_us": 565.375
+      },
+      "P5": {
+        "debit_mio_s": 55.90770264459647,
+        "mur_moy_us": 279.478484375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 279.478484375,
+        "p95_us": 459.541,
+        "p99_us": 728.041
+      },
+      "P5.1": {
+        "debit_mio_s": 97.43720659221165,
+        "mur_moy_us": 160.3596875,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 160.3596875,
+        "p95_us": 267.292,
+        "p99_us": 303.792
+      }
+    },
+    "ratio_debit_final_sur_p5": 1.7428225804880044,
+    "ratio_debit_final_sur_p41": 1.6740585617099062,
+    "delta_mur_moy_us": -119.11879687499999,
+    "delta_flush_moy_us": 0.0,
+    "delta_hors_flush_moy_us": -119.11879687499999
+  },
+  {
+    "repetition": 2,
+    "arch": "aarch64",
+    "secteur": 4096,
+    "operation": "write",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 1.6521593950878755,
+        "mur_moy_us": 9457.3199453125,
+        "flush_moy_us": 8757.85778125,
+        "hors_flush_moy_us": 699.4621640625,
+        "p95_us": 11271.083,
+        "p99_us": 19800.667
+      },
+      "P5": {
+        "debit_mio_s": 1.5420015267865976,
+        "mur_moy_us": 10132.9341953125,
+        "flush_moy_us": 8954.6197578125,
+        "hors_flush_moy_us": 1178.3144375,
+        "p95_us": 12035.042,
+        "p99_us": 12986.875
+      },
+      "P5.1": {
+        "debit_mio_s": 1.529739130679541,
+        "mur_moy_us": 10214.15984375,
+        "flush_moy_us": 8877.114890625,
+        "hors_flush_moy_us": 1337.044953125,
+        "p95_us": 12415.75,
+        "p99_us": 18255.292
+      }
+    },
+    "ratio_debit_final_sur_p5": 0.9920477406189017,
+    "ratio_debit_final_sur_p41": 0.9259028730688402,
+    "delta_mur_moy_us": 81.22564843749933,
+    "delta_flush_moy_us": -77.50486718749926,
+    "delta_hors_flush_moy_us": 158.73051562499995
+  },
+  {
+    "repetition": 2,
+    "arch": "x86_64",
+    "secteur": 512,
+    "operation": "read",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 41.14538295211416,
+        "mur_moy_us": 379.7509921875,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 379.7509921875,
+        "p95_us": 753.25,
+        "p99_us": 863.083
+      },
+      "P5": {
+        "debit_mio_s": 43.70187576754151,
+        "mur_moy_us": 357.536140625,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 357.536140625,
+        "p95_us": 604.583,
+        "p99_us": 674.167
+      },
+      "P5.1": {
+        "debit_mio_s": 72.63473871141761,
+        "mur_moy_us": 215.117453125,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 215.117453125,
+        "p95_us": 342.833,
+        "p99_us": 380.667
+      }
+    },
+    "ratio_debit_final_sur_p5": 1.6620508258678743,
+    "ratio_debit_final_sur_p41": 1.7653193019482016,
+    "delta_mur_moy_us": -142.41868749999998,
+    "delta_flush_moy_us": 0.0,
+    "delta_hors_flush_moy_us": -142.41868749999998
+  },
+  {
+    "repetition": 2,
+    "arch": "x86_64",
+    "secteur": 512,
+    "operation": "write",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 1.585546676555827,
+        "mur_moy_us": 9854.645234375,
+        "flush_moy_us": 8848.745859375,
+        "hors_flush_moy_us": 1005.899375,
+        "p95_us": 12218.916,
+        "p99_us": 13939.792
+      },
+      "P5": {
+        "debit_mio_s": 1.4908388407939062,
+        "mur_moy_us": 10480.676765625,
+        "flush_moy_us": 8984.679,
+        "hors_flush_moy_us": 1495.997765625,
+        "p95_us": 12234.0,
+        "p99_us": 13365.584
+      },
+      "P5.1": {
+        "debit_mio_s": 1.3914273180586718,
+        "mur_moy_us": 11229.476234375,
+        "flush_moy_us": 9446.267953125,
+        "hors_flush_moy_us": 1783.20828125,
+        "p95_us": 13510.208,
+        "p99_us": 16099.709
+      }
+    },
+    "ratio_debit_final_sur_p5": 0.9333183976597393,
+    "ratio_debit_final_sur_p41": 0.877569445688709,
+    "delta_mur_moy_us": 748.7994687500013,
+    "delta_flush_moy_us": 461.58895312499953,
+    "delta_hors_flush_moy_us": 287.21051562499997
+  },
+  {
+    "repetition": 2,
+    "arch": "x86_64",
+    "secteur": 4096,
+    "operation": "read",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 53.87997223241751,
+        "mur_moy_us": 289.9964375,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 289.9964375,
+        "p95_us": 574.083,
+        "p99_us": 764.708
+      },
+      "P5": {
+        "debit_mio_s": 32.619774142967216,
+        "mur_moy_us": 479.0039296875,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 479.0039296875,
+        "p95_us": 737.625,
+        "p99_us": 956.541
+      },
+      "P5.1": {
+        "debit_mio_s": 70.89004507401737,
+        "mur_moy_us": 220.411765625,
+        "flush_moy_us": 0.0,
+        "hors_flush_moy_us": 220.411765625,
+        "p95_us": 370.417,
+        "p99_us": 402.25
+      }
+    },
+    "ratio_debit_final_sur_p5": 2.1732230506354124,
+    "ratio_debit_final_sur_p41": 1.3157030736434854,
+    "delta_mur_moy_us": -258.5921640625,
+    "delta_flush_moy_us": 0.0,
+    "delta_hors_flush_moy_us": -258.5921640625
+  },
+  {
+    "repetition": 2,
+    "arch": "x86_64",
+    "secteur": 4096,
+    "operation": "write",
+    "par_phase": {
+      "P4.1": {
+        "debit_mio_s": 1.687034743232131,
+        "mur_moy_us": 9261.8128125,
+        "flush_moy_us": 8478.9345390625,
+        "hors_flush_moy_us": 782.8782734375,
+        "p95_us": 10609.708,
+        "p99_us": 11744.833
+      },
+      "P5": {
+        "debit_mio_s": 1.3889986901999316,
+        "mur_moy_us": 11249.1106796875,
+        "flush_moy_us": 9300.9990234375,
+        "hors_flush_moy_us": 1948.11165625,
+        "p95_us": 12860.666,
+        "p99_us": 13691.083
+      },
+      "P5.1": {
+        "debit_mio_s": 1.4816747840664215,
+        "mur_moy_us": 10545.49903125,
+        "flush_moy_us": 8730.9681015625,
+        "hors_flush_moy_us": 1814.5309296875,
+        "p95_us": 12187.042,
+        "p99_us": 13386.5
+      }
+    },
+    "ratio_debit_final_sur_p5": 1.066721512784976,
+    "ratio_debit_final_sur_p41": 0.8782716479375715,
+    "delta_mur_moy_us": -703.6116484374998,
+    "delta_flush_moy_us": -570.0309218750008,
+    "delta_hors_flush_moy_us": -133.58072656249988
+  }
+]

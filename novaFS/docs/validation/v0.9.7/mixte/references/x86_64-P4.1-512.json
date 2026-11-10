@@ -1,0 +1,56 @@
+{
+  "secteur": 512,
+  "memoire": {
+    "tas_pic": 194752,
+    "pile_travail": 2097152,
+    "pile_main_hote": 8372224,
+    "tas_et_pile_travail": 2291904,
+    "rss_pic": 5787648
+  },
+  "operations": {
+    "read": {
+      "n": 128,
+      "p50_ns": 498042,
+      "p95_ns": 848708,
+      "p99_ns": 930875,
+      "max_ns": 975208,
+      "total_ns": 68208165,
+      "F1": null,
+      "F2": null,
+      "utiles_octets": 2097152,
+      "ecritures_blocs": 0,
+      "synchronisations": 0,
+      "temps_sync_ns": 0,
+      "sync_moy_ns": null,
+      "debit_mio_s": 29.322002725040324,
+      "amplification": null
+    },
+    "write": {
+      "n": 128,
+      "p50_ns": 8250500,
+      "p95_ns": 10498542,
+      "p99_ns": 13364167,
+      "max_ns": 13943584,
+      "total_ns": 1068294623,
+      "F1": {
+        "p50_ns": 3710291,
+        "p95_ns": 5856375,
+        "p99_ns": 7291791,
+        "max_ns": 7623750
+      },
+      "F2": {
+        "p50_ns": 3515375,
+        "p95_ns": 4292542,
+        "p99_ns": 4718834,
+        "max_ns": 4840833
+      },
+      "utiles_octets": 2097152,
+      "ecritures_blocs": 1152,
+      "synchronisations": 256,
+      "temps_sync_ns": 893960953,
+      "sync_moy_ns": 3492034.97265625,
+      "debit_mio_s": 1.8721427188162492,
+      "amplification": 2.25
+    }
+  }
+}

@@ -1,8 +1,10 @@
-# NovaFS P5 sur macOS
+# NovaFS P5.1 sur macOS
 
-NovaFS v0.9.6 crée des snapshots en lecture seule et des clones inscriptibles sur un pool CoW versionné. Pour retrouver une vue, conserver le pool et son reçu. Pour sauvegarder une seule vue indépendamment du pool, utiliser `export` puis `check-export`. La commande `restore` restaure l’archive dans un nouveau pool. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne la cible Darwin.
+NovaFS v0.9.7 crée des snapshots en lecture seule et des clones inscriptibles sur un pool CoW versionné. Pour retrouver une vue, conserver le pool et son reçu. Pour sauvegarder une seule vue indépendamment du pool, utiliser `export` puis `check-export`. La commande `restore` restaure l’archive dans un nouveau pool. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne la cible Darwin.
 
 Le pool attribue les pages physiques de 4 Kio aux racines actives et à leur prédécesseur. Il conserve la lignée d’un contenu partagé après disparition de l’origine. Les images historiques disposent de leur lecteur et d’une migration explicite vers un autre support. [Format du pool P5](docs/novafs-p5-format.md) · [Partage, quotas et migration](docs/novafs-p5-partage.md) · [Export et restauration](docs/novafs-p5-export.md) · [Résultats et reproduction](docs/novafs-p5-validation.md)
+
+La v0.9.7 accélère les relectures du pool partagé et conserve le format disque P5. [Diagnostic, mesures et qualification P5.1](docs/novafs-p5.1-performance.md)
 
 ## Images et bancs historiques P0 à P4.1
 

@@ -2,7 +2,7 @@
 //! du domaine de checksum de son contenu. Aucune adresse physique n'est exportée.
 mod coordinator;
 use crate::shared_graph::{self as graph, Catalog, Entry, Graph, Kind, PageRef};
-use crate::{Block, Device, Engine, Error, Ids, Mode, Result};
+use crate::{Block, Device, Engine, Error, Ids, Mode, Ref, Result};
 pub use coordinator::{SharedAdmin, SharedCoordinator, SharedRead, SharedWrite};
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
@@ -193,12 +193,14 @@ struct Cached {
     ids: Ids,
     blocks: u64,
     engine: Engine<()>,
+    cursor: crate::fs::ReadCursor,
 }
 
 struct PreparedContent {
     base: Entry,
     state: Engine<()>,
     dirty: BTreeMap<u64, Box<Block>>,
+    data_refs: Vec<Ref>,
 }
 /// Le descripteur de périphérique reste exclusif. Les lectures empruntent le
 /// pool et les publications requièrent un emprunt mutable jusqu'à F2.
@@ -536,20 +538,38 @@ impl<D: Device> SharedPool<D> {
         })
     }
     fn mount_cached<E: Device>(&self, e: &Entry, dev: E, mode: Mode) -> Result<Engine<E>> {
+        Ok(self.mount_with_cursor(e, dev, mode)?.0)
+    }
+
+    fn mount_with_cursor<E: Device>(
+        &self,
+        e: &Entry,
+        dev: E,
+        mode: Mode,
+    ) -> Result<(Engine<E>, crate::fs::ReadCursor)> {
         let saved = self.cached.lock().map_err(|_| Error::Unavailable)?.take();
         if let Some(c) =
             saved.filter(|c| c.root == e.root && c.ids == e.ids && c.blocks == e.blocks)
         {
-            return Ok(c.engine.replace_device(dev, mode).0);
+            return Ok((c.engine.replace_device(dev, mode).0, c.cursor));
         }
-        Engine::mount(dev, e.ids, mode)
+        Ok((Engine::mount(dev, e.ids, mode)?, Default::default()))
     }
     fn remember(&self, e: &Entry, engine: Engine<()>) -> Result<()> {
+        self.remember_read(e, engine, Default::default())
+    }
+    fn remember_read(
+        &self,
+        e: &Entry,
+        engine: Engine<()>,
+        cursor: crate::fs::ReadCursor,
+    ) -> Result<()> {
         *self.cached.lock().map_err(|_| Error::Unavailable)? = Some(Cached {
             root: e.root,
             ids: e.ids,
             blocks: e.blocks,
             engine,
+            cursor,
         });
         Ok(())
     }
@@ -565,7 +585,7 @@ impl<D: Device> SharedPool<D> {
     pub fn read_file(&self, id: u64, path: &str, offset: u64, len: usize) -> Result<Vec<u8>> {
         let e = self.entry(id)?;
         let result = (|| {
-            let fs = self.mount_cached(
+            let (fs, mut cursor) = self.mount_with_cursor(
                 e,
                 Volume {
                     disk: &self.dev,
@@ -575,8 +595,8 @@ impl<D: Device> SharedPool<D> {
                 },
                 Mode::ReadOnly,
             )?;
-            let bytes = fs.read(path, offset, len)?;
-            self.remember(e, fs.replace_device((), Mode::ReadOnly).0)?;
+            let bytes = fs.read_with_cursor(path, offset, len, Some(&mut cursor))?;
+            self.remember_read(e, fs.replace_device((), Mode::ReadOnly).0, cursor)?;
             Ok(bytes)
         })();
         self.observe(result)
@@ -597,25 +617,22 @@ impl<D: Device> SharedPool<D> {
         };
         let fs = Engine::format(overlay, ids)?;
         let (state, overlay) = fs.replace_device((), Mode::ReadWrite);
-        self.publish_content(next, id, PageRef::EMPTY, state, overlay.dirty)
+        self.publish_content(next, id, PageRef::EMPTY, state, overlay.dirty, &[])
     }
     fn publish_content(
         &mut self,
         mut next: Catalog,
         id: u64,
         old: PageRef,
-        state: Engine<()>,
+        mut state: Engine<()>,
         dirty: BTreeMap<u64, Box<Block>>,
+        data_refs: &[Ref],
     ) -> Result<u64> {
         self.prepare()?;
         let result = (|| {
             let mut refs = BTreeMap::new();
-            for (lba, page) in dirty {
-                let reference = if *page == [0; 4096] {
-                    PageRef::EMPTY
-                } else {
-                    graph::store_data(&mut self.graph, &mut self.dev, &page)?
-                };
+            for (&lba, page) in &dirty {
+                let reference = graph::store_data(&mut self.graph, &mut self.dev, page)?;
                 refs.insert(lba, reference);
             }
             for lba in state.newly_unprotected() {
@@ -630,6 +647,7 @@ impl<D: Device> SharedPool<D> {
             e.root = root;
             let e = e.clone();
             self.publish(next)?;
+            state.cache_published_data(data_refs, &dirty);
             self.remember(&e, state)?;
             Ok(id)
         })();
@@ -638,7 +656,7 @@ impl<D: Device> SharedPool<D> {
     fn stage_change(
         &self,
         id: u64,
-        op: impl FnOnce(&mut Engine<Overlay<'_, D>>) -> Result<()>,
+        op: impl FnOnce(&mut Engine<Overlay<'_, D>>) -> Result<Vec<Ref>>,
     ) -> Result<PreparedContent> {
         let e = self.entry(id)?.clone();
         if e.kind == Kind::Snapshot {
@@ -655,12 +673,13 @@ impl<D: Device> SharedPool<D> {
         };
         let fs = self.mount_cached(&e, overlay, Mode::ReadWrite);
         let mut fs = self.observe(fs)?;
-        self.observe(op(&mut fs))?;
+        let data_refs = self.observe(op(&mut fs))?;
         let (state, overlay) = fs.replace_device((), Mode::ReadWrite);
         Ok(PreparedContent {
             base: e,
             state,
             dirty: overlay.dirty,
+            data_refs,
         })
     }
     fn commit_prepared(&mut self, plan: PreparedContent) -> Result<()> {
@@ -668,6 +687,7 @@ impl<D: Device> SharedPool<D> {
             base: e,
             dirty,
             state,
+            data_refs,
         } = plan;
         if self.entry(e.id)? != &e {
             return Err(Error::Invalid("racine de préparation périmée"));
@@ -675,18 +695,25 @@ impl<D: Device> SharedPool<D> {
         if dirty.is_empty() {
             return self.remember(&e, state);
         }
-        self.publish_content(self.candidate()?, e.id, e.root, state, dirty)
+        self.publish_content(self.candidate()?, e.id, e.root, state, dirty, &data_refs)
             .map(|_| ())
     }
     fn plan_write(&self, id: u64, path: &str, offset: u64, data: &[u8]) -> Result<PreparedContent> {
-        self.stage_change(id, |fs| fs.write(path, offset, data))
+        self.stage_change(id, |fs| {
+            let (plan, refs) = fs.prepare_write_data(path, offset, data)?;
+            plan.commit()?;
+            Ok(refs)
+        })
     }
     fn change(
         &mut self,
         id: u64,
         op: impl FnOnce(&mut Engine<Overlay<'_, D>>) -> Result<()>,
     ) -> Result<()> {
-        let plan = self.stage_change(id, op)?;
+        let plan = self.stage_change(id, |fs| {
+            op(fs)?;
+            Ok(Vec::new())
+        })?;
         self.commit_prepared(plan)
     }
     pub fn write_file(&mut self, id: u64, path: &str, offset: u64, data: &[u8]) -> Result<()> {

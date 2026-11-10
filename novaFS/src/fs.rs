@@ -8,6 +8,7 @@ use crate::{
     tree::{self, Family},
 };
 pub(crate) use check::{check_shared_data, validate};
+pub(crate) use data::ReadCursor;
 use record::*;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

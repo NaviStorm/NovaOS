@@ -308,6 +308,18 @@ impl<D> Engine<D> {
             .is_none_or(|run| run.age >= self.head.m.previous.max(1))
     }
 
+    /// Les octets privés de l'overlay et les références de données viennent
+    /// du même plan FS. Seul le pool peut les admettre après vérification du
+    /// graphe, F1 et F2. Un cache indisponible reste un simple défaut de cache.
+    pub(crate) fn cache_published_data(&mut self, refs: &[Ref], pages: &BTreeMap<u64, Box<Block>>) {
+        let cache = self.cache.get_mut().unwrap_or_else(|p| p.into_inner());
+        for &r in refs {
+            if let Some(page) = pages.get(&r.block) {
+                cache.remember(None, r, **page);
+            }
+        }
+    }
+
     /// Transition de la paire (G−1,G) à (G,G+1). Les retraits datés G−1
     /// viennent de sortir de la fenêtre récupérable du moteur de contenu.
     pub(crate) fn newly_unprotected(&self) -> impl Iterator<Item = u64> + '_ {
@@ -611,12 +623,12 @@ impl<D: Device> Engine<D> {
         self.publish(plan)?;
         Ok(result)
     }
-    pub(crate) fn prepare_write_with(
+    pub(crate) fn prepare_write_with<T>(
         &mut self,
-        f: impl FnOnce(&mut Tx<D>) -> Result<()>,
-    ) -> Result<PreparedWrite<'_, D>> {
-        let (plan, ()) = self.prepare(false, f)?;
-        Ok(PreparedWrite { engine: self, plan })
+        f: impl FnOnce(&mut Tx<D>) -> Result<T>,
+    ) -> Result<(PreparedWrite<'_, D>, T)> {
+        let (plan, value) = self.prepare(false, f)?;
+        Ok((PreparedWrite { engine: self, plan }, value))
     }
     fn prepare<T>(
         &self,

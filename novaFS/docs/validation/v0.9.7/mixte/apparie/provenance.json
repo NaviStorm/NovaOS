@@ -1,0 +1,254 @@
+{
+  "date_debut": "2026-11-10T22:41:43+00:00",
+  "plateforme": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "macos": "27.2",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "sources": {
+    "P4.1": {
+      "ref": "b865c58",
+      "commit_de_base": "b865c58245b8d641fea1a79ee7cafcf45a7045c4",
+      "sha256_sources_moteur": "c75da27933bfb8f84a96ea781bd62afaf2e3696caf7936e9c52cca450a00f901"
+    },
+    "P5": {
+      "ref": "ae508ce",
+      "commit_de_base": "ae508ce9182b7c64aba5089f8a38cc6d2b887608",
+      "sha256_sources_moteur": "ee0d06e2baf4e08080175081c5a39cee03b07705911aad70f377c844b522d7d2"
+    },
+    "P5.1": {
+      "ref": "travail",
+      "commit_de_base": "ae508ce9182b7c64aba5089f8a38cc6d2b887608",
+      "sha256_sources_moteur": "7be62cde144050be351345b0ae3ba1a64b8ded85d97aa611c55d85cae462b28f"
+    }
+  },
+  "client_sha256": "a8778edad03f5a73a1c0ee539e5abbb45683705c16bc0a794827e429fda3d7d0",
+  "lanceur_historique_sha256": "c36c6aa782f7381e804ba7427f53cb4775cce1cdea5661bfcbceda0d60bed165",
+  "executables_sha256": {
+    "P4.1-aarch64": "c7486a288c9d347ac2eaa64a3250e6cf77b6cc52afb4f8e8f0f34b617cc05da4",
+    "P4.1-x86_64": "94fcaa5c7a00194ef1697d9da37ddb42538c451da8ef540269d4fd9c95fcab2f",
+    "P5-aarch64": "432597fadb1322a2776afaaeb8963baeae1d2683bc19d2cfdfca1baabfc0cd06",
+    "P5-x86_64": "0441cc8e8862560e332447505a448bb77638a6ea72df12ff9a32310de1efd6d2",
+    "P5.1-aarch64": "f5fae12001069183159e7fd0cd9c0132511430a92a88a0f7455d0ecf25154fa7",
+    "P5.1-x86_64": "a9795a531b5a5b32f901af92c5b6006ecbefbecf9d5ec51cd9050dbed4102397"
+  },
+  "commande": "python3 novaFS/lab/p51-mixte.py --p51 travail --sortie <dossier>",
+  "cache": "politique historique de FileImage et macOS ; chaque processus crée une image temporaire",
+  "passages": [
+    {
+      "repetition": 1,
+      "architecture": "aarch64",
+      "secteur": 512,
+      "phase": "P4.1",
+      "fichier": "r1-aarch64-P4.1-512",
+      "debut_utc": "2026-11-10T22:41:43+00:00",
+      "fin_utc": "2026-11-10T22:41:44+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "aarch64",
+      "secteur": 512,
+      "phase": "P5",
+      "fichier": "r1-aarch64-P5-512",
+      "debut_utc": "2026-11-10T22:41:44+00:00",
+      "fin_utc": "2026-11-10T22:41:53+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "aarch64",
+      "secteur": 512,
+      "phase": "P5.1",
+      "fichier": "r1-aarch64-P5.1-512",
+      "debut_utc": "2026-11-10T22:41:53+00:00",
+      "fin_utc": "2026-11-10T22:42:03+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "phase": "P5",
+      "fichier": "r1-aarch64-P5-4096",
+      "debut_utc": "2026-11-10T22:42:03+00:00",
+      "fin_utc": "2026-11-10T22:42:12+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "phase": "P5.1",
+      "fichier": "r1-aarch64-P5.1-4096",
+      "debut_utc": "2026-11-10T22:42:12+00:00",
+      "fin_utc": "2026-11-10T22:42:21+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "phase": "P4.1",
+      "fichier": "r1-aarch64-P4.1-4096",
+      "debut_utc": "2026-11-10T22:42:21+00:00",
+      "fin_utc": "2026-11-10T22:42:22+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "phase": "P5.1",
+      "fichier": "r1-x86_64-P5.1-512",
+      "debut_utc": "2026-11-10T22:42:22+00:00",
+      "fin_utc": "2026-11-10T22:42:32+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "phase": "P4.1",
+      "fichier": "r1-x86_64-P4.1-512",
+      "debut_utc": "2026-11-10T22:42:32+00:00",
+      "fin_utc": "2026-11-10T22:42:34+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "phase": "P5",
+      "fichier": "r1-x86_64-P5-512",
+      "debut_utc": "2026-11-10T22:42:34+00:00",
+      "fin_utc": "2026-11-10T22:42:44+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "phase": "P4.1",
+      "fichier": "r1-x86_64-P4.1-4096",
+      "debut_utc": "2026-11-10T22:42:44+00:00",
+      "fin_utc": "2026-11-10T22:42:45+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "phase": "P5",
+      "fichier": "r1-x86_64-P5-4096",
+      "debut_utc": "2026-11-10T22:42:45+00:00",
+      "fin_utc": "2026-11-10T22:42:55+00:00"
+    },
+    {
+      "repetition": 1,
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "phase": "P5.1",
+      "fichier": "r1-x86_64-P5.1-4096",
+      "debut_utc": "2026-11-10T22:42:55+00:00",
+      "fin_utc": "2026-11-10T22:43:04+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "phase": "P5.1",
+      "fichier": "r2-x86_64-P5.1-4096",
+      "debut_utc": "2026-11-10T22:43:04+00:00",
+      "fin_utc": "2026-11-10T22:43:14+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "phase": "P5",
+      "fichier": "r2-x86_64-P5-4096",
+      "debut_utc": "2026-11-10T22:43:14+00:00",
+      "fin_utc": "2026-11-10T22:43:24+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "phase": "P4.1",
+      "fichier": "r2-x86_64-P4.1-4096",
+      "debut_utc": "2026-11-10T22:43:24+00:00",
+      "fin_utc": "2026-11-10T22:43:25+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "phase": "P5",
+      "fichier": "r2-x86_64-P5-512",
+      "debut_utc": "2026-11-10T22:43:25+00:00",
+      "fin_utc": "2026-11-10T22:43:35+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "phase": "P4.1",
+      "fichier": "r2-x86_64-P4.1-512",
+      "debut_utc": "2026-11-10T22:43:35+00:00",
+      "fin_utc": "2026-11-10T22:43:37+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "phase": "P5.1",
+      "fichier": "r2-x86_64-P5.1-512",
+      "debut_utc": "2026-11-10T22:43:37+00:00",
+      "fin_utc": "2026-11-10T22:43:46+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "phase": "P4.1",
+      "fichier": "r2-aarch64-P4.1-4096",
+      "debut_utc": "2026-11-10T22:43:46+00:00",
+      "fin_utc": "2026-11-10T22:43:48+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "phase": "P5.1",
+      "fichier": "r2-aarch64-P5.1-4096",
+      "debut_utc": "2026-11-10T22:43:48+00:00",
+      "fin_utc": "2026-11-10T22:43:58+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "phase": "P5",
+      "fichier": "r2-aarch64-P5-4096",
+      "debut_utc": "2026-11-10T22:43:58+00:00",
+      "fin_utc": "2026-11-10T22:44:06+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "aarch64",
+      "secteur": 512,
+      "phase": "P5.1",
+      "fichier": "r2-aarch64-P5.1-512",
+      "debut_utc": "2026-11-10T22:44:06+00:00",
+      "fin_utc": "2026-11-10T22:44:16+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "aarch64",
+      "secteur": 512,
+      "phase": "P5",
+      "fichier": "r2-aarch64-P5-512",
+      "debut_utc": "2026-11-10T22:44:16+00:00",
+      "fin_utc": "2026-11-10T22:44:25+00:00"
+    },
+    {
+      "repetition": 2,
+      "architecture": "aarch64",
+      "secteur": 512,
+      "phase": "P4.1",
+      "fichier": "r2-aarch64-P4.1-512",
+      "debut_utc": "2026-11-10T22:44:25+00:00",
+      "fin_utc": "2026-11-10T22:44:26+00:00"
+    }
+  ]
+}

@@ -445,7 +445,20 @@ struct Allocation {
     blocks: u64,
     refs: u16,
     weight: u64,
+    /// Un bit par position de l'arête vérifiée dans la page parent immuable.
+    occupied_slots: u64,
     children: Vec<u64>,
+}
+
+impl Allocation {
+    fn child_at(&self, slot: usize) -> Option<u64> {
+        let bit = 1u64 << slot;
+        if self.occupied_slots & bit == 0 {
+            return None;
+        }
+        let rank = (self.occupied_slots & (bit - 1)).count_ones() as usize;
+        self.children.get(rank).copied()
+    }
 }
 
 pub(crate) struct Graph {
@@ -551,6 +564,9 @@ impl Graph {
         root: PageRef,
         lba: u64,
     ) -> Result<Block> {
+        if lba >= (WIDTH * LEAVES) as u64 {
+            return Err(Error::Invalid("LBA hors traduction P5"));
+        }
         if root == PageRef::EMPTY {
             return Ok([0; 4096]);
         }
@@ -559,23 +575,13 @@ impl Graph {
             .get(&root.block)
             .filter(|a| a.role == Role::Root && a.hash == root.hash)
             .ok_or(Error::Corrupt("racine absente de l’index monté"))?;
-        let find = |parent: &Allocation, index: u16| {
-            let pos = parent
-                .children
-                .binary_search_by_key(&index, |block| match self.used[block].role {
-                    Role::Leaf(n) | Role::Data(n) => n,
-                    Role::Root => unreachable!("racine enfant dans un index vérifié"),
-                })
-                .ok()?;
-            let block = parent.children[pos];
-            Some((block, &self.used[&block]))
-        };
-        let Some((_, leaf)) = find(page, (lba / WIDTH as u64) as u16) else {
+        let Some(leaf) = page.child_at(lba as usize / WIDTH) else {
             return Ok([0; 4096]);
         };
-        let Some((block, data)) = find(leaf, lba as u16) else {
+        let Some(block) = self.used[&leaf].child_at(lba as usize % WIDTH) else {
             return Ok([0; 4096]);
         };
+        let data = &self.used[&block];
         checked_page(
             dev,
             PageRef {
@@ -668,6 +674,7 @@ impl Graph {
             return Ok(a.weight);
         }
         let mut weight = 1;
+        let mut occupied_slots = 0;
         let mut children = Vec::new();
         if let Role::Data(_) = role {
             checked_page(dev, r, role)?;
@@ -690,6 +697,7 @@ impl Graph {
                 )?;
                 agree(child.block != r.block, "cycle de traduction P5")?;
                 weight += self.pin(dev, entry, child, next, journal)?;
+                occupied_slots |= 1u64 << i;
                 children.push(child.block);
             }
         }
@@ -706,6 +714,7 @@ impl Graph {
                 blocks: entry.blocks,
                 refs: 1,
                 weight,
+                occupied_slots,
                 children,
             },
         );
@@ -967,6 +976,49 @@ mod tests {
         let view = origin(1, r);
         advance(&mut g, &mut d, vec![view.clone()])?;
         Ok((g, d, view, page))
+    }
+
+    #[test]
+    fn rang_des_aretes_creuses_et_racines_divergentes() -> Result<()> {
+        for sector in [512, 4096] {
+            let mut dev = SimDevice::new(2048, sector)?;
+            let mut graph = Graph::format(&mut dev, POOL)?;
+            let mut changes = BTreeMap::new();
+            for (i, lba) in [0, 5, 63, 64, 127, 1023].into_iter().enumerate() {
+                let page = store_data(&mut graph, &mut dev, &[i as u8 + 1; 4096])?;
+                changes.insert(lba, page);
+            }
+            let root = patch_root(&mut graph, &mut dev, PageRef::EMPTY, &changes)?;
+            let mut first = origin(1, root);
+            first.blocks = 1024;
+            advance(&mut graph, &mut dev, vec![first.clone()])?;
+            let replacement = store_data(&mut graph, &mut dev, &[0x87; 4096])?;
+            let edits = BTreeMap::from([(63, PageRef::EMPTY), (127, replacement)]);
+            let next = patch_root(&mut graph, &mut dev, root, &edits)?;
+            first.root = next;
+            advance(&mut graph, &mut dev, vec![first])?;
+            let imported = Graph::open(&dev)?;
+            for index in [&graph, &imported] {
+                for view in [root, next] {
+                    for lba in [0, 1, 5, 62, 63, 64, 65, 127, 128, 960, 1022, 1023] {
+                        assert_eq!(
+                            index.read_indexed_page(&dev, view, lba)?,
+                            read_page(&dev, view, lba)?,
+                            "position {lba}"
+                        );
+                    }
+                    assert!(index.read_indexed_page(&dev, view, 1024).is_err());
+                }
+            }
+            dev.control()
+                .replace_stable(replacement.block, [0xac; 4096])?;
+            assert!(matches!(
+                imported.read_indexed_page(&dev, next, 127),
+                Err(Error::Corrupt(_))
+            ));
+            assert_eq!(imported.read_indexed_page(&dev, root, 127)?, [5; 4096]);
+        }
+        Ok(())
     }
 
     /// Construire un catalogue dont la somme et le parent sont valides, sans
