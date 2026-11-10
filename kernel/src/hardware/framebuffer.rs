@@ -11,7 +11,7 @@ pub(crate) struct Screen {
 }
 
 impl Screen {
-    fn from_limine(fb: &Framebuffer<'_>) -> Result<Self, &'static str> {
+    pub(crate) fn from_limine(fb: &Framebuffer<'_>) -> Result<Self, &'static str> {
         let sizes = [
             fb.red_mask_size(),
             fb.green_mask_size(),
@@ -59,6 +59,10 @@ impl Screen {
         })
     }
 
+    pub(crate) fn span(&self) -> (usize, usize) {
+        (self.base.addr(), self.stride * self.height * 4)
+    }
+
     pub(crate) fn rgb(&self, r: u8, g: u8, b: u8) -> u32 {
         let [rs, gs, bs] = self.shifts;
         (u32::from(r) << rs) | (u32::from(g) << gs) | (u32::from(b) << bs)
@@ -100,8 +104,7 @@ impl Screen {
 }
 
 /// Renvoie l’écran initialisé et l’ordonnée qui suit la bannière.
-pub fn show_banner(fb: &Framebuffer<'_>, text: &str) -> Result<(Screen, usize), &'static str> {
-    let mut screen = Screen::from_limine(fb)?;
+pub fn show_banner(mut screen: Screen, text: &str) -> Result<(Screen, usize), &'static str> {
     let columns = text
         .len()
         .checked_mul(font::WIDTH + 1)

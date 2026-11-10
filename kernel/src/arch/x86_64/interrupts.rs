@@ -96,8 +96,8 @@ fn install_emergency_stacks() {
         gdt.add(7)
             .write(103 | ((base & 0xffffff) << 16) | (0x89 << 40) | ((base & 0xff000000) << 32));
         gdt.add(8).write(base >> 32);
-        gdt.add(9).write(0x00af_fb00_0000_ffff); // code 64 bits CPL3
-        gdt.add(10).write(0x00cf_f300_0000_ffff); // données CPL3
+        gdt.add(10).write(0x00af_fb00_0000_ffff); // code 64 bits CPL3
+        gdt.add(9).write(0x00cf_f300_0000_ffff); // données CPL3
 
         tss.add(36)
             .cast::<usize>()
@@ -139,10 +139,11 @@ pub(super) fn install() {
         table.0[vector] = Gate::new(unsafe { nova_exception_entries[vector] }, cs);
     }
     table.0[3].attributes |= 0x60; // INT3 utilisateur
-    table.0[0x81] = Gate::new(exit_entry as *const () as usize, cs);
-    table.0[0x81].attributes |= 0x60;
     table.0[14].ist = 1;
     table.0[8].ist = 2;
+    // NMI et #MC restent terminales, y compris dans la fenêtre de changement de RSP.
+    table.0[2].ist = 2;
+    table.0[18].ist = 2;
     table.0[0x20] = Gate::new(timer_entry as *const () as usize, cs);
     table.0[0x21] = Gate::new(keyboard_entry as *const () as usize, cs);
     table.0[0x27] = Gate::new(spurious_master as *const () as usize, cs);
@@ -232,7 +233,7 @@ macro_rules! irq_entry {
                 "push rbp","push r8","push r9","push r10","push r11","push r12","push r13","push r14","push r15",
                 "mov rdi,[rsp+128]", // CS matériel après 15 GPR et RIP
                 "mov ax,ds","push rax","mov ax,es","push rax","mov ax,fs","push rax","mov ax,gs","push rax",
-                "mov r12,rsp","and rsp,-16","cld","call {irq}","mov rsp,r12",
+                "mov r12,rsp","and rsp,-16","cld","pushfq","and qword ptr [rsp],-262145","popfq","call {irq}","mov rsp,r12",
                 "pop rax","mov gs,ax","pop rax","mov fs,ax","pop rax","mov es,ax","pop rax","mov ds,ax",
                 "test byte ptr [rsp+128],3","jz 2f",
                 "mov rax,[rsp+144]","shl rax,16","sar rax,16","cmp rax,[rsp+144]","je 2f",
@@ -298,13 +299,87 @@ extern "C" fn invalid_stack(pc: u64, sp: u64) -> ! {
     );
 }
 
-// Sûreté : porte DPL3 unique de terminaison, sans retour. RIP et CS sont
-// empilés par le CPU ; seul le code scalaire dans RAX est accepté.
-#[unsafe(naked)]
-extern "C" fn exit_entry() {
-    naked_asm!("mov rdi,rax","mov rsi,[rsp]","mov rdx,[rsp+8]","cld","and rsp,-16","call {}",sym exit);
+// Sûreté : la porte assembleur lit RSP0 dans le TSS avant toute utilisation
+// de la pile. Le scratch est privé au BSP et n’est vivant que sous masque IRQ.
+core::arch::global_asm!(include_str!("syscall.S"), tss=sym TSS, dispatch=sym syscall_dispatch);
+
+#[repr(C)]
+struct CallFrame {
+    ax: u64,
+    bx: u64,
+    cx: u64,
+    dx: u64,
+    si: u64,
+    di: u64,
+    bp: u64,
+    r8: u64,
+    r9: u64,
+    r10: u64,
+    r11: u64,
+    r12: u64,
+    r13: u64,
+    r14: u64,
+    r15: u64,
+    pc: u64,
+    cs: u64,
+    flags: u64,
+    sp: u64,
+    ss: u64,
 }
-extern "C" fn exit(code: u64, pc: u64, cs: u64) -> ! {
-    assert_eq!(cs & 3, 3);
-    finish(Outcome::Exit(code), pc, "Ring3")
+
+const _: () = assert!(
+    size_of::<CallFrame>() == 160
+        && core::mem::offset_of!(CallFrame, pc) == 120
+        && core::mem::offset_of!(CallFrame, sp) == 144
+);
+
+extern "C" fn syscall_dispatch(f: &mut CallFrame) {
+    // IF est imposé. IOPL, NT, VM, RF et les bits réservés ne sont pas importés.
+    f.flags = (f.flags & 0x240dd5) | 0x202;
+    f.cx = f.pc;
+    f.r11 = f.flags;
+    let r = crate::sched::process::syscall::call(f.ax, [f.di, f.si, f.dx], f.pc, f.sp, "Ring3");
+    f.ax = r.status;
+    f.dx = r.value;
+}
+
+pub(super) fn enable_syscall() {
+    // Sûreté : adresse d’entrée définie par syscall.S, dans .text superviseur RX.
+    unsafe extern "C" {
+        fn nova_syscall();
+    }
+    fn write_msr(msr: u32, value: u64) {
+        // Sûreté : MSR SYSCALL documentés, initialisation à CPL0 sur le BSP.
+        unsafe {
+            asm!("wrmsr",in("ecx") msr,in("eax") value as u32,in("edx") (value>>32) as u32,options(nostack))
+        };
+    }
+    let cs: u16;
+    let ss: u16;
+    // Sûreté : lecture des sélecteurs actifs avant installation de STAR.
+    unsafe { asm!("mov {0:x},cs","mov {1:x},ss",out(reg) cs,out(reg) ss,options(nostack)) };
+    assert_eq!((cs, ss), (0x28, 0x30));
+    write_msr(0xc0000081, (0x40u64 << 48) | (0x28u64 << 32));
+    write_msr(0xc0000082, nova_syscall as *const () as u64);
+    write_msr(0xc0000084, 0x47700);
+    // Sûreté : EFER.SCE est activé en dernier, avec une porte et une GDT valides.
+    unsafe {
+        asm!("rdmsr","or eax,1","wrmsr",in("ecx") 0xc0000080u32,out("eax") _,out("edx") _,options(nostack))
+    };
+}
+
+pub(super) fn syscall_paths() -> (u64, u64) {
+    // Sûreté : deux compteurs 64 bits alignés, modifiés uniquement en
+    // assembleur sur CPU0, IRQ masquées aux points de lecture et d’écriture.
+    unsafe extern "C" {
+        static nova_fast: u64;
+        static nova_iret: u64;
+    }
+    let _irq = hal::interrupts::Guard::new();
+    unsafe {
+        (
+            (&raw const nova_fast).read_volatile(),
+            (&raw const nova_iret).read_volatile(),
+        )
+    }
 }

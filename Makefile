@@ -1,4 +1,4 @@
-.PHONY: build kernel run test endurance clean
+.PHONY: build kernel run test ram-test endurance clean
 ARCH ?= x86_64
 export NOVA_ARCH := $(ARCH)
 
@@ -14,6 +14,9 @@ run: build
 
 test: build
 	python3 tests/demarrage.py
+
+ram-test: kernel
+	python3 tests/demarrage.py --ram-test
 
 DURATION ?= 7200
 

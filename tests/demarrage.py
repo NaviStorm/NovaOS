@@ -13,14 +13,14 @@ import time
 
 
 BUILD = Path("build")
-BANNER = b"NovaOS v0.6.0\r\n"
+BANNER = b"NovaOS v0.7.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "19bc20b0f107c02424c36ec69da76506b1c6814ed9ac8e4f518a9cb593d73cf5",
-    "demarrage": "0e858efacbee00f4c6a348da7d4fcf807fcfce04f2007df10a80bda062493fe1",
-    "composition": "88df8ff52b3aa81e5f04ac1b33e3a21df7de67ce4de9ca087d6f3c76348519a5",
-    "frappe": "8fde1e6c6a883ee2133cfe99c91250036e516e9dcf25b25e6a75d5ddab1fc115",
-    "saisie": "fb216d742bea84d1d421890d61e44dae7a819e44e5a1536047e88e4522446de6",
+    "demarrage-aarch64": "7c1495ab025569cfe8d1ff88d9bab9d39594477de0d147b6f120c3b4ce874676",
+    "demarrage": "7795d7bfb120453569f86729872e4cc32db3b488a8b4dbb42e0a9df46d0610f1",
+    "composition": "8fcd4439c99a9a5d7eaad4ab93e48fe799f44253ae3a698d133fcb562b208f44",
+    "frappe": "1ad294559e946ccb2999b8498dc7b9c1f7fab58555119ccd14d2973d78fa9419",
+    "saisie": "1af54d9973d4f3d9aa19a25071df7642543965d4e3d021cafd9f63c261ccc6f0",
 }
 
 
@@ -187,7 +187,7 @@ def boot(name, check, **settings):
                               bufsize=0, env={**os.environ, **settings}) as vm:
             try:
                 qmp(vm, "qmp_capabilities")
-                check(vm, directory, log)
+                result = check(vm, directory, log)
                 qmp(vm, "quit")
                 if vm.wait(timeout=5):
                     raise RuntimeError("Arrêt anormal de QEMU.")
@@ -197,7 +197,8 @@ def boot(name, check, **settings):
                     vm.wait()
                 if log.exists():
                     log.replace(BUILD / f"serie-{name}.log")
-        print(f"OK — {name}", flush=True)
+        print(f"{result or 'OK'} — {name}", flush=True)
+        return result
 
 
 def check_fault(report, arch, access, cause):
@@ -263,12 +264,12 @@ def memory_scenarios(arch):
         scenario_vm(arch, name, memory_check(arch, access, cause))
 
 
-def scenario_vm(arch, name, check, suffix=""):
+def scenario_vm(arch, name, check, suffix="", **settings):
     with tempfile.TemporaryDirectory(dir=BUILD) as work:
         iso = str(Path(work) / "sonde.iso")
         subprocess.run(["sh", "scripts/iso.sh", name, iso], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-        boot(f"{arch}-{name}{suffix}", check, NOVA_ISO=iso)
+        return boot(f"{arch}-{name}{suffix}", check, NOVA_ISO=iso, **settings)
 
 
 def heap_check(arch, name):
@@ -473,6 +474,66 @@ def boot_fault(arch):
     scenario_vm(arch, "proc-boot-fault", verify)
 
 
+def abi_scenario(arch, ram, allow_firmware_limit=False, arm_pan=False):
+    measured = {}
+    def verify(vm, directory, log):
+        configured = qmp(vm, "query-memory-size-summary")["base-memory"]
+        if configured != ram * 1024**2:
+            raise RuntimeError(f"RAM QEMU inattendue : {configured}")
+        deadline = time.monotonic() + 55
+        report = ""
+        while vm.poll() is None and time.monotonic() < deadline:
+            report = log.read_text(errors="replace") if log.exists() else ""
+            clean = re.sub(r"\x1b\[[0-9;=?]*[a-zA-Z]", "", report)
+            if allow_firmware_limit and ram == 64 and "NovaOS v" not in clean:
+                reason = ("NewSize >= 0x08000000" if arch == "aarch64" else
+                          "High memory allocator: Out of memory")
+                if reason in clean:
+                    measured.update(etat="avant_noyau", motif=reason)
+                    return "NON EXÉCUTÉ (amorçage)"
+            if any(bad in report for bad in ("Panique du noyau", "Exception noyau", "Erreur fatale")):
+                raise RuntimeError(report[-1800:])
+            if "RAM phase=repos_ui" in report and "ABI valide" in report:
+                break
+            time.sleep(0.05)
+        phases = {name: {k: int(v) for k,v in re.findall(r"([a-z_]+)=(\d+)", fields)}
+                  for name,fields in re.findall(r"RAM phase=([a-z_]+) ([^\r\n]+)", report)}
+        assert set(phases) == {"init","repos","reprise","actifs","detruits","repos_ui"}, report[-1200:]
+        for v in phases.values():
+            assert v["resident"] == sum(v[k] for k in ("image","tables","kpile","upile","heap","buddy","utilisateur"))
+            assert v["retenu"] == v["resident"] + v["chargeur"] + v["extra_elf"] + v["ram_video"]
+            assert v["retenu"] + v["libres"] <= ram * 256
+        assert "ABI copie sur deux pages et retrait atomique OK" in report
+        assert phases["actifs"]["meta_actifs"] > phases["repos"]["meta_actifs"] == 0
+        assert phases["repos_ui"]["heap"] <= phases["repos_ui"]["heap_va"]
+        assert phases["init"]["chargeur"] == phases["repos"]["restitue"] > 0
+        assert phases["repos"] == phases["detruits"] == phases["reprise"]
+        assert phases["actifs"]["processus"] == 2 and phases["actifs"]["upile"] == 2
+        assert phases["repos_ui"]["processus"] == phases["repos_ui"]["chargeur"] == 0
+        proof = re.search(r"ABI valide series=(\d+) preemptions=(\d+) attentes=(\d+) revocation=OK", report)
+        assert proof and int(proof[1]) >= 4096 and int(proof[2]) > 0 and int(proof[3]) >= 2
+        assert len(re.findall(r"^DEBUG pid=\d+ NovaABI$",report,re.M)) == 16
+        assert len(re.findall(r"faute=ABI .*acces=retour cause=contexte",report)) == 2
+        assert "pc=0x401000 faute=ABI" in report
+        if arch == "x86_64":
+            paths = re.search(r"ABI SYSRET=(\d+) IRETQ=(\d+) SMAP=(\d)",report)
+            assert paths and min(int(paths[1]),int(paths[2])) > 0 and paths[3] == "1"
+            measured.update(sysret=int(paths[1]), iretq=int(paths[2]), smap=True)
+            wait_for_halt(vm, True)
+        else:
+            feature = re.search(r"ABI ERET PAN=(0|1)", report)
+            assert feature and (not arm_pan or feature[1] == "1")
+            measured["pan"] = feature[1] == "1"
+            wait_for_wfi(vm)
+        measured.update(etat="valide", phases=phases, objectif_8_mio=phases["repos_ui"]["retenu"] <= 2048, series=int(proof[1]),
+                        preemptions=int(proof[2]), attentes=int(proof[3]))
+
+    label = f"{ram}-pan" if arm_pan else str(ram)
+    extra = {"NOVA_ARM_CPU": "cortex-a76"} if arm_pan else {}
+    scenario_vm(arch, "abi-test", verify, f"-{label}", NOVA_RAM=str(ram), **extra)
+    (BUILD / f"abi-{arch}-{label}.json").write_text(json.dumps(measured, indent=2) + "\n")
+
+
 def suite():
     if os.environ.get("NOVA_ARCH", "x86_64") == "aarch64":
         boot("aarch64", check_arm)
@@ -480,6 +541,9 @@ def suite():
         boot("std", check_x86, NOVA_VGA="std")
         boot("none", check_without_vga, NOVA_VGA="none")
     arch = os.environ.get("NOVA_ARCH", "x86_64")
+    abi_scenario(arch, 256)
+    if arch == "aarch64":
+        abi_scenario(arch, 256, arm_pan=True)
     process_test(arch)
     boot_fault(arch)
     memory_scenarios(arch)
@@ -494,8 +558,12 @@ def suite():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--endurance", type=int, metavar="SECONDES")
+    parser.add_argument("--ram-test", action="store_true")
     args = parser.parse_args()
-    if args.endurance is None:
+    if args.ram_test:
+        for ram in (64,128,256):
+            abi_scenario(os.environ.get("NOVA_ARCH","x86_64"), ram, allow_firmware_limit=True)
+    elif args.endurance is None:
         suite()
     elif args.endurance > 0:
         endurance(os.environ.get("NOVA_ARCH", "x86_64"), args.endurance)

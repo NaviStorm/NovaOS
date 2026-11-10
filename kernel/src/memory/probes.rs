@@ -119,7 +119,7 @@ impl Memory {
             if !self.frames.empty_prefix(root, 512) {
                 return Err(Error::Verification);
             }
-            self.frames.release(root);
+            self.frames.release_table(root);
         }
         self.frames.release(a);
         self.frames.release(b);

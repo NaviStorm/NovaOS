@@ -208,7 +208,7 @@ impl VirtualMemory for Memory {
         if frame.0 % PAGE != 0 {
             return Err(Error::Alignment);
         }
-        if !self.frames.covers(frame.0, EntryType::USABLE) {
+        if !self.frames.managed(frame.0) {
             return Err(Error::Reserved);
         }
         let alias = self.space.direct_alias(&self.frames, frame.0)?;
@@ -273,4 +273,130 @@ impl Memory {
         self.frames.release(frame.0);
         Ok(())
     }
+}
+
+/// Compteurs exclusifs, en pages physiques. Les octets de métadonnées de la
+/// table des processus sont déjà inclus dans l’image statique.
+#[derive(Default)]
+pub(crate) struct Resident {
+    pub stacks: usize,
+    pub user: usize,
+    pub user_stacks: usize,
+    pub processes: usize,
+    pub process_bytes: usize,
+    pub tcb_bytes: usize,
+    pub heap: usize,
+    pub buddy: usize,
+    pub reusable: usize,
+}
+impl Memory {
+    pub(crate) fn report(&self, phase: &str, r: Resident) {
+        let pages = |kind| {
+            self.frames
+                .regions()
+                .filter(|e| e.entry_type == kind)
+                .map(|e| e.length.div_ceil(PAGE))
+                .sum::<u64>()
+        };
+        // Toutes les pages liées (.bss comprise) ont été vérifiées lors de
+        // l’installation de la MMU. Les images v0.7 ne chargent aucun module.
+        let image = (self.image.end - self.image.start) / PAGE;
+        let exec_extra = pages(EntryType::EXECUTABLE_AND_MODULES)
+            .checked_sub(image)
+            .expect("image physique");
+
+        let video = pages(EntryType::FRAMEBUFFER);
+        let ram_video = if crate::arch::VIDEO_SYSTEM_RAM {
+            video
+        } else {
+            0
+        };
+        let released = self.frames.reclaimed;
+        let loader = pages(EntryType::BOOTLOADER_RECLAIMABLE) - released;
+        let used = self.frames.initial - self.frames.available;
+        let counted =
+            self.frames.tables + (r.stacks + r.user + r.user_stacks + r.heap + r.buddy) as u64;
+        assert_eq!(used, counted, "cadres sans attribution dans le bilan");
+        log(format_args!(
+            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={}",
+            self.frames.tables,
+            r.stacks,
+            r.user_stacks,
+            r.heap,
+            r.buddy,
+            r.user,
+            r.processes,
+            crate::sched::process::metadata_bytes(),
+            r.process_bytes,
+            r.tcb_bytes,
+            crate::heap::reserved_pages(),
+            self.frames.available,
+            r.reusable,
+            used + image,
+            used + image + loader + exec_extra + ram_video
+        ));
+    }
+}
+
+/// # Safety
+/// CPU unique, pile et tables Limine abandonnées. Aucune référence aux réponses
+/// (hors carte remplacée ici) ni rappel de firmware ne peut encore être utilisé.
+pub(crate) unsafe fn reclaim_loader(video: Option<(usize, usize)>) -> Result<()> {
+    let (early, offset) =
+        crate::heap::with_pages(|m| Ok((m.frames.info.entries, m.frames.info.offset)))?;
+    if let Some((base, bytes)) = video {
+        let mut pa = (base as u64).checked_sub(offset).ok_or(Error::Geometry)?;
+        let end = pa.checked_add(bytes as u64).ok_or(Error::Geometry)?;
+        while pa < end {
+            let e = early
+                .iter()
+                .find(|e| {
+                    e.entry_type == EntryType::FRAMEBUFFER
+                        && e.base <= pa
+                        && pa < e.base.saturating_add(e.length)
+                })
+                .ok_or(Error::Geometry)?;
+            pa = e.base.checked_add(e.length).ok_or(Error::Geometry)?;
+        }
+    }
+    let mut map = alloc::vec::Vec::new();
+    map.try_reserve_exact(early.len())
+        .map_err(|_| Error::Exhausted)?;
+    map.extend(early.iter().map(|e| **e));
+    for (i, e) in map
+        .iter()
+        .enumerate()
+        .filter(|(_, e)| e.entry_type == EntryType::BOOTLOADER_RECLAIMABLE)
+    {
+        let end = e.base.checked_add(e.length).ok_or(Error::Geometry)?;
+        if (e.base | end) % PAGE != 0
+            || map.iter().enumerate().any(|(j, other)| {
+                j != i
+                    && other.length != 0
+                    && other.base < end
+                    && other.base.saturating_add(other.length) > e.base
+            })
+        {
+            return Err(Error::Geometry);
+        }
+    }
+    crate::heap::with_pages(move |m| {
+        assert!(m.frames.map.is_empty());
+        m.frames.info.entries = &[];
+        m.frames.map = map;
+        for i in 0..m.frames.map.len() {
+            let e = m.frames.map[i];
+            if e.entry_type != EntryType::BOOTLOADER_RECLAIMABLE {
+                continue;
+            }
+            for frame in (e.base.max(PAGE)..e.base + e.length).step_by(PAGE as usize) {
+                // Le HHDM de ces cadres est RW/NX. La carte possédée conserve le
+                // type original : le curseur USABLE ne peut jamais les redistribuer.
+                m.frames.release(frame);
+                m.frames.reclaimed += 1;
+            }
+        }
+        m.frames.initial += m.frames.reclaimed;
+        Ok(())
+    })
 }

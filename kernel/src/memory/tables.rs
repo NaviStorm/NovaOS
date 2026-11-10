@@ -51,7 +51,7 @@ impl Frames {
 impl AddressSpace {
     pub(crate) fn new(frames: &mut Frames) -> Result<Self> {
         Ok(Self {
-            root: frames.take()?,
+            root: frames.take_table()?,
             user: false,
         })
     }
@@ -65,7 +65,7 @@ impl AddressSpace {
             for i in 256..512 {
                 let entry = frames.entry(kernel.root, i);
                 if entry != 0 && !paging::matches(entry, paging::table(entry & PHYS_MASK)) {
-                    frames.release(space.root);
+                    frames.release_table(space.root);
                     return Err(Error::Verification);
                 }
                 frames.put(space.root, i, entry);
@@ -99,11 +99,11 @@ impl AddressSpace {
             let mut children = [0; 3];
             let count = 3 - level;
             for i in 0..count {
-                match frames.take() {
+                match frames.take_table() {
                     Ok(frame) => children[i] = frame,
                     Err(e) => {
                         for &frame in &children[..i] {
-                            frames.release(frame);
+                            frames.release_table(frame);
                         }
                         return Err(e);
                     }
@@ -186,7 +186,7 @@ impl AddressSpace {
         }
         paging::invalidate(va);
         for &table in &tables[first_free..] {
-            frames.release(table);
+            frames.release_table(table);
         }
         Ok(old & PHYS_MASK)
     }

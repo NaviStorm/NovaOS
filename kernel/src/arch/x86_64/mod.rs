@@ -8,6 +8,9 @@ pub(crate) mod timer;
 
 use core::{arch::asm, fmt};
 
+/// La VGA standard de Q35 possède sa propre mémoire vidéo.
+pub(crate) const VIDEO_SYSTEM_RAM: bool = false;
+
 pub(crate) const DIAGNOSTIC: Option<fn(fmt::Arguments<'_>)> = Some(serial::line);
 pub(crate) fn init() {
     serial::init();

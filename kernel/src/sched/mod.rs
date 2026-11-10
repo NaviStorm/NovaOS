@@ -30,6 +30,7 @@ pub fn ticks() -> u64 {
 enum Wait {
     Until(u64),
     Event(usize),
+    Process(process::Pid),
 }
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 enum State {
@@ -57,6 +58,7 @@ struct Thread {
     stack: Stack,
     saved: usize,
     wait_order: u64,
+    in_syscall: bool,
     entry: fn(),
     priority: Priority,
     cpu_mask: u64,
@@ -247,6 +249,9 @@ impl Core {
         if matches!(why, Reason::Tick(_)) && old != IDLE && next != IDLE {
             self.stats.preemptions += 1;
         }
+        if matches!(why, Reason::Tick(false)) && self.thread(old).in_syscall {
+            self.processes.syscall_switches += 1;
+        }
         if matches!(why, Reason::Tick(true)) {
             let pid = self
                 .thread(old)
@@ -373,6 +378,7 @@ fn create(slot: usize, entry: fn(), priority: Priority, cpu_mask: u64) -> Result
             stack,
             saved,
             wait_order: 0,
+            in_syscall: false,
             entry,
             priority,
             cpu_mask,
@@ -420,6 +426,7 @@ fn idle() {
         if with(|s| s.ready.len != 0) {
             dispatch(Reason::Yield);
         } else {
+            process::idle_sample();
             context::idle_wait();
         }
     }

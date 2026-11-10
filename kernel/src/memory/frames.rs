@@ -22,6 +22,10 @@ pub struct Frames {
     end: u64,
     recycled: u64,
     pub available: u64,
+    pub initial: u64,
+    pub tables: u64,
+    pub(super) map: alloc::vec::Vec<Entry>,
+    pub(super) reclaimed: u64,
 }
 
 impl Frames {
@@ -59,11 +63,23 @@ impl Frames {
             end: 0,
             recycled: 0,
             available,
+            initial: available,
+            tables: 0,
+            map: alloc::vec::Vec::new(),
+            reclaimed: 0,
         })
     }
 
+    pub(super) fn regions(&self) -> impl Iterator<Item = &Entry> {
+        self.info.entries.iter().copied().chain(self.map.iter())
+    }
+    pub(super) fn managed(&self, frame: u64) -> bool {
+        self.covers(frame, EntryType::USABLE)
+            || (self.reclaimed != 0 && self.covers(frame, EntryType::BOOTLOADER_RECLAIMABLE))
+    }
+
     pub fn covers(&self, frame: u64, kind: EntryType) -> bool {
-        self.info.entries.iter().any(|e| {
+        self.regions().any(|e| {
             e.entry_type == kind
                 && frame >= e.base
                 && frame
@@ -76,6 +92,16 @@ impl Frames {
         (self.info.offset + frame) as *mut u64
     }
 
+    pub fn take_table(&mut self) -> Result<u64> {
+        let frame = self.take()?;
+        self.tables += 1;
+        Ok(frame)
+    }
+    pub fn release_table(&mut self, frame: u64) {
+        self.tables = self.tables.checked_sub(1).expect("compte tables");
+        self.release(frame);
+    }
+
     pub fn take(&mut self) -> Result<u64> {
         let frame = if self.recycled != 0 {
             let head = self.recycled;
@@ -85,7 +111,11 @@ impl Frames {
             head
         } else {
             while self.next == self.end {
-                let e: &Entry = self.info.entries.get(self.region).ok_or(Error::Exhausted)?;
+                let e = self
+                    .map
+                    .get(self.region)
+                    .or_else(|| self.info.entries.get(self.region).copied())
+                    .ok_or(Error::Exhausted)?;
                 self.region += 1;
                 if e.entry_type == EntryType::USABLE {
                     self.end = e.base + e.length;

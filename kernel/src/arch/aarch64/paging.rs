@@ -130,7 +130,7 @@ pub fn activate(space: &AddressSpace, frames: &mut Frames) -> Result<()> {
     let thunk = space.descriptor(frames, high)?;
     let temporary = AddressSpace::new(frames)?;
     temporary.insert(frames, low, thunk)?;
-    let empty = frames.take()?; // Racine TTBR0 permanente, aucune page EL0.
+    let empty = frames.take_table()?; // Racine TTBR0 permanente, aucune page EL0.
     let tcr: u64;
     // Sûreté : seul le régime TTBR0, inutilisé par Limine rév. 3, est reconfiguré.
     // Le code, la pile et VBAR ont des VA hautes couvertes par les deux espaces.
@@ -147,7 +147,7 @@ pub fn activate(space: &AddressSpace, frames: &mut Frames) -> Result<()> {
     }
     serial::READY.store(true, Ordering::Release);
     temporary.remove(frames, low)?;
-    frames.release(temporary.root);
+    frames.release_table(temporary.root);
     Ok(())
 }
 

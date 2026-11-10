@@ -1,12 +1,14 @@
-# NovaOS v0.6.0
+# NovaOS v0.7.0
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.6.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.7.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
 Le noyau ordonnance ses threads en tourniquet sur CPU0 avec un timer matériel à 250 Hz. Le thread de saisie x86_64 se bloque en attente du clavier. Sur les deux cibles, le thread idle prend la main quand la file des prêts est vide. [Ordonnancement, synchronisation et validation](docs/ordonnancement.md)
 
 Deux instances indépendantes du programme de démonstration démarrent en Ring 3 sur x86_64 ou en EL0 sur AArch64. Elles calculent sous préemption matérielle puis terminent avec les codes 41 et 82. Le terminal QEMU reçoit les PID et les résultats sur le port série. [Architecture des processus et validation de la v0.6.0](docs/processus.md)
+
+Les programmes disposent de six appels natifs pour lire leurs identifiants, céder le CPU, terminer, attendre un processus autorisé et écrire un diagnostic borné. [ABI native v1 et sécurité](docs/abi.md) · [Mesures de RAM et validation QEMU](docs/mesures-v0.7.0.md)
 
 ## Démarrage manuel dans QEMU
 
@@ -44,6 +46,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | `make run` | Ouvre l’écran QEMU et affiche COM1 dans le terminal. Fermer la fenêtre pour quitter. |
 | `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle, de tas et de multitâche pour la cible choisie. Nécessite Python 3. |
 | `make ARCH=x86_64 endurance DURATION=7200` | Exécute la campagne de contention et de restitution pendant au moins deux heures réelles. Accepte aussi `ARCH=aarch64`. |
+| `make ARCH=aarch64 ram-test` | Mesure la RAM physique avec 64, 128 et 256 Mio. Accepte également `ARCH=x86_64`. |
 | `make clean` | Supprime les produits de compilation et de test dans `build/` et `target/`. |
 
 ### Compiler pour AArch64
@@ -111,9 +114,11 @@ Six VM supplémentaires par architecture exercent l’allocateur, les espaces in
 
 Sept VM par architecture testent le tas, la pénurie physique et la récupération, les sentinelles, la cohérence de l’arbre, la réentrée du verrou, la page de garde et le traitement d’une allocation infaillible refusée. Les journaux se trouvent dans `build/serie-<architecture>-heap-*.log`.
 
-Quatre scénarios d’ordonnancement par architecture vérifient la préemption matérielle, la contention, la terminaison, le débordement de pile, l’interdiction du SIMD et la stabilité sur au moins 15 000 ticks. Un cinquième scénario combine registres, fragmentation, contention, pénurie et collecte des threads pendant au moins 15 secondes réelles. Les deux suites effectuent **22 démarrages x86_64 et 21 AArch64**, dont deux scénarios consacrés aux processus. Le même ELF sert aux tests et à l’image normale. Les diagnostics se trouvent dans `build/serie-<architecture>-sched-*.log`.
+Quatre scénarios d’ordonnancement par architecture vérifient la préemption matérielle, la contention, la terminaison, le débordement de pile, l’interdiction du SIMD et la stabilité sur au moins 15 000 ticks. Un cinquième scénario combine registres, fragmentation, contention, pénurie et collecte des threads pendant au moins 15 secondes réelles. Les deux suites effectuent **23 démarrages x86_64 et 23 AArch64**, dont deux scénarios de processus par cible. La sonde ABI tourne sur Q35 et virt, avec une exécution ARM supplémentaire sur Cortex-A76 pour PAN. Le même ELF sert aux tests et à l’image normale. Les diagnostics se trouvent dans `build/serie-<architecture>-sched-*.log`.
 
 Les campagnes longues réutilisent ce cinquième scénario sur une VM continue par cible. [Protocole et mesures de la v0.5.1](docs/durcissement.md)
+
+Les journaux et bilans de la matrice RAM sont conservés dans `build/`. Le test relève la phase exacte lorsqu’un firmware ou Limine interrompt un démarrage avant le noyau.
 
 ## Provenance de Limine
 

@@ -15,20 +15,21 @@ pub fn prepare() {
     unsafe {
         asm!("mov {}, cr0",out(reg) cr0);
         asm!("mov cr0, {}",in(reg) cr0 | 8);
-        // Les seules entrées depuis CPL3 sont les portes IDT installées. Le
-        // firmware ne doit laisser aucun chemin SYSCALL/SYSENTER exploitable.
-        asm!("rdmsr","and eax,-2","wrmsr",in("ecx") 0xc0000080u32,out("eax") _,out("edx") _);
         asm!("wrmsr", in("ecx") 0x174u32, in("eax") 0u32, in("edx") 0u32);
         asm!("mov {},cr4",out(reg) cr4);
         let mut flags = cr4 & !((1 << 16) | (1 << 22) | (1 << 8)); // FSGSBASE, PKE, PCE
         if features.ebx & (1 << 7) != 0 {
             flags |= 1 << 20;
         } // SMEP
+        if features.ebx & (1 << 20) != 0 {
+            flags |= 1 << 21;
+        } // SMAP
         if features.ecx & 4 != 0 {
             flags |= 1 << 11;
         } // UMIP
         asm!("mov cr4,{}",in(reg) flags);
     }
+    super::interrupts::enable_syscall();
 }
 pub fn sp() -> usize {
     let value;
@@ -103,12 +104,12 @@ pub fn kernel_stack(top: usize) {
 pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize) -> ! {
     naked_asm!(
         "mov rsp,rdi",
-        "push 0x53",
+        "push 0x4b",
         "push rdx",
         "push 0x202",
-        "push 0x4b",
+        "push 0x53",
         "push rsi",
-        "mov ax,0x53",
+        "mov ax,0x4b",
         "mov ds,ax",
         "mov es,ax",
         "mov fs,ax",
@@ -118,4 +119,16 @@ pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize) -> ! {
         ".endr",
         "iretq"
     );
+}
+
+pub fn report_syscalls() {
+    let (fast, full) = super::interrupts::syscall_paths();
+    assert!(fast > 0 && full > 0);
+    let cr4: u64;
+    // Sûreté : lecture d’état CR4 à CPL0 pour le diagnostic.
+    unsafe { asm!("mov {},cr4",out(reg) cr4,options(nostack)) };
+    crate::hal::log(format_args!(
+        "ABI SYSRET={fast} IRETQ={full} SMAP={}",
+        (cr4 >> 21) & 1
+    ));
 }

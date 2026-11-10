@@ -6,9 +6,9 @@ Le noyau construit un espace superviseur à quatre niveaux avant d’initialiser
 
 La révision de base 3 fournit le décalage du mappage direct en moitié haute (HHDM), les adresses physique et virtuelle du noyau, la carte physique et le mode de pagination. NovaOS vérifie les réponses et la géométrie avant d’utiliser les cadres. Il accède à une table physique via son adresse HHDM. Pendant la reprise, il suit aussi les grands blocs des tables héritées pour retrouver le cadre et les attributs de cache de chaque page. [Protocole Limine](https://github.com/limine-bootloader/limine-protocol/blob/trunk/PROTOCOL.md)
 
-L’allocateur parcourt exclusivement les plages `USABLE` alignées, en excluant le cadre zéro. Il conserve son curseur et une liste de cadres restitués dont le premier mot contient le lien suivant. Chaque attribution remet le cadre à zéro. Ces métadonnées n’exigent ni tas, ni tableau dimensionné par la plus grande adresse physique.
+Le curseur initial de l’allocateur parcourt les plages `USABLE` alignées, en excluant le cadre zéro. La liste de recyclage reçoit aussi les cadres de Limine après la restitution de la mémoire d’amorçage. Il conserve son curseur et une liste de cadres restitués dont le premier mot contient le lien suivant. Chaque attribution remet le cadre à zéro. Ces métadonnées n’exigent ni tas, ni tableau dimensionné par la plus grande adresse physique.
 
-La nouvelle carte directe couvre la RAM utilisable, la mémoire du chargeur, l’image et le framebuffer. La mémoire du chargeur reste réservée, notamment la pile, les réponses Limine, la GDT x86 et ses anciennes tables. Les plages ACPI, réservées ou défectueuses restent hors de l’allocateur. Le PL011 de la machine ARM virt dispose de son propre mappage de périphérique.
+La nouvelle carte directe couvre la RAM utilisable, la mémoire du chargeur, l’image et le framebuffer. La mémoire du chargeur reste réservée jusqu’au passage sur les tables et la pile de NovaOS. Depuis la v0.7.0, le noyau copie les données persistantes, vérifie les plages puis restitue les cadres récupérables du chargeur. [Bilan physique](mesures-v0.7.0.md) Les plages ACPI, réservées ou défectueuses restent hors de l’allocateur. Le PL011 de la machine ARM virt dispose de son propre mappage de périphérique.
 
 ## Permissions par page
 

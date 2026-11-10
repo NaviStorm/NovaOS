@@ -12,6 +12,7 @@ fn main() {
 
     let user = Path::new("../user");
     println!("cargo::rerun-if-changed=../user");
+    println!("cargo::rerun-if-changed=../abi");
     let target = env::var("TARGET").unwrap();
     let output = PathBuf::from(env::var_os("OUT_DIR").unwrap()).join("demo.bin");
     let linker = format!("link-arg=-T{}", user.join("demo.ld").display());
@@ -23,6 +24,8 @@ fn main() {
             &target,
             "-C",
             "panic=abort",
+            "-C",
+            "opt-level=s",
             "-C",
             "relocation-model=static",
             "-C",

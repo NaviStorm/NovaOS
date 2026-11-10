@@ -319,3 +319,27 @@ pub(crate) fn audit(normalize: bool) -> Usage {
         })
         .unwrap_or_else(|e| global::fatal(e))
 }
+
+pub(crate) const fn reserved_pages() -> usize {
+    CAPACITY / PAGE_BYTES
+}
+
+pub(crate) fn measure(phase: &str, runtime: memory::Resident) {
+    global::GLOBAL
+        .with_state(|s| {
+            let committed = s.heap.committed;
+            let used = s.heap.tree().used_end().next_multiple_of(PAGE_BYTES);
+            s.pages.report(
+                phase,
+                memory::Resident {
+                    heap: committed / PAGE_BYTES,
+                    buddy: meta_bytes(committed) / PAGE_BYTES,
+                    reusable: (committed - used + meta_bytes(committed) - meta_bytes(used))
+                        / PAGE_BYTES,
+                    ..runtime
+                },
+            );
+            Ok(())
+        })
+        .unwrap();
+}

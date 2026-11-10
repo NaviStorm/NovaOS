@@ -6,6 +6,9 @@ mod serial;
 pub(crate) mod timer;
 use core::{arch::asm, fmt};
 
+/// Le ramfb de virt affiche des pixels stockés en RAM système.
+pub(crate) const VIDEO_SYSTEM_RAM: bool = true;
+
 pub(crate) const DIAGNOSTIC: Option<fn(fmt::Arguments<'_>)> = Some(serial::line);
 pub(crate) fn init() {
     mask_interrupts();

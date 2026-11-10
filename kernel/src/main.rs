@@ -4,6 +4,8 @@
 
 extern crate alloc;
 
+#[path = "../../abi/native.rs"]
+mod abi;
 mod arch;
 mod boot;
 mod console;
@@ -35,6 +37,9 @@ pub extern "C" fn nova_start() -> ! {
             .test(scenario)
             .unwrap_or_else(|error| panic!("Autotest mémoire : {error:?}"));
     }
+    if scenario == b"abi-test" {
+        memory.report("init", memory::Resident::default());
+    }
     let kernel_space = memory.space_id();
     heap::install(memory);
     if scenario.starts_with(b"heap-") {
@@ -44,26 +49,42 @@ pub extern "C" fn nova_start() -> ! {
 }
 
 fn main_thread() {
-    let scenario = boot::scenario();
+    let (args, screen) = boot::handoff();
+    // Sûreté : CPU0 exécute déjà sa pile privée et ses propres tables, GDT/TSS
+    // ou VBAR. Les réponses ont été copiées ; aucun lecteur Limine ne subsiste.
+    match unsafe { memory::reclaim_loader(screen.as_ref().ok().map(framebuffer::Screen::span)) } {
+        Ok(()) => (),
+        Err(memory::Error::Exhausted) => log(format_args!(
+            "Carte mémoire conservée dans les cadres Limine."
+        )),
+        Err(e) => panic!("Restitution du chargeur : {e:?}"),
+    }
+    let scenario = args.as_slice();
     if scenario.starts_with(b"sched-") {
         sched::test(scenario);
+    }
+    if scenario == b"abi-test" {
+        sched::process::abi_test();
     }
     if scenario == b"proc-test" {
         sched::process::test();
     }
-    if let Err(reason) = interactive() {
+    if let Err(reason) = interactive(scenario, screen) {
         hal::interrupts::mask();
         log(format_args!("{reason}"));
         hal::cpu::halt();
     }
 }
 
-fn interactive() -> Result<(), &'static str> {
-    let (screen, bottom) = framebuffer::show_banner(&boot::framebuffer()?, BANNER)?;
+fn interactive(
+    scenario: &[u8],
+    screen: Result<framebuffer::Screen, &'static str>,
+) -> Result<(), &'static str> {
+    let (screen, bottom) = framebuffer::show_banner(screen?, BANNER)?;
     log(format_args!("Affichage prêt."));
     let mut console = console::Console::new(screen, bottom)?;
     let keyboard = hal::keyboard()?;
-    match boot::scenario() {
+    match scenario {
         b"" => sched::process::boot_demo(false),
         b"proc-boot-fault" => sched::process::boot_demo(true),
         _ => {}

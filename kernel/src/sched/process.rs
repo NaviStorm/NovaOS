@@ -6,7 +6,11 @@ use crate::{
     memory::user::{self, UserSpace},
 };
 
+mod abi_probe;
 mod demo;
+pub(super) use abi_probe::idle_sample;
+pub(crate) use abi_probe::test as abi_test;
+pub(crate) mod syscall;
 pub(crate) use demo::{boot_demo, test};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -34,6 +38,8 @@ struct Process {
     space: Option<UserSpace>,
     threads: usize,
     observed: bool,
+    wait_right: Option<WaitRight>,
+    debug_messages: u8,
     // None pendant la vie du processus. Le statut reste disponible après collecte.
     outcome: Option<Outcome>,
     preemptions: u64,
@@ -41,12 +47,16 @@ struct Process {
 pub(super) struct Table {
     slots: [Option<Process>; MAX],
     serial: u64,
+    pub(super) syscall_switches: u64,
+    blocked_waits: u64,
 }
 impl Table {
     pub(super) const fn new() -> Self {
         Self {
             slots: [const { None }; MAX],
             serial: 0,
+            syscall_switches: 0,
+            blocked_waits: 0,
         }
     }
     fn get(&self, pid: Pid) -> &Process {
@@ -58,6 +68,13 @@ impl Table {
         let p = self.slots[pid.slot].as_mut().expect("PID absent");
         assert_eq!(p.pid, pid);
         p
+    }
+    fn release_observer(&mut self, pid: Pid) {
+        let p = self.get_mut(pid);
+        p.observed = false;
+        if p.space.is_none() {
+            self.slots[pid.slot] = None;
+        }
     }
     pub(super) fn space(&self, pid: Pid) -> SpaceId {
         self.get(pid).space.as_ref().unwrap().id()
@@ -78,7 +95,24 @@ fn enter() {
 /// sert au diagnostic ; il ne donne pas accès à ce droit depuis un programme.
 struct Child(Pid);
 
-fn spawn_image(image: &[u8], data: &[u8], private_ro: Option<&[u8]>) -> Result<Child, Error> {
+/// Une référence forte, typée pour la seule opération WAIT. La clé locale ne
+/// permet jamais de retrouver un objet par un PID fourni par l’utilisateur.
+#[derive(Clone, Copy)]
+struct WaitRight {
+    target: Pid,
+}
+impl WaitRight {
+    fn key(self) -> u64 {
+        self.target.number | (1 << 63)
+    }
+}
+
+fn spawn_image(
+    image: &[u8],
+    data: &[u8],
+    private_ro: Option<&[u8]>,
+    wait_on: Option<Child>,
+) -> Result<Child, Error> {
     let guard = Guard::new();
     if !guard.was_enabled() {
         return Err(Error::Critical);
@@ -104,8 +138,18 @@ fn spawn_image(image: &[u8], data: &[u8], private_ro: Option<&[u8]>) -> Result<C
         .unwrap();
         return Err(e);
     }
+    let wait_right = wait_on.map(|child| {
+        let right = WaitRight { target: child.0 };
+        core::mem::forget(child); // Transfert de l’unique droit, repris par wait ou detach.
+        right
+    });
     Ok(with(|s| {
-        s.processes.serial = s.processes.serial.checked_add(1).expect("PID épuisés");
+        s.processes.serial = s
+            .processes
+            .serial
+            .checked_add(1)
+            .filter(|n| *n < 1 << 63)
+            .expect("PID épuisés");
         let pid = Pid {
             slot: proc_slot,
             number: s.processes.serial,
@@ -115,6 +159,8 @@ fn spawn_image(image: &[u8], data: &[u8], private_ro: Option<&[u8]>) -> Result<C
             space: Some(space),
             threads: 1,
             observed: true,
+            wait_right,
+            debug_messages: 0,
             outcome: None,
             preemptions: 0,
         });
@@ -154,9 +200,15 @@ pub(super) fn detach(pid: Pid) {
         if p.threads == 0 {
             assert!(p.outcome.is_some());
             let space = p.space.take().expect("dernier espace");
-            if !p.observed {
+            let orphan = !p.observed;
+            let unused = p.wait_right.take();
+            if orphan {
                 s.processes.slots[pid.slot] = None;
             }
+            if let Some(right) = unused {
+                s.processes.release_observer(right.target);
+            }
+            s.signal(Wait::Process(pid));
             Some(space)
         } else {
             None
@@ -191,12 +243,30 @@ impl Child {
 }
 impl Drop for Child {
     fn drop(&mut self) {
-        with(|s| {
-            let p = s.processes.get_mut(self.0);
-            p.observed = false;
-            if p.space.is_none() {
-                s.processes.slots[self.0.slot] = None;
-            }
-        });
+        with(|s| s.processes.release_observer(self.0));
     }
+}
+
+pub(crate) const fn metadata_bytes() -> usize {
+    size_of::<Table>()
+}
+
+fn measure(phase: &str) {
+    with(|s| {
+        let mut r = crate::memory::Resident::default();
+        r.tcb_bytes = s.slots.capacity() * size_of::<Option<Thread>>();
+        for t in s.slots.iter().flatten() {
+            r.stacks += (t.stack.top - t.stack.low) / 4096;
+        }
+        for p in s.processes.slots.iter().flatten() {
+            r.processes += 1;
+            r.process_bytes += size_of::<Process>();
+            if let Some(space) = &p.space {
+                let (data, stack) = space.page_counts();
+                r.user += data;
+                r.user_stacks += stack;
+            }
+        }
+        heap::measure(phase, r);
+    });
 }

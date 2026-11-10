@@ -14,6 +14,19 @@ pub fn prepare() {
         "bic x9,x9,#(3<<20)","msr cpacr_el1,x9","msr cntkctl_el1,xzr","mrs x9,sctlr_el1",
         "bic x9,x9,#(1<<9)","bic x9,x9,#(1<<26)","msr sctlr_el1,x9","isb",out("x9") _);
     }
+    if pan_supported() {
+        // Sûreté : FEAT_PAN vérifiée, SPAN=0 force PAN à toute entrée à EL1.
+        unsafe {
+            asm!("mrs x9,sctlr_el1","bic x9,x9,#(1<<23)","msr sctlr_el1,x9","isb",
+            ".arch_extension pan","msr pan,#1",out("x9") _,options(nostack))
+        };
+    }
+}
+pub fn pan_supported() -> bool {
+    let features: u64;
+    // Sûreté : registre d’identification lisible à EL1 sur la cible ARMv8-A.
+    unsafe { asm!("mrs {},id_aa64mmfr1_el1",out(reg) features,options(nostack)) };
+    (features >> 20) & 15 != 0
 }
 pub fn sp() -> usize {
     let value;
@@ -96,4 +109,13 @@ pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize) -> ! {
         ".endr",
         "eret"
     );
+}
+
+pub fn report_syscalls() {
+    let mut active = 0u64;
+    if pan_supported() {
+        // Sûreté : FEAT_PAN vérifiée avant lecture du PSTATE privilégié.
+        unsafe { asm!(".arch_extension pan","mrs {},pan",out(reg) active,options(nostack)) };
+    }
+    crate::hal::log(format_args!("ABI ERET PAN={}", (active >> 22) & 1));
 }

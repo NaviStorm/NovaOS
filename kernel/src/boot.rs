@@ -29,7 +29,7 @@ static FRAMEBUFFER: FramebufferRequest = FramebufferRequest::new();
 #[used]
 static END: RequestsEndMarker = RequestsEndMarker::new();
 
-pub fn framebuffer() -> Result<Framebuffer<'static>, &'static str> {
+fn framebuffer() -> Result<Framebuffer<'static>, &'static str> {
     if !BASE.is_supported() {
         return Err("Erreur : révision du protocole Limine incompatible.");
     }
@@ -63,6 +63,9 @@ pub struct MemoryInfo {
 }
 
 pub fn memory() -> Result<MemoryInfo, &'static str> {
+    if RETIRED.load(core::sync::atomic::Ordering::Acquire) {
+        return Err("Chargeur déjà libéré.");
+    }
     if !BASE.is_supported()
         || !MODE
             .get_response()
@@ -83,7 +86,22 @@ pub fn memory() -> Result<MemoryInfo, &'static str> {
 }
 
 pub fn scenario() -> &'static [u8] {
+    assert!(!RETIRED.load(core::sync::atomic::Ordering::Acquire));
     CMDLINE
         .get_response()
         .map_or(&[], |r| r.cmdline().to_bytes())
+}
+
+static RETIRED: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
+
+/// Dernière lecture des réponses Limine. La géométrie vidéo est possédée par
+/// Screen ; seuls les pixels du framebuffer dédié restent utilisés.
+pub(crate) fn handoff() -> (
+    alloc::vec::Vec<u8>,
+    Result<crate::hardware::framebuffer::Screen, &'static str>,
+) {
+    let args = scenario().to_vec();
+    let screen = framebuffer().and_then(|f| crate::hardware::framebuffer::Screen::from_limine(&f));
+    RETIRED.store(true, core::sync::atomic::Ordering::Release);
+    (args, screen)
 }

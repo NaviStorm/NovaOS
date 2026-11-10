@@ -2,12 +2,12 @@
 //! cèdent jamais la main ; le noyau suit leurs compteurs par le HHDM.
 use super::*;
 
-static DEMO: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/demo.bin"));
+pub(super) static DEMO: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/demo.bin"));
 
 // Ordre des opérations dans l’image plate indépendante de chaque cible.
 #[derive(Clone, Copy)]
 #[repr(u64)]
-enum Action {
+pub(super) enum Action {
     Compute,
     Read,
     Write,
@@ -22,7 +22,7 @@ enum Action {
 }
 use Action::*;
 
-fn spawn_demo(mode: Action, seed: u64, target: u64) -> Result<Child, Error> {
+pub(super) fn spawn_demo(mode: Action, seed: u64, target: u64) -> Result<Child, Error> {
     let mut config = [0u8; 24];
     for (out, value) in config.chunks_exact_mut(8).zip([mode as u64, seed, target]) {
         out.copy_from_slice(&value.to_le_bytes());
@@ -32,10 +32,11 @@ fn spawn_demo(mode: Action, seed: u64, target: u64) -> Result<Child, Error> {
         DEMO,
         &config,
         matches!(mode, Owner | WriteReadOnly).then_some(&marker[..]),
+        None,
     )
 }
 
-fn shortage() {
+pub(super) fn shortage() {
     let baseline = heap::audit(true);
     let mut held = heap::with_pages(|m| m.hold_for_probe(0)).unwrap();
     // Échecs successifs de racine, tables intermédiaires, pages privées

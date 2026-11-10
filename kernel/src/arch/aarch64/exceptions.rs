@@ -43,14 +43,7 @@ nova_vectors:
     bl {handler}
 // EL1h : SP_EL1 appartient au thread. Sauver ELR/SPSR avant tout autre
 // thread, qui pourra lui aussi recevoir des exceptions. Pas de FP/SIMD.
-nova_sync_el0:
-    mov x4,x0
-    mrs x0,esr_el1
-    mrs x1,far_el1
-    mrs x2,elr_el1
-    mrs x3,spsr_el1
-    bl {user_handler}
-nova_irq_el1h:
+.macro save_all
     sub sp,sp,#288
     stp x0,x1,[sp,#0]
     stp x2,x3,[sp,#16]
@@ -74,8 +67,19 @@ nova_irq_el1h:
     mrs x0,sp_el0
     mrs x2,tpidr_el0
     stp x0,x2,[sp,#264]
+.endm
+nova_sync_el0:
+    save_all
+    mov x0,sp
+    mrs x1,esr_el1
+    mrs x2,far_el1
+    bl {user_handler}
+    b restore_all
+nova_irq_el1h:
+    save_all
     mov x0,x1
     bl {irq}
+restore_all:
     ldp x0,x2,[sp,#264]
     msr sp_el0,x0
     msr tpidr_el0,x2
@@ -139,12 +143,29 @@ extern "C" fn fault(esr: u64, address: u64, pc: u64, state: u64, sync: u64) -> !
     hal::cpu::halt()
 }
 
-extern "C" fn user_fault(esr: u64, address: u64, pc: u64, state: u64, arg: u64) -> ! {
-    use crate::sched::process::{Fault, Outcome, finish};
+#[repr(C)]
+struct TrapFrame {
+    x: [u64; 31],
+    pc: u64,
+    state: u64,
+    sp: u64,
+    tls: u64,
+}
+
+// Les huit derniers octets d’alignement de la pile ne sont jamais empruntés.
+const _: () = assert!(size_of::<TrapFrame>() == 280 && core::mem::offset_of!(TrapFrame, pc) == 248);
+
+extern "C" fn user_fault(f: &mut TrapFrame, esr: u64, address: u64) {
+    use crate::sched::process::{Fault, Outcome, finish, syscall};
+    let (pc, state) = (f.pc, f.state);
     assert_eq!(state & 31, 0, "origine EL0t");
     let ec = esr >> 26;
-    if ec == 0x15 && esr & 0xffff == 0x51 {
-        finish(Outcome::Exit(arg), pc, "EL0");
+    if ec == 0x15 && esr & 0xffff == 0x4e {
+        let r = syscall::call(f.x[8], [f.x[0], f.x[1], f.x[2]], pc, f.sp, "EL0");
+        f.x[0] = r.status;
+        f.x[1] = r.value;
+        f.state = (state & 0xf0000000) | 0x340; // NZCV, EL0t, IRQ permises.
+        return;
     }
     let (trap, access, cause, va) = match ec {
         0x20 | 0x24 => {
