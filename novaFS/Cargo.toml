@@ -1,10 +1,10 @@
 [package]
 name = "novafs"
-version = "0.9.4"
+version = "0.9.5"
 edition = "2024"
 publish = false
 default-run = "novafs"
-description = "Laboratoire NovaFS P4 sur images temporaires"
+description = "Laboratoire NovaFS P4.1 sur images temporaires"
 
 [[bin]]
 name = "novafs-bench"
@@ -14,11 +14,21 @@ path = "lab/novafs-bench.rs"
 name = "p1-image"
 path = "lab/p1-image.rs"
 
+[[example]]
+name = "txn-latency"
+path = "lab/txn_latency.rs"
+
+[[example]]
+name = "profile-read"
+path = "lab/profile-read.rs"
+required-features = ["latency-probes"]
+
 [workspace]
 
 [features]
 check-metrics = []
 bench-coordinator = []
+latency-probes = []
 
 [dependencies]
 getrandom = "0.4"

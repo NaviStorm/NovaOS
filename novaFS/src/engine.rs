@@ -1,5 +1,7 @@
 //! Publication et vérification des deux générations. Aucun Drop n'effectue d'E/S.
 use crate::codec::{Anchor, data_hash};
+#[cfg(feature = "latency-probes")]
+use crate::latency_probes::{Phase, enter};
 use crate::space::Space;
 use crate::tree::{self, Family, Node, ReadTree, WriteTree};
 use crate::{Block, Device, Error, Ids, MAX_BLOCKS, Manifest, Ref, Result};
@@ -283,6 +285,8 @@ impl<D: Device> ReadTree for Engine<D> {
             if let Some(bytes) = self.cached(Some(f), r)? {
                 return Node::decode(&bytes, self.ids, r, f);
             }
+            #[cfg(feature = "latency-probes")]
+            let _sample = enter(Phase::MetadataMiss);
             let bytes = self.dev.read(r.block)?;
             let node = Node::decode(&bytes, self.ids, r, f)?;
             self.remember_checked(Some(f), r, bytes)?;
@@ -307,6 +311,8 @@ impl<D: Device> View for Engine<D> {
             if let Some(bytes) = self.cached(None, r)? {
                 return Ok(bytes);
             }
+            #[cfg(feature = "latency-probes")]
+            let _sample = enter(Phase::DataMiss);
             let bytes = check_payload(self.ids, r, self.dev.read(r.block)?)?;
             self.remember_checked(None, r, bytes)?;
             Ok(bytes)
@@ -319,6 +325,8 @@ impl<D: Device> Engine<D> {
         self.cache.lock().expect("cache de lecture interrompu")
     }
     fn cached(&self, kind: Option<Family>, r: Ref) -> Result<Option<Block>> {
+        #[cfg(feature = "latency-probes")]
+        let _sample = enter(Phase::CacheLookup);
         let mut cache = self.cache();
         self.check_health()?;
         r.validate(self.head.m.blocks, self.generation())?;

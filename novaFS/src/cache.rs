@@ -209,6 +209,8 @@ impl Cache {
         }
         // Seconde chance : au plus un tour complet, puis une victime. Son
         // allocation de 4 Kio est réutilisée sans pic d'une page supplémentaire.
+        #[cfg(feature = "latency-probes")]
+        let _sample = crate::latency_probes::enter(crate::latency_probes::Phase::Eviction);
         loop {
             self.counts.clock_steps = self.counts.clock_steps.saturating_add(1);
             let i = self.hand;

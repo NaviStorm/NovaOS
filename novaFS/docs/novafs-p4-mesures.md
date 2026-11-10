@@ -1,5 +1,7 @@
 # NovaFS P4 v0.9.4 — mesures avant/après
 
+**Relecture en P4.1.** Les valeurs historiques ci-dessous sont conservées. Le [diagnostic P4.1](novafs-p4.1-latences.md) borne le p99 global d’origine et publie des distributions calculées sur les appels individuels.
+
 ## Conditions et instrumentation
 
 Mac Apple Silicon, macOS 27.2, Rust stable 1.99.1 en release. Les mesures ARM64 sont natives et les mesures x86_64 utilisent Rosetta. Le harnais vérifie le type Mach-O. La référence a été amorcée sur une extraction de `1510eca` avant les modifications du moteur. Seuls les compteurs et les charges du laboratoire y ont été ajoutés. Chaque version utilise la même suite de mesures, avec une image ordinaire temporaire neuve par exécution. Les deux cibles du banc complet sont lancées successivement. Le Mac sert aussi aux compilations, aux profils courts et aux tests. Les caches hôtes restent actifs ; il ne s’agit pas de mesures sur machine isolée.

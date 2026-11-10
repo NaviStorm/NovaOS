@@ -53,8 +53,12 @@ fn record_peak(live: usize) {
 // Les compteurs atomiques et malloc_size n’appellent pas l’allocateur Rust.
 unsafe impl GlobalAlloc for Measured {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+        #[cfg(feature = "latency-probes")]
+        let sample = novafs::latency_probes::enter(novafs::latency_probes::Phase::Allocation);
         // Sûreté : le demandeur fournit un Layout valide selon GlobalAlloc.
         let ptr = unsafe { System.alloc(layout) };
+        #[cfg(feature = "latency-probes")]
+        drop(sample);
         if !ptr.is_null() {
             // Sûreté : l’allocation vient de réussir.
             let bytes = unsafe { capacity(ptr, layout) };
@@ -68,6 +72,8 @@ unsafe impl GlobalAlloc for Measured {
         // Sûreté : le bloc est encore vivant à l’entrée dans dealloc.
         let bytes = unsafe { capacity(ptr, layout) };
         LIVE.fetch_sub(bytes, Ordering::Relaxed);
+        #[cfg(feature = "latency-probes")]
+        let _sample = novafs::latency_probes::enter(novafs::latency_probes::Phase::Deallocation);
         // Sûreté : restitution au fournisseur d’origine avec le Layout d’origine.
         unsafe { System.dealloc(ptr, layout) }
     }

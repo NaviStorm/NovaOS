@@ -6,6 +6,9 @@ pub mod codec;
 pub mod device;
 mod engine;
 mod fs;
+#[cfg(feature = "latency-probes")]
+#[path = "../lab/latency_probes.rs"]
+pub mod latency_probes;
 pub mod pool;
 mod space;
 pub mod tree;

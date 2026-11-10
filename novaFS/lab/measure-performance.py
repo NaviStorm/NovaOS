@@ -26,10 +26,42 @@ def measure(binary, sector, scenario):
     if not rss:
         raise RuntimeError("RSS Darwin manquante")
     lines = result.stdout.splitlines()
+    report = {"secteur": sector, "scenario": scenario, "rss_octets": int(rss[1]),
+              "journal": lines, "time_l": result.stderr.splitlines()}
     if scenario == "complet":
         verify_barriers(lines)
-    return {"secteur": sector, "scenario": scenario, "rss_octets": int(rss[1]),
-            "journal": lines, "time_l": result.stderr.splitlines()}
+        report["lecture_sequentielle_64_kio"] = read_distribution(lines)
+    return report
+
+
+def distribution(samples):
+    """Quantiles empiriques au rang plafond, sur les requêtes individuelles."""
+    ordered = sorted(samples)
+    return {"n": len(ordered), **{key: ordered[(len(ordered) * p + 99) // 100 - 1]
+            for key, p in (("p50_ns", 50), ("p95_ns", 95), ("p99_ns", 99), ("max_ns", 100))}}
+
+
+def read_distribution(lines):
+    raw, announced = {}, {}
+    for line in lines:
+        cols = line.split("\t")
+        if cols[:2] == ["echantillons_ns", "lecture_seq64k"]:
+            s = int(cols[2])
+            ns = list(map(int, cols[3:]))
+            if s in raw or len(ns) != 512 or min(ns) < 0:
+                raise ValueError("échantillons de lecture incomplets ou dupliqués")
+            raw[s] = ns
+        elif cols[0] == "lecture_seq64k":
+            s = int(cols[1])
+            if s in announced:
+                raise ValueError("série de lecture dupliquée")
+            announced[s] = dict(zip(("n", "p50_ns", "p95_ns", "p99_ns", "max_ns"),
+                                    map(int, [cols[2], *cols[5:9]]), strict=True))
+    if raw.keys() != set(range(1, 6)) or announced != {s: distribution(v) for s, v in raw.items()}:
+        raise ValueError("quantiles ou séries de lecture incohérents")
+    return {"toutes_requetes": distribution(ns for v in raw.values() for ns in v),
+            "par_serie": announced,
+            "pire_p99_par_serie_ns": max(v["p99_ns"] for v in announced.values())}
 
 
 def verify_barriers(lines):
@@ -73,8 +105,13 @@ def build(source, arch, reference, directory):
         text = manifest.read_text()
         if 'version = "0.9.3"' not in text:
             raise ValueError("--reference exige un paquet NovaFS P3 0.9.3")
-        if "bench-coordinator = " not in text:
-            manifest.write_text(text.replace("[features]", "[features]\nbench-coordinator = []", 1))
+        # Le banc commun teste aussi le cfg des sondes P4.1. Ces features
+        # restent toutes deux désactivées quand on mesure l'archive P3.
+        needed = [name for name in ("bench-coordinator", "latency-probes")
+                  if f"{name} = " not in text]
+        if needed:
+            manifest.write_text(text.replace("[features]", "[features]" +
+                                "".join(f"\n{name} = []" for name in needed), 1))
     target = arch + "-apple-darwin"
     cmd = [temp / "lab/run", "build", "--offline", "--bin", "novafs-bench"]
     if not reference:
@@ -110,7 +147,7 @@ def main():
             if not args.reference and args.charge in ("toutes", "coordinateur"):
                 cases.append(measure(exe, sector, "coordinateur"))
         print(json.dumps({
-            "architecture": args.arch, "moteur": "P3" if args.reference else "P4",
+            "architecture": args.arch, "moteur": "P3" if args.reference else "P4.1",
             "sha256_binaire": hashlib.sha256(exe.read_bytes()).hexdigest(), "campagnes": cases,
         }, ensure_ascii=False, indent=2))
 

@@ -1,6 +1,8 @@
-# NovaFS P4 sur macOS
+# NovaFS P4.1 sur macOS
 
-NovaFS v0.9.4 conserve le format disque P0, les deux barrières de publication P1, les contrôles d’intégrité P2 et les réservations P3. Il fonctionne sur des volumes logiques dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+NovaFS v0.9.5 conserve le format disque P0, les deux barrières de publication P1, les contrôles d’intégrité P2 et les réservations P3. Il fonctionne sur des volumes logiques dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+
+P4.1 corrige la mesure du p99 : le banc conserve les temps des lectures individuelles et distingue leur distribution globale du pire p99 par série. Le [diagnostic et les commandes de reproduction](docs/novafs-p4.1-latences.md) séparent lecture à froid, lecture à chaud, temps CPU et temps passé dans les appels au fichier.
 
 Le cache de lecture se configure en octets, index compris. Dans `novafs script`, `cache 131072` lui accorde 128 Kio, `cache` affiche ses compteurs sur stderr et `cache 0` le vide et le désactive. Le coordinateur de la bibliothèque hôte accepte plusieurs demandes et sérialise les publications par pool. [Cache](docs/novafs-p4-cache.md) · [Coordinateur et exemple d’API](docs/novafs-p4-coordinateur.md) · [Validation et commandes](docs/novafs-p4-performance.md) · [Mesures P3/P4](docs/novafs-p4-mesures.md)
 

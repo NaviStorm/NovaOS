@@ -1,6 +1,8 @@
 //! Banc macOS sur fichiers temporaires anonymes. Les chronos incluent les
 //! contrôles des résultats, les copies de données et les deux sync_all de commit.
 use novafs::device::{FileImage, Persistence, SimDevice, SimFault};
+#[cfg(feature = "latency-probes")]
+use novafs::latency_probes;
 use novafs::{Block, Device, Engine, Error, Ids, Mode, Ref, Result, tree};
 use std::{
     cell::{Cell, RefCell},
@@ -154,6 +156,17 @@ fn measure(
     let after = counts.readout();
     let peak = PHASE_PEAK.load(Ordering::Relaxed);
     let allocations = heap_meter::ALLOCATIONS.load(Ordering::Relaxed) - allocs;
+    if label == "lecture_seq64k" {
+        // Export après les deux chronos et le relevé mémoire, avant le tri :
+        // un p99 global se calcule sur les requêtes, pas sur les cinq p99.
+        use std::io::Write;
+        let mut out = std::io::stdout().lock();
+        write!(out, "echantillons_ns\t{label}\t{series}")?;
+        for ns in &times {
+            write!(out, "\t{ns}")?;
+        }
+        writeln!(out)?;
+    }
     times.sort_unstable();
     let quantile = |p: usize| times[(operations * p).div_ceil(100) - 1];
     println!(

@@ -1,0 +1,1239 @@
+{
+  "unites": "nanosecondes, octets utiles par 2^20 par seconde",
+  "groupes": [
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "moteur": "P3",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 484333,
+        "p95": 527875,
+        "p99": 592125,
+        "max": 1178541
+      },
+      "Mio_s": 127.97088948918913,
+      "appel_le_plus_lent": {
+        "total_ns": 1178541,
+        "cpu_ns": 1179041,
+        "fichier_ns": 0,
+        "lecture_ns": 1138625,
+        "controle_liberation_ns": 39916
+      },
+      "p99_par_campagne_ns": {
+        "1": 638542,
+        "2": 664292,
+        "3": 597958,
+        "4": 555292,
+        "5": 529167,
+        "6": 528417
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 14746,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 634292.0,
+        "cpu_ns_mediane": 585687.5,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 617104.5,
+        "controle_liberation_ns_mediane": 17750.0,
+        "reliquat_signe_mur_cpu_ns_mediane": 49209.0
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "moteur": "P4",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 231167,
+        "p95": 408416,
+        "p99": 501125,
+        "max": 1413333
+      },
+      "Mio_s": 274.407855182112,
+      "appel_le_plus_lent": {
+        "total_ns": 1413333,
+        "cpu_ns": 268083,
+        "fichier_ns": 0,
+        "lecture_ns": 1372833,
+        "controle_liberation_ns": 40500
+      },
+      "p99_par_campagne_ns": {
+        "1": 488416,
+        "2": 516583,
+        "3": 492666,
+        "4": 506333,
+        "5": 507709,
+        "6": 490875
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 15060,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 514625.5,
+        "cpu_ns_mediane": 513687.5,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 496958.5,
+        "controle_liberation_ns_mediane": 16959.0,
+        "reliquat_signe_mur_cpu_ns_mediane": -125.0
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "moteur": "P4.1",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 228208,
+        "p95": 407667,
+        "p99": 498083,
+        "max": 892750
+      },
+      "Mio_s": 276.4748488533241,
+      "appel_le_plus_lent": {
+        "total_ns": 892750,
+        "cpu_ns": 821292,
+        "fichier_ns": 0,
+        "lecture_ns": 852250,
+        "controle_liberation_ns": 40500
+      },
+      "p99_par_campagne_ns": {
+        "1": 491000,
+        "2": 521334,
+        "3": 498458,
+        "4": 495375,
+        "5": 495625,
+        "6": 490041
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 15043,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 511042.0,
+        "cpu_ns_mediane": 510021.0,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 493104.5,
+        "controle_liberation_ns_mediane": 16875.0,
+        "reliquat_signe_mur_cpu_ns_mediane": -125.0
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "moteur": "P3",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 624500,
+        "p95": 677416,
+        "p99": 736375,
+        "max": 1581416
+      },
+      "Mio_s": 99.33346770302575,
+      "appel_le_plus_lent": {
+        "total_ns": 1581416,
+        "cpu_ns": 1358209,
+        "fichier_ns": 53542,
+        "lecture_ns": 1563333,
+        "controle_liberation_ns": 18083
+      },
+      "p99_par_campagne_ns": {
+        "1": 794875,
+        "2": 712792,
+        "3": 728875,
+        "4": 715375,
+        "5": 677083,
+        "6": 675000
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 14634,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 768937.5,
+        "cpu_ns_mediane": 749791.5,
+        "fichier_ns_mediane": 17395.5,
+        "lecture_ns_mediane": 748083.0,
+        "controle_liberation_ns_mediane": 18416.5,
+        "reliquat_signe_mur_cpu_ns_mediane": 12625.5
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "moteur": "P4",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 314709,
+        "p95": 428250,
+        "p99": 488375,
+        "max": 1098000
+      },
+      "Mio_s": 197.46886555604178,
+      "appel_le_plus_lent": {
+        "total_ns": 1098000,
+        "cpu_ns": 586166,
+        "fichier_ns": 22126,
+        "lecture_ns": 1080000,
+        "controle_liberation_ns": 18000
+      },
+      "p99_par_campagne_ns": {
+        "1": 470875,
+        "2": 535500,
+        "3": 455750,
+        "4": 483042,
+        "5": 530125,
+        "6": 463667
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 14898,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 526416.5,
+        "cpu_ns_mediane": 503875.5,
+        "fichier_ns_mediane": 14189.0,
+        "lecture_ns_mediane": 505979.0,
+        "controle_liberation_ns_mediane": 17229.0,
+        "reliquat_signe_mur_cpu_ns_mediane": 9416.5
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "moteur": "P4.1",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 313583,
+        "p95": 425541,
+        "p99": 478459,
+        "max": 1082875
+      },
+      "Mio_s": 198.79859893606022,
+      "appel_le_plus_lent": {
+        "total_ns": 1082875,
+        "cpu_ns": 484375,
+        "fichier_ns": 27959,
+        "lecture_ns": 1065292,
+        "controle_liberation_ns": 17583
+      },
+      "p99_par_campagne_ns": {
+        "1": 457500,
+        "2": 504208,
+        "3": 457667,
+        "4": 468500,
+        "5": 474584,
+        "6": 493250
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 14987,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 506354.5,
+        "cpu_ns_mediane": 500833.0,
+        "fichier_ns_mediane": 13499.5,
+        "lecture_ns_mediane": 487458.5,
+        "controle_liberation_ns_mediane": 17041.5,
+        "reliquat_signe_mur_cpu_ns_mediane": -125.0
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "moteur": "P3",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 488875,
+        "p95": 533958,
+        "p99": 597333,
+        "max": 1482250
+      },
+      "Mio_s": 126.71504262977295,
+      "appel_le_plus_lent": {
+        "total_ns": 1482250,
+        "cpu_ns": 858208,
+        "fichier_ns": 0,
+        "lecture_ns": 1068292,
+        "controle_liberation_ns": 413958
+      },
+      "p99_par_campagne_ns": {
+        "1": 580875,
+        "2": 613709,
+        "3": 558000,
+        "4": 544750,
+        "5": 635916,
+        "6": 646250
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 14581,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 638125.0,
+        "cpu_ns_mediane": 601958.5,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 618041.5,
+        "controle_liberation_ns_mediane": 18666.5,
+        "reliquat_signe_mur_cpu_ns_mediane": 19291.5
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "moteur": "P4",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 229750,
+        "p95": 406084,
+        "p99": 497458,
+        "max": 714583
+      },
+      "Mio_s": 276.30986141148446,
+      "appel_le_plus_lent": {
+        "total_ns": 714583,
+        "cpu_ns": 458542,
+        "fichier_ns": 0,
+        "lecture_ns": 694625,
+        "controle_liberation_ns": 19958
+      },
+      "p99_par_campagne_ns": {
+        "1": 492208,
+        "2": 510084,
+        "3": 503250,
+        "4": 494041,
+        "5": 491250,
+        "6": 493250
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 15044,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 507666.5,
+        "cpu_ns_mediane": 507479.0,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 490750.0,
+        "controle_liberation_ns_mediane": 16625.0,
+        "reliquat_signe_mur_cpu_ns_mediane": -125.0
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "moteur": "P4.1",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 228917,
+        "p95": 408500,
+        "p99": 501333,
+        "max": 625208
+      },
+      "Mio_s": 274.7837434121338,
+      "appel_le_plus_lent": {
+        "total_ns": 625208,
+        "cpu_ns": 402458,
+        "fichier_ns": 0,
+        "lecture_ns": 604416,
+        "controle_liberation_ns": 20792
+      },
+      "p99_par_campagne_ns": {
+        "1": 498625,
+        "2": 508416,
+        "3": 510708,
+        "4": 497125,
+        "5": 500000,
+        "6": 495083
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 14909,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 511833.0,
+        "cpu_ns_mediane": 511041.5,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 494604.0,
+        "controle_liberation_ns_mediane": 16916.5,
+        "reliquat_signe_mur_cpu_ns_mediane": -125.0
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "moteur": "P3",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 1030750,
+        "p95": 1464375,
+        "p99": 1831375,
+        "max": 4742042
+      },
+      "Mio_s": 57.535713773973924,
+      "appel_le_plus_lent": {
+        "total_ns": 4742042,
+        "cpu_ns": 799000,
+        "fichier_ns": 4087999,
+        "lecture_ns": 4724875,
+        "controle_liberation_ns": 17167
+      },
+      "p99_par_campagne_ns": {
+        "1": 1674916,
+        "2": 1816833,
+        "3": 1780875,
+        "4": 1849625,
+        "5": 1935208,
+        "6": 1917209
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 0,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 2134625.0,
+        "cpu_ns_mediane": 780271.0,
+        "fichier_ns_mediane": 1498041.0,
+        "lecture_ns_mediane": 2118562.5,
+        "controle_liberation_ns_mediane": 17042.0,
+        "reliquat_signe_mur_cpu_ns_mediane": 1363500.0
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "moteur": "P4",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 715541,
+        "p95": 1180625,
+        "p99": 1494416,
+        "max": 6819958
+      },
+      "Mio_s": 81.56029257546037,
+      "appel_le_plus_lent": {
+        "total_ns": 6819958,
+        "cpu_ns": 677417,
+        "fichier_ns": 6300374,
+        "lecture_ns": 6804791,
+        "controle_liberation_ns": 15167
+      },
+      "p99_par_campagne_ns": {
+        "1": 1527792,
+        "2": 1526292,
+        "3": 1435375,
+        "4": 1438125,
+        "5": 1502583,
+        "6": 1527250
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 0,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 1699604.0,
+        "cpu_ns_mediane": 554187.5,
+        "fichier_ns_mediane": 1278498.0,
+        "lecture_ns_mediane": 1682437.5,
+        "controle_liberation_ns_mediane": 17000.0,
+        "reliquat_signe_mur_cpu_ns_mediane": 1161750.0
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "moteur": "P4.1",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 719833,
+        "p95": 1204708,
+        "p99": 1664083,
+        "max": 12583916
+      },
+      "Mio_s": 80.24082947620124,
+      "appel_le_plus_lent": {
+        "total_ns": 12583916,
+        "cpu_ns": 648459,
+        "fichier_ns": 12115790,
+        "lecture_ns": 12566291,
+        "controle_liberation_ns": 17625
+      },
+      "p99_par_campagne_ns": {
+        "1": 1558792,
+        "2": 2487250,
+        "3": 1448334,
+        "4": 1552916,
+        "5": 1529458,
+        "6": 1461167
+      },
+      "appels_au_moins_11_738875_ms": 1,
+      "cpu_superieur_au_mur": 0,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 2059646.0,
+        "cpu_ns_mediane": 556812.5,
+        "fichier_ns_mediane": 1655958.0,
+        "lecture_ns_mediane": 2041521.0,
+        "controle_liberation_ns_mediane": 17375.0,
+        "reliquat_signe_mur_cpu_ns_mediane": 1502708.5
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "moteur": "P3",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 783167,
+        "p95": 848000,
+        "p99": 929250,
+        "max": 5831250
+      },
+      "Mio_s": 79.27301470965214,
+      "appel_le_plus_lent": {
+        "total_ns": 5831250,
+        "cpu_ns": 847000,
+        "fichier_ns": 0,
+        "lecture_ns": 5812250,
+        "controle_liberation_ns": 19000
+      },
+      "p99_par_campagne_ns": {
+        "1": 932167,
+        "2": 828458,
+        "3": 864917,
+        "4": 882208,
+        "5": 864917,
+        "6": 1040334
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 11740,
+      "queue_des_appels": {
+        "n": 155,
+        "total_ns_mediane": 972083,
+        "cpu_ns_mediane": 938000,
+        "fichier_ns_mediane": 0,
+        "lecture_ns_mediane": 950625,
+        "controle_liberation_ns_mediane": 19000,
+        "reliquat_signe_mur_cpu_ns_mediane": 15750
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "moteur": "P4",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 369750,
+        "p95": 667333,
+        "p99": 819458,
+        "max": 1052542
+      },
+      "Mio_s": 173.0542642313958,
+      "appel_le_plus_lent": {
+        "total_ns": 1052542,
+        "cpu_ns": 938000,
+        "fichier_ns": 0,
+        "lecture_ns": 1033875,
+        "controle_liberation_ns": 18667
+      },
+      "p99_par_campagne_ns": {
+        "1": 816083,
+        "2": 807208,
+        "3": 821833,
+        "4": 840083,
+        "5": 807583,
+        "6": 819125
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 11944,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 832354.0,
+        "cpu_ns_mediane": 832000.0,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 814208.5,
+        "controle_liberation_ns_mediane": 17687.5,
+        "reliquat_signe_mur_cpu_ns_mediane": -541.0
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "moteur": "P4.1",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 362583,
+        "p95": 662750,
+        "p99": 812250,
+        "max": 1038833
+      },
+      "Mio_s": 173.2353920674004,
+      "appel_le_plus_lent": {
+        "total_ns": 1038833,
+        "cpu_ns": 1035000,
+        "fichier_ns": 0,
+        "lecture_ns": 1020083,
+        "controle_liberation_ns": 18750
+      },
+      "p99_par_campagne_ns": {
+        "1": 808667,
+        "2": 845667,
+        "3": 814750,
+        "4": 811750,
+        "5": 799667,
+        "6": 805667
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 12080,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 826479.0,
+        "cpu_ns_mediane": 827000.0,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 808770.5,
+        "controle_liberation_ns_mediane": 17667.0,
+        "reliquat_signe_mur_cpu_ns_mediane": -416.5
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "moteur": "P3",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 985417,
+        "p95": 1060208,
+        "p99": 1150292,
+        "max": 2575916
+      },
+      "Mio_s": 62.866573306779856,
+      "appel_le_plus_lent": {
+        "total_ns": 2575916,
+        "cpu_ns": 1526000,
+        "fichier_ns": 33376,
+        "lecture_ns": 2557041,
+        "controle_liberation_ns": 18875
+      },
+      "p99_par_campagne_ns": {
+        "1": 1187042,
+        "2": 1078875,
+        "3": 1113125,
+        "4": 1076250,
+        "5": 1093209,
+        "6": 1223375
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 12162,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 1193958.0,
+        "cpu_ns_mediane": 1160500.0,
+        "fichier_ns_mediane": 22041.0,
+        "lecture_ns_mediane": 1174146.0,
+        "controle_liberation_ns_mediane": 18416.5,
+        "reliquat_signe_mur_cpu_ns_mediane": 17562.0
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "moteur": "P4",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 483708,
+        "p95": 667667,
+        "p99": 750375,
+        "max": 1086375
+      },
+      "Mio_s": 128.71981840432207,
+      "appel_le_plus_lent": {
+        "total_ns": 1086375,
+        "cpu_ns": 1086000,
+        "fichier_ns": 17915,
+        "lecture_ns": 1068625,
+        "controle_liberation_ns": 17750
+      },
+      "p99_par_campagne_ns": {
+        "1": 729084,
+        "2": 759292,
+        "3": 742959,
+        "4": 761791,
+        "5": 736375,
+        "6": 750833
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 12185,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 789312.5,
+        "cpu_ns_mediane": 781500.0,
+        "fichier_ns_mediane": 18042.5,
+        "lecture_ns_mediane": 770958.0,
+        "controle_liberation_ns_mediane": 17833.0,
+        "reliquat_signe_mur_cpu_ns_mediane": -500.0
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "moteur": "P4.1",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 484542,
+        "p95": 662708,
+        "p99": 739792,
+        "max": 1192792
+      },
+      "Mio_s": 128.84393057986458,
+      "appel_le_plus_lent": {
+        "total_ns": 1192792,
+        "cpu_ns": 904000,
+        "fichier_ns": 32957,
+        "lecture_ns": 1174417,
+        "controle_liberation_ns": 18375
+      },
+      "p99_par_campagne_ns": {
+        "1": 730917,
+        "2": 757000,
+        "3": 737417,
+        "4": 748500,
+        "5": 731958,
+        "6": 747708
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 12272,
+      "queue_des_appels": {
+        "n": 155,
+        "total_ns_mediane": 778209,
+        "cpu_ns_mediane": 770000,
+        "fichier_ns_mediane": 17501,
+        "lecture_ns_mediane": 755833,
+        "controle_liberation_ns_mediane": 17792,
+        "reliquat_signe_mur_cpu_ns_mediane": -458
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "moteur": "P3",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 786208,
+        "p95": 843834,
+        "p99": 901625,
+        "max": 2406041
+      },
+      "Mio_s": 79.10782442169928,
+      "appel_le_plus_lent": {
+        "total_ns": 2406041,
+        "cpu_ns": 1074000,
+        "fichier_ns": 0,
+        "lecture_ns": 2386583,
+        "controle_liberation_ns": 19458
+      },
+      "p99_par_campagne_ns": {
+        "1": 866375,
+        "2": 983083,
+        "3": 894292,
+        "4": 907125,
+        "5": 883333,
+        "6": 892334
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 11754,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 935812.5,
+        "cpu_ns_mediane": 906500.0,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 915604.0,
+        "controle_liberation_ns_mediane": 18541.0,
+        "reliquat_signe_mur_cpu_ns_mediane": 25687.5
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "moteur": "P4",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 373958,
+        "p95": 664458,
+        "p99": 814125,
+        "max": 1250500
+      },
+      "Mio_s": 172.6469022655835,
+      "appel_le_plus_lent": {
+        "total_ns": 1250500,
+        "cpu_ns": 808000,
+        "fichier_ns": 0,
+        "lecture_ns": 1232417,
+        "controle_liberation_ns": 18083
+      },
+      "p99_par_campagne_ns": {
+        "1": 807750,
+        "2": 817958,
+        "3": 817084,
+        "4": 797792,
+        "5": 814750,
+        "6": 826000
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 11899,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 830083.5,
+        "cpu_ns_mediane": 830000.0,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 812083.5,
+        "controle_liberation_ns_mediane": 17750.0,
+        "reliquat_signe_mur_cpu_ns_mediane": -334.0
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "moteur": "P4.1",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 368791,
+        "p95": 667625,
+        "p99": 820958,
+        "max": 1355333
+      },
+      "Mio_s": 172.21188311407533,
+      "appel_le_plus_lent": {
+        "total_ns": 1355333,
+        "cpu_ns": 1004000,
+        "fichier_ns": 0,
+        "lecture_ns": 1337333,
+        "controle_liberation_ns": 18000
+      },
+      "p99_par_campagne_ns": {
+        "1": 800833,
+        "2": 812833,
+        "3": 843250,
+        "4": 804000,
+        "5": 813542,
+        "6": 870917
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 11812,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 843083.0,
+        "cpu_ns_mediane": 841000.0,
+        "fichier_ns_mediane": 0.0,
+        "lecture_ns_mediane": 824770.5,
+        "controle_liberation_ns_mediane": 18000.0,
+        "reliquat_signe_mur_cpu_ns_mediane": -333.0
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "moteur": "P3",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 1415125,
+        "p95": 1836125,
+        "p99": 2169792,
+        "max": 6854709
+      },
+      "Mio_s": 42.52526142733701,
+      "appel_le_plus_lent": {
+        "total_ns": 6854709,
+        "cpu_ns": 1182000,
+        "fichier_ns": 5802626,
+        "lecture_ns": 6838459,
+        "controle_liberation_ns": 16250
+      },
+      "p99_par_campagne_ns": {
+        "1": 2350875,
+        "2": 2159542,
+        "3": 2201583,
+        "4": 2148417,
+        "5": 2092166,
+        "6": 2215917
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 0,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 2516499.5,
+        "cpu_ns_mediane": 1147500.0,
+        "fichier_ns_mediane": 1436439.0,
+        "lecture_ns_mediane": 2498187.0,
+        "controle_liberation_ns_mediane": 17958.5,
+        "reliquat_signe_mur_cpu_ns_mediane": 1304271.0
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "moteur": "P4",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 896625,
+        "p95": 1395875,
+        "p99": 1768292,
+        "max": 9549917
+      },
+      "Mio_s": 66.05425579448507,
+      "appel_le_plus_lent": {
+        "total_ns": 9549917,
+        "cpu_ns": 1001000,
+        "fichier_ns": 8815627,
+        "lecture_ns": 9531625,
+        "controle_liberation_ns": 18292
+      },
+      "p99_par_campagne_ns": {
+        "1": 2013792,
+        "2": 1777041,
+        "3": 1787708,
+        "4": 1715083,
+        "5": 1684709,
+        "6": 1732458
+      },
+      "appels_au_moins_11_738875_ms": 0,
+      "cpu_superieur_au_mur": 0,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 1999604.5,
+        "cpu_ns_mediane": 780500.0,
+        "fichier_ns_mediane": 1370353.0,
+        "lecture_ns_mediane": 1982583.0,
+        "controle_liberation_ns_mediane": 18000.0,
+        "reliquat_signe_mur_cpu_ns_mediane": 1252937.5
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "moteur": "P4.1",
+      "n": 15360,
+      "latence_ns": {
+        "p50": 897375,
+        "p95": 1454750,
+        "p99": 2220708,
+        "max": 40601416
+      },
+      "Mio_s": 63.204081697527265,
+      "appel_le_plus_lent": {
+        "total_ns": 40601416,
+        "cpu_ns": 757000,
+        "fichier_ns": 40073459,
+        "lecture_ns": 40581541,
+        "controle_liberation_ns": 19875
+      },
+      "p99_par_campagne_ns": {
+        "1": 1718583,
+        "2": 1734500,
+        "3": 2539875,
+        "4": 4861917,
+        "5": 1733875,
+        "6": 1731000
+      },
+      "appels_au_moins_11_738875_ms": 18,
+      "cpu_superieur_au_mur": 0,
+      "queue_des_appels": {
+        "n": 154,
+        "total_ns_mediane": 3091750.5,
+        "cpu_ns_mediane": 738000.0,
+        "fichier_ns_mediane": 2588542.0,
+        "lecture_ns_mediane": 3073250.0,
+        "controle_liberation_ns_mediane": 18416.5,
+        "reliquat_signe_mur_cpu_ns_mediane": 2367479.5
+      }
+    }
+  ],
+  "comparaisons_appariees": [
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "avant": "P3",
+      "apres": "P4",
+      "ratio_p99_apres_avant": [
+        0.764892520773888,
+        0.7776444696007178,
+        0.8239140541643393,
+        0.911831973088033,
+        0.9594494743625358,
+        0.9289538375941728
+      ],
+      "ratio_median": 0.8678730136261861,
+      "campagnes_plus_rapides": 6
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "avant": "P4",
+      "apres": "P4.1",
+      "ratio_p99_apres_avant": [
+        1.0052905719714342,
+        1.009196973187271,
+        1.0117564435134554,
+        0.978358116101459,
+        0.9761989643673836,
+        0.9983009931245226
+      ],
+      "ratio_median": 1.0017957825479784,
+      "campagnes_plus_rapides": 3
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "avant": "P3",
+      "apres": "P4",
+      "ratio_p99_apres_avant": [
+        0.5923887403679824,
+        0.751271058036566,
+        0.6252786829017322,
+        0.6752290756596191,
+        0.7829542316082371,
+        0.6869140740740741
+      ],
+      "ratio_median": 0.6810715748668466,
+      "campagnes_plus_rapides": 6
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "avant": "P4",
+      "apres": "P4.1",
+      "ratio_p99_apres_avant": [
+        0.9715954340323865,
+        0.9415648926237161,
+        1.0042062534284146,
+        0.969894957374307,
+        0.8952303701957086,
+        1.063802254635331
+      ],
+      "ratio_median": 0.9707451957033467,
+      "campagnes_plus_rapides": 4
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "avant": "P3",
+      "apres": "P4",
+      "ratio_p99_apres_avant": [
+        0.8473561437486551,
+        0.8311496165120603,
+        0.9018817204301075,
+        0.9069132629646627,
+        0.7725076896948654,
+        0.7632495164410058
+      ],
+      "ratio_median": 0.8392528801303577,
+      "campagnes_plus_rapides": 6
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "avant": "P4",
+      "apres": "P4.1",
+      "ratio_p99_apres_avant": [
+        1.0130371712771837,
+        0.996729950361117,
+        1.0148196721311475,
+        1.0062423968860883,
+        1.0178117048346056,
+        1.0037161682716675
+      ],
+      "ratio_median": 1.009639784081636,
+      "campagnes_plus_rapides": 1
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "avant": "P3",
+      "apres": "P4",
+      "ratio_p99_apres_avant": [
+        0.912160371027562,
+        0.8400838161790324,
+        0.8059942444023304,
+        0.7775224707711023,
+        0.7764452193252611,
+        0.7966006835978758
+      ],
+      "ratio_median": 0.8012974640001032,
+      "campagnes_plus_rapides": 6
+    },
+    {
+      "architecture": "aarch64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "avant": "P4",
+      "apres": "P4.1",
+      "ratio_p99_apres_avant": [
+        1.02029072020275,
+        1.6296029855361884,
+        1.0090283027083515,
+        1.079819904389396,
+        1.0178858672033426,
+        0.9567307251596006
+      ],
+      "ratio_median": 1.0190882937030463,
+      "campagnes_plus_rapides": 1
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "avant": "P3",
+      "apres": "P4",
+      "ratio_p99_apres_avant": [
+        0.87546866602229,
+        0.9743499368706682,
+        0.9501871277822034,
+        0.9522504896804381,
+        0.9337115584501172,
+        0.7873673262625273
+      ],
+      "ratio_median": 0.9419493431161603,
+      "campagnes_plus_rapides": 6
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "chaud_512k",
+      "avant": "P4",
+      "apres": "P4.1",
+      "ratio_p99_apres_avant": [
+        0.9909126890279543,
+        1.0476444732956065,
+        0.9913814607103877,
+        0.9662735705876682,
+        0.990197911545934,
+        0.9835702731573325
+      ],
+      "ratio_median": 0.990555300286944,
+      "campagnes_plus_rapides": 5
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "avant": "P3",
+      "apres": "P4",
+      "ratio_p99_apres_avant": [
+        0.6142023618372391,
+        0.7037812536206697,
+        0.6674533408197642,
+        0.7078197444831591,
+        0.6735903198747907,
+        0.6137390415857771
+      ],
+      "ratio_median": 0.6705218303472774,
+      "campagnes_plus_rapides": 6
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "buffered",
+      "phase": "froid_32m",
+      "avant": "P4",
+      "apres": "P4.1",
+      "ratio_p99_apres_avant": [
+        1.002514113600079,
+        0.9969813984606712,
+        0.9925406381778806,
+        0.9825529574384575,
+        0.9940016975046682,
+        0.995837955976895
+      ],
+      "ratio_median": 0.9949198267407815,
+      "campagnes_plus_rapides": 5
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "avant": "P3",
+      "apres": "P4",
+      "ratio_p99_apres_avant": [
+        0.9323329966815755,
+        0.8320335109039624,
+        0.9136657825408256,
+        0.8794730604933167,
+        0.9223588386259768,
+        0.925662364092369
+      ],
+      "ratio_median": 0.9180123105834013,
+      "campagnes_plus_rapides": 6
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "chaud_512k",
+      "avant": "P4",
+      "apres": "P4.1",
+      "ratio_p99_apres_avant": [
+        0.991436706901888,
+        0.9937343971206346,
+        1.0320236352688341,
+        1.0077814768761784,
+        0.9985173366063209,
+        1.0543789346246972
+      ],
+      "ratio_median": 1.0031494067412496,
+      "campagnes_plus_rapides": 3
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "avant": "P3",
+      "apres": "P4",
+      "ratio_p99_apres_avant": [
+        0.8566138140054235,
+        0.822878647416906,
+        0.8120102671577678,
+        0.7983007954228625,
+        0.8052463332259486,
+        0.7818244094882615
+      ],
+      "ratio_median": 0.8086283001918582,
+      "campagnes_plus_rapides": 6
+    },
+    {
+      "architecture": "x86_64",
+      "cache_hote": "nocache",
+      "phase": "froid_32m",
+      "avant": "P4",
+      "apres": "P4.1",
+      "ratio_p99_apres_avant": [
+        0.8534064094007723,
+        0.9760607661837853,
+        1.4207437679979058,
+        2.834799831844873,
+        1.0291836750441767,
+        0.9991584211565302
+      ],
+      "ratio_median": 1.0141710481003534,
+      "campagnes_plus_rapides": 3
+    }
+  ]
+}

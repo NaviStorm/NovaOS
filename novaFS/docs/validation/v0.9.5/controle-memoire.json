@@ -1,0 +1,296 @@
+{
+  "unite": "octet",
+  "architectures": {
+    "aarch64": {
+      "sha256_cli": "b224559af29796f8363e611389e6f7e3c22471e9fc19d7e446bf1a7e108e4dc1",
+      "sha256_standard": "f31d6a117f8e2fe7ca8cca830c70ae92ab85be8baf53913745c66a55fb6cd2af",
+      "pile_lc_main": 2097152,
+      "cli": [
+        {
+          "rss_pic": 3162112,
+          "empreinte_pic": 2081200,
+          "cas": "lv_sain",
+          "secteur": 512,
+          "code": 0,
+          "tas_pic": 551984,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2649136,
+          "sans_instrumentation": {
+            "rss_pic": 3178496,
+            "empreinte_pic": 2113968
+          }
+        },
+        {
+          "rss_pic": 2867200,
+          "empreinte_pic": 1802672,
+          "cas": "lv_corrompu",
+          "secteur": 512,
+          "code": 1,
+          "tas_pic": 289616,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2386768,
+          "sans_instrumentation": {
+            "rss_pic": 2932736,
+            "empreinte_pic": 1868208
+          }
+        },
+        {
+          "rss_pic": 2932736,
+          "empreinte_pic": 1851824,
+          "cas": "pool_16_lv",
+          "secteur": 512,
+          "code": 0,
+          "tas_pic": 212240,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2309392,
+          "sans_instrumentation": {
+            "rss_pic": 2899968,
+            "empreinte_pic": 1851824
+          }
+        },
+        {
+          "rss_pic": 3194880,
+          "empreinte_pic": 2113968,
+          "cas": "lv_sain",
+          "secteur": 4096,
+          "code": 0,
+          "tas_pic": 551984,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2649136,
+          "sans_instrumentation": {
+            "rss_pic": 3473408,
+            "empreinte_pic": 2408880
+          }
+        },
+        {
+          "rss_pic": 2867200,
+          "empreinte_pic": 1802672,
+          "cas": "lv_corrompu",
+          "secteur": 4096,
+          "code": 1,
+          "tas_pic": 289616,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2386768,
+          "sans_instrumentation": {
+            "rss_pic": 2916352,
+            "empreinte_pic": 1851824
+          }
+        },
+        {
+          "rss_pic": 2981888,
+          "empreinte_pic": 1900976,
+          "cas": "pool_16_lv",
+          "secteur": 4096,
+          "code": 0,
+          "tas_pic": 212240,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2309392,
+          "sans_instrumentation": {
+            "rss_pic": 2899968,
+            "empreinte_pic": 1851824
+          }
+        }
+      ],
+      "restitution": [
+        {
+          "cas": "sain",
+          "secteur": 512,
+          "cycles": 64,
+          "avant": 79696,
+          "apres": 79696,
+          "pic_phase": 80688
+        },
+        {
+          "cas": "corrompu",
+          "secteur": 512,
+          "cycles": 64,
+          "avant": 80784,
+          "apres": 80784,
+          "pic_phase": 81488
+        },
+        {
+          "cas": "penurie_bitmaps",
+          "secteur": 512,
+          "cycles": 64,
+          "avant": 80784,
+          "apres": 80784,
+          "pic_phase": 80784
+        },
+        {
+          "cas": "sain",
+          "secteur": 4096,
+          "cycles": 64,
+          "avant": 79696,
+          "apres": 79696,
+          "pic_phase": 80688
+        },
+        {
+          "cas": "corrompu",
+          "secteur": 4096,
+          "cycles": 64,
+          "avant": 80784,
+          "apres": 80784,
+          "pic_phase": 81488
+        },
+        {
+          "cas": "penurie_bitmaps",
+          "secteur": 4096,
+          "cycles": 64,
+          "avant": 80784,
+          "apres": 80784,
+          "pic_phase": 80784
+        }
+      ]
+    },
+    "x86_64": {
+      "sha256_cli": "dbc2eb6fb6c1d80d9a6f959c50c95ca42349e9087c0c7caf60cae4ae7c6c1737",
+      "sha256_standard": "67d5e7bb74d92fb5236618f874574d0e1e15d67adf36e4651fe87e98ac18fe1e",
+      "pile_lc_main": 2097152,
+      "cli": [
+        {
+          "rss_pic": 4763648,
+          "empreinte_pic": 3593176,
+          "cas": "lv_sain",
+          "secteur": 512,
+          "code": 0,
+          "tas_pic": 551888,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2649040,
+          "sans_instrumentation": {
+            "rss_pic": 4968448,
+            "empreinte_pic": 3843032
+          }
+        },
+        {
+          "rss_pic": 4661248,
+          "empreinte_pic": 3416952,
+          "cas": "lv_corrompu",
+          "secteur": 512,
+          "code": 1,
+          "tas_pic": 289520,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2386672,
+          "sans_instrumentation": {
+            "rss_pic": 4210688,
+            "empreinte_pic": 2913000
+          }
+        },
+        {
+          "rss_pic": 4259840,
+          "empreinte_pic": 2872016,
+          "cas": "pool_16_lv",
+          "secteur": 512,
+          "code": 0,
+          "tas_pic": 212144,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2309296,
+          "sans_instrumentation": {
+            "rss_pic": 4190208,
+            "empreinte_pic": 2859728
+          }
+        },
+        {
+          "rss_pic": 5390336,
+          "empreinte_pic": 4351128,
+          "cas": "lv_sain",
+          "secteur": 4096,
+          "code": 0,
+          "tas_pic": 551888,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2649040,
+          "sans_instrumentation": {
+            "rss_pic": 5206016,
+            "empreinte_pic": 4064192
+          }
+        },
+        {
+          "rss_pic": 4595712,
+          "empreinte_pic": 3335008,
+          "cas": "lv_corrompu",
+          "secteur": 4096,
+          "code": 1,
+          "tas_pic": 289520,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2386672,
+          "sans_instrumentation": {
+            "rss_pic": 4591616,
+            "empreinte_pic": 3375968
+          }
+        },
+        {
+          "rss_pic": 4247552,
+          "empreinte_pic": 2843320,
+          "cas": "pool_16_lv",
+          "secteur": 4096,
+          "code": 0,
+          "tas_pic": 212144,
+          "pile_reservee": 2097152,
+          "tas_plus_pile": 2309296,
+          "sans_instrumentation": {
+            "rss_pic": 4214784,
+            "empreinte_pic": 2867896
+          }
+        }
+      ],
+      "restitution": [
+        {
+          "cas": "sain",
+          "secteur": 512,
+          "cycles": 64,
+          "avant": 71856,
+          "apres": 71856,
+          "pic_phase": 72848
+        },
+        {
+          "cas": "corrompu",
+          "secteur": 512,
+          "cycles": 64,
+          "avant": 72944,
+          "apres": 72944,
+          "pic_phase": 73648
+        },
+        {
+          "cas": "penurie_bitmaps",
+          "secteur": 512,
+          "cycles": 64,
+          "avant": 72944,
+          "apres": 72944,
+          "pic_phase": 72944
+        },
+        {
+          "cas": "sain",
+          "secteur": 4096,
+          "cycles": 64,
+          "avant": 71856,
+          "apres": 71856,
+          "pic_phase": 72848
+        },
+        {
+          "cas": "corrompu",
+          "secteur": 4096,
+          "cycles": 64,
+          "avant": 72944,
+          "apres": 72944,
+          "pic_phase": 73648
+        },
+        {
+          "cas": "penurie_bitmaps",
+          "secteur": 4096,
+          "cycles": 64,
+          "avant": 72944,
+          "apres": 72944,
+          "pic_phase": 72944
+        }
+      ]
+    }
+  },
+  "lv_octets": 8589934592,
+  "lv_alloues_hote": 81920,
+  "bloc_corrompu": 5,
+  "pool_octets": 17825792,
+  "comparaison_integrale_apres": [
+    "lv_sain",
+    "lv_corrompu",
+    "pool_16_lv"
+  ]
+}

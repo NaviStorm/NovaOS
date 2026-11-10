@@ -1,0 +1,820 @@
+{
+  "images": {
+    "serie-1.img": "2fc08442d7b7c4c2037b6763b44650b16c96f8683510af2b7bd926ccb0e5e319",
+    "serie-2.img": "c6eb6fdf4b5c30338d37abedc882d91d65bfb61933d48b3259d3b84b1ba91f16",
+    "serie-3.img": "8c6d8889ea848fb266247a3aa9eca94fc3ec3605a946beab7a28b55391e2b495",
+    "serie-4.img": "59001b9572f2cd470c602a15c576e8841cefd2d2d9e677808758d25cccce1281",
+    "serie-5.img": "eec8d6b443a025638ab07d115d5730b2abd457c3eaf8d7eb2dd56e7a52af44e0"
+  },
+  "sha256_lecteur": "d0bc95bcccdd047b216ef17573440d8dd1cb1052040df2ad97865b1d90019ca2",
+  "sha256_brut": "dbf83919d808abbda410f6fbf1b69bece812cccb533f1f6d87586ac402b91369",
+  "binaires": [
+    {
+      "moteur": "P3",
+      "architecture": "aarch64",
+      "sha256_rlib": "074eb30fbd6c8b49f22e8308ed41c8a7b3230ec9c54f7ca76bb514a5aec2a159",
+      "sha256_binaire": "6f24ce8df7f46d605bc8daadc31afc064a10275123a9213cfb87c11f4b29d733",
+      "sha256_binaire_instrumente": "e13b936e1ffaa39a83f883f11c628bd613d64c4af99eb77b19213e257b48641a"
+    },
+    {
+      "moteur": "P3",
+      "architecture": "x86_64",
+      "sha256_rlib": "98bf52656195861946ca52657ac126919cc9fdd8a4b8a76c5b614426e66c847d",
+      "sha256_binaire": "7ddfeb3d398e7e1587ec5579e01fafbd7e7df1be01f5cd78ebb0b1930938fd63",
+      "sha256_binaire_instrumente": "66acdb35b1318a722fa0a149e21e9fcb1056fc0254fcbb05d361231cd27a15b8"
+    },
+    {
+      "moteur": "P4",
+      "architecture": "aarch64",
+      "sha256_rlib": "624aaaf532203f5572bd4a0b90ff2bfaceb5e16c832938a47adbbf72a8505514",
+      "sha256_binaire": "7915180f5e59becf6de97e5442139a71643aaced8e52c3845c40cfbdfcac4f16",
+      "sha256_binaire_instrumente": "d6fe1f66a47fa4d888c28c3418960274725188f17c1aa3735fd4435f3ce48509"
+    },
+    {
+      "moteur": "P4",
+      "architecture": "x86_64",
+      "sha256_rlib": "4491a8e0ef45fa5145fea6e5c080b40728ed94fdb19b12a03b3b7aa2b097f803",
+      "sha256_binaire": "982f58a5ca195106f97f9a4a454a219b26f962421f3d5a8dbb23a5ed3fcf0aa0",
+      "sha256_binaire_instrumente": "7aa87bff72aaa192db4c014be84f029f0c702a4e8eb4c9ccd8459e11e9920deb"
+    },
+    {
+      "moteur": "P4.1",
+      "architecture": "aarch64",
+      "sha256_rlib": "36d986a2b47ba817e7113336953273b5dc51020dfc3b0530c892e24c7b24ed77",
+      "sha256_binaire": "a291e67f9dd2fe0cc6a7021cb58f8bb68c5b22f2c100805f2412524dc0c7e407",
+      "sha256_binaire_instrumente": "d099002d9d98660653fff9f0db529ebcf74f218d4983352e735feb93acc10444"
+    },
+    {
+      "moteur": "P4.1",
+      "architecture": "x86_64",
+      "sha256_rlib": "07b89264759e51d70ce095a9654aaaa28e5981c883f50f89aed9e88af590d104",
+      "sha256_binaire": "c51ab93c420e14462ccfa2f32824d8db7b5787d2f7c92c752db69be4aba86fd9",
+      "sha256_binaire_instrumente": "f869712f1067326774ef67604cd472080c49b7f18d3ff95de9c72e9c5e87384b"
+    }
+  ],
+  "machine": "arm64",
+  "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2\nBuildVersion:\t\t26B123",
+  "campagnes": [
+    {
+      "debut_UTC": "2026-11-10T21:06:10Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 1,
+      "ordre": 1,
+      "architecture": "aarch64",
+      "moteur": "P3",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 586708,
+          "p95": 613542,
+          "p99": 651458,
+          "max": 724458,
+          "Mio_s": 106.58901947940912
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 457333,
+          "p95": 502708,
+          "p99": 552917,
+          "max": 637958,
+          "Mio_s": 135.71292742175783
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:06:16Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 1,
+      "ordre": 2,
+      "architecture": "aarch64",
+      "moteur": "P4",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 295708,
+          "p95": 390167,
+          "p99": 433125,
+          "max": 560834,
+          "Mio_s": 212.27588103197257
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 206416,
+          "p95": 369917,
+          "p99": 462542,
+          "max": 486792,
+          "Mio_s": 301.0319520186827
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:06:21Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 1,
+      "ordre": 3,
+      "architecture": "aarch64",
+      "moteur": "P4.1",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 292750,
+          "p95": 396375,
+          "p99": 440417,
+          "max": 562708,
+          "Mio_s": 212.88051264032993
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 206958,
+          "p95": 383375,
+          "p99": 464750,
+          "max": 496125,
+          "Mio_s": 296.9194383723543
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:06:26Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 1,
+      "ordre": 1,
+      "architecture": "x86_64",
+      "moteur": "P3",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 958042,
+          "p95": 1069708,
+          "p99": 1134958,
+          "max": 1194792,
+          "Mio_s": 64.51317758039714
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 751208,
+          "p95": 877125,
+          "p99": 935708,
+          "max": 1021000,
+          "Mio_s": 81.7010811765005
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:06:35Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 1,
+      "ordre": 2,
+      "architecture": "x86_64",
+      "moteur": "P4",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 466958,
+          "p95": 618334,
+          "p99": 691917,
+          "max": 992000,
+          "Mio_s": 134.22508182495213
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 334666,
+          "p95": 618375,
+          "p99": 761833,
+          "max": 1322042,
+          "Mio_s": 184.02593489462154
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:06:43Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 1,
+      "ordre": 3,
+      "architecture": "x86_64",
+      "moteur": "P4.1",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 464542,
+          "p95": 629208,
+          "p99": 707375,
+          "max": 983458,
+          "Mio_s": 135.3869224506746
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 328875,
+          "p95": 620875,
+          "p99": 768958,
+          "max": 813875,
+          "Mio_s": 184.5781229068228
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:06:50Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 2,
+      "ordre": 1,
+      "architecture": "x86_64",
+      "moteur": "P4",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 466917,
+          "p95": 660083,
+          "p99": 753417,
+          "max": 1029125,
+          "Mio_s": 133.16839417853998
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 343375,
+          "p95": 632792,
+          "p99": 779292,
+          "max": 991834,
+          "Mio_s": 182.6252784641711
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:06:58Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 2,
+      "ordre": 2,
+      "architecture": "x86_64",
+      "moteur": "P4.1",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 467458,
+          "p95": 637750,
+          "p99": 709250,
+          "max": 994708,
+          "Mio_s": 133.21314066705696
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 342834,
+          "p95": 632916,
+          "p99": 762416,
+          "max": 880708,
+          "Mio_s": 183.04346353084475
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:05Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 2,
+      "ordre": 3,
+      "architecture": "x86_64",
+      "moteur": "P3",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 956209,
+          "p95": 1028791,
+          "p99": 1099750,
+          "max": 1779375,
+          "Mio_s": 64.80389446229405
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 748333,
+          "p95": 794834,
+          "p99": 854292,
+          "max": 1116208,
+          "Mio_s": 83.38376170438906
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:15Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 2,
+      "ordre": 1,
+      "architecture": "aarch64",
+      "moteur": "P4",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 297458,
+          "p95": 400375,
+          "p99": 439125,
+          "max": 581584,
+          "Mio_s": 208.9640234881779
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 213334,
+          "p95": 383208,
+          "p99": 465458,
+          "max": 543000,
+          "Mio_s": 293.3484168689061
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:19Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 2,
+      "ordre": 2,
+      "architecture": "aarch64",
+      "moteur": "P4.1",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 297541,
+          "p95": 413000,
+          "p99": 483000,
+          "max": 727750,
+          "Mio_s": 205.56674778703123
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 209917,
+          "p95": 393792,
+          "p99": 480416,
+          "max": 960958,
+          "Mio_s": 288.32415581327143
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:24Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 2,
+      "ordre": 3,
+      "architecture": "aarch64",
+      "moteur": "P3",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 592334,
+          "p95": 634667,
+          "p99": 688166,
+          "max": 978042,
+          "Mio_s": 105.25757765040802
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 460625,
+          "p95": 501791,
+          "p99": 533416,
+          "max": 614584,
+          "Mio_s": 135.58423880237757
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:29Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 3,
+      "ordre": 1,
+      "architecture": "aarch64",
+      "moteur": "P4.1",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 297667,
+          "p95": 400292,
+          "p99": 443708,
+          "max": 586375,
+          "Mio_s": 208.68931192041345
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 211083,
+          "p95": 374833,
+          "p99": 465667,
+          "max": 615250,
+          "Mio_s": 295.08455942212663
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:34Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 3,
+      "ordre": 2,
+      "architecture": "aarch64",
+      "moteur": "P3",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 594958,
+          "p95": 635666,
+          "p99": 687667,
+          "max": 796667,
+          "Mio_s": 104.62054745027953
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 460584,
+          "p95": 498250,
+          "p99": 539083,
+          "max": 636625,
+          "Mio_s": 135.07873360317032
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:40Z",
+      "secteur": 4096,
+      "pile_principale": 2097152,
+      "pile_travail": 2109440,
+      "campagne": 3,
+      "ordre": 3,
+      "architecture": "aarch64",
+      "moteur": "P4",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 295417,
+          "p95": 411417,
+          "p99": 468000,
+          "max": 612041,
+          "Mio_s": 208.58002619913742
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 210375,
+          "p95": 391625,
+          "p99": 493250,
+          "max": 682583,
+          "Mio_s": 289.23180987569685
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:44Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 3,
+      "ordre": 1,
+      "architecture": "x86_64",
+      "moteur": "P4.1",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 464833,
+          "p95": 632375,
+          "p99": 712875,
+          "max": 1072209,
+          "Mio_s": 134.6938062148441
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 348834,
+          "p95": 623750,
+          "p99": 779750,
+          "max": 915792,
+          "Mio_s": 183.86026682233992
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:07:52Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 3,
+      "ordre": 2,
+      "architecture": "x86_64",
+      "moteur": "P3",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 943625,
+          "p95": 997167,
+          "p99": 1043500,
+          "max": 1712792,
+          "Mio_s": 65.87883925065755
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 744166,
+          "p95": 776083,
+          "p99": 811375,
+          "max": 1063333,
+          "Mio_s": 84.03701385484318
+        }
+      }
+    },
+    {
+      "debut_UTC": "2026-11-10T21:08:01Z",
+      "secteur": 512,
+      "pile_principale": 2097152,
+      "pile_travail": 2097152,
+      "campagne": 3,
+      "ordre": 3,
+      "architecture": "x86_64",
+      "moteur": "P4",
+      "phases": {
+        "froid_32m": {
+          "n": 2560,
+          "p50": 465042,
+          "p95": 632417,
+          "p99": 704875,
+          "max": 977375,
+          "Mio_s": 135.3478067781207
+        },
+        "chaud_512k": {
+          "n": 2560,
+          "p50": 329125,
+          "p95": 630958,
+          "p99": 763958,
+          "max": 807291,
+          "Mio_s": 183.71164682376502
+        }
+      }
+    }
+  ],
+  "groupes": [
+    {
+      "architecture": "aarch64",
+      "moteur": "P3",
+      "phase": "chaud_512k",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 459500,
+        "p95": 501000,
+        "p99": 541791,
+        "max": 637958
+      },
+      "Mio_s": 135.45807951453554
+    },
+    {
+      "architecture": "aarch64",
+      "moteur": "P3",
+      "phase": "froid_32m",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 591375,
+        "p95": 628500,
+        "p99": 677917,
+        "max": 978042
+      },
+      "Mio_s": 105.48269182713202
+    },
+    {
+      "architecture": "aarch64",
+      "moteur": "P4",
+      "phase": "chaud_512k",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 210208,
+        "p95": 382417,
+        "p99": 469667,
+        "max": 682583
+      },
+      "Mio_s": 294.4566621227444
+    },
+    {
+      "architecture": "aarch64",
+      "moteur": "P4",
+      "phase": "froid_32m",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 296041,
+        "p95": 401417,
+        "p99": 448625,
+        "max": 612041
+      },
+      "Mio_s": 209.9269345237056
+    },
+    {
+      "architecture": "aarch64",
+      "moteur": "P4.1",
+      "phase": "chaud_512k",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 209625,
+        "p95": 383291,
+        "p99": 468084,
+        "max": 960958
+      },
+      "Mio_s": 293.39582071002906
+    },
+    {
+      "architecture": "aarch64",
+      "moteur": "P4.1",
+      "phase": "froid_32m",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 295583,
+        "p95": 402917,
+        "p99": 457500,
+        "max": 727750
+      },
+      "Mio_s": 209.00267783461794
+    },
+    {
+      "architecture": "x86_64",
+      "moteur": "P3",
+      "phase": "chaud_512k",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 746833,
+        "p95": 831750,
+        "p99": 900292,
+        "max": 1116208
+      },
+      "Mio_s": 83.02889106781915
+    },
+    {
+      "architecture": "x86_64",
+      "moteur": "P3",
+      "phase": "froid_32m",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 952125,
+        "p95": 1039500,
+        "p99": 1106959,
+        "max": 1779375
+      },
+      "Mio_s": 65.06002882700902
+    },
+    {
+      "architecture": "x86_64",
+      "moteur": "P4",
+      "phase": "chaud_512k",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 340291,
+        "p95": 630250,
+        "p99": 767875,
+        "max": 1322042
+      },
+      "Mio_s": 183.45232025982884
+    },
+    {
+      "architecture": "x86_64",
+      "moteur": "P4",
+      "phase": "froid_32m",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 466041,
+        "p95": 639542,
+        "p99": 725542,
+        "max": 1029125
+      },
+      "Mio_s": 134.241196889992
+    },
+    {
+      "architecture": "x86_64",
+      "moteur": "P4.1",
+      "phase": "chaud_512k",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 345583,
+        "p95": 630375,
+        "p99": 767750,
+        "max": 915792
+      },
+      "Mio_s": 183.82514555524912
+    },
+    {
+      "architecture": "x86_64",
+      "moteur": "P4.1",
+      "phase": "froid_32m",
+      "latence_ns": {
+        "n": 7680,
+        "p50": 465625,
+        "p95": 634125,
+        "p99": 710250,
+        "max": 1072209
+      },
+      "Mio_s": 134.42515799093837
+    }
+  ],
+  "comparaisons": [
+    {
+      "architecture": "aarch64",
+      "avant": "P3",
+      "apres": "P4",
+      "phase": "froid_32m",
+      "ratios_p99": [
+        0.6648548333123547,
+        0.6381091190207014,
+        0.6805619580407377
+      ],
+      "mediane": 0.6648548333123547
+    },
+    {
+      "architecture": "aarch64",
+      "avant": "P4",
+      "apres": "P4.1",
+      "phase": "froid_32m",
+      "ratios_p99": [
+        1.0168357864357864,
+        1.0999146029035012,
+        0.9480940170940171
+      ],
+      "mediane": 1.0168357864357864
+    },
+    {
+      "architecture": "aarch64",
+      "avant": "P3",
+      "apres": "P4",
+      "phase": "chaud_512k",
+      "ratios_p99": [
+        0.836548704416757,
+        0.8725984972329289,
+        0.9149796970039864
+      ],
+      "mediane": 0.8725984972329289
+    },
+    {
+      "architecture": "aarch64",
+      "avant": "P4",
+      "apres": "P4.1",
+      "phase": "chaud_512k",
+      "ratios_p99": [
+        1.0047736205577007,
+        1.0321360896149598,
+        0.9440790674100354
+      ],
+      "mediane": 1.0047736205577007
+    },
+    {
+      "architecture": "x86_64",
+      "avant": "P3",
+      "apres": "P4",
+      "phase": "froid_32m",
+      "ratios_p99": [
+        0.6096410616075661,
+        0.6850802455103433,
+        0.6754911356013417
+      ],
+      "mediane": 0.6754911356013417
+    },
+    {
+      "architecture": "x86_64",
+      "avant": "P4",
+      "apres": "P4.1",
+      "phase": "froid_32m",
+      "ratios_p99": [
+        1.0223408298972276,
+        0.94137774963931,
+        1.011349530058521
+      ],
+      "mediane": 1.011349530058521
+    },
+    {
+      "architecture": "x86_64",
+      "avant": "P3",
+      "apres": "P4",
+      "phase": "chaud_512k",
+      "ratios_p99": [
+        0.8141781410440009,
+        0.9122080038207077,
+        0.9415596980434447
+      ],
+      "mediane": 0.9122080038207077
+    },
+    {
+      "architecture": "x86_64",
+      "avant": "P4",
+      "apres": "P4.1",
+      "phase": "chaud_512k",
+      "ratios_p99": [
+        1.0093524433832612,
+        0.9783444459843037,
+        1.020671293448069
+      ],
+      "mediane": 1.0093524433832612
+    }
+  ]
+}

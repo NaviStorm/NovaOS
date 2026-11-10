@@ -86,6 +86,8 @@ impl Device for FileImage {
     }
 
     fn read(&self, index: u64) -> Result<Block> {
+        #[cfg(feature = "latency-probes")]
+        let _sample = crate::latency_probes::enter(crate::latency_probes::Phase::ImageRead);
         let mut data = [0; BLOCK as usize];
         self.file
             .read_exact_at(&mut data, self.geometry.offset(index)?)?;
