@@ -1,0 +1,613 @@
+{
+  "architecture": "aarch64",
+  "execution": "native Apple Silicon",
+  "date_debut_utc": "2026-11-10T17:35:06+00:00",
+  "macOS": "27.2",
+  "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "commande_reproduction": "/usr/bin/time -l prototype/novafs/target/aarch64-apple-darwin/release/novafs-bench 4096",
+  "commande_executee": "/usr/bin/time -l /private/tmp/nova09-arm-qualified 4096",
+  "binaire": "Copie immuable du binaire de release durant les deux campagnes, sans reconstruction intermédiaire.",
+  "sha256_executable": "c08173bbd0f3fa6b6ff028bc99e04a68005f7e86863208733b3fcc6f12aabfc6",
+  "sha256_stdout_integral": "fa19b8ab2c1ee6a439740e86ab41008b9c0960611b0d23188c360f6fbda40042",
+  "sha256_time_l": "351f13102bffae59c735b02f5027e10b6b7619b2cc93f768865cd8a88e12aa30",
+  "fichier_series": "bench-aarch64.tsv",
+  "sha256_series": "e942db9a51d98cdd3697601f07af146c42f35102a0cf47a7ce9027edad6b1a64",
+  "secteur_logique_octets": 4096,
+  "image_principale_mio": 96,
+  "image_pression_blocs": 480,
+  "image_maximale_creuse_gio": 8,
+  "ordre_de_lancement": "ARM puis x86_64, séquentiel ; pas de contrôle de l’activité générale du Mac",
+  "methode": "Une écriture inclut les deux sync_all. Lectures avec contrôle des contenus. Paires de lectures post-remontage : cache propre du moteur vidé avant la première, puis lecture répétée ; le cache du système hôte n’est jamais purgé.",
+  "duree_processus_s": {
+    "reelle": 172.19,
+    "utilisateur": 45.51,
+    "systeme": 6.52
+  },
+  "memoire": {
+    "pic_malloc_octets": 1188480,
+    "piles_travail_reservees_max": 2621440,
+    "majorant_tas_rust_et_piles": 3809920,
+    "plafond_7mio": 7340032,
+    "rss_max_octets": 5783552,
+    "empreinte_max_octets": 4669896,
+    "depassement_majorant_travail_7mio_octets": 0,
+    "depassement_rss_processus_7mio_octets": 0,
+    "portee": "Allocations Rust vivantes arrondies par malloc_size, moteur et instrumentation, avec coexistence de realloc. Piles des deux threads de travail comptées selon leur réservation (2 Mio et 512 Kio), profondeur non mesurée. RSS et empreinte résidente de tout le processus mesurées par macOS, bibliothèque, runtime et éventuelle traduction inclus. Le cache fichier et le noyau hôte sont hors enveloppe moteur."
+  },
+  "synthese_series": {
+    "ecriture_seq64k": {
+      "series": 5,
+      "operations": 2560,
+      "octets": 167772160,
+      "secondes": 33.567311,
+      "mio_par_seconde": 4.767,
+      "operations_par_seconde": 76.265,
+      "plus_haut_p99_serie_ns": 35111750,
+      "maximum_ns": 211583875,
+      "octets_lus_au_peripherique": 709890048,
+      "octets_ecrits_au_peripherique": 252026880,
+      "flushs": 5120,
+      "duree_cumulee_flush_s": 25.129082
+    },
+    "lecture_seq64k": {
+      "series": 5,
+      "operations": 2560,
+      "octets": 167772160,
+      "secondes": 1.570221,
+      "mio_par_seconde": 101.896,
+      "operations_par_seconde": 1630.344,
+      "plus_haut_p99_serie_ns": 1547625,
+      "maximum_ns": 3773208,
+      "octets_lus_au_peripherique": 171364352,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    },
+    "lecture_aleatoire4k": {
+      "series": 5,
+      "operations": 1280,
+      "octets": 5242880,
+      "secondes": 0.093512,
+      "mio_par_seconde": 53.469,
+      "operations_par_seconde": 13688.058,
+      "plus_haut_p99_serie_ns": 99583,
+      "maximum_ns": 105667,
+      "octets_lus_au_peripherique": 13393920,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    },
+    "ecriture_aleatoire4k": {
+      "series": 5,
+      "operations": 1280,
+      "octets": 5242880,
+      "secondes": 13.270306,
+      "mio_par_seconde": 0.377,
+      "operations_par_seconde": 96.456,
+      "plus_haut_p99_serie_ns": 15894708,
+      "maximum_ns": 19978334,
+      "octets_lus_au_peripherique": 68689920,
+      "octets_ecrits_au_peripherique": 45096960,
+      "flushs": 2560,
+      "duree_cumulee_flush_s": 11.118987
+    },
+    "creer_et_ecrire16": {
+      "series": 1,
+      "operations": 4096,
+      "octets": 65536,
+      "secondes": 85.930126,
+      "mio_par_seconde": 0.001,
+      "operations_par_seconde": 47.667,
+      "plus_haut_p99_serie_ns": 24995209,
+      "maximum_ns": 485010292,
+      "octets_lus_au_peripherique": 622247936,
+      "octets_ecrits_au_peripherique": 302116864,
+      "flushs": 16384,
+      "duree_cumulee_flush_s": 73.008791
+    },
+    "petite_lecture16": {
+      "series": 5,
+      "operations": 20480,
+      "octets": 327680,
+      "secondes": 3.412567,
+      "mio_par_seconde": 0.092,
+      "operations_par_seconde": 6001.347,
+      "plus_haut_p99_serie_ns": 365667,
+      "maximum_ns": 918833,
+      "octets_lus_au_peripherique": 236417024,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    },
+    "verification_integrale": {
+      "series": 1,
+      "operations": 1,
+      "octets": 0,
+      "secondes": 2.423192,
+      "mio_par_seconde": 0.0,
+      "operations_par_seconde": 0.413,
+      "plus_haut_p99_serie_ns": 2423192125,
+      "maximum_ns": 2423192125,
+      "octets_lus_au_peripherique": 1161596928,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    },
+    "lecture_apres_remontage": {
+      "series": 5,
+      "operations": 2560,
+      "octets": 167772160,
+      "secondes": 1.574082,
+      "mio_par_seconde": 101.647,
+      "operations_par_seconde": 1626.344,
+      "plus_haut_p99_serie_ns": 702833,
+      "maximum_ns": 713917,
+      "octets_lus_au_peripherique": 172032000,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    },
+    "lecture_repetee": {
+      "series": 5,
+      "operations": 2560,
+      "octets": 167772160,
+      "secondes": 1.566228,
+      "mio_par_seconde": 102.156,
+      "operations_par_seconde": 1634.5,
+      "plus_haut_p99_serie_ns": 656166,
+      "maximum_ns": 749833,
+      "octets_lus_au_peripherique": 171765760,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    },
+    "lecture_512k_froide": {
+      "series": 5,
+      "operations": 40,
+      "octets": 2621440,
+      "secondes": 0.024607,
+      "mio_par_seconde": 101.597,
+      "operations_par_seconde": 1625.554,
+      "plus_haut_p99_serie_ns": 646041,
+      "maximum_ns": 646041,
+      "octets_lus_au_peripherique": 2867200,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    },
+    "lecture_512k_chaude": {
+      "series": 5,
+      "operations": 40,
+      "octets": 2621440,
+      "secondes": 0.019755,
+      "mio_par_seconde": 126.548,
+      "operations_par_seconde": 2024.761,
+      "plus_haut_p99_serie_ns": 517416,
+      "maximum_ns": 517416,
+      "octets_lus_au_peripherique": 0,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    },
+    "reemploi": {
+      "series": 1,
+      "operations": 162,
+      "octets": 663552,
+      "secondes": 2.374625,
+      "mio_par_seconde": 0.266,
+      "operations_par_seconde": 68.221,
+      "plus_haut_p99_serie_ns": 181754750,
+      "maximum_ns": 188519291,
+      "octets_lus_au_peripherique": 4841472,
+      "octets_ecrits_au_peripherique": 4435968,
+      "flushs": 324,
+      "duree_cumulee_flush_s": 2.239303
+    },
+    "verification_8gio_creux": {
+      "series": 1,
+      "operations": 1,
+      "octets": 0,
+      "secondes": 0.003408,
+      "mio_par_seconde": 0.0,
+      "operations_par_seconde": 293.413,
+      "plus_haut_p99_serie_ns": 3408083,
+      "maximum_ns": 3408083,
+      "octets_lus_au_peripherique": 77824,
+      "octets_ecrits_au_peripherique": 0,
+      "flushs": 0,
+      "duree_cumulee_flush_s": 0.0
+    }
+  },
+  "fragmentation": [
+    {
+      "serie": 1,
+      "extents": 1579,
+      "intervalles": 14,
+      "plus_grand": 16211
+    },
+    {
+      "serie": 2,
+      "extents": 2357,
+      "intervalles": 17,
+      "plus_grand": 16188
+    },
+    {
+      "serie": 3,
+      "extents": 2899,
+      "intervalles": 17,
+      "plus_grand": 16176
+    },
+    {
+      "serie": 4,
+      "extents": 3394,
+      "intervalles": 18,
+      "plus_grand": 16164
+    },
+    {
+      "serie": 5,
+      "extents": 3792,
+      "intervalles": 17,
+      "plus_grand": 16154
+    }
+  ],
+  "pression": {
+    "pages_avant_refus": 324,
+    "extents": 324,
+    "libres_au_refus": 133,
+    "differes": 5,
+    "plus_grand": 128,
+    "blocs_reutilises": 157,
+    "intervalles_apres": 12
+  },
+  "remontages": [
+    {
+      "serie": 1,
+      "duree_ns": 2238175209
+    },
+    {
+      "serie": 2,
+      "duree_ns": 2242566250
+    },
+    {
+      "serie": 3,
+      "duree_ns": 2242073042
+    },
+    {
+      "serie": 4,
+      "duree_ns": 2254296750
+    },
+    {
+      "serie": 5,
+      "duree_ns": 2248368500
+    }
+  ],
+  "compteurs_cache": [
+    {
+      "serie": 1,
+      "phase": "lecture_apres_remontage",
+      "pages": 256,
+      "touches": 28976,
+      "absences": 8400,
+      "evictions": 8144,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 1,
+      "phase": "lecture_repetee",
+      "pages": 256,
+      "touches": 28989,
+      "absences": 8387,
+      "evictions": 8387,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 1,
+      "phase": "lecture_512k_froide",
+      "pages": 140,
+      "touches": 444,
+      "absences": 140,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 1,
+      "phase": "lecture_512k_chaude",
+      "pages": 140,
+      "touches": 584,
+      "absences": 0,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 2,
+      "phase": "lecture_apres_remontage",
+      "pages": 256,
+      "touches": 28976,
+      "absences": 8400,
+      "evictions": 8144,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 2,
+      "phase": "lecture_repetee",
+      "pages": 256,
+      "touches": 28989,
+      "absences": 8387,
+      "evictions": 8387,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 2,
+      "phase": "lecture_512k_froide",
+      "pages": 140,
+      "touches": 444,
+      "absences": 140,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 2,
+      "phase": "lecture_512k_chaude",
+      "pages": 140,
+      "touches": 584,
+      "absences": 0,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 3,
+      "phase": "lecture_apres_remontage",
+      "pages": 256,
+      "touches": 28976,
+      "absences": 8400,
+      "evictions": 8144,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 3,
+      "phase": "lecture_repetee",
+      "pages": 256,
+      "touches": 28989,
+      "absences": 8387,
+      "evictions": 8387,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 3,
+      "phase": "lecture_512k_froide",
+      "pages": 140,
+      "touches": 444,
+      "absences": 140,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 3,
+      "phase": "lecture_512k_chaude",
+      "pages": 140,
+      "touches": 584,
+      "absences": 0,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 4,
+      "phase": "lecture_apres_remontage",
+      "pages": 256,
+      "touches": 28976,
+      "absences": 8400,
+      "evictions": 8144,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 4,
+      "phase": "lecture_repetee",
+      "pages": 256,
+      "touches": 28989,
+      "absences": 8387,
+      "evictions": 8387,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 4,
+      "phase": "lecture_512k_froide",
+      "pages": 140,
+      "touches": 444,
+      "absences": 140,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 4,
+      "phase": "lecture_512k_chaude",
+      "pages": 140,
+      "touches": 584,
+      "absences": 0,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 5,
+      "phase": "lecture_apres_remontage",
+      "pages": 256,
+      "touches": 28976,
+      "absences": 8400,
+      "evictions": 8144,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 5,
+      "phase": "lecture_repetee",
+      "pages": 256,
+      "touches": 28989,
+      "absences": 8387,
+      "evictions": 8387,
+      "pages_rendues_avant_duo": 0
+    },
+    {
+      "serie": 5,
+      "phase": "lecture_512k_froide",
+      "pages": 140,
+      "touches": 444,
+      "absences": 140,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    },
+    {
+      "serie": 5,
+      "phase": "lecture_512k_chaude",
+      "pages": 140,
+      "touches": 584,
+      "absences": 0,
+      "evictions": 0,
+      "pages_rendues_avant_duo": 256
+    }
+  ],
+  "contention_chaque_acteur": [
+    {
+      "serie": 0,
+      "acteur": "A",
+      "operations": 8,
+      "utile": 65536,
+      "acteur_ns": 150938542,
+      "simultane_ns": 150999791,
+      "p50_ns": 10317333,
+      "p95_ns": 82494542,
+      "p99_ns": 82494542,
+      "max_ns": 82494542
+    },
+    {
+      "serie": 0,
+      "acteur": "B",
+      "operations": 8,
+      "utile": 65536,
+      "acteur_ns": 73910542,
+      "simultane_ns": 150999791,
+      "p50_ns": 8719333,
+      "p95_ns": 10362791,
+      "p99_ns": 10362791,
+      "max_ns": 10362791
+    },
+    {
+      "serie": 1,
+      "acteur": "A",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 1343145250,
+      "simultane_ns": 1343231666,
+      "p50_ns": 9620459,
+      "p95_ns": 14637417,
+      "p99_ns": 680563791,
+      "max_ns": 680563791
+    },
+    {
+      "serie": 1,
+      "acteur": "B",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 671050000,
+      "simultane_ns": 1343231666,
+      "p50_ns": 9623083,
+      "p95_ns": 12655958,
+      "p99_ns": 16411666,
+      "max_ns": 16411666
+    },
+    {
+      "serie": 2,
+      "acteur": "A",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 1289837000,
+      "simultane_ns": 1289960625,
+      "p50_ns": 10257417,
+      "p95_ns": 13383416,
+      "p99_ns": 642244792,
+      "max_ns": 642244792
+    },
+    {
+      "serie": 2,
+      "acteur": "B",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 632590375,
+      "simultane_ns": 1289960625,
+      "p50_ns": 9595542,
+      "p95_ns": 10466917,
+      "p99_ns": 14621375,
+      "max_ns": 14621375
+    },
+    {
+      "serie": 3,
+      "acteur": "A",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 1308517334,
+      "simultane_ns": 1308656125,
+      "p50_ns": 9665292,
+      "p95_ns": 11580041,
+      "p99_ns": 681222083,
+      "max_ns": 681222083
+    },
+    {
+      "serie": 3,
+      "acteur": "B",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 671688333,
+      "simultane_ns": 1308656125,
+      "p50_ns": 9703667,
+      "p95_ns": 14214000,
+      "p99_ns": 14584958,
+      "max_ns": 14584958
+    },
+    {
+      "serie": 4,
+      "acteur": "A",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 1269861625,
+      "simultane_ns": 1270004125,
+      "p50_ns": 9728875,
+      "p95_ns": 11158917,
+      "p99_ns": 642434417,
+      "max_ns": 642434417
+    },
+    {
+      "serie": 4,
+      "acteur": "B",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 633618791,
+      "simultane_ns": 1270004125,
+      "p50_ns": 9653625,
+      "p95_ns": 10663750,
+      "p99_ns": 11593125,
+      "max_ns": 11593125
+    },
+    {
+      "serie": 5,
+      "acteur": "A",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 1008257917,
+      "simultane_ns": 1253762292,
+      "p50_ns": 9579417,
+      "p95_ns": 12409917,
+      "p99_ns": 389645833,
+      "max_ns": 389645833
+    },
+    {
+      "serie": 5,
+      "acteur": "B",
+      "operations": 64,
+      "utile": 524288,
+      "acteur_ns": 1253623375,
+      "simultane_ns": 1253762292,
+      "p50_ns": 9594750,
+      "p95_ns": 11358959,
+      "p99_ns": 638909708,
+      "max_ns": 638909708
+    }
+  ],
+  "portee_contention": "Deux threads natifs et un mutex sur une seule instance, 8 opérations de chauffe puis cinq fois 64 écritures/lectures de 4 Kio par acteur. Les délais incluent acquisition puis réacquisition. Le temps simultane_ns est commun aux deux acteurs d’une série."
+}

@@ -1,0 +1,17 @@
+[package]
+name = "novafs"
+version = "0.9.0"
+edition = "2024"
+publish = false
+default-run = "novafs"
+description = "Laboratoire NovaFS P0 sur images temporaires"
+
+[workspace]
+
+[dependencies]
+getrandom = "0.4"
+sha2 = "0.10.9"
+tempfile = "3.27"
+
+[profile.release]
+overflow-checks = true

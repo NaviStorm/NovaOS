@@ -1,0 +1,122 @@
+{
+  "cible": "x86_64-apple-darwin",
+  "suite_secondes_hote": 14.326,
+  "groupes": {
+    "src/lib.rs": {
+      "réussis": 13,
+      "ignorés": 0,
+      "secondes": 0.26
+    },
+    "src/bin/novafs.rs": {
+      "réussis": 0,
+      "ignorés": 0,
+      "secondes": 0.0
+    },
+    "src/bin/novafs-bench.rs": {
+      "réussis": 0,
+      "ignorés": 0,
+      "secondes": 0.0
+    },
+    "tests/clients.rs": {
+      "réussis": 9,
+      "ignorés": 0,
+      "secondes": 0.06
+    },
+    "tests/crash.rs": {
+      "réussis": 3,
+      "ignorés": 0,
+      "secondes": 2.83
+    },
+    "tests/decoder.rs": {
+      "réussis": 1,
+      "ignorés": 0,
+      "secondes": 0.26
+    },
+    "tests/interop.rs": {
+      "réussis": 2,
+      "ignorés": 0,
+      "secondes": 0.01
+    },
+    "tests/lifecycle.rs": {
+      "réussis": 4,
+      "ignorés": 0,
+      "secondes": 0.03
+    },
+    "tests/properties.rs": {
+      "réussis": 1,
+      "ignorés": 1,
+      "secondes": 0.05
+    },
+    "tests/shortage.rs": {
+      "réussis": 2,
+      "ignorés": 0,
+      "secondes": 0.03
+    },
+    "tests/tool.rs": {
+      "réussis": 1,
+      "ignorés": 0,
+      "secondes": 0.43
+    },
+    "tests/volumes.rs": {
+      "réussis": 4,
+      "ignorés": 0,
+      "secondes": 3.15
+    },
+    "doctests": {
+      "réussis": 0,
+      "ignorés": 0,
+      "secondes": 0.0
+    }
+  },
+  "tests": [
+    "codec::tests::vecteur_externe_ancre_et_domaine",
+    "device::tests::power_cut_reverses_and_tears_only_selected_sectors",
+    "codec::tests::bit_requis_et_suffixes_malformes_resignes",
+    "tree::tests::cle_profonde_ne_deborde_pas_sur_le_sous_arbre_voisin",
+    "tree::tests::noeuds_hostiles_resignes",
+    "fs::tests::n04_checksum_fault_freezes_writer_and_hides_partial_read",
+    "space::tests::intervalles_fragmentes_comparees_a_un_modele_par_bloc",
+    "fs::tests::n01_replacement_collects_and_reuses_verified_blocks",
+    "fs::tests::n04_reject_semantic_corruption_even_with_valid_digests",
+    "device::tests::geometric_and_temporary_io",
+    "tree::tests::versions_immuables_scissions_fusions_contraction",
+    "fs::tests::n01_names_split_delete_and_contract",
+    "tree::tests::operations_et_bornes_differentielles",
+    "v04_offre_initiale_silencieuse_et_rendez_vous_du_second_client",
+    "v05_r_pleine_ack_et_fragments_retardes",
+    "v05_fragments_rejeu_et_mort",
+    "v01_objets_positions_reutilisation",
+    "v03_mutations_et_conflits",
+    "v06_ouverture_par_alias_contre_unlink",
+    "v04_autorite_locale_et_quotas",
+    "v06_concurrence_et_vues",
+    "v02_chemins_et_frontieres",
+    "n05_external_witness_detects_unreachable_durable_state",
+    "n03_flush_order_sector_tears_and_restart",
+    "n02_all_write_and_flush_boundaries",
+    "dix_mille_mutations_de_cellules_resignees",
+    "f01_pipe_transport",
+    "f01_vectors_endian_and_features",
+    "pas_de_reformatage_repli_ou_reparation_implicite",
+    "distinguer_erreur_avant_ancre_et_issue_inconnue",
+    "retour_image_coherente_pendant_vie_du_processus",
+    "cache_propre_restitue_et_verification_independante",
+    "reference_smoke",
+    "n06_staging_credits_are_returned_at_every_failure",
+    "n06_full_device_keeps_the_emergency_reserve_and_recovers_after_collection",
+    "cli_images_anonymes_et_sauvetage",
+    "p02_pool_barrier_negative_controls",
+    "pool::p01_rejects_forged_catalogues_even_with_valid_digests",
+    "p01_typed_exports_geometry_and_zero_on_reassignment",
+    "p02_independent_catalogue_fs_commits_and_stale_identity"
+  ],
+  "differentiel": {
+    "graines": 100,
+    "operations": 1000000,
+    "commits_observes": 345183,
+    "penuries": 54643,
+    "remontages": 1000,
+    "secondes": 39.621
+  },
+  "environnement": "macOS local ; campagnes fonctionnelles des deux cibles lancées en parallèle"
+}

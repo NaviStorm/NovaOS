@@ -1,0 +1,272 @@
+//! L'outil ne reçoit aucun chemin du Mac. Les octets d'une image exportée
+//! transitent par stdout, les diagnostics par stderr.
+use novafs::{Block, Device, Engine, Error, Ids, Mode, Result, codec::Anchor, device::FileImage};
+use std::io::{self, BufRead, IsTerminal, Read, Write};
+use std::os::{
+    fd::AsFd,
+    unix::fs::{FileTypeExt, MetadataExt},
+};
+
+const HELP: &str = "NovaFS P0 — images jetables, uniquement sur flux
+novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
+novafs script BLOCS SECTEUR                        lit les commandes puis émet l’image sur stdout
+novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l’image sur stdin
+novafs verify BLOCS SECTEUR FS_ID LV_ID            vérifie intégralement les deux générations
+novafs salvage BLOCS SECTEUR FS_ID LV_ID SLOT NOM extrait un fichier sur stdout en lecture seule
+SECTEUR = 512 ou 4096. Identités = 32 chiffres hexadécimaux chacune.
+Commandes de script (une par ligne, chemins NovaFS sans espaces) :
+  mkdir /nom | create /nom | rename /source /dest | unlink /nom | collect
+  write /nom OFFSET HEX | read /nom OFFSET LONGUEUR | inspect | verify
+Les résultats du script, les identités générées et les erreurs vont sur stderr.";
+
+fn num(s: &str) -> Result<u64> {
+    s.parse()
+        .map_err(|_| Error::Invalid("entier non signé attendu"))
+}
+fn hex(s: &str) -> Result<Vec<u8>> {
+    if !s.len().is_multiple_of(2) || !s.bytes().all(|b| b.is_ascii_hexdigit()) {
+        return Err(Error::Invalid("hexadécimal"));
+    }
+    s.as_bytes()
+        .chunks_exact(2)
+        .map(|c| {
+            let nibble = |b: u8| {
+                if b.is_ascii_digit() {
+                    b - b'0'
+                } else {
+                    b.to_ascii_lowercase() - b'a' + 10
+                }
+            };
+            Ok(nibble(c[0]) * 16 + nibble(c[1]))
+        })
+        .collect()
+}
+fn label(bytes: &[u8]) -> String {
+    bytes.iter().map(|b| format!("{b:02x}")).collect()
+}
+fn identifier(s: &str) -> Result<[u8; 16]> {
+    if s.len() != 32 {
+        return Err(Error::Invalid("identité de 16 octets"));
+    }
+    hex(s)?.try_into().map_err(|_| Error::Invalid("identité"))
+}
+fn new_id() -> Result<[u8; 16]> {
+    let mut id = [0; 16];
+    getrandom::fill(&mut id).map_err(|e| io::Error::other(e.to_string()))?;
+    Ok(id)
+}
+fn describe(dev: &impl Device) -> Result<()> {
+    let mut damaged = false;
+    for slot in [0, 1] {
+        match Anchor::decode(&dev.read(slot)?, slot) {
+            Ok(a) => println!(
+                "slot={slot} génération={} blocs={} FS={} LV={} manifeste={} sha256={}",
+                a.manifest.birth,
+                a.blocks,
+                label(&a.ids.fs),
+                label(&a.ids.lv),
+                a.manifest.block,
+                label(&a.manifest.hash)
+            ),
+            Err(e) => {
+                eprintln!("slot={slot} invalide : {e}");
+                damaged = true;
+            }
+        }
+    }
+    if damaged {
+        Err(Error::Corrupt("inspection des ancres"))
+    } else {
+        Ok(())
+    }
+}
+// Examiner le descripteur déjà ouvert sans suivre un chemin de périphérique.
+// Les images transitent par un fichier ordinaire ou un tube, jamais par un terminal.
+fn image_stream(fd: &impl AsFd) -> Result<()> {
+    let handle = std::fs::File::from(fd.as_fd().try_clone_to_owned()?);
+    let ty = handle.metadata()?.file_type();
+    if ty.is_file() || ty.is_fifo() || ty.is_socket() {
+        Ok(())
+    } else {
+        Err(Error::Invalid(
+            "transport d’image : fichier ordinaire ou tube requis",
+        ))
+    }
+}
+fn load(dev: &mut impl Device, reader: &mut impl Read) -> Result<()> {
+    let mut buf: Block = [0; 4096];
+    for b in 0..dev.blocks() {
+        reader.read_exact(&mut buf)?;
+        dev.write(b, &buf)?;
+    }
+    if reader.read(&mut buf[..1])? != 0 {
+        return Err(Error::Invalid("octets après l’image"));
+    }
+    dev.flush()
+}
+fn emit(dev: &impl Device, mut output: impl Write) -> Result<()> {
+    for b in 0..dev.blocks() {
+        output.write_all(&dev.read(b)?)?;
+    }
+    output.flush()?;
+    Ok(())
+}
+fn commands(fs: &mut Engine<&mut FileImage>, mut input: impl BufRead) -> Result<()> {
+    // Le payload maximal est 64 Kio, deux caractères ASCII par octet.
+    const LINE: usize = 132_200;
+    let mut buf = Vec::new();
+    loop {
+        buf.clear();
+        if input
+            .by_ref()
+            .take((LINE + 1) as u64)
+            .read_until(b'\n', &mut buf)?
+            == 0
+        {
+            break;
+        }
+        if buf.len() > LINE {
+            return Err(Error::Limit("ligne de commande"));
+        }
+        let line = std::str::from_utf8(&buf).map_err(|_| Error::Invalid("UTF-8"))?;
+        let mut words = line.split_ascii_whitespace();
+        let Some(cmd) = words.next() else { continue };
+        let args: Vec<_> = words.by_ref().take(4).collect();
+        if words.next().is_some() {
+            return Err(Error::Invalid("arguments en trop"));
+        }
+        match (cmd, args.as_slice()) {
+            ("mkdir", [p]) => fs.mkdir(p)?,
+            ("create", [p]) => fs.create(p)?,
+            ("unlink", [p]) => fs.unlink(p)?,
+            ("rename", [a, b]) => fs.rename(a, b)?,
+            ("collect", []) => while fs.collect()? {},
+            ("write", [p, off, bytes]) => fs.write(p, num(off)?, &hex(bytes)?)?,
+            ("read", [p, off, n]) => eprintln!(
+                "{}",
+                label(&fs.read(
+                    p,
+                    num(off)?,
+                    usize::try_from(num(n)?).map_err(|_| Error::Limit("lecture"))?
+                )?)
+            ),
+            ("inspect", []) => eprintln!("génération={} {:?}", fs.generation(), fs.space_stats()),
+            ("verify", []) => fs.verify()?,
+            _ => return Err(Error::Invalid("commande du script")),
+        }
+    }
+    Ok(())
+}
+fn run() -> Result<()> {
+    let args: Vec<String> = std::env::args().skip(1).collect();
+    if args.is_empty() || args == ["--help"] {
+        println!("{HELP}");
+        return Ok(());
+    }
+    if args.len() == 2 && args[1] == "--help" {
+        let prefix = format!("novafs {} ", args[0]);
+        let usage = HELP
+            .lines()
+            .find(|s| s.starts_with(&prefix))
+            .ok_or(Error::Invalid("commande inconnue"))?;
+        println!("{usage}");
+        return Ok(());
+    }
+    if args.len() < 3 {
+        return Err(Error::Invalid("consulter --help"));
+    }
+    let blocks = num(&args[1])?;
+    if blocks > 32768 {
+        return Err(Error::Limit("outil limité à 128 Mio par image"));
+    }
+    let sector = u32::try_from(num(&args[2])?).map_err(|_| Error::Invalid("secteur"))?;
+    let mut dev = FileImage::create(blocks, sector)?;
+    match (args[0].as_str(), args.len()) {
+        ("create" | "script", 3) => {
+            image_stream(&io::stdout())?;
+            if args[0] == "script" && !io::stdin().is_terminal() {
+                image_stream(&io::stdin())?;
+            }
+            let ids = Ids {
+                fs: new_id()?,
+                lv: new_id()?,
+            };
+            eprintln!("FS={} LV={}", label(&ids.fs), label(&ids.lv));
+            let mut engine = Engine::format(&mut dev, ids)?;
+            if args[0] == "script" {
+                commands(&mut engine, io::stdin().lock())?;
+            }
+            engine.verify()?;
+            engine.unmount()?;
+            emit(&dev, io::BufWriter::new(io::stdout().lock()))
+        }
+        ("inspect", 3) => {
+            image_stream(&io::stdin())?;
+            load(&mut dev, &mut io::stdin().lock())?;
+            describe(&dev)
+        }
+        ("verify", 5) | ("salvage", 7) => {
+            image_stream(&io::stdin())?;
+            if args[0] == "salvage" {
+                image_stream(&io::stdout())?;
+            }
+            let ids = Ids {
+                fs: identifier(&args[3])?,
+                lv: identifier(&args[4])?,
+            };
+            load(&mut dev, &mut io::stdin().lock())?;
+            if args[0] == "verify" {
+                let fs = Engine::mount(&mut dev, ids, Mode::ReadOnly)?;
+                fs.verify()?;
+                println!(
+                    "Vérification intégrale réussie, génération {}",
+                    fs.generation()
+                );
+            } else {
+                let fs = Engine::salvage(&mut dev, ids, num(&args[5])?)?;
+                eprintln!(
+                    "Sauvetage en lecture seule, génération {}, fraîcheur indéterminée",
+                    fs.generation()
+                );
+                let mut output = io::BufWriter::new(io::stdout().lock());
+                if fs.stat(&args[6])?.size > 128 * 1024 * 1024 {
+                    return Err(Error::Limit("extraction de plus de 128 Mio"));
+                }
+                let mut pos = 0;
+                loop {
+                    let bytes = fs.read(&args[6], pos, 65536)?;
+                    if bytes.is_empty() {
+                        break;
+                    }
+                    output.write_all(&bytes)?;
+                    pos += bytes.len() as u64;
+                }
+                output.flush()?;
+            }
+            Ok(())
+        }
+        _ => Err(Error::Invalid("syntaxe ; consulter --help")),
+    }
+}
+// Un descripteur standard peut avoir été redirigé avant le démarrage.
+// /dev/null est un puits de texte autorisé ; aucun périphérique brut n'est ouvert.
+fn text_stream(fd: &(impl AsFd + IsTerminal)) -> Result<()> {
+    if fd.is_terminal() || image_stream(fd).is_ok() {
+        return Ok(());
+    }
+    let meta = std::fs::File::from(fd.as_fd().try_clone_to_owned()?).metadata()?;
+    if meta.file_type().is_char_device() && meta.rdev() == std::fs::metadata("/dev/null")?.rdev() {
+        Ok(())
+    } else {
+        Err(Error::Invalid("sortie texte non autorisée"))
+    }
+}
+fn main() {
+    if text_stream(&io::stderr()).is_err() {
+        std::process::exit(2)
+    }
+    if let Err(e) = text_stream(&io::stdout()).and_then(|_| run()) {
+        eprintln!("NovaFS : {e}");
+        std::process::exit(1);
+    }
+}

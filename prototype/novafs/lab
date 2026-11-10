@@ -1,0 +1,17 @@
+#!/bin/sh
+# Le dépôt parent cible un noyau bare-metal. Ce paquet utilise toujours Darwin.
+set -eu
+cd "$(dirname "$0")"
+host=$(rustup run stable rustc -vV | sed -n 's/^host: //p')
+target=${NOVAFS_TARGET:-$host}
+case "$target" in
+    x86_64-apple-darwin|aarch64-apple-darwin) ;;
+    *) echo 'Cible macOS requise.' >&2; exit 2 ;;
+esac
+action=${1:-test}
+if [ "$#" -gt 0 ]; then shift; fi
+case "$action" in
+    run|test|check|build)
+        RUSTDOC="$(rustup which --toolchain stable rustdoc)" RUSTC="$(rustup which --toolchain stable rustc)" exec rustup run stable cargo "$action" --locked --release --target "$target" "$@" ;;
+    *) echo 'Usage : lab {test|run|check|build} [arguments Cargo]' >&2; exit 2 ;;
+esac

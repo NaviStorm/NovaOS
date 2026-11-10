@@ -12,6 +12,10 @@ Les six appels natifs historiques permettent de lire les identifiants du process
 
 Dix appels IPC permettent à des processus isolés de communiquer par endpoints unicast. Le noyau vérifie les capacités locales, livre les messages en FIFO et engage les transferts de droits à la réception. Un client peut envoyer jusqu’à 128 octets ou fusionner des notifications sur 64 bits. [Contrat IPC](docs/ipc-architecture.md) · [ABI binaire](docs/ipc-abi.md) · [Résultats et limites de la v0.8.0](docs/mesures-v0.8.0.md)
 
+## Prototype de stockage macOS
+
+NovaFS P0 v0.9.0 s’exécute sur des images jetables dans le workspace hôte `prototype/novafs`. Le noyau amorcé sous QEMU reste en v0.8.0. [Utiliser le prototype](prototype/novafs/README.md) · [Résultats des essais](docs/novafs-prototype-macos.md)
+
 ## Démarrage manuel dans QEMU
 
 Depuis la racine du dépôt, choisir une commande. Chacune compile le noyau et ouvre la fenêtre QEMU correspondante.

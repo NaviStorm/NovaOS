@@ -18,7 +18,7 @@ Le prototype de vecteur propose l’enveloppe suivante pour **tout bloc de méta
 | Octets | Candidat P0 | Validation |
 | --- | --- | --- |
 | 0–7 | ASCII `NOVAP0FS` | Signature de laboratoire exacte. |
-| 8–15 | Majeure u16, mineure u16, type u16, longueur d’en-tête u16 | Profil laboratoire 0.0, type reconnu à cet endroit, longueur 96. Les codes numériques de types seront fixés avec les vecteurs du prototype. |
+| 8–15 | Majeure u16, mineure u16, type u16, longueur d’en-tête u16 | Profil laboratoire 0.0, type reconnu à cet endroit, longueur 96. Types du prototype hôte : ancre 1, manifeste 2, nœud 3. |
 | 16–31, 32–47 | Identités FS et LV | Identiques aux valeurs attendues pour le montage et à celles des parents. |
 | 48–55, 56–63 | Bloc propre dans le LV u64, génération de naissance u64 | Bloc lu à la position annoncée, génération non nulle et au plus égale à la génération consultée. Pour un ancrage, naissance = génération qu’il publie. |
 | 64–95 | Empreinte sur 32 octets | Somme recalculée sur le bloc et vérifiée contre la référence du parent quand elle existe. |
@@ -70,3 +70,17 @@ Le monteur prend la géométrie du service de volume et une session exclusive d�
 Trois masques séparent une information facultative ignorable, une extension dont seuls les lecteurs connaissent encore toutes les données nécessaires, et une extension qui change l’interprétation. Une majeure inconnue ou un bit incompatible inconnu interdit tout montage. Un bit inconnu du groupe « lecture seule » interdit l’écriture et n’admet une lecture que si le profil de lecture et les vérifications de sécurité restent entièrement interprétables. Un bit optionnel inconnu n’est ignorable que pour des données auxiliaires encadrées et sans incidence sur les clés, les permissions, les sommes, les pointeurs, l’allocation ou la durabilité. À défaut de ce contrat, refuser. Un changement de mineure doit suivre ces mêmes règles. Pour le premier corpus P0, les deux ancrages utilisent la même géométrie et les trois masques sont nuls. L’activation d’une fonctionnalité future exigera des tests croisés sur images anciennes/nouvelles et une migration conservant une génération récupérable.
 
 Les choix coûteux à changer sont la géométrie des ancres, le bloc de 4 Kio, l’ordre des clés de noms, les identités stables, le domaine des sommes, le partage des extents et l’interprétation des états différés. Le placement physique multi-disques concerne le pool. Les snapshots et clones changeront les règles d’appartenance des blocs à une génération. Une extension compressée ou chiffrée exigera des types de records nouveaux et des règles explicites de validation de longueur, de somme, de clé et de nonce. Le budget reste exposé aux petites écritures très fragmentées et au temps de vérification intégrale. Un unique disque fournit une détection de corruption avec refus de restitution. Une réparation sûre nécessitera une autre copie vérifiée et un critère explicite de fraîcheur.
+
+## Encodage retenu par le prototype macOS
+
+Le prototype P0 utilise la signature et la version de laboratoire 0.0 définies ci-dessus. La racine objet vaut 1 et le premier numéro disponible vaut 2 à la création. Les cinq familles de nœuds sont numérotées de 1 à 5, dans l’ordre des racines du manifeste. Voici les valeurs des feuilles dans la révision expérimentale effectivement testée. Les nombres occupent exactement la largeur indiquée en little-endian.
+
+| Famille | Valeur de feuille |
+| --- | --- |
+| Objets (1) | Type u8 (1 fichier, 2 répertoire), révision u64, taille u64, état u8 (0 vivant, 1 en collecte), parent u64, longueur du nom u16 puis nom UTF-8. Taille de préfixe 28 octets. |
+| Noms (2) | Numéro de l’enfant u64. La clé contient parent u64, longueur u16 et nom UTF-8. |
+| Extents (3) | Premier bloc LV u64, compte u16 (1 à 16), naissance u64, puis exactement ce nombre de digests SHA-256. |
+| Espace (4) | Longueur en blocs u64, classe u8 (0 libre, 1 différé), âge u64 (zéro si libre). Le moteur limite le tableau en mémoire à 4 096 intervalles et l’arbre d’espace publié à 64 nœuds au plus. Un refus d’admission conserve les racines précédentes. |
+| Collecte (5) | Bloc logique de début du prochain extent à retirer, u64, puis octet d’état 1. Chaque lot est une transaction. |
+
+Le formatage place deux ancres logiquement identiques aux blocs 0 et 1 après F1, puis les stabilise par F2. Chaque corps d’ancre occupe les octets 96 à 183. Dans le manifeste, les références des cinq arbres occupent les octets 160 à 399. Les octets de suffixe et les trois masques de fonctionnalités restent à zéro. Le codec refuse une extension inconnue dans ce corpus. Ces choix permettent de reproduire les vecteurs sur ARM64 et x86_64. Ils n’engagent pas un format destiné à des données pérennes. [Codec](../prototype/novafs/src/codec.rs) · [Feuilles](../prototype/novafs/src/fs/record.rs) · [Vecteurs et échanges](../prototype/novafs/tests/interop.rs)

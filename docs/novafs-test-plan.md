@@ -1,6 +1,6 @@
 # Validation du VFS, des volumes et de NovaFS
 
-**Phase de conception, base `9cc2917`.** Ce plan définit les essais à construire et leurs conditions de réussite. Aucun de ces essais de stockage n’a été exécuté. La v0.8.0 fournit les transports IPC et leurs mesures. Ses suites QEMU ne montent aucun volume NovaFS. [Mesures IPC existantes](mesures-v0.8.0.md) · [Cibles de test existantes](../Makefile)
+**Phase de conception, base `9cc2917`.** Ce plan définit les essais à construire et leurs conditions de réussite. Les résultats du prototype macOS sont consignés séparément avec la portée des modèles de session et de volumes. [Campagne hôte](novafs-prototype-macos.md) La v0.8.0 fournit les transports IPC et leurs mesures. Ses suites QEMU ne montent aucun volume NovaFS. [Mesures IPC existantes](mesures-v0.8.0.md) · [Cibles de test existantes](../Makefile)
 
 ## Ce que le dépôt permet de vérifier dès la conception
 
