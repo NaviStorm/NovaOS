@@ -14,28 +14,31 @@ fn main() {
     println!("cargo::rerun-if-changed=../user");
     println!("cargo::rerun-if-changed=../abi");
     let target = env::var("TARGET").unwrap();
-    let output = PathBuf::from(env::var_os("OUT_DIR").unwrap()).join("demo.bin");
-    let linker = format!("link-arg=-T{}", user.join("demo.ld").display());
-    let ok = Command::new(env::var_os("RUSTC").unwrap())
-        .arg(user.join("demo.rs"))
-        .args([
-            "--edition=2024",
-            "--target",
-            &target,
-            "-C",
-            "panic=abort",
-            "-C",
-            "opt-level=s",
-            "-C",
-            "relocation-model=static",
-            "-C",
-            "link-arg=--oformat=binary",
-            "-C",
-            &linker,
-            "-o",
-        ])
-        .arg(output)
-        .status()
-        .expect("compilation du programme utilisateur");
-    assert!(ok.success(), "édition de liens de la démonstration");
+    let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    for name in ["demo", "ipc"] {
+        let output = out.join(format!("{name}.bin"));
+        let linker = format!("link-arg=-T{}", user.join("demo.ld").display());
+        let ok = Command::new(env::var_os("RUSTC").unwrap())
+            .arg(user.join(format!("{name}.rs")))
+            .args([
+                "--edition=2024",
+                "--target",
+                &target,
+                "-C",
+                "panic=abort",
+                "-C",
+                "opt-level=s",
+                "-C",
+                "relocation-model=static",
+                "-C",
+                "link-arg=--oformat=binary",
+                "-C",
+                &linker,
+                "-o",
+            ])
+            .arg(output)
+            .status()
+            .expect("compilation du programme utilisateur");
+        assert!(ok.success(), "édition de liens de {name}");
+    }
 }

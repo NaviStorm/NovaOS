@@ -19,3 +19,24 @@ pub fn pending() -> bool {
     Port::PicCommand.write(0x0a); // OCW3 : lire IRR (requêtes en attente).
     Port::PicCommand.read() & 1 != 0
 }
+
+pub fn counter() -> u64 {
+    let (lo, hi): (u32, u32);
+    // Sûreté : LFENCE/RDTSC en anneau zéro, compteur local du seul BSP.
+    unsafe {
+        core::arch::asm!("lfence","rdtsc","lfence",out("eax")lo,out("edx")hi,options(nostack))
+    };
+    (u64::from(hi) << 32) | u64::from(lo)
+}
+pub fn counter_hz() -> u64 {
+    let start = crate::sched::ticks();
+    while crate::sched::ticks() == start {
+        core::hint::spin_loop();
+    }
+    let first = crate::sched::ticks();
+    let a = counter();
+    while crate::sched::ticks() - first < 64 {
+        core::hint::spin_loop();
+    }
+    (counter() - a) * u64::from(crate::sched::HZ) / (crate::sched::ticks() - first)
+}

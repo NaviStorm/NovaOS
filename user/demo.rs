@@ -4,6 +4,7 @@
 #[path = "../abi/native.rs"]
 mod abi;
 mod calls;
+mod gate;
 
 // Sûreté : point d’entrée autonome, sans référence au noyau. Les instructions
 // de sonde sont exécutées uniquement dans l’espace utilisateur de la VM.

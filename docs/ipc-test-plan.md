@@ -1,6 +1,6 @@
 # Plan de validation du contrat IPC
 
-**Statut — critères pour une future implémentation.** La référence de code est `4900cf5`. Les scénarios T01 à T18 ci-dessous sont à réaliser après autorisation. Aucun résultat de latence, de débit ou de livraison IPC n’est acquis lors de la conception. [Architecture](ipc-architecture.md) · [Invariants S01 à S12](ipc-security.md) · [Sélecteurs et structures](ipc-abi.md)
+**Contrat de validation v0.8.0.** Les oracles ci-dessous proviennent de la conception `7ca2e89`. Les mesures et les cas injectés dans le noyau sont consignés par architecture dans le rapport de livraison. [Résultats QEMU](mesures-v0.8.0.md) [Architecture](ipc-architecture.md) · [Invariants S01 à S12](ipc-security.md) · [Sélecteurs et structures](ipc-abi.md)
 
 ## Banc et preuves
 
@@ -51,12 +51,27 @@ Pour les courses, placer des points de contrôle de test **hors des sections cri
 | S08, S09 | T06, T08, T09, T18 |
 | S10, S11, S12 | T11, T12, T13, T16, T18 |
 
-Après implémentation, intégrer les sondes courtes aux suites `make ARCH=x86_64 test` et `make ARCH=aarch64 test`, puis exécuter les matrices `ram-test`. Conserver les régressions d’affichage, clavier disponible, MMU, Buddy, mutex, threads, processus et ABI native. La commande `endurance` existante exerce le multitâche et la mémoire ; la charge IPC décrite en T16 reste à y intégrer ou à lancer dans une VM dédiée.
+Les sondes courtes font partie de `make ARCH=x86_64 test` et `make ARCH=aarch64 test`. Les matrices `ram-test` les rejouent à 128 et 256 Mio. Les suites conservent les régressions d’affichage, de clavier disponible, de MMU, du Buddy, des mutex, des threads, des processus et de l’ABI native. La commande `endurance` exerce le multitâche et la mémoire. La commande `ipc-endurance` exécute T16 dans sa propre VM.
 
-Pour chaque cas, consigner architecture, PASS/ÉCHEC/NON EXÉCUTÉ, durée réelle et chemin du journal. Joindre les traces de courses, les bilans de pages et les histogrammes aux résultats détaillés. Une compilation, un résultat sur une seule architecture ou une campagne interrompue ne valide pas le comportement manquant. La phase documentaire se vérifie séparément par confrontation aux sources, calcul des offsets et des plafonds, contrôle des vecteurs et inspection du diff Git.
+Pour chaque cas, consigner architecture, PASS/ÉCHEC/NON EXÉCUTÉ, durée réelle et chemin du journal. Joindre les traces de courses, les bilans de pages et les histogrammes aux résultats détaillés. Une compilation, un résultat sur une seule architecture ou une campagne interrompue ne valide pas le comportement manquant. La phase documentaire a été vérifiée séparément par confrontation aux sources, calcul des offsets et des plafonds, contrôle des vecteurs et inspection du diff Git.
 
 ## Contrôle effectué sur la proposition
 
 La comparaison statique avec les sources Git de `4900cf5` a retrouvé les six opérations et les sept statuts existants. Les dix sélecteurs proposés sont uniques, dans la version 1 et disjoints des six sélecteurs livrés. Le calcul indépendant des offsets, des tailles et de l’alignement des trois structures a confirmé la borne de copie de 256 octets. L’encodage little-endian des deux préfixes DATA correspond aux vecteurs publiés.
 
-La vérification a aussi retrouvé les douze invariants dans la matrice, les dix-huit scénarios définis, les quatre postes du sous-total de 312 Kio et les cibles des liens locaux. Ce sont des vérifications de spécification. Les résultats fonctionnels IPC sur QEMU restent à produire lors de la future phase autorisée.
+La vérification a aussi retrouvé les douze invariants dans la matrice, les dix-huit scénarios définis, les quatre postes du sous-total de 312 Kio et les cibles des liens locaux. Ce sont des vérifications de spécification. La v0.8.0 ajoute les campagnes exécutables suivantes.
+
+## Reproduction
+
+Depuis la racine du dépôt, remplacer la cible par `aarch64` pour la seconde machine.
+
+```sh
+make ARCH=x86_64 test
+make ARCH=x86_64 ram-test
+make ARCH=x86_64 ipc-races
+make ARCH=x86_64 ipc-perf
+make ARCH=x86_64 ipc-endurance DURATION=7200
+NOVA_ARCH=x86_64 python3 tests/ipc.py test --ram 128
+```
+
+`test` inclut les sondes IPC courtes de T01 à T18. T09 dispose de sa VM de courses, T17 de sa VM de performance et T16 d’une VM d’endurance continue. Le contrôleur hôte surveille les sorties fatales, les bilans et les délais via l’horloge monotone. Le journal série et son résumé JSON sont écrits sous `build/`. Le JSON IPC contient l’empreinte SHA-256 du noyau ELF. [Contrôleur des campagnes](../tests/ipc.py) · [Acteurs utilisateur](../user/ipc.rs)

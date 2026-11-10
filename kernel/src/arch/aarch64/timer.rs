@@ -87,3 +87,16 @@ pub fn pending() -> bool {
     }
     ctl & 7 == 5
 }
+
+pub fn counter() -> u64 {
+    let v;
+    // Sûreté : lecture ordonnée du compteur physique au niveau EL1.
+    unsafe { asm!("isb","mrs {},cntpct_el0",out(reg)v,options(nostack)) };
+    v
+}
+pub fn counter_hz() -> u64 {
+    let v;
+    // Sûreté : fréquence architecturale du timer générique à EL1.
+    unsafe { asm!("mrs {},cntfrq_el0",out(reg)v,options(nostack)) };
+    v
+}

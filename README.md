@@ -1,6 +1,6 @@
-# NovaOS v0.7.0
+# NovaOS v0.8.0
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.7.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.8.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
@@ -8,7 +8,9 @@ Le noyau ordonnance ses threads en tourniquet sur CPU0 avec un timer matériel �
 
 Deux instances indépendantes du programme de démonstration démarrent en Ring 3 sur x86_64 ou en EL0 sur AArch64. Elles calculent sous préemption matérielle puis terminent avec les codes 41 et 82. Le terminal QEMU reçoit les PID et les résultats sur le port série. [Architecture des processus et validation de la v0.6.0](docs/processus.md)
 
-Les programmes disposent de six appels natifs pour lire leurs identifiants, céder le CPU, terminer, attendre un processus autorisé et écrire un diagnostic borné. [ABI native v1 et sécurité](docs/abi.md) · [Mesures de RAM et validation QEMU](docs/mesures-v0.7.0.md)
+Les six appels natifs historiques permettent de lire les identifiants du processus et du thread, de céder le CPU, de terminer, d’attendre un processus autorisé et d’écrire un diagnostic borné. [ABI native v1 et sécurité](docs/abi.md) · [Mesures de RAM et validation QEMU](docs/mesures-v0.7.0.md)
+
+Dix appels IPC permettent à des processus isolés de communiquer par endpoints unicast. Le noyau vérifie les capacités locales, livre les messages en FIFO et engage les transferts de droits à la réception. Un client peut envoyer jusqu’à 128 octets ou fusionner des notifications sur 64 bits. [Contrat IPC](docs/ipc-architecture.md) · [ABI binaire](docs/ipc-abi.md) · [Résultats et limites de la v0.8.0](docs/mesures-v0.8.0.md)
 
 ## Démarrage manuel dans QEMU
 
@@ -44,9 +46,13 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | --- | --- |
 | `make build` | Compile le noyau et crée l’ISO UEFI. |
 | `make run` | Ouvre l’écran QEMU et affiche COM1 dans le terminal. Fermer la fenêtre pour quitter. |
-| `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle, de tas et de multitâche pour la cible choisie. Nécessite Python 3. |
+| `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle, de tas de multitâche, de processus, d’ABI et d’IPC pour la cible choisie. Nécessite Python 3. |
 | `make ARCH=x86_64 endurance DURATION=7200` | Exécute la campagne de contention et de restitution pendant au moins deux heures réelles. Accepte aussi `ARCH=aarch64`. |
 | `make ARCH=aarch64 ram-test` | Mesure la RAM physique avec 64, 128 et 256 Mio. Accepte également `ARCH=x86_64`. |
+| `make ARCH=x86_64 ipc-test` | Exécute les sondes IPC courtes, dont le retrait d’une page pendant une réception. |
+| `make ARCH=aarch64 ipc-races` | Force cinq ordres de réveil 10 000 fois chacun. |
+| `make ARCH=x86_64 ipc-perf` | Mesure six formes d’échange, au repos et sous contention. |
+| `make ARCH=aarch64 ipc-endurance DURATION=7200` | Contrôle chaque cycle d’IPC et mesure deux heures sur l’horloge hôte. Ces quatre cibles acceptent les deux architectures. |
 | `make clean` | Supprime les produits de compilation et de test dans `build/` et `target/`. |
 
 ### Compiler pour AArch64
@@ -83,7 +89,8 @@ Dans UTM sur Apple Silicon, créer une VM en **émulation**, sélectionner **x86
 | `kernel/src/memory/` | Cadres physiques de 4 Kio, espaces d’adressage, mappage, démappage et vérification des protections. |
 | `kernel/src/sched/` | Threads, piles gardées, file des prêts, sommeil, événements et mutex bloquant. |
 | `kernel/src/sched/process.rs`, `kernel/src/memory/user.rs` | Cycle de vie des processus, espaces privés, protections et restitution. |
-| `user/` | Programme autonome de démonstration, compilé pour la cible puis embarqué dans l’image. |
+| `kernel/src/sched/process/ipc/` | Endpoints, arbres de capacités, files, attentes et transactions de réception. |
+| `user/` | Images utilisateur autonomes de démonstration et d’essai IPC, compilées pour la cible. |
 | `kernel/src/heap/` | Allocateur global, arbres de blocs, extension transactionnelle et sondes du tas. |
 | `kernel/src/hal/` | Interfaces communes du processeur, du masquage des interruptions et de la mémoire virtuelle. |
 | `kernel/src/arch/x86_64/` | Pagination IA-32e, #PF, instructions CPU, COM1, IDT, PIC 8259 et clavier PS/2. |

@@ -29,6 +29,7 @@ pub fn ticks() -> u64 {
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 enum Wait {
     Until(u64),
+    Ipc(u64),
     Event(usize),
     Process(process::Pid),
 }
@@ -88,6 +89,7 @@ impl Ready {
 #[derive(Default, Clone, Copy)]
 struct Stats {
     preemptions: u64,
+    ipc_preemptions: u64,
     yields: u64,
     wakes: u64,
     exits: u64,
@@ -97,6 +99,7 @@ struct Stats {
 }
 struct Core {
     kernel_space: SpaceId,
+    ipc: process::ipc::Domain,
     processes: process::Table,
     slots: Vec<Option<Thread>>,
     ready: Ready,
@@ -116,6 +119,19 @@ fn with<R>(f: impl FnOnce(&mut Core) -> R) -> R {
 }
 
 impl Core {
+    fn flush_ipc(&mut self) {
+        let mut mask = self.ipc.take_wakes();
+        while mask != 0 {
+            let slot = mask.trailing_zeros() as usize;
+            mask &= mask - 1;
+            if self.slots[slot].as_ref().is_some_and(|t| {
+                t.state == State::Blocked(Wait::Ipc(self.ipc.wake_cookie(slot)))
+                    && self.ipc.waiter_generation(slot) == Some(t.id.generation)
+            }) {
+                self.wake(slot);
+            }
+        }
+    }
     fn thread(&self, i: usize) -> &Thread {
         self.slots[i].as_ref().expect("thread absent")
     }
@@ -180,7 +196,10 @@ impl Core {
         let old = self.current;
         let state = match why {
             Reason::Tick(_) => {
-                let now = NOVA_TICKS.fetch_add(1, Ordering::Relaxed) + 1;
+                let now = ticks().saturating_add(1);
+                NOVA_TICKS.store(now, Ordering::Relaxed);
+                self.ipc.expire(now);
+                self.flush_ipc();
                 for i in 0..self.slots.len() {
                     if matches!(self.slots[i].as_ref().map(|t| t.state),Some(State::Blocked(Wait::Until(end))) if end<=now)
                     {
@@ -248,6 +267,9 @@ impl Core {
         self.current = next;
         if matches!(why, Reason::Tick(_)) && old != IDLE && next != IDLE {
             self.stats.preemptions += 1;
+            if self.ipc.has_pending() {
+                self.stats.ipc_preemptions += 1;
+            }
         }
         if matches!(why, Reason::Tick(false)) && self.thread(old).in_syscall {
             self.processes.syscall_switches += 1;
@@ -272,7 +294,16 @@ enum Reason {
 
 /// IRQ déjà masquées par l’appelant ; le masque reste attaché à la pile du thread.
 fn dispatch(why: Reason) {
-    if let Some((save, load)) = with(|s| s.select(why)) {
+    dispatch_measured(why, 0);
+}
+fn dispatch_measured(why: Reason, masked_since: u64) {
+    if let Some((save, load)) = with(|s| {
+        let next = s.select(why);
+        if masked_since != 0 {
+            s.ipc.finish_masked(masked_since);
+        }
+        next
+    }) {
         // Sûreté : TCB fixe, pile cible READY vérifiée, aucuns emprunts de CORE vivants.
         unsafe {
             context::switch(save, load);
@@ -442,6 +473,7 @@ pub fn start(main: fn(), kernel_space: SpaceId) -> ! {
         CORE.0.get().write(Some(Core {
             kernel_space,
             processes: process::Table::new(),
+            ipc: process::ipc::Domain::new(),
             slots,
             ready: Ready {
                 items: [0; MAX],

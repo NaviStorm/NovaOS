@@ -205,20 +205,27 @@ impl UserSpace {
         m.frames.release(frame);
     }
 
+    pub(crate) fn add_second_data(&mut self, m: &mut Memory) -> Result<()> {
+        self.add(m, DATA + PAGE, Access::ReadWrite, &[])
+    }
+    pub(crate) fn remove_second_data(&mut self, m: &mut Memory) {
+        assert_eq!(self.mapped[self.len - 1], DATA + PAGE);
+        self.len -= 1;
+        Self::release_page(&self.tables, m, DATA + PAGE);
+    }
+
     /// Deux pages RW adjacentes, puis deuxième page retirée. Vérifie les
     /// octets des deux côtés et l’absence d’écriture partielle après retrait.
     pub(crate) fn test_copy(&mut self, m: &mut Memory) {
         let next = DATA + PAGE;
-        self.add(m, next, Access::ReadWrite, &[]).unwrap();
+        self.add_second_data(m).unwrap();
         let addr = next - 3;
         let original = [1, 2, 3, 4, 5, 6];
         assert!(self.copy_to_user(m, addr, &original));
         let mut buf = [0u8; 6];
         assert!(self.copy_from_user(m, addr, &mut buf));
         assert_eq!(buf, original);
-        self.len -= 1;
-        assert_eq!(self.mapped[self.len], next);
-        Self::release_page(&self.tables, m, next);
+        self.remove_second_data(m);
         assert!(!self.copy_to_user(m, addr, &[9; 6]));
         assert!(self.copy_from_user(m, addr, &mut buf[..3]));
         assert_eq!(buf, original);

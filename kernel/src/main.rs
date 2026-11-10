@@ -37,7 +37,7 @@ pub extern "C" fn nova_start() -> ! {
             .test(scenario)
             .unwrap_or_else(|error| panic!("Autotest mémoire : {error:?}"));
     }
-    if scenario == b"abi-test" {
+    if matches!(scenario, b"abi-test" | b"ipc-test") {
         memory.report("init", memory::Resident::default());
     }
     let kernel_space = memory.space_id();
@@ -65,6 +65,9 @@ fn main_thread() {
     }
     if scenario == b"abi-test" {
         sched::process::abi_test();
+    }
+    if scenario.starts_with(b"ipc-") {
+        sched::process::ipc::run(scenario);
     }
     if scenario == b"proc-test" {
         sched::process::test();

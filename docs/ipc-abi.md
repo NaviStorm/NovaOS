@@ -1,6 +1,6 @@
-# Extension IPC proposée de l’ABI native v1
+# Extension IPC de l’ABI native v1
 
-**Statut — proposition pour la v0.8.0, base `4900cf5`.** Sur cette base, pour un contexte de retour utilisateur valide, les sélecteurs IPC ci-dessous renvoient `UNKNOWN_CALL`. Les six sélecteurs publiés `0x10001` à `0x10006`, leurs arguments, leurs erreurs, `Reply` et `WaitInfo` conservent leur contrat. `process_wait` continue de consommer son droit de suivi spécialisé. [Constantes et types livrés](../abi/native.rs) · [Dispatch livré](../kernel/src/sched/process/syscall.rs) · [ABI native v1](abi.md)
+**NovaOS v0.8.0.** Le dispatcher commun traite les dix sélecteurs IPC sur les deux architectures. Leur première affectation figure dans le contrat `7ca2e89`. Les six sélecteurs publiés `0x10001` à `0x10006`, leurs arguments, leurs erreurs, `Reply` et `WaitInfo` conservent leur contrat. `process_wait` continue de consommer son droit de suivi spécialisé. [Constantes et types livrés](../abi/native.rs) · [Dispatch livré](../kernel/src/sched/process/syscall.rs) · [ABI native v1](abi.md)
 
 ## Porte et représentation
 
@@ -13,7 +13,7 @@ Les règles v1 de préservation des registres, de validation du PC/SP et de pré
 
 Le sélecteur a la forme `(1 << 16) | opération`. Dans le tableau, « — » désigne un argument inutilisé, ignoré comme dans l’ABI native. Un émetteur peut le mettre à zéro. Les **champs réservés des structures**, eux, doivent valoir zéro. Pour chaque descripteur, `version=1`, `size` et l’argument c doivent correspondre exactement à la taille indiquée. Une forme ultérieure incompatible demandera de nouveaux sélecteurs ou une version d’ABI distincte.
 
-## Sélecteurs proposés
+## Sélecteurs IPC
 
 | Sélecteur | Appel | a | b | c | Droit sur a | Valeur sur succès |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -102,7 +102,7 @@ COPY donne un descendant avec les droits demandés. MOVE exige un nœud non raci
 | 12 | REFUSED | Don présenté au receveur de tête qui a omis ACCEPT_CAP. Résultat pour les deux appels |
 | 13 | NO_MEMORY | Échec réel d’une allocation nécessaire dans les quotas |
 
-Les codes 0 à 6 existent déjà. Les codes 7 à 13 et l’usage de BAD_VERSION pour les nouvelles structures sont proposés uniquement pour l’IPC. Les versions et opérations inconnues sur la porte native conservent leur comportement actuel.
+Les codes 0 à 6 existent déjà. Les codes 7 à 13 et l’usage de BAD_VERSION pour les nouvelles structures s’appliquent aux opérations IPC. Les versions et opérations inconnues sur la porte native conservent leur comportement actuel.
 
 **Ordre d’entrée.** Vérifier le contexte de retour selon la v1, puis décoder la version et l’opération. Pour un appel sur handle, résoudre le handle primaire et ses droits dans la table de l’appelant avant d’accéder à la mémoire utilisateur. Pour un descripteur, vérifier d’abord c et l’alignement, puis la plage et la copie d’entrée, puis la version, la taille interne, les champs et combinaisons réservés. Pour receive, la validation initiale de la plage inclut son caractère inscriptible en entier. Pour give, résoudre ensuite la source, vérifier les droits demandés et les contraintes de MOVE. Réitérer les contrôles d’autorité après une préparation qui a relâché la protection. Une erreur de contexte de retour termine le seul processus conformément à la v1.
 
@@ -137,4 +137,4 @@ H désigne le nouveau handle observé chez le receveur. Vérifier qu’il est no
 
 Le refus d’une clé étrangère par `ipc_send` retourne `(5,0)`, même si b vise une adresse noyau. Un SendV1 de longueur 129 sur un canal autorisé retourne `(3,0)`. Avec une sortie alignée qui chevauche une garde, `ipc_receive` retourne `(4,0)` et laisse l’élément disponible.
 
-**Contraintes de migration.** Le plus grand transfert structurel est de 184 octets, compatible avec la borne de copie actuelle de 256 octets sur deux pages. La v1 ne propose ni bibliothèque IPC, ni allocation de handle générique, ni primitive qui effectue à elle seule un commit couplé entre mémoire et table de capacités. Ces dernières étapes devront être ajoutées au noyau commun. Le dispatcher v0.7.0 devra continuer à reconnaître les six sélecteurs existants exactement comme auparavant. [Copies actuelles](../kernel/src/memory/user.rs) · [Validation proposée](ipc-test-plan.md)
+**Compatibilité.** Les images utilisent la porte native v1. Les trois tailles, les trois alignements et tous les offsets sont vérifiés à la compilation pour le noyau et les images utilisateur. Le plus grand transfert, ReceiveV1, occupe 184 octets et peut traverser deux pages. Les six anciens sélecteurs restent testés séparément avec leurs programmes v0.7.0. [Types binaires](../abi/native.rs) · [Porte utilisateur](../user/gate.rs) · [Résultats QEMU](mesures-v0.8.0.md)

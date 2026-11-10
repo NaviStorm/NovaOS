@@ -25,3 +25,10 @@ endurance: kernel
 
 clean:
 	rm -rf build target
+
+.PHONY: ipc-test ipc-races ipc-perf ipc-endurance
+ipc-test ipc-races ipc-perf: kernel
+	python3 tests/ipc.py $(patsubst ipc-%,%,$@)
+
+ipc-endurance: kernel
+	python3 tests/ipc.py endurance --seconds "$(DURATION)"

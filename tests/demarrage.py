@@ -13,14 +13,14 @@ import time
 
 
 BUILD = Path("build")
-BANNER = b"NovaOS v0.7.0\r\n"
+BANNER = b"NovaOS v0.8.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "7c1495ab025569cfe8d1ff88d9bab9d39594477de0d147b6f120c3b4ce874676",
-    "demarrage": "7795d7bfb120453569f86729872e4cc32db3b488a8b4dbb42e0a9df46d0610f1",
-    "composition": "8fcd4439c99a9a5d7eaad4ab93e48fe799f44253ae3a698d133fcb562b208f44",
-    "frappe": "1ad294559e946ccb2999b8498dc7b9c1f7fab58555119ccd14d2973d78fa9419",
-    "saisie": "1af54d9973d4f3d9aa19a25071df7642543965d4e3d021cafd9f63c261ccc6f0",
+    "demarrage-aarch64": "808cb21ff95d5a4aff1d06c6c76f541cb5ac7113be01c328944a1fa309729c0f",
+    "demarrage": "74f072002041453faf5faf74e973f5d68ca224c9e1813c7265922671d88a6810",
+    "composition": "7e1839e408eedf03c45bebde8c2841e1d2c31bfdc35ccb8ad678363b9ac45815",
+    "frappe": "2d98ee8c8dc4c043383d9bae4e6be28e9710634f7b244ab0638bd91ec0be3e75",
+    "saisie": "150b341c2f8535d938724adb3ca5b215e396b469260d4152c4b8f5953853a5dd",
 }
 
 
@@ -500,7 +500,7 @@ def abi_scenario(arch, ram, allow_firmware_limit=False, arm_pan=False):
                   for name,fields in re.findall(r"RAM phase=([a-z_]+) ([^\r\n]+)", report)}
         assert set(phases) == {"init","repos","reprise","actifs","detruits","repos_ui"}, report[-1200:]
         for v in phases.values():
-            assert v["resident"] == sum(v[k] for k in ("image","tables","kpile","upile","heap","buddy","utilisateur"))
+            assert v["resident"] == sum(v[k] for k in ("image","tables","kpile","upile","heap","buddy","ipc","utilisateur"))
             assert v["retenu"] == v["resident"] + v["chargeur"] + v["extra_elf"] + v["ram_video"]
             assert v["retenu"] + v["libres"] <= ram * 256
         assert "ABI copie sur deux pages et retrait atomique OK" in report
@@ -553,6 +553,8 @@ def suite():
         scenario_vm(arch, case, scheduler_check(arch, case))
 
     endurance(arch, 15)
+    from ipc import campaign
+    campaign(arch)
 
 
 if __name__ == "__main__":
@@ -561,8 +563,12 @@ if __name__ == "__main__":
     parser.add_argument("--ram-test", action="store_true")
     args = parser.parse_args()
     if args.ram_test:
-        for ram in (64,128,256):
-            abi_scenario(os.environ.get("NOVA_ARCH","x86_64"), ram, allow_firmware_limit=True)
+        from ipc import campaign
+        arch = os.environ.get("NOVA_ARCH", "x86_64")
+        for ram in (64, 128, 256):
+            abi_scenario(arch, ram, allow_firmware_limit=True)
+            if ram >= 128:
+                campaign(arch, ram=ram)
     elif args.endurance is None:
         suite()
     elif args.endurance > 0:

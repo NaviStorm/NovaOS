@@ -2,6 +2,8 @@
 
 Le contrat partagé se trouve dans `abi/native.rs`. Les deux architectures utilisent des mots de 64 bits et un ordre little-endian. Un sélecteur vaut `(1 << 16) | opération`. Un appelant peut reconnaître une version incompatible avant d’interpréter sa réponse. Les valeurs attribuées dans cette version sont fixes. Une rupture future exige une nouvelle version et une notice de migration.
 
+La v0.8.0 ajoute les sélecteurs `0x10020` à `0x10029`. Les appels ci-dessous conservent leurs valeurs et leur convention de retour. [Extension IPC](ipc-abi.md)
+
 ## Appel et retour
 
 | Architecture | Instruction | Sélecteur | Arguments a, b, c | Retour statut, valeur |
@@ -9,7 +11,7 @@ Le contrat partagé se trouve dans `abi/native.rs`. Les deux architectures utili
 | x86_64 Ring 3 | `syscall` | RAX | RDI, RSI, RDX | RAX, RDX |
 | AArch64 EL0t | `svc #0x4e` | x8 | x0, x1, x2 | x0, x1 |
 
-Les arguments inutilisés sont ignorés. Un succès renvoie le statut zéro. En cas d’erreur, la valeur est zéro. Sur x86, RCX et R11 sont détruits par l’instruction. Les autres GPR hors résultats, RSP et les sélecteurs de données sont préservés. Les drapeaux arithmétiques et DF sont conservés, IF est imposé et IOPL reste nul. Sur ARM, x2 à x30, SP_EL0, TPIDR_EL0 et NZCV sont préservés. Le retour utilise EL0t et autorise les IRQ. Les routines de l’image indépendante dans `user/calls.rs` montrent comment déclarer les registres et les effets mémoire à Rust.
+Les arguments inutilisés sont ignorés. Un succès renvoie le statut zéro. En cas d’erreur, la valeur est zéro. Sur x86, RCX et R11 sont détruits par l’instruction. Les autres GPR hors résultats, RSP et les sélecteurs de données sont préservés. Les drapeaux arithmétiques et DF sont conservés, IF est imposé et IOPL reste nul. Sur ARM, x2 à x30, SP_EL0, TPIDR_EL0 et NZCV sont préservés. Le retour utilise EL0t et autorise les IRQ. Les routines de l’image indépendante dans `user/gate.rs` montrent comment déclarer les registres et les effets mémoire à Rust.
 
 | Sélecteur | Appel | Arguments | Valeur en cas de succès |
 | --- | --- | --- | --- |

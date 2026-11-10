@@ -1,0 +1,3440 @@
+{
+  "architecture": "aarch64",
+  "base_git": "7ca2e89",
+  "elf_sha256": "c737a75d5f5d087e65a75c58e79f6061c98af86e697af8eeb5a1cd1264b9fad2",
+  "elf_octets": 539264,
+  "sections_chargees_octets": {
+    ".limine_requests": 384,
+    ".text": 324280,
+    ".rodata": 47203,
+    ".data": 7880,
+    ".bss": 16888
+  },
+  "campagnes": {
+    "128": {
+      "test": {
+        "architecture": "aarch64",
+        "mode": "test",
+        "ram_mio": 128,
+        "elf_sha256": "c737a75d5f5d087e65a75c58e79f6061c98af86e697af8eeb5a1cd1264b9fad2",
+        "cas_ns": {
+          "T01": 7870000,
+          "T02": 5948000,
+          "T03": 5695008,
+          "T04": 4664000,
+          "T05/T06": 11940992,
+          "T07/T15": 5916000,
+          "T06/T08/T18": 17860000,
+          "T10": 6140992,
+          "T11": 5796992,
+          "T12/T18": 5928000,
+          "T04/T11": 11898000,
+          "T12": 42078992,
+          "T13": 288898000,
+          "T16": 11928992,
+          "T18": 30028992,
+          "T14": 6030000
+        },
+        "phases": {
+          "init": {
+            "image": 100,
+            "tables": 74,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 23675,
+            "cache": 0,
+            "chargeur": 6722,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 174,
+            "retenu": 7365
+          },
+          "ipc_repos": {
+            "image": 100,
+            "tables": 80,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 30355,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 216,
+            "retenu": 685
+          },
+          "ipc_reprise": {
+            "image": 100,
+            "tables": 80,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 30355,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 216,
+            "retenu": 685
+          },
+          "ipc_actifs": {
+            "image": 100,
+            "tables": 167,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 6168,
+            "meta_actifs": 3264,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 29942,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 629,
+            "retenu": 1098
+          },
+          "ipc_saturation": {
+            "image": 100,
+            "tables": 167,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 6168,
+            "meta_actifs": 3264,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 29874,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 697,
+            "retenu": 1166
+          },
+          "ipc_detruits": {
+            "image": 100,
+            "tables": 80,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 30355,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 216,
+            "retenu": 685
+          }
+        },
+        "secondes": 0.526
+      },
+      "races": {
+        "architecture": "aarch64",
+        "mode": "races",
+        "ram_mio": 128,
+        "elf_sha256": "c737a75d5f5d087e65a75c58e79f6061c98af86e697af8eeb5a1cd1264b9fad2",
+        "traces": [
+          {
+            "tour": 1000,
+            "op": 4997,
+            "rang": 7996,
+            "echeance": 100010,
+            "tick": 100000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 1000,
+            "op": 4998,
+            "rang": 7998,
+            "echeance": 100010,
+            "tick": 100010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 1000,
+            "op": 5000,
+            "rang": 1,
+            "echeance": 100010,
+            "tick": 100000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 2000,
+            "op": 9997,
+            "rang": 15996,
+            "echeance": 200010,
+            "tick": 200000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 2000,
+            "op": 9998,
+            "rang": 15998,
+            "echeance": 200010,
+            "tick": 200010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 2000,
+            "op": 10000,
+            "rang": 1,
+            "echeance": 200010,
+            "tick": 200000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 3000,
+            "op": 14997,
+            "rang": 23996,
+            "echeance": 300010,
+            "tick": 300000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 3000,
+            "op": 14998,
+            "rang": 23998,
+            "echeance": 300010,
+            "tick": 300010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 3000,
+            "op": 15000,
+            "rang": 1,
+            "echeance": 300010,
+            "tick": 300000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 4000,
+            "op": 19997,
+            "rang": 31996,
+            "echeance": 400010,
+            "tick": 400000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 4000,
+            "op": 19998,
+            "rang": 31998,
+            "echeance": 400010,
+            "tick": 400010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 4000,
+            "op": 20000,
+            "rang": 1,
+            "echeance": 400010,
+            "tick": 400000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 5000,
+            "op": 24997,
+            "rang": 39996,
+            "echeance": 500010,
+            "tick": 500000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 5000,
+            "op": 24998,
+            "rang": 39998,
+            "echeance": 500010,
+            "tick": 500010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 5000,
+            "op": 25000,
+            "rang": 1,
+            "echeance": 500010,
+            "tick": 500000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 6000,
+            "op": 29997,
+            "rang": 47996,
+            "echeance": 600010,
+            "tick": 600000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 6000,
+            "op": 29998,
+            "rang": 47998,
+            "echeance": 600010,
+            "tick": 600010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 6000,
+            "op": 30000,
+            "rang": 1,
+            "echeance": 600010,
+            "tick": 600000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 7000,
+            "op": 34997,
+            "rang": 55996,
+            "echeance": 700010,
+            "tick": 700000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 7000,
+            "op": 34998,
+            "rang": 55998,
+            "echeance": 700010,
+            "tick": 700010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 7000,
+            "op": 35000,
+            "rang": 1,
+            "echeance": 700010,
+            "tick": 700000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 8000,
+            "op": 39997,
+            "rang": 63996,
+            "echeance": 800010,
+            "tick": 800000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 8000,
+            "op": 39998,
+            "rang": 63998,
+            "echeance": 800010,
+            "tick": 800010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 8000,
+            "op": 40000,
+            "rang": 1,
+            "echeance": 800010,
+            "tick": 800000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 9000,
+            "op": 44997,
+            "rang": 71996,
+            "echeance": 900010,
+            "tick": 900000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 9000,
+            "op": 44998,
+            "rang": 71998,
+            "echeance": 900010,
+            "tick": 900010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 9000,
+            "op": 45000,
+            "rang": 1,
+            "echeance": 900010,
+            "tick": 900000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 10000,
+            "op": 49997,
+            "rang": 79996,
+            "echeance": 1000010,
+            "tick": 1000000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 10000,
+            "op": 49998,
+            "rang": 79998,
+            "echeance": 1000010,
+            "tick": 1000010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 10000,
+            "op": 50000,
+            "rang": 1,
+            "echeance": 1000010,
+            "tick": 1000000,
+            "statut": 11,
+            "reveils": 1
+          }
+        ],
+        "courses": {
+          "ordres": 5,
+          "repetitions": 10000,
+          "preemptions": 407
+        },
+        "secondes": 5.724
+      },
+      "perf": {
+        "architecture": "aarch64",
+        "mode": "perf",
+        "ram_mio": 128,
+        "elf_sha256": "c737a75d5f5d087e65a75c58e79f6061c98af86e697af8eeb5a1cd1264b9fad2",
+        "compteur_hz": 62500000,
+        "concurrence": {
+          "livraisons": 610708,
+          "calcul": 612734,
+          "preemptions": 5713,
+          "erreurs": 0,
+          "fenetre_hote_s": 32.57528341599391
+        },
+        "series": [
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5425234590002219
+          },
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.5344699590059463
+          },
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.5329520410014084
+          },
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.5388862079998944
+          },
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.533181416001753
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5422739589994308
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.5338522090023616
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.5322406670020428
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.534688042003836
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.5359782079976867
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5420732920028968
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.5329247089975979
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.535924249998061
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.5380095829968923
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.5378761660031159
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5031587090052199
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.4963108339943574
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.493979875005607
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.5001866670063464
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.49726312499842606
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5672367080042022
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.5936379579943605
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.5609541250014445
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.5569115420003072
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.5601442080005654
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.506276208005147
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.4997450000009849
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.4995877080000355
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.501395749997755
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.49676424999779556
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.0781527089930023
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 1.0788890839976375
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 1.0735692499947618
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 1.0761947920036619
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 1.0766821249999339
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.0781795000002603
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 1.0717903339973418
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 1.0695358330049203
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 1.0723573750001378
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 1.0762042909991578
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.0786811250000028
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 1.1054235420015175
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 1.0776163749978878
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 1.100670125000761
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 1.120750832997146
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.0764604579962906
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 1.0577279170029215
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 1.0548731250019046
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 1.0451890000040294
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 1.0700325419966248
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.0993535000015981
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 1.0951444160018582
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 1.0824207919940818
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 1.0747081669978797
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 1.078344791996642
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.0059419999961392
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.9971746669980348
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.993806249993213
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.9978471670037834
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.991261791998113
+          }
+        ],
+        "histogrammes": {
+          "DATA0-0": {
+            "irq": {
+              "n": 299908,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 64992
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 53008
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 22528,
+              "p99": 26624,
+              "max": 153008
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 53248,
+              "p95": 57344,
+              "p99": 73728,
+              "max": 278992
+            },
+            "reprise": {
+              "n": 99908,
+              "p50": 14336,
+              "p95": 15360,
+              "p99": 18432,
+              "max": 96992
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 13312,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 164992
+            }
+          },
+          "DATA32-0": {
+            "irq": {
+              "n": 299906,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 50000
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 36992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 22528,
+              "p99": 24576,
+              "max": 108992
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 53248,
+              "p95": 53248,
+              "p99": 65536,
+              "max": 152000
+            },
+            "reprise": {
+              "n": 99906,
+              "p50": 14336,
+              "p95": 14336,
+              "p99": 18432,
+              "max": 99008
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 12288,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 148000
+            }
+          },
+          "DATA128-0": {
+            "irq": {
+              "n": 299905,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 52000
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 70000
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 22528,
+              "p99": 26624,
+              "max": 109008
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 53248,
+              "p95": 53248,
+              "p99": 65536,
+              "max": 153008
+            },
+            "reprise": {
+              "n": 99905,
+              "p50": 14336,
+              "p95": 14336,
+              "p99": 18432,
+              "max": 101008
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 12288,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 148000
+            }
+          },
+          "NOTIFY-0": {
+            "irq": {
+              "n": 299944,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 62000
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 20480,
+              "p99": 24576,
+              "max": 120000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 49152,
+              "p95": 49152,
+              "p99": 61440,
+              "max": 176992
+            },
+            "reprise": {
+              "n": 99944,
+              "p50": 14336,
+              "p95": 14336,
+              "p99": 18432,
+              "max": 98992
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 11264,
+              "p95": 45056,
+              "p99": 49152,
+              "max": 172992
+            }
+          },
+          "COPY-0": {
+            "irq": {
+              "n": 350070,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 9216,
+              "max": 60000
+            },
+            "depot": {
+              "n": 50000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 57008
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 24576,
+              "p95": 28672,
+              "p99": 32768,
+              "max": 124000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 57344,
+              "p95": 65536,
+              "p99": 73728,
+              "max": 185008
+            },
+            "reprise": {
+              "n": 100070,
+              "p50": 22528,
+              "p95": 24576,
+              "p99": 30720,
+              "max": 110992
+            },
+            "appel": {
+              "n": 250000,
+              "p50": 7168,
+              "p95": 49152,
+              "p99": 57344,
+              "max": 173008
+            }
+          },
+          "MOVE-0": {
+            "irq": {
+              "n": 300143,
+              "p50": 5120,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 57008
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 22528,
+              "p99": 24576,
+              "max": 117008
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 49152,
+              "p95": 53248,
+              "p99": 61440,
+              "max": 170000
+            },
+            "reprise": {
+              "n": 100143,
+              "p50": 14336,
+              "p95": 14336,
+              "p99": 18432,
+              "max": 91008
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 40960,
+              "p95": 40960,
+              "p99": 45056,
+              "max": 144000
+            }
+          },
+          "revocation": {
+            "irq": {
+              "n": 3400,
+              "p50": 3072,
+              "p95": 9216,
+              "p99": 16384,
+              "max": 324992
+            },
+            "livraison": {
+              "n": 100,
+              "p50": 30720,
+              "p95": 36864,
+              "p99": 36864,
+              "max": 37008
+            },
+            "revocation": {
+              "n": 100,
+              "p50": 8192,
+              "p95": 9216,
+              "p99": 12288,
+              "max": 326000
+            },
+            "reprise": {
+              "n": 100,
+              "p50": 13312,
+              "p95": 14336,
+              "p99": 15360,
+              "max": 16992
+            },
+            "appel": {
+              "n": 3300,
+              "p50": 3072,
+              "p95": 9216,
+              "p99": 65536,
+              "max": 326000
+            }
+          },
+          "DATA0-1": {
+            "irq": {
+              "n": 499393,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 62000
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 92992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 49152,
+              "p95": 49152,
+              "p99": 57344,
+              "max": 172000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 114688,
+              "p99": 131072,
+              "max": 252000
+            },
+            "reprise": {
+              "n": 99913,
+              "p50": 40960,
+              "p95": 45056,
+              "p99": 49152,
+              "max": 164000
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 11264,
+              "p95": 106496,
+              "p99": 114688,
+              "max": 246000
+            }
+          },
+          "DATA32-1": {
+            "irq": {
+              "n": 499379,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 67008
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 75008
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 49152,
+              "p95": 49152,
+              "p99": 57344,
+              "max": 208000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 114688,
+              "p99": 131072,
+              "max": 281008
+            },
+            "reprise": {
+              "n": 99911,
+              "p50": 40960,
+              "p95": 45056,
+              "p99": 49152,
+              "max": 199008
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 11264,
+              "p95": 106496,
+              "p99": 114688,
+              "max": 275008
+            }
+          },
+          "DATA128-1": {
+            "irq": {
+              "n": 499329,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 9216,
+              "max": 92992
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 4096,
+              "p99": 4096,
+              "max": 98992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 49152,
+              "p95": 57344,
+              "p99": 61440,
+              "max": 171008
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 131072,
+              "p99": 147456,
+              "max": 252000
+            },
+            "reprise": {
+              "n": 99899,
+              "p50": 40960,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 154000
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 11264,
+              "p95": 114688,
+              "p99": 131072,
+              "max": 246000
+            }
+          },
+          "NOTIFY-1": {
+            "irq": {
+              "n": 499385,
+              "p50": 7168,
+              "p95": 8192,
+              "p99": 9216,
+              "max": 59008
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 49152,
+              "p95": 57344,
+              "p99": 61440,
+              "max": 174000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 122880,
+              "p99": 131072,
+              "max": 230000
+            },
+            "reprise": {
+              "n": 99931,
+              "p50": 40960,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 167008
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 10240,
+              "p95": 106496,
+              "p99": 122880,
+              "max": 243008
+            }
+          },
+          "COPY-1": {
+            "irq": {
+              "n": 549814,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 9216,
+              "max": 52992
+            },
+            "depot": {
+              "n": 50000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 98000
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 49152,
+              "p95": 53248,
+              "p99": 65536,
+              "max": 166000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 114688,
+              "p99": 147456,
+              "max": 298992
+            },
+            "reprise": {
+              "n": 100082,
+              "p50": 49152,
+              "p95": 53248,
+              "p99": 61440,
+              "max": 159008
+            },
+            "appel": {
+              "n": 250000,
+              "p50": 7168,
+              "p95": 106496,
+              "p99": 122880,
+              "max": 231008
+            }
+          },
+          "MOVE-1": {
+            "irq": {
+              "n": 500060,
+              "p50": 5120,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 50000
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 45056,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 168000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 98304,
+              "p95": 106496,
+              "p99": 122880,
+              "max": 260000
+            },
+            "reprise": {
+              "n": 100182,
+              "p50": 40960,
+              "p95": 40960,
+              "p99": 45056,
+              "max": 150992
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 81920,
+              "p95": 90112,
+              "p99": 98304,
+              "max": 213008
+            }
+          }
+        },
+        "secondes": 48.864
+      }
+    },
+    "256": {
+      "test": {
+        "architecture": "aarch64",
+        "mode": "test",
+        "ram_mio": 256,
+        "elf_sha256": "c737a75d5f5d087e65a75c58e79f6061c98af86e697af8eeb5a1cd1264b9fad2",
+        "cas_ns": {
+          "T01": 12288992,
+          "T02": 6012000,
+          "T03": 5544992,
+          "T04": 5904992,
+          "T05/T06": 12021008,
+          "T07/T15": 5876000,
+          "T06/T08/T18": 18054000,
+          "T10": 6094992,
+          "T11": 5764000,
+          "T12/T18": 5900000,
+          "T04/T11": 11958000,
+          "T12": 42126000,
+          "T13": 432385008,
+          "T16": 11942992,
+          "T18": 26783008,
+          "T14": 5946992
+        },
+        "phases": {
+          "init": {
+            "image": 100,
+            "tables": 138,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 56377,
+            "cache": 0,
+            "chargeur": 6724,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 238,
+            "retenu": 7431
+          },
+          "ipc_repos": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          },
+          "ipc_reprise": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          },
+          "ipc_actifs": {
+            "image": 100,
+            "tables": 231,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 6168,
+            "meta_actifs": 3264,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 62646,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 693,
+            "retenu": 1162
+          },
+          "ipc_saturation": {
+            "image": 100,
+            "tables": 231,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 6168,
+            "meta_actifs": 3264,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 62578,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 761,
+            "retenu": 1230
+          },
+          "ipc_detruits": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          }
+        },
+        "secondes": 0.645
+      },
+      "races": {
+        "architecture": "aarch64",
+        "mode": "races",
+        "ram_mio": 256,
+        "elf_sha256": "c737a75d5f5d087e65a75c58e79f6061c98af86e697af8eeb5a1cd1264b9fad2",
+        "traces": [
+          {
+            "tour": 1000,
+            "op": 4997,
+            "rang": 7996,
+            "echeance": 100010,
+            "tick": 100000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 1000,
+            "op": 4998,
+            "rang": 7998,
+            "echeance": 100010,
+            "tick": 100010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 1000,
+            "op": 5000,
+            "rang": 1,
+            "echeance": 100010,
+            "tick": 100000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 2000,
+            "op": 9997,
+            "rang": 15996,
+            "echeance": 200010,
+            "tick": 200000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 2000,
+            "op": 9998,
+            "rang": 15998,
+            "echeance": 200010,
+            "tick": 200010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 2000,
+            "op": 10000,
+            "rang": 1,
+            "echeance": 200010,
+            "tick": 200000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 3000,
+            "op": 14997,
+            "rang": 23996,
+            "echeance": 300010,
+            "tick": 300000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 3000,
+            "op": 14998,
+            "rang": 23998,
+            "echeance": 300010,
+            "tick": 300010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 3000,
+            "op": 15000,
+            "rang": 1,
+            "echeance": 300010,
+            "tick": 300000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 4000,
+            "op": 19997,
+            "rang": 31996,
+            "echeance": 400010,
+            "tick": 400000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 4000,
+            "op": 19998,
+            "rang": 31998,
+            "echeance": 400010,
+            "tick": 400010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 4000,
+            "op": 20000,
+            "rang": 1,
+            "echeance": 400010,
+            "tick": 400000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 5000,
+            "op": 24997,
+            "rang": 39996,
+            "echeance": 500010,
+            "tick": 500000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 5000,
+            "op": 24998,
+            "rang": 39998,
+            "echeance": 500010,
+            "tick": 500010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 5000,
+            "op": 25000,
+            "rang": 1,
+            "echeance": 500010,
+            "tick": 500000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 6000,
+            "op": 29997,
+            "rang": 47996,
+            "echeance": 600010,
+            "tick": 600000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 6000,
+            "op": 29998,
+            "rang": 47998,
+            "echeance": 600010,
+            "tick": 600010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 6000,
+            "op": 30000,
+            "rang": 1,
+            "echeance": 600010,
+            "tick": 600000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 7000,
+            "op": 34997,
+            "rang": 55996,
+            "echeance": 700010,
+            "tick": 700000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 7000,
+            "op": 34998,
+            "rang": 55998,
+            "echeance": 700010,
+            "tick": 700010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 7000,
+            "op": 35000,
+            "rang": 1,
+            "echeance": 700010,
+            "tick": 700000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 8000,
+            "op": 39997,
+            "rang": 63996,
+            "echeance": 800010,
+            "tick": 800000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 8000,
+            "op": 39998,
+            "rang": 63998,
+            "echeance": 800010,
+            "tick": 800010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 8000,
+            "op": 40000,
+            "rang": 1,
+            "echeance": 800010,
+            "tick": 800000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 9000,
+            "op": 44997,
+            "rang": 71996,
+            "echeance": 900010,
+            "tick": 900000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 9000,
+            "op": 44998,
+            "rang": 71998,
+            "echeance": 900010,
+            "tick": 900010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 9000,
+            "op": 45000,
+            "rang": 1,
+            "echeance": 900010,
+            "tick": 900000,
+            "statut": 11,
+            "reveils": 1
+          },
+          {
+            "tour": 10000,
+            "op": 49997,
+            "rang": 79996,
+            "echeance": 1000010,
+            "tick": 1000000,
+            "statut": 9,
+            "reveils": 1
+          },
+          {
+            "tour": 10000,
+            "op": 49998,
+            "rang": 79998,
+            "echeance": 1000010,
+            "tick": 1000010,
+            "statut": 8,
+            "reveils": 1
+          },
+          {
+            "tour": 10000,
+            "op": 50000,
+            "rang": 1,
+            "echeance": 1000010,
+            "tick": 1000000,
+            "statut": 11,
+            "reveils": 1
+          }
+        ],
+        "courses": {
+          "ordres": 5,
+          "repetitions": 10000,
+          "preemptions": 381
+        },
+        "secondes": 5.784
+      },
+      "perf": {
+        "architecture": "aarch64",
+        "mode": "perf",
+        "ram_mio": 256,
+        "elf_sha256": "c737a75d5f5d087e65a75c58e79f6061c98af86e697af8eeb5a1cd1264b9fad2",
+        "compteur_hz": 62500000,
+        "concurrence": {
+          "livraisons": 610816,
+          "calcul": 612594,
+          "preemptions": 5004,
+          "erreurs": 0,
+          "fenetre_hote_s": 30.073608374994365
+        },
+        "series": [
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5029275830020197
+          },
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.5058059169969056
+          },
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.4998887500114506
+          },
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.4999976249964675
+          },
+          {
+            "mode": "DATA0",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.4999847500002943
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5087663749873172
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.4959706249937881
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.4973780419968534
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.5040034160047071
+          },
+          {
+            "mode": "DATA32",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.4978782910038717
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5000824170128908
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.5054389580036514
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.49993950000498444
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.503591000000597
+          },
+          {
+            "mode": "DATA128",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.5000126660015667
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.46367295799427666
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.4613534579984844
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.47340750000148546
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.4704722909955308
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.4734570409927983
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.5282894999982091
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.5248249160067644
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.5286388749955222
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.5350047079991782
+          },
+          {
+            "mode": "COPY",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.5265540420077741
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.4785154169949237
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.4686714999988908
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.46626970800571144
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.4663659999932861
+          },
+          {
+            "mode": "MOVE",
+            "charge": 0,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.4710034170129802
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.004078624988324
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.991657500009751
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.9978717499907361
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.9958046669926262
+          },
+          {
+            "mode": "DATA0",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.9885343329951866
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.0038830829871586
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 1.0009920000011334
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.998517083004117
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.9987547079945216
+          },
+          {
+            "mode": "DATA32",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.9974707090004813
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.9978560000017751
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 1.000575708996621
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 1.0068962080113124
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.9999622500035912
+          },
+          {
+            "mode": "DATA128",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.9968320000043605
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.9743038750020787
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.9692177079996327
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.9653765410039341
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.9679109169956064
+          },
+          {
+            "mode": "NOTIFY",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.9658033330051694
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 1.0099950000003446
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 1.0098294579947833
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 1.003559624994523
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 1.0092397080006776
+          },
+          {
+            "mode": "COPY",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 1.0022959589987295
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 1,
+            "tours": 10000,
+            "secondes": 0.9355435830075294
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 2,
+            "tours": 10000,
+            "secondes": 0.9330536670022411
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 3,
+            "tours": 10000,
+            "secondes": 0.924953292007558
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 4,
+            "tours": 10000,
+            "secondes": 0.9243755420029629
+          },
+          {
+            "mode": "MOVE",
+            "charge": 1,
+            "serie": 5,
+            "tours": 10000,
+            "secondes": 0.9215577909926651
+          }
+        ],
+        "histogrammes": {
+          "DATA0-0": {
+            "irq": {
+              "n": 299918,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 162000
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 3072,
+              "max": 58992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 20480,
+              "p99": 24576,
+              "max": 278992
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 49152,
+              "p95": 53248,
+              "p99": 61440,
+              "max": 390000
+            },
+            "reprise": {
+              "n": 99918,
+              "p50": 13312,
+              "p95": 14336,
+              "p99": 16384,
+              "max": 72000
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 10240,
+              "p95": 45056,
+              "p99": 49152,
+              "max": 282000
+            }
+          },
+          "DATA32-0": {
+            "irq": {
+              "n": 299913,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 32000
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 3072,
+              "max": 26000
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 20480,
+              "p99": 22528,
+              "max": 50992
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 49152,
+              "p95": 53248,
+              "p99": 57344,
+              "max": 95008
+            },
+            "reprise": {
+              "n": 99913,
+              "p50": 13312,
+              "p95": 14336,
+              "p99": 15360,
+              "max": 42000
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 10240,
+              "p95": 45056,
+              "p99": 49152,
+              "max": 90992
+            }
+          },
+          "DATA128-0": {
+            "irq": {
+              "n": 299904,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 34000
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 3072,
+              "max": 29008
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 20480,
+              "p99": 24576,
+              "max": 90000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 49152,
+              "p95": 53248,
+              "p99": 61440,
+              "max": 128000
+            },
+            "reprise": {
+              "n": 99904,
+              "p50": 13312,
+              "p95": 14336,
+              "p99": 16384,
+              "max": 70992
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 10240,
+              "p95": 45056,
+              "p99": 49152,
+              "max": 142000
+            }
+          },
+          "NOTIFY-0": {
+            "irq": {
+              "n": 299946,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 7168,
+              "max": 74992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 20480,
+              "p99": 22528,
+              "max": 92000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 49152,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 173008
+            },
+            "reprise": {
+              "n": 99946,
+              "p50": 13312,
+              "p95": 14336,
+              "p99": 16384,
+              "max": 85008
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 9216,
+              "p95": 45056,
+              "p99": 49152,
+              "max": 168000
+            }
+          },
+          "COPY-0": {
+            "irq": {
+              "n": 350065,
+              "p50": 6144,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 62000
+            },
+            "depot": {
+              "n": 50000,
+              "p50": 2048,
+              "p95": 3072,
+              "p99": 3072,
+              "max": 50992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 22528,
+              "p95": 26624,
+              "p99": 28672,
+              "max": 72000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 53248,
+              "p95": 57344,
+              "p99": 65536,
+              "max": 174992
+            },
+            "reprise": {
+              "n": 100065,
+              "p50": 18432,
+              "p95": 24576,
+              "p99": 26624,
+              "max": 50992
+            },
+            "appel": {
+              "n": 250000,
+              "p50": 6144,
+              "p95": 45056,
+              "p99": 49152,
+              "max": 108000
+            }
+          },
+          "MOVE-0": {
+            "irq": {
+              "n": 300152,
+              "p50": 5120,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 70992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 20480,
+              "p95": 20480,
+              "p99": 24576,
+              "max": 136000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 49152,
+              "p95": 49152,
+              "p99": 57344,
+              "max": 163008
+            },
+            "reprise": {
+              "n": 100152,
+              "p50": 13312,
+              "p95": 14336,
+              "p99": 16384,
+              "max": 43008
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 32768,
+              "p95": 40960,
+              "p99": 40960,
+              "max": 174000
+            }
+          },
+          "revocation": {
+            "irq": {
+              "n": 3400,
+              "p50": 3072,
+              "p95": 9216,
+              "p99": 15360,
+              "max": 270000
+            },
+            "livraison": {
+              "n": 100,
+              "p50": 28672,
+              "p95": 30720,
+              "p99": 45056,
+              "max": 54000
+            },
+            "revocation": {
+              "n": 100,
+              "p50": 7168,
+              "p95": 8192,
+              "p99": 9216,
+              "max": 270000
+            },
+            "reprise": {
+              "n": 100,
+              "p50": 12288,
+              "p95": 13312,
+              "p99": 18432,
+              "max": 19008
+            },
+            "appel": {
+              "n": 3300,
+              "p50": 3072,
+              "p95": 9216,
+              "p99": 61440,
+              "max": 270000
+            }
+          },
+          "DATA0-1": {
+            "irq": {
+              "n": 499473,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 48000
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 3072,
+              "max": 52992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 45056,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 125008
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 106496,
+              "p99": 114688,
+              "max": 182000
+            },
+            "reprise": {
+              "n": 99911,
+              "p50": 40960,
+              "p95": 40960,
+              "p99": 45056,
+              "max": 116992
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 10240,
+              "p95": 98304,
+              "p99": 106496,
+              "max": 186992
+            }
+          },
+          "DATA32-1": {
+            "irq": {
+              "n": 499453,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 39008
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 52992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 45056,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 180000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 106496,
+              "p99": 114688,
+              "max": 242000
+            },
+            "reprise": {
+              "n": 99923,
+              "p50": 40960,
+              "p95": 40960,
+              "p99": 45056,
+              "max": 172000
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 10240,
+              "p95": 98304,
+              "p99": 106496,
+              "max": 241008
+            }
+          },
+          "DATA128-1": {
+            "irq": {
+              "n": 499404,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 46000
+            },
+            "depot": {
+              "n": 100000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 4096,
+              "max": 64000
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 45056,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 125008
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 106496,
+              "p99": 122880,
+              "max": 206992
+            },
+            "reprise": {
+              "n": 99912,
+              "p50": 40960,
+              "p95": 40960,
+              "p99": 45056,
+              "max": 118000
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 10240,
+              "p95": 98304,
+              "p99": 106496,
+              "max": 202000
+            }
+          },
+          "NOTIFY-1": {
+            "irq": {
+              "n": 499530,
+              "p50": 6144,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 47008
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 45056,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 140000
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 98304,
+              "p95": 106496,
+              "p99": 114688,
+              "max": 209008
+            },
+            "reprise": {
+              "n": 99944,
+              "p50": 40960,
+              "p95": 40960,
+              "p99": 45056,
+              "max": 127008
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 9216,
+              "p95": 98304,
+              "p99": 106496,
+              "max": 210000
+            }
+          },
+          "COPY-1": {
+            "irq": {
+              "n": 549762,
+              "p50": 5120,
+              "p95": 8192,
+              "p99": 8192,
+              "max": 34000
+            },
+            "depot": {
+              "n": 50000,
+              "p50": 3072,
+              "p95": 3072,
+              "p99": 3072,
+              "max": 74000
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 45056,
+              "p95": 53248,
+              "p99": 57344,
+              "max": 115008
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 106496,
+              "p95": 106496,
+              "p99": 122880,
+              "max": 344000
+            },
+            "reprise": {
+              "n": 100080,
+              "p50": 45056,
+              "p95": 49152,
+              "p99": 53248,
+              "max": 183008
+            },
+            "appel": {
+              "n": 250000,
+              "p50": 6144,
+              "p95": 98304,
+              "p99": 106496,
+              "max": 244992
+            }
+          },
+          "MOVE-1": {
+            "irq": {
+              "n": 499943,
+              "p50": 5120,
+              "p95": 7168,
+              "p99": 8192,
+              "max": 86992
+            },
+            "livraison": {
+              "n": 100000,
+              "p50": 45056,
+              "p95": 45056,
+              "p99": 53248,
+              "max": 147008
+            },
+            "aller_retour": {
+              "n": 50000,
+              "p50": 98304,
+              "p95": 98304,
+              "p99": 114688,
+              "max": 226000
+            },
+            "reprise": {
+              "n": 100137,
+              "p50": 36864,
+              "p95": 40960,
+              "p99": 45056,
+              "max": 134000
+            },
+            "appel": {
+              "n": 200000,
+              "p50": 73728,
+              "p95": 90112,
+              "p99": 98304,
+              "max": 208992
+            }
+          }
+        },
+        "secondes": 45.316
+      }
+    }
+  },
+  "endurance": {
+    "architecture": "aarch64",
+    "mode": "endurance",
+    "ram_mio": 256,
+    "elf_sha256": "c737a75d5f5d087e65a75c58e79f6061c98af86e697af8eeb5a1cd1264b9fad2",
+    "secondes": 7200.163,
+    "cycles": 610625,
+    "periodes": 4885,
+    "libres": 63059,
+    "extraits": [
+      "IPC endurance periode=1 cycles=125 libres=63059",
+      "IPC endurance periode=2443 cycles=125 libres=63059",
+      "IPC endurance periode=4885 cycles=125 libres=63059"
+    ]
+  },
+  "extraits_256_mio": [
+    "IPC T10 bloque=1 pages_rw=2 temoin=96 tete=42 cadres=63059 OK",
+    "IPC creation premier_budget=5",
+    "IPC attentes_synthetiques=32 max_pid=4 pages_attentes=2 pages_totales=73",
+    "IPC saturation endpoints=64 noeuds=4 locales=3 attentes=0 octets_vivants=105216 statique=1064 pages=71",
+    "IPC composition ordre=0 receveur=108 offre=109 rang=2 admis=1 livres=0 retires=1 pile_suspendue=1072",
+    "IPC composition ordre=1 receveur=110 offre=111 rang=2 admis=1 livres=0 retires=1 pile_suspendue=1072",
+    "IPC composition ordre=2 receveur=112 offre=113 rang=2 admis=1 livres=0 retires=1 pile_suspendue=1072",
+    "IPC composition ordre=3 receveur=114 offre=115 rang=2 admis=1 livres=0 retires=1 pile_suspendue=1072",
+    "IPC composition ordre=4 receveur=116 offre=117 rang=2 admis=1 livres=1 retires=0 pile_suspendue=1072"
+  ],
+  "regressions": {
+    "abi": {
+      "64": {
+        "etat": "avant_noyau",
+        "motif": "NewSize >= 0x08000000"
+      },
+      "128": {
+        "pan": false,
+        "etat": "valide",
+        "phases": {
+          "init": {
+            "image": 100,
+            "tables": 74,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 23675,
+            "cache": 0,
+            "chargeur": 6722,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 174,
+            "retenu": 7365
+          },
+          "repos": {
+            "image": 100,
+            "tables": 80,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 30355,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 216,
+            "retenu": 685
+          },
+          "reprise": {
+            "image": 100,
+            "tables": 80,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 30355,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 216,
+            "retenu": 685
+          },
+          "actifs": {
+            "image": 100,
+            "tables": 91,
+            "kpile": 64,
+            "upile": 2,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 5,
+            "processus": 2,
+            "meta_octets": 6168,
+            "meta_actifs": 384,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 30305,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 266,
+            "retenu": 735
+          },
+          "detruits": {
+            "image": 100,
+            "tables": 80,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 30355,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 216,
+            "retenu": 685
+          },
+          "repos_ui": {
+            "image": 100,
+            "tables": 80,
+            "kpile": 16,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 30371,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6722,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 200,
+            "retenu": 669
+          }
+        },
+        "objectif_8_mio": true,
+        "series": 16128,
+        "preemptions": 1,
+        "attentes": 2
+      },
+      "256": {
+        "pan": false,
+        "etat": "valide",
+        "phases": {
+          "init": {
+            "image": 100,
+            "tables": 138,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 56377,
+            "cache": 0,
+            "chargeur": 6724,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 238,
+            "retenu": 7431
+          },
+          "repos": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          },
+          "reprise": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          },
+          "actifs": {
+            "image": 100,
+            "tables": 155,
+            "kpile": 64,
+            "upile": 2,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 5,
+            "processus": 2,
+            "meta_octets": 6168,
+            "meta_actifs": 384,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63009,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 330,
+            "retenu": 799
+          },
+          "detruits": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          },
+          "repos_ui": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 16,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63075,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 264,
+            "retenu": 733
+          }
+        },
+        "objectif_8_mio": true,
+        "series": 50176,
+        "preemptions": 2,
+        "attentes": 2
+      },
+      "256-pan": {
+        "pan": true,
+        "etat": "valide",
+        "phases": {
+          "init": {
+            "image": 100,
+            "tables": 138,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 56377,
+            "cache": 0,
+            "chargeur": 6724,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 238,
+            "retenu": 7431
+          },
+          "repos": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          },
+          "reprise": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          },
+          "actifs": {
+            "image": 100,
+            "tables": 155,
+            "kpile": 64,
+            "upile": 2,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 5,
+            "processus": 2,
+            "meta_octets": 6168,
+            "meta_actifs": 384,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63009,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 330,
+            "retenu": 799
+          },
+          "detruits": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63059,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 280,
+            "retenu": 749
+          },
+          "repos_ui": {
+            "image": 100,
+            "tables": 144,
+            "kpile": 16,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 6168,
+            "meta_actifs": 0,
+            "tcb_octets": 4096,
+            "heap_va": 65536,
+            "libres": 63075,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 6724,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 264,
+            "retenu": 733
+          }
+        },
+        "objectif_8_mio": true,
+        "series": 42496,
+        "preemptions": 1,
+        "attentes": 2
+      }
+    },
+    "stress": {
+      "architecture": "aarch64",
+      "secondes_demandees": 15,
+      "secondes_reelles": 16.778,
+      "avant": {
+        "blocs": 3,
+        "occupes": 10304,
+        "engages": 12288,
+        "libres": 63059
+      },
+      "bilan": {
+        "periode": 2,
+        "ticks": 2842,
+        "preemptions": 2836,
+        "collectes": 5026,
+        "attentes": 630,
+        "mutex": 632,
+        "A": 682,
+        "B": 682,
+        "allocations": 7524,
+        "audits": 8,
+        "penuries": 1,
+        "minimum": 62944,
+        "blocs": 3,
+        "occupes": 10304,
+        "engages": 12288,
+        "libres": 63059
+      }
+    }
+  },
+  "journaux_sha256": {
+    "serie-aarch64-abi-test-64.log": "76463ed96543f53e03d1a8b7ef018f40d96c218b0efb359037c8bd3831d1843d",
+    "serie-aarch64-abi-test-128.log": "d29e57b090b92a60348f265477680c381ad0d1dbcc7be6e25f868375f2123c23",
+    "serie-aarch64-abi-test-256.log": "a26ddf206f22291a42369d5a32f2c212c6631156eaa99abf7c9bbd6c9b29c6ae",
+    "serie-aarch64-proc-test.log": "e77b631d2ce09c3eb1d4033782ba1a2118592b0341ca622f8b543d33edeac891",
+    "serie-aarch64-proc-boot-fault.log": "2ca8813cf2b0bf1525e5b927862cf5a6b5c1e4f6dd42988ecc4c9be9ef57c71f",
+    "serie-aarch64-mem-test.log": "52a07f3d057824f37125db4328eb8fb3cfcf47c8df5602ff1a5ed497395e297c",
+    "serie-aarch64-mem-ro.log": "32d5283fb48e70e16b371e33ba76de50a9523096b12e190eb3e43142eec0bf45",
+    "serie-aarch64-mem-alias.log": "c44cc4f509ad46d1a5802d2bf3fe955af06326d9137abad451131eb191d7c297",
+    "serie-aarch64-mem-page-ro.log": "61faeabb6d8af66154123e4d252fe0bc603c9833aa39195ae072e3f53f011bec",
+    "serie-aarch64-mem-nx.log": "4f702a11b378c53e704b86b7da2c8871a77558c2633d1012ee8c32beb86b6b48",
+    "serie-aarch64-mem-absent.log": "aedd1c22629c2cd4ed9287f4436d5114d2793dac83df2597e756aec2f1e79d75",
+    "serie-aarch64-heap-test.log": "a4c82c9f68442421c2097ea847d64e19b7c3f55d978aec79741ee0ee83c1ee04",
+    "serie-aarch64-heap-oom.log": "c510665fcb7e60565549e3759d4d91321292a548cd221ac8edcd14f500294af3",
+    "serie-aarch64-heap-corrupt.log": "ba78b1b05b7da4affc9fecacb30e6e6d61c799785b60a6525b80310fc9fc44e3",
+    "serie-aarch64-heap-guard.log": "c23522f9985b43cf96ed8f5600b0954a2963f65e4327b188116a765803c9a079",
+    "serie-aarch64-heap-infallible.log": "fb9730a8df7eb3288e098b5ec9ccf4779fb7c0fb83ede074bdde148fa4caa0cf",
+    "serie-aarch64-heap-reentrant.log": "ceb2b069f7bdaf1b732bda8c1d6ed0be84a4e16144bcccd1b258964525953d98",
+    "serie-aarch64-heap-metadata.log": "7bae607ac7c3e59672f5fad986186ee4b4ef771bdad4742c8eb6c0af0dce6067",
+    "serie-aarch64-sched-test.log": "592ca1096fb6f7889d35ebc575fa75614d92d3ce3e0f61245e073bbd3827d9a0",
+    "serie-aarch64-sched-guard.log": "c822b6532b8e79e303286d4cb828902ff880bbbca70a0164d895cf7304c6c964",
+    "serie-aarch64-sched-fpu.log": "76bd72d241f83bf8b00a4be4e86ba447590ba58ce25851e5a533a817d59251bf",
+    "serie-aarch64-sched-stress.log": "ea528f4aa01425f5a5dc9a4bbc8a0b4625bdbd7cb9d80150c06b278f782308eb",
+    "serie-aarch64-sched-endurance-15s.log": "ee353508a71efb8cfe236b3b62e476c5200a7cc0683cc7888f63a51c0ace85e8",
+    "serie-aarch64-ipc-endurance-7200s.log": "27707f9359e11cc46b727d6465d46f34a8bd08208b7996c4210beb268402acc1",
+    "serie-aarch64-ipc-test-128.log": "a057c99f9f5c630942caa471cf560a69a1d636c23cea24ccac8a17acf9649fe1",
+    "serie-aarch64-ipc-test-256.log": "d1fea9cbc7069311de4927c4f7d8721001b423c953e9b19bc5d211a45df208af",
+    "serie-aarch64-ipc-races-128.log": "cbdfe39d26bcdbdeb39b9b896c7018cc5dc9d86fe47b644bd5acbc6c0e718e10",
+    "serie-aarch64-ipc-races-256.log": "e82d3ba334411f99ab5f0dded75f83900be2d2fd1dd7183337f05c8e5d44674b",
+    "serie-aarch64-ipc-perf-128.log": "e4331b8e0886f54fe903f21641ee9fcdf3f931327335868aa4dd36da2b8c9bc2",
+    "serie-aarch64-ipc-perf-256.log": "122bce26d9e04037a05ec8016effd16f71e45e1576d2363e5c21c3543e48bc2d",
+    "serie-aarch64-abi-test-256-pan.log": "54a61b00938ad1172836dd2198126f42313853dcc880260a6f36d901eb387d6d",
+    "serie-aarch64.log": "73703cf33a4afdfeb7a9bc9325bbee36c4f69c5c860b509c5866b8548f737100"
+  }
+}

@@ -105,6 +105,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     context::enable();
     let [a, b, c] = args;
     let result = match id {
+        IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
         PROCESS_ID => Ok(with(|s| caller(s).number)),
         THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
         THREAD_YIELD => {

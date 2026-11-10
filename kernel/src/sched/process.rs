@@ -8,6 +8,7 @@ use crate::{
 
 mod abi_probe;
 mod demo;
+pub(crate) mod ipc;
 pub(super) use abi_probe::idle_sample;
 pub(crate) use abi_probe::test as abi_test;
 pub(crate) mod syscall;
@@ -117,6 +118,16 @@ fn spawn_image(
     if !guard.was_enabled() {
         return Err(Error::Critical);
     }
+    create_image(image, data, private_ro, wait_on)
+}
+
+// L’appelant maintient le masque IRQ jusqu’à publication du groupe.
+fn create_image(
+    image: &[u8],
+    data: &[u8],
+    private_ro: Option<&[u8]>,
+    wait_on: Option<Child>,
+) -> Result<Child, Error> {
     reap();
     let (slot, proc_slot) = with(|s| {
         Some((
@@ -175,19 +186,24 @@ fn spawn_image(
 pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
     let pid = with(|s| {
         let pid = s.thread(s.current).owner.expect("exception hors processus");
+        s.ipc.death(pid, ticks());
+        s.flush_ipc();
+        s.ipc.collect();
         let p = s.processes.get_mut(pid);
         assert!(p.outcome.replace(result).is_none());
         pid
     });
-    match result {
-        Outcome::Exit(code) => hal::log(format_args!(
-            "PROC pid={} niveau={level} pc={pc:#x} sortie={code}",
-            pid.number
-        )),
-        Outcome::Fault(f) => hal::log(format_args!(
-            "PROC pid={} niveau={level} pc={pc:#x} faute={} adresse={:#x} acces={} cause={} syndrome={:#x}",
-            pid.number, f.trap, f.address, f.access, f.cause, f.syndrome
-        )),
+    if !ipc::quiet() {
+        match result {
+            Outcome::Exit(code) => hal::log(format_args!(
+                "PROC pid={} niveau={level} pc={pc:#x} sortie={code}",
+                pid.number
+            )),
+            Outcome::Fault(f) => hal::log(format_args!(
+                "PROC pid={} niveau={level} pc={pc:#x} faute={} adresse={:#x} acces={} cause={} syndrome={:#x}",
+                pid.number, f.trap, f.address, f.access, f.cause, f.syndrome
+            )),
+        }
     }
     dispatch(Reason::Exit);
     unreachable!("processus terminé repris")
@@ -254,6 +270,7 @@ pub(crate) const fn metadata_bytes() -> usize {
 fn measure(phase: &str) {
     with(|s| {
         let mut r = crate::memory::Resident::default();
+        r.ipc = s.ipc.pages();
         r.tcb_bytes = s.slots.capacity() * size_of::<Option<Thread>>();
         for t in s.slots.iter().flatten() {
             r.stacks += (t.stack.top - t.stack.low) / 4096;

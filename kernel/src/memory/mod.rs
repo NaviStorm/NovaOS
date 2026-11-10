@@ -280,6 +280,7 @@ impl Memory {
 #[derive(Default)]
 pub(crate) struct Resident {
     pub stacks: usize,
+    pub ipc: usize,
     pub user: usize,
     pub user_stacks: usize,
     pub processes: usize,
@@ -314,16 +315,17 @@ impl Memory {
         let released = self.frames.reclaimed;
         let loader = pages(EntryType::BOOTLOADER_RECLAIMABLE) - released;
         let used = self.frames.initial - self.frames.available;
-        let counted =
-            self.frames.tables + (r.stacks + r.user + r.user_stacks + r.heap + r.buddy) as u64;
+        let counted = self.frames.tables
+            + (r.ipc + r.stacks + r.user + r.user_stacks + r.heap + r.buddy) as u64;
         assert_eq!(used, counted, "cadres sans attribution dans le bilan");
         log(format_args!(
-            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={}",
+            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={}",
             self.frames.tables,
             r.stacks,
             r.user_stacks,
             r.heap,
             r.buddy,
+            r.ipc,
             r.user,
             r.processes,
             crate::sched::process::metadata_bytes(),
