@@ -10,7 +10,7 @@ use crate::{
 };
 use core::{alloc::Layout, mem::size_of};
 pub(crate) use global::{install, realign, with_pages};
-pub(crate) use probes::test;
+pub(crate) use probes::{shortage, test};
 use tree::{Block, Tree};
 
 const PAGE_BYTES: usize = memory::PAGE as usize;
@@ -23,6 +23,7 @@ const CANARY: u64 = 0xb8ab_47e9_c351_6f2d;
 #[derive(Debug, PartialEq, Eq)]
 enum Error {
     NoMemory,
+    Reentrant,
     InvalidPointer,
     WrongLayout,
     Metadata,
@@ -73,6 +74,8 @@ struct Heap {
     capacity: usize,
     metadata: usize,
     committed: usize,
+    live_blocks: usize,
+    occupied: usize,
 }
 
 impl Heap {
@@ -94,6 +97,8 @@ impl Heap {
             capacity,
             metadata,
             committed: 0,
+            live_blocks: 0,
+            occupied: 0,
         })
     }
 
@@ -159,17 +164,18 @@ impl Heap {
         Ok(())
     }
 
-    fn trim(&mut self, pages: &mut Memory) {
-        if self.committed <= TRIM_THRESHOLD {
+    fn trim(&mut self, pages: &mut Memory, threshold: usize) {
+        if self.committed <= threshold {
             return;
         }
         let used = self.tree().used_end();
-        let keep = used.next_multiple_of(PAGE_BYTES).max(PAGE_BYTES);
+        let minimum = if threshold == 0 { 0 } else { PAGE_BYTES };
+        let keep = used.next_multiple_of(PAGE_BYTES).max(minimum);
         let old = self.committed;
-        if old - keep < TRIM_THRESHOLD {
+        if old - keep < threshold || old == keep {
             return;
         }
-        if used == 0 {
+        if used == 0 && keep != 0 {
             self.tree().empty_first_page();
         }
         self.committed = keep;
@@ -223,13 +229,17 @@ impl Heap {
             }
         };
         self.mark(block, layout);
+        self.live_blocks += 1;
+        self.occupied += block.size;
         Ok((self.base + block.start) as *mut u8)
     }
 
     fn free(&mut self, pages: &mut Memory, pointer: *mut u8, layout: Layout) -> Result<()> {
         let (b, root) = self.inspect(pointer.addr(), layout)?;
         self.tree().release(b, root);
-        self.trim(pages);
+        self.live_blocks = self.live_blocks.checked_sub(1).ok_or(Error::Metadata)?;
+        self.occupied = self.occupied.checked_sub(b.size).ok_or(Error::Metadata)?;
+        self.trim(pages, TRIM_THRESHOLD);
         Ok(())
     }
 
@@ -246,8 +256,9 @@ impl Heap {
         let size = block_size(new)?;
         if let Some(block) = self.tree().resize(b, root, size) {
             self.mark(block, new);
+            self.occupied = self.occupied.checked_sub(b.size).ok_or(Error::Metadata)? + block.size;
             if size < b.size {
-                self.trim(pages);
+                self.trim(pages, TRIM_THRESHOLD);
             }
             return Ok(pointer);
         }
@@ -266,6 +277,8 @@ impl Heap {
                         .resize(b, new_root, size)
                         .expect("jumeaux disponibles");
                     self.mark(block, new);
+                    self.occupied =
+                        self.occupied.checked_sub(b.size).ok_or(Error::Metadata)? + block.size;
                     return Ok(pointer);
                 }
                 // Un autre bloc déjà engagé peut encore convenir.
@@ -275,4 +288,34 @@ impl Heap {
         }
         self.allocate(pages, new)
     }
+}
+
+/// Photographie cohérente sous le verrou des pages et du tas. La normalisation
+/// rend le suffixe libre du cache lors des comparaisons à charge nulle.
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
+pub(crate) struct Usage {
+    pub blocks: usize,
+    pub occupied: usize,
+    pub committed: usize,
+    pub free_pages: u64,
+}
+
+pub(crate) fn audit(normalize: bool) -> Usage {
+    global::GLOBAL
+        .with_state(|s| {
+            let (blocks, occupied) = s.heap.tree().audit()?;
+            if (blocks, occupied) != (s.heap.live_blocks, s.heap.occupied) {
+                return Err(Error::Metadata);
+            }
+            if normalize {
+                s.heap.trim(&mut s.pages, 0);
+            }
+            Ok(Usage {
+                blocks,
+                occupied,
+                committed: s.heap.committed,
+                free_pages: s.pages.free_pages(),
+            })
+        })
+        .unwrap_or_else(|e| global::fatal(e))
 }

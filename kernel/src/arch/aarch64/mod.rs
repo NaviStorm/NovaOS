@@ -38,3 +38,10 @@ pub(crate) fn restore_interrupts(flags: usize) {
     // Sûreté : image DAIF capturée sur ce CPU avant l’acquisition du verrou.
     unsafe { asm!("msr daif, {}", in(reg) flags, options(nostack)) };
 }
+
+pub(crate) fn cpu_id() -> usize {
+    let mpidr: usize;
+    // Sûreté : lecture seule de l’affinité du processeur courant à EL1.
+    unsafe { asm!("mrs {}, mpidr_el1", out(reg) mpidr, options(nomem, nostack, preserves_flags)) };
+    mpidr & 0xff_00ff_ffff
+}

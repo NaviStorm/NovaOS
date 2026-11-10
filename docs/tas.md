@@ -1,4 +1,4 @@
-# Tas noyau de NovaOS v0.4.0
+# Tas noyau de NovaOS
 
 Après la prise de contrôle de la MMU, le noyau installe son allocateur global. Il possède le gestionnaire de mémoire et obtient ses pages superviseur RW/NX par `Memory::allocate_page`. Il les rend par `Memory::release_page`. L’arbre de blocs et les objets Rust utilisent uniquement ces interfaces. La HAL intervient dans le verrou pour sauvegarder, masquer et restaurer les interruptions locales.
 
@@ -14,7 +14,7 @@ La fenêtre virtuelle des objets commence à `0xffff_f001_0000_0000` et mesure 2
 
 La longueur engagée se décompose en arbres de blocs jumeaux. Chaque nœud divisé indique la taille du plus grand bloc libre de son sous-arbre. L’allocation suit cette indication, divise un bloc libre puis actualise ses ancêtres. La libération fusionne les jumeaux libres. La recherche et la mise à jour sur des pages déjà engagées sont logarithmiques, avec au plus 23 niveaux de division. Une réallocation privilégie le redimensionnement sur place, y compris par extension en fin de tas. Lors d’un déplacement, la copie des octets utiles s’effectue hors verrou. La primitive interne `heap::realign` accepte aussi un nouvel alignement.
 
-Les indicateurs de l’arbre résident dans une fenêtre privée distincte. Ils coûtent deux octets par tranche de 32 octets engagée, arrondis à des pages de 4 Kio. Le noyau mappe les nouvelles pages de métadonnées et de données avant de publier une extension. Si le dernier cadre manque, il démape les pages provisoires dans l’ordre inverse. Quand le suffixe libre permet de rendre au moins 64 Kio, le tas le restitue à la MMU et réduit aussi ses métadonnées. Un tas ayant servi conserve au moins une page de données en réserve.
+Les indicateurs de l’arbre résident dans une fenêtre privée distincte. Ils coûtent deux octets par tranche de 32 octets engagée, arrondis à des pages de 4 Kio. Le noyau mappe les nouvelles pages de métadonnées et de données avant de publier une extension. Si le dernier cadre manque, il démape les pages provisoires dans l’ordre inverse. Quand le suffixe libre permet de rendre au moins 64 Kio, le tas le restitue à la MMU et réduit aussi ses métadonnées. En fonctionnement courant, un tas ayant servi conserve au moins une page de données en réserve. La sonde peut purger ce cache pour comparer deux bilans à charge identique.
 
 ## Contrôles et limites
 
@@ -37,6 +37,8 @@ make ARCH=aarch64 test
 | `heap-test` | Libérations alternées sur 128 blocs pendant huit cycles, réutilisation des adresses, fusion, remise à zéro, 1 500 opérations mixtes, alignements de 1 octet à 2 Mio, réallocation sur place ou avec déplacement. Les pointeurs de `Box`, `Vec` et `String` sont retrouvés dans l’arbre. Les erreurs de pointeur, de disposition, de taille et la double libération sont contrôlées par le moteur interne. |
 | `heap-oom` | Une fenêtre de test immobilise de vrais cadres jusqu’à ce qu’il en reste au plus huit. Une réservation de vecteur et la croissance d’un bloc existant échouent. Le contenu, le nombre de cadres libres et la longueur engagée sont contrôlés. Une fois les cadres rendus, les mêmes demandes réussissent. |
 | `heap-corrupt` | La sonde altère sa propre sentinelle. La libération par le chemin global produit le diagnostic `Overrun` et la VM entre en veille. |
+| `heap-metadata` | La sonde masque un bloc vivant dans l’arbre. Le décompte indépendant détecte la corruption et produit `Metadata`. |
+| `heap-reentrant` | Une acquisition imbriquée sur le même CPU produit `Reentrant` et un arrêt contrôlé. |
 | `heap-guard` | Une lecture de la garde haute provoque une faute de traduction. Le test confronte l’adresse et le syndrome à l’accès demandé. |
 | `heap-infallible` | Une capacité supérieure à la fenêtre est demandée à `Vec::with_capacity`. La panique d’allocation est journalisée et le CPU entre en veille. |
 

@@ -1,4 +1,4 @@
-# Threads noyau de NovaOS v0.5.0
+# Threads noyau de NovaOS
 
 Le premier thread reprend l’affichage et, sur x86_64, la saisie au prompt. Un second thread, idle, attend la prochaine IRQ lorsqu’il est seul à pouvoir tourner. Les threads de validation sont lancés par les arguments Limine des ISO temporaires de test.
 
@@ -33,7 +33,7 @@ Chaque thread reçoit 64 Kio RW/NX encadrés par deux pages de garde de 4 Kio no
 
 Une garde de section critique sauvegarde le masque d’interruption du CPU puis le restaure à sa sortie. Le tas conserve son verrou atomique et le journal série protège l’écriture d’un message. Le traitement normal du tick parcourt au plus 32 emplacements et emploie uniquement des structures préallouées. Création de piles et collecte restent en contexte de thread. Les appels de sommeil ou de cession en section non préemptible déclenchent un diagnostic, et `spawn` y renvoie une erreur.
 
-Le pilote clavier contrôle le tampon et arme son attente sous le même masque IRQ. Un événement réveille un dormeur qui vérifie à nouveau son prédicat. Le mutex utilise ce mécanisme pour bloquer ses concurrents. Le propriétaire reste préemptible, et lui seul détient la garde de la donnée. La libération publie l’état disponible avant la notification. Idle vérifie la file sous masque avant `sti; hlt` sur x86_64 ou `wfi` sur ARM. Une IRQ en attente provoque le réveil.
+Le pilote clavier contrôle le tampon et arme son attente sous le même masque IRQ. Un événement réveille un dormeur qui vérifie à nouveau son prédicat. Le mutex utilise ce mécanisme pour bloquer ses concurrents. Le propriétaire reste préemptible, et lui seul détient la garde de la donnée. La libération transfère la propriété au plus ancien dormeur sous le masque IRQ, puis rend le processeur préemptible. Un concurrent arrivé entre le réveil et la reprise rejoint la file d’attente. Quand personne n’attend, le mutex redevient disponible. Idle vérifie la file sous masque avant `sti; hlt` sur x86_64 ou `wfi` sur ARM. Une IRQ en attente provoque le réveil.
 
 ## Reproduire la validation
 
@@ -74,4 +74,4 @@ Les deux suites ont également validé le masquage d’une IRQ en attente suivi 
 
 La validation cible QEMU TCG mono-CPU et les plateformes Q35 et virt/GICv2 configurées dans le dépôt. Le masque d’affinité accepté vaut 1. Les classes disponibles sont normale et idle. Tous les threads sont de confiance et partagent le même espace noyau. Le passage en Ring 3 ou EL0, les appels système, le SMP, les priorités multiples de travail et le changement de racine par processus restent hors de cette version.
 
-Un mutex est non récursif. Les appelants doivent respecter un ordre cohérent pour plusieurs verrous. La politique ne garantit ni héritage de priorité ni délai maximal d’attente. Les pages de garde détectent un accès qui les touche ; un saut arbitraire de SP peut les franchir. Une corruption de pile ou une instruction interdite entraîne un arrêt global pour inspection. Les performances sur matériel physique, les fautes imbriquées et une exécution de plusieurs heures n’ont pas été validées.
+Un mutex est non récursif. Les appelants doivent respecter un ordre cohérent pour plusieurs verrous. La politique ne garantit ni héritage de priorité ni délai maximal d’attente. Les pages de garde détectent un accès qui les touche ; un saut arbitraire de SP peut les franchir. Une corruption de pile ou une instruction interdite entraîne un arrêt global pour inspection. Les performances sur matériel physique et les fautes imbriquées restent à valider. [Essais d’endurance de la v0.5.1](durcissement.md)

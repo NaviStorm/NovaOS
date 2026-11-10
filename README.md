@@ -1,6 +1,6 @@
-# NovaOS v0.5.0
+# NovaOS v0.5.1
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.5.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.5.1`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
@@ -41,6 +41,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | `make build` | Compile le noyau et crée l’ISO UEFI. |
 | `make run` | Ouvre l’écran QEMU et affiche COM1 dans le terminal. Fermer la fenêtre pour quitter. |
 | `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle, de tas et de multitâche pour la cible choisie. Nécessite Python 3. |
+| `make ARCH=x86_64 endurance DURATION=7200` | Exécute la campagne de contention et de restitution pendant au moins deux heures réelles. Accepte aussi `ARCH=aarch64`. |
 | `make clean` | Supprime les produits de compilation et de test dans `build/` et `target/`. |
 
 ### Compiler pour AArch64
@@ -104,9 +105,11 @@ Une seconde VM démarre sans carte graphique. Le test attend le diagnostic de fr
 
 Six VM supplémentaires par architecture exercent l’allocateur, les espaces indépendants et cinq fautes provoquées. Les journaux portent le nom du scénario, par exemple `build/serie-x86_64-mem-nx.log` et `build/serie-aarch64-mem-absent.log`. Les ISO de test sont temporaires.
 
-Cinq VM supplémentaires par architecture testent le tas, la pénurie physique et la récupération, la détection de corruption, la page de garde et le traitement d’une allocation infaillible refusée. Les journaux se trouvent dans `build/serie-<architecture>-heap-*.log`.
+Sept VM par architecture testent le tas, la pénurie physique et la récupération, les sentinelles, la cohérence de l’arbre, la réentrée du verrou, la page de garde et le traitement d’une allocation infaillible refusée. Les journaux se trouvent dans `build/serie-<architecture>-heap-*.log`.
 
-Quatre scénarios d’ordonnancement par architecture vérifient la préemption matérielle, la contention, la terminaison, le débordement de pile, l’interdiction du SIMD et la stabilité sur au moins 15 000 ticks. Les deux suites effectuent **17 démarrages x86_64 et 16 AArch64**. Le même ELF sert aux tests et à l’image normale. Les diagnostics se trouvent dans `build/serie-<architecture>-sched-*.log`.
+Quatre scénarios d’ordonnancement par architecture vérifient la préemption matérielle, la contention, la terminaison, le débordement de pile, l’interdiction du SIMD et la stabilité sur au moins 15 000 ticks. Un cinquième scénario combine registres, fragmentation, contention, pénurie et collecte des threads pendant au moins 15 secondes réelles. Les deux suites effectuent **20 démarrages x86_64 et 19 AArch64**. Le même ELF sert aux tests et à l’image normale. Les diagnostics se trouvent dans `build/serie-<architecture>-sched-*.log`.
+
+Les campagnes longues réutilisent ce cinquième scénario sur une VM continue par cible. [Protocole et mesures de la v0.5.1](docs/durcissement.md)
 
 ## Provenance de Limine
 

@@ -233,9 +233,10 @@ fn mixed() {
     log(format_args!("TAS 1500 operations mixtes OK"));
 }
 
-fn shortage() {
+pub(crate) fn shortage() {
     const SCRATCH: usize = BASE + 2 * CAPACITY;
     const REQUEST: usize = 64 << 10;
+    let baseline = audit(true);
     let mut anchor = Allocation::new(27, 8);
     anchor.bytes().fill(0x71);
     let counts = || {
@@ -243,25 +244,33 @@ fn shortage() {
             .with_state(|s| Ok((s.heap.committed, s.pages.free_pages())))
             .unwrap()
     };
-    let initial = counts();
+    let initial = audit(true);
     // Immobiliser de vrais cadres dans une fenêtre distincte. La MMU reste la
     // seule source de pages du tas et conserve quelques cadres pour amorcer
     // l’extension avant son échec. Aucune allocation Rust dans cette section.
-    let held = GLOBAL
-        .with_state(|s| {
-            let mut count = 0;
-            while s.pages.free_pages() > 8 {
-                s.pages
-                    .allocate_page(
-                        VirtualAddress(SCRATCH + count * PAGE_BYTES),
-                        Access::ReadWrite,
-                    )
-                    .map_err(Error::Paging)?;
-                count += 1;
-            }
-            Ok(count)
-        })
-        .unwrap();
+    let mut held = 0;
+    loop {
+        let done = GLOBAL
+            .with_state(|s| {
+                for _ in 0..32 {
+                    if s.pages.free_pages() <= 8 {
+                        return Ok(true);
+                    }
+                    s.pages
+                        .allocate_page(
+                            VirtualAddress(SCRATCH + held * PAGE_BYTES),
+                            Access::ReadWrite,
+                        )
+                        .map_err(Error::Paging)?;
+                    held += 1;
+                }
+                Ok(false)
+            })
+            .unwrap();
+        if done {
+            break;
+        }
+    }
     let constrained = counts();
     let original = anchor.ptr;
     let mut v = Vec::<u8>::new();
@@ -274,29 +283,33 @@ fn shortage() {
     assert_eq!(counts(), constrained);
     assert!(v.try_reserve_exact(usize::MAX).is_err());
 
-    GLOBAL
-        .with_state(|s| {
-            for i in (0..held).rev() {
-                // Sûreté : chaque page appartient exclusivement à la sonde, sans référence.
-                unsafe {
-                    s.pages
-                        .release_page(VirtualAddress(SCRATCH + i * PAGE_BYTES))
+    while held > 0 {
+        GLOBAL
+            .with_state(|s| {
+                let lower = held.saturating_sub(32);
+                for i in (lower..held).rev() {
+                    // Sûreté : chaque page appartient exclusivement à la sonde, sans référence.
+                    unsafe {
+                        s.pages
+                            .release_page(VirtualAddress(SCRATCH + i * PAGE_BYTES))
+                    }
+                    .map_err(Error::Paging)?;
                 }
-                .map_err(Error::Paging)?;
-            }
-            Ok(())
-        })
-        .unwrap();
-    assert_eq!(counts(), initial);
+                held = lower;
+                Ok(())
+            })
+            .unwrap();
+    }
+    assert_eq!(audit(true), initial);
     v.try_reserve_exact(REQUEST)
         .expect("même demande après pénurie");
     v.resize(REQUEST, 0xa5);
     assert!(anchor.resize(REQUEST * 2, 8));
     assert!(anchor.bytes()[..27].iter().all(|&b| b == 0x71));
     assert_eq!(v[v.len() - 1], 0xa5);
-    drop(anchor);
     drop(v);
-    assert_eq!(counts(), initial);
+    drop(anchor);
+    assert_eq!(audit(true), baseline);
     log(format_args!(
         "TAS penurie physique, rollback, realloc conserve et reprise OK"
     ));
@@ -335,6 +348,28 @@ pub(crate) fn test(scenario: &[u8]) {
                 .unwrap();
             drop(a);
             panic!("sentinelle ignorée");
+        }
+        b"heap-reentrant" => {
+            GLOBAL
+                .with_state(|_| {
+                    audit(false);
+                    Ok(())
+                })
+                .unwrap();
+            panic!("réentrée ignorée");
+        }
+        b"heap-metadata" => {
+            let _a = Allocation::new(9, 8);
+            GLOBAL
+                .with_state(|s| {
+                    let mut tree = s.heap.tree();
+                    // Une racine entièrement libre contredit le décompte des blocs vivants.
+                    tree.empty_first_page();
+                    Ok(())
+                })
+                .unwrap();
+            audit(false);
+            panic!("arbre corrompu accepté");
         }
         b"heap-guard" => {
             let _anchor = Allocation::new(17, 8);

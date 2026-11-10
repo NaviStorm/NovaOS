@@ -107,6 +107,38 @@ impl Tree<'_> {
         }
     }
 
+    /// Recalcule les résumés depuis les feuilles accessibles. Les descendants
+    /// obsolètes d’un bloc fusionné ne font pas partie de l’arbre.
+    pub fn audit(&self) -> super::Result<(usize, usize)> {
+        let mut totals = (0, 0);
+        for root in roots(self.bytes) {
+            self.audit_block(root, &mut totals)?;
+        }
+        Ok(totals)
+    }
+
+    fn audit_block(&self, b: Block, totals: &mut (usize, usize)) -> super::Result<u8> {
+        match self.state(b) {
+            FREE => Ok(b.size.ilog2() as u8),
+            LIVE => {
+                totals.0 += 1;
+                totals.1 += b.size;
+                Ok(0)
+            }
+            stored if b.size > QUANTUM => {
+                let left = self.audit_block(b.left(), totals)?;
+                let right = self.audit_block(b.right(), totals)?;
+                let largest = left.max(right);
+                let child_order = b.left().size.ilog2() as u8;
+                if (left == child_order && right == child_order) || stored != largest.max(FULL) {
+                    return Err(super::Error::Metadata);
+                }
+                Ok(largest)
+            }
+            _ => Err(super::Error::Metadata),
+        }
+    }
+
     pub fn has_space(&self, size: usize) -> bool {
         roots(self.bytes).any(|b| self.largest(b) >= size.ilog2() as u8)
     }

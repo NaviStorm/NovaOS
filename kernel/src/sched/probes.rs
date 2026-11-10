@@ -1,4 +1,5 @@
 //! Les deux travailleurs CPU n’utilisent ni cession, ni sommeil, ni blocage.
+mod endurance;
 use super::*;
 use alloc::vec::Vec;
 use core::sync::atomic::{AtomicBool, AtomicU64, Ordering::SeqCst};
@@ -120,7 +121,22 @@ fn critical() {
     while ticks() == before {
         core::hint::spin_loop();
     }
+    let inside = crate::heap::with_pages(|_| {
+        let nested = Guard::new();
+        assert!(!nested.was_enabled());
+        let now = ticks();
+        while !hal::timer::pending() {
+            core::hint::spin_loop();
+        }
+        assert_eq!(ticks(), now);
+        Ok(now)
+    })
+    .unwrap();
+    while ticks() == inside {
+        core::hint::spin_loop();
+    }
     hal::log(format_args!("IRQ timer pendante masquee puis livree OK"));
+    hal::log(format_args!("BUDDY IRQ masquee sous verrou puis livree OK"));
 }
 
 static RELEASE: AtomicBool = AtomicBool::new(false);
@@ -149,6 +165,33 @@ fn limit() {
     hal::log(format_args!(
         "TCB saturation, generations et affinite CPU0 OK"
     ));
+}
+
+// Le propriétaire réessaie immédiatement après avoir libéré. Les deux
+// dormeurs doivent passer dans leur ordre d’inscription, avant sa reprise.
+static ORDER: Mutex<u8> = Mutex::new(0);
+
+fn waiter<const EXPECTED: u8>() {
+    let mut turn = ORDER.lock();
+    assert_eq!(*turn, EXPECTED);
+    *turn += 1;
+}
+
+fn handoff() {
+    let lock = ORDER.lock();
+    let mut ids = [with(|s| s.thread(s.current).id); 2];
+    for (slot, entry) in ids.iter_mut().zip([waiter::<0> as fn(), waiter::<1>]) {
+        *slot = spawn(entry).unwrap();
+        let deadline = ticks() + u64::from(HZ);
+        while !with(|s| matches!(s.thread(slot.slot).state, State::Blocked(Wait::Event(_)))) {
+            assert!(ticks() < deadline, "inscription mutex");
+            yield_now();
+        }
+    }
+    drop(lock);
+    assert_eq!(*ORDER.lock(), 2);
+    wait_done(&ids);
+    hal::log(format_args!("MUTEX transfert FIFO sans depassement OK"));
 }
 
 fn lifecycle() {
@@ -193,11 +236,13 @@ fn fpu() {
 }
 pub(crate) fn test(scenario: &[u8]) {
     match scenario {
+        b"sched-endurance" => endurance::run(),
         b"sched-test" => {
             critical();
             parallel(false);
             lifecycle();
             limit();
+            handoff();
         }
         b"sched-stress" => parallel(true),
         b"sched-guard" | b"sched-fpu" => {

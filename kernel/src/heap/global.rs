@@ -4,7 +4,7 @@ use core::{
     alloc::{GlobalAlloc, Layout},
     cell::UnsafeCell,
     ptr,
-    sync::atomic::{AtomicBool, Ordering},
+    sync::atomic::{AtomicUsize, Ordering},
 };
 
 pub(super) struct State {
@@ -13,7 +13,7 @@ pub(super) struct State {
 }
 
 pub(super) struct KernelAllocator {
-    locked: AtomicBool,
+    owner: AtomicUsize,
     state: UnsafeCell<Option<State>>,
 }
 
@@ -23,17 +23,17 @@ unsafe impl Sync for KernelAllocator where State: Send {}
 
 #[global_allocator]
 pub(super) static GLOBAL: KernelAllocator = KernelAllocator {
-    locked: AtomicBool::new(false),
+    owner: AtomicUsize::new(0),
     state: UnsafeCell::new(None),
 };
 
 struct Guard<'a> {
-    locked: &'a AtomicBool,
+    owner: &'a AtomicUsize,
     flags: usize,
 }
 impl Drop for Guard<'_> {
     fn drop(&mut self) {
-        self.locked.store(false, Ordering::Release);
+        self.owner.store(0, Ordering::Release);
         hal::interrupts::restore(self.flags);
     }
 }
@@ -41,17 +41,23 @@ impl Drop for Guard<'_> {
 impl KernelAllocator {
     fn with<R>(&self, f: impl FnOnce(&mut Option<State>) -> R) -> R {
         let flags = hal::interrupts::save_and_mask();
-        while self
-            .locked
-            .compare_exchange_weak(false, true, Ordering::Acquire, Ordering::Relaxed)
-            .is_err()
-        {
-            while self.locked.load(Ordering::Relaxed) {
-                core::hint::spin_loop();
+        let cpu = hal::cpu::id() + 1; // Zéro représente le verrou libre.
+        loop {
+            match self
+                .owner
+                .compare_exchange_weak(0, cpu, Ordering::Acquire, Ordering::Relaxed)
+            {
+                Ok(_) => break,
+                Err(owner) if owner == cpu => fatal(Error::Reentrant),
+                Err(_) => {
+                    while self.owner.load(Ordering::Relaxed) != 0 {
+                        core::hint::spin_loop();
+                    }
+                }
             }
         }
         let _guard = Guard {
-            locked: &self.locked,
+            owner: &self.owner,
             flags,
         };
         // Sûreté : propriétaire unique du verrou, IRQ locales masquées. Les

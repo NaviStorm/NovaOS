@@ -54,6 +54,7 @@ struct Thread {
     state: State,
     stack: Stack,
     saved: usize,
+    wait_order: u64,
     entry: fn(),
     priority: Priority,
     cpu_mask: u64,
@@ -122,15 +123,50 @@ impl Core {
         self.ready.push(i);
         self.stats.wakes += 1;
     }
-    fn signal(&mut self, wait: Wait) {
-        if let Some(i) = self
+    fn signal(&mut self, wait: Wait) -> Option<Id> {
+        let id = self
             .slots
             .iter()
-            .position(|t| t.as_ref().is_some_and(|t| t.state == State::Blocked(wait)))
-        {
-            self.wake(i);
-        }
+            .flatten()
+            .filter(|t| t.state == State::Blocked(wait))
+            .min_by_key(|t| t.wait_order)?
+            .id;
+        self.wake(id.slot);
+        Some(id)
     }
+
+    fn audit(&self) -> usize {
+        let mut queued = [false; MAX];
+        assert!(self.ready.len < MAX && self.ready.head < MAX);
+        for offset in 0..self.ready.len {
+            let i = self.ready.items[(self.ready.head + offset) % MAX];
+            assert!(i != IDLE && !queued[i] && self.thread(i).state == State::Ready);
+            queued[i] = true;
+        }
+        assert_eq!(self.thread(self.current).state, State::Running);
+        let mut occupied = 0;
+        let mut terminated = 0;
+        for (i, slot) in self.slots.iter().enumerate() {
+            if let Some(t) = slot {
+                occupied += 1;
+                terminated += u64::from(t.state == State::Terminated);
+                assert_eq!(t.id.slot, i);
+                assert_eq!(t.space, self.kernel_space);
+                assert_eq!(t.cpu_mask, 1);
+                assert_eq!(t.priority == Priority::Idle, i == IDLE);
+                assert_eq!(t.state == State::Running, i == self.current);
+                assert_eq!(queued[i], i != IDLE && t.state == State::Ready);
+                t.stack.check(if i == self.current {
+                    context::sp()
+                } else {
+                    t.saved
+                });
+            }
+        }
+        assert_eq!(self.stats.exits - self.stats.reaped, terminated);
+        occupied
+    }
+
     fn select(&mut self, why: Reason) -> Option<(*mut usize, usize)> {
         let old = self.current;
         let state = match why {
@@ -153,7 +189,12 @@ impl Core {
             }
             Reason::Block(wait) => {
                 if matches!(wait, Wait::Event(_)) {
-                    self.stats.event_waits += 1;
+                    self.stats.event_waits = self
+                        .stats
+                        .event_waits
+                        .checked_add(1)
+                        .expect("attentes épuisées");
+                    self.thread_mut(old).wait_order = self.stats.event_waits;
                 }
                 State::Blocked(wait)
             }
@@ -225,8 +266,8 @@ impl Event {
         );
         dispatch(Reason::Block(Wait::Event(self as *const _ as usize)));
     }
-    pub fn notify_one(&self) {
-        with(|s| s.signal(Wait::Event(self as *const _ as usize)));
+    pub fn notify_one(&self) -> Option<Id> {
+        with(|s| s.signal(Wait::Event(self as *const _ as usize)))
     }
 }
 pub fn yield_now() {
@@ -299,6 +340,7 @@ fn create(slot: usize, entry: fn(), priority: Priority, cpu_mask: u64) -> Result
             state: State::Ready,
             stack,
             saved,
+            wait_order: 0,
             entry,
             priority,
             cpu_mask,

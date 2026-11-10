@@ -38,6 +38,8 @@ pub mod interrupts {
 }
 
 pub mod cpu {
+    pub(crate) use crate::arch::cpu_id as id;
+
     /// Arrête le processeur courant. Un réveil parasite le remet en veille.
     pub fn halt() -> ! {
         loop {

@@ -34,11 +34,14 @@ impl<T> Mutex<T> {
             "mutex en interruption ou section critique"
         );
         let id = with(|s| s.thread(s.current).id);
-        while let Some(owner) = self.owner.get() {
+        if let Some(owner) = self.owner.get() {
             assert_ne!(owner, id, "mutex récursif");
+            // Drop réserve la propriété à cet identifiant avant la remise des IRQ.
             self.changed.wait(&irq);
+            assert_eq!(self.owner.get(), Some(id), "transfert du mutex");
+        } else {
+            self.owner.set(Some(id));
         }
-        self.owner.set(Some(id));
         Locked {
             mutex: self,
             _local: PhantomData,
@@ -61,7 +64,6 @@ impl<T> DerefMut for Locked<'_, T> {
 impl<T> Drop for Locked<'_, T> {
     fn drop(&mut self) {
         let _irq = Guard::new();
-        self.mutex.owner.set(None);
-        self.mutex.changed.notify_one();
+        self.mutex.owner.set(self.mutex.changed.notify_one());
     }
 }

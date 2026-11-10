@@ -1,5 +1,6 @@
 """Démarrages UEFI sur la même image que make run pour chaque architecture."""
 
+import argparse
 import hashlib
 import json
 import os
@@ -12,14 +13,14 @@ import time
 
 
 BUILD = Path("build")
-BANNER = b"NovaOS v0.5.0\r\n"
+BANNER = b"NovaOS v0.5.1\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "4519b9b87def9e473dd614d35697fb00407df1cc4bf82dcbaf6f73a82624e028",
-    "demarrage": "1c8e8e7de52f012f12fcc0c13907e5dabdfa29c0c8e58f28f8cdc71e5c5141bf",
-    "composition": "0bfdda4db06254be9564cdaa0c6fe19a7126ee9231d0cde86c0df3c624223a78",
-    "frappe": "6d7030cbb973d96193698bfac113e888d4e906cbda1249c99c7ec38572b7a09b",
-    "saisie": "aa0ff47ccd1a5a0ec5cb1e1c9e4262ac74e90d50e6d73c45c6b5d6760966f396",
+    "demarrage-aarch64": "c9c743d33a6c14fe6c035c4a3b2fefd1d8f23017973209abe5985e390d6eb4cb",
+    "demarrage": "9fea8ea19fa06fcbfab01bdcd0e0538b9a4be3bc819d1b1bc184a79cb97f91d5",
+    "composition": "d137f834269c693372b498ca613e0a9271a92710698abe0af631ce3d7995e345",
+    "frappe": "95f4f02b6b581c183f75825c6309452064d6ca55b21d6a2f0281e650c9f75154",
+    "saisie": "0c88b713a6f62f945c7645756c0d3b0f2916ff868438744703a788e8b6343643",
 }
 
 
@@ -179,7 +180,7 @@ def boot(name, check, **settings):
                     vm.wait()
                 if log.exists():
                     log.replace(BUILD / f"serie-{name}.log")
-        print(f"OK — {name}, démarrage et veille vérifiés.")
+        print(f"OK — {name}", flush=True)
 
 
 def check_fault(report, arch, access, cause):
@@ -245,12 +246,12 @@ def memory_scenarios(arch):
         scenario_vm(arch, name, memory_check(arch, access, cause))
 
 
-def scenario_vm(arch, name, check):
+def scenario_vm(arch, name, check, suffix=""):
     with tempfile.TemporaryDirectory(dir=BUILD) as work:
         iso = str(Path(work) / "sonde.iso")
         subprocess.run(["sh", "scripts/iso.sh", name, iso], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-        boot(f"{arch}-{name}", check, NOVA_ISO=iso)
+        boot(f"{arch}-{name}{suffix}", check, NOVA_ISO=iso)
 
 
 def heap_check(arch, name):
@@ -261,6 +262,8 @@ def heap_check(arch, name):
                       "TAS 1500 operations mixtes OK", "TAS Box Vec String OK", "Affichage prêt."),
         "heap-oom": ("TAS penurie physique, rollback, realloc conserve et reprise OK",
                      "Affichage prêt."),
+        "heap-reentrant": ("Erreur fatale du tas : Reentrant",),
+        "heap-metadata": ("Erreur fatale du tas : Metadata",),
         "heap-corrupt": ("Erreur fatale du tas : Overrun",),
         "heap-infallible": ("SONDE allocation infaillible", "Panique du noyau",
                             "memory allocation of 268435457 bytes failed"),
@@ -314,6 +317,8 @@ def scheduler_check(arch, name):
                               and int(checks[4]) >= 4 and int(checks[5]) > 0
                               and "PILES 48 creations et restitutions OK" in report
                               and "IRQ timer pendante masquee puis livree OK" in report
+                              and "BUDDY IRQ masquee sous verrou puis livree OK" in report
+                              and "MUTEX transfert FIFO sans depassement OK" in report
                               and "TCB saturation, generations et affinite CPU0 OK" in report)
                 else:
                     stats = re.search(r"STRESS ticks=(\d+) switches=(\d+) A=(\d+) B=(\d+) cycles=(\d+)", report)
@@ -333,7 +338,56 @@ def scheduler_check(arch, name):
     return verify
 
 
-if __name__ == "__main__":
+def endurance(arch, seconds):
+    # Chaque bilan est émis après la collecte de tous les travailleurs. On garde
+    # la même VM et le même espace mémoire entre les périodes.
+    result = {}
+    def verify(vm, directory, log):
+        deadline = time.monotonic() + 120
+        offset, pending, start, baseline, previous = 0, "", None, None, {}
+        growing = ("ticks", "preemptions", "collectes", "attentes", "mutex", "A", "B", "allocations", "audits")
+        while vm.poll() is None and time.monotonic() < deadline:
+            if log.exists():
+                with log.open("rb") as stream:
+                    stream.seek(offset)
+                    pending += stream.read().decode("ascii", errors="replace")
+                    offset = stream.tell()
+            lines = pending.split("\n")
+            pending = lines.pop()
+            for line in lines:
+                if any(bad in line for bad in ("Panique", "Erreur fatale", "#PF", "ABORT", "FPU/SIMD interdit")):
+                    raise RuntimeError(line)
+                if not line.startswith("ENDURANCE "):
+                    continue
+                values = {k: int(v) for k, v in re.findall(r"([A-Za-z]+)=(\d+)", line)}
+                resources = {k: values[k] for k in ("blocs", "occupes", "engages", "libres")}
+                now = time.monotonic()
+                if line.startswith("ENDURANCE debut "):
+                    if start is not None:
+                        raise RuntimeError("Redémarrage pendant la campagne")
+                    start, baseline = now, resources
+                elif line.startswith("ENDURANCE bilan "):
+                    if (resources != baseline or values["periode"] != previous.get("periode", 0) + 1
+                            or any(values[k] <= previous.get(k, 0) for k in growing)
+                            or values["penuries"] != 1 + (values["periode"] - 1) // 64
+                            or not 0 < values["minimum"] < baseline["libres"]):
+                        raise RuntimeError(f"Bilan incohérent : {line}")
+                    elapsed = now - start
+                    previous = values
+                    if elapsed >= seconds:
+                        result.update(architecture=arch, secondes_demandees=seconds,
+                                      secondes_reelles=round(elapsed, 3), avant=baseline, bilan=values)
+                        return
+                deadline = now + 120
+            time.sleep(0.1)
+        raise RuntimeError(f"Endurance interrompue ou bilan absent depuis 120 s : {previous}")
+    scenario_vm(arch, "sched-endurance", verify, f"-{seconds}s")
+    path = BUILD / f"endurance-{arch}-{seconds}s.json"
+    path.write_text(json.dumps(result, indent=2) + "\n")
+    print(path, result, flush=True)
+
+
+def suite():
     if os.environ.get("NOVA_ARCH", "x86_64") == "aarch64":
         boot("aarch64", check_arm)
     else:
@@ -341,7 +395,21 @@ if __name__ == "__main__":
         boot("none", check_without_vga, NOVA_VGA="none")
     arch = os.environ.get("NOVA_ARCH", "x86_64")
     memory_scenarios(arch)
-    for case in ("heap-test", "heap-oom", "heap-corrupt", "heap-guard", "heap-infallible"):
+    for case in ("heap-test", "heap-oom", "heap-corrupt", "heap-guard", "heap-infallible", "heap-reentrant", "heap-metadata"):
         scenario_vm(arch, case, heap_check(arch, case))
     for case in ("sched-test", "sched-guard", "sched-fpu", "sched-stress"):
         scenario_vm(arch, case, scheduler_check(arch, case))
+
+    endurance(arch, 15)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--endurance", type=int, metavar="SECONDES")
+    args = parser.parse_args()
+    if args.endurance is None:
+        suite()
+    elif args.endurance > 0:
+        endurance(os.environ.get("NOVA_ARCH", "x86_64"), args.endurance)
+    else:
+        parser.error("La durée doit être strictement positive.")

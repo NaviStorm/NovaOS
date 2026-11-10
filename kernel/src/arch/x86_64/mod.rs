@@ -43,3 +43,8 @@ pub(crate) fn restore_interrupts(flags: usize) {
         unsafe { asm!("sti", options(nostack)) };
     }
 }
+
+/// Identifiant APIC initial sur la machine Q35 configurée par NovaOS.
+pub(crate) fn cpu_id() -> usize {
+    (core::arch::x86_64::__cpuid(1).ebx >> 24) as usize
+}
