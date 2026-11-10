@@ -10,6 +10,7 @@ use std::{
 };
 
 mod heap_meter;
+mod reservation_bench;
 use heap_meter::{LIVE, PEAK, PHASE_PEAK};
 
 const IDS: Ids = Ids {
@@ -563,7 +564,7 @@ fn main() -> Result<()> {
         None | Some("4096") => 4096,
         _ => {
             return Err(Error::Invalid(
-                "novafs-bench [512|4096] [complet|pression|memoire|reprise|prepare-controle|restitution-controle]",
+                "novafs-bench [512|4096] [complet|pression|memoire|reprise|prepare-controle|restitution-controle|reservations]",
             ));
         }
     };
@@ -585,11 +586,20 @@ fn main() -> Result<()> {
             "reprise" => recovery_memory(sector),
             "prepare-controle" => prepare_check_image(sector),
             "restitution-controle" => check_restitution(sector),
+            "reservations" => reservation_bench::run(sector),
             _ => Err(Error::Invalid("scénario inconnu")),
         })?
         .join()
         .expect("panique du benchmark")?;
     let peak = PEAK.load(Ordering::Relaxed);
+    #[cfg(target_os = "macos")]
+    {
+        let main_stack = heap_meter::current_stack_size();
+        println!(
+            "pile_principale={main_stack} tas_et_toutes_piles={}",
+            peak + stacks + main_stack
+        );
+    }
     println!(
         "pic_malloc_octets={peak} piles_travail_reservees_max={stacks} majorant_tas_rust_et_piles={} plafond_7mio={}",
         peak + stacks,

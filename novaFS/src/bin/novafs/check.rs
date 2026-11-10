@@ -1,20 +1,23 @@
 //! Diagnostic hors ligne. Aucun chemin, montage écrivain, écriture de bloc ou flush.
 use novafs::device::{FileImage, Geometry};
-use novafs::pool::{Type, check_pool};
-use novafs::{BLOCK_BYTES, Error, Ids, IntegrityReport, PairStatus, check_image};
+use novafs::pool::{Type, check_pool, inspect_usage};
+use novafs::{
+    BLOCK_BYTES, Engine, Error, Ids, IntegrityReport, Mode, PairStatus, VolumeAccounting,
+    check_image,
+};
 use serde_json::{Value, json};
 use std::fs::{File, Metadata};
 use std::io::{self, Write};
 use std::os::{fd::AsFd, unix::fs::MetadataExt};
 
 pub(super) fn help(command: &str) -> String {
-    let usage = if command == "check" {
-        "check BLOCS SECTEUR FS_ID LV_ID"
+    let arguments = if matches!(command, "check" | "space") {
+        "BLOCS SECTEUR FS_ID LV_ID"
     } else {
-        "check-pool BLOCS SECTEUR"
+        "BLOCS SECTEUR"
     };
     format!(
-        "novafs {usage} < image.raw\nImage hors ligne sur fichier ordinaire ; secteurs 512 ou 4096. Sortie JSON.\nCodes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète."
+        "novafs {command} {arguments} < image.raw\nImage hors ligne sur fichier ordinaire ; secteurs 512 ou 4096. Sortie JSON.\nCodes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète."
     )
 }
 
@@ -71,6 +74,23 @@ impl Status {
 }
 
 type Failure = (Status, String);
+
+pub(super) fn volume_space(s: &VolumeAccounting) -> Value {
+    json!({
+        "domaine":"fs","unite_bloc_octets":BLOCK_BYTES,"capacite_blocs":s.capacity_blocks,
+        "alloues_blocs":s.allocated_blocks,"vivants_blocs":s.live_blocks,"recuperables_blocs":s.recoverable_blocks,
+        "reserves_maintenance_blocs":s.maintenance_reserved,"reserves_transaction_blocs":s.transaction_reserved,
+        "disponibles_blocs":s.available_blocks,"logique_octets":s.logical_bytes.to_string(),
+        "quota_logique_octets":s.logical_quota_bytes,"cible_maintenance_blocs":s.maintenance_target,
+        "metadonnees_allocation_ram_octets":s.allocation_metadata_bytes
+    })
+}
+
+fn storage_failure(e: Error) -> Failure {
+    let mut status = Status::Coherent;
+    status.include(&e);
+    (status, e.to_string())
+}
 
 fn fs_report(report: IntegrityReport) -> (Status, Value) {
     let mut status = Status::Coherent;
@@ -169,7 +189,7 @@ fn fingerprint(m: &Metadata) -> (u64, i64, i64, i64, i64) {
 fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
     let usage = |e: Error| (Status::Usage, e.to_string());
     let interrupted = |e: io::Error| (Status::Incomplete, e.to_string());
-    let is_lv = args[0] == "check";
+    let is_lv = matches!(args[0].as_str(), "check" | "space");
     if args.len() != if is_lv { 5 } else { 3 } {
         return Err((Status::Usage, help(&args[0])));
     }
@@ -215,9 +235,38 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
     }
     let dev = FileImage::from_file(fd.try_clone().map_err(interrupted)?, blocks, sector)
         .map_err(|e| (Status::Incomplete, e.to_string()))?;
-    let result = match ids {
-        Some(ids) => fs_report(check_image(&dev, ids)),
-        None => diagnose_pool(&dev),
+    let result = match (args[0].as_str(), ids) {
+        ("space", Some(ids)) => {
+            let fs = Engine::mount(dev, ids, Mode::ReadOnly).map_err(storage_failure)?;
+            let stats = fs.accounting().map_err(storage_failure)?;
+            (Status::Coherent, volume_space(&stats))
+        }
+        ("space-pool", None) => {
+            let (s, entries) = inspect_usage(&dev).map_err(storage_failure)?;
+            let volumes: Vec<_> = entries
+                .iter()
+                .map(|(e, usage)| {
+                    let kind = match e.kind {
+                        Type::Ready => "pret",
+                        Type::Preparing => "preparation",
+                        Type::Raw => "raw",
+                    };
+                    json!({"lv":super::label(&e.id),"type":kind,"domaine":super::label(&e.owner),
+                    "garantis_blocs":e.guaranteed_blocks,"fs":usage.as_ref().map(volume_space)})
+                })
+                .collect();
+            (
+                Status::Coherent,
+                json!({"domaine":"catalogue_pool","unite_bloc_octets":BLOCK_BYTES,
+                "capacite_blocs":s.total_blocks,"grain_entete_blocs":s.metadata_blocks,"queue_blocs":s.tail_blocks,
+                "attribues_blocs":s.assigned_blocks,"differes_blocs":s.deferred_blocks,
+                "reserves_transaction_blocs":s.reserved_blocks,"disponibles_blocs":s.available_blocks,
+                "partages_entre_lv_blocs":s.shared_blocks,"tickets":s.pending_volumes,"volumes":volumes}),
+            )
+        }
+        ("check", Some(ids)) => fs_report(check_image(&dev, ids)),
+        ("check-pool", None) => diagnose_pool(&dev),
+        _ => return Err((Status::Usage, help(&args[0]))),
     };
     if fingerprint(&before) != fingerprint(&fd.metadata().map_err(interrupted)?) {
         return Err((
@@ -230,7 +279,11 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
 
 pub(super) fn run(args: &[String]) -> u8 {
     let (status, mut result) = evaluate(args).unwrap_or_else(|(s, e)| (s, json!({"raison":e})));
-    result["schema"] = json!("novafs-check-1");
+    result["schema"] = json!(if matches!(args[0].as_str(), "space" | "space-pool") {
+        "novafs-space-1"
+    } else {
+        "novafs-check-1"
+    });
     result["statut"] = json!(status.name());
     let mut output = io::stdout().lock();
     if serde_json::to_writer(&mut output, &result).is_err()

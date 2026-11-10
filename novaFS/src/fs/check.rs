@@ -11,7 +11,7 @@ pub(crate) fn validate<V: View, W: View>(
     older: Option<&W>,
     full: bool,
     on_data: &mut impl FnMut(Ref) -> Result<()>,
-) -> Result<()> {
+) -> Result<u128> {
     let m = v.manifest();
     let view_gen = generation(v)?;
     if m.root_oid != ROOT
@@ -21,12 +21,18 @@ pub(crate) fn validate<V: View, W: View>(
         return Err(Error::Corrupt("racine ou recul du compteur d’objet"));
     }
     let _ = live(v, ROOT)?;
+    let mut logical_bytes = 0u128;
     walk(v, Family::Objects, |key, record| {
         let id = number(key)?;
         if id >= m.next_oid {
             return Err(Error::Corrupt("numéro d’objet hors compteur"));
         }
         let obj = Object::decode(id, record, view_gen)?;
+        if !obj.dead && obj.stat.kind == Kind::File {
+            logical_bytes = logical_bytes
+                .checked_add(u128::from(obj.stat.size))
+                .ok_or(Error::Corrupt("somme des tailles logiques"))?;
+        }
         if let Some(old) = older
             && id < old.manifest().next_oid
         {
@@ -108,7 +114,8 @@ pub(crate) fn validate<V: View, W: View>(
             return Err(Error::Corrupt("curseur de collecte sans lot correspondant"));
         }
         Ok(())
-    })
+    })?;
+    Ok(logical_bytes)
 }
 
 pub(crate) fn check_shared_data(

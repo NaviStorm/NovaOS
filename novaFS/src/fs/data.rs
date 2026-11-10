@@ -97,6 +97,16 @@ impl<D: Device> Engine<D> {
     }
 
     pub fn write(&mut self, path: &str, offset: u64, bytes: &[u8]) -> Result<()> {
+        self.prepare_write(path, offset, bytes)?.commit()
+    }
+
+    /// Plan entièrement calculé en mémoire, annulable jusqu'à son commit.
+    pub fn prepare_write(
+        &mut self,
+        path: &str,
+        offset: u64,
+        bytes: &[u8],
+    ) -> Result<crate::PreparedWrite<'_, D>> {
         let end = offset
             .checked_add(bytes.len() as u64)
             .filter(|&v| v <= i64::MAX as u64)
@@ -104,7 +114,7 @@ impl<D: Device> Engine<D> {
         if bytes.len() > MAX_IO {
             return Err(Error::Limit("64 Kio de données par transaction"));
         }
-        self.transact(false, |tx| {
+        self.prepare_write_with(|tx| {
             let mut obj = resolve(tx, &components(path)?)?;
             if obj.stat.kind != Kind::File {
                 return Err(Error::IsDirectory);
@@ -112,6 +122,8 @@ impl<D: Device> Engine<D> {
             if bytes.is_empty() {
                 return Ok(());
             }
+            let new_size = obj.stat.size.max(end);
+            tx.resize_logical(obj.stat.size, new_size)?;
             let id = obj.stat.id;
             let first_page = offset / BLOCK_BYTES;
             let after_last = end.div_ceil(BLOCK_BYTES);
@@ -178,7 +190,7 @@ impl<D: Device> Engine<D> {
                 )?;
                 start = stop;
             }
-            obj.stat.size = obj.stat.size.max(end);
+            obj.stat.size = new_size;
             obj.stat.revision = generation(tx)?;
             save_object(tx, &obj)
         })

@@ -1,9 +1,12 @@
-//! Vérification du catalogue mono-PD du banc P0. Les chemins d’administration et
-//! d’écriture du pool appartiennent exclusivement à la fixture de tests.
+//! Catalogue de volumes hôte. Le contrôle P2 demeure en lecture seule.
 use crate::{Block, Device, Error, Ids, IntegrityReport, Result, check_image};
 mod catalog;
-pub use catalog::Type;
-use catalog::{Entry, GRAIN, Uid, load, validate_pair};
+mod manager;
+use catalog::{Entry, load, validate_pair};
+pub use catalog::{GRAIN, Type, Uid};
+pub use manager::{
+    Pool, PoolSpaceStats, View, VolumeInfo, VolumeReservation, inspect_space, inspect_usage,
+};
 
 #[derive(Debug)]
 pub struct PoolReport {
@@ -32,6 +35,9 @@ struct ReadVolume<'a, D> {
 impl<D: Device> Device for ReadVolume<'_, D> {
     fn blocks(&self) -> u64 {
         self.entry.grains * GRAIN
+    }
+    fn logical_quota_bytes(&self) -> Option<u64> {
+        (self.entry.kind != Type::Raw).then(|| self.blocks() * 4096)
     }
     fn read(&self, block: u64) -> Result<Block> {
         self.disk.read(self.entry.physical(block)?)

@@ -293,6 +293,7 @@ impl<D: Device> Engine<D> {
             if obj.stat.kind == Kind::Directory && directory_entry(tx, id, None)?.is_some() {
                 return Err(Error::NotEmpty);
             }
+            tx.resize_logical(obj.stat.size, 0)?;
             tx.remove(Family::Names, &key)?;
             if let Some((first, _)) = data::first_extent(tx, id, 0)? {
                 obj.dead = true;

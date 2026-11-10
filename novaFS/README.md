@@ -1,6 +1,8 @@
-# NovaFS P2 sur macOS
+# NovaFS P3 sur macOS
 
-NovaFS v0.9.2 conserve le format disque P0 et les deux barrières de publication P1. Il fonctionne sur une image logique de LV dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+NovaFS v0.9.3 conserve le format disque P0 et les deux barrières de publication P1. Il fonctionne sur une image logique de LV dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+
+La commande `space` mesure l’usage logique des fichiers, l’allocation physique dans le LV et les blocs disponibles après la réserve de maintenance. `space-pool` donne la partition physique du pool et l’usage de chaque LV prêt. La bibliothèque permet de préparer et d’annuler une écriture CoW, de configurer une limite de session et de réserver des grains pour plusieurs LV. [Contrat de comptabilisation et exemples](docs/novafs-p3-espace.md)
 
 La commande `check` examine les deux générations d’une image hors ligne et rend un diagnostic JSON, y compris lorsqu’une seule génération reste lisible. `check-pool` contrôle le catalogue du pool de laboratoire et le contenu des volumes déclarés prêts. Ces deux commandes prennent un **fichier ordinaire en entrée standard**. [Utilisation, codes de sortie et stratégie de récupération](docs/novafs-p2-integrite.md) · [Injections de corruption](docs/novafs-p2-injections.md) · [Contrôle des volumes](docs/novafs-p2-pool.md)
 

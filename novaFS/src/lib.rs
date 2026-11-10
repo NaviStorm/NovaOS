@@ -1,4 +1,4 @@
-//! Prototype hôte NovaFS P2. Le moteur lit et écrit le format de laboratoire P0.
+//! Prototype hôte NovaFS P3. Le moteur lit et écrit le format de laboratoire P0.
 mod cache;
 pub use cache::CacheStats;
 pub mod codec;
@@ -15,7 +15,10 @@ pub use engine::integrity::{
     CheckIssue, IntegrityReport, PairStatus, SlotReport, check_image,
     check_image_with_bitmap_budget,
 };
-pub use engine::{Engine, Mode, SpaceStats, Tx, View};
+pub use engine::{
+    Engine, Mode, PreparedWrite, ReservationCost, SpaceStats, Tx, View, VolumeAccounting,
+    VolumePolicy,
+};
 pub use fs::{Kind, Stat};
 
 pub const BLOCK_BYTES: usize = 4096;
@@ -32,6 +35,9 @@ pub enum Error {
     NotFound,
     Exists,
     NoSpace,
+    PoolFull,
+    QuotaExceeded,
+    MaintenanceExhausted,
     NoMemory,
     Busy,
     ReadOnly,
@@ -53,6 +59,10 @@ impl From<std::io::Error> for Error {
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::NoSpace => write!(f, "espace ordinaire du volume insuffisant"),
+            Self::PoolFull => write!(f, "espace physique du pool insuffisant"),
+            Self::QuotaExceeded => write!(f, "quota dépassé"),
+            Self::MaintenanceExhausted => write!(f, "réserve de maintenance insuffisante"),
             Self::Publication { phase, cause } => {
                 write!(f, "publication indéterminée ({phase}) : {cause}")
             }
@@ -83,6 +93,11 @@ impl std::error::Error for Error {
 /// entièrement. Une erreur de lecture ne fournit aucun bloc à l'appelant.
 pub trait Device {
     fn blocks(&self) -> u64;
+    /// Plafond logique stable pendant la durée de la vue, imposé par son propriétaire. Une image
+    /// FS autonome peut conserver les fichiers creux du profil P0 sans plafond.
+    fn logical_quota_bytes(&self) -> Option<u64> {
+        None
+    }
     fn read(&self, block: u64) -> Result<Block>;
     fn write(&mut self, block: u64, data: &Block) -> Result<()>;
     fn flush(&mut self) -> Result<()>;
@@ -91,6 +106,9 @@ pub trait Device {
 impl<D: Device> Device for &mut D {
     fn blocks(&self) -> u64 {
         (**self).blocks()
+    }
+    fn logical_quota_bytes(&self) -> Option<u64> {
+        (**self).logical_quota_bytes()
     }
     fn read(&self, b: u64) -> Result<Block> {
         (**self).read(b)

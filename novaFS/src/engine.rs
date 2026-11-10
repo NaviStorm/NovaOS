@@ -13,6 +13,8 @@ const PUBLISHING: u8 = 2;
 const MAX_COW: usize = 64;
 const RESERVE: u64 = 128;
 const SPACE_LEAF: usize = 112;
+mod admission;
+pub use admission::{PreparedWrite, ReservationCost, VolumeAccounting, VolumePolicy};
 pub mod integrity;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Mode {
@@ -122,6 +124,7 @@ impl<D: Device> View for DiskView<'_, D> {
 struct Allocation {
     space: Space,
     nodes: Vec<u64>,
+    logical_bytes: u128,
 }
 struct Marks(Vec<u64>);
 impl Marks {
@@ -199,7 +202,7 @@ fn check_generation<D: Device>(
             },
         )?;
     }
-    crate::fs::validate(v, prior.map(|(o, _, _)| o), full, &mut own)?;
+    alloc.logical_bytes = crate::fs::validate(v, prior.map(|(o, _, _)| o), full, &mut own)?;
     let mut runs = alloc.space.0.iter().peekable();
     for b in 2..v.m.blocks {
         if runs.peek().is_some_and(|r| r.end <= b) {
@@ -270,6 +273,7 @@ pub struct Engine<D> {
     cache: std::sync::Mutex<crate::cache::Cache>,
     salvage: bool,
     staging_limit: usize,
+    policy: VolumePolicy,
 }
 impl<D: Device> ReadTree for Engine<D> {
     fn read(&self, r: Ref, f: Family) -> Result<Node> {
@@ -372,22 +376,37 @@ impl<D: Device> Engine<D> {
         self.observe(self.verify_current())
     }
     fn verify_current(&self) -> Result<()> {
-        if self.salvage {
+        let disk_alloc = if self.salvage {
             let h = Head::load(&self.dev, self.ids, self.head.slot)?;
             if h.reference != self.head.reference {
                 return Err(Error::Corrupt("ancrage modifié depuis le sauvetage"));
             }
             let v = DiskView::new(&self.dev, self.ids, &h.m);
-            check_generation(&v, &h, None, true)?;
+            check_generation(&v, &h, None, true)?.0
         } else {
-            let (disk, _) = inspect_pair(&self.dev, self.ids, true)?;
+            let (disk, allocation) = inspect_pair(&self.dev, self.ids, true)?;
             if disk.reference != self.head.reference {
                 return Err(Error::Corrupt("tête différente du reçu en mémoire"));
             }
+            allocation
+        };
+        if disk_alloc.logical_bytes != self.alloc.logical_bytes {
+            return Err(Error::Corrupt(
+                "usage logique différent du catalogue en mémoire",
+            ));
         }
         Ok(())
     }
-    pub fn mount(mut dev: D, ids: Ids, mode: Mode) -> Result<Self> {
+    pub fn mount(dev: D, ids: Ids, mode: Mode) -> Result<Self> {
+        Self::mount_with_policy(dev, ids, mode, VolumePolicy::default())
+    }
+    pub fn mount_with_policy(
+        mut dev: D,
+        ids: Ids,
+        mode: Mode,
+        policy: VolumePolicy,
+    ) -> Result<Self> {
+        policy.validate(dev.blocks())?;
         // Une paire dont les métadonnées sont lisibles peut partager des
         // données endommagées. Les contrôler avant de livrer un montage normal.
         let (head, alloc) = inspect_pair(&dev, ids, true)?;
@@ -398,6 +417,7 @@ impl<D: Device> Engine<D> {
             dev,
             ids,
             mode,
+            policy,
             head,
             alloc,
             staging_limit: MAX_COW,
@@ -417,6 +437,7 @@ impl<D: Device> Engine<D> {
             dev,
             ids,
             mode: Mode::ReadOnly,
+            policy: VolumePolicy::default(),
             head: h,
             alloc,
             staging_limit: MAX_COW,
@@ -448,10 +469,13 @@ impl<D: Device> Engine<D> {
             space: Space::fresh(blocks),
             staged: BTreeMap::new(),
             data_count: 0,
+            data_blocks: [0; 17],
+            logical_bytes: 0,
+            logical_quota_bytes: dev.logical_quota_bytes(),
             staging_limit: MAX_COW,
         };
         crate::fs::initialize(&mut tx)?;
-        let plan = tx.finish(&[], None, false)?;
+        let plan = tx.finish(&[], None, RESERVE)?;
         let a = Anchor {
             ids,
             blocks,
@@ -477,6 +501,7 @@ impl<D: Device> Engine<D> {
             dev,
             ids,
             mode: Mode::ReadWrite,
+            policy: VolumePolicy::default(),
             head,
             alloc,
             staging_limit: MAX_COW,
@@ -490,6 +515,22 @@ impl<D: Device> Engine<D> {
         releasing: bool,
         f: impl FnOnce(&mut Tx<D>) -> Result<T>,
     ) -> Result<T> {
+        let (plan, result) = self.prepare(releasing, f)?;
+        self.publish(plan)?;
+        Ok(result)
+    }
+    pub(crate) fn prepare_write_with(
+        &mut self,
+        f: impl FnOnce(&mut Tx<D>) -> Result<()>,
+    ) -> Result<PreparedWrite<'_, D>> {
+        let (plan, ()) = self.prepare(false, f)?;
+        Ok(PreparedWrite { engine: self, plan })
+    }
+    fn prepare<T>(
+        &self,
+        releasing: bool,
+        f: impl FnOnce(&mut Tx<D>) -> Result<T>,
+    ) -> Result<(Option<Plan>, T)> {
         if self.mode == Mode::ReadOnly {
             return Err(Error::ReadOnly);
         }
@@ -509,20 +550,36 @@ impl<D: Device> Engine<D> {
             space,
             staged: BTreeMap::new(),
             data_count: 0,
+            data_blocks: [0; 17],
+            logical_bytes: self.alloc.logical_bytes,
+            logical_quota_bytes: self.logical_quota(),
             staging_limit: self.staging_limit,
         };
-        let result = self.observe(f(&mut tx))?;
+        // Seules unlink/collect sont admises sur la réserve. L'épuisement de
+        // cette voie peut intervenir dès la première page de données privées.
+        let classify = |e| match (releasing, e) {
+            (true, Error::NoSpace) => Error::MaintenanceExhausted,
+            (_, error) => error,
+        };
+        let result = self.observe(f(&mut tx)).map_err(classify)?;
         if tx.staged.is_empty()
             && tx.m.roots == self.head.m.roots
             && tx.m.next_oid == self.head.m.next_oid
         {
-            return Ok(result);
+            return Ok((None, result));
         }
-        let plan = self.observe(tx.finish(
-            &self.alloc.nodes,
-            Some(self.head.reference.block),
-            releasing,
-        ))?;
+        let floor = if releasing {
+            0
+        } else {
+            self.policy.maintenance_blocks
+        };
+        let plan = self
+            .observe(tx.finish(&self.alloc.nodes, Some(self.head.reference.block), floor))
+            .map_err(classify)?;
+        Ok((Some(plan), result))
+    }
+    fn publish(&mut self, plan: Option<Plan>) -> Result<()> {
+        let Some(plan) = plan else { return Ok(()) };
         let anchor = Anchor {
             ids: self.ids,
             blocks: self.dev.blocks(),
@@ -550,7 +607,7 @@ impl<D: Device> Engine<D> {
         self.head = plan.head;
         self.alloc = plan.alloc;
         self.health.store(HEALTHY, Ordering::Relaxed);
-        Ok(result)
+        Ok(())
     }
 }
 
@@ -561,12 +618,16 @@ pub struct Tx<'a, D> {
     space: Space,
     staged: BTreeMap<u64, Box<Block>>,
     data_count: usize,
+    data_blocks: [u64; 17],
+    logical_bytes: u128,
+    logical_quota_bytes: Option<u64>,
     staging_limit: usize,
 }
 struct Plan {
     head: Head,
     alloc: Allocation,
     staged: BTreeMap<u64, Box<Block>>,
+    cost: ReservationCost,
 }
 impl<D: Device> View for Tx<'_, D> {
     fn ids(&self) -> Ids {
@@ -611,6 +672,22 @@ impl<D: Device> WriteTree for Tx<'_, D> {
     }
 }
 impl<D: Device> Tx<'_, D> {
+    pub(crate) fn resize_logical(&mut self, previous: u64, next: u64) -> Result<()> {
+        let updated = self
+            .logical_bytes
+            .checked_sub(u128::from(previous))
+            .and_then(|n| n.checked_add(u128::from(next)))
+            .ok_or(Error::Corrupt("somme des tailles logiques"))?;
+        if updated > self.logical_bytes
+            && self
+                .logical_quota_bytes
+                .is_some_and(|q| updated > u128::from(q))
+        {
+            return Err(Error::QuotaExceeded);
+        }
+        self.logical_bytes = updated;
+        Ok(())
+    }
     pub fn manifest_mut(&mut self) -> &mut Manifest {
         &mut self.m
     }
@@ -635,11 +712,12 @@ impl<D: Device> Tx<'_, D> {
     }
     pub fn alloc_data(&mut self, data: &Block) -> Result<Ref> {
         // 64 Kio non alignés peuvent toucher 17 blocs physiques.
-        if self.data_count >= 17 {
+        if self.data_count == self.data_blocks.len() {
             return Err(Error::Limit("données CoW"));
         }
-        self.data_count += 1;
         let block = self.reserve()?;
+        self.data_blocks[self.data_count] = block;
+        self.data_count += 1;
         let birth = self.m.previous + 1;
         self.staged.insert(block, Box::new(*data));
         Ok(Ref {
@@ -650,6 +728,13 @@ impl<D: Device> Tx<'_, D> {
     }
     pub fn retire_block(&mut self, b: u64) -> Result<()> {
         let age = if self.staged.remove(&b).is_some() {
+            if let Some(i) = self.data_blocks[..self.data_count]
+                .iter()
+                .position(|&x| x == b)
+            {
+                self.data_count -= 1;
+                self.data_blocks[i] = self.data_blocks[self.data_count];
+            }
             0
         } else {
             self.m.previous
@@ -660,7 +745,7 @@ impl<D: Device> Tx<'_, D> {
         mut self,
         old_space: &[u64],
         old_manifest: Option<u64>,
-        releasing: bool,
+        maintenance_floor: u64,
     ) -> Result<Plan> {
         for &b in old_space {
             self.retire_block(b)?;
@@ -688,7 +773,7 @@ impl<D: Device> Tx<'_, D> {
                 refs.push(self.space.take()?);
             }
         }
-        if !releasing && self.space.eligible(1) < RESERVE {
+        if self.space.eligible(1) < maintenance_floor {
             return Err(Error::NoSpace);
         }
         let g = self.m.previous + 1;
@@ -738,6 +823,10 @@ impl<D: Device> Tx<'_, D> {
         let (reference, data) = self.m.encode(self.ids, mb, g)?;
         self.staged.insert(mb, Box::new(data));
         Ok(Plan {
+            cost: ReservationCost {
+                data_blocks: self.data_count as u64,
+                metadata_blocks: (self.staged.len() - self.data_count) as u64,
+            },
             head: Head {
                 m: self.m,
                 reference,
@@ -746,6 +835,7 @@ impl<D: Device> Tx<'_, D> {
             alloc: Allocation {
                 space: self.space,
                 nodes: refs,
+                logical_bytes: self.logical_bytes,
             },
             staged: self.staged,
         })

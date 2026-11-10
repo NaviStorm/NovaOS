@@ -1,0 +1,88 @@
+{
+  "version": "0.9.3",
+  "base": "6f15350",
+  "architectures": {
+    "aarch64": {
+      "tests_courts": 78,
+      "scenarios_P0": [
+        "F01",
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06",
+        "P01",
+        "P02",
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06"
+      ],
+      "differentiel": {
+        "graines": 100,
+        "opérations": 1000000,
+        "commits_observés": 345183,
+        "pénuries_injectées": 54643,
+        "remontages_et_audits": 1000,
+        "secondes": 24.863
+      },
+      "coupures_ecrivain_fichier": 24,
+      "coupures_VM_x86_64": 10,
+      "cycles_restitution_P1": 128
+    },
+    "x86_64": {
+      "tests_courts": 78,
+      "scenarios_P0": [
+        "F01",
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06",
+        "P01",
+        "P02",
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06"
+      ],
+      "differentiel": {
+        "graines": 100,
+        "opérations": 1000000,
+        "commits_observés": 345183,
+        "pénuries_injectées": 54643,
+        "remontages_et_audits": 1000,
+        "secondes": 41.992
+      },
+      "coupures_ecrivain_fichier": 24,
+      "coupures_VM_x86_64": 10,
+      "cycles_restitution_P1": 128
+    }
+  },
+  "compatibilite_fs": {
+    "d0ba7cb": {
+      "P3_vers_P3": 8,
+      "reference_vers_P3": 8,
+      "P3_vers_reference": 8,
+      "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+    },
+    "38c8699": {
+      "P3_vers_P3": 8,
+      "reference_vers_P3": 8,
+      "P3_vers_reference": 8,
+      "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+    },
+    "6f15350": {
+      "P3_vers_P3": 8,
+      "reference_vers_P3": 8,
+      "P3_vers_reference": 8,
+      "sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+    }
+  }
+}

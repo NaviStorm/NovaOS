@@ -27,7 +27,7 @@ fn cli_images_anonymes_et_sauvetage() {
     assert!(help.status.success());
     assert!(
         help.stdout.starts_with(
-            concat!("NovaFS P2 v", env!("CARGO_PKG_VERSION"), " — format P0").as_bytes()
+            concat!("NovaFS P3 v", env!("CARGO_PKG_VERSION"), " — format P0").as_bytes()
         )
     );
     for sub in [
@@ -38,6 +38,8 @@ fn cli_images_anonymes_et_sauvetage() {
         "salvage",
         "check",
         "check-pool",
+        "space",
+        "space-pool",
     ] {
         assert!(tool(&[sub, "--help"], b"").status.success())
     }

@@ -2,6 +2,18 @@
 use std::alloc::{GlobalAlloc, Layout, System};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
+#[cfg(target_os = "macos")]
+pub(crate) fn current_stack_size() -> usize {
+    use std::ffi::c_void;
+    unsafe extern "C" {
+        fn pthread_self() -> *mut c_void;
+        fn pthread_get_stacksize_np(thread: *mut c_void) -> usize;
+    }
+    // Sûreté : le pthread interrogé est le thread courant vivant ; la requête
+    // renvoie la taille de réservation sans déréférencer sa pile.
+    unsafe { pthread_get_stacksize_np(pthread_self()) }
+}
+
 pub(crate) static LIVE: AtomicUsize = AtomicUsize::new(0);
 pub(crate) static PEAK: AtomicUsize = AtomicUsize::new(0);
 pub(crate) static PHASE_PEAK: AtomicUsize = AtomicUsize::new(0);

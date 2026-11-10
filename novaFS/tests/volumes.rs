@@ -1,10 +1,8 @@
 //! P01/P02 exercent les publications du catalogue et du FS sur le même
-//! périphérique. Ce gestionnaire de volumes de test n’est pas un service NovaOS.
-#[path = "support/pool.rs"]
-mod pool;
+//! périphérique via le gestionnaire de volumes du prototype hôte.
 use novafs::device::{Event, Persistence, SimDevice, SimSnapshot};
+use novafs::pool::{GRAIN, Pool, Type, Uid};
 use novafs::{Device, Engine, Error, Ids, Mode, Result};
-use pool::{GRAIN, Pool, Type, Uid};
 
 const LV: Uid = [0x11; 16];
 const FS: Uid = [0x21; 16];
@@ -21,7 +19,7 @@ fn p01_typed_exports_geometry_and_zero_on_reassignment() -> Result<()> {
         p.create(LV, Some(FS), 1)?;
         p.create_for([0x81; 16], RAW, None, 1)?;
         assert!(matches!(p.create(RAW, None, 1), Err(Error::Exists)));
-        assert!(matches!(p.create(NEW, None, 1), Err(Error::NoSpace)));
+        assert!(matches!(p.create(NEW, None, 1), Err(Error::PoolFull)));
         assert!(p.view(LV, Type::Raw, [0; 16]).is_err());
         assert!(p.view(RAW, Type::Ready, FS).is_err());
         assert!(p.mark_ready(LV, FS).is_err());
@@ -46,7 +44,7 @@ fn p01_typed_exports_geometry_and_zero_on_reassignment() -> Result<()> {
         fs.unmount()?;
         p.remove(RAW)?;
         // Le catalogue précédent possède encore les blocs de RAW.
-        assert!(matches!(p.create(NEW, None, 1), Err(Error::NoSpace)));
+        assert!(matches!(p.create(NEW, None, 1), Err(Error::PoolFull)));
         p.advance()?;
         p.create_for([0x82; 16], NEW, None, 1)?;
         assert!(p.raw_for([0x81; 16], NEW).is_err());
@@ -64,7 +62,7 @@ fn p01_typed_exports_geometry_and_zero_on_reassignment() -> Result<()> {
         q.create_for([0x81; 16], RAW, None, 3)?;
         assert!(matches!(
             q.create_for([0x81; 16], NEW, None, 2),
-            Err(Error::Limit(_))
+            Err(Error::QuotaExceeded)
         ));
         q.create_for([0x82; 16], NEW, None, 2)?;
     }
@@ -79,13 +77,13 @@ fn pool_cut_matrix(
     let d = base.device();
     let h = d.control();
     let mut p = Pool::import(d)?;
-    let initial = p.head.generation;
+    let initial = p.generation();
     let old_entries = entry_ids(&p);
     h.trace(None, None);
     op(&mut p)?;
     let new_entries = entry_ids(&p);
     let events = h.events();
-    let new = p.head.generation;
+    let new = p.generation();
     let slot = new % 2;
     let submitted = events
         .iter()
@@ -106,12 +104,12 @@ fn pool_cut_matrix(
             assert!(op(&mut p).is_err(), "{label} frontière {i}");
             c.power_cut(policy)?;
             let restored = Pool::import(c.snapshot().device())?;
-            if restored.head.generation == initial {
+            if restored.generation() == initial {
                 assert!(i < stable);
                 assert_eq!(entry_ids(&restored), old_entries);
             } else {
                 assert!(i >= submitted);
-                assert_eq!(restored.head.generation, new);
+                assert_eq!(restored.generation(), new);
                 assert_eq!(entry_ids(&restored), new_entries);
             }
             tested += 1;
@@ -121,10 +119,8 @@ fn pool_cut_matrix(
     Ok(())
 }
 fn entry_ids(p: &Pool<SimDevice>) -> Vec<(Uid, Uid, Type, u64)> {
-    p.head
-        .entries
-        .iter()
-        .map(|e| (e.id, e.fs, e.kind, e.grains))
+    p.volumes()
+        .map(|e| (e.id, e.fs, e.kind, e.guaranteed_blocks / GRAIN))
         .collect()
 }
 
@@ -139,7 +135,7 @@ fn p02_independent_catalogue_fs_commits_and_stale_identity() -> Result<()> {
     p.create(LV, Some(FS), 1)?;
     let reserved = host.snapshot();
     let reopening = Pool::import(reserved.device())?;
-    assert_eq!(reopening.head.entries[0].kind, Type::Preparing);
+    assert_eq!(reopening.volumes().next().unwrap().kind, Type::Preparing);
     assert!(p.view(LV, Type::Ready, FS).is_err());
     let fs = Engine::format(p.view(LV, Type::Preparing, FS)?, IDS)?;
     drop(fs);
@@ -200,7 +196,7 @@ fn p02_pool_barrier_negative_controls() -> Result<()> {
     let d = SimDevice::new(4 * GRAIN, 512)?;
     let h = d.control();
     let p = Pool::format(d)?;
-    let old = p.head.generation;
+    let old = p.generation();
     let base = h.snapshot();
     let d = base.device();
     let h = d.control();
@@ -212,7 +208,7 @@ fn p02_pool_barrier_negative_controls() -> Result<()> {
         .iter()
         .position(|e| *e == Event::FlushSubmitted(2))
         .unwrap();
-    let newer = p.head.generation;
+    let newer = p.generation();
     // F1 omise, l'ancre seule nomme une bande encore volatile.
     let d = base.device();
     let h = d.control();
@@ -227,11 +223,11 @@ fn p02_pool_barrier_negative_controls() -> Result<()> {
     let mut p = Pool::import(d)?;
     h.trace(None, Some(2));
     p.create(RAW, None, 1)?;
-    assert_eq!(p.head.generation, newer);
+    assert_eq!(p.generation(), newer);
     h.power_cut(Persistence::None)?;
     let p = Pool::import(h.snapshot().device())?;
-    assert_eq!(p.head.generation, old);
-    assert!(p.head.entries.is_empty());
+    assert_eq!(p.generation(), old);
+    assert!(p.volumes().next().is_none());
     Ok(())
 }
 

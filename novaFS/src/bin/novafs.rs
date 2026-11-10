@@ -13,7 +13,7 @@ mod check;
 mod heap_meter;
 
 const HELP: &str = concat!(
-    "NovaFS P2 v",
+    "NovaFS P3 v",
     env!("CARGO_PKG_VERSION"),
     " — format P0, images jetables, uniquement sur flux
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
@@ -22,11 +22,14 @@ novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l�
 novafs verify BLOCS SECTEUR FS_ID LV_ID            vérifie intégralement les deux générations
 novafs check BLOCS SECTEUR FS_ID LV_ID             contrôle RO d’un LV, rapport JSON
 novafs check-pool BLOCS SECTEUR                    contrôle RO d’un catalogue P0 et de ses LV prêts
+novafs space BLOCS SECTEUR FS_ID LV_ID             comptabilité du FS au repos, sur un LV hors ligne
+novafs space-pool BLOCS SECTEUR                    comptabilité physique du catalogue hors ligne
 novafs salvage BLOCS SECTEUR FS_ID LV_ID SLOT NOM extrait un fichier sur stdout en lecture seule
 SECTEUR = 512 ou 4096. Identités = 32 chiffres hexadécimaux chacune.
 Commandes de script (une par ligne, chemins NovaFS sans espaces) :
   mkdir /nom | create /nom | rename /source /dest | unlink /nom | collect
   write /nom OFFSET HEX | read /nom OFFSET LONGUEUR | inspect | verify
+  policy BLOCS_MAINTENANCE QUOTA_OCTETS|none | space
 Les résultats du script, les identités générées et les erreurs vont sur stderr."
 );
 
@@ -162,6 +165,16 @@ fn commands(fs: &mut Engine<&mut FileImage>, mut input: impl BufRead) -> Result<
                 )?)
             ),
             ("inspect", []) => eprintln!("génération={} {:?}", fs.generation(), fs.space_stats()),
+            ("space", []) => eprintln!("{}", check::volume_space(&fs.accounting()?)),
+            ("policy", [reserve, quota]) => {
+                fs.set_volume_policy(novafs::VolumePolicy {
+                    maintenance_blocks: num(reserve)?,
+                    logical_quota_bytes: match *quota {
+                        "none" => None,
+                        limit => Some(num(limit)?),
+                    },
+                })?;
+            }
             ("verify", []) => fs.verify()?,
             _ => return Err(Error::Invalid("commande du script")),
         }
@@ -180,6 +193,11 @@ fn run(args: &[String]) -> Result<()> {
             .find(|s| s.starts_with(&prefix))
             .ok_or(Error::Invalid("commande inconnue"))?;
         println!("{usage}");
+        if args[0] == "script" {
+            println!(
+                "policy BLOCS_MAINTENANCE QUOTA_OCTETS|none    fixe la politique de cette session\nspace    écrit les compteurs JSON sur stderr (l’image reste sur stdout)"
+            );
+        }
         return Ok(());
     }
     if args.len() < 3 {
@@ -280,12 +298,15 @@ fn main() -> std::process::ExitCode {
     let command = args.first().map(String::as_str);
     if matches!(
         command,
-        Some("check" | "check-pool" | "verify" | "inspect" | "salvage")
+        Some("check" | "check-pool" | "space" | "space-pool" | "verify" | "inspect" | "salvage")
     ) && !check::separate_outputs().unwrap_or(false)
     {
         return ExitCode::from(2);
     }
-    if matches!(command, Some("check" | "check-pool")) {
+    if matches!(
+        command,
+        Some("check" | "check-pool" | "space" | "space-pool")
+    ) {
         if args.get(1).map(String::as_str) == Some("--help") && args.len() == 2 {
             println!("{}", check::help(&args[0]));
             return ExitCode::SUCCESS;
@@ -304,14 +325,8 @@ fn main() -> std::process::ExitCode {
 
 #[cfg(all(feature = "check-metrics", target_os = "macos"))]
 fn report_check_memory() {
-    use std::{ffi::c_void, sync::atomic::Ordering};
-    unsafe extern "C" {
-        fn pthread_self() -> *mut c_void;
-        fn pthread_get_stacksize_np(thread: *mut c_void) -> usize;
-    }
-    // Sûreté : interroger le pthread Darwin courant tant qu’il est vivant.
-    // La valeur retournée désigne la réservation, sans déréférencement de pile.
-    let stack = unsafe { pthread_get_stacksize_np(pthread_self()) };
+    use std::sync::atomic::Ordering;
+    let stack = heap_meter::current_stack_size();
     let peak = heap_meter::PEAK.load(Ordering::Relaxed);
     eprintln!(
         "mesure pic_tas_octets={peak} pile_reservee_octets={stack} total_octets={}",
