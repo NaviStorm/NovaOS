@@ -3,6 +3,7 @@ use crate::codec::{Anchor, data_hash};
 use crate::space::Space;
 use crate::tree::{self, Family, Node, ReadTree, WriteTree};
 use crate::{Block, Device, Error, Ids, MAX_BLOCKS, Manifest, Ref, Result};
+use std::cell::Cell;
 use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU8, Ordering};
 
@@ -12,6 +13,7 @@ const PUBLISHING: u8 = 2;
 const MAX_COW: usize = 64;
 const RESERVE: u64 = 128;
 const SPACE_LEAF: usize = 112;
+pub mod integrity;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Mode {
     ReadOnly,
@@ -30,12 +32,14 @@ pub trait View: ReadTree {
     fn manifest(&self) -> &Manifest;
     fn raw(&self, b: u64) -> Result<Block>;
     fn checked_data(&self, r: Ref) -> Result<Block> {
-        let bytes = self.raw(r.block)?;
-        if data_hash(self.ids(), r.block, r.birth, &bytes) != r.hash {
-            return Err(Error::Corrupt("somme du bloc de données"));
-        }
-        Ok(bytes)
+        check_payload(self.ids(), r, self.raw(r.block)?)
     }
+}
+fn check_payload(ids: Ids, r: Ref, bytes: Block) -> Result<Block> {
+    if data_hash(ids, r.block, r.birth, &bytes) != r.hash {
+        return Err(Error::Corrupt("somme du bloc de données"));
+    }
+    Ok(bytes)
 }
 #[derive(Clone)]
 struct Head {
@@ -49,6 +53,9 @@ impl Head {
             return Err(Error::Invalid("slot d’ancrage"));
         }
         let a = Anchor::decode(&dev.read(slot)?, slot)?;
+        Self::from_anchor(dev, ids, slot, a)
+    }
+    fn from_anchor<D: Device>(dev: &D, ids: Ids, slot: u64, a: Anchor) -> Result<Self> {
         if a.ids != ids || a.blocks != dev.blocks() || !(2..a.blocks).contains(&a.manifest.block) {
             return Err(Error::Corrupt("identité, taille ou manifeste de l’ancre"));
         }
@@ -73,13 +80,27 @@ struct DiskView<'a, D> {
     dev: &'a D,
     ids: Ids,
     m: &'a Manifest,
+    // Adresse certaine d'une erreur de référence, d'E/S ou de checksum.
+    failed_block: Cell<Option<u64>>,
+}
+impl<'a, D> DiskView<'a, D> {
+    fn new(dev: &'a D, ids: Ids, m: &'a Manifest) -> Self {
+        Self {
+            dev,
+            ids,
+            m,
+            failed_block: Cell::new(None),
+        }
+    }
+    fn at<T>(&self, block: u64, result: Result<T>) -> Result<T> {
+        result.inspect_err(|_| self.failed_block.set(Some(block)))
+    }
 }
 impl<D: Device> ReadTree for DiskView<'_, D> {
     fn read(&self, r: Ref, f: Family) -> Result<Node> {
-        if !(2..self.m.blocks).contains(&r.block) || r.birth == 0 || r.birth > self.m.previous + 1 {
-            return Err(Error::Corrupt("référence d’arbre hors vue"));
-        }
-        Node::decode(&self.dev.read(r.block)?, self.ids, r, f)
+        self.at(r.block, r.validate(self.m.blocks, self.m.previous + 1))?;
+        let bytes = self.raw(r.block)?;
+        self.at(r.block, Node::decode(&bytes, self.ids, r, f))
     }
 }
 impl<D: Device> View for DiskView<'_, D> {
@@ -90,7 +111,10 @@ impl<D: Device> View for DiskView<'_, D> {
         self.m
     }
     fn raw(&self, b: u64) -> Result<Block> {
-        self.dev.read(b)
+        self.at(b, self.dev.read(b))
+    }
+    fn checked_data(&self, r: Ref) -> Result<Block> {
+        self.at(r.block, check_payload(self.ids, r, self.raw(r.block)?))
     }
 }
 
@@ -185,33 +209,38 @@ fn check_generation<D: Device>(
         if available.is_some() == used.has(b) {
             return Err(Error::Corrupt("partition espace incomplète"));
         }
-        if let Some((older, old, _)) = prior
-            && old.has(b)
-            && !used.has(b)
-            && available.map(|r| r.age) != Some(older.m.previous + 1)
-        {
-            return Err(Error::Corrupt("âge du bloc libéré"));
+        if let (Some((older, old, _)), Some(run)) = (prior, available) {
+            // Un bloc daté du prédécesseur immédiat doit y avoir été possédé,
+            // et tout bloc retiré de cette vue porte exactement cet âge.
+            if old.has(b) != (run.age == older.m.previous + 1) {
+                return Err(Error::Corrupt("âge du bloc libéré"));
+            }
         }
     }
     Ok((alloc, used))
 }
 fn inspect_pair<D: Device>(dev: &D, ids: Ids, full: bool) -> Result<(Head, Allocation)> {
     geometry(dev, ids)?;
-    let mut high = Head::load(dev, ids, 0)?;
-    let mut low = Head::load(dev, ids, 1)?;
+    inspect_heads(
+        dev,
+        ids,
+        Head::load(dev, ids, 0)?,
+        Head::load(dev, ids, 1)?,
+        full,
+    )
+}
+fn inspect_heads<D: Device>(
+    dev: &D,
+    ids: Ids,
+    mut high: Head,
+    mut low: Head,
+    full: bool,
+) -> Result<(Head, Allocation)> {
     if low.reference.birth > high.reference.birth {
         std::mem::swap(&mut low, &mut high);
     }
-    let hv = DiskView {
-        dev,
-        ids,
-        m: &high.m,
-    };
-    let lv = DiskView {
-        dev,
-        ids,
-        m: &low.m,
-    };
+    let hv = DiskView::new(dev, ids, &high.m);
+    let lv = DiskView::new(dev, ids, &low.m);
     if high.reference.birth == 1 && high.reference == low.reference {
         let (alloc, _) = check_generation(&hv, &high, None, full)?;
         return Ok((high, alloc));
@@ -271,10 +300,7 @@ impl<D: Device> View for Engine<D> {
         if let Some(bytes) = cached {
             return Ok(bytes);
         }
-        let bytes = self.dev.read(r.block)?;
-        if data_hash(self.ids, r.block, r.birth, &bytes) != r.hash {
-            return Err(Error::Corrupt("somme du bloc de données"));
-        }
+        let bytes = check_payload(self.ids, r, self.dev.read(r.block)?)?;
         self.cache().remember(None, r, bytes);
         Ok(bytes)
     }
@@ -351,11 +377,7 @@ impl<D: Device> Engine<D> {
             if h.reference != self.head.reference {
                 return Err(Error::Corrupt("ancrage modifié depuis le sauvetage"));
             }
-            let v = DiskView {
-                dev: &self.dev,
-                ids: self.ids,
-                m: &h.m,
-            };
+            let v = DiskView::new(&self.dev, self.ids, &h.m);
             check_generation(&v, &h, None, true)?;
         } else {
             let (disk, _) = inspect_pair(&self.dev, self.ids, true)?;
@@ -366,7 +388,9 @@ impl<D: Device> Engine<D> {
         Ok(())
     }
     pub fn mount(mut dev: D, ids: Ids, mode: Mode) -> Result<Self> {
-        let (head, alloc) = inspect_pair(&dev, ids, false)?;
+        // Une paire dont les métadonnées sont lisibles peut partager des
+        // données endommagées. Les contrôler avant de livrer un montage normal.
+        let (head, alloc) = inspect_pair(&dev, ids, true)?;
         if mode == Mode::ReadWrite {
             dev.flush()?;
         }
@@ -387,11 +411,7 @@ impl<D: Device> Engine<D> {
     pub fn salvage(dev: D, ids: Ids, slot: u64) -> Result<Self> {
         geometry(&dev, ids)?;
         let h = Head::load(&dev, ids, slot)?;
-        let v = DiskView {
-            dev: &dev,
-            ids,
-            m: &h.m,
-        };
+        let v = DiskView::new(&dev, ids, &h.m);
         let (alloc, _) = check_generation(&v, &h, None, false)?;
         Ok(Self {
             dev,

@@ -27,10 +27,18 @@ fn cli_images_anonymes_et_sauvetage() {
     assert!(help.status.success());
     assert!(
         help.stdout.starts_with(
-            concat!("NovaFS P1 v", env!("CARGO_PKG_VERSION"), " — format P0").as_bytes()
+            concat!("NovaFS P2 v", env!("CARGO_PKG_VERSION"), " — format P0").as_bytes()
         )
     );
-    for sub in ["create", "inspect", "verify", "script", "salvage"] {
+    for sub in [
+        "create",
+        "inspect",
+        "verify",
+        "script",
+        "salvage",
+        "check",
+        "check-pool",
+    ] {
         assert!(tool(&[sub, "--help"], b"").status.success())
     }
     assert!(tool(&["create", "180", "512"], b"").status.success());

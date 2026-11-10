@@ -1,6 +1,8 @@
-# NovaFS P1 sur macOS
+# NovaFS P2 sur macOS
 
-NovaFS v0.9.1 conserve le format P0. Il fonctionne sur une image logique de LV dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+NovaFS v0.9.2 conserve le format disque P0 et les deux barrières de publication P1. Il fonctionne sur une image logique de LV dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+
+La commande `check` examine les deux générations d’une image hors ligne et rend un diagnostic JSON, y compris lorsqu’une seule génération reste lisible. `check-pool` contrôle le catalogue du pool de laboratoire et le contenu des volumes déclarés prêts. Ces deux commandes prennent un **fichier ordinaire en entrée standard**. [Utilisation, codes de sortie et stratégie de récupération](docs/novafs-p2-integrite.md) · [Injections de corruption](docs/novafs-p2-injections.md) · [Contrôle des volumes](docs/novafs-p2-pool.md)
 
 P1 exerce les ruptures aux frontières de publication, les erreurs d’E/S partielles et la perte du cache volatil. Les commandes et les limites de chaque essai figurent dans le [rapport de durabilité](docs/novafs-p1-durabilite.md), la [matrice des injections](docs/novafs-p1-coupures.md) et les [mesures comparées avec P0](docs/novafs-p1-mesures.md).
 
@@ -21,6 +23,7 @@ printf '%s\n' 'mkdir /notes' 'create /notes/exemple' \
 fs_id=$(sed -n 's/^FS=\([^ ]*\) LV=.*/\1/p' "$log")
 lv_id=$(sed -n 's/^FS=[^ ]* LV=\(.*\)/\1/p' "$log")
 "$lab" run -- verify 512 512 "$fs_id" "$lv_id" < "$image"
+"$lab" run -- check 512 512 "$fs_id" "$lv_id" < "$image"
 
 rm "$image" "$log"
 ```

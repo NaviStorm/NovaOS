@@ -234,3 +234,123 @@ fn p02_pool_barrier_negative_controls() -> Result<()> {
     assert!(p.head.entries.is_empty());
     Ok(())
 }
+
+#[test]
+fn p2_check_pool_json_et_image_identique() -> Result<()> {
+    use serde_json::Value;
+    use std::{fs, process::Command};
+
+    const PD_BLOCKS: u64 = 5 * GRAIN + 7;
+    for sector in [512, 4096] {
+        let disk = SimDevice::new(PD_BLOCKS, sector)?;
+        let ctl = disk.control();
+        let mut p = Pool::format(disk)?;
+        p.create(LV, Some(FS), 1)?;
+        let mut fs = Engine::format(p.view(LV, Type::Preparing, FS)?, IDS)?;
+        fs.create("/preuve")?;
+        fs.write("/preuve", 0, &[0x27; 4096])?;
+        fs.unmount()?;
+        p.mark_ready(LV, FS)?;
+        p.create(RAW, None, 1)?;
+        p.create(NEW, Some([0xfa; 16]), 1)?;
+        let base = ctl.snapshot().bytes()?;
+        let marker: Vec<_> = base
+            .chunks_exact(4096)
+            .enumerate()
+            .filter(|(_, b)| **b == [0x27; 4096])
+            .map(|(i, _)| i)
+            .collect();
+        assert_eq!(
+            marker.len(),
+            1,
+            "seul le grain du LV prêt contient le marqueur"
+        );
+        for case in 0..4 {
+            let mut bytes = base.clone();
+            if case == 1 {
+                bytes[marker[0] * 4096 + 821] ^= 0x40;
+            }
+            if case == 2 {
+                bytes[82] ^= 0x80;
+            }
+            let file = tempfile::NamedTempFile::new()?;
+            fs::write(file.path(), &bytes)?;
+            // Le cas 3 présente un descripteur d'écriture seule ; la vraie
+            // lecture fera EBADF. Le diagnostic doit être incomplet, code 3.
+            let fd = if case == 3 {
+                fs::OpenOptions::new().write(true).open(file.path())?
+            } else {
+                fs::File::open(file.path())?
+            };
+            let out = Command::new(env!("CARGO_BIN_EXE_novafs"))
+                .args(["check-pool", &PD_BLOCKS.to_string(), &sector.to_string()])
+                .stdin(fd)
+                .output()?;
+            assert_eq!(out.status.code(), Some([0, 1, 1, 3][case]), "{:?}", out);
+            let report: Value = serde_json::from_slice(&out.stdout).expect("rapport JSON du CLI");
+            assert_eq!(report["domaine"], "pool");
+            let volumes = report["volumes"].as_array().unwrap();
+            if case < 2 {
+                assert_eq!(report["paire"]["etat"], "verifiee");
+                assert_eq!(volumes.len(), 3);
+                assert_eq!(
+                    volumes[0]["contenu"]["etat"],
+                    if case == 0 { "verifie" } else { "echec" }
+                );
+                let nested = &volumes[0]["contenu"]["diagnostic"];
+                assert_eq!(nested["slots"][0]["vue_verifiee"], true); // G2, avant l’écriture du fichier.
+                assert_eq!(nested["slots"][1]["vue_verifiee"], case == 0);
+                assert_eq!(
+                    nested["paire"]["etat"],
+                    if case == 0 {
+                        "verifiee"
+                    } else {
+                        "indisponible"
+                    }
+                );
+                assert_eq!(volumes[1]["contenu"]["etat"], "donnees_sans_checksum_fs");
+                assert_eq!(volumes[2]["contenu"]["etat"], "non_publie");
+            } else {
+                assert_eq!(report["paire"]["etat"], "indisponible");
+                assert_eq!(report["slots"][0]["catalogue_verifie"], false);
+                assert_eq!(report["slots"][1]["catalogue_verifie"], case == 2);
+                assert!(volumes.is_empty());
+            }
+            assert_eq!(fs::read(file.path())?, bytes);
+        }
+    }
+    Ok(())
+}
+
+/// Image de mesure extérieure au processus mesuré. Les 16 LV prêts occupent
+/// chacun un grain et contiennent leur propre fichier non vide.
+#[test]
+#[ignore = "crée un nouveau fichier jetable indiqué par NOVAFS_POOL_FIXTURE"]
+fn p2_pool_image_de_mesure() -> Result<()> {
+    use std::{fs::OpenOptions, io::Write};
+    let path = std::env::var_os("NOVAFS_POOL_FIXTURE").ok_or(Error::Invalid(
+        "destination jetable NOVAFS_POOL_FIXTURE requise",
+    ))?;
+    let disk = SimDevice::new(17 * GRAIN, 4096)?;
+    let ctl = disk.control();
+    let mut pool = Pool::format(disk)?;
+    for i in 1..=16 {
+        let ids = Ids {
+            lv: [i; 16],
+            fs: [i + 16; 16],
+        };
+        pool.create_for([i + 32; 16], ids.lv, Some(ids.fs), 1)?;
+        let view = pool.view(ids.lv, Type::Preparing, ids.fs)?;
+        let mut fs = Engine::format(view, ids)?;
+        fs.create("/contenu")?;
+        fs.write("/contenu", 0, &[i; 4096])?;
+        fs.unmount()?;
+        pool.mark_ready(ids.lv, ids.fs)?;
+    }
+    let source = ctl.snapshot().device();
+    let mut file = OpenOptions::new().write(true).create_new(true).open(path)?;
+    for b in 0..source.blocks() {
+        file.write_all(&source.read(b)?)?;
+    }
+    Ok(())
+}

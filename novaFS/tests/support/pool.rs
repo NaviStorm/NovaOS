@@ -1,114 +1,17 @@
-//! Fixture de validation de P01/P02. Le moteur de fichiers ne connaît que sa vue LV.
-//! Catalogue mono-PD simulé, avec A/B physiques et trois bandes CoW distinctes.
+//! Gestion et écritures réservées au banc P01/P02. Le décodeur RO est celui du vérificateur.
 use novafs::{Block, Device, Error, Result};
-use sha2::{Digest, Sha256};
-use std::collections::{BTreeMap, BTreeSet};
-
-pub type Uid = [u8; 16];
-pub const POOL: Uid = [0x51; 16];
-pub const PD: Uid = [0xd3; 16];
-pub const GRAIN: u64 = 256;
-const BAND_BLOCKS: usize = 16;
-const BAND_BYTES: usize = BAND_BLOCKS * 4096;
-type Hash = [u8; 32];
-// Domaine du formateur et quota d’allocation épaisse choisis par le banc.
+#[path = "../../src/pool/catalog.rs"]
+mod catalog;
+use catalog::{
+    BAND_BYTES, Catalog, DOMAIN_QUOTA, Entry, Hash, PD, POOL, Segment, band_start, digest, load,
+    validate_pair,
+};
+pub use catalog::{GRAIN, Type, Uid};
 const ADMIN: Uid = [0x72; 16];
-const DOMAIN_QUOTA: u64 = 4;
-
-fn digest(domain: &[u8], bytes: &[u8]) -> Hash {
-    let mut sha = Sha256::new();
-    sha.update(domain);
-    sha.update(bytes);
-    sha.finalize().into()
-}
-fn le(bytes: &[u8]) -> u64 {
-    u64::from_le_bytes(bytes.try_into().expect("champ de huit octets"))
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum Type {
-    Raw = 1,
-    Preparing = 2,
-    Ready = 3,
-}
-
-#[derive(Clone, Debug)]
-pub struct Segment {
-    pub logical: u64,
-    pub physical: u64,
-    pub count: u64,
-}
-#[derive(Clone, Debug)]
-pub struct Entry {
-    pub id: Uid,
-    pub owner: Uid,
-    pub fs: Uid,
-    pub kind: Type,
-    pub grains: u64,
-    pub segments: Vec<Segment>,
-}
-
-#[derive(Clone, Debug)]
-pub struct Catalog {
-    pub generation: u64,
-    pub band: u8,
-    pub previous: Hash,
-    pub entries: Vec<Entry>,
-}
 
 impl Catalog {
-    pub fn validate(&self, disk_blocks: u64) -> Result<()> {
-        if self.generation == 0 || self.band >= 3 || self.entries.len() > 16 {
-            return Err(Error::Corrupt("catalogue hors profil"));
-        }
-        let mut ids = BTreeSet::new();
-        let mut fs_ids = BTreeSet::new();
-        let mut physical = Vec::new();
-        let mut charged: BTreeMap<Uid, u64> = BTreeMap::new();
-        for e in &self.entries {
-            let total = charged.entry(e.owner).or_default();
-            *total = total
-                .checked_add(e.grains)
-                .ok_or(Error::Corrupt("quota débordant"))?;
-            if e.owner == [0; 16] || *total > DOMAIN_QUOTA {
-                return Err(Error::Corrupt("quota de domaine"));
-            }
-            if e.id == [0; 16]
-                || !ids.insert(e.id)
-                || (e.fs != [0; 16] && !fs_ids.insert(e.fs))
-                || (e.kind == Type::Raw) != (e.fs == [0; 16])
-                || e.grains == 0
-            {
-                return Err(Error::Corrupt("identité ou type LV"));
-            }
-            let mut next = 0;
-            for seg in &e.segments {
-                let end = seg
-                    .physical
-                    .checked_add(seg.count)
-                    .ok_or(Error::Corrupt("fin PD"))?;
-                if seg.count == 0
-                    || seg.physical == 0
-                    || seg.logical != next
-                    || end > disk_blocks / GRAIN
-                    || physical.len() >= 256
-                {
-                    return Err(Error::Corrupt("segment LV invalide"));
-                }
-                next = next
-                    .checked_add(seg.count)
-                    .ok_or(Error::Corrupt("fin LV"))?;
-                physical.push((seg.physical, end));
-            }
-            if next != e.grains {
-                return Err(Error::Corrupt("taille LV"));
-            }
-        }
-        physical.sort_unstable();
-        if physical.windows(2).any(|w| w[0].1 > w[1].0) {
-            return Err(Error::Corrupt("chevauchement de LV"));
-        }
-        Ok(())
+    fn reachable(&self) -> impl Iterator<Item = &Segment> {
+        self.entries.iter().flat_map(|e| &e.segments)
     }
     fn bytes(&self) -> Vec<u8> {
         let mut b = Vec::with_capacity(BAND_BYTES);
@@ -136,75 +39,6 @@ impl Catalog {
         b.resize(BAND_BYTES, 0);
         b
     }
-    fn decode(b: &[u8], band: u8, generation: u64, blocks: u64) -> Result<Self> {
-        if b.len() != BAND_BYTES
-            || &b[..8] != b"NP0POOLC"
-            || b[8..24] != POOL
-            || b[24..40] != PD
-            || le(&b[40..48]) != generation
-            || b[80] != band
-            || b[81] != 1
-            || b[82] > 16
-        {
-            return Err(Error::Corrupt("identité, membres ou version du pool"));
-        }
-        let mut pos = 83;
-        let mut entries = Vec::new();
-        let mut count = 0;
-        for _ in 0..b[82] {
-            let raw = b.get(pos..pos + 59).ok_or(Error::Corrupt("LV tronqué"))?;
-            pos += 59;
-            let n = u16::from_le_bytes(raw[57..59].try_into().unwrap()) as usize;
-            count += n;
-            if count > 256 {
-                return Err(Error::Corrupt("trop de segments"));
-            }
-            let kind = match raw[48] {
-                1 => Type::Raw,
-                2 => Type::Preparing,
-                3 => Type::Ready,
-                _ => return Err(Error::Corrupt("type LV")),
-            };
-            let mut segments = Vec::with_capacity(n);
-            for _ in 0..n {
-                let s = b
-                    .get(pos..pos + 24)
-                    .ok_or(Error::Corrupt("segment tronqué"))?;
-                pos += 24;
-                segments.push(Segment {
-                    logical: le(&s[..8]),
-                    physical: le(&s[8..16]),
-                    count: le(&s[16..24]),
-                });
-            }
-            entries.push(Entry {
-                id: raw[..16].try_into().unwrap(),
-                owner: raw[16..32].try_into().unwrap(),
-                fs: raw[32..48].try_into().unwrap(),
-                kind,
-                grains: le(&raw[49..57]),
-                segments,
-            });
-        }
-        if b[pos..].iter().any(|&x| x != 0) {
-            return Err(Error::Corrupt("suffixe du catalogue"));
-        }
-        let catalog = Self {
-            generation: generation,
-            band,
-            previous: b[48..80].try_into().unwrap(),
-            entries,
-        };
-        catalog.validate(blocks)?;
-        Ok(catalog)
-    }
-    fn reachable(&self) -> impl Iterator<Item = &Segment> {
-        self.entries.iter().flat_map(|e| &e.segments)
-    }
-}
-
-fn band_start(band: u8) -> u64 {
-    2 + u64::from(band) * BAND_BLOCKS as u64
 }
 fn anchor(slot: u64, c: &Catalog, hash: Hash) -> Block {
     let mut b = [0; 4096];
@@ -226,34 +60,6 @@ fn write_band<D: Device>(dev: &mut D, c: &Catalog) -> Result<Hash> {
     }
     Ok(digest(b"PoolP0.catalog", &b))
 }
-fn load<D: Device>(dev: &D, slot: u64) -> Result<(Catalog, Hash)> {
-    let mut a = dev.read(slot)?;
-    let sum: Hash = a[82..114].try_into().unwrap();
-    a[82..114].fill(0);
-    let g = le(&a[40..48]);
-    if &a[..8] != b"NP0POOLA"
-        || a[8..24] != POOL
-        || a[24..40] != PD
-        || a[49] != slot as u8
-        || a[48] >= 3
-        || g == 0
-        || (g != 1 && g % 2 != slot)
-        || a[114..].iter().any(|&x| x != 0)
-        || digest(b"PoolP0.anchor", &a) != sum
-    {
-        return Err(Error::Corrupt("ancrage du pool"));
-    }
-    let mut bytes = Vec::with_capacity(BAND_BYTES);
-    for i in 0..BAND_BLOCKS {
-        bytes.extend(dev.read(band_start(a[48]) + i as u64)?);
-    }
-    let hash = digest(b"PoolP0.catalog", &bytes);
-    if a[50..82] != hash {
-        return Err(Error::Corrupt("checksum du catalogue"));
-    }
-    Ok((Catalog::decode(&bytes, a[48], g, dev.blocks())?, hash))
-}
-
 pub struct Pool<D: Device> {
     pub disk: D,
     pub head: Catalog,
@@ -294,36 +100,7 @@ impl<D: Device> Pool<D> {
         } else {
             (right, left)
         };
-        if head.generation == 1 {
-            if old_hash != hash || head.previous != [0; 32] {
-                return Err(Error::Corrupt("init du pool divergente"));
-            }
-        } else if older.generation.checked_add(1) != Some(head.generation)
-            || old_hash != head.previous
-            || older.band == head.band
-        {
-            return Err(Error::Corrupt("filiation du pool"));
-        }
-        // Une plage visible des deux générations garde son propriétaire et la
-        // même adresse logique. Traversée bornée par les 256 segments de P0.
-        for a in &older.entries {
-            for b in &head.entries {
-                for x in &a.segments {
-                    for y in &b.segments {
-                        let first = x.physical.max(y.physical);
-                        if first < (x.physical + x.count).min(y.physical + y.count)
-                            && (a.id != b.id
-                                || a.owner != b.owner
-                                || a.fs != b.fs
-                                || x.logical + (first - x.physical)
-                                    != y.logical + (first - y.physical))
-                        {
-                            return Err(Error::Corrupt("réattribution précoce"));
-                        }
-                    }
-                }
-            }
-        }
+        validate_pair(&older, old_hash, &head, hash)?;
         disk.flush()?;
         Ok(Self {
             disk,
@@ -514,30 +291,15 @@ impl<D: Device> Drop for View<'_, D> {
         *self.exported = false;
     }
 }
-impl<D: Device> View<'_, D> {
-    fn physical(&self, i: u64) -> Result<u64> {
-        if i >= self.blocks() {
-            return Err(Error::Invalid("hors LV"));
-        }
-        let grain = i / GRAIN;
-        let s = self
-            .entry
-            .segments
-            .iter()
-            .find(|s| (s.logical..s.logical + s.count).contains(&grain))
-            .ok_or(Error::Corrupt("trou"))?;
-        Ok((s.physical + (grain - s.logical)) * GRAIN + i % GRAIN)
-    }
-}
 impl<D: Device> Device for View<'_, D> {
     fn blocks(&self) -> u64 {
         self.entry.grains * GRAIN
     }
     fn read(&self, i: u64) -> Result<Block> {
-        self.disk.read(self.physical(i)?)
+        self.disk.read(self.entry.physical(i)?)
     }
     fn write(&mut self, i: u64, b: &Block) -> Result<()> {
-        self.disk.write(self.physical(i)?, b)
+        self.disk.write(self.entry.physical(i)?, b)
     }
     fn flush(&mut self) -> Result<()> {
         self.disk.flush()
@@ -578,6 +340,15 @@ fn p01_rejects_forged_catalogues_even_with_valid_digests() -> Result<()> {
         let slot = c.generation % 2;
         d.write(slot, &anchor(slot, &c, hash))?;
         d.flush()?;
+        let bytes = d.control().snapshot().bytes()?;
+        let diagnosis = novafs::pool::check_pool(&d);
+        assert!(matches!(
+            diagnosis.slots[slot as usize],
+            Err(Error::Corrupt(_))
+        ));
+        assert!(diagnosis.slots[(1 - slot) as usize].is_ok());
+        assert!(diagnosis.pair.is_none() && diagnosis.volumes.is_empty());
+        assert_eq!(d.control().snapshot().bytes()?, bytes);
         assert!(Pool::import(d).is_err(), "catalogue forgé {mutate}");
     }
     // Un export oublié simule un détenteur qui ne rend pas son bail. Même si son
@@ -586,6 +357,73 @@ fn p01_rejects_forged_catalogues_even_with_valid_digests() -> Result<()> {
         let v = p.view([1; 16], Type::Raw, [0; 16])?;
         std::mem::forget(v);
         assert!(matches!(p.advance(), Err(Error::Busy)));
+    }
+    Ok(())
+}
+
+#[test]
+fn p2_catalogues_valides_localement_mais_succession_impossible() -> Result<()> {
+    for sector in [512, 4096] {
+        let dev = novafs::device::SimDevice::new(GRAIN * 5, sector)?;
+        let control = dev.control();
+        let mut pool = Pool::format(dev)?;
+        // Des hashes cohérents sur les deux ancres ne transforment pas un
+        // catalogue muni d'un prédécesseur en genèse du format P0.
+        let mut genesis = pool.head.clone();
+        genesis.previous = [1; 32];
+        let mut forged = control.snapshot().device();
+        let digest = write_band(&mut forged, &genesis)?;
+        for slot in 0..2 {
+            forged.write(slot, &anchor(slot, &genesis, digest))?;
+        }
+        forged.flush()?;
+        let c = forged.control();
+        let bytes = c.snapshot().bytes()?;
+        c.trace(None, None);
+        let invalid = novafs::pool::check_pool(&forged);
+        assert!(
+            invalid
+                .slots
+                .iter()
+                .all(|s| matches!(s, Err(Error::Corrupt("genèse du catalogue de pool"))))
+        );
+        assert!(invalid.pair.is_none() && invalid.volumes.is_empty());
+        assert!(c.events().is_empty());
+        assert_eq!(c.snapshot().bytes()?, bytes);
+        pool.create([1; 16], None, 1)?;
+        pool.create([2; 16], Some([3; 16]), 1)?;
+        pool.advance()?;
+        let base = control.snapshot();
+        // Chaque mutation est encodée et signée de nouveau. Les deux bandes
+        // passent le contrôle local ; aucune nouvelle attribution n'a été autorisée.
+        for case in 0..5 {
+            let mut candidate = pool.head.clone();
+            match case {
+                0 => candidate.entries[0].segments[0].physical = 3,
+                1 => candidate.entries[0].owner = [9; 16],
+                2 => candidate.entries[0].id = [4; 16],
+                3 => {
+                    candidate.entries[1].id = [4; 16];
+                    candidate.entries[1].kind = Type::Ready;
+                }
+                4 => candidate.previous = [0; 32],
+                _ => unreachable!(),
+            }
+            let mut d = base.device();
+            let c = d.control();
+            let hash = write_band(&mut d, &candidate)?;
+            let slot = candidate.generation % 2;
+            d.write(slot, &anchor(slot, &candidate, hash))?;
+            d.flush()?;
+            let bytes = c.snapshot().bytes()?;
+            c.trace(None, None);
+            let report = novafs::pool::check_pool(&d);
+            assert!(report.slots.iter().all(Result::is_ok));
+            assert!(matches!(report.pair, Some(Err(Error::Corrupt(_)))));
+            assert!(report.volumes.is_empty());
+            assert!(c.events().is_empty());
+            assert_eq!(c.snapshot().bytes()?, bytes);
+        }
     }
     Ok(())
 }

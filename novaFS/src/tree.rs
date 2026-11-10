@@ -58,6 +58,15 @@ impl Family {
 
 pub type Record = (Vec<u8>, Vec<u8>);
 
+fn copy_field(bytes: &[u8]) -> Result<Vec<u8>> {
+    let mut field = Vec::new();
+    field
+        .try_reserve_exact(bytes.len())
+        .map_err(|_| Error::NoMemory)?;
+    field.extend_from_slice(bytes);
+    Ok(field)
+}
+
 #[derive(Clone, Debug)]
 pub struct Node {
     pub family: Family,
@@ -156,8 +165,11 @@ impl Node {
         let mut node = Self {
             family,
             level,
-            entries: Vec::with_capacity(count),
+            entries: Vec::new(),
         };
+        node.entries
+            .try_reserve_exact(count)
+            .map_err(|_| Error::NoMemory)?;
         let mut offset = CELLS + 2 * count;
         for i in 0..count {
             let pointer = usize::from(le16(&bytes[CELLS + 2 * i..CELLS + 2 * i + 2]));
@@ -181,7 +193,7 @@ impl Node {
                 return Err(Error::Corrupt("clés non canoniques ou non ordonnées"));
             }
             node.check_value(value, r.birth)?;
-            node.entries.push((key.to_vec(), value.to_vec()));
+            node.entries.push((copy_field(key)?, copy_field(value)?));
             offset += kl + vl;
         }
         if bytes[offset..].iter().any(|&b| b != 0) {

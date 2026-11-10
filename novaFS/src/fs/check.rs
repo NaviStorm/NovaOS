@@ -83,6 +83,9 @@ pub(crate) fn validate<V: View, W: View>(
         }
         let obj = object(v, id)?;
         let run = Run::decode(value, m.blocks, view_gen)?;
+        if run.birth > obj.stat.revision {
+            return Err(Error::Corrupt("extent postérieur à la révision du fichier"));
+        }
         after = run.end(first)?;
         last_id = id;
         if obj.stat.kind != Kind::File || after > obj.stat.size.div_ceil(BLOCK_BYTES) {

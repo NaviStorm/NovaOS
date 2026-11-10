@@ -71,17 +71,17 @@ def exchange(writers, readers):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--p0", type=Path, help="lanceur lab/run d’une extraction du commit P0")
+    parser.add_argument("--reference", "--p0", type=Path, help="lanceur lab/run d’une version de référence")
     args = parser.parse_args()
     if platform.system() != "Darwin":
         raise RuntimeError("macOS requis")
     current = {target: executable(target, HERE / "run") for target in TARGETS}
     exchange(current, current)
-    if args.p0:
-        previous = {target: executable(target, args.p0.resolve()) for target in TARGETS}
-        print("P0 vers P1")
+    if args.reference:
+        previous = {target: executable(target, args.reference.resolve()) for target in TARGETS}
+        print("Version de référence vers version courante")
         exchange(previous, current)
-        print("P1 vers P0")
+        print("Version courante vers version de référence")
         exchange(current, previous)
 
 

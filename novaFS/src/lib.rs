@@ -1,4 +1,4 @@
-//! Prototype hôte NovaFS P1. Le moteur lit et écrit le format de laboratoire P0.
+//! Prototype hôte NovaFS P2. Le moteur lit et écrit le format de laboratoire P0.
 mod cache;
 pub use cache::CacheStats;
 pub mod codec;
@@ -6,10 +6,15 @@ pub mod codec;
 pub mod device;
 mod engine;
 mod fs;
+pub mod pool;
 mod space;
 pub mod tree;
 
 pub use codec::{Ids, Manifest, Ref};
+pub use engine::integrity::{
+    CheckIssue, IntegrityReport, PairStatus, SlotReport, check_image,
+    check_image_with_bitmap_budget,
+};
 pub use engine::{Engine, Mode, SpaceStats, Tx, View};
 pub use fs::{Kind, Stat};
 

@@ -3,12 +3,14 @@
 use novafs::device::{FileImage, Persistence, SimDevice, SimFault};
 use novafs::{Block, Device, Engine, Error, Ids, Mode, Result};
 use std::{
-    alloc::{GlobalAlloc, Layout, System},
     cell::{Cell, RefCell},
     rc::Rc,
-    sync::atomic::{AtomicUsize, Ordering},
+    sync::atomic::Ordering,
     time::Instant,
 };
+
+mod heap_meter;
+use heap_meter::{LIVE, PEAK, PHASE_PEAK};
 
 const IDS: Ids = Ids {
     fs: [11; 16],
@@ -21,64 +23,6 @@ const CHUNK: usize = 64 * 1024;
 const SMALL: usize = 4096;
 const PAGE: usize = 4096;
 const IMAGE_BLOCKS: u64 = 24 * 1024; // 96 Mio de fichier creux, hors tas Rust.
-
-static LIVE: AtomicUsize = AtomicUsize::new(0);
-static PEAK: AtomicUsize = AtomicUsize::new(0);
-static PHASE_PEAK: AtomicUsize = AtomicUsize::new(0);
-
-struct Measured;
-#[global_allocator]
-static HEAP: Measured = Measured;
-
-#[cfg(target_os = "macos")]
-unsafe extern "C" {
-    fn malloc_size(ptr: *const u8) -> usize;
-}
-
-/// L’allocateur System de Darwin utilise libSystem pour ses blocs, y compris
-/// les allocations alignées. Ce compteur comprend l’arrondi malloc de chacun.
-unsafe fn capacity(ptr: *mut u8, layout: Layout) -> usize {
-    #[cfg(target_os = "macos")]
-    {
-        // Sûreté : ptr est une allocation System vivante appartenant à ce banc.
-        unsafe { malloc_size(ptr) }.max(layout.size())
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = ptr;
-        layout.size()
-    }
-}
-
-fn record_peak(live: usize) {
-    PEAK.fetch_max(live, Ordering::Relaxed);
-    PHASE_PEAK.fetch_max(live, Ordering::Relaxed);
-}
-
-// Sûreté : délégation strictement symétrique à System avec son Layout original.
-// Les compteurs atomiques et malloc_size n’appellent pas l’allocateur Rust.
-unsafe impl GlobalAlloc for Measured {
-    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-        // Sûreté : le demandeur fournit un Layout valide selon GlobalAlloc.
-        let ptr = unsafe { System.alloc(layout) };
-        if !ptr.is_null() {
-            // Sûreté : l’allocation vient de réussir.
-            let bytes = unsafe { capacity(ptr, layout) };
-            record_peak(LIVE.fetch_add(bytes, Ordering::Relaxed) + bytes);
-        }
-        ptr
-    }
-
-    unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
-        // Sûreté : le bloc est encore vivant à l’entrée dans dealloc.
-        let bytes = unsafe { capacity(ptr, layout) };
-        LIVE.fetch_sub(bytes, Ordering::Relaxed);
-        // Sûreté : restitution au fournisseur d’origine avec le Layout d’origine.
-        unsafe { System.dealloc(ptr, layout) }
-    }
-    // L’implémentation par défaut de realloc alloue, copie puis libère.
-    // Le pic de coexistence des deux blocs est donc inclus dans la mesure.
-}
 
 #[derive(Default)]
 struct Counts {
@@ -253,6 +197,92 @@ fn maximum_geometry(sector: u32) -> Result<()> {
     e.create("/petit")?; // Les deux générations doivent exister avant l'inspection.
     measure("verification_8gio_creux", 1, 1, 0, &counts, |_| e.verify())?;
     e.unmount()?;
+    Ok(())
+}
+
+/// Le processus parent fournit le descripteur de son image creuse précréée.
+/// Le formatage ordinaire exige tous les blocs vierges avant toute écriture.
+fn prepare_check_image(sector: u32) -> Result<()> {
+    use std::{fs::File, io, os::fd::AsFd};
+    let file = File::from(io::stdin().as_fd().try_clone_to_owned()?);
+    let disk = FileImage::from_file(file, novafs::MAX_BLOCKS, sector)?;
+    let mut fs = Engine::format(disk, IDS)?;
+    fs.mkdir("/catalogue")?;
+    for i in 0..96 {
+        fs.create(&format!("/catalogue/document-{i:03}"))?;
+    }
+    fs.create("/contenu")?;
+    fs.write("/contenu", 0, &[0xaf; PAGE])?;
+    fs.write("/contenu", 0, &[0x5c; PAGE])?;
+    fs.verify()?;
+    fs.unmount()?;
+    Ok(())
+}
+
+fn check_restitution(sector: u32) -> Result<()> {
+    use novafs::{CheckIssue, PairStatus, check_image, check_image_with_bitmap_budget};
+    let mut fs = Engine::format(SimDevice::new(512, sector)?, IDS)?;
+    fs.create("/t")?;
+    fs.write("/t", 0, &[0x32; PAGE])?;
+    let slot = fs.generation() as usize % 2;
+    let healthy = fs.unmount()?;
+    let corrupt = healthy.control().snapshot().device();
+    let mut anchor = corrupt.read(slot as u64)?;
+    anchor[64] ^= 1;
+    corrupt.control().replace_stable(slot as u64, anchor)?;
+
+    let check = |case| {
+        let report = match case {
+            0 => check_image(&healthy, IDS),
+            1 => check_image(&corrupt, IDS),
+            _ => check_image_with_bitmap_budget(&healthy, IDS, 0),
+        };
+        match case {
+            0 => assert!(matches!(report.pair, PairStatus::Verified { slot: n } if n == slot)),
+            1 => {
+                assert!(matches!(report.pair, PairStatus::Unavailable));
+                assert!(report.slots[1 - slot].issue.is_none());
+                assert!(matches!(
+                    report.slots[slot].issue,
+                    Some(CheckIssue {
+                        error: Error::Corrupt(_),
+                        ..
+                    })
+                ));
+            }
+            _ => {
+                assert!(matches!(report.pair, PairStatus::Unavailable));
+                assert!(report.slots.iter().all(|s| matches!(
+                    s.issue,
+                    Some(CheckIssue {
+                        error: Error::NoMemory,
+                        ..
+                    })
+                )));
+            }
+        }
+    };
+    for (case, name) in ["sain", "corrompu", "penurie_bitmaps"]
+        .into_iter()
+        .enumerate()
+    {
+        check(case);
+        let baseline = LIVE.load(Ordering::Relaxed);
+        PHASE_PEAK.store(baseline, Ordering::Relaxed);
+        for _ in 0..64 {
+            check(case);
+            assert_eq!(
+                LIVE.load(Ordering::Relaxed),
+                baseline,
+                "allocation retenue : {name}"
+            );
+        }
+        let peak = PHASE_PEAK.load(Ordering::Relaxed);
+        let after = LIVE.load(Ordering::Relaxed);
+        println!(
+            "controle={name} cycles=64 vivant_avant={baseline} vivant_apres={after} pic_phase={peak}"
+        );
+    }
     Ok(())
 }
 
@@ -533,7 +563,7 @@ fn main() -> Result<()> {
         None | Some("4096") => 4096,
         _ => {
             return Err(Error::Invalid(
-                "novafs-bench [512|4096] [complet|pression|memoire|reprise]",
+                "novafs-bench [512|4096] [complet|pression|memoire|reprise|prepare-controle|restitution-controle]",
             ));
         }
     };
@@ -553,6 +583,8 @@ fn main() -> Result<()> {
             "pression" => pressure(sector),
             "memoire" => maximum_geometry(sector),
             "reprise" => recovery_memory(sector),
+            "prepare-controle" => prepare_check_image(sector),
+            "restitution-controle" => check_restitution(sector),
             _ => Err(Error::Invalid("scénario inconnu")),
         })?
         .join()

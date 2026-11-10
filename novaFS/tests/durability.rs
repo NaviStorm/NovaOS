@@ -301,15 +301,17 @@ fn p1_read_errors_and_uninitialised_blocks() -> Result<()> {
         for block in [data, metadata, t.new.generation % 2] {
             let dev = t.committed.device();
             let ctl = dev.control();
+            let mounted = Engine::mount(dev, IDS, Mode::ReadOnly)?;
             ctl.replace_stable(block, [0; N])?;
             if block == data {
-                let fs = Engine::mount(dev, IDS, Mode::ReadOnly)?;
-                assert!(matches!(fs.read("/marqueur", 0, N), Err(Error::Corrupt(_))));
-                let audit = Engine::mount(ctl.snapshot().device(), IDS, Mode::ReadOnly)?;
-                assert!(matches!(audit.verify(), Err(Error::Corrupt(_))));
-            } else {
                 assert!(matches!(
-                    Engine::mount(dev, IDS, Mode::ReadWrite),
+                    mounted.read("/marqueur", 0, N),
+                    Err(Error::Corrupt(_))
+                ));
+            }
+            for mode in [Mode::ReadOnly, Mode::ReadWrite] {
+                assert!(matches!(
+                    Engine::mount(ctl.snapshot().device(), IDS, mode),
                     Err(Error::Corrupt(_))
                 ));
             }

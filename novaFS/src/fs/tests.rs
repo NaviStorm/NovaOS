@@ -205,3 +205,38 @@ fn n04_checksum_fault_freezes_writer_and_hides_partial_read() {
     ));
     assert!(matches!(engine.unmount(), Err(Error::Unavailable)));
 }
+
+#[test]
+fn p2_extent_ne_apres_la_revision_du_fichier() -> Result<()> {
+    let mut engine = laboratory();
+    engine.create("/x")?;
+    engine.write("/x", 0, &[5; 4096])?;
+    let id = engine.stat("/x")?.id;
+    engine.transact(false, |tx| {
+        let (_, old) = data::covering(tx, id, 0)?.unwrap();
+        tx.retire_block(old.first)?;
+        let replacement = tx.alloc_data(&[6; 4096])?;
+        // Toutes les sommes et l'allocation sont justes. Seule la révision
+        // de l'objet n'a pas été mise à jour avec l'extent de remplacement.
+        let stale = Run {
+            first: replacement.block,
+            birth: replacement.birth,
+            hashes: vec![replacement.hash],
+        };
+        tx.put(Family::Extents, extent_key(id, 0).into(), stale.encode())
+    })?;
+    let newest = engine.generation() as usize % 2;
+    let image = engine.into_device();
+    let report = crate::check_image(&image, IDS);
+    assert!(report.slots[1 - newest].issue.is_none());
+    assert!(matches!(
+        report.slots[newest].issue.as_ref().map(|i| &i.error),
+        Some(Error::Corrupt("extent postérieur à la révision du fichier"))
+    ));
+    assert!(matches!(report.pair, crate::PairStatus::Unavailable));
+    assert!(matches!(
+        Engine::mount(image, IDS, Mode::ReadOnly),
+        Err(Error::Corrupt(_))
+    ));
+    Ok(())
+}

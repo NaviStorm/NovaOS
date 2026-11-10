@@ -1,0 +1,88 @@
+{
+  "version": "0.9.2",
+  "base_git": "38c8699",
+  "macos": "27.2",
+  "rust": "1.99.1",
+  "architectures": {
+    "aarch64": {
+      "execution": "native",
+      "tests_courts_reussis": 63,
+      "scenarios_P0": [
+        "F01",
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06",
+        "P01",
+        "P02",
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06"
+      ],
+      "differentiel": {
+        "graines": 100,
+        "opérations": 1000000,
+        "commits_observés": 345183,
+        "pénuries_injectées": 54643,
+        "remontages_et_audits": 1000,
+        "secondes": 25.046
+      },
+      "P1_coupures_fichier": 24,
+      "P1_coupures_VM_x86_64": 10,
+      "P1_restitutions_apres_reprise": 128,
+      "pic_tas_plus_piles_banc_moteur_complet": 3809952
+    },
+    "x86_64": {
+      "execution": "Rosetta",
+      "tests_courts_reussis": 63,
+      "scenarios_P0": [
+        "F01",
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06",
+        "P01",
+        "P02",
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06"
+      ],
+      "differentiel": {
+        "graines": 100,
+        "opérations": 1000000,
+        "commits_observés": 345183,
+        "pénuries_injectées": 54643,
+        "remontages_et_audits": 1000,
+        "secondes": 40.619
+      },
+      "P1_coupures_fichier": 24,
+      "P1_coupures_VM_x86_64": 10,
+      "P1_restitutions_apres_reprise": 128,
+      "pic_tas_plus_piles_banc_moteur_complet": 3809616
+    }
+  },
+  "echanges_F01": {
+    "d0ba7cb": {
+      "P2_vers_P2": 8,
+      "reference_vers_P2": 8,
+      "P2_vers_reference": 8,
+      "sha256_image": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+    },
+    "38c8699": {
+      "P2_vers_P2": 8,
+      "reference_vers_P2": 8,
+      "P2_vers_reference": 8,
+      "sha256_image": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+    }
+  }
+}

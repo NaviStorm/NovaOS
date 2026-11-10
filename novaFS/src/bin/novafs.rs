@@ -6,15 +6,22 @@ use std::os::{
     fd::AsFd,
     unix::fs::{FileTypeExt, MetadataExt},
 };
+#[path = "novafs/check.rs"]
+mod check;
+#[cfg(feature = "check-metrics")]
+#[path = "../../lab/heap_meter.rs"]
+mod heap_meter;
 
 const HELP: &str = concat!(
-    "NovaFS P1 v",
+    "NovaFS P2 v",
     env!("CARGO_PKG_VERSION"),
     " — format P0, images jetables, uniquement sur flux
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
 novafs script BLOCS SECTEUR                        lit les commandes puis émet l’image sur stdout
 novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l’image sur stdin
 novafs verify BLOCS SECTEUR FS_ID LV_ID            vérifie intégralement les deux générations
+novafs check BLOCS SECTEUR FS_ID LV_ID             contrôle RO d’un LV, rapport JSON
+novafs check-pool BLOCS SECTEUR                    contrôle RO d’un catalogue P0 et de ses LV prêts
 novafs salvage BLOCS SECTEUR FS_ID LV_ID SLOT NOM extrait un fichier sur stdout en lecture seule
 SECTEUR = 512 ou 4096. Identités = 32 chiffres hexadécimaux chacune.
 Commandes de script (une par ligne, chemins NovaFS sans espaces) :
@@ -161,8 +168,7 @@ fn commands(fs: &mut Engine<&mut FileImage>, mut input: impl BufRead) -> Result<
     }
     Ok(())
 }
-fn run() -> Result<()> {
-    let args: Vec<String> = std::env::args().skip(1).collect();
+fn run(args: &[String]) -> Result<()> {
     if args.is_empty() || args == ["--help"] {
         println!("{HELP}");
         return Ok(());
@@ -265,12 +271,50 @@ fn text_stream(fd: &(impl AsFd + IsTerminal)) -> Result<()> {
         Err(Error::Invalid("sortie texte non autorisée"))
     }
 }
-fn main() {
-    if text_stream(&io::stderr()).is_err() {
-        std::process::exit(2)
+fn main() -> std::process::ExitCode {
+    use std::process::ExitCode;
+    let args: Vec<String> = std::env::args().skip(1).collect();
+    if text_stream(&io::stderr()).is_err() || text_stream(&io::stdout()).is_err() {
+        return ExitCode::from(2);
     }
-    if let Err(e) = text_stream(&io::stdout()).and_then(|_| run()) {
+    let command = args.first().map(String::as_str);
+    if matches!(
+        command,
+        Some("check" | "check-pool" | "verify" | "inspect" | "salvage")
+    ) && !check::separate_outputs().unwrap_or(false)
+    {
+        return ExitCode::from(2);
+    }
+    if matches!(command, Some("check" | "check-pool")) {
+        if args.get(1).map(String::as_str) == Some("--help") && args.len() == 2 {
+            println!("{}", check::help(&args[0]));
+            return ExitCode::SUCCESS;
+        }
+        let status = check::run(&args);
+        #[cfg(all(feature = "check-metrics", target_os = "macos"))]
+        report_check_memory();
+        return ExitCode::from(status);
+    }
+    if let Err(e) = run(&args) {
         eprintln!("NovaFS : {e}");
-        std::process::exit(1);
+        return ExitCode::FAILURE;
     }
+    ExitCode::SUCCESS
+}
+
+#[cfg(all(feature = "check-metrics", target_os = "macos"))]
+fn report_check_memory() {
+    use std::{ffi::c_void, sync::atomic::Ordering};
+    unsafe extern "C" {
+        fn pthread_self() -> *mut c_void;
+        fn pthread_get_stacksize_np(thread: *mut c_void) -> usize;
+    }
+    // Sûreté : interroger le pthread Darwin courant tant qu’il est vivant.
+    // La valeur retournée désigne la réservation, sans déréférencement de pile.
+    let stack = unsafe { pthread_get_stacksize_np(pthread_self()) };
+    let peak = heap_meter::PEAK.load(Ordering::Relaxed);
+    eprintln!(
+        "mesure pic_tas_octets={peak} pile_reservee_octets={stack} total_octets={}",
+        peak + stack
+    );
 }
