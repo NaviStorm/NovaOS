@@ -1,0 +1,368 @@
+{
+  "macos": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "cpu": "Apple M4 Max",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "revision_p51": "3ca74ee9a4465867306a19ac7c74942db5c9f6f7",
+  "p51": "96727501b8962d3c2d4ca53cb8129d8173ef72a9996ba489d247e66b851bd3f5",
+  "p6": "6805b55e9cbd30cd28cfbd08c3757e98b33333e9c1fb7780113be424ec9d3694",
+  "sources_banc": {
+    "p6_mesures.rs": "061df90d4dd3c0fca8075eccafa862ed6bf44afde74e2e6ded4a0790a5c9aa2e",
+    "p6_donnees.rs": "1705d5d1b23a2bffff9e1c8ecd819643527a6f9abff1c1ccfbceeea41198edb7",
+    "heap_meter.rs": "c98bd54365ae7ea0422637bce8018a4b69c8b1acf4cf13ea712283fd836ec946",
+    "thread_clock.rs": "ad6fe6731142eb38e803b67dd1dd76a11e31561f964dc064e7c1f038622e3407",
+    "latency_probes.rs": "f2e9587877ec2ae0e56be126251972c736c2f17a3f0bd37911017ea6e2abfc20"
+  },
+  "binaires": {
+    "aarch64/P5.1": "5a45fe44d0f98fba3466829cc541006102341d37c83d489d4ffee06f5ad3ffcb",
+    "aarch64/P6": "9e8e32c12c2c82c6a694d4688b46df28b1ba791cc4c4084de2f2494620757572",
+    "aarch64/P6-sondes": "89fc238d3a93ccaa9859c79558203159ff968000ae44ea0ace834bb6eed22111",
+    "x86_64/P5.1": "242f580917253e7568a18940d3033e508759c8ba4db7f5a11e76cb22436b732d",
+    "x86_64/P6": "4b855c26ab49739b3b41942d1ff036d00e2406b948bb0c986f9335563565eb50",
+    "x86_64/P6-sondes": "997fe9ec8f36ee735c28808339b5000397f85dc2be1b05b823e8da6dd758914b"
+  },
+  "horloges": {
+    "aarch64": {
+      "architecture": "aarch64",
+      "charge": {
+        "clock_gettime_nsec_np_brut": 120039542,
+        "getrusage_processus_ns": 120056000,
+        "horloge_thread_retenue_ns": 120039166,
+        "mur_ns": 120056083
+      },
+      "horloge_retenue": "clock_gettime_nsec_np",
+      "pause": {
+        "clock_gettime_nsec_np_brut": 23917,
+        "getrusage_processus_ns": 25000,
+        "horloge_thread_retenue_ns": 23541,
+        "mur_ns": 130031833
+      }
+    },
+    "x86_64": {
+      "architecture": "x86_64",
+      "charge": {
+        "clock_gettime_nsec_np_brut": 2881135,
+        "getrusage_processus_ns": 120050000,
+        "horloge_thread_retenue_ns": 120041000,
+        "mur_ns": 120053208
+      },
+      "horloge_retenue": "Mach THREAD_BASIC_INFO",
+      "pause": {
+        "clock_gettime_nsec_np_brut": 1487,
+        "getrusage_processus_ns": 63000,
+        "horloge_thread_retenue_ns": 48000,
+        "mur_ns": 127171667
+      }
+    }
+  },
+  "executions": [
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "phase": "P5.1",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:43.174794+00:00",
+      "fin_utc": "2026-11-10T23:42:45.275118+00:00",
+      "tas_pic": 1757520,
+      "pile_travail": 2109440,
+      "rss_pic": 5373952
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "phase": "P6-none",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:45.275147+00:00",
+      "fin_utc": "2026-11-10T23:42:47.049188+00:00",
+      "tas_pic": 1757520,
+      "pile_travail": 2109440,
+      "rss_pic": 5455872
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "phase": "P6-lz4",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:47.049217+00:00",
+      "fin_utc": "2026-11-10T23:42:48.877226+00:00",
+      "tas_pic": 1757520,
+      "pile_travail": 2109440,
+      "rss_pic": 5455872
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "phase": "P6-none",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:48.877251+00:00",
+      "fin_utc": "2026-11-10T23:42:50.668627+00:00",
+      "tas_pic": 1757520,
+      "pile_travail": 2109440,
+      "rss_pic": 6029312
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "phase": "P6-lz4",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:50.668652+00:00",
+      "fin_utc": "2026-11-10T23:42:52.789093+00:00",
+      "tas_pic": 1757520,
+      "pile_travail": 2109440,
+      "rss_pic": 5472256
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "phase": "P5.1",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:52.789119+00:00",
+      "fin_utc": "2026-11-10T23:42:54.602768+00:00",
+      "tas_pic": 1757520,
+      "pile_travail": 2109440,
+      "rss_pic": 5341184
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "phase": "P6-none",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:54.602792+00:00",
+      "fin_utc": "2026-11-10T23:42:56.846037+00:00",
+      "tas_pic": 1757232,
+      "pile_travail": 2097152,
+      "rss_pic": 9998336
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "phase": "P6-lz4",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:56.846061+00:00",
+      "fin_utc": "2026-11-10T23:42:59.170815+00:00",
+      "tas_pic": 1757232,
+      "pile_travail": 2097152,
+      "rss_pic": 9203712
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "phase": "P5.1",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:42:59.170838+00:00",
+      "fin_utc": "2026-11-10T23:43:01.710886+00:00",
+      "tas_pic": 1757168,
+      "pile_travail": 2097152,
+      "rss_pic": 9756672
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "phase": "P6-lz4",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:43:01.710910+00:00",
+      "fin_utc": "2026-11-10T23:43:04.020822+00:00",
+      "tas_pic": 1757232,
+      "pile_travail": 2097152,
+      "rss_pic": 10907648
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "phase": "P5.1",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:43:04.020845+00:00",
+      "fin_utc": "2026-11-10T23:43:06.213897+00:00",
+      "tas_pic": 1757168,
+      "pile_travail": 2097152,
+      "rss_pic": 10870784
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "phase": "P6-none",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:43:06.213921+00:00",
+      "fin_utc": "2026-11-10T23:43:08.439986+00:00",
+      "tas_pic": 1757232,
+      "pile_travail": 2097152,
+      "rss_pic": 9490432
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "phase": "P6-none",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:08.440016+00:00",
+      "fin_utc": "2026-11-10T23:43:10.656731+00:00",
+      "tas_pic": 1757168,
+      "pile_travail": 2097152,
+      "rss_pic": 10313728
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "phase": "P5.1",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:10.656754+00:00",
+      "fin_utc": "2026-11-10T23:43:12.880237+00:00",
+      "tas_pic": 1757104,
+      "pile_travail": 2097152,
+      "rss_pic": 10784768
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "phase": "P6-lz4",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:12.880260+00:00",
+      "fin_utc": "2026-11-10T23:43:15.155410+00:00",
+      "tas_pic": 1757168,
+      "pile_travail": 2097152,
+      "rss_pic": 10174464
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "phase": "P5.1",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:15.155435+00:00",
+      "fin_utc": "2026-11-10T23:43:17.329820+00:00",
+      "tas_pic": 1757104,
+      "pile_travail": 2097152,
+      "rss_pic": 9650176
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "phase": "P6-lz4",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:17.329845+00:00",
+      "fin_utc": "2026-11-10T23:43:19.649100+00:00",
+      "tas_pic": 1757168,
+      "pile_travail": 2097152,
+      "rss_pic": 8744960
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "phase": "P6-none",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:19.649123+00:00",
+      "fin_utc": "2026-11-10T23:43:21.873898+00:00",
+      "tas_pic": 1757168,
+      "pile_travail": 2097152,
+      "rss_pic": 10076160
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "phase": "P5.1",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:21.873923+00:00",
+      "fin_utc": "2026-11-10T23:43:23.579291+00:00",
+      "tas_pic": 1757328,
+      "pile_travail": 2109440,
+      "rss_pic": 5357568
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "phase": "P6-lz4",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:23.579317+00:00",
+      "fin_utc": "2026-11-10T23:43:25.401973+00:00",
+      "tas_pic": 1757328,
+      "pile_travail": 2109440,
+      "rss_pic": 5488640
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "phase": "P6-none",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:25.401996+00:00",
+      "fin_utc": "2026-11-10T23:43:27.334185+00:00",
+      "tas_pic": 1757328,
+      "pile_travail": 2109440,
+      "rss_pic": 6012928
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "phase": "P6-lz4",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:27.334208+00:00",
+      "fin_utc": "2026-11-10T23:43:29.383515+00:00",
+      "tas_pic": 1757328,
+      "pile_travail": 2109440,
+      "rss_pic": 5472256
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "phase": "P6-none",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:29.383537+00:00",
+      "fin_utc": "2026-11-10T23:43:31.195437+00:00",
+      "tas_pic": 1757328,
+      "pile_travail": 2109440,
+      "rss_pic": 5455872
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "phase": "P5.1",
+      "repetition": 2,
+      "debut_utc": "2026-11-10T23:43:31.195461+00:00",
+      "fin_utc": "2026-11-10T23:43:33.012999+00:00",
+      "tas_pic": 1757328,
+      "pile_travail": 2109440,
+      "rss_pic": 5292032
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "phase": "P6-lz4-sondes",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:43:33.013024+00:00",
+      "fin_utc": "2026-11-10T23:43:35.178597+00:00",
+      "tas_pic": 1757536,
+      "pile_travail": 2109440,
+      "rss_pic": 5783552
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "phase": "P6-lz4-sondes",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:43:35.178622+00:00",
+      "fin_utc": "2026-11-10T23:43:37.012404+00:00",
+      "tas_pic": 1757536,
+      "pile_travail": 2109440,
+      "rss_pic": 5734400
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "phase": "P6-lz4-sondes",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:43:37.012428+00:00",
+      "fin_utc": "2026-11-10T23:43:39.741049+00:00",
+      "tas_pic": 1757248,
+      "pile_travail": 2097152,
+      "rss_pic": 11534336
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "phase": "P6-lz4-sondes",
+      "repetition": 1,
+      "debut_utc": "2026-11-10T23:43:39.741074+00:00",
+      "fin_utc": "2026-11-10T23:43:42.125412+00:00",
+      "tas_pic": 1757248,
+      "pile_travail": 2097152,
+      "rss_pic": 11825152
+    }
+  ]
+}

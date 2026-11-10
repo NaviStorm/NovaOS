@@ -7,7 +7,7 @@ use crate::{
     codec::Ref,
     tree::{self, Family},
 };
-pub(crate) use check::{check_shared_data, validate};
+pub(crate) use check::{check_shared_data, data_pages, validate};
 pub(crate) use data::ReadCursor;
 use record::*;
 

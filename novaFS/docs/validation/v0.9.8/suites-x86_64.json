@@ -1,0 +1,171 @@
+{
+  "historique_et_suites": {
+    "architecture": "x86_64",
+    "standard": {
+      "reussis": 137,
+      "echecs": 0,
+      "ignores": 4
+    },
+    "sondes": {
+      "reussis": 138,
+      "echecs": 0,
+      "ignores": 4
+    },
+    "modele": {
+      "reussis": 1,
+      "echecs": 0,
+      "ignores": 0
+    },
+    "options": {
+      "reussis": 2,
+      "echecs": 0,
+      "ignores": 0
+    },
+    "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=40.177",
+    "pannes_p5": {
+      "512": [
+        {
+          "operation": "Snapshot",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        },
+        {
+          "operation": "Clone",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        },
+        {
+          "operation": "Ecrire",
+          "frontieres": 39,
+          "coupures": 117,
+          "erreurs_io": 26,
+          "dechirees": 1
+        },
+        {
+          "operation": "Retirer",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        },
+        {
+          "operation": "Retirer",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        },
+        {
+          "operation": "Collecter",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        }
+      ],
+      "4096": [
+        {
+          "operation": "Snapshot",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        },
+        {
+          "operation": "Clone",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        },
+        {
+          "operation": "Ecrire",
+          "frontieres": 39,
+          "coupures": 117,
+          "erreurs_io": 26,
+          "dechirees": 1
+        },
+        {
+          "operation": "Retirer",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        },
+        {
+          "operation": "Retirer",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        },
+        {
+          "operation": "Collecter",
+          "frontieres": 15,
+          "coupures": 45,
+          "erreurs_io": 10,
+          "dechirees": 1
+        }
+      ]
+    },
+    "controles_p51_standard": [
+      "curseur_du_montage_cow",
+      "rang_des_aretes_creuses_et_racines_divergentes",
+      "donnees_propres_apres_f2_uniquement"
+    ],
+    "controles_p51_sondes": [
+      "curseur_du_montage_cow",
+      "rang_des_aretes_creuses_et_racines_divergentes",
+      "donnees_propres_apres_f2_uniquement"
+    ],
+    "migration": [
+      "MIGRATION secteur=512 frontières=96",
+      "MIGRATION secteur=4096 frontières=96"
+    ],
+    "permutations": [
+      "PERMUTATIONS secteur=512 ordres=24",
+      "PERMUTATIONS secteur=4096 ordres=24"
+    ],
+    "saturation": [
+      "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+      "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+    ],
+    "aleatoire": [
+      "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+      "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+      "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+      "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+    ],
+    "restitution": [
+      "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=167904 après=167904",
+      "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=167904 après=167904",
+      "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=167904 après=167904",
+      "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=167904 après=167904"
+    ]
+  },
+  "p6_cible": {
+    "reussis": 5,
+    "echecs": 0,
+    "ignores": 0
+  },
+  "P6_ALEA": [
+    "P6_ALEA secteur=512 graine=2911a3 actions=24 coupures=12 EIO=12",
+    "P6_ALEA secteur=512 graine=6c28e1 actions=24 coupures=12 EIO=12",
+    "P6_ALEA secteur=4096 graine=2911a3 actions=24 coupures=12 EIO=12",
+    "P6_ALEA secteur=4096 graine=6c28e1 actions=24 coupures=12 EIO=12"
+  ],
+  "P6_PANNE": [
+    "P6_PANNE secteur=512 frontieres=39 coupures=117 EIO_ecriture=20",
+    "P6_PANNE secteur=4096 frontieres=39 coupures=117 EIO_ecriture=20"
+  ],
+  "P6_MEMOIRE": [
+    "P6_MEMOIRE secteur=512 F2_erreur=false cycles=32 avant=5360 apres=5360",
+    "P6_MEMOIRE secteur=512 F2_erreur=true cycles=32 avant=5360 apres=5360",
+    "P6_MEMOIRE secteur=4096 F2_erreur=false cycles=32 avant=5360 apres=5360",
+    "P6_MEMOIRE secteur=4096 F2_erreur=true cycles=32 avant=5360 apres=5360"
+  ]
+}

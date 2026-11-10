@@ -1,6 +1,6 @@
 //! Graphe CoW du pool P5. Le complément de l'union des deux graphes protégés est
 //! libre. Aucun compteur de référence indépendant ne doit être rejoué après panne.
-use crate::{Block, Device, Error, Ids, MAX_BLOCKS, Result};
+use crate::{Block, Compression, Device, Error, Ids, MAX_BLOCKS, Result, compression};
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -35,12 +35,15 @@ pub(crate) enum Kind {
 pub(crate) struct PageRef {
     pub block: u64,
     pub hash: Hash,
+    // Le codec de feuille persiste ce type dans un bitmap séparé des adresses.
+    packed: bool,
 }
 
 impl PageRef {
     pub const EMPTY: Self = Self {
         block: 0,
         hash: [0; 32],
+        packed: false,
     };
 
     fn write(self, dest: &mut [u8]) {
@@ -52,6 +55,7 @@ impl PageRef {
         Self {
             block: number(&src[..8]),
             hash: src[8..40].try_into().unwrap(),
+            packed: false,
         }
     }
 
@@ -69,12 +73,14 @@ pub(crate) struct Entry {
     pub owner: Key,
     pub ids: Ids,
     pub kind: Kind,
+    pub policy: Compression,
     pub blocks: u64,
     pub root: PageRef,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct Catalog {
+    p6: bool,
     pub pool: Key,
     pub generation: u64,
     pub next_id: u64,
@@ -100,6 +106,18 @@ fn signature(kind: &[u8; 8]) -> Block {
     b
 }
 
+/// Un décodeur P5 reconstruit ses en-têtes attendus octet par octet. Chaque
+/// structure P6 porte un autre magic, une révision 2 et le bit obligatoire LZ4.
+fn profile(kind: &[u8; 8], p6: bool) -> Block {
+    let mut b = signature(kind);
+    if p6 {
+        b[2] = b'6';
+        b[8..10].copy_from_slice(&2u16.to_le_bytes());
+        b[10..12].copy_from_slice(&1u16.to_le_bytes());
+    }
+    b
+}
+
 fn agree(result: bool, reason: &'static str) -> Result<()> {
     if result {
         Ok(())
@@ -108,8 +126,8 @@ fn agree(result: bool, reason: &'static str) -> Result<()> {
     }
 }
 
-fn header(pool: Key, blocks: u64, slot: u64) -> Block {
-    let mut b = signature(META);
+fn header(pool: Key, blocks: u64, slot: u64, p6: bool) -> Block {
+    let mut b = profile(META, p6);
     b[16..32].copy_from_slice(&pool);
     b[32..40].copy_from_slice(&blocks.to_le_bytes());
     b[40..48].copy_from_slice(&slot.to_le_bytes());
@@ -122,13 +140,17 @@ pub(crate) fn looks_like_pool(dev: &impl Device) -> Result<bool> {
     if dev.blocks() < FIXED {
         return Ok(false);
     }
-    Ok(dev.read(0)?[..8] == META[..]
-        || dev.read(1)?[..8] == META[..]
-        || dev.read(2)?[..8] == SELECTOR[..])
+    for (slot, magic) in [(0, META), (1, META), (2, SELECTOR)] {
+        let page = dev.read(slot)?;
+        if page[..8] == magic[..] || page[..8] == profile(magic, true)[..8] {
+            return Ok(true);
+        }
+    }
+    Ok(false)
 }
 
-fn marker(pool: Key, slot: u64) -> Block {
-    let mut b = signature(SELECTOR);
+fn marker(pool: Key, slot: u64, p6: bool) -> Block {
+    let mut b = profile(SELECTOR, p6);
     b[16..32].copy_from_slice(&pool);
     for off in COPIES {
         b[off] = CODES[slot as usize];
@@ -138,7 +160,7 @@ fn marker(pool: Key, slot: u64) -> Block {
 
 /// Le mot Gray ne change que d'un bit entre deux publications consécutives.
 /// Une déchirure old/new laisse chaque copie égale à l'un des deux codes.
-fn read_markers(dev: &impl Device, pool: Key) -> Result<Vec<u64>> {
+fn read_markers(dev: &impl Device, pool: Key, p6: bool) -> Result<Vec<u64>> {
     let mut b = dev.read(2)?;
     let mut slots = Vec::with_capacity(2);
     for off in COPIES {
@@ -152,7 +174,7 @@ fn read_markers(dev: &impl Device, pool: Key) -> Result<Vec<u64>> {
         b[off] = 0;
     }
     agree(
-        slots.len() <= 2 && b == marker(pool, 0),
+        slots.len() <= 2 && b == marker(pool, 0, p6),
         "sélecteur P5 incompatible",
     )?;
     Ok(slots)
@@ -184,6 +206,10 @@ fn catalog_check(cat: &Catalog, blocks: u64) -> Result<()> {
             "descripteur de vue P5 hors profil",
         )?;
         e.root.validate(blocks)?;
+        agree(
+            !e.root.packed && (cat.p6 || e.policy == Compression::None),
+            "type de racine ou politique incompatible",
+        )?;
         let guaranteed: u64 = cat
             .entries
             .iter()
@@ -209,7 +235,8 @@ fn catalog_check(cat: &Catalog, blocks: u64) -> Result<()> {
 
 fn check_transition(old: &Catalog, new: &Catalog) -> Result<()> {
     agree(
-        old.pool == new.pool
+        old.p6 == new.p6
+            && old.pool == new.pool
             && old.generation.checked_add(1) == Some(new.generation)
             && new.next_id >= old.next_id,
         "filiation/compteur de vues P5",
@@ -222,7 +249,7 @@ fn check_transition(old: &Catalog, new: &Catalog) -> Result<()> {
                     && p.ids == v.ids
                     && p.kind == v.kind
                     && p.blocks == v.blocks
-                    && (v.kind != Kind::Snapshot || p.root == v.root),
+                    && (v.kind != Kind::Snapshot || (p.root == v.root && p.policy == v.policy)),
                 "mutation d'une identité ou d'un snapshot P5",
             )?;
         } else {
@@ -247,7 +274,7 @@ fn check_transition(old: &Catalog, new: &Catalog) -> Result<()> {
 
 fn catalog_page(cat: &Catalog, parent: Hash, blocks: u64) -> Result<(Block, Hash)> {
     catalog_check(cat, blocks)?;
-    let mut b = signature(CATALOG);
+    let mut b = profile(CATALOG, cat.p6);
     b[16..32].copy_from_slice(&cat.pool);
     b[32..40].copy_from_slice(&cat.generation.to_le_bytes());
     b[40..48].copy_from_slice(&cat.next_id.to_le_bytes());
@@ -259,6 +286,10 @@ fn catalog_page(cat: &Catalog, parent: Hash, blocks: u64) -> Result<(Block, Hash
         dst[24..40].copy_from_slice(&e.ids.fs);
         dst[40..56].copy_from_slice(&e.ids.lv);
         dst[56] = e.kind as u8;
+        dst[57] = match e.policy {
+            Compression::None => 0,
+            Compression::Lz4 => 1,
+        };
         dst[64..72].copy_from_slice(&e.blocks.to_le_bytes());
         e.root.write(&mut dst[72..112]);
     }
@@ -273,12 +304,15 @@ struct Record {
     hash: Hash,
 }
 
-fn read_catalog(dev: &impl Device, pool: Key, slot: u64) -> Result<Record> {
+fn read_catalog(dev: &impl Device, pool: Key, slot: u64, p6: bool) -> Result<Record> {
     let b = dev.read(3 + slot)?;
     let generation = number(&b[32..40]);
     let count = usize::from(b[112]);
     agree(
-        b[..8] == CATALOG[..] && b[16..32] == pool && generation % 4 == slot && count <= MAX_VIEWS,
+        b[..8] == profile(CATALOG, p6)[..8]
+            && b[16..32] == pool
+            && generation % 4 == slot
+            && count <= MAX_VIEWS,
         "position ou profil du catalogue P5",
     )?;
     let mut entries = Vec::with_capacity(count);
@@ -297,11 +331,21 @@ fn read_catalog(dev: &impl Device, pool: Key, slot: u64) -> Result<Record> {
                 lv: src[40..56].try_into().unwrap(),
             },
             kind,
+            policy: match src[57] {
+                0 => Compression::None,
+                1 if p6 => Compression::Lz4,
+                _ => {
+                    return Err(Error::Corrupt(
+                        "politique persistante de compression inconnue",
+                    ));
+                }
+            },
             blocks: number(&src[64..72]),
             root: PageRef::read(&src[72..112]),
         });
     }
     let cat = Catalog {
+        p6,
         pool,
         generation,
         next_id: number(&b[40..48]),
@@ -325,11 +369,11 @@ fn link(old: &Record, new: &Record) -> Result<()> {
     agree(old.hash == new.parent, "empreinte du catalogue parent P5")
 }
 
-fn select(dev: &impl Device, pool: Key) -> Result<(Record, Option<Record>, bool)> {
-    let slots = read_markers(dev, pool)?;
-    let mut head = read_catalog(dev, pool, slots[0])?;
+fn select(dev: &impl Device, pool: Key, p6: bool) -> Result<(Record, Option<Record>, bool)> {
+    let slots = read_markers(dev, pool, p6)?;
+    let mut head = read_catalog(dev, pool, slots[0], p6)?;
     if slots.len() == 2 {
-        let mut other = read_catalog(dev, pool, slots[1])?;
+        let mut other = read_catalog(dev, pool, slots[1], p6)?;
         if other.cat.generation > head.cat.generation {
             std::mem::swap(&mut head, &mut other);
         }
@@ -337,7 +381,7 @@ fn select(dev: &impl Device, pool: Key) -> Result<(Record, Option<Record>, bool)
         return Ok((head, Some(other), true));
     }
     let previous = if head.cat.generation > 1 {
-        let older = read_catalog(dev, pool, (head.cat.generation - 1) % 4)?;
+        let older = read_catalog(dev, pool, (head.cat.generation - 1) % 4, p6)?;
         link(&older, &head)?;
         Some(older)
     } else {
@@ -351,6 +395,7 @@ enum Role {
     Root,
     Leaf(u16),
     Data(u16),
+    Packed(u16),
 }
 
 impl Role {
@@ -359,6 +404,7 @@ impl Role {
             Role::Root => b"NovaFS.P5.root",
             Role::Leaf(_) => b"NovaFS.P5.leaf",
             Role::Data(_) => b"NovaFS.P5.page",
+            Role::Packed(_) => b"NovaFS.P6.lz4",
         }
     }
 }
@@ -374,25 +420,32 @@ fn checked_page(dev: &impl Device, r: PageRef, role: Role) -> Result<Block> {
     Ok(b)
 }
 
-fn pointers(dev: &impl Device, r: PageRef, role: Role) -> Result<Vec<PageRef>> {
+fn pointers(dev: &impl Device, r: PageRef, role: Role, p6: bool) -> Result<Vec<PageRef>> {
     let (magic, index, count) = match role {
         Role::Root => (ROOT, 0, LEAVES),
         Role::Leaf(i) => (LEAF, i, WIDTH),
-        Role::Data(_) => return Err(Error::Invalid("niveau de traduction P5")),
+        _ => return Err(Error::Invalid("niveau de traduction du pool")),
     };
     if r == PageRef::EMPTY {
         return Ok(vec![PageRef::EMPTY; count]);
     }
     let b = checked_page(dev, r, role)?;
-    let mut h = signature(magic);
+    let mut h = profile(magic, p6);
+    let packed = if p6 && matches!(role, Role::Leaf(_)) {
+        h[24..32].copy_from_slice(&b[24..32]);
+        number(&b[24..32])
+    } else {
+        0
+    };
     h[16..18].copy_from_slice(&index.to_le_bytes());
     agree(
         b[..32] == h[..32] && b[32 + 40 * count..].iter().all(|&x| x == 0),
         "en-tête ou suffixe d'une page de traduction P5",
     )?;
     let mut refs = Vec::with_capacity(count);
-    for bytes in b[32..32 + 40 * count].chunks_exact(40) {
-        let p = PageRef::read(bytes);
+    for (i, bytes) in b[32..32 + 40 * count].chunks_exact(40).enumerate() {
+        let mut p = PageRef::read(bytes);
+        p.packed = packed & (1u64 << i) != 0;
         p.validate(dev.blocks())?;
         refs.push(p);
     }
@@ -403,29 +456,38 @@ fn pointers(dev: &impl Device, r: PageRef, role: Role) -> Result<Vec<PageRef>> {
     Ok(refs)
 }
 
+fn read_content(dev: &impl Device, page: PageRef, lba: u16) -> Result<Block> {
+    if page.packed {
+        let bytes = checked_page(dev, page, Role::Packed(lba))?;
+        compression::inspect(&bytes)?.page(lba)
+    } else {
+        checked_page(dev, page, Role::Data(lba))
+    }
+}
+
 /// Les pages FS absentes sont définies comme zéro, sans consulter le dispositif.
-pub(crate) fn read_page(dev: &impl Device, root: PageRef, lba: u64) -> Result<Block> {
+pub(crate) fn read_page(dev: &impl Device, root: PageRef, lba: u64, p6: bool) -> Result<Block> {
     if lba >= (LEAVES * WIDTH) as u64 {
         return Err(Error::Invalid("page hors vue P5"));
     }
     let i = lba as usize / WIDTH;
-    let leaf = pointers(dev, root, Role::Root)?[i];
+    let leaf = pointers(dev, root, Role::Root, p6)?[i];
     if leaf == PageRef::EMPTY {
         return Ok([0; 4096]);
     }
-    let data = pointers(dev, leaf, Role::Leaf(i as u16))?[lba as usize % WIDTH];
+    let data = pointers(dev, leaf, Role::Leaf(i as u16), p6)?[lba as usize % WIDTH];
     if data == PageRef::EMPTY {
         Ok([0; 4096])
     } else {
-        checked_page(dev, data, Role::Data(lba as u16))
+        read_content(dev, data, lba as u16)
     }
 }
 
-pub(crate) fn mapped_lbas(dev: &impl Device, root: PageRef) -> Result<Vec<u64>> {
+pub(crate) fn mapped_lbas(dev: &impl Device, root: PageRef, p6: bool) -> Result<Vec<u64>> {
     let mut out = Vec::new();
-    for (i, leaf) in pointers(dev, root, Role::Root)?.into_iter().enumerate() {
+    for (i, leaf) in pointers(dev, root, Role::Root, p6)?.into_iter().enumerate() {
         if leaf != PageRef::EMPTY {
-            for (j, data) in pointers(dev, leaf, Role::Leaf(i as u16))?
+            for (j, data) in pointers(dev, leaf, Role::Leaf(i as u16), p6)?
                 .into_iter()
                 .enumerate()
             {
@@ -444,6 +506,7 @@ struct Allocation {
     ids: Ids,
     blocks: u64,
     refs: u16,
+    encoded_bytes: u16,
     weight: u64,
     /// Un bit par position de l'arête vérifiée dans la page parent immuable.
     occupied_slots: u64,
@@ -475,6 +538,18 @@ pub(crate) struct Graph {
 
 impl Graph {
     pub(crate) fn format(dev: &mut impl Device, pool: Key) -> Result<Self> {
+        Self::format_version(dev, pool, false)
+    }
+
+    pub(crate) fn format_p6(dev: &mut impl Device, pool: Key) -> Result<Self> {
+        Self::format_version(dev, pool, true)
+    }
+
+    pub(crate) fn is_p6(&self) -> bool {
+        self.head.p6
+    }
+
+    fn format_version(dev: &mut impl Device, pool: Key, p6: bool) -> Result<Self> {
         if pool == [0; 16] || !(FIXED + 1..=MAX_BLOCKS).contains(&dev.blocks()) {
             return Err(Error::Invalid("identité ou taille du pool P5"));
         }
@@ -485,6 +560,7 @@ impl Graph {
             }
         }
         let head = Catalog {
+            p6,
             pool,
             generation: 1,
             next_id: 1,
@@ -492,11 +568,11 @@ impl Graph {
         };
         let (catalog, hash) = catalog_page(&head, [0; 32], dev.blocks())?;
         for slot in [0, 1] {
-            dev.write(slot, &header(pool, dev.blocks(), slot))?;
+            dev.write(slot, &header(pool, dev.blocks(), slot, p6))?;
         }
         dev.write(4, &catalog)?;
         dev.flush()?;
-        dev.write(2, &marker(pool, 1))?;
+        dev.write(2, &marker(pool, 1, p6))?;
         dev.flush()?;
         Ok(Self {
             head,
@@ -518,13 +594,14 @@ impl Graph {
         )?;
         let first = dev.read(0)?;
         let pool: Key = first[16..32].try_into().unwrap();
+        let p6 = first[..8] == profile(META, true)[..8];
         agree(
             pool != [0; 16]
-                && first == header(pool, dev.blocks(), 0)
-                && dev.read(1)? == header(pool, dev.blocks(), 1),
+                && first == header(pool, dev.blocks(), 0, p6)
+                && dev.read(1)? == header(pool, dev.blocks(), 1, p6),
             "géométrie, version ou identité du pool P5",
         )?;
-        let (head, previous, _) = select(dev, pool)?;
+        let (head, previous, _) = select(dev, pool, p6)?;
         let mut g = Self {
             head: head.cat,
             previous: previous.map(|v| v.cat),
@@ -564,32 +641,40 @@ impl Graph {
         root: PageRef,
         lba: u64,
     ) -> Result<Block> {
+        match self.lookup(root, lba)? {
+            Some(reference) => read_content(dev, reference, lba as u16),
+            None => Ok([0; 4096]),
+        }
+    }
+
+    pub(crate) fn is_packed(&self, root: PageRef, lba: u64) -> Result<bool> {
+        Ok(self.lookup(root, lba)?.is_some_and(|r| r.packed))
+    }
+
+    fn lookup(&self, root: PageRef, lba: u64) -> Result<Option<PageRef>> {
         if lba >= (WIDTH * LEAVES) as u64 {
-            return Err(Error::Invalid("LBA hors traduction P5"));
+            return Err(Error::Invalid("LBA hors traduction"));
         }
         if root == PageRef::EMPTY {
-            return Ok([0; 4096]);
+            return Ok(None);
         }
         let page = self
             .used
             .get(&root.block)
-            .filter(|a| a.role == Role::Root && a.hash == root.hash)
+            .filter(|a| !root.packed && a.role == Role::Root && a.hash == root.hash)
             .ok_or(Error::Corrupt("racine absente de l’index monté"))?;
         let Some(leaf) = page.child_at(lba as usize / WIDTH) else {
-            return Ok([0; 4096]);
+            return Ok(None);
         };
         let Some(block) = self.used[&leaf].child_at(lba as usize % WIDTH) else {
-            return Ok([0; 4096]);
+            return Ok(None);
         };
         let data = &self.used[&block];
-        checked_page(
-            dev,
-            PageRef {
-                block,
-                hash: data.hash,
-            },
-            data.role,
-        )
+        Ok(Some(PageRef {
+            block,
+            hash: data.hash,
+            packed: matches!(data.role, Role::Packed(_)),
+        }))
     }
 
     pub(crate) fn protected_catalogs(&self) -> impl Iterator<Item = &Catalog> {
@@ -605,7 +690,7 @@ impl Graph {
         if self.must_stabilize {
             self.poisoned = true;
             dev.flush()?;
-            let (head, previous, mixed) = select(dev, self.head.pool)?;
+            let (head, previous, mixed) = select(dev, self.head.pool, self.is_p6())?;
             agree(
                 head.hash == self.hash
                     && head.cat == self.head
@@ -613,7 +698,10 @@ impl Graph {
                 "publication déplacée depuis l'import P5",
             )?;
             if mixed {
-                dev.write(2, &marker(self.head.pool, self.head.generation % 4))?;
+                dev.write(
+                    2,
+                    &marker(self.head.pool, self.head.generation % 4, self.is_p6()),
+                )?;
                 dev.flush()?;
             }
             self.must_stabilize = false;
@@ -658,10 +746,20 @@ impl Graph {
             return Ok(0);
         }
         r.validate(self.blocks)?;
+        agree(
+            r.packed == matches!(role, Role::Packed(_)) && (!r.packed || self.is_p6()),
+            "type d’arête de compression",
+        )?;
         if let Some(a) = self.used.get_mut(&r.block) {
             agree(
                 a.hash == r.hash
-                    && a.role == role
+                    && match (a.role, role) {
+                        (Role::Packed(old), Role::Packed(lba)) => {
+                            old / WIDTH as u16 == lba / WIDTH as u16
+                                && a.occupied_slots & (1 << (lba as usize % WIDTH)) != 0
+                        }
+                        _ => a.role == role,
+                    }
                     && a.ids == entry.ids
                     && a.blocks == entry.blocks,
                 "allocation P5 partagée entre positions, types ou lignées incompatibles",
@@ -676,10 +774,30 @@ impl Graph {
         let mut weight = 1;
         let mut occupied_slots = 0;
         let mut children = Vec::new();
-        if let Role::Data(_) = role {
+        let mut encoded_bytes = 0;
+        if let Role::Packed(lba) = role {
+            let bytes = checked_page(dev, r, role)?;
+            let unit = compression::inspect(&bytes)?;
+            for slot in unit.lbas() {
+                agree(
+                    u64::from(slot) < entry.blocks && slot / WIDTH as u16 == lba / WIDTH as u16,
+                    "unité P6 hors volume ou feuille",
+                )?;
+                occupied_slots |= 1u64 << (slot as usize % WIDTH);
+            }
+            agree(
+                occupied_slots & (1u64 << (lba as usize % WIDTH)) != 0,
+                "LBA absent de l’unité P6",
+            )?;
+            unit.verify_all()?;
+            encoded_bytes = unit.encoded_bytes() as u16;
+        } else if let Role::Data(_) = role {
             checked_page(dev, r, role)?;
         } else {
-            for (i, child) in pointers(dev, r, role)?.into_iter().enumerate() {
+            for (i, child) in pointers(dev, r, role, self.is_p6())?
+                .into_iter()
+                .enumerate()
+            {
                 if child == PageRef::EMPTY {
                     continue;
                 }
@@ -687,7 +805,12 @@ impl Graph {
                     Role::Root => (Role::Leaf(i as u16), i * WIDTH),
                     Role::Leaf(n) => {
                         let i = usize::from(n) * WIDTH + i;
-                        (Role::Data(i as u16), i)
+                        let next = if child.packed {
+                            Role::Packed(i as u16)
+                        } else {
+                            Role::Data(i as u16)
+                        };
+                        (next, i)
                     }
                     _ => unreachable!(),
                 };
@@ -696,7 +819,12 @@ impl Graph {
                     "traduction au-delà de la vue P5",
                 )?;
                 agree(child.block != r.block, "cycle de traduction P5")?;
-                weight += self.pin(dev, entry, child, next, journal)?;
+                let child_weight = self.pin(dev, entry, child, next, journal)?;
+                // Chaque LBA est une arête retenue, mais une unité d’une feuille
+                // occupe un seul bloc physique même si plusieurs slots la nomment.
+                if !child.packed || !children.contains(&child.block) {
+                    weight += child_weight;
+                }
                 occupied_slots |= 1u64 << i;
                 children.push(child.block);
             }
@@ -713,6 +841,7 @@ impl Graph {
                 ids: entry.ids,
                 blocks: entry.blocks,
                 refs: 1,
+                encoded_bytes,
                 weight,
                 occupied_slots,
                 children,
@@ -772,7 +901,7 @@ impl Graph {
             return Err(cause);
         }
         self.poisoned = true;
-        dev.write(2, &marker(next.pool, slot))
+        dev.write(2, &marker(next.pool, slot, self.is_p6()))
             .map_err(|cause| Error::Publication {
                 phase: "sélecteur P5",
                 cause: Box::new(cause),
@@ -816,6 +945,30 @@ impl Graph {
         }
     }
 
+    /// LBA compressés de la vue, unités physiques distinctes et octets LZ4
+    /// retenus par ces unités, y compris les slots survivant à une réécriture.
+    pub(crate) fn compression_usage(&self, root: PageRef) -> Result<(u64, u64, u64)> {
+        if root == PageRef::EMPTY {
+            return Ok((0, 0, 0));
+        }
+        self.root_pages(root)?;
+        let mut units = BTreeSet::new();
+        let mut pages = 0;
+        let mut bytes = 0;
+        for leaf in &self.used[&root.block].children {
+            for block in &self.used[leaf].children {
+                let allocation = &self.used[block];
+                if matches!(allocation.role, Role::Packed(_)) {
+                    pages += 1;
+                    if units.insert(*block) {
+                        bytes += u64::from(allocation.encoded_bytes);
+                    }
+                }
+            }
+        }
+        Ok((pages, units.len() as u64, bytes))
+    }
+
     pub(crate) fn occupied(&self) -> u64 {
         FIXED + self.used.len() as u64
     }
@@ -853,7 +1006,11 @@ fn store(graph: &mut Graph, dev: &mut impl Device, b: &Block, role: Role) -> Res
         graph.poisoned = true;
         return Err(cause);
     }
-    Ok(PageRef { block, hash })
+    Ok(PageRef {
+        block,
+        hash,
+        packed: matches!(role, Role::Packed(_)),
+    })
 }
 
 pub(crate) fn store_data(
@@ -865,6 +1022,17 @@ pub(crate) fn store_data(
         return Ok(PageRef::EMPTY);
     }
     store(graph, dev, data, Role::Data(0))
+}
+
+pub(crate) fn store_unit(
+    graph: &mut Graph,
+    dev: &mut impl Device,
+    bytes: &Block,
+) -> Result<PageRef> {
+    if !graph.is_p6() {
+        return Err(Error::Invalid("pool sans compression P6"));
+    }
+    store(graph, dev, bytes, Role::Packed(0))
 }
 
 fn store_pointers(
@@ -881,7 +1049,18 @@ fn store_pointers(
         Role::Leaf(n) => (LEAF, n),
         _ => return Err(Error::Invalid("type de nœud P5")),
     };
-    let mut b = signature(magic);
+    let mut b = profile(magic, graph.is_p6());
+    let mut mask = 0u64;
+    for (slot, r) in refs.iter().enumerate() {
+        if r.packed {
+            agree(
+                graph.is_p6() && matches!(role, Role::Leaf(_)),
+                "unité P6 à un niveau interdit",
+            )?;
+            mask |= 1u64 << slot;
+        }
+    }
+    b[24..32].copy_from_slice(&mask.to_le_bytes());
     b[16..18].copy_from_slice(&idx.to_le_bytes());
     for (dst, p) in b[32..].chunks_exact_mut(40).zip(refs) {
         p.write(dst);
@@ -901,7 +1080,7 @@ pub(crate) fn patch_root(
     if changes.last_key_value().unwrap().0 >= &((WIDTH * LEAVES) as u64) {
         return Err(Error::Invalid("modification hors vue P5"));
     }
-    let mut root = pointers(dev, old, Role::Root)?;
+    let mut root = pointers(dev, old, Role::Root, graph.is_p6())?;
     let mut modified = false;
     for (i, entry) in root.iter_mut().enumerate() {
         let start = (i * WIDTH) as u64;
@@ -910,7 +1089,7 @@ pub(crate) fn patch_root(
             continue;
         }
         let role = Role::Leaf(i as u16);
-        let mut leaf = pointers(dev, *entry, role)?;
+        let mut leaf = pointers(dev, *entry, role, graph.is_p6())?;
         let mut touched = false;
         for (&lba, &r) in range {
             r.validate(dev.blocks())?;
@@ -946,6 +1125,7 @@ mod tests {
             blocks: 256,
             owner: [1; 16],
             kind: Kind::Origin,
+            policy: Compression::None,
             ids: Ids {
                 fs: [2; 16],
                 lv: [3; 16],
@@ -1003,7 +1183,7 @@ mod tests {
                     for lba in [0, 1, 5, 62, 63, 64, 65, 127, 128, 960, 1022, 1023] {
                         assert_eq!(
                             index.read_indexed_page(&dev, view, lba)?,
-                            read_page(&dev, view, lba)?,
+                            read_page(&dev, view, lba, false)?,
                             "position {lba}"
                         );
                     }
@@ -1028,8 +1208,193 @@ mod tests {
         let (bytes, _) = catalog_page(c, g.hash, d.blocks())?;
         d.write(3 + slot, &bytes)?;
         d.flush()?;
-        d.write(2, &marker(POOL, slot))?;
+        d.write(2, &marker(POOL, slot, g.is_p6()))?;
         d.flush()
+    }
+
+    fn pack_at(positions: &[u16]) -> Result<Block> {
+        let mut pack = compression::Packer::default();
+        for &lba in positions {
+            assert_eq!(
+                pack.push(lba, &[1 + (lba % 250) as u8; 4096])?,
+                compression::Push::Added
+            );
+        }
+        Ok(pack.finish().unwrap())
+    }
+
+    #[test]
+    fn p6_unite_partagee_poids_et_dernier_slot() -> Result<()> {
+        for sector in [512, 4096] {
+            let mut d = SimDevice::new(512, sector)?;
+            let mut g = Graph::format_p6(&mut d, POOL)?;
+            let slots = [17, 18, 35, 63];
+            let encoded = pack_at(&slots)?;
+            let payload = compression::inspect(&encoded)?.encoded_bytes() as u64;
+            let pack = store_unit(&mut g, &mut d, &encoded)?;
+            let changes = slots.into_iter().map(|n| (u64::from(n), pack)).collect();
+            let root = patch_root(&mut g, &mut d, PageRef::EMPTY, &changes)?;
+            let mut e = origin(1, root);
+            e.policy = Compression::Lz4;
+            advance(&mut g, &mut d, vec![e.clone()])?;
+            let snap = Entry {
+                id: 2,
+                kind: Kind::Snapshot,
+                ..e.clone()
+            };
+            advance(&mut g, &mut d, vec![e.clone(), snap.clone()])?;
+            let mut retire = BTreeMap::new();
+            for n in [17, 35, 63] {
+                retire.insert(n, PageRef::EMPTY);
+            }
+            e.root = patch_root(&mut g, &mut d, root, &retire)?;
+            advance(&mut g, &mut d, vec![e.clone(), snap.clone()])?;
+            // Les deux racines et feuilles diffèrent, mais elles gardent un seul
+            // et même bloc physique. La garantie du snapshot impute trois pages.
+            assert_eq!(g.usage(1)?, (2, 1));
+            assert_eq!(g.usage(2)?, (2, 1));
+            assert_eq!(g.root_pages(root)?, 3);
+            assert_eq!(g.compression_usage(root)?, (4, 1, payload));
+            assert_eq!(g.compression_usage(e.root)?, (1, 1, payload));
+            for graph in [&g, &Graph::open(&d)?] {
+                assert!(graph.is_packed(e.root, 18)?);
+                assert!(!graph.is_packed(e.root, 17)?);
+                assert_eq!(graph.read_indexed_page(&d, e.root, 18)?, [19; 4096]);
+                assert_eq!(graph.read_indexed_page(&d, e.root, 17)?, [0; 4096]);
+                assert_eq!(read_page(&d, root, 17, true)?, [18; 4096]);
+            }
+            advance(&mut g, &mut d, vec![e])?;
+            advance(&mut g, &mut d, vec![])?;
+            assert!(g.used.contains_key(&pack.block));
+            advance(&mut g, &mut d, vec![])?;
+            assert!(!g.used.contains_key(&pack.block));
+            assert_eq!(g.occupied(), FIXED);
+            g.cursor = pack.block;
+            assert_eq!(g.allocate()?, pack.block);
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn p6_refuse_unites_malformees_et_aretes_incompatibles() -> Result<()> {
+        for sector in [512, 4096] {
+            for scenario in 0..8 {
+                let mut d = SimDevice::new(512, sector)?;
+                let mut g = Graph::format_p6(&mut d, POOL)?;
+                let mut bytes = pack_at(&[8, 9])?;
+                let mut lba = 8;
+                match scenario {
+                    0 => bytes[10] = 255,                                    // algorithme inconnu
+                    1 => bytes[8] = 2,                                       // version inconnue
+                    2 => bytes[12..16].fill(255), // taille logique forgée
+                    3 => bytes[34..36].fill(255), // longueur du premier flux
+                    4 => bytes[36..38].copy_from_slice(&8u16.to_le_bytes()), // chevauchement
+                    5 => bytes[96..100].fill(0),  // offset LZ4 nul
+                    6 => lba = 7,                 // slot absent dans la même feuille
+                    7 => lba = 72,                // même bit, feuille étrangère
+                    _ => unreachable!(),
+                }
+                let pack = store_unit(&mut g, &mut d, &bytes)?;
+                let root = patch_root(
+                    &mut g,
+                    &mut d,
+                    PageRef::EMPTY,
+                    &BTreeMap::from([(lba, pack)]),
+                )?;
+                let mut candidate = g.head.clone();
+                candidate.generation += 1;
+                candidate.next_id = 2;
+                candidate.entries.push(origin(1, root));
+                assert!(
+                    matches!(g.commit(&mut d, candidate.clone()), Err(Error::Corrupt(_))),
+                    "cas {scenario}"
+                );
+                assert_eq!(g.occupied(), FIXED);
+                // Le banc écrit ensuite une tête correctement scellée : le
+                // montage doit lui aussi refuser les octets et toutes les arêtes.
+                inject_catalog(&mut d, &g, &candidate)?;
+                assert!(
+                    matches!(Graph::open(&d), Err(Error::Corrupt(_))),
+                    "cas {scenario}"
+                );
+            }
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn p6_refuse_ancres_fs_empaquetees_aux_octets_identiques() -> Result<()> {
+        use crate::shared::SharedPool;
+        for sector in [512, 4096] {
+            let mut pool = SharedPool::format_p6(SimDevice::new(2048, sector)?, POOL)?;
+            let ids = Ids {
+                fs: [11; 16],
+                lv: [12; 16],
+            };
+            let id = pool.create([3; 16], ids, 256)?;
+            pool.create_file(id, "/f")?;
+            let mut disk = pool.into_device();
+            let mut graph = Graph::open(&disk)?;
+            graph.prepare(&mut disk)?;
+            let mut entry = graph.head.entries[0].clone();
+            let mut pack = compression::Packer::default();
+            for lba in [0, 1] {
+                let page = read_page(&disk, entry.root, lba, true)?;
+                assert_eq!(&page[..8], b"NOVAP0FS");
+                assert_eq!(pack.push(lba as u16, &page)?, compression::Push::Added);
+            }
+            let unit = store_unit(&mut graph, &mut disk, &pack.finish().unwrap())?;
+            entry.root = patch_root(
+                &mut graph,
+                &mut disk,
+                entry.root,
+                &BTreeMap::from([(0, unit), (1, unit)]),
+            )?;
+            advance(&mut graph, &mut disk, vec![entry])?;
+            // Tous les checksums externes et internes concordent ; le contrôle
+            // des familles de pages reste nécessaire pour refuser ce catalogue.
+            assert!(Graph::open(&disk).is_ok());
+            assert!(matches!(
+                SharedPool::open(disk),
+                Err(Error::Corrupt(
+                    "page compressée hors des extents de données"
+                ))
+            ));
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn p6_bits_obligatoires_et_masque_de_typage() -> Result<()> {
+        for sector in [512, 4096] {
+            let mut d = SimDevice::new(512, sector)?;
+            let mut g = Graph::format_p6(&mut d, POOL)?;
+            let raw_like_pack = pack_at(&[8, 9])?;
+            let raw = store_data(&mut g, &mut d, &raw_like_pack)?;
+            let root = patch_root(&mut g, &mut d, PageRef::EMPTY, &BTreeMap::from([(8, raw)]))?;
+            advance(&mut g, &mut d, vec![origin(1, root)])?;
+            assert_eq!(g.read_indexed_page(&d, root, 8)?, raw_like_pack);
+            let addr = g.used[&root.block].children[0];
+            let mut leaf = d.read(addr)?;
+            leaf[24..32].copy_from_slice(&(1u64 << 8).to_le_bytes());
+            let forged = store(&mut g, &mut d, &leaf, Role::Leaf(0))?;
+            let mut refs = vec![PageRef::EMPTY; LEAVES];
+            refs[0] = forged;
+            let forged_root = store_pointers(&mut g, &mut d, &refs, Role::Root)?;
+            assert!(matches!(
+                advance(&mut g, &mut d, vec![origin(1, forged_root)]),
+                Err(Error::Corrupt(_))
+            ));
+            d.flush()?;
+            let mut h = header(POOL, d.blocks(), 0, true);
+            h[10] |= 0x40;
+            h[48..80].fill(0);
+            let sum = checksum(b"NovaFS.P5.header", 0, &h);
+            h[48..80].copy_from_slice(&sum);
+            d.control().replace_stable(0, h)?;
+            assert!(matches!(Graph::open(&d), Err(Error::Corrupt(_))));
+        }
+        Ok(())
     }
 
     #[test]
@@ -1058,12 +1423,14 @@ mod tests {
                         // être refusée avant de tenter de suivre son empreinte.
                         PageRef {
                             block: self_addr,
+                            packed: false,
                             hash: [11; 32],
                         }
                         .write(&mut raw[32..72]);
                         d.write(self_addr, &raw)?;
                         clone.root = PageRef {
                             block: self_addr,
+                            packed: false,
                             hash: checksum(Role::Root.domain(), self_addr, &raw),
                         };
                     }
@@ -1150,7 +1517,7 @@ mod tests {
                 let stable = d.control().snapshot();
                 for mask in 0..16 {
                     let mut partial = stable.device();
-                    let mut word = marker(POOL, old % 4);
+                    let mut word = marker(POOL, old % 4, false);
                     for (i, off) in COPIES.iter().enumerate() {
                         if mask & (1 << i) != 0 {
                             word[*off] = CODES[(new % 4) as usize];
@@ -1166,7 +1533,7 @@ mod tests {
                 }
                 let bad = stable.device();
                 for (off, value) in [(COPIES[0], 17), (10, 1), (127, 32)] {
-                    let mut raw = marker(POOL, new % 4);
+                    let mut raw = marker(POOL, new % 4, false);
                     raw[off] = value;
                     bad.control().replace_stable(2, raw)?;
                     assert!(matches!(Graph::open(&bad), Err(Error::Corrupt(_))));
@@ -1270,7 +1637,7 @@ mod tests {
             }
             assert_eq!(available.len() as u64, 512 - FIXED - 3);
             assert!(!available.contains(&data.block));
-            assert_eq!(read_page(&d, clone.root, 42)?, [0x74; 4096]);
+            assert_eq!(read_page(&d, clone.root, 42, false)?, [0x74; 4096]);
             reloaded.reset_pending();
             advance(&mut reloaded, &mut d, vec![])?;
             assert_eq!(reloaded.deferred(), 3);

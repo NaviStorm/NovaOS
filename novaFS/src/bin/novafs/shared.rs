@@ -1,15 +1,17 @@
-//! Outils d’images P5 sur flux. Les transformations publient une nouvelle image
+//! Outils d’images de pools P5 et P6 sur flux. Les transformations publient une nouvelle image
 //! sur stdout après validation. Le descripteur source reste ouvert en lecture seule.
 use super::{emit, hex, identifier, image_stream, label, load, num};
 use novafs::device::FileImage;
 use novafs::shared::{ObjectKind, SharedPool};
-use novafs::shared_export::{ExportInfo, export_view, restore_view};
-use novafs::{Device, Error, Ids, Result};
+use novafs::shared_export::{ExportInfo, export_view, restore_view, restore_with_compression};
+use novafs::{Compression, Device, Engine, Error, Ids, Mode, Result};
 use serde_json::{Value, json};
 use std::io::{self, Write};
 
-pub(super) const HELP: &str = "novafs pool-format BLOCS SECTEUR POOL_ID             crée un pool P5 vide sur stdout
-novafs volume-create BLOCS SECTEUR DOMAINE FS_ID LV_ID BLOCS_LV    ajoute une origine au pool lu sur stdin
+pub(super) const HELP: &str = "novafs pool-format BLOCS SECTEUR POOL_ID [p5|p6]     crée un pool vide (P5 par défaut)
+novafs volume-create BLOCS SECTEUR DOMAINE FS_ID LV_ID BLOCS_LV [none|lz4]    ajoute une origine au pool lu sur stdin
+novafs set-compression BLOCS SECTEUR OBJET none|lz4    définit la politique des prochaines écritures
+novafs compression-space BLOCS SECTEUR OBJET         affiche les octets logiques et l’usage physique en JSON
 novafs file-create BLOCS SECTEUR OBJET CHEMIN       crée un fichier dans une branche inscriptible
 novafs file-write BLOCS SECTEUR OBJET CHEMIN OFFSET HEX   modifie le fichier dans une copie du pool
 novafs file-read BLOCS SECTEUR OBJET CHEMIN OFFSET OCTETS    extrait les octets du fichier sur stdout
@@ -19,8 +21,9 @@ novafs drop-view BLOCS SECTEUR OBJET                retire une vue et publie son
 novafs advance BLOCS SECTEUR                        effectue une rotation du catalogue de pool
 novafs list-views BLOCS SECTEUR                     énumère les vues et leurs reçus en JSON
 novafs export BLOCS SECTEUR OBJET                   émet un export complet de snapshot ou clone
-novafs restore BLOCS_DEST SECTEUR_DEST POOL_DEST DOMAINE   restaure l’export dans un nouveau pool
+novafs restore BLOCS_DEST SECTEUR_DEST POOL_DEST DOMAINE [none|lz4]   restaure dans un pool neuf (politique explicite pour P6)
 novafs migrate-pool BLOCS_DEST SECTEUR_DEST POOL_DEST BLOCS_P0 SECTEUR_P0   migre un pool P0 complet hors ligne
+novafs migrate-view BLOCS_DEST SECTEUR_DEST POOL_DEST BLOCS_SOURCE SECTEUR_SOURCE OBJET none|lz4   importe une vue P5/P6 dans un nouveau pool P6
 novafs migrate-lv BLOCS_DEST SECTEUR_DEST POOL_DEST BLOCS_P0 SECTEUR_P0 DOMAINE FS_ID LV_ID   importe un LV P0 autonome
 novafs check-export                                vérifie un export complet sur stdin, JSON sur stdout";
 
@@ -28,12 +31,19 @@ pub(super) fn known(cmd: &str) -> bool {
     HELP.lines()
         .any(|l| l.split_ascii_whitespace().nth(1) == Some(cmd))
 }
+fn compression(name: &str) -> Result<Compression> {
+    match name {
+        "none" => Ok(Compression::None),
+        "lz4" => Ok(Compression::Lz4),
+        _ => Err(Error::Invalid("politique de compression inconnue")),
+    }
+}
 fn volume(id: u64, pool: &SharedPool<impl Device>) -> Result<Value> {
     let obj = pool.info(id)?;
     let receipt = pool.receipt(id)?;
     Ok(
         json!({"id":id, "pool":label(&receipt.pool), "empreinte":label(&receipt.root),
-        "type":kind(obj.kind), "domaine":label(&obj.owner), "lignee_fs":label(&obj.ids.fs),
+        "type":kind(obj.kind), "compression": match obj.policy { Compression::None=>"none", Compression::Lz4=>"lz4" }, "domaine":label(&obj.owner), "lignee_fs":label(&obj.ids.fs),
         "lignee_lv":label(&obj.ids.lv), "blocs_logiques":obj.blocks}),
     )
 }
@@ -73,18 +83,34 @@ pub(super) fn run(args: &[String]) -> Result<()> {
     if cmd != "pool-format" {
         image_stream(&io::stdin())?;
     }
-    if cmd != "list-views" {
+    if !matches!(cmd, "list-views" | "compression-space") {
         image_stream(&io::stdout())?;
     }
     let mut pool = match (cmd, tail) {
-        ("pool-format", [pool]) => SharedPool::format(scratch, identifier(pool)?)?,
+        ("pool-format", [pool, "p6"]) => SharedPool::format_p6(scratch, identifier(pool)?)?,
+        ("pool-format", [pool] | [pool, "p5"]) => SharedPool::format(scratch, identifier(pool)?)?,
         ("restore", [pool, owner]) => {
             let mut pool = SharedPool::format(scratch, identifier(pool)?)?;
             let id = restore_view(&mut pool, io::stdin().lock(), identifier(owner)?)?;
             eprintln!("{}", volume(id, &pool)?);
             pool
         }
-        ("migrate-pool" | "migrate-lv", [pool, old_blocks, old_sector, other @ ..]) => {
+        ("restore", [pool, owner, name]) => {
+            let policy = compression(name)?;
+            let mut pool = SharedPool::format_p6(scratch, identifier(pool)?)?;
+            let id = restore_with_compression(
+                &mut pool,
+                io::stdin().lock(),
+                identifier(owner)?,
+                policy,
+            )?;
+            eprintln!("{}", volume(id, &pool)?);
+            pool
+        }
+        (
+            "migrate-pool" | "migrate-lv" | "migrate-view",
+            [pool, old_blocks, old_sector, other @ ..],
+        ) => {
             let size = num(old_blocks)?;
             if size > 32768 {
                 return Err(Error::Limit("outil limité à 128 Mio par image"));
@@ -93,8 +119,23 @@ pub(super) fn run(args: &[String]) -> Result<()> {
                 u32::try_from(num(old_sector)?).map_err(|_| Error::Invalid("secteur source"))?;
             let mut old = FileImage::create(size, sector)?;
             load(&mut old, &mut io::stdin().lock())?;
-            let mut target = SharedPool::format(scratch, identifier(pool)?)?;
+            let mut target = if cmd == "migrate-view" {
+                SharedPool::format_p6(scratch, identifier(pool)?)?
+            } else {
+                SharedPool::format(scratch, identifier(pool)?)?
+            };
             let ids = match (cmd, other) {
+                ("migrate-view", [id, name]) => {
+                    let source = SharedPool::open(old)?;
+                    let view = source.info(num(id)?)?;
+                    vec![target.import_with_compression(
+                        view.owner,
+                        view.ids,
+                        &source.read_device(view.id)?,
+                        view.kind,
+                        compression(name)?,
+                    )?]
+                }
                 ("migrate-pool", []) => target.migrate_legacy(&old)?,
                 ("migrate-lv", [owner, fs, lv]) => vec![target.import_image(
                     identifier(owner)?,
@@ -112,7 +153,7 @@ pub(super) fn run(args: &[String]) -> Result<()> {
             }
             target
         }
-        ("restore" | "pool-format" | "migrate-pool" | "migrate-lv", _) => {
+        ("restore" | "pool-format" | "migrate-pool" | "migrate-lv" | "migrate-view", _) => {
             return Err(Error::Invalid("syntaxe P5"));
         }
         _ => {
@@ -121,15 +162,41 @@ pub(super) fn run(args: &[String]) -> Result<()> {
         }
     };
     let created = match (cmd, tail) {
-        ("pool-format" | "restore" | "migrate-pool" | "migrate-lv", _) => None,
-        ("volume-create", [owner, fs, lv, size]) => Some(pool.create(
+        ("pool-format" | "restore" | "migrate-pool" | "migrate-lv" | "migrate-view", _) => None,
+        ("volume-create", [owner, fs, lv, size, opts @ ..]) => Some(pool.create_with_compression(
             identifier(owner)?,
             Ids {
                 fs: identifier(fs)?,
                 lv: identifier(lv)?,
             },
             num(size)?,
+            match opts {
+                [] => Compression::None,
+                [p] => compression(p)?,
+                _ => return Err(Error::Invalid("arguments volume-create")),
+            },
         )?),
+        ("set-compression", [id, name]) => {
+            let id = num(id)?;
+            pool.set_compression(id, compression(name)?)?;
+            Some(id)
+        }
+        ("compression-space", [id]) => {
+            let id = num(id)?;
+            let info = pool.info(id)?;
+            let usage = pool.usage(id)?;
+            let packs = pool.compression_usage(id)?;
+            let fs = Engine::mount(pool.read_device(id)?, info.ids, Mode::ReadOnly)?;
+            let space = fs.accounting()?;
+            return output_json(json!({
+                "objet": id, "taille_logique_octets": space.logical_bytes,
+                "quota_logique_octets": space.logical_quota_bytes, "unites_compressees": packs.compressed_units,
+                "pages_compressees_mappees": packs.mapped_compressed_pages, "flux_lz4_octets": packs.encoded_bytes,
+                "unites_physiques_octets": packs.physical_bytes, "economie_octets": packs.saved_bytes,
+                "vue_exclusifs_blocs": usage.exclusive, "vue_partages_blocs": usage.shared,
+                "pool_occupes_blocs": usage.occupied, "pool_credit_blocs": usage.reserved
+            }));
+        }
         ("snapshot", [id]) => Some(pool.snapshot(num(id)?)?),
         ("clone", [id, owner]) => Some(pool.clone_snapshot(num(id)?, identifier(owner)?)?),
         ("drop-view", [id]) => {

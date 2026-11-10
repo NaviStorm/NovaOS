@@ -118,6 +118,17 @@ pub(crate) fn validate<V: View, W: View>(
     Ok(logical_bytes)
 }
 
+/// Visite les LBA de payloads d'un arbre d'extents déjà admis par le montage.
+pub(crate) fn data_pages(v: &impl View, mut visit: impl FnMut(u64) -> Result<()>) -> Result<()> {
+    walk(v, Family::Extents, |_, value| {
+        let run = Run::decode(value, v.manifest().blocks, generation(v)?)?;
+        for index in 0..run.hashes.len() {
+            visit(run.reference(index).block)?;
+        }
+        Ok(())
+    })
+}
+
 pub(crate) fn check_shared_data(
     v: &impl View,
     other: &impl View,

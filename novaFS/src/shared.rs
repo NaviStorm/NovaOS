@@ -1,8 +1,9 @@
 //! Un seul écrivain par pool. Une vue possède une identité publique distincte
 //! du domaine de checksum de son contenu. Aucune adresse physique n'est exportée.
 mod coordinator;
+mod packing;
 use crate::shared_graph::{self as graph, Catalog, Entry, Graph, Kind, PageRef};
-use crate::{Block, Device, Engine, Error, Ids, Mode, Ref, Result};
+use crate::{Block, Compression, Device, Engine, Error, Ids, Mode, Ref, Result};
 pub use coordinator::{SharedAdmin, SharedCoordinator, SharedRead, SharedWrite};
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
@@ -20,6 +21,7 @@ pub enum ObjectKind {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct ObjectInfo {
+    pub policy: Compression,
     pub id: u64,
     pub owner: [u8; 16],
     pub ids: Ids,
@@ -45,6 +47,16 @@ pub struct Usage {
     pub reserved: u64,
 }
 
+/// Charge des unités de données compressées accessibles depuis une racine.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct CompressionUsage {
+    pub mapped_compressed_pages: u64,
+    pub compressed_units: u64,
+    pub encoded_bytes: u64,
+    pub physical_bytes: u64,
+    pub saved_bytes: u64,
+}
+
 impl From<Kind> for ObjectKind {
     fn from(kind: Kind) -> Self {
         match kind {
@@ -68,6 +80,7 @@ impl From<&Entry> for ObjectInfo {
     fn from(e: &Entry) -> Self {
         Self {
             id: e.id,
+            policy: e.policy,
             kind: e.kind.into(),
             blocks: e.blocks,
             ids: e.ids,
@@ -88,6 +101,7 @@ const MAX_ENTRIES: usize = 16;
 struct Volume<'a, D> {
     disk: &'a D,
     index: Option<&'a Graph>,
+    p6: bool,
     root: PageRef,
     blocks: u64,
 }
@@ -104,7 +118,7 @@ impl<D: Device> Device for Volume<'_, D> {
         }
         match self.index {
             Some(index) => index.read_indexed_page(self.disk, self.root, b),
-            None => graph::read_page(self.disk, self.root, b),
+            None => graph::read_page(self.disk, self.root, b, self.p6),
         }
     }
     fn write(&mut self, _: u64, _: &Block) -> Result<()> {
@@ -188,6 +202,10 @@ impl Device for Source<'_> {
     }
 }
 
+fn is_data_page(map: &[u64; 16], lba: u64) -> bool {
+    lba < 1024 && map[lba as usize / 64] & (1u64 << (lba % 64)) != 0
+}
+
 struct Cached {
     root: PageRef,
     ids: Ids,
@@ -221,6 +239,18 @@ impl<D: Device> SharedPool<D> {
             health: AtomicU8::new(0),
         })
     }
+    pub fn format_p6(mut dev: D, pool: [u8; 16]) -> Result<Self> {
+        let graph = Graph::format_p6(&mut dev, pool)?;
+        Ok(Self {
+            dev,
+            graph,
+            cached: Mutex::default(),
+            health: AtomicU8::new(0),
+        })
+    }
+    pub fn is_p6(&self) -> bool {
+        self.graph.is_p6()
+    }
     pub fn open(dev: D) -> Result<Self> {
         let graph = Graph::open(&dev)?;
         let mut checked = Vec::new();
@@ -234,6 +264,7 @@ impl<D: Device> SharedPool<D> {
                 }
                 let fs = Engine::mount(
                     Volume {
+                        p6: graph.is_p6(),
                         disk: &dev,
                         index: None,
                         root: e.root,
@@ -242,7 +273,23 @@ impl<D: Device> SharedPool<D> {
                     e.ids,
                     Mode::ReadOnly,
                 )?;
-                for lba in graph::mapped_lbas(&dev, e.root)? {
+                if graph.is_p6() && fs.accounting()?.logical_bytes > u128::from(e.blocks) * 4096 {
+                    return Err(Error::Corrupt("quota logique de la vue P6 dépassé"));
+                }
+                let data_pages = if graph.is_p6() && graph.compression_usage(e.root)?.0 > 0 {
+                    Some(fs.file_page_map()?)
+                } else {
+                    None
+                };
+                for lba in graph::mapped_lbas(&dev, e.root, graph.is_p6())? {
+                    if let Some(map) = &data_pages
+                        && graph.is_packed(e.root, lba)?
+                        && !is_data_page(map, lba)
+                    {
+                        return Err(Error::Corrupt(
+                            "page compressée hors des extents de données",
+                        ));
+                    }
                     if !fs.protected_lba(lba) {
                         return Err(Error::Corrupt("page mappée hors des générations FS"));
                     }
@@ -311,7 +358,12 @@ impl<D: Device> SharedPool<D> {
     pub fn receipt(&self, id: u64) -> Result<Receipt> {
         let e = self.entry(id)?;
         let mut hash = Sha256::new();
-        hash.update(b"NovaFS.P5.receipt.v1");
+        if self.is_p6() {
+            hash.update(b"NovaFS.P6.receipt.v1");
+            hash.update([e.policy as u8]);
+        } else {
+            hash.update(b"NovaFS.P5.receipt.v1");
+        }
         hash.update(self.pool_id());
         hash.update(id.to_le_bytes());
         hash.update(e.owner);
@@ -420,6 +472,41 @@ impl<D: Device> SharedPool<D> {
             reserved,
         })
     }
+    pub fn compression_usage(&self, id: u64) -> Result<CompressionUsage> {
+        let entry = self.entry(id)?;
+        let (mapped, units, bytes) = self.graph.compression_usage(entry.root)?;
+        let saved = mapped
+            .checked_sub(units)
+            .ok_or(Error::Corrupt("poids des packs"))?;
+        Ok(CompressionUsage {
+            mapped_compressed_pages: mapped,
+            compressed_units: units,
+            encoded_bytes: bytes,
+            physical_bytes: units * 4096,
+            saved_bytes: saved * 4096,
+        })
+    }
+
+    pub fn set_compression(&mut self, id: u64, policy: Compression) -> Result<()> {
+        let entry = self.entry(id)?;
+        if entry.kind == Kind::Snapshot {
+            return Err(Error::ReadOnly);
+        }
+        if entry.policy == policy {
+            return Ok(());
+        }
+        if !self.is_p6() {
+            return Err(Error::Invalid("la compression nécessite un pool P6"));
+        }
+        let mut next = self.candidate()?;
+        next.entries
+            .iter_mut()
+            .find(|e| e.id == id)
+            .ok_or(Error::NotFound)?
+            .policy = policy;
+        self.publish(next)
+    }
+
     fn candidate(&self) -> Result<Catalog> {
         self.healthy()?;
         let mut next = self.graph.catalog().clone();
@@ -468,6 +555,7 @@ impl<D: Device> SharedPool<D> {
             blocks,
             kind,
             root,
+            policy: Compression::None,
         });
         Ok(id)
     }
@@ -514,6 +602,7 @@ impl<D: Device> SharedPool<D> {
             kind,
             e.root,
         )?;
+        next.entries.last_mut().ok_or(Error::NotFound)?.policy = e.policy;
         Self::validate_admission(&self.graph, &next, self.dev.blocks(), None)?;
         self.publish(next)?;
         Ok(id)
@@ -530,6 +619,7 @@ impl<D: Device> SharedPool<D> {
         Ok(VerifiedView {
             pool: self,
             volume: Volume {
+                p6: self.graph.is_p6(),
                 disk: &self.dev,
                 index: None,
                 root: e.root,
@@ -588,6 +678,7 @@ impl<D: Device> SharedPool<D> {
             let (fs, mut cursor) = self.mount_with_cursor(
                 e,
                 Volume {
+                    p6: self.graph.is_p6(),
                     disk: &self.dev,
                     index: Some(&self.graph),
                     root: e.root,
@@ -603,11 +694,23 @@ impl<D: Device> SharedPool<D> {
     }
 
     pub fn create(&mut self, owner: [u8; 16], ids: Ids, blocks: u64) -> Result<u64> {
+        self.create_with_compression(owner, ids, blocks, Compression::None)
+    }
+    pub fn create_with_compression(
+        &mut self,
+        owner: [u8; 16],
+        ids: Ids,
+        blocks: u64,
+        policy: Compression,
+    ) -> Result<u64> {
+        self.check_policy(policy)?;
         let mut next = self.candidate()?;
         let id = self.append(&mut next, owner, ids, blocks, Kind::Origin, PageRef::EMPTY)?;
+        next.entries.last_mut().ok_or(Error::NotFound)?.policy = policy;
         Self::validate_admission(&self.graph, &next, self.dev.blocks(), None)?;
         let overlay = Overlay {
             base: Volume {
+                p6: self.graph.is_p6(),
                 disk: &self.dev,
                 index: None,
                 root: PageRef::EMPTY,
@@ -618,6 +721,12 @@ impl<D: Device> SharedPool<D> {
         let fs = Engine::format(overlay, ids)?;
         let (state, overlay) = fs.replace_device((), Mode::ReadWrite);
         self.publish_content(next, id, PageRef::EMPTY, state, overlay.dirty, &[])
+    }
+    fn check_policy(&self, policy: Compression) -> Result<()> {
+        if policy == Compression::Lz4 && !self.is_p6() {
+            return Err(Error::Invalid("la compression nécessite un pool P6"));
+        }
+        Ok(())
     }
     fn publish_content(
         &mut self,
@@ -631,9 +740,28 @@ impl<D: Device> SharedPool<D> {
         self.prepare()?;
         let result = (|| {
             let mut refs = BTreeMap::new();
+            let policy = next
+                .entries
+                .iter()
+                .find(|e| e.id == id)
+                .ok_or(Error::NotFound)?
+                .policy;
+            let mut group =
+                (policy == Compression::Lz4 && data_refs.len() >= 2).then(packing::Group::default);
             for (&lba, page) in &dirty {
-                let reference = graph::store_data(&mut self.graph, &mut self.dev, page)?;
-                refs.insert(lba, reference);
+                if let Some(pack) = &mut group
+                    && data_refs.iter().any(|r| r.block == lba)
+                {
+                    pack.add(&mut self.graph, &mut self.dev, &mut refs, lba, page)?;
+                } else {
+                    refs.insert(
+                        lba,
+                        graph::store_data(&mut self.graph, &mut self.dev, page)?,
+                    );
+                }
+            }
+            if let Some(pack) = &mut group {
+                pack.publish(&mut self.graph, &mut self.dev, &mut refs)?;
             }
             for lba in state.newly_unprotected() {
                 refs.insert(lba, PageRef::EMPTY);
@@ -664,6 +792,7 @@ impl<D: Device> SharedPool<D> {
         }
         let overlay = Overlay {
             base: Volume {
+                p6: self.graph.is_p6(),
                 disk: &self.dev,
                 index: Some(&self.graph),
                 root: e.root,
@@ -748,20 +877,35 @@ impl<D: Device> SharedPool<D> {
         ids: Ids,
         source: &dyn Device,
         kind: Kind,
+        policy: Compression,
     ) -> Result<u64> {
+        self.check_policy(policy)?;
         let blocks = source.blocks();
         if !(256..=1024).contains(&blocks) || blocks % 256 != 0 {
             return Err(Error::Invalid("taille de la vue importée"));
         }
         let id = self.append(next, owner, ids, blocks, kind, PageRef::EMPTY)?;
+        next.entries.last_mut().ok_or(Error::NotFound)?.policy = policy;
         Self::validate_admission(&self.graph, next, self.dev.blocks(), None)?;
         let fs = Engine::mount(Source(source), ids, Mode::ReadOnly)?;
+        if self.is_p6() && fs.accounting()?.logical_bytes > u128::from(blocks) * 4096 {
+            return Err(Error::QuotaExceeded);
+        }
+        let mut compression = if policy == Compression::Lz4 {
+            Some((fs.file_page_map()?, packing::Group::default()))
+        } else {
+            None
+        };
         self.prepare()?;
         let mut refs = BTreeMap::new();
         for lba in 0..blocks {
             if fs.protected_lba(lba) {
                 let page = source.read(lba)?;
-                if page != [0; 4096] {
+                if let Some((map, group)) = &mut compression
+                    && is_data_page(map, lba)
+                {
+                    group.add(&mut self.graph, &mut self.dev, &mut refs, lba, &page)?;
+                } else if page != [0; 4096] {
                     refs.insert(
                         lba,
                         graph::store_data(&mut self.graph, &mut self.dev, &page)?,
@@ -769,11 +913,16 @@ impl<D: Device> SharedPool<D> {
                 }
             }
         }
+        if let Some((_, group)) = &mut compression {
+            group.publish(&mut self.graph, &mut self.dev, &mut refs)?;
+        }
+        refs.retain(|_, r| *r != PageRef::EMPTY);
         let root = graph::patch_root(&mut self.graph, &mut self.dev, PageRef::EMPTY, &refs)?;
         // Relire le contenu importé avant de l'engager, même si le média source
         // a fourni deux lectures différentes pendant la copie.
         let copied = Engine::mount(
             Volume {
+                p6: self.graph.is_p6(),
                 disk: &self.dev,
                 index: None,
                 root,
@@ -787,12 +936,27 @@ impl<D: Device> SharedPool<D> {
                 "source de migration modifiée pendant la copie",
             ));
         }
+        if let Some((expected, _)) = &compression
+            && copied.file_page_map()? != *expected
+        {
+            return Err(Error::Corrupt(
+                "classification de données modifiée pendant la copie",
+            ));
+        }
         next.entries.last_mut().ok_or(Error::NotFound)?.root = root;
         let mut leaves = 0u16;
         for lba in refs.keys() {
             leaves |= 1 << (lba / 64);
         }
-        let weight = 1 + u64::from(leaves.count_ones()) + refs.len() as u64;
+        let pages = if compression.is_some() {
+            refs.values()
+                .map(|r| r.block)
+                .collect::<std::collections::BTreeSet<_>>()
+                .len()
+        } else {
+            refs.len()
+        };
+        let weight = 1 + u64::from(leaves.count_ones()) + pages as u64;
         Self::validate_admission(&self.graph, next, self.dev.blocks(), Some((root, weight)))?;
         Ok(id)
     }
@@ -803,8 +967,18 @@ impl<D: Device> SharedPool<D> {
         source: &impl Device,
         kind: ObjectKind,
     ) -> Result<u64> {
+        self.import_with_compression(owner, ids, source, kind, Compression::None)
+    }
+    pub fn import_with_compression(
+        &mut self,
+        owner: [u8; 16],
+        ids: Ids,
+        source: &impl Device,
+        kind: ObjectKind,
+        policy: Compression,
+    ) -> Result<u64> {
         let mut next = self.candidate()?;
-        let result = self.stage_import(&mut next, owner, ids, source, kind.into());
+        let result = self.stage_import(&mut next, owner, ids, source, kind.into(), policy);
         let id = self.finish(result)?;
         self.publish(next)?;
         Ok(id)
@@ -816,7 +990,14 @@ impl<D: Device> SharedPool<D> {
         }
         let mut ids = Vec::new();
         let result = crate::pool::visit_ready(source, |owner, lineage, device| {
-            ids.push(self.stage_import(&mut next, owner, lineage, device, Kind::Origin)?);
+            ids.push(self.stage_import(
+                &mut next,
+                owner,
+                lineage,
+                device,
+                Kind::Origin,
+                Compression::None,
+            )?);
             Ok(())
         });
         self.finish(result)?;

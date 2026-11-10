@@ -1,7 +1,8 @@
-//! Prototype hôte NovaFS. Moteur de contenu P0 et pools de vues CoW P5.
+//! Prototype hôte NovaFS. Contenu P0, vues CoW P5 et compression des pools P6.
 mod cache;
 pub use cache::CacheStats;
 pub mod codec;
+mod compression;
 #[path = "../lab/device.rs"]
 pub mod device;
 mod engine;
@@ -30,6 +31,15 @@ pub use fs::{Kind, Stat};
 pub const BLOCK_BYTES: usize = 4096;
 pub const MAX_BLOCKS: u64 = 2_097_152;
 pub type Block = [u8; BLOCK_BYTES];
+
+/// Politique persistante appliquée aux nouvelles pages de données d'une vue.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[repr(u8)]
+pub enum Compression {
+    #[default]
+    None = 0,
+    Lz4 = 1,
+}
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug)]

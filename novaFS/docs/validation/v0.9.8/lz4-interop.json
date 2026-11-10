@@ -1,0 +1,17 @@
+{
+  "bibliotheque": "1.11.0",
+  "graine": "0x6e6f766146535036",
+  "architectures": {
+    "aarch64": {
+      "reference_vers_novafs": 256,
+      "novafs_vers_reference": 256,
+      "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+    },
+    "x86_64": {
+      "reference_vers_novafs": 256,
+      "novafs_vers_reference": 256,
+      "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+    }
+  },
+  "sha256_corpus": "c525b71ce2cf4dd9f9d3b324c2c984965e442daf137aff8d3a12535b92ae722c"
+}

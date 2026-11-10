@@ -1,0 +1,175 @@
+{
+  "reference": "3ca74ee",
+  "echanges": [
+    {
+      "producteur": "aarch64",
+      "lecteur": "x86_64",
+      "secteur": 512,
+      "politique_source": "none",
+      "politique_destination": "lz4",
+      "sha256_pool": "4ce0309532304c756fba26631186aa0357b54ce5dcf6b0d5372133b04a0aa1db",
+      "sha256_export": "8153ae5098d5542c317894cea4661812e3920df902d42291fa681f0e0b043313",
+      "sha256_enregistrements_logiques": "5dfb9226ee23e043ac477a03169e5af0b5bf5c956dd43a6013687a83344563d4",
+      "octets_economises_source": 0,
+      "octets_economises_restauration": 28672,
+      "restaurations_p6": 2,
+      "restaurations_p51": 1,
+      "refus_mutation_p51": 1,
+      "controles_sur_image_corrompue": 0
+    },
+    {
+      "producteur": "aarch64",
+      "lecteur": "x86_64",
+      "secteur": 512,
+      "politique_source": "lz4",
+      "politique_destination": "none",
+      "sha256_pool": "1981c15fd86e7c628a6c6d5b59e5eefd6e9f3b31b7f83a9fb8605f8d71b9f2ae",
+      "sha256_export": "932279700162dee6c3f61fc87539c981ac1b01976919d6d945cb0d82277c01bc",
+      "sha256_enregistrements_logiques": "5dfb9226ee23e043ac477a03169e5af0b5bf5c956dd43a6013687a83344563d4",
+      "octets_economises_source": 28672,
+      "octets_economises_restauration": 0,
+      "restaurations_p6": 2,
+      "restaurations_p51": 1,
+      "refus_mutation_p51": 1,
+      "controles_sur_image_corrompue": 2
+    },
+    {
+      "producteur": "aarch64",
+      "lecteur": "x86_64",
+      "secteur": 4096,
+      "politique_source": "none",
+      "politique_destination": "lz4",
+      "sha256_pool": "4ce0309532304c756fba26631186aa0357b54ce5dcf6b0d5372133b04a0aa1db",
+      "sha256_export": "a1fec795470028be2f630dae36780cb58bf351a9dcc75955dd672d77f10735fe",
+      "sha256_enregistrements_logiques": "5dfb9226ee23e043ac477a03169e5af0b5bf5c956dd43a6013687a83344563d4",
+      "octets_economises_source": 0,
+      "octets_economises_restauration": 28672,
+      "restaurations_p6": 2,
+      "restaurations_p51": 1,
+      "refus_mutation_p51": 1,
+      "controles_sur_image_corrompue": 0
+    },
+    {
+      "producteur": "aarch64",
+      "lecteur": "x86_64",
+      "secteur": 4096,
+      "politique_source": "lz4",
+      "politique_destination": "none",
+      "sha256_pool": "1981c15fd86e7c628a6c6d5b59e5eefd6e9f3b31b7f83a9fb8605f8d71b9f2ae",
+      "sha256_export": "e5d9eb7cba50e08b5eae16d2710e3a5436c87021e711a743abe4eb6350617d07",
+      "sha256_enregistrements_logiques": "5dfb9226ee23e043ac477a03169e5af0b5bf5c956dd43a6013687a83344563d4",
+      "octets_economises_source": 28672,
+      "octets_economises_restauration": 0,
+      "restaurations_p6": 2,
+      "restaurations_p51": 1,
+      "refus_mutation_p51": 1,
+      "controles_sur_image_corrompue": 2
+    },
+    {
+      "producteur": "x86_64",
+      "lecteur": "aarch64",
+      "secteur": 512,
+      "politique_source": "none",
+      "politique_destination": "lz4",
+      "sha256_pool": "4ce0309532304c756fba26631186aa0357b54ce5dcf6b0d5372133b04a0aa1db",
+      "sha256_export": "8153ae5098d5542c317894cea4661812e3920df902d42291fa681f0e0b043313",
+      "sha256_enregistrements_logiques": "5dfb9226ee23e043ac477a03169e5af0b5bf5c956dd43a6013687a83344563d4",
+      "octets_economises_source": 0,
+      "octets_economises_restauration": 28672,
+      "restaurations_p6": 2,
+      "restaurations_p51": 1,
+      "refus_mutation_p51": 1,
+      "controles_sur_image_corrompue": 0
+    },
+    {
+      "producteur": "x86_64",
+      "lecteur": "aarch64",
+      "secteur": 512,
+      "politique_source": "lz4",
+      "politique_destination": "none",
+      "sha256_pool": "1981c15fd86e7c628a6c6d5b59e5eefd6e9f3b31b7f83a9fb8605f8d71b9f2ae",
+      "sha256_export": "932279700162dee6c3f61fc87539c981ac1b01976919d6d945cb0d82277c01bc",
+      "sha256_enregistrements_logiques": "5dfb9226ee23e043ac477a03169e5af0b5bf5c956dd43a6013687a83344563d4",
+      "octets_economises_source": 28672,
+      "octets_economises_restauration": 0,
+      "restaurations_p6": 2,
+      "restaurations_p51": 1,
+      "refus_mutation_p51": 1,
+      "controles_sur_image_corrompue": 2
+    },
+    {
+      "producteur": "x86_64",
+      "lecteur": "aarch64",
+      "secteur": 4096,
+      "politique_source": "none",
+      "politique_destination": "lz4",
+      "sha256_pool": "4ce0309532304c756fba26631186aa0357b54ce5dcf6b0d5372133b04a0aa1db",
+      "sha256_export": "a1fec795470028be2f630dae36780cb58bf351a9dcc75955dd672d77f10735fe",
+      "sha256_enregistrements_logiques": "5dfb9226ee23e043ac477a03169e5af0b5bf5c956dd43a6013687a83344563d4",
+      "octets_economises_source": 0,
+      "octets_economises_restauration": 28672,
+      "restaurations_p6": 2,
+      "restaurations_p51": 1,
+      "refus_mutation_p51": 1,
+      "controles_sur_image_corrompue": 0
+    },
+    {
+      "producteur": "x86_64",
+      "lecteur": "aarch64",
+      "secteur": 4096,
+      "politique_source": "lz4",
+      "politique_destination": "none",
+      "sha256_pool": "1981c15fd86e7c628a6c6d5b59e5eefd6e9f3b31b7f83a9fb8605f8d71b9f2ae",
+      "sha256_export": "e5d9eb7cba50e08b5eae16d2710e3a5436c87021e711a743abe4eb6350617d07",
+      "sha256_enregistrements_logiques": "5dfb9226ee23e043ac477a03169e5af0b5bf5c956dd43a6013687a83344563d4",
+      "octets_economises_source": 28672,
+      "octets_economises_restauration": 0,
+      "restaurations_p6": 2,
+      "restaurations_p51": 1,
+      "refus_mutation_p51": 1,
+      "controles_sur_image_corrompue": 2
+    }
+  ],
+  "migrations": [
+    {
+      "producteur": "aarch64",
+      "lecteur": "x86_64",
+      "secteur_source": 512,
+      "secteur_destination": 4096,
+      "sha256_source": "79cb422c932bcedef35630ea31ed4ddb5c6a22f93ff9c79b17b31402fe2bde66",
+      "economie_octets": 36864
+    },
+    {
+      "producteur": "aarch64",
+      "lecteur": "x86_64",
+      "secteur_source": 4096,
+      "secteur_destination": 512,
+      "sha256_source": "79cb422c932bcedef35630ea31ed4ddb5c6a22f93ff9c79b17b31402fe2bde66",
+      "economie_octets": 36864
+    },
+    {
+      "producteur": "x86_64",
+      "lecteur": "aarch64",
+      "secteur_source": 512,
+      "secteur_destination": 4096,
+      "sha256_source": "79cb422c932bcedef35630ea31ed4ddb5c6a22f93ff9c79b17b31402fe2bde66",
+      "economie_octets": 36864
+    },
+    {
+      "producteur": "x86_64",
+      "lecteur": "aarch64",
+      "secteur_source": 4096,
+      "secteur_destination": 512,
+      "sha256_source": "79cb422c932bcedef35630ea31ed4ddb5c6a22f93ff9c79b17b31402fe2bde66",
+      "economie_octets": 36864
+    }
+  ],
+  "executables_p6_sha256": {
+    "aarch64": "c366b5233fbb098cf12744b648552af03d4c9a6f328be846404473274d9bbffa",
+    "x86_64": "55184cd72775087d65e5f3a1059c7da2e64eb97bffe97bb0519c738c25cc46a4"
+  },
+  "executables_p51_sha256": {
+    "aarch64": "dbd7cae504c1548237769e0e5e9696dfda4dcd954c074f883173c241f84535ff",
+    "x86_64": "122914a48ec46e1b0d80c365d861de69202d4e24b16e018b9e58c8c8bf98aa40"
+  }
+}

@@ -87,7 +87,10 @@ def instrument(root, shared):
     code = path.read_text()
     code = code.replace("    Empty,", "\n".join("    " + n + "," for n in variants) + "\n    Empty,")
     code = code.replace('    "sonde_vide",', "\n".join('    "' + n + '",' for n in variants) + '\n    "sonde_vide",')
-    code = code.replace("const NAMES: [&str; 10]", f"const NAMES: [&str; {10+len(variants)}]")
+    code, changes = re.subn(r"const NAMES: \[&str; (\d+)\]",
+                            lambda match: f"const NAMES: [&str; {int(match[1]) + len(variants)}]", code)
+    if changes != 1:
+        raise ValueError("dimension des sondes introuvable")
     path.write_text(code)
     shutil.copyfile(LAB / "p51profil.rs", root / "lab/p51profil.rs")
     manifest = root / "Cargo.toml"

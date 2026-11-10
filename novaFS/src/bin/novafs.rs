@@ -17,14 +17,14 @@ mod shared;
 const HELP: &str = concat!(
     "NovaFS v",
     env!("CARGO_PKG_VERSION"),
-    " — formats P0 et P5, images jetables, uniquement sur flux
+    " — formats P0 et P5, pools P6 avec compression LZ4, images jetables, uniquement sur flux
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
 novafs script BLOCS SECTEUR                        lit les commandes puis émet l’image sur stdout
 novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l’image sur stdin
 novafs verify BLOCS SECTEUR FS_ID LV_ID            vérifie intégralement les deux générations
 novafs check BLOCS SECTEUR FS_ID LV_ID             contrôle RO d’un LV, rapport JSON
-novafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE   vérifie une branche P5 et son reçu externe
-novafs check-pool BLOCS SECTEUR                    vérifie l’intégrité du pool P0 ou P5
+novafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE   vérifie une branche P5/P6 et son reçu externe
+novafs check-pool BLOCS SECTEUR                    vérifie l’intégrité du pool P0, P5 ou P6 (option --full)
 novafs space BLOCS SECTEUR FS_ID LV_ID             comptabilité du FS au repos, sur un LV hors ligne
 novafs space-pool BLOCS SECTEUR                    comptabilité physique du catalogue hors ligne
 novafs salvage BLOCS SECTEUR FS_ID LV_ID SLOT NOM extrait un fichier sur stdout en lecture seule
@@ -322,7 +322,10 @@ fn main() -> std::process::ExitCode {
     }
     let command = args.first().map(String::as_str);
     if command.is_some_and(shared::known)
-        && !matches!(command, Some("check-export" | "list-views"))
+        && !matches!(
+            command,
+            Some("check-export" | "list-views" | "compression-space")
+        )
         && args.get(1).map(String::as_str) != Some("--help")
         && !check::separate_binary_diagnostics().unwrap_or(false)
     {

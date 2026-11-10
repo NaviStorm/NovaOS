@@ -16,10 +16,12 @@ pub(super) fn help(command: &str) -> String {
         return "novafs check-export < sauvegarde.nvx\nRapport JSON de l’export autonome vérifié. Alias : novafs check --export.".into();
     }
     if command == "check" {
-        return "novafs check BLOCS SECTEUR FS_ID LV_ID < lv-p0.raw\nnovafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE < pool-p5.raw\nnovafs check --export < sauvegarde.nvx\nRapport JSON hors ligne. Codes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète.".into();
+        return "novafs check BLOCS SECTEUR FS_ID LV_ID < lv-p0.raw\nnovafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE [--full] < pool.raw\nnovafs check --export < sauvegarde.nvx\nRapport JSON hors ligne. Codes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète.".into();
     }
     let arguments = if command == "space" {
-        "BLOCS SECTEUR FS_ID LV_ID (P0) ou BLOCS SECTEUR POOL_ID OBJET (P5)"
+        "BLOCS SECTEUR FS_ID LV_ID (P0) ou BLOCS SECTEUR POOL_ID OBJET (P5 ou P6)"
+    } else if command == "check-pool" {
+        "BLOCS SECTEUR [--full]"
     } else {
         "BLOCS SECTEUR"
     };
@@ -200,6 +202,13 @@ fn fingerprint(m: &Metadata) -> (u64, i64, i64, i64, i64) {
 }
 
 fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
+    let args = if matches!(args[0].as_str(), "check" | "check-pool")
+        && args.last().is_some_and(|a| a == "--full")
+    {
+        &args[..args.len() - 1]
+    } else {
+        args
+    };
     let usage = |e: Error| (Status::Usage, e.to_string());
     let interrupted = |e: io::Error| (Status::Incomplete, e.to_string());
     if args == ["check-export"] || args == ["check", "--export"] {
@@ -285,7 +294,11 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
     let result = match (args[0].as_str(), ids) {
         (_, _) if shared => {
             let pool = SharedPool::open(dev).map_err(storage_failure)?;
-            let mut report = json!({"domaine":"pool_partage","format":"P5","pool":super::label(&pool.pool_id()),"vues":pool.list().len()});
+            let mut report = json!({"domaine":"pool_partage","format":if pool.is_p6() {"P6"} else {"P5"},"pool":super::label(&pool.pool_id()),"vues":pool.list().len()});
+            if pool.is_p6() {
+                report["verification"] =
+                    json!("graphe, décompression intégrale et deux générations FS");
+            }
             if matches!(args[0].as_str(), "space" | "space-pool") {
                 let (occupied, deferred, reserved) = pool.pool_usage().map_err(storage_failure)?;
                 report["capacite_blocs"] = json!(blocks);

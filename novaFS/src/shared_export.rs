@@ -234,6 +234,17 @@ pub fn restore_view<D: Device>(
     input: impl Read,
     owner: [u8; 16],
 ) -> Result<u64> {
+    restore_with_compression(pool, input, owner, crate::Compression::None)
+}
+
+/// Importe les pages logiques vérifiées avec la politique de la destination.
+/// L'archive complète ne contient ni flux LZ4 ni adresse du pool source.
+pub fn restore_with_compression<D: Device>(
+    pool: &mut SharedPool<D>,
+    input: impl Read,
+    owner: [u8; 16],
+    policy: crate::Compression,
+) -> Result<u64> {
     let (info, image) = materialize(input)?;
-    pool.import_image(owner, info.ids, &image, info.kind)
+    pool.import_with_compression(owner, info.ids, &image, info.kind, policy)
 }

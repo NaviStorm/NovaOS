@@ -22,9 +22,11 @@ pub enum Phase {
     ImageRead,
     Allocation,
     Deallocation,
+    Compression,
+    Decompression,
 }
 
-const NAMES: [&str; 10] = [
+const NAMES: [&str; 12] = [
     "sonde_vide",
     "lecture_moteur_64k",
     "recherche_cache",
@@ -35,6 +37,8 @@ const NAMES: [&str; 10] = [
     "lecture_image",
     "allocation_system",
     "liberation_system",
+    "compression_lz4",
+    "decompression_lz4",
 ];
 
 // Nanosecondes exactes de 0 à 15, puis huit classes par puissance de deux.
@@ -114,6 +118,17 @@ pub fn begin() {
     assert!(!ENABLED.with(Cell::get));
     COUNTERS.with(|c| c.borrow_mut().fill(EMPTY));
     ENABLED.with(|on| on.set(true));
+}
+
+/// Compteurs cumulatifs du thread pour le banc P6. La lecture ne réserve aucun tampon.
+pub fn codec_cpu_ns() -> (u128, u128) {
+    COUNTERS.with(|c| {
+        let c = c.borrow();
+        (
+            c[Phase::Compression as usize].cpu.sum,
+            c[Phase::Decompression as usize].cpu.sum,
+        )
+    })
 }
 
 /// Désactive avant la construction du JSON, dont le tas appartient au rapport.

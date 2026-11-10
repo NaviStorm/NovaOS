@@ -375,6 +375,38 @@ impl<D: Device> View for Engine<D> {
     }
 }
 impl<D: Device> Engine<D> {
+    /// Classification des deux générations d'un LV du pool partagé (1 024 LBA au plus).
+    /// Le contenu d'une page ne détermine jamais si elle peut être compressée.
+    pub(crate) fn file_page_map(&self) -> Result<[u64; 16]> {
+        let blocks = self.head.m.blocks;
+        if blocks > 1024 {
+            return Err(Error::Limit("classification de données hors profil du LV"));
+        }
+        let mut bits = [0u64; 16];
+        let mut collect = |m: &Manifest| {
+            crate::fs::data_pages(&DiskView::new(&self.dev, self.ids, m), |b| {
+                if b >= blocks {
+                    return Err(Error::Corrupt("page de données hors du volume"));
+                }
+                bits[b as usize / 64] |= 1 << (b % 64);
+                Ok(())
+            })
+        };
+        collect(&self.head.m)?;
+        if self.head.m.previous != 0 {
+            let prior = Head::load(&self.dev, self.ids, 1 - self.head.slot)?;
+            if prior.reference.birth != self.head.m.previous
+                || prior.reference.hash != self.head.m.previous_hash
+            {
+                return Err(Error::Corrupt(
+                    "prédécesseur modifié pendant la classification",
+                ));
+            }
+            collect(&prior.m)?;
+        }
+        Ok(bits)
+    }
+
     fn cache(&self) -> std::sync::MutexGuard<'_, crate::cache::Cache> {
         self.cache.lock().expect("cache de lecture interrompu")
     }
