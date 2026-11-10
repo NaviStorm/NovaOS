@@ -17,7 +17,7 @@ IMAGE_BYTES = 384 * 4096
 
 def executable(target):
     output = subprocess.check_output(
-        [HERE / "lab", "test", "--no-run", "--test", "interop", "--message-format=json"],
+        [HERE / "run", "test", "--no-run", "--test", "interop", "--message-format=json"],
         env={**os.environ, "NOVAFS_TARGET": target}, text=True,
     )
     paths = [msg["executable"] for line in output.splitlines()

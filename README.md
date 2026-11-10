@@ -14,7 +14,7 @@ Dix appels IPC permettent à des processus isolés de communiquer par endpoints 
 
 ## Prototype de stockage macOS
 
-NovaFS P0 v0.9.0 s’exécute sur des images jetables dans le workspace hôte `prototype/novafs`. Le noyau amorcé sous QEMU reste en v0.8.0. [Utiliser le prototype](prototype/novafs/README.md) · [Résultats des essais](docs/novafs-prototype-macos.md)
+NovaFS P0 v0.9.0 s’exécute sur des images jetables dans le workspace hôte `novaFS`. Le noyau amorcé sous QEMU reste en v0.8.0. [Utiliser le prototype](novaFS/README.md) · [Résultats des essais](novaFS/docs/novafs-prototype-macos.md)
 
 ## Démarrage manuel dans QEMU
 

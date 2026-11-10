@@ -4,7 +4,7 @@
   "date_debut_utc": "2026-11-10T17:37:58+00:00",
   "macOS": "27.2",
   "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
-  "commande_reproduction": "/usr/bin/time -l prototype/novafs/target/x86_64-apple-darwin/release/novafs-bench 512",
+  "commande_reproduction": "/usr/bin/time -l novaFS/target/x86_64-apple-darwin/release/novafs-bench 512",
   "commande_executee": "/usr/bin/time -l /private/tmp/nova09-x86-qualified 512",
   "binaire": "Copie immuable du binaire de release durant les deux campagnes, sans reconstruction intermédiaire.",
   "sha256_executable": "8d9647474eb659ead08dfb982ed10289d2eeffae0a519e85af193d166364c658",

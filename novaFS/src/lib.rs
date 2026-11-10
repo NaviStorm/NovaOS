@@ -2,6 +2,7 @@
 mod cache;
 pub use cache::CacheStats;
 pub mod codec;
+#[path = "../lab/device.rs"]
 pub mod device;
 mod engine;
 mod fs;

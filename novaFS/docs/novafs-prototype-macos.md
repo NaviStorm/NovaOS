@@ -1,10 +1,10 @@
 # NovaFS 0.9.0 — résultats du prototype macOS
 
-**Le moteur P0 fonctionne sur des images jetables.** Les quinze scénarios du plan ont été exécutés avec le moteur Rust sur macOS ARM64 natif et avec un exécutable macOS x86_64 sous traduction sur le même Mac. Les droits et les files de clients ainsi que le catalogue de pool ont été exercés dans le banc hôte. Les opérations de fichiers, les B+Trees, les extents, les vérifications de blocs et les commits utilisés par ces essais sont ceux du moteur livré. [Guide et commandes](../prototype/novafs/README.md) · [Format expérimental](novafs-disk-format.md) · [Plan de référence](novafs-test-plan.md)
+**Le moteur P0 fonctionne sur des images jetables.** Les quinze scénarios du plan ont été exécutés avec le moteur Rust sur macOS ARM64 natif et avec un exécutable macOS x86_64 sous traduction sur le même Mac. Les droits et les files de clients ainsi que le catalogue de pool ont été exercés dans le banc hôte. Les opérations de fichiers, les B+Trees, les extents, les vérifications de blocs et les commits utilisés par ces essais sont ceux du moteur livré. [Guide et commandes](../README.md) · [Format expérimental](novafs-disk-format.md) · [Plan de référence](novafs-test-plan.md)
 
 ## Périmètre et reproductibilité
 
-Base Git `ab0b5c1`, Rust stable 1.99.1, macOS 27.2. Le paquet hôte a son propre verrou Cargo. La commande `git log -1 --format=%H -- docs/novafs-prototype-macos.md` identifie la livraison. Les deux suites de régression existantes `make ARCH=x86_64 test` et `make ARCH=aarch64 test` ont également réussi sur le noyau v0.8.0. Ces régressions QEMU ne mesurent pas le stockage.
+Base Git `ab0b5c1`, Rust stable 1.99.1, macOS 27.2. Le paquet hôte a son propre verrou Cargo. Le commit de livraison du prototype est `8820a58`. Les deux suites de régression existantes `make ARCH=x86_64 test` et `make ARCH=aarch64 test` ont également réussi sur le noyau v0.8.0. Ces régressions QEMU ne mesurent pas le stockage.
 
 Le formateur a utilisé des fichiers ordinaires temporaires anonymes. Les coupures ont été injectées dans un périphérique RAM distinct qui sépare le cache volatil du support stable. L’échange interarchitecture passe par des tubes entre deux exécutables Mach-O identifiés. Les essais de performances utilisent les écritures et synchronisations réelles de fichiers macOS. Aucun disque physique n’a été ouvert.
 
@@ -28,7 +28,7 @@ Le formateur a utilisé des fichiers ordinaires temporaires anonymes. Les coupur
 | P02 | Deux niveaux de commit | Réussi | Réussi | 3 549 injections par architecture sur préparation du LV, formatage, publication de l’état prêt, suppression et réattribution. État du pool vérifié avant toute activation du FS. |
 | F01 | Format croisé | Réussi | Réussi | Quatre images canoniques identiques octet par octet, huit échanges entre architectures et géométries, somme indépendante, refus de versions, de bits requis et d’endianité altérée. |
 
-Les expériences V01–V06 utilisent des ports et des sessions attribués par le contrôleur de test macOS. Deux threads se disputent un verrou d’écrivain hôte. Les délais de bootstrap y sont simulés. P01–P02 emploient une fixture de catalogue réservée aux tests, avec ses propres ancres et sa table de volumes. Ces résultats laissent ouverts l’ordonnancement, les droits DMA et le lancement de futurs services NovaOS. [Banc clients](../prototype/novafs/tests/clients.rs) · [Rapport détaillé des pannes et des volumes](novafs-prototype-pannes.md) · [Transferts F01 exécutés](validation/v0.9.0/echange.txt)
+Les expériences V01–V06 utilisent des ports et des sessions attribués par le contrôleur de test macOS. Deux threads se disputent un verrou d’écrivain hôte. Les délais de bootstrap y sont simulés. P01–P02 emploient une fixture de catalogue réservée aux tests, avec ses propres ancres et sa table de volumes. Ces résultats laissent ouverts l’ordonnancement, les droits DMA et le lancement de futurs services NovaOS. [Banc clients](../tests/clients.rs) · [Rapport détaillé des pannes et des volumes](novafs-prototype-pannes.md) · [Transferts F01 exécutés](validation/v0.9.0/echange.txt)
 
 ## Propriétés et vérification indépendante
 
@@ -39,7 +39,7 @@ Les expériences V01–V06 utilisent des ports et des sessions attribués par le
 
 Chaque campagne longue utilise 100 graines de 10 000 opérations. Un modèle indépendant de noms, identités et vecteurs d’octets fournit l’oracle des réponses et du contenu après remontage. Les pénuries utilisent le crédit de pages de construction du moteur. Les allocations de petite taille de la bibliothèque Rust peuvent encore faire échouer le processus en cas d’épuisement réel de la mémoire de macOS. Le banc ne provoque pas une pénurie générale du Mac.
 
-Un corpus complémentaire de 10 000 mutations de cellules, avec SHA-256 recalculé, a entraîné 8 688 rejets et 1 312 décodages structurellement canoniques. Chaque nœud accepté a été réencodé à l’identique. La validation sémantique de la propriété des blocs s’exerce séparément sur des images complètes. Les essais de CLI passent par les véritables commandes de création, script, inspection, vérification et extraction d’un slot en lecture seule. [Propriétés](../prototype/novafs/tests/properties.rs) · [Mutations du décodeur](../prototype/novafs/tests/decoder.rs) · [Résultats ARM64](validation/v0.9.0/tests-aarch64.json) · [Résultats x86_64](validation/v0.9.0/tests-x86_64.json)
+Un corpus complémentaire de 10 000 mutations de cellules, avec SHA-256 recalculé, a entraîné 8 688 rejets et 1 312 décodages structurellement canoniques. Chaque nœud accepté a été réencodé à l’identique. La validation sémantique de la propriété des blocs s’exerce séparément sur des images complètes. Les essais de CLI passent par les véritables commandes de création, script, inspection, vérification et extraction d’un slot en lecture seule. [Propriétés](../tests/properties.rs) · [Mutations du décodeur](../tests/decoder.rs) · [Résultats ARM64](validation/v0.9.0/tests-aarch64.json) · [Résultats x86_64](validation/v0.9.0/tests-x86_64.json)
 
 ## Performances sur fichiers temporaires
 
