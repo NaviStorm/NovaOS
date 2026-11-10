@@ -13,7 +13,7 @@ mod check;
 mod heap_meter;
 
 const HELP: &str = concat!(
-    "NovaFS P3 v",
+    "NovaFS P4 v",
     env!("CARGO_PKG_VERSION"),
     " — format P0, images jetables, uniquement sur flux
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
@@ -29,7 +29,7 @@ SECTEUR = 512 ou 4096. Identités = 32 chiffres hexadécimaux chacune.
 Commandes de script (une par ligne, chemins NovaFS sans espaces) :
   mkdir /nom | create /nom | rename /source /dest | unlink /nom | collect
   write /nom OFFSET HEX | read /nom OFFSET LONGUEUR | inspect | verify
-  policy BLOCS_MAINTENANCE QUOTA_OCTETS|none | space
+  policy BLOCS_MAINTENANCE QUOTA_OCTETS|none | space | cache [OCTETS]
 Les résultats du script, les identités générées et les erreurs vont sur stderr."
 );
 
@@ -166,6 +166,24 @@ fn commands(fs: &mut Engine<&mut FileImage>, mut input: impl BufRead) -> Result<
             ),
             ("inspect", []) => eprintln!("génération={} {:?}", fs.generation(), fs.space_stats()),
             ("space", []) => eprintln!("{}", check::volume_space(&fs.accounting()?)),
+            ("cache", [bytes]) => {
+                let limit =
+                    usize::try_from(num(bytes)?).map_err(|_| Error::Limit("budget cache"))?;
+                fs.set_cache_budget(limit)?;
+            }
+            ("cache", []) => {
+                let s = fs.cache_stats();
+                eprintln!(
+                    "{}",
+                    serde_json::json!({
+                        "budget_octets": s.budget_bytes, "capacite_pages": s.capacity_pages,
+                        "pages": s.pages, "contenu_octets": s.payload_bytes, "index_octets": s.metadata_bytes,
+                        "debite_octets": s.charged_bytes, "fixe_octets": s.fixed_bytes,
+                        "succes": s.hits, "absences": s.misses, "evictions": s.evictions,
+                        "invalidations": s.invalidations, "pas_clock": s.clock_steps
+                    })
+                );
+            }
             ("policy", [reserve, quota]) => {
                 fs.set_volume_policy(novafs::VolumePolicy {
                     maintenance_blocks: num(reserve)?,
@@ -195,7 +213,7 @@ fn run(args: &[String]) -> Result<()> {
         println!("{usage}");
         if args[0] == "script" {
             println!(
-                "policy BLOCS_MAINTENANCE QUOTA_OCTETS|none    fixe la politique de cette session\nspace    écrit les compteurs JSON sur stderr (l’image reste sur stdout)"
+                "policy BLOCS_MAINTENANCE QUOTA_OCTETS|none    fixe la politique de cette session\nspace    écrit les compteurs d’espace sur stderr\ncache OCTETS    règle le budget pages et index (0 le désactive)\ncache    écrit les compteurs du cache sur stderr"
             );
         }
         return Ok(());

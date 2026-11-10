@@ -22,12 +22,38 @@ fn tool(args: &[&str], input: &[u8]) -> Output {
     })
 }
 #[test]
+fn cli_budget_cache_et_restitution() {
+    let output = tool(
+        &["script", "320", "4096"],
+        b"cache 16384\ncreate /f\nwrite /f 0 ab\nread /f 0 1\nread /f 0 1\ncache\ncache 0\ncache\n",
+    );
+    assert!(output.status.success(), "{:?}", output.stderr);
+    let diag = std::str::from_utf8(&output.stderr).unwrap();
+    let rows: Vec<serde_json::Value> = diag
+        .lines()
+        .filter(|l| l.starts_with('{'))
+        .map(|l| serde_json::from_str(l).unwrap())
+        .collect();
+    assert_eq!(rows.len(), 2);
+    assert!(rows[0]["pages"].as_u64().unwrap() > 0);
+    assert!(rows[0]["debite_octets"].as_u64().unwrap() <= 16384);
+    assert_eq!(rows[1]["debite_octets"], 0);
+    assert_eq!(rows[1]["capacite_pages"], 0);
+    let help = tool(&["script", "--help"], b"");
+    assert!(
+        std::str::from_utf8(&help.stdout)
+            .unwrap()
+            .contains("cache OCTETS")
+    );
+}
+
+#[test]
 fn cli_images_anonymes_et_sauvetage() {
     let help = tool(&["--help"], b"");
     assert!(help.status.success());
     assert!(
         help.stdout.starts_with(
-            concat!("NovaFS P3 v", env!("CARGO_PKG_VERSION"), " — format P0").as_bytes()
+            concat!("NovaFS P4 v", env!("CARGO_PKG_VERSION"), " — format P0").as_bytes()
         )
     );
     for sub in [

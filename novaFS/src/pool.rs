@@ -1,9 +1,11 @@
 //! Catalogue de volumes hôte. Le contrôle P2 demeure en lecture seule.
 use crate::{Block, Device, Error, Ids, IntegrityReport, Result, check_image};
 mod catalog;
+mod coordinator;
 mod manager;
 use catalog::{Entry, load, validate_pair};
 pub use catalog::{GRAIN, Type, Uid};
+pub use coordinator::{PoolCoordinator, ReadRequest, WriteRequest};
 pub use manager::{
     Pool, PoolSpaceStats, View, VolumeInfo, VolumeReservation, inspect_space, inspect_usage,
 };

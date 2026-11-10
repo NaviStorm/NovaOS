@@ -18,6 +18,8 @@ pub(crate) static LIVE: AtomicUsize = AtomicUsize::new(0);
 pub(crate) static PEAK: AtomicUsize = AtomicUsize::new(0);
 pub(crate) static PHASE_PEAK: AtomicUsize = AtomicUsize::new(0);
 
+pub(crate) static ALLOCATIONS: AtomicUsize = AtomicUsize::new(0);
+
 struct Measured;
 #[global_allocator]
 static HEAP: Measured = Measured;
@@ -56,6 +58,7 @@ unsafe impl GlobalAlloc for Measured {
         if !ptr.is_null() {
             // Sûreté : l’allocation vient de réussir.
             let bytes = unsafe { capacity(ptr, layout) };
+            ALLOCATIONS.fetch_add(1, Ordering::Relaxed);
             record_peak(LIVE.fetch_add(bytes, Ordering::Relaxed) + bytes);
         }
         ptr

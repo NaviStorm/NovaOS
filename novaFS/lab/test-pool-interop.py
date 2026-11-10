@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Vérifie sur macOS le catalogue épais P2/P3 et les 16 systèmes de fichiers inclus."""
+"""Vérifie entre deux versions le catalogue épais et les 16 systèmes de fichiers inclus."""
 import argparse
 import hashlib
 import json
@@ -52,7 +52,7 @@ def check_accounting(result):
 
 def campaign(reference, directory):
     binaries, images = {}, {}
-    for version, launcher in (("P2", reference), ("P3", HERE / "run")):
+    for version, launcher in (("reference", reference), ("courante", HERE / "run")):
         for arch in CPUS:
             cargo = directory / version
             writer = build(launcher, arch, cargo, ["test", "--no-run", "--test", "volumes"], "volumes")
@@ -72,7 +72,7 @@ def campaign(reference, directory):
         subprocess.run(["/usr/bin/cmp", "-s", baseline, image], check=True)
         other = next(a for a in CPUS if a != arch)
         for sector in (512, 4096):
-            for version in ("P2", "P3"):
+            for version in ("reference", "courante"):
                 result = report(binaries[version, other], "check-pool", sector, image)
                 if result["paire"]["generation"] != 33 or any(
                     v["contenu"]["etat"] != "verifie" or v["type"] != "pret"
@@ -80,7 +80,7 @@ def campaign(reference, directory):
                 ):
                     raise ValueError("catalogue ou contenu d'un LV non vérifié")
                 integrity += 1
-            check_accounting(report(binaries["P3", other], "space-pool", sector, image))
+            check_accounting(report(binaries["courante", other], "space-pool", sector, image))
             accounts += 1
         with image.open("rb") as f:
             if hashlib.file_digest(f, "sha256").hexdigest() != digest:
@@ -91,6 +91,6 @@ def campaign(reference, directory):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--reference", required=True, type=Path, help="lanceur lab/run du commit P2")
+    parser.add_argument("--reference", required=True, type=Path, help="lanceur lab/run de P2 ou d’une version ultérieure")
     with tempfile.TemporaryDirectory(prefix="novafs-pool-interop-") as temp:
         campaign(parser.parse_args().reference.resolve(), Path(temp))

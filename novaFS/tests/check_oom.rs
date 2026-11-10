@@ -142,3 +142,33 @@ fn refus_reels_bitmap_table_cle_et_valeur_puis_reprise() -> Result<()> {
     }
     Ok(())
 }
+
+#[test]
+fn refus_du_repertoire_et_de_la_page_cache_sans_perte_de_lecture() -> Result<()> {
+    let ids = Ids {
+        fs: [0x21; 16],
+        lv: [0x52; 16],
+    };
+    for sector in [512, 4096] {
+        let mut fs = Engine::format(SimDevice::new(257, sector)?, ids)?;
+        fs.create("/x")?;
+        fs.write("/x", 0, b"ok")?;
+        // Avec deux cellules dans l'arbre objets, ni la requête d'un octet
+        // ni le décodeur de cette fixture ne demandent l'une de ces tailles.
+        // 512 octets pour les seaux, 16 Kio pour les 256 descripteurs,
+        // 4 Kio pour une page de contenu. L'échec est consommé une seule fois.
+        for bytes in [512, 16 * 1024, 4096] {
+            fs.reclaim_cache();
+            DENY_ONCE.with(|want| want.set(bytes));
+            let data = fs.read("/x", 0, 1)?;
+            DENY_ONCE.with(|want| assert_eq!(want.replace(0), 0));
+            assert_eq!(data, b"o");
+            assert_eq!(fs.read("/x", 0, 2)?, b"ok");
+            assert!(fs.cache_stats().pages > 0);
+            fs.verify()?;
+            fs.reclaim_cache();
+            assert_eq!(fs.cache_stats().charged_bytes, 0);
+        }
+    }
+    Ok(())
+}

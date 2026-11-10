@@ -1,7 +1,7 @@
 //! Banc macOS sur fichiers temporaires anonymes. Les chronos incluent les
 //! contrôles des résultats, les copies de données et les deux sync_all de commit.
 use novafs::device::{FileImage, Persistence, SimDevice, SimFault};
-use novafs::{Block, Device, Engine, Error, Ids, Mode, Result};
+use novafs::{Block, Device, Engine, Error, Ids, Mode, Ref, Result, tree};
 use std::{
     cell::{Cell, RefCell},
     rc::Rc,
@@ -10,7 +10,12 @@ use std::{
 };
 
 mod heap_meter;
+mod performance;
 mod reservation_bench;
+// Même implémentation privée que le moteur, sollicitée isolément sans E/S.
+#[allow(dead_code)]
+#[path = "../src/cache.rs"]
+mod cache;
 use heap_meter::{LIVE, PEAK, PHASE_PEAK};
 
 const IDS: Ids = Ids {
@@ -31,6 +36,11 @@ struct Counts {
     writes: Cell<u64>,
     flushes: Cell<u64>,
     flush_ns: Cell<u128>,
+    last_write_was_anchor: Cell<Option<bool>>,
+    f1: Cell<u64>,
+    f1_ns: Cell<u128>,
+    f2: Cell<u64>,
+    f2_ns: Cell<u128>,
 }
 impl Counts {
     fn readout(&self) -> (u64, u64, u64, u128) {
@@ -64,6 +74,7 @@ impl Device for Image {
     }
     fn write(&mut self, block: u64, data: &Block) -> Result<()> {
         self.file.write(block, data)?;
+        self.counts.last_write_was_anchor.set(Some(block < 2));
         self.counts.writes.set(self.counts.writes.get() + 1);
         let mut tracker = self.reuse.borrow_mut();
         if tracker.phase == 1 && data[..16] == [0xa1; 16] {
@@ -76,9 +87,21 @@ impl Device for Image {
     fn flush(&mut self) -> Result<()> {
         let start = Instant::now();
         let result = self.file.flush();
+        let duration = start.elapsed().as_nanos();
         self.counts
             .flush_ns
-            .set(self.counts.flush_ns.get() + start.elapsed().as_nanos());
+            .set(self.counts.flush_ns.get() + duration);
+        match self.counts.last_write_was_anchor.take() {
+            Some(true) => {
+                self.counts.f2.set(self.counts.f2.get() + 1);
+                self.counts.f2_ns.set(self.counts.f2_ns.get() + duration);
+            }
+            Some(false) => {
+                self.counts.f1.set(self.counts.f1.get() + 1);
+                self.counts.f1_ns.set(self.counts.f1_ns.get() + duration);
+            }
+            None => {}
+        }
         self.counts.flushes.set(self.counts.flushes.get() + 1);
         result
     }
@@ -113,6 +136,14 @@ fn measure(
     let mut times = Vec::with_capacity(operations);
     PHASE_PEAK.store(LIVE.load(Ordering::Relaxed), Ordering::Relaxed);
     let before = counts.readout();
+    let barriers = (
+        counts.f1.get(),
+        counts.f2.get(),
+        counts.f1_ns.get(),
+        counts.f2_ns.get(),
+    );
+    let allocs = heap_meter::ALLOCATIONS.load(Ordering::Relaxed);
+    let baseline = LIVE.load(Ordering::Relaxed);
     let begin = Instant::now();
     for i in 0..operations {
         let op = Instant::now();
@@ -122,6 +153,7 @@ fn measure(
     let elapsed = begin.elapsed().as_nanos().max(1);
     let after = counts.readout();
     let peak = PHASE_PEAK.load(Ordering::Relaxed);
+    let allocations = heap_meter::ALLOCATIONS.load(Ordering::Relaxed) - allocs;
     times.sort_unstable();
     let quantile = |p: usize| times[(operations * p).div_ceil(100) - 1];
     println!(
@@ -134,6 +166,13 @@ fn measure(
         after.1 - before.1,
         after.2 - before.2,
         after.3 - before.3,
+    );
+    println!(
+        "instrumentation\t{label}\t{series}\t{}\t{}\t{}\t{}\t{allocations}\t{baseline}",
+        counts.f1.get() - barriers.0,
+        counts.f2.get() - barriers.1,
+        counts.f1_ns.get() - barriers.2,
+        counts.f2_ns.get() - barriers.3
     );
     Ok(())
 }
@@ -564,7 +603,7 @@ fn main() -> Result<()> {
         None | Some("4096") => 4096,
         _ => {
             return Err(Error::Invalid(
-                "novafs-bench [512|4096] [complet|pression|memoire|reprise|prepare-controle|restitution-controle|reservations]",
+                "novafs-bench [512|4096] [complet|pression|memoire|reprise|prepare-controle|restitution-controle|reservations|profil]",
             ));
         }
     };
@@ -587,6 +626,9 @@ fn main() -> Result<()> {
             "prepare-controle" => prepare_check_image(sector),
             "restitution-controle" => check_restitution(sector),
             "reservations" => reservation_bench::run(sector),
+            "profil" => performance::run(sector),
+            #[cfg(feature = "bench-coordinator")]
+            "coordinateur" => performance::coordinator(sector),
             _ => Err(Error::Invalid("scénario inconnu")),
         })?
         .join()

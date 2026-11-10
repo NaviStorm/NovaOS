@@ -117,6 +117,10 @@ pub struct PreparedWrite<'a, D> {
 }
 
 impl<D: Device> PreparedWrite<'_, D> {
+    /// Seul le coordinateur garde le plan hors de l'emprunt, sous ticket exclusif du LV.
+    pub(crate) fn detach(self) -> (crate::Ref, Option<Plan>) {
+        (self.engine.receipt(), self.plan)
+    }
     pub fn cost(&self) -> ReservationCost {
         match &self.plan {
             Some(p) => p.cost,
@@ -137,6 +141,21 @@ impl<D: Device> PreparedWrite<'_, D> {
 
     pub fn commit(self) -> Result<()> {
         self.engine.publish(self.plan)
+    }
+}
+
+impl<D: Device> Engine<D> {
+    pub(crate) fn commit_ticket(
+        &mut self,
+        base: crate::Ref,
+        plan: Option<Plan>,
+    ) -> Result<crate::Ref> {
+        self.check_health()?;
+        if base != self.receipt() {
+            return Err(Error::Invalid("génération du plan périmée"));
+        }
+        self.publish(plan)?;
+        Ok(self.receipt())
     }
 }
 

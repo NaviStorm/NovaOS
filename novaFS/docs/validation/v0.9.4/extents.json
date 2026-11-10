@@ -1,0 +1,1218 @@
+{
+  "aarch64": {
+    "p3": [
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 22064416,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 21804708,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 21934708,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 21906000,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 21791416,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 63012542,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 63050541,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 62647500,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 62436750,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 62149583,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 21930583,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 21915125,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 20442250,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 21874500,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 21921667,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 61463542,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 63052291,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 64282167,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 63260625,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 63110709,
+        "secteur": 4096
+      }
+    ],
+    "ab": [
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5392042,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5342458,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5385292,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5361083,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5284584,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45903459,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45859708,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45473209,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 46124917,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 46002667,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5360417,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5351083,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 4952667,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 4896166,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5277083,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 46007166,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45520917,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45888708,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 44742625,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45140917,
+        "secteur": 4096
+      }
+    ],
+    "p4": [
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5444167,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5443917,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5457375,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5506709,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5513709,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45654875,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45549959,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45560875,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45788500,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45754584,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5457916,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5426083,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5477708,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5436750,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 5478416,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45384625,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45396166,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45610875,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45532292,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 45565208,
+        "secteur": 4096
+      }
+    ]
+  },
+  "x86_64": {
+    "p3": [
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31274333,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31941042,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31512958,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31499666,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31447416,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 91423667,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 92505166,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 91795000,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 91764500,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 91202917,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31425125,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31399208,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31525791,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 31166584,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 10368,
+        "octets_demandes": 10715264,
+        "ns": 30794542,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 92505417,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 92075875,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 92566625,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 91322208,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 4736,
+        "appels_alloc": 19200,
+        "octets_demandes": 14075392,
+        "ns": 92080292,
+        "secteur": 4096
+      }
+    ],
+    "ab": [
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 7800334,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8025500,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 7854250,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8063958,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8120167,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68979958,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68623916,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68473792,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 67705625,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 67511042,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8003792,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 9015208,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 7658500,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8068959,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 7910917,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68424542,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 67884375,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 67850709,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68763208,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 69869417,
+        "secteur": 4096
+      }
+    ],
+    "p4": [
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8242292,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8236917,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8231667,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8206125,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8260292,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 69336500,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 69035500,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 69265291,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 69579000,
+        "secteur": 512
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 69378042,
+        "secteur": 512
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8194208,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8189625,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8175750,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8180834,
+        "secteur": 4096
+      },
+      {
+        "phase": "lecture_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 0,
+        "appels_alloc": 2688,
+        "octets_demandes": 8591744,
+        "ns": 8246917,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 0,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 70848250,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 1,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68454458,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 2,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68698500,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 3,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68403459,
+        "secteur": 4096
+      },
+      {
+        "phase": "preparer_64k",
+        "serie": 4,
+        "operations": 128,
+        "blocs_lus": 2816,
+        "appels_alloc": 11520,
+        "octets_demandes": 11951872,
+        "ns": 68444791,
+        "secteur": 4096
+      }
+    ]
+  }
+}

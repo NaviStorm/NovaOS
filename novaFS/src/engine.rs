@@ -32,6 +32,8 @@ pub struct SpaceStats {
 pub trait View: ReadTree {
     fn ids(&self) -> Ids;
     fn manifest(&self) -> &Manifest;
+    /// Lecture brute d'un bloc sans contrôle de son checksum. L'appelant qui
+    /// dispose d'une référence de données doit utiliser checked_data.
     fn raw(&self, b: u64) -> Result<Block>;
     fn checked_data(&self, r: Ref) -> Result<Block> {
         check_payload(self.ids(), r, self.raw(r.block)?)
@@ -277,15 +279,16 @@ pub struct Engine<D> {
 }
 impl<D: Device> ReadTree for Engine<D> {
     fn read(&self, r: Ref, f: Family) -> Result<Node> {
-        r.validate(self.head.m.blocks, self.generation())?;
-        let cached = self.cache().get(Some(f), r);
-        if let Some(bytes) = cached {
-            return Node::decode(&bytes, self.ids, r, f);
-        }
-        let bytes = self.dev.read(r.block)?;
-        let node = Node::decode(&bytes, self.ids, r, f)?;
-        self.cache().remember(Some(f), r, bytes);
-        Ok(node)
+        (|| {
+            if let Some(bytes) = self.cached(Some(f), r)? {
+                return Node::decode(&bytes, self.ids, r, f);
+            }
+            let bytes = self.dev.read(r.block)?;
+            let node = Node::decode(&bytes, self.ids, r, f)?;
+            self.remember_checked(Some(f), r, bytes)?;
+            Ok(node)
+        })()
+        .map_err(|e| self.read_failure(e))
     }
 }
 impl<D: Device> View for Engine<D> {
@@ -296,22 +299,43 @@ impl<D: Device> View for Engine<D> {
         &self.head.m
     }
     fn raw(&self, b: u64) -> Result<Block> {
-        self.dev.read(b)
+        self.check_health()?;
+        self.observe(self.dev.read(b))
     }
     fn checked_data(&self, r: Ref) -> Result<Block> {
-        r.validate(self.head.m.blocks, self.generation())?;
-        let cached = self.cache().get(None, r);
-        if let Some(bytes) = cached {
-            return Ok(bytes);
-        }
-        let bytes = check_payload(self.ids, r, self.dev.read(r.block)?)?;
-        self.cache().remember(None, r, bytes);
-        Ok(bytes)
+        (|| {
+            if let Some(bytes) = self.cached(None, r)? {
+                return Ok(bytes);
+            }
+            let bytes = check_payload(self.ids, r, self.dev.read(r.block)?)?;
+            self.remember_checked(None, r, bytes)?;
+            Ok(bytes)
+        })()
+        .map_err(|e| self.read_failure(e))
     }
 }
 impl<D: Device> Engine<D> {
     fn cache(&self) -> std::sync::MutexGuard<'_, crate::cache::Cache> {
         self.cache.lock().expect("cache de lecture interrompu")
+    }
+    fn cached(&self, kind: Option<Family>, r: Ref) -> Result<Option<Block>> {
+        let mut cache = self.cache();
+        self.check_health()?;
+        r.validate(self.head.m.blocks, self.generation())?;
+        Ok(cache.get(kind, r))
+    }
+    fn remember_checked(&self, kind: Option<Family>, r: Ref, data: Block) -> Result<()> {
+        // Une lecture en vol peut finir après la découverte d'une faute par
+        // un autre client. Revérifier sous le même verrou que la purge.
+        let mut cache = self.cache();
+        self.check_health()?;
+        cache.remember(kind, r, data);
+        Ok(())
+    }
+    /// Budget du tas pour les pages propres et leur index. Zéro désactive les
+    /// admissions. Un changement de capacité rend immédiatement la mémoire.
+    pub fn set_cache_budget(&self, bytes: usize) -> Result<()> {
+        self.cache().set_budget(bytes)
     }
     pub fn cache_stats(&self) -> crate::CacheStats {
         self.cache().stats()
@@ -328,8 +352,8 @@ impl<D: Device> Engine<D> {
     pub fn into_device(self) -> D {
         self.dev
     }
-    fn check_health(&self) -> Result<()> {
-        match self.health.load(Ordering::Relaxed) {
+    pub(crate) fn check_health(&self) -> Result<()> {
+        match self.health.load(Ordering::Acquire) {
             HEALTHY => Ok(()),
             FAULTED => Err(Error::Unavailable),
             _ => Err(Error::UnknownOutcome),
@@ -344,13 +368,31 @@ impl<D: Device> Engine<D> {
     pub fn set_staging_budget(&mut self, bytes: usize) {
         self.staging_limit = (bytes / 4096).min(MAX_COW);
     }
-    pub(crate) fn observe<T>(&self, result: Result<T>) -> Result<T> {
-        self.check_health()?;
-        if matches!(result, Err(Error::Corrupt(_) | Error::Io(_))) {
-            self.health.store(FAULTED, Ordering::Relaxed);
-            self.reclaim_cache();
+    fn read_failure(&self, error: Error) -> Error {
+        if !matches!(error, Error::Corrupt(_) | Error::Io(_)) {
+            return self.check_health().err().unwrap_or(error);
         }
-        result
+        let mut cache = self.cache();
+        match self.health.load(Ordering::Acquire) {
+            HEALTHY => {
+                self.health.store(FAULTED, Ordering::Release);
+                cache.reclaim();
+                error
+            }
+            // La même erreur peut remonter d'une lecture de nœud jusqu'à
+            // l'opération de fichier. Conserver le diagnostic d'origine.
+            FAULTED => error,
+            _ => Error::UnknownOutcome,
+        }
+    }
+    pub(crate) fn observe<T>(&self, result: Result<T>) -> Result<T> {
+        match result {
+            Ok(value) => {
+                self.check_health()?;
+                Ok(value)
+            }
+            Err(e) => Err(self.read_failure(e)),
+        }
     }
     pub fn space_stats(&self) -> SpaceStats {
         let oldest = self.head.m.previous.max(1);
@@ -589,21 +631,31 @@ impl<D: Device> Engine<D> {
         // Dès une erreur d'E/S, aucune autre transaction ne peut recycler ces
         // adresses avant un nouveau montage. F1 précède toute écriture d'ancre.
         self.health.store(FAULTED, Ordering::Relaxed);
-        for (b, data) in &plan.staged {
-            self.dev.write(*b, data)?;
-        }
-        self.dev.flush()?;
-        self.health.store(PUBLISHING, Ordering::Relaxed);
-        self.dev
-            .write(plan.head.slot, &anchor)
-            .map_err(|e| Error::Publication {
-                phase: "ancre",
+        let writes = (|| {
+            for (b, data) in &plan.staged {
+                self.dev.write(*b, data)?;
+            }
+            self.dev.flush()?;
+            self.health.store(PUBLISHING, Ordering::Relaxed);
+            self.dev
+                .write(plan.head.slot, &anchor)
+                .map_err(|e| Error::Publication {
+                    phase: "ancre",
+                    cause: Box::new(e),
+                })?;
+            self.dev.flush().map_err(|e| Error::Publication {
+                phase: "F2",
                 cause: Box::new(e),
-            })?;
-        self.dev.flush().map_err(|e| Error::Publication {
-            phase: "F2",
-            cause: Box::new(e),
-        })?;
+            })
+        })();
+        let cache = self.cache.get_mut().expect("cache de lecture interrompu");
+        if let Err(e) = writes {
+            cache.reclaim();
+            return Err(e);
+        }
+        for block in plan.staged.keys() {
+            cache.invalidate(*block);
+        }
         self.head = plan.head;
         self.alloc = plan.alloc;
         self.health.store(HEALTHY, Ordering::Relaxed);
@@ -623,7 +675,7 @@ pub struct Tx<'a, D> {
     logical_quota_bytes: Option<u64>,
     staging_limit: usize,
 }
-struct Plan {
+pub(crate) struct Plan {
     head: Head,
     alloc: Allocation,
     staged: BTreeMap<u64, Box<Block>>,

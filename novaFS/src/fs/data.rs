@@ -74,23 +74,30 @@ impl<D: Device> Engine<D> {
             }
             let stat = file(self, path)?;
             let length = (stat.size.saturating_sub(offset)).min(limit as u64) as usize;
-            let mut output = vec![0; length];
-            let mut cursor = 0;
-            while cursor < length {
-                let pos = offset + cursor as u64;
+            let mut output = Vec::new();
+            output
+                .try_reserve_exact(length)
+                .map_err(|_| Error::NoMemory)?;
+            while output.len() < length {
+                let pos = offset + output.len() as u64;
                 let index = pos / BLOCK_BYTES;
-                let inside = (pos % BLOCK_BYTES) as usize;
-                let count = (4096 - inside).min(length - cursor);
-                if let Some((first, run)) = covering(self, stat.id, index)? {
-                    let page = checked_page(
-                        self,
-                        run.reference((index - first) as usize),
-                        index,
-                        stat.size,
-                    )?;
-                    output[cursor..cursor + count].copy_from_slice(&page[inside..inside + count]);
+                let mut inside = (pos % BLOCK_BYTES) as usize;
+                let Some((first, run)) = covering(self, stat.id, index)? else {
+                    let count = (4096 - inside).min(length - output.len());
+                    output.resize(output.len() + count, 0);
+                    continue;
+                };
+                // La vue est stable pour cette opération. Chaque page garde sa
+                // propre référence et son contrôle d'intégrité, même dans un extent contigu.
+                for i in (index - first) as usize..run.hashes.len() {
+                    let page = checked_page(self, run.reference(i), first + i as u64, stat.size)?;
+                    let count = (4096 - inside).min(length - output.len());
+                    output.extend_from_slice(&page[inside..inside + count]);
+                    if output.len() == length {
+                        break;
+                    }
+                    inside = 0;
                 }
-                cursor += count;
             }
             Ok(output)
         })
@@ -131,27 +138,36 @@ impl<D: Device> Engine<D> {
             let mut replaced: Vec<(u64, Run)> = Vec::new();
             let mut fresh = Vec::with_capacity((after_last - first_page) as usize);
             let mut used = 0;
-            for logical in first_page..after_last {
-                let mut page = if let Some((first, run)) = covering(tx, id, logical)? {
-                    let old = run.reference((logical - first) as usize);
-                    let page = checked_page(tx, old, logical, obj.stat.size)?;
-                    if replaced.last().is_none_or(|&(l, _)| l != first) {
-                        replaced.push((first, run));
-                    }
-                    tx.retire_block(old.block)?;
-                    page
-                } else {
-                    [0; 4096]
+            let mut logical = first_page;
+            while logical < after_last {
+                let extent = covering(tx, id, logical)?;
+                let stop = match &extent {
+                    Some((first, run)) => run.end(*first)?.min(after_last),
+                    None => logical + 1,
                 };
-                let inside = if logical == first_page {
-                    (offset % BLOCK_BYTES) as usize
-                } else {
-                    0
-                };
-                let count = (4096 - inside).min(bytes.len() - used);
-                page[inside..inside + count].copy_from_slice(&bytes[used..used + count]);
-                used += count;
-                fresh.push(tx.alloc_data(&page)?);
+                while logical < stop {
+                    let mut page = if let Some((first, run)) = &extent {
+                        let old = run.reference((logical - first) as usize);
+                        let page = checked_page(tx, old, logical, obj.stat.size)?;
+                        tx.retire_block(old.block)?;
+                        page
+                    } else {
+                        [0; 4096]
+                    };
+                    let inside = if logical == first_page {
+                        (offset % BLOCK_BYTES) as usize
+                    } else {
+                        0
+                    };
+                    let count = (4096 - inside).min(bytes.len() - used);
+                    page[inside..inside + count].copy_from_slice(&bytes[used..used + count]);
+                    used += count;
+                    fresh.push(tx.alloc_data(&page)?);
+                    logical += 1;
+                }
+                if let Some(extent) = extent {
+                    replaced.push(extent);
+                }
             }
 
             let family = Family::Extents;

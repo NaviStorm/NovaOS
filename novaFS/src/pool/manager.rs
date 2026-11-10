@@ -480,6 +480,27 @@ impl Drop for VolumeReservation {
 }
 
 impl<D: Device> Pool<D> {
+    pub(super) fn into_ready_devices(self) -> Result<(D, Vec<Entry>)> {
+        self.writable()?;
+        if self
+            .pending
+            .lock()
+            .map_err(|_| Error::Unavailable)?
+            .entries
+            .iter()
+            .any(Option::is_some)
+        {
+            return Err(Error::Busy);
+        }
+        let (_, head, hash) = checked_catalogs(&self.disk)?;
+        if head.generation != self.head.generation || hash != self.hash {
+            return Err(Error::Corrupt("catalogue modifié avant coordination"));
+        }
+        let mut entries = head.entries;
+        entries.retain(|e| e.kind == Type::Ready);
+        Ok((self.disk, entries))
+    }
+
     pub fn into_device(self) -> D {
         self.disk
     }

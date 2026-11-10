@@ -1,6 +1,8 @@
-# NovaFS P3 sur macOS
+# NovaFS P4 sur macOS
 
-NovaFS v0.9.3 conserve le format disque P0 et les deux barrières de publication P1. Il fonctionne sur une image logique de LV dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+NovaFS v0.9.4 conserve le format disque P0, les deux barrières de publication P1, les contrôles d’intégrité P2 et les réservations P3. Il fonctionne sur des volumes logiques dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+
+Le cache de lecture se configure en octets, index compris. Dans `novafs script`, `cache 131072` lui accorde 128 Kio, `cache` affiche ses compteurs sur stderr et `cache 0` le vide et le désactive. Le coordinateur de la bibliothèque hôte accepte plusieurs demandes et sérialise les publications par pool. [Cache](docs/novafs-p4-cache.md) · [Coordinateur et exemple d’API](docs/novafs-p4-coordinateur.md) · [Validation et commandes](docs/novafs-p4-performance.md) · [Mesures P3/P4](docs/novafs-p4-mesures.md)
 
 La commande `space` mesure l’usage logique des fichiers, l’allocation physique dans le LV et les blocs disponibles après la réserve de maintenance. `space-pool` donne la partition physique du pool et l’usage de chaque LV prêt. La bibliothèque permet de préparer et d’annuler une écriture CoW, de configurer une limite de session et de réserver des grains pour plusieurs LV. [Contrat de comptabilisation et exemples](docs/novafs-p3-espace.md)
 
@@ -40,7 +42,7 @@ L’outil accepte 133 à 32 768 blocs pour une image formatée, des secteurs l
 
 - `Engine::format`, `mount`, `unmount` et `salvage` travaillent sur un périphérique possédé exclusivement. Une transaction réserve au plus 64 blocs CoW, y compris les index et le manifeste. La réserve de 128 blocs limite les allocations ordinaires. `unlink` retire le nom, puis `collect` rend les extents par lots récupérables après coupure.
 - L’ordre de publication est écritures des dépendances, flush F1, écriture de l’ancre alternée, flush F2, puis retour du succès. Une erreur avant l’ancre interrompt le montage courant. Une erreur à la publication transporte la phase, sa cause et le caractère indéterminé du résultat. Le remontage RW valide les deux générations et stabilise la tête retenue avant de rendre l’écrivain.
-- Les opérations ordinaires utilisent des références (bloc, naissance, SHA-256) et un cache de lecture propre de 256 blocs au plus, à seconde chance. `reclaim_cache` restitue le contenu et l’index. `verify` contourne ce cache, relit le support et compare la tête à celle observée par l’instance en mémoire. Après un défaut d’intégrité, rouvrir une nouvelle instance pour poursuivre un diagnostic indépendant.
+- Les opérations ordinaires utilisent des références (bloc, naissance, SHA-256) et un cache de lecture à seconde chance, de 256 pages par défaut. `reclaim_cache` restitue le contenu et l’index. `verify` contourne ce cache, relit le support et compare la tête à celle observée par l’instance en mémoire. Après un défaut d’intégrité, rouvrir une nouvelle instance pour poursuivre un diagnostic indépendant.
 - Le banc conserve ses reçus hors du support simulé. Un nouveau montage sans reçu externe peut accepter une paire ancienne mais parfaitement cohérente. La lecture en RO ne transforme pas une telle observation en preuve de fraîcheur.
 
 [Format sérialisé](docs/novafs-disk-format.md) · [Rapport des quinze scénarios](docs/novafs-prototype-macos.md) · [Injections de panne](docs/novafs-prototype-pannes.md)

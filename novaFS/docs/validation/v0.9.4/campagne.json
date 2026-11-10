@@ -1,0 +1,104 @@
+{
+  "version": "0.9.4",
+  "base": "1510eca",
+  "architectures": {
+    "aarch64": {
+      "tests_ordinaires_reussis": 95,
+      "scenarios_P0": [
+        "F01",
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06",
+        "P01",
+        "P02",
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06"
+      ],
+      "differentiel": {
+        "graines": 100,
+        "opérations": 1000000,
+        "commits_observés": 345183,
+        "pénuries_injectées": 54643,
+        "remontages_et_audits": 1000,
+        "secondes": 25.086
+      },
+      "SIGKILL_hote": 24,
+      "SIGKILL_VM": 10,
+      "cycles_restitution_coordinateur": 256,
+      "cycles_restitution_P1": 128
+    },
+    "x86_64": {
+      "tests_ordinaires_reussis": 95,
+      "scenarios_P0": [
+        "F01",
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06",
+        "P01",
+        "P02",
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06"
+      ],
+      "differentiel": {
+        "graines": 100,
+        "opérations": 1000000,
+        "commits_observés": 345183,
+        "pénuries_injectées": 54643,
+        "remontages_et_audits": 1000,
+        "secondes": 41.023
+      },
+      "SIGKILL_hote": 24,
+      "SIGKILL_VM": 10,
+      "cycles_restitution_coordinateur": 256,
+      "cycles_restitution_P1": 128
+    }
+  },
+  "compatibilite_fs": {
+    "d0ba7cb": {
+      "P4_vers_P4": 8,
+      "reference_vers_P4": 8,
+      "P4_vers_reference": 8
+    },
+    "38c8699": {
+      "P4_vers_P4": 8,
+      "reference_vers_P4": 8,
+      "P4_vers_reference": 8
+    },
+    "6f15350": {
+      "P4_vers_P4": 8,
+      "reference_vers_P4": 8,
+      "P4_vers_reference": 8
+    },
+    "1510eca": {
+      "P4_vers_P4": 8,
+      "reference_vers_P4": 8,
+      "P4_vers_reference": 8
+    }
+  },
+  "pool_P3_P4": {
+    "images_identiques": 4,
+    "blocs_par_image": 4352,
+    "controles_integrite": 16,
+    "controles_espace": 8
+  },
+  "pool_P2_P4": {
+    "images_identiques": 4,
+    "blocs_par_image": 4352,
+    "controles_integrite": 16,
+    "controles_espace": 8
+  }
+}
