@@ -43,8 +43,8 @@ impl Geometry {
     }
 }
 
-/// Fichier ordinaire anonyme. Le même descripteur reste propriétaire de l'image
-/// entre formatage, démontage et inspection. Aucune résolution de nom ultérieure.
+/// Image dans un fichier ordinaire. Les E/S sont positionnelles et portent
+/// toujours sur le descripteur initial, y compris après démontage.
 pub struct FileImage {
     file: File,
     geometry: Geometry,
@@ -54,10 +54,24 @@ impl FileImage {
     pub fn create(blocks: u64, sector: u32) -> Result<Self> {
         let geometry = Geometry::new(blocks, sector)?;
         let file = tempfile::tempfile()?;
-        if !file.metadata()?.file_type().is_file() {
+        if !file.metadata()?.is_file() {
             return Err(Error::Invalid("fichier temporaire ordinaire requis"));
         }
         file.set_len(blocks * BLOCK)?;
+        Ok(Self { file, geometry })
+    }
+
+    /// Reprendre le descripteur d'une image de laboratoire existante. Le banc
+    /// garde les autres écrivains exclus et la longueur fixe pendant son usage.
+    /// Un descripteur ouvert en lecture seule convient au montage RO.
+    pub fn from_file(file: File, blocks: u64, sector: u32) -> Result<Self> {
+        let geometry = Geometry::new(blocks, sector)?;
+        let metadata = file.metadata()?;
+        if !metadata.is_file() || metadata.len() != blocks * BLOCK {
+            return Err(Error::Invalid(
+                "fichier ordinaire de longueur exacte requis",
+            ));
+        }
         Ok(Self { file, geometry })
     }
 
@@ -84,6 +98,8 @@ impl Device for FileImage {
     }
 
     fn flush(&mut self) -> Result<()> {
+        // Sur les deux cibles Darwin qualifiées, Rust appelle F_FULLFSYNC.
+        // Sa réussite atteste la réponse de l'hôte à la demande de vidage.
         self.file.sync_all()?;
         Ok(())
     }
@@ -137,6 +153,26 @@ pub enum Persistence {
     Prefix { block: u64, bytes: usize },
 }
 
+/// Erreur d'E/S ponctuelle, distincte d'une coupure du service. Une commande
+/// en échec peut avoir modifié tout ou partie du support ou de son cache.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SimFault {
+    Read {
+        block: u64,
+    },
+    /// Accepter ce préfixe dans le cache avant de signaler l'échec.
+    Write {
+        block: u64,
+        prefix: usize,
+    },
+    /// Au n-ième flush après armement (à partir de 1), stabiliser au plus
+    /// `persist_newest` blocs volatils en ordre inverse puis signaler l'échec.
+    Flush {
+        ordinal: u32,
+        persist_newest: usize,
+    },
+}
+
 #[derive(Default)]
 struct Trace {
     events: Vec<Event>,
@@ -156,6 +192,7 @@ struct State {
     sequence: u64,
     trace: Option<Trace>,
     interrupted: bool,
+    fault: Option<SimFault>,
 }
 
 fn injected() -> Error {
@@ -163,6 +200,12 @@ fn injected() -> Error {
         ErrorKind::Interrupted,
         "interruption injectée",
     ))
+}
+
+fn io_fault() -> Error {
+    // EIO dans sys/errno.h sur les deux cibles Darwin du laboratoire.
+    const EIO: i32 = 5;
+    io::Error::from_raw_os_error(EIO).into()
 }
 
 impl State {
@@ -190,6 +233,28 @@ impl State {
             .map_or([0; BLOCK as usize], |b| **b)
     }
 
+    fn visible_block(&self, index: u64) -> Block {
+        match self.volatile.get(&index) {
+            Some(v) => *v.data,
+            None => self.stable_block(index),
+        }
+    }
+
+    fn queue(&mut self, index: u64, data: Block) -> Result<()> {
+        self.sequence = self
+            .sequence
+            .checked_add(1)
+            .ok_or(Error::Limit("séquence du banc"))?;
+        self.volatile.insert(
+            index,
+            Volatile {
+                sequence: self.sequence,
+                data: Arc::new(data),
+            },
+        );
+        Ok(())
+    }
+
     fn persist(&mut self, index: u64, data: Arc<Block>) {
         if data.iter().all(|&byte| byte == 0) {
             self.medium.stable.remove(&index);
@@ -198,21 +263,31 @@ impl State {
         }
     }
 
+    fn persist_newest(&mut self, count: usize) -> Result<()> {
+        if count == 0 {
+            return Ok(());
+        }
+        // La capacité du support borne le nombre de blocs volatils distincts.
+        let mut order = Vec::new();
+        order
+            .try_reserve_exact(self.volatile.len())
+            .map_err(|_| Error::Limit("ordre des écritures du simulateur"))?;
+        order.extend(self.volatile.iter().map(|(&i, v)| (v.sequence, i)));
+        order.sort_unstable_by(|a, b| b.cmp(a));
+        for (_, index) in order.into_iter().take(count) {
+            let v = self
+                .volatile
+                .remove(&index)
+                .expect("bloc volatil répertorié");
+            self.persist(index, v.data);
+        }
+        Ok(())
+    }
+
     fn cut(&mut self, how: Persistence) -> Result<()> {
         match how {
             Persistence::None => {}
-            Persistence::Newest(n) => {
-                let mut order: Vec<_> = self
-                    .volatile
-                    .iter()
-                    .map(|(&i, v)| (v.sequence, i))
-                    .collect();
-                order.sort_unstable_by(|a, b| b.cmp(a));
-                for (_, index) in order.into_iter().take(n) {
-                    let data = self.volatile[&index].data.clone();
-                    self.persist(index, data);
-                }
-            }
+            Persistence::Newest(n) => self.persist_newest(n)?,
             Persistence::Sectors { block, mask } => {
                 self.medium.geometry.offset(block)?;
                 let sector = self.medium.geometry.sector as usize;
@@ -246,6 +321,7 @@ impl State {
         self.volatile.clear();
         self.trace = None;
         self.interrupted = false;
+        self.fault = None;
         Ok(())
     }
 }
@@ -266,6 +342,27 @@ impl SimControl {
 
     pub fn snapshot(&self) -> SimSnapshot {
         self.state().medium.clone()
+    }
+
+    /// Une seule injection peut être armée. L'EIO la consomme ; couper
+    /// l'alimentation ou redémarrer le banc annule un plan encore en attente.
+    pub fn inject(&self, fault: SimFault) -> Result<()> {
+        let mut state = self.state();
+        if state.fault.is_some() || state.interrupted {
+            return Err(Error::Busy);
+        }
+        match fault {
+            SimFault::Write { prefix, .. } if prefix > BLOCK_BYTES => {
+                return Err(Error::Invalid("préfixe d'écriture"));
+            }
+            SimFault::Read { block } | SimFault::Write { block, .. } => {
+                state.medium.geometry.offset(block)?;
+            }
+            SimFault::Flush { ordinal: 0, .. } => return Err(Error::Invalid("rang du flush")),
+            SimFault::Flush { .. } => {}
+        }
+        state.fault = Some(fault);
+        Ok(())
     }
 
     /// Le compteur d'événement commence à 0 et celui des flushs à 1.
@@ -293,6 +390,7 @@ impl SimControl {
         let mut state = self.state();
         state.trace = None;
         state.interrupted = false;
+        state.fault = None;
     }
 
     pub fn replace_stable(&self, index: u64, bytes: Block) -> Result<()> {
@@ -325,6 +423,7 @@ impl SimDevice {
             sequence: 0,
             trace: None,
             interrupted: false,
+            fault: None,
         };
         Self {
             shared: Arc::new(Mutex::new(state)),
@@ -367,33 +466,34 @@ impl Device for SimDevice {
     }
 
     fn read(&self, index: u64) -> Result<Block> {
-        let state = self.shared.lock().unwrap();
+        let mut state = self.shared.lock().unwrap();
         state.medium.geometry.offset(index)?;
         if state.interrupted {
             return Err(injected());
         }
-        Ok(match state.volatile.get(&index) {
-            Some(v) => *v.data,
-            None => state.stable_block(index),
-        })
+        if state.fault == Some(SimFault::Read { block: index }) {
+            state.fault = None;
+            return Err(io_fault());
+        }
+        Ok(state.visible_block(index))
     }
 
     fn write(&mut self, index: u64, data: &Block) -> Result<()> {
         let mut state = self.shared.lock().unwrap();
         state.medium.geometry.offset(index)?;
         state.point(Event::BeforeWrite(index))?;
-        state.sequence = state
-            .sequence
-            .checked_add(1)
-            .ok_or(Error::Limit("séquence du banc"))?;
-        let sequence = state.sequence;
-        state.volatile.insert(
-            index,
-            Volatile {
-                sequence,
-                data: Arc::new(*data),
-            },
-        );
+        if let Some(SimFault::Write { block, prefix }) = state.fault
+            && block == index
+        {
+            state.fault = None;
+            if prefix != 0 {
+                let mut partial = state.visible_block(index);
+                partial[..prefix].copy_from_slice(&data[..prefix]);
+                state.queue(index, partial)?;
+            }
+            return Err(io_fault());
+        }
+        state.queue(index, *data)?;
         state.point(Event::WriteSubmitted(index))?;
         state.point(Event::WriteCompleted(index))
     }
@@ -408,6 +508,21 @@ impl Device for SimDevice {
             }
         };
         state.point(Event::FlushSubmitted(ordinal))?;
+        if let Some(SimFault::Flush {
+            ordinal: remaining,
+            persist_newest,
+        }) = state.fault
+        {
+            if remaining == 1 {
+                state.fault = None;
+                state.persist_newest(persist_newest)?;
+                return Err(io_fault());
+            }
+            state.fault = Some(SimFault::Flush {
+                ordinal: remaining - 1,
+                persist_newest,
+            });
+        }
         if state
             .trace
             .as_ref()
@@ -445,6 +560,113 @@ mod tests {
             assert!(file.geometry().sectors(2, u64::MAX).is_err());
         }
         assert!(FileImage::create(512, 1024).is_err());
+        Ok(())
+    }
+
+    #[test]
+    fn reprise_fichier_par_descripteur_et_refus_des_geometries_inexactes() -> Result<()> {
+        for sector in [512, 4096] {
+            let temp = tempfile::NamedTempFile::new()?;
+            temp.as_file().set_len(2 * BLOCK)?;
+            assert!(FileImage::from_file(temp.reopen()?, 1, sector).is_err());
+            assert!(FileImage::from_file(temp.reopen()?, 3, sector).is_err());
+            assert!(FileImage::from_file(temp.reopen()?, 2, 2048).is_err());
+            let mut writer = FileImage::from_file(temp.reopen()?, 2, sector)?;
+            writer.write(1, &[0x41; BLOCK_BYTES])?;
+            writer.flush()?;
+            drop(writer);
+            let mut reader = FileImage::from_file(File::open(temp.path())?, 2, sector)?;
+            assert_eq!(reader.read(1)?, [0x41; BLOCK_BYTES]);
+            assert!(matches!(
+                reader.write(1, &[0; BLOCK_BYTES]),
+                Err(Error::Io(_))
+            ));
+            assert_eq!(reader.read(1)?, [0x41; BLOCK_BYTES]);
+        }
+        let directory = tempfile::tempdir()?;
+        assert!(FileImage::from_file(File::open(directory.path())?, 1, 512).is_err());
+        Ok(())
+    }
+
+    #[test]
+    fn erreurs_de_lecture_et_ecriture_partielle_a_usage_unique() -> Result<()> {
+        for sector in [512, 4096] {
+            let mut disk = SimDevice::new(4, sector)?;
+            let ctl = disk.control();
+            assert!(ctl.inject(SimFault::Read { block: 4 }).is_err());
+            assert!(
+                ctl.inject(SimFault::Write {
+                    block: 2,
+                    prefix: BLOCK_BYTES + 1
+                })
+                .is_err()
+            );
+            assert!(
+                ctl.inject(SimFault::Flush {
+                    ordinal: 0,
+                    persist_newest: 2
+                })
+                .is_err()
+            );
+            ctl.inject(SimFault::Read { block: 1 })?;
+            assert!(matches!(
+                ctl.inject(SimFault::Read { block: 0 }),
+                Err(Error::Busy)
+            ));
+            assert_eq!(disk.read(0)?, [0; BLOCK_BYTES]);
+            assert!(matches!(disk.read(1), Err(Error::Io(e)) if e.raw_os_error() == Some(5)));
+            assert_eq!(disk.read(1)?, [0; BLOCK_BYTES]);
+
+            for prefix in [0, 1, sector as usize - 1, BLOCK_BYTES] {
+                disk.write(2, &[1; BLOCK_BYTES])?;
+                disk.flush()?;
+                disk.write(2, &[2; BLOCK_BYTES])?;
+                ctl.inject(SimFault::Write { block: 2, prefix })?;
+                assert!(matches!(
+                    disk.write(2, &[3; BLOCK_BYTES]),
+                    Err(Error::Io(_))
+                ));
+                let mut expected = [2; BLOCK_BYTES];
+                expected[..prefix].fill(3);
+                assert_eq!(disk.read(2)?, expected);
+                assert_eq!(ctl.snapshot().device().read(2)?, [1; BLOCK_BYTES]);
+                ctl.power_cut(Persistence::Newest(1))?;
+                assert_eq!(disk.read(2)?, expected);
+            }
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn flush_en_erreur_peut_stabiliser_une_partie_ou_tout_le_cache() -> Result<()> {
+        for sector in [512, 4096] {
+            for newest in [0, 1, 2, usize::MAX] {
+                let mut disk = SimDevice::new(8, sector)?;
+                let ctl = disk.control();
+                ctl.inject(SimFault::Flush {
+                    ordinal: 2,
+                    persist_newest: newest,
+                })?;
+                disk.write(4, &[4; BLOCK_BYTES])?;
+                disk.flush()?;
+                disk.write(2, &[2; BLOCK_BYTES])?;
+                disk.write(5, &[5; BLOCK_BYTES])?;
+                disk.write(1, &[1; BLOCK_BYTES])?;
+                assert!(matches!(disk.flush(), Err(Error::Io(e)) if e.raw_os_error() == Some(5)));
+                for b in [1, 2, 4, 5] {
+                    assert_eq!(disk.read(b)?, [b as u8; BLOCK_BYTES]);
+                }
+                ctl.power_cut(Persistence::None)?;
+                assert_eq!(disk.read(4)?, [4; BLOCK_BYTES]);
+                for (rank, b) in [1u64, 5, 2].into_iter().enumerate() {
+                    let expected = if rank < newest { b as u8 } else { 0 };
+                    assert_eq!(disk.read(b)?, [expected; BLOCK_BYTES]);
+                }
+                disk.write(0, &[8; BLOCK_BYTES])?;
+                disk.flush()?;
+                assert_eq!(ctl.snapshot().device().read(0)?, [8; BLOCK_BYTES]);
+            }
+        }
         Ok(())
     }
 

@@ -25,7 +25,11 @@ fn tool(args: &[&str], input: &[u8]) -> Output {
 fn cli_images_anonymes_et_sauvetage() {
     let help = tool(&["--help"], b"");
     assert!(help.status.success());
-    assert!(help.stdout.starts_with(b"NovaFS P0"));
+    assert!(
+        help.stdout.starts_with(
+            concat!("NovaFS P1 v", env!("CARGO_PKG_VERSION"), " — format P0").as_bytes()
+        )
+    );
     for sub in ["create", "inspect", "verify", "script", "salvage"] {
         assert!(tool(&[sub, "--help"], b"").status.success())
     }

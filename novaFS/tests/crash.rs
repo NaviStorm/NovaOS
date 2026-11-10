@@ -1,6 +1,7 @@
 //! Coupures du périphérique et reçus gérés par l'observateur extérieur.
 use novafs::device::{Event, Persistence, SimDevice, SimSnapshot};
 use novafs::{Device, Engine, Error, Ids, Mode, Ref, Result, View};
+use std::collections::BTreeMap;
 
 const LAB_POOL: [u8; 16] = [0x31; 16];
 const IDS: Ids = Ids {
@@ -35,12 +36,15 @@ fn next_policy(snapshot: &SimSnapshot) -> Result<Fs> {
     Engine::mount(snapshot.device(), IDS, Mode::ReadWrite)
 }
 
-fn directory_state(fs: &Fs) -> Result<Vec<(String, Vec<u8>)>> {
+type Files = BTreeMap<String, Vec<u8>>;
+
+fn directory_state(fs: &Fs) -> Result<Files> {
     let names = fs.list("/", None, 64)?;
     assert!(
         names.len() < 64,
         "la fixture de coupure doit tenir dans une page de noms"
     );
+    assert!(names.windows(2).all(|pair| pair[0] < pair[1]));
     names
         .into_iter()
         .map(|name| {
@@ -50,17 +54,23 @@ fn directory_state(fs: &Fs) -> Result<Vec<(String, Vec<u8>)>> {
         .collect()
 }
 
-fn exercise(label: &str, base: SimSnapshot, op: impl Fn(&mut Fs) -> Result<()>) -> Result<()> {
+fn exercise(
+    label: &str,
+    base: SimSnapshot,
+    old_state: &Files,
+    new_state: &Files,
+    op: impl Fn(&mut Fs) -> Result<()>,
+) -> Result<()> {
     let mut normal = next_policy(&base)?;
     let before = normal.receipt();
-    let old_state = directory_state(&normal)?;
+    assert_eq!(&directory_state(&normal)?, old_state);
     let raw = normal.into_device();
     let ctl = raw.control();
     normal = Engine::mount(raw, IDS, Mode::ReadWrite)?;
     ctl.trace(None, None);
     op(&mut normal)?;
     let after = normal.receipt();
-    let new_state = directory_state(&normal)?;
+    assert_eq!(&directory_state(&normal)?, new_state);
     let events = ctl.events();
     assert_eq!(after.birth, before.birth + 1);
     let f1 = events
@@ -106,11 +116,11 @@ fn exercise(label: &str, base: SimSnapshot, op: impl Fn(&mut Fs) -> Result<()>) 
                 );
             }
             assert_eq!(
-                directory_state(&fs)?.as_slice(),
+                &directory_state(&fs)?,
                 if fs.receipt() == before {
-                    &old_state[..]
+                    old_state
                 } else {
-                    &new_state[..]
+                    new_state
                 }
             );
             checks += 1;
@@ -121,6 +131,7 @@ fn exercise(label: &str, base: SimSnapshot, op: impl Fn(&mut Fs) -> Result<()>) 
     let new = recover(&ctl.snapshot())?;
     assert_eq!(new.receipt(), after);
     new.verify()?;
+    assert_eq!(&directory_state(&new)?, new_state);
     println!(
         "N02 {label}: {} frontières, {checks} coupures et confirmation",
         events.len()
@@ -130,22 +141,46 @@ fn exercise(label: &str, base: SimSnapshot, op: impl Fn(&mut Fs) -> Result<()>) 
 
 #[test]
 fn n02_all_write_and_flush_boundaries() -> Result<()> {
+    // Ce catalogue vit hors du périphérique : ni son contenu initial ni les effets
+    // attendus des mutations ne proviennent d'une lecture du moteur testé.
+    let base_files = Files::from([
+        ("A".to_owned(), b"preuve du client A".to_vec()),
+        ("B".to_owned(), b"preuve du client B".to_vec()),
+        ("scratch".to_owned(), vec![3; 8192]),
+    ]);
     let mut fs = setup(512)?;
     fs.write("/scratch", 0, &[3; 8192])?;
     let base = fs.into_device().control().snapshot();
-    exercise("deux blocs", base.clone(), |f| {
+    let mut written = base_files.clone();
+    written.insert("scratch".into(), vec![11; 8192]);
+    exercise("deux blocs", base.clone(), &base_files, &written, |f| {
         f.write("/scratch", 0, &[11; 8192])
     })?;
-    exercise("rename", base.clone(), |f| f.rename("/scratch", "/moved"))?;
-    exercise("unlink", base.clone(), |f| f.unlink("/scratch"))?;
-    let mut fs = next_policy(&base)?;
-    fs.unlink("/scratch")?;
-    exercise("collecte", fs.into_device().control().snapshot(), |f| {
-        assert!(f.collect()?);
-        Ok(())
+    let mut unlinked = base_files.clone();
+    let contents = unlinked.remove("scratch").unwrap();
+    let mut moved = unlinked.clone();
+    moved.insert("moved".into(), contents);
+    exercise("rename", base.clone(), &base_files, &moved, |f| {
+        f.rename("/scratch", "/moved")
+    })?;
+    exercise("unlink", base.clone(), &base_files, &unlinked, |f| {
+        f.unlink("/scratch")
     })?;
     let mut fs = next_policy(&base)?;
+    fs.unlink("/scratch")?;
+    exercise(
+        "collecte",
+        fs.into_device().control().snapshot(),
+        &unlinked,
+        &unlinked,
+        |f| {
+            assert!(f.collect()?);
+            Ok(())
+        },
+    )?;
+    let mut fs = next_policy(&base)?;
     let mut written = std::collections::BTreeSet::new();
+    let mut files = base_files.clone();
     let mut reuse = false;
     for tag in 31u8..63 {
         let d = fs.into_device();
@@ -163,17 +198,21 @@ fn n02_all_write_and_flush_boundaries() -> Result<()> {
             })
             .collect();
         if blocks.iter().any(|b| written.contains(b)) {
-            exercise("réutilisation de bloc", old, |f| {
+            let mut next = files.clone();
+            next.insert("scratch".into(), vec![tag; 8192]);
+            exercise("réutilisation de bloc", old, &files, &next, |f| {
                 f.write("/scratch", 0, &[tag; 8192])
             })?;
             reuse = true;
             break;
         }
         written.extend(blocks);
+        files.insert("scratch".into(), vec![tag; 8192]);
     }
     assert!(reuse, "réutilisation jamais atteinte");
     // Déclencher et observer la scission effective de la racine des noms.
     let mut fs = next_policy(&base)?;
+    let mut files = base_files;
     let mut split = false;
     for i in 0..100 {
         let d = fs.into_device();
@@ -186,10 +225,15 @@ fn n02_all_write_and_flush_boundaries() -> Result<()> {
         fs.create(&name)?;
         let new_level = ctl.snapshot().device().read(fs.manifest().roots[1].block)?[98];
         if new_level > old_level {
-            exercise("scission de B+Tree", old, |f| f.create(&name))?;
+            let mut next = files.clone();
+            next.insert(name[1..].to_owned(), Vec::new());
+            exercise("scission de B+Tree", old, &files, &next, |f| {
+                f.create(&name)
+            })?;
             split = true;
             break;
         }
+        files.insert(name[1..].to_owned(), Vec::new());
     }
     assert!(split, "scission jamais atteinte");
     Ok(())

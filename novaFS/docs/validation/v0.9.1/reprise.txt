@@ -1,0 +1,12 @@
+architecture=aarch64
+reprise secteur=512 cycles=64 vivant_avant=960 vivant_apres=960 pic_phase=120832 flushs_par_commit=2 flushs_montage_ro=0 flushs_montage_rw=1
+pic_malloc_octets=120832 piles_travail_reservees_max=2097152 majorant_tas_rust_et_piles=2217984 plafond_7mio=7340032
+architecture=aarch64
+reprise secteur=4096 cycles=64 vivant_avant=960 vivant_apres=960 pic_phase=120832 flushs_par_commit=2 flushs_montage_ro=0 flushs_montage_rw=1
+pic_malloc_octets=120832 piles_travail_reservees_max=2097152 majorant_tas_rust_et_piles=2217984 plafond_7mio=7340032
+architecture=x86_64
+reprise secteur=512 cycles=64 vivant_avant=864 vivant_apres=864 pic_phase=110896 flushs_par_commit=2 flushs_montage_ro=0 flushs_montage_rw=1
+pic_malloc_octets=110896 piles_travail_reservees_max=2097152 majorant_tas_rust_et_piles=2208048 plafond_7mio=7340032
+architecture=x86_64
+reprise secteur=4096 cycles=64 vivant_avant=864 vivant_apres=864 pic_phase=110896 flushs_par_commit=2 flushs_montage_ro=0 flushs_montage_rw=1
+pic_malloc_octets=110896 piles_travail_reservees_max=2097152 majorant_tas_rust_et_piles=2208048 plafond_7mio=7340032

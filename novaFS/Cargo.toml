@@ -1,14 +1,18 @@
 [package]
 name = "novafs"
-version = "0.9.0"
+version = "0.9.1"
 edition = "2024"
 publish = false
 default-run = "novafs"
-description = "Laboratoire NovaFS P0 sur images temporaires"
+description = "Laboratoire NovaFS P1 sur images temporaires"
 
 [[bin]]
 name = "novafs-bench"
 path = "lab/novafs-bench.rs"
+
+[[example]]
+name = "p1-image"
+path = "lab/p1-image.rs"
 
 [workspace]
 

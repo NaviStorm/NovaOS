@@ -7,7 +7,10 @@ use std::os::{
     unix::fs::{FileTypeExt, MetadataExt},
 };
 
-const HELP: &str = "NovaFS P0 — images jetables, uniquement sur flux
+const HELP: &str = concat!(
+    "NovaFS P1 v",
+    env!("CARGO_PKG_VERSION"),
+    " — format P0, images jetables, uniquement sur flux
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
 novafs script BLOCS SECTEUR                        lit les commandes puis émet l’image sur stdout
 novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l’image sur stdin
@@ -17,7 +20,8 @@ SECTEUR = 512 ou 4096. Identités = 32 chiffres hexadécimaux chacune.
 Commandes de script (une par ligne, chemins NovaFS sans espaces) :
   mkdir /nom | create /nom | rename /source /dest | unlink /nom | collect
   write /nom OFFSET HEX | read /nom OFFSET LONGUEUR | inspect | verify
-Les résultats du script, les identités générées et les erreurs vont sur stderr.";
+Les résultats du script, les identités générées et les erreurs vont sur stderr."
+);
 
 fn num(s: &str) -> Result<u64> {
     s.parse()

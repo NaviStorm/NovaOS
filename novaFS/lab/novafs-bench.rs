@@ -1,6 +1,6 @@
 //! Banc macOS sur fichiers temporaires anonymes. Les chronos incluent les
 //! contrôles des résultats, les copies de données et les deux sync_all de commit.
-use novafs::device::FileImage;
+use novafs::device::{FileImage, Persistence, SimDevice, SimFault};
 use novafs::{Block, Device, Engine, Error, Ids, Mode, Result};
 use std::{
     alloc::{GlobalAlloc, Layout, System},
@@ -256,6 +256,69 @@ fn maximum_geometry(sector: u32) -> Result<()> {
     Ok(())
 }
 
+fn recovery_cycle(sector: u32, byte: u8) -> Result<()> {
+    let data = [byte; PAGE];
+    {
+        let (mut writer, counts, _) = fixture(256, sector, false)?;
+        let formatted = counts.flushes.get();
+        writer.create("/t")?;
+        writer.write("/t", 0, &data)?;
+        let published = counts.flushes.get();
+        assert_eq!(published - formatted, 4);
+        let reader = Engine::mount(writer.unmount()?, IDS, Mode::ReadOnly)?;
+        reader.verify()?;
+        assert_eq!(reader.read("/t", 0, PAGE)?, data);
+        assert_eq!(counts.flushes.get(), published);
+        let writer = Engine::mount(reader.unmount()?, IDS, Mode::ReadWrite)?;
+        assert_eq!(counts.flushes.get() - published, 1);
+        drop(writer.unmount()?);
+    }
+
+    let sim = SimDevice::new(256, sector)?;
+    let control = sim.control();
+    let mut engine = Engine::format(sim, IDS)?;
+    engine.create("/t")?;
+    engine.write("/t", 0, &data)?;
+    let receipt = engine.receipt();
+    control.inject(SimFault::Flush {
+        ordinal: 2,
+        persist_newest: 0,
+    })?;
+    assert!(matches!(
+        engine.write("/t", 0, &[!byte; PAGE]),
+        Err(Error::Publication { phase: "F2", .. })
+    ));
+    let sim = engine.into_device();
+    control.power_cut(Persistence::None)?;
+    let recovered = Engine::mount(sim, IDS, Mode::ReadWrite)?;
+    assert_eq!(recovered.receipt(), receipt);
+    assert_eq!(recovered.read("/t", 0, PAGE)?, data);
+    recovered.verify()?;
+    drop(recovered.unmount()?);
+    Ok(())
+}
+
+fn recovery_memory(sector: u32) -> Result<()> {
+    // Amorcer le runtime de ce thread avant de mesurer les allocations retenues.
+    recovery_cycle(sector, 0xa5)?;
+    let baseline = LIVE.load(Ordering::Relaxed);
+    PHASE_PEAK.store(baseline, Ordering::Relaxed);
+    for cycle in 0..64 {
+        recovery_cycle(sector, cycle)?;
+        assert_eq!(
+            LIVE.load(Ordering::Relaxed),
+            baseline,
+            "allocations résiduelles au cycle {cycle}"
+        );
+    }
+    let after = LIVE.load(Ordering::Relaxed);
+    let peak = PHASE_PEAK.load(Ordering::Relaxed);
+    println!(
+        "reprise secteur={sector} cycles=64 vivant_avant={baseline} vivant_apres={after} pic_phase={peak} flushs_par_commit=2 flushs_montage_ro=0 flushs_montage_rw=1"
+    );
+    Ok(())
+}
+
 /// Deux acteurs macOS, chemins distincts dans le même moteur à écrivain
 /// unique. Un client garde l’exclusion le temps d’une opération du moteur.
 fn contention(sector: u32) -> Result<()> {
@@ -470,7 +533,7 @@ fn main() -> Result<()> {
         None | Some("4096") => 4096,
         _ => {
             return Err(Error::Invalid(
-                "novafs-bench [512|4096] [complet|pression|memoire]",
+                "novafs-bench [512|4096] [complet|pression|memoire|reprise]",
             ));
         }
     };
@@ -489,6 +552,7 @@ fn main() -> Result<()> {
             "complet" => run(sector),
             "pression" => pressure(sector),
             "memoire" => maximum_geometry(sector),
+            "reprise" => recovery_memory(sector),
             _ => Err(Error::Invalid("scénario inconnu")),
         })?
         .join()

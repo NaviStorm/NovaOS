@@ -1,0 +1,113 @@
+architecture=x86_64 secteur=512 image_mio=96 arene_stack_max=2097152 allocations=System
+phase	serie	operations	octets_utiles	duree_ns	p50_ns	p95_ns	p99_ns	max_ns	blocs_lus	blocs_ecrits	flushs	flush_ns	pic_malloc_octets
+ecriture_seq64k	1	512	33554432	5849475292	10142750	10898125	16319833	153226792	25254	11732	1024	5213161252	1175056
+lecture_seq64k	1	512	33554432	499800291	975541	1003416	1029541	1065416	8345	0	0	0	1145296
+lecture_aleatoire4k	1	256	1048576	33193917	139542	169666	186542	235833	653	0	0	0	1081808
+ecriture_aleatoire4k	1	256	1048576	2343972084	9318458	10393833	10634375	11429541	3366	2214	512	2184769580	1111680
+fragmentation	serie=1	extents=1579	intervalles=14	plus_grand=16211
+ecriture_seq64k	2	512	33554432	5220392333	10136166	11167250	13865459	17619292	36950	12386	1024	4220506322	1182576
+lecture_seq64k	2	512	33554432	511161583	967458	1174667	1589584	1956708	8357	0	0	0	1146032
+lecture_aleatoire4k	2	256	1048576	32645083	115333	160750	169833	181500	654	0	0	0	1082544
+ecriture_aleatoire4k	2	256	1048576	2623818875	10139750	11753875	12079292	12157625	3351	2199	512	2181215124	1110272
+fragmentation	serie=2	extents=2357	intervalles=17	plus_grand=16188
+ecriture_seq64k	3	512	33554432	6867421834	12197792	13680708	19457917	166965292	36993	12429	1024	5097106750	1185136
+lecture_seq64k	3	512	33554432	515999125	980500	1186584	1519167	1750375	8369	0	0	0	1145776
+lecture_aleatoire4k	3	256	1048576	32769542	139333	160959	170584	176167	652	0	0	0	1082288
+ecriture_aleatoire4k	3	256	1048576	2668413542	10324000	11794750	13716000	14594083	3351	2199	512	2259163870	1111648
+fragmentation	serie=3	extents=2899	intervalles=17	plus_grand=16176
+ecriture_seq64k	4	512	33554432	6183815916	12339750	13394875	14463042	15740875	37044	12477	1024	4418615052	1186944
+lecture_seq64k	4	512	33554432	512015667	983125	1093833	1376583	1570375	8378	0	0	0	1149312
+lecture_aleatoire4k	4	256	1048576	33520458	126250	171125	191708	194291	650	0	0	0	1085824
+ecriture_aleatoire4k	4	256	1048576	2532874083	9723750	11710291	11817208	12753583	3348	2196	512	2169056841	1113904
+fragmentation	serie=4	extents=3394	intervalles=18	plus_grand=16164
+ecriture_seq64k	5	512	33554432	6923731791	12276625	13447333	16390375	218302416	37072	12506	1024	5207688796	1188176
+lecture_seq64k	5	512	33554432	496547000	965917	1024792	1068667	1136625	8388	0	0	0	1147696
+lecture_aleatoire4k	5	256	1048576	32420125	122583	159542	174417	182458	661	0	0	0	1084208
+ecriture_aleatoire4k	5	256	1048576	2667115541	10395750	12351167	13578208	14616750	3354	2202	512	2285404735	1113168
+fragmentation	serie=5	extents=3792	intervalles=17	plus_grand=16154
+creer_et_ecrire16	1	4096	65536	85932308625	19962667	23111375	33011708	434190792	151916	73759	16384	75613378624	1156128
+petite_lecture16	1	4096	65536	1277253250	304458	335959	536958	1597083	11636	0	0	0	1113024
+petite_lecture16	2	4096	65536	1257155542	305250	328500	347542	392458	11521	0	0	0	1113024
+petite_lecture16	3	4096	65536	1273678500	310791	326792	348792	610542	11518	0	0	0	1113024
+petite_lecture16	4	4096	65536	1263780625	308292	326875	347833	417083	11522	0	0	0	1113024
+petite_lecture16	5	4096	65536	1264000375	308292	328875	348709	393291	11522	0	0	0	1113024
+verification_integrale	1	1	0	4537902000	4537901709	4537901709	4537901709	4537901709	283593	0	0	0	1099440
+remontage	serie=1	duree_ns=4184971416
+lecture_apres_remontage	1	512	33554432	553771208	1079416	1123167	1148000	1244208	8400	0	0	0	1147552
+cache	serie=1	phase=lecture_apres_remontage	pages=256	touches=28976	absences=8400	evictions=8144	pages_rendues_avant_duo=0
+lecture_repetee	1	512	33554432	569153708	1108750	1186958	1267333	1415541	8387	0	0	0	1147552
+cache	serie=1	phase=lecture_repetee	pages=256	touches=28989	absences=8387	evictions=8387	pages_rendues_avant_duo=0
+lecture_512k_froide	1	8	524288	9164208	1121417	1234625	1234625	1234625	140	0	0	0	663712
+cache	serie=1	phase=lecture_512k_froide	pages=140	touches=444	absences=140	evictions=0	pages_rendues_avant_duo=256
+lecture_512k_chaude	1	8	524288	7397583	924292	991083	991083	991083	0	0	0	0	667808
+cache	serie=1	phase=lecture_512k_chaude	pages=140	touches=584	absences=0	evictions=0	pages_rendues_avant_duo=256
+remontage	serie=2	duree_ns=4215174583
+lecture_apres_remontage	2	512	33554432	558957375	1088833	1156083	1194000	1235166	8400	0	0	0	1147552
+cache	serie=2	phase=lecture_apres_remontage	pages=256	touches=28976	absences=8400	evictions=8144	pages_rendues_avant_duo=0
+lecture_repetee	2	512	33554432	556175167	1084000	1133042	1178209	1199375	8387	0	0	0	1147552
+cache	serie=2	phase=lecture_repetee	pages=256	touches=28989	absences=8387	evictions=8387	pages_rendues_avant_duo=0
+lecture_512k_froide	2	8	524288	8883667	1099208	1137750	1137750	1137750	140	0	0	0	663712
+cache	serie=2	phase=lecture_512k_froide	pages=140	touches=444	absences=140	evictions=0	pages_rendues_avant_duo=256
+lecture_512k_chaude	2	8	524288	7208791	898500	916084	916084	916084	0	0	0	0	667808
+cache	serie=2	phase=lecture_512k_chaude	pages=140	touches=584	absences=0	evictions=0	pages_rendues_avant_duo=256
+remontage	serie=3	duree_ns=4208452750
+lecture_apres_remontage	3	512	33554432	554382875	1082166	1124042	1152959	1166625	8400	0	0	0	1147552
+cache	serie=3	phase=lecture_apres_remontage	pages=256	touches=28976	absences=8400	evictions=8144	pages_rendues_avant_duo=0
+lecture_repetee	3	512	33554432	554250417	1081500	1125167	1153125	1244500	8387	0	0	0	1147552
+cache	serie=3	phase=lecture_repetee	pages=256	touches=28989	absences=8387	evictions=8387	pages_rendues_avant_duo=0
+lecture_512k_froide	3	8	524288	8878625	1106083	1124958	1124958	1124958	140	0	0	0	663712
+cache	serie=3	phase=lecture_512k_froide	pages=140	touches=444	absences=140	evictions=0	pages_rendues_avant_duo=256
+lecture_512k_chaude	3	8	524288	7284625	898000	966708	966708	966708	0	0	0	0	667808
+cache	serie=3	phase=lecture_512k_chaude	pages=140	touches=584	absences=0	evictions=0	pages_rendues_avant_duo=256
+remontage	serie=4	duree_ns=4209975375
+lecture_apres_remontage	4	512	33554432	556798291	1085292	1126167	1166667	1238292	8400	0	0	0	1147552
+cache	serie=4	phase=lecture_apres_remontage	pages=256	touches=28976	absences=8400	evictions=8144	pages_rendues_avant_duo=0
+lecture_repetee	4	512	33554432	554945750	1082083	1119750	1155917	1188334	8387	0	0	0	1147552
+cache	serie=4	phase=lecture_repetee	pages=256	touches=28989	absences=8387	evictions=8387	pages_rendues_avant_duo=0
+lecture_512k_froide	4	8	524288	8828000	1094917	1145000	1145000	1145000	140	0	0	0	663712
+cache	serie=4	phase=lecture_512k_froide	pages=140	touches=444	absences=140	evictions=0	pages_rendues_avant_duo=256
+lecture_512k_chaude	4	8	524288	6899666	855958	887458	887458	887458	0	0	0	0	667808
+cache	serie=4	phase=lecture_512k_chaude	pages=140	touches=584	absences=0	evictions=0	pages_rendues_avant_duo=256
+remontage	serie=5	duree_ns=4213782208
+lecture_apres_remontage	5	512	33554432	556942834	1082791	1133833	1192916	1310542	8400	0	0	0	1147552
+cache	serie=5	phase=lecture_apres_remontage	pages=256	touches=28976	absences=8400	evictions=8144	pages_rendues_avant_duo=0
+lecture_repetee	5	512	33554432	554498167	1082334	1118583	1137792	1149416	8387	0	0	0	1147552
+cache	serie=5	phase=lecture_repetee	pages=256	touches=28989	absences=8387	evictions=8387	pages_rendues_avant_duo=0
+lecture_512k_froide	5	8	524288	8574625	1049625	1137875	1137875	1137875	140	0	0	0	663712
+cache	serie=5	phase=lecture_512k_froide	pages=140	touches=444	absences=140	evictions=0	pages_rendues_avant_duo=256
+lecture_512k_chaude	5	8	524288	7084875	883084	897584	897584	897584	0	0	0	0	667808
+cache	serie=5	phase=lecture_512k_chaude	pages=140	touches=584	absences=0	evictions=0	pages_rendues_avant_duo=256
+contention	serie=0	acteur=A	operations=8	utile=65536	acteur_ns=141065333	simultane_ns=141220125	p50_ns=8637750	p95_ns=79414542	p99_ns=79414542	max_ns=79414542
+contention	serie=0	acteur=B	operations=8	utile=65536	acteur_ns=71003083	simultane_ns=141220125	p50_ns=8661958	p95_ns=10275000	p99_ns=10275000	max_ns=10275000
+contention	serie=1	acteur=A	operations=64	utile=524288	acteur_ns=1160651792	simultane_ns=1197716667	p50_ns=9600916	p95_ns=48388292	p99_ns=81143833	max_ns=81143833
+contention	serie=1	acteur=B	operations=64	utile=524288	acteur_ns=1197571875	simultane_ns=1197716667	p50_ns=9778375	p95_ns=45643000	p99_ns=92908875	max_ns=92908875
+contention	serie=2	acteur=A	operations=64	utile=524288	acteur_ns=802820042	simultane_ns=1146287500	p50_ns=8145333	p95_ns=9974958	p99_ns=262634667	max_ns=262634667
+contention	serie=2	acteur=B	operations=64	utile=524288	acteur_ns=1146154834	simultane_ns=1146287500	p50_ns=9287334	p95_ns=10707500	p99_ns=558118083	max_ns=558118083
+contention	serie=3	acteur=A	operations=64	utile=524288	acteur_ns=1253768667	simultane_ns=1264038417	p50_ns=10513167	p95_ns=74969500	p99_ns=111076167	max_ns=111076167
+contention	serie=3	acteur=B	operations=64	utile=524288	acteur_ns=1263819917	simultane_ns=1264038417	p50_ns=10550209	p95_ns=61081292	p99_ns=90265750	max_ns=90265750
+contention	serie=4	acteur=A	operations=64	utile=524288	acteur_ns=1080242541	simultane_ns=1236523709	p50_ns=9918000	p95_ns=48766708	p99_ns=227844208	max_ns=227844208
+contention	serie=4	acteur=B	operations=64	utile=524288	acteur_ns=1236325125	simultane_ns=1236523709	p50_ns=9814542	p95_ns=88109125	p99_ns=209798833	max_ns=209798833
+contention	serie=5	acteur=A	operations=64	utile=524288	acteur_ns=1097206542	simultane_ns=1097269625	p50_ns=8587125	p95_ns=8712125	p99_ns=559804875	max_ns=559804875
+contention	serie=5	acteur=B	operations=64	utile=524288	acteur_ns=551163333	simultane_ns=1097269625	p50_ns=8622875	p95_ns=9315959	p99_ns=10281125	max_ns=10281125
+reemploi	1	162	663552	1497923542	9174541	10277584	11756208	12672667	1182	1083	324	1436093841	97072
+pression	pages_avant_refus=324	extents=324	libres_au_refus=133	differes=5	plus_grand=128	blocs_reutilises=157	intervalles_apres=12
+verification_8gio_creux	1	1	0	4665459	4665333	4665333	4665333	4665333	19	0	0	0	527616
+pic_malloc_octets=1188176 piles_travail_reservees_max=2621440 majorant_tas_rust_et_piles=3809616 plafond_7mio=7340032
+      187.60 real        59.70 user         5.31 sys
+            14798848  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                3884  page reclaims
+                   0  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+              147571  voluntary context switches
+               11661  involuntary context switches
+       1475781178590  instructions retired
+        230941570711  cycles elapsed
+            13727184  peak memory footprint

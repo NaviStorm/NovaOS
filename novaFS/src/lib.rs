@@ -1,4 +1,4 @@
-//! Prototype hôte du profil de laboratoire P0. Le noyau ne dépend pas de ce paquet.
+//! Prototype hôte NovaFS P1. Le moteur lit et écrit le format de laboratoire P0.
 mod cache;
 pub use cache::CacheStats;
 pub mod codec;
@@ -69,9 +69,13 @@ impl std::error::Error for Error {
     }
 }
 
-/// Le retour d'une écriture signifie sa complétion. Seul flush confirme
-/// la stabilisation du jeu d'écritures complétées dans le modèle du périphérique.
-/// Le détenteur assure l'exclusivité et la stabilité de la géométrie.
+/// E/S par bloc entier de 4 Kio, indexé depuis zéro. Le détenteur assure
+/// l'exclusivité de l'écrivain et conserve la géométrie pendant le montage.
+/// Une écriture réussie est acceptée et lisible ; son contenu peut encore
+/// dépendre d'un cache volatil. Un flush réussi confirme les écritures
+/// précédentes dans le domaine de persistance déclaré par le backend.
+/// Un échec d'écriture ou de flush peut avoir pris effet partiellement ou
+/// entièrement. Une erreur de lecture ne fournit aucun bloc à l'appelant.
 pub trait Device {
     fn blocks(&self) -> u64;
     fn read(&self, block: u64) -> Result<Block>;

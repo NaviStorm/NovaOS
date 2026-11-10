@@ -1,6 +1,8 @@
-# NovaFS P0 sur macOS
+# NovaFS P1 sur macOS
 
-Ce paquet Rust possède son propre workspace Cargo et sa propre version 0.9.0. Il fonctionne sur une image logique de LV dont les blocs mesurent 4 096 octets. Le lanceur `lab/run` choisit explicitement la cible Darwin : la configuration Cargo du dépôt parent cible le noyau bare-metal.
+NovaFS v0.9.1 conserve le format P0. Il fonctionne sur une image logique de LV dont les blocs mesurent 4 096 octets. Le paquet possède son propre workspace Cargo. Le lanceur `lab/run` sélectionne explicitement la cible Darwin.
+
+P1 exerce les ruptures aux frontières de publication, les erreurs d’E/S partielles et la perte du cache volatil. Les commandes et les limites de chaque essai figurent dans le [rapport de durabilité](docs/novafs-p1-durabilite.md), la [matrice des injections](docs/novafs-p1-coupures.md) et les [mesures comparées avec P0](docs/novafs-p1-mesures.md).
 
 ## Créer, inspecter et vérifier une image jetable
 
