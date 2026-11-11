@@ -2,7 +2,9 @@
 
 NovaFS est distribué sous la Mozilla Public License 2.0. [Licence de NovaFS](LICENSE)
 
-NovaFS v0.9.9 permet de chiffrer indépendamment les origines d’un pool P7, puis de partager les unités entre snapshots et clones. La commande `python3 novaFS/lab/p7-cli.py aarch64` exécute un parcours complet sur des images jetables avec des clés neuves. [Chiffrement, format et utilisation](docs/novafs-p7-chiffrement.md) · [Mesures par architecture](docs/novafs-p7-mesures.md)
+NovaFS v0.9.10 revalide les deux générations protégées avant toute réparation et toute mutation. [Reprise, concurrence et qualification](docs/novafs-p7.1-consolidation.md)
+
+Le format P7 permet de chiffrer indépendamment les origines d’un pool P7, puis de partager les unités entre snapshots et clones. La commande `python3 novaFS/lab/p7-cli.py aarch64` exécute un parcours complet sur des images jetables avec des clés neuves. [Chiffrement, format et utilisation](docs/novafs-p7-chiffrement.md) · [Mesures par architecture](docs/novafs-p7-mesures.md)
 
 La v0.9.8 a introduit la compression transparente LZ4 par volume sur les nouveaux pools P6. Un volume peut alterner les politiques `none` et `lz4` au fil des écritures. [Format, résultats et reproduction P6](docs/novafs-p6-compression.md)
 

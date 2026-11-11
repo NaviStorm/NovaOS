@@ -12,7 +12,10 @@ mod fs;
 #[path = "../lab/latency_probes.rs"]
 pub mod latency_probes;
 pub mod pool;
-pub mod secure_commit;
+mod secure_commit;
+
+#[cfg(test)]
+pub(crate) static KDF_TEST: std::sync::Mutex<()> = std::sync::Mutex::new(());
 pub mod secure_export;
 pub mod secure_pool;
 pub mod secure_unit;
@@ -119,6 +122,11 @@ impl std::error::Error for Error {
 /// Un échec d'écriture ou de flush peut avoir pris effet partiellement ou
 /// entièrement. Une erreur de lecture ne fournit aucun bloc à l'appelant.
 pub trait Device {
+    /// Verrou partagé par tous les acteurs pouvant modifier ce support P7.
+    /// Un backend qui ne peut exclure les écritures étrangères reste consultable.
+    fn mutation_lock(&self) -> Option<std::sync::Arc<std::sync::Mutex<()>>> {
+        None
+    }
     fn blocks(&self) -> u64;
     /// Plafond logique stable pendant la durée de la vue, imposé par son propriétaire. Une image
     /// FS autonome peut conserver les fichiers creux du profil P0 sans plafond.
@@ -162,6 +170,9 @@ pub trait Device {
 }
 
 impl<D: Device> Device for &mut D {
+    fn mutation_lock(&self) -> Option<std::sync::Arc<std::sync::Mutex<()>>> {
+        (**self).mutation_lock()
+    }
     fn blocks(&self) -> u64 {
         (**self).blocks()
     }

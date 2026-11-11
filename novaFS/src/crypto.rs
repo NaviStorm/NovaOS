@@ -333,6 +333,7 @@ mod tests {
 
     #[test]
     fn deux_emplacements_et_vecteur_argon_openssl() -> Result<()> {
+        let _kdf = crate::KDF_TEST.lock().unwrap();
         let salt: [u8; 16] = array::from_fn(|i| i as u8);
         let phrase = b"novafs-p7-corpus";
         // OpenSSL 3.5.9 KDF ARGON2ID, m=65536, t=3, p=4, clé de 32 octets.

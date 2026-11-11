@@ -153,7 +153,11 @@ fn protected_redundancy(records: &[Option<Head>; COMMIT_BLOCKS as usize], genera
 /// Contrôle strict hors ligne de chaque copie présente, y compris celles
 /// que la sélection de reprise peut écarter après une écriture déchirée.
 pub fn verify_commit_replicas(d: &impl Device, pool: Id, administration: &Secret) -> Result<()> {
-    let key = super::publication_key(d, pool, administration)?;
+    let header = super::read_header(d)?;
+    if header[16..32] != pool {
+        return Err(corrupt());
+    }
+    let key = super::publication_key(&header, pool, administration)?;
     let mut records = [None; COMMIT_BLOCKS as usize];
     for (offset, record) in records.iter_mut().enumerate() {
         let offset = offset as u64;

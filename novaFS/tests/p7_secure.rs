@@ -525,72 +525,6 @@ fn campagnes_a_oracle_externe_et_saturation() -> Result<()> {
 }
 
 #[test]
-fn preuve_domaine_independante_de_la_publication_administrative() -> Result<()> {
-    use novafs::secure_commit::{CommitLog, Head};
-    use sha2::{Digest as _, Sha256};
-    use zeroize::Zeroizing;
-    for sector in [512, 4096] {
-        let (mut p, ctl) = pool(1600, sector)?;
-        let (id, domain) = volume(&mut p, 22, Compression::None)?;
-        p.write_file(id, "/f", 0, b"contenu signe du domaine")?;
-        let generation = p.generation();
-        let initial = ctl.snapshot();
-        // État de même génération dans les couches P6 et P7, avec une
-        // mutation de catalogue qui conserve les unités physiques immuables.
-        p.snapshot(id)?;
-        let next = ctl.snapshot().device();
-        drop(p);
-        let mut d = initial.device();
-        let header = d.read(0)?;
-        // Le propriétaire de l'administration possède uniquement son secret
-        // d'enrôlement. Le banc lui fait publier un catalogue dont une preuve
-        // de domaine a été altérée, sans lui remettre la clé de ce domaine.
-        let mut wrapped = Zeroizing::new(<[u8; 32]>::try_from(&header[80..112]).unwrap());
-        admin().derive(&POOL, b"pool-enveloppe-v1")?.open(
-            header[40..64].try_into().unwrap(),
-            header[64..80].try_into().unwrap(),
-            &header[..40],
-            wrapped.as_mut(),
-        )?;
-        let pubkey = Secret::from_bytes(*wrapped).derive(&POOL, b"pool-publication-v1")?;
-        let verify = |d: &SimDevice, h: &Head| {
-            let mut hash = Sha256::new();
-            for i in 0..9 {
-                hash.update(d.read(10 + 9 * (h.generation % 4) + i)?);
-            }
-            if <[u8; 32]>::from(hash.finalize()) != h.digest {
-                return Err(Error::Corrupt("catalogue du banc"));
-            }
-            Ok(())
-        };
-        let mut log = CommitLog::open(&d, 2, POOL, &pubkey, verify)?;
-        log.resume(&mut d, &pubkey, verify)?;
-        log.publish(&mut d, &pubkey, |d, g| {
-            let mut hash = Sha256::new();
-            for i in 0..9 {
-                let mut page = next.read(10 + 9 * (g % 4) + i)?;
-                if i == 8 {
-                    page[0] ^= 1;
-                }
-                d.write(10 + 9 * (g % 4) + i, &page)?;
-                hash.update(page);
-            }
-            Ok(hash.finalize().into())
-        })?;
-        let mut mounted = SecurePool::open(d, POOL, &admin())?;
-        assert_eq!(mounted.generation(), generation + 1);
-        assert!(
-            mounted
-                .unlock(domain, Credential::Recovery(&recovery()))
-                .is_err()
-        );
-        assert!(mounted.read_file(id, "/f", 0, 64).is_err());
-        assert!(mounted.write_file(id, "/f", 0, b"mutation").is_err());
-    }
-    Ok(())
-}
-
-#[test]
 fn entropie_indisponible_pendant_une_transaction() -> Result<()> {
     use novafs::crypto::{Entropy, HostEntropy};
     struct Fail {
@@ -661,6 +595,315 @@ fn dommage_combine_aucune_reparation_avant_controle_du_graphe() -> Result<()> {
             0
         );
         assert_eq!(ctl.snapshot().bytes()?, before);
+    }
+    Ok(())
+}
+
+fn refus_sans_ecriture(p: &mut Pool, ctl: &SimControl, volume: u64) -> Result<()> {
+    let generation = p.generation();
+    let avant = ctl.snapshot().bytes()?;
+    ctl.trace(None, None);
+    assert!(matches!(
+        p.write_file(volume, "/f", 0, b"tentative"),
+        Err(Error::Corrupt(_) | Error::Io(_))
+    ));
+    assert!(matches!(
+        p.write_file(volume, "/f", 0, b"bis"),
+        Err(Error::Unavailable)
+    ));
+    assert_eq!(p.generation(), generation);
+    assert!(
+        !ctl.events()
+            .iter()
+            .any(|e| matches!(e, Event::BeforeWrite(_)))
+    );
+    assert_eq!(avant, ctl.snapshot().bytes()?);
+    Ok(())
+}
+
+fn alterer(ctl: &SimControl, bloc: u64, octet: usize) -> Result<()> {
+    let mut page = ctl.snapshot().device().read(bloc)?;
+    page[octet] ^= 1;
+    ctl.replace_stable(bloc, page)
+}
+
+#[test]
+fn p71_entete_apres_ouverture_avant_reparation() -> Result<()> {
+    for secteur in [512, 4096] {
+        let (mut p, ctl) = pool(1800, secteur)?;
+        let (v, domaine) = volume(&mut p, 21, Compression::None)?;
+        p.write_file(v, "/f", 0, &[71; 8192])?;
+        let certificat = 3 + 2 * (p.generation() % 4);
+        let disk = p.into_device();
+        ctl.replace_stable(certificat, [0; K])?;
+        let mut p = opened(disk, domaine)?;
+        p.check()?;
+        alterer(&ctl, 1, 80)?;
+        refus_sans_ecriture(&mut p, &ctl, v)?;
+    }
+    Ok(())
+}
+
+#[test]
+fn p71_banque_apres_publication_en_mode_inscriptible() -> Result<()> {
+    for secteur in [512, 4096] {
+        let (mut p, ctl) = pool(1800, secteur)?;
+        let (v, _) = volume(&mut p, 21, Compression::None)?;
+        p.write_file(v, "/f", 0, &[71; 8192])?;
+        p.advance()?;
+        p.check()?;
+        alterer(&ctl, 10 + 9 * (p.generation() % 4) + 8, 0)?;
+        refus_sans_ecriture(&mut p, &ctl, v)?;
+    }
+    Ok(())
+}
+
+#[test]
+fn p71_dommages_combines_et_erreurs_de_lecture() -> Result<()> {
+    for secteur in [512, 4096] {
+        let (mut p, ctl) = pool(1800, secteur)?;
+        let (v, domaine) = volume(&mut p, 21, Compression::None)?;
+        p.write_file(v, "/f", 0, &[71; 8192])?;
+        let naissance = p.generation();
+        let snapshot = p.snapshot(v)?;
+        let clone = p.clone_snapshot(snapshot, OWNER)?;
+        let g = p.generation();
+        let base = ctl.snapshot();
+        let objets = obj(&base.device(), domaine, naissance)?;
+        let donnees = objets.iter().find(|(_, h)| h[11] == 1).unwrap().0;
+        let racine = objets
+            .iter()
+            .find(|(_, h)| h[48..56] == (1u64 << 32).to_le_bytes())
+            .unwrap()
+            .0;
+        let tete = 10 + 9 * (g % 4);
+        let parent = 10 + 9 * ((g - 1) % 4);
+        let certificat = 2 + 2 * (g % 4);
+        for dommages in [
+            vec![(1, 80), (certificat, 4095)],
+            vec![(tete, 32), (certificat, 4095)],
+            vec![(tete + 8, 0), (donnees + 1, 19)],
+            vec![(racine + 1, 7), (donnees, 48)],
+            vec![(donnees, 112), (racine, 88)],
+            vec![(parent + 8, 1), (tete + 8, 2)],
+            vec![(certificat, 4095), (certificat + 1, 4095)],
+            vec![(0, 80), (1, 80)],
+        ] {
+            let d = base.device();
+            let ctl = d.control();
+            let mut p = opened(d, domaine)?;
+            for (bloc, offset) in dommages {
+                alterer(&ctl, bloc, offset)?;
+            }
+            refus_sans_ecriture(&mut p, &ctl, clone)?;
+        }
+        for bloc in [0, 1, certificat, parent, tete + 8, racine, donnees + 1] {
+            let d = base.device();
+            let ctl = d.control();
+            ctl.replace_stable(certificat + 1, [0; K])?;
+            let mut p = opened(d, domaine)?;
+            ctl.inject(SimFault::Read { block: bloc })?;
+            refus_sans_ecriture(&mut p, &ctl, clone)?;
+        }
+    }
+    Ok(())
+}
+
+#[test]
+fn p71_interruption_de_la_reparation_et_publication() -> Result<()> {
+    for secteur in [512, 4096] {
+        let (mut p, ctl) = pool(1800, secteur)?;
+        let (v, domaine) = volume(&mut p, 21, Compression::None)?;
+        p.write_file(v, "/f", 0, b"avant")?;
+        let g = p.generation();
+        drop(p);
+        let tete = 3 + 2 * (g % 4);
+        let parent = 3 + 2 * ((g - 1) % 4);
+        ctl.replace_stable(tete, [0; K])?;
+        ctl.replace_stable(parent, [0; K])?;
+        let base = ctl.snapshot();
+        let d = base.device();
+        let ctl = d.control();
+        let mut p = opened(d, domaine)?;
+        ctl.trace(None, None);
+        p.write_file(v, "/f", 0, b"apres")?;
+        let trace = ctl.events();
+        let cibles: Vec<_> = trace
+            .iter()
+            .filter_map(|e| match e {
+                Event::BeforeWrite(b) => Some(*b),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(&cibles[..2], &[tete, parent]);
+        assert_eq!(
+            trace
+                .iter()
+                .filter(|e| matches!(e, Event::FlushCompleted(_)))
+                .count(),
+            4
+        );
+        for point in 0..=trace.len() {
+            for persistance in [Persistence::None, Persistence::Newest(2)] {
+                let d = base.device();
+                let ctl = d.control();
+                let mut p = opened(d, domaine)?;
+                ctl.trace(Some(point), None);
+                let confirme = p.write_file(v, "/f", 0, b"apres").is_ok();
+                assert_eq!(confirme, point == trace.len());
+                ctl.power_cut(persistance)?;
+                let mut reprise = reouvrir(&ctl.snapshot(), &[domaine])?;
+                reprise.check()?;
+                let contenu = lire(&mut reprise, v)?;
+                match reprise.generation() {
+                    n if n == g => {
+                        assert!(!confirme);
+                        assert_eq!(contenu, b"avant");
+                    }
+                    n if n == g + 1 => assert_eq!(contenu, b"apres"),
+                    n => panic!("génération inattendue {n}"),
+                }
+            }
+        }
+        eprintln!(
+            "P71_REPRISE secteur={secteur} coupures={}",
+            2 * (trace.len() + 1)
+        );
+    }
+    Ok(())
+}
+
+#[test]
+fn p71_ecrivains_lecteur_et_modification_externe() -> Result<()> {
+    use std::sync::{Arc, mpsc};
+    use std::time::Duration;
+    // Les descripteurs du banc partagent réellement le support et son verrou.
+    struct Session {
+        disk: Arc<Mutex<SimDevice>>,
+        rendez_vous: Arc<Mutex<Option<(mpsc::Sender<()>, mpsc::Receiver<()>)>>>,
+    }
+    impl Device for Session {
+        fn mutation_lock(&self) -> Option<Arc<Mutex<()>>> {
+            self.disk.lock().unwrap().mutation_lock()
+        }
+        fn blocks(&self) -> u64 {
+            self.disk.lock().unwrap().blocks()
+        }
+        fn read(&self, b: u64) -> Result<Block> {
+            if let Some((arrive, continuer)) = self.rendez_vous.lock().unwrap().take() {
+                arrive.send(()).unwrap();
+                continuer.recv_timeout(Duration::from_secs(10)).unwrap();
+            }
+            self.disk.lock().unwrap().read(b)
+        }
+        fn write(&mut self, b: u64, p: &Block) -> Result<()> {
+            self.disk.lock().unwrap().write(b, p)
+        }
+        fn flush(&mut self) -> Result<()> {
+            self.disk.lock().unwrap().flush()
+        }
+    }
+    for secteur in [512, 4096] {
+        let (p, ctl) = pool(1800, secteur)?;
+        let disk = Arc::new(Mutex::new(p.into_device()));
+        let session = || Session {
+            disk: disk.clone(),
+            rendez_vous: Arc::default(),
+        };
+        let mut lecteur = SecurePool::open(session(), POOL, &admin())?;
+        let mut second = SecurePool::open(session(), POOL, &admin())?;
+        let (arrive, attende) = mpsc::channel();
+        let (libere, continuer) = mpsc::channel();
+        // Armer après le montage garantit que la pause survient dans change.
+        let dev = session();
+        let rendez_vous = dev.rendez_vous.clone();
+        let mut premier = SecurePool::open(dev, POOL, &admin())?;
+        *rendez_vous.lock().unwrap() = Some((arrive, continuer));
+        let travail = std::thread::spawn(move || premier.advance());
+        attende.recv_timeout(Duration::from_secs(10)).unwrap();
+        let bloque = second.advance();
+        let lecture = lecteur.check();
+        let externe = ctl.replace_stable(0, [0; K]);
+        libere.send(()).unwrap();
+        travail.join().unwrap()?;
+        assert!(matches!(bloque, Err(Error::Busy)));
+        assert!(matches!(lecture, Err(Error::Busy)));
+        assert!(matches!(externe, Err(Error::Busy)));
+        ctl.trace(None, None);
+        assert!(matches!(second.advance(), Err(Error::Corrupt(_))));
+        assert!(matches!(lecteur.check(), Err(Error::Corrupt(_))));
+        assert!(
+            !ctl.events()
+                .iter()
+                .any(|e| matches!(e, Event::BeforeWrite(_)))
+        );
+        SecurePool::open(session(), POOL, &admin())?.check()?;
+    }
+    Ok(())
+}
+
+#[test]
+fn p71_descripteurs_externes_sans_exclusivite() -> Result<()> {
+    use novafs::device::FileImage;
+    for secteur in [512, 4096] {
+        let fichier = tempfile::NamedTempFile::new()?;
+        fichier.as_file().set_len(1800 * 4096)?;
+        let import = || FileImage::from_file(fichier.reopen()?, 1800, secteur);
+        let vide = std::fs::read(fichier.path())?;
+        assert!(matches!(
+            SecurePool::format(import()?, POOL, &admin()),
+            Err(Error::ReadOnly)
+        ));
+        assert_eq!(std::fs::read(fichier.path())?, vide);
+        let prive = SecurePool::format(FileImage::create(1800, secteur)?, POOL, &admin())?;
+        std::io::copy(&mut prive.into_device().into_file(), &mut fichier.reopen()?)?;
+        let base = std::fs::read(fichier.path())?;
+        let mut lecteur = SecurePool::open(import()?, POOL, &admin())?;
+        let mut second = SecurePool::open(import()?, POOL, &admin())?;
+        lecteur.check()?;
+        assert!(matches!(second.advance(), Err(Error::ReadOnly)));
+        assert_eq!(std::fs::read(fichier.path())?, base);
+        // Descripteur indépendant sur le même inode. Le changement survient
+        // entre deux diagnostics en lecture seule, sans course pendant la lecture.
+        use std::os::unix::fs::FileExt;
+        let offset = K + 80;
+        fichier
+            .as_file()
+            .write_all_at(&[base[offset] ^ 1], offset as u64)?;
+        fichier.as_file().sync_all()?;
+        let alteree = std::fs::read(fichier.path())?;
+        assert!(matches!(lecteur.check(), Err(Error::Corrupt(_))));
+        assert!(matches!(lecteur.advance(), Err(Error::Unavailable)));
+        assert_eq!(std::fs::read(fichier.path())?, alteree);
+    }
+    Ok(())
+}
+
+#[test]
+fn p71_corruption_avant_drain_du_cache_volatil() -> Result<()> {
+    for secteur in [512, 4096] {
+        let (mut p, ctl) = pool(1800, secteur)?;
+        let (v, domaine) = volume(&mut p, 21, Compression::None)?;
+        p.write_file(v, "/f", 0, &[71; 8192])?;
+        let g = p.generation();
+        let mut disk = p.into_device();
+        let (objet, _) = obj(&disk, domaine, g)?
+            .into_iter()
+            .find(|(_, h)| h[11] == 1)
+            .unwrap();
+        alterer(&ctl, objet + 1, 384)?;
+        ctl.replace_stable(3 + 2 * (g % 4), [0; K])?;
+        // Écriture acceptée avant reprise sur un bloc libre de cette petite vue.
+        let libre = disk.blocks() - 1;
+        assert_eq!(disk.read(libre)?, [0; K]);
+        disk.write(libre, &[0x52; K])?;
+        let mut p = opened(disk, domaine)?;
+        refus_sans_ecriture(&mut p, &ctl, v)?;
+        assert!(
+            !ctl.events()
+                .iter()
+                .any(|e| matches!(e, Event::FlushSubmitted(_)))
+        );
     }
     Ok(())
 }

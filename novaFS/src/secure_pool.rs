@@ -262,6 +262,10 @@ pub fn looks_like(d: &impl Device) -> Result<bool> {
 }
 /// Identité et géométrie publiques. L'appelant conserve séparément son identité attendue.
 pub fn inspect_header(d: &impl Device) -> Result<Id> {
+    Ok(read_header(d)?[16..32].try_into().unwrap())
+}
+
+fn read_header(d: &impl Device) -> Result<Block> {
     coord(d.blocks())?;
     let p = d.read(0)?;
     let pool = p[16..32].try_into().unwrap();
@@ -270,15 +274,10 @@ pub fn inspect_header(d: &impl Device) -> Result<Id> {
     if pool == [0; 16] || normalized != header(pool, d.blocks()) || p != d.read(1)? {
         return Err(corrupt());
     }
-    Ok(pool)
+    Ok(p)
 }
 
-pub(super) fn publication_key(
-    disk: &impl Device,
-    pool: Id,
-    administration: &Secret,
-) -> Result<Secret> {
-    let h = disk.read(0)?;
+pub(super) fn publication_key(h: &Block, pool: Id, administration: &Secret) -> Result<Secret> {
     let wrap = administration.derive(&pool, b"pool-enveloppe-v1")?;
     let mut secret = zeroize::Zeroizing::new(<[u8; 32]>::try_from(&h[80..112]).unwrap());
     wrap.open(
@@ -412,6 +411,80 @@ impl<D: Device> Device for Media<'_, D> {
     }
 }
 
+/// Une sélection lit d’abord la banque du parent, puis la banque de tête.
+/// Seuls les objets des catalogues g et g−1 restent épinglés par le format P7.
+struct Validation<'a> {
+    expected: Head,
+    pool: Id,
+    admin: &'a Secret,
+    header_mac: &'a Digest,
+    keys: &'a BTreeMap<Id, Keys>,
+    parent: Option<crate::shared_graph::Catalog>,
+    state: Option<State>,
+    full_graph: bool,
+}
+impl<'a> Validation<'a> {
+    fn new(
+        expected: Head,
+        pool: Id,
+        admin: &'a Secret,
+        header_mac: &'a Digest,
+        keys: &'a BTreeMap<Id, Keys>,
+    ) -> Self {
+        Self {
+            expected,
+            pool,
+            admin,
+            header_mac,
+            keys,
+            parent: None,
+            state: None,
+            full_graph: true,
+        }
+    }
+    fn visit(&mut self, disk: &impl Device, h: &Head) -> Result<()> {
+        let mut state = State::load(disk, self.pool, h)?;
+        let size = coord(disk.blocks())?;
+        let prefix = Prefix {
+            state: &state,
+            size,
+        };
+        let mut catalogs =
+            crate::shared_graph::Graph::visible_catalogs(&prefix, self.pool)?.into_iter();
+        if h != &self.expected {
+            if h.generation.checked_add(1) != Some(self.expected.generation)
+                || self.expected.parent != h.digest
+                || self.parent.is_some()
+            {
+                return Err(corrupt());
+            }
+            self.parent = catalogs.next();
+            return Ok(());
+        }
+        if catalogs.nth(1) != self.parent {
+            return Err(Error::Corrupt("catalogue précédent P7 divergent"));
+        }
+        let header = read_header(disk)?;
+        self.admin
+            .verify_mac(&[b"NovaFS/P7/session/header", &header], self.header_mac)?;
+        if self.full_graph {
+            state.signed_views(size, self.pool, self.keys, None, true)?;
+            SharedPool::open(Media {
+                disk: &mut ReadOnly(disk),
+                state: &mut state,
+                keys: self.keys,
+                pool: self.pool,
+                generation: h.generation,
+                read_scope: None,
+                write_scope: None,
+                writer: None,
+            })?;
+        }
+        self.state = Some(state);
+        Ok(())
+    }
+}
+
 /// Le secret administratif est provisionné par le propriétaire, indépendamment des
 /// secrets de volume. La fermeture par into_device rend le support à son propriétaire
 /// et libère les clés. Une vue déverrouillée reste limitée à la durée de son appel.
@@ -420,6 +493,7 @@ pub struct SecurePool<D, E = HostEntropy> {
     disk: D,
     pool: Id,
     admin: Secret,
+    header_mac: Digest,
     log: CommitLog,
     state: State,
     keys: BTreeMap<Id, Keys>,
@@ -441,6 +515,8 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         administration: &Secret,
         mut entropy: E,
     ) -> Result<Self> {
+        let gate = disk.mutation_lock().ok_or(Error::ReadOnly)?;
+        let _exclusive = gate.try_lock().map_err(|_| Error::Busy)?;
         coord(disk.blocks())?;
         if pool == [0; 16] {
             return Err(Error::Invalid("identité du pool P7"));
@@ -482,6 +558,7 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         Ok(Self {
             disk,
             pool,
+            header_mac: admin.mac(&[b"NovaFS/P7/session/header", &h]),
             admin,
             entropy,
             log,
@@ -496,11 +573,17 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         administration: &Secret,
         entropy: E,
     ) -> Result<Self> {
-        if inspect_header(&disk)? != expected_pool {
+        let gate = disk.mutation_lock();
+        let _guard = gate
+            .as_ref()
+            .map(|g| g.try_lock().map_err(|_| Error::Busy))
+            .transpose()?;
+        let h = read_header(&disk)?;
+        if h[16..32] != expected_pool {
             return Err(corrupt());
         }
         let pool = expected_pool;
-        let admin = publication_key(&disk, pool, administration)?;
+        let admin = publication_key(&h, pool, administration)?;
         let log = CommitLog::open(&disk, 2, pool, &admin, |d, h| {
             State::load(d, pool, h).map(drop)
         })?;
@@ -508,6 +591,7 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         Ok(Self {
             disk,
             pool,
+            header_mac: admin.mac(&[b"NovaFS/P7/session/header", &h]),
             admin,
             entropy,
             log,
@@ -537,13 +621,34 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
             writer: None,
         })
     }
-    pub fn list(&mut self) -> Result<Vec<ObjectInfo>> {
+    fn local_views(&mut self) -> Result<Vec<ObjectInfo>> {
         let pool = self.pool;
         crate::shared::views_at_head(&self.media(None)?, pool)
     }
+    pub fn list(&mut self) -> Result<Vec<ObjectInfo>> {
+        self.with_reader(|p| {
+            p.check_physical(false)?;
+            p.local_views()
+        })
+    }
+    fn with_reader<T>(&mut self, read: impl FnOnce(&mut Self) -> Result<T>) -> Result<T> {
+        if self.failed {
+            return Err(Error::Unavailable);
+        }
+        let gate = self.disk.mutation_lock();
+        let _guard = gate
+            .as_ref()
+            .map(|g| g.try_lock().map_err(|_| Error::Busy))
+            .transpose()?;
+        let result = read(self);
+        if matches!(result, Err(Error::Io(_) | Error::Corrupt(_))) {
+            self.failed = true;
+        }
+        result
+    }
     fn scope(&mut self, id: u64) -> Result<Id> {
         let ids = self
-            .list()?
+            .local_views()?
             .iter()
             .find(|v| v.id == id)
             .ok_or(Error::NotFound)?
@@ -561,9 +666,24 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
             .collect()
     }
     pub fn domain(&mut self, id: u64) -> Result<Id> {
-        self.scope(id)
+        self.with_reader(|p| {
+            p.check_physical(false)?;
+            p.scope(id)
+        })
     }
     pub fn unlock(&mut self, domain: Id, cred: Credential<'_>) -> Result<()> {
+        if self.failed {
+            return Err(Error::Unavailable);
+        }
+        let gate = self.disk.mutation_lock();
+        let _guard = gate
+            .as_ref()
+            .map(|g| g.try_lock().map_err(|_| Error::Busy))
+            .transpose()?;
+        if let Err(e) = self.check_physical(false) {
+            self.failed = true;
+            return Err(e);
+        }
         let slots = self
             .state
             .domains
@@ -605,29 +725,41 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         Ok(())
     }
     pub fn verify_receipt(&mut self, receipt: &crate::shared::Receipt) -> Result<()> {
-        self.check()?;
-        SharedPool::open(self.media(None)?)?.verify_receipt(receipt)
+        self.with_reader(|p| {
+            p.available()?;
+            p.check_physical(true)?;
+            SharedPool::open(p.media(None)?)?.verify_receipt(receipt)
+        })
     }
     pub fn receipt(&mut self, id: u64) -> Result<crate::shared::Receipt> {
-        self.check()?;
-        SharedPool::open(self.media(None)?)?.receipt(id)
+        self.with_reader(|p| {
+            p.available()?;
+            p.check_physical(true)?;
+            SharedPool::open(p.media(None)?)?.receipt(id)
+        })
+    }
+    fn check_physical(&self, full_graph: bool) -> Result<()> {
+        let mut validation = Validation::new(
+            self.log.head(),
+            self.pool,
+            &self.admin,
+            &self.header_mac,
+            &self.keys,
+        );
+        validation.full_graph = full_graph;
+        let log = CommitLog::open(&self.disk, 2, self.pool, &self.admin, |d, h| {
+            validation.visit(d, h)
+        })?;
+        if log.head() != self.log.head() {
+            return Err(corrupt());
+        }
+        Ok(())
     }
     pub fn check(&mut self) -> Result<()> {
-        self.available()?;
-        let result = self
-            .state
-            .signed_views(
-                coord(self.disk.blocks())?,
-                self.pool,
-                &self.keys,
-                None,
-                true,
-            )
-            .and_then(|_| SharedPool::open(self.media(None)?).map(drop));
-        if result.is_err() {
-            self.failed = true
-        }
-        result
+        self.with_reader(|p| {
+            p.available()?;
+            p.check_physical(true)
+        })
     }
     fn change<T>(
         &mut self,
@@ -637,38 +769,41 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
     ) -> Result<T> {
         self.available()?;
         let pool = self.pool;
-        self.state.signed_views(
-            coord(self.disk.blocks())?,
-            self.pool,
+        let gate = self.disk.mutation_lock().ok_or(Error::ReadOnly)?;
+        let _exclusive = gate.try_lock().map_err(|_| Error::Busy)?;
+        // Un drain peut stabiliser des commandes d’une instance antérieure.
+        // Valider leur vue lisible, puis revalider le support après le drain.
+        if self.log.needs_drain()
+            && let Err(error) = self.check_physical(true)
+        {
+            self.failed = true;
+            return Err(error);
+        }
+        let mut validation = Validation::new(
+            self.log.head(),
+            pool,
+            &self.admin,
+            &self.header_mac,
             &self.keys,
-            None,
-            true,
-        )?;
-        // Le drain peut modifier durablement la dernière bande. Vérifier après le
-        // drain le graphe sélectionné avant d'autoriser la réparation des certificats.
-        let selected = self.log.head();
-        let keys = &self.keys;
-        self.log.resume(&mut self.disk, &self.admin, |d, h| {
-            let state = State::load(d, pool, h)?;
-            if h == &selected {
-                let mut disk = ReadOnly(d);
-                let mut state = state;
-                state.signed_views(coord(d.blocks())?, pool, keys, None, true)?;
-                SharedPool::open(Media {
-                    disk: &mut disk,
-                    state: &mut state,
-                    keys,
-                    pool,
-                    generation: h.generation,
-                    read_scope: None,
-                    write_scope: None,
-                    writer: None,
-                })?;
+        );
+        let verified = self
+            .log
+            .resume(&mut self.disk, &self.admin, |d, h| validation.visit(d, h))
+            .and_then(|()| validation.state.ok_or_else(corrupt));
+        let mut state = match verified {
+            Ok(state) => state,
+            Err(error) => {
+                self.failed = true;
+                return Err(error);
             }
-            Ok(())
-        })?;
-        let mut state = self.state.clone();
-        let old = self.list()?;
+        };
+        let old = crate::shared::views_at_head(
+            &Prefix {
+                state: &state,
+                size: coord(self.disk.blocks())?,
+            },
+            pool,
+        )?;
         if let Some(d) = domain {
             if state
                 .domains
@@ -771,15 +906,14 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         result
     }
     pub fn read_file(&mut self, id: u64, path: &str, offset: u64, n: usize) -> Result<Vec<u8>> {
-        let scope = self.scope(id)?;
-        let pool = self.pool;
-        let media = self.media(Some(scope))?;
-        media.key(scope)?;
-        let result = crate::shared::read_one(&media, pool, id, path, offset, n);
-        if matches!(result, Err(Error::Corrupt(_) | Error::Io(_))) {
-            self.failed = true
-        }
-        result
+        self.with_reader(|p| {
+            p.check_physical(false)?;
+            let scope = p.scope(id)?;
+            let pool = p.pool;
+            let media = p.media(Some(scope))?;
+            media.key(scope)?;
+            crate::shared::read_one(&media, pool, id, path, offset, n)
+        })
     }
     pub fn create_file(&mut self, id: u64, path: &str) -> Result<()> {
         let s = self.scope(id)?;
@@ -827,28 +961,30 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         backup: &Secret,
         out: impl Write,
     ) -> Result<crate::shared_export::ExportInfo> {
-        self.available()?;
-        let domain = self.scope(id)?;
-        self.check()?;
-        let engine = SharedPool::open(Media {
-            disk: &mut self.disk,
-            state: &mut self.state,
-            keys: &self.keys,
-            pool: self.pool,
-            generation: self.log.head().generation,
-            read_scope: None,
-            write_scope: None,
-            writer: None,
-        })?;
-        crate::secure_export::export_view(
-            &engine,
-            id,
-            sector,
-            domain,
-            backup,
-            &mut self.entropy,
-            out,
-        )
+        self.with_reader(|p| {
+            p.available()?;
+            let domain = p.scope(id)?;
+            p.check_physical(true)?;
+            let engine = SharedPool::open(Media {
+                disk: &mut p.disk,
+                state: &mut p.state,
+                keys: &p.keys,
+                pool: p.pool,
+                generation: p.log.head().generation,
+                read_scope: None,
+                write_scope: None,
+                writer: None,
+            })?;
+            crate::secure_export::export_view(
+                &engine,
+                id,
+                sector,
+                domain,
+                backup,
+                &mut p.entropy,
+                out,
+            )
+        })
     }
     pub fn restore(
         &mut self,

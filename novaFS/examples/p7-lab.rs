@@ -40,6 +40,9 @@ struct Counters {
 }
 struct Measured(FileImage, Rc<Cell<Counters>>);
 impl Device for Measured {
+    fn mutation_lock(&self) -> Option<std::sync::Arc<std::sync::Mutex<()>>> {
+        self.0.mutation_lock()
+    }
     fn blocks(&self) -> u64 {
         self.0.blocks()
     }
@@ -238,14 +241,12 @@ fn exchange(action: &str, sector: u32, dir: &Path) -> Result<()> {
     let data = corpus::donnees(BYTES, "repetitif", 0xaf);
     match action {
         "produire" => {
-            let file = OpenOptions::new()
+            let mut file = OpenOptions::new()
                 .create_new(true)
                 .read(true)
                 .write(true)
                 .open(image)?;
-            file.set_len(BLOCKS * 4096)?;
-            let mut p =
-                SecurePool::format(FileImage::from_file(file, BLOCKS, sector)?, POOL, &admin)?;
+            let mut p = SecurePool::format(FileImage::create(BLOCKS, sector)?, POOL, &admin)?;
             let o = p.create(OWNER, IDS, 256, Compression::Lz4, Some((PHRASE, &recovery)))?;
             p.create_file(o, "/f")?;
             p.write_file(o, "/f", 0, &data)?;
@@ -259,6 +260,8 @@ fn exchange(action: &str, sector: u32, dir: &Path) -> Result<()> {
                 .open(archive)?;
             p.export(c, sector, &backup, &mut out)?;
             out.flush()?;
+            std::io::copy(&mut p.into_device().into_file(), &mut file)?;
+            file.sync_all()?;
         }
         "lire" => {
             let mut p = SecurePool::open(

@@ -231,6 +231,10 @@ impl CommitLog {
         Ok(Self::build(layout, selection.head, key, Mode::Inspection))
     }
 
+    pub(crate) fn needs_drain(&self) -> bool {
+        self.mode == Mode::Inspection
+    }
+
     pub fn head(&self) -> Head {
         self.head
     }
@@ -245,13 +249,14 @@ impl CommitLog {
         verify: impl FnMut(&D, &Head) -> Result<()>,
     ) -> Result<()> {
         self.check_key(key)?;
-        match self.mode {
-            Mode::Writable => return Ok(()),
-            Mode::Interrupted => return Err(Error::UnknownOutcome),
-            Mode::Inspection => {}
+        if self.mode == Mode::Interrupted {
+            return Err(Error::UnknownOutcome);
         }
+        let drain = self.mode == Mode::Inspection;
         self.mode = Mode::Interrupted;
-        d.flush()?;
+        if drain {
+            d.flush()?;
+        }
         let selection = self.layout.scan(d, key, verify)?;
         if self.head != selection.head {
             return Err(Error::Corrupt("tête P7 modifiée pendant la reprise"));
@@ -718,6 +723,92 @@ mod tests {
                 };
                 assert_eq!(recovered.head().generation, expected);
             }
+        }
+        Ok(())
+    }
+    #[test]
+    fn preuve_domaine_independante_de_la_publication_administrative() -> crate::Result<()> {
+        let _kdf = crate::KDF_TEST.lock().unwrap();
+        use super::{CommitLog, Head};
+        use crate::crypto::{Credential, Secret};
+        use crate::device::SimDevice;
+        use crate::secure_pool::SecurePool;
+        use crate::{Compression, Device, Error, Ids, Result};
+        const POOL: [u8; 16] = [14; 16];
+        let admin = || Secret::from_bytes([0x54; 32]);
+        let recovery = || Secret::from_bytes([0xb9; 32]);
+        use sha2::{Digest as _, Sha256};
+        use zeroize::Zeroizing;
+        for sector in [512, 4096] {
+            let device = SimDevice::new(1600, sector)?;
+            let ctl = device.control();
+            let mut p = SecurePool::format(device, POOL, &admin())?;
+            let id = p.create(
+                [33; 16],
+                Ids {
+                    fs: [22; 16],
+                    lv: [23; 16],
+                },
+                256,
+                Compression::None,
+                Some((b"phrase publique du banc", &recovery())),
+            )?;
+            let domain = p.domain(id)?;
+            p.create_file(id, "/f")?;
+            p.write_file(id, "/f", 0, b"contenu signe du domaine")?;
+            let generation = p.generation();
+            let initial = ctl.snapshot();
+            // État de même génération dans les couches P6 et P7, avec une
+            // mutation de catalogue qui conserve les unités physiques immuables.
+            p.snapshot(id)?;
+            let next = ctl.snapshot().device();
+            drop(p);
+            let mut d = initial.device();
+            let header = d.read(0)?;
+            // Le propriétaire de l'administration possède uniquement son secret
+            // d'enrôlement. Le banc lui fait publier un catalogue dont une preuve
+            // de domaine a été altérée, sans lui remettre la clé de ce domaine.
+            let mut wrapped = Zeroizing::new(<[u8; 32]>::try_from(&header[80..112]).unwrap());
+            admin().derive(&POOL, b"pool-enveloppe-v1")?.open(
+                header[40..64].try_into().unwrap(),
+                header[64..80].try_into().unwrap(),
+                &header[..40],
+                wrapped.as_mut(),
+            )?;
+            let pubkey = Secret::from_bytes(*wrapped).derive(&POOL, b"pool-publication-v1")?;
+            let verify = |d: &SimDevice, h: &Head| {
+                let mut hash = Sha256::new();
+                for i in 0..9 {
+                    hash.update(d.read(10 + 9 * (h.generation % 4) + i)?);
+                }
+                if <[u8; 32]>::from(hash.finalize()) != h.digest {
+                    return Err(Error::Corrupt("catalogue du banc"));
+                }
+                Ok(())
+            };
+            let mut log = CommitLog::open(&d, 2, POOL, &pubkey, verify)?;
+            log.resume(&mut d, &pubkey, verify)?;
+            log.publish(&mut d, &pubkey, |d, g| {
+                let mut hash = Sha256::new();
+                for i in 0..9 {
+                    let mut page = next.read(10 + 9 * (g % 4) + i)?;
+                    if i == 8 {
+                        page[0] ^= 1;
+                    }
+                    d.write(10 + 9 * (g % 4) + i, &page)?;
+                    hash.update(page);
+                }
+                Ok(hash.finalize().into())
+            })?;
+            let mut mounted = SecurePool::open(d, POOL, &admin())?;
+            assert_eq!(mounted.generation(), generation + 1);
+            assert!(
+                mounted
+                    .unlock(domain, Credential::Recovery(&recovery()))
+                    .is_err()
+            );
+            assert!(mounted.read_file(id, "/f", 0, 64).is_err());
+            assert!(mounted.write_file(id, "/f", 0, b"mutation").is_err());
         }
         Ok(())
     }

@@ -48,6 +48,7 @@ impl Geometry {
 pub struct FileImage {
     file: File,
     geometry: Geometry,
+    mutation_lock: Option<Arc<Mutex<()>>>,
 }
 
 impl FileImage {
@@ -58,7 +59,11 @@ impl FileImage {
             return Err(Error::Invalid("fichier temporaire ordinaire requis"));
         }
         file.set_len(blocks * BLOCK)?;
-        Ok(Self { file, geometry })
+        Ok(Self {
+            file,
+            geometry,
+            mutation_lock: Some(Arc::default()),
+        })
     }
 
     /// Reprendre le descripteur d'une image de laboratoire existante. Le banc
@@ -72,7 +77,16 @@ impl FileImage {
                 "fichier ordinaire de longueur exacte requis",
             ));
         }
-        Ok(Self { file, geometry })
+        Ok(Self {
+            file,
+            geometry,
+            mutation_lock: None,
+        })
+    }
+
+    /// Rend le descripteur après consommation du propriétaire de l’image.
+    pub fn into_file(self) -> File {
+        self.file
     }
 
     pub fn geometry(&self) -> Geometry {
@@ -81,6 +95,9 @@ impl FileImage {
 }
 
 impl Device for FileImage {
+    fn mutation_lock(&self) -> Option<Arc<Mutex<()>>> {
+        self.mutation_lock.clone()
+    }
     fn blocks(&self) -> u64 {
         self.geometry.blocks
     }
@@ -329,11 +346,13 @@ impl State {
 }
 
 pub struct SimDevice {
+    gate: Arc<Mutex<()>>,
     shared: Arc<Mutex<State>>,
 }
 
 #[derive(Clone)]
 pub struct SimControl {
+    gate: Arc<Mutex<()>>,
     shared: Arc<Mutex<State>>,
 }
 
@@ -384,11 +403,13 @@ impl SimControl {
     }
 
     pub fn power_cut(&self, persistence: Persistence) -> Result<()> {
+        let _guard = self.gate.try_lock().map_err(|_| Error::Busy)?;
         self.state().cut(persistence)
     }
 
     /// Le service a quitté. Le cache du périphérique reste lisible.
     pub fn restart_service(&self) {
+        let _guard = self.gate.lock().expect("phase du simulateur interrompue");
         let mut state = self.state();
         state.trace = None;
         state.interrupted = false;
@@ -396,6 +417,7 @@ impl SimControl {
     }
 
     pub fn replace_stable(&self, index: u64, bytes: Block) -> Result<()> {
+        let _guard = self.gate.try_lock().map_err(|_| Error::Busy)?;
         let mut state = self.state();
         state.medium.geometry.offset(index)?;
         if !state.volatile.is_empty() {
@@ -429,6 +451,7 @@ impl SimDevice {
         };
         Self {
             shared: Arc::new(Mutex::new(state)),
+            gate: Arc::default(),
         }
     }
 
@@ -454,6 +477,7 @@ impl SimDevice {
     pub fn control(&self) -> SimControl {
         SimControl {
             shared: self.shared.clone(),
+            gate: self.gate.clone(),
         }
     }
 
@@ -463,6 +487,9 @@ impl SimDevice {
 }
 
 impl Device for SimDevice {
+    fn mutation_lock(&self) -> Option<Arc<Mutex<()>>> {
+        Some(self.gate.clone())
+    }
     fn blocks(&self) -> u64 {
         self.geometry().blocks
     }

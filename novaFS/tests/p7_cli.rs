@@ -66,8 +66,7 @@ fn wire(domain: [u8; 16], recovery: bool) -> Vec<u8> {
 fn controles_cli_ro_et_canal_secret_borne() -> Result<()> {
     for sector in [512, 4096] {
         let file = tempfile::NamedTempFile::new()?;
-        file.as_file().set_len(BLOCKS * 4096)?;
-        let dev = FileImage::from_file(file.reopen()?, BLOCKS, sector)?;
+        let dev = FileImage::create(BLOCKS, sector)?;
         let mut p = SecurePool::format(dev, POOL, &Secret::from_bytes(ADMIN))?;
         let ids = Ids {
             fs: [7; 16],
@@ -85,7 +84,7 @@ fn controles_cli_ro_et_canal_secret_borne() -> Result<()> {
         let domain = p.domain(volume)?;
         let receipt = p.receipt(volume)?;
         let generation = p.generation();
-        drop(p);
+        std::io::copy(&mut p.into_device().into_file(), &mut file.reopen()?)?;
         let sector_arg = sector.to_string();
         let input = fs::read(file.path())?;
         let pool = ["check-pool", "1200", sector_arg.as_str()];
