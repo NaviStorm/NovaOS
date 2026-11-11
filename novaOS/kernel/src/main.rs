@@ -6,6 +6,9 @@ extern crate alloc;
 
 #[path = "../../abi/native.rs"]
 mod abi;
+#[allow(dead_code)]
+#[path = "../../abi/terminal.rs"]
+mod terminal;
 mod arch;
 mod boot;
 mod console;
@@ -75,6 +78,8 @@ fn main_thread() {
         b"namespace-disconnect" => Some(38),
         b"namespace-depth" => Some(36),
         b"namespace-inspect" => Some(37),
+        b"cli" => Some(41),
+        b"cli-test" => Some(42),
         b"namespace-write" => Some(29),
         b"namespace-read" => Some(30),
         b"namespace-rename" => Some(31),

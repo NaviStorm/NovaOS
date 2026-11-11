@@ -1,11 +1,13 @@
-# Composants de la distribution
+# Composants utilisateur
 
-| Emplacement prévu | Contenu envisagé |
+Le workspace Cargo construit un ELF Rust `no_std + alloc` par programme, pour x86_64 et AArch64. Le shell et les commandes utilisent la bibliothèque native de NovaOS.
+
+| Répertoire | Contenu |
 |---|---|
-| `shell/` | Shell utilisateur et commandes internes comme `cd`. |
-| `coreutils/` | Commandes telles que `ls`, `cat`, `cp`, `mv`, `rm`, `mkdir`, `chmod`, `chown` et `chgrp`. |
-| `editors/` | Éditeurs tels que `vi`. |
-| `viewers/` | Outils de consultation tels que `less` et `more`. |
-| `libraries/` | Bibliothèques partagées entre applications. |
+| `shell/` | Interpréteur interactif, éditeur UTF-8, analyse des arguments, exécution et délégation. `cd` et `exit` sont internes. |
+| `coreutils/` | Programmes isolés `pwd`, `ls`, `cat`, `head`, `mkdir` et `rm`. L’ELF `probe` sert à la qualification. |
+| `libraries/` | Catalogue, protocole de lancement, attente, flux de texte et accès au client IPC commun. |
 
-Ces emplacements sont réservés. Git matérialisera chaque sous-répertoire lorsqu’il contiendra un premier fichier suivi. Le noyau garde son éditeur de ligne. Les programmes de démonstration et de vérification de l’IPC sont construits avec lui dans [novaOS/user/](../novaOS/user/).
+Depuis la racine, `make -C novaOS ARCH=x86_64 cli` ou `make -C novaOS ARCH=aarch64 cli` ouvre le terminal. Le manifeste associe le nom de l’image `shell` à son point d’entrée. Un interpréteur de remplacement peut utiliser les mêmes interfaces natives. [Architecture et tests](../novaOS/docs/cli-v0.13.0.md)
+
+La licence MIT couvre le shell, les commandes et leur bibliothèque. Les dépendances conservent leurs avis de licence. [Licence](LICENSE)

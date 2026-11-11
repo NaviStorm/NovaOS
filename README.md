@@ -2,7 +2,7 @@
 
 NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-Dans **NovaOS v0.12.0**, une application peut parcourir un volume autonome depuis une capacité de répertoire, renommer un fichier et le relire après redémarrage de QEMU. Le service utilisateur exécute le moteur **NovaFS v0.9.12**, également utilisable sur macOS.
+Dans **NovaOS v0.13.0**, le shell série permet de parcourir un volume autonome, de lire des fichiers et de modifier son arborescence. Chaque commande externe s’exécute dans son propre processus. Le service utilisateur exécute le moteur **NovaFS v0.9.12**, également utilisable sur macOS.
 
 ## Philosophie et architecture
 
@@ -14,7 +14,7 @@ Le schéma suit le chemin de stockage. Les traits pleins indiquent les échanges
 
 ```mermaid
 flowchart TD
-    app[Application utilisateur de diagnostic] --> ipc[IPC à capacités du micro-noyau]
+    app[Shell et commandes natives isolées] --> ipc[IPC à capacités du micro-noyau]
     apps[Applications utilisateur futures] -.-> ipc
     ipc --> fs[Service utilisateur NovaFS]
     fs -->|montage et transactions| moteur[Cœur portable NovaFS]
@@ -34,7 +34,7 @@ flowchart TD
 | Stockage bloc | Implémenté | Lecture, écriture et synchronisation sur un disque VirtIO optionnel. Le service bloc et le pilote s’exécutent en espace utilisateur. |
 | NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. NovaOS expose le montage et les transactions sur les fichiers des volumes autonomes. |
 | Interface texte | Implémenté | Le prompt de diagnostic du noyau accepte la saisie AZERTY sur x86_64. |
-| Environnement utilisateur | Prévu | Shell utilisateur, commandes, applications natives de distribution et gestion des comptes. |
+| Environnement utilisateur | Implémenté | Shell série, cd, exit et six commandes isolées : pwd, ls, cat, head, mkdir et rm. |
 | Interface et distribution | Prévu | NovaUI et système hybride immuable. |
 
 ## Compiler et démarrer
@@ -44,11 +44,11 @@ Depuis la racine du dépôt, sur un Mac Apple Silicon, utiliser Rust stable avec
 ```sh
 make -C novaOS ARCH=x86_64 build
 make -C novaOS ARCH=aarch64 build
-make -C novaOS ARCH=x86_64 run
-make -C novaOS ARCH=aarch64 run
+make -C novaOS ARCH=x86_64 cli
+make -C novaOS ARCH=aarch64 cli
 ```
 
-Les cibles `build` produisent respectivement `novaOS/build/novaos.iso` et `novaOS/build/novaos-aarch64.iso`. Les cibles `run` démarrent QEMU avec affichage et sortie série dans le terminal. Depuis `novaOS/`, omettre `-C novaOS`. [Configuration QEMU et UTM](novaOS/README.md)
+Les cibles `build` produisent respectivement `novaOS/build/novaos.iso` et `novaOS/build/novaos-aarch64.iso`. La cible `cli` ouvre le shell dans le terminal et conserve son volume de démonstration entre démarrages. La cible `run` sans image ouvre la fenêtre graphique de diagnostic. Depuis `novaOS/`, omettre `-C novaOS`. [Shell, commandes et image de démonstration](novaOS/docs/cli-v0.13.0.md) · [Configuration QEMU et UTM](novaOS/README.md)
 
 ## Tester et approfondir
 
@@ -57,6 +57,8 @@ make -C novaOS ARCH=x86_64 test
 make -C novaOS ARCH=aarch64 test
 make -C novaOS ARCH=x86_64 file-test
 make -C novaOS ARCH=aarch64 file-test
+make -C novaOS ARCH=x86_64 cli-test
+make -C novaOS ARCH=aarch64 cli-test
 novaFS/lab/run test --offline
 ```
 
@@ -70,16 +72,16 @@ NovaFS utilise son propre workspace Cargo et des images jetables. Ses bancs macO
 OS/
 ├── novaOS/         Micro-noyau, ABI, services, pilotes et bancs QEMU
 ├── novaFS/         Moteur de fichiers indépendant et laboratoire macOS
-├── components/     Emplacement des futures commandes et applications
+├── components/     Shell, commandes natives et bibliothèque utilisateur
 ├── distribution/   Emplacement des futurs manifestes et outils d’assemblage
 └── README.md
 ```
 
-Les deux derniers répertoires sont en construction. Les images de développement se construisent aujourd’hui depuis le workspace NovaOS. [NovaOS](novaOS/README.md) · [NovaFS](novaFS/README.md) · [Composants](components/README.md) · [Distribution](distribution/README.md)
+Les images de développement se construisent aujourd’hui depuis le workspace NovaOS. [NovaOS](novaOS/README.md) · [NovaFS](novaFS/README.md) · [Composants](components/README.md) · [Distribution](distribution/README.md)
 
 ## Feuille de route
 
-La prise en charge native des catalogues de pools et des volumes chiffrés reste ouverte. Les orientations à plus long terme comprennent un shell et des commandes utilisateur, des comptes et permissions, des compilateurs natifs et une interface graphique NovaUI. La compatibilité SwiftUI/AppKit reste exploratoire.
+La prise en charge native des catalogues de pools et des volumes chiffrés reste ouverte. Les orientations à plus long terme comprennent des comptes et permissions, des compilateurs natifs et une interface graphique NovaUI. La compatibilité SwiftUI/AppKit reste exploratoire.
 
 La distribution vise une architecture hybride immuable, avec une base système mise à jour de manière atomique, un retour à la version précédente et des données utilisateur modifiables. Ce modèle reste à développer.
 
@@ -89,4 +91,4 @@ Pour signaler un problème, indiquer le commit, l’architecture, la commande de
 
 ## Licences
 
-NovaOS est distribué sous licence MIT et NovaFS sous Mozilla Public License 2.0. Les avis des dépendances embarquées accompagnent les images NovaOS dans `licenses/`. Chaque autre composant relève de sa licence propre lorsqu’elle est définie. [Licence NovaOS](novaOS/LICENSE) · [Licence NovaFS](novaFS/LICENSE)
+NovaOS, le shell, les six commandes et leur bibliothèque sont distribués sous licence MIT. NovaFS est distribué sous Mozilla Public License 2.0. Les avis des dépendances embarquées accompagnent les images NovaOS dans `licenses/`. Chaque autre composant relève de sa licence propre lorsqu’elle est définie. [Licence NovaOS](novaOS/LICENSE) · [Licence des composants CLI](components/LICENSE) · [Licence NovaFS](novaFS/LICENSE)

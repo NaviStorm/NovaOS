@@ -9,8 +9,12 @@ build: kernel
 kernel:
 	. scripts/target.sh && RUSTC="$$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$$rust_target"
 
+ifneq ($(strip $(IMAGE)),)
+run: cli
+else
 run: build
 	sh scripts/qemu.sh -serial stdio
+endif
 
 test: build
 	python3 tests/demarrage.py
@@ -67,3 +71,22 @@ lifecycle-test: kernel
 namespace-test: kernel
 	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
 	python3 tests/namespace.py
+
+.PHONY: cli cli-image cli-test
+ifneq ($(strip $(IMAGE)),)
+cli: kernel
+	python3 scripts/session_cli.py run --sector "$(SECTOR)" "$(IMAGE)"
+else
+cli: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	mkdir -p build
+	python3 scripts/session_cli.py demo --sector "$(SECTOR)" "build/shell-$(ARCH)-$(SECTOR).raw"
+endif
+
+cli-image:
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 scripts/session_cli.py image --sector "$(SECTOR)" "$(IMAGE)"
+
+cli-test: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 tests/cli.py

@@ -53,3 +53,19 @@ pub fn line(text: fmt::Arguments<'_>) {
     use fmt::Write;
     let _ = writeln!(Com1, "{text}\r");
 }
+
+pub(crate) fn input() -> Option<u8> {
+    let read = |offset: u16| {
+        let b: u8;
+        // Sûreté : CPU0 en Ring 0, registres LSR et RBR du COM1 initialisé.
+        unsafe {
+            asm!("in al, dx", in("dx") BASE + offset, out("al") b, options(nomem, nostack, preserves_flags));
+        }
+        b
+    };
+    let status = read(5);
+    (status != 0xff && status & 1 != 0).then(|| read(0))
+}
+pub(crate) fn output(text: &str) -> fmt::Result {
+    fmt::Write::write_str(&mut Com1, text)
+}

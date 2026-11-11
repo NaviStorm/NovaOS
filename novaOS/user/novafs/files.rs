@@ -385,6 +385,7 @@ impl Session<'_, '_> {
         Ok(())
     }
 }
+mod delegated;
 mod namespace;
 
 pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Result<()> {
@@ -409,6 +410,8 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
     ];
     let mut last = [0; 2];
     let mut lane = 0;
+    let cli = matches!(rt::config(1), 41 | 42);
+    let mut admission = delegated::Ports::default();
     loop {
         let i = lane;
         if pair {
@@ -425,7 +428,8 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             continue;
         }
         let timeout = if pair { 1 } else { 15000 };
-        let m = match rt::receive_for(ports[i].0, timeout) {
+        let m = match rt::receive_options(ports[i].0, timeout, u32::from(cli)) {
+            Err(rt::TIMED_OUT) if cli => continue,
             Err(rt::TIMED_OUT) if pair => match rt::receive_for(rt::config(8 + i), 0) {
                 Err(rt::WOULD_BLOCK) => continue,
                 Err(rt::DENIED | rt::CLOSED | rt::REVOKED) => {
@@ -452,12 +456,21 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             },
             r => r?,
         };
+        if cli && m.kind == 3 {
+            admission.accept(m);
+            continue;
+        }
+        let mut grant = None;
         let mut a = w::frame(m.payload[1], 0, 0);
         let r = if m.kind != 1 || m.len != 128 || m.tag <= last[i] {
             Err(rt::BAD_ARGUMENT)
         } else {
             last[i] = m.tag;
-            s.dispatch(client, other, &m.payload, &mut a)
+            if cli && m.payload[1] == w::DELEGATE {
+                delegated::prepare(&s, client, &m.payload, &mut admission).map(|g| grant = Some(g))
+            } else {
+                s.dispatch(client, other, &m.payload, &mut a)
+            }
         };
         if let Err(e) = r {
             a = w::frame(m.payload[1], 0, 0);
@@ -482,6 +495,9 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             {
                 return Err(e);
             }
+        }
+        if let Some(g) = grant {
+            g.serve(&mut s, client)?;
         }
         if done && other.is_none_or(|c| c.closed) {
             return Ok(());

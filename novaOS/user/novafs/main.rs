@@ -3,7 +3,13 @@
 extern crate alloc;
 mod device;
 mod files;
+#[path = "../heap.rs"]
 mod heap;
+fn allocation_probe() {
+    if runtime::config(1) == 105 {
+        core::hint::black_box(probes::load(0x20000));
+    }
+}
 #[path = "../storage/medium.rs"]
 mod medium;
 mod probes;

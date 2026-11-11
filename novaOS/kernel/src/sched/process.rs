@@ -43,6 +43,8 @@ struct Process {
     observed: bool,
     wait_right: Option<WaitRight>,
     debug_messages: u8,
+    terminal: u8,
+    exit_counter: u64,
     // None pendant la vie du processus. Le statut reste disponible après collecte.
     outcome: Option<Outcome>,
     preemptions: u64,
@@ -178,6 +180,8 @@ fn create_image(
             observed: true,
             wait_right,
             debug_messages: 0,
+            terminal: 0,
+            exit_counter: 0,
             outcome: None,
             preemptions: 0,
         });
@@ -190,7 +194,8 @@ fn create_image(
 /// Appelé exclusivement depuis une exception synchrone dont le cadre matériel
 /// atteste le mode utilisateur. La pile privée du noyau est active, IRQ masquées.
 pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
-    let pid = with(|s| {
+    let entered = hal::timer::counter();
+    let (pid, trace_exit) = with(|s| {
         let pid = s.thread(s.current).owner.expect("exception hors processus");
         crate::hardware::block::died(pid.number);
         s.ipc.death(pid, ticks());
@@ -198,9 +203,15 @@ pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
         s.ipc.collect();
         let p = s.processes.get_mut(pid);
         assert!(p.outcome.replace(result).is_none());
-        pid
+        p.exit_counter = entered;
+        (
+            pid,
+            p.terminal == 0
+                || p.terminal & crate::terminal::QUALIFY != 0
+                || matches!(result, Outcome::Fault(_)),
+        )
     });
-    if !ipc::quiet() {
+    if trace_exit && !ipc::quiet() {
         match result {
             Outcome::Exit(code) => hal::log(format_args!(
                 "PROC pid={} niveau={level} pc={pc:#x} sortie={code}",

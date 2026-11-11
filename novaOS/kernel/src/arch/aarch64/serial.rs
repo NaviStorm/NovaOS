@@ -50,3 +50,17 @@ pub fn line(args: fmt::Arguments<'_>) {
         let _ = EarlyMessage(0).write_fmt(args);
     }
 }
+
+pub(crate) fn input() -> Option<u8> {
+    if !READY.load(Ordering::Acquire) {
+        return None;
+    }
+    // Sûreté : READY garantit la page Device PL011. RXFE protège la lecture de DR.
+    unsafe {
+        (((VA + 0x18) as *const u32).read_volatile() & 16 == 0)
+            .then(|| (VA as *const u32).read_volatile() as u8)
+    }
+}
+pub(crate) fn output(text: &str) -> fmt::Result {
+    Uart.write_str(text)
+}

@@ -259,7 +259,7 @@ pub(crate) fn volume(mode: u64) -> bool {
     FILE_TIMING.store(matches!(mode, 25 | 36), Ordering::Relaxed);
     let start = heap::audit(true);
     let hz = hal::timer::counter_hz();
-    if matches!(mode, 6 | 25 | 36) {
+    if matches!(mode, 6 | 25 | 36 | 42) {
         measure("bloc_repos");
         heap::with_pages(|m| {
             m.begin_frame_sample();
@@ -268,7 +268,7 @@ pub(crate) fn volume(mode: u64) -> bool {
         .unwrap();
         block::metrics::start(hz);
     }
-    let rights = if matches!(mode, 4 | 6 | 8 | 9 | 11 | 14..=22 | 24 | 25 | 27 | 28 | 29 | 31..=36 | 39 | 40)
+    let rights = if matches!(mode, 4 | 6 | 8 | 9 | 11 | 14..=22 | 24 | 25 | 27 | 28 | 29 | 31..=36 | 39..=42)
     {
         1 | 2 | 4 | 8
     } else {
@@ -285,7 +285,16 @@ pub(crate) fn volume(mode: u64) -> bool {
         (RELAY, 15),
         (MEDIA, 1),
         (DISK, 0),
-        (if mode >= 11 { FILE_CLIENT } else { CONTROL }, 0),
+        (
+            if matches!(mode, 41 | 42) {
+                include_bytes!(concat!(env!("OUT_DIR"), "/shell.elf"))
+            } else if mode >= 11 {
+                FILE_CLIENT
+            } else {
+                CONTROL
+            },
+            0,
+        ),
     ];
     let group = if matches!(mode, 29 | 30 | 38) {
         let [r, s, d, a] = members;
@@ -306,7 +315,7 @@ pub(crate) fn volume(mode: u64) -> bool {
         "BLOC chaine novaFS={} bloc={} pilote={} client={} generation={key}",
         service.0.number, relay.0.number, driver.0.number, app.0.number
     ));
-    if matches!(mode, 6 | 25 | 36) {
+    if matches!(mode, 6 | 25 | 36 | 42) {
         measure("bloc_publie")
     }
     let ids = [relay.0, service.0, driver.0];
@@ -328,7 +337,7 @@ pub(crate) fn volume(mode: u64) -> bool {
     hal::log(format_args!(
         "BLOC bilan mode={mode} service={s:?} bloc={b:?} pilote={d:?} client={a:?} retrait={retired:?} cycles_retrait={ticks}"
     ));
-    if matches!(mode, 6 | 25 | 36) {
+    if matches!(mode, 6 | 25 | 36 | 42) {
         ipc::end_measure(hz);
         block::metrics::report();
         let frames = heap::with_pages(|m| Ok(m.end_frame_sample())).unwrap();

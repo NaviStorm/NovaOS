@@ -62,11 +62,14 @@ pub fn receive(key: u64) -> Result<ReceiveV1> {
 }
 
 pub fn receive_for(key: u64, timeout: u64) -> Result<ReceiveV1> {
+    receive_options(key, timeout, 0)
+}
+pub fn receive_options(key: u64, timeout: u64, options: u32) -> Result<ReceiveV1> {
     let mut msg = ReceiveV1 {
         version: VERSION,
         size: 184,
         timeout,
-        options: 0,
+        options,
         reserved: 0,
         kind: 0,
         len: 0,

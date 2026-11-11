@@ -18,6 +18,39 @@ impl Client {
             disconnected: false,
         })
     }
+    /// Vue temporaire fournie au processus enfant par le lanceur.
+    pub fn scoped() -> rt::Result<Self> {
+        let mut c = Self::new()?;
+        c.session = 1;
+        Ok(c)
+    }
+    pub fn give(&self, source: u64, rights: u32) -> rt::Result<()> {
+        let offer = rt::GiveV1 {
+            version: rt::VERSION,
+            size: 48,
+            timeout: 15000,
+            source,
+            tag: u64::from(rights),
+            rights,
+            mode: 1,
+            reserved: 0,
+        };
+        rt::value(rt::call(
+            rt::IPC_GIVE,
+            self.tx,
+            (&raw const offer) as u64,
+            48,
+        ))
+        .map(|_| ())
+    }
+    pub fn delegate(&mut self, kind: u8, handle: u64, leaf: &[u8]) -> rt::Result<()> {
+        if !leaf.is_empty() {
+            self.path_fragment(0, leaf)?;
+        }
+        let mut q = w::frame(w::DELEGATE, self.session, handle);
+        q[2] = kind;
+        self.request(q).map(|_| ())
+    }
     pub fn request(&mut self, q: w::Frame) -> rt::Result<w::Frame> {
         if self.disconnected {
             return Err(rt::CLOSED);

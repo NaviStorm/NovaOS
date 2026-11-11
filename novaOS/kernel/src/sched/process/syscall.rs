@@ -69,6 +69,13 @@ fn wait(key: u64, out: u64, len: u64) -> Result<u64, u64> {
             if !heap::with_pages(|m| Ok(space.copy_to_user(m, out, &bytes))).unwrap() {
                 return Err(BAD_ADDRESS);
             }
+            if p.terminal & crate::terminal::QUALIFY != 0 {
+                hal::log(format_args!(
+                    "CLI collecte pid={} cycles={}",
+                    right.target.number,
+                    hal::timer::counter() - child.exit_counter
+                ));
+            }
             s.processes.get_mut(pid).wait_right = None;
             s.processes.release_observer(right.target);
             Ok(None)
@@ -131,6 +138,8 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
             hal::interrupts::mask();
             finish(Outcome::Exit(a), pc, level);
         }
+        crate::terminal::SPAWN => ipc::spawn_program(a, b, c),
+        crate::terminal::CONSOLE => console_io(a, b, c),
         PROCESS_WAIT => wait(a, b, c),
         DEBUG_WRITE => debug_write(a, b),
         _ if id >> 16 != u64::from(VERSION) => Err(BAD_VERSION),
@@ -180,4 +189,87 @@ fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
         return Err(BAD_ADDRESS);
     }
     Ok(128)
+}
+
+fn console_io(port: u64, address: u64, len: u64) -> Result<u64, u64> {
+    use crate::terminal::*;
+    let right = u8::try_from(port).map_err(|_| BAD_ARGUMENT)?;
+    if !matches!(right, INPUT | OUTPUT | ERROR | EDIT) {
+        return Err(BAD_ARGUMENT);
+    }
+    let pid = with(|s| caller(s));
+    if with(|s| s.processes.get(pid).terminal & right == 0) {
+        return Err(DENIED);
+    }
+    if right == INPUT {
+        if address != 0 || len != 0 {
+            return Err(BAD_ARGUMENT);
+        }
+        loop {
+            if let Some(b) = crate::arch::serial::input() {
+                return Ok(b.into());
+            }
+            sleep(1)
+        }
+    }
+    // EDIT expose seulement les gestes du terminal nécessaires à l'éditeur de ligne.
+    if right == EDIT {
+        if len != 0 {
+            return Err(BAD_ARGUMENT);
+        }
+        if address == 2 && with(|s| s.processes.get(pid).terminal & QUALIFY != 0) {
+            let pages = with(|s| s.processes.get(pid).space.as_ref().unwrap().page_counts());
+            let audit = heap::audit(true);
+            measure("cli_repos");
+            hal::log(format_args!(
+                "CLI repos pages={} libres={} buddy={}",
+                pages.0 + pages.1,
+                audit.free_pages,
+                audit.occupied
+            ));
+            return Ok(0);
+        }
+        let text = match address {
+            0 => "\r",
+            1 => "\x08",
+            _ => return Err(BAD_ARGUMENT),
+        };
+        crate::arch::serial::output(text).map_err(|_| REFUSED)?;
+        return Ok(0);
+    }
+    let mut buffer = [0; DEBUG_MAX];
+    let n = usize::try_from(len).map_err(|_| LIMIT)?;
+    let bytes = buffer
+        .get_mut(..n)
+        .filter(|b| !b.is_empty())
+        .ok_or(BAD_ARGUMENT)?;
+    if !with(|s| {
+        heap::with_pages(|m| {
+            Ok(s.processes
+                .get(pid)
+                .space
+                .as_ref()
+                .unwrap()
+                .copy_from_user(m, address, bytes))
+        })
+        .unwrap()
+    }) {
+        return Err(BAD_ADDRESS);
+    }
+    let text = core::str::from_utf8(bytes).map_err(|_| BAD_ARGUMENT)?;
+    // Les programmes peuvent imprimer du texte et changer de ligne. Seul EDIT contrôle le curseur.
+    if text.chars().any(|c| c != '\n' && !printable(c)) {
+        return Err(BAD_ARGUMENT);
+    }
+    let _guard = Guard::new();
+    for piece in text.split_inclusive('\n') {
+        if let Some(line) = piece.strip_suffix('\n') {
+            crate::arch::serial::output(line)
+                .and_then(|_| crate::arch::serial::output("\r\n"))
+                .map_err(|_| REFUSED)?;
+        } else {
+            crate::arch::serial::output(piece).map_err(|_| REFUSED)?;
+        }
+    }
+    Ok(len)
 }

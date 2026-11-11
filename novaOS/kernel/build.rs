@@ -107,13 +107,45 @@ fn main() {
         .args(["build", "--release", "--locked", "--target", &target])
         .current_dir(service)
         .env("CARGO_TARGET_DIR", &work)
-        .env("CARGO_ENCODED_RUSTFLAGS", flags)
+        .env("CARGO_ENCODED_RUSTFLAGS", &flags)
         .status()
         .expect("compilation du service NovaFS");
     assert!(result.success(), "liaison du service NovaFS");
     std::fs::copy(
-        work.join(target).join("release/novaos-storage"),
+        work.join(&target).join("release/novaos-storage"),
         out.join("storage-media.bin"),
     )
     .unwrap();
+
+    let components = manifest.join("../../components");
+    for path in [
+        "Cargo.toml",
+        "Cargo.lock",
+        "libraries",
+        "coreutils",
+        "shell",
+    ] {
+        println!(
+            "cargo::rerun-if-changed={}",
+            components.join(path).display()
+        );
+    }
+    let result = Command::new(env::var_os("CARGO").unwrap())
+        .args(["build", "--release", "--locked", "--target", &target])
+        .current_dir(&components)
+        .env("CARGO_TARGET_DIR", &work)
+        .env("CARGO_ENCODED_RUSTFLAGS", &flags)
+        .status()
+        .expect("compilation des ELF CLI");
+    assert!(result.success(), "liaison des composants CLI");
+    let mut catalog = String::from("&[");
+    for name in ["pwd", "ls", "cat", "head", "mkdir", "rm", "probe", "shell"] {
+        let path = out.join(format!("{name}.elf"));
+        std::fs::copy(work.join(&target).join("release").join(name), &path).unwrap();
+        if name != "shell" {
+            catalog.push_str(&format!("(include_bytes!({path:?}),{}),", name == "probe"));
+        }
+    }
+    catalog.push(']');
+    std::fs::write(out.join("cli_catalog.rs"), catalog).unwrap();
 }

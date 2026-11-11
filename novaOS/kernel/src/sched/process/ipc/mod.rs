@@ -3,6 +3,8 @@
 use super::*;
 use crate::abi::*;
 pub(crate) mod lifecycle;
+mod spawn;
+pub(super) use spawn::spawn_program;
 pub(crate) mod metrics;
 mod pool;
 use pool::{Bits, Pool};
@@ -821,7 +823,14 @@ pub(super) fn launch_block<const N: usize>(
             let control = member.0;
             let a = s.ipc.create(consumer)?;
             let b = s.ipc.create(consumer)?;
-            let tx = s.ipc.derive(consumer, a, control, SEND.into())?;
+            let shell = matches!(mode, 41 | 42);
+            let rights = if shell { SEND | GRANT } else { SEND };
+            let tx = s.ipc.derive(consumer, a, control, rights.into())?;
+            if shell {
+                use crate::terminal::*;
+                let trace = if mode == 42 { QUALIFY } else { 0 };
+                s.processes.get_mut(control).terminal = INPUT | OUTPUT | ERROR | EDIT | LAUNCH | trace;
+            }
             let rx = s.ipc.derive(consumer, b, control, RECEIVE.into())?;
             s.ipc.locals.get_mut(control.slot).bootstrap = tx;
             configure_session(s, control, rx, mode);
@@ -859,7 +868,7 @@ pub(super) fn launch_block<const N: usize>(
                 .unwrap();
             }
         }
-        if mode == 36 {
+        if matches!(mode, 36 | 42) {
             s.ipc
                 .metrics
                 .start_session(consumer.number, group[3].0.number);

@@ -6,6 +6,8 @@ La v0.8.0 ajoute les sélecteurs `0x10020` à `0x10029`. Les appels ci-dessous c
 
 Le port privé du pilote utilise `0x10040`. La préparation de v0.11.0 attribue `0x10041` à `HEAP_RESIZE`. Cette extension publique traite les bornes en octets du tas privé avec les conventions de registres ci-dessous. Le troisième argument réservé doit être nul. [Contrat, erreurs et qualification du tas](novafs-integration-v0.11.0.md#tas-privé-et-abi)
 
+La v0.13.0 attribue `0x10042` à `SPAWN` et `0x10043` à `CONSOLE`. Ces appels utilisent les mêmes registres et conventions de retour sur les deux architectures. [Lancement, arguments et droits du terminal](cli-v0.13.0.md#contrat-de-lancement-et-de-console)
+
 ## Appel et retour
 
 | Architecture | Instruction | Sélecteur | Arguments a, b, c | Retour statut, valeur |

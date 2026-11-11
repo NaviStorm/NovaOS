@@ -45,7 +45,10 @@ fn driver() -> Result<()> {
     }
     let mut last = 0;
     loop {
-        let m = receive_for(input, 5000)?;
+        let m = match receive_for(input, 5000) {
+            Err(TIMED_OUT) if matches!(config(1), 41 | 42) => continue,
+            r => r?,
+        };
         if m.len != 128 || m.kind != 1 || m.tag <= last || !wire::syntax(&m.payload) {
             send(output, m.tag, &[BAD_ARGUMENT as u8])?;
             continue;

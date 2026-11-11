@@ -1,5 +1,5 @@
 //! dlmalloc gère les blocs privés. Le noyau attribue et retire seulement des pages entières.
-use crate::runtime::{HEAP_RESIZE, OK, call, config};
+use crate::runtime::{HEAP_RESIZE, OK, call};
 use core::alloc::{GlobalAlloc, Layout};
 use core::ptr::null_mut;
 use dlmalloc::{Allocator, Dlmalloc};
@@ -20,9 +20,7 @@ unsafe impl Allocator for Pages {
             && resize(base, end)
         {
             // Profil de panne du lanceur : les pages sont attribuées et malloc est encore actif.
-            if config(1) == 105 {
-                core::hint::black_box(crate::probes::load(0x20000));
-            }
+            crate::allocation_probe();
             return (base as *mut u8, n, 0);
         }
         (null_mut(), 0, 0)

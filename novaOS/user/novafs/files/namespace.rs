@@ -4,7 +4,7 @@ use super::*;
 
 // Les nouvelles opérations distinguent les erreurs de catalogue. OPEN v2
 // conserve les statuts déjà compris par les anciens clients.
-fn error(e: Error) -> u64 {
+pub(super) fn error(e: Error) -> u64 {
     match e {
         Error::NotDirectory => w::NOT_DIR,
         Error::IsDirectory => w::IS_DIR,
@@ -55,7 +55,7 @@ impl Client {
         p.bytes.extend_from_slice(&q[w::PAYLOAD..w::PAYLOAD + n]);
         Ok(())
     }
-    fn take_path(&mut self, index: usize, inline: &[u8]) -> rt::Result<String> {
+    pub(super) fn take_path(&mut self, index: usize, inline: &[u8]) -> rt::Result<String> {
         let p = core::mem::take(&mut self.paths[index]);
         let bytes = if inline.is_empty() {
             shape(p.total != 0 && p.bytes.len() == p.total)?;
@@ -73,7 +73,7 @@ impl Client {
     }
 }
 
-fn stat_reply(a: &mut Frame, stat: novafs::Stat) {
+pub(super) fn stat_reply(a: &mut Frame, stat: novafs::Stat) {
     let p = &mut a[w::PAYLOAD..];
     p[..8].copy_from_slice(&stat.id.to_le_bytes());
     p[8..16].copy_from_slice(&stat.revision.to_le_bytes());

@@ -3,7 +3,7 @@ mod interrupts;
 mod keyboard;
 pub(crate) mod paging;
 mod ports;
-mod serial;
+pub(crate) mod serial;
 pub(crate) mod timer;
 
 use core::{arch::asm, fmt};

@@ -73,3 +73,11 @@ pub const NOT_EMPTY: u64 = 28;
 pub const NOT_DIR: u64 = 29;
 pub const IS_DIR: u64 = 30;
 pub const PATH_MAX: usize = 1024;
+
+// Délégation éphémère de la session à une paire de canaux IPC dédiée.
+pub const DELEGATE: u8 = 21;
+pub const CWD_VIEW: u8 = 1;
+pub const DIR_VIEW: u8 = 2;
+pub const FILE_VIEW: u8 = 3;
+pub const CREATE_ENTRY: u8 = 4;
+pub const REMOVE_ENTRY: u8 = 5;

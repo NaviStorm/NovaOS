@@ -1,8 +1,8 @@
-# NovaOS v0.12.0
+# NovaOS v0.13.0
 
 Depuis la racine du monorepo : `make -C novaOS ARCH=x86_64 block-test` ou `make -C novaOS ARCH=aarch64 block-test`. Pour un démarrage graphique avec une image raw existante : `make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512` (AArch64 : `ARCH=aarch64`, secteur 512 ou 4096).
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.12.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.13.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
@@ -20,6 +20,17 @@ NovaFS v0.9.12 monte des volumes autonomes depuis le service Ring 3 / EL0. Le cl
 
 Le démonstrateur écrit sur des images jetables. Pour monter votre image en lecture seule, utiliser `make ARCH=x86_64 file-info IMAGE=/chemin/volume.raw SECTOR=512`. Le démarrage sans disque conserve la session de diagnostic. [Interface et contrats](docs/novafs-integration-v0.11.0.md) · [Résultats QEMU](docs/validation/novafs-natif-v0.11.0.md)
 
+## Shell utilisateur
+
+Depuis la racine du dépôt, démarrer la console série interactive de l’architecture choisie.
+
+```sh
+make -C novaOS ARCH=x86_64 cli
+make -C novaOS ARCH=aarch64 cli
+```
+
+Le volume de démonstration contient `/documents/exemple.txt`. Les commandes externes s’exécutent en Ring 3 ou EL0. `exit` ferme la session. Dans le terminal QEMU, Ctrl-A puis X quitte l’émulateur. [Commandes, droits et validation](docs/cli-v0.13.0.md)
+
 ## Démarrage manuel dans QEMU
 
 Depuis le répertoire `novaOS/`, choisir une commande. Chacune compile le noyau et ouvre la fenêtre QEMU correspondante.
@@ -31,11 +42,11 @@ make ARCH=aarch64 run  # virt, bannière sur ramfb et diagnostics PL011 dans le 
 
 Sur x86_64, cliquer dans la fenêtre pour saisir du texte. Sur AArch64, le noyau entre en veille après la bannière. Fermer la fenêtre pour quitter la VM.
 
-## Saisie interactive
+## Saisie dans le framebuffer de diagnostic
 
 La disposition est **AZERTY français PC**. Les deux touches Maj permettent de saisir des majuscules et les chiffres de la rangée supérieure. Les accents directs, AltGr et les touches mortes circonflexe et tréma sont pris en charge. Par exemple, AltGr + E donne `€` et les touches `^` puis `e` donnent `ê`.
 
-**Retour arrière** efface un caractère de la ligne en cours. **Entrée** valide la ligne et présente un nouveau prompt. Une ligne peut contenir 128 caractères Unicode. Au-delà de la largeur de la fenêtre, sa fin reste visible pendant la frappe. Quand la zone de texte est pleine, les lignes défilent sous la bannière. Le jalon se termine à la remise de la ligne validée au noyau. L’interprétation des commandes est prévue pour le futur shell.
+**Retour arrière** efface un caractère de la ligne en cours. **Entrée** valide la ligne et présente un nouveau prompt. Une ligne peut contenir 128 caractères Unicode. Au-delà de la largeur de la fenêtre, sa fin reste visible pendant la frappe. Quand la zone de texte est pleine, les lignes défilent sous la bannière. Ce mode affiche la ligne validée. La cible `cli` donne accès à l’interpréteur sur le terminal série.
 
 ## Compiler sur un Mac Apple Silicon
 
@@ -54,6 +65,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | --- | --- |
 | `make build` | Compile le noyau et crée l’ISO UEFI. |
 | `make run` | Ouvre l’écran QEMU et affiche COM1 dans le terminal. Fermer la fenêtre pour quitter. |
+| `make cli-test` | Exerce la session série et ses programmes sur des secteurs de 512 et 4 096 octets avec redémarrages. |
 | `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle, de tas de multitâche, de processus, d’ABI et d’IPC pour la cible choisie. Nécessite Python 3. |
 | `make ARCH=x86_64 endurance DURATION=7200` | Exécute la campagne de contention et de restitution pendant au moins deux heures réelles. Accepte aussi `ARCH=aarch64`. |
 | `make ARCH=aarch64 ram-test` | Mesure la RAM physique avec 64, 128 et 256 Mio. Accepte également `ARCH=x86_64`. |
@@ -117,7 +129,7 @@ Le pilote vidéo utilise les décalages RVB et le pas de ligne indiqués par Lim
 
 Sur x86_64, la GDT du noyau reprend les sélecteurs de Limine et ajoute un TSS avec piles d’urgence pour les fautes de page et doubles fautes. L’IDT reçoit IRQ0 pour le PIT et IRQ1 pour l’i8042. Quand le tampon du clavier est vide, le thread de saisie s’inscrit sur un canal d’attente sous masque IRQ. L’interruption le replace dans la file des prêts. Le décodage AZERTY reste en contexte de thread. [Contrôleur i8042 de QEMU](https://github.com/qemu/qemu/blob/master/hw/input/pckbd.c) · [Disposition AZERTY de pc-keyboard](https://github.com/rust-embedded-community/pc-keyboard/blob/main/src/layouts/azerty.rs)
 
-Le shell consommera les lignes remises par `read_line`. Le VFS reste prévu comme un service distinct du matériel, avec un RAMFS comme premier fournisseur.
+L’éditeur de ligne du shell série se trouve dans `components/shell/`. Le client natif communique avec le service NovaFS par IPC.
 
 ## Vérification
 

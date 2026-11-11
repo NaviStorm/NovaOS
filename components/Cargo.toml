@@ -1,0 +1,64 @@
+[package]
+name = "nova-cli"
+version = "0.13.0"
+edition = "2024"
+publish = false
+license = "MIT"
+
+[workspace]
+
+[lib]
+path = "libraries/lib.rs"
+test = false
+
+[dependencies]
+dlmalloc = "0.2.14"
+spin = { version = "0.9.9", default-features = false, features = ["spin_mutex", "mutex"] }
+
+[profile.release]
+panic = "abort"
+overflow-checks = true
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+
+[[bin]]
+name = "shell"
+path = "shell/main.rs"
+test = false
+
+[[bin]]
+name = "pwd"
+path = "coreutils/pwd.rs"
+test = false
+
+[[bin]]
+name = "ls"
+path = "coreutils/ls.rs"
+test = false
+
+[[bin]]
+name = "cat"
+path = "coreutils/cat.rs"
+test = false
+
+[[bin]]
+name = "head"
+path = "coreutils/head.rs"
+test = false
+
+[[bin]]
+name = "mkdir"
+path = "coreutils/mkdir.rs"
+test = false
+
+[[bin]]
+name = "rm"
+path = "coreutils/rm.rs"
+test = false
+
+[[bin]]
+name = "probe"
+path = "coreutils/probe.rs"
+test = false
