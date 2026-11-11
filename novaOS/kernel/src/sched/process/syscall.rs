@@ -106,6 +106,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     let [a, b, c] = args;
     let result = match id {
         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
+        crate::hardware::block::PORTAL => device(a, b, c),
         PROCESS_ID => Ok(with(|s| caller(s).number)),
         THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
         THREAD_YIELD => {
@@ -127,4 +128,42 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         Ok(value) => Reply { status: OK, value },
         Err(status) => Reply { status, value: 0 },
     }
+}
+
+// Port privé du pilote élu. Les seize appels ABI v1 et leurs sélecteurs restent inchangés.
+fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
+    use crate::hardware::block;
+    let pid = with(|s| caller(s));
+    if !block::admit(pid.number, key) {
+        return Err(DENIED);
+    }
+    if size != 128 || addr % 8 != 0 {
+        return Err(BAD_ARGUMENT);
+    }
+    let mut wire = [0u8; 128];
+    let valid = with(|s| {
+        let space = s.processes.get(pid).space.as_ref().unwrap();
+        heap::with_pages(|m| {
+            Ok(space.writable(m, addr, 128) && space.copy_from_user(m, addr, &mut wire))
+        })
+        .unwrap()
+    });
+    if !valid {
+        return Err(BAD_ADDRESS);
+    }
+    block::command(pid.number, key, &mut wire)?;
+    if !with(|s| {
+        heap::with_pages(|m| {
+            Ok(s.processes
+                .get(pid)
+                .space
+                .as_ref()
+                .unwrap()
+                .copy_to_user(m, addr, &wire))
+        })
+        .unwrap()
+    }) {
+        return Err(BAD_ADDRESS);
+    }
+    Ok(128)
 }

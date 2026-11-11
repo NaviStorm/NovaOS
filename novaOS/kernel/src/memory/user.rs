@@ -14,6 +14,11 @@ pub(crate) struct UserSpace {
 }
 
 impl UserSpace {
+    pub(crate) fn audit_driver(&self, m: &Memory, dma: &[u64; 24]) -> bool {
+        self.tables
+            .audit_driver(&m.frames, &self.mapped[..self.len], dma)
+    }
+
     pub fn id(&self) -> SpaceId {
         SpaceId(self.tables.root)
     }

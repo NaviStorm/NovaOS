@@ -21,11 +21,42 @@ fn main() {
         "storage/service",
         "storage/client",
         "storage/failure",
+        "storage/relay",
+        "storage/disk",
+        "storage/requester",
+        "storage/media",
+        "storage/control",
     ] {
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
         let linker = format!("link-arg=-T{}", user.join("demo.ld").display());
-        let ok = Command::new(env::var_os("RUSTC").unwrap())
-            .arg(user.join(format!("{name}.rs")))
+        let mut rust = Command::new(env::var_os("RUSTC").unwrap());
+        let compact = matches!(
+            name,
+            "storage/relay"
+                | "storage/disk"
+                | "storage/requester"
+                | "storage/media"
+                | "storage/control"
+        );
+        if name == "storage/media" {
+            rust.args(["--cfg", "block_media"]);
+        }
+        if compact {
+            rust.args([
+                "-C",
+                "lto=fat",
+                "-C",
+                "codegen-units=1",
+                "-C",
+                "strip=symbols",
+            ]);
+        }
+        let ok = rust
+            .arg(user.join(if name == "storage/media" {
+                "storage/service.rs".into()
+            } else {
+                format!("{name}.rs")
+            }))
             .args([
                 "--edition=2024",
                 "--target",
@@ -33,7 +64,11 @@ fn main() {
                 "-C",
                 "panic=abort",
                 "-C",
-                "opt-level=s",
+                if compact {
+                    "opt-level=z"
+                } else {
+                    "opt-level=s"
+                },
                 "-C",
                 "relocation-model=static",
                 "-C",

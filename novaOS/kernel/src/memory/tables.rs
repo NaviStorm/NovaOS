@@ -227,3 +227,55 @@ impl Frames {
         (0..entries).all(|i| self.entry(root, i) == 0)
     }
 }
+
+impl AddressSpace {
+    /// Énumération de l'espace réellement installé. Comparer à la liste privée
+    /// exclut un alias non déclaré, même lorsque son adresse est inconnue du pilote.
+    pub(super) fn audit_driver(&self, frames: &Frames, expected: &[u64], dma: &[u64; 24]) -> bool {
+        fn descend(
+            f: &Frames,
+            tab: u64,
+            level: usize,
+            prefix: u64,
+            max: usize,
+            known: &[u64],
+            deny: &[u64; 24],
+            count: &mut usize,
+        ) -> bool {
+            for i in 0..max {
+                let ent = f.entry(tab, i);
+                if ent == 0 {
+                    continue;
+                }
+                let pa = ent & PHYS_MASK;
+                let va = prefix | ((i as u64) << (39 - level * 9));
+                if !f.managed(pa) || deny.contains(&pa) {
+                    return false;
+                }
+                if level == 3 {
+                    if !known.contains(&va) {
+                        return false;
+                    }
+                    *count += 1;
+                } else if !paging::matches(ent, paging::user_table(pa))
+                    || !descend(f, pa, level + 1, va, 512, known, deny, count)
+                {
+                    return false;
+                }
+            }
+            true
+        }
+        let mut count = 0;
+        if !descend(frames, self.root, 0, 0, 256, expected, dma, &mut count)
+            || count != expected.len()
+        {
+            return false;
+        }
+        // Sur x86 le premier niveau U/S=0 suffit pour toutes les branches
+        // hautes. Sur ARM le TTBR0 privé ne contient aucune branche haute.
+        (256..512).all(|i| {
+            let e = frames.entry(self.root, i);
+            e == 0 || (paging::SHARED_UPPER && paging::matches(e, paging::table(e & PHYS_MASK)))
+        })
+    }
+}

@@ -69,6 +69,31 @@ fn main_thread() {
     if scenario.starts_with(b"ipc-") {
         sched::process::ipc::run(scenario);
     }
+    if let Some(mode) = match scenario {
+        b"storage-live" => Some(3),
+        b"storage-write" => Some(4),
+        b"storage-read" => Some(5),
+        b"storage-perf" => Some(6),
+        b"storage-eio" => Some(8),
+        _ => None,
+    } {
+        let ok = sched::process::storage::volume(mode);
+        hal::log(format_args!("BLOC session terminee ok={ok}"));
+        if mode != 3 {
+            hal::cpu::halt()
+        }
+    }
+    if scenario == b"dma-fence" {
+        let result = hardware::block::probe_protection();
+        hal::log(format_args!("DMA bilan {result:?}"));
+        hal::cpu::halt()
+    }
+    if matches!(scenario, b"dma-user" | b"dma-flight") {
+        sched::process::storage::qualify_transport(scenario == b"dma-flight");
+    }
+    if scenario == b"dma-qual" {
+        hardware::block::probe();
+    }
     if scenario == b"storage-test" {
         sched::process::storage::test();
     }

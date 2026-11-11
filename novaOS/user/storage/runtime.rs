@@ -51,8 +51,8 @@ pub fn channels() -> Result<(u64, u64)> {
 }
 
 pub fn config(word: usize) -> u64 {
-    assert!(word < 2);
-    // Sûreté : le lanceur initialise deux mots alignés de la page DATA privée
+    assert!(word < 6);
+    // Sûreté : le lanceur initialise les mots alignés de la page DATA privée
     // avant publication. Ce sont des valeurs locales, jamais des pointeurs.
     unsafe { (0x401000 as *const u64).add(word).read_volatile() }
 }

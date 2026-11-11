@@ -119,3 +119,14 @@ pub unsafe fn switch_thread_root(root: u64) {
 pub fn sync_user_code(alias: u64) {
     sync_code(alias, alias);
 }
+
+pub fn device_cache() -> Result<u64> {
+    let (lo, hi): (u32, u32);
+    // Sûreté : lecture de IA32_PAT à CPL0. Chercher le type UC effectif du firmware.
+    unsafe { asm!("rdmsr",in("ecx") 0x277u32,out("eax") lo,out("edx") hi,options(nostack)) };
+    let pat = u64::from(lo) | u64::from(hi) << 32;
+    let i = (0..8u64)
+        .find(|i| (pat >> (8 * i)) & 255 == 0)
+        .ok_or(Error::Mode)?;
+    Ok(((i & 3) << 3) | ((i & 4) << 5))
+}

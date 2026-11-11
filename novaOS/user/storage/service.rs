@@ -3,6 +3,12 @@
 mod runtime;
 use runtime::*;
 
+#[cfg(block_media)]
+#[path = "medium.rs"]
+mod medium;
+#[cfg(block_media)]
+use medium::serve;
+#[cfg(not(block_media))]
 fn serve() -> Result<()> {
     let (requests, replies) = channels()?;
     let mut last = 0;

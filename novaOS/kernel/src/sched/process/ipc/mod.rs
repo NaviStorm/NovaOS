@@ -771,3 +771,95 @@ pub(super) fn begin_measure(client: Pid, service: Pid) {
 pub(super) fn end_measure(hz: u64) {
     with(|s| s.ipc.metrics.report(hz));
 }
+
+/// Deux sessions privées : NovaFS ↔ service bloc ↔ pilote. Une image n'obtient
+/// que les deux sens IPC de son voisin. Le droit matériel est lié au seul pilote.
+pub(super) fn launch_block<const N: usize>(
+    images: [(&[u8], u32); N],
+    key: u64,
+    mode: u64,
+) -> Res<[Child; N]> {
+    assert!(matches!(N, 3 | 4));
+    let private = crate::hardware::block::private_frames().map_err(|_| DENIED)?;
+    let _guard = Guard::new();
+    let group = launch(images)?;
+    let (server, consumer, device) = (group[0].0, group[1].0, group[2].0);
+    let configured = with(|s| {
+        for pid in [device, server, consumer] {
+            let space = s.processes.get(pid).space.as_ref().unwrap();
+            if !heap::with_pages(|m| Ok(space.audit_driver(m, &private))).unwrap() {
+                return Err(DENIED);
+            }
+        }
+        let reply = s.ipc.create(server)?;
+        let read_reply = s.ipc.derive(server, reply, consumer, RECEIVE.into())?;
+        let input = s.ipc.create(device)?;
+        let request = s.ipc.derive(device, input, server, SEND.into())?;
+        let output = s.ipc.create(device)?;
+        let response = s.ipc.derive(device, output, server, RECEIVE.into())?;
+        s.ipc.locals.get_mut(device.slot).bootstrap = input;
+        for (pid, words) in [
+            (server, [reply, mode, request, response]),
+            (device, [output, mode, key, 0]),
+            (
+                consumer,
+                [read_reply, mode, if N == 3 { key } else { 0 }, 0],
+            ),
+        ] {
+            let space = s.processes.get(pid).space.as_ref().unwrap();
+            heap::with_pages(|m| {
+                for (i, v) in words.into_iter().enumerate() {
+                    space.write_data(m, i, v)
+                }
+                Ok(())
+            })
+            .unwrap();
+        }
+        if N == 4 {
+            let control = group[3].0;
+            let a = s.ipc.create(consumer)?;
+            let b = s.ipc.create(consumer)?;
+            let tx = s.ipc.derive(consumer, a, control, SEND.into())?;
+            let rx = s.ipc.derive(consumer, b, control, RECEIVE.into())?;
+            s.ipc.locals.get_mut(control.slot).bootstrap = tx;
+            configure_session(s, control, rx, mode);
+            let space = s.processes.get(consumer).space.as_ref().unwrap();
+            heap::with_pages(|m| {
+                space.write_data(m, 4, a);
+                space.write_data(m, 5, b);
+                Ok(())
+            })
+            .unwrap();
+        }
+        if mode == 6 {
+            s.ipc.metrics.start_session(consumer.number, server.number)
+        }
+        if !crate::hardware::block::attach(device.number, key) {
+            return Err(DENIED);
+        }
+        Ok(())
+    });
+    if let Err(e) = configured {
+        for c in group {
+            retire_unpublished(c)
+        }
+        return Err(e);
+    }
+    Ok(group)
+}
+
+pub(super) fn close_block_channels(roles: &[Pid]) {
+    with(|s| {
+        for i in s.ipc.ends.ids() {
+            let ep = *s.ipc.ends.get(i);
+            if roles.iter().any(|p| p.number == ep.owner) {
+                // Passer par close : il invalide également les attentes avant
+                // leur réveil. destroy seul retirerait l'endpoint sous un dormeur.
+                let root = s.ipc.node(ep.root).expect("racine de canal vivant");
+                s.ipc.close(root)
+            }
+        }
+        s.flush_ipc();
+        s.ipc.collect();
+    });
+}

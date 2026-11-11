@@ -14,14 +14,14 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
-BANNER = b"NovaOS v0.9.0\r\n"
+BANNER = b"NovaOS v0.10.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "25a7b3629cd259338c3c6a5294e1bbdf5abf872963f6410cbc0e4eb2c3d80dc1",
-    "demarrage": "71167043bf9e250cc31860781e1025474150456b3f82679a776a40241f2e056d",
-    "composition": "4e5101ac1dd7848ad39fa045af091b570d4bba5daf76acc98df70bae240e101f",
-    "frappe": "d24b10bffe8ee84c264167a9cc7663102c6f9f0ab6365227d50a8cc33c72a0bf",
-    "saisie": "22665fa321b6f335f1550061a4a09e4a78ff84169606c298e2df951add6e8687",
+    "demarrage-aarch64": "8ef6ee055b417e3399d1939ba0af5f4a1828cea96b644814df559ebbb024ab58",
+    "demarrage": "092d01ad3ff41838649537d8dca3c2aaa59be3217fe72e8d7c506aca28ff1b00",
+    "composition": "02c3b09e5bb311235eb86162d224fcc2dbab9e64596da9a93f4e6d87b014be02",
+    "frappe": "ad3e6d6120b23174c57a6a6f40f518d2d6224908d56b707666d1653c4d756f42",
+    "saisie": "a1f965412cb828706a01194b82ec28074f5ef305ecb38d50efbbebeb3569e02b",
 }
 
 
@@ -510,14 +510,16 @@ def abi_scenario(arch, ram, allow_firmware_limit=False, arm_pan=False):
                     return "NON EXÉCUTÉ (amorçage)"
             if any(bad in report for bad in ("Panique du noyau", "Exception noyau", "Erreur fatale")):
                 raise RuntimeError(report[-1800:])
-            if "RAM phase=repos_ui" in report and "ABI valide" in report:
+            # La sortie série est progressive : attendre la ligne entière avant de
+            # vérifier le total des cadres (resident et retenu se trouvent en fin de ligne).
+            if re.search(r"RAM phase=repos_ui [^\n]*\n", report) and "ABI valide" in report:
                 break
             time.sleep(0.05)
         phases = {name: {k: int(v) for k,v in re.findall(r"([a-z_]+)=(\d+)", fields)}
                   for name,fields in re.findall(r"RAM phase=([a-z_]+) ([^\r\n]+)", report)}
         assert set(phases) == {"init","repos","reprise","actifs","detruits","repos_ui"}, report[-1200:]
         for v in phases.values():
-            assert v["resident"] == sum(v[k] for k in ("image","tables","kpile","upile","heap","buddy","ipc","utilisateur"))
+            assert v["resident"] == sum(v[k] for k in ("image","tables","kpile","upile","heap","buddy","ipc","utilisateur","dma"))
             assert v["retenu"] == v["resident"] + v["chargeur"] + v["extra_elf"] + v["ram_video"]
             assert v["retenu"] + v["libres"] <= ram * 256
         assert "ABI copie sur deux pages et retrait atomique OK" in report

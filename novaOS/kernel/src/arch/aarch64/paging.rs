@@ -232,3 +232,13 @@ pub fn sync_user_code(alias: u64) {
         )
     };
 }
+
+pub fn device_cache() -> Result<u64> {
+    let mair: u64;
+    // Sûreté : lecture EL1 du MAIR actif, recherche de Device-nGnRnE.
+    unsafe { asm!("mrs {},mair_el1",out(reg) mair,options(nostack)) };
+    (0..8u64)
+        .find(|i| (mair >> (8 * i)) & 255 == 0)
+        .map(|i| i << 2)
+        .ok_or(Error::Mode)
+}

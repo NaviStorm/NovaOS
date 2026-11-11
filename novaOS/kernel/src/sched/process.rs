@@ -187,6 +187,7 @@ fn create_image(
 pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
     let pid = with(|s| {
         let pid = s.thread(s.current).owner.expect("exception hors processus");
+        crate::hardware::block::died(pid.number);
         s.ipc.death(pid, ticks());
         s.flush_ipc();
         s.ipc.collect();

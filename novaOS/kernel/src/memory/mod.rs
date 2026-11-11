@@ -104,6 +104,7 @@ impl SpaceId {
 }
 
 pub struct Memory {
+    dma_frames: u64,
     frames: Frames,
     space: AddressSpace,
     cache: u64,
@@ -175,6 +176,7 @@ impl Memory {
         paging::map_devices(&space, &mut frames)?;
         paging::activate(&space, &mut frames)?;
         let mem = Self {
+            dma_frames: 0,
             frames,
             space,
             cache,
@@ -334,10 +336,11 @@ impl Memory {
         let loader = pages(EntryType::BOOTLOADER_RECLAIMABLE) - released;
         let used = self.frames.initial - self.frames.available;
         let counted = self.frames.tables
+            + self.dma_frames
             + (r.ipc + r.stacks + r.user + r.user_stacks + r.heap + r.buddy) as u64;
         assert_eq!(used, counted, "cadres sans attribution dans le bilan");
         log(format_args!(
-            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={}",
+            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={} dma={}",
             self.frames.tables,
             r.stacks,
             r.user_stacks,
@@ -353,7 +356,8 @@ impl Memory {
             self.frames.available,
             r.reusable,
             used + image,
-            used + image + loader + exec_extra + ram_video
+            used + image + loader + exec_extra + ram_video,
+            self.dma_frames
         ));
     }
 }
@@ -417,6 +421,64 @@ pub(crate) unsafe fn reclaim_loader(video: Option<(usize, usize)>) -> Result<()>
             }
         }
         m.frames.initial += m.frames.reclaimed;
+        Ok(())
+    })
+}
+
+/// L'appelant conserve le cadre hors du Buddy jusqu'au drainage et à la révocation du DMA.
+pub(crate) fn pin_dma() -> Result<(u64, usize)> {
+    crate::heap::with_pages(|m| {
+        let pa = m.frames.take()?;
+        m.dma_frames += 1;
+        Ok((pa, m.frames.direct(pa) as usize))
+    })
+}
+
+/// # Safety
+/// Le cadre provient de pin_dma et n'a plus aucun utilisateur, y compris le périphérique.
+pub(crate) unsafe fn release_dma(pa: u64) {
+    crate::heap::with_pages(|m| {
+        // Sûreté : l'appelant a acquitté la révocation sur le domaine, alias HHDM privé.
+        unsafe {
+            m.frames
+                .direct(pa)
+                .cast::<u8>()
+                .write_bytes(0, PAGE as usize)
+        };
+        m.frames.release(pa);
+        m.dma_frames = m
+            .dma_frames
+            .checked_sub(1)
+            .expect("cadre DMA sans propriétaire");
+        Ok(())
+    })
+    .expect("restitution du cadre DMA");
+}
+
+/// Fenêtre superviseur Device/UC dans l'arène dédiée du transport QEMU.
+pub(crate) fn map_io(pa: u64, va: u64) -> Result<()> {
+    if (pa | va) % PAGE != 0
+        || pa > frames::PHYS_MASK
+        || !(0xffff_c900_0000_0000..0xffff_c900_0100_0000).contains(&va)
+    {
+        return Err(Error::Geometry);
+    }
+    crate::heap::with_pages(|m| {
+        if m.frames
+            .regions()
+            .any(|e| mapped(e.entry_type) && e.base < pa + PAGE && pa < e.base + e.length)
+        {
+            return Err(Error::Reserved);
+        }
+        let desc = paging::leaf(pa, Access::ReadWrite, paging::device_cache()?);
+        match m.space.descriptor(&m.frames, va) {
+            Ok(old) if paging::matches(old, desc) => return Ok(()),
+            Ok(_) => return Err(Error::Occupied),
+            Err(Error::Missing) => (),
+            Err(e) => return Err(e),
+        }
+        m.space.insert(&mut m.frames, va, desc)?;
+        paging::invalidate(va);
         Ok(())
     })
 }

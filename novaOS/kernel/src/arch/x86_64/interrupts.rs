@@ -146,6 +146,10 @@ pub(super) fn install() {
     table.0[18].ist = 2;
     table.0[0x20] = Gate::new(timer_entry as *const () as usize, cs);
     table.0[0x21] = Gate::new(keyboard_entry as *const () as usize, cs);
+    // Vecteurs externes non attribués : aucune livraison aux processus.
+    table.0[0x30..0xff].fill(Gate::new(orphan_entry as *const () as usize, cs));
+    table.0[0x51] = Gate::new(disk_entry as *const () as usize, cs);
+    table.0[0xff] = Gate::new(spurious_master as *const () as usize, cs);
     table.0[0x27] = Gate::new(spurious_master as *const () as usize, cs);
     table.0[0x2f] = master_eoi;
     let descriptor = Descriptor {
@@ -243,6 +247,16 @@ macro_rules! irq_entry {
         }
     };
 }
+extern "C" fn disk_irq() {
+    crate::hardware::block::interrupt();
+    crate::hardware::block::eoi();
+}
+extern "C" fn orphan_irq() {
+    crate::hardware::block::stray();
+    crate::hardware::block::eoi()
+}
+irq_entry!(orphan_entry, orphan_irq);
+irq_entry!(disk_entry, disk_irq);
 irq_entry!(timer_entry, super::timer::tick);
 irq_entry!(keyboard_entry, super::keyboard::irq);
 irq_entry!(spurious_master, ignore_spurious);

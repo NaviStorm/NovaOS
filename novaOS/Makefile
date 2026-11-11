@@ -35,3 +35,14 @@ ipc-test ipc-races ipc-perf: kernel
 
 ipc-endurance: kernel
 	python3 tests/ipc.py endurance --seconds "$(DURATION)"
+
+.PHONY: block-test block-perf block-run
+block-test: kernel
+	python3 tests/bloc.py
+
+block-perf: kernel
+	python3 tests/bloc.py --perf
+
+SECTOR ?= 512
+block-run: kernel
+	python3 scripts/bloc_qemu.py --sector "$(SECTOR)" "$(IMAGE)"

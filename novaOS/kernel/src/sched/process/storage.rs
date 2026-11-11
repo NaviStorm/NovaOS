@@ -165,3 +165,170 @@ pub(crate) fn test() {
     measure("stockage_detruit");
     hal::log(format_args!("STOCKAGE validation OK"));
 }
+
+const RELAY: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-relay.bin"));
+const DISK: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-disk.bin"));
+const REQUESTER: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-requester.bin"));
+pub(crate) fn qualify_transport(delayed: bool) {
+    use crate::hardware::block;
+    let mut witness: Option<block::Witness> = None;
+    let mut reference = None;
+    for &mode in if delayed {
+        &[2u64, 1][..]
+    } else {
+        &[1, 2, 1][..]
+    } {
+        if delayed && mode == 2 {
+            hal::log(format_args!("DMA injection prete"));
+            sleep(3 * u64::from(HZ));
+        }
+        let starts = block::kicks();
+        let key = block::begin_session(1 | 8).expect("ouvrir une session en lecture seulement");
+        let old_frame = block::private_frames().unwrap()[20];
+        assert!(block::begin_session(1).is_err());
+        let [relay, client, driver] =
+            ipc::launch_block([(RELAY, 15), (REQUESTER, 1), (DISK, 0)], key, mode).unwrap();
+        let driver_pid = driver.0.number;
+        let driver_result = wait(driver);
+        assert!(!block::admit(driver_pid, key));
+        if delayed && mode == 2 {
+            let outstanding = block::inflight();
+            hal::log(format_args!(
+                "DMA pilote mort transfert_en_vol={outstanding}"
+            ));
+            assert!(outstanding, "la lecture doit encore être en vol");
+        }
+        assert!(
+            block::publication_unique(),
+            "index réellement publié dans la file DMA"
+        );
+        let mut retired = block::retire();
+        if delayed && mode == 2 && retired == Err(block::Error::Quarantine) {
+            hal::log(format_args!("DMA quarantaine cadres epingles"));
+            for _ in 0..3 {
+                sleep(u64::from(HZ));
+                retired = block::retire();
+                if retired.is_ok() {
+                    break;
+                }
+            }
+        }
+        retired.expect("retrait du bail");
+        if mode == 2 {
+            witness =
+                Some(block::Witness::claim(old_frame).expect("réattribution de la page retirée"))
+        } else if let Some(w) = witness.take() {
+            w.verify().expect("témoin du propriétaire suivant")
+        }
+        let results = (wait(relay), wait(client), driver_result);
+        if witness.is_none() {
+            let snapshot = heap::audit(true);
+            if let Some(old) = reference {
+                assert_eq!(snapshot, old, "fuite entre sessions chaudes")
+            }
+            reference = Some(snapshot);
+        }
+        assert_eq!(
+            block::kicks() - starts,
+            1,
+            "seule la demande valide peut notifier"
+        );
+        hal::log(format_args!(
+            "DMA utilisateurs mode={mode} generation={key} resultats={results:?}"
+        ));
+        if mode == 2 {
+            assert!(matches!(driver_result, Outcome::Fault(_)));
+            assert!(!matches!(results.0, Outcome::Exit(0)));
+            assert!(!matches!(results.1, Outcome::Exit(0)))
+        } else {
+            assert_eq!(
+                results,
+                (Outcome::Exit(0), Outcome::Exit(0), Outcome::Exit(0))
+            )
+        }
+    }
+    hal::log(format_args!("DMA utilisateurs bilan OK"));
+    hal::cpu::halt()
+}
+
+const MEDIA: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-media.bin"));
+const CONTROL: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-control.bin"));
+pub(crate) fn volume(mode: u64) -> bool {
+    use crate::hardware::block;
+    let start = heap::audit(true);
+    let hz = hal::timer::counter_hz();
+    if mode == 6 {
+        measure("bloc_repos");
+        heap::with_pages(|m| {
+            m.begin_frame_sample();
+            Ok(())
+        })
+        .unwrap();
+        block::metrics::start(hz);
+    }
+    let rights = if mode == 4 || mode == 6 || mode == 8 {
+        1 | 2 | 4 | 8
+    } else {
+        1 | 8
+    };
+    let key = match block::begin_session(rights) {
+        Ok(v) => v,
+        Err(e) => {
+            hal::log(format_args!("BLOC ouverture refusee {e:?}"));
+            return false;
+        }
+    };
+    let group = ipc::launch_block(
+        [(RELAY, 15), (MEDIA, 1), (DISK, 0), (CONTROL, 0)],
+        key,
+        mode,
+    );
+    let [relay, service, driver, app] = match group {
+        Ok(v) => v,
+        Err(e) => {
+            let _ = block::retire();
+            hal::log(format_args!("BLOC admission refusee {e}"));
+            return false;
+        }
+    };
+    hal::log(format_args!(
+        "BLOC chaine novaFS={} bloc={} pilote={} client={} generation={key}",
+        service.0.number, relay.0.number, driver.0.number, app.0.number
+    ));
+    if mode == 6 {
+        measure("bloc_publie")
+    }
+    let ids = [relay.0, service.0, driver.0];
+    let a = wait(app);
+    if a != Outcome::Exit(0) {
+        block::died(driver.0.number);
+        ipc::close_block_channels(&ids);
+    }
+    let s = wait(service);
+    let d = wait(driver);
+    let t = crate::hal::timer::counter();
+    let retired = block::retire();
+    let ticks = crate::hal::timer::counter() - t;
+    let b = wait(relay);
+    hal::log(format_args!(
+        "BLOC bilan mode={mode} service={s:?} bloc={b:?} pilote={d:?} client={a:?} retrait={retired:?} cycles_retrait={ticks}"
+    ));
+    if mode == 6 {
+        ipc::end_measure(hz);
+        block::metrics::report();
+        let frames = heap::with_pages(|m| Ok(m.end_frame_sample())).unwrap();
+        let after = heap::audit(true);
+        measure("bloc_collecte");
+        hal::log(format_args!(
+            "BLOC memoire cadres_init={} cadres_fin={} allocations={} pic_cadres={} buddy_init={} buddy_fin={} hz={hz} retrait_ns={}",
+            start.free_pages,
+            after.free_pages,
+            frames.allocations,
+            start.free_pages - frames.minimum_free,
+            start.occupied,
+            after.occupied,
+            (u128::from(ticks) * 1_000_000_000 / u128::from(hz))
+        ));
+    }
+    [a, s, d, b].iter().all(|x| *x == Outcome::Exit(0)) && retired.is_ok()
+}

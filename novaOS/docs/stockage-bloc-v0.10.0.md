@@ -1,6 +1,117 @@
-# Stockage bloc natif — audit préalable à NovaOS v0.10.0
+# Stockage bloc natif — NovaOS v0.10.0
 
-## Qualification de VT-d sur Q35 et d’INTx sur ARM, 11 novembre 2026
+## Transport natif de la v0.10.0
+
+Le service NovaFS émet désormais des requêtes persistantes depuis Ring 3 sur Q35 et EL0 sur QEMU virt. Un client de diagnostic ne possède que les deux capacités IPC de son service NovaFS. Le service NovaFS possède les deux sens de la session avec le service bloc ; ce dernier est le seul client IPC du pilote. Les trois exécutables ont des espaces d’adressage distincts. Le noyau n’interprète aucun secteur NovaFS. Sans disque attribué, le démarrage historique et le service v0.9 restent disponibles.
+
+### Interface et frontières de confiance
+
+| Autorité | Opérations et limites |
+|---|---|
+| Application | INFO/FIN auprès du service NovaFS ; aucun handle de disque, de pilote ou d’IOMMU. |
+| Service NovaFS | INFO, READ, WRITE, FLUSH et CLOSE par des messages de 128 octets au service bloc. Le lanceur choisit un profil de service du [même point d’entrée NovaFS](../user/storage/service.rs). Le diagnostic de persistance produit et compare ses octets dans cette image utilisateur. |
+| Service bloc | Valide la version, l’opération, la taille, les champs réservés et la progression du tag. Transmet seulement au pilote publié par le lanceur. |
+| Pilote utilisateur | Écrit le header VirtIO little-endian et propose les objets et le sens de la chaîne. Le port privé additif `0x10040` requiert **l’identité du processus et la génération vivante**. Aucun sélecteur, convention, taille de structure ou droit des seize appels natifs antérieurs ne change. |
+| Composant DMA | Copie 128 octets depuis la page utilisateur après vérification de toute la plage. Il décode la proposition en privé ; un objet local désigne exclusivement un header, une page entrante, une page sortante ou un statut. Il construit les vrais descripteurs, vérifie la géométrie, publie l’index puis le doorbell après barrière. Pas d’IOVA, de pointeur trans-espace, d’index de file libre ni de registre programmable dans cette interface. |
+| Superviseur et HAL | MANAGE : configuration, masquage, mappings, retrait, réinitialisation et redémarrage. Ce droit n’est pas distribuable. READ (bit 0) inclut INFO, WRITE (1), FLUSH (2), CLOSE (3). La propriété RO offerte par le disque retire WRITE, même si le profil le demande. Un PID réutilisant un slot n’hérite pas du bail. |
+
+[Protocole bloc](../abi/block.rs) · [Médiation du bail](../kernel/src/hardware/block/lease.rs) · [Pilote utilisateur](../user/storage/disk.rs) · [Service bloc](../user/storage/relay.rs)
+
+Une seule demande matérielle peut être en vol. READ publie un IN, attend la complétion et livre les morceaux successifs (au plus 96 octets). WRITE assemble le secteur entier dans un cadre privé ; aucun OUT n’est soumis tant que la dernière pièce attendue manque. Les contrôles portent sur le LBA logique, la conversion en unités VirtIO de 512 octets, les bornes et le sens. FLUSH ne prend pas de données. Un succès de WRITE indique l’acceptation, celui de FLUSH la confirmation du backend configuré. Une erreur ou une déconnexion après soumission ne justifie ni un accusé durable ni un rejeu automatique.
+
+### Files, interruptions et retrait
+
+Sept cadres distincts appartiennent à chaque session : descripteurs R, disponible R, utilisé RW, header R, données entrantes W, statut W, données sortantes R (permissions depuis le périphérique). QEMU lit l’index « utilisé » à l’activation : la protection W seule y a produit une faute sur les deux architectures. **Un seul** cadre doit être mixte, sans données client ni descripteurs modifiables. Les objets sont scellés dans la RAM du noyau, indépendamment de la durée de vie du message utilisateur.
+
+Sur Q35, VT-d autorise le SID de la seule fonction de données et une seule route MSI-X remappable. PCI, table MSI-X, PBA, porte de notification et LAPIC restent superviseur ; les ports PCI sont protégés par CPL/IOPL/TSS. Le pilote ne peut choisir ni une destination de DMA ni un format de MSI. L’interruption est comptée uniquement si la demande armée et l’index utilisé concordent. Le chemin de compatibilité du modèle précédent n’est pas délégué ; aucune émission vers un vecteur étranger n’est nécessaire à cette qualification. Les neuf cadres du remappeur sont **permanents** : après retrait, aucune entrée pour le disque, aucune route autorisée, traduction et remappage toujours actifs. Pas de fenêtre de bypass globale. Le contrôle des capacités du matériel exige ici le drainage des lectures et écritures. Sur ARM le pilote prépare les mêmes commandes en EL0 ; le noyau vérifie les fonctions PCI du bus racine, la ligne INTx 37 exclusive, l’absence de MSI et de fenêtre réservée, puis utilise virtio-IOMMU sans bypass et le GICv2.
+
+L’admission précède la soumission, et la mort du processus ferme le bail avant la collecte de son espace. Le retrait attend le retour de l’unique chaîne, effectue le reset, coupe le bus mastering, masque et purge l’interruption, retire les traductions, attend les acquittements et efface les cadres. Un reset MMIO tenté sur une lecture artificiellement suspendue avait bloqué le vCPU. La version livrée attend donc **avant** le reset ; à l’échéance elle conserve l’ancien domaine et les pages épinglées. Une reprise du backend permet au superviseur de réessayer le retrait ; sans preuve de quiescence, pas de réattribution. Sur Q35, la file d’invalidation n’est jamais réactivée avec l’index d’une ancienne incarnation. Sur erreur de session, le superviseur ferme les racines IPC via l’opération qui réveille également les dormeurs. Le retrait brut d’un endpoint avait laissé un dormeur référencer un slot déjà supprimé lors du test de support en lecture seule.
+
+### Qualification et oracles
+
+Hôte macOS ARM64, QEMU 11.1.3 TCG, un CPU, 256 Mio, UEFI/Limine. Quatre profils : deux architectures × secteurs physiques et logiques de 512 ou 4 096 octets. Toutes les données concernent des fichiers raw jetables d’un Mio. Les tests ne touchent aucun disque physique. Le relevé des capacités Q35 donne CAP `0x80d2008c222f0686`, ECAP `0xf00f5a`, DWD=DRD=1. Le profil ARM emploie l’ECAM haut de virt, GICv2, MSI désactivées.
+
+| Contrôles demandés | Vérification exécutée |
+|---|---|
+| 1, 3 : chaîne valide, modification après validation | Motif préparé hors VM, relecture complète depuis le pilote, statut et longueur utilisés, IRQ réelle. La copie de travail du pilote peut être réutilisée ; les pages de descripteurs et les cadres DMA n’ont aucun alias utilisateur. |
+| 2, 4, 5, 6 : objet hors domaine, chaîne cyclique ou indirecte, longueur et dépassement | Propositions à identifiants et champs invalides, longueur altérée, LBA maximal et proposition concurrente : rejet avant publication. L’index disponible relu dans la vraie file et le compteur de notifications de chaque session n’avance que pour la lecture valide. |
+| 7, 8, 9 : notification, PCI et MSI non autorisés | Énumération des tables réellement installées du pilote et des services : seuls leurs cadres privés sont adressables ; les branches hautes x86 sont superviseur. Pas de doorbell ni de capacité PCI/MSI. Le second processus appelant le port avec le bon numéro de génération est refusé. Les fautes de privilège CPU sont aussi couvertes par la suite historique. |
+| 10 : interruption inattendue | Sur la vraie route, après masquage et complétion, observation de PBA/GIC en attente. Retrait et première IRQ du nouveau propriétaire vérifiés. Autre essai : livraison tardive sur la route d’origine après fermeture du destinataire, acquittée sans réveil. |
+| 11, 17 : DMA révoqué et réattribution | Lecture vers le propre tampon du banc passé en R, puis retiré ; faute IOMMU lue dans l’invité, 4 Kio du témoin intacts dans les deux cas, malgré un statut VirtIO 0. Après collecte du pilote, l’allocateur réattribue le même cadre au banc ; son nouveau motif reste intact pendant le transfert de l’incarnation suivante. |
+| 12, 13, 16 : panne, redémarrage et reset pendant un transfert | Exception synchrone du pilote sur sa propre instruction de test. Le banc suspend le READ dans le backend et attend la preuve que le pilote est mort avant la complétion. L’invité atteint la quarantaine, ce qui démontre que le vCPU reste disponible. Reprise du backend, retrait acquitté puis nouvelle génération et motif exact. La stratégie refuse précisément de lancer un reset non drainé. |
+| 14, 15 : erreurs de lecture, d’écriture et de FLUSH | blkdebug retourne EIO ; le noyau consigne IOERR sur le bon opcode, les quatre processus sont collectés, aucun acquittement durable n’est fourni. Pour READ les octets initiaux correspondent au motif attendu : le test échouerait si l’injection manquait sa cible. WRITE refusé laisse l’image entière intacte. Après FLUSH refusé, seuls les octets extérieurs au secteur sont exigés inchangés : la durabilité de ce secteur est indéterminée. |
+| 18, 19, 20 : saturation, IPC malformé, révocation | Second bail et seconde opération en vol refusés ; trame invalide rejetée ; ancien identifiant refusé à la génération suivante, droit fermé à la mort du propriétaire. Le profil manuel découvre le support ; le profil de test ne peut écrire sur un disque annoncé RO. |
+
+**Persistance.** Dans chacune des quatre géométries/architectures, le service NovaFS a créé le motif relatif au LBA et à la position dans le secteur, envoyé WRITE par IPC et obtenu FLUSH. Le banc a arrêté QEMU par SIGKILL, comparé l’image **entière** à un oracle hôte indépendant puis lancé une autre VM sur le même fichier, sans le réinitialiser. Le service a relu et comparé chaque octet. Ces observations concernent VirtIO, le cache writeback de QEMU et la réouverture du fichier sous macOS. Elles n’établissent aucune résistance à une coupure électrique de la machine.
+
+### Mesures natives
+
+**Régressions :** 25/25 scénarios QEMU historiques par architecture. Les dix groupes du banc bloc sont passés dans chacune des deux géométries, soit 20/20 par architecture, plus une campagne de mesure par profil. Les captures de référence v0.10.0 ont été calculées en remplaçant uniquement la bannière dans les cinq images v0.9.0 ayant leur empreinte attendue. L’affichage des deux cibles et la saisie AZERTY x86 ont ensuite été comparés en VM aux nouvelles empreintes. Le banc attend désormais le retour à la ligne série avant de vérifier le bilan RAM : lire dès le préfixe pouvait couper les champs « resident » et « retenu » sous charge. Le total contrôlé inclut explicitement la catégorie DMA.
+
+| Cible / secteur | READ p50 / p99 (µs) | WRITE p50 / p99 (µs) | FLUSH p50 / max (µs) | Séq. W / R (Mio/s) | Dispersé W / R (Mio/s) |
+|---|---:|---:|---:|---:|---:|
+| Q35 / 512 | 131,26 / 609,86 | 36,91 / 369,52 | 114,85 / 367,51 | 0,54 / 0,57 | 0,58 / 0,59 |
+| Q35 / 4096 | 147,02 / 284,15 | 53,09 / 585,26 | 392,05 / 415,76 | 0,83 / 0,83 | 0,85 / 0,84 |
+| virt ARM / 512 | 163,84 / 208,00 | 53,25 / 161,01 | 360,45 / 431,01 | 0,44 / 0,46 | 0,47 / 0,50 |
+| virt ARM / 4096 | 163,84 / 198,00 | 73,73 / 230,00 | 384,99 / 384,99 | 0,68 / 0,71 | 0,70 / 0,71 |
+
+| Cible / secteur | Validation / copie IN / copie OUT : moyennes (µs) | IPC aller-retour p50 / p99 (µs) | Commutation p50 / p99 (µs) | Retrait (µs) |
+|---|---:|---:|---:|---:|
+| Q35 / 512 | 2,618 / 0,635 / 0,677 | 98,44 / 246,10 | 3,08 / 4,00 | 561,79 |
+| Q35 / 4096 | 2,752 / 0,550 / 0,586 | 98,01 / 163,35 | 3,06 / 4,08 | 623,14 |
+| virt ARM / 512 | 4,400 / 0,624 / 0,688 | 131,07 / 245,76 | 5,12 / 6,14 | 541,01 |
+| virt ARM / 4096 | 4,144 / 0,656 / 0,624 | 122,88 / 196,61 | 4,10 / 6,14 | 582,00 |
+
+Chaque marche mesure 32 secteurs, profondeur un, pour chaque sens et ordre. Le parcours dispersé visite les 32 mêmes secteurs dans une permutation déterministe. Les débits incluent fragmentation en IPC et copies entre le début de la première opération et la fin de la dernière dans le transport, hors FLUSH. Une marche de lecture vérifie tous les octets côté service NovaFS. Les latences matérielles englobent notification, traitement, vérification de l’IRQ, du registre utilisé, du statut et des fautes. READ inclut également le temps entre les appels utilisateur BEGIN et END. Il y a 64 READ, 64 WRITE et seulement deux FLUSH après écriture par profil : le maximum FLUSH décrit ces deux observations, pas une estimation de queue de distribution. La validation porte sur 130 chaînes. Le coût de copie concerne les fragments de 96 octets (dernier fragment plus court). Les quantiles sont les bornes supérieures des classes de l’histogramme ; maximum exact, compteur natif calibré, temps écoulé incluant les préemptions.
+
+| Cible / secteur | Résident repos / publié / collecté (Kio) | RAM retenue publiée avec vidéo (Kio) | Pic résident (Kio) | Cadres alloués / retenus au premier cycle | Buddy avant / après (octets) |
+|---|---:|---:|---:|---:|---:|
+| Q35 / 512 | 1284 / 1824 / 1332 | 1824 | 1824 | 135 / 12 | 9280 / 9280 |
+| Q35 / 4096 | 1284 / 1824 / 1332 | 1824 | 1824 | 135 / 12 | 9280 / 9280 |
+| virt ARM / 512 | 1200 / 1740 / 1212 | 3616 | 1740 | 135 / 3 | 10304 / 10304 |
+| virt ARM / 4096 | 1200 / 1740 / 1212 | 3616 | 1740 | 135 / 3 | 10304 / 10304 |
+
+Chaque service a une page de code, une page de données et une page de pile utilisateur ; les piles noyau, tables et cadres IPC sont comptés séparément dans l’annexe. Le pic est calculé avec le minimum de cadres libres sur la fenêtre, outils de mesure compris. La VM possède 256 Mio ; le « résident » est la RAM attribuée par le noyau, pas le RSS de QEMU sur macOS. Au premier cycle trois cadres de tables MMIO restent en place sur chaque cible et neuf cadres supplémentaires gardent VT-d actif sur Q35. Après établissement de ce socle, les cycles chauds du banc retrouvent le même bilan Buddy/cadres ; le témoin réattribué a conservé ses 4 Kio. Aucun plafond artificiel ni extrapolation à une endurance longue.
+
+[Valeurs détaillées et observations série par profil](validation/bloc-natif-v0.10.0.md).
+
+### Reproduction et limites
+
+Depuis la racine du dépôt, avec les deux cibles Rust, QEMU, son firmware EDK2, Python 3 et xorriso :
+
+```sh
+for arch in x86_64 aarch64; do
+    make -C novaOS ARCH="$arch" test
+    make -C novaOS ARCH="$arch" block-test
+    make -C novaOS ARCH="$arch" block-perf
+done
+
+# Image raw existante, ouverte en lecture seule. Fenêtre QEMU et série sur le terminal.
+make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512
+make -C novaOS ARCH=aarch64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=4096
+```
+
+[Banc natif](../tests/bloc.py) · [Profil QEMU](../scripts/bloc_qemu.py). Les journaux sont dans `novaOS/build/bloc-<arch>-<secteur>/`. Le banc d’injection utilise QMP pour suspendre/reprendre le backend, jamais pour remplir les anneaux ou écrire les secteurs à la place de l’invité. Les scénarios d’écriture générés par le banc sont **destructifs pour le secteur de test** : ne pas les lancer sur une image à conserver. Le démarrage manuel ne lance pas ces scénarios. L’affichage est disponible sur les deux cibles et le clavier AZERTY sur x86_64.
+
+Qualification limitée à ces deux topologies fixes, à un vCPU et une seule fonction VirtIO moderne ; firmware et modèle du périphérique de confiance. Pas de hotplug, de transfert direct de pages utilisateur, d’ATS, de file indirecte ou de support de contrôleur physique. Le bloc et le pilote sont en espace utilisateur sur les deux architectures ; l’autorité sur la configuration et les copies DMA est privilégiée. Le service exécute une session privée ; l’interface de diagnostic ne constitue pas un montage NovaFS ni une API publique de fichiers. Aucune revendication de durabilité physique ou d’absence générale de fuite n’est déduite de ces essais.
+
+## Audit préalable du composant de confiance, base 83b5c25
+
+Le périphérique de données et le firmware QEMU font partie de la base de confiance. Le pilote, le service bloc et le client peuvent fournir des octets arbitraires ou disparaître pendant un transfert. La mémoire et la configuration de tous les autres périphériques restent hors de leur autorité.
+
+| Chemin | Autorité et contrôle prévus avant le premier kick |
+|---|---|
+| Demande utilisateur | L’identité du processus et sa capacité bornent l’opération. Copier les paramètres, valider le secteur, la taille, le sens et l’état de la session sur la copie. Un identifiant de fragment ne désigne jamais une adresse machine. |
+| Chaîne et TOCTOU | Une seule chaîne directe de deux segments pour FLUSH ou de trois pour READ. Pour une future écriture, trois segments. Le composant construit la chaîne dans ses cadres privés à partir d’objets fixes. Le pilote ne fournit ni index suivant, ni IOVA, ni flags. Les chaînes cycliques et indirectes sont donc hors du langage de soumission. Header, table et anneau disponible sont lisibles seulement par le disque. Le statut, les données entrantes et l’anneau utilisé ont leurs propres cadres. |
+| Publication | Une seule opération en vol. Le producteur écrit toutes les descriptions, publie l’index avec une barrière adaptée au transport puis notifie la seule file accordée. Aucun accès utilisateur au doorbell, aux adresses de files, aux vecteurs, à la structure ISR ni au chemin PCI CFG alternatif. Une lecture lit uniquement les octets d’une complétion saine. |
+| Interruptions Q35 | CPL3, IOPL zéro, bitmap TSS au-delà de sa limite. Le noyau garde config PCI/ECAM, BAR MSI-X et PBA, LAPIC, IOAPIC et tables VT-d. Il contrôle aussi les destinations d’écriture DMA, y compris les adresses d’anneaux et de statut. Les interruptions de file et de changement de configuration dépendent du transport. Le format de compatibilité de QEMU 11.1.3 rend une délégation directe insuffisante. |
+| Interruptions ARM | Le noyau conserve le GIC et l’IOMMU. Le virtio-blk du profil doit être sans MSI, doté d’une seule ligne INTx exclusive et dépourvu de fenêtre MSI réservée. Le pilote EL0 prépare la commande bloc. Les droits aux registres et le cycle de vie du domaine doivent conserver les garanties de la topologie vérifiée. |
+| Retrait et crash | Fermer l’admission et la livraison au processus, obtenir la quiescence ou un reset acquitté, retirer la route, traiter les interruptions pendantes et supprimer les mappings. Attendre la fin de l’invalidation et du drainage. Seule une confirmation permet d’effacer et de rendre les cadres. Une ambiguïté retient les ressources en quarantaine. |
+| Variante sans MSI Q35 | INTx n’identifie pas intrinsèquement sa source. Il faudrait inventorier et réserver la ligne PCI complète et protéger le routage ainsi que toutes les destinations DMA. Le profil qualifié utilise le transport moderne et un vecteur MSI-X remappable sous contrôle exclusif. |
+
+Les vérifications préalables utilisent des lectures sur des images jetables et des compteurs de complétion, de faute et d’interruption. La persistance depuis le service utilisateur dépend de leur résultat. [Transport PCI et anneaux VirtIO 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/virtio-v1.2.html)
+
+## Historique : qualification de VT-d sur Q35 et d’INTx sur ARM, 11 novembre 2026
 
 **La qualification s’arrête avant l’attribution du disque à un pilote utilisateur.** Sur Q35, QEMU 11.1.3 applique le remappage aux MSI au format remappable. Son traitement du format de compatibilité laisse passer le message sans appliquer la règle de blocage exigée par Intel. Avec ce modèle, le noyau ne pourrait pas garantir l’exclusivité d’une destination APIC ou la révocation de tous les formats avec les files sous le contrôle du pilote. Sur ARM, le disque possède une ligne INTx exclusive dans la topologie testée. La délégation native exige la qualification des deux cibles.
 

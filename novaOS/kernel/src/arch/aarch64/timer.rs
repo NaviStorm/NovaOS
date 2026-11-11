@@ -69,14 +69,22 @@ pub(super) extern "C" fn irq(state: usize) {
     }
     if id == PPI {
         arm();
+    } else if id == 37 {
+        if !crate::hardware::block::interrupt() {
+            disk_line(false)
+        }
+    } else if id >= 32 {
+        crate::hardware::block::stray();
+        write(DIST, 0x180 + 4 * u64::from(id / 32), 1 << (id % 32));
     }
     write(CPU, 0x10, ack); // EOI avant de pouvoir suspendre cette pile.
     // Sûreté : termine l’écriture Device avant la prochaine livraison d’IRQ.
     unsafe {
         asm!("dsb sy", options(nostack));
     }
-    assert_eq!(id, PPI, "IRQ GIC inattendue");
-    sched::tick(state & 15 == 0);
+    if id == PPI {
+        sched::tick(state & 15 == 0)
+    }
 }
 
 pub fn pending() -> bool {
@@ -99,4 +107,30 @@ pub fn counter_hz() -> u64 {
     // Sûreté : fréquence architecturale du timer générique à EL1.
     unsafe { asm!("mrs {},cntfrq_el0",out(reg)v,options(nostack)) };
     v
+}
+
+pub(crate) fn disk_line(enable: bool) {
+    const BIT: u32 = 1 << 5; // INTID 37, SPI5 du disque 00:06.0
+    if enable {
+        let pri = 0x400 + (37 / 4) * 4;
+        write(DIST, pri, (read(DIST, pri) & !0xff00) | 0x4000);
+        let target = 0x800 + (37 / 4) * 4;
+        write(DIST, target, (read(DIST, target) & !0xff00) | 0x100);
+        write(DIST, 0x104, BIT);
+    } else {
+        write(DIST, 0x184, BIT)
+    }
+    // Sûreté : terminer la configuration GIC avant publication ou retrait du droit.
+    unsafe { asm!("dsb sy", options(nostack, preserves_flags)) }
+}
+pub(crate) fn purge_disk() -> crate::hardware::block::Result<()> {
+    write(DIST, 0x284, 1 << 5);
+    if (read(DIST, 0x204) | read(DIST, 0x304) | read(DIST, 0x104)) & (1 << 5) == 0 {
+        Ok(())
+    } else {
+        Err(crate::hardware::block::Error::Quarantine)
+    }
+}
+pub(crate) fn disk_pending() -> bool {
+    read(DIST, 0x204) & (1 << 5) != 0
 }

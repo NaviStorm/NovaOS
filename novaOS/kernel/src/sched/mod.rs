@@ -3,7 +3,7 @@
 mod probes;
 pub(crate) mod process;
 mod stack;
-mod sync;
+pub(crate) mod sync;
 use crate::hal::{self, context, interrupts::Guard};
 use crate::memory::SpaceId;
 use alloc::vec::Vec;

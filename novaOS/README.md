@@ -1,6 +1,8 @@
-# NovaOS v0.9.0
+# NovaOS v0.10.0
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.9.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Depuis la racine du monorepo : `make -C novaOS ARCH=x86_64 block-test` ou `make -C novaOS ARCH=aarch64 block-test`. Pour un démarrage graphique avec une image raw existante : `make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512` (AArch64 : `ARCH=aarch64`, secteur 512 ou 4096).
+
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.10.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
@@ -14,7 +16,7 @@ Dix appels IPC permettent à des processus isolés de communiquer par endpoints 
 
 ## Prototype de stockage macOS
 
-NovaFS v0.9.12 s’exécute sur des images jetables dans le workspace voisin `../novaFS/`. NovaOS lance un service de stockage et son client en Ring 3 ou EL0. Ils consultent le nombre de volumes disponibles, puis ferment leur session. Le raccordement du moteur et des périphériques blocs reste à réaliser. [Protocole, cycle de vie et qualification v0.9.0](docs/novafs-integration-v0.9.0.md) [Utiliser le prototype](../novaFS/README.md) · [Scrub et résultats de la qualification P8](../novaFS/docs/novafs-p8-scrub.md)
+NovaFS v0.9.12 s’exécute sur des images jetables dans le workspace voisin `../novaFS/`. NovaOS lance un service de stockage et son client en Ring 3 ou EL0. Ils consultent le nombre de volumes disponibles, puis ferment leur session. Le profil bloc optionnel fait passer READ, WRITE et FLUSH par le service NovaFS, le service bloc et le pilote en Ring 3 / EL0. Le profil manuel ouvre l’image en lecture seule. Les images de qualification sont jetables ; le moteur de fichiers NovaFS reste hors du noyau et n’est pas monté dans l’invité. [Transport, confinement et résultats v0.10.0](docs/stockage-bloc-v0.10.0.md) [Protocole, cycle de vie et qualification v0.9.0](docs/novafs-integration-v0.9.0.md) [Utiliser le prototype](../novaFS/README.md) · [Scrub et résultats de la qualification P8](../novaFS/docs/novafs-p8-scrub.md)
 
 ## Démarrage manuel dans QEMU
 
