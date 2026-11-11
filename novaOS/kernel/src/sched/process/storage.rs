@@ -256,10 +256,10 @@ const CONTROL: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-control
 const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fileclient.bin"));
 pub(crate) fn volume(mode: u64) -> bool {
     use crate::hardware::block;
-    FILE_TIMING.store(mode == 25, Ordering::Relaxed);
+    FILE_TIMING.store(matches!(mode, 25 | 36), Ordering::Relaxed);
     let start = heap::audit(true);
     let hz = hal::timer::counter_hz();
-    if matches!(mode, 6 | 25) {
+    if matches!(mode, 6 | 25 | 36) {
         measure("bloc_repos");
         heap::with_pages(|m| {
             m.begin_frame_sample();
@@ -268,7 +268,8 @@ pub(crate) fn volume(mode: u64) -> bool {
         .unwrap();
         block::metrics::start(hz);
     }
-    let rights = if matches!(mode, 4 | 6 | 8 | 9 | 11 | 14..=22 | 24 | 25 | 27 | 28) {
+    let rights = if matches!(mode, 4 | 6 | 8 | 9 | 11 | 14..=22 | 24 | 25 | 27 | 28 | 29 | 31..=36 | 39 | 40)
+    {
         1 | 2 | 4 | 8
     } else {
         1 | 8
@@ -280,17 +281,20 @@ pub(crate) fn volume(mode: u64) -> bool {
             return false;
         }
     };
-    let group = ipc::launch_block(
-        [
-            (RELAY, 15),
-            (MEDIA, 1),
-            (DISK, 0),
-            (if mode >= 11 { FILE_CLIENT } else { CONTROL }, 0),
-        ],
-        key,
-        mode,
-    );
-    let [relay, service, driver, app] = match group {
+    let members = [
+        (RELAY, 15),
+        (MEDIA, 1),
+        (DISK, 0),
+        (if mode >= 11 { FILE_CLIENT } else { CONTROL }, 0),
+    ];
+    let group = if matches!(mode, 29 | 30 | 38) {
+        let [r, s, d, a] = members;
+        ipc::launch_block([r, s, d, a, (FILE_CLIENT, 0)], key, mode)
+            .map(|[r, s, d, a, p]| ([r, s, d, a], Some(p)))
+    } else {
+        ipc::launch_block(members, key, mode).map(|group| (group, None))
+    };
+    let ([relay, service, driver, app], peer) = match group {
         Ok(v) => v,
         Err(e) => {
             let _ = block::retire();
@@ -302,14 +306,18 @@ pub(crate) fn volume(mode: u64) -> bool {
         "BLOC chaine novaFS={} bloc={} pilote={} client={} generation={key}",
         service.0.number, relay.0.number, driver.0.number, app.0.number
     ));
-    if matches!(mode, 6 | 25) {
+    if matches!(mode, 6 | 25 | 36) {
         measure("bloc_publie")
     }
     let ids = [relay.0, service.0, driver.0];
     let a = wait(app);
-    if a != Outcome::Exit(0) {
+    if peer.is_none() && a != Outcome::Exit(0) {
         block::died(driver.0.number);
         ipc::close_block_channels(&ids);
+    }
+    let second = peer.map(wait);
+    if let Some(result) = second {
+        hal::log(format_args!("NOMS fin du second client {result:?}"));
     }
     let s = wait(service);
     let d = wait(driver);
@@ -320,7 +328,7 @@ pub(crate) fn volume(mode: u64) -> bool {
     hal::log(format_args!(
         "BLOC bilan mode={mode} service={s:?} bloc={b:?} pilote={d:?} client={a:?} retrait={retired:?} cycles_retrait={ticks}"
     ));
-    if matches!(mode, 6 | 25) {
+    if matches!(mode, 6 | 25 | 36) {
         ipc::end_measure(hz);
         block::metrics::report();
         let frames = heap::with_pages(|m| Ok(m.end_frame_sample())).unwrap();
@@ -337,15 +345,17 @@ pub(crate) fn volume(mode: u64) -> bool {
             (u128::from(ticks) * 1_000_000_000 / u128::from(hz))
         ));
     }
-    [a, s, d, b].iter().all(|x| *x == Outcome::Exit(0)) && retired.is_ok()
+    second.is_none_or(|outcome| outcome == Outcome::Exit(if mode == 38 { 9 } else { 0 }))
+        && [a, s, d, b].iter().all(|x| *x == Outcome::Exit(0))
+        && retired.is_ok()
 }
 
-pub(crate) fn file_perf() -> bool {
-    if !volume(25) {
+pub(crate) fn file_perf(mode: u64) -> bool {
+    if !volume(mode) {
         return false;
     }
     let warm = heap::audit(true);
-    if !volume(25) {
+    if !volume(mode) {
         return false;
     }
     let clean = heap::audit(true) == warm

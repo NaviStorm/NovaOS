@@ -126,45 +126,68 @@ impl<D: Device> Engine<D> {
                 Some(c) => (c.resolve(self, path)?, &mut c.extent),
                 None => (file(self, path)?, &mut local),
             };
-            let length = (stat.size.saturating_sub(offset)).min(limit as u64) as usize;
-            let mut output = Vec::new();
-            output
-                .try_reserve_exact(length)
-                .map_err(|_| Error::NoMemory)?;
-            while output.len() < length {
-                let pos = offset + output.len() as u64;
-                let index = pos / BLOCK_BYTES;
-                let mut inside = (pos % BLOCK_BYTES) as usize;
-                let hit = extent.as_ref().is_some_and(|(first, run)| {
-                    index
-                        .checked_sub(*first)
-                        .is_some_and(|n| n < run.hashes.len() as u64)
-                });
-                if !hit {
-                    *extent = covering(self, stat.id, index)?;
-                }
-                let Some((first, run)) = extent.as_ref() else {
-                    let count = (4096 - inside).min(length - output.len());
-                    output.resize(output.len() + count, 0);
-                    continue;
-                };
-                // La vue est stable pour cette opération. Chaque page garde sa
-                // propre référence et son contrôle d'intégrité, même dans un extent contigu.
-                for i in (index - *first) as usize..run.hashes.len() {
-                    let page = checked_page(self, run.reference(i), *first + i as u64, stat.size)?;
-                    let count = (4096 - inside).min(length - output.len());
-                    output.extend_from_slice(&page[inside..inside + count]);
-                    if output.len() == length {
-                        break;
-                    }
-                    inside = 0;
-                }
-                if output.len() < length {
-                    *extent = None;
-                }
-            }
-            Ok(output)
+            self.read_extent_data(stat, extent, offset, limit)
         })
+    }
+
+    pub fn read_id(&self, id: u64, offset: u64, limit: usize) -> Result<Vec<u8>> {
+        self.checked_access(|| {
+            if limit > MAX_IO || offset > i64::MAX as u64 {
+                return Err(Error::Invalid("plage de lecture"));
+            }
+            let stat = by_id(self, id)?.stat;
+            if stat.kind != Kind::File {
+                return Err(Error::IsDirectory);
+            }
+            self.read_extent_data(stat, &mut None, offset, limit)
+        })
+    }
+
+    fn read_extent_data(
+        &self,
+        stat: Stat,
+        extent: &mut Option<(u64, Run)>,
+        offset: u64,
+        limit: usize,
+    ) -> Result<Vec<u8>> {
+        let length = (stat.size.saturating_sub(offset)).min(limit as u64) as usize;
+        let mut output = Vec::new();
+        output
+            .try_reserve_exact(length)
+            .map_err(|_| Error::NoMemory)?;
+        while output.len() < length {
+            let pos = offset + output.len() as u64;
+            let index = pos / BLOCK_BYTES;
+            let mut inside = (pos % BLOCK_BYTES) as usize;
+            let hit = extent.as_ref().is_some_and(|(first, run)| {
+                index
+                    .checked_sub(*first)
+                    .is_some_and(|n| n < run.hashes.len() as u64)
+            });
+            if !hit {
+                *extent = covering(self, stat.id, index)?;
+            }
+            let Some((first, run)) = extent.as_ref() else {
+                let count = (4096 - inside).min(length - output.len());
+                output.resize(output.len() + count, 0);
+                continue;
+            };
+            // La vue est stable pour cette opération. Chaque page garde sa
+            // propre référence et son contrôle d'intégrité, même dans un extent contigu.
+            for i in (index - *first) as usize..run.hashes.len() {
+                let page = checked_page(self, run.reference(i), *first + i as u64, stat.size)?;
+                let count = (4096 - inside).min(length - output.len());
+                output.extend_from_slice(&page[inside..inside + count]);
+                if output.len() == length {
+                    break;
+                }
+                inside = 0;
+            }
+            if output.len() < length {
+                *extent = None;
+            }
+        }
+        Ok(output)
     }
 
     pub fn write(&mut self, path: &str, offset: u64, bytes: &[u8]) -> Result<()> {
@@ -188,6 +211,25 @@ impl<D: Device> Engine<D> {
         offset: u64,
         bytes: &[u8],
     ) -> Result<(crate::PreparedWrite<'_, D>, Vec<Ref>)> {
+        self.prepare_object_write(offset, bytes, |tx| resolve(tx, &components(path)?))
+    }
+
+    pub fn prepare_write_id(
+        &mut self,
+        id: u64,
+        offset: u64,
+        bytes: &[u8],
+    ) -> Result<crate::PreparedWrite<'_, D>> {
+        self.prepare_object_write(offset, bytes, |tx| by_id(tx, id))
+            .map(|(plan, _)| plan)
+    }
+
+    fn prepare_object_write(
+        &mut self,
+        offset: u64,
+        bytes: &[u8],
+        object: impl FnOnce(&Tx<D>) -> Result<Object>,
+    ) -> Result<(crate::PreparedWrite<'_, D>, Vec<Ref>)> {
         let end = offset
             .checked_add(bytes.len() as u64)
             .filter(|&v| v <= i64::MAX as u64)
@@ -196,7 +238,7 @@ impl<D: Device> Engine<D> {
             return Err(Error::Limit("64 Kio de données par transaction"));
         }
         self.prepare_write_with(|tx| {
-            let mut obj = resolve(tx, &components(path)?)?;
+            let mut obj = object(tx)?;
             if obj.stat.kind != Kind::File {
                 return Err(Error::IsDirectory);
             }

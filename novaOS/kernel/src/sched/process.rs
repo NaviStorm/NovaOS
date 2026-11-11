@@ -13,6 +13,7 @@ pub(crate) mod storage;
 pub(super) use abi_probe::idle_sample;
 pub(crate) use abi_probe::test as abi_test;
 pub(crate) mod syscall;
+pub(super) use demo::before_reap_probe;
 pub(crate) use demo::{boot_demo, test};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]

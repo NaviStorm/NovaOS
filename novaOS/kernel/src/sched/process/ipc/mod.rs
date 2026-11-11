@@ -2,6 +2,7 @@
 //! traduction utilisateur ne traverse dispatch. Les pages des slabs sont RW/NX.
 use super::*;
 use crate::abi::*;
+pub(crate) mod lifecycle;
 pub(crate) mod metrics;
 mod pool;
 use pool::{Bits, Pool};
@@ -780,7 +781,7 @@ pub(super) fn launch_block<const N: usize>(
     key: u64,
     mode: u64,
 ) -> Res<[Child; N]> {
-    assert!(matches!(N, 3 | 4));
+    assert!(matches!(N, 3..=5));
     let private = crate::hardware::block::private_frames().map_err(|_| DENIED)?;
     let _guard = Guard::new();
     let group = launch(images)?;
@@ -816,8 +817,8 @@ pub(super) fn launch_block<const N: usize>(
             })
             .unwrap();
         }
-        if N == 4 {
-            let control = group[3].0;
+        for (i, member) in group[3..].iter().enumerate() {
+            let control = member.0;
             let a = s.ipc.create(consumer)?;
             let b = s.ipc.create(consumer)?;
             let tx = s.ipc.derive(consumer, a, control, SEND.into())?;
@@ -825,14 +826,45 @@ pub(super) fn launch_block<const N: usize>(
             s.ipc.locals.get_mut(control.slot).bootstrap = tx;
             configure_session(s, control, rx, mode);
             let space = s.processes.get(consumer).space.as_ref().unwrap();
+            let app = s.processes.get(control).space.as_ref().unwrap();
+            // L'endpoint témoin appartient au client. Sa mort révoque la vue
+            // RECEIVE du service sans toucher au canal de l'autre session.
+            let life = if N == 5 {
+                let token = s.ipc.create(control)?;
+                s.ipc.derive(control, token, consumer, RECEIVE.into())?
+            } else {
+                0
+            };
             heap::with_pages(|m| {
-                space.write_data(m, 4, a);
-                space.write_data(m, 5, b);
+                app.write_data(m, 2, i as u64);
+                space.write_data(m, 8 + i, life);
+                space.write_data(m, 4 + 2 * i, a);
+                space.write_data(m, 5 + 2 * i, b);
                 Ok(())
             })
             .unwrap();
         }
-        if matches!(mode,6|25) {
+        if N == 5 {
+            // Canal du banc pour observer les deux CWD au même instant.
+            let test = group[3].0;
+            let peer = group[4].0;
+            let token = s.ipc.create(test)?;
+            let limited = s.ipc.derive(test, token, peer, (SEND | RECEIVE).into())?;
+            for (pid, cap) in [(test, token), (peer, limited)] {
+                let space = s.processes.get(pid).space.as_ref().unwrap();
+                heap::with_pages(|m| {
+                    space.write_data(m, 3, cap);
+                    Ok(())
+                })
+                .unwrap();
+            }
+        }
+        if mode == 36 {
+            s.ipc
+                .metrics
+                .start_session(consumer.number, group[3].0.number);
+        }
+        if matches!(mode, 6 | 25) {
             s.ipc.metrics.start_session(consumer.number, server.number)
         }
         if !crate::hardware::block::attach(device.number, key) {

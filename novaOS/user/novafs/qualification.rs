@@ -22,7 +22,16 @@ pub(crate) struct FaultProbe {
 }
 impl FaultProbe {
     pub fn arm(&self) {
-        let mode = rt::config(1);
+        let mode = match rt::config(1) {
+            36 => 25,
+            39 => 15,
+            40 => 18,
+            32 => 14,
+            33 => 16,
+            34 => 17,
+            35 => 19,
+            other => other,
+        };
         if mode == 25 && self.mode.get() == 0 {
             self.mode.set(mode);
             self.phase.set(1);

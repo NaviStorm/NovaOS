@@ -36,7 +36,7 @@ class Bench:
         self.env={**os.environ,'NOVA_ARCH':arch}
         self.report=ROOT/'build'/f'bloc-{arch}-{sector}'
         self.report.mkdir(parents=True,exist_ok=True)
-    def run(self,case,label=None,*,debug=None,flight=False,kill=False,readonly=False,cut=None):
+    def run(self,case,label=None,*,debug=None,flight=False,kill=False,readonly=False,cut=None,timeout=None):
         iso=ROOT/'build'/f'bloc-{self.arch}-{case}.iso'
         if not iso.exists() or iso.stat().st_mtime<(ROOT/'target'/({'x86_64':'x86_64-unknown-none','aarch64':'aarch64-unknown-none-softfloat'}[self.arch])/'release/novaos').stat().st_mtime:
             subprocess.run(['sh',ROOT/'scripts/iso.sh',case,iso],env=self.env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,check=True)
@@ -50,7 +50,7 @@ class Bench:
                 stdout=subprocess.PIPE if monitor else err,stderr=err,bufsize=0) as vm:
             try:
                 if monitor:qmp(vm,'qmp_capabilities')
-                armed=released=False;end=time.monotonic()+(160 if case=='storage-perf' else 55)
+                armed=released=False;end=time.monotonic()+(timeout or (160 if case=='storage-perf' else 55))
                 while time.monotonic()<end and vm.poll() is None:
                     # Conserver seulement les lignes dont le pilote série a terminé l'émission.
                     s=log.read_text(errors='replace').rpartition('\n')[0]

@@ -8,6 +8,7 @@ use protocol as w;
 use runtime as rt;
 
 mod fileapi;
+mod names;
 use fileapi::Client;
 fn log(s: &[u8]) {
     rt::call(rt::DEBUG_WRITE, s.as_ptr() as u64, s.len() as u64, 0);
@@ -51,6 +52,9 @@ fn perf(mut c: Client) -> rt::Result<()> {
 fn probe() -> rt::Result<()> {
     let mode = rt::config(1);
     let mut c = Client::new()?;
+    if (29..=40).contains(&mode) {
+        return names::probe(c, mode);
+    }
     if mode == 25 {
         return perf(c);
     }

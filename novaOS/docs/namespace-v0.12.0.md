@@ -1,4 +1,160 @@
-# Espace de noms natif — audit de v0.12.0
+# Espace de noms natif de NovaOS v0.12.0
+
+## Collecte des processus
+
+Sur la base `02c78c8`, la sortie d'un processus choisissait immédiatement le thread idle. Celui-ci reprend toutefois sa pile à l'endroit où il avait été suspendu. Entre deux tours de sa boucle, les interruptions sont permises. Un tick arrivé avant `reap()` rendait le processeur à la file normale. Deux travailleurs continuellement prêts suffisaient ensuite à affamer le collecteur. Le journal AArch64 initial montrait bien la sortie du PID 14 avec le code 23, juste avant l'expiration du délai.
+
+La sonde `proc-test` arme cette fenêtre et attend un tick du timer matériel. Sur l'ancien sélecteur, Ring 3 et EL0 ont tous deux donné `statut=Some(Exit(23)) observe=Some(false) fin=12 collecte=11 preemption_idle=1 file=2`. Le processus avait terminé, son observateur avait disparu et son TCB occupait toujours un slot. La sonde laisse tourner les deux travailleurs, sans création de processus ni appel à join dans le contrôleur pendant l'attente.
+
+Le premier journal ne contenait pas la chronologie des IRQ. Le cas imposé au timer reproduit le même échec avec l'état interne du collecteur.
+
+Le sélecteur consulte désormais la dette de collecte à chaque décision. Tant qu'il reste un TCB terminé, idle peut reprendre sa pile et vider cette dette. Le retrait du TCB, la restitution de sa pile et le dernier détachement de son espace utilisateur restent protégés par le masque IRQ sur CPU0. Le prochain tour d'idle rend la main à la file FIFO. Le délai historique reste d'une seconde. [Ordonnanceur](../kernel/src/sched/mod.rs) · [Sonde de préemption](../kernel/src/sched/process/demo.rs)
+
+Le profil `proc-lifecycle` crée 64 familles. Le parent détient le droit WAIT sur le fils. Le contrôleur alterne mort du parent en premier, mort du fils en premier, sortie normale et faute utilisateur confinée. Il vérifie la survie de l'autre processus et son accès à sa page privée, la conservation du statut pour l'observateur vivant, puis la disparition des deux entrées. Il exerce alternativement la révocation explicite et la destruction de l'endpoint à la mort du parent. À chaque réemploi de slot, l'ancienne clé IPC est refusée. Après chaque famille, l'audit contrôle les TCB, les slabs IPC, les cadres libres et le Buddy. La terminaison forcée du banc passe par une exception utilisateur. [Cycle de vie](../kernel/src/sched/process/ipc/lifecycle.rs) · [Oracle série](../tests/cycle_processus.py)
+
+## Objets et autorité
+
+Le module d'espace de noms s'exécute dans le processus NovaFS, en Ring 3 ou EL0. L'application utilise la bibliothèque native et deux capacités IPC privées. Un seul moteur monté sérialise les opérations et détient le bail de stockage. Le noyau configure les canaux, réalise la commutation et protège le DMA. Le service bloc reçoit des secteurs et des barrières de persistance. [Bibliothèque](../user/storage/fileapi.rs) · [Service](../user/novafs/files/namespace.rs)
+
+Le moteur P8 indexe un nom UTF-8 dans un parent et retrouve le numéro monotone de l'enfant. Il recoupe le lien avec le parent et le nom inscrits dans l'objet. Les ouvertures mémorisent l'ID dans l'instance de montage. READ et SYNC retrouvent les mêmes extents par cet ID, même après le renommage d'un ancêtre. Le couple d'identifiants FS/LV et le montage déterminent la portée de l'ID. La révision d'un objet varie au cours de sa vie. L'autorité du client vient du canal attribué par le lanceur et du handle local retrouvé dans la table de ce canal. [Catalogue](../../novaFS/src/fs.rs) · [Données](../../novaFS/src/fs/data.rs)
+
+Chaque session admet 32 handles de fichiers et de répertoires au total, deux chemins fragmentés et un CWD détenu par référence d'objet et masque de droits. L'émission des handles est monotone pendant la vie du service. La fin du canal invalide les handles et le redémarrage exige de nouvelles capacités IPC. Le profil à deux applications fournit un écrivain et un lecteur sur des paires de canaux distinctes. Le service traite les canaux à tour de rôle. Un endpoint témoin appartenant à chaque application permet de détecter sa disparition et d'abandonner ses ressources privées. Le canal supplémentaire du banc sert à vérifier qu'un numéro de handle réellement ouvert chez le pair est refusé. Lors du premier essai à deux clients en EL0/512, le deuxième émetteur a expiré pendant la vérification du montage en cours. La bibliothèque utilise maintenant la même échéance de 15 000 ticks pour la soumission synchrone du message fichier et pour l'attente de sa réponse. Les deux échéances s'appliquent séparément. Le collecteur d'orphelins garde son seuil d'origine. Les droits utilisateur persistants, les ACL et la délégation de handles de répertoire entre applications restent hors de ce profil.
+
+## Chemins et droits
+
+Les requêtes acceptent de 1 à 1 024 octets UTF-8, avec au plus 255 octets par composant. Le parseur P8 historique admet jusqu'à 32 composants par opérande. Le service compare les octets sans transformation Unicode et distingue la casse. Le séparateur est `/`. NUL, les octets de contrôle ASCII, DEL, les composants vides et les séparateurs répétés sont rejetés. Le nom `.` désigne le répertoire parcouru. Le service refuse tout composant `..`, y compris sur une capacité de la racine. Les noms réservés sont exclus comme feuilles de mutation.
+
+Le handle zéro désigne le CWD pour une opération relative. Un opérande absolu est accepté depuis l'autorité de montage de la session en passant zéro. Une capacité de répertoire explicite exige un opérande relatif. Chaque DIR_OPEN peut réduire les droits hérités. Les contrôles portent sur traversée (1), lecture de fichiers (2), énumération (4), création (8), suppression (16), renommage (32) et écriture de fichiers (64). LOOKUP_AT permet la consultation des métadonnées de l'objet nommé au titre de la traversée. STAT concerne un handle déjà acquis. Un renommage demande traversée, déplacement et suppression dans la source, traversée, déplacement et création dans la destination.
+
+Le plafond sur disque est de 32 arêtes depuis la racine. Un chemin canonique peut atteindre 8 192 octets avec 32 noms de 255 octets et leurs séparateurs. La limite de 1 024 vient de l'argument de résolution. Une application peut enchaîner plusieurs DIR_OPEN, puis OPEN_AT. Aucun nom absolu cumulé n'intervient dans la lecture. GETCWD parcourt les liens parents pour l'affichage et retourne le texte par fragments. Il conserve temporairement au plus 32 noms. La pagination signale un changement de génération et exige une nouvelle lecture depuis le début.
+
+## Trames et transactions
+
+L'enveloppe fichier v2 reste de 128 octets, dont 88 de charge utile. Les sept opérations fichier v0.11.0 gardent leurs sélecteurs 1 à 7 et leur syntaxe. Les sélecteurs ci-dessous sont des opérations du service sur les mêmes appels IPC du noyau. Les entiers sont little-endian. La session figure à l'octet 8, le handle à 16, l'offset à 24 et le dernier argument à 32. Le statut de réponse est à l'octet 3 et la longueur utile à 4. [Contrat binaire](../abi/files.rs) · [ABI noyau](../abi/native.rs)
+
+| Opération | Contrat |
+|---|---|
+| 8 PATH_FRAGMENT | Deux emplacements par session, choisis par flags 0 ou 1. L'offset zéro ouvre un argument, le total reste constant et chaque fragment doit suivre le précédent. L'opération finale consomme l'argument complet. Un chemin court peut aussi être envoyé en ligne. |
+| 9 DIR_OPEN | Résout le chemin depuis la capacité de départ. Retourne un handle de répertoire portant le sous-ensemble demandé et un STAT de l'objet. |
+| 10 LOOKUP_AT, 17 STAT | Métadonnées par nom ou handle. La charge de 25 octets contient ID, révision et taille sur 64 bits, puis type (1 fichier, 2 répertoire). |
+| 11 OPEN_AT | Retourne un handle de fichier. Les bits lecture, écriture et création gardent les valeurs de OPEN. La publication d'un objet créé précède le succès. |
+| 12 READDIR | Rend le prochain nom dans l'ordre de l'index après le nom de continuation, éventuellement vide pour commencer. L'offset permet de lire la suite d'un nom. La réponse indique génération et longueur totale. Une longueur totale nulle indique la fin de l'énumération. |
+| 13 MKDIR_AT, 14 RMDIR, 15 UNLINK_AT | Création ou retrait typé d'une entrée. Un doublon, un répertoire non vide ou un objet retenu par un handle ou un CWD vivant donne une erreur. |
+| 18 DIR_CLOSE | DIR_CLOSE retire la référence d'ouverture et le CWD conserve sa propre référence. |
+| 16 RENAME_AT | Le handle source est à 16 et le handle de destination à 32. Les chemins occupent les deux emplacements. Le déplacement conserve l'ID et utilise une seule transaction dans le LV. |
+| 19 CHDIR, 20 GETCWD | CHDIR conserve l'ID et les droits du répertoire. GETCWD renvoie sa représentation actuelle. Le client peut recommencer une lecture interrompue par un changement de génération sans perdre le CWD. |
+
+Les erreurs de domaine incluent objet absent (20), corruption (21), publication incertaine (22), manque d'espace (23), occupation (24), opération inconnue (25), E/S (26), doublon (27), répertoire non vide (28), type répertoire attendu (29) et type fichier attendu (30). Les erreurs ABI historiques de requête, de droits, de limite de ressources et de révocation restent utilisées.
+
+Les mutations réutilisent la préparation CoW, les réservations, les contrôles du catalogue et la publication F1/F2. Le déplacement valide l'ascendance de la destination et la hauteur restante du sous-arbre avant publication. Une destination existante distincte donne une erreur. Une demande dont la source et la destination désignent la même entrée existante suit le contrat de renommage P8. Les handles ouverts et les CWD continuent de désigner leur objet si un ancêtre change de nom. Les mouvements entre volumes sont exclus par la portée du montage. Une préparation WRITE privée bloque les mutations concurrentes. UNLINK retire l'entrée de façon atomique. Les extents encore à récupérer appartiennent à la file persistante de collecte P8. Lors de la dernière fermeture normale d'un montage inscriptible, le service draine ces lots dans des transactions de maintenance. Une coupure laisse un travail identifié pour un montage suivant. Les confirmés F2, les refus de pools P5/P6/P7 et le sauvetage explicite suivent les contrats antérieurs. [Durabilité](../../novaFS/docs/novafs-p1-durabilite.md) · [Scrub](../../novaFS/docs/novafs-p8-scrub.md)
+
+## Oracles de validation
+
+| Contrôles de la mission | Observation exigée |
+|---|---|
+| 1–5 | Une image macOS contient l'objet 8 et le motif `4e 6f 76 61`. Le client monte, crée un père et un sous-répertoire, puis crée, synchronise et relit un fichier. |
+| 6–11 | READDIR rend un nom de 255 octets en trois fragments puis atteint la fin. Les deux clients utilisent des CWD distincts et un rendez-vous transmet un handle réel du pair. Son utilisation pour STAT échoue. `.` fonctionne. La traversée par `..` et le départ absolu depuis une capacité explicite sont refusés. |
+| 12–18 | Un fichier ouvert est déplacé dans un autre répertoire et relu par son handle. Son unlink immédiat donne BUSY. Après CLOSE, la suppression réussit. Le CWD protège un répertoire même après DIR_CLOSE. Le banc vérifie aussi doublon, répertoire non vide, cycle et destination occupée. |
+| 19–21 | Réutilisation d'un handle retraité, requête après révocation du canal, composant vide, UTF-8 invalide, droits insuffisants et octets réservés. Le lecteur reste en mesure de lire son fichier autorisé avant fermeture. Le profil de déconnexion vérifie aussi la survie du premier client après la sortie du second. |
+| 22–25 | Le banc atteint les longueurs canoniques 1 023, 1 024, 1 025, 1 074, 4 096 et 8 192 octets. La demande cumulée de 10 001 s'arrête à la première arête manquante après 8 192 octets. Créer le 33ᵉ niveau donne LIMIT et laisse la génération intacte. Le test hôte compare aussi le support stable intégral avant et après le refus d'un déplacement trop profond. |
+| 26–29 | EIO pendant écriture, F1 et F2. Arrêt forcé avant, pendant et après les barrières, puis après réception du succès de RENAME_AT. Le vérificateur Darwin contrôle les deux ancres, la génération, l'ID et les quatre octets lus par arêtes. Un nouveau processus QEMU monte en lecture seule et l'image entière reste identique. |
+| 30 | Deux passages de la charge de 32 niveaux dans la même VM. Au second retrait, le contrôleur exige la même comptabilité mémoire qu'après le premier, une table des processus vide et zéro page IPC. |
+
+Les valeurs de performances incluent l'émulation et la contention de l'hôte. Un arrêt forcé de QEMU laisse potentiellement en mémoire les écritures déjà acceptées par macOS. Les oracles couvrent les états autorisés par le disque virtuel et ses réponses de FLUSH. Une coupure électrique sur matériel physique demanderait un autre banc. [Images et injections](../tests/namespace.py) · [Lecteur hôte par ID](../tests/namespace_oracle.rs)
+
+## Résultats du 11 novembre 2026
+
+Campagne sous macOS 27.2 ARM64, Rust 1.99.1 et QEMU 11.1.3. Les invités utilisent TCG avec un vCPU, 256 Mio et un périphérique VirtIO-blk en cache writeback. Chaque architecture a exécuté les scénarios de stockage sur des secteurs logiques et physiques de 512 puis de 4 096 octets.
+
+| Contrôle | x86_64 QEMU | AArch64 QEMU |
+|---|---:|---:|
+| Scénarios historiques de démarrage, ABI, processus, mémoire et IPC | 25/25 | 25/25 |
+| Groupes bloc avec DMA, erreurs et révocation | 24/24 | 24/24 |
+| Contrôles fichier v0.11.0 | 44/44 | 44/44 |
+| ELF multipage et concurrence IPC, profils supplémentaires | 2/2 | 2/2 |
+| Profils de collecte ciblés, cinq répétitions de chacun | 5 × proc-test et 5 × proc-lifecycle | 5 × proc-test et 5 × proc-lifecycle |
+| Contrôles d'espace de noms 1 à 30 ci-dessus | réussis sur les deux géométries | réussis sur les deux géométries |
+
+Les cinq répétitions de proc-lifecycle ont créé et collecté 640 processus par architecture. À la fin de chacune, 63 341 cadres étaient libres sous x86_64 et 62 773 sous AArch64, comme au début. Le groupe d'espace de noms journalise douze résultats par géométrie. Ils regroupent plusieurs assertions client et hôte. Sur chacune des quatre combinaisons, la lecture après redémarrage a retrouvé l'objet 8 et les octets `4e 6f 76 61` sous le chemin de 1 074 octets. Les handles successifs ont permis de lire le fichier au niveau 32 et à 8 192 octets.
+
+Sur chaque combinaison invité/secteur, les trois coupures autour de F1 ont rendu l'ancien nom en G10. Les trois coupures autour de F2 ont rendu le nouveau nom en G11, tout comme la coupure après la confirmation au client. Les erreurs injectées sur l'écriture et F1 ont rendu G10. L'échec de F2 a été signalé au client comme publication incertaine et le remontage a retrouvé G11. Chaque issue a été vérifiée dans une nouvelle VM et avec le lecteur macOS de l'autre architecture. Les 28 coupures et les 12 injections d'E/S de cette campagne portent sur le renommage.
+
+Sur Darwin ARM64 natif et x86_64 sous Rosetta, NovaFS a réussi **179 tests standards et 180 instrumentés par architecture**, incluant le nouveau test des arêtes après remontage. Les campagnes différentielles séparées ont exécuté **1 000 000 d'opérations chacune** sur 100 graines, avec 345 183 commits, 54 643 pénuries injectées et 1 000 remontages et audits. Elles ont duré 25,568 s en natif et 41,271 s sous Rosetta. La qualification inclut la récupération, les corruptions, les snapshots, les clones, la cryptographie et le scrub. L'interopérabilité P8 a également relu les images du producteur historique `a33cc66` sur les quatre combinaisons Darwin/secteur. L'oracle LZ4 a échangé 256 flux dans chaque sens et sur chaque architecture. NovaFS conserve v0.9.12. Les ajouts concernent l'accès au catalogue depuis un parent et les lectures/écritures par objet. Le format P8, les deux barrières et les 17 appels noyau conservent leurs contrats.
+
+### Temps des opérations
+
+Les durées sont exprimées en millisecondes. Chaque ligne donne un échantillon par opération dans le profil à 32 niveaux. La seconde session remonte le volume dans la même VM. OPEN_AT comprend la création d'un fichier. Le parcours est chronométré du premier handle aux 32 niveaux. Chaque opération dispose de deux observations par configuration. Un percentile par opération demanderait une campagne plus longue.
+
+| Invité | Secteur | Passage | LOOKUP_AT | OPEN_AT | READDIR | MKDIR_AT | RENAME_AT | UNLINK_AT | Parcours 32 |
+|---|---|---|---|---|---|---|---|---|---|
+| x86_64 | 512 | initial | 31,648 | 205,982 | 0,634 | 144,258 | 183,417 | 170,477 | 29,811 |
+| x86_64 | 512 | second | 32,800 | 218,079 | 0,700 | 145,810 | 202,820 | 184,744 | 30,462 |
+| x86_64 | 4 096 | initial | 21,575 | 136,720 | 0,541 | 98,157 | 123,030 | 116,393 | 29,618 |
+| x86_64 | 4 096 | second | 23,397 | 144,134 | 0,672 | 99,973 | 128,832 | 118,466 | 30,429 |
+| AArch64 | 512 | initial | 32,974 | 216,251 | 0,472 | 156,678 | 193,643 | 193,476 | 25,679 |
+| AArch64 | 512 | second | 33,090 | 218,775 | 0,455 | 153,755 | 191,939 | 181,327 | 26,273 |
+| AArch64 | 4 096 | initial | 23,148 | 149,516 | 0,457 | 105,155 | 131,089 | 124,339 | 26,272 |
+| AArch64 | 4 096 | second | 23,251 | 148,575 | 0,423 | 104,053 | 134,417 | 126,954 | 25,969 |
+
+Les temps F1 et F2 en millisecondes proviennent de l'adaptateur du service lors du renommage. L'histogramme IPC aller-retour couvre l'ensemble de la session, y compris les fragments du transport bloc. Les percentiles IPC sont en microsecondes.
+
+| Invité | Secteur | Passage | F1 (ms) | F2 (ms) | Échantillons IPC | IPC p50 (µs) | IPC p99 (µs) |
+|---|---|---|---|---|---|---|---|
+| x86_64 | 512 | initial | 0,604 | 0,234 | 206 411 | 114,251 | 179,538 |
+| x86_64 | 512 | second | 5,815 | 0,212 | 206 923 | 114,586 | 180,065 |
+| x86_64 | 4 096 | initial | 0,320 | 0,181 | 145 307 | 114,421 | 163,459 |
+| x86_64 | 4 096 | second | 0,246 | 0,188 | 145 667 | 115,093 | 164,419 |
+| AArch64 | 512 | initial | 0,573 | 0,228 | 206 411 | 114,688 | 180,224 |
+| AArch64 | 512 | second | 0,576 | 0,209 | 206 923 | 114,688 | 180,224 |
+| AArch64 | 4 096 | initial | 0,536 | 0,227 | 145 307 | 114,688 | 180,224 |
+| AArch64 | 4 096 | second | 0,524 | 0,199 | 145 667 | 122,880 | 180,224 |
+
+### Mémoire résidente dans les invités
+
+Les quatre premières colonnes de mémoire sont en Kio. Le noyau comprend image, tables, piles noyau, tas, Buddy et pages IPC. Le service NovaFS comprend ses pages utilisateur et sa pile. Le total à F1 inclut aussi les autres processus et le DMA. Le pic total additionne le résident initial et le maximum de cadres supplémentaires simultanés depuis le lancement. Les allocations comptent les cadres de 4 Kio obtenus pendant la session. La dernière paire de colonnes permet de vérifier la restitution effective.
+
+| Invité | Secteur | Passage | Noyau à F1 | NovaFS à F1 | Total à F1 | Pic total | Allocations | Cadres libres avant | Cadres libres après |
+|---|---|---|---|---|---|---|---|---|---|
+| x86_64 | 512 | initial | 2 852 | 616 | 3 844 | 3 844 | 364 | 63 341 | 63 329 |
+| x86_64 | 512 | second | 2 852 | 616 | 3 844 | 3 844 | 352 | 63 329 | 63 329 |
+| x86_64 | 4 096 | initial | 2 852 | 616 | 3 844 | 3 844 | 364 | 63 341 | 63 329 |
+| x86_64 | 4 096 | second | 2 852 | 616 | 3 844 | 3 844 | 352 | 63 329 | 63 329 |
+| AArch64 | 512 | initial | 2 736 | 600 | 3 716 | 3 716 | 361 | 62 771 | 62 768 |
+| AArch64 | 512 | second | 2 736 | 600 | 3 716 | 3 716 | 358 | 62 768 | 62 768 |
+| AArch64 | 4 096 | initial | 2 736 | 600 | 3 716 | 3 716 | 361 | 62 771 | 62 768 |
+| AArch64 | 4 096 | second | 2 736 | 600 | 3 716 | 3 716 | 358 | 62 768 | 62 768 |
+
+Le premier lancement laisse trois cadres de tables de pages sur les deux architectures et neuf cadres DMA supplémentaires sur x86_64. Sur AArch64, le framebuffer occupe en outre 469 cadres de RAM système (1 876 Kio) en dehors du compteur résident. Il porte la RAM totale retenue à 5 592 Kio à F1. Le framebuffer x86_64 utilise de la mémoire vidéo distincte. Le second lancement conserve le nombre de cadres libres initial, le bilan complet du Buddy et zéro page IPC après fermeture. La mesure porte sur les cadres suivis par NovaOS. La restitution a été contrôlée sur les charges décrites ici.
+
+## Commandes de qualification
+
+Depuis la racine du monorepo sur macOS ARM64 avec Rosetta et les outils du projet.
+
+```sh
+for arch in x86_64 aarch64; do
+    make -C novaOS ARCH="$arch" test lifecycle-test block-test elf-test ipc-races file-test namespace-test || exit 1
+    python3 novaFS/lab/p51-validation-suites.py "$arch" || exit 1
+done
+```
+
+Le passage macOS comprend aussi ces deux contrôles de compatibilité indépendants.
+
+```sh
+python3 novaFS/lab/p8-validation.py cli --sortie /tmp/novafs-p8-interop.json
+python3 novaFS/lab/p6-lz4-interop.py
+```
+
+Le banc d'espace de noms conserve les journaux et les compteurs invités sous `novaOS/build/bloc-ARCH-SECTEUR/`. Les phases peuvent être isolées depuis la racine avec `NOVA_ARCH=aarch64 python3 novaOS/tests/namespace.py --sector 512 --only recovery` après construction. Chaque essai utilise une image raw jetable.
+
+Cette commande affiche les deux passages et les fréquences utilisées pour convertir les cycles en millisecondes.
+
+```sh
+rg 'ECHANTILLON |RAM phase=|IPC hist type=aller_retour|BLOC memoire|STOCKAGE restitution' novaOS/build/bloc-*/namespace-depth.serial
+```
+
+## Audits précédant l'arbitrage
+
+Les observations et commandes qui suivent décrivent la base v0.11.0 antérieure à la résolution relative. L'arbitrage de livraison conserve P8 et ses 32 niveaux.
 
 ## Reprise depuis `6a5656c` — compatibilité de la profondeur
 

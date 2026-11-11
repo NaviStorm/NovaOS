@@ -22,7 +22,8 @@ fn error(e: Error) -> u64 {
 }
 struct File {
     key: u64,
-    path: String,
+    id: u64,
+    kind: Kind,
     rights: u8,
 }
 struct Pending {
@@ -32,13 +33,44 @@ struct Pending {
     reserved: u64,
     bytes: Vec<u8>,
 }
+#[derive(Default)]
+struct PathInput {
+    total: usize,
+    bytes: Vec<u8>,
+}
+struct Client {
+    id: u64,
+    mounted: bool,
+    closed: bool,
+    rights: u8,
+    cwd: (u64, u8),
+    handles: Vec<File>,
+    paths: [PathInput; 2],
+}
+impl Client {
+    fn new(id: u64, rights: u8) -> Self {
+        Self {
+            id,
+            mounted: false,
+            closed: false,
+            rights,
+            cwd: (0, 0),
+            handles: Vec::new(),
+            paths: Default::default(),
+        }
+    }
+    fn handle(&self, key: u64) -> rt::Result<&File> {
+        self.handles
+            .iter()
+            .find(|f| f.key == key)
+            .ok_or(rt::REVOKED)
+    }
+}
 struct Session<'a, 'b> {
     dev: &'a IpcDevice<'b>,
     sector: u32,
-    id: u64,
     writable: bool,
     fs: Option<Engine<&'a IpcDevice<'b>>>,
-    handles: Vec<File>,
     next: u64,
     pending: Option<Pending>,
     failed: Option<u64>,
@@ -47,7 +79,13 @@ fn shape(ok: bool) -> rt::Result<()> {
     if ok { Ok(()) } else { Err(rt::BAD_ARGUMENT) }
 }
 impl Session<'_, '_> {
-    fn dispatch(&mut self, q: &Frame, a: &mut Frame) -> rt::Result<()> {
+    fn dispatch(
+        &mut self,
+        client: &mut Client,
+        other: Option<&Client>,
+        q: &Frame,
+        a: &mut Frame,
+    ) -> rt::Result<()> {
         let op = q[1];
         let flags = q[2];
         let n = w::length(q);
@@ -56,7 +94,19 @@ impl Session<'_, '_> {
         let offset = w::word(q, 24);
         let total = w::word(q, 32);
         shape(q[0] == w::VERSION && q[3] == 0 && q[6..8] == [0; 2] && n <= w::FRAGMENT)?;
-        let content = if matches!(op, w::WRITE | w::OPEN) {
+        let content = if matches!(
+            op,
+            w::WRITE
+                | w::OPEN
+                | w::PATH_FRAGMENT
+                | w::DIR_OPEN
+                | w::OPEN_AT
+                | w::LOOKUP_AT
+                | w::MKDIR_AT
+                | w::RMDIR
+                | w::UNLINK_AT
+                | w::READDIR
+        ) {
             n
         } else {
             0
@@ -68,28 +118,35 @@ impl Session<'_, '_> {
         }
         if op == w::MOUNT {
             shape(plain && session == 0 && handle == 0)?;
-            if self.fs.is_some() {
+            if client.mounted {
                 return Err(w::BUSY);
             }
-            let first = self.dev.read(0).map_err(error)?;
-            if &first[..8] != b"NOVAP0FS" {
-                return Err(w::UNSUPPORTED);
+            if self.fs.is_none() {
+                let first = self.dev.read(0).map_err(error)?;
+                if &first[..8] != b"NOVAP0FS" {
+                    return Err(w::UNSUPPORTED);
+                }
+                if rt::config(1) == 23 {
+                    crate::qualification::stop(b"COUPURE remontage");
+                }
+                let ids = Anchor::decode(&first, 0).map_err(error)?.ids;
+                let mode = if self.writable {
+                    Mode::ReadWrite
+                } else {
+                    Mode::ReadOnly
+                };
+                self.fs = Some(Engine::mount(self.dev, ids, mode).map_err(error)?);
             }
-            if rt::config(1) == 23 {
-                crate::qualification::stop(b"COUPURE remontage");
-            }
-            let ids = Anchor::decode(&first, 0).map_err(error)?.ids;
-            let mode = if self.writable {
-                Mode::ReadWrite
-            } else {
-                Mode::ReadOnly
-            };
-            self.fs = Some(Engine::mount(self.dev, ids, mode).map_err(error)?);
-            w::set(a, 8, self.id);
+            client.cwd = (self.fs.as_ref().unwrap().root_id(), client.rights);
+            client.mounted = true;
+            w::set(a, 8, client.id);
             return Ok(());
         }
-        if session != self.id || session == 0 {
+        if session != client.id || !client.mounted {
             return Err(rt::DENIED);
+        }
+        if (w::PATH_FRAGMENT..=w::GETCWD).contains(&op) {
+            return self.directory_request(client, other, q, a);
         }
         let fs = self.fs.as_mut().ok_or(rt::CLOSED)?;
         match op {
@@ -109,7 +166,11 @@ impl Session<'_, '_> {
                 p[48..56].copy_from_slice(&available.to_le_bytes());
                 p[56..72].copy_from_slice(&stats.logical_bytes.to_le_bytes());
                 p[72..80].copy_from_slice(&fs.generation().to_le_bytes());
-                p[80] = if self.writable { 3 } else { 1 };
+                p[80] = if client.rights & w::FILE_WRITE != 0 {
+                    3
+                } else {
+                    1
+                };
                 p[81] = 0; // Version du contenu autonome P0 compris par le moteur P8.
                 p[82] = 1; // Transactions CoW de fichiers.
                 w::size(a, 83);
@@ -124,11 +185,13 @@ impl Session<'_, '_> {
                         && flags & 3 != 0,
                 )?;
                 if flags & w::CREATE != 0 && flags & w::WRITABLE == 0
-                    || !self.writable && flags & w::WRITABLE != 0
+                    || client.rights & w::FILE_WRITE == 0 && flags & w::WRITABLE != 0
+                    || client.rights & w::FILE_READ == 0 && flags & w::READABLE != 0
+                    || client.rights & w::ADD == 0 && flags & w::CREATE != 0
                 {
                     return Err(rt::DENIED);
                 }
-                if self.handles.len() == 32 {
+                if client.handles.len() == 32 {
                     return Err(rt::LIMIT);
                 }
                 let next = self.next.checked_add(1).ok_or(rt::LIMIT)?;
@@ -139,57 +202,67 @@ impl Session<'_, '_> {
                         && !path.bytes().any(|b| b < 32 || b == 127)
                         && path[1..].split('/').all(|s| !matches!(s, "" | "." | "..")),
                 )?;
-                self.handles.try_reserve(1).map_err(|_| rt::NO_MEMORY)?;
-                let mut owned = String::new();
-                owned
-                    .try_reserve_exact(path.len())
-                    .map_err(|_| rt::NO_MEMORY)?;
-                owned.push_str(path);
-                match fs.stat(path) {
-                    Ok(info) => shape(info.kind == Kind::File)?,
+                client.handles.try_reserve(1).map_err(|_| rt::NO_MEMORY)?;
+                let info = match fs.stat(path) {
+                    Ok(info) => info,
                     Err(Error::NotFound) if flags & w::CREATE != 0 => {
                         if self.pending.is_some() {
                             return Err(w::BUSY);
                         }
-                        fs.create(path).map_err(error)?
+                        fs.create_at(fs.root_id(), &path[1..], Kind::File)
+                            .map_err(error)?
                     }
                     Err(e) => return Err(error(e)),
-                }
+                };
+                shape(info.kind == Kind::File)?;
                 self.next = next;
-                self.handles.push(File {
+                client.handles.push(File {
                     key: next,
-                    path: owned,
+                    id: info.id,
+                    kind: info.kind,
                     rights: flags & 3,
                 });
                 w::set(a, 16, next);
             }
             w::CLOSE if handle == 0 => {
                 shape(plain)?;
-                if self.pending.is_some() {
+                if self
+                    .pending
+                    .as_ref()
+                    .is_some_and(|p| client.handle(p.file).is_ok())
+                {
                     return Err(w::BUSY);
                 }
-                self.fs
-                    .take()
-                    .unwrap()
-                    .unmount()
-                    .map_err(error)?
-                    .close()
-                    .map_err(error)?;
+                if other.is_none_or(|c| c.closed) {
+                    if self.writable {
+                        while fs.collection_pending().map_err(error)? {
+                            fs.collect().map_err(error)?;
+                        }
+                    }
+                    self.fs
+                        .take()
+                        .unwrap()
+                        .unmount()
+                        .map_err(error)?
+                        .close()
+                        .map_err(error)?;
+                }
             }
             w::READ | w::WRITE | w::SYNC | w::CLOSE => {
-                let at = self
+                let at = client
                     .handles
                     .iter()
                     .position(|f| f.key == handle)
                     .ok_or(rt::REVOKED)?;
-                let file = &self.handles[at];
+                let file = &client.handles[at];
+                shape(file.kind == Kind::File)?;
                 match op {
                     w::READ => {
                         shape(flags == 0 && total == 0 && offset.checked_add(n as u64).is_some())?;
                         if file.rights & w::READABLE == 0 {
                             return Err(rt::DENIED);
                         }
-                        let bytes = fs.read(&file.path, offset, n).map_err(error)?;
+                        let bytes = fs.read_id(file.id, offset, n).map_err(error)?;
                         a[w::PAYLOAD..w::PAYLOAD + bytes.len()].copy_from_slice(&bytes);
                         let mut count = bytes.len();
                         if let Some(p) = self
@@ -254,7 +327,7 @@ impl Session<'_, '_> {
                         if p.bytes.len() == p.size {
                             // Le seul écrivain reste à cette génération jusqu'à SYNC ou abandon.
                             // La réservation est évaluée par le moteur, y compris le coût des métadonnées.
-                            match fs.prepare_write(&file.path, p.offset, &p.bytes) {
+                            match fs.prepare_write_id(file.id, p.offset, &p.bytes) {
                                 Ok(plan) => {
                                     p.reserved = plan.accounting().transaction_reserved;
                                     plan.cancel();
@@ -280,7 +353,10 @@ impl Session<'_, '_> {
                                 rt::exit(rt::CANCELLED)
                             }
                             self.dev.start_probe();
-                            fs.write(&file.path, p.offset, &p.bytes).map_err(error)?;
+                            fs.prepare_write_id(file.id, p.offset, &p.bytes)
+                                .map_err(error)?
+                                .commit()
+                                .map_err(error)?;
                             self.pending = None;
                         } else {
                             self.dev.flush().map_err(error)?;
@@ -300,7 +376,7 @@ impl Session<'_, '_> {
                         if rt::config(1) == 22 && file.rights & w::WRITABLE != 0 {
                             crate::qualification::stop(b"COUPURE fermeture");
                         }
-                        self.handles.swap_remove(at);
+                        client.handles.swap_remove(at);
                     }
                 }
             }
@@ -309,42 +385,105 @@ impl Session<'_, '_> {
         Ok(())
     }
 }
+mod namespace;
+
 pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Result<()> {
     let mut s = Session {
         dev,
         sector,
-        id: rt::value(rt::call(rt::PROCESS_ID, 0, 0, 0))?,
         writable,
         fs: None,
-        handles: Vec::new(),
         next: 0,
         pending: None,
         failed: None,
     };
-    let mut last = 0;
+    let pid = rt::value(rt::call(rt::PROCESS_ID, 0, 0, 0))?;
+    let pair = rt::config(6) != 0;
+    let mut clients = [
+        Client::new(pid, if writable { w::DIR_ALL } else { w::DIR_RO }),
+        Client::new(pid | (1 << 63), w::DIR_RO),
+    ];
+    let ports = [
+        (rt::config(4), rt::config(5)),
+        (rt::config(6), rt::config(7)),
+    ];
+    let mut last = [0; 2];
+    let mut lane = 0;
     loop {
-        let m = rt::receive_for(rt::config(4), 15000)?;
+        let i = lane;
+        if pair {
+            lane ^= 1;
+        }
+        let (client, other) = if i == 0 {
+            let [c, peer] = &mut clients;
+            (c, pair.then_some(&*peer))
+        } else {
+            let [peer, c] = &mut clients;
+            (c, Some(&*peer))
+        };
+        if client.closed {
+            continue;
+        }
+        let timeout = if pair { 1 } else { 15000 };
+        let m = match rt::receive_for(ports[i].0, timeout) {
+            Err(rt::TIMED_OUT) if pair => match rt::receive_for(rt::config(8 + i), 0) {
+                Err(rt::WOULD_BLOCK) => continue,
+                Err(rt::DENIED | rt::CLOSED | rt::REVOKED) => {
+                    if s.pending
+                        .as_ref()
+                        .is_some_and(|p| client.handle(p.file).is_ok())
+                    {
+                        s.pending = None;
+                    }
+                    rt::value(rt::call(rt::IPC_CLOSE, ports[i].0, 0, 0))?;
+                    client.closed = true;
+                    client.handles.clear();
+                    client.paths = Default::default();
+                    if other.is_some_and(|c| c.closed) {
+                        if let Some(fs) = s.fs.take() {
+                            fs.unmount().map_err(error)?;
+                        }
+                        return s.dev.close().map_err(error);
+                    }
+                    continue;
+                }
+                Ok(_) => continue,
+                Err(e) => return Err(e),
+            },
+            r => r?,
+        };
         let mut a = w::frame(m.payload[1], 0, 0);
-        let r = if m.kind != 1 || m.len != 128 || m.tag <= last {
+        let r = if m.kind != 1 || m.len != 128 || m.tag <= last[i] {
             Err(rt::BAD_ARGUMENT)
         } else {
-            last = m.tag;
-            s.dispatch(&m.payload, &mut a)
+            last[i] = m.tag;
+            s.dispatch(client, other, &m.payload, &mut a)
         };
         if let Err(e) = r {
             a = w::frame(m.payload[1], 0, 0);
             a[3] = e as u8;
             if matches!(e, w::UNCERTAIN | w::IO | w::CORRUPT) {
-                s.failed = Some(e)
+                s.failed = Some(e);
             }
         }
         let done = r.is_ok() && m.payload[1] == w::CLOSE && w::word(&m.payload, 16) == 0;
-        // Fermer la racine des requêtes retire les droits dérivés avant la réponse finale.
         if done {
-            rt::value(rt::call(rt::IPC_CLOSE, rt::config(4), 0, 0))?;
+            rt::value(rt::call(rt::IPC_CLOSE, ports[i].0, 0, 0))?;
+            client.closed = true;
+            client.handles.clear();
+            client.paths = Default::default();
         }
-        rt::send(rt::config(5), m.tag, &a)?;
-        if done {
+        if let Err(e) = rt::send(ports[i].1, m.tag, &a) {
+            if !pair
+                || !matches!(
+                    rt::receive_for(rt::config(8 + i), 0),
+                    Err(rt::DENIED | rt::CLOSED | rt::REVOKED)
+                )
+            {
+                return Err(e);
+            }
+        }
+        if done && other.is_none_or(|c| c.closed) {
             return Ok(());
         }
     }

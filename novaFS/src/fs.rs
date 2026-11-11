@@ -88,7 +88,33 @@ fn components(path: &str) -> Result<Vec<&str>> {
 }
 
 fn resolve(v: &impl View, steps: &[&str]) -> Result<Object> {
-    let mut current = live(v, ROOT)?;
+    resolve_from(v, ROOT, steps)
+}
+
+// Un identifiant fourni par l'appelant peut avoir été supprimé. Une cible
+// absente dans l'index des noms, en revanche, est une corruption (live).
+fn by_id(v: &impl View, id: u64) -> Result<Object> {
+    if id == ROOT {
+        return live(v, id);
+    }
+    let bytes = get(v, Family::Objects, &id.to_le_bytes())?.ok_or(Error::NotFound)?;
+    let obj = Object::decode(id, &bytes, generation(v)?)?;
+    if obj.dead {
+        Err(Error::NotFound)
+    } else {
+        Ok(obj)
+    }
+}
+
+fn relative(path: &str) -> Result<&str> {
+    if path.starts_with('/') || path.split('/').any(|s| s == "..") {
+        return Err(Error::Invalid("sortie du répertoire"));
+    }
+    Ok(path)
+}
+
+fn resolve_from(v: &impl View, base: u64, steps: &[&str]) -> Result<Object> {
+    let mut current = by_id(v, base)?;
     for &step in steps {
         if current.stat.kind != Kind::Directory {
             return Err(Error::NotDirectory);
@@ -110,7 +136,7 @@ fn resolve(v: &impl View, steps: &[&str]) -> Result<Object> {
     Ok(current)
 }
 
-fn directory_and_leaf<'p>(v: &impl View, path: &'p str) -> Result<(Object, &'p str)> {
+fn directory_and_leaf<'p>(v: &impl View, base: u64, path: &'p str) -> Result<(Object, &'p str)> {
     let steps = components(path)?;
     let (name, parent_steps) = steps
         .split_last()
@@ -118,7 +144,7 @@ fn directory_and_leaf<'p>(v: &impl View, path: &'p str) -> Result<(Object, &'p s
     if !valid_name(name) {
         return Err(Error::Invalid("nom réservé"));
     }
-    let parent = resolve(v, parent_steps)?;
+    let parent = resolve_from(v, base, parent_steps)?;
     if parent.stat.kind != Kind::Directory {
         return Err(Error::NotDirectory);
     }
@@ -201,38 +227,73 @@ impl<D: Device> Engine<D> {
         self.checked_access(|| Ok(resolve(self, &components(path)?)?.stat))
     }
 
-    /// Page de noms triés. Le nom de continuation est le dernier nom rendu.
-    pub fn list(&self, path: &str, after: Option<&str>, limit: usize) -> Result<Vec<String>> {
+    /// L'autorité sur base appartient au service appelant. Les liens descendants
+    /// sont recoupés avec l'enregistrement de l'objet à chaque étape.
+    pub fn lookup_at(&self, base: u64, path: &str) -> Result<Stat> {
+        self.checked_access(|| Ok(resolve_from(self, base, &components(relative(path)?)?)?.stat))
+    }
+
+    pub fn stat_id(&self, id: u64) -> Result<Stat> {
+        self.checked_access(|| Ok(by_id(self, id)?.stat))
+    }
+
+    pub const MAX_DIRECTORY_DEPTH: usize = MAX_DEPTH;
+
+    pub fn root_id(&self) -> u64 {
+        ROOT
+    }
+
+    /// Lien inverse validé au montage, pour l'affichage du répertoire courant.
+    pub fn parent_name(&self, id: u64) -> Result<(u64, String)> {
         self.checked_access(|| {
-            if limit > 64 || after.is_some_and(|s| !valid_name(s)) {
-                return Err(Error::Invalid("page de répertoire"));
-            }
-            let dir = resolve(self, &components(path)?)?;
-            if dir.stat.kind != Kind::Directory {
-                return Err(Error::NotDirectory);
-            }
-            let mut names: Vec<String> = Vec::with_capacity(limit);
-            for _ in 0..limit {
-                let cursor = names.last().map(String::as_str).or(after);
-                let Some((name, _)) = directory_entry(self, dir.stat.id, cursor)? else {
-                    break;
-                };
-                names.push(name);
-            }
-            Ok(names)
+            let obj = by_id(self, id)?;
+            Ok((obj.parent, obj.name))
         })
     }
 
-    pub fn create(&mut self, path: &str) -> Result<()> {
-        self.create_object(path, Kind::File)
-    }
-    pub fn mkdir(&mut self, path: &str) -> Result<()> {
-        self.create_object(path, Kind::Directory)
+    /// Page de noms triés. Le nom de continuation est le dernier nom rendu.
+    pub fn list(&self, path: &str, after: Option<&str>, limit: usize) -> Result<Vec<String>> {
+        self.checked_access(|| {
+            self.directory_names(resolve(self, &components(path)?)?.stat, after, limit)
+        })
     }
 
-    fn create_object(&mut self, path: &str, kind: Kind) -> Result<()> {
+    pub fn list_id(&self, id: u64, after: Option<&str>, limit: usize) -> Result<Vec<String>> {
+        self.checked_access(|| self.directory_names(by_id(self, id)?.stat, after, limit))
+    }
+
+    fn directory_names(&self, dir: Stat, after: Option<&str>, limit: usize) -> Result<Vec<String>> {
+        if limit > 64 || after.is_some_and(|s| !valid_name(s)) {
+            return Err(Error::Invalid("page de répertoire"));
+        }
+        if dir.kind != Kind::Directory {
+            return Err(Error::NotDirectory);
+        }
+        let mut names: Vec<String> = Vec::with_capacity(limit);
+        for _ in 0..limit {
+            let cursor = names.last().map(String::as_str).or(after);
+            let Some((name, _)) = directory_entry(self, dir.id, cursor)? else {
+                break;
+            };
+            names.push(name);
+        }
+        Ok(names)
+    }
+
+    pub fn create(&mut self, path: &str) -> Result<()> {
+        self.create_object(ROOT, path, Kind::File).map(|_| ())
+    }
+    pub fn mkdir(&mut self, path: &str) -> Result<()> {
+        self.create_object(ROOT, path, Kind::Directory).map(|_| ())
+    }
+
+    pub fn create_at(&mut self, base: u64, path: &str, kind: Kind) -> Result<Stat> {
+        self.create_object(base, relative(path)?, kind)
+    }
+
+    fn create_object(&mut self, base: u64, path: &str, kind: Kind) -> Result<Stat> {
         self.transact(false, |tx| {
-            let (dir, name) = directory_and_leaf(tx, path)?;
+            let (dir, name) = directory_and_leaf(tx, base, path)?;
             let key = name_key(dir.stat.id, name);
             if get(tx, Family::Names, &key)?.is_some() {
                 return Err(Error::Exists);
@@ -246,14 +307,23 @@ impl<D: Device> Engine<D> {
             let obj = Object::new(id, kind, dir.stat.id, name, generation(tx)?);
             save_object(tx, &obj)?;
             tx.put(Family::Names, key, id.to_le_bytes().to_vec())?;
-            touch(tx, dir.stat.id)
+            touch(tx, dir.stat.id)?;
+            Ok(obj.stat)
         })
     }
 
     pub fn rename(&mut self, from: &str, to: &str) -> Result<()> {
+        self.move_entry(ROOT, from, ROOT, to)
+    }
+
+    pub fn rename_at(&mut self, src: u64, from: &str, dst: u64, to: &str) -> Result<()> {
+        self.move_entry(src, relative(from)?, dst, relative(to)?)
+    }
+
+    fn move_entry(&mut self, src: u64, from: &str, dst: u64, to: &str) -> Result<()> {
         self.transact(false, |tx| {
-            let (before, old_name) = directory_and_leaf(tx, from)?;
-            let (after, new_name) = directory_and_leaf(tx, to)?;
+            let (before, old_name) = directory_and_leaf(tx, src, from)?;
+            let (after, new_name) = directory_and_leaf(tx, dst, to)?;
             let old_key = name_key(before.stat.id, old_name);
             let new_key = name_key(after.stat.id, new_name);
             let id = number(&get(tx, Family::Names, &old_key)?.ok_or(Error::NotFound)?)?;
@@ -287,11 +357,26 @@ impl<D: Device> Engine<D> {
     }
 
     pub fn unlink(&mut self, path: &str) -> Result<()> {
+        self.remove_entry(ROOT, path, None)
+    }
+
+    pub fn unlink_at(&mut self, base: u64, path: &str, kind: Kind) -> Result<()> {
+        self.remove_entry(base, relative(path)?, Some(kind))
+    }
+
+    fn remove_entry(&mut self, base: u64, path: &str, kind: Option<Kind>) -> Result<()> {
         self.transact(true, |tx| {
-            let (dir, name) = directory_and_leaf(tx, path)?;
+            let (dir, name) = directory_and_leaf(tx, base, path)?;
             let key = name_key(dir.stat.id, name);
             let id = number(&get(tx, Family::Names, &key)?.ok_or(Error::NotFound)?)?;
             let mut obj = live(tx, id)?;
+            if kind.is_some_and(|k| k != obj.stat.kind) {
+                return Err(if obj.stat.kind == Kind::Directory {
+                    Error::IsDirectory
+                } else {
+                    Error::NotDirectory
+                });
+            }
             if obj.stat.kind == Kind::Directory && directory_entry(tx, id, None)?.is_some() {
                 return Err(Error::NotEmpty);
             }
@@ -309,6 +394,11 @@ impl<D: Device> Engine<D> {
             }
             touch(tx, dir.stat.id)
         })
+    }
+
+    pub fn collection_pending(&self) -> Result<bool> {
+        let f = Family::Garbage;
+        self.checked_access(|| Ok(tree::first(self, root(self, f), f)?.is_some()))
     }
 
     /// Libère un extent de l'objet en tête et le retire avec son dernier lot.

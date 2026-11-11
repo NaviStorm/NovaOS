@@ -58,3 +58,12 @@ file-test: kernel
 
 file-info: kernel
 	python3 scripts/bloc_qemu.py --volume --sector "$(SECTOR)" "$(IMAGE)"
+
+.PHONY: lifecycle-test
+lifecycle-test: kernel
+	python3 tests/cycle_processus.py
+
+.PHONY: namespace-test
+namespace-test: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 tests/namespace.py

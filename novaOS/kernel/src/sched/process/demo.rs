@@ -1,6 +1,23 @@
 //! Contrôleur de la démonstration plate. Les deux processus de calcul ne
 //! cèdent jamais la main ; le noyau suit leurs compteurs par le HHDM.
 use super::*;
+use core::sync::atomic::AtomicBool;
+
+static PREEMPT_REAPER: AtomicBool = AtomicBool::new(false);
+
+// Sonde proc-test uniquement. Attendre un vrai tick dans la fenêtre IRQ ouverte
+// entre deux passages d'idle. Le chemin normal conserve son masque habituel.
+pub(in crate::sched) fn before_reap_probe() {
+    if PREEMPT_REAPER.load(Ordering::Relaxed)
+        && with(|s| s.stats.exits > s.stats.reaped)
+        && PREEMPT_REAPER.swap(false, Ordering::Relaxed)
+    {
+        let before = ticks();
+        while ticks() == before {
+            core::hint::spin_loop();
+        }
+    }
+}
 
 pub(super) static DEMO: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/demo.bin"));
 
@@ -170,14 +187,32 @@ pub(crate) fn test() {
     }
     // Aucun join, reap ou spawn pendant cette attente. Les deux processus
     // de calcul restent toujours prêts et interdiraient une veille naturelle.
+    PREEMPT_REAPER.store(true, Ordering::Relaxed);
     let orphan = spawn_demo(Exit, 23, 0).unwrap();
     let pid = orphan.0;
     drop(orphan);
     let deadline = ticks() + u64::from(HZ);
-    while with(|s| s.processes.slots[pid.slot].is_some()) {
-        assert!(ticks() < deadline, "orphelin non collecté");
+    while with(|s| {
+        let Some(p) = &s.processes.slots[pid.slot] else {
+            return false;
+        };
+        assert_eq!(p.pid, pid);
+        assert!(
+            ticks() < deadline,
+            "orphelin non collecté pid={} statut={:?} observe={} fin={} collecte={} preemption_idle={} file={}",
+            pid.number,
+            p.outcome,
+            p.observed,
+            s.stats.exits,
+            s.stats.reaped,
+            s.stats.idle_ticks,
+            s.ready.len
+        );
+        true
+    }) {
         sleep(1);
     }
+    assert!(!PREEMPT_REAPER.load(Ordering::Relaxed));
     hal::log(format_args!("PROC orphelin collecte sous charge OK"));
 
     // Laisser s’exécuter les deux survivants après la dernière faute.

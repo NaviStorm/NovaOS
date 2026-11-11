@@ -181,10 +181,10 @@ fn exercise(d: &mut Block, mode: u64) -> Result<()> {
 pub fn serve() -> Result<()> {
     let (tx, rx) = channels()?;
     let mut d = Block { tx, rx, tag: 0 };
-    if (11..=28).contains(&config(1)) {
+    if (11..=40).contains(&config(1)) {
         let info = d.command(w::INFO)?;
         let writable = w::number(&info, 16) & 6 == 6;
-        if !writable && !matches!(config(1), 12 | 13 | 23 | 26) {
+        if !writable && !matches!(config(1), 12 | 13 | 23 | 26 | 30 | 37 | 38) {
             return Err(DENIED);
         }
         let dev = crate::device::IpcDevice::new(&mut d, w::number(&info, 4), w::lba(&info))

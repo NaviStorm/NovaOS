@@ -238,10 +238,9 @@ impl Core {
         if t.priority != Priority::Idle && state == State::Ready {
             self.ready.push(old);
         }
-        // Un processus terminé doit libérer ses pages même si des travailleurs
-        // restent prêts indéfiniment. Idle collecte depuis sa propre pile puis
-        // repasse immédiatement à la file normale, hors du gestionnaire IRQ.
-        let next = if matches!(why, Reason::Exit) && self.thread(old).owner.is_some() {
+        // Une IRQ peut reprendre idle juste avant reap(). La dette de collecte
+        // reste observable jusqu'au retrait du TCB sur une autre pile.
+        let next = if self.stats.exits != self.stats.reaped {
             IDLE
         } else {
             self.ready.pop().unwrap_or(IDLE)
@@ -463,6 +462,7 @@ extern "C" fn trampoline() -> ! {
 }
 fn idle() {
     loop {
+        process::before_reap_probe();
         let _guard = Guard::new();
         reap();
         if with(|s| s.ready.len != 0) {

@@ -2,7 +2,7 @@
 
 NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-Dans **NovaOS v0.11.0**, une application peut monter un volume autonome, créer un fichier et en retrouver les octets après redémarrage de QEMU. Le service utilisateur exécute le moteur **NovaFS v0.9.12**, également utilisable sur macOS.
+Dans **NovaOS v0.12.0**, une application peut parcourir un volume autonome depuis une capacité de répertoire, renommer un fichier et le relire après redémarrage de QEMU. Le service utilisateur exécute le moteur **NovaFS v0.9.12**, également utilisable sur macOS.
 
 ## Philosophie et architecture
 

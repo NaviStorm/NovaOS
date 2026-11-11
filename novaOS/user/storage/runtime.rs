@@ -51,7 +51,7 @@ pub fn channels() -> Result<(u64, u64)> {
 }
 
 pub fn config(word: usize) -> u64 {
-    assert!(word < 6);
+    assert!(word < 10);
     // Sûreté : le lanceur initialise les mots alignés de la page DATA privée
     // avant publication. Ce sont des valeurs locales, jamais des pointeurs.
     unsafe { (0x401000 as *const u64).add(word).read_volatile() }
@@ -80,13 +80,17 @@ pub fn receive_for(key: u64, timeout: u64) -> Result<ReceiveV1> {
 }
 
 pub fn send(key: u64, tag: u64, bytes: &[u8]) -> Result<()> {
+    send_for(key, tag, bytes, TIMEOUT)
+}
+
+pub fn send_for(key: u64, tag: u64, bytes: &[u8], timeout: u64) -> Result<()> {
     if bytes.len() > 128 {
         return Err(BAD_ARGUMENT);
     }
     let mut msg = SendV1 {
         version: VERSION,
         size: 160,
-        timeout: TIMEOUT,
+        timeout,
         tag,
         len: bytes.len() as u32,
         flags: 1,

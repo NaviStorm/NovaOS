@@ -70,6 +70,18 @@ fn main_thread() {
         sched::process::ipc::run(scenario);
     }
     if let Some(mode) = match scenario {
+        b"namespace-f1-inflight" => Some(39),
+        b"namespace-f2-inflight" => Some(40),
+        b"namespace-disconnect" => Some(38),
+        b"namespace-depth" => Some(36),
+        b"namespace-inspect" => Some(37),
+        b"namespace-write" => Some(29),
+        b"namespace-read" => Some(30),
+        b"namespace-rename" => Some(31),
+        b"namespace-f1-before" => Some(32),
+        b"namespace-f1-after" => Some(33),
+        b"namespace-f2-before" => Some(34),
+        b"namespace-f2-after" => Some(35),
         b"files-recover" => Some(13),
         b"files-f1-before" => Some(14),
         b"files-f1-inflight" => Some(15),
@@ -99,8 +111,8 @@ fn main_thread() {
     } {
         let ok = if mode == 28 {
             !sched::process::storage::volume(mode) && sched::process::storage::volume(13)
-        } else if mode == 25 {
-            sched::process::storage::file_perf()
+        } else if matches!(mode, 25 | 36) {
+            sched::process::storage::file_perf(mode)
         } else {
             sched::process::storage::volume(mode)
         };
@@ -125,6 +137,10 @@ fn main_thread() {
     }
     if scenario == b"elf-test" {
         sched::process::storage::elf_test();
+        hal::cpu::halt()
+    }
+    if scenario == b"proc-lifecycle" {
+        sched::process::ipc::lifecycle::test();
         hal::cpu::halt()
     }
     if scenario == b"proc-test" {

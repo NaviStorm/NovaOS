@@ -23,7 +23,7 @@ impl Client {
             return Err(rt::CLOSED);
         }
         self.tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
-        rt::send(self.tx, self.tag, &q)?;
+        rt::send_for(self.tx, self.tag, &q, 15000)?;
         let r = rt::receive_for(self.rx, 15000)
             .and_then(|r| {
                 if r.kind == 1 && r.tag == self.tag && r.len == 128 && r.payload[..2] == q[..2] {
@@ -34,7 +34,11 @@ impl Client {
             })
             .map_err(|e| {
                 self.disconnected = true;
-                if q[1] == w::SYNC || (q[1] == w::OPEN && q[2] & w::CREATE != 0) {
+                if matches!(
+                    q[1],
+                    w::SYNC | w::MKDIR_AT | w::RMDIR | w::RENAME_AT | w::UNLINK_AT
+                ) || (matches!(q[1], w::OPEN | w::OPEN_AT) && q[2] & w::CREATE != 0)
+                {
                     w::UNCERTAIN
                 } else {
                     e
@@ -119,5 +123,75 @@ impl Client {
             }
         }
         Ok(())
+    }
+}
+
+impl Client {
+    fn path_fragment(&mut self, slot: u8, bytes: &[u8]) -> rt::Result<()> {
+        if bytes.is_empty() || bytes.len() > w::PATH_MAX {
+            return Err(rt::LIMIT);
+        }
+        for (i, part) in bytes.chunks(w::FRAGMENT).enumerate() {
+            let mut q = w::frame(w::PATH_FRAGMENT, self.session, 0);
+            q[2] = slot;
+            w::size(&mut q, part.len());
+            w::set(&mut q, 24, (i * w::FRAGMENT) as u64);
+            w::set(&mut q, 32, bytes.len() as u64);
+            q[w::PAYLOAD..w::PAYLOAD + part.len()].copy_from_slice(part);
+            self.request(q)?;
+        }
+        Ok(())
+    }
+    pub fn at(&mut self, op: u8, dir: u64, name: &[u8], rights: u8) -> rt::Result<w::Frame> {
+        let mut q = w::frame(op, self.session, dir);
+        q[2] = rights;
+        if name.is_empty() {
+            return Err(rt::BAD_ARGUMENT);
+        }
+        if name.len() <= w::FRAGMENT {
+            w::size(&mut q, name.len());
+            q[w::PAYLOAD..w::PAYLOAD + name.len()].copy_from_slice(name);
+        } else {
+            self.path_fragment(0, name)?;
+        }
+        self.request(q)
+    }
+    pub fn rename(&mut self, src: u64, name: &[u8], dest: u64, to: &[u8]) -> rt::Result<()> {
+        self.path_fragment(0, name)?;
+        self.path_fragment(1, to)?;
+        let mut q = w::frame(w::RENAME_AT, self.session, src);
+        w::set(&mut q, 32, dest);
+        self.request(q).map(|_| ())
+    }
+    pub fn directory(&mut self, base: u64, path: &[u8], rights: u8) -> rt::Result<u64> {
+        Ok(w::word(&self.at(w::DIR_OPEN, base, path, rights)?, 16))
+    }
+    pub fn open_at(&mut self, base: u64, path: &[u8], rights: u8) -> rt::Result<u64> {
+        Ok(w::word(&self.at(w::OPEN_AT, base, path, rights)?, 16))
+    }
+    pub fn readdir_fragment(
+        &mut self,
+        dir: u64,
+        after: &[u8],
+        offset: u64,
+        generation: u64,
+    ) -> rt::Result<w::Frame> {
+        let mut q = w::frame(w::READDIR, self.session, dir);
+        if after.len() > w::FRAGMENT {
+            self.path_fragment(0, after)?;
+        } else {
+            w::size(&mut q, after.len());
+            q[w::PAYLOAD..w::PAYLOAD + after.len()].copy_from_slice(after);
+        }
+        w::set(&mut q, 24, offset);
+        w::set(&mut q, 32, generation);
+        self.request(q)
+    }
+
+    pub fn cwd_fragment(&mut self, pos: u64, generation: u64) -> rt::Result<w::Frame> {
+        let mut q = w::frame(w::GETCWD, self.session, 0);
+        w::set(&mut q, 24, pos);
+        w::set(&mut q, 32, generation);
+        self.request(q)
     }
 }

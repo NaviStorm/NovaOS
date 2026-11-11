@@ -44,3 +44,32 @@ pub fn length(f: &Frame) -> usize {
 pub fn size(f: &mut Frame, n: usize) {
     f[4..6].copy_from_slice(&(n as u16).to_le_bytes())
 }
+
+// Extension de la trame v2. La charge d'un chemin se fragmente par session.
+pub const PATH_FRAGMENT: u8 = 8;
+pub const DIR_OPEN: u8 = 9;
+pub const LOOKUP_AT: u8 = 10;
+pub const OPEN_AT: u8 = 11;
+pub const READDIR: u8 = 12;
+pub const MKDIR_AT: u8 = 13;
+pub const RMDIR: u8 = 14;
+pub const UNLINK_AT: u8 = 15;
+pub const RENAME_AT: u8 = 16;
+pub const STAT: u8 = 17;
+pub const DIR_CLOSE: u8 = 18;
+pub const CHDIR: u8 = 19;
+pub const GETCWD: u8 = 20;
+pub const TRAVERSE: u8 = 1;
+pub const FILE_READ: u8 = 2;
+pub const ENUMERATE: u8 = 4;
+pub const ADD: u8 = 8;
+pub const REMOVE: u8 = 16;
+pub const MOVE: u8 = 32;
+pub const FILE_WRITE: u8 = 64;
+pub const DIR_ALL: u8 = 127;
+pub const DIR_RO: u8 = TRAVERSE | FILE_READ | ENUMERATE;
+pub const EXISTS: u64 = 27;
+pub const NOT_EMPTY: u64 = 28;
+pub const NOT_DIR: u64 = 29;
+pub const IS_DIR: u64 = 30;
+pub const PATH_MAX: usize = 1024;
