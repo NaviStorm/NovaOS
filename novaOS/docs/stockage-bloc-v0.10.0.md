@@ -1,6 +1,127 @@
 # Stockage bloc natif — audit préalable à NovaOS v0.10.0
 
-## Reprise après validation de l’option A
+## Qualification de VT-d sur Q35 et d’INTx sur ARM, 11 novembre 2026
+
+**La qualification s’arrête avant l’attribution du disque à un pilote utilisateur.** Sur Q35, QEMU 11.1.3 applique le remappage aux MSI au format remappable. Son traitement du format de compatibilité laisse passer le message sans appliquer la règle de blocage exigée par Intel. Avec ce modèle, le noyau ne pourrait pas garantir l’exclusivité d’une destination APIC ou la révocation de tous les formats avec les files sous le contrôle du pilote. Sur ARM, le disque possède une ligne INTx exclusive dans la topologie testée. La délégation native exige la qualification des deux cibles.
+
+L’audit part du commit `da2cd181e834f6b6852988da30642b577af4b101` sur la branche `main`, vérifiée propre. NovaOS v0.9.0 sous MIT, NovaFS v0.9.12 sous MPL-2.0. L’ABI native contient six appels généraux et dix appels IPC. Les capacités d’endpoint attribuées au service de stockage, le gestionnaire de cadres et les gestionnaires d’IRQ existants ne fournissent pas d’attribution de périphérique. Le superviseur v0.9.0 relance un service IPC. Il ne draine pas des DMA. [ABI](../abi/native.rs) · [IPC](../kernel/src/sched/process/ipc/mod.rs) · [Cadres](../kernel/src/memory/frames.rs) · [Superviseur](../kernel/src/sched/process/storage.rs)
+
+### Machines et périmètre des preuves
+
+Hôte macOS 27.2 ARM64, QEMU Homebrew 11.1.3, images raw jetables d’un Mio, secteurs logiques et physiques de 512 ou 4 096 octets. Q35 utilise `intel-iommu,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off`. ARM utilise `virt,gic-version=2,msi=off` et `virtio-iommu-pci,addr=5,granule=4k,aw-bits=48,boot-bypass=off`. Le disque moderne `00:06.0` négocie ACCESS_PLATFORM, BLK_SIZE et FLUSH. ATS est désactivé. Q35 expose deux vecteurs MSI-X, ARM zéro. Les débits ci-dessous utilisent le cache de fichier de l’hôte.
+
+- **Démarrages NovaOS.** Quatre démarrages UEFI/Limine avec TCG, un vCPU et 256 Mio. Pour chacune des deux géométries, Q35 démarre sur son CD SATA habituel, ARM sur le CD SCSI. QMP confirme le disque et la géométrie. Les processus Ring 3 et EL0 terminent leur démonstration. Le service envoie `INFO volumes=0 FIN confirmee`. Les quatre images restent vides.
+- **Banc matériel.** QTest programme les modèles de périphériques. Sur x86, deux LAPIC sont observables sous TCG. Une ROM témoin exécute sur CPU0 une routine qui incrémente un compteur hors DMA et envoie EOI. CPU1 reste témoin de destination. Sur ARM, QTest lit et acquitte l’interface CPU réelle du modèle GICv2, sans exécuter de routine EL0 ou EL1. La RAM de test est comparée octet pour octet. Ces preuves portent sur QEMU.
+- **Reproduction.** Les deux commandes `make -C novaOS ARCH=x86_64 test` et `make -C novaOS ARCH=aarch64 test` exécutent les régressions natives. Les profils, l’assembleur du témoin, les commandes QEMU, les charges et les oracles sont en [annexe exécutable](validation/vtd-intx-v0.10.0.md). Le banc virtio-IOMMU précédent a également été rejoué dans ses trois profils, soit douze instances.
+
+### Matrice de décision
+
+Chaque essai ci-dessous a tourné dans les deux géométries. Les limites s’appliquent au transfert de responsabilité du noyau au pilote.
+
+| Propriété | x86_64 Q35 / Intel VT-d | AArch64 virt / virtio-IOMMU |
+|---|---|---|
+| Isolation DMA | **Observée pour la RAM testée.** Domaine 1, tables à quatre niveaux, six pages de file et de transfert avec droits directionnels. WRITE et READ reproduisent le motif. Un READ vers une IOVA retirée produit une faute FRCD du SID 48, motif `0x05`. La page de 4 Kio reste intacte. | **Observée pour la RAM testée.** ATTACH sans bypass, MAP explicites et PROBE vide. Le disque accède aux six pages accordées. Après retrait de la page de données, huit enregistrements de faute signalent le SID 48. La page reste intacte malgré le statut bloc 0. |
+| Révocation DMA | **Observée.** Suppression de l’entrée, invalidation IOTLB, WAIT écrit en mémoire et tête de file vérifiée. Le retrait final du contexte est aussi invalidé et acquitté. | **Observée.** UNMAP et DETACH acquittés. Une invalidation demandée pour un domaine absent retourne NOENT. Un témoin de lecture confirme la protection après UNMAP. |
+| Isolation des interruptions | **Échec de la garantie globale.** Le chemin MSI-X remappable valide le SID et livre au CPU0 configuré. Le format de compatibilité ne respecte pas le blocage requis. Détail ci-dessous. | **Observée pour cette topologie fixe.** Carte PCI fournie par QEMU, fonctions recensées par QMP et IAR du GIC concordent. Disque slot 6, INTA, SPI 5, INTID 37. SCSI slot 1 et IOMMU slot 5 partagent INTID 36, conservé côté noyau. Le disque n’expose ni capacité PCI MSI ni MSI-X. |
+| Révocation des interruptions | **Partielle.** IRTE retirée et IEC invalidé avec WAIT. Une complétion remappable ultérieure est refusée. Un vecteur déjà accepté par le LAPIC exige encore son traitement. Le format de compatibilité empêche de qualifier toutes les requêtes. | **Observée au GIC.** Masquage d’une ligne déjà en attente, IAR = 1023. Acquittement de la source, purge du pending, réarmement sans reliquat. Une autre complétion produite pendant le masquage reste interdite à l’interface CPU. La clôture d’un abonnement EL0 reste à réaliser. |
+| Protection des pages réattribuées | **Observée entre cadres du banc.** Même IOVA remappée sur un autre cadre, contenu intégral relu. L’ancien cadre garde sa sentinelle. Le test d’EIO en vol répète ce contrôle après reset. | **Observée entre cadres du banc.** Le domaine 2 reprend l’IOVA de l’ancien domaine 1. Seul le nouveau cadre reçoit les octets. L’ancien conserve ses 4 Kio. Également revérifié après EIO en vol. Aucun de ces essais ne réattribue une page à un processus natif. |
+| Gestion des pannes | **Partielle.** Un descripteur d’invalidation réservé provoque IQE, bloque la tête de file et empêche le WAIT suivant. Le banc conserve le cadre jusqu’à l’arrêt de la VM. Un transfert suspendu sur EIO est réinitialisé et repris sur un nouveau cadre. | **Partielle.** Commande inconnue refusée avec UNSUPP, domaine absent avec NOENT. Le disque reprend après EIO en vol et reset. La file de fautes avec huit tampons est remplie ; son débordement au-delà de huit et la perte d’une réponse d’invalidation restent non qualifiés. |
+
+**Cycle d’un transfert interrompu.** Le test `en_vol.py` utilise les huit descripteurs d’une file pour quatre FLUSH distincts et vérifie les quatre têtes et leurs quatre statuts. Une lecture suivante rencontre EIO sur le backend jetable. QMP observe `io-status=failed` et l’état `io-error` alors que la tête utilisée et le statut du transfert restent inchangés. Le banc réinitialise la fonction, coupe le bus mastering, retire la route et le mapping, puis change le contenu de l’ancien cadre. Après reprise du backend, une lecture sur un nouveau cadre restitue le secteur attendu. L’ancien cadre et l’image complète restent intacts dans les quatre cas. Cette saturation porte sur les descripteurs effectivement accordés. La mort d’un pilote Ring 3/EL0, la pénurie du futur pool de cadres DMA et les réponses IPC tardives du futur service bloc restent à tester.
+
+Le périmètre DMA porte sur la fonction bloc et ses cadres. L’accès croisé entre deux pilotes natifs affectés simultanément à deux domaines, la panne d’un contrôleur pendant DETACH et la réattribution par le gestionnaire de pages de NovaOS restent à valider. Le contrôleur du CD de démarrage appartient au firmware.
+
+### Qualification des six garanties MSI
+
+En fonctionnement, le banc relit `ECAP=0x00f00f5a`, `GSTS=0xc7000000`, `IRTA=0x02006803`. Les bits de traduction, de file d’invalidation et de remappage sont actifs. La table a été chargée avec EIME à 1 ; CFIS vaut 0. La source exacte est configurée dans l’IRTE. Le banc conserve au disque le même handle remappable pour tous ses essais.
+
+| Garantie demandée | Observation et verdict |
+|---|---|
+| Livraison autorisée | IRR du LAPIC 0 contient le vecteur 81, IRR du LAPIC 1 ne le contient pas. Après autorisation des IRQ par la ROM, le compteur du gestionnaire avance et EOI est émis. **Vérifiée.** |
+| Rejet d’une interruption non autorisée | L’administrateur attribue l’entrée au périphérique témoin `00:07.0`. La complétion habituelle du disque `00:06.0` est refusée, FRCD `0x26`, SID 48, aucun des deux LAPIC ne présente le vecteur. **Vérifiée pour le format remappable.** |
+| Protection de la destination APIC | La route autorisée désigne seulement CPU0. La trace confirme cette destination dans le cas positif. La protection de toute destination échoue à l’audit du format de compatibilité. |
+| Protection contre l’usurpation de source | Le SID est comparé à la source exacte attendue sur le chemin remappable. Le contrôle négatif ci-dessus l’atteste. Le traitement du format de compatibilité ne consulte pas cette entrée. L’exclusivité globale par périphérique est **non qualifiée**. |
+| Rejet après retrait | Retrait de l’IRTE et invalidation IEC acquittée. La complétion suivante produit FRCD `0x22`. Le compteur reste stable. Le réarmement autorise une nouvelle livraison. **Vérifiée pour le format remappable.** |
+| Traitement des interruptions en attente | Une interruption déjà dans l’IRR survit au retrait de la route et est traitée une fois par l’ancien témoin. Séparément, le masquage de l’entrée MSI-X avant la complétion met son bit PBA à 1. Après retrait de la route et reset, PBA vaut 0 dans les quatre instances. Le démasquage sous route fermée laisse le compteur inchangé. |
+
+La spécification Intel VT-d, révision 5.0, §5.1.4, prescrit le blocage des interruptions de compatibilité si EIME est actif ou si CFIS est à zéro lorsque le remappage est actif. La source du **tag v11.1.3** traite ce format avant la consultation de l’entrée et renvoie un succès avec le message d’origine. La suite du traitement transmet le résultat à l’APIC. L’inspection statique de la routine dans l’exécutable Homebrew installé retrouve ce chemin. SHA-256 du fichier source `intel_iommu.c` : `c0c72123f5ffa5d49c07e31987c3b3ef12fb5a539f0bb6887e78f82756494ce1`. SHA-256 du binaire testé : `a462b64050825e6adfc88ea14b3896205056b2f0b0090938b536ce69381739ab`. Aucun essai n’a injecté un vecteur étranger en format de compatibilité. La conclusion sur ce format provient de la spécification, des registres relus et du code de cette version. [Intel VT-d, §5.1.4](https://cdrdv2-public.intel.com/831418/vt-directed-io-spec.pdf) · [Remappage dans QEMU v11.1.3](https://github.com/qemu/qemu/blob/v11.1.3/hw/i386/intel_iommu.c#L4377-L4394) · [Livraison au contrôleur](https://github.com/qemu/qemu/blob/v11.1.3/hw/i386/intel_iommu.c#L4488-L4522)
+
+Dans ce profil PCI sans PASID, le modèle Intel expose à la fonction un chemin matériel distinct pour les interruptions. Le refus d’accès à la page témoin valide donc la protection de la RAM, tandis que les interruptions dépendent du filtrage décrit ci-dessus. [Espace d’adressage du périphérique dans QEMU v11.1.3](https://github.com/qemu/qemu/blob/v11.1.3/hw/i386/intel_iommu.c#L1733-L1749)
+
+Sur ARM, le firmware et le laboratoire ont des fenêtres ECAM différentes. Les cartes de routage extraites pour les deux réglages de `highmem` sont identiques. INTA du slot 6 est exclusive parmi les fonctions présentes. Le partage observé sur la ligne 36 montre pourquoi le noyau doit revalider l’inventaire avant chaque attribution et refuser un changement de topologie qui introduit une autre source sur la ligne déléguée. Le noyau garde le contrôle du GIC et des fonctions PCI voisines. [Banc et inventaire](validation/vtd-intx-v0.10.0.md)
+
+### Contrat de capacités matérielles proposé
+
+Chaque droit est attaché à un propriétaire et à l’incarnation de la fonction, du domaine, de la file ou de la route. Une désignation détenue par un client IPC ne crée aucun de ces droits. Les libellés décrivent les opérations demandées au noyau ; aucun numéro de syscall n’est attribué par cet audit.
+
+| Ressource | Autorité minimale envisagée |
+|---|---|
+| Fonction PCI | Le superviseur possède le droit d’attribuer et de retirer la fonction. Le pilote reçoit un droit d’usage d’une seule fonction, non transmissible. Le noyau garde reset, bus mastering et cycle de vie PCI. |
+| MMIO ou configuration PCI | Lecture des seuls champs accordés, écritures limitées aux champs nécessaires. Le noyau garde BAR, configuration MSI/MSI-X, adresses des files et registres privilégiés. Si des champs admis et interdits partagent une page, médiation champ par champ. |
+| File VirtIO | Utiliser une file numérotée, dans sa profondeur accordée. Le pilote prépare les requêtes et traite les complétions. La notification est bornée à la file. En cas de médiation, seule une séparation matérielle ou une copie privée immuable peut empêcher une modification après validation. |
+| Mapping et révocation DMA | Le pilote peut demander un mapping pour des cadres explicitement épinglés dont il a l’usage, avec un sens, une longueur et une durée. Le noyau contrôle propriété, chevauchements, permissions, fenêtres réservées et compteurs. La révocation d’un mapping ou de tout le domaine est privilégiée et attend l’acquittement matériel. |
+| Réception d’IRQ | Le pilote peut recevoir et acquitter une notification logicielle liée à sa seule route et à sa génération. Le noyau contrôle le masquage, la source, la destination, l’acquittement matériel et la purge. |
+| Domaine IOMMU | Création, attachement au SID, tables, invalidations, désattachement et destruction réservés au noyau. Le pilote n’obtient jamais d’adresses de tables, d’accès à l’APIC ou au GIC, ni d’autorité sur le domaine voisin. |
+
+### Cycle de vie exigé avant délégation
+
+1. **Initialiser.** Découvrir la topologie, vérifier les capacités et réserver les ressources de contrôle.
+2. **Attribuer.** Lier les droits matériels à une seule incarnation et au processus concerné.
+3. **Configurer le domaine.** Bypass fermé, ATS désactivé, cadres épinglés, permissions minimales. Attendre le résultat de l’installation.
+4. **Configurer les interruptions.** Source, destination et file connues, notifications utilisateur fermées.
+5. **Activer.** Autoriser bus mastering et notifications lorsque toutes les protections sont effectives.
+6. **Servir.** Borner les requêtes et les cadres en vol, comptabiliser chaque transfert.
+7. **Fermer l’admission.** Invalider la session et empêcher toute nouvelle soumission, y compris après mort du pilote.
+8. **Arrêter le périphérique.** Obtenir un drainage ou un reset confirmé. Consigner l’issue incertaine des opérations interrompues.
+9. **Retirer les interruptions.** Fermer les notifications, masquer la source, retirer la route, acquitter l’invalidation, vider les états périphérique et contrôleur et attendre la fin des gestionnaires de l’ancienne incarnation.
+10. **Révoquer le DMA.** Retirer le bus mastering et les mappings. Conserver les cadres épinglés.
+11. **Acquitter les invalidations.** Valider leur achèvement et les fautes en attente. En cas d’erreur ou de délai expiré, conserver domaine, route et cadres en quarantaine.
+12. **Rendre les pages.** Effacer les cadres avant réattribution, uniquement quand l’ancienne source ne peut plus y accéder.
+13. **Détruire le domaine.** Désattacher la fonction, invalider le contexte selon l’architecture et attendre l’acquittement avant de recycler SID logique, identifiants et structures de contrôle.
+
+### Persistance, régressions et mesures
+
+Sur chaque cible et pour chaque géométrie, un processus QEMU écrit un motif identifiable à l’offset 8 192 et confirme FLUSH. Le banc tue QEMU, lance une instance indépendante, relit le secteur par le périphérique, puis compare côté hôte chaque octet de l’image entière. Les quatre couples écriture/relecture réussissent. L’EIO en vol est injectée séparément. La transaction invitée Ring 3/EL0 via INFO, READ, WRITE, FLUSH, CLOSE, ses retours tardifs, ses coupures avant et pendant FLUSH et la durabilité physique restent non validées.
+
+| Régression NovaOS v0.9.0 ou mesure du service existant | x86_64 | AArch64 |
+|---|---:|---:|
+| Scénarios QEMU réussis par `make test` | 25/25 | 25/25 |
+| IPC INFO/FIN, 513 allers-retours, p50 / p99 | 30,621 / 44,911 µs | 45,056 / 53,248 µs |
+| RAM résidente au repos / avec serveur seul / après destruction | 1 212 / 1 336 / 1 212 Kio | 1 140 / 1 264 / 1 140 Kio |
+| RAM totale retenue aux mêmes étapes, y compris la RAM vidéo comptabilisée | 1 212 / 1 336 / 1 212 Kio | 3 016 / 3 140 / 3 016 Kio |
+| Pic dans la fenêtre panne/reprise du service | 1 432 Kio | 1 360 Kio |
+| Allocations de cadres dans cette fenêtre / blocs Buddy après collecte | 161 / 3 | 161 / 3 |
+
+Les journaux `novaOS/build/serie-<arch>-storage-test.log` expriment la RAM en cadres de 4 Kio. Le pic correspond au résident de base plus les 55 cadres supplémentaires observés au minimum de cadres libres. Le retour à la valeur initiale porte sur cette fenêtre. Les suites historiques couvrent ABI, IPC, capacités, isolation utilisateur, interruptions, mémoire, pénurie, relance du service et restitution de ses ressources. La mémoire et les fuites éventuelles du futur pilote natif restent à mesurer.
+
+La campagne matérielle ci-dessous utilise des transferts de 4 Kio à profondeur 1. Pour chaque profil, 128 opérations par direction et par parcours, ordre pseudo-aléatoire reproductible. Les latences incluent soumission QTest, notification, lecture de la complétion et du statut. Les débits incluent la préparation ou la comparaison de tous les octets via QTest. Le coût de cette relecture hôte domine le débit READ. Les mesures sont des temps muraux de laboratoire, sensibles à la charge hôte. [Charge et calcul des percentiles](validation/vtd-intx-v0.10.0.md)
+
+| Architecture / secteur | WRITE séq. p50 / p99 (µs) | READ séq. p50 / p99 (µs) | Débit séquentiel W / R (Mio/s) | Débit aléatoire W / R (Mio/s) | FLUSH après écritures séq. / aléatoires (µs, 1 par charge) |
+|---|---:|---:|---:|---:|---:|
+| x86_64 / 512 | 147,7 / 240,6 | 170,9 / 306,5 | 17,18 / 1,79 | 19,68 / 1,96 | 468,9 / 510,9 |
+| x86_64 / 4 096 | 132,8 / 176,1 | 161,0 / 254,2 | 19,56 / 1,82 | 21,19 / 1,93 | 462,2 / 257,6 |
+| AArch64 / 512 | 126,2 / 176,4 | 126,4 / 161,2 | 20,43 / 1,99 | 20,44 / 1,84 | 483,4 / 515,4 |
+| AArch64 / 4 096 | 123,1 / 165,9 | 125,9 / 205,1 | 20,64 / 2,00 | 20,45 / 2,02 | 475,9 / 528,6 |
+
+| Architecture / secteur | MAP / UNMAP p50 (µs) | Retrait / installation IRQ p50 (µs) | FLUSH sans nouvelle écriture p50 / p99 (µs) |
+|---|---:|---:|---:|
+| x86_64 / 512 | 99,5 / 99,5 | 98,5 / 98,1 | 112,2 / 151,4 |
+| x86_64 / 4 096 | 88,6 / 88,8 | 87,1 / 89,5 | 114,6 / 170,3 |
+| AArch64 / 512 | 123,2 / 121,3 | 26,3 / 25,7 | 105,5 / 140,6 |
+| AArch64 / 4 096 | 121,8 / 122,6 | 25,8 / 25,8 | 105,6 / 123,2 |
+
+Trente-deux échantillons par opération de contrôle et 64 FLUSH sans nouvelle écriture. Sur Q35, MAP et UNMAP incluent l’invalidation IOTLB et son WAIT, le changement d’IRTE inclut IEC et WAIT. Sur ARM, ce sont des commandes virtio-IOMMU acquittées et des masquages ou démasquages GIC relus. La latence complète de révocation d’un pilote inclurait aussi arrêt des soumissions, drainage, traitement des interruptions déjà acceptées et récupération des cadres. Aucun chiffre natif v0.10.0 ne peut être déduit de ces mesures.
+
+### Arbitrage
+
+1. **Conserver le pilote et ses files en espace utilisateur.** Qualifier une version corrigée ou un autre modèle VT-d dont la conformité au blocage des deux formats peut être vérifiée. Exiger les tests de source, destination, retrait et interruptions déjà en attente avant l’attribution.
+2. **Autoriser une médiation du transport sur Q35.** Conserver Intel VT-d et le pilote bloc utilisateur, mais permettre à un composant de confiance de valider et de sceller les descripteurs et de garder le contrôle de toutes les destinations d’interruption. Définir les accès CPU et DMA aux descripteurs pendant tout le transfert. Cette option élargit la base de confiance et nécessite sa propre qualification.
+
+Le profil ARM retenu demeure virtio-IOMMU avec MSI désactivé. La reprise du stockage natif dépend de cet arbitrage et de la validation de la solution choisie.
+
+---
+
+## Historique de la qualification virtio-IOMMU sur les deux cibles
 
 **Décision au commit de départ `547502d96c889e4fcd19250506171bbeb622d0da`, le 11 novembre 2026.** L’accès à une page de RAM démappée est effectivement refusé par virtio-IOMMU sur Q35 et sur ARM `virt`. Sur Q35, le contrôleur annonce aussi au disque une fenêtre MSI vers l’APIC que le noyau ne peut pas retirer avec `UNMAP`. Avec les descripteurs matériels sous le contrôle du pilote Ring 3, la plateforme testée ne fournit pas de preuve que ses accès au contrôleur d’interruptions se limitent à l’IRQ attribuée. Le §19 demande l’arrêt avant de déléguer le périphérique. Le dépôt était propre sur `main`. NovaOS reste en v0.9.0 (MIT) et NovaFS en v0.9.12 (MPL-2.0).
 
@@ -69,7 +190,7 @@ Les régressions ont tourné simultanément sur les deux cibles. Les chiffres IP
 | Sécurité DMA §14 | Mappings positifs, reset, retrait acquitté d’une page, essai matériel sur l’ancienne IOVA et détachement d’un domaine sous QTest. Restent à vérifier dans NovaOS les capacités, les bornes et permissions, plusieurs domaines simultanés, la révocation en vol, la mort, le redémarrage, les erreurs d’invalidation, les requêtes invalides, la saturation et le recyclage de cadres entre processus. |
 | Stockage §15 | Démarrage et régressions de l’invité existant. Géométrie, WRITE, FLUSH, READ après redémarrage et signalement d’interruption sur les modèles PCI sous QTest. Restent à vérifier en Ring 3 et EL0 le service bloc, ses cinq opérations via IPC, les droits, erreurs, pannes, redémarrages, fuites et la persistance de bout en bout. |
 
-### Arbitrage demandé
+### Arbitrage du précédent audit
 
 1. **Conserver virtio-IOMMU sur les deux cibles** et autoriser une médiation générique des descripteurs sur Q35. Le noyau scellerait la liste vérifiée des segments autorisés et les adresses des files jusqu’à la complétion. L’admission exclurait les fenêtres d’interruptions. Les pages de description seraient protégées des modifications CPU et DMA. Le pilote utilisateur conserverait la négociation bloc, les commandes, la géométrie et la gestion du disque. Cette variante étend la partie de transport à laquelle le noyau doit faire confiance.
 2. **Conserver les files sous le contrôle du pilote utilisateur** et autoriser pour Q35 la qualification d’un autre contrôleur assurant aussi le remappage des interruptions par source, par exemple Intel VT-d. QEMU installé expose `intel-iommu,intremap`. Il faudrait démontrer le filtrage du SID, y compris le traitement des interruptions au format de compatibilité, et toutes les invalidations. Sur ARM, poursuivre avec virtio-IOMMU, INTx et `msi=off`. Cette variante ajoute un backend IOMMU x86. Sa sécurité reste à qualifier.
