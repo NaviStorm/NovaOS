@@ -70,6 +70,24 @@ fn main_thread() {
         sched::process::ipc::run(scenario);
     }
     if let Some(mode) = match scenario {
+        b"files-recover" => Some(13),
+        b"files-f1-before" => Some(14),
+        b"files-f1-inflight" => Some(15),
+        b"files-f1-after" => Some(16),
+        b"files-f2-before" => Some(17),
+        b"files-f2-inflight" => Some(18),
+        b"files-f2-after" => Some(19),
+        b"files-data" => Some(20),
+        b"files-meta" => Some(21),
+        b"files-close" => Some(22),
+        b"files-remount" => Some(23),
+        b"files-inject" => Some(24),
+        b"files-info" => Some(26),
+        b"files-abandon" => Some(27),
+        b"files-restart" => Some(28),
+        b"files-perf" => Some(25),
+        b"files-write" => Some(11),
+        b"files-read" => Some(12),
         b"storage-live" => Some(3),
         b"storage-write" => Some(4),
         b"storage-read" => Some(5),
@@ -79,7 +97,13 @@ fn main_thread() {
         b"storage-eio" => Some(8),
         _ => None,
     } {
-        let ok = sched::process::storage::volume(mode);
+        let ok = if mode == 28 {
+            !sched::process::storage::volume(mode) && sched::process::storage::volume(13)
+        } else if mode == 25 {
+            sched::process::storage::file_perf()
+        } else {
+            sched::process::storage::volume(mode)
+        };
         hal::log(format_args!("BLOC session terminee ok={ok}"));
         if mode != 3 {
             hal::cpu::halt()

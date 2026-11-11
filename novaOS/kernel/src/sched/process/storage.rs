@@ -253,11 +253,13 @@ pub(crate) fn qualify_transport(delayed: bool) {
 
 const MEDIA: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-media.bin"));
 const CONTROL: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-control.bin"));
+const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fileclient.bin"));
 pub(crate) fn volume(mode: u64) -> bool {
     use crate::hardware::block;
+    FILE_TIMING.store(mode == 25, Ordering::Relaxed);
     let start = heap::audit(true);
     let hz = hal::timer::counter_hz();
-    if mode == 6 {
+    if matches!(mode, 6 | 25) {
         measure("bloc_repos");
         heap::with_pages(|m| {
             m.begin_frame_sample();
@@ -266,7 +268,7 @@ pub(crate) fn volume(mode: u64) -> bool {
         .unwrap();
         block::metrics::start(hz);
     }
-    let rights = if mode == 4 || mode == 6 || mode == 8 || mode == 9 {
+    let rights = if matches!(mode, 4 | 6 | 8 | 9 | 11 | 14..=22 | 24 | 25 | 27 | 28) {
         1 | 2 | 4 | 8
     } else {
         1 | 8
@@ -279,7 +281,12 @@ pub(crate) fn volume(mode: u64) -> bool {
         }
     };
     let group = ipc::launch_block(
-        [(RELAY, 15), (MEDIA, 1), (DISK, 0), (CONTROL, 0)],
+        [
+            (RELAY, 15),
+            (MEDIA, 1),
+            (DISK, 0),
+            (if mode >= 11 { FILE_CLIENT } else { CONTROL }, 0),
+        ],
         key,
         mode,
     );
@@ -295,7 +302,7 @@ pub(crate) fn volume(mode: u64) -> bool {
         "BLOC chaine novaFS={} bloc={} pilote={} client={} generation={key}",
         service.0.number, relay.0.number, driver.0.number, app.0.number
     ));
-    if mode == 6 {
+    if matches!(mode, 6 | 25) {
         measure("bloc_publie")
     }
     let ids = [relay.0, service.0, driver.0];
@@ -313,7 +320,7 @@ pub(crate) fn volume(mode: u64) -> bool {
     hal::log(format_args!(
         "BLOC bilan mode={mode} service={s:?} bloc={b:?} pilote={d:?} client={a:?} retrait={retired:?} cycles_retrait={ticks}"
     ));
-    if mode == 6 {
+    if matches!(mode, 6 | 25) {
         ipc::end_measure(hz);
         block::metrics::report();
         let frames = heap::with_pages(|m| Ok(m.end_frame_sample())).unwrap();
@@ -333,6 +340,21 @@ pub(crate) fn volume(mode: u64) -> bool {
     [a, s, d, b].iter().all(|x| *x == Outcome::Exit(0)) && retired.is_ok()
 }
 
+pub(crate) fn file_perf() -> bool {
+    if !volume(25) {
+        return false;
+    }
+    let warm = heap::audit(true);
+    if !volume(25) {
+        return false;
+    }
+    let clean = heap::audit(true) == warm
+        && with(|s| s.processes.slots.iter().all(Option::is_none) && s.ipc.pages() == 0);
+    hal::log(format_args!(
+        "STOCKAGE restitution apres deux sessions={clean}"
+    ));
+    clean
+}
 /// Exerce le même ELF que le vrai service bloc, dans son espace utilisateur privé.
 pub(crate) fn elf_test() {
     fn spawn(mode: u64) -> Child {
@@ -433,7 +455,46 @@ use core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 static TIMING: AtomicBool = AtomicBool::new(false);
 static BEGIN: AtomicU64 = AtomicU64::new(0);
 /// Marqueurs acceptés uniquement pendant la sonde mono-client ELF.
+static FILE_TIMING: AtomicBool = AtomicBool::new(false);
+static USER_SAMPLE: AtomicU64 = AtomicU64::new(0);
+static BLOCK_SAMPLE: AtomicU64 = AtomicU64::new(0);
 pub(super) fn time_marker(msg: &str) -> bool {
+    if FILE_TIMING.load(Ordering::Relaxed) {
+        let timer = if msg.starts_with("ech ") {
+            Some(&USER_SAMPLE)
+        } else if msg.starts_with("bar ") {
+            Some(&BLOCK_SAMPLE)
+        } else {
+            None
+        };
+        if let Some(timer) = timer {
+            let now = hal::timer::counter();
+            let then = timer.swap(now, Ordering::Relaxed);
+            if !msg.ends_with(" debut") {
+                hal::log(format_args!(
+                    "ECHANTILLON {msg} cycles={}",
+                    now.wrapping_sub(then)
+                ));
+            }
+            if msg == "bar f1" {
+                measure("transaction");
+                let (data, stack) = with(|s| {
+                    s.processes
+                        .get(s.thread(s.current).owner.unwrap())
+                        .space
+                        .as_ref()
+                        .unwrap()
+                        .page_counts()
+                });
+                hal::log(format_args!(
+                    "ECHANTILLON service donnees={data} pile={stack}"
+                ));
+            }
+            // Le temps de journalisation de cette frontière est exclu du prochain intervalle.
+            timer.store(hal::timer::counter(), Ordering::Relaxed);
+            return true;
+        }
+    }
     if !TIMING.load(Ordering::Relaxed) {
         return false;
     }

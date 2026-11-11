@@ -1,6 +1,6 @@
-# Préparation de NovaFS en espace utilisateur
+# Montage natif de NovaFS dans NovaOS v0.11.0
 
-Base de réalisation `3ae21f71e89b5964086e03fbca0c1eef171a2a77`, NovaOS 0.10.0 et NovaFS 0.9.12. Le service lancé avec un disque attribué est un ELF utilisateur indépendant. Il initialise son allocateur à la première allocation, encode puis décode une page de B+Tree avec la bibliothèque NovaFS et vérifie son contenu. Dans le profil de qualification, il exerce aussi le véritable trait `Device` sur le transport IPC. **Le montage de volumes et les transactions fichier dans NovaOS restent à qualifier dans l’étape suivante.** L’audit historique figure en fin de document.
+Le service ELF utilisateur lie le moteur NovaFS v0.9.12 du monorepo avec `no_std + alloc`. Le profil fichier monte un volume logique autonome produit par la CLI P8 sur un disque VirtIO attribué. L’application, le service NovaFS, le service bloc et le pilote disposent de quatre espaces d’adressage distincts. Le pilote propose les commandes au composant DMA de confiance. Le noyau applique les droits et le confinement matériel. Le montage, les arbres et la publication s’exécutent en Ring 3 ou EL0. [Qualification du parcours fichier](validation/novafs-natif-v0.11.0.md)
 
 ## Chargement et protections
 
@@ -16,37 +16,52 @@ Le sélecteur est nécessaire pour rendre et reprendre de la mémoire physique p
 
 [Chargeur ELF](../kernel/src/memory/user/elf.rs) · [Propriété et collecte](../kernel/src/memory/user.rs) · [Allocateur du service](../user/novafs/heap.rs) · [ABI native](../abi/native.rs)
 
-## Contrat de la prochaine interface fichier
+## Autorité et durée de vie
 
-Ce contrat décrit les responsabilités à mettre en œuvre. Il faudra attribuer une version de trame fichier distincte du diagnostic v1 `INFO/FIN`. La découverte du service ou du support existant ne vaut pas ouverture d’un volume. Le superviseur distribue des capacités de session unicast. Le client possède SEND pour ses requêtes et RECEIVE pour ses réponses. Le service possède les droits complémentaires et conserve les capacités du canal bloc. Le client ne reçoit ni capacité de pilote, ni adresse de page, ni LBA. Le service valide les droits sur l’objet, la génération de session et le numéro de requête avant de consommer un fragment. Les droits applicatifs ci-dessous seront attribués par le superviseur et pourront seulement être réduits.
+Le lanceur attribue un seul support à la chaîne. Le propriétaire du bail matériel est le pilote identifié par PID et époque. Une seule commande matérielle peut être en vol. La réponse INFO du bloc contient à +16 le masque de droits effectifs, qui tient compte du mode lecture seule du support. Un profil demandant l’écriture exige WRITE et FLUSH avant d’admettre le client. Le fichier raw doit rester exclusivement attribué à la VM pendant son montage.
 
-| Opération | Autorité et résultat attendu | Erreurs ou fin d’opération |
-|---|---|---|
-| MOUNT | Autorité de montage sur le volume attribué. Vérifier profil, géométrie, génération, intégrité et clés requises. Un montage RW exige l’exclusivité sur le pool. Publier la session après ces contrôles. | Support absent, profil inconnu, corruption, volume verrouillé, conflit d’écrivain, pénurie ou erreur bloc. Libérer toute admission partielle. |
-| INFO | Droit de consultation sur la session montée. Renvoyer identité, géométrie, génération confirmée et mode effectivement vérifiés. | Session périmée ou fermée, volume indisponible. |
-| OPEN | Droit de parcours et de lecture ou écriture selon la demande. La création requiert le droit de mutation du répertoire. Retourner un handle opaque limité à la session avec génération et droits réduits. | Chemin invalide, objet absent, conflit de création, type incorrect, RO, manque de ressources. |
-| READ | Handle lisible, offset et longueur vérifiés. Réassembler les fragments validés. Rendre le compte réel, zéro à EOF. | Handle périmé, dépassement, intégrité ou E/S. Une réponse partielle doit préciser le nombre d’octets attestés. |
-| WRITE | Handle inscriptible, plages et taille totale contrôlées avant mutation, crédit de réservation acquis. Une écriture acquittée peut encore être en attente de publication durable. | Disque plein, quota, RO, pénurie, réception incomplète ou E/S. Abandonner les fragments incomplets avant publication. |
-| SYNC | Droit de mutation sur la session. Confirmer la génération seulement après les barrières F1 et F2 réellement acquittées sur le support attribué. | Un délai ou une perte de canal après soumission rend le résultat indéterminé. Reprendre et vérifier la génération avant toute nouvelle mutation. |
-| CLOSE | Droit sur le handle ou la session. Invalider sa génération et relâcher les références. Une fermeture de session clôt tous ses handles et son canal bloc. | Un second CLOSE est périmé. CLOSE ne promet pas la durabilité d’une transaction en attente. |
+Le client reçoit SEND sur un endpoint de requêtes et RECEIVE sur un endpoint de réponses. Seul le service détient leurs racines. Ce couple autorise l’accès à l’espace de noms du volume attribué. Le numéro de session (PID du service) corrèle les messages. Les handles désignent des entrées de la table privée de ce canal, avec des droits réduits à l’ouverture. Aucun des deux entiers ne permet à un autre processus d’obtenir l’endpoint. Une session admet 32 handles simultanés, numérotés de façon croissante avec refus du débordement. Une seconde ouverture du même chemin peut donner des droits différents. Le service traite une requête à la fois. Les ACL par fichier et la délégation de sous-arborescences restent à développer.
 
-Une requête de fichier peut employer plusieurs messages IPC bornés. L’identité de session, le tag, l’opération, la taille et l’offset du fragment doivent correspondre à l’attente. Après décès, les handles de cette session deviennent invalides. Une publication potentiellement soumise exige une reprise sur support stable. Le service bloc conserve ses opérations INFO, READ, WRITE, FLUSH et CLOSE et son découpage en fragments de 96 octets. L’adaptateur assemble 4 Kio avant de rendre une lecture au moteur. Une écriture ou un FLUSH en erreur ferme la vue et propage le statut du transport. Une ancienne branche du client pouvait interpréter une réponse d’erreur d’un octet de valeur zéro comme une sortie réussie du service. Le client rejette désormais cette trame comme invalide. Une nouvelle instance exigera une session de confiance. L’exclusivité d’écriture du pool et l’entropie native restent à qualifier avant les mutations protégées.
+La fermeture de session retire la racine des requêtes avant la dernière réponse. La fin du service révoque le canal de réponses. Après une déconnexion, le lanceur ferme les canaux du groupe, attend les processus et retire le bail DMA. Une relance crée des processus, des capacités et un bail neufs. Une panne pendant une publication exige un nouveau montage. Un client qui perd la réponse d’une mutation après envoi obtient une issue indéterminée. La bibliothèque invalide alors la connexion. Les attentes sont bornées à 250 ticks pour un échange bloc, 5 000 pour la réception au repos du relais et du pilote et 15 000 pour la réponse fichier (250 Hz). Un client durable doit traiter une expiration comme une interruption de session. Le service de diagnostic démarré sans disque continue de proposer INFO/FIN v1.
 
-[Transport sectoriel](../abi/block.rs) · [Adaptateur NovaFS](../user/novafs/device.rs) · [Portabilité du moteur](../../novaFS/docs/novafs-coeur-portable.md)
+## Protocole fichier v2
 
-## Validation et reproduction
+Chaque requête et réponse utilise exactement 128 octets. Le tag IPC augmente à chaque requête. Les champs multioctets sont little-endian. Les champs de requête inutilisés et la fin du payload doivent être nuls. Aucune adresse d’un processus ne traverse cette interface.
 
-Les mesures et les résultats par architecture figurent dans le [rapport de qualification](validation/preparation-novafs-v0.11.0.md).
+| Offset | Type | Champ |
+|---:|---|---|
+| 0, 1, 2, 3 | 4 × u8 | Version 2, opération, options, statut (zéro en requête). |
+| 4, 6 | u16, u16 | Longueur du fragment et réservé. |
+| 8, 16, 24, 32 | 4 × u64 | Session, handle, offset absolu, taille totale ou résultat numérique. |
+| 40–127 | 88 octets | Chemin, données ou résultat INFO. Une erreur rend une charge utile vide. |
 
-Depuis la racine du monorepo :
+| Opération | Contrat |
+|---|---|
+| 1 MOUNT | Session et handle nuls. Le moteur décode l’ancre, vérifie les deux générations, leur filiation, la géométrie, les références, les données et la partition de l’espace. Le montage RW attend un FLUSH du support. La réponse livre la session à +8. |
+| 2 INFO | Handle nul. Dans le payload, LV et FS (16 octets chacun), secteur et bloc (u32), capacité et disponible ordinaire (u64, en blocs), somme des tailles logiques publiées (u128), génération (u64), mode (1 RO, 3 RW), version de contenu (0), fonctionnalités (bit 0, transactions de fichiers). Le disponible déduit aussi le crédit de la préparation en cours. |
+| 3 OPEN | Chemin absolu UTF-8 de 1 à 88 octets. Les composantes vides, `.`, `..` et les caractères de contrôle ASCII sont refusés. Options 1 lecture, 2 écriture, 4 création si absent. La création exige le droit d’écriture et publie par le moteur avant de livrer le handle à +16. Une création est suspendue par un retour BUSY si une écriture occupe la réservation. |
+| 4 READ | Offset et nombre d’octets demandés, au plus 88 par trame. Le compte réel figure à +4. Zéro octet marque la fin du fichier pour une demande non vide. Le handle auteur voit sa propre écriture entièrement assemblée et admise, y compris les trous remplis de zéros. Les autres handles voient la vue publiée. |
+| 5 WRITE | Une seule écriture privée à la fois. START=1, CONTINUE=2, longueur totale de 1 à 65 536 octets, fragments contigus et non vides. La réponse à +32 donne le cumul reçu. Au dernier fragment, `Engine::prepare_write` contrôle le coût CoW et les réservations. Le service retient le crédit et les octets, puis libère le plan. La génération reste exclusive jusqu’à SYNC ou abandon. |
+| 6 SYNC | Handle inscriptible. Une requête incomplète renvoie BUSY. Le moteur reconstruit le plan sur la même tête, écrit ses dépendances, attend F1, publie l’ancre alternée et attend F2. La réponse à +32 identifie la génération. Un SYNC propre envoie également un vrai FLUSH. La double préparation a un coût inclus dans les mesures. |
+| 7 CLOSE | Ferme le handle indiqué. Le bit DISCARD=1 autorise l’abandon explicite de sa préparation privée. Une fermeture ordinaire avec des octets en attente renvoie BUSY. Avec handle nul, la fermeture exige une session propre, libère tous ses handles, démonte le moteur, attend CLOSE du bloc et révoque l’accès. Une erreur de publication reste visible. |
 
-```sh
-for a in x86_64 aarch64; do
-    make -C novaOS ARCH="$a" elf-test test block-test block-perf ipc-test ipc-races ipc-perf || exit 1
-done
-```
+Les erreurs ABI utilisées comprennent BAD_ARGUMENT, DENIED, LIMIT, REVOKED, CLOSED et NO_MEMORY. Les statuts du service sont 20 (absent), 21 (intégrité), 22 (publication indéterminée), 23 (volume plein, quota ou réserve), 24 (occupé), 25 (format ou opération non pris en charge) et 26 (E/S). L’intégrité, l’E/S et la publication indéterminée rendent la session inutilisable jusqu’à sa destruction. La bibliothèque fragmente les lectures et écritures. Lors d’une erreur de lecture multifragment, des octets des premiers fragments peuvent déjà se trouver dans le tampon de destination.
 
-Le banc utilise des images brutes jetables. L’oracle de l’hôte vérifie le fichier entier après WRITE, FLUSH et arrêt forcé de la VM. Une deuxième VM relit la page. Ces opérations portent sur un bloc brut. Le futur parcours fichier devra créer et modifier un fichier, synchroniser la transaction, couper la VM, contrôler l’image avec NovaFS côté hôte puis remonter en invité.
+[Trame fichier](../abi/files.rs) · [Bibliothèque du client](../user/storage/fileapi.rs) · [Service fichier](../user/novafs/files.rs) · [Adaptateur sectoriel](../user/novafs/device.rs)
+
+## Profil disque et reprise
+
+P8 désigne la version du moteur et de son scrub. Un **LV autonome** possède l’enveloppe historique de contenu P0, deux ancres de 4 Kio et des manifestes chaînés. Le service suit le chemin commun `Engine::mount`, `prepare_write` et `write`. La réserve ordinaire de maintenance vaut 128 blocs. La politique du LV autonome autorise les fichiers creux sans quota logique externe. Les quotas et les crédits de pools requièrent le coordinateur de pool.
+
+Les catalogues P0, les pools partagés P5/P6 et les pools P7 ont d’autres points d’entrée. P5/P6 exigent l’union des racines de tête et de prédécesseur, les références de vues, la réservation physique et, pour P6, la classification des unités compressées. P7 exige en plus la validation des banques et attestations répliquées, de leur filiation et des authentificateurs avec les clés appropriées. Aucun de ces conteneurs n’est exposé en écriture dans ce profil. Le service refuse une signature incompatible dès le début du montage. Il ne cherche pas un LV en balayant le disque. Les snapshots, clones, LZ4, clés et exports conservent leurs contrats dans NovaFS. L’invité ne propose aucun déverrouillage. [Contrats de récupération et de scrub](../../novaFS/docs/novafs-p8-scrub.md)
+
+Le trait Device traduit chaque bloc de 4 Kio en un ou huit secteurs, les transporte par fragments de 96 octets et se ferme à la première erreur bloc. Les barrières attendent le statut de complétion VirtIO. Avant la publication de l’ancre, la génération précédente reste exigée. Pendant la publication, l’issue peut être l’ancienne génération ou la nouvelle entière. Une ancre effectivement déchirée impose le refus du montage normal. Après confirmation de F2, le moteur exige la nouvelle tête sous les hypothèses du support. Les données non confirmées exigent une reprise avec contrôle de génération. [Publication du moteur](../../novaFS/src/engine.rs) · [Modèle P1](../../novaFS/docs/novafs-p1-durabilite.md)
+
+## Reproduction
+
+Depuis la racine du monorepo, `make -C novaOS ARCH=x86_64 file-test` et `make -C novaOS ARCH=aarch64 file-test` construisent la CLI hôte et lancent les deux géométries. Pour consulter son propre LV autonome, utiliser `make -C novaOS ARCH=aarch64 file-info SECTOR=4096 IMAGE=/chemin/volume.raw`, avec un chemin absolu vers un fichier ordinaire. Les deux architectures acceptent les secteurs 512 et 4 096. La commande ouvre l’image en lecture seule et affiche l’identité du volume. Les essais en écriture emploient des copies temporaires.
+
+[Rapport de validation du montage et des transactions](validation/novafs-natif-v0.11.0.md) · [Qualification précédente du chargeur et du tas](validation/preparation-novafs-v0.11.0.md)
 
 ---
 

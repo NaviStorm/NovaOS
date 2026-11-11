@@ -71,6 +71,9 @@ impl Block {
         }
         Ok(())
     }
+    pub(crate) fn close(&mut self) -> Result<()> {
+        self.command(w::CLOSE).map(|_| ())
+    }
     pub(crate) fn flush(&mut self) -> Result<()> {
         self.command(w::FLUSH).map(|_| ())
     }
@@ -114,7 +117,7 @@ fn exercise(d: &mut Block, mode: u64) -> Result<()> {
     if matches!(mode, 9 | 10) {
         use novafs::Device;
         let mut device =
-            crate::device::IpcDevice::new(d, size as u32, count).map_err(crate::device::status)?;
+            &crate::device::IpcDevice::new(d, size as u32, count).map_err(crate::device::status)?;
         let logical = 2;
         if device.blocks() <= logical {
             return Err(BAD_ARGUMENT);
@@ -178,6 +181,16 @@ fn exercise(d: &mut Block, mode: u64) -> Result<()> {
 pub fn serve() -> Result<()> {
     let (tx, rx) = channels()?;
     let mut d = Block { tx, rx, tag: 0 };
+    if (11..=28).contains(&config(1)) {
+        let info = d.command(w::INFO)?;
+        let writable = w::number(&info, 16) & 6 == 6;
+        if !writable && !matches!(config(1), 12 | 13 | 23 | 26) {
+            return Err(DENIED);
+        }
+        let dev = crate::device::IpcDevice::new(&mut d, w::number(&info, 4), w::lba(&info))
+            .map_err(crate::device::status)?;
+        return crate::files::serve(&dev, w::number(&info, 4), writable);
+    }
     let (front, back) = (config(4), config(5));
     let mode = config(1);
     for (id, op) in [(1, INFO), (2, FIN)] {

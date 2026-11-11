@@ -1,0 +1,351 @@
+//! Un endpoint privé donne accès à un seul volume et à sa table locale de handles.
+use crate::{device::IpcDevice, protocol as w, runtime as rt};
+use alloc::{string::String, vec::Vec};
+use novafs::{Device, Engine, Error, Kind, Mode, View, codec::Anchor};
+use w::Frame;
+
+fn error(e: Error) -> u64 {
+    match e {
+        Error::UnknownOutcome | Error::Publication { .. } => w::UNCERTAIN,
+        Error::Unavailable | Error::Io(_) => w::IO,
+        Error::Corrupt(_) => w::CORRUPT,
+        Error::Invalid(_) | Error::NotDirectory | Error::IsDirectory => rt::BAD_ARGUMENT,
+        Error::Limit(_) => rt::LIMIT,
+        Error::NoSpace | Error::PoolFull | Error::QuotaExceeded | Error::MaintenanceExhausted => {
+            w::FULL
+        }
+        Error::NoMemory => rt::NO_MEMORY,
+        Error::NotFound => w::NOT_FOUND,
+        Error::ReadOnly => rt::DENIED,
+        _ => w::BUSY,
+    }
+}
+struct File {
+    key: u64,
+    path: String,
+    rights: u8,
+}
+struct Pending {
+    file: u64,
+    offset: u64,
+    size: usize,
+    reserved: u64,
+    bytes: Vec<u8>,
+}
+struct Session<'a, 'b> {
+    dev: &'a IpcDevice<'b>,
+    sector: u32,
+    id: u64,
+    writable: bool,
+    fs: Option<Engine<&'a IpcDevice<'b>>>,
+    handles: Vec<File>,
+    next: u64,
+    pending: Option<Pending>,
+    failed: Option<u64>,
+}
+fn shape(ok: bool) -> rt::Result<()> {
+    if ok { Ok(()) } else { Err(rt::BAD_ARGUMENT) }
+}
+impl Session<'_, '_> {
+    fn dispatch(&mut self, q: &Frame, a: &mut Frame) -> rt::Result<()> {
+        let op = q[1];
+        let flags = q[2];
+        let n = w::length(q);
+        let session = w::word(q, 8);
+        let handle = w::word(q, 16);
+        let offset = w::word(q, 24);
+        let total = w::word(q, 32);
+        shape(q[0] == w::VERSION && q[3] == 0 && q[6..8] == [0; 2] && n <= w::FRAGMENT)?;
+        let content = if matches!(op, w::WRITE | w::OPEN) {
+            n
+        } else {
+            0
+        };
+        shape(q[w::PAYLOAD + content..].iter().all(|b| *b == 0))?;
+        let plain = flags == 0 && n == 0 && offset == 0 && total == 0;
+        if let Some(e) = self.failed {
+            return Err(e);
+        }
+        if op == w::MOUNT {
+            shape(plain && session == 0 && handle == 0)?;
+            if self.fs.is_some() {
+                return Err(w::BUSY);
+            }
+            let first = self.dev.read(0).map_err(error)?;
+            if &first[..8] != b"NOVAP0FS" {
+                return Err(w::UNSUPPORTED);
+            }
+            if rt::config(1) == 23 {
+                crate::qualification::stop(b"COUPURE remontage");
+            }
+            let ids = Anchor::decode(&first, 0).map_err(error)?.ids;
+            let mode = if self.writable {
+                Mode::ReadWrite
+            } else {
+                Mode::ReadOnly
+            };
+            self.fs = Some(Engine::mount(self.dev, ids, mode).map_err(error)?);
+            w::set(a, 8, self.id);
+            return Ok(());
+        }
+        if session != self.id || session == 0 {
+            return Err(rt::DENIED);
+        }
+        let fs = self.fs.as_mut().ok_or(rt::CLOSED)?;
+        match op {
+            w::INFO => {
+                shape(plain && handle == 0)?;
+                let stats = fs.accounting().map_err(error)?;
+                let available = stats
+                    .available_blocks
+                    .checked_sub(self.pending.as_ref().map_or(0, |p| p.reserved))
+                    .ok_or(w::CORRUPT)?;
+                let p = &mut a[w::PAYLOAD..];
+                p[..16].copy_from_slice(&fs.ids().lv);
+                p[16..32].copy_from_slice(&fs.ids().fs);
+                p[32..36].copy_from_slice(&self.sector.to_le_bytes());
+                p[36..40].copy_from_slice(&4096u32.to_le_bytes());
+                p[40..48].copy_from_slice(&stats.capacity_blocks.to_le_bytes());
+                p[48..56].copy_from_slice(&available.to_le_bytes());
+                p[56..72].copy_from_slice(&stats.logical_bytes.to_le_bytes());
+                p[72..80].copy_from_slice(&fs.generation().to_le_bytes());
+                p[80] = if self.writable { 3 } else { 1 };
+                p[81] = 0; // Version du contenu autonome P0 compris par le moteur P8.
+                p[82] = 1; // Transactions CoW de fichiers.
+                w::size(a, 83);
+            }
+            w::OPEN => {
+                shape(
+                    handle == 0
+                        && offset == 0
+                        && total == 0
+                        && n > 0
+                        && flags & !7 == 0
+                        && flags & 3 != 0,
+                )?;
+                if flags & w::CREATE != 0 && flags & w::WRITABLE == 0
+                    || !self.writable && flags & w::WRITABLE != 0
+                {
+                    return Err(rt::DENIED);
+                }
+                if self.handles.len() == 32 {
+                    return Err(rt::LIMIT);
+                }
+                let next = self.next.checked_add(1).ok_or(rt::LIMIT)?;
+                let path = core::str::from_utf8(&q[w::PAYLOAD..w::PAYLOAD + n])
+                    .map_err(|_| rt::BAD_ARGUMENT)?;
+                shape(
+                    path.starts_with('/')
+                        && !path.bytes().any(|b| b < 32 || b == 127)
+                        && path[1..].split('/').all(|s| !matches!(s, "" | "." | "..")),
+                )?;
+                self.handles.try_reserve(1).map_err(|_| rt::NO_MEMORY)?;
+                let mut owned = String::new();
+                owned
+                    .try_reserve_exact(path.len())
+                    .map_err(|_| rt::NO_MEMORY)?;
+                owned.push_str(path);
+                match fs.stat(path) {
+                    Ok(info) => shape(info.kind == Kind::File)?,
+                    Err(Error::NotFound) if flags & w::CREATE != 0 => {
+                        if self.pending.is_some() {
+                            return Err(w::BUSY);
+                        }
+                        fs.create(path).map_err(error)?
+                    }
+                    Err(e) => return Err(error(e)),
+                }
+                self.next = next;
+                self.handles.push(File {
+                    key: next,
+                    path: owned,
+                    rights: flags & 3,
+                });
+                w::set(a, 16, next);
+            }
+            w::CLOSE if handle == 0 => {
+                shape(plain)?;
+                if self.pending.is_some() {
+                    return Err(w::BUSY);
+                }
+                self.fs
+                    .take()
+                    .unwrap()
+                    .unmount()
+                    .map_err(error)?
+                    .close()
+                    .map_err(error)?;
+            }
+            w::READ | w::WRITE | w::SYNC | w::CLOSE => {
+                let at = self
+                    .handles
+                    .iter()
+                    .position(|f| f.key == handle)
+                    .ok_or(rt::REVOKED)?;
+                let file = &self.handles[at];
+                match op {
+                    w::READ => {
+                        shape(flags == 0 && total == 0 && offset.checked_add(n as u64).is_some())?;
+                        if file.rights & w::READABLE == 0 {
+                            return Err(rt::DENIED);
+                        }
+                        let bytes = fs.read(&file.path, offset, n).map_err(error)?;
+                        a[w::PAYLOAD..w::PAYLOAD + bytes.len()].copy_from_slice(&bytes);
+                        let mut count = bytes.len();
+                        if let Some(p) = self
+                            .pending
+                            .as_ref()
+                            .filter(|p| p.file == handle && p.bytes.len() == p.size)
+                        {
+                            // Le reste de la réponse a été initialisé à zéro, y compris un éventuel trou.
+                            let end = p.offset + p.size as u64;
+                            count = count.max(end.saturating_sub(offset).min(n as u64) as usize);
+                            let start = offset.max(p.offset);
+                            let stop = (offset + n as u64).min(end);
+                            if start < stop {
+                                let dst = w::PAYLOAD + (start - offset) as usize;
+                                a[dst..dst + (stop - start) as usize].copy_from_slice(
+                                    &p.bytes
+                                        [(start - p.offset) as usize..(stop - p.offset) as usize],
+                                );
+                            }
+                        }
+                        w::size(a, count);
+                    }
+                    w::WRITE => {
+                        if file.rights & w::WRITABLE == 0 {
+                            return Err(rt::DENIED);
+                        }
+                        shape(
+                            n > 0
+                                && total <= w::MAX_WRITE as u64
+                                && n as u64 <= total
+                                && matches!(flags, w::START | w::CONTINUE),
+                        )?;
+                        if flags == w::START {
+                            shape(
+                                offset
+                                    .checked_add(total)
+                                    .is_some_and(|end| end <= i64::MAX as u64),
+                            )?;
+                            if self.pending.is_some() {
+                                return Err(w::BUSY);
+                            }
+                            let mut bytes = Vec::new();
+                            bytes
+                                .try_reserve_exact(total as usize)
+                                .map_err(|_| rt::NO_MEMORY)?;
+                            self.pending = Some(Pending {
+                                file: handle,
+                                offset,
+                                size: total as usize,
+                                reserved: 0,
+                                bytes,
+                            });
+                        }
+                        let p = self.pending.as_mut().ok_or(rt::BAD_ARGUMENT)?;
+                        shape(
+                            p.file == handle
+                                && total as usize == p.size
+                                && p.offset.checked_add(p.bytes.len() as u64) == Some(offset)
+                                && n <= p.size - p.bytes.len(),
+                        )?;
+                        p.bytes.extend_from_slice(&q[w::PAYLOAD..w::PAYLOAD + n]);
+                        if p.bytes.len() == p.size {
+                            // Le seul écrivain reste à cette génération jusqu'à SYNC ou abandon.
+                            // La réservation est évaluée par le moteur, y compris le coût des métadonnées.
+                            match fs.prepare_write(&file.path, p.offset, &p.bytes) {
+                                Ok(plan) => {
+                                    p.reserved = plan.accounting().transaction_reserved;
+                                    plan.cancel();
+                                }
+                                Err(e) => {
+                                    self.pending = None;
+                                    return Err(error(e));
+                                }
+                            }
+                        }
+                        w::set(a, 32, p.bytes.len() as u64);
+                    }
+                    w::SYNC => {
+                        shape(plain)?;
+                        if file.rights & w::WRITABLE == 0 {
+                            return Err(rt::DENIED);
+                        }
+                        if let Some(p) = &self.pending {
+                            if p.file != handle || p.bytes.len() != p.size {
+                                return Err(w::BUSY);
+                            }
+                            if rt::config(1) == 28 {
+                                rt::exit(rt::CANCELLED)
+                            }
+                            self.dev.start_probe();
+                            fs.write(&file.path, p.offset, &p.bytes).map_err(error)?;
+                            self.pending = None;
+                        } else {
+                            self.dev.flush().map_err(error)?;
+                        }
+                        w::set(a, 32, fs.generation());
+                    }
+                    _ => {
+                        shape(
+                            matches!(flags, 0 | w::DISCARD) && n == 0 && total == 0 && offset == 0,
+                        )?;
+                        if self.pending.as_ref().is_some_and(|p| p.file == handle) {
+                            if flags != w::DISCARD {
+                                return Err(w::BUSY);
+                            }
+                            self.pending = None;
+                        }
+                        if rt::config(1) == 22 && file.rights & w::WRITABLE != 0 {
+                            crate::qualification::stop(b"COUPURE fermeture");
+                        }
+                        self.handles.swap_remove(at);
+                    }
+                }
+            }
+            _ => return Err(w::UNSUPPORTED),
+        }
+        Ok(())
+    }
+}
+pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Result<()> {
+    let mut s = Session {
+        dev,
+        sector,
+        id: rt::value(rt::call(rt::PROCESS_ID, 0, 0, 0))?,
+        writable,
+        fs: None,
+        handles: Vec::new(),
+        next: 0,
+        pending: None,
+        failed: None,
+    };
+    let mut last = 0;
+    loop {
+        let m = rt::receive_for(rt::config(4), 15000)?;
+        let mut a = w::frame(m.payload[1], 0, 0);
+        let r = if m.kind != 1 || m.len != 128 || m.tag <= last {
+            Err(rt::BAD_ARGUMENT)
+        } else {
+            last = m.tag;
+            s.dispatch(&m.payload, &mut a)
+        };
+        if let Err(e) = r {
+            a = w::frame(m.payload[1], 0, 0);
+            a[3] = e as u8;
+            if matches!(e, w::UNCERTAIN | w::IO | w::CORRUPT) {
+                s.failed = Some(e)
+            }
+        }
+        let done = r.is_ok() && m.payload[1] == w::CLOSE && w::word(&m.payload, 16) == 0;
+        // Fermer la racine des requêtes retire les droits dérivés avant la réponse finale.
+        if done {
+            rt::value(rt::call(rt::IPC_CLOSE, rt::config(4), 0, 0))?;
+        }
+        rt::send(rt::config(5), m.tag, &a)?;
+        if done {
+            return Ok(());
+        }
+    }
+}

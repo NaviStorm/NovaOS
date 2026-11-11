@@ -126,6 +126,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
     if s.rights & right == 0 {
         return Err(abi::DENIED);
     }
+    let rights = s.rights;
     let phase = s.phase;
     if phase == Phase::Closed {
         return Err(abi::CLOSED);
@@ -143,6 +144,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
     match (op, w[2], phase) {
         (INFO, BEGIN, Phase::Empty) => {
             put(w, 4, d.size as u32);
+            put(w, 16, u32::from(rights));
             w[8..16].copy_from_slice(&d.sectors.to_le_bytes());
         }
         (READ, BEGIN, Phase::Empty) => {

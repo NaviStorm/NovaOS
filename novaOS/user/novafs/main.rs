@@ -2,10 +2,14 @@
 #![no_main]
 extern crate alloc;
 mod device;
+mod files;
 mod heap;
 #[path = "../storage/medium.rs"]
 mod medium;
 mod probes;
+#[path = "../../abi/files.rs"]
+mod protocol;
+mod qualification;
 #[path = "../storage/runtime.rs"]
 mod runtime;
 use alloc::vec;

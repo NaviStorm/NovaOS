@@ -2,7 +2,7 @@
 
 NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-Dans NovaOS **v0.10.0**, on peut déjà suivre une requête de stockage depuis un processus utilisateur jusqu’à un disque VirtIO sous QEMU. Le système de fichiers **NovaFS v0.9.12** se développe dans le même dépôt. Son moteur transactionnel se teste indépendamment sur macOS.
+Dans **NovaOS v0.11.0**, une application peut monter un volume autonome, créer un fichier et en retrouver les octets après redémarrage de QEMU. Le service utilisateur exécute le moteur **NovaFS v0.9.12**, également utilisable sur macOS.
 
 ## Philosophie et architecture
 
@@ -17,8 +17,8 @@ flowchart TD
     app[Application utilisateur de diagnostic] --> ipc[IPC à capacités du micro-noyau]
     apps[Applications utilisateur futures] -.-> ipc
     ipc --> fs[Service utilisateur NovaFS]
-    fs -->|IPC| bloc[Service utilisateur bloc]
-    moteur[Cœur portable NovaFS] -->|initialisation du codec| fs
+    fs -->|montage et transactions| moteur[Cœur portable NovaFS]
+    moteur -->|adaptateur IPC| bloc[Service utilisateur bloc]
     bloc -->|IPC| pilote[Pilote VirtIO utilisateur]
     pilote --> noyau[Micro-noyau · médiation DMA et HAL]
     noyau --> materiel[Matériel VirtIO émulé par QEMU]
@@ -32,7 +32,7 @@ flowchart TD
 | Mémoire et exécution | Implémenté | Mémoire virtuelle protégée, ELF multipages, tas privés, piles gardées, ordonnanceur préemptif mono-CPU et processus isolés en Ring 3 ou EL0. |
 | ABI et services | Implémenté | Appels système natifs et IPC à capacités entre processus disposant d’espaces d’adressage distincts. |
 | Stockage bloc | Implémenté | Lecture, écriture et synchronisation sur un disque VirtIO optionnel. Le service bloc et le pilote s’exécutent en espace utilisateur. |
-| NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. Dans NovaOS, le service initialise le codec d’arbre et accède aux blocs de 4 Kio. Le montage de fichiers reste à qualifier. |
+| NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. NovaOS expose le montage et les transactions sur les fichiers des volumes autonomes. |
 | Interface texte | Implémenté | Le prompt de diagnostic du noyau accepte la saisie AZERTY sur x86_64. |
 | Environnement utilisateur | Prévu | Shell utilisateur, commandes, applications natives de distribution et gestion des comptes. |
 | Interface et distribution | Prévu | NovaUI et système hybride immuable. |
@@ -55,6 +55,8 @@ Les cibles `build` produisent respectivement `novaOS/build/novaos.iso` et `novaO
 ```sh
 make -C novaOS ARCH=x86_64 test
 make -C novaOS ARCH=aarch64 test
+make -C novaOS ARCH=x86_64 file-test
+make -C novaOS ARCH=aarch64 file-test
 novaFS/lab/run test --offline
 ```
 
@@ -77,7 +79,7 @@ Les deux derniers répertoires sont en construction. Les images de développemen
 
 ## Feuille de route
 
-Le prochain enjeu du stockage est de monter un volume NovaFS dans le service utilisateur et de permettre aux applications d’y manipuler des fichiers. Les orientations à plus long terme comprennent un shell et des commandes utilisateur, des comptes et permissions, des compilateurs natifs et une interface graphique NovaUI. La compatibilité SwiftUI/AppKit reste exploratoire.
+La prise en charge native des catalogues de pools et des volumes chiffrés reste ouverte. Les orientations à plus long terme comprennent un shell et des commandes utilisateur, des comptes et permissions, des compilateurs natifs et une interface graphique NovaUI. La compatibilité SwiftUI/AppKit reste exploratoire.
 
 La distribution vise une architecture hybride immuable, avec une base système mise à jour de manière atomique, un retour à la version précédente et des données utilisateur modifiables. Ce modèle reste à développer.
 

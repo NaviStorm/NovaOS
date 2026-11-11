@@ -25,9 +25,19 @@ fn main() {
         "storage/disk",
         "storage/requester",
         "storage/control",
+        "storage/fileclient",
     ] {
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
-        let linker = format!("link-arg=-T{}", user.join("demo.ld").display());
+        let file_client = name == "storage/fileclient";
+        let linker = format!(
+            "link-arg=-T{}",
+            user.join(if file_client {
+                "novafs/service.ld"
+            } else {
+                "demo.ld"
+            })
+            .display()
+        );
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
         let compact = matches!(
             name,
@@ -42,6 +52,11 @@ fn main() {
                 "-C",
                 "strip=symbols",
             ]);
+        }
+        if file_client {
+            rust.args(["-C", "link-arg=-zmax-page-size=4096"]);
+        } else {
+            rust.args(["-C", "link-arg=--oformat=binary"]);
         }
         let ok = rust
             .arg(user.join(format!("{name}.rs")))
@@ -59,8 +74,6 @@ fn main() {
                 },
                 "-C",
                 "relocation-model=static",
-                "-C",
-                "link-arg=--oformat=binary",
                 "-C",
                 &linker,
                 "-o",

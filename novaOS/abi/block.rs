@@ -1,4 +1,5 @@
 //! Protocole privé du service bloc, sans pointeurs. Cette version ne modifie pas l'ABI IPC v1.
+/// La réponse INFO fournit les droits effectifs du bail dans le u32 à +16.
 pub const PORTAL: u64 = 0x0001_0040;
 pub const INFO: u8 = 1;
 pub const READ: u8 = 2;

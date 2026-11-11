@@ -50,3 +50,11 @@ block-run: kernel
 .PHONY: elf-test
 elf-test: kernel
 	python3 tests/elf.py
+
+.PHONY: file-test file-info
+file-test: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 tests/fichiers.py
+
+file-info: kernel
+	python3 scripts/bloc_qemu.py --volume --sector "$(SECTOR)" "$(IMAGE)"

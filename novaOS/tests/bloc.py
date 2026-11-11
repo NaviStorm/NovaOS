@@ -36,19 +36,20 @@ class Bench:
         self.env={**os.environ,'NOVA_ARCH':arch}
         self.report=ROOT/'build'/f'bloc-{arch}-{sector}'
         self.report.mkdir(parents=True,exist_ok=True)
-    def run(self,case,label=None,*,debug=None,flight=False,kill=False,readonly=False):
+    def run(self,case,label=None,*,debug=None,flight=False,kill=False,readonly=False,cut=None):
         iso=ROOT/'build'/f'bloc-{self.arch}-{case}.iso'
         if not iso.exists() or iso.stat().st_mtime<(ROOT/'target'/({'x86_64':'x86_64-unknown-none','aarch64':'aarch64-unknown-none-softfloat'}[self.arch])/'release/novaos').stat().st_mtime:
             subprocess.run(['sh',ROOT/'scripts/iso.sh',case,iso],env=self.env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,check=True)
         log=self.report/((label or case)+'.serial');log.write_bytes(b'')
         controls=['-display','none','-monitor','none','-serial','file:'+str(log)]
-        if flight:controls+=['-qmp','stdio']
+        monitor = flight or cut is not None
+        if monitor:controls+=['-qmp','stdio']
         argv=command(self.arch,self.sector,self.image,debug=debug,readonly=readonly,controls=controls)
         with (self.report/((label or case)+'.qemu')).open('w') as err,subprocess.Popen(
-                argv,env={**self.env,'NOVA_ISO':str(iso)},stdin=subprocess.PIPE if flight else subprocess.DEVNULL,
-                stdout=subprocess.PIPE if flight else err,stderr=err,bufsize=0) as vm:
+                argv,env={**self.env,'NOVA_ISO':str(iso)},stdin=subprocess.PIPE if monitor else subprocess.DEVNULL,
+                stdout=subprocess.PIPE if monitor else err,stderr=err,bufsize=0) as vm:
             try:
-                if flight:qmp(vm,'qmp_capabilities')
+                if monitor:qmp(vm,'qmp_capabilities')
                 armed=released=False;end=time.monotonic()+(160 if case=='storage-perf' else 55)
                 while time.monotonic()<end and vm.poll() is None:
                     # Conserver seulement les lignes dont le pilote série a terminé l'émission.
@@ -60,10 +61,25 @@ class Bench:
                             if r:raise RuntimeError(str(r))
                         if not armed and 'DMA injection prete' in s:control('break read_aio retard');armed=True
                         if armed and not released and 'DMA quarantaine cadres epingles' in s:control('resume retard');released=True
+                    if cut and cut in s:
+                        if cut == "COUPURE armer blkdebug":
+                            if not armed:
+                                reply=qmp(vm,"human-monitor-command",**{"command-line":'qemu-io d "break flush_to_disk barriere"'})
+                                if reply:raise RuntimeError(str(reply))
+                                armed=True
+                            if "COUPURE soumission FLUSH" not in s:
+                                time.sleep(.01)
+                                continue
+                            reply=qmp(vm,"human-monitor-command",**{"command-line":'qemu-io d "wait_break barriere"'})
+                            if reply:raise RuntimeError(str(reply))
+                        stats=next(r["stats"] for r in qmp(vm,"query-blockstats") if r["device"]=="d")
+                        print(f"{case} {stats['wr_operations']} ecritures {stats['flush_operations']} flush termines",flush=True)
+                        break
                     if kill and ('NVFS FLUSH confirme' in s or 'NVFS adaptateur FLUSH confirme' in s):break
                     if any(w in s for w in ('BLOC session terminee','DMA bilan','DMA utilisateurs bilan')):break
                     time.sleep(.01)
                 else:raise RuntimeError(f'{case}: délai expiré ou QEMU arrêté ; {log}')
+                if cut:assert cut in s, s[-1600:]
                 if flight:assert armed and released and 'transfert_en_vol=true' in s and 'faute=' in s
             finally:
                 if vm.poll() is None:vm.kill()

@@ -832,7 +832,7 @@ pub(super) fn launch_block<const N: usize>(
             })
             .unwrap();
         }
-        if mode == 6 {
+        if matches!(mode,6|25) {
             s.ipc.metrics.start_session(consumer.number, server.number)
         }
         if !crate::hardware::block::attach(device.number, key) {

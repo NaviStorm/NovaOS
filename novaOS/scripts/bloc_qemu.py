@@ -27,9 +27,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('image', type=Path)
     parser.add_argument('--sector', choices=(512,4096), type=int, default=512)
+    parser.add_argument('--volume',action='store_true',help='Monter un LV NovaFS autonome en lecture seule et afficher son identifiant.')
     args = parser.parse_args()
     arch = os.environ.get('NOVA_ARCH', 'x86_64')
-    iso = ROOT/'build'/f'bloc-live-{arch}.iso'
-    subprocess.run(['sh',ROOT/'scripts/iso.sh','storage-live',iso],check=True)
+    profile='files-info' if args.volume else 'storage-live'
+    iso = ROOT/'build'/f'{profile}-{arch}.iso'
+    subprocess.run(['sh',ROOT/'scripts/iso.sh',profile,iso],check=True)
     argv=command(arch,args.sector,args.image,readonly=True,controls=['-serial','stdio'])
     os.execvpe(argv[0],argv,{**os.environ,'NOVA_ARCH':arch,'NOVA_ISO':str(iso)})

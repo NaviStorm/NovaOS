@@ -19,6 +19,7 @@ pub(crate) struct IpcDevice<'a> {
     geometry: Geometry,
     count: u64,
     failed: Cell<bool>,
+    qualification: crate::qualification::FaultProbe,
 }
 impl<'a> IpcDevice<'a> {
     pub(crate) fn new(session: &'a mut Block, size: u32, sectors: u64) -> Result<Self> {
@@ -35,7 +36,14 @@ impl<'a> IpcDevice<'a> {
             geometry: Geometry::new(count, size)?,
             count,
             failed: Cell::new(false),
+            qualification: Default::default(),
         })
+    }
+    pub(crate) fn close(&self) -> Result<()> {
+        self.exchange(Block::close)
+    }
+    pub(crate) fn start_probe(&self) {
+        self.qualification.arm()
     }
     fn exchange<T>(&self, f: impl FnOnce(&mut Block) -> core::result::Result<T, u64>) -> Result<T> {
         if self.failed.get() {
@@ -49,6 +57,7 @@ impl<'a> IpcDevice<'a> {
     }
     fn transfer(&self, b: u64, page: &mut novafs::Block, write: bool) -> Result<()> {
         let (first, _) = self.geometry.sectors(b, 1)?;
+        let metadata = page.starts_with(b"NOVAP0FS");
         self.exchange(|s| {
             for (i, sector) in page
                 .chunks_exact_mut(self.geometry.sector_size() as usize)
@@ -59,12 +68,13 @@ impl<'a> IpcDevice<'a> {
                     first.checked_add(i as u64).ok_or(BAD_ARGUMENT)?,
                     write,
                 )?;
+                self.qualification.sector(b, write, metadata);
             }
             Ok(())
         })
     }
 }
-impl Device for IpcDevice<'_> {
+impl Device for &IpcDevice<'_> {
     fn blocks(&self) -> u64 {
         self.count
     }
@@ -77,6 +87,9 @@ impl Device for IpcDevice<'_> {
         self.transfer(block, &mut *zeroize::Zeroizing::new(*data), true)
     }
     fn flush(&mut self) -> Result<()> {
-        self.exchange(Block::flush)
+        self.qualification.before_flush();
+        self.exchange(Block::flush)?;
+        self.qualification.after_flush();
+        Ok(())
     }
 }
