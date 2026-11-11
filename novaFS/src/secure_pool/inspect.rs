@@ -3,6 +3,7 @@
 use super::*;
 use crate::secure_commit::COMMIT_BLOCKS;
 use crate::shared_graph::{Graph, PageRef};
+use alloc::vec::Vec;
 
 pub struct StructuralReport {
     pub pool: Id,

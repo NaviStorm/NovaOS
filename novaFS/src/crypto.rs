@@ -19,8 +19,14 @@ pub trait Entropy {
     fn fill(&mut self, out: &mut [u8]) -> Result<()>;
 }
 
-#[cfg(not(target_os = "none"))]
 pub struct HostEntropy;
+
+#[cfg(target_os = "none")]
+impl Entropy for HostEntropy {
+    fn fill(&mut self, _: &mut [u8]) -> Result<()> {
+        Err(Error::Unavailable)
+    }
+}
 
 #[cfg(not(target_os = "none"))]
 impl Entropy for HostEntropy {

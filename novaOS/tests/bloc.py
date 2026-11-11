@@ -60,7 +60,7 @@ class Bench:
                             if r:raise RuntimeError(str(r))
                         if not armed and 'DMA injection prete' in s:control('break read_aio retard');armed=True
                         if armed and not released and 'DMA quarantaine cadres epingles' in s:control('resume retard');released=True
-                    if kill and 'NVFS FLUSH confirme' in s:break
+                    if kill and ('NVFS FLUSH confirme' in s or 'NVFS adaptateur FLUSH confirme' in s):break
                     if any(w in s for w in ('BLOC session terminee','DMA bilan','DMA utilisateurs bilan')):break
                     time.sleep(.01)
                 else:raise RuntimeError(f'{case}: délai expiré ou QEMU arrêté ; {log}')
@@ -96,6 +96,24 @@ class Bench:
         assert 'NVFS READ octets compares' in s and 'BLOC session terminee ok=true' in s
         assert self.image.read_bytes()==expected
         self.check('WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière')
+    def adapter(self):
+        before = bytes([0x53]) * (1 << 20)
+        self.image.write_bytes(before)
+        page = bytes(((2 * 29 + i * 37) & 255) ^ ((i >> 5) & 255) ^ 0xb7 for i in range(4096))
+        expected = before[:8192] + page + before[12288:]
+        write = self.run('storage-page-write', kill=True)
+        assert 'NVFS coeur initialise ELF tas prive' in write
+        assert 'NVFS adaptateur FLUSH confirme' in write and self.image.read_bytes() == expected
+        read = self.run('storage-page-read')
+        assert 'NVFS coeur initialise ELF tas prive' in read
+        assert 'NVFS adaptateur READ 4096 confirme' in read and 'BLOC session terminee ok=true' in read
+        assert self.image.read_bytes() == expected
+        self.check('Device NovaFS, page complète de 4 Kio entre deux VM')
+        denied = self.run('storage-page-write', 'page-lecture-seule', readonly=True)
+        assert 'service=Exit(5)' in denied and 'client=Exit(5)' in denied
+        assert 'NVFS adaptateur FLUSH confirme' not in denied
+        assert self.image.read_bytes() == expected
+        self.check('Device NovaFS, refus du support RO transmis au client')
     def failures(self):
         original=bytes([0xc5])*(1<<20)
         for label,event,case in [('eio-read','read_aio','storage-read'),('eio-write','write_aio','storage-write'),('eio-flush','flush_to_disk','storage-write')]:
@@ -132,11 +150,11 @@ class Bench:
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--perf',action='store_true')
-    parser.add_argument('--only',choices=('qualify','durable','failures'))
+    parser.add_argument('--only',choices=('qualify','durable','failures','adapter'))
     args=parser.parse_args()
     for size in (512,4096):
         with tempfile.TemporaryDirectory(prefix='novabloc-')as tmp:
             bench=Bench(Path(tmp),os.environ.get('NOVA_ARCH','x86_64'),size)
             if args.perf:bench.perf()
             elif args.only:getattr(bench,args.only)()
-            else:bench.qualify();bench.durable();bench.failures()
+            else:bench.qualify();bench.durable();bench.failures();bench.adapter()

@@ -1,12 +1,13 @@
 //! Sauvegarde autonome P7 de pages logiques. Les fichiers de travail ne contiennent
 //! que des pages chiffrées. Une vérification intégrale précède l'import transactionnel.
 use crate::crypto::{Entropy, Secret};
-use crate::device::FileImage;
+use crate::io::Scratch;
+use crate::io::{Read, Write};
 use crate::shared::SharedPool;
 use crate::shared_export::{Coverage, ExportInfo, HEAD, coverage, exact, export_manifest};
 use crate::{BLOCK_BYTES, Block, Device, Error, Result};
+use alloc::vec::Vec;
 use sha2::{Digest, Sha256};
-use std::io::{Read, Write};
 use zeroize::Zeroizing;
 
 const MAGIC: &[u8; 8] = b"NV7EXPRT";
@@ -150,7 +151,7 @@ struct Row {
 }
 
 struct ArchiveImage {
-    ciphertexts: FileImage,
+    ciphertexts: Scratch,
     rows: Vec<Option<Row>>,
     key: Secret,
     header: [u8; 32],
@@ -224,7 +225,7 @@ pub(crate) fn verified_image(
         .map_err(|_| Error::NoMemory)?;
     rows.resize(info.blocks as usize, None);
     let mut image = ArchiveImage {
-        ciphertexts: FileImage::create(info.blocks, info.sector)?,
+        ciphertexts: Scratch::create(info.blocks, info.sector)?,
         rows,
         key: transport.derive(&archive_id, DATA_KEY)?,
         header: hash.clone().finalize().into(),

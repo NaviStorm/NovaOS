@@ -74,6 +74,8 @@ fn main_thread() {
         b"storage-write" => Some(4),
         b"storage-read" => Some(5),
         b"storage-perf" => Some(6),
+        b"storage-page-write" => Some(9),
+        b"storage-page-read" => Some(10),
         b"storage-eio" => Some(8),
         _ => None,
     } {
@@ -96,6 +98,10 @@ fn main_thread() {
     }
     if scenario == b"storage-test" {
         sched::process::storage::test();
+    }
+    if scenario == b"elf-test" {
+        sched::process::storage::elf_test();
+        hal::cpu::halt()
     }
     if scenario == b"proc-test" {
         sched::process::test();

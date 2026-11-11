@@ -3,7 +3,9 @@
 //! verrou. Un abandon rend toute preuve locale inutilisable par un appel ultérieur.
 use super::*;
 use crate::shared_graph::{Graph, PageRef};
-use std::cell::{Cell, RefCell};
+use alloc::vec::Vec;
+use core::cell::{Cell, RefCell};
+#[cfg(not(target_os = "none"))]
 use std::time::Instant;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -697,6 +699,7 @@ fn inspect_lv(
 /// Sur un espace sans verrou, le détenteur fournit une image hors ligne stable.
 /// La réparation exige toujours le verrou du backend. Le diagnostic ne draine
 /// jamais de commandes. Une nouvelle invocation reconstruit toutes ses preuves.
+#[cfg(not(target_os = "none"))]
 pub fn scrub<D: Device>(
     device: &mut D,
     mode: Mode,
@@ -704,8 +707,22 @@ pub fn scrub<D: Device>(
     progress: impl FnMut(Progress) -> bool,
 ) -> Result<Report> {
     let started = Instant::now();
+    scrub_with(device, mode, auth, progress, &mut HostEntropy, || {
+        started.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64
+    })
+}
+
+/// L'appelant fournit l'entropie de session et le temps écoulé en nanosecondes.
+pub fn scrub_with<D: Device>(
+    device: &mut D,
+    mode: Mode,
+    auth: Option<&Authority<'_>>,
+    progress: impl FnMut(Progress) -> bool,
+    entropy: &mut impl Entropy,
+    elapsed: impl FnOnce() -> u64,
+) -> Result<Report> {
     let mut run = [0; 16];
-    HostEntropy.fill(&mut run)?;
+    entropy.fill(&mut run)?;
     let mut report = Report::new(run);
     let gate = device.mutation_lock();
     if gate.is_none() && mode == Mode::Repair {
@@ -876,6 +893,6 @@ pub fn scrub<D: Device>(
     report.reads = scan.reads.get();
     report.writes = scan.writes;
     report.flushes = scan.flushes;
-    report.elapsed_ns = started.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64;
+    report.elapsed_ns = elapsed();
     Ok(report)
 }

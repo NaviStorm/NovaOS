@@ -1,6 +1,6 @@
 //! Adaptateurs du laboratoire hôte. Aucun constructeur ne prend un chemin de périphérique.
 //! Le simulateur représente le support (hors budget de travail du moteur).
-use crate::{BLOCK_BYTES, Block, Device, Error, MAX_BLOCKS, Result};
+use crate::{BLOCK_BYTES, Block, Device, Error, Result};
 use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::{self, ErrorKind};
@@ -11,37 +11,7 @@ const BLOCK: u64 = BLOCK_BYTES as u64;
 const MAX_SIM_BLOCKS: u64 = 32_768;
 const TRACE_LIMIT: usize = 8_192;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct Geometry {
-    blocks: u64,
-    sector: u32,
-}
-
-impl Geometry {
-    pub fn new(blocks: u64, sector: u32) -> Result<Self> {
-        if !matches!(sector, 512 | 4096) || !(1..=MAX_BLOCKS).contains(&blocks) {
-            return Err(Error::Invalid("géométrie de l’image"));
-        }
-        Ok(Self { blocks, sector })
-    }
-
-    pub fn sector_size(self) -> u32 {
-        self.sector
-    }
-
-    /// LBA natif et nombre de secteurs, pour une plage exprimée en blocs NovaFS.
-    pub fn sectors(self, first: u64, count: u64) -> Result<(u64, u64)> {
-        if count == 0 || first.checked_add(count).is_none_or(|end| end > self.blocks) {
-            return Err(Error::Invalid("plage hors image"));
-        }
-        let ratio = BLOCK / u64::from(self.sector);
-        Ok((first * ratio, count * ratio))
-    }
-
-    fn offset(self, index: u64) -> Result<u64> {
-        Ok(self.sectors(index, 1)?.0 * u64::from(self.sector))
-    }
-}
+pub use crate::geometry::Geometry;
 
 /// Image dans un fichier ordinaire. Les E/S sont positionnelles et portent
 /// toujours sur le descripteur initial, y compris après démontage.

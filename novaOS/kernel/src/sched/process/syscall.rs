@@ -29,7 +29,9 @@ fn debug_write(addr: u64, len: u64) -> Result<u64, u64> {
         Ok(p.pid.number)
     })?;
     let msg = core::str::from_utf8(bytes).expect("ASCII filtré");
-    hal::log(format_args!("DEBUG pid={pid} {msg}"));
+    if !storage::time_marker(msg) {
+        hal::log(format_args!("DEBUG pid={pid} {msg}"));
+    }
     Ok(len)
 }
 
@@ -81,20 +83,20 @@ fn wait(key: u64, out: u64, len: u64) -> Result<u64, u64> {
 /// Les deux portes appellent cette fonction sur la pile privée, IRQ masquées.
 /// Le contexte entier est sauvegardé avant de permettre une préemption.
 pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static str) -> Reply {
-    if !(user::CODE..user::CODE + crate::memory::PAGE).contains(&pc)
-        || !(user::STACK..=user::TOP).contains(&sp)
-        || (cfg!(target_arch = "aarch64") && (sp % 16 != 0 || pc % 4 != 0))
-    {
+    let (exec, stack) = with(|s| {
+        let space = s.processes.get(caller(s)).space.as_ref().unwrap();
+        (
+            space.executable(pc),
+            (space.stack_bottom()..=space.stack_top()).contains(&sp),
+        )
+    });
+    if !exec || !stack || (cfg!(target_arch = "aarch64") && (sp % 16 != 0 || pc % 4 != 0)) {
         finish(
             Outcome::Fault(Fault {
                 trap: "ABI",
                 access: "retour",
                 cause: "contexte",
-                address: if !(user::CODE..user::CODE + crate::memory::PAGE).contains(&pc) {
-                    pc
-                } else {
-                    sp
-                },
+                address: if !exec { pc } else { sp },
                 syndrome: 0,
             }),
             pc,
@@ -107,6 +109,18 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     let result = match id {
         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
         crate::hardware::block::PORTAL => device(a, b, c),
+        HEAP_RESIZE if c == 0 => with(|s| {
+            let pid = caller(s);
+            let space = s.processes.get_mut(pid).space.as_mut().unwrap();
+            heap::with_pages(|m| space.resize_heap(m, a, b)).map_err(|e| {
+                if e == crate::memory::Error::Exhausted {
+                    NO_MEMORY
+                } else {
+                    BAD_ARGUMENT
+                }
+            })
+        }),
+        HEAP_RESIZE => Err(BAD_ARGUMENT),
         PROCESS_ID => Ok(with(|s| caller(s).number)),
         THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
         THREAD_YIELD => {

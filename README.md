@@ -18,7 +18,7 @@ flowchart TD
     apps[Applications utilisateur futures] -.-> ipc
     ipc --> fs[Service utilisateur NovaFS]
     fs -->|IPC| bloc[Service utilisateur bloc]
-    moteur[Moteur NovaFS sur macOS] -.->|portage prévu| fs
+    moteur[Cœur portable NovaFS] -->|initialisation du codec| fs
     bloc -->|IPC| pilote[Pilote VirtIO utilisateur]
     pilote --> noyau[Micro-noyau · médiation DMA et HAL]
     noyau --> materiel[Matériel VirtIO émulé par QEMU]
@@ -29,10 +29,10 @@ flowchart TD
 | Domaine | État | Ce que l’on peut utiliser ou suivre |
 |---|---|---|
 | Démarrage et affichage | Implémenté | UEFI avec Limine, framebuffer et journal série sur les deux architectures. |
-| Mémoire et exécution | Implémenté | Mémoire virtuelle protégée, tas noyau, ordonnanceur préemptif mono-CPU et processus isolés en Ring 3 ou EL0. |
+| Mémoire et exécution | Implémenté | Mémoire virtuelle protégée, ELF multipages, tas privés, piles gardées, ordonnanceur préemptif mono-CPU et processus isolés en Ring 3 ou EL0. |
 | ABI et services | Implémenté | Appels système natifs et IPC à capacités entre processus disposant d’espaces d’adressage distincts. |
 | Stockage bloc | Implémenté | Lecture, écriture et synchronisation sur un disque VirtIO optionnel. Le service bloc et le pilote s’exécutent en espace utilisateur. |
-| NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. Dans NovaOS, le service accède aux secteurs ; le montage d’un système de fichiers reste à réaliser. |
+| NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. Dans NovaOS, le service initialise le codec d’arbre et accède aux blocs de 4 Kio. Le montage de fichiers reste à qualifier. |
 | Interface texte | Implémenté | Le prompt de diagnostic du noyau accepte la saisie AZERTY sur x86_64. |
 | Environnement utilisateur | Prévu | Shell utilisateur, commandes, applications natives de distribution et gestion des comptes. |
 | Interface et distribution | Prévu | NovaUI et système hybride immuable. |

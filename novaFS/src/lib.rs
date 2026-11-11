@@ -1,21 +1,29 @@
-//! Prototype hôte NovaFS. Contenu P0, vues CoW, compression et chiffrement de volumes.
+//! Moteur NovaFS commun aux adaptateurs hôtes et aux cibles nues. Contenu P0, vues CoW, compression et chiffrement de volumes.
+#![cfg_attr(target_os = "none", no_std)]
+#[macro_use]
+extern crate alloc;
+pub mod geometry;
+pub mod io;
+pub mod sync;
+use alloc::boxed::Box;
 mod cache;
 pub use cache::CacheStats;
 pub mod codec;
 mod compression;
 pub mod crypto;
+#[cfg(not(target_os = "none"))]
 #[path = "../lab/device.rs"]
 pub mod device;
 mod engine;
 mod fs;
-#[cfg(feature = "latency-probes")]
+#[cfg(all(feature = "latency-probes", not(target_os = "none")))]
 #[path = "../lab/latency_probes.rs"]
 pub mod latency_probes;
 pub mod pool;
 mod secure_commit;
 
 #[cfg(test)]
-pub(crate) static KDF_TEST: std::sync::Mutex<()> = std::sync::Mutex::new(());
+pub(crate) static KDF_TEST: crate::sync::Mutex<()> = crate::sync::Mutex::new(());
 pub mod secure_export;
 pub mod secure_pool;
 pub mod secure_unit;
@@ -54,14 +62,14 @@ pub enum Compression {
     None = 0,
     Lz4 = 1,
 }
-pub type Result<T> = std::result::Result<T, Error>;
+pub type Result<T> = core::result::Result<T, Error>;
 
 #[derive(Debug)]
 pub enum Error {
     Corrupt(&'static str),
     Invalid(&'static str),
     Limit(&'static str),
-    Io(std::io::Error),
+    Io(crate::io::Error),
     NotFound,
     Exists,
     NoSpace,
@@ -81,13 +89,13 @@ pub enum Error {
     NotEmpty,
     IsDirectory,
 }
-impl From<std::io::Error> for Error {
-    fn from(e: std::io::Error) -> Self {
+impl From<crate::io::Error> for Error {
+    fn from(e: crate::io::Error) -> Self {
         Self::Io(e)
     }
 }
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Display for Error {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::NoSpace => write!(f, "espace ordinaire du volume insuffisant"),
             Self::PoolFull => write!(f, "espace physique du pool insuffisant"),
@@ -104,8 +112,8 @@ impl std::fmt::Display for Error {
         }
     }
 }
-impl std::error::Error for Error {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+impl core::error::Error for Error {
+    fn source(&self) -> Option<&(dyn core::error::Error + 'static)> {
         match self {
             Self::Io(e) => Some(e),
             Self::Publication { cause, .. } => Some(cause.as_ref()),
@@ -124,7 +132,7 @@ impl std::error::Error for Error {
 pub trait Device {
     /// Verrou partagé par tous les acteurs pouvant modifier ce support P7.
     /// Un backend qui ne peut exclure les écritures étrangères reste consultable.
-    fn mutation_lock(&self) -> Option<std::sync::Arc<std::sync::Mutex<()>>> {
+    fn mutation_lock(&self) -> Option<crate::sync::Arc<crate::sync::Mutex<()>>> {
         None
     }
     fn blocks(&self) -> u64;
@@ -170,7 +178,7 @@ pub trait Device {
 }
 
 impl<D: Device> Device for &mut D {
-    fn mutation_lock(&self) -> Option<std::sync::Arc<std::sync::Mutex<()>>> {
+    fn mutation_lock(&self) -> Option<crate::sync::Arc<crate::sync::Mutex<()>>> {
         (**self).mutation_lock()
     }
     fn blocks(&self) -> u64 {

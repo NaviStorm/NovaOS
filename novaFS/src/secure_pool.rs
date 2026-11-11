@@ -1,13 +1,14 @@
 //! Pool P7. Le préfixe de contrôle du graphe est privé à la transaction.
 //! Le registre CoW P6 demeure l'unique allocateur des paires (en-tête, contenu).
 use crate::crypto::{Credential, Entropy, HostEntropy, SLOTS_BYTES, Secret, Slots};
+use crate::io::{Read, Write};
 use crate::secure_commit::{CommitLog, Digest, Head};
 use crate::secure_unit::{self as unit, Context, Keys, Kind};
 use crate::shared::{ObjectInfo, SharedPool, VerifiedGraph};
 use crate::{Block, Compression, Device, Error, Ids, ObjectRole, Result};
+use alloc::collections::BTreeMap;
+use alloc::{boxed::Box, vec::Vec};
 use sha2::{Digest as _, Sha256};
-use std::collections::BTreeMap;
-use std::io::{Read, Write};
 mod inspect;
 pub mod scrub;
 pub use inspect::{StructuralReport, structural_check, verify_commit_replicas};
@@ -75,9 +76,9 @@ impl State {
     fn save(&self, d: &mut impl Device, pool: Id, g: u64) -> Result<Digest> {
         let base = FIRST_BANK + g % 4 * BANK_BLOCKS;
         let mut hash = Sha256::new();
-        for (i, page) in std::iter::once(&self.directory(pool, g)?)
+        for (i, page) in core::iter::once(&self.directory(pool, g)?)
             .chain(&self.prefix)
-            .chain(std::iter::once(self.proofs.as_ref()))
+            .chain(core::iter::once(self.proofs.as_ref()))
             .enumerate()
         {
             d.write(base + i as u64, page)?;
@@ -299,7 +300,7 @@ struct Media<'a, D> {
     /// Une lecture ciblée impose aussi le domaine attendu, indépendant du disque.
     read_scope: Option<Id>,
     write_scope: Option<Id>,
-    writer: Option<(&'a mut dyn Entropy, &'a std::cell::Cell<bool>)>,
+    writer: Option<(&'a mut dyn Entropy, &'a core::cell::Cell<bool>)>,
 }
 impl<'a, D: Device> Media<'a, D> {
     fn physical(&self, b: u64) -> Result<u64> {
@@ -449,7 +450,7 @@ impl<'a, 'guard> Validation<'a, 'guard> {
         &mut self,
         disk: &impl Device,
         h: &Head,
-        exclusive: Option<&'guard std::sync::MutexGuard<'guard, ()>>,
+        exclusive: Option<&'guard crate::sync::MutexGuard<'guard, ()>>,
     ) -> Result<()> {
         let mut state = State::load(disk, self.pool, h)?;
         let size = coord(disk.blocks())?;
@@ -842,7 +843,7 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
             .generation
             .checked_add(1)
             .ok_or(Error::Limit("génération P7"))?;
-        let submitted = std::cell::Cell::new(false);
+        let submitted = core::cell::Cell::new(false);
         let result = (|| {
             let media = Media {
                 disk: &mut self.disk,

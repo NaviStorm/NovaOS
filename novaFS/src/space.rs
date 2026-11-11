@@ -1,6 +1,7 @@
 //! Partition de l'espace non possédé, tenue en intervalles bornés.
 //! Âge zéro = libre ; un âge positif conserve une génération encore protégée.
 use crate::{Error, Result};
+use alloc::vec::Vec;
 
 pub(crate) const MAX_RUNS: usize = 4096;
 #[derive(Clone, Copy, Debug)]

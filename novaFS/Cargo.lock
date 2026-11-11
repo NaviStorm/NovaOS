@@ -290,6 +290,7 @@ dependencies = [
  "serde_json",
  "sha2 0.10.9",
  "sha2 0.11.1",
+ "spin",
  "tempfile",
  "zeroize",
 ]
@@ -411,6 +412,12 @@ dependencies = [
  "cpufeatures 0.3.1",
  "digest 0.11.3",
 ]
+
+[[package]]
+name = "spin"
+version = "0.9.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3763264f6b73151db08c50ff20d7d8a0b8796e021cdea7ceedad07b80155fa0e"
 
 [[package]]
 name = "syn"

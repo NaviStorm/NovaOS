@@ -87,10 +87,14 @@ impl Table {
 }
 fn enter() {
     let _irq = Guard::new();
-    let top = with(|s| s.thread(s.current).stack.top);
+    let (top, entry, user_top) = with(|s| {
+        let t = s.thread(s.current);
+        let space = s.processes.get(t.owner.unwrap()).space.as_ref().unwrap();
+        (t.stack.top, space.entry(), space.stack_top())
+    });
     // Sûreté : thread utilisateur fraîchement publié ; code RX et pile RW/NX
     // validés, racine active, IRQ masquées jusqu’au retour matériel.
-    unsafe { context::enter_user(top, user::CODE as usize, user::TOP as usize) }
+    unsafe { context::enter_user(top, entry as usize, user_top as usize) }
 }
 
 /// Droit noyau de suivre ce fils et de récolter son statut. Le PID numérique
@@ -110,7 +114,7 @@ impl WaitRight {
 }
 
 fn spawn_image(
-    image: &[u8],
+    image: &'static [u8],
     data: &[u8],
     private_ro: Option<&[u8]>,
     wait_on: Option<Child>,
@@ -124,7 +128,7 @@ fn spawn_image(
 
 // L’appelant maintient le masque IRQ jusqu’à publication du groupe.
 fn create_image(
-    image: &[u8],
+    image: &'static [u8],
     data: &[u8],
     private_ro: Option<&[u8]>,
     wait_on: Option<Child>,

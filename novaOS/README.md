@@ -14,9 +14,9 @@ Les six appels natifs historiques permettent de lire les identifiants du process
 
 Dix appels IPC permettent à des processus isolés de communiquer par endpoints unicast. Le noyau vérifie les capacités locales, livre les messages en FIFO et engage les transferts de droits à la réception. Un client peut envoyer jusqu’à 128 octets ou fusionner des notifications sur 64 bits. [Contrat IPC](docs/ipc-architecture.md) · [ABI binaire](docs/ipc-abi.md) · [Résultats et limites de la v0.8.0](docs/mesures-v0.8.0.md)
 
-## Prototype de stockage macOS
+## Stockage et portabilité de NovaFS
 
-NovaFS v0.9.12 s’exécute sur des images jetables dans le workspace voisin `../novaFS/`. NovaOS lance un service de stockage et son client en Ring 3 ou EL0. Ils consultent le nombre de volumes disponibles, puis ferment leur session. Le profil bloc optionnel fait passer READ, WRITE et FLUSH par le service NovaFS, le service bloc et le pilote en Ring 3 / EL0. Le profil manuel ouvre l’image en lecture seule. Les images de qualification sont jetables ; le moteur de fichiers NovaFS reste hors du noyau et n’est pas monté dans l’invité. [Transport, confinement et résultats v0.10.0](docs/stockage-bloc-v0.10.0.md) [Protocole, cycle de vie et qualification v0.9.0](docs/novafs-integration-v0.9.0.md) [Utiliser le prototype](../novaFS/README.md) · [Scrub et résultats de la qualification P8](../novaFS/docs/novafs-p8-scrub.md)
+NovaFS v0.9.12 s’exécute sur des images jetables dans le workspace voisin `../novaFS/`. NovaOS lance un service de stockage et son client en Ring 3 ou EL0. Ils consultent le nombre de volumes disponibles, puis ferment leur session. Le profil bloc optionnel fait passer READ, WRITE et FLUSH par le service NovaFS, le service bloc et le pilote en Ring 3 / EL0. Avec un disque attribué, le service ELF multipage initialise le codec NovaFS sur son tas privé. Le profil manuel ouvre l’image en lecture seule. [Chargement, mémoire et validation](docs/novafs-integration-v0.11.0.md) Les images de qualification sont jetables ; le moteur de fichiers NovaFS reste hors du noyau et n’est pas monté dans l’invité. [Transport, confinement et résultats v0.10.0](docs/stockage-bloc-v0.10.0.md) [Protocole, cycle de vie et qualification v0.9.0](docs/novafs-integration-v0.9.0.md) [Utiliser le prototype](../novaFS/README.md) · [Scrub et résultats de la qualification P8](../novaFS/docs/novafs-p8-scrub.md)
 
 ## Démarrage manuel dans QEMU
 
@@ -60,6 +60,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | `make ARCH=aarch64 ipc-races` | Force cinq ordres de réveil 10 000 fois chacun. |
 | `make ARCH=x86_64 ipc-perf` | Mesure six formes d’échange, au repos et sous contention. |
 | `make ARCH=aarch64 ipc-endurance DURATION=7200` | Contrôle chaque cycle d’IPC et mesure deux heures sur l’horloge hôte. Ces quatre cibles acceptent les deux architectures. |
+| `make ARCH=x86_64 elf-test` | Teste dans QEMU le chargeur ELF, le tas privé, les protections et la collecte. Accepte aussi `ARCH=aarch64`. |
 | `make clean` | Supprime les produits de compilation et de test dans `build/` et `target/`. |
 
 ### Compiler pour AArch64

@@ -1,5 +1,6 @@
 //! Lecteur du catalogue mono-PD de laboratoire P0, partagé avec sa fixture.
 use super::{Device, Error, Result};
+use alloc::vec::Vec;
 use sha2::{Digest, Sha256};
 
 pub type Uid = [u8; 16];

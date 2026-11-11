@@ -2,10 +2,11 @@
 use super::catalog::Entry;
 use super::{Pool, Uid};
 use crate::engine::Plan;
+use crate::sync::{Arc, Mutex, RwLock};
 use crate::{Block, CacheStats, Device, Engine, Error, Ids, Mode, Ref, Result, VolumePolicy};
-use std::collections::VecDeque;
-use std::sync::atomic::{AtomicU8, Ordering};
-use std::sync::{Arc, Mutex, RwLock};
+use alloc::collections::VecDeque;
+use alloc::vec::Vec;
+use core::sync::atomic::{AtomicU8, Ordering};
 
 const QUEUE_LIMIT: usize = 16;
 const PLAN_LIMIT: usize = 2;

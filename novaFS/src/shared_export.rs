@@ -1,11 +1,12 @@
 //! Export autonome d’une vue partagée. Le flux contient les pages nécessaires
 //! aux deux générations internes vérifiées. Les blocs libres restent implicites.
-use crate::device::{FileImage, Geometry};
+use crate::geometry::Geometry;
+use crate::io::Scratch;
+use crate::io::{ErrorKind, Read, Write};
 use crate::shared::{ObjectKind, SharedPool};
 use crate::{BLOCK_BYTES, Block, Device, Engine, Error, Ids, Mode, Result};
+use core::cell::RefCell;
 use sha2::{Digest, Sha256};
-use std::cell::RefCell;
-use std::io::{ErrorKind, Read, Write};
 
 const MAGIC: &[u8; 8] = b"NV5EXPRT";
 const END: &[u8; 8] = b"NV5XEND!";
@@ -194,11 +195,11 @@ pub(crate) fn exact(input: &mut impl Read, buf: &mut [u8]) -> Result<()> {
     }
 }
 
-fn materialize(mut input: impl Read) -> Result<(ExportInfo, FileImage)> {
+fn materialize(mut input: impl Read) -> Result<(ExportInfo, Scratch)> {
     let mut header = [0; HEAD];
     exact(&mut input, &mut header)?;
     let info = ExportInfo::decode(&header)?;
-    let mut image = FileImage::create(info.blocks, info.sector)?;
+    let mut image = Scratch::create(info.blocks, info.sector)?;
     let mut sha = Sha256::new();
     sha.update(DOMAIN);
     sha.update(header);

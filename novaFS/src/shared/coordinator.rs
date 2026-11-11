@@ -2,8 +2,9 @@
 //! ticket administratif peut invalider un plan préparé pour une vue disparue.
 use super::{PreparedContent, SharedPool};
 use crate::pool::coordinator::{Action, Kind, Queue};
+use crate::sync::{Mutex, RwLock, TryLockError};
 use crate::{Device, Error, Result};
-use std::sync::{Mutex, RwLock, TryLockError};
+use alloc::vec::Vec;
 
 pub struct SharedCoordinator<D: Device> {
     pool: RwLock<SharedPool<D>>,

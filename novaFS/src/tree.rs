@@ -2,7 +2,8 @@
 //! réécrit le chemin modifié et, lors d’une fusion, un voisin du même parent.
 use crate::codec::{HEADER, Ids, Ref, TREE, check_meta, finish_meta, le16, le64};
 use crate::{Block, Error, Result};
-use std::cmp::Ordering;
+use alloc::vec::Vec;
+use core::cmp::Ordering;
 
 #[repr(u16)]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
@@ -39,7 +40,7 @@ impl Family {
                     && !name.contains(&b'/')
                     && name != b"."
                     && name != b".."
-                    && std::str::from_utf8(name).is_ok()
+                    && core::str::from_utf8(name).is_ok()
             }
             Self::Extents => key.len() == 16,
             _ => key.len() == 8,

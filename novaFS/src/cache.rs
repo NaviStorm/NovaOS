@@ -1,6 +1,7 @@
 //! Cache propre par montage. Les listes de seaux et CLOCK référencent des
 //! indices dans un tableau borné ; aucune entrée n'est allouée sur un hit.
 use crate::{Block, Error, Ref, Result, tree::Family};
+use alloc::{boxed::Box, vec::Vec};
 
 const DEFAULT_PAGES: usize = 256;
 const MAX_PAGES: usize = 512;
@@ -215,7 +216,7 @@ impl Cache {
         }
         // Seconde chance : au plus un tour complet, puis une victime. Son
         // allocation de 4 Kio est réutilisée sans pic d'une page supplémentaire.
-        #[cfg(feature = "latency-probes")]
+        #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
         let _sample = crate::latency_probes::enter(crate::latency_probes::Phase::Eviction);
         loop {
             self.counts.clock_steps = self.counts.clock_steps.saturating_add(1);
@@ -272,7 +273,7 @@ impl Cache {
             payload_bytes: pages * size_of::<Block>(),
             metadata_bytes,
             charged_bytes: pages * size_of::<Block>() + metadata_bytes,
-            fixed_bytes: size_of::<std::sync::Mutex<Self>>(),
+            fixed_bytes: size_of::<crate::sync::Mutex<Self>>(),
             ..self.counts
         }
     }

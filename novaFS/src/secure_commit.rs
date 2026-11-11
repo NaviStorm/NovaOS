@@ -3,6 +3,7 @@
 //! contient deux attestations dans des blocs disjoints. F1 stabilise le graphe
 //! complet avant la production de ces attestations. F2 précède l'acquittement.
 use crate::{BLOCK_BYTES, Block, Device, Error, Result, crypto::Secret};
+use alloc::boxed::Box;
 
 pub type Digest = [u8; 32];
 pub const COMMIT_BLOCKS: u64 = 8;

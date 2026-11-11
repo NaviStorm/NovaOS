@@ -186,7 +186,7 @@ impl Unit<'_> {
 // LZ4 block sans dictionnaire. La table de recherche locale de 2 Kio ne
 // contient que des indices dans le bloc logique courant.
 fn encode_block(src: &Block, dst: &mut [u8]) -> Option<usize> {
-    #[cfg(feature = "latency-probes")]
+    #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
     let _probe = crate::latency_probes::enter(crate::latency_probes::Phase::Compression);
     let mut table = [u16::MAX; 1024];
     let mut written = 0;
@@ -265,7 +265,7 @@ fn length(input: &mut &[u8], nibble: u8) -> Result<usize> {
 /// Le décodeur ne lit aucun octet hors du flux et initialise strictement
 /// les 4 Kio promis. Les copies chevauchantes ne lisent que le préfixe produit.
 fn decode_block(mut src: &[u8]) -> Result<Block> {
-    #[cfg(feature = "latency-probes")]
+    #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
     let _probe = crate::latency_probes::enter(crate::latency_probes::Phase::Decompression);
     let mut output = [0; BLOCK_BYTES];
     let mut pos = 0;

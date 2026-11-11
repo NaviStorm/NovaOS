@@ -598,11 +598,12 @@ fn launch_error(e: Error) -> u64 {
     match e {
         Error::Full => LIMIT,
         Error::Memory(crate::memory::Error::Exhausted) => NO_MEMORY,
+        Error::Memory(_) => BAD_ARGUMENT,
         _ => panic!("lanceur IPC : {e:?}"),
     }
 }
 
-pub(super) fn launch<const N: usize>(members: [(&[u8], u32); N]) -> Res<[Child; N]> {
+pub(super) fn launch<const N: usize>(members: [(&'static [u8], u32); N]) -> Res<[Child; N]> {
     assert!(N > 0 && N <= 32 && members[0].1 == ALL);
     let _irq = Guard::new();
     let mut group: [Option<Child>; N] = core::array::from_fn(|_| None);
@@ -732,7 +733,7 @@ fn retire_unpublished(child: Child) {
 }
 
 pub(super) fn launch_session(
-    service: &[u8],
+    service: &'static [u8],
     client: &'static [u8],
     rounds: u64,
 ) -> Res<(Service, Child)> {
@@ -775,7 +776,7 @@ pub(super) fn end_measure(hz: u64) {
 /// Deux sessions privées : NovaFS ↔ service bloc ↔ pilote. Une image n'obtient
 /// que les deux sens IPC de son voisin. Le droit matériel est lié au seul pilote.
 pub(super) fn launch_block<const N: usize>(
-    images: [(&[u8], u32); N],
+    images: [(&'static [u8], u32); N],
     key: u64,
     mode: u64,
 ) -> Res<[Child; N]> {

@@ -46,3 +46,7 @@ block-perf: kernel
 SECTOR ?= 512
 block-run: kernel
 	python3 scripts/bloc_qemu.py --sector "$(SECTOR)" "$(IMAGE)"
+
+.PHONY: elf-test
+elf-test: kernel
+	python3 tests/elf.py

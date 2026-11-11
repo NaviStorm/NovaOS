@@ -4,8 +4,9 @@ use super::catalog::{
     validate_pair,
 };
 use super::{GRAIN, Type, Uid};
+use crate::sync::{Arc, Mutex};
 use crate::{Block, Device, Error, Result};
-use std::sync::{Arc, Mutex};
+use alloc::{boxed::Box, vec::Vec};
 const ADMIN: Uid = [0x72; 16];
 
 impl Catalog {
@@ -206,7 +207,7 @@ impl<D: Device> Pool<D> {
             phase: "F2 du pool",
             cause: Box::new(cause),
         })?;
-        self.older = std::mem::replace(&mut self.head, c);
+        self.older = core::mem::replace(&mut self.head, c);
         self.hash = h;
         self.health = Health::Healthy;
         Ok(())

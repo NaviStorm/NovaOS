@@ -1,6 +1,7 @@
 //! Records de feuilles P0. Chaque scalaire est lu dans une tranche vérifiée.
 use super::{Kind, Stat};
 use crate::{Error, Result, codec::Ref};
+use alloc::{borrow::ToOwned, string::String, vec::Vec};
 
 pub(super) const ROOT: u64 = 1;
 pub(super) const MAX_DEPTH: usize = 32;
@@ -35,7 +36,7 @@ pub(super) fn name_key(parent: u64, name: &str) -> Vec<u8> {
 pub(super) fn parse_name_key(key: &[u8]) -> Result<(u64, &str)> {
     let head = key.get(..10).ok_or(Error::Corrupt("clé de nom tronquée"))?;
     let len = usize::from(u16::from_le_bytes([head[8], head[9]]));
-    let name = std::str::from_utf8(&key[10..]).map_err(|_| Error::Corrupt("nom UTF-8"))?;
+    let name = core::str::from_utf8(&key[10..]).map_err(|_| Error::Corrupt("nom UTF-8"))?;
     if len != name.len() || !valid_name(name) {
         return Err(Error::Corrupt("nom interdit"));
     }
@@ -110,7 +111,7 @@ impl Object {
         };
         let parent = number(&head[18..26])?;
         let len = usize::from(u16::from_le_bytes([head[26], head[27]]));
-        let name = std::str::from_utf8(&data[28..]).map_err(|_| Error::Corrupt("nom d’objet"))?;
+        let name = core::str::from_utf8(&data[28..]).map_err(|_| Error::Corrupt("nom d’objet"))?;
         let attachment_ok = if id == ROOT {
             !dead && kind == Kind::Directory && parent == ROOT && name.is_empty()
         } else if dead {
@@ -199,7 +200,7 @@ impl Run {
         }
     }
 
-    pub fn slice(&self, range: std::ops::Range<usize>) -> Self {
+    pub fn slice(&self, range: core::ops::Range<usize>) -> Self {
         Self {
             first: self.first + range.start as u64,
             birth: self.birth,

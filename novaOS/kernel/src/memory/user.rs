@@ -1,5 +1,8 @@
 //! Propriété des mappings privés. Toutes les copies passent par le HHDM du cadre validé.
 use super::*;
+mod elf;
+pub(crate) use elf::STACK_TOP as ELF_TOP;
+use elf::{Elf, HEAP};
 
 pub const CODE: u64 = 0x400000;
 pub const DATA: u64 = 0x401000;
@@ -11,12 +14,20 @@ pub(crate) struct UserSpace {
     tables: AddressSpace,
     mapped: [u64; 4],
     len: usize,
+    elf: Option<Elf<'static>>,
+    loaded: usize,
+    stack_extra: usize,
+    heap_pages: usize,
 }
 
 impl UserSpace {
     pub(crate) fn audit_driver(&self, m: &Memory, dma: &[u64; 24]) -> bool {
-        self.tables
-            .audit_driver(&m.frames, &self.mapped[..self.len], dma)
+        self.tables.audit_driver(
+            &m.frames,
+            |va| self.owns(va),
+            self.page_counts().0 + self.page_counts().1,
+            dma,
+        )
     }
 
     pub fn id(&self) -> SpaceId {
@@ -24,7 +35,23 @@ impl UserSpace {
     }
 
     fn add(&mut self, m: &mut Memory, va: u64, perm: Access, bytes: &[u8]) -> Result<()> {
-        if bytes.len() > PAGE as usize || self.len == self.mapped.len() {
+        if self.len == self.mapped.len() {
+            return Err(Error::Geometry);
+        }
+        self.map(m, va, perm, 0, bytes)?;
+        self.mapped[self.len] = va;
+        self.len += 1;
+        Ok(())
+    }
+    fn map(
+        &self,
+        m: &mut Memory,
+        va: u64,
+        perm: Access,
+        offset: usize,
+        bytes: &[u8],
+    ) -> Result<()> {
+        if bytes.len() > PAGE as usize - offset {
             return Err(Error::Geometry);
         }
         let frame = m.frames.take()?;
@@ -34,21 +61,24 @@ impl UserSpace {
             .expect("HHDM du cadre privé");
         let dst = m.frames.direct(frame).cast::<u8>();
         // Sûreté : cadre neuf, exclusif et zéro ; la copie bornée précède toute publication.
-        unsafe { core::ptr::copy_nonoverlapping(bytes.as_ptr(), dst, bytes.len()) };
+        unsafe { core::ptr::copy_nonoverlapping(bytes.as_ptr(), dst.add(offset), bytes.len()) };
         let desc = paging::user_leaf(frame, perm, alias.cache);
         if let Err(e) = self.tables.insert(&mut m.frames, va, desc) {
             m.frames.release(frame);
             return Err(e);
         }
-        self.mapped[self.len] = va;
-        self.len += 1;
         if perm != Access::ReadWrite {
             alias.protect(&mut m.frames, Access::ReadOnly);
         }
         if perm == Access::ReadExecute {
             paging::sync_user_code(dst as u64);
         }
-        if !paging::matches(self.tables.descriptor(&m.frames, va)?, desc) {
+        if !self
+            .tables
+            .descriptor(&m.frames, va)
+            .is_ok_and(|installed| paging::matches(installed, desc))
+        {
+            Self::release_page(&self.tables, m, va);
             return Err(Error::Verification);
         }
         Ok(())
@@ -56,26 +86,61 @@ impl UserSpace {
 
     pub fn new(
         m: &mut Memory,
-        image: &[u8],
+        image: &'static [u8],
         config: &[u8],
         private_ro: Option<&[u8]>,
     ) -> Result<Self> {
         if image.is_empty() {
             return Err(Error::Geometry);
         }
+        let elf = if image.starts_with(b"\x7fELF") {
+            Some(Elf::parse(image)?)
+        } else {
+            None
+        };
+        if elf.is_some() && private_ro.is_some() {
+            return Err(Error::Geometry);
+        }
         let mut s = Self {
             tables: AddressSpace::user(&mut m.frames, &m.space)?,
             mapped: [0; 4],
             len: 0,
+            elf,
+            loaded: 0,
+            stack_extra: 0,
+            heap_pages: 0,
         };
         let result = (|| {
-            s.add(m, CODE, Access::ReadExecute, image)?;
+            if let Some(e) = elf {
+                for seg in e.segments() {
+                    let file_end = seg.start + seg.filesz as u64;
+                    for va in seg.pages() {
+                        let lo = va.max(seg.start);
+                        let size = (va + PAGE).min(file_end).saturating_sub(lo) as usize;
+                        let offset = seg.offset + ((lo - seg.start) as usize).min(seg.filesz);
+                        s.map(
+                            m,
+                            va,
+                            seg.access,
+                            (lo - va) as usize,
+                            &image[offset..offset + size],
+                        )?;
+                        s.loaded += 1;
+                    }
+                }
+                for va in (e.stack..ELF_TOP - PAGE).step_by(PAGE as usize) {
+                    s.map(m, va, Access::ReadWrite, 0, &[])?;
+                    s.stack_extra += 1;
+                }
+            } else {
+                s.add(m, CODE, Access::ReadExecute, image)?;
+            }
             s.add(m, DATA, Access::ReadWrite, config)?;
-            s.add(m, STACK, Access::ReadWrite, &[])?;
+            s.add(m, s.stack_top() - PAGE, Access::ReadWrite, &[])?;
             if let Some(payload) = private_ro {
                 s.add(m, PRIVATE, Access::ReadOnly, payload)?;
             }
-            for guard in [STACK - PAGE, TOP] {
+            for guard in [s.stack_bottom() - PAGE, s.stack_top()] {
                 if s.tables.descriptor(&m.frames, guard) != Err(Error::Missing) {
                     return Err(Error::Verification);
                 }
@@ -90,12 +155,74 @@ impl UserSpace {
     }
 
     pub(crate) fn page_counts(&self) -> (usize, usize) {
-        (self.len - 1, 1)
+        (
+            self.len - 1 + self.loaded + self.heap_pages,
+            1 + self.stack_extra,
+        )
     }
 
+    pub fn entry(&self) -> u64 {
+        self.elf.map_or(CODE, |e| e.entry)
+    }
+    pub fn stack_top(&self) -> u64 {
+        if self.elf.is_some() { ELF_TOP } else { TOP }
+    }
+    pub fn stack_bottom(&self) -> u64 {
+        self.elf.map_or(STACK, |e| e.stack)
+    }
+    pub fn executable(&self, pc: u64) -> bool {
+        self.elf.map_or_else(
+            || (CODE..CODE + PAGE).contains(&pc),
+            |e| {
+                e.segments()
+                    .any(|s| s.access == Access::ReadExecute && (s.start..s.end).contains(&pc))
+            },
+        )
+    }
+    fn owns(&self, page: u64) -> bool {
+        self.mapped[..self.len].contains(&page)
+            || (self.stack_bottom()..self.stack_top() - PAGE).contains(&page)
+            || (HEAP..self.heap_end()).contains(&page)
+            || self.elf.is_some_and(|e| {
+                e.segments()
+                    .any(|s| (s.start & !(PAGE - 1)) <= page && page < s.end)
+            })
+    }
+    fn heap_end(&self) -> u64 {
+        HEAP + self.heap_pages as u64 * PAGE
+    }
+    /// Comparaison de l'ancienne borne et déplacement atomique en pages.
+    pub fn resize_heap(&mut self, m: &mut Memory, expected: u64, end: u64) -> Result<u64> {
+        let old = self.heap_end();
+        if expected == 0 && end == 0 {
+            return Ok(old);
+        }
+        if expected != old || !(HEAP..=(1 << 47)).contains(&end) || end % PAGE != 0 {
+            return Err(Error::Geometry);
+        }
+        if end > old {
+            if (end - old) / PAGE > m.frames.available {
+                return Err(Error::Exhausted);
+            }
+            for va in (old..end).step_by(PAGE as usize) {
+                if let Err(e) = self.map(m, va, Access::ReadWrite, 0, &[]) {
+                    for mapped in (old..va).step_by(PAGE as usize) {
+                        Self::release_page(&self.tables, m, mapped)
+                    }
+                    return Err(e);
+                }
+            }
+        } else {
+            for va in (end..old).step_by(PAGE as usize) {
+                Self::release_page(&self.tables, m, va)
+            }
+        }
+        self.heap_pages = ((end - HEAP) / PAGE) as usize;
+        Ok(end)
+    }
     fn frame_for(&self, m: &Memory, va: u64, write: bool) -> Option<u64> {
         let page = va & !(PAGE - 1);
-        if !self.mapped[..self.len].contains(&page) {
+        if !self.owns(page) {
             return None;
         }
         let desc = self.tables.descriptor(&m.frames, page).ok()?;
@@ -253,6 +380,17 @@ impl UserSpace {
 
     /// Espace inactif, dernier thread commuté. Seules les branches basses sont possédées.
     pub fn release(self, m: &mut Memory) {
+        if let Some(e) = self.elf {
+            for va in e.segments().flat_map(|s| s.pages()).take(self.loaded) {
+                Self::release_page(&self.tables, m, va)
+            }
+            for i in 0..self.stack_extra {
+                Self::release_page(&self.tables, m, e.stack + i as u64 * PAGE)
+            }
+        }
+        for va in (HEAP..self.heap_end()).step_by(PAGE as usize) {
+            Self::release_page(&self.tables, m, va)
+        }
         for va in self.mapped[..self.len].iter().copied().rev() {
             Self::release_page(&self.tables, m, va);
         }
@@ -262,4 +400,33 @@ impl UserSpace {
         ));
         m.frames.release_table(self.tables.root);
     }
+}
+
+/// Les images mutées restent des octets du banc. Le parseur doit les rejeter avant tout mapping.
+pub(crate) fn check_elf_headers(image: &[u8]) {
+    assert!(Elf::parse(image).is_ok());
+    let ph = u64::from_le_bytes(image[32..40].try_into().unwrap()) as usize;
+    let va = u64::from_le_bytes(image[ph + 16..ph + 24].try_into().unwrap());
+    let mut trial = image.to_vec();
+    for (offset, value) in [
+        (32, u64::MAX),
+        (24, 0),
+        (24, HEAP),
+        (ph + 8, u64::MAX),
+        (ph + 16, u64::MAX - 1),
+        (ph + 16, 0xffff_8000_0000_0000),
+        (ph + 16, DATA),
+        (ph + 32, u64::MAX),
+        (ph + 48, 3),
+        (ph + 56 + 16, va),
+        (ph + 8, 1),
+    ] {
+        trial[offset..offset + 8].copy_from_slice(&value.to_le_bytes());
+        assert!(Elf::parse(&trial).is_err());
+        trial[offset..offset + 8].copy_from_slice(&image[offset..offset + 8]);
+    }
+    trial[ph + 4..ph + 8].copy_from_slice(&7u32.to_le_bytes());
+    assert!(Elf::parse(&trial).is_err());
+    assert!(Elf::parse(&image[..63]).is_err());
+    assert!(Elf::parse(&image[..ph + 55]).is_err());
 }

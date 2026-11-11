@@ -1,0 +1,3 @@
+# Les threads NovaOS ne disposent pas encore de contexte SIMD.
+[target.'cfg(target_os = "none")']
+rustflags = ["--cfg", 'sha2_backend="soft"', "--cfg", 'chacha20_backend="soft"', "--cfg", 'poly1305_backend="soft"']

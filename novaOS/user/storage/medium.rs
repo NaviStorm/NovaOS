@@ -4,7 +4,7 @@ use crate::runtime::*;
 #[allow(dead_code)]
 #[path = "../../abi/block.rs"]
 mod w;
-struct Block {
+pub(crate) struct Block {
     tx: u64,
     rx: u64,
     tag: u64,
@@ -19,7 +19,8 @@ impl Block {
             return Err(BAD_ARGUMENT);
         }
         if r.len == 1 {
-            return Err(r.payload[0] as u64);
+            let status = u64::from(r.payload[0]);
+            return Err(if status == OK { BAD_ARGUMENT } else { status });
         }
         if r.len != 128 || buf[..3] != r.payload[..3] {
             return Err(BAD_ARGUMENT);
@@ -33,7 +34,8 @@ impl Block {
         Ok(b)
     }
     #[inline(never)]
-    fn sector(&mut self, size: usize, lba: u64, write: bool) -> Result<()> {
+    pub(crate) fn transfer(&mut self, bytes: &mut [u8], lba: u64, write: bool) -> Result<()> {
+        let size = bytes.len();
         let op = if write { w::WRITE } else { w::READ };
         let base = |phase| {
             let mut f = w::blank(op);
@@ -51,21 +53,43 @@ impl Block {
             w::put(&mut f, 4, n as u32);
             w::put(&mut f, 16, at as u32);
             if write {
-                for i in 0..n {
-                    f[32 + i] = pattern(lba, at + i)
-                }
+                f[32..32 + n].copy_from_slice(&bytes[at..at + n]);
             }
             self.exchange(&mut f)?;
             if !write {
-                for i in 0..n {
-                    if f[32 + i] != pattern(lba, at + i) {
-                        return Err(REFUSED);
-                    }
+                if w::lba(&f) != lba
+                    || w::number(&f, 4) != n as u32
+                    || w::number(&f, 16) != at as u32
+                {
+                    return Err(BAD_FRAME as u64);
                 }
+                bytes[at..at + n].copy_from_slice(&f[32..32 + n]);
             }
         }
         if write {
             self.exchange(&mut base(w::END))?
+        }
+        Ok(())
+    }
+    pub(crate) fn flush(&mut self) -> Result<()> {
+        self.command(w::FLUSH).map(|_| ())
+    }
+    fn sector(&mut self, size: usize, lba: u64, write: bool) -> Result<()> {
+        let mut page = [0; 4096];
+        let sector = &mut page[..size];
+        if write {
+            for (i, b) in sector.iter_mut().enumerate() {
+                *b = pattern(lba, i)
+            }
+        }
+        self.transfer(sector, lba, write)?;
+        if !write
+            && sector
+                .iter()
+                .enumerate()
+                .any(|(i, &b)| b != pattern(lba, i))
+        {
+            return Err(REFUSED);
         }
         Ok(())
     }
@@ -86,6 +110,28 @@ fn exercise(d: &mut Block, mode: u64) -> Result<()> {
     let count = w::lba(&info);
     if !matches!(size, 512 | 4096) || count == 0 {
         return Err(BAD_ARGUMENT);
+    }
+    if matches!(mode, 9 | 10) {
+        use novafs::Device;
+        let mut device =
+            crate::device::IpcDevice::new(d, size as u32, count).map_err(crate::device::status)?;
+        let logical = 2;
+        if device.blocks() <= logical {
+            return Err(BAD_ARGUMENT);
+        }
+        let expected = core::array::from_fn(|i| pattern(logical, i));
+        if mode == 9 {
+            device
+                .write(logical, &expected)
+                .map_err(crate::device::status)?;
+            device.flush().map_err(crate::device::status)?;
+            log(b"NVFS adaptateur FLUSH confirme");
+        } else if device.read(logical).map_err(crate::device::status)? != expected {
+            return Err(REFUSED);
+        } else {
+            log(b"NVFS adaptateur READ 4096 confirme");
+        }
+        return Ok(());
     }
     if mode == 3 {
         log(b"NVFS INFO support accessible");

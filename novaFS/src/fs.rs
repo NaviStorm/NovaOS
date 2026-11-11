@@ -1,4 +1,5 @@
 //! Catalogue, hiérarchie et primitives locales du moteur sur image expérimentale.
+use alloc::{borrow::ToOwned, string::String, vec::Vec};
 mod check;
 mod data;
 mod record;

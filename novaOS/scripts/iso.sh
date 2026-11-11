@@ -15,13 +15,14 @@ cp "$root/boot/limine.conf" "$stage/root/"
 if [ "$#" -ne 0 ]; then
     [ "$#" -eq 2 ] || exit 2
     case "$1" in
-        storage-live|storage-write|storage-read|storage-perf|storage-eio|dma-flight|dma-fence|dma-user|dma-qual|storage-test|ipc-test|ipc-endurance|ipc-perf|ipc-races|abi-test|proc-test|proc-boot-fault|mem-test|mem-ro|mem-alias|mem-page-ro|mem-nx|mem-absent|heap-test|heap-oom|heap-corrupt|heap-reentrant|heap-metadata|heap-guard|heap-infallible|sched-test|sched-stress|sched-endurance|sched-guard|sched-fpu) ;;
+        elf-test|storage-page-write|storage-page-read|storage-live|storage-write|storage-read|storage-perf|storage-eio|dma-flight|dma-fence|dma-user|dma-qual|storage-test|ipc-test|ipc-endurance|ipc-perf|ipc-races|abi-test|proc-test|proc-boot-fault|mem-test|mem-ro|mem-alias|mem-page-ro|mem-nx|mem-absent|heap-test|heap-oom|heap-corrupt|heap-reentrant|heap-metadata|heap-guard|heap-infallible|sched-test|sched-stress|sched-endurance|sched-guard|sched-fpu) ;;
         *) exit 2 ;;
     esac
     printf '    cmdline: %s\n' "$1" >> "$stage/root/limine.conf"
     iso=$2
 fi
 cp -R "$root/licenses" "$stage/root/"
+python3 "$root/scripts/licences_service.py" "$rust_target" "$stage/root/licenses/service-novafs.txt"
 cp "$root/target/$rust_target/release/novaos" "$stage/root/boot/novaos.elf"
 xorriso -as mkisofs -R -J -V NOVAOS -e boot/limine-uefi-cd.bin \
     -no-emul-boot -efi-boot-part --efi-boot-image --protective-msdos-label \

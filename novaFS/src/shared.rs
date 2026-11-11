@@ -1,16 +1,17 @@
 //! Un seul écrivain par pool. Une vue possède une identité publique distincte
 //! du domaine de checksum de son contenu. Aucune adresse physique n'est exportée.
+use alloc::vec::Vec;
 mod coordinator;
 mod packing;
 use crate::shared_graph::{self as graph, Catalog, Entry, Graph, Kind, PageRef};
-use crate::{Block, Compression, Device, Engine, Error, Ids, Mode, Ref, Result};
-pub use coordinator::{SharedAdmin, SharedCoordinator, SharedRead, SharedWrite};
-use sha2::{Digest, Sha256};
-use std::collections::BTreeMap;
-use std::sync::{
+use crate::sync::{
     Mutex,
     atomic::{AtomicU8, Ordering},
 };
+use crate::{Block, Compression, Device, Engine, Error, Ids, Mode, Ref, Result};
+use alloc::collections::BTreeMap;
+pub use coordinator::{SharedAdmin, SharedCoordinator, SharedRead, SharedWrite};
+use sha2::{Digest, Sha256};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ObjectKind {
@@ -327,7 +328,7 @@ pub struct SharedPool<D> {
 /// Le prêt du verrou interdit de conserver ce résultat au-delà de la transaction.
 pub(crate) struct VerifiedGraph<'guard> {
     graph: Graph,
-    _exclusive: &'guard std::sync::MutexGuard<'guard, ()>,
+    _exclusive: &'guard crate::sync::MutexGuard<'guard, ()>,
 }
 
 impl VerifiedGraph<'_> {
@@ -365,7 +366,7 @@ impl<D: Device> SharedPool<D> {
     }
     pub(crate) fn verify_exclusive<'g>(
         dev: &D,
-        exclusive: &'g std::sync::MutexGuard<'g, ()>,
+        exclusive: &'g crate::sync::MutexGuard<'g, ()>,
     ) -> Result<VerifiedGraph<'g>> {
         Ok(VerifiedGraph {
             graph: Self::verify_graph(dev, true)?,
@@ -1064,7 +1065,7 @@ impl<D: Device> SharedPool<D> {
         let pages = if compression.is_some() {
             refs.values()
                 .map(|r| r.block)
-                .collect::<std::collections::BTreeSet<_>>()
+                .collect::<alloc::collections::BTreeSet<_>>()
                 .len()
         } else {
             refs.len()

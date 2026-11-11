@@ -1,8 +1,10 @@
 //! Banc macOS sur fichiers temporaires anonymes. Les chronos incluent les
 //! contrôles des résultats, les copies de données et les deux sync_all de commit.
+extern crate alloc;
 use novafs::device::{FileImage, Persistence, SimDevice, SimFault};
 #[cfg(feature = "latency-probes")]
 use novafs::latency_probes;
+use novafs::sync;
 use novafs::{Block, Device, Engine, Error, Ids, Mode, Ref, Result, tree};
 use std::{
     cell::{Cell, RefCell},

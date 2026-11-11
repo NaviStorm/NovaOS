@@ -231,14 +231,20 @@ impl Frames {
 impl AddressSpace {
     /// Énumération de l'espace réellement installé. Comparer à la liste privée
     /// exclut un alias non déclaré, même lorsque son adresse est inconnue du pilote.
-    pub(super) fn audit_driver(&self, frames: &Frames, expected: &[u64], dma: &[u64; 24]) -> bool {
+    pub(super) fn audit_driver(
+        &self,
+        frames: &Frames,
+        expected: impl Fn(u64) -> bool,
+        pages: usize,
+        dma: &[u64; 24],
+    ) -> bool {
         fn descend(
             f: &Frames,
             tab: u64,
             level: usize,
             prefix: u64,
             max: usize,
-            known: &[u64],
+            known: &impl Fn(u64) -> bool,
             deny: &[u64; 24],
             count: &mut usize,
         ) -> bool {
@@ -253,7 +259,7 @@ impl AddressSpace {
                     return false;
                 }
                 if level == 3 {
-                    if !known.contains(&va) {
+                    if !known(va) {
                         return false;
                     }
                     *count += 1;
@@ -266,9 +272,7 @@ impl AddressSpace {
             true
         }
         let mut count = 0;
-        if !descend(frames, self.root, 0, 0, 256, expected, dma, &mut count)
-            || count != expected.len()
-        {
+        if !descend(frames, self.root, 0, 0, 256, &expected, dma, &mut count) || count != pages {
             return false;
         }
         // Sur x86 le premier niveau U/S=0 suffit pour toutes les branches

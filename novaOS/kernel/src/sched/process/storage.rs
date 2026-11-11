@@ -24,7 +24,7 @@ fn wait(child: Child) -> Outcome {
     }
 }
 
-fn supervise(first: &[u8], lifetime: Lifetime) -> bool {
+fn supervise(first: &'static [u8], lifetime: Lifetime) -> bool {
     for (attempt, image) in [first, SERVICE].into_iter().enumerate() {
         let qualification = matches!(lifetime, Lifetime::Qualification);
         let (mut service, client) =
@@ -266,7 +266,7 @@ pub(crate) fn volume(mode: u64) -> bool {
         .unwrap();
         block::metrics::start(hz);
     }
-    let rights = if mode == 4 || mode == 6 || mode == 8 {
+    let rights = if mode == 4 || mode == 6 || mode == 8 || mode == 9 {
         1 | 2 | 4 | 8
     } else {
         1 | 8
@@ -331,4 +331,123 @@ pub(crate) fn volume(mode: u64) -> bool {
         ));
     }
     [a, s, d, b].iter().all(|x| *x == Outcome::Exit(0)) && retired.is_ok()
+}
+
+/// Exerce le même ELF que le vrai service bloc, dans son espace utilisateur privé.
+pub(crate) fn elf_test() {
+    fn spawn(mode: u64) -> Child {
+        let mut config = [0; 16];
+        config[8..].copy_from_slice(&mode.to_le_bytes());
+        spawn_image(MEDIA, &config, None, None).unwrap()
+    }
+    user::check_elf_headers(MEDIA);
+    let initial = heap::audit(true);
+    // Épuisement réel pendant le chargement, puis après une première page de tas.
+    heap::with_pages(|m| {
+        let before = m.free_pages();
+        let mut held = m.hold_for_probe(9)?;
+        assert!(matches!(
+            UserSpace::new(m, MEDIA, &[], None),
+            Err(crate::memory::Error::Exhausted)
+        ));
+        assert_eq!(m.free_pages(), 9);
+        held.restore_to(m, before);
+        let mut image = UserSpace::new(m, MEDIA, &[], None)?;
+        let saved = m.free_pages();
+        let base = image.resize_heap(m, 0, 0)?;
+        let mut held = m.hold_for_probe(5)?;
+        assert_eq!(
+            image.resize_heap(m, base, base + 5 * 4096),
+            Err(crate::memory::Error::Exhausted)
+        );
+        assert_eq!(image.resize_heap(m, 0, 0)?, base);
+        assert_eq!(m.free_pages(), 5);
+        held.restore_to(m, saved);
+        image.release(m);
+        assert_eq!(m.free_pages(), before);
+        Ok(())
+    })
+    .unwrap();
+    let hz = hal::timer::counter_hz();
+    heap::with_pages(|m| {
+        m.begin_frame_sample();
+        Ok(())
+    })
+    .unwrap();
+    let load_start = hal::timer::counter();
+    let image = heap::with_pages(|m| UserSpace::new(m, MEDIA, &[], None)).unwrap();
+    let load = hal::timer::counter() - load_start;
+    let free_start = hal::timer::counter();
+    heap::with_pages(|m| {
+        image.release(m);
+        Ok(())
+    })
+    .unwrap();
+    let free = hal::timer::counter() - free_start;
+    TIMING.store(true, Ordering::Relaxed);
+    let start = hal::timer::counter();
+    let first = spawn(101);
+    let created = hal::timer::counter() - start;
+    assert_eq!(wait(first), Outcome::Exit(0));
+    TIMING.store(false, Ordering::Relaxed);
+    for mode in [102, 103, 104, 105, 108, 109, 110, 111] {
+        let Outcome::Fault(f) = wait(spawn(mode)) else {
+            panic!("faute utilisateur attendue")
+        };
+        assert_eq!(
+            f.cause,
+            if matches!(mode, 108 | 109 | 111) {
+                "protection"
+            } else {
+                "absente"
+            }
+        );
+        match mode {
+            102 => assert_eq!(f.address, 1 << 46),
+            103 => assert!(
+                (user::ELF_TOP - 262144 - 4096..user::ELF_TOP - 262144).contains(&f.address)
+            ),
+            108 | 111 => assert_eq!(f.access, "ecriture"),
+            109 => assert_eq!(f.access, "execution"),
+            110 => assert_eq!(f.address, user::ELF_TOP),
+            _ => assert_eq!(f.address, 0x20000),
+        }
+        assert_eq!(heap::audit(true), initial);
+    }
+    let a = spawn(106);
+    let b = spawn(107);
+    measure("elf_deux_processus");
+    assert_eq!(wait(a), Outcome::Exit(0));
+    assert_eq!(wait(b), Outcome::Exit(0));
+    let stats = heap::with_pages(|m| Ok(m.end_frame_sample())).unwrap();
+    assert_eq!(heap::audit(true), initial);
+    hal::log(format_args!(
+        "ELF restitution OK libres={} allocations={} pic_cadres={} creation_cycles={created} chargement_cycles={load} collecte_cycles={free} hz={hz}",
+        initial.free_pages,
+        stats.allocations,
+        initial.free_pages - stats.minimum_free
+    ));
+}
+
+use core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+static TIMING: AtomicBool = AtomicBool::new(false);
+static BEGIN: AtomicU64 = AtomicU64::new(0);
+/// Marqueurs acceptés uniquement pendant la sonde mono-client ELF.
+pub(super) fn time_marker(msg: &str) -> bool {
+    if !TIMING.load(Ordering::Relaxed) {
+        return false;
+    }
+    if msg == "chrono debut" {
+        BEGIN.store(hal::timer::counter(), Ordering::Relaxed);
+        return true;
+    }
+    if matches!(
+        msg,
+        "alloc_free_4096" | "alloc_512" | "free_512" | "extension_2" | "retrait_2" | "vide"
+    ) {
+        let elapsed = hal::timer::counter() - BEGIN.load(Ordering::Relaxed);
+        hal::log(format_args!("ELF mesure {msg} cycles={elapsed}"));
+        return true;
+    }
+    false
 }

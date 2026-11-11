@@ -1,5 +1,6 @@
 //! Catalogue de volumes hôte. Le contrôle P2 demeure en lecture seule.
 use crate::{Block, Device, Error, Ids, IntegrityReport, Result, check_image};
+use alloc::vec::Vec;
 mod catalog;
 pub(crate) mod coordinator;
 mod manager;
@@ -60,7 +61,7 @@ pub(crate) fn visit_ready<D: Device>(
 ) -> Result<()> {
     let (mut old, mut head) = (load(dev, 0)?, load(dev, 1)?);
     if head.0.generation < old.0.generation {
-        std::mem::swap(&mut old, &mut head);
+        core::mem::swap(&mut old, &mut head);
     }
     validate_pair(&old.0, old.1, &head.0, head.1)?;
     if head.0.entries.iter().any(|e| e.kind != Type::Ready) {

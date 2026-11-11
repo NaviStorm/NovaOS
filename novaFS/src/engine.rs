@@ -1,13 +1,14 @@
 //! Publication et vérification des deux générations. Aucun Drop n'effectue d'E/S.
 use crate::codec::{Anchor, data_hash};
-#[cfg(feature = "latency-probes")]
+#[cfg(all(feature = "latency-probes", not(target_os = "none")))]
 use crate::latency_probes::{Phase, enter};
 use crate::space::Space;
 use crate::tree::{self, Family, Node, ReadTree, WriteTree};
 use crate::{Block, Device, Error, Ids, MAX_BLOCKS, Manifest, Ref, Result};
-use std::cell::Cell;
-use std::collections::BTreeMap;
-use std::sync::atomic::{AtomicU8, Ordering};
+use alloc::collections::BTreeMap;
+use alloc::{boxed::Box, vec::Vec};
+use core::cell::Cell;
+use core::sync::atomic::{AtomicU8, Ordering};
 
 const HEALTHY: u8 = 0;
 const FAULTED: u8 = 1;
@@ -244,7 +245,7 @@ fn inspect_heads<D: Device>(
     full: bool,
 ) -> Result<(Head, Allocation)> {
     if low.reference.birth > high.reference.birth {
-        std::mem::swap(&mut low, &mut high);
+        core::mem::swap(&mut low, &mut high);
     }
     let hv = DiskView::new(dev, ids, &high.m);
     let lv = DiskView::new(dev, ids, &low.m);
@@ -274,7 +275,7 @@ pub struct Engine<D> {
     alloc: Allocation,
     mode: Mode,
     health: AtomicU8,
-    cache: std::sync::Mutex<crate::cache::Cache>,
+    cache: crate::sync::Mutex<crate::cache::Cache>,
     salvage: bool,
     staging_limit: usize,
     policy: VolumePolicy,
@@ -343,7 +344,7 @@ impl<D: Device> ReadTree for Engine<D> {
             if let Some(bytes) = self.cached(Some(f), r)? {
                 return Node::decode(&bytes, self.ids, r, f);
             }
-            #[cfg(feature = "latency-probes")]
+            #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
             let _sample = enter(Phase::MetadataMiss);
             let bytes = self.dev.read(r.block)?;
             let node = Node::decode(&bytes, self.ids, r, f)?;
@@ -369,7 +370,7 @@ impl<D: Device> View for Engine<D> {
             if let Some(bytes) = self.cached(None, r)? {
                 return Ok(bytes);
             }
-            #[cfg(feature = "latency-probes")]
+            #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
             let _sample = enter(Phase::DataMiss);
             let bytes = check_payload(self.ids, r, self.dev.read(r.block)?)?;
             self.remember_checked(None, r, bytes)?;
@@ -411,11 +412,11 @@ impl<D: Device> Engine<D> {
         Ok(bits)
     }
 
-    fn cache(&self) -> std::sync::MutexGuard<'_, crate::cache::Cache> {
+    fn cache(&self) -> crate::sync::MutexGuard<'_, crate::cache::Cache> {
         self.cache.lock().expect("cache de lecture interrompu")
     }
     fn cached(&self, kind: Option<Family>, r: Ref) -> Result<Option<Block>> {
-        #[cfg(feature = "latency-probes")]
+        #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
         let _sample = enter(Phase::CacheLookup);
         let mut cache = self.cache();
         self.check_health()?;

@@ -1,5 +1,6 @@
 use super::*;
 use crate::Block;
+use alloc::{string::String, vec::Vec};
 
 pub(super) fn first_extent(v: &impl View, id: u64, at: u64) -> Result<Option<(u64, Run)>> {
     let f = Family::Extents;
@@ -17,7 +18,7 @@ pub(super) fn first_extent(v: &impl View, id: u64, at: u64) -> Result<Option<(u6
 }
 
 pub(super) fn covering(v: &impl View, id: u64, logical: u64) -> Result<Option<(u64, Run)>> {
-    #[cfg(feature = "latency-probes")]
+    #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
     let _sample = crate::latency_probes::enter(crate::latency_probes::Phase::Extent);
     let f = Family::Extents;
     let Some((k, val)) = tree::floor(v, root(v, f), f, &extent_key(id, logical))? else {

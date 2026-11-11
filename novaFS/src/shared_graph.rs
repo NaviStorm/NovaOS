@@ -2,8 +2,9 @@
 //! libre. Aucun compteur de référence indépendant ne doit être rejoué après panne.
 use self::ObjectRole as Role;
 use crate::{Block, Compression, Device, Error, Ids, MAX_BLOCKS, Result, compression};
+use alloc::collections::{BTreeMap, BTreeSet};
+use alloc::{boxed::Box, vec::Vec};
 use sha2::{Digest, Sha256};
-use std::collections::{BTreeMap, BTreeSet};
 
 pub(crate) type Key = [u8; 16];
 type Hash = [u8; 32];
@@ -376,7 +377,7 @@ fn select(dev: &impl Device, pool: Key, p6: bool) -> Result<(Record, Option<Reco
     if slots.len() == 2 {
         let mut other = read_catalog(dev, pool, slots[1], p6)?;
         if other.cat.generation > head.cat.generation {
-            std::mem::swap(&mut head, &mut other);
+            core::mem::swap(&mut head, &mut other);
         }
         link(&other, &head)?;
         return Ok((head, Some(other), true));
@@ -634,7 +635,7 @@ impl Graph {
 
     pub(crate) fn visible_catalogs(dev: &impl Device, pool: Key) -> Result<Vec<Catalog>> {
         let (head, previous) = Self::p6_catalogs(dev, pool)?;
-        Ok(std::iter::once(head.cat)
+        Ok(core::iter::once(head.cat)
             .chain(previous.map(|p| p.cat))
             .collect())
     }
@@ -670,7 +671,7 @@ impl Graph {
         let (head, parent) = Self::load_catalogs(dev)?;
         let mixed = read_markers(dev, head.cat.pool, head.cat.p6)?.len() != 1;
         Ok((
-            std::iter::once(head.cat)
+            core::iter::once(head.cat)
                 .chain(parent.map(|r| r.cat))
                 .collect(),
             mixed,
@@ -683,7 +684,7 @@ impl Graph {
         inspect: impl FnOnce(&Graph, &Entry) -> Result<T>,
     ) -> Result<T> {
         let (head, parent) = Self::load_catalogs(dev)?;
-        if !std::iter::once(&head)
+        if !core::iter::once(&head)
             .chain(parent.as_ref())
             .any(|r| r.cat.generation == generation && r.cat.entries.contains(entry))
         {
@@ -762,7 +763,7 @@ impl Graph {
     }
 
     pub(crate) fn protected_catalogs(&self) -> impl Iterator<Item = &Catalog> {
-        std::iter::once(&self.head).chain(self.previous.iter())
+        core::iter::once(&self.head).chain(self.previous.iter())
     }
 
     /// L'ouverture RO ne lance aucune barrière. Avant le premier réemploi RW,
@@ -1000,7 +1001,7 @@ impl Graph {
                 self.release(v.root.block);
             }
         }
-        self.previous = Some(std::mem::replace(&mut self.head, next));
+        self.previous = Some(core::mem::replace(&mut self.head, next));
         self.hash = hash;
         self.poisoned = false;
         self.pending.clear();
@@ -1664,14 +1665,14 @@ mod tests {
         fn write(&mut self, b: u64, data: &Block) -> Result<()> {
             self.ecritures += 1;
             self.disque.write(b, data)?;
-            if std::mem::take(&mut self.ecriture) {
+            if core::mem::take(&mut self.ecriture) {
                 return Err(Error::NoSpace);
             }
             Ok(())
         }
         fn flush(&mut self) -> Result<()> {
             self.disque.flush()?;
-            if std::mem::take(&mut self.flush) {
+            if core::mem::take(&mut self.flush) {
                 return Err(Error::NoSpace);
             }
             Ok(())

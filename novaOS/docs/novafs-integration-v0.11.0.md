@@ -1,4 +1,56 @@
-# Audit du portage de NovaFS en espace utilisateur
+# Préparation de NovaFS en espace utilisateur
+
+Base de réalisation `3ae21f71e89b5964086e03fbca0c1eef171a2a77`, NovaOS 0.10.0 et NovaFS 0.9.12. Le service lancé avec un disque attribué est un ELF utilisateur indépendant. Il initialise son allocateur à la première allocation, encode puis décode une page de B+Tree avec la bibliothèque NovaFS et vérifie son contenu. Dans le profil de qualification, il exerce aussi le véritable trait `Device` sur le transport IPC. **Le montage de volumes et les transactions fichier dans NovaOS restent à qualifier dans l’étape suivante.** L’audit historique figure en fin de document.
+
+## Chargement et protections
+
+Le lanceur admet des ELF64 statiques little-endian de la machine cible, fournis par la construction. Il vérifie les limites du tableau de programmes et de chaque plage de fichier, la congruence offset/adresse, les débordements et les adresses utilisateur. Chaque `PT_LOAD` non vide possède des pages exclusives. Deux segments partageant une page sont rejetés, même si leurs octets sont disjoints. Chaque page reçoit la partie initialisée de son segment, avec zéros dans la BSS et les marges. Le texte est RX, les constantes R/NX et les données RW/NX. L’entrée doit désigner des octets initialisés du texte. Les ELF dynamiques, l’interpréteur, TLS et les demandes W+X sont refusés. Les démonstrateurs plats historiques gardent leur profil d’origine.
+
+La taille de pile provient de `PT_GNU_STACK.p_memsz`, arrondie à la page. Le défaut est une page. Le service NovaFS demande 256 Kio. Une page non mappée protège chaque extrémité. Les images ELF reçoivent une page de configuration privée à `0x401000`. La pile descend sous l’adresse `2^46 − 8192`, le tas grandit à partir de `2^46`. Le noyau vérifie la plage exécutable de retour et le pointeur de pile propre au processus. Ces espaces utilisent les tables et le contrôle matériel Ring 3 ou EL0 existants. Une faute localisée entraîne la collecte de l’espace et le réveil de ses observateurs. Les mappings privés, leurs tables intermédiaires et leurs cadres restent attribués à un seul processus. Le chargeur restitue les pages déjà préparées si une admission échoue.
+
+## Tas privé et ABI
+
+Le sélecteur additionnel `HEAP_RESIZE = 0x00010041` utilise la convention de registres et la paire de retour `(status, value)` de l’ABI v1. Ses trois arguments sont des u64. `(0, 0, 0)` donne la borne exclusive courante. `(ancienne_borne, nouvelle_borne, 0)` compare puis déplace cette borne sous le même verrou mémoire. Les bornes sont alignées sur 4 Kio et appartiennent à la moitié utilisateur. Une extension fournit des pages zéro RW/NX. Un retrait rend les cadres et invalide leurs mappings. Le succès renvoie la nouvelle borne. Un argument non valide, une borne périmée ou un second retrait utilisant l’ancienne borne donne `BAD_ARGUMENT`. Une pénurie donne `NO_MEMORY`. Une extension échouée conserve la borne et le contenu antérieurs. Une demande sans changement est idempotente. Les seize sélecteurs historiques et le port privé du pilote gardent leurs numéros et conventions.
+
+Le sélecteur est nécessaire pour rendre et reprendre de la mémoire physique pendant la vie du service. Un tas imposé au lancement réserverait aussi son maximum au repos. `dlmalloc` gère les objets à l’intérieur de chaque ELF, avec un verrou local. Une libération d’objet le rend réutilisable par ce processus. Le noyau collecte le tas entier même si un service meurt dans l’allocateur. Les doubles retraits et adresses invalides sont testés à la frontière entre processus et noyau. La libération d’un pointeur Rust arbitraire par du code utilisateur `unsafe` reste hors contrat de `GlobalAlloc`. Une allocation Rust infaillible peut terminer le processus. Les réservations faillibles peuvent transmettre la pénurie à l’appelant. Le provisionnement des pages est immédiat et dépend des cadres effectivement disponibles. Un déplacement très grand garde la section critique mémoire pendant toute l’opération, ce qui peut augmenter la latence de préemption sur le système mono-CPU.
+
+[Chargeur ELF](../kernel/src/memory/user/elf.rs) · [Propriété et collecte](../kernel/src/memory/user.rs) · [Allocateur du service](../user/novafs/heap.rs) · [ABI native](../abi/native.rs)
+
+## Contrat de la prochaine interface fichier
+
+Ce contrat décrit les responsabilités à mettre en œuvre. Il faudra attribuer une version de trame fichier distincte du diagnostic v1 `INFO/FIN`. La découverte du service ou du support existant ne vaut pas ouverture d’un volume. Le superviseur distribue des capacités de session unicast. Le client possède SEND pour ses requêtes et RECEIVE pour ses réponses. Le service possède les droits complémentaires et conserve les capacités du canal bloc. Le client ne reçoit ni capacité de pilote, ni adresse de page, ni LBA. Le service valide les droits sur l’objet, la génération de session et le numéro de requête avant de consommer un fragment. Les droits applicatifs ci-dessous seront attribués par le superviseur et pourront seulement être réduits.
+
+| Opération | Autorité et résultat attendu | Erreurs ou fin d’opération |
+|---|---|---|
+| MOUNT | Autorité de montage sur le volume attribué. Vérifier profil, géométrie, génération, intégrité et clés requises. Un montage RW exige l’exclusivité sur le pool. Publier la session après ces contrôles. | Support absent, profil inconnu, corruption, volume verrouillé, conflit d’écrivain, pénurie ou erreur bloc. Libérer toute admission partielle. |
+| INFO | Droit de consultation sur la session montée. Renvoyer identité, géométrie, génération confirmée et mode effectivement vérifiés. | Session périmée ou fermée, volume indisponible. |
+| OPEN | Droit de parcours et de lecture ou écriture selon la demande. La création requiert le droit de mutation du répertoire. Retourner un handle opaque limité à la session avec génération et droits réduits. | Chemin invalide, objet absent, conflit de création, type incorrect, RO, manque de ressources. |
+| READ | Handle lisible, offset et longueur vérifiés. Réassembler les fragments validés. Rendre le compte réel, zéro à EOF. | Handle périmé, dépassement, intégrité ou E/S. Une réponse partielle doit préciser le nombre d’octets attestés. |
+| WRITE | Handle inscriptible, plages et taille totale contrôlées avant mutation, crédit de réservation acquis. Une écriture acquittée peut encore être en attente de publication durable. | Disque plein, quota, RO, pénurie, réception incomplète ou E/S. Abandonner les fragments incomplets avant publication. |
+| SYNC | Droit de mutation sur la session. Confirmer la génération seulement après les barrières F1 et F2 réellement acquittées sur le support attribué. | Un délai ou une perte de canal après soumission rend le résultat indéterminé. Reprendre et vérifier la génération avant toute nouvelle mutation. |
+| CLOSE | Droit sur le handle ou la session. Invalider sa génération et relâcher les références. Une fermeture de session clôt tous ses handles et son canal bloc. | Un second CLOSE est périmé. CLOSE ne promet pas la durabilité d’une transaction en attente. |
+
+Une requête de fichier peut employer plusieurs messages IPC bornés. L’identité de session, le tag, l’opération, la taille et l’offset du fragment doivent correspondre à l’attente. Après décès, les handles de cette session deviennent invalides. Une publication potentiellement soumise exige une reprise sur support stable. Le service bloc conserve ses opérations INFO, READ, WRITE, FLUSH et CLOSE et son découpage en fragments de 96 octets. L’adaptateur assemble 4 Kio avant de rendre une lecture au moteur. Une écriture ou un FLUSH en erreur ferme la vue et propage le statut du transport. Une ancienne branche du client pouvait interpréter une réponse d’erreur d’un octet de valeur zéro comme une sortie réussie du service. Le client rejette désormais cette trame comme invalide. Une nouvelle instance exigera une session de confiance. L’exclusivité d’écriture du pool et l’entropie native restent à qualifier avant les mutations protégées.
+
+[Transport sectoriel](../abi/block.rs) · [Adaptateur NovaFS](../user/novafs/device.rs) · [Portabilité du moteur](../../novaFS/docs/novafs-coeur-portable.md)
+
+## Validation et reproduction
+
+Les mesures et les résultats par architecture figurent dans le [rapport de qualification](validation/preparation-novafs-v0.11.0.md).
+
+Depuis la racine du monorepo :
+
+```sh
+for a in x86_64 aarch64; do
+    make -C novaOS ARCH="$a" elf-test test block-test block-perf ipc-test ipc-races ipc-perf || exit 1
+done
+```
+
+Le banc utilise des images brutes jetables. L’oracle de l’hôte vérifie le fichier entier après WRITE, FLUSH et arrêt forcé de la VM. Une deuxième VM relit la page. Ces opérations portent sur un bloc brut. Le futur parcours fichier devra créer et modifier un fichier, synchroniser la transaction, couper la VM, contrôler l’image avec NovaFS côté hôte puis remonter en invité.
+
+---
+
+## Audit initial sur la base 2e9ad2c
 
 **Décision du 11 novembre 2026 — arrêt avant implémentation.** Sur la base propre `2e9ad2c261652ffbf7edc30457bb2980b3caeb84` de `main`, le service NovaOS 0.10.0 sait relire un secteur synchronisé après redémarrage. Il ne peut pas héberger le moteur NovaFS 0.9.12 dans son espace utilisateur actuel. Deux travaux distincts nécessitent un arbitrage : le chargement de services à plusieurs segments et la séparation du moteur transactionnel de son environnement Darwin. Les licences vérifiées sont [MIT pour NovaOS](../LICENSE) et [MPL-2.0 pour NovaFS](../../novaFS/LICENSE).
 
@@ -62,7 +114,7 @@ done
 python3 novaFS/lab/p7-no-std.py
 ```
 
-Pour reproduire les deux échecs du paquet complet avec les cibles Rust installées :
+Sur la révision initiale 2e9ad2c, les deux échecs du paquet complet se reproduisaient avec les cibles Rust installées :
 
 ```sh
 cd novaFS

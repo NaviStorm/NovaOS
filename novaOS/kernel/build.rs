@@ -24,7 +24,6 @@ fn main() {
         "storage/relay",
         "storage/disk",
         "storage/requester",
-        "storage/media",
         "storage/control",
     ] {
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
@@ -32,15 +31,8 @@ fn main() {
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
         let compact = matches!(
             name,
-            "storage/relay"
-                | "storage/disk"
-                | "storage/requester"
-                | "storage/media"
-                | "storage/control"
+            "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
-        if name == "storage/media" {
-            rust.args(["--cfg", "block_media"]);
-        }
         if compact {
             rust.args([
                 "-C",
@@ -52,11 +44,7 @@ fn main() {
             ]);
         }
         let ok = rust
-            .arg(user.join(if name == "storage/media" {
-                "storage/service.rs".into()
-            } else {
-                format!("{name}.rs")
-            }))
+            .arg(user.join(format!("{name}.rs")))
             .args([
                 "--edition=2024",
                 "--target",
@@ -82,4 +70,37 @@ fn main() {
             .expect("compilation du programme utilisateur");
         assert!(ok.success(), "édition de liens de {name}");
     }
+    println!("cargo::rerun-if-changed=../../novaFS/src");
+    println!("cargo::rerun-if-changed=../../novaFS/Cargo.toml");
+    let service = user.join("novafs");
+    let linker = service.join("service.ld").canonicalize().unwrap();
+    let work = out.join("service-target");
+    // Workspace et target-dir séparés pour que les dépendances invitées ne soient
+    // jamais liées à l'ELF superviseur, même en compilation incrémentale.
+    let flags = [
+        "-Crelocation-model=static",
+        "-Cno-redzone=yes",
+        "--cfg",
+        "sha2_backend=\"soft\"",
+        "--cfg",
+        "chacha20_backend=\"soft\"",
+        "--cfg",
+        "poly1305_backend=\"soft\"",
+        "-Clink-arg=-zmax-page-size=4096",
+        &format!("-Clink-arg=-T{}", linker.display()),
+    ]
+    .join("\x1f");
+    let result = Command::new(env::var_os("CARGO").unwrap())
+        .args(["build", "--release", "--locked", "--target", &target])
+        .current_dir(service)
+        .env("CARGO_TARGET_DIR", &work)
+        .env("CARGO_ENCODED_RUSTFLAGS", flags)
+        .status()
+        .expect("compilation du service NovaFS");
+    assert!(result.success(), "liaison du service NovaFS");
+    std::fs::copy(
+        work.join(target).join("release/novaos-storage"),
+        out.join("storage-media.bin"),
+    )
+    .unwrap();
 }

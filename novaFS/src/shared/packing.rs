@@ -2,7 +2,7 @@
 //! Le singleton conserve une copie de 4 Kio pour pouvoir revenir au format brut.
 use super::{Block, Device, Graph, PageRef, Result, graph};
 use crate::compression::{Packer, Push};
-use std::collections::BTreeMap;
+use alloc::collections::BTreeMap;
 
 pub(super) struct Group {
     packer: Packer,
@@ -59,7 +59,7 @@ impl Group {
         dev: &mut impl Device,
         refs: &mut BTreeMap<u64, PageRef>,
     ) -> Result<()> {
-        let pack = std::mem::take(&mut self.packer);
+        let pack = core::mem::take(&mut self.packer);
         let mut slots = [0u16; 16];
         let mut count = 0;
         for lba in pack.lbas() {
