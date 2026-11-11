@@ -206,6 +206,6 @@ Depuis la racine du dépôt, les commandes suivantes rejouent les suites de réf
 )
 ```
 
-La version Cargo reste v0.9.9. Les licences vérifiées sont MPL-2.0 pour le paquet NovaFS et MIT pour NovaOS. [Manifeste NovaFS](../Cargo.toml) · [Licence NovaFS](../LICENSE) · [Licence NovaOS](../../LICENSE)
+La version Cargo reste v0.9.9. Les licences vérifiées sont MPL-2.0 pour le paquet NovaFS et MIT pour NovaOS. [Manifeste NovaFS](../Cargo.toml) · [Licence NovaFS](../LICENSE) · [Licence NovaOS](../../novaOS/LICENSE)
 
 </details>

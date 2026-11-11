@@ -63,7 +63,7 @@ La vérification a aussi retrouvé les douze invariants dans la matrice, les dix
 
 ## Reproduction
 
-Depuis la racine du dépôt, remplacer la cible par `aarch64` pour la seconde machine.
+Depuis le répertoire `novaOS/`, remplacer la cible par `aarch64` pour la seconde machine.
 
 ```sh
 make ARCH=x86_64 test

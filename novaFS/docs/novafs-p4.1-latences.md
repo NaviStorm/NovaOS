@@ -101,7 +101,7 @@ Un contrôle distinct sur les cinq cycles mixtes a comparé P4 et P4.1 sans autr
 
 ## Reproduction
 
-Depuis la racine de NovaOS, sur un Mac Apple Silicon avec Rosetta, les deux cibles Rust Darwin et les dépendances Cargo hors ligne :
+Depuis la racine du monorepo, sur un Mac Apple Silicon avec Rosetta, les deux cibles Rust Darwin et les dépendances Cargo hors ligne :
 
 ```sh
 set -eu

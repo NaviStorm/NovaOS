@@ -1,7 +1,8 @@
 #!/bin/sh
 set -eu
-. scripts/target.sh
-iso=${NOVA_ISO:-$iso}
+root=$(CDPATH= cd "$(dirname "$0")/.." && pwd)
+. "$root/scripts/target.sh"
+iso=${NOVA_ISO:-"$root/$iso"}
 
 case "${NOVA_ARCH:-x86_64}" in
     x86_64)

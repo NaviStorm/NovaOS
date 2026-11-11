@@ -2,3 +2,8 @@
 /target/
 .DS_Store
 __pycache__/
+/novaOS/build/
+/novaOS/target/
+*.iso
+*.img
+*.log

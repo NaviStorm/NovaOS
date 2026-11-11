@@ -4,7 +4,7 @@ La v0.7.0 remplace les deux portes de sortie expérimentales décrites pour la v
 
 ## Démarrer la démonstration
 
-Depuis la racine du dépôt sur macOS ARM64, lancer la VM choisie. Le démarrage normal affiche la bannière et écrit sur le port série les résultats des deux processus. Les PID 1 et 2 doivent sortir avec les codes 41 et 82. L’ordre de sortie dépend des interruptions.
+Depuis le répertoire `novaOS/` sur macOS ARM64, lancer la VM choisie. Le démarrage normal affiche la bannière et écrit sur le port série les résultats des deux processus. Les PID 1 et 2 doivent sortir avec les codes 41 et 82. L’ordre de sortie dépend des interruptions.
 
 ```sh
 make ARCH=x86_64 run   # Fenêtre VGA, clavier PS/2 AZERTY, série COM1 dans le terminal

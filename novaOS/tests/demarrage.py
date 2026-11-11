@@ -12,7 +12,8 @@ import tempfile
 import time
 
 
-BUILD = Path("build")
+ROOT = Path(__file__).resolve().parents[1]
+BUILD = ROOT / "build"
 BANNER = b"NovaOS v0.8.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
@@ -181,7 +182,7 @@ def boot(name, check, **settings):
     with tempfile.TemporaryDirectory(dir=BUILD) as work:
         directory = Path(work)
         log = directory / "serie.log"
-        args = ["sh", "scripts/qemu.sh", "-display", "none", "-monitor", "none",
+        args = ["sh", ROOT / "scripts/qemu.sh", "-display", "none", "-monitor", "none",
                 "-serial", f"file:{log}", "-qmp", "stdio"]
         with subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                               bufsize=0, env={**os.environ, **settings}) as vm:
@@ -265,9 +266,10 @@ def memory_scenarios(arch):
 
 
 def scenario_vm(arch, name, check, suffix="", **settings):
+    BUILD.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(dir=BUILD) as work:
         iso = str(Path(work) / "sonde.iso")
-        subprocess.run(["sh", "scripts/iso.sh", name, iso], check=True,
+        subprocess.run(["sh", ROOT / "scripts/iso.sh", name, iso], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
         return boot(f"{arch}-{name}{suffix}", check, NOVA_ISO=iso, **settings)
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Le dépôt parent cible un noyau bare-metal. Ce paquet utilise toujours Darwin.
+# Le workspace hôte NovaFS cible Darwin sur les deux architectures.
 set -eu
 cd "$(dirname "$0")/.."
 host=$(rustup run stable rustc -vV | sed -n 's/^host: //p')

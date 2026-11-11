@@ -77,8 +77,8 @@ unset NOVAFS_TARGET
     CARGO_NET_OFFLINE=true python3 novaFS/lab/test-interop.py --p0 "$p0/novaFS/lab/run"
 )
 
-make ARCH=x86_64 test
-make ARCH=aarch64 test
+make -C novaOS ARCH=x86_64 test
+make -C novaOS ARCH=aarch64 test
 ```
 
 L’option `--support fichier` lance uniquement les morts du processus hôte, `--support qemu` uniquement les coupures de VM. La commande F01 sans `--p0` teste les deux architectures de la version courante. Les campagnes de débit et de restitution mémoire disposent de leurs [commandes de reproduction](novafs-p1-mesures.md#reproduction).

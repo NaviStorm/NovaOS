@@ -2,7 +2,7 @@
 
 ## Reproduire
 
-Depuis le dépôt sur macOS ARM64, les suites démarrent de vraies VM UEFI sous QEMU TCG. Le même ELF sert à l’image de démarrage et aux sondes. Le banc contrôle la quantité de RAM configurée via QMP. Il écrit les mesures dans `build/abi-<architecture>-<Mio>.json` et conserve le journal série correspondant.
+Depuis `novaOS/` sur macOS ARM64, les suites démarrent de vraies VM UEFI sous QEMU TCG. Le même ELF sert à l’image de démarrage et aux sondes. Le banc contrôle la quantité de RAM configurée via QMP. Il écrit les mesures dans `build/abi-<architecture>-<Mio>.json` et conserve le journal série correspondant.
 
 ```sh
 make ARCH=x86_64 test

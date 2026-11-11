@@ -18,7 +18,7 @@ L’audit de l’ordonnanceur contrôle la présence unique de chaque thread pr�
 
 ## Reproduire les mesures
 
-Depuis la racine du dépôt, sur macOS avec les cibles Rust et QEMU du projet installés, exécuter les deux suites. Chacune comprend une campagne courte d’au moins 15 secondes.
+Depuis le répertoire `novaOS/`, sur macOS avec les cibles Rust et QEMU du projet installés, exécuter les deux suites. Chacune comprend une campagne courte d’au moins 15 secondes.
 
 ```sh
 make ARCH=x86_64 test
