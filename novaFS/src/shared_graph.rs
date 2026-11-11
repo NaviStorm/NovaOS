@@ -81,7 +81,7 @@ pub(crate) struct Entry {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct Catalog {
-    p6: bool,
+    pub(crate) p6: bool,
     pub pool: Key,
     pub generation: u64,
     pub next_id: u64,
@@ -662,6 +662,36 @@ impl Graph {
         let mut graph = Self::index_roots(dev, head, previous);
         graph.pin(dev, &e, e.root, Role::Root, &mut Vec::new())?;
         inspect(&graph, &e)
+    }
+
+    /// Les copies du sélecteur partagent un seul bloc NovaFS de publication.
+    /// Un mélange accepté en reprise reste signalé par le contrôle hors ligne.
+    pub(crate) fn scrub_catalogs(dev: &impl Device) -> Result<(Vec<Catalog>, bool)> {
+        let (head, parent) = Self::load_catalogs(dev)?;
+        let mixed = read_markers(dev, head.cat.pool, head.cat.p6)?.len() != 1;
+        Ok((
+            std::iter::once(head.cat)
+                .chain(parent.map(|r| r.cat))
+                .collect(),
+            mixed,
+        ))
+    }
+    pub(crate) fn inspect_scrub_entry<T>(
+        dev: &impl Device,
+        generation: u64,
+        entry: &Entry,
+        inspect: impl FnOnce(&Graph, &Entry) -> Result<T>,
+    ) -> Result<T> {
+        let (head, parent) = Self::load_catalogs(dev)?;
+        if !std::iter::once(&head)
+            .chain(parent.as_ref())
+            .any(|r| r.cat.generation == generation && r.cat.entries.contains(entry))
+        {
+            return Err(Error::Corrupt("vue du scrub modifiée"));
+        }
+        let mut graph = Self::index_roots(dev, head, parent);
+        graph.pin(dev, entry, entry.root, Role::Root, &mut Vec::new())?;
+        inspect(&graph, entry)
     }
 
     pub(crate) fn open(dev: &impl Device) -> Result<Self> {

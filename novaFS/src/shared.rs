@@ -194,6 +194,22 @@ pub(crate) fn views_at_head(dev: &impl Device, pool: [u8; 16]) -> Result<Vec<Obj
         .collect())
 }
 
+pub(crate) fn scrub_view(dev: &impl Device, pool: [u8; 16], id: u64) -> Result<()> {
+    Graph::inspect_one(dev, pool, id, |graph, entry| {
+        mount_verified_volume(dev, graph, entry, false).map(drop)
+    })
+}
+
+pub(crate) fn scrub_historical_view(
+    dev: &impl Device,
+    generation: u64,
+    entry: &Entry,
+) -> Result<()> {
+    Graph::inspect_scrub_entry(dev, generation, entry, |graph, entry| {
+        mount_verified_volume(dev, graph, entry, false).map(drop)
+    })
+}
+
 pub(crate) fn read_one<D: Device>(
     dev: &D,
     pool: [u8; 16],

@@ -9,6 +9,7 @@ use sha2::{Digest as _, Sha256};
 use std::collections::BTreeMap;
 use std::io::{Read, Write};
 mod inspect;
+pub mod scrub;
 pub use inspect::{StructuralReport, structural_check, verify_commit_replicas};
 
 type Id = [u8; 16];

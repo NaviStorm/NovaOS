@@ -195,7 +195,7 @@ fn diagnose_pool(dev: &FileImage) -> (Status, Value) {
     )
 }
 
-fn fingerprint(m: &Metadata) -> (u64, i64, i64, i64, i64) {
+pub(super) fn fingerprint(m: &Metadata) -> (u64, i64, i64, i64, i64) {
     (
         m.len(),
         m.mtime(),

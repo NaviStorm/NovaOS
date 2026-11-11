@@ -11,6 +11,8 @@ mod check;
 #[cfg(feature = "check-metrics")]
 #[path = "../../lab/heap_meter.rs"]
 mod heap_meter;
+#[path = "novafs/scrub.rs"]
+mod scrub;
 #[path = "novafs/secure.rs"]
 mod secure;
 #[path = "novafs/shared.rs"]
@@ -20,6 +22,7 @@ const HELP: &str = concat!(
     "NovaFS v",
     env!("CARGO_PKG_VERSION"),
     " — formats P0 et P5, pools P6 LZ4 et P7 chiffrés, images jetables, uniquement sur flux
+novafs scrub BLOCS SECTEUR [--full | --repair] [--cles-fd3] [--json]   contrôle des objets persistants
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
 novafs script BLOCS SECTEUR                        lit les commandes puis émet l’image sur stdout
 novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l’image sur stdin
@@ -328,6 +331,9 @@ fn main() -> std::process::ExitCode {
         return ExitCode::from(2);
     }
     let command = args.first().map(String::as_str);
+    if command == Some("scrub") {
+        return ExitCode::from(scrub::run(&args[1..]));
+    }
     if command.is_some_and(shared::known)
         && !matches!(
             command,
