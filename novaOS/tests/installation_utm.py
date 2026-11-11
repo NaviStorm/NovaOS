@@ -55,7 +55,7 @@ int main(int argc, const char **argv) { return swtpm_main(argc, argv, "swtpm", "
 def observation(cmd, profil, traces, lecture):
     start = time.monotonic()
     # Le témoin négatif observe la VM après l'erreur de traduction émise par le modèle.
-    limite = 30 if profil.endswith("disque-protege") else 75
+    limite = 30 if profil.endswith("disque-protege") or profil == "utm-optique-protegee" else 75
     sortie = bytearray()
     invite = None
     pic_rss = 0
@@ -78,14 +78,18 @@ def observation(cmd, profil, traces, lecture):
                     break
                 log.write(paquet)
                 sortie.extend(paquet)
-                if lecture and invite is None and b"nova> " in sortie:
+                # Les traces de lectures peuvent occuper plusieurs Mio. Garder le
+                # chevauchement nécessaire aux marqueurs coupés entre deux lectures.
+                recent = sortie[-(len(paquet) + 128):]
+                if lecture and invite is None and b"nova> " in recent:
                     invite = time.monotonic() - start
                     vm.stdin.write(b"cat /documents/exemple.txt\n")
-                if lecture and not lu and b"\r\nNovaOS\r\nnova> " in sortie:
+                # La ligne précédente peut être une trace QEMU terminée par LF.
+                if lecture and invite is not None and not lu and b"\nNovaOS\r\nnova> " in recent:
                     lu = True
                     vm.stdin.write(b"exit\n")
-                if (b"BLOC session terminee ok=true\r\n" in sortie or
-                        re.search(rb"BLOC ouverture refusee \w+\r\n", sortie)):
+                if (b"BLOC session terminee ok=true\r\n" in recent or
+                        re.search(rb"BLOC ouverture refusee \w+\r\n", recent)):
                     break
         finally:
             if vm.poll() is None:
@@ -110,12 +114,14 @@ def observation(cmd, profil, traces, lecture):
                 pic_rss_emulateur_kio=pic_rss or None)
 
 
-def essai(tmp, traces, profil):
+def essai(tmp, traces, profil, *, tracer_dma=False):
     utm = profil.startswith("utm-")
-    cd = profil.endswith("-cd")
+    cd = profil.endswith("-cd") or profil == "utm-optique-protegee"
     protege = profil != "utm-disque-temoin"
     emulateur = tmp / "qemu-aarch64-softmmu" if utm else "qemu-system-aarch64"
     carte = MACHINE + (",its=off" if utm else ",msi=off")
+    if profil == "utm-gic3-disque-protege":
+        carte = "virt-10.0,gic-version=3,its=off"
     with tempfile.TemporaryDirectory(dir=tmp) as dossier:
         etat = Path(dossier)
         socket = etat / "tpm"
@@ -139,7 +145,10 @@ def essai(tmp, traces, profil):
                         "-device", "tpm-tis-device,tpmdev=tpm0", "-trace", "virtio_iommu_fill_resv_property"]
                 image = tmp / "cli.iso"
                 if cd:
-                    args += ["-device", "virtio-scsi-pci,addr=1", "-drive",
+                    lecteur = "virtio-scsi-pci,addr=1"
+                    if profil == "utm-optique-protegee":
+                        lecteur += ",disable-legacy=on,iommu_platform=on"
+                    args += ["-device", lecteur, "-drive",
                              f"if=none,id=cd,file={image},format=raw,readonly=on,media=cdrom",
                              "-device", "scsi-cd,drive=cd,bootindex=1"]
                     image = tmp / "volume.raw"
@@ -152,6 +161,14 @@ def essai(tmp, traces, profil):
                     disque += ",bootindex=1"
                 args += ["-drive", f"if=none,id=d,format=raw,snapshot=on,file={image},cache=writeback,"
                          "werror=report,rerror=report", "-device", disque]
+                if tracer_dma:
+                    evenements = ["virtio_set_status", "virtio_iommu_attach", "virtio_iommu_map",
+                                  "virtio_iommu_unmap", "virtio_iommu_detach", "virtio_iommu_report_fault",
+                                  "virtio_blk_handle_read", "virtio_blk_handle_write"]
+                    if not cd or profil == "utm-optique-protegee":
+                        evenements.append("virtio_iommu_translate")
+                    for evenement in evenements:
+                        args.extend(["-trace", evenement])
                 return observation(args, profil, traces, profil == "qemu-cd")
             finally:
                 if tpm.poll() is None:

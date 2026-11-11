@@ -1,0 +1,15 @@
+[package]
+name = "temoin-efi"
+version = "0.0.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "temoin-efi"
+path = "main.rs"
+
+[dependencies]
+r-efi = "=6.0.0"
