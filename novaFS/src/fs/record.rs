@@ -59,6 +59,7 @@ pub(super) fn parse_extent_key(key: &[u8]) -> Result<(u64, u64)> {
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(super) struct Object {
+    pub times: crate::time::Times,
     pub stat: Stat,
     pub dead: bool,
     pub parent: u64,
@@ -68,6 +69,7 @@ pub(super) struct Object {
 impl Object {
     pub fn new(id: u64, kind: Kind, parent: u64, name: &str, revision: u64) -> Self {
         Self {
+            times: crate::time::Times::UNKNOWN,
             stat: Stat {
                 id,
                 kind,
@@ -80,8 +82,8 @@ impl Object {
         }
     }
 
-    pub fn encode(&self) -> Vec<u8> {
-        let mut out = Vec::with_capacity(28 + self.name.len());
+    pub fn encode(&self, p9: bool) -> Vec<u8> {
+        let mut out = Vec::with_capacity(28 + self.name.len() + if p9 { 48 } else { 0 });
         out.push(match self.stat.kind {
             Kind::File => 1,
             Kind::Directory => 2,
@@ -92,10 +94,13 @@ impl Object {
         out.extend_from_slice(&self.parent.to_le_bytes());
         out.extend_from_slice(&(self.name.len() as u16).to_le_bytes());
         out.extend_from_slice(self.name.as_bytes());
+        if p9 {
+            out.extend_from_slice(&self.times.encode());
+        }
         out
     }
 
-    pub fn decode(id: u64, data: &[u8], generation: u64) -> Result<Self> {
+    pub fn decode(id: u64, data: &[u8], generation: u64, p9: bool) -> Result<Self> {
         let head = data.get(..28).ok_or(Error::Corrupt("objet tronqué"))?;
         let kind = match head[0] {
             1 => Kind::File,
@@ -111,7 +116,14 @@ impl Object {
         };
         let parent = number(&head[18..26])?;
         let len = usize::from(u16::from_le_bytes([head[26], head[27]]));
-        let name = core::str::from_utf8(&data[28..]).map_err(|_| Error::Corrupt("nom d’objet"))?;
+        let end = 28 + len;
+        let name = core::str::from_utf8(data.get(28..end).ok_or(Error::Corrupt("nom tronqué"))?)
+            .map_err(|_| Error::Corrupt("nom d’objet"))?;
+        let times = match &data[end..] {
+            [] => crate::time::Times::UNKNOWN,
+            bytes if p9 => crate::time::Times::decode(bytes)?,
+            _ => return Err(Error::Corrupt("suffixe d’objet historique")),
+        };
         let attachment_ok = if id == ROOT {
             !dead && kind == Kind::Directory && parent == ROOT && name.is_empty()
         } else if dead {
@@ -130,6 +142,7 @@ impl Object {
             return Err(Error::Corrupt("contenu d’objet"));
         }
         Ok(Self {
+            times,
             stat: Stat {
                 id,
                 kind,

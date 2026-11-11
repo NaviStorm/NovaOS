@@ -6,6 +6,7 @@ use crate::shared_graph::{Graph, PageRef};
 use alloc::vec::Vec;
 
 pub struct StructuralReport {
+    pub p9: bool,
     pub pool: Id,
     pub generation: u64,
     pub protected_generations: u8,
@@ -95,7 +96,8 @@ fn inspect_generation<D: Device>(d: &D, h: Head, report: &mut StructuralReport) 
 }
 
 pub fn structural_check(d: &impl Device) -> Result<StructuralReport> {
-    let pool = inspect_header(d)?;
+    let header = read_header(d)?;
+    let pool = header[16..32].try_into().expect("identité fixe");
     let mut records = [None; COMMIT_BLOCKS as usize];
     let mut count = 0u8;
     for (offset, record) in records.iter_mut().enumerate() {
@@ -118,7 +120,9 @@ pub fn structural_check(d: &impl Device) -> Result<StructuralReport> {
         .flatten()
         .max_by_key(|h| h.generation)
         .ok_or_else(corrupt)?;
+    migration::check_checkpoint(&header, head)?;
     let mut report = StructuralReport {
+        p9: &header[..8] == P9_MAGIC,
         pool,
         generation: head.generation,
         attestations: count,
@@ -159,12 +163,15 @@ pub fn verify_commit_replicas(d: &impl Device, pool: Id, administration: &Secret
         return Err(corrupt());
     }
     let key = super::publication_key(&header, pool, administration)?;
+    verify_redundancy(d, pool, &key)
+}
+pub(super) fn verify_redundancy(d: &impl Device, pool: Id, key: &Secret) -> Result<()> {
     let mut records = [None; COMMIT_BLOCKS as usize];
     for (offset, record) in records.iter_mut().enumerate() {
         let offset = offset as u64;
         let b = d.read(2 + offset)?;
         if b != [0; 4096] {
-            *record = Some(Head::inspect_authenticated(&b, pool, 2, offset, &key)?);
+            *record = Some(Head::inspect_authenticated(&b, pool, 2, offset, key)?);
         }
     }
     let g = records

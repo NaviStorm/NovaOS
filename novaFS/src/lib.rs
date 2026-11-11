@@ -32,6 +32,7 @@ pub mod shared_export;
 mod shared_graph;
 pub use shared_graph::ObjectRole;
 mod space;
+pub mod time;
 pub mod tree;
 
 pub use codec::{Ids, Manifest, Ref};
@@ -130,6 +131,11 @@ impl core::error::Error for Error {
 /// Un échec d'écriture ou de flush peut avoir pris effet partiellement ou
 /// entièrement. Une erreur de lecture ne fournit aucun bloc à l'appelant.
 pub trait Device {
+    /// Le conteneur P9 authentifie une genèse importée. Un pool historique la refuse.
+    fn imported_genesis(&self) -> bool {
+        false
+    }
+
     /// Verrou partagé par tous les acteurs pouvant modifier ce support P7.
     /// Un backend qui ne peut exclure les écritures étrangères reste consultable.
     fn mutation_lock(&self) -> Option<crate::sync::Arc<crate::sync::Mutex<()>>> {
@@ -178,6 +184,9 @@ pub trait Device {
 }
 
 impl<D: Device> Device for &mut D {
+    fn imported_genesis(&self) -> bool {
+        (**self).imported_genesis()
+    }
     fn mutation_lock(&self) -> Option<crate::sync::Arc<crate::sync::Mutex<()>>> {
         (**self).mutation_lock()
     }

@@ -27,7 +27,7 @@ pub(crate) fn validate<V: View, W: View>(
         if id >= m.next_oid {
             return Err(Error::Corrupt("numéro d’objet hors compteur"));
         }
-        let obj = Object::decode(id, record, view_gen)?;
+        let obj = Object::decode(id, record, view_gen, m.atime.is_some())?;
         if !obj.dead && obj.stat.kind == Kind::File {
             logical_bytes = logical_bytes
                 .checked_add(u128::from(obj.stat.size))
@@ -38,9 +38,11 @@ pub(crate) fn validate<V: View, W: View>(
         {
             let saved = get(old, Family::Objects, key)?
                 .ok_or(Error::Corrupt("numéro d’objet réutilisé"))?;
-            let previous = Object::decode(id, &saved, generation(old)?)?;
+            let previous =
+                Object::decode(id, &saved, generation(old)?, old.manifest().atime.is_some())?;
             if (previous.dead && !obj.dead)
                 || previous.stat.kind != obj.stat.kind
+                || previous.times.btime != obj.times.btime
                 || obj.stat.revision < previous.stat.revision
                 || (record != saved && obj.stat.revision != view_gen)
             {

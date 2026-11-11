@@ -39,7 +39,7 @@ pub(super) fn check(
         }
         return Ok((
             Status::Coherent,
-            json!({"format":"P7","verification":"cryptographique",
+            json!({"format":if pool.is_p9() {"P9"} else {"P7"},"verification":"cryptographique",
             "authenticite_verifiee":true,"generation":pool.generation(),"recu_verifie":receipt.is_some()}),
         ));
     }
@@ -54,7 +54,7 @@ pub(super) fn check(
     }
     Ok((
         Status::Incomplete,
-        json!({"format":"P7","verification":"structurelle",
+        json!({"format":if r.p9 {"P9"} else {"P7"},"verification":"structurelle",
         "authenticite_verifiee":false,"recu_verifie":false,"pool":crate::label(&r.pool),
         "generation_declaree":r.generation,"generations_inspectees":r.protected_generations,
         "attestations_examinees":r.attestations,"vues":r.active_views,

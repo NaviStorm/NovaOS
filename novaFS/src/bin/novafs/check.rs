@@ -20,12 +20,12 @@ pub(super) fn help(command: &str) -> String {
         return "novafs check-export [--cle-fd4] < sauvegarde.nvx\nRapport JSON de l’export autonome vérifié. Alias : novafs check --export.".into();
     }
     if command == "check" {
-        return "novafs check BLOCS SECTEUR FS_ID LV_ID < lv-p0.raw\nnovafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE [--full] [--cles-fd3] < pool.raw\nnovafs check --export [--cle-fd4] < sauvegarde.nvx\nP7 sans clé : inspection structurelle (code 3). --cles-fd3 : pipe anonyme NP7KEYS1 et vérification complète.\nRapport JSON hors ligne. Codes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète.".into();
+        return "novafs check BLOCS SECTEUR FS_ID LV_ID < lv-p0.raw\nnovafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE [--full] [--cles-fd3] < pool.raw\nnovafs check --export [--cle-fd4] < sauvegarde.nvx\nP7/P9 sans clé : inspection structurelle (code 3). --cles-fd3 : pipe anonyme NP7KEYS1 et vérification complète.\nRapport JSON hors ligne. Codes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète.".into();
     }
     let arguments = if command == "space" {
         "BLOCS SECTEUR FS_ID LV_ID (P0) ou BLOCS SECTEUR POOL_ID OBJET (P5 ou P6)"
     } else if command == "check-pool" {
-        "BLOCS SECTEUR [--full] [--cles-fd3] (P7 : structure sans clé, contrôle complet par pipe anonyme NP7KEYS1)"
+        "BLOCS SECTEUR [--full] [--cles-fd3] (P7/P9 : structure sans clé, contrôle complet par pipe anonyme NP7KEYS1)"
     } else {
         "BLOCS SECTEUR"
     };
@@ -229,11 +229,11 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
         }
         super::image_stream(&io::stdin()).map_err(usage)?;
         let before = metadata(&io::stdin()).map_err(interrupted)?;
-        let info = if archive_p7 {
+        let (info, format) = if archive_p7 {
             let secret = super::secure::backup().map_err(usage)?;
-            novafs::secure_export::check_export(io::stdin().lock(), &secret)
+            novafs::secure_export::check_export_profile(io::stdin().lock(), &secret)
         } else {
-            novafs::shared_export::check_export(io::stdin().lock())
+            novafs::shared_export::check_export(io::stdin().lock()).map(|i| (i, 5))
         }
         .map_err(storage_failure)?;
         if before.is_file()
@@ -246,7 +246,7 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
         }
         let mut report = super::shared::archive_info(&info);
         if archive_p7 {
-            report["format"] = json!("P7");
+            report["format"] = json!(format!("P{format}"));
             report["authenticite_verifiee"] = json!(true);
         }
         return Ok((Status::Coherent, report));
@@ -321,7 +321,7 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
         secure.map_err(storage_failure)?;
         return Err((
             Status::Usage,
-            "le canal NP7KEYS1 requiert un pool P7".into(),
+            "le canal NP7KEYS1 requiert un pool P7 ou P9".into(),
         ));
     }
     let shared = match secure.and_then(|_| looks_like_pool(&dev)) {
@@ -388,7 +388,7 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
             return Err((Status::Corrupt, "format P5 attendu pour le reçu".into()));
         }
         ("space", Some(ids)) => {
-            let fs = Engine::mount(dev, ids, Mode::ReadOnly).map_err(storage_failure)?;
+            let fs = Engine::mount_current(dev, ids, Mode::ReadOnly).map_err(storage_failure)?;
             let stats = fs.accounting().map_err(storage_failure)?;
             (Status::Coherent, volume_space(&stats))
         }

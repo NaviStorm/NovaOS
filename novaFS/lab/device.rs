@@ -59,6 +59,16 @@ impl FileImage {
         self.file
     }
 
+    /// Occupation physique du fichier image rapportée par Darwin.
+    pub fn allocated_bytes(&self) -> Result<u64> {
+        use std::os::unix::fs::MetadataExt;
+        self.file
+            .metadata()?
+            .blocks()
+            .checked_mul(512)
+            .ok_or(Error::Limit("occupation du fichier image"))
+    }
+
     pub fn geometry(&self) -> Geometry {
         self.geometry
     }

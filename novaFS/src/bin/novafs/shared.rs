@@ -8,8 +8,9 @@ use novafs::{Compression, Device, Engine, Error, Ids, Mode, Result};
 use serde_json::{Value, json};
 use std::io::{self, Write};
 
-pub(super) const HELP: &str = "novafs pool-format BLOCS SECTEUR POOL_ID [p5|p6|p7 --cles-fd3]     crée un pool vide (P5 par défaut)
+pub(super) const HELP: &str = "novafs pool-format BLOCS SECTEUR POOL_ID [p5|p6|p7|p9 --cles-fd3]     crée un pool vide (P5 par défaut)
 novafs volume-create BLOCS SECTEUR DOMAINE FS_ID LV_ID BLOCS_LV [none|lz4]    ajoute une origine au pool lu sur stdin
+novafs restore-into BLOCS SECTEUR PROPRIETAIRE none|lz4 --archive-fd4 --cles-fd3    restaure une vue dans la copie du pool P9 reçu sur stdin
 novafs set-compression BLOCS SECTEUR OBJET none|lz4    définit la politique des prochaines écritures
 novafs compression-space BLOCS SECTEUR OBJET         affiche les octets logiques et l’usage physique en JSON
 novafs file-create BLOCS SECTEUR OBJET CHEMIN       crée un fichier dans une branche inscriptible
@@ -25,6 +26,12 @@ novafs restore BLOCS_DEST SECTEUR_DEST POOL_DEST DOMAINE [none|lz4]   restaure d
 novafs migrate-pool BLOCS_DEST SECTEUR_DEST POOL_DEST BLOCS_P0 SECTEUR_P0   migre un pool P0 complet hors ligne
 novafs migrate-view BLOCS_DEST SECTEUR_DEST POOL_DEST BLOCS_SOURCE SECTEUR_SOURCE OBJET none|lz4   importe une vue P5/P6 dans un nouveau pool P6
 novafs migrate-lv BLOCS_DEST SECTEUR_DEST POOL_DEST BLOCS_P0 SECTEUR_P0 DOMAINE FS_ID LV_ID   importe un LV P0 autonome
+novafs migrate-p9 BLOCS_SOURCE SECTEUR BLOCS_DEST --cles-fd3   migre un pool P7 vers une nouvelle image P9, enrôlements sur FD4
+novafs migrate-ready-p9 BLOCS_SOURCE SECTEUR BLOCS_DEST SHA256   migre les LV prêts d’un catalogue P0
+novafs migrate-clear-p9 BLOCS_SOURCE SECTEUR BLOCS_DEST SHA256   migre un pool P5/P6 vérifié, témoin et administration sur FD4
+novafs file-times BLOCS SECTEUR OBJET CHEMIN --cles-fd3    affiche les quatre dates UTC
+novafs set-atime BLOCS SECTEUR OBJET noatime|relatime|strictatime --cles-fd3   publie la politique de la vue
+novafs migration-receipt BLOCS SECTEUR --cles-fd3    affiche les identités et les budgets de migration vérifiés
 novafs check-export                                vérifie un export complet sur stdin, JSON sur stdout";
 
 pub(super) const P7_HELP: &str = "P7 : ajouter --cles-fd3 en dernier. volume-create attend aussi none|lz4 puis clair|chiffre. file-write reçoit les octets avec --donnees-fd4 à la place du texte hexadécimal. export lit sa clé sur FD4. restore attend POOL_DEST DOMAINE none|lz4 et les secrets sur FD4. Protocole des pipes dans docs/novafs-p7-chiffrement.md.";
@@ -84,11 +91,51 @@ pub(super) fn run(args: &[String]) -> Result<()> {
     if cmd != "pool-format" {
         image_stream(&io::stdin())?;
     }
-    if !matches!(cmd, "list-views" | "compression-space") {
+    if !matches!(
+        cmd,
+        "list-views" | "compression-space" | "migration-receipt" | "file-times"
+    ) {
         image_stream(&io::stdout())?;
     }
     if tail.last() == Some(&"--cles-fd3") {
         return super::secure::run(cmd, &tail[..tail.len() - 1], scratch, sector);
+    }
+    if let ("migrate-clear-p9" | "migrate-ready-p9", [dest, digest]) = (cmd, tail) {
+        load(&mut scratch, &mut io::stdin().lock())?;
+        let expected = hex(digest)?
+            .try_into()
+            .map_err(|_| Error::Invalid("SHA-256 de la source"))?;
+        let mut pipe = super::check::key_pipe::pipe(4)?;
+        let witness = super::secure::key(&mut pipe)?;
+        let admin = super::secure::key(&mut pipe)?;
+        super::secure::end(&mut pipe)?;
+        let target = num(dest)?;
+        if target > 32768 {
+            return Err(Error::Limit("taille de destination"));
+        }
+        let target = FileImage::create(target, sector)?;
+        let (image, r) = if cmd == "migrate-ready-p9" {
+            let stage = target.blocks().checked_sub(46).ok_or(Error::NoSpace)? / 2 + 7;
+            novafs::secure_pool::migration::migrate_ready_pool(
+                &scratch,
+                FileImage::create(stage, sector)?,
+                target,
+                expected,
+                &witness,
+                &admin,
+                novafs::crypto::HostEntropy,
+            )?
+        } else {
+            SharedPool::open(scratch)?.migrate_p9(
+                target,
+                expected,
+                &witness,
+                &admin,
+                novafs::crypto::HostEntropy,
+            )?
+        };
+        super::migration_digest(&image, Some(r.destination()), r.units(), expected)?;
+        return emit(&image, io::BufWriter::new(io::stdout().lock()));
     }
     let mut pool = match (cmd, tail) {
         ("pool-format", [pool, "p6"]) => SharedPool::format_p6(scratch, identifier(pool)?)?,
@@ -190,7 +237,7 @@ pub(super) fn run(args: &[String]) -> Result<()> {
             let info = pool.info(id)?;
             let usage = pool.usage(id)?;
             let packs = pool.compression_usage(id)?;
-            let fs = Engine::mount(pool.read_device(id)?, info.ids, Mode::ReadOnly)?;
+            let fs = Engine::mount_current(pool.read_device(id)?, info.ids, Mode::ReadOnly)?;
             let space = fs.accounting()?;
             return output_json(json!({
                 "objet": id, "taille_logique_octets": space.logical_bytes,

@@ -129,7 +129,7 @@ pub(crate) fn coverage(device: &impl Device, ids: Ids) -> Result<Coverage> {
         seen: RefCell::new([0; MAX_VOLUME.div_ceil(64) as usize]),
     };
     // Le montage RO P2 parcourt les deux générations, y compris les données des extents.
-    drop(Engine::mount(&mut audit, ids, Mode::ReadOnly)?);
+    drop(Engine::mount_current(&mut audit, ids, Mode::ReadOnly)?);
     Ok(audit.seen.into_inner())
 }
 

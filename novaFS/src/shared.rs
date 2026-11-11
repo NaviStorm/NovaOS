@@ -136,7 +136,7 @@ fn mount_verified_volume<'a, D: Device>(
     e: &Entry,
     indexed: bool,
 ) -> Result<Engine<Volume<'a, D>>> {
-    let fs = Engine::mount(
+    let fs = Engine::mount_current(
         Volume {
             p6: graph.is_p6(),
             disk: dev,
@@ -224,6 +224,46 @@ pub(crate) fn read_one<D: Device>(
     })
 }
 
+pub(crate) fn access_needed(
+    dev: &impl Device,
+    pool: [u8; 16],
+    id: u64,
+    path: &str,
+    now: crate::time::Timestamp,
+) -> Result<bool> {
+    Graph::inspect_one(dev, pool, id, |graph, e| {
+        if e.kind == Kind::Snapshot {
+            return Ok(false);
+        }
+        let fs = mount_verified_volume(dev, graph, e, false)?;
+        Ok(fs
+            .atime_policy()
+            .unwrap_or_default()
+            .update(fs.times(path)?, now))
+    })
+}
+pub(crate) fn times_one(
+    dev: &impl Device,
+    pool: [u8; 16],
+    id: u64,
+    path: &str,
+) -> Result<crate::time::Times> {
+    Graph::inspect_one(dev, pool, id, |graph, e| {
+        mount_verified_volume(dev, graph, e, false)?.times(path)
+    })
+}
+pub(crate) fn list_one(
+    dev: &impl Device,
+    pool: [u8; 16],
+    id: u64,
+    path: &str,
+    after: Option<&str>,
+    n: usize,
+) -> Result<Vec<alloc::string::String>> {
+    Graph::inspect_one(dev, pool, id, |graph, e| {
+        mount_verified_volume(dev, graph, e, false)?.list(path, after, n)
+    })
+}
 struct VerifiedView<'a, D> {
     pool: &'a SharedPool<D>,
     volume: Volume<'a, D>,
@@ -249,7 +289,7 @@ impl<D: Device> Device for VerifiedView<'_, D> {
 
 /// Les barrières du moteur de contenu isolent ses étapes dans une image privée.
 /// Le pool synchronise toutes les dépendances de cette image avant publication.
-struct Overlay<'a, D> {
+pub(crate) struct Overlay<'a, D> {
     base: Volume<'a, D>,
     dirty: BTreeMap<u64, crate::PrivatePage>,
 }
@@ -318,6 +358,8 @@ struct PreparedContent {
 /// Le descripteur de périphérique reste exclusif. Les lectures empruntent le
 /// pool et les publications requièrent un emprunt mutable jusqu'à F2.
 pub struct SharedPool<D> {
+    pub(crate) p9: bool,
+    pub(crate) clock: Option<alloc::sync::Arc<dyn crate::time::Clock>>,
     dev: D,
     graph: Graph,
     cached: Mutex<Option<Cached>>,
@@ -344,6 +386,8 @@ impl<D: Device> SharedPool<D> {
         Ok(Self {
             dev,
             graph,
+            p9: false,
+            clock: None,
             cached: Mutex::default(),
             health: AtomicU8::new(0),
         })
@@ -353,6 +397,8 @@ impl<D: Device> SharedPool<D> {
         Ok(Self {
             dev,
             graph,
+            p9: false,
+            clock: None,
             cached: Mutex::default(),
             health: AtomicU8::new(0),
         })
@@ -394,6 +440,8 @@ impl<D: Device> SharedPool<D> {
         Self {
             dev,
             graph,
+            p9: false,
+            clock: None,
             cached: Mutex::default(),
             health: AtomicU8::new(0),
         }
@@ -401,6 +449,24 @@ impl<D: Device> SharedPool<D> {
     pub fn into_device(self) -> D {
         self.dev
     }
+    pub(crate) fn verify_source(&self) -> Result<()> {
+        let fresh = Self::verify_graph(&self.dev, true)?;
+        if !self
+            .graph
+            .protected_catalogs()
+            .eq(fresh.protected_catalogs())
+        {
+            return Err(Error::Busy);
+        }
+        Ok(())
+    }
+    pub(crate) fn source_parts(&self) -> (&D, &Graph) {
+        (&self.dev, &self.graph)
+    }
+    pub(crate) fn classify_view(&self, entry: &Entry) -> Result<[u64; 16]> {
+        mount_verified_volume(&self.dev, &self.graph, entry, true)?.file_page_map()
+    }
+
     pub fn pool_id(&self) -> [u8; 16] {
         self.graph.catalog().pool
     }
@@ -722,7 +788,12 @@ impl<D: Device> SharedPool<D> {
         })
     }
     fn mount_cached<E: Device>(&self, e: &Entry, dev: E, mode: Mode) -> Result<Engine<E>> {
-        Ok(self.mount_with_cursor(e, dev, mode)?.0)
+        let mut fs = self.mount_with_cursor(e, dev, mode)?.0;
+        fs.select_p9_pool(self.p9);
+        if let Some(clock) = &self.clock {
+            fs.set_clock(clock.clone());
+        }
+        Ok(fs)
     }
 
     fn mount_with_cursor<E: Device>(
@@ -737,7 +808,7 @@ impl<D: Device> SharedPool<D> {
         {
             return Ok((c.engine.replace_device(dev, mode).0, c.cursor));
         }
-        Ok((Engine::mount(dev, e.ids, mode)?, Default::default()))
+        Ok((Engine::mount_current(dev, e.ids, mode)?, Default::default()))
     }
     fn remember(&self, e: &Entry, engine: Engine<()>) -> Result<()> {
         self.remember_read(e, engine, Default::default())
@@ -812,7 +883,16 @@ impl<D: Device> SharedPool<D> {
             },
             dirty: BTreeMap::new(),
         };
-        let fs = Engine::format(overlay, ids)?;
+        let fs = if self.p9 {
+            Engine::format_p9(
+                overlay,
+                ids,
+                crate::time::Atime::Relative,
+                self.clock.clone(),
+            )?
+        } else {
+            Engine::format(overlay, ids)?
+        };
         let (state, overlay) = fs.replace_device((), Mode::ReadWrite);
         self.publish_content(next, id, PageRef::EMPTY, state, overlay.dirty, &[])
     }
@@ -934,7 +1014,7 @@ impl<D: Device> SharedPool<D> {
             Ok(refs)
         })
     }
-    fn change(
+    pub(crate) fn change(
         &mut self,
         id: u64,
         op: impl FnOnce(&mut Engine<Overlay<'_, D>>) -> Result<()>,
@@ -945,6 +1025,35 @@ impl<D: Device> SharedPool<D> {
         })?;
         self.commit_prepared(plan)
     }
+    pub(crate) fn access_file(
+        &mut self,
+        id: u64,
+        path: &str,
+        offset: u64,
+        n: usize,
+    ) -> Result<Vec<u8>> {
+        let mut bytes = Vec::new();
+        self.change(id, |fs| {
+            bytes = fs.read_access(path, offset, n)?;
+            Ok(())
+        })?;
+        Ok(bytes)
+    }
+    pub(crate) fn access_dir(
+        &mut self,
+        id: u64,
+        path: &str,
+        after: Option<&str>,
+        n: usize,
+    ) -> Result<Vec<alloc::string::String>> {
+        let mut names = Vec::new();
+        self.change(id, |fs| {
+            names = fs.list_access(path, after, n)?;
+            Ok(())
+        })?;
+        Ok(names)
+    }
+
     pub fn write_file(&mut self, id: u64, path: &str, offset: u64, data: &[u8]) -> Result<()> {
         let plan = self.plan_write(id, path, offset, data)?;
         self.commit_prepared(plan)
@@ -987,7 +1096,25 @@ impl<D: Device> SharedPool<D> {
         let id = self.append(next, owner, ids, blocks, kind, PageRef::EMPTY)?;
         next.entries.last_mut().ok_or(Error::NotFound)?.policy = policy;
         Self::validate_admission(&self.graph, next, self.dev.blocks(), None)?;
-        let fs = Engine::mount(Source(source), ids, Mode::ReadOnly)?;
+        let fs = Engine::mount_current(Source(source), ids, Mode::ReadOnly)?;
+        if !self.p9 && fs.atime_policy().is_some() {
+            return Err(Error::Invalid("contenu P9 dans un pool historique"));
+        }
+        let sibling = if self.p9 {
+            self.graph
+                .catalog()
+                .entries
+                .iter()
+                .rev()
+                .find(|v| v.ids == ids && v.blocks == blocks)
+                .cloned()
+        } else {
+            None
+        };
+        let sibling_map = sibling
+            .as_ref()
+            .map(|e| self.classify_view(e))
+            .transpose()?;
         if self.is_p6() && fs.accounting()?.logical_bytes > u128::from(blocks) * 4096 {
             return Err(Error::QuotaExceeded);
         }
@@ -1009,6 +1136,14 @@ impl<D: Device> SharedPool<D> {
         for lba in 0..blocks {
             if fs.protected_lba(lba) {
                 let page = source.read(lba)?;
+                if let (Some(v), Some(old), Some(new)) = (&sibling, &sibling_map, &file_map)
+                    && is_data_page(old, lba) == is_data_page(new, lba)
+                    && let Some(r) = self.graph.lookup(v.root, lba)?
+                    && self.graph.read_indexed_page(&self.dev, v.root, lba)? == page
+                {
+                    refs.insert(lba, r);
+                    continue;
+                }
                 if let Some((map, group)) = &mut compression
                     && is_data_page(map, lba)
                 {
@@ -1031,10 +1166,18 @@ impl<D: Device> SharedPool<D> {
             group.publish(&mut self.graph, &mut self.dev, &mut refs)?;
         }
         refs.retain(|_, r| *r != PageRef::EMPTY);
-        let root = graph::patch_root(&mut self.graph, &mut self.dev, PageRef::EMPTY, &refs)?;
+        let root = if let Some(e) = sibling {
+            let mut diff = refs.clone();
+            for lba in graph::mapped_lbas(&self.dev, e.root, self.graph.is_p6())? {
+                diff.entry(lba).or_insert(PageRef::EMPTY);
+            }
+            graph::patch_root(&mut self.graph, &mut self.dev, e.root, &diff)?
+        } else {
+            graph::patch_root(&mut self.graph, &mut self.dev, PageRef::EMPTY, &refs)?
+        };
         // Relire le contenu importé avant de l'engager, même si le média source
         // a fourni deux lectures différentes pendant la copie.
-        let copied = Engine::mount(
+        let copied = Engine::mount_current(
             Volume {
                 p6: self.graph.is_p6(),
                 disk: &self.dev,

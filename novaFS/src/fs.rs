@@ -40,7 +40,7 @@ fn get(v: &impl View, f: Family, key: &[u8]) -> Result<Option<Vec<u8>>> {
 fn object(v: &impl View, id: u64) -> Result<Object> {
     let data = get(v, Family::Objects, &id.to_le_bytes())?
         .ok_or(Error::Corrupt("objet référencé absent"))?;
-    Object::decode(id, &data, generation(v)?)
+    Object::decode(id, &data, generation(v)?, v.manifest().atime.is_some())
 }
 fn live(v: &impl View, id: u64) -> Result<Object> {
     let obj = object(v, id)?;
@@ -53,21 +53,22 @@ fn save_object<D: Device>(tx: &mut Tx<D>, obj: &Object) -> Result<()> {
     tx.put(
         Family::Objects,
         obj.stat.id.to_le_bytes().to_vec(),
-        obj.encode(),
+        obj.encode(tx.manifest().atime.is_some()),
     )
 }
 fn touch<D: Device>(tx: &mut Tx<D>, id: u64) -> Result<()> {
     let mut obj = live(tx, id)?;
     obj.stat.revision = generation(tx)?;
+    obj.times.mtime = tx.now;
+    obj.times.ctime = tx.now;
     save_object(tx, &obj)
 }
 pub(crate) fn initialize<D: Device>(tx: &mut Tx<D>) -> Result<()> {
     tx.manifest_mut().root_oid = ROOT;
     tx.manifest_mut().next_oid = 2;
-    save_object(
-        tx,
-        &Object::new(ROOT, Kind::Directory, ROOT, "", generation(tx)?),
-    )
+    let mut root = Object::new(ROOT, Kind::Directory, ROOT, "", generation(tx)?);
+    root.times = crate::time::Times::created(tx.now);
+    save_object(tx, &root)
 }
 
 fn components(path: &str) -> Result<Vec<&str>> {
@@ -98,7 +99,7 @@ fn by_id(v: &impl View, id: u64) -> Result<Object> {
         return live(v, id);
     }
     let bytes = get(v, Family::Objects, &id.to_le_bytes())?.ok_or(Error::NotFound)?;
-    let obj = Object::decode(id, &bytes, generation(v)?)?;
+    let obj = Object::decode(id, &bytes, generation(v)?, v.manifest().atime.is_some())?;
     if obj.dead {
         Err(Error::NotFound)
     } else {
@@ -237,6 +238,127 @@ impl<D: Device> Engine<D> {
         self.checked_access(|| Ok(by_id(self, id)?.stat))
     }
 
+    fn legacy_read(&self) -> Result<()> {
+        if !self.read_only()
+            && self
+                .atime_policy()
+                .is_some_and(|p| p != crate::time::Atime::No)
+        {
+            return Err(Error::Invalid(
+                "accès P9 inscriptible : utiliser read_access ou list_access",
+            ));
+        }
+        Ok(())
+    }
+    pub fn times(&self, path: &str) -> Result<crate::time::Times> {
+        self.checked_access(|| Ok(resolve(self, &components(path)?)?.times))
+    }
+
+    /// L'appelant valide sa capacité sur l'objet avant d'utiliser son identifiant.
+    pub fn times_id(&self, id: u64) -> Result<crate::time::Times> {
+        self.checked_access(|| Ok(by_id(self, id)?.times))
+    }
+
+    pub fn set_times(
+        &mut self,
+        path: &str,
+        atime: Option<crate::time::Timestamp>,
+        mtime: Option<crate::time::Timestamp>,
+    ) -> Result<()> {
+        self.update_times(|tx| resolve(tx, &components(path)?), atime, mtime)
+    }
+
+    pub fn set_times_id(
+        &mut self,
+        id: u64,
+        atime: Option<crate::time::Timestamp>,
+        mtime: Option<crate::time::Timestamp>,
+    ) -> Result<()> {
+        self.update_times(|tx| by_id(tx, id), atime, mtime)
+    }
+
+    fn update_times(
+        &mut self,
+        object: impl FnOnce(&Tx<'_, D>) -> Result<Object>,
+        atime: Option<crate::time::Timestamp>,
+        mtime: Option<crate::time::Timestamp>,
+    ) -> Result<()> {
+        if self.atime_policy().is_none() {
+            return Err(Error::Invalid("volume P9 requis"));
+        }
+        self.transact(false, |tx| {
+            let mut obj = object(tx)?;
+            let before = obj.times;
+            if let Some(value) = atime {
+                obj.times.atime = value;
+            }
+            if let Some(value) = mtime {
+                obj.times.mtime = value;
+            }
+            if obj.times != before {
+                obj.times.ctime = tx.now;
+                obj.stat.revision = generation(tx)?;
+                save_object(tx, &obj)?;
+            }
+            Ok(())
+        })
+    }
+
+    fn record_access(&mut self, id: u64) -> Result<()> {
+        let Some(policy) = self.atime_policy() else {
+            return Ok(());
+        };
+        if self.read_only() || policy == crate::time::Atime::No {
+            return Ok(());
+        }
+        self.transact(false, |tx| {
+            let mut obj = by_id(tx, id)?;
+            if policy.update(obj.times, tx.now) {
+                obj.times.atime = tx.now;
+                obj.stat.revision = generation(tx)?;
+                save_object(tx, &obj)?;
+            }
+            Ok(())
+        })
+    }
+
+    /// Lecture applicative. Les vérificateurs utilisent inspect_id.
+    pub fn read_access(&mut self, path: &str, offset: u64, limit: usize) -> Result<Vec<u8>> {
+        let id = self.stat(path)?.id;
+        self.read_access_id(id, offset, limit)
+    }
+
+    pub fn read_access_id(&mut self, id: u64, offset: u64, limit: usize) -> Result<Vec<u8>> {
+        let data = self.inspect_id(id, offset, limit)?;
+        if !data.is_empty() {
+            self.record_access(id)?;
+        }
+        Ok(data)
+    }
+
+    pub fn list_access(
+        &mut self,
+        path: &str,
+        after: Option<&str>,
+        limit: usize,
+    ) -> Result<Vec<String>> {
+        let id = self.stat(path)?.id;
+        self.list_access_id(id, after, limit)
+    }
+
+    pub fn list_access_id(
+        &mut self,
+        id: u64,
+        after: Option<&str>,
+        limit: usize,
+    ) -> Result<Vec<String>> {
+        let entries = self.inspect_dir(id, after, limit)?;
+        if limit != 0 {
+            self.record_access(id)?;
+        }
+        Ok(entries)
+    }
+
     pub const MAX_DIRECTORY_DEPTH: usize = MAX_DEPTH;
 
     pub fn root_id(&self) -> u64 {
@@ -253,12 +375,17 @@ impl<D: Device> Engine<D> {
 
     /// Page de noms triés. Le nom de continuation est le dernier nom rendu.
     pub fn list(&self, path: &str, after: Option<&str>, limit: usize) -> Result<Vec<String>> {
+        self.legacy_read()?;
         self.checked_access(|| {
             self.directory_names(resolve(self, &components(path)?)?.stat, after, limit)
         })
     }
 
     pub fn list_id(&self, id: u64, after: Option<&str>, limit: usize) -> Result<Vec<String>> {
+        self.legacy_read()?;
+        self.inspect_dir(id, after, limit)
+    }
+    pub fn inspect_dir(&self, id: u64, after: Option<&str>, limit: usize) -> Result<Vec<String>> {
         self.checked_access(|| self.directory_names(by_id(self, id)?.stat, after, limit))
     }
 
@@ -304,7 +431,8 @@ impl<D: Device> Engine<D> {
             let id = tx.manifest().next_oid;
             tx.manifest_mut().next_oid =
                 id.checked_add(1).ok_or(Error::Limit("numéros d’objet"))?;
-            let obj = Object::new(id, kind, dir.stat.id, name, generation(tx)?);
+            let mut obj = Object::new(id, kind, dir.stat.id, name, generation(tx)?);
+            obj.times = crate::time::Times::created(tx.now);
             save_object(tx, &obj)?;
             tx.put(Family::Names, key, id.to_le_bytes().to_vec())?;
             touch(tx, dir.stat.id)?;
@@ -345,6 +473,7 @@ impl<D: Device> Engine<D> {
             obj.parent = after.stat.id;
             obj.name = new_name.to_owned();
             obj.stat.revision = generation(tx)?;
+            obj.times.ctime = tx.now;
             tx.remove(Family::Names, &old_key)?;
             tx.put(Family::Names, new_key, id.to_le_bytes().to_vec())?;
             save_object(tx, &obj)?;
@@ -387,6 +516,7 @@ impl<D: Device> Engine<D> {
                 obj.parent = 0;
                 obj.name.clear();
                 obj.stat.revision = generation(tx)?;
+                obj.times.ctime = tx.now;
                 save_object(tx, &obj)?;
                 tx.put(Family::Garbage, id.to_le_bytes().to_vec(), gc_value(first))?;
             } else {

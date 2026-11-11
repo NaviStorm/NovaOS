@@ -81,7 +81,33 @@ fn footer(hash: Sha256, count: u64) -> [u8; 40] {
 
 /// Le domaine source provient de la façade déverrouillée. La clé de sauvegarde
 /// est indépendante du domaine. Un nouveau secret de transport protège chaque flux.
+#[cfg(test)]
 pub(crate) fn export_view<D: Device>(
+    pool: &SharedPool<D>,
+    id: u64,
+    sector: u32,
+    source_domain: [u8; 16],
+    backup: &Secret,
+    rng: &mut impl Entropy,
+    output: impl Write,
+) -> Result<ExportInfo> {
+    export_with_parent(
+        ExportProfile::P7,
+        pool,
+        id,
+        sector,
+        source_domain,
+        backup,
+        rng,
+        output,
+    )
+}
+pub(crate) enum ExportProfile {
+    P7,
+    P9 { parent: Option<([u8; 16], u64)> },
+}
+pub(crate) fn export_with_parent<D: Device>(
+    profile: ExportProfile,
     pool: &SharedPool<D>,
     id: u64,
     sector: u32,
@@ -95,13 +121,32 @@ pub(crate) fn export_view<D: Device>(
     }
     let device = pool.read_device(id)?;
     let (info, seen) = export_manifest(pool, id, sector, &device)?;
-    let mut manifest = Zeroizing::new([0u8; MANIFEST]);
+    let mut manifest = Zeroizing::new(vec![
+        0u8;
+        MANIFEST
+            + if matches!(profile, ExportProfile::P9 { .. }) {
+                24
+            } else {
+                0
+            }
+    ]);
     manifest[..HEAD].copy_from_slice(&info.encode()?);
-    manifest[HEAD..].copy_from_slice(&source_domain);
+    manifest[HEAD..MANIFEST].copy_from_slice(&source_domain);
+    if let ExportProfile::P9 {
+        parent: Some((pool, parent)),
+    } = profile
+    {
+        manifest[MANIFEST..MANIFEST + 16].copy_from_slice(&pool);
+        manifest[MANIFEST + 16..].copy_from_slice(&parent.to_le_bytes());
+    }
 
     let mut archive_id = [0u8; 16];
     rng.fill(&mut archive_id)?;
-    let header = prefix(archive_id);
+    let mut header = prefix(archive_id);
+    if matches!(profile, ExportProfile::P9 { .. }) {
+        header[..8].copy_from_slice(b"NV9EXPRT");
+        header[8..10].copy_from_slice(&2u16.to_le_bytes());
+    }
     let transport = Secret::generate(rng)?;
     let wrapping = backup.derive(&archive_id, WRAP_KEY)?;
     let mut wrapped = Zeroizing::new(*transport.as_bytes());
@@ -184,16 +229,34 @@ impl Device for ArchiveImage {
     }
 }
 
-/// Accepte exclusivement des archives P7. Le vérificateur et l'importeur lisent
-/// les mêmes pages authentifiées et chaque relecture vérifie son tag.
+/// Domaine et éventuelle filiation engagés par le manifeste authentifié.
+pub(crate) struct ArchiveOrigin {
+    pub domain: [u8; 16],
+    pub parent: Option<([u8; 16], u64)>,
+    pub p9: bool,
+}
+#[cfg(test)]
 pub(crate) fn verified_image(
-    mut input: impl Read,
+    input: impl Read,
     backup: &Secret,
 ) -> Result<(ExportInfo, impl Device)> {
+    let (info, _, image) = verified_with_origin(input, backup)?;
+    Ok((info, image))
+}
+pub(crate) fn verified_with_origin(
+    mut input: impl Read,
+    backup: &Secret,
+) -> Result<(ExportInfo, ArchiveOrigin, impl Device)> {
     let mut header = [0; PREFIX];
     exact(&mut input, &mut header)?;
     let archive_id = header[16..].try_into().unwrap();
-    if header != prefix(archive_id) {
+    let p9 = &header[..8] == b"NV9EXPRT";
+    let mut expected = prefix(archive_id);
+    if p9 {
+        expected[..8].copy_from_slice(b"NV9EXPRT");
+        expected[8..10].copy_from_slice(&2u16.to_le_bytes());
+    }
+    if header != expected {
         return Err(Error::Corrupt(
             "signature, version ou algorithme d’archive P7",
         ));
@@ -210,14 +273,25 @@ pub(crate) fn verified_image(
     drop(wrapped);
 
     let seal = Seal::read(&mut input)?;
-    let mut manifest = Zeroizing::new([0u8; MANIFEST]);
+    let mut manifest = Zeroizing::new(vec![0u8; MANIFEST + if p9 { 24 } else { 0 }]);
     exact(&mut input, &mut manifest[..])?;
     let aad = hash.clone().finalize();
     seal.hash(&mut hash, &manifest[..]);
     let manifest_key = transport.derive(&archive_id, MANIFEST_KEY)?;
     manifest_key.open(&seal.nonce, &seal.tag, &aad, &mut manifest[..])?;
     let info = ExportInfo::decode((&manifest[..HEAD]).try_into().unwrap())?;
-    if manifest[HEAD..] == [0; 16] {
+    let domain = manifest[HEAD..MANIFEST].try_into().unwrap();
+    let parent = if p9 {
+        let realm: [u8; 16] = manifest[MANIFEST..MANIFEST + 16].try_into().unwrap();
+        let parent = u64::from_le_bytes(manifest[MANIFEST + 16..].try_into().unwrap());
+        if (realm == [0; 16]) != (parent == 0) || (realm == info.pool && parent >= info.id) {
+            return Err(Error::Corrupt("parent d'archive P9"));
+        }
+        (parent != 0).then_some((realm, parent))
+    } else {
+        None
+    };
+    if domain == [0; 16] {
         return Err(Error::Corrupt("domaine du manifeste P7"));
     }
     let mut rows = Vec::new();
@@ -262,12 +336,18 @@ pub(crate) fn verified_image(
     if coverage(&image, info.ids)? != seen {
         return Err(Error::Corrupt("ensemble des pages d’archive P7"));
     }
-    Ok((info, image))
+    Ok((info, ArchiveOrigin { domain, parent, p9 }, image))
 }
 
 /// Vérification authentifiée en lecture seule, après clôture du flux.
 pub fn check_export(input: impl Read, backup: &Secret) -> Result<ExportInfo> {
-    Ok(verified_image(input, backup)?.0)
+    Ok(check_export_profile(input, backup)?.0)
+}
+
+/// Le profil annoncé provient du préfixe couvert par l'AEAD du transport.
+pub fn check_export_profile(input: impl Read, backup: &Secret) -> Result<(ExportInfo, u16)> {
+    let (info, origin, _) = verified_with_origin(input, backup)?;
+    Ok((info, if origin.p9 { 9 } else { 7 }))
 }
 
 #[cfg(test)]

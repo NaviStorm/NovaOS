@@ -210,6 +210,8 @@ impl Anchor {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Manifest {
+    /// None désigne exclusivement le contenu historique.
+    pub atime: Option<crate::time::Atime>,
     pub previous: u64,
     pub previous_hash: [u8; 32],
     pub root_oid: u64,
@@ -252,12 +254,23 @@ impl Manifest {
         for (chunk, r) in bytes[160..400].chunks_exact_mut(48).zip(self.roots) {
             chunk.copy_from_slice(&r.to_bytes());
         }
+        if let Some(policy) = self.atime {
+            bytes[400..408].copy_from_slice(b"NP9TIME1");
+            bytes[408] = policy as u8;
+        }
         finish_meta(bytes, MANIFEST, ids, block, generation)
     }
 
     pub fn decode(bytes: &Block, ids: Ids, expected: Ref) -> Result<Self> {
         check_meta(bytes, MANIFEST, ids, expected)?;
-        if bytes[400..].iter().any(|&b| b != 0) {
+        let atime = if &bytes[400..408] == b"NP9TIME1" {
+            Some(crate::time::Atime::decode(bytes[408])?)
+        } else if bytes[400..409] == [0; 9] {
+            None
+        } else {
+            return Err(Error::Corrupt("profil de contenu inconnu"));
+        };
+        if bytes[409..].iter().any(|&b| b != 0) {
             return Err(Error::Corrupt("suffixe du manifeste"));
         }
         let mut roots = [Ref::ZERO; 5];
@@ -265,6 +278,7 @@ impl Manifest {
             *r = Ref::from_bytes(chunk)?;
         }
         let manifest = Self {
+            atime,
             previous: le64(&bytes[96..104]),
             previous_hash: bytes[104..136].try_into().unwrap(),
             root_oid: le64(&bytes[136..144]),

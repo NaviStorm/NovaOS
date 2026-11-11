@@ -240,3 +240,37 @@ fn p2_extent_ne_apres_la_revision_du_fichier() -> Result<()> {
     ));
     Ok(())
 }
+
+#[test]
+fn p9_scrub_refuse_une_fraction_non_canonique_meme_sous_des_empreintes_valides() -> Result<()> {
+    for sector in [512, 4096] {
+        let mut fs = Engine::format_p9(
+            SimDevice::new(512, sector)?,
+            IDS,
+            crate::time::Atime::Relative,
+            None,
+        )?;
+        fs.create("/date")?;
+        let id = fs.stat("/date")?.id;
+        fs.transact(false, |tx| {
+            let mut record = get(tx, Family::Objects, &id.to_le_bytes())?.ok_or(Error::NotFound)?;
+            let end = record.len();
+            record[end - 4..].copy_from_slice(&1_000_000_000u32.to_le_bytes());
+            tx.put(Family::Objects, id.to_le_bytes().to_vec(), record)
+        })?;
+        let mut image = fs.into_device();
+        let stable = image.control().snapshot().bytes()?;
+        let report = crate::check_image(&image, IDS);
+        assert!(matches!(report.pair, crate::PairStatus::Unavailable));
+        assert!(report.slots.iter().any(|s| matches!(
+            s.issue.as_ref().map(|i| &i.error),
+            Some(Error::Corrupt("horodatage P9 non canonique"))
+        )));
+        use crate::secure_pool::scrub::{Mode as ScrubMode, Status, scrub};
+        let result = scrub(&mut image, ScrubMode::Full, None, |_| true)?;
+        assert_ne!(result.status, Status::Healthy);
+        assert_eq!(image.control().snapshot().bytes()?, stable);
+        assert!(Engine::mount_current(image, IDS, Mode::ReadWrite).is_err());
+    }
+    Ok(())
+}

@@ -1,0 +1,1107 @@
+{
+  "schema": "novafs-p9-qualification-1",
+  "version_novafs": "0.9.13",
+  "version_novaos": "0.13.0",
+  "revision_source_p8": "f2742e1f7621eb4b732e81bd472a7156b1f48ecf",
+  "date": "2026-11-11",
+  "macos": "27.2 (26B123)",
+  "rustc": "1.99.1",
+  "secteurs_octets": [
+    512,
+    4096
+  ],
+  "architecture": {
+    "aarch64": {
+      "execution": "Darwin natif",
+      "suites": {
+        "architecture": "aarch64",
+        "standard": {
+          "reussis": 192,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "sondes": {
+          "reussis": 193,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=25.098",
+        "pannes_p5": {
+          "512": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ],
+          "4096": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ]
+        },
+        "controles_p51_standard": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "controles_p51_sondes": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "migration": [
+          "MIGRATION secteur=512 frontières=96",
+          "MIGRATION secteur=4096 frontières=96"
+        ],
+        "permutations": [
+          "PERMUTATIONS secteur=512 ordres=24",
+          "PERMUTATIONS secteur=4096 ordres=24"
+        ],
+        "saturation": [
+          "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+          "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+        ],
+        "aleatoire": [
+          "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+        ],
+        "restitution": [
+          "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=183024 après=183024",
+          "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=183024 après=183024",
+          "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=183024 après=183024",
+          "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=183024 après=183024"
+        ]
+      },
+      "p9": {
+        "512": {
+          "migration_pool_frontieres": 26,
+          "echecs_flush": 7,
+          "unites_chiffrees": 21,
+          "migration_lv_coupures": 48,
+          "transactions_coupures_et_ordres": 492
+        },
+        "4096": {
+          "migration_pool_frontieres": 26,
+          "echecs_flush": 7,
+          "unites_chiffrees": 21,
+          "migration_lv_coupures": 48,
+          "transactions_coupures_et_ordres": 492
+        }
+      },
+      "preuve_filiation": [
+        "secteur=512 enfant=Clone parents_appeles=2/3 generation=10 blocs_identiques=3000 recus_identiques=6 identiques_apres_retrait=oui",
+        "secteur=512 enfant=Snapshot parents_appeles=4/5 generation=10 blocs_identiques=3000 recus_identiques=6 identiques_apres_retrait=oui",
+        "secteur=512 temoin_divergent=distinct source_intacte=oui",
+        "secteur=4096 enfant=Clone parents_appeles=2/3 generation=10 blocs_identiques=3000 recus_identiques=6 identiques_apres_retrait=oui",
+        "secteur=4096 enfant=Snapshot parents_appeles=4/5 generation=10 blocs_identiques=3000 recus_identiques=6 identiques_apres_retrait=oui",
+        "secteur=4096 temoin_divergent=distinct source_intacte=oui"
+      ],
+      "reproduction_p8": [
+        "secteur=512 lecture_cible=ok mutation_partielle=ReadOnly soumissions_refus=0 restaurations_isolees=2 second_import=Exists ordres=2 ancien_recu_a_identifiants_egaux=Invalid source_et_recus_intacts=oui scellement_abandonne=1 octets_stables_modifies=0",
+        "secteur=4096 lecture_cible=ok mutation_partielle=ReadOnly soumissions_refus=0 restaurations_isolees=2 second_import=Exists ordres=2 ancien_recu_a_identifiants_egaux=Invalid source_et_recus_intacts=oui scellement_abandonne=1 octets_stables_modifies=0"
+      ],
+      "qemu_novaos_profil_historique": [
+        "aarch64/512 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+        "aarch64/4096 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO"
+      ],
+      "parcours_cli_p7": [
+        "aarch64-apple-darwin 512 création, snapshot, export et restauration validés",
+        "aarch64-apple-darwin 4096 création, snapshot, export et restauration validés"
+      ],
+      "sha256_cli": "cb1aedfb319d3b71d8a9d5ca2b389363639929f8e47743e6603215cb459f9415"
+    },
+    "x86_64": {
+      "execution": "Darwin traduit par Rosetta",
+      "suites": {
+        "architecture": "x86_64",
+        "standard": {
+          "reussis": 192,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "sondes": {
+          "reussis": 193,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=40.613",
+        "pannes_p5": {
+          "512": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ],
+          "4096": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ]
+        },
+        "controles_p51_standard": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "controles_p51_sondes": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "migration": [
+          "MIGRATION secteur=512 frontières=96",
+          "MIGRATION secteur=4096 frontières=96"
+        ],
+        "permutations": [
+          "PERMUTATIONS secteur=512 ordres=24",
+          "PERMUTATIONS secteur=4096 ordres=24"
+        ],
+        "saturation": [
+          "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+          "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+        ],
+        "aleatoire": [
+          "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+        ],
+        "restitution": [
+          "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=167936 après=167936",
+          "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=167936 après=167936",
+          "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=167936 après=167936",
+          "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=167936 après=167936"
+        ]
+      },
+      "p9": {
+        "512": {
+          "migration_pool_frontieres": 26,
+          "echecs_flush": 7,
+          "unites_chiffrees": 21,
+          "migration_lv_coupures": 48,
+          "transactions_coupures_et_ordres": 492
+        },
+        "4096": {
+          "migration_pool_frontieres": 26,
+          "echecs_flush": 7,
+          "unites_chiffrees": 21,
+          "migration_lv_coupures": 48,
+          "transactions_coupures_et_ordres": 492
+        }
+      },
+      "preuve_filiation": [
+        "secteur=512 enfant=Clone parents_appeles=2/3 generation=10 blocs_identiques=3000 recus_identiques=6 identiques_apres_retrait=oui",
+        "secteur=512 enfant=Snapshot parents_appeles=4/5 generation=10 blocs_identiques=3000 recus_identiques=6 identiques_apres_retrait=oui",
+        "secteur=512 temoin_divergent=distinct source_intacte=oui",
+        "secteur=4096 enfant=Clone parents_appeles=2/3 generation=10 blocs_identiques=3000 recus_identiques=6 identiques_apres_retrait=oui",
+        "secteur=4096 enfant=Snapshot parents_appeles=4/5 generation=10 blocs_identiques=3000 recus_identiques=6 identiques_apres_retrait=oui",
+        "secteur=4096 temoin_divergent=distinct source_intacte=oui"
+      ],
+      "reproduction_p8": [
+        "secteur=512 lecture_cible=ok mutation_partielle=ReadOnly soumissions_refus=0 restaurations_isolees=2 second_import=Exists ordres=2 ancien_recu_a_identifiants_egaux=Invalid source_et_recus_intacts=oui scellement_abandonne=1 octets_stables_modifies=0",
+        "secteur=4096 lecture_cible=ok mutation_partielle=ReadOnly soumissions_refus=0 restaurations_isolees=2 second_import=Exists ordres=2 ancien_recu_a_identifiants_egaux=Invalid source_et_recus_intacts=oui scellement_abandonne=1 octets_stables_modifies=0"
+      ],
+      "qemu_novaos_profil_historique": [
+        "x86_64/512 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+        "x86_64/4096 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO"
+      ],
+      "parcours_cli_p7": [
+        "x86_64-apple-darwin 512 création, snapshot, export et restauration validés",
+        "x86_64-apple-darwin 4096 création, snapshot, export et restauration validés"
+      ],
+      "sha256_cli": "f8a43e1311b9c1227ae65aecd45655ce38fcd2ee5e6c4582b311e52479cba525"
+    }
+  },
+  "historique": {
+    "revisions_images": [
+      "d0ba7cb",
+      "38c8699",
+      "6f15350",
+      "1510eca",
+      "0a89d23",
+      "b865c58",
+      "ae508ce",
+      "3ca74ee"
+    ],
+    "echanges_pool_partage": 8,
+    "images_p5": {
+      "images": 4,
+      "lectures_croisees": 8,
+      "refus_ecrivains_P0": 8,
+      "sha256": "bcd0ef65d84ff95250a11efe63750abcff9ee14ca012b2315ab824486d9014ad"
+    },
+    "echanges_export_p5": 4,
+    "test_rapport_latences": "réussi",
+    "p6_echanges": 8,
+    "p6_migrations": 4,
+    "p7_echanges": 4,
+    "p7_restaurations": 8,
+    "lz4": {
+      "bibliotheque": "1.11.1",
+      "graine": "0x6e6f766146535036",
+      "architectures": {
+        "aarch64": {
+          "reference_vers_novafs": 256,
+          "novafs_vers_reference": 256,
+          "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+        },
+        "x86_64": {
+          "reference_vers_novafs": 256,
+          "novafs_vers_reference": 256,
+          "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+        }
+      },
+      "sha256_corpus": "c525b71ce2cf4dd9f9d3b324c2c984965e442daf137aff8d3a12535b92ae722c"
+    },
+    "scrub_p8": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "rapports": 12,
+        "statuts": [
+          "incomplet",
+          "authentification_indisponible",
+          "coherent",
+          "corruption",
+          "repare",
+          "non_reparable",
+          "coherent",
+          "coherent",
+          "coherent",
+          "non_reparable",
+          "coherent",
+          "non_reparable"
+        ]
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "rapports": 12,
+        "statuts": [
+          "incomplet",
+          "authentification_indisponible",
+          "coherent",
+          "corruption",
+          "repare",
+          "non_reparable",
+          "coherent",
+          "coherent",
+          "coherent",
+          "non_reparable",
+          "coherent",
+          "non_reparable"
+        ]
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "rapports": 12,
+        "statuts": [
+          "incomplet",
+          "authentification_indisponible",
+          "coherent",
+          "corruption",
+          "repare",
+          "non_reparable",
+          "coherent",
+          "coherent",
+          "coherent",
+          "non_reparable",
+          "coherent",
+          "non_reparable"
+        ]
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "rapports": 12,
+        "statuts": [
+          "incomplet",
+          "authentification_indisponible",
+          "coherent",
+          "corruption",
+          "repare",
+          "non_reparable",
+          "coherent",
+          "coherent",
+          "coherent",
+          "non_reparable",
+          "coherent",
+          "non_reparable"
+        ]
+      }
+    ],
+    "coupures_images_et_qemu": {
+      "aarch64": {
+        "fichier": 24,
+        "qemu": 10,
+        "remontages_par_cas": 2
+      },
+      "x86_64": {
+        "fichier": 24,
+        "qemu": 10,
+        "remontages_par_cas": 2
+      }
+    }
+  },
+  "mesures": {
+    "aarch64-512": {
+      "allocations_migrations": 645015,
+      "creation": {
+        "max_ns": 64831167,
+        "n": 24,
+        "p50_ns": 43897875,
+        "p95_ns": 64582625,
+        "p99_ns": 64831167
+      },
+      "creation_volume_clair": {
+        "max_ns": 12085125,
+        "n": 24,
+        "p50_ns": 9349042,
+        "p95_ns": 10709084,
+        "p99_ns": 12085125
+      },
+      "ecriture": {
+        "max_ns": 89796291,
+        "n": 24,
+        "p50_ns": 58891167,
+        "p95_ns": 89451375,
+        "p99_ns": 89796291
+      },
+      "enrolement_volume": {
+        "max_ns": 84177792,
+        "n": 24,
+        "p50_ns": 71604000,
+        "p95_ns": 78848667,
+        "p99_ns": 84177792
+      },
+      "exclusifs_snapshot_apres": 0,
+      "exclusifs_snapshot_avant": 0,
+      "lecture_noatime": {
+        "max_ns": 120476000,
+        "n": 24,
+        "p50_ns": 70500833,
+        "p95_ns": 118380917,
+        "p99_ns": 120476000
+      },
+      "lecture_strictatime": {
+        "max_ns": 212242000,
+        "n": 24,
+        "p50_ns": 131777625,
+        "p95_ns": 208770834,
+        "p99_ns": 212242000
+      },
+      "lignes_recu": 3,
+      "migration": {
+        "max_ns": 285593750,
+        "n": 24,
+        "p50_ns": 275266250,
+        "p95_ns": 284475750,
+        "p99_ns": 285593750
+      },
+      "montage_ns": 353083,
+      "occupation_destination_apres_charge": 12288000,
+      "occupation_destination_apres_migration": 12288000,
+      "occupation_source": 12288000,
+      "octets_recu": 372,
+      "p8_creation": {
+        "max_ns": 137961417,
+        "n": 24,
+        "p50_ns": 58045666,
+        "p95_ns": 92952750,
+        "p99_ns": 137961417
+      },
+      "p8_ecriture": {
+        "max_ns": 92189334,
+        "n": 24,
+        "p50_ns": 55784959,
+        "p95_ns": 92071209,
+        "p99_ns": 92189334
+      },
+      "p8_renommage": {
+        "max_ns": 91066958,
+        "n": 24,
+        "p50_ns": 57150333,
+        "p95_ns": 90268125,
+        "p99_ns": 91066958
+      },
+      "partage_snapshot_apres": 19,
+      "partage_snapshot_avant": 19,
+      "pile_reservee": 8372224,
+      "rechiffrement_ns": 15140333,
+      "rechiffrement_octets": 1048576,
+      "renommage": {
+        "max_ns": 91998583,
+        "n": 24,
+        "p50_ns": 58909500,
+        "p95_ns": 90230458,
+        "p99_ns": 91998583
+      },
+      "restauration_clone": {
+        "max_ns": 113699584,
+        "n": 24,
+        "p50_ns": 101589542,
+        "p95_ns": 112128625,
+        "p99_ns": 113699584
+      },
+      "secteur": 512,
+      "snapshot": {
+        "max_ns": 130239500,
+        "n": 24,
+        "p50_ns": 45765000,
+        "p95_ns": 65850584,
+        "p99_ns": 130239500
+      },
+      "surcout_objet_octets": 48,
+      "taille_image": 12288000,
+      "tas_initial": 102256,
+      "tas_pic_migration": 67213072,
+      "transactions_par_seconde": 18.14179819504584,
+      "unites_immuables": 28,
+      "verification": {
+        "max_ns": 138557167,
+        "n": 24,
+        "p50_ns": 89504666,
+        "p95_ns": 135644917,
+        "p99_ns": 138557167
+      },
+      "verification_recu": {
+        "max_ns": 491000,
+        "n": 24,
+        "p50_ns": 321375,
+        "p95_ns": 383583,
+        "p99_ns": 491000
+      },
+      "tas_avant": 1936,
+      "tas_apres": 1936,
+      "tas_pic_processus": 67874512,
+      "rss_pic_octets": 72957952,
+      "empreinte_pic_darwin_octets": 71205344,
+      "rechiffrement_mio_s": 66.04874542719767
+    },
+    "aarch64-4096": {
+      "allocations_migrations": 645014,
+      "creation": {
+        "max_ns": 65291709,
+        "n": 24,
+        "p50_ns": 42863625,
+        "p95_ns": 64819000,
+        "p99_ns": 65291709
+      },
+      "creation_volume_clair": {
+        "max_ns": 11592542,
+        "n": 24,
+        "p50_ns": 9239958,
+        "p95_ns": 10453000,
+        "p99_ns": 11592542
+      },
+      "ecriture": {
+        "max_ns": 89971000,
+        "n": 24,
+        "p50_ns": 57112375,
+        "p95_ns": 89829208,
+        "p99_ns": 89971000
+      },
+      "enrolement_volume": {
+        "max_ns": 74030166,
+        "n": 24,
+        "p50_ns": 70637083,
+        "p95_ns": 73502625,
+        "p99_ns": 74030166
+      },
+      "exclusifs_snapshot_apres": 0,
+      "exclusifs_snapshot_avant": 0,
+      "lecture_noatime": {
+        "max_ns": 124077292,
+        "n": 24,
+        "p50_ns": 66358708,
+        "p95_ns": 118876708,
+        "p99_ns": 124077292
+      },
+      "lecture_strictatime": {
+        "max_ns": 213194917,
+        "n": 24,
+        "p50_ns": 126790333,
+        "p95_ns": 211217125,
+        "p99_ns": 213194917
+      },
+      "lignes_recu": 3,
+      "migration": {
+        "max_ns": 284958834,
+        "n": 24,
+        "p50_ns": 270665583,
+        "p95_ns": 284270458,
+        "p99_ns": 284958834
+      },
+      "montage_ns": 308166,
+      "occupation_destination_apres_charge": 12288000,
+      "occupation_destination_apres_migration": 12288000,
+      "occupation_source": 12288000,
+      "octets_recu": 372,
+      "p8_creation": {
+        "max_ns": 141311666,
+        "n": 24,
+        "p50_ns": 57783166,
+        "p95_ns": 90570000,
+        "p99_ns": 141311666
+      },
+      "p8_ecriture": {
+        "max_ns": 90333458,
+        "n": 24,
+        "p50_ns": 56166833,
+        "p95_ns": 88420208,
+        "p99_ns": 90333458
+      },
+      "p8_renommage": {
+        "max_ns": 90272167,
+        "n": 24,
+        "p50_ns": 56852875,
+        "p95_ns": 89317292,
+        "p99_ns": 90272167
+      },
+      "partage_snapshot_apres": 19,
+      "partage_snapshot_avant": 19,
+      "pile_reservee": 8372224,
+      "rechiffrement_ns": 14857500,
+      "rechiffrement_octets": 1048576,
+      "renommage": {
+        "max_ns": 89698834,
+        "n": 24,
+        "p50_ns": 57905708,
+        "p95_ns": 89422584,
+        "p99_ns": 89698834
+      },
+      "restauration_clone": {
+        "max_ns": 110276458,
+        "n": 24,
+        "p50_ns": 100016333,
+        "p95_ns": 109938250,
+        "p99_ns": 110276458
+      },
+      "secteur": 4096,
+      "snapshot": {
+        "max_ns": 132915584,
+        "n": 24,
+        "p50_ns": 44024417,
+        "p95_ns": 65941875,
+        "p99_ns": 132915584
+      },
+      "surcout_objet_octets": 48,
+      "taille_image": 12288000,
+      "tas_initial": 102256,
+      "tas_pic_migration": 67213072,
+      "transactions_par_seconde": 18.304424680452623,
+      "unites_immuables": 28,
+      "verification": {
+        "max_ns": 139642709,
+        "n": 24,
+        "p50_ns": 82821875,
+        "p95_ns": 136074125,
+        "p99_ns": 139642709
+      },
+      "verification_recu": {
+        "max_ns": 377459,
+        "n": 24,
+        "p50_ns": 316791,
+        "p95_ns": 377250,
+        "p99_ns": 377459
+      },
+      "tas_avant": 1936,
+      "tas_apres": 1936,
+      "tas_pic_processus": 67874512,
+      "rss_pic_octets": 72990720,
+      "empreinte_pic_darwin_octets": 71238112,
+      "rechiffrement_mio_s": 67.30607437321218
+    },
+    "x86_64-512": {
+      "allocations_migrations": 645019,
+      "creation": {
+        "max_ns": 99116625,
+        "n": 24,
+        "p50_ns": 66819750,
+        "p95_ns": 98340708,
+        "p99_ns": 99116625
+      },
+      "creation_volume_clair": {
+        "max_ns": 11025791,
+        "n": 24,
+        "p50_ns": 10047625,
+        "p95_ns": 10422083,
+        "p99_ns": 11025791
+      },
+      "ecriture": {
+        "max_ns": 138819250,
+        "n": 24,
+        "p50_ns": 89731000,
+        "p95_ns": 138503833,
+        "p99_ns": 138819250
+      },
+      "enrolement_volume": {
+        "max_ns": 128852500,
+        "n": 24,
+        "p50_ns": 120475625,
+        "p95_ns": 126061792,
+        "p99_ns": 128852500
+      },
+      "exclusifs_snapshot_apres": 0,
+      "exclusifs_snapshot_avant": 0,
+      "lecture_noatime": {
+        "max_ns": 189592000,
+        "n": 24,
+        "p50_ns": 106426625,
+        "p95_ns": 187554375,
+        "p99_ns": 189592000
+      },
+      "lecture_strictatime": {
+        "max_ns": 331758708,
+        "n": 24,
+        "p50_ns": 194326750,
+        "p95_ns": 324758167,
+        "p99_ns": 331758708
+      },
+      "lignes_recu": 3,
+      "migration": {
+        "max_ns": 450927792,
+        "n": 24,
+        "p50_ns": 427365750,
+        "p95_ns": 447061583,
+        "p99_ns": 450927792
+      },
+      "montage_ns": 607708,
+      "occupation_destination_apres_charge": 12288000,
+      "occupation_destination_apres_migration": 12288000,
+      "occupation_source": 12288000,
+      "octets_recu": 372,
+      "p8_creation": {
+        "max_ns": 213237416,
+        "n": 24,
+        "p50_ns": 92588916,
+        "p95_ns": 141618917,
+        "p99_ns": 213237416
+      },
+      "p8_ecriture": {
+        "max_ns": 141651417,
+        "n": 24,
+        "p50_ns": 89741709,
+        "p95_ns": 135903334,
+        "p99_ns": 141651417
+      },
+      "p8_renommage": {
+        "max_ns": 143572041,
+        "n": 24,
+        "p50_ns": 91841959,
+        "p95_ns": 140147042,
+        "p99_ns": 143572041
+      },
+      "partage_snapshot_apres": 19,
+      "partage_snapshot_avant": 19,
+      "pile_reservee": 8372224,
+      "rechiffrement_ns": 22935791,
+      "rechiffrement_octets": 1048576,
+      "renommage": {
+        "max_ns": 140456625,
+        "n": 24,
+        "p50_ns": 88037375,
+        "p95_ns": 138366666,
+        "p99_ns": 140456625
+      },
+      "restauration_clone": {
+        "max_ns": 176461417,
+        "n": 24,
+        "p50_ns": 167793416,
+        "p95_ns": 175697125,
+        "p99_ns": 176461417
+      },
+      "secteur": 512,
+      "snapshot": {
+        "max_ns": 206134417,
+        "n": 24,
+        "p50_ns": 66816875,
+        "p95_ns": 100479917,
+        "p99_ns": 206134417
+      },
+      "surcout_objet_octets": 48,
+      "taille_image": 12288000,
+      "tas_initial": 102048,
+      "tas_pic_migration": 67212832,
+      "transactions_par_seconde": 12.065788638143783,
+      "unites_immuables": 28,
+      "verification": {
+        "max_ns": 224230333,
+        "n": 24,
+        "p50_ns": 134192417,
+        "p95_ns": 218043833,
+        "p99_ns": 224230333
+      },
+      "verification_recu": {
+        "max_ns": 619333,
+        "n": 24,
+        "p50_ns": 570667,
+        "p95_ns": 602250,
+        "p99_ns": 619333
+      },
+      "tas_avant": 1840,
+      "tas_apres": 1840,
+      "tas_pic_processus": 67874000,
+      "rss_pic_octets": 75862016,
+      "empreinte_pic_darwin_octets": 73577864,
+      "rechiffrement_mio_s": 43.599978740650364
+    },
+    "x86_64-4096": {
+      "allocations_migrations": 645015,
+      "creation": {
+        "max_ns": 99535208,
+        "n": 24,
+        "p50_ns": 65032333,
+        "p95_ns": 97353750,
+        "p99_ns": 99535208
+      },
+      "creation_volume_clair": {
+        "max_ns": 11785500,
+        "n": 24,
+        "p50_ns": 9643458,
+        "p95_ns": 10407167,
+        "p99_ns": 11785500
+      },
+      "ecriture": {
+        "max_ns": 138240708,
+        "n": 24,
+        "p50_ns": 86126042,
+        "p95_ns": 138029125,
+        "p99_ns": 138240708
+      },
+      "enrolement_volume": {
+        "max_ns": 129319709,
+        "n": 24,
+        "p50_ns": 120416666,
+        "p95_ns": 127889292,
+        "p99_ns": 129319709
+      },
+      "exclusifs_snapshot_apres": 0,
+      "exclusifs_snapshot_avant": 0,
+      "lecture_noatime": {
+        "max_ns": 190979708,
+        "n": 24,
+        "p50_ns": 106160041,
+        "p95_ns": 189962292,
+        "p99_ns": 190979708
+      },
+      "lecture_strictatime": {
+        "max_ns": 334422792,
+        "n": 24,
+        "p50_ns": 196542916,
+        "p95_ns": 324156583,
+        "p99_ns": 334422792
+      },
+      "lignes_recu": 3,
+      "migration": {
+        "max_ns": 443400541,
+        "n": 24,
+        "p50_ns": 427354000,
+        "p95_ns": 435640208,
+        "p99_ns": 443400541
+      },
+      "montage_ns": 614042,
+      "occupation_destination_apres_charge": 12288000,
+      "occupation_destination_apres_migration": 12288000,
+      "occupation_source": 12288000,
+      "octets_recu": 372,
+      "p8_creation": {
+        "max_ns": 212572833,
+        "n": 24,
+        "p50_ns": 88081334,
+        "p95_ns": 138881834,
+        "p99_ns": 212572833
+      },
+      "p8_ecriture": {
+        "max_ns": 142728416,
+        "n": 24,
+        "p50_ns": 86764625,
+        "p95_ns": 139046083,
+        "p99_ns": 142728416
+      },
+      "p8_renommage": {
+        "max_ns": 142683084,
+        "n": 24,
+        "p50_ns": 88173375,
+        "p95_ns": 141061917,
+        "p99_ns": 142683084
+      },
+      "partage_snapshot_apres": 19,
+      "partage_snapshot_avant": 19,
+      "pile_reservee": 8372224,
+      "rechiffrement_ns": 22701417,
+      "rechiffrement_octets": 1048576,
+      "renommage": {
+        "max_ns": 139855000,
+        "n": 24,
+        "p50_ns": 87446958,
+        "p95_ns": 137993292,
+        "p99_ns": 139855000
+      },
+      "restauration_clone": {
+        "max_ns": 185845750,
+        "n": 24,
+        "p50_ns": 168560042,
+        "p95_ns": 179872875,
+        "p99_ns": 185845750
+      },
+      "secteur": 4096,
+      "snapshot": {
+        "max_ns": 200692709,
+        "n": 24,
+        "p50_ns": 65975958,
+        "p95_ns": 99554083,
+        "p99_ns": 200692709
+      },
+      "surcout_objet_octets": 48,
+      "taille_image": 12288000,
+      "tas_initial": 102048,
+      "tas_pic_migration": 67212832,
+      "transactions_par_seconde": 11.841384329297428,
+      "unites_immuables": 28,
+      "verification": {
+        "max_ns": 216127667,
+        "n": 24,
+        "p50_ns": 132731292,
+        "p95_ns": 212858542,
+        "p99_ns": 216127667
+      },
+      "verification_recu": {
+        "max_ns": 606375,
+        "n": 24,
+        "p50_ns": 550750,
+        "p95_ns": 594334,
+        "p99_ns": 606375
+      },
+      "tas_avant": 1840,
+      "tas_apres": 1840,
+      "tas_pic_processus": 67874000,
+      "rss_pic_octets": 75698176,
+      "empreinte_pic_darwin_octets": 73381208,
+      "rechiffrement_mio_s": 44.05011369995098
+    }
+  },
+  "echanges_p9": [
+    {
+      "producteur": "aarch64-apple-darwin",
+      "lecteur": "x86_64-apple-darwin",
+      "secteur": 512,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "aarch64-apple-darwin",
+      "lecteur": "x86_64-apple-darwin",
+      "secteur": 4096,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "x86_64-apple-darwin",
+      "lecteur": "aarch64-apple-darwin",
+      "secteur": 512,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "x86_64-apple-darwin",
+      "lecteur": "aarch64-apple-darwin",
+      "secteur": 4096,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    }
+  ],
+  "compilations_cibles_nues": [
+    "x86_64-unknown-none",
+    "aarch64-unknown-none-softfloat"
+  ],
+  "licences": {
+    "novaFS": "MPL-2.0",
+    "novaOS": "MIT"
+  }
+}

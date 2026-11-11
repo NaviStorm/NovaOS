@@ -80,6 +80,15 @@ pub(crate) fn visit_ready<D: Device>(
     Ok(())
 }
 
+pub(crate) fn checkpoint(dev: &impl Device) -> Result<(u64, [u8; 32])> {
+    let (mut old, mut head) = (load(dev, 0)?, load(dev, 1)?);
+    if head.0.generation < old.0.generation {
+        core::mem::swap(&mut old, &mut head);
+    }
+    validate_pair(&old.0, old.1, &head.0, head.1)?;
+    Ok((head.0.generation, head.1))
+}
+
 /// Le type du rapport distingue les catalogues locaux, leur filiation et le
 /// contenu des LV prêts. Aucune vue n'est dérivée d'une paire non vérifiée.
 pub fn check_pool<D: Device>(dev: &D) -> PoolReport {

@@ -398,6 +398,9 @@ impl<D: Device> Located<'_, '_, D> {
     }
 }
 impl<D: Device> Device for Located<'_, '_, D> {
+    fn imported_genesis(&self) -> bool {
+        self.media.imported_genesis()
+    }
     fn blocks(&self) -> u64 {
         self.media.blocks()
     }
@@ -582,6 +585,9 @@ fn p7<D: Device, F: FnMut(Progress) -> bool>(
 ) -> Result<()> {
     let header = read_header(disk)
         .inspect_err(|e| report.issue("en-tetes", None, None, Some((0, 2)), e.into()))?;
+    if &header[..8] == P9_MAGIC {
+        report.format = "P9";
+    }
     let pool: Id = header[16..32].try_into().unwrap();
     let admin = auth
         .map(|a| {
@@ -592,6 +598,7 @@ fn p7<D: Device, F: FnMut(Progress) -> bool>(
         })
         .transpose()?;
     let copies = copies(disk, pool, admin.as_ref(), report)?;
+    migration::check_checkpoint(&header, copies.head)?;
     let mut state = load_state(disk, pool, copies.head, report)?;
     let keys = auth
         .map(|a| keys(&state, a))
@@ -838,7 +845,21 @@ pub fn scrub_with<D: Device>(
                         .filter_map(|s| s.anchor.as_ref().map(|a| a.manifest.birth))
                         .max();
                     report.views = 1;
+                    let active = match fs.pair {
+                        crate::PairStatus::Verified { slot } => fs.slots[slot].anchor.clone(),
+                        _ => None,
+                    };
                     inspect_lv(&mut report, fs, anchor.ids.lv, true)?;
+                    if let Some(active) = active {
+                        let manifest = crate::Manifest::decode(
+                            &scan.read(active.manifest.block)?,
+                            active.ids,
+                            active.manifest,
+                        )?;
+                        if manifest.atime.is_some() {
+                            report.format = "LV P9";
+                        }
+                    }
                     report.status = Status::Healthy;
                     return Ok(());
                 }

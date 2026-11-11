@@ -21,8 +21,9 @@ mod shared;
 const HELP: &str = concat!(
     "NovaFS v",
     env!("CARGO_PKG_VERSION"),
-    " — formats P0 et P5, pools P6 LZ4 et P7 chiffrés, images jetables, uniquement sur flux
+    " — formats P0 et P5, pools P6 LZ4, P7 chiffrés et P9 horodatés, images sur flux
 novafs scrub BLOCS SECTEUR [--full | --repair] [--cles-fd3] [--json]   contrôle des objets persistants
+novafs migrate-content-p9 BLOCS SECTEUR FS_ID LV_ID   migre une image autonome vers P9 sur stdout
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
 novafs script BLOCS SECTEUR                        lit les commandes puis émet l’image sur stdout
 novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l’image sur stdin
@@ -30,8 +31,8 @@ novafs verify BLOCS SECTEUR FS_ID LV_ID            vérifie intégralement les d
 novafs check BLOCS SECTEUR FS_ID LV_ID             contrôle RO d’un LV, rapport JSON
 novafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE   vérifie une branche P5/P6 et son reçu externe
 novafs check-pool BLOCS SECTEUR                    vérifie l’intégrité du pool P0, P5 ou P6 (option --full)
-novafs check-pool BLOCS SECTEUR [--cles-fd3]       inspecte P7 ou authentifie par pipe anonyme FD 3
-novafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE [--cles-fd3]   contrôle P7 et son reçu avec clés
+novafs check-pool BLOCS SECTEUR [--cles-fd3]       inspecte P7/P9 ou authentifie par pipe anonyme FD 3
+novafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE [--cles-fd3]   contrôle P7/P9 et son reçu avec clés
 novafs space BLOCS SECTEUR FS_ID LV_ID             comptabilité du FS au repos, sur un LV hors ligne
 novafs space-pool BLOCS SECTEUR                    comptabilité physique du catalogue hors ligne
 novafs salvage BLOCS SECTEUR FS_ID LV_ID SLOT NOM extrait un fichier sur stdout en lecture seule
@@ -209,6 +210,19 @@ fn commands(fs: &mut Engine<&mut FileImage>, mut input: impl BufRead) -> Result<
     }
     Ok(())
 }
+fn migration_digest(
+    image: &impl Device,
+    pool: Option<[u8; 16]>,
+    units: u64,
+    source: [u8; 32],
+) -> Result<()> {
+    let sha = novafs::secure_pool::migration::image_digest(image)?;
+    eprintln!(
+        "{}",
+        serde_json::json!({"migration_verifiee":true,"sha256_source":label(&source),"sha256":label(&sha),"pool":pool.as_ref().map(|p|label(p)),"unites":units})
+    );
+    Ok(())
+}
 fn run(args: &[String]) -> Result<()> {
     if args.is_empty() || args == ["--help"] {
         println!("{HELP}\n{}", shared::HELP);
@@ -245,6 +259,27 @@ fn run(args: &[String]) -> Result<()> {
     let sector = u32::try_from(num(&args[2])?).map_err(|_| Error::Invalid("secteur"))?;
     let mut dev = FileImage::create(blocks, sector)?;
     match (args[0].as_str(), args.len()) {
+        ("migrate-content-p9", 5) => {
+            image_stream(&io::stdin())?;
+            image_stream(&io::stdout())?;
+            load(&mut dev, &mut io::stdin().lock())?;
+            let source = Engine::mount(
+                dev,
+                Ids {
+                    fs: identifier(&args[3])?,
+                    lv: identifier(&args[4])?,
+                },
+                Mode::ReadOnly,
+            )?;
+            let dst = source.migrate_timestamps(FileImage::create(blocks, sector)?)?;
+            migration_digest(
+                &dst,
+                None,
+                0,
+                novafs::secure_pool::migration::image_digest(&source.into_device())?,
+            )?;
+            emit(&dst, io::BufWriter::new(io::stdout().lock()))
+        }
         ("create" | "script", 3) => {
             image_stream(&io::stdout())?;
             if args[0] == "script" && !io::stdin().is_terminal() {
@@ -279,7 +314,7 @@ fn run(args: &[String]) -> Result<()> {
             };
             load(&mut dev, &mut io::stdin().lock())?;
             if args[0] == "verify" {
-                let fs = Engine::mount(&mut dev, ids, Mode::ReadOnly)?;
+                let fs = Engine::mount_current(&mut dev, ids, Mode::ReadOnly)?;
                 fs.verify()?;
                 println!(
                     "Vérification intégrale réussie, génération {}",
@@ -337,7 +372,13 @@ fn main() -> std::process::ExitCode {
     if command.is_some_and(shared::known)
         && !matches!(
             command,
-            Some("check-export" | "list-views" | "compression-space")
+            Some(
+                "check-export"
+                    | "list-views"
+                    | "compression-space"
+                    | "file-times"
+                    | "migration-receipt"
+            )
         )
         && args.get(1).map(String::as_str) != Some("--help")
         && !check::separate_binary_diagnostics().unwrap_or(false)

@@ -10,11 +10,21 @@ use alloc::collections::BTreeMap;
 use alloc::{boxed::Box, vec::Vec};
 use sha2::{Digest as _, Sha256};
 mod inspect;
+pub mod migration;
 pub mod scrub;
 pub use inspect::{StructuralReport, structural_check, verify_commit_replicas};
 
 type Id = [u8; 16];
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum ViewParent {
+    Origin,
+    HistoricalUnknown,
+    Exact(u64),
+    External(Id, u64),
+}
+
 const MAGIC: &[u8; 8] = b"NP7POOLH";
+const P9_MAGIC: &[u8; 8] = b"NP9POOLH";
 const CONTROL: usize = 7;
 const BANK_BLOCKS: u64 = 9;
 const FIRST_BANK: u64 = 10;
@@ -41,6 +51,10 @@ struct Domain {
 
 #[derive(Clone)]
 struct State {
+    p9: bool,
+    // Une entrée absente sur un dérivé importé désigne une origine historique inconnue.
+    parents: BTreeMap<u64, (Id, u64)>,
+    imports: BTreeMap<Id, (Id, Id)>,
     prefix: Vec<Block>,
     domains: Vec<Domain>,
     proofs: Box<Block>,
@@ -48,6 +62,9 @@ struct State {
 impl State {
     fn empty() -> Self {
         Self {
+            p9: false,
+            parents: BTreeMap::new(),
+            imports: BTreeMap::new(),
             prefix: vec![[0; 4096]; CONTROL],
             domains: Vec::new(),
             proofs: Box::new([0; 4096]),
@@ -58,7 +75,7 @@ impl State {
             return Err(Error::Limit("domaines P7"));
         }
         let mut p = [0; 4096];
-        p[..8].copy_from_slice(b"NP7DIR01");
+        p[..8].copy_from_slice(if self.p9 { b"NP9DIR01" } else { b"NP7DIR01" });
         p[8..24].copy_from_slice(&pool);
         p[24..32].copy_from_slice(&g.to_le_bytes());
         p[32] = self.domains.len() as u8;
@@ -92,12 +109,53 @@ impl State {
         let mut hash = Sha256::new();
         hash.update(p);
         let mut state = Self::empty();
+        state.p9 = &p[..8] == b"NP9DIR01";
+        if state.p9 != (&read_header(d)?[..8] == P9_MAGIC) {
+            return Err(corrupt());
+        }
         for (i, page) in state.prefix.iter_mut().enumerate() {
             *page = d.read(base + 1 + i as u64)?;
             hash.update(*page);
         }
         *state.proofs = d.read(base + 8)?;
         hash.update(state.proofs.as_ref());
+        if state.p9 {
+            let proof = &state.proofs[2048..];
+            if &proof[..8] != b"NP9PAR01" || proof[8] > 32 {
+                return Err(corrupt());
+            }
+            for pair in proof[16..].chunks_exact(32).take(proof[8] as usize) {
+                let child = u64::from_le_bytes(pair[..8].try_into().unwrap());
+                let parent = u64::from_le_bytes(pair[8..16].try_into().unwrap());
+                let origin: Id = pair[16..32].try_into().unwrap();
+                if parent == 0
+                    || (origin == [0; 16] && child <= parent)
+                    || state.parents.insert(child, (origin, parent)).is_some()
+                {
+                    return Err(corrupt());
+                }
+            }
+            let n = usize::from(proof[1152]);
+            if n > LIMIT {
+                return Err(corrupt());
+            }
+            for row in proof[1168..].chunks_exact(48).take(n) {
+                let dest: Id = row[..16].try_into().unwrap();
+                let src: Id = row[16..32].try_into().unwrap();
+                let old: Id = row[32..48].try_into().unwrap();
+                if [dest, src, old].contains(&[0; 16])
+                    || state.imports.values().any(|v| *v == (src, old))
+                    || state.imports.insert(dest, (src, old)).is_some()
+                {
+                    return Err(corrupt());
+                }
+            }
+            let mut canonical = [0; 2048];
+            state.write_parents(&mut canonical)?;
+            if canonical != proof {
+                return Err(corrupt());
+            }
+        }
         if <[u8; 32]>::from(hash.finalize()) != h.digest || usize::from(p[32]) > LIMIT {
             return Err(corrupt());
         }
@@ -126,7 +184,13 @@ impl State {
             }
             state.domains.push(d);
         }
-        if state.directory(pool, h.generation)? != p {
+        if state.imports.keys().any(|id| {
+            !state
+                .domains
+                .iter()
+                .any(|d| d.id == *id && d.slots.is_some())
+        }) || state.directory(pool, h.generation)? != p
+        {
             return Err(corrupt());
         }
         let catalogs = crate::shared_graph::Graph::visible_catalogs(
@@ -151,6 +215,28 @@ impl State {
         }
         Ok(state)
     }
+    fn write_parents(&self, out: &mut [u8]) -> Result<()> {
+        if self.imports.len() > LIMIT {
+            return Err(corrupt());
+        }
+        out[1152] = self.imports.len() as u8;
+        for (row, (dest, (pool, domain))) in out[1168..].chunks_exact_mut(48).zip(&self.imports) {
+            row[..16].copy_from_slice(dest);
+            row[16..32].copy_from_slice(pool);
+            row[32..48].copy_from_slice(domain);
+        }
+        if self.parents.len() > 32 {
+            return Err(corrupt());
+        }
+        out[..8].copy_from_slice(b"NP9PAR01");
+        out[8] = self.parents.len() as u8;
+        for (pair, (child, (origin, parent))) in out[16..].chunks_exact_mut(32).zip(&self.parents) {
+            pair[..8].copy_from_slice(&child.to_le_bytes());
+            pair[8..16].copy_from_slice(&parent.to_le_bytes());
+            pair[16..32].copy_from_slice(origin);
+        }
+        Ok(())
+    }
     /// Chaque génération comporte au plus seize vues. Le HMAC lie la racine
     /// du domaine à sa vue publique et à l'ensemble des emplacements autorisés.
     fn signed_views(
@@ -164,6 +250,30 @@ impl State {
         let source = Prefix { state: self, size };
         let catalogs = crate::shared_graph::Graph::visible_catalogs(&source, pool)?;
         let mut page = Box::new([0; 4096]);
+        if self.p9 {
+            self.write_parents(&mut page[2048..])?;
+            for (&child, &(origin, parent)) in &self.parents {
+                let find = |id| {
+                    catalogs
+                        .iter()
+                        .flat_map(|cat| &cat.entries)
+                        .find(|e| e.id == id)
+                };
+                let e = find(child).ok_or_else(corrupt)?;
+                if parent == 0
+                    || e.kind == crate::shared_graph::Kind::Origin
+                    || (origin == [0; 16]
+                        && (parent >= child
+                            || find(parent).is_some_and(|p| {
+                                p.ids != e.ids
+                                    || (e.kind == crate::shared_graph::Kind::Clone
+                                        && p.kind != crate::shared_graph::Kind::Snapshot)
+                            })))
+                {
+                    return Err(corrupt());
+                }
+            }
+        }
         let mut pos = 0;
         for catalog in catalogs {
             for entry in catalog.entries {
@@ -188,10 +298,34 @@ impl State {
                             &entry.root.hash,
                             slots.as_bytes(),
                         ];
-                        if verify {
-                            key.verify_mac(parts, tag)?
-                        }
-                        page[pos..end].copy_from_slice(&key.mac(parts));
+                        let (parent_pool, parent) =
+                            self.parents.get(&entry.id).copied().unwrap_or(([0; 16], 0));
+                        let edge = parent.to_le_bytes();
+                        let computed = if self.p9 {
+                            let mut parts = parts.to_vec();
+                            let (archive_pool, archive_domain) = self
+                                .imports
+                                .get(&d.id)
+                                .copied()
+                                .unwrap_or(([0; 16], [0; 16]));
+                            parts.extend([
+                                b"NovaFS/P9/filiation/v1".as_slice(),
+                                &parent_pool,
+                                &edge,
+                                &archive_pool,
+                                &archive_domain,
+                            ]);
+                            if verify {
+                                key.verify_mac(&parts, tag)?;
+                            }
+                            key.mac(&parts)
+                        } else {
+                            if verify {
+                                key.verify_mac(parts, tag)?;
+                            }
+                            key.mac(parts)
+                        };
+                        page[pos..end].copy_from_slice(&computed);
                     } else {
                         page[pos..end].copy_from_slice(tag)
                     }
@@ -232,6 +366,9 @@ struct Prefix<'a> {
     size: u64,
 }
 impl Device for Prefix<'_> {
+    fn imported_genesis(&self) -> bool {
+        self.state.p9
+    }
     fn blocks(&self) -> u64 {
         self.size
     }
@@ -260,7 +397,16 @@ fn header(pool: Id, blocks: u64) -> Block {
     b
 }
 pub fn looks_like(d: &impl Device) -> Result<bool> {
-    Ok(d.blocks() >= 2 && (&d.read(0)?[..8] == MAGIC || &d.read(1)?[..8] == MAGIC))
+    if d.blocks() < 2 {
+        return Ok(false);
+    }
+    for index in 0..2 {
+        let b = d.read(index)?;
+        if &b[..8] == MAGIC || &b[..8] == P9_MAGIC {
+            return Ok(true);
+        }
+    }
+    Ok(false)
 }
 /// Identité et géométrie publiques. L'appelant conserve séparément son identité attendue.
 pub fn inspect_header(d: &impl Device) -> Result<Id> {
@@ -273,12 +419,48 @@ fn read_header(d: &impl Device) -> Result<Block> {
     let pool = p[16..32].try_into().unwrap();
     let mut normalized = p;
     normalized[40..112].fill(0);
-    if pool == [0; 16] || normalized != header(pool, d.blocks()) || p != d.read(1)? {
+    let mut expected = header(pool, d.blocks());
+    if &p[..8] == P9_MAGIC {
+        expected[..8].copy_from_slice(P9_MAGIC);
+        expected[8..10].copy_from_slice(&9u16.to_le_bytes());
+    }
+    if &p[..8] == P9_MAGIC {
+        if p[12] > 1 || (p[12] == 1) != migration::receipt_field(&p)?.is_some() {
+            return Err(corrupt());
+        }
+        expected[12] = p[12];
+        normalized[112..].fill(0);
+    }
+    if pool == [0; 16] || normalized != expected || p != d.read(1)? {
         return Err(corrupt());
     }
     Ok(p)
 }
 
+fn new_header(
+    pool: Id,
+    blocks: u64,
+    administration: &Secret,
+    entropy: &mut impl Entropy,
+    p9: bool,
+    migrated: bool,
+) -> Result<(Block, Secret)> {
+    let master = Secret::generate(entropy)?;
+    let admin = master.derive(&pool, b"pool-publication-v1")?;
+    let wrap = administration.derive(&pool, b"pool-enveloppe-v1")?;
+    let mut h = header(pool, blocks);
+    if p9 {
+        h[..8].copy_from_slice(P9_MAGIC);
+        h[8..10].copy_from_slice(&9u16.to_le_bytes());
+    }
+    h[12] = u8::from(migrated);
+    let mut secret = zeroize::Zeroizing::new(*master.as_bytes());
+    let (nonce, tag) = wrap.seal(entropy, &h[..40], &mut secret[..])?;
+    h[40..64].copy_from_slice(&nonce);
+    h[64..80].copy_from_slice(&tag);
+    h[80..112].copy_from_slice(&secret[..]);
+    Ok((h, admin))
+}
 pub(super) fn publication_key(h: &Block, pool: Id, administration: &Secret) -> Result<Secret> {
     let wrap = administration.derive(&pool, b"pool-enveloppe-v1")?;
     let mut secret = zeroize::Zeroizing::new(<[u8; 32]>::try_from(&h[80..112]).unwrap());
@@ -288,7 +470,11 @@ pub(super) fn publication_key(h: &Block, pool: Id, administration: &Secret) -> R
         &h[..40],
         &mut secret[..],
     )?;
-    Secret::from_bytes(*secret).derive(&pool, b"pool-publication-v1")
+    let key = Secret::from_bytes(*secret).derive(&pool, b"pool-publication-v1")?;
+    if &h[..8] == P9_MAGIC {
+        migration::verify_destination_header(h, &key)?;
+    }
+    Ok(key)
 }
 
 struct Media<'a, D> {
@@ -333,6 +519,9 @@ fn role(r: ObjectRole) -> (Kind, u64) {
     }
 }
 impl<D: Device> Device for Media<'_, D> {
+    fn imported_genesis(&self) -> bool {
+        self.state.p9
+    }
     fn blocks(&self) -> u64 {
         CONTROL as u64 + (self.disk.blocks() - FIRST_UNIT) / 2
     }
@@ -422,6 +611,8 @@ struct Validation<'a, 'guard> {
     header_mac: &'a Digest,
     keys: &'a BTreeMap<Id, Keys>,
     parent: Option<crate::shared_graph::Catalog>,
+    parent_edges: BTreeMap<u64, (Id, u64)>,
+    parent_imports: BTreeMap<Id, (Id, Id)>,
     state: Option<State>,
     full_graph: bool,
     graph: Option<VerifiedGraph<'guard>>,
@@ -441,6 +632,8 @@ impl<'a, 'guard> Validation<'a, 'guard> {
             header_mac,
             keys,
             parent: None,
+            parent_edges: BTreeMap::new(),
+            parent_imports: BTreeMap::new(),
             state: None,
             full_graph: true,
             graph: None,
@@ -468,12 +661,27 @@ impl<'a, 'guard> Validation<'a, 'guard> {
                 return Err(corrupt());
             }
             self.parent = catalogs.next();
+            self.parent_edges = state.parents;
+            self.parent_imports = state.imports;
             return Ok(());
         }
         if catalogs.nth(1) != self.parent {
             return Err(Error::Corrupt("catalogue précédent P7 divergent"));
         }
+        if state.p9
+            && let Some(previous) = &self.parent
+        {
+            for view in &previous.entries {
+                let domain = state.domain(view.ids)?.id;
+                if state.parents.get(&view.id) != self.parent_edges.get(&view.id)
+                    || state.imports.get(&domain) != self.parent_imports.get(&domain)
+                {
+                    return Err(Error::Corrupt("filiation P9 divergente entre publications"));
+                }
+            }
+        }
         let header = read_header(disk)?;
+        migration::check_checkpoint(&header, *h)?;
         self.admin
             .verify_mac(&[b"NovaFS/P7/session/header", &header], self.header_mac)?;
         if self.full_graph {
@@ -503,6 +711,7 @@ impl<'a, 'guard> Validation<'a, 'guard> {
 /// secrets de volume. La fermeture par into_device rend le support à son propriétaire
 /// et libère les clés. Une vue déverrouillée reste limitée à la durée de son appel.
 pub struct SecurePool<D, E = HostEntropy> {
+    clock: Option<alloc::sync::Arc<dyn crate::time::Clock>>,
     entropy: E,
     disk: D,
     pool: Id,
@@ -524,10 +733,22 @@ impl<D: Device> SecurePool<D> {
 impl<D: Device, E: Entropy> SecurePool<D, E> {
     /// L'intégrateur fournit un CSPRNG fiable dont l'état ne provient jamais du pool.
     pub fn format_with_entropy(
+        disk: D,
+        pool: Id,
+        administration: &Secret,
+        entropy: E,
+    ) -> Result<Self> {
+        Self::format_profile(disk, pool, administration, entropy, false)
+    }
+    pub fn format_p9(disk: D, pool: Id, administration: &Secret, entropy: E) -> Result<Self> {
+        Self::format_profile(disk, pool, administration, entropy, true)
+    }
+    fn format_profile(
         mut disk: D,
         pool: Id,
         administration: &Secret,
         mut entropy: E,
+        p9: bool,
     ) -> Result<Self> {
         let gate = disk.mutation_lock().ok_or(Error::ReadOnly)?;
         let _exclusive = gate.try_lock().map_err(|_| Error::Busy)?;
@@ -540,16 +761,14 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
                 return Err(Error::Exists);
             }
         }
-        let master = Secret::generate(&mut entropy)?;
-        let admin = master.derive(&pool, b"pool-publication-v1")?;
-        let wrap = administration.derive(&pool, b"pool-enveloppe-v1")?;
-        let mut h = header(pool, disk.blocks());
-        let mut secret = zeroize::Zeroizing::new(*master.as_bytes());
-        let (nonce, tag) = wrap.seal(&mut entropy, &h[..40], &mut secret[..])?;
-        h[40..64].copy_from_slice(&nonce);
-        h[64..80].copy_from_slice(&tag);
-        h[80..112].copy_from_slice(&secret[..]);
+        let (h, admin) = new_header(pool, disk.blocks(), administration, &mut entropy, p9, false)?;
         let mut state = State::empty();
+        state.p9 = p9;
+        if p9 {
+            let mut buf = [0; 2048];
+            state.write_parents(&mut buf)?;
+            state.proofs[2048..].copy_from_slice(&buf);
+        }
         let keys = BTreeMap::new();
         let log = CommitLog::format(&mut disk, 2, pool, &admin, |d, g| {
             d.write(0, &h)?;
@@ -572,6 +791,7 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         Ok(Self {
             disk,
             pool,
+            clock: None,
             header_mac: admin.mac(&[b"NovaFS/P7/session/header", &h]),
             admin,
             entropy,
@@ -601,10 +821,12 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         let log = CommitLog::open(&disk, 2, pool, &admin, |d, h| {
             State::load(d, pool, h).map(drop)
         })?;
+        migration::check_checkpoint(&h, log.head())?;
         let state = State::load(&disk, pool, &log.head())?;
         Ok(Self {
             disk,
             pool,
+            clock: None,
             header_mac: admin.mac(&[b"NovaFS/P7/session/header", &h]),
             admin,
             entropy,
@@ -781,6 +1003,25 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         domain: Option<Domain>,
         op: impl FnOnce(&mut SharedPool<Media<'_, D>>) -> Result<T>,
     ) -> Result<T> {
+        self.change_parent(scope, domain, None, op)
+    }
+    fn change_parent<T>(
+        &mut self,
+        scope: Id,
+        domain: Option<Domain>,
+        parent: Option<(Id, u64)>,
+        op: impl FnOnce(&mut SharedPool<Media<'_, D>>) -> Result<T>,
+    ) -> Result<T> {
+        self.change_from(scope, domain, parent, None, op)
+    }
+    fn change_from<T>(
+        &mut self,
+        scope: Id,
+        domain: Option<Domain>,
+        parent: Option<(Id, u64)>,
+        origin: Option<(Id, Id)>,
+        op: impl FnOnce(&mut SharedPool<Media<'_, D>>) -> Result<T>,
+    ) -> Result<T> {
         self.available()?;
         let pool = self.pool;
         let gate = self.disk.mutation_lock().ok_or(Error::ReadOnly)?;
@@ -835,6 +1076,12 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
             {
                 return Err(Error::Exists);
             }
+            if let Some(origin) = origin {
+                if state.imports.values().any(|v| *v == origin) {
+                    return Err(Error::Exists);
+                }
+                state.imports.insert(d.id, origin);
+            }
             state.domains.push(d);
         }
         let generation = self
@@ -861,15 +1108,32 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
                 Some(verified) => verified.attach(media),
                 None => SharedPool::open(media)?,
             };
+            engine.p9 = self.state.p9;
+            engine.clock = self.clock.clone();
             let start = engine.generation();
             let value = op(&mut engine)?;
             let changed = engine.generation() != start;
             let current = engine.list();
             drop(engine);
             if changed {
+                if state.p9 {
+                    if let Some(parent) = parent {
+                        let added = current
+                            .iter()
+                            .find(|e| !old.iter().any(|o| o.id == e.id))
+                            .ok_or_else(corrupt)?;
+                        state.parents.insert(added.id, parent);
+                    }
+                    state
+                        .parents
+                        .retain(|child, _| old.iter().chain(&current).any(|e| e.id == *child));
+                }
                 state
                     .domains
                     .retain(|d| old.iter().chain(&current).any(|e| e.ids == d.ids));
+                state
+                    .imports
+                    .retain(|id, _| state.domains.iter().any(|d| d.id == *id));
                 state.proofs = state.signed_views(
                     coord(self.disk.blocks())?,
                     pool,
@@ -934,7 +1198,131 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         }
         result
     }
+    /// Unités exclusives et partagées de la vue d'après le graphe vérifié.
+    pub fn view_usage(&mut self, id: u64) -> Result<crate::shared::Usage> {
+        self.with_reader(|p| {
+            p.available()?;
+            p.check_physical(true)?;
+            SharedPool::open(p.media(None)?)?.usage(id)
+        })
+    }
+    pub fn is_p9(&self) -> bool {
+        self.state.p9
+    }
+    pub fn set_clock(&mut self, clock: alloc::sync::Arc<dyn crate::time::Clock>) {
+        self.clock = Some(clock);
+    }
+    pub fn parent(&mut self, id: u64) -> Result<ViewParent> {
+        self.with_reader(|p| {
+            p.check_physical(false)?;
+            let v = p
+                .local_views()?
+                .into_iter()
+                .find(|v| v.id == id)
+                .ok_or(Error::NotFound)?;
+            let scope = p.state.domain(v.ids)?.id;
+            p.media(Some(scope))?.key(scope)?;
+            Ok(match (v.kind, p.state.parents.get(&id)) {
+                (crate::shared::ObjectKind::Origin, _) => ViewParent::Origin,
+                (_, Some(&(realm, parent))) if realm == [0; 16] => ViewParent::Exact(parent),
+                (_, Some(&(realm, parent))) => ViewParent::External(realm, parent),
+                _ => ViewParent::HistoricalUnknown,
+            })
+        })
+    }
+    pub fn times(&mut self, id: u64, path: &str) -> Result<crate::time::Times> {
+        self.with_reader(|p| {
+            p.check_physical(false)?;
+            let scope = p.scope(id)?;
+            let pool = p.pool;
+            let media = p.media(Some(scope))?;
+            media.key(scope)?;
+            crate::shared::times_one(&media, pool, id, path)
+        })
+    }
+    pub fn set_times(
+        &mut self,
+        id: u64,
+        path: &str,
+        atime: Option<crate::time::Timestamp>,
+        mtime: Option<crate::time::Timestamp>,
+    ) -> Result<()> {
+        let scope = self.scope(id)?;
+        self.change(scope, None, |p| {
+            p.change(id, |fs| fs.set_times(path, atime, mtime))
+        })
+    }
+    pub fn set_atime_policy(&mut self, id: u64, policy: crate::time::Atime) -> Result<()> {
+        let scope = self.scope(id)?;
+        self.change(scope, None, |p| {
+            p.change(id, |fs| fs.set_atime_policy(policy))
+        })
+    }
+    fn read_with_policy<T>(
+        &mut self,
+        id: u64,
+        path: &str,
+        inspect: impl FnOnce(&Media<'_, D>, Id) -> Result<T>,
+        accessed: impl FnOnce(&T) -> bool,
+        update: impl FnOnce(&mut SharedPool<Media<'_, D>>) -> Result<T>,
+    ) -> Result<T> {
+        let immediate = self.with_reader(|p| {
+            p.check_physical(false)?;
+            let writable = p.state.p9 && p.disk.mutation_lock().is_some();
+            let scope = p.scope(id)?;
+            let pool = p.pool;
+            let now = writable.then(|| {
+                p.clock
+                    .as_deref()
+                    .unwrap_or(&crate::time::SystemClock)
+                    .now()
+            });
+            let media = p.media(Some(scope))?;
+            media.key(scope)?;
+            let value = inspect(&media, pool)?;
+            if let Some(now) = now
+                && accessed(&value)
+                && crate::shared::access_needed(&media, pool, id, path, now)?
+            {
+                Ok(None)
+            } else {
+                Ok(Some(value))
+            }
+        })?;
+        if let Some(value) = immediate {
+            return Ok(value);
+        }
+        // Le coordinateur d'écriture vérifie de nouveau la tête, lit le contenu
+        // et évalue la politique sur la même vue que la publication de l'accès.
+        let scope = self.scope(id)?;
+        self.change(scope, None, update)
+    }
+    pub fn list_dir(
+        &mut self,
+        id: u64,
+        path: &str,
+        after: Option<&str>,
+        n: usize,
+    ) -> Result<Vec<alloc::string::String>> {
+        self.read_with_policy(
+            id,
+            path,
+            |m, pool| crate::shared::list_one(m, pool, id, path, after, n),
+            |_| n != 0,
+            |p| p.access_dir(id, path, after, n),
+        )
+    }
     pub fn read_file(&mut self, id: u64, path: &str, offset: u64, n: usize) -> Result<Vec<u8>> {
+        self.read_with_policy(
+            id,
+            path,
+            |m, pool| crate::shared::read_one(m, pool, id, path, offset, n),
+            |bytes| !bytes.is_empty(),
+            |p| p.access_file(id, path, offset, n),
+        )
+    }
+    /// Consultations immuables, sauvegarde et contrôle de la source de migration.
+    pub fn inspect_file(&mut self, id: u64, path: &str, offset: u64, n: usize) -> Result<Vec<u8>> {
         self.with_reader(|p| {
             p.check_physical(false)?;
             let scope = p.scope(id)?;
@@ -973,11 +1361,13 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
     }
     pub fn snapshot(&mut self, id: u64) -> Result<u64> {
         let s = self.scope(id)?;
-        self.change(s, None, |p| p.snapshot(id))
+        self.change_parent(s, None, Some(([0; 16], id)), |p| p.snapshot(id))
     }
     pub fn clone_snapshot(&mut self, id: u64, owner: Id) -> Result<u64> {
         let s = self.scope(id)?;
-        self.change(s, None, |p| p.clone_snapshot(id, owner))
+        self.change_parent(s, None, Some(([0; 16], id)), |p| {
+            p.clone_snapshot(id, owner)
+        })
     }
     pub fn remove(&mut self, id: u64) -> Result<()> {
         let s = self.scope(id)?;
@@ -994,6 +1384,17 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
             p.available()?;
             let domain = p.scope(id)?;
             p.check_physical(true)?;
+            use crate::secure_export::ExportProfile;
+            let provenance = if p.state.p9 {
+                let parent = p
+                    .state
+                    .parents
+                    .get(&id)
+                    .map(|&(realm, id)| (if realm == [0; 16] { p.pool } else { realm }, id));
+                ExportProfile::P9 { parent }
+            } else {
+                ExportProfile::P7
+            };
             let engine = SharedPool::open(Media {
                 disk: &mut p.disk,
                 state: &mut p.state,
@@ -1004,7 +1405,8 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
                 write_scope: None,
                 writer: None,
             })?;
-            crate::secure_export::export_view(
+            crate::secure_export::export_with_parent(
+                provenance,
                 &engine,
                 id,
                 sector,
@@ -1024,12 +1426,35 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         recovery: &Secret,
         policy: Compression,
     ) -> Result<u64> {
-        let (info, image) = crate::secure_export::verified_image(input, backup)?;
+        let (info, archive, image) = crate::secure_export::verified_with_origin(input, backup)?;
+        if archive.p9 && !self.state.p9 {
+            return Err(Error::Invalid("destination P9 requise pour cette archive"));
+        }
+        let origin = (info.pool, archive.domain);
+        if self.state.p9
+            && let Some(d) = self.state.domains.iter().find(|d| d.ids == info.ids)
+        {
+            if self.state.imports.get(&d.id) != Some(&origin) {
+                return Err(Error::Exists);
+            }
+            let slots = d.slots.as_ref().ok_or(Error::ReadOnly)?;
+            // Un ré-enrôlement implicite ne doit pas changer l'autorité sur les vues existantes.
+            slots.unlock(&d.id, Credential::Recovery(recovery))?;
+            slots.unlock(&d.id, Credential::Passphrase(phrase))?;
+            let scope = d.id;
+            return self.change_parent(scope, None, archive.parent, |p| {
+                p.import_with_compression(owner, info.ids, &image, info.kind, policy)
+            });
+        }
         let d = self.provision(info.ids, Some((phrase, recovery)))?;
         let scope = d.id;
-        let result = self.change(scope, Some(d), |p| {
-            p.import_with_compression(owner, info.ids, &image, info.kind, policy)
-        });
+        let result = self.change_from(
+            scope,
+            Some(d),
+            archive.parent,
+            self.state.p9.then_some(origin),
+            |p| p.import_with_compression(owner, info.ids, &image, info.kind, policy),
+        );
         if result.is_err() {
             self.keys.remove(&scope);
         }

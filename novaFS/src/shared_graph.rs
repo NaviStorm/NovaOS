@@ -1,6 +1,7 @@
 //! Graphe CoW du pool P5. Le complément de l'union des deux graphes protégés est
 //! libre. Aucun compteur de référence indépendant ne doit être rejoué après panne.
 use self::ObjectRole as Role;
+pub(crate) mod migration;
 use crate::{Block, Compression, Device, Error, Ids, MAX_BLOCKS, Result, compression};
 use alloc::collections::{BTreeMap, BTreeSet};
 use alloc::{boxed::Box, vec::Vec};
@@ -182,7 +183,7 @@ fn read_markers(dev: &impl Device, pool: Key, p6: bool) -> Result<Vec<u64>> {
     Ok(slots)
 }
 
-fn catalog_check(cat: &Catalog, blocks: u64) -> Result<()> {
+fn catalog_check(cat: &Catalog, blocks: u64, imported: bool) -> Result<()> {
     agree(
         cat.pool != [0; 16]
             && cat.generation > 0
@@ -190,7 +191,7 @@ fn catalog_check(cat: &Catalog, blocks: u64) -> Result<()> {
             && cat.entries.len() <= MAX_VIEWS,
         "catalogue P5 hors profil",
     )?;
-    if cat.generation == 1 {
+    if cat.generation == 1 && !imported {
         agree(
             cat.next_id == 1 && cat.entries.is_empty(),
             "genèse du pool P5",
@@ -275,13 +276,26 @@ fn check_transition(old: &Catalog, new: &Catalog) -> Result<()> {
 }
 
 fn catalog_page(cat: &Catalog, parent: Hash, blocks: u64) -> Result<(Block, Hash)> {
-    catalog_check(cat, blocks)?;
+    encode_catalog(cat, parent, blocks, false)
+}
+
+fn encode_catalog(
+    cat: &Catalog,
+    parent: Hash,
+    blocks: u64,
+    imported: bool,
+) -> Result<(Block, Hash)> {
+    catalog_check(cat, blocks, imported)?;
+    if imported && (!cat.p6 || cat.generation != 1) {
+        return Err(Error::Corrupt("genèse importée P9"));
+    }
     let mut b = profile(CATALOG, cat.p6);
     b[16..32].copy_from_slice(&cat.pool);
     b[32..40].copy_from_slice(&cat.generation.to_le_bytes());
     b[40..48].copy_from_slice(&cat.next_id.to_le_bytes());
     b[48..80].copy_from_slice(&parent);
     b[112] = cat.entries.len() as u8;
+    b[113] = u8::from(imported);
     for (dst, e) in b[HEADER..].chunks_exact_mut(ENTRY_SIZE).zip(&cat.entries) {
         dst[..8].copy_from_slice(&e.id.to_le_bytes());
         dst[8..24].copy_from_slice(&e.owner);
@@ -354,7 +368,12 @@ fn read_catalog(dev: &impl Device, pool: Key, slot: u64, p6: bool) -> Result<Rec
         entries,
     };
     let parent = b[48..80].try_into().unwrap();
-    let (expected, hash) = catalog_page(&cat, parent, dev.blocks())?;
+    let (expected, hash) = encode_catalog(
+        &cat,
+        parent,
+        dev.blocks(),
+        b[113] == 1 && dev.imported_genesis(),
+    )?;
     agree(
         b == expected,
         "checksum, version ou suffixe du catalogue P5",

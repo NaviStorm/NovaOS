@@ -141,8 +141,12 @@ fn execute(args: &[String]) -> Result<u8> {
             r.repaired,
             r.elapsed_ns as f64 / 1_000_000.0
         )?;
-        if r.format == "P7" && !r.authenticated {
-            writeln!(report, "Authenticité complète du pool P7 non établie.")?;
+        if matches!(r.format, "P7" | "P9") && !r.authenticated {
+            writeln!(
+                report,
+                "Authenticité complète du pool {} non établie.",
+                r.format
+            )?;
         }
         for (generation, view) in &r.locked_views {
             writeln!(

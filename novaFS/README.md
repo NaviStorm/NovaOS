@@ -2,6 +2,8 @@
 
 NovaFS est distribué sous la Mozilla Public License 2.0. [Licence de NovaFS](LICENSE)
 
+La v0.9.13 introduit quatre dates UTC par fichier et répertoire. La migration explicite crée une image P9 distincte, conserve les dates historiques inconnues et réchiffre chaque lignée protégée avec de nouvelles clés. Un reçu relie les deux pools et les vues partagées. [Format, migration, résultats et commandes](docs/novafs-p9-timestamps.md)
+
 La v0.9.12 ajoute `novafs scrub` pour les images P0, P5, P6 et P7. Sur P7, `--repair` peut reconstruire une attestation depuis sa réplique authentifiée et produire une nouvelle image. [Périmètre, résultats et commandes](docs/novafs-p8-scrub.md)
 
 La v0.9.11 conserve le graphe authentifié pendant une écriture exclusive et le libère à la fin de la transaction. [Latences, récupération et reproduction](docs/novafs-p7.2-performance.md)

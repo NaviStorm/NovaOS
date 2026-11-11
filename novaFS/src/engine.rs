@@ -3,6 +3,8 @@ use crate::codec::{Anchor, data_hash};
 #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
 use crate::latency_probes::{Phase, enter};
 use crate::space::Space;
+use crate::sync::Arc;
+use crate::time::{Atime, Clock, SystemClock, Timestamp};
 use crate::tree::{self, Family, Node, ReadTree, WriteTree};
 use crate::{Block, Device, Error, Ids, MAX_BLOCKS, Manifest, Ref, Result};
 use alloc::collections::BTreeMap;
@@ -17,6 +19,7 @@ const MAX_COW: usize = 64;
 const RESERVE: u64 = 128;
 const SPACE_LEAF: usize = 112;
 mod admission;
+mod migration;
 pub use admission::{PreparedWrite, ReservationCost, VolumeAccounting, VolumePolicy};
 pub mod integrity;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -254,6 +257,7 @@ fn inspect_heads<D: Device>(
         return Ok((high, alloc));
     }
     if low.reference.birth != high.m.previous
+        || (low.m.atime.is_some() && high.m.atime.is_none())
         || low.reference.hash != high.m.previous_hash
         || high.m.next_oid < low.m.next_oid
     {
@@ -269,6 +273,8 @@ fn inspect_heads<D: Device>(
 }
 
 pub struct Engine<D> {
+    clock: Option<Arc<dyn Clock>>,
+    pub(crate) promote: bool,
     dev: D,
     ids: Ids,
     head: Head,
@@ -287,6 +293,8 @@ impl<D> Engine<D> {
     pub(crate) fn replace_device<E>(self, dev: E, mode: Mode) -> (Engine<E>, D) {
         (
             Engine {
+                clock: self.clock,
+                promote: self.promote,
                 dev,
                 mode,
                 ids: self.ids,
@@ -380,6 +388,34 @@ impl<D: Device> View for Engine<D> {
     }
 }
 impl<D: Device> Engine<D> {
+    pub fn set_clock(&mut self, clock: Arc<dyn Clock>) {
+        self.clock = Some(clock);
+    }
+    pub(crate) fn utc_now(&self) -> Timestamp {
+        self.clock.as_deref().unwrap_or(&SystemClock).now()
+    }
+    pub(crate) fn select_p9_pool(&mut self, enabled: bool) {
+        self.promote = enabled && self.head.m.atime.is_none();
+    }
+
+    pub fn atime_policy(&self) -> Option<Atime> {
+        self.head
+            .m
+            .atime
+            .or_else(|| self.promote.then_some(Atime::Relative))
+    }
+    pub fn set_atime_policy(&mut self, policy: Atime) -> Result<()> {
+        if self.atime_policy().is_none() {
+            return Err(Error::Invalid("volume P9 requis"));
+        }
+        self.transact(false, |tx| {
+            tx.m.atime = Some(policy);
+            Ok(())
+        })
+    }
+    pub(crate) fn read_only(&self) -> bool {
+        self.mode == Mode::ReadOnly
+    }
     /// Classification des deux générations d'un LV du pool partagé (1 024 LBA au plus).
     /// Le contenu d'une page ne détermine jamais si elle peut être compressée.
     pub(crate) fn file_page_map(&self) -> Result<[u64; 16]> {
@@ -541,16 +577,29 @@ impl<D: Device> Engine<D> {
     pub fn mount(dev: D, ids: Ids, mode: Mode) -> Result<Self> {
         Self::mount_with_policy(dev, ids, mode, VolumePolicy::default())
     }
-    pub fn mount_with_policy(
+    pub fn mount_with_policy(dev: D, ids: Ids, mode: Mode, policy: VolumePolicy) -> Result<Self> {
+        Self::mount_profile(dev, ids, mode, policy, false)
+    }
+
+    /// Accepte les contenus historiques et P9. L'entrée historique mount reste
+    /// celle du service NovaOS 0.13 qui ne négocie pas encore le profil P9.
+    pub fn mount_current(dev: D, ids: Ids, mode: Mode) -> Result<Self> {
+        Self::mount_profile(dev, ids, mode, VolumePolicy::default(), true)
+    }
+    fn mount_profile(
         mut dev: D,
         ids: Ids,
         mode: Mode,
         policy: VolumePolicy,
+        allow_p9: bool,
     ) -> Result<Self> {
         policy.validate(dev.blocks())?;
         // Une paire dont les métadonnées sont lisibles peut partager des
         // données endommagées. Les contrôler avant de livrer un montage normal.
         let (head, alloc) = inspect_pair(&dev, ids, true)?;
+        if head.m.atime.is_some() && !allow_p9 {
+            return Err(Error::Invalid("profil P9 non négocié"));
+        }
         if mode == Mode::ReadWrite {
             dev.flush()?;
         }
@@ -558,6 +607,8 @@ impl<D: Device> Engine<D> {
             dev,
             ids,
             mode,
+            clock: None,
+            promote: false,
             policy,
             head,
             alloc,
@@ -578,6 +629,8 @@ impl<D: Device> Engine<D> {
             dev,
             ids,
             mode: Mode::ReadOnly,
+            clock: None,
+            promote: false,
             policy: VolumePolicy::default(),
             head: h,
             alloc,
@@ -587,7 +640,23 @@ impl<D: Device> Engine<D> {
             salvage: true,
         })
     }
-    pub fn format(mut dev: D, ids: Ids) -> Result<Self> {
+    pub fn format(dev: D, ids: Ids) -> Result<Self> {
+        Self::format_profile(dev, ids, None, None)
+    }
+    pub fn format_p9(
+        dev: D,
+        ids: Ids,
+        policy: Atime,
+        clock: Option<Arc<dyn Clock>>,
+    ) -> Result<Self> {
+        Self::format_profile(dev, ids, Some(policy), clock)
+    }
+    fn format_profile(
+        mut dev: D,
+        ids: Ids,
+        atime: Option<Atime>,
+        clock: Option<Arc<dyn Clock>>,
+    ) -> Result<Self> {
         geometry(&dev, ids)?;
         for b in 0..dev.blocks() {
             if dev.read(b)?.iter().any(|&v| v != 0) {
@@ -596,6 +665,7 @@ impl<D: Device> Engine<D> {
         }
         let blocks = dev.blocks();
         let m = Manifest {
+            atime,
             previous: 0,
             previous_hash: [0; 32],
             root_oid: 1,
@@ -604,6 +674,11 @@ impl<D: Device> Engine<D> {
             roots: [Ref::ZERO; 5],
         };
         let mut tx = Tx {
+            now: if atime.is_some() {
+                clock.as_deref().unwrap_or(&SystemClock).now()
+            } else {
+                Timestamp::UNKNOWN
+            },
             dev: &dev,
             ids,
             m,
@@ -642,6 +717,8 @@ impl<D: Device> Engine<D> {
             dev,
             ids,
             mode: Mode::ReadWrite,
+            clock,
+            promote: false,
             policy: VolumePolicy::default(),
             head,
             alloc,
@@ -677,6 +754,7 @@ impl<D: Device> Engine<D> {
         }
         self.check_health()?;
         let mut m = self.head.m.clone();
+        m.atime = self.atime_policy();
         self.generation()
             .checked_add(1)
             .ok_or(Error::Limit("génération épuisée"))?;
@@ -685,6 +763,11 @@ impl<D: Device> Engine<D> {
         let mut space = self.alloc.space.fork()?;
         space.advance(self.head.m.previous.max(1));
         let mut tx = Tx {
+            now: if m.atime.is_some() {
+                self.utc_now()
+            } else {
+                Timestamp::UNKNOWN
+            },
             dev: &self.dev,
             ids: self.ids,
             m,
@@ -706,6 +789,7 @@ impl<D: Device> Engine<D> {
         if tx.staged.is_empty()
             && tx.m.roots == self.head.m.roots
             && tx.m.next_oid == self.head.m.next_oid
+            && tx.m.atime == self.head.m.atime
         {
             return Ok((None, result));
         }
@@ -763,6 +847,7 @@ impl<D: Device> Engine<D> {
 }
 
 pub struct Tx<'a, D> {
+    pub(crate) now: Timestamp,
     dev: &'a D,
     ids: Ids,
     m: Manifest,

@@ -9,7 +9,7 @@ use novafs::{Error, Ids, Result};
 use std::io::{self, Read, Write};
 use zeroize::Zeroizing;
 
-fn end(input: &mut impl Read) -> Result<()> {
+pub(super) fn end(input: &mut impl Read) -> Result<()> {
     let mut extra = Zeroizing::new([0; 1]);
     if input.read(&mut extra[..])? != 0 {
         return Err(Error::Invalid("octets en excès sur FD4"));
@@ -21,7 +21,7 @@ pub(super) fn key(input: &mut impl Read) -> Result<Secret> {
     input.read_exact(&mut bytes[..])?;
     Ok(Secret::from_bytes(*bytes))
 }
-fn enrollment(input: &mut impl Read) -> Result<(Zeroizing<Vec<u8>>, Secret)> {
+fn read_enrollment(input: &mut impl Read) -> Result<(Zeroizing<Vec<u8>>, Secret)> {
     let mut len = [0; 2];
     input.read_exact(&mut len)?;
     let n = usize::from(u16::from_le_bytes(len));
@@ -31,8 +31,12 @@ fn enrollment(input: &mut impl Read) -> Result<(Zeroizing<Vec<u8>>, Secret)> {
     let mut phrase = Zeroizing::new(vec![0; n]);
     input.read_exact(&mut phrase)?;
     let recovery = key(input)?;
-    end(input)?;
     Ok((phrase, recovery))
+}
+fn enrollment(input: &mut impl Read) -> Result<(Zeroizing<Vec<u8>>, Secret)> {
+    let entry = read_enrollment(input)?;
+    end(input)?;
+    Ok(entry)
 }
 pub(super) fn backup() -> Result<Secret> {
     let mut input = key_pipe::pipe(4)?;
@@ -49,7 +53,11 @@ pub(super) fn run(cmd: &str, args: &[&str], mut image: FileImage, sector: u32) -
         if identifier(expected)? != frame.pool || !frame.domains.is_empty() {
             return Err(Error::Invalid("provisionnement du pool P7"));
         }
-        SecurePool::format(image, frame.pool, &frame.admin)?
+        if cmd == "pool-format" && args.get(1) == Some(&"p9") {
+            SecurePool::format_p9(image, frame.pool, &frame.admin, novafs::crypto::HostEntropy)?
+        } else {
+            SecurePool::format(image, frame.pool, &frame.admin)?
+        }
     } else {
         load(&mut image, &mut io::stdin().lock())?;
         let mut pool = SecurePool::open(image, frame.pool, &frame.admin)?;
@@ -59,7 +67,85 @@ pub(super) fn run(cmd: &str, args: &[&str], mut image: FileImage, sector: u32) -
         pool
     };
     let id = match (cmd, args) {
-        ("pool-format", [_, "p7"]) => None,
+        ("pool-format", [_, "p7" | "p9"]) => None,
+        ("migrate-p9", [blocks]) => {
+            use novafs::secure_pool::migration::Enrollment;
+            let target = num(blocks)?;
+            if target > 32768 {
+                return Err(Error::Limit("taille de destination"));
+            }
+            let mut pipe = key_pipe::pipe(4)?;
+            let mut tag = [0; 8];
+            pipe.read_exact(&mut tag)?;
+            if &tag != b"NP9ENRL1" {
+                return Err(Error::Invalid("trame d’enrôlement P9"));
+            }
+            let destination_key = key(&mut pipe)?;
+            let mut count = [0];
+            pipe.read_exact(&mut count)?;
+            if count[0] > 17 {
+                return Err(Error::Invalid("nombre de lignées"));
+            }
+            let mut records = Vec::new();
+            for _ in 0..count[0] {
+                let mut id = [0; 16];
+                pipe.read_exact(&mut id)?;
+                let (phrase, recovery) = read_enrollment(&mut pipe)?;
+                records.push((id, phrase, recovery));
+            }
+            end(&mut pipe)?;
+            let enroll = records
+                .iter()
+                .map(|(id, p, r)| Enrollment {
+                    old_domain: *id,
+                    phrase: p,
+                    recovery: r,
+                })
+                .collect::<Vec<_>>();
+            let (image, receipt) = pool.migrate_p9(
+                FileImage::create(target, sector)?,
+                &destination_key,
+                &enroll,
+                novafs::crypto::HostEntropy,
+            )?;
+            pool.verify_migration_source(&receipt)?;
+            super::migration_digest(
+                &image,
+                Some(receipt.destination()),
+                receipt.units(),
+                novafs::secure_pool::migration::image_digest(&pool.into_device())?,
+            )?;
+            return emit(&image, io::BufWriter::new(io::stdout().lock()));
+        }
+        ("file-times", [id, path]) => {
+            let t = pool.times(num(id)?, path)?;
+            println!(
+                "{}",
+                serde_json::json!({"btime":t.btime.parts(),"mtime":t.mtime.parts(),"ctime":t.ctime.parts(),"atime":t.atime.parts()})
+            );
+            return Ok(());
+        }
+        ("set-atime", [id, policy]) => {
+            use novafs::time::Atime;
+            let policy = match *policy {
+                "noatime" => Atime::No,
+                "relatime" => Atime::Relative,
+                "strictatime" => Atime::Strict,
+                _ => return Err(Error::Invalid("politique atime")),
+            };
+            pool.set_atime_policy(num(id)?, policy)?;
+            None
+        }
+        ("migration-receipt", []) => {
+            let r = pool.migration_receipt()?.ok_or(Error::NotFound)?;
+            let lineages=r.lineages().zip(r.seals()).map(|((ids,old,new),(_,data,metadata))|serde_json::json!({"fs":label(&ids.fs),"lv":label(&ids.lv),"origine":label(&old),"destination":label(&new),"scellements_donnees":data,"scellements_metadonnees":metadata})).collect::<Vec<_>>();
+            let views=r.views().map(|v| serde_json::json!({"id":v.id,"lignee":v.lineage,"type":super::shared::kind(v.kind),"parent":match v.parent{novafs::secure_pool::ViewParent::Origin=>"origine",_=>"parent historique inconnu"}})).collect::<Vec<_>>();
+            println!(
+                "{}",
+                serde_json::json!({"pool":label(&r.destination()),"pool_source":label(&r.source()),"racine_source":label(&r.source_root()),"racine_destination":label(&r.destination_root()),"empreinte_partage":label(&r.graph_digest()),"generation_source":r.source_generation(),"generation_destination":r.destination_generation(),"unites":r.units(),"lignees":lineages,"vues":views,"recu":label(r.as_bytes())})
+            );
+            return Ok(());
+        }
         ("volume-create", [owner, fs, lv, n, codec, mode]) => {
             let provision = match *mode {
                 "chiffre" => Some(enrollment(&mut key_pipe::pipe(4)?)?),
@@ -95,7 +181,8 @@ pub(super) fn run(cmd: &str, args: &[&str], mut image: FileImage, sector: u32) -
             if n > 65536 {
                 return Err(Error::Limit("lecture de plus de 64 Kio"));
             }
-            let bytes = Zeroizing::new(pool.read_file(num(id)?, path, num(at)?, n as usize)?);
+            // Cette commande extrait des octets d'une image hors ligne et publie uniquement les données.
+            let bytes = Zeroizing::new(pool.inspect_file(num(id)?, path, num(at)?, n as usize)?);
             io::stdout().lock().write_all(&bytes)?;
             return Ok(());
         }
@@ -133,6 +220,22 @@ pub(super) fn run(cmd: &str, args: &[&str], mut image: FileImage, sector: u32) -
                 io::BufWriter::new(io::stdout().lock()),
             )?;
             return Ok(());
+        }
+        ("restore-into", [owner, codec, "--archive-fd4"]) => {
+            if !pool.is_p9() {
+                return Err(Error::Invalid("pool P9 requis"));
+            }
+            let mut pipe = key_pipe::pipe(4)?;
+            let transport = key(&mut pipe)?;
+            let (phrase, recovery) = read_enrollment(&mut pipe)?;
+            Some(pool.restore(
+                &mut pipe,
+                &transport,
+                identifier(owner)?,
+                &phrase,
+                &recovery,
+                super::shared::compression(codec)?,
+            )?)
         }
         ("restore", [_, owner, codec]) => {
             let mut pipe = key_pipe::pipe(4)?;

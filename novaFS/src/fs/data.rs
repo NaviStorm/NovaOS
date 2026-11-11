@@ -107,6 +107,7 @@ impl<D: Device> Engine<D> {
     }
 
     pub fn read(&self, path: &str, offset: u64, limit: usize) -> Result<Vec<u8>> {
+        self.legacy_read()?;
         self.read_with_cursor(path, offset, limit, None)
     }
 
@@ -131,6 +132,10 @@ impl<D: Device> Engine<D> {
     }
 
     pub fn read_id(&self, id: u64, offset: u64, limit: usize) -> Result<Vec<u8>> {
+        self.legacy_read()?;
+        self.inspect_id(id, offset, limit)
+    }
+    pub fn inspect_id(&self, id: u64, offset: u64, limit: usize) -> Result<Vec<u8>> {
         self.checked_access(|| {
             if limit > MAX_IO || offset > i64::MAX as u64 {
                 return Err(Error::Invalid("plage de lecture"));
@@ -246,6 +251,33 @@ impl<D: Device> Engine<D> {
                 return Ok(Vec::new());
             }
             let new_size = obj.stat.size.max(end);
+            if tx.manifest().atime.is_some() && new_size == obj.stat.size {
+                let mut used = 0;
+                while used < bytes.len() {
+                    let pos = offset + used as u64;
+                    let index = pos / BLOCK_BYTES;
+                    let inside = (pos % BLOCK_BYTES) as usize;
+                    let count = (4096 - inside).min(bytes.len() - used);
+                    let equal = if let Some((first, run)) = covering(tx, obj.stat.id, index)? {
+                        let old = checked_page(
+                            tx,
+                            run.reference((index - first) as usize),
+                            index,
+                            obj.stat.size,
+                        )?;
+                        old[inside..inside + count] == bytes[used..used + count]
+                    } else {
+                        bytes[used..used + count].iter().all(|&b| b == 0)
+                    };
+                    if !equal {
+                        break;
+                    }
+                    used += count;
+                }
+                if used == bytes.len() {
+                    return Ok(Vec::new());
+                }
+            }
             tx.resize_logical(obj.stat.size, new_size)?;
             let id = obj.stat.id;
             let first_page = offset / BLOCK_BYTES;
@@ -324,6 +356,8 @@ impl<D: Device> Engine<D> {
             }
             obj.stat.size = new_size;
             obj.stat.revision = generation(tx)?;
+            obj.times.mtime = tx.now;
+            obj.times.ctime = tx.now;
             save_object(tx, &obj)?;
             Ok(fresh)
         })
