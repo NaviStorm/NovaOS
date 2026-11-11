@@ -15,8 +15,14 @@ fn main() {
     println!("cargo::rerun-if-changed=../abi");
     let target = env::var("TARGET").unwrap();
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
-    for name in ["demo", "ipc"] {
-        let output = out.join(format!("{name}.bin"));
+    for name in [
+        "demo",
+        "ipc",
+        "storage/service",
+        "storage/client",
+        "storage/failure",
+    ] {
+        let output = out.join(format!("{}.bin", name.replace('/', "-")));
         let linker = format!("link-arg=-T{}", user.join("demo.ld").display());
         let ok = Command::new(env::var_os("RUSTC").unwrap())
             .arg(user.join(format!("{name}.rs")))

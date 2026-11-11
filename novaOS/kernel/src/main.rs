@@ -69,6 +69,9 @@ fn main_thread() {
     if scenario.starts_with(b"ipc-") {
         sched::process::ipc::run(scenario);
     }
+    if scenario == b"storage-test" {
+        sched::process::storage::test();
+    }
     if scenario == b"proc-test" {
         sched::process::test();
     }
@@ -83,12 +86,26 @@ fn interactive(
     scenario: &[u8],
     screen: Result<framebuffer::Screen, &'static str>,
 ) -> Result<(), &'static str> {
-    let (screen, bottom) = framebuffer::show_banner(screen?, BANNER)?;
-    log(format_args!("Affichage prêt."));
-    let mut console = console::Console::new(screen, bottom)?;
-    let keyboard = hal::keyboard()?;
+    let terminal = (|| {
+        let (screen, bottom) = framebuffer::show_banner(screen?, BANNER)?;
+        log(format_args!("Affichage prêt."));
+        Ok((console::Console::new(screen, bottom)?, hal::keyboard()?))
+    })();
+    if let Err(reason) = terminal {
+        if scenario.is_empty() {
+            // Le service de stockage démarre également sur la console série seule.
+            log(format_args!("{reason}"));
+            sched::process::storage::before_halt();
+            hal::cpu::halt();
+        }
+        return Err(reason);
+    }
+    let (mut console, keyboard) = terminal?;
     match scenario {
-        b"" => sched::process::boot_demo(false),
+        b"" => {
+            sched::process::boot_demo(false);
+            sched::process::storage::boot();
+        }
         b"proc-boot-fault" => sched::process::boot_demo(true),
         _ => {}
     }

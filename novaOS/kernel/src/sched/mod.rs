@@ -297,8 +297,18 @@ fn dispatch(why: Reason) {
     dispatch_measured(why, 0);
 }
 fn dispatch_measured(why: Reason, masked_since: u64) {
+    use process::ipc::metrics;
+    let start = metrics::switch_stamp();
     if let Some((save, load)) = with(|s| {
+        let old = s.current;
         let next = s.select(why);
+        if start != 0 && next.is_some() {
+            metrics::switch_out(
+                start,
+                s.ipc.measured_peer(s.thread(old).owner)
+                    && s.ipc.measured_peer(s.thread(s.current).owner),
+            );
+        }
         if masked_since != 0 {
             s.ipc.finish_masked(masked_since);
         }
@@ -308,6 +318,7 @@ fn dispatch_measured(why: Reason, masked_since: u64) {
         unsafe {
             context::switch(save, load);
         }
+        metrics::switch_in();
     }
 }
 pub(crate) fn tick(user: bool) {

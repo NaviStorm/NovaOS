@@ -23,6 +23,7 @@ pub struct Frames {
     recycled: u64,
     pub available: u64,
     pub initial: u64,
+    pub(super) sample: Option<super::FrameSample>,
     pub tables: u64,
     pub(super) map: alloc::vec::Vec<Entry>,
     pub(super) reclaimed: u64,
@@ -64,6 +65,7 @@ impl Frames {
             recycled: 0,
             available,
             initial: available,
+            sample: None,
             tables: 0,
             map: alloc::vec::Vec::new(),
             reclaimed: 0,
@@ -133,6 +135,10 @@ impl Frames {
                 .write_bytes(0, PAGE as usize)
         };
         self.available -= 1;
+        if let Some(sample) = &mut self.sample {
+            sample.allocations += 1;
+            sample.minimum_free = sample.minimum_free.min(self.available);
+        }
         Ok(frame)
     }
 

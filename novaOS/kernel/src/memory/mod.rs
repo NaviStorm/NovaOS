@@ -110,7 +110,25 @@ pub struct Memory {
     image: Image,
 }
 
+pub(crate) struct FrameSample {
+    pub allocations: u64,
+    pub minimum_free: u64,
+}
 impl Memory {
+    pub(crate) fn begin_frame_sample(&mut self) {
+        assert!(self.frames.sample.is_none());
+        self.frames.sample = Some(FrameSample {
+            allocations: 0,
+            minimum_free: self.frames.available,
+        });
+    }
+    pub(crate) fn end_frame_sample(&mut self) -> FrameSample {
+        self.frames
+            .sample
+            .take()
+            .expect("échantillon de cadres actif")
+    }
+
     /// # Safety
     /// Une seule prise de contrôle, au démarrage sur le BSP, avant tout autre
     /// usage des cadres USABLE. La carte et le HHDM proviennent du Limine actif.

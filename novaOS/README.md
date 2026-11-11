@@ -1,6 +1,6 @@
-# NovaOS v0.8.0
+# NovaOS v0.9.0
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.8.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. La cible x86_64 affiche `NovaOS v0.9.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
@@ -14,7 +14,7 @@ Dix appels IPC permettent à des processus isolés de communiquer par endpoints 
 
 ## Prototype de stockage macOS
 
-NovaFS v0.9.12 s’exécute sur des images jetables dans le workspace voisin `../novaFS/`. Son intégration comme service utilisateur de NovaOS est prévue pour une phase ultérieure. [Utiliser le prototype](../novaFS/README.md) · [Scrub et résultats de la qualification P8](../novaFS/docs/novafs-p8-scrub.md)
+NovaFS v0.9.12 s’exécute sur des images jetables dans le workspace voisin `../novaFS/`. NovaOS lance un service de stockage et son client en Ring 3 ou EL0. Ils consultent le nombre de volumes disponibles, puis ferment leur session. Le raccordement du moteur et des périphériques blocs reste à réaliser. [Protocole, cycle de vie et qualification v0.9.0](docs/novafs-integration-v0.9.0.md) [Utiliser le prototype](../novaFS/README.md) · [Scrub et résultats de la qualification P8](../novaFS/docs/novafs-p8-scrub.md)
 
 ## Démarrage manuel dans QEMU
 
@@ -53,6 +53,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle, de tas de multitâche, de processus, d’ABI et d’IPC pour la cible choisie. Nécessite Python 3. |
 | `make ARCH=x86_64 endurance DURATION=7200` | Exécute la campagne de contention et de restitution pendant au moins deux heures réelles. Accepte aussi `ARCH=aarch64`. |
 | `make ARCH=aarch64 ram-test` | Mesure la RAM physique avec 64, 128 et 256 Mio. Accepte également `ARCH=x86_64`. |
+| `make ARCH=x86_64 storage-test` | Qualifie le service résident, ses clients, la reprise, la mémoire et les latences. Accepte aussi `ARCH=aarch64`. |
 | `make ARCH=x86_64 ipc-test` | Exécute les sondes IPC courtes, dont le retrait d’une page pendant une réception. |
 | `make ARCH=aarch64 ipc-races` | Force cinq ordres de réveil 10 000 fois chacun. |
 | `make ARCH=x86_64 ipc-perf` | Mesure six formes d’échange, au repos et sous contention. |

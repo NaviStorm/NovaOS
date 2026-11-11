@@ -9,6 +9,7 @@ use crate::{
 mod abi_probe;
 mod demo;
 pub(crate) mod ipc;
+pub(crate) mod storage;
 pub(super) use abi_probe::idle_sample;
 pub(crate) use abi_probe::test as abi_test;
 pub(crate) mod syscall;

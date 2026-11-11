@@ -3,6 +3,28 @@
 use super::*;
 use core::sync::atomic::AtomicBool;
 static ACTIVE: AtomicBool = AtomicBool::new(false);
+static SWITCHES: AtomicBool = AtomicBool::new(false);
+// CPU0, IRQ masquées. Le marqueur est transmis entre les deux piles noyau.
+static HANDOFF: AtomicU64 = AtomicU64::new(0);
+pub(crate) fn switch_stamp() -> u64 {
+    if SWITCHES.load(Ordering::Relaxed) {
+        hal::timer::counter()
+    } else {
+        0
+    }
+}
+pub(crate) fn switch_out(start: u64, pair: bool) {
+    HANDOFF.store(if pair { start } else { 0 }, Ordering::Relaxed);
+}
+pub(crate) fn switch_in() {
+    let end = switch_stamp();
+    if end != 0 {
+        let start = HANDOFF.swap(0, Ordering::Relaxed);
+        if start != 0 {
+            with(|s| s.ipc.metrics.sample(7, start, end));
+        }
+    }
+}
 pub(super) fn stamp() -> u64 {
     if ACTIVE.load(Ordering::Relaxed) {
         hal::timer::counter()
@@ -47,6 +69,7 @@ pub(super) struct Metrics {
     pub admitted: [u64; 32],
     pub woken: [u64; 32],
     pub round: u64,
+    window: Option<(u64, u64)>,
 }
 impl Metrics {
     pub const fn new() -> Self {
@@ -58,14 +81,24 @@ impl Metrics {
             admitted: [0; 32],
             woken: [0; 32],
             round: 0,
+            window: None,
         }
     }
     pub fn start(&mut self, pid: u64, peer: u64) {
+        self.start_series(pid, peer, 7);
+    }
+    fn start_series(&mut self, pid: u64, peer: u64, classes: usize) {
         self.focus = pid;
         self.peer = peer;
         self.round = 0;
-        self.hist = alloc::vec![Histogram{bins:[0;256],samples:0,max:0};7];
+        self.hist = alloc::vec![Histogram{bins:[0;256],samples:0,max:0};classes];
         ACTIVE.store(true, Ordering::Relaxed);
+    }
+    pub fn start_session(&mut self, client: u64, service: u64) {
+        self.start_series(client, service, 8);
+        self.window = None;
+        HANDOFF.store(0, Ordering::Relaxed);
+        SWITCHES.store(true, Ordering::Relaxed);
     }
     pub fn includes(&self, pid: Pid) -> bool {
         pid.number == self.focus || pid.number == self.peer
@@ -73,6 +106,10 @@ impl Metrics {
     pub fn sample(&mut self, i: usize, start: u64, end: u64) {
         if start != 0 && !self.hist.is_empty() {
             self.hist[i].record(end - start);
+            if i == 4 && SWITCHES.load(Ordering::Relaxed) {
+                let window = self.window.get_or_insert((start, end));
+                window.1 = end;
+            }
         }
     }
     pub fn section(&mut self, begin: u64, end: u64, id: u64, entry: u64, r: Res<Option<u64>>) {
@@ -85,6 +122,14 @@ impl Metrics {
     }
     pub fn report(&mut self, hz: u64) {
         ACTIVE.store(false, Ordering::Relaxed);
+        SWITCHES.store(false, Ordering::Relaxed);
+        if let Some((start, end)) = self.window.take() {
+            let ns = u128::from(end - start) * 1_000_000_000 / u128::from(hz);
+            hal::log(format_args!(
+                "STOCKAGE trafic tours={} ns={ns}",
+                self.hist[4].samples
+            ));
+        }
         for (i, h) in self.hist.iter().enumerate().filter(|(_, h)| h.samples > 0) {
             let ns = |v: u64| (u128::from(v) * 1_000_000_000 / u128::from(hz)) as u64;
             hal::log(format_args!(
@@ -96,7 +141,8 @@ impl Metrics {
                     "revocation",
                     "aller_retour",
                     "reprise",
-                    "appel"
+                    "appel",
+                    "commutation"
                 ][i],
                 h.samples,
                 ns(h.quantile(50)),

@@ -14,14 +14,14 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
-BANNER = b"NovaOS v0.8.0\r\n"
+BANNER = b"NovaOS v0.9.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "808cb21ff95d5a4aff1d06c6c76f541cb5ac7113be01c328944a1fa309729c0f",
-    "demarrage": "74f072002041453faf5faf74e973f5d68ca224c9e1813c7265922671d88a6810",
-    "composition": "7e1839e408eedf03c45bebde8c2841e1d2c31bfdc35ccb8ad678363b9ac45815",
-    "frappe": "2d98ee8c8dc4c043383d9bae4e6be28e9710634f7b244ab0638bd91ec0be3e75",
-    "saisie": "150b341c2f8535d938724adb3ca5b215e396b469260d4152c4b8f5953853a5dd",
+    "demarrage-aarch64": "25a7b3629cd259338c3c6a5294e1bbdf5abf872963f6410cbc0e4eb2c3d80dc1",
+    "demarrage": "71167043bf9e250cc31860781e1025474150456b3f82679a776a40241f2e056d",
+    "composition": "4e5101ac1dd7848ad39fa045af091b570d4bba5daf76acc98df70bae240e101f",
+    "frappe": "d24b10bffe8ee84c264167a9cc7663102c6f9f0ab6365227d50a8cc33c72a0bf",
+    "saisie": "22665fa321b6f335f1550061a4a09e4a78ff84169606c298e2df951add6e8687",
 }
 
 
@@ -150,20 +150,35 @@ def wait_demo(vm, log, level, faulty=False):
     raise RuntimeError(f"Démonstration inachevée en {level}")
 
 
+def wait_storage(vm, log, headless=False):
+    deadline = time.monotonic() + 10
+    while vm.poll() is None and time.monotonic() < deadline:
+        report = log.read_text(errors="replace") if log.exists() else ""
+        marker = "STOCKAGE arret service=" if headless else "RAM phase=stockage_boot"
+        if (marker in report and "STOCKAGE session=1" in report
+                and "INFO volumes=0 FIN confirmee" in report):
+            return
+        time.sleep(0.05)
+    raise RuntimeError("Échange de démarrage avec le service de stockage inachevé.")
+
+
 def check_x86(vm, directory, log):
     wait_for_serial(vm, log, "Affichage prêt.\r\nClavier PS/2 prêt (AZERTY).")
     wait_demo(vm, log, "Ring3")
+    wait_storage(vm, log)
     test_keyboard(vm, directory)
     wait_for_halt(vm, True)
 
 
 def check_without_vga(vm, directory, log):
     wait_for_serial(vm, log, "Erreur : aucun framebuffer transmis par Limine.")
+    wait_storage(vm, log, headless=True)
     wait_for_halt(vm, False)
 
 
 def check_arm(vm, directory, log):
     wait_demo(vm, log, "EL0")
+    wait_storage(vm, log)
     expect_screen(vm, directory, "demarrage-aarch64", timeout=45)
     wait_for_wfi(vm)
 
@@ -536,6 +551,42 @@ def abi_scenario(arch, ram, allow_firmware_limit=False, arm_pan=False):
     (BUILD / f"abi-{arch}-{label}.json").write_text(json.dumps(measured, indent=2) + "\n")
 
 
+def storage_test(arch):
+    level = "Ring3" if arch == "x86_64" else "EL0"
+
+    def verify(vm, directory, log):
+        deadline = time.monotonic() + 55
+        report = ""
+        while vm.poll() is None and time.monotonic() < deadline:
+            report = log.read_text(errors="replace") if log.exists() else ""
+            if any(s in report for s in ("Panique du noyau", "Exception noyau", "Erreur fatale")):
+                raise RuntimeError(report[-2400:])
+            if "STOCKAGE validation OK" in report:
+                break
+            time.sleep(0.05)
+        assert "STOCKAGE validation OK" in report and "faute=" not in report, report[-2400:]
+        events = re.findall(rf"PROC pid=(\d+) niveau={level} pc=0x40[0-9a-f]{{4}} sortie=(\d+)", report)
+        exits = dict(events)
+        assert len(events) == 8 and exits.pop("3", None) in ("5", "11"), events
+        assert exits == {"1": "5", "2": "70", "4": "0", "5": "0", "6": "0", "7": "0", "8": "0"}, events
+        assert "STOCKAGE session=2 service=4 client=5 INFO volumes=0 FIN confirmee" in report
+        assert "STOCKAGE seconde session service=4 client=6" in report
+        assert "STOCKAGE arret service=4 resultats=Exit(0),Exit(0)" in report
+        assert "IPC hist type=aller_retour n=513 " in report
+        assert "STOCKAGE campagne tours=513 " in report
+        assert re.search(r"IPC hist type=commutation n=[1-9]\d* p50=[1-9]", report)
+        assert re.search(r"STOCKAGE trafic tours=513 ns=[1-9]", report)
+        assert re.search(r"STOCKAGE cadres allocations=[1-9]\d* pic=[1-9]", report)
+        assert "STOCKAGE publication annulee budget=" in report
+        phases = {phase: dict(re.findall(r"(\w+)=(\d+)", values)) for phase, values in
+                  re.findall(r"RAM phase=stockage_(\w+) ([^\n]+)", report)}
+        assert phases["repos"] == phases["recupere"] == phases["detruit"]
+        assert phases["resident"]["processus"] == "1" and phases["resident"]["upile"] == "1"
+        assert phases["publie"]["processus"] == "2" and phases["publie"]["upile"] == "2"
+
+    scenario_vm(arch, "storage-test", verify)
+
+
 def suite():
     if os.environ.get("NOVA_ARCH", "x86_64") == "aarch64":
         boot("aarch64", check_arm)
@@ -546,6 +597,7 @@ def suite():
     abi_scenario(arch, 256)
     if arch == "aarch64":
         abi_scenario(arch, 256, arm_pan=True)
+    storage_test(arch)
     process_test(arch)
     boot_fault(arch)
     memory_scenarios(arch)
@@ -563,8 +615,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--endurance", type=int, metavar="SECONDES")
     parser.add_argument("--ram-test", action="store_true")
+    parser.add_argument("--storage-test", action="store_true")
     args = parser.parse_args()
-    if args.ram_test:
+    if args.storage_test:
+        storage_test(os.environ.get("NOVA_ARCH", "x86_64"))
+    elif args.ram_test:
         from ipc import campaign
         arch = os.environ.get("NOVA_ARCH", "x86_64")
         for ram in (64, 128, 256):

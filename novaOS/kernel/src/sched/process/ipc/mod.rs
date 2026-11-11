@@ -2,7 +2,7 @@
 //! traduction utilisateur ne traverse dispatch. Les pages des slabs sont RW/NX.
 use super::*;
 use crate::abi::*;
-mod metrics;
+pub(crate) mod metrics;
 mod pool;
 use pool::{Bits, Pool};
 mod probes;
@@ -161,6 +161,9 @@ impl Domain {
         self.nodes.collect();
         self.locals.collect();
         self.waits.collect();
+    }
+    pub(in crate::sched) fn measured_peer(&self, pid: Option<Pid>) -> bool {
+        pid.is_some_and(|p| self.metrics.includes(p))
     }
     pub(crate) fn finish_masked(&mut self, start: u64) {
         self.metrics.sample(0, start, metrics::stamp());
@@ -591,17 +594,21 @@ fn undo_unpublished(child: Child) {
     .unwrap();
 }
 
+fn launch_error(e: Error) -> u64 {
+    match e {
+        Error::Full => LIMIT,
+        Error::Memory(crate::memory::Error::Exhausted) => NO_MEMORY,
+        _ => panic!("lanceur IPC : {e:?}"),
+    }
+}
+
 pub(super) fn launch<const N: usize>(members: [(&[u8], u32); N]) -> Res<[Child; N]> {
     assert!(N > 0 && N <= 32 && members[0].1 == ALL);
     let _irq = Guard::new();
     let mut group: [Option<Child>; N] = core::array::from_fn(|_| None);
     let attempt = (|| {
         for (c, &(image, _)) in group.iter_mut().zip(&members) {
-            *c = Some(create_image(image, &[], None, None).map_err(|e| match e {
-                Error::Full => LIMIT,
-                Error::Memory(crate::memory::Error::Exhausted) => NO_MEMORY,
-                _ => panic!("lanceur IPC : {e:?}"),
-            })?);
+            *c = Some(create_image(image, &[], None, None).map_err(launch_error)?);
         }
         let owner = group[0].as_ref().unwrap().0;
         let mut grants = [(owner, 0); N];
@@ -627,4 +634,140 @@ pub(super) fn launch<const N: usize>(members: [(&[u8], u32); N]) -> Res<[Child; 
         return Err(e);
     }
     Ok(group.map(Option::unwrap))
+}
+
+/// Le lanceur conserve les deux racines créées par le noyau. L'admission est
+/// séquentielle et limitée au même binaire client immuable pour cette version.
+pub(super) struct Service {
+    pub process: Child,
+    requests: u64,
+    replies: u64,
+    previous: Pid,
+    client_image: &'static [u8],
+}
+
+fn configure_session(s: &Core, pid: Pid, replies: u64, rounds: u64) {
+    let space = s.processes.get(pid).space.as_ref().unwrap();
+    heap::with_pages(|m| {
+        space.write_data(m, 0, replies);
+        space.write_data(m, 1, rounds);
+        Ok(())
+    })
+    .unwrap();
+}
+
+impl Service {
+    fn admission(&self, s: &Core) -> Res<()> {
+        let owner = self.process.0;
+        if s.processes.slots[self.previous.slot]
+            .as_ref()
+            .is_some_and(|p| p.pid == self.previous && p.space.is_some())
+        {
+            return Err(LIMIT);
+        }
+        let input = s.ipc.lookup(owner, self.requests, MANAGE)?.endpoint;
+        let output = s.ipc.lookup(owner, self.replies, MANAGE)?.endpoint;
+        // Aucun dépôt du client précédent ne doit franchir l'admission.
+        // Le serveur doit déjà attendre la prochaine demande, sans réponse en vol.
+        for id in [input, output] {
+            let ep = s.ipc.ends.get(id.slot());
+            if ep.len != 0 || ep.bits != 0 {
+                return Err(WOULD_BLOCK);
+            }
+        }
+        let listening = s.ipc.waits.ids().any(|i| {
+            let w = s.ipc.waits.get(i);
+            w.pid == owner
+                && w.ep == input
+                && w.done.is_none()
+                && matches!(w.op, Operation::Receive { .. })
+        });
+        if listening { Ok(()) } else { Err(WOULD_BLOCK) }
+    }
+
+    pub(super) fn listening(&self) -> bool {
+        with(|s| self.admission(s).is_ok())
+    }
+
+    pub(super) fn next_client(&mut self, rounds: u64) -> Res<Child> {
+        let _irq = Guard::new();
+        let owner = self.process.0;
+        with(|s| self.admission(s))?;
+        let child = create_image(self.client_image, &[], None, None).map_err(launch_error)?;
+        let peer = child.0;
+        let result = with(|s| {
+            let writer = s.ipc.derive(owner, self.requests, peer, SEND.into())?;
+            let reader = s.ipc.derive(owner, self.replies, peer, RECEIVE.into())?;
+            s.ipc.locals.get_mut(peer.slot).bootstrap = writer;
+            configure_session(s, peer, reader, rounds);
+            Ok(())
+        });
+        if let Err(status) = result {
+            retire_unpublished(child);
+            return Err(status);
+        }
+        self.previous = peer;
+        Ok(child)
+    }
+
+    pub(super) fn shutdown(&self) {
+        with(|s| {
+            for key in [self.requests, self.replies] {
+                if let Ok(n) = s.ipc.lookup(self.process.0, key, MANAGE) {
+                    s.ipc.close(n);
+                }
+            }
+            s.flush_ipc();
+            s.ipc.collect();
+        });
+    }
+}
+
+fn retire_unpublished(child: Child) {
+    with(|s| {
+        s.ipc.death(child.0, ticks());
+        s.ipc.collect();
+    });
+    undo_unpublished(child);
+}
+
+pub(super) fn launch_session(
+    service: &[u8],
+    client: &'static [u8],
+    rounds: u64,
+) -> Res<(Service, Child)> {
+    let _irq = Guard::new();
+    let [server, reader] = launch([(service, ALL), (client, SEND)])?;
+    let (owner, peer) = (server.0, reader.0);
+    let result = with(|s| {
+        let root = s.ipc.create(owner)?;
+        let handle = s.ipc.derive(owner, root, peer, RECEIVE.into())?;
+        configure_session(s, owner, root, 0);
+        configure_session(s, peer, handle, rounds);
+        Ok((s.ipc.caps(owner).unwrap().bootstrap, root))
+    });
+    match result {
+        Ok((requests, replies)) => Ok((
+            Service {
+                process: server,
+                requests,
+                replies,
+                previous: peer,
+                client_image: client,
+            },
+            reader,
+        )),
+        Err(status) => {
+            retire_unpublished(server);
+            retire_unpublished(reader);
+            Err(status)
+        }
+    }
+}
+
+pub(super) fn begin_measure(client: Pid, service: Pid) {
+    with(|s| s.ipc.metrics.start_session(client.number, service.number));
+}
+pub(super) fn end_measure(hz: u64) {
+    with(|s| s.ipc.metrics.report(hz));
 }

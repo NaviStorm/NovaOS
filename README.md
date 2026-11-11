@@ -2,8 +2,8 @@
 
 | Répertoire | Rôle |
 |---|---|
-| [novaOS/](novaOS/README.md) | Micro-noyau Rust `no_std` v0.8.0 pour x86_64 et AArch64. Il démarre sous UEFI avec Limine, exécute des processus isolés et fournit l’ABI native et l’IPC par capacités. Le prompt de diagnostic avec saisie AZERTY fonctionne sur x86_64. |
-| [novaFS/](novaFS/README.md) | Système de fichiers indépendant v0.9.12. Le prototype macOS utilise des images jetables et prend en charge les transactions CoW, les snapshots, les clones, LZ4, le chiffrement et le scrub P8. Son intégration comme service utilisateur NovaOS reste à développer. |
+| [novaOS/](novaOS/README.md) | Micro-noyau Rust `no_std` v0.9.0 pour x86_64 et AArch64. Il démarre sous UEFI avec Limine, exécute des processus isolés et fournit l’ABI native et l’IPC par capacités. Le prompt de diagnostic avec saisie AZERTY fonctionne sur x86_64. |
+| [novaFS/](novaFS/README.md) | Système de fichiers indépendant v0.9.12. Le prototype macOS utilise des images jetables et prend en charge les transactions CoW, les snapshots, les clones, LZ4, le chiffrement et le scrub P8. NovaOS lance deux processus qui échangent les informations de stockage. Le moteur sur images s’exécute encore sur macOS. |
 | [components/](components/README.md) | Emplacements réservés aux applications, commandes et bibliothèques indépendantes. |
 | [distribution/](distribution/README.md) | Organisation prévue pour sélectionner les composants et assembler les images de distribution. |
 
