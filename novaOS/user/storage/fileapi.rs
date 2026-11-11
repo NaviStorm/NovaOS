@@ -69,7 +69,15 @@ impl Client {
                 self.disconnected = true;
                 if matches!(
                     q[1],
-                    w::SYNC | w::MKDIR_AT | w::RMDIR | w::RENAME_AT | w::UNLINK_AT
+                    w::CREATE_NEW
+                        | w::PUBLISH_COPY
+                        | w::TOUCH_SELECTED
+                        | w::MOVE_SELECTED
+                        | w::SYNC
+                        | w::MKDIR_AT
+                        | w::RMDIR
+                        | w::RENAME_AT
+                        | w::UNLINK_AT
                 ) || (matches!(q[1], w::OPEN | w::OPEN_AT) && q[2] & w::CREATE != 0)
                 {
                     w::UNCERTAIN

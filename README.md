@@ -2,7 +2,7 @@
 
 NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-Dans **NovaOS v0.13.0**, le shell série permet de parcourir un volume autonome, de lire des fichiers et de modifier son arborescence. Chaque commande externe s’exécute dans son propre processus. Le service conserve le contrat de montage validé en v0.13.0. Sur macOS, **NovaFS v0.9.13** permet de migrer une image vers le profil P9 et d’horodater les créations, modifications et accès ultérieurs. [Format et compatibilité](novaFS/docs/novafs-p9-timestamps.md)
+**NovaOS v0.14.0** monte les volumes autonomes NovaFS P9. Le shell série permet de copier, déplacer et dater des fichiers, de consulter leur contenu et de les trier par date de modification. Chaque commande externe s’exécute dans son propre processus. **NovaFS v0.9.13** fournit aussi la migration explicite des images historiques sur macOS. [CLI native](novaOS/docs/cli-v0.14.0.md) · [Format et compatibilité](novaFS/docs/novafs-p9-timestamps.md)
 
 ## Philosophie et architecture
 
@@ -34,7 +34,7 @@ flowchart TD
 | Stockage bloc | Implémenté | Lecture, écriture et synchronisation sur un disque VirtIO optionnel. Le service bloc et le pilote s’exécutent en espace utilisateur. |
 | NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. NovaOS expose le montage et les transactions sur les fichiers des volumes autonomes. |
 | Interface texte | Implémenté | Le prompt de diagnostic du noyau accepte la saisie AZERTY sur x86_64. |
-| Environnement utilisateur | Implémenté | Shell série, cd, exit et six commandes isolées : pwd, ls, cat, head, mkdir et rm. |
+| Environnement utilisateur | Implémenté | Shell série avec édition UTF-8, historique privé et alias. Douze commandes isolées, dont `cp`, `mv`, `touch`, `more`, `wc` et `tail`. |
 | Interface et distribution | Prévu | NovaUI et système hybride immuable. |
 
 ## Compiler et démarrer
@@ -48,7 +48,7 @@ make -C novaOS ARCH=x86_64 cli
 make -C novaOS ARCH=aarch64 cli
 ```
 
-Les cibles `build` produisent respectivement `novaOS/build/novaos.iso` et `novaOS/build/novaos-aarch64.iso`. La cible `cli` ouvre le shell dans le terminal et conserve son volume de démonstration entre démarrages. La cible `run` sans image ouvre la fenêtre graphique de diagnostic. Depuis `novaOS/`, omettre `-C novaOS`. [Shell, commandes et image de démonstration](novaOS/docs/cli-v0.13.0.md) · [Configuration QEMU et UTM](novaOS/README.md)
+Les cibles `build` produisent respectivement `novaOS/build/novaos.iso` et `novaOS/build/novaos-aarch64.iso`. La cible `cli` ouvre le shell dans le terminal et conserve son volume de démonstration entre démarrages. La cible `run` sans image ouvre la fenêtre graphique de diagnostic. Depuis `novaOS/`, omettre `-C novaOS`. [Shell, commandes et image de démonstration](novaOS/docs/cli-v0.14.0.md) · [Configuration QEMU et UTM](novaOS/README.md)
 
 ## Tester et approfondir
 

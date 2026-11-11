@@ -9,10 +9,22 @@ pub enum Program {
     Mkdir,
     Rm,
     Probe,
+    Cp,
+    Mv,
+    Touch,
+    More,
+    Wc,
+    Tail,
 }
 impl Program {
     pub fn named(s: &str, test: bool) -> Option<Self> {
         Some(match s {
+            "cp" => Self::Cp,
+            "mv" => Self::Mv,
+            "touch" => Self::Touch,
+            "more" => Self::More,
+            "wc" => Self::Wc,
+            "tail" => Self::Tail,
             "pwd" => Self::Pwd,
             "ls" => Self::Ls,
             "cat" => Self::Cat,
@@ -25,9 +37,9 @@ impl Program {
     }
 }
 pub enum Operand<'a> {
+    Info(bool),
+    Batch(crate::options::Options<'a>, Program),
     Cwd,
-    Directory(&'a str, bool),
-    Read(&'a str, Option<usize>),
     Create(&'a str),
     Remove(&'a str),
     Probe(&'a str),
@@ -35,19 +47,25 @@ pub enum Operand<'a> {
 pub fn operand<'a>(p: Program, args: &[&'a str]) -> Result<Operand<'a>, u64> {
     use crate::runtime::BAD_ARGUMENT;
     use Program::*;
+    let options = crate::options::parse(p, args)?;
+    if options.help || options.version {
+        return Ok(Operand::Info(options.help));
+    }
+    let count = options.files.len();
+    match p {
+        Ls | Cat | Head | Tail | More | Wc | Cp | Mv | Touch => {
+            if matches!(p, Cp | Mv) && count != 2 || p != Ls && count == 0 {
+                return Err(BAD_ARGUMENT);
+            }
+            return Ok(Operand::Batch(options, p));
+        }
+        _ => {}
+    }
+    let args = options.files.as_slice();
     Ok(match (p, args) {
         (Pwd, []) => Operand::Cwd,
-        (Ls, []) => Operand::Directory(".", false),
-        (Ls, ["-l"]) => Operand::Directory(".", true),
-        (Ls, ["-l", path]) => Operand::Directory(path, true),
-        (Ls, [path]) if !path.starts_with('-') => Operand::Directory(path, false),
-        (Cat, [path]) => Operand::Read(path, None),
-        (Head, [path]) if *path != "-n" => Operand::Read(path, Some(10)),
-        (Head, ["-n", n, path]) if !n.is_empty() && n.bytes().all(|b| b.is_ascii_digit()) => {
-            Operand::Read(path, Some(n.parse().map_err(|_| BAD_ARGUMENT)?))
-        }
         (Mkdir, [path]) => Operand::Create(path),
-        (Rm, [path]) if !path.starts_with('-') => Operand::Remove(path),
+        (Rm, [path]) => Operand::Remove(path),
         (Probe, [s]) => Operand::Probe(s),
         _ => return Err(BAD_ARGUMENT),
     })

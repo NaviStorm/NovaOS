@@ -38,6 +38,6 @@ done
 # La NVRAM du paquet reste en lecture seule ; QEMU garde les écritures en mémoire.
 ram=${NOVA_RAM:-256}
 case "$ram" in 64|128|256) ;; *) echo "RAM attendue : 64, 128 ou 256 Mio" >&2; exit 2 ;; esac
-exec "$emulator" -name NovaOS -accel tcg -smp 1 -m "${ram}M" -nic none -no-reboot \
+exec "$emulator" -name NovaOS -rtc base=utc,clock=host -accel tcg -smp 1 -m "${ram}M" -nic none -no-reboot \
     -drive "if=pflash,unit=0,format=raw,readonly=on,file=$OVMF_CODE" \
     -drive "if=pflash,unit=1,format=raw,snapshot=on,file=$OVMF_VARS" "$@"

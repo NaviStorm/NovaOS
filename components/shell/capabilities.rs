@@ -12,18 +12,41 @@ impl Grant {
     }
     pub fn select(&mut self, fs: &mut Client, operand: &Operand) -> rt::Result<()> {
         let (scope, handle, leaf) = match operand {
+            Operand::Info(_) => return Ok(()),
+            Operand::Batch(opts, program) => {
+                use nova_cli::command::Program::*;
+                fs.simple(w::STAGE, 0)?;
+                let default = ["."];
+                let paths = if opts.files.is_empty() {
+                    &default[..]
+                } else {
+                    &opts.files
+                };
+                for (i, path) in paths.iter().enumerate() {
+                    let role = match program {
+                        Ls if opts.has(b'R') => w::SELECT_TREE,
+                        Ls => w::SELECT_LIST,
+                        Cp if i == 0 && (opts.has(b'R') || opts.has(b'r')) => w::SELECT_COPY_TREE,
+                        Cp if i == 0 => w::SELECT_FILE,
+                        Cp if opts.has(b'R') || opts.has(b'r') => w::SELECT_COPY_DEST,
+                        Cp => w::SELECT_NEW,
+                        Mv if i == 0 => w::SELECT_FROM,
+                        Mv => w::SELECT_TO,
+                        Touch => w::SELECT_TOUCH,
+                        Cat | Head | Tail | Wc | More => w::SELECT_FILE,
+                        _ => return Err(rt::BAD_ARGUMENT),
+                    };
+                    fs.at(w::STAGE, 0, path.as_bytes(), role)?;
+                }
+                (w::GROUP, 0, "")
+            }
             Operand::Cwd | Operand::Probe("revocation" | "droits") => (w::CWD_VIEW, 0, ""),
+            Operand::Probe("stat") => {
+                fs.simple(w::STAGE, 0)?;
+                fs.at(w::STAGE, 0, b".", w::SELECT_LIST)?;
+                (w::GROUP, 0, "")
+            }
             Operand::Probe(_) => return Ok(()),
-            Operand::Directory(path, _) => {
-                let dir = fs.directory(0, path.as_bytes(), w::TRAVERSE | w::ENUMERATE)?;
-                self.handle = Some((dir, true));
-                (w::DIR_VIEW, dir, "")
-            }
-            Operand::Read(path, _) => {
-                let file = fs.open_at(0, path.as_bytes(), w::READABLE)?;
-                self.handle = Some((file, false));
-                (w::FILE_VIEW, file, "")
-            }
             Operand::Create(path) | Operand::Remove(path) => {
                 if path.len() > w::PATH_MAX || path.contains("//") {
                     return Err(rt::BAD_ARGUMENT);

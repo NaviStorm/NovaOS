@@ -4,6 +4,8 @@ pub const CONSOLE: u64 = 0x10043;
 pub const INPUT: u8 = 1;
 pub const OUTPUT: u8 = 2;
 pub const ERROR: u8 = 4;
+/// Style du nom d’un répertoire sur le terminal série, exige OUTPUT.
+pub const DIRECTORY_COLOR: u8 = 64;
 pub const EDIT: u8 = 8;
 pub const LAUNCH: u8 = 16;
 pub const QUALIFY: u8 = 32;

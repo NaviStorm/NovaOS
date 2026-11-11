@@ -2,6 +2,7 @@
 pub(crate) mod context;
 mod exceptions;
 pub(crate) mod paging;
+pub(crate) mod rtc;
 pub(crate) mod serial;
 pub(crate) mod timer;
 use core::{arch::asm, fmt};

@@ -2,9 +2,11 @@
 #![no_main]
 extern crate alloc;
 use nova_cli::{console, fileapi::Client, runtime as rt, tty};
+mod aliases;
 mod builtins;
 mod capabilities;
 mod executor;
+mod history;
 mod input;
 mod lexer;
 mod line_editor;
@@ -12,21 +14,33 @@ mod parser;
 
 fn session() -> rt::Result<()> {
     let mut fs = Client::new()?;
-    fs.mount()?;
     let test = rt::config(1) == 42;
+    let mark = |text: &[u8]| {
+        if test {
+            rt::call(rt::DEBUG_WRITE, text.as_ptr() as u64, text.len() as u64, 0);
+        }
+    };
+    mark(b"ech debut");
+    fs.mount()?;
+    mark(b"ech montage-cli");
     if test && rt::call(tty::SPAWN, u64::MAX, 0, 0).status != rt::BAD_ARGUMENT {
         return Err(rt::REFUSED);
     }
+    let mut aliases = aliases::Aliases::default();
+    let mut history = history::History::configured()?;
     let mut input = input::Input::default();
     loop {
         if test {
             console::edit(2)?;
         }
-        let command = line_editor::line(&mut input)
-            .and_then(|s| lexer::lex(&s))
+        let command = line_editor::line(&mut input, &history)
+            .and_then(|s| {
+                history.remember(&s);
+                lexer::lex(&s)
+            })
             .map(parser::parse);
         match command {
-            Ok(Some(cmd)) => match executor::execute(&mut fs, cmd, test) {
+            Ok(Some(cmd)) => match executor::execute(&mut fs, cmd, test, &mut aliases) {
                 Ok(false) => break,
                 Ok(true) => {}
                 Err(e) => console::write(

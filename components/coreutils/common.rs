@@ -9,6 +9,15 @@ pub fn run(p: Program, command: impl FnOnce(&mut Client, Operand<'_>) -> rt::Res
     let r = (|| {
         let args = process::arguments()?;
         let op = operand(p, &args)?;
+        if let Operand::Info(help) = op {
+            let text = if help {
+                nova_cli::options::usage(p)
+            } else {
+                concat!("NovaOS ", env!("CARGO_PKG_VERSION"))
+            };
+            console::write(tty::OUTPUT, text)?;
+            return console::write(tty::OUTPUT, "\n");
+        }
         let prep = rt::config(3);
         if prep != 0 {
             return Err(prep);

@@ -81,3 +81,20 @@ pub const DIR_VIEW: u8 = 2;
 pub const FILE_VIEW: u8 = 3;
 pub const CREATE_ENTRY: u8 = 4;
 pub const REMOVE_ENTRY: u8 = 5;
+
+// Vues de premier plan. Une entrée déléguée fixe son parent et son nom.
+pub const STAGE: u8 = 22;
+pub const GROUP: u8 = 6;
+pub const SELECT_FILE: u8 = 1;
+pub const SELECT_LIST: u8 = 2;
+pub const SELECT_TREE: u8 = 3;
+pub const SELECT_NEW: u8 = 4;
+pub const SELECT_TOUCH: u8 = 5;
+pub const SELECT_FROM: u8 = 6;
+pub const SELECT_TO: u8 = 7;
+pub const CREATE_NEW: u8 = 23;
+pub const MOVE_SELECTED: u8 = 24;
+pub const TOUCH_SELECTED: u8 = 25;
+pub const SELECT_COPY_TREE: u8 = 8;
+pub const SELECT_COPY_DEST: u8 = 9;
+pub const PUBLISH_COPY: u8 = 26;

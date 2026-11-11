@@ -25,7 +25,7 @@ dependencies = [
 
 [[package]]
 name = "novaos"
-version = "0.13.0"
+version = "0.14.0"
 dependencies = [
  "font8x8",
  "limine",

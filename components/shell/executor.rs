@@ -6,8 +6,16 @@ use nova_cli::{
     fileapi::Client,
     process, runtime as rt, tty,
 };
-pub fn execute(fs: &mut Client, cmd: Invocation, test: bool) -> rt::Result<bool> {
+pub fn execute(
+    fs: &mut Client,
+    cmd: Invocation,
+    test: bool,
+    aliases: &mut super::aliases::Aliases,
+) -> rt::Result<bool> {
+    let cmd = aliases.expand(cmd)?;
     match cmd.name.as_str() {
+        "alias" => return aliases.define(&cmd.args).map(|_| true),
+        "unalias" => return aliases.remove(&cmd.args).map(|_| true),
         "exit" => {
             return if cmd.args.is_empty() {
                 Ok(false)

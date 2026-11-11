@@ -16,6 +16,29 @@ fn verify() -> rt::Result<()> {
                 core::arch::asm!("ud2", options(noreturn, nostack))
             }
         }
+        ["stat"] => {
+            let mut c = Client::scoped()?;
+            let mark = |text: &[u8]| {
+                rt::value(rt::call(
+                    rt::DEBUG_WRITE,
+                    text.as_ptr() as u64,
+                    text.len() as u64,
+                    0,
+                ))
+            };
+            mark(b"ech debut")?;
+            for _ in 0..16 {
+                let frame = c.simple(w::STAT, 1)?;
+                if w::length(&frame) != 73 || frame[w::PAYLOAD + 24] != 2 {
+                    return Err(rt::REFUSED);
+                }
+            }
+            mark(b"ech stat16")?;
+            if c.directory(1, b".", w::FILE_WRITE).err() != Some(rt::DENIED) {
+                return Err(rt::REFUSED);
+            }
+            Ok(())
+        }
         ["droits"] => {
             if rt::call(tty::SPAWN, 0, 0, 0).status != rt::DENIED
                 || rt::call(tty::CONSOLE, tty::INPUT.into(), 0, 0).status != rt::DENIED

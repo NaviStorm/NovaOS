@@ -8,13 +8,17 @@ import sys
 def notices(target, destination):
     root = Path(__file__).resolve().parents[1]
     manifest = root / "user" / "novafs" / "Cargo.toml"
-    data = subprocess.check_output([
-        "rustup", "run", "stable", "cargo", "metadata", "--format-version", "1",
-        "--manifest-path", manifest, "--filter-platform", target, "--locked", "--offline",
-    ], cwd=manifest.parent)
-    # Mutualiser les textes identiques sans perdre leur attribution aux paquets.
     texts = {}
-    for package in json.loads(data)["packages"]:
+    components = root.parent / "components"
+    packages = {}
+    for project in (manifest, components / "Cargo.toml"):
+        data = subprocess.check_output([
+            "rustup", "run", "stable", "cargo", "metadata", "--format-version", "1",
+            "--manifest-path", project, "--filter-platform", target, "--locked", "--offline",
+        ], cwd=project.parent)
+        for package in json.loads(data)["packages"]:
+            packages[package["id"]] = package
+    for package in packages.values():
         folder = Path(package["manifest_path"]).parent
         files = sorted(p for p in folder.iterdir() if p.is_file()
                        and p.name.upper().startswith(("LICENSE", "COPYRIGHT", "NOTICE")))

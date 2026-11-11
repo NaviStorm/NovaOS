@@ -3,6 +3,7 @@ mod interrupts;
 mod keyboard;
 pub(crate) mod paging;
 mod ports;
+pub(crate) mod rtc;
 pub(crate) mod serial;
 pub(crate) mod timer;
 

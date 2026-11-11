@@ -128,6 +128,8 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
             })
         }),
         HEAP_RESIZE => Err(BAD_ARGUMENT),
+        CLOCK_UTC if args == [0; 3] => crate::arch::rtc::seconds().ok_or(REFUSED),
+        CLOCK_UTC => Err(BAD_ARGUMENT),
         PROCESS_ID => Ok(with(|s| caller(s).number)),
         THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
         THREAD_YIELD => {
@@ -194,6 +196,8 @@ fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
 fn console_io(port: u64, address: u64, len: u64) -> Result<u64, u64> {
     use crate::terminal::*;
     let right = u8::try_from(port).map_err(|_| BAD_ARGUMENT)?;
+    let color = right == DIRECTORY_COLOR;
+    let right = if color { OUTPUT } else { right };
     if !matches!(right, INPUT | OUTPUT | ERROR | EDIT) {
         return Err(BAD_ARGUMENT);
     }
@@ -262,6 +266,9 @@ fn console_io(port: u64, address: u64, len: u64) -> Result<u64, u64> {
         return Err(BAD_ARGUMENT);
     }
     let _guard = Guard::new();
+    if color {
+        crate::arch::serial::output("\x1b[34m").map_err(|_| REFUSED)?;
+    }
     for piece in text.split_inclusive('\n') {
         if let Some(line) = piece.strip_suffix('\n') {
             crate::arch::serial::output(line)
@@ -270,6 +277,9 @@ fn console_io(port: u64, address: u64, len: u64) -> Result<u64, u64> {
         } else {
             crate::arch::serial::output(piece).map_err(|_| REFUSED)?;
         }
+    }
+    if color {
+        crate::arch::serial::output("\x1b[0m").map_err(|_| REFUSED)?;
     }
     Ok(len)
 }

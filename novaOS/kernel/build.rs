@@ -117,6 +117,9 @@ fn main() {
     )
     .unwrap();
 
+    println!("cargo::rerun-if-env-changed=NOVA_HISTORY_ENTRIES");
+    println!("cargo::rerun-if-env-changed=NOVA_MORE_LINES");
+    println!("cargo::rerun-if-env-changed=NOVA_MORE_COLUMNS");
     let components = manifest.join("../../components");
     for path in [
         "Cargo.toml",
@@ -139,7 +142,10 @@ fn main() {
         .expect("compilation des ELF CLI");
     assert!(result.success(), "liaison des composants CLI");
     let mut catalog = String::from("&[");
-    for name in ["pwd", "ls", "cat", "head", "mkdir", "rm", "probe", "shell"] {
+    for name in [
+        "pwd", "ls", "cat", "head", "mkdir", "rm", "probe", "cp", "mv", "touch", "more", "wc",
+        "tail", "shell",
+    ] {
         let path = out.join(format!("{name}.elf"));
         std::fs::copy(work.join(&target).join("release").join(name), &path).unwrap();
         if name != "shell" {

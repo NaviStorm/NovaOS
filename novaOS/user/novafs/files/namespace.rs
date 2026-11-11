@@ -73,13 +73,23 @@ impl Client {
     }
 }
 
-pub(super) fn stat_reply(a: &mut Frame, stat: novafs::Stat) {
+pub(super) fn stat_reply(
+    a: &mut Frame,
+    stat: novafs::Stat,
+    fs: &Engine<&IpcDevice>,
+) -> rt::Result<()> {
     let p = &mut a[w::PAYLOAD..];
     p[..8].copy_from_slice(&stat.id.to_le_bytes());
     p[8..16].copy_from_slice(&stat.revision.to_le_bytes());
     p[16..24].copy_from_slice(&stat.size.to_le_bytes());
     p[24] = if stat.kind == Kind::Directory { 2 } else { 1 };
-    w::size(a, 25);
+    if fs.atime_policy().is_some() {
+        p[25..73].copy_from_slice(&fs.times_id(stat.id).map_err(error)?.encode());
+        w::size(a, 73);
+    } else {
+        w::size(a, 25);
+    }
+    Ok(())
 }
 
 fn fragment(a: &mut Frame, bytes: &[u8], offset: usize) -> rt::Result<()> {
@@ -115,7 +125,7 @@ impl Session<'_, '_> {
         if op == w::STAT {
             shape(flags == 0 && n == 0 && offset == 0 && total == 0)?;
             let id = if key == 0 { c.cwd.0 } else { c.handle(key)?.id };
-            stat_reply(a, fs.stat_id(id).map_err(error)?);
+            stat_reply(a, fs.stat_id(id).map_err(error)?, fs)?;
             return Ok(());
         }
         let (mut base, mut permitted) = c.directory(key)?;
@@ -192,9 +202,21 @@ impl Session<'_, '_> {
             } else {
                 Some(c.take_path(0, inline)?)
             };
-            let names = fs.list_id(base, after.as_deref(), 1).map_err(error)?;
+            if self.pending.is_some()
+                && fs
+                    .atime_policy()
+                    .is_some_and(|v| v != novafs::time::Atime::No)
+            {
+                return Err(w::BUSY);
+            }
+            let names = if offset == 0 {
+                fs.list_access_id(base, after.as_deref(), 1)
+            } else {
+                fs.inspect_dir(base, after.as_deref(), 1)
+            }
+            .map_err(error)?;
             let bytes = names.first().map_or(&[][..], |s| s.as_bytes());
-            w::set(a, 24, generation);
+            w::set(a, 24, fs.generation());
             return fragment(
                 a,
                 bytes,
@@ -224,13 +246,17 @@ impl Session<'_, '_> {
         match op {
             w::LOOKUP_AT => {
                 shape(flags == 0)?;
-                stat_reply(a, fs.lookup_at(base, path).map_err(error)?);
+                stat_reply(a, fs.lookup_at(base, path).map_err(error)?, fs)?;
             }
             w::DIR_OPEN | w::OPEN_AT => {
                 if c.handles.len() >= 32 {
                     return Err(rt::LIMIT);
                 }
-                let next = self.next.checked_add(1).ok_or(rt::LIMIT)?;
+                let next = self
+                    .next
+                    .checked_add(1)
+                    .filter(|v| *v < 1u64 << 63)
+                    .ok_or(rt::LIMIT)?;
                 c.handles.try_reserve(1).map_err(|_| rt::NO_MEMORY)?;
                 let (kind, grant) = if op == w::DIR_OPEN {
                     shape(flags != 0 && flags & !w::DIR_ALL == 0)?;
@@ -264,6 +290,7 @@ impl Session<'_, '_> {
                     });
                 }
                 self.next = next;
+                let next = if c.scoped { next | 1u64 << 63 } else { next };
                 c.handles.push(File {
                     key: next,
                     id: stat.id,
@@ -271,7 +298,7 @@ impl Session<'_, '_> {
                     rights: grant,
                 });
                 w::set(a, 16, next);
-                stat_reply(a, stat);
+                stat_reply(a, stat, fs)?;
             }
             w::MKDIR_AT => {
                 shape(flags == 0)?;

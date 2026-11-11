@@ -39,6 +39,7 @@ pub fn reason(e: u64) -> &'static str {
         rt::LIMIT => "limite atteinte",
         rt::BAD_ARGUMENT => "argument invalide",
         rt::NO_MEMORY => "mémoire insuffisante",
+        w::UNSUPPORTED => "opération indisponible pour ce profil",
         w::EXISTS => "existe déjà",
         w::NOT_FOUND => "introuvable",
         w::IS_DIR => "est un répertoire",

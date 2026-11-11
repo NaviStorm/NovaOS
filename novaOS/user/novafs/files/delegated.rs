@@ -39,6 +39,7 @@ pub(super) struct Grant {
     client: Client,
     kind: u8,
     leaf: String,
+    targets: Vec<selected::Target>,
 }
 
 pub(super) fn prepare(
@@ -70,8 +71,14 @@ pub(super) fn prepare(
     let key = w::word(q, 16);
     let mut delegated = Client::new(1, 0);
     delegated.mounted = true;
+    delegated.scoped = true;
     let mut leaf = String::new();
+    let targets = core::mem::take(&mut owner.targets);
     match kind {
+        w::GROUP => {
+            shape(key == 0 && !targets.is_empty())?;
+            selected::admit(&mut delegated, &targets)?;
+        }
         w::CWD_VIEW => {
             shape(key == 0)?;
             delegated.cwd = owner.cwd;
@@ -116,6 +123,7 @@ pub(super) fn prepare(
         kind,
         client: delegated,
         leaf,
+        targets,
     })
 }
 
@@ -129,6 +137,9 @@ impl Grant {
     ) -> rt::Result<()> {
         let op = q[1];
         shape(q[0] == w::VERSION && q[3] == 0 && q[6..8] == [0; 2] && w::word(q, 8) == 1)?;
+        if self.kind == w::GROUP {
+            return selected::execute(s, &mut self.client, owner, &self.targets, q, a);
+        }
         match (self.kind, op) {
             (w::CWD_VIEW, w::GETCWD) | (w::FILE_VIEW, w::READ) => {
                 s.dispatch(&mut self.client, Some(owner), q, a)
@@ -151,8 +162,7 @@ impl Grant {
                         .ok_or(rt::CLOSED)?
                         .lookup_at(self.client.cwd.0, &name)
                         .map_err(namespace::error)?;
-                namespace::stat_reply(a, stat);
-                Ok(())
+                namespace::stat_reply(a, stat, s.fs.as_ref().ok_or(rt::CLOSED)?)
             }
             (w::CREATE_ENTRY, w::MKDIR_AT) | (w::REMOVE_ENTRY, w::UNLINK_AT) => {
                 shape(
@@ -168,7 +178,10 @@ impl Grant {
             _ => Err(rt::DENIED),
         }
     }
-    pub fn serve(mut self, s: &mut Session<'_, '_>, owner: &Client) -> rt::Result<()> {
+    pub fn abandoned_copy(&mut self) -> Option<(u64, String, u64)> {
+        self.client.copy.take()
+    }
+    pub fn serve(&mut self, s: &mut Session<'_, '_>, owner: &Client) -> rt::Result<()> {
         let mut last = 0;
         loop {
             let m = match rt::receive_for(self.ports.rx, 15000) {

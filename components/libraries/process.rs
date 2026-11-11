@@ -18,9 +18,19 @@ pub fn spawn(p: Program, args: &[String], channels: (u64, u64), status: u64) -> 
     if count > tty::ARG_MAX {
         return Err(rt::LIMIT);
     }
-    let stdout =
-        status == 0 && matches!(p, Program::Pwd | Program::Ls | Program::Cat | Program::Head);
-    let streams = tty::ERROR | if stdout { tty::OUTPUT } else { 0 };
+    let reads_input = status == 0
+        && channels.0 != 0
+        && (p == Program::More
+            || matches!(p, Program::Cp | Program::Mv)
+                && crate::options::parse(p, &args.iter().map(String::as_str).collect::<Vec<_>>())?
+                    .has(b'i'));
+    let streams = tty::ERROR
+        | if status == 0 && p != Program::Probe {
+            tty::OUTPUT
+        } else {
+            0
+        }
+        | if reads_input { tty::INPUT } else { 0 };
     for (i, v) in [
         channels.0,
         channels.1,

@@ -85,6 +85,7 @@ pub fn map_devices(space: &AddressSpace, frames: &mut Frames) -> Result<()> {
     use super::timer;
     for (va, pa) in [
         (serial::VA, serial::PA),
+        (super::rtc::VA, super::rtc::PA),
         (timer::DIST, timer::DIST_PA),
         (timer::CPU, timer::CPU_PA),
     ] {

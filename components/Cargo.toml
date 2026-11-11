@@ -1,6 +1,6 @@
 [package]
 name = "nova-cli"
-version = "0.13.0"
+version = "0.14.0"
 edition = "2024"
 publish = false
 license = "MIT"
@@ -12,6 +12,7 @@ path = "libraries/lib.rs"
 test = false
 
 [dependencies]
+unicode-width = { version = "=0.2.2", default-features = false }
 dlmalloc = "0.2.14"
 spin = { version = "0.9.9", default-features = false, features = ["spin_mutex", "mutex"] }
 
@@ -61,4 +62,34 @@ test = false
 [[bin]]
 name = "probe"
 path = "coreutils/probe.rs"
+test = false
+
+[[bin]]
+name = "cp"
+path = "coreutils/cp.rs"
+test = false
+
+[[bin]]
+name = "mv"
+path = "coreutils/mv.rs"
+test = false
+
+[[bin]]
+name = "touch"
+path = "coreutils/touch.rs"
+test = false
+
+[[bin]]
+name = "more"
+path = "coreutils/more.rs"
+test = false
+
+[[bin]]
+name = "wc"
+path = "coreutils/wc.rs"
+test = false
+
+[[bin]]
+name = "tail"
+path = "coreutils/tail.rs"
 test = false

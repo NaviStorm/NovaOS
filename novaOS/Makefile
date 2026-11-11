@@ -90,3 +90,8 @@ cli-image:
 cli-test: kernel
 	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
 	python3 tests/cli.py
+
+.PHONY: cli-p9-test
+cli-p9-test: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 tests/cli_p9.py

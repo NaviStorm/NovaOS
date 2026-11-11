@@ -1,6 +1,11 @@
 //! Les positions gauche/droite sont aussi accessibles par Ctrl-B/Ctrl-F.
 use nova_cli::{runtime as rt, tty};
 pub enum Key {
+    Home,
+    End,
+    Up,
+    Down,
+    Delete,
     Left,
     Right,
     Erase,
@@ -32,6 +37,8 @@ impl Input {
                 Key::Enter
             }
             8 | 127 => Key::Erase,
+            1 => Key::Home,
+            5 => Key::End,
             2 => Key::Left,
             6 => Key::Right,
             27 => {
@@ -41,6 +48,23 @@ impl Input {
                     Key::Invalid
                 } else {
                     match byte()? {
+                        b'A' => Key::Up,
+                        b'B' => Key::Down,
+                        b'H' => Key::Home,
+                        b'F' => Key::End,
+                        action @ (b'1' | b'3' | b'4' | b'7' | b'8') => {
+                            let term = byte()?;
+                            if term != b'~' {
+                                self.pending = Some(term);
+                                Key::Invalid
+                            } else {
+                                match action {
+                                    b'3' => Key::Delete,
+                                    b'1' | b'7' => Key::Home,
+                                    _ => Key::End,
+                                }
+                            }
+                        }
                         b'D' => Key::Left,
                         b'C' => Key::Right,
                         c => {

@@ -62,7 +62,11 @@ fn probe() -> rt::Result<()> {
     ensure(c.session != 0)?;
     log(b"FICHIERS MOUNT");
     let info = c.info()?;
-    ensure(w::length(&info) == 83 && info[w::PAYLOAD + 81] == 0 && info[w::PAYLOAD + 82] == 1)?;
+    ensure(
+        w::length(&info) == 83
+            && matches!(info[w::PAYLOAD + 81], 0 | 9)
+            && info[w::PAYLOAD + 82] == 1,
+    )?;
     if mode == 26 {
         let mut id = *b"Volume 00000000000000000000000000000000";
         let digits = b"0123456789abcdef";

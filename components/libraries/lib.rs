@@ -14,3 +14,6 @@ pub mod process;
 pub mod protocol;
 #[path = "../../novaOS/abi/terminal.rs"]
 pub mod tty;
+
+pub mod directory;
+pub mod options;

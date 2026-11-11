@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+import sys
 
 from bloc_qemu import ROOT, command
 
@@ -37,6 +38,24 @@ def fixture(path, sector):
         os.link(image.name, path)
 
 
+def fixture_p9(path, sector):
+    """Publier une image NEUVE. Le démarrage sur une image existante ne la convertit jamais."""
+    import re
+    with tempfile.TemporaryDirectory(dir=path.parent, prefix=".nova-preparation-") as tmp:
+        source = Path(tmp) / "fixture.raw"
+        fixture(source, sector)
+        with source.open("rb") as disk:
+            records = subprocess.check_output([HOST, "inspect", "512", str(sector)], stdin=disk)
+        ids = re.search(rb"FS=(\w+) LV=(\w+)", records)
+        if ids is None:
+            raise ValueError("identifiants absents de l’image de préparation")
+        subprocess.run([
+            sys.executable, ROOT.parent / "novaFS/lab/migrate-p9.py", source, path,
+            "--outil", HOST, "--profil", "contenu", "--secteur", str(sector),
+            "--fs", ids[1].decode(), "--lv", ids[2].decode(),
+        ], check=True)
+
+
 def machine(arch, sector, image, test=False, manual=False):
     profile = "cli-test" if test else "cli"
     iso = ROOT / "build" / f"{profile}-{arch}.iso"
@@ -56,11 +75,11 @@ if __name__ == "__main__":
     parser.add_argument("--sector", type=int, choices=[512, 4096], default=512)
     args = parser.parse_args()
     if args.action == "image":
-        fixture(args.image, args.sector)
+        fixture_p9(args.image, args.sector)
     else:
         if args.action == "demo" and not args.image.exists():
             try:
-                fixture(args.image, args.sector)
+                fixture_p9(args.image, args.sector)
             except FileExistsError:
                 pass
         cmd, env = machine(os.environ.get("NOVA_ARCH", "x86_64"), args.sector, args.image, manual=True)

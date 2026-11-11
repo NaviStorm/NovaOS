@@ -298,6 +298,12 @@ fn measure(phase: &str) {
             r.process_bytes += size_of::<Process>();
             if let Some(space) = &p.space {
                 let (data, stack) = space.page_counts();
+                if matches!(phase, "cli_repos" | "cli_enfant") {
+                    hal::log(format_args!(
+                        "CLI mem pid={} privees={} pile={}",
+                        p.pid.number, data, stack
+                    ));
+                }
                 r.user += data;
                 r.user_stacks += stack;
             }

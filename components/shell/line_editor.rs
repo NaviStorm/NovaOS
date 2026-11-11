@@ -13,11 +13,13 @@ fn start_at(s: &str, mut i: usize) -> usize {
     }
     i
 }
-pub fn line(input: &mut Input) -> rt::Result<String> {
+pub fn line(input: &mut Input, history: &super::history::History) -> rt::Result<String> {
     write(tty::OUTPUT, PROMPT)?;
     let mut s = String::new();
     let (mut pos, mut left) = (0, 0);
     let mut invalid = None;
+    let mut index = history.len();
+    let mut draft = (String::new(), 0);
     loop {
         match input.next()? {
             Key::Enter => {
@@ -40,6 +42,30 @@ pub fn line(input: &mut Input) -> rt::Result<String> {
                     write(tty::OUTPUT, &s[pos - c.len_utf8()..])?;
                     continue;
                 }
+            }
+            Key::Home => pos = 0,
+            Key::End => pos = s.len(),
+            Key::Delete if pos < s.len() => {
+                s.remove(pos);
+            }
+            Key::Up if index > 0 => {
+                if index == history.len() {
+                    draft = (s.clone(), pos);
+                }
+                index -= 1;
+                s = history.get(index).unwrap().clone();
+                pos = s.len();
+                left = 0;
+            }
+            Key::Down if index < history.len() => {
+                index += 1;
+                if let Some(entry) = history.get(index) {
+                    s = entry.clone();
+                    pos = s.len();
+                } else {
+                    (s, pos) = draft.clone();
+                }
+                left = 0;
             }
             Key::Erase if pos > 0 => {
                 let i = s[..pos].char_indices().next_back().unwrap().0;

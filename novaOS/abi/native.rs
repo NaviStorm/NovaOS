@@ -2,6 +2,8 @@
 pub const VERSION: u32 = 1;
 /// Borne exclusive du tas privé. Arguments : ancienne borne, nouvelle borne, zéro.
 pub const HEAP_RESIZE: u64 = 0x0001_0041;
+/// Heure civile UTC de la RTC, secondes entières depuis 1970, arguments à zéro.
+pub const CLOCK_UTC: u64 = 0x10044;
 pub const PROCESS_ID: u64 = 0x0001_0001;
 pub const THREAD_ID: u64 = 0x0001_0002;
 pub const THREAD_YIELD: u64 = 0x0001_0003;

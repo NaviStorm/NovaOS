@@ -256,7 +256,7 @@ const CONTROL: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-control
 const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fileclient.bin"));
 pub(crate) fn volume(mode: u64) -> bool {
     use crate::hardware::block;
-    FILE_TIMING.store(matches!(mode, 25 | 36), Ordering::Relaxed);
+    FILE_TIMING.store(matches!(mode, 25 | 36 | 42), Ordering::Relaxed);
     let start = heap::audit(true);
     let hz = hal::timer::counter_hz();
     if matches!(mode, 6 | 25 | 36 | 42) {

@@ -39,7 +39,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     let word = |i: usize| u64::from_le_bytes(data[i * 8..i * 8 + 8].try_into().unwrap());
     let (input, output, ports) = (word(0), word(1), word(2));
     if word(4) != (n - tty::HEADER) as u64
-        || ports & !u64::from(authority & (tty::OUTPUT | tty::ERROR)) != 0
+        || ports & !u64::from(authority & (tty::INPUT | tty::OUTPUT | tty::ERROR)) != 0
         || (input == 0) != (output == 0)
         || (input != 0 && input == output)
     {

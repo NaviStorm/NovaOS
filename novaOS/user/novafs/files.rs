@@ -1,8 +1,28 @@
 //! Un endpoint privé donne accès à un seul volume et à sa table locale de handles.
 use crate::{device::IpcDevice, protocol as w, runtime as rt};
+use alloc::sync::Arc;
 use alloc::{string::String, vec::Vec};
+use core::sync::atomic::{AtomicI64, Ordering};
+use novafs::time::{Clock, Timestamp};
 use novafs::{Device, Engine, Error, Kind, Mode, View, codec::Anchor};
 use w::Frame;
+
+struct Civil(AtomicI64);
+
+impl Civil {
+    fn sample(&self) -> rt::Result<Timestamp> {
+        let seconds = rt::value(rt::call(rt::CLOCK_UTC, 0, 0, 0))?;
+        let seconds = i64::try_from(seconds).map_err(|_| rt::REFUSED)?;
+        self.0.store(seconds, Ordering::Relaxed);
+        Timestamp::utc(seconds, 0).map_err(error)
+    }
+}
+
+impl Clock for Civil {
+    fn now(&self) -> Timestamp {
+        Timestamp::utc(self.0.load(Ordering::Relaxed), 0).unwrap()
+    }
+}
 
 fn error(e: Error) -> u64 {
     match e {
@@ -42,10 +62,13 @@ struct Client {
     id: u64,
     mounted: bool,
     closed: bool,
+    scoped: bool,
     rights: u8,
     cwd: (u64, u8),
     handles: Vec<File>,
     paths: [PathInput; 2],
+    targets: Vec<selected::Target>,
+    copy: Option<(u64, String, u64)>,
 }
 impl Client {
     fn new(id: u64, rights: u8) -> Self {
@@ -53,10 +76,13 @@ impl Client {
             id,
             mounted: false,
             closed: false,
+            scoped: false,
             rights,
             cwd: (0, 0),
             handles: Vec::new(),
             paths: Default::default(),
+            targets: Vec::new(),
+            copy: None,
         }
     }
     fn handle(&self, key: u64) -> rt::Result<&File> {
@@ -71,6 +97,7 @@ struct Session<'a, 'b> {
     sector: u32,
     writable: bool,
     fs: Option<Engine<&'a IpcDevice<'b>>>,
+    clock: Arc<Civil>,
     next: u64,
     pending: Option<Pending>,
     failed: Option<u64>,
@@ -135,7 +162,12 @@ impl Session<'_, '_> {
                 } else {
                     Mode::ReadOnly
                 };
-                self.fs = Some(Engine::mount(self.dev, ids, mode).map_err(error)?);
+                let mut fs = Engine::mount_current(self.dev, ids, mode).map_err(error)?;
+                if self.writable && fs.atime_policy().is_some() {
+                    self.clock.sample()?;
+                    fs.set_clock(self.clock.clone());
+                }
+                self.fs = Some(fs);
             }
             client.cwd = (self.fs.as_ref().unwrap().root_id(), client.rights);
             client.mounted = true;
@@ -144,6 +176,19 @@ impl Session<'_, '_> {
         }
         if session != client.id || !client.mounted {
             return Err(rt::DENIED);
+        }
+        let needs_date = matches!(
+            op,
+            w::READ | w::READDIR | w::MKDIR_AT | w::RMDIR | w::UNLINK_AT | w::RENAME_AT | w::SYNC
+        ) || matches!(op, w::OPEN | w::OPEN_AT) && flags & w::CREATE != 0;
+        if needs_date
+            && self.writable
+            && self
+                .fs
+                .as_ref()
+                .is_some_and(|fs| fs.atime_policy().is_some())
+        {
+            self.clock.sample()?;
         }
         if (w::PATH_FRAGMENT..=w::GETCWD).contains(&op) {
             return self.directory_request(client, other, q, a);
@@ -171,7 +216,7 @@ impl Session<'_, '_> {
                 } else {
                     1
                 };
-                p[81] = 0; // Version du contenu autonome P0 compris par le moteur P8.
+                p[81] = if fs.atime_policy().is_some() { 9 } else { 0 };
                 p[82] = 1; // Transactions CoW de fichiers.
                 w::size(a, 83);
             }
@@ -194,7 +239,11 @@ impl Session<'_, '_> {
                 if client.handles.len() == 32 {
                     return Err(rt::LIMIT);
                 }
-                let next = self.next.checked_add(1).ok_or(rt::LIMIT)?;
+                let next = self
+                    .next
+                    .checked_add(1)
+                    .filter(|v| *v < 1u64 << 63)
+                    .ok_or(rt::LIMIT)?;
                 let path = core::str::from_utf8(&q[w::PAYLOAD..w::PAYLOAD + n])
                     .map_err(|_| rt::BAD_ARGUMENT)?;
                 shape(
@@ -262,7 +311,14 @@ impl Session<'_, '_> {
                         if file.rights & w::READABLE == 0 {
                             return Err(rt::DENIED);
                         }
-                        let bytes = fs.read_id(file.id, offset, n).map_err(error)?;
+                        if self.pending.is_some()
+                            && fs
+                                .atime_policy()
+                                .is_some_and(|p| p != novafs::time::Atime::No)
+                        {
+                            return Err(w::BUSY);
+                        }
+                        let bytes = fs.read_access_id(file.id, offset, n).map_err(error)?;
                         a[w::PAYLOAD..w::PAYLOAD + bytes.len()].copy_from_slice(&bytes);
                         let mut count = bytes.len();
                         if let Some(p) = self
@@ -387,6 +443,7 @@ impl Session<'_, '_> {
 }
 mod delegated;
 mod namespace;
+mod selected;
 
 pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Result<()> {
     let mut s = Session {
@@ -394,6 +451,7 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
         sector,
         writable,
         fs: None,
+        clock: Arc::new(Civil(AtomicI64::new(0))),
         next: 0,
         pending: None,
         failed: None,
@@ -468,6 +526,8 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             last[i] = m.tag;
             if cli && m.payload[1] == w::DELEGATE {
                 delegated::prepare(&s, client, &m.payload, &mut admission).map(|g| grant = Some(g))
+            } else if cli && m.payload[1] == w::STAGE {
+                selected::stage(&s, client, &m.payload)
             } else {
                 s.dispatch(client, other, &m.payload, &mut a)
             }
@@ -496,8 +556,25 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
                 return Err(e);
             }
         }
-        if let Some(g) = grant {
-            g.serve(&mut s, client)?;
+        if let Some(mut g) = grant {
+            let result = g.serve(&mut s, client);
+            // L'admission a exigé un écrivain au repos. Seul le fils actif
+            // a pu préparer des octets pendant cette délégation.
+            s.pending = None;
+            if let Some((parent, name, id)) = g.abandoned_copy()
+                && s.failed.is_none()
+            {
+                let fs = s.fs.as_mut().ok_or(rt::CLOSED)?;
+                if let Err(e) = selected::discard(fs, parent, &name, id) {
+                    let status = namespace::error(e);
+                    if matches!(status, w::UNCERTAIN | w::IO | w::CORRUPT) {
+                        s.failed = Some(status);
+                    }
+                    result?;
+                    return Err(status);
+                }
+            }
+            result?;
         }
         if done && other.is_none_or(|c| c.closed) {
             return Ok(());
