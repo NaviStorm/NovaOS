@@ -1,5 +1,141 @@
 # Espace de noms natif — audit de v0.12.0
 
+## Reprise depuis `6a5656c` — compatibilité de la profondeur
+
+**La résolution depuis une capacité de répertoire est validée comme choix d’architecture.** Le point restant à arbitrer est la profondeur d’une arborescence persistante dans un seul LV. Un lecteur NovaFS v0.9.12 refuse le montage au-delà de **32 arêtes** depuis la racine, même si les objets, les noms et les deux générations ont des sommes correctes. La longueur canonique maximale du profil est donc **32 × (255 + 1) = 8 192 octets**, séparateurs compris. Un chemin canonique de 10 001 octets exige au moins 40 arêtes. Le découpage en requêtes de 1 024 octets préserve le budget IPC et laisse intact le contrôle du montage. [Contrat du format, catalogue et admission](../../novaFS/docs/novafs-disk-format.md) · [Vérification des objets vivants](../../novaFS/src/fs/check.rs)
+
+### Origine des limites
+
+| Couche | Contrôle observé | Conséquence |
+|---|---|---|
+| API publique et résolution | `components` refuse une entrée de plus de 1 024 octets et plus de 32 composants. `resolve` commence à l’objet racine. Le curseur de lecture mémorise facultativement un chemin déjà accepté. | La limite de 1 024 porte sur l’argument. Les appels successifs actuels recommencent à la racine. [Résolution](../../novaFS/src/fs.rs) · [Lecture et cache du chemin](../../novaFS/src/fs/data.rs) |
+| Index et sérialisation | La clé de nom contient le parent u64, la longueur u16 et 1 à 255 octets UTF-8. Sa valeur est l’ID enfant u64. L’enregistrement d’objet porte le parent, le nom, le type et la révision. Le compteur `next_oid` interdit le recyclage d’un numéro au sein de la lignée validée. | Le moteur peut rechercher un enfant depuis un parent. La limite de niveaux internes du B+Tree concerne l’index. Le chemin canonique n’occupe aucun champ sur disque. [Records](../../novaFS/src/fs/record.rs) · [Comparateur et codec B+Tree](../../novaFS/src/tree.rs) |
+| Écriture et montage | La création contrôle la profondeur du parent. Le renommage vérifie aussi les descendants lorsqu’il augmente la profondeur. Le montage contrôle les parents de chaque objet vivant dans chacune des deux générations admises. | Un écrivain qui produirait un objet de profondeur 33 créerait un volume refusé par les lecteurs actuels. Les mêmes champs binaires peuvent encoder cette chaîne, mais sa publication changerait le contrat de compatibilité. [Mutations](../../novaFS/src/fs.rs) · [Contrôle des générations](../../novaFS/src/engine.rs) |
+| Adaptateur natif et IPC | Le cœur `no_std` partage les fonctions précédentes avec Darwin. Le `Device` transporte des blocs de 4 Kio. Les messages fichier v2 ont 128 octets dont 88 de charge utile, et OPEN limite actuellement son argument à une trame. | La fragmentation d’une requête pourra franchir 88 octets. La géométrie de secteur et les tampons de transport n’interviennent pas dans le calcul de profondeur. [Adaptateur](../user/novafs/device.rs) · [Trame fichier](../abi/files.rs) · [Client](../user/storage/fileapi.rs) |
+| Tests historiques | Le scénario hôte V02 crée 32 répertoires, exige le rejet du suivant et exerce une entrée de 1 024 octets. | Le maintien des tests et de l’interopérabilité couvre un rejet observable. [V02](../../novaFS/tests/clients.rs) |
+
+### Résultats de la nouvelle campagne
+
+1. **Objet renommé de 820 à 1 074 octets.** Sur ARM64 natif et x86_64 sous Rosetta, en secteurs de 512 puis de 4 096 octets, la sonde mémorise l’ID du fichier avant le renommage. Après publication et remontage RO, elle suit cinq arêtes dans l’index des noms, vérifie chaque lien inverse et retrouve le même ID. La lecture de l’extent avec son checksum rend les quatre octets `4e 6f 76 61`. Aucun renommage inverse ni reconstruction du chemin complet n’intervient dans cette lecture. La sonde exerce les primitives internes du moteur avec le profil de production. La délégation IPC d’une capacité de répertoire reste à implémenter.
+2. **Longueurs canoniques.** Pour chaque couple hôte/secteur, la CLI de production crée puis vérifie après remontage des images aux longueurs 1 023, 1 024, 1 025, 1 074, 4 096 et 8 192 octets. La lecture par chemin absolu retourne `Nova` dans les deux premiers cas puis `Invalid("chemin")` dans les quatre autres. Pour le témoin de 10 001 octets, le générateur expérimental assemble 40 composants, publie et vérifie le catalogue. Les deux lecteurs de production refusent ensuite ce volume au contrôle de profondeur.
+3. **Écrivain, lecteur et reprise.** Le test déplace `/s`, contenant le fichier `f`, sous une chaîne de répertoires nommés `x`. Sous 30 répertoires, le fichier atteint la profondeur 32 et le renommage réussit. Sous 31 répertoires, l’opérande de destination fait 64 octets et compte 32 composants. L’écrivain de production refuse cette mutation avec `Limit("profondeur après renommage")`. Un générateur temporaire autorisant 40 niveaux publie la même mutation. Il relit `Nova` à la génération 36. Le vérificateur v0.9.12 refuse le montage normal avec `Corrupt("cycle ou profondeur du catalogue")`. Le sauvetage RO du prédécesseur explicitement choisi retrouve `/s/f` en G35. Une rétrogradation automatique vers cette ancienne génération ferait disparaître un renommage confirmé par le générateur.
+
+| Invité de production | Secteur | 32 arêtes, G35 | 33 arêtes, G36 | 40 arêtes, chemin de 10 001 octets |
+|---|---:|---|---|---|
+| x86_64 | 512 | MOUNT RO et INFO réussis | RO et RW refusés, statut 21 | RO refusé, statut 21 |
+| x86_64 | 4 096 | MOUNT RO et INFO réussis | RO et RW refusés, statut 21 | RO refusé, statut 21 |
+| AArch64 | 512 | MOUNT RO et INFO réussis | RO et RW refusés, statut 21 | RO refusé, statut 21 |
+| AArch64 | 4 096 | MOUNT RO et INFO réussis | RO et RW refusés, statut 21 | RO refusé, statut 21 |
+
+Le bloc de commandes de reproduction ci-dessous a été exécuté depuis une extraction neuve de la base. Le banc compare chaque image octet pour octet après chacune des 16 VM, y compris lors d’une tentative RW refusée. Les images à 33 et 40 arêtes sont des contre-exemples fabriqués dans une copie temporaire du code. Le seul paramètre changé dans le générateur est `MAX_DEPTH`. Toutes les admissions QEMU ci-dessus utilisent le noyau et le service de la base. [Reproducteur](../tests/profondeur_p8.py)
+
+### Régressions rejouées depuis la base de reprise
+
+| Architecture | Scénarios historiques QEMU | Groupes bloc | Contrôles fichier v0.11.0 | ELF / courses IPC | macOS clients / coupures |
+|---|---|---:|---:|---|---|
+| x86_64 | 25/25 au premier passage | 24/24 | 44/44 | réussis | 9/9 et 3/3 sous Rosetta |
+| AArch64 | Premier passage interrompu au scénario processus, puis 25/25 au rejeu complet | 24/24 | 44/44 | réussis | 9/9 et 3/3 en natif |
+
+Lors du premier passage AArch64, le PID 14 avait annoncé sa sortie et le noyau a paniqué sur l’assertion `orphelin non collecté` de `proc-test`. Le test exige la collecte dans un délai de `HZ` ticks. Le même binaire et le même test ont réussi au rejeu. La cause de cet échec intermittent reste ouverte. Les contrôles bloc et fichier couvrent les deux géométries, les coupures et les erreurs de FLUSH. Les suites P8 complètes, instrumentées et millionnaires n’ont pas été relancées. Le moteur de production et ses codecs n’ont reçu aucune modification. [Assertion du noyau](../kernel/src/sched/process/demo.rs) · [Banc QEMU](../tests/demarrage.py)
+
+### Décision à prendre avant implémentation
+
+- **Conserver P8 en v0.12.0 (recommandé).** Autoriser les requêtes de 1 024 octets depuis une capacité pour atteindre tout objet admis, y compris les fichiers dont le chemin canonique fait 1 074, 4 096 ou 8 192 octets. Garder la borne persistante de 32 arêtes et qualifier le refus au-delà. Dans ce périmètre, un parcours répété de 100 ou 1 000 composants peut mesurer des appels successifs, mais ne démontre pas une arborescence de 100 ou 1 000 niveaux distincts.
+- **Exiger plus de 32 niveaux distincts sur un même volume.** Autoriser une évolution explicite et détectable du profil de stockage. Elle devra conserver la lecture des images P8 et permettre aux anciens lecteurs de refuser le nouveau profil avant mutation. Remplacer la borne fixe par une détection de cycles et des budgets d’inspection vérifiables à l’admission, au renommage et à la récupération. Les modifications de format et toute migration demandent une décision séparée.
+
+Dans les deux cas, la base d’une requête sera un handle lié à un montage, à une session authentifiée par son canal et à ses droits effectifs. L’ID sur disque sert à la recherche interne. LOOKUP_AT et OPEN_AT devront vérifier la traversée à chaque étape. Une capacité ouverte restera attachée à son objet si le renommage reste dans son périmètre. Un déplacement qui ferait sortir un objet ouvert ou le répertoire courant de ce périmètre devra être refusé avant publication. Toute remontée par `..` devra respecter la racine de confinement de la capacité, ou être refusée. CHDIR conservera l’identité en session et GETCWD pourra produire le texte par fragments. Le service utilisera les transactions existantes pour MKDIR, RMDIR, UNLINK et RENAME. Ces contrats portent sur l’implémentation à reprendre après arbitrage.
+
+Les latences, les allocations et les pics mémoire des futures opérations `*_AT` restent à mesurer. Aucune mesure de montage négatif n’est présentée comme la performance d’une opération de répertoire native.
+
+### Reproduire le contrôle de compatibilité
+
+Depuis la racine de la livraison documentaire, sur macOS ARM64 avec Rosetta et les outils de développement du projet :
+
+```sh
+set -eu
+base=6a5656cbc7dab65320aa417f4298b7e39c412d67
+lab=$(mktemp -d)
+git archive "$base" novaFS | tar -x -C "$lab"
+python3 - "$lab" <<'PY'
+from pathlib import Path
+import sys
+doc = Path("novaOS/docs/namespace-v0.12.0.md").read_text()
+probe = doc.split("#### identite_p8.rs\n\n```rust\n", 1)[1].split("\n```", 1)[0]
+with (Path(sys.argv[1]) / "novaFS/src/fs/tests.rs").open("a") as tests:
+    tests.write("\n" + probe + "\n")
+PY
+for arch in aarch64 x86_64; do
+    NOVAFS_TARGET="$arch-apple-darwin" "$lab/novaFS/lab/run" test --offline --lib \
+        fs::tests::acces_par_identite_apres_renommage -- --exact
+    NOVAFS_TARGET="$arch-apple-darwin" novaFS/lab/run build --offline --bin novafs
+    make -C novaOS ARCH="$arch" kernel
+done
+python3 - "$lab" <<'PY'
+from pathlib import Path
+import sys
+f = Path(sys.argv[1]) / "novaFS/src/fs/record.rs"
+old = "const MAX_DEPTH: usize = 32;"
+s = f.read_text()
+assert s.count(old) == 1
+f.write_text(s.replace(old, "const MAX_DEPTH: usize = 40;"))
+PY
+NOVAFS_TARGET=aarch64-apple-darwin "$lab/novaFS/lab/run" build --offline --bin novafs
+for arch in aarch64 x86_64; do
+    python3 novaOS/tests/profondeur_p8.py "$arch" "$lab/novaFS/target/aarch64-apple-darwin/release/novafs"
+done
+```
+
+<details>
+<summary>Sonde de lecture par identité dans la copie temporaire du moteur</summary>
+
+#### identite_p8.rs
+
+```rust
+
+#[test]
+fn acces_par_identite_apres_renommage() -> Result<()> {
+    use crate::device::FileImage;
+    for secteur in [512, 4096] {
+        let mut fs = Engine::format(FileImage::create(256, secteur)?, IDS)?;
+        let noms = ["a".to_owned(), "b".repeat(250), "c".repeat(250), "d".repeat(250), "e".repeat(64)];
+        let mut parent = String::new();
+        for nom in &noms[..4] {
+            parent.push('/');
+            parent.push_str(nom);
+            fs.mkdir(&parent)?;
+        }
+        let ancien = format!("{parent}/{}", noms[4]);
+        assert_eq!(ancien.len(), 820);
+        fs.create(&ancien)?;
+        fs.write(&ancien, 0, b"Nova")?;
+        let id = fs.stat(&ancien)?.id;
+        let nouveau_nom = "z".repeat(255);
+        fs.rename("/a", &format!("/{nouveau_nom}"))?;
+        let fs = Engine::mount(fs.unmount()?, IDS, Mode::ReadOnly)?;
+        fs.verify()?;
+        assert_eq!(ancien.len() - 1 + nouveau_nom.len(), 1074);
+        let mut objet = live(&fs, ROOT)?;
+        for nom in core::iter::once(&nouveau_nom).chain(&noms[1..]) {
+            assert_eq!(objet.stat.kind, Kind::Directory);
+            let parent = objet.stat.id;
+            let valeur = get(&fs, Family::Names, &name_key(parent, nom))?.expect("entrée présente");
+            objet = live(&fs, number(&valeur)?)?;
+            assert_eq!((objet.parent, &objet.name), (parent, nom));
+        }
+        assert_eq!((objet.stat.id, objet.stat.kind, objet.stat.size), (id, Kind::File, 4));
+        let (debut, extent) = data::covering(&fs, id, 0)?.expect("extent présent");
+        assert_eq!(debut, 0);
+        let page = data::checked_page(&fs, extent.reference(0), 0, objet.stat.size)?;
+        assert_eq!(&page[..4], b"Nova");
+    }
+    Ok(())
+}
+```
+
+</details>
+
+## Audit initial sur la base `24609a5`
+
 **Décision de livraison.** Arrêt au contrôle d’intégrité de l’espace de noms sur la base `24609a52e64a5626527827babc912ba7731d70de`. Un renommage valide fait disparaître l’accès à un fichier par le moteur public, alors que son entrée reste énumérable et que le volume passe la vérification intégrale. Un renommage inverse restitue le même objet et les mêmes octets. Le choix à trancher porte sur l’accès aux arbres déjà publiés par NovaFS. NovaOS reste en v0.11.0 (MIT) et NovaFS en v0.9.12 (MPL-2.0).
 
 ## Témoin sur un volume autonome
@@ -57,7 +193,7 @@ Chaque banc fichier a vérifié 20 coupures, huit erreurs d’E/S avec remontage
 - **Consultation et concurrence.** LOOKUP résout un objet sous la base autorisée. STAT rend type, identité, taille et révision. READDIR utilise le curseur de nom du moteur et doit détecter une révision du répertoire modifiée entre deux pages. CHDIR doit conserver une identité de répertoire dans la session. GETCWD reconstruit le chemin visible depuis la racine de cette session. Pour la première implémentation, refuser par OCCUPÉ la suppression ou le déplacement d’un répertoire courant, d’un objet ouvert ou d’un de leurs ancêtres concernés. Appliquer cette règle à toutes les sessions sous le même écrivain avant publication. [Primitives existantes](../../novaFS/src/fs.rs) · [Règles de concurrence](../../novaFS/docs/vfs-architecture.md)
 - **Compatibilité.** Les pools, snapshots, clones, unités comprimées, attestations et clés conservent leurs contrats historiques. Le service v0.11.0 expose uniquement le contenu du LV autonome. Cette expérience porte sur ce profil. [Partage CoW](../../novaFS/docs/novafs-p5-partage.md) · [Compression](../../novaFS/docs/novafs-p6-compression.md) · [Vérification P7](../../novaFS/docs/novafs-p7-verification.md) · [Scrub P8](../../novaFS/docs/novafs-p8-scrub.md)
 
-## Arbitrage proposé
+## Arbitrage initial (option B autorisée lors de la reprise)
 
 **Option A — borner le chemin canonique de tout objet à 1 024 octets.** Contrôler aussi les descendants au sein de la transaction, y compris lors d’un changement de nom à profondeur constante. Refuser avant F1 si la nouvelle longueur dépasse la borne ou si le budget d’inspection s’épuise. Appliquer la règle aux écrivains macOS et NovaOS. Définir une admission explicite pour les images historiques comme G8 et un accès de récupération RO. L’admission doit distinguer une limite d’accessibilité et une corruption de blocs.
 
