@@ -10,7 +10,7 @@ use std::io::{ErrorKind, Read, Write};
 const MAGIC: &[u8; 8] = b"NV5EXPRT";
 const END: &[u8; 8] = b"NV5XEND!";
 const DOMAIN: &[u8] = b"NovaFS/export/complet/v1\0";
-const HEAD: usize = 160;
+pub(crate) const HEAD: usize = 160;
 const MAX_VOLUME: u64 = 4 * crate::pool::GRAIN;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -27,7 +27,7 @@ pub struct ExportInfo {
 }
 
 impl ExportInfo {
-    fn encode(&self) -> Result<[u8; HEAD]> {
+    pub(crate) fn encode(&self) -> Result<[u8; HEAD]> {
         let tag: u64 = match self.kind {
             ObjectKind::Snapshot => 1,
             ObjectKind::Clone => 2,
@@ -64,7 +64,7 @@ impl ExportInfo {
         buf[144..152].copy_from_slice(&self.pages.to_le_bytes());
         Ok(buf)
     }
-    fn decode(b: &[u8; HEAD]) -> Result<Self> {
+    pub(crate) fn decode(b: &[u8; HEAD]) -> Result<Self> {
         if b[..8] != MAGIC[..] || u16::from_le_bytes(b[8..10].try_into().unwrap()) != 1 {
             return Err(Error::Corrupt("signature ou version d’export inconnue"));
         }
@@ -95,7 +95,7 @@ impl ExportInfo {
 }
 
 // Quatre grains P3 par domaine. Le bitmap de tout le LV occupe au plus 128 octets.
-type Coverage = [u64; MAX_VOLUME.div_ceil(64) as usize];
+pub(crate) type Coverage = [u64; MAX_VOLUME.div_ceil(64) as usize];
 struct Traced<'a, D> {
     device: &'a D,
     seen: RefCell<Coverage>,
@@ -119,7 +119,7 @@ impl<D: Device> Device for Traced<'_, D> {
         Err(Error::ReadOnly)
     }
 }
-fn coverage(device: &impl Device, ids: Ids) -> Result<Coverage> {
+pub(crate) fn coverage(device: &impl Device, ids: Ids) -> Result<Coverage> {
     if device.blocks() > MAX_VOLUME {
         return Err(Error::Limit("taille du volume exporté"));
     }
@@ -132,17 +132,14 @@ fn coverage(device: &impl Device, ids: Ids) -> Result<Coverage> {
     Ok(audit.seen.into_inner())
 }
 
-/// Appeler sur un pool stable, avec la géométrie du support source. La fin du flux
-/// et son empreinte sont obligatoires, même pour un export sans données de fichier.
-pub fn export_view<D: Device>(
+pub(crate) fn export_manifest<D: Device>(
     pool: &SharedPool<D>,
     id: u64,
     sector: u32,
-    mut output: impl Write,
-) -> Result<ExportInfo> {
+    device: &impl Device,
+) -> Result<(ExportInfo, Coverage)> {
     let object = pool.info(id)?;
-    let device = pool.read_device(id)?;
-    let seen = coverage(&device, object.ids)?;
+    let seen = coverage(device, object.ids)?;
     let info = ExportInfo {
         pool: pool.pool_id(),
         id,
@@ -154,6 +151,19 @@ pub fn export_view<D: Device>(
         sector,
         pages: seen.iter().map(|w| u64::from(w.count_ones())).sum(),
     };
+    Ok((info, seen))
+}
+
+/// Appeler sur un pool stable, avec la géométrie du support source. La fin du flux
+/// et son empreinte sont obligatoires, même pour un export sans données de fichier.
+pub fn export_view<D: Device>(
+    pool: &SharedPool<D>,
+    id: u64,
+    sector: u32,
+    mut output: impl Write,
+) -> Result<ExportInfo> {
+    let device = pool.read_device(id)?;
+    let (info, seen) = export_manifest(pool, id, sector, &device)?;
     let header = info.encode()?;
     let mut sha = Sha256::new();
     sha.update(DOMAIN);
@@ -177,7 +187,7 @@ pub fn export_view<D: Device>(
     Ok(info)
 }
 
-fn exact(input: &mut impl Read, buf: &mut [u8]) -> Result<()> {
+pub(crate) fn exact(input: &mut impl Read, buf: &mut [u8]) -> Result<()> {
     match input.read_exact(buf) {
         Err(e) if e.kind() == ErrorKind::UnexpectedEof => Err(Error::Corrupt("export interrompu")),
         res => Ok(res?),

@@ -8,7 +8,7 @@ use novafs::{Compression, Device, Engine, Error, Ids, Mode, Result};
 use serde_json::{Value, json};
 use std::io::{self, Write};
 
-pub(super) const HELP: &str = "novafs pool-format BLOCS SECTEUR POOL_ID [p5|p6]     crée un pool vide (P5 par défaut)
+pub(super) const HELP: &str = "novafs pool-format BLOCS SECTEUR POOL_ID [p5|p6|p7 --cles-fd3]     crée un pool vide (P5 par défaut)
 novafs volume-create BLOCS SECTEUR DOMAINE FS_ID LV_ID BLOCS_LV [none|lz4]    ajoute une origine au pool lu sur stdin
 novafs set-compression BLOCS SECTEUR OBJET none|lz4    définit la politique des prochaines écritures
 novafs compression-space BLOCS SECTEUR OBJET         affiche les octets logiques et l’usage physique en JSON
@@ -27,11 +27,12 @@ novafs migrate-view BLOCS_DEST SECTEUR_DEST POOL_DEST BLOCS_SOURCE SECTEUR_SOURC
 novafs migrate-lv BLOCS_DEST SECTEUR_DEST POOL_DEST BLOCS_P0 SECTEUR_P0 DOMAINE FS_ID LV_ID   importe un LV P0 autonome
 novafs check-export                                vérifie un export complet sur stdin, JSON sur stdout";
 
+pub(super) const P7_HELP: &str = "P7 : ajouter --cles-fd3 en dernier. volume-create attend aussi none|lz4 puis clair|chiffre. file-write reçoit les octets avec --donnees-fd4 à la place du texte hexadécimal. export lit sa clé sur FD4. restore attend POOL_DEST DOMAINE none|lz4 et les secrets sur FD4. Protocole des pipes dans docs/novafs-p7-chiffrement.md.";
 pub(super) fn known(cmd: &str) -> bool {
     HELP.lines()
         .any(|l| l.split_ascii_whitespace().nth(1) == Some(cmd))
 }
-fn compression(name: &str) -> Result<Compression> {
+pub(super) fn compression(name: &str) -> Result<Compression> {
     match name {
         "none" => Ok(Compression::None),
         "lz4" => Ok(Compression::Lz4),
@@ -47,7 +48,7 @@ fn volume(id: u64, pool: &SharedPool<impl Device>) -> Result<Value> {
         "lignee_lv":label(&obj.ids.lv), "blocs_logiques":obj.blocks}),
     )
 }
-fn kind(k: ObjectKind) -> &'static str {
+pub(super) fn kind(k: ObjectKind) -> &'static str {
     match k {
         ObjectKind::Origin => "origine",
         ObjectKind::Clone => "clone",
@@ -85,6 +86,9 @@ pub(super) fn run(args: &[String]) -> Result<()> {
     }
     if !matches!(cmd, "list-views" | "compression-space") {
         image_stream(&io::stdout())?;
+    }
+    if tail.last() == Some(&"--cles-fd3") {
+        return super::secure::run(cmd, &tail[..tail.len() - 1], scratch, sector);
     }
     let mut pool = match (cmd, tail) {
         ("pool-format", [pool, "p6"]) => SharedPool::format_p6(scratch, identifier(pool)?)?,

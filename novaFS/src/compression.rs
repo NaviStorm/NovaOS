@@ -36,6 +36,12 @@ pub(crate) struct Packer {
     count: usize,
 }
 
+impl Drop for Packer {
+    fn drop(&mut self) {
+        zeroize::Zeroize::zeroize(&mut self.block);
+    }
+}
+
 impl Default for Packer {
     fn default() -> Self {
         Self {

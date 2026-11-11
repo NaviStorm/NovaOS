@@ -11,13 +11,15 @@ mod check;
 #[cfg(feature = "check-metrics")]
 #[path = "../../lab/heap_meter.rs"]
 mod heap_meter;
+#[path = "novafs/secure.rs"]
+mod secure;
 #[path = "novafs/shared.rs"]
 mod shared;
 
 const HELP: &str = concat!(
     "NovaFS v",
     env!("CARGO_PKG_VERSION"),
-    " — formats P0 et P5, pools P6 avec compression LZ4, images jetables, uniquement sur flux
+    " — formats P0 et P5, pools P6 LZ4 et P7 chiffrés, images jetables, uniquement sur flux
 novafs create BLOCS SECTEUR                        émet une image vierge sur stdout
 novafs script BLOCS SECTEUR                        lit les commandes puis émet l’image sur stdout
 novafs inspect BLOCS SECTEUR                       décrit les deux ancres de l’image sur stdin
@@ -25,6 +27,8 @@ novafs verify BLOCS SECTEUR FS_ID LV_ID            vérifie intégralement les d
 novafs check BLOCS SECTEUR FS_ID LV_ID             contrôle RO d’un LV, rapport JSON
 novafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE   vérifie une branche P5/P6 et son reçu externe
 novafs check-pool BLOCS SECTEUR                    vérifie l’intégrité du pool P0, P5 ou P6 (option --full)
+novafs check-pool BLOCS SECTEUR [--cles-fd3]       inspecte P7 ou authentifie par pipe anonyme FD 3
+novafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE [--cles-fd3]   contrôle P7 et son reçu avec clés
 novafs space BLOCS SECTEUR FS_ID LV_ID             comptabilité du FS au repos, sur un LV hors ligne
 novafs space-pool BLOCS SECTEUR                    comptabilité physique du catalogue hors ligne
 novafs salvage BLOCS SECTEUR FS_ID LV_ID SLOT NOM extrait un fichier sur stdout en lecture seule
@@ -215,6 +219,9 @@ fn run(args: &[String]) -> Result<()> {
             .find(|s| s.starts_with(&prefix))
             .ok_or(Error::Invalid("commande inconnue"))?;
         println!("{usage}");
+        if shared::known(&args[0]) {
+            println!("{}", shared::P7_HELP);
+        }
         if args[0] == "script" {
             println!(
                 "policy BLOCS_MAINTENANCE QUOTA_OCTETS|none    fixe la politique de cette session\nspace    écrit les compteurs d’espace sur stderr\ncache OCTETS    règle le budget pages et index (0 le désactive)\ncache    écrit les compteurs du cache sur stderr"

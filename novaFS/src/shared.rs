@@ -129,6 +129,83 @@ impl<D: Device> Device for Volume<'_, D> {
     }
 }
 
+fn mount_verified_volume<'a, D: Device>(
+    dev: &'a D,
+    graph: &Graph,
+    e: &Entry,
+) -> Result<Engine<Volume<'a, D>>> {
+    let fs = Engine::mount(
+        Volume {
+            p6: graph.is_p6(),
+            disk: dev,
+            index: None,
+            root: e.root,
+            blocks: e.blocks,
+        },
+        e.ids,
+        Mode::ReadOnly,
+    )?;
+    if graph.is_p6() && fs.accounting()?.logical_bytes > u128::from(e.blocks) * 4096 {
+        return Err(Error::Corrupt("quota logique de la vue P6 dépassé"));
+    }
+    let data_pages =
+        if dev.typed_fs_pages() || (graph.is_p6() && graph.compression_usage(e.root)?.0 > 0) {
+            Some(fs.file_page_map()?)
+        } else {
+            None
+        };
+    for lba in graph::mapped_lbas(dev, e.root, graph.is_p6())? {
+        if let Some(map) = &data_pages
+            && graph.is_packed(e.root, lba)?
+            && !is_data_page(map, lba)
+        {
+            return Err(Error::Corrupt(
+                "page compressée hors des extents de données",
+            ));
+        }
+        if dev.typed_fs_pages() {
+            let Some(page) = graph.lookup(e.root, lba)? else {
+                return Err(Error::Corrupt("LBA sans référence"));
+            };
+            dev.check_file_class(
+                page.block,
+                is_data_page(
+                    data_pages
+                        .as_ref()
+                        .ok_or(Error::Corrupt("classification absente"))?,
+                    lba,
+                ),
+            )?;
+        }
+        if !fs.protected_lba(lba) {
+            return Err(Error::Corrupt("page mappée hors des générations FS"));
+        }
+    }
+    Ok(fs)
+}
+
+/// Ces entrées proviennent des catalogues de tête et parent contrôlés. Le
+/// dispositif P7 authentifie leur publication avant de les fournir.
+pub(crate) fn views_at_head(dev: &impl Device, pool: [u8; 16]) -> Result<Vec<ObjectInfo>> {
+    Ok(Graph::views_at_head(dev, pool)?
+        .iter()
+        .map(ObjectInfo::from)
+        .collect())
+}
+
+pub(crate) fn read_one<D: Device>(
+    dev: &D,
+    pool: [u8; 16],
+    id: u64,
+    path: &str,
+    offset: u64,
+    len: usize,
+) -> Result<Vec<u8>> {
+    Graph::inspect_one(dev, pool, id, |graph, e| {
+        mount_verified_volume(dev, graph, e)?.read(path, offset, len)
+    })
+}
+
 struct VerifiedView<'a, D> {
     pool: &'a SharedPool<D>,
     volume: Volume<'a, D>,
@@ -156,7 +233,7 @@ impl<D: Device> Device for VerifiedView<'_, D> {
 /// Le pool synchronise toutes les dépendances de cette image avant publication.
 struct Overlay<'a, D> {
     base: Volume<'a, D>,
-    dirty: BTreeMap<u64, Box<Block>>,
+    dirty: BTreeMap<u64, crate::PrivatePage>,
 }
 impl<D: Device> Device for Overlay<'_, D> {
     fn blocks(&self) -> u64 {
@@ -167,7 +244,7 @@ impl<D: Device> Device for Overlay<'_, D> {
     }
     fn read(&self, b: u64) -> Result<Block> {
         if let Some(page) = self.dirty.get(&b) {
-            return Ok(**page);
+            return Ok(***page);
         }
         self.base.read(b)
     }
@@ -178,7 +255,7 @@ impl<D: Device> Device for Overlay<'_, D> {
         if self.dirty.len() >= 66 && !self.dirty.contains_key(&b) {
             return Err(Error::Limit("pages privées du moteur de contenu"));
         }
-        self.dirty.insert(b, Box::new(*data));
+        self.dirty.insert(b, crate::private_page(*data));
         Ok(())
     }
     fn flush(&mut self) -> Result<()> {
@@ -217,7 +294,7 @@ struct Cached {
 struct PreparedContent {
     base: Entry,
     state: Engine<()>,
-    dirty: BTreeMap<u64, Box<Block>>,
+    dirty: BTreeMap<u64, crate::PrivatePage>,
     data_refs: Vec<Ref>,
 }
 /// Le descripteur de périphérique reste exclusif. Les lectures empruntent le
@@ -262,38 +339,7 @@ impl<D: Device> SharedPool<D> {
                 if checked.contains(&key) {
                     continue;
                 }
-                let fs = Engine::mount(
-                    Volume {
-                        p6: graph.is_p6(),
-                        disk: &dev,
-                        index: None,
-                        root: e.root,
-                        blocks: e.blocks,
-                    },
-                    e.ids,
-                    Mode::ReadOnly,
-                )?;
-                if graph.is_p6() && fs.accounting()?.logical_bytes > u128::from(e.blocks) * 4096 {
-                    return Err(Error::Corrupt("quota logique de la vue P6 dépassé"));
-                }
-                let data_pages = if graph.is_p6() && graph.compression_usage(e.root)?.0 > 0 {
-                    Some(fs.file_page_map()?)
-                } else {
-                    None
-                };
-                for lba in graph::mapped_lbas(&dev, e.root, graph.is_p6())? {
-                    if let Some(map) = &data_pages
-                        && graph.is_packed(e.root, lba)?
-                        && !is_data_page(map, lba)
-                    {
-                        return Err(Error::Corrupt(
-                            "page compressée hors des extents de données",
-                        ));
-                    }
-                    if !fs.protected_lba(lba) {
-                        return Err(Error::Corrupt("page mappée hors des générations FS"));
-                    }
-                }
+                mount_verified_volume(&dev, &graph, e)?;
                 checked.push(key);
             }
         }
@@ -734,7 +780,7 @@ impl<D: Device> SharedPool<D> {
         id: u64,
         old: PageRef,
         mut state: Engine<()>,
-        dirty: BTreeMap<u64, Box<Block>>,
+        dirty: BTreeMap<u64, crate::PrivatePage>,
         data_refs: &[Ref],
     ) -> Result<u64> {
         self.prepare()?;
@@ -756,7 +802,13 @@ impl<D: Device> SharedPool<D> {
                 } else {
                     refs.insert(
                         lba,
-                        graph::store_data(&mut self.graph, &mut self.dev, page)?,
+                        graph::store_fs_page(
+                            &mut self.graph,
+                            &mut self.dev,
+                            lba,
+                            page,
+                            data_refs.iter().any(|r| r.block == lba),
+                        )?,
                     );
                 }
             }
@@ -891,8 +943,16 @@ impl<D: Device> SharedPool<D> {
         if self.is_p6() && fs.accounting()?.logical_bytes > u128::from(blocks) * 4096 {
             return Err(Error::QuotaExceeded);
         }
+        let file_map = if policy == Compression::Lz4 || self.dev.typed_fs_pages() {
+            Some(fs.file_page_map()?)
+        } else {
+            None
+        };
         let mut compression = if policy == Compression::Lz4 {
-            Some((fs.file_page_map()?, packing::Group::default()))
+            Some((
+                file_map.ok_or(Error::Invalid("carte FS absente"))?,
+                packing::Group::default(),
+            ))
         } else {
             None
         };
@@ -908,7 +968,13 @@ impl<D: Device> SharedPool<D> {
                 } else if page != [0; 4096] {
                     refs.insert(
                         lba,
-                        graph::store_data(&mut self.graph, &mut self.dev, &page)?,
+                        graph::store_fs_page(
+                            &mut self.graph,
+                            &mut self.dev,
+                            lba,
+                            &page,
+                            file_map.as_ref().is_some_and(|m| is_data_page(m, lba)),
+                        )?,
                     );
                 }
             }

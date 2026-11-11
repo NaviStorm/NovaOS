@@ -1,177 +1,114 @@
-# NovaFS P7 — audit préalable du chiffrement authentifié
+# NovaFS P7 · chiffrement authentifié des volumes · v0.9.9
 
-**Décision soumise à arbitrage.** Deux copies d'une image P6 peuvent être ouvertes séparément en écriture. Si le futur pool chiffré conserve cette autonomie, la copie dupliquera aussi le domaine cryptographique et l'état persistant de son compteur. Sa prochaine valeur pourra alors être employée deux fois. Le CSPRNG indépendant de macOS permettrait de borner très fortement le risque de collision, mais deux tirages de 192 bits peuvent être égaux. Le §7 demande à la fois cette méthode et l'impossibilité de réutiliser une paire clé/nonce pour deux contenus distincts. Les §3, §17 et §19 imposent de trancher cette différence avant de publier un écrivain. Le livrable est l'audit du commit `ea00a755deeb6e5fde64be3ebb748912c6089dc7` sur `main`. Le manifeste et le verrou identifient v0.9.8. La licence de NovaFS est la MPL-2.0. Le SHA-256 vérifié de son texte est `fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85`. [Manifeste](../Cargo.toml) · [Licence](../LICENSE)
+Le format P7 permet de faire cohabiter des volumes clairs et chiffrés dans le même pool. Le service ouvre le pool avec son secret administratif. Le propriétaire déverrouille chaque domaine chiffré avec sa phrase ou sa clé de récupération. Les images et les archives de cette version sont expérimentales. Le code du prototype et sa licence MPL-2.0 se trouvent dans le paquet NovaFS. [Moteur du pool](../src/secure_pool.rs) · [Licence](../LICENSE)
 
-## 1. Témoin sur le format actuel
+## Contrat de sécurité et décision de nonces
 
-Un pool P6 de 1 024 blocs contient une origine de 256 blocs et un fichier vide. Le laboratoire a soumis deux écritures légitimes partant exactement de la même image de génération 3. L'une contient 4 096 octets `41` hexadécimal, l'autre autant d'octets `42`. Chaque sortie a passé `check-pool --full`, puis une relecture exacte du fichier. Le parcours du catalogue sélectionné et des feuilles de traduction a identifié l'allocation suivante dans les deux sorties.
+Un lecteur hors ligne peut conserver, lire, comparer, tronquer, déplacer ou réécrire les octets du support et tenter des phrases hors ligne. La confidentialité couvre les noms, le contenu, les extents et les métadonnées internes d'une vue chiffrée. La géométrie, les identités publiques, la parenté observable via les références, l'occupation, les positions, les longueurs et le choix de compression restent visibles. Le service, ses clés, son espace mémoire déverrouillé, le CSPRNG et le code de validation appartiennent au périmètre de confiance. La destruction du support peut empêcher la lecture.
 
-| Exécutable macOS | Secteur | Génération des deux sorties | LBA du contenu | Adresse physique | Contrôles complets / relectures |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| ARM64 natif | 512 | 4 | 9 | 22 | 2 / 2 |
-| ARM64 natif | 4 096 | 4 | 9 | 22 | 2 / 2 |
-| x86_64 sous Rosetta | 512 | 4 | 9 | 22 | 2 / 2 |
-| x86_64 sous Rosetta | 4 096 | 4 | 9 | 22 | 2 / 2 |
+**Décision A.** XChaCha20-Poly1305 utilise une clé de 256 bits, un nonce de 192 bits et un tag de 128 bits. Chaque appel de scellement tire 24 octets indépendants, y compris pour les enveloppes, les objets abandonnés avant publication et les réessais. Une référence CoW qui reprend les mêmes octets ne déclenche aucun chiffrement. Le contexte disque et la génération servent à authentifier l'unité. Un défaut d'entropie fait échouer l'opération. Le pilote hôte utilise `getrandom::fill` et le backend Darwin `getentropy`. La façade accepte une implémentation remplaçable de `Entropy`. Un futur fournisseur NovaOS devra obtenir un état frais, y compris après duplication de l'hôte en fonctionnement. [Primitives](../src/crypto.rs) · [Construction XChaCha20-Poly1305](https://doc.libsodium.org/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction) · [Source Darwin de getrandom](https://docs.rs/getrandom/0.4.3/getrandom/#supported-targets)
 
-Les identités du pool, du FS et du LV concordaient aussi. La source a conservé son SHA-256. Ce résultat porte sur l'allocateur et les générations P6. Aucune opération AEAD n'a eu lieu. Une dérivation déterministe de clé et de nonce à partir de ces seuls champs produirait la même paire sur les deux branches. La copie entière peut être faite hors du service, même si le service sérialise parfaitement les écritures sur chaque branche. [Sélection et allocation du graphe](../src/shared_graph.rs) · [Contrat CoW et reçus](novafs-p5-partage.md)
+Pour deux tirages, la probabilité de collision est 2⁻¹⁹². Pour q tirages uniformes et indépendants sous une même clé, l'union des q(q−1)/2 paires donne la borne q(q−1)/2¹⁹³. À q = 2³², elle vaut 2⁻¹²⁹ × (1 − 2⁻³²), soit moins de 1,47 × 10⁻³⁹. Cette borne concerne les nonces. La sécurité de la phrase et la résistance de l'authentificateur ont d'autres limites.
 
-Il existe également une fenêtre sur **une seule image**. Une préparation peut écrire un chiffré que le support conserve alors que son catalogue ne sera jamais publié. Si le compteur correspondant ne devient durable qu'avec ce catalogue, la reprise pourra réattribuer sa valeur. Le premier chiffré a pu être observé. Compter uniquement les mutations acquittées ou rechercher des doublons dans les deux générations vivantes laisse échapper ces appels. Exclure la détection du rollback intégral du modèle de fraîcheur ne suffit pas à supprimer ce risque pour la confidentialité de deux écritures. [Protocole F1/F2](novafs-p1-durabilite.md) · [Réservation des nonces, RFC 5116 §3.1](https://www.rfc-editor.org/rfc/rfc5116.html#section-3.1)
+**Plafond d'exploitation de 2³² scellements par clé effective**, en cumulant les branches, les reprises et les tentatives. Le disque seul ne connaît pas le nombre de copies ni leurs usages. Le détenteur doit allouer des budgets aux écrivains et provisionner un nouveau domaine avant le plafond. Si le cumul ne peut plus être borné, retirer l'ancienne clé de l'écriture. La migration disponible consiste à figer un snapshot, produire et contrôler son archive, puis vérifier sa restauration dans un pool neuf doté d'une nouvelle clé maîtresse. Confirmer la relecture et sauvegarder le nouveau secours avant de retirer l'ancienne copie. Une telle migration porte sur une vue à la fois. Elle ne recrée pas la topologie de partage et n'efface pas les sauvegardes anciennes. Une nouvelle enveloppe de phrase sous une même maîtresse laisserait les clés de données identiques. P7 ne réalise aucune conversion automatique.
 
-## 2. Trois contrats possibles
+L'audit de `0d72ebc` avait mesuré deux branches P6 produisant des contenus différents à la même génération 4, au même LBA 9 et au même bloc physique 22. Le scénario a été rejoué sur `ea00a755` en natif et sous Rosetta dans les deux géométries. Le banc P7 compare les nonces effectivement persistés sur des écritures issues de deux copies autonomes. Cette observation teste le câblage. La borne provient de l'hypothèse sur la source d'entropie. [Tests du pool et des copies](../tests/p7_secure.rs)
 
-| Option | Garantie et hypothèses | Conséquence pour NovaFS |
-| --- | --- | --- |
-| **A. XChaCha20-Poly1305, nonce aléatoire à chaque chiffrement** | Sous une même clé, pour q tirages indépendants et uniformes de 24 octets, la probabilité d'au moins une collision est au plus q(q−1)/2¹⁹³. Pour deux appels elle vaut 2⁻¹⁹². Jusqu'à 2³² appels, elle reste inférieure à 2⁻¹²⁹. | Recommandation pour garder les images autonomes. Accepter explicitement une garantie probabiliste. L'hôte doit fournir de l'entropie fraîche après reprise. Un échec du CSPRNG interrompt l'opération avant toute sortie chiffrée. |
-| **B. XChaCha20-Poly1305, attribution stricte par clé** | Tous les écrivains du domaine obtiennent des valeurs disjointes d'un état monotone durable qui échappe à la copie et au rollback de l'image. Toute valeur attribuée est consommée avant chiffrement, même en cas d'abandon. | Conserve l'exigence « jamais ». Il faut définir le détenteur de l'état, le transfert entre machines et le refus d'écriture lorsqu'il est indisponible. Une plage réservée devient dangereuse si deux écrivains peuvent reprendre la même mémoire vive. Exclure le clonage de l'état vif entre attribution et emploi, ou effectuer l'attribution et le chiffrement dans le composant non clonable. |
-| **C. AEAD résistant à la répétition accidentelle** | AES-256-GCM-SIV est une construction normalisée qui limite les conséquences d'une répétition de nonce. Elle conserve des limites d'usage et peut révéler l'égalité des messages en cas de répétition dans le même contexte. | Changer la suite et la propriété à valider. Cette option ne garantit pas l'unicité. Elle exige un nouvel audit du format, des limites de la primitive et des bibliothèques. |
+## Autorités, clés et mémoire
 
-Dans A, q additionne les tentatives réussies, avortées et jamais publiées, sur toutes les copies qui utilisent **la même clé effective**. Le seuil de 2³² illustre la borne. Un compteur de rotation local ne peut imposer ce plafond à une collection inconnue de copies. Les risques calculés par clé s'additionnent pour borner le risque global. La probabilité de collision du nonce ne mesure ni la résistance du mot de passe ni la probabilité de falsification d'un tag. Les snapshots qui reprennent les mêmes octets chiffrés n'invoquent pas le chiffrement. Toute opération qui **rechiffre**, y compris un nouvel essai, un emplacement de clé ou un enregistrement d'export, est soumise à la politique de sa clé. [Construction XChaCha, document de conception](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha-03#section-2.1) · [Usage de nonces aléatoires par libsodium](https://doc.libsodium.org/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction) · [Limites d'AES-GCM-SIV, RFC 8452 §9](https://www.rfc-editor.org/rfc/rfc8452.html#section-9)
+- Une clé maîtresse administrative aléatoire est enveloppée par une sous-clé dérivée du secret de provisionnement externe de 32 octets. La clé de publication est dérivée de cette maîtresse et de l'identité du pool. Le propriétaire conserve hors du support l'identité attendue et le secret administratif.
+- Chaque origine chiffrée reçoit une maîtresse aléatoire de 32 octets et un domaine aléatoire de 16 octets. HKDF-SHA-256 sépare les usages données, métadonnées et engagement de vue. Les libellés ont un préfixe de protocole et une longueur. La dérivation et le calcul des MAC utilisent RustCrypto. [HKDF](https://www.rfc-editor.org/rfc/rfc5869)
+- Les deux emplacements de 72 octets enveloppent indépendamment la même maîtresse. Chacun contient un nonce, un tag et 32 octets chiffrés. Le profil de 16 octets et un sel frais de 16 octets précèdent les emplacements. Le type, le domaine, l'indice et le profil sont engagés. Argon2id v19 utilise m = 65 536 Kio, t = 3, p = 4. Le second emplacement dérive sa clé d'un secret de récupération aléatoire indépendant de 32 octets. La clé du domaine authentifie également l'ensemble des emplacements autorisés. Les paramètres et longueurs sont contrôlés avant allocation. Un seul Argon2 à la fois, avec retour `Busy` en contention. [Profil Argon2id](https://www.rfc-editor.org/rfc/rfc9106.html#section-4) · [Dépendances et vecteurs](novafs-p7-verification.md)
+- Un snapshot et ses clones utilisent la même maîtresse, même si l'origine est supprimée. Le détenteur de la clé de domaine peut lire ses descendants hors ligne. Le service applique séparément les droits sur chaque vue. Le verrouillage supprime les sous-clés résidentes du domaine. Une lecture ciblée peut continuer sur un autre domaine. Une mutation ou un contrôle intégral exige les clés de tous les domaines retenus par les deux catalogues. `encrypted_domains()` les énumère, y compris celles d'une origine en cours de retrait.
+- Les secrets possédés, le tampon Argon2, les pages privées du moteur et les entrées du cache sont effacés à leur libération. Le verrouillage exige un emprunt exclusif. Les appels de la façade ne conservent aucun ticket de lecture ni cache clair déverrouillé entre opérations. L'appelant possède les octets déjà rendus par `read_file`. Les registres, les copies temporaires du compilateur, les diagnostics de l'hôte et le swap limitent l'effacement vérifiable. La perte de tous les secrets de déverrouillage pour un domaine rend son contenu irrécupérable. Le prototype ne dépend d'aucun trousseau externe.
 
-## 3. Frontières de confiance
+## Disposition du support et vérification des références
 
-L'adversaire peut conserver plusieurs versions de l'image, lire chaque secteur, changer les en-têtes et les références, réordonner ou supprimer des blocs et présenter une archive modifiée. Il peut tenter des phrases secrètes hors ligne. Le service, son code de vérification, les clés effectivement autorisées, le CSPRNG de l'hôte et la mémoire d'un processus déverrouillé sont dans le périmètre de confiance. L'accès physique, les allocations, les tailles, les trous, la topologie publique et le gain de compression pourront être observables. Un service d'écriture accessible à un acteur non fiable ne doit pas mélanger ses données et des secrets d'un autre domaine dans une unité comprimée.
+Les entiers sont little-endian. Un bloc fait 4 096 octets. Le premier ou le second en-tête P7 permet d'identifier la famille. Le lecteur exige les deux copies canoniques, la révision 7, le bit de fonctionnalité 1 et la géométrie exacte. Le formateur se limite aux images explicitement neuves avec zone de contrôle vide. Les lecteurs historiques gardent leur contrat P0/P5/P6. L'ancien écrivain P6 a été présenté à des images P7 sur les deux architectures. [Échanges et refus de l'ancien écrivain](validation/v0.9.9/p7-echanges.json)
 
-Pour une racine authentifiée, le lecteur doit détecter toute substitution ou modification des octets utilisés pour produire son résultat, sous les hypothèses des primitives. Un adversaire peut toujours empêcher la lecture en détruisant un secteur. Un reçu ancien authentique peut encore authentifier une ancienne image entière. Exiger le dernier état confirmé suppose un témoin récent, indépendant du pool et résistant au recul, conservant identité, génération et empreinte de racine. Une sauvegarde locale du même reçu peut reculer avec l'image. La révocation à travers toutes les copies a la même limite. [Limites de la récupération NovaFS](novafs-recovery.md)
-
-## 4. Clés, déverrouillage et confinement
-
-- À la création, chaque **origine chiffrée indépendante** reçoit un identifiant de domaine et une clé maîtresse de 32 octets tirée du CSPRNG. Un snapshot et ses clones partagent ce domaine, y compris pour les écritures divergentes de ses clones. Un détenteur de la clé du domaine peut lire hors ligne ce que les clés de ce domaine protègent. L'autorisation d'un client sur une vue reste du ressort du service.
-- HKDF-SHA-256 dérive des clés distinctes pour les données, les métadonnées confidentielles, le MAC des racines et l'enveloppement des clés d'export. Les contextes de dérivation incluent un libellé versionné, le domaine et l'époque. L'encodage des champs utilise des tailles fixes ou un préfixe de longueur. Un secret administratif de pool distinct authentifie le catalogue global et l'allocation des domaines. La clé administrative doit être provisionnée localement à la création, enveloppée pour l'administrateur et tenue distincte des secrets de déverrouillage des domaines. Un lecteur de volume peut vérifier sa racine avec ses propres clés. Modifier la répartition physique globale requiert l'autorité administrative. [HKDF, RFC 5869](https://www.rfc-editor.org/rfc/rfc5869.txt)
-- Deux emplacements indépendants enveloppent la même clé maîtresse avec AEAD. Le premier utilise une KEK dérivée par Argon2id de la phrase secrète. Le second utilise une KEK dérivée par HKDF d'un secret de récupération aléatoire de 32 octets remis séparément au propriétaire. Les emplacements lient dans leurs données associées le type, le domaine, l'époque, le numéro d'emplacement, la version et les paramètres de dérivation. L'identité de domaine attendue est fournie par le contexte de confiance. Le manifeste authentifié du domaine engage l'ensemble des emplacements autorisés. Après ouverture d'une enveloppe, vérifier cet ensemble avant d'accepter la clé. Une clé incorrecte donne un refus uniforme. Des identifiants futurs pourront désigner NovaKey ou un authentificateur matériel.
-- Profil de phrase proposé pour l'outil hôte de déverrouillage : Argon2id v19, sel frais de 16 octets, sortie de 32 octets, 64 Mio, trois passes et quatre voies. Accepter uniquement les profils connus, borner les longueurs *avant* allocation et sérialiser les dérivations coûteuses. La matrice de 64 Mio dépasse à elle seule le budget monté de 7 Mio. Elle doit être explicitement comptabilisée dans l'outil de déverrouillage, avec son propre pic et sa latence. Si le plafond devait aussi englober cet outil, il faudrait arbitrer le profil avant toute livraison par phrase secrète. [Argon2id, RFC 9106 §4](https://www.rfc-editor.org/rfc/rfc9106.html#section-4)
-- Une rotation du mot de passe remplace l'enveloppe au moyen d'une transaction. Une rotation de données utilise une nouvelle époque avec des clés appropriées. L'ancienne époque doit rester lisible tant que des références protégées l'utilisent. Si la clé maîtresse a fuité, changer le libellé d'époque sous cette même clé ne rétablit aucune confidentialité. Il faut de nouveaux secrets indépendants et un réencodage explicite pour protéger des données futures contre son ancien détenteur. Une ancienne sauvegarde et ses anciens secrets peuvent toujours être utilisés ensemble. La perte de la phrase reste récupérable avec le second emplacement. La perte de tous les moyens de déverrouillage et de leurs sauvegardes est définitive.
-- Entrée du secret via un canal dédié et borné. Exclure arguments CLI, environnement, traces, JSON et temporaires en clair. Garder les secrets dans des tampons à propriétaire unique et limiter les copies. Le verrouillage révoque les tickets et accès en vol, attend les opérations admises, purge aussi le cache logique, les pages privées et le tampon Argon2 avant libération. Répéter l'effacement sur erreur. Les copies de l'appelant, registres, crash dumps et swap macOS limitent la portée du nettoyage. [Cache P4](novafs-p4-cache.md) · [Garanties de zeroize](https://docs.rs/zeroize/1.9.1/zeroize/)
-
-## 5. Format proposé, opérations CoW et vérification
-
-Un pool P7 porterait une signature distincte, une révision explicite et des fonctionnalités obligatoires. L'entête borne la géométrie, les algorithmes, le nombre d'époques et d'emplacements. Une référence publique authentifiée associe le domaine à sa politique, à ses emplacements de clé et à sa racine. Le lecteur qui attend un volume protégé refuse une image se présentant comme non chiffrée ou de version antérieure. Les lecteurs historiques P0–P6 restent distincts. Une migration éventuelle doit produire une nouvelle image, vérifiée avant remise au client. L'original et ses anciennes copies peuvent contenir du clair.
-
-Une page brute P6 occupe déjà 4 096 octets, tout comme une unité LZ4 contenant de 2 à 16 pages logiques. Une unité P7 pourrait donc garder son chiffré dans un bloc de 4 Kio et placer sa version, son identifiant immuable, sa portée, son nonce de 24 octets et son tag de 16 octets dans des métadonnées CoW séparées. Ajouter simplement 40 octets aux 64 références d'une feuille P6 nécessiterait 5 152 octets avec son en-tête de 32 octets. Une page auxiliaire liée à la feuille, ou une nouvelle géométrie de feuilles, doit entrer dans le calcul du crédit avant toute écriture. La réservation couvre les pages incompressibles, les métadonnées cryptographiques, une divergence CoW et les deux générations. Le registre doit épingler le chiffré et sa description jusqu'au retrait de leur dernière référence. [Format des feuilles P5](novafs-p5-format.md) · [Unités P6](novafs-p6-compression.md) · [Admission physique P3](novafs-p3-espace.md)
-
-L'identité d'une unité est attribuée à sa création. Les données associées encodent en ordre canonique la version, la suite, le pool, le domaine, l'époque, le type, l'identité immuable, l'adresse physique autorisée, la portée logique originale, la longueur logique et la longueur encodée. Pour un pack partagé, la portée désigne les slots de **l'unité originale**, dans l'ordre, et chaque arête doit nommer un slot présent. Le catalogue authentifie séparément le lien entre la vue, son propriétaire, son type, son domaine et sa racine. Un clone réutilise le chiffré, le nonce et le tag existants. Une réécriture partielle construit une nouvelle unité. La suppression de l'origine laisse intactes la clé enveloppée du domaine et les données encore retenues par un descendant ou le catalogue précédent.
-
-L'écrivain compresse d'abord les données lorsque le gain physique le justifie. Il authentifie et chiffre ensuite le bloc complet, y compris le répertoire du pack et son remplissage. Les noms, extents, métadonnées du FS interne et empreintes logiques susceptibles de révéler un contenu connu doivent eux aussi rester confidentiels sur le support. Les champs nécessaires à la navigation publique peuvent rester visibles si leur liaison à une racine est authentifiée. À la lecture, borner les champs publics, reconstruire les données associées depuis la référence attendue et vérifier le tag via l'API AEAD. Toute sortie temporaire reste privée et est effacée sur erreur. Décompresser, vérifier les tailles et les contraintes FS, puis rendre les octets ou les admettre au cache.
-
-Le contrôle **sans clé** peut vérifier signatures, tailles, plages, compteurs, types et canonicalité. Son résultat doit indiquer « structure examinée, authenticité non vérifiée ». Le contrôle **avec clés** vérifie la racine administrative, les racines de domaines, les deux générations, les tags, les identités, les arêtes et enfin le contenu logique décompressé. Il rapporte les domaines réellement couverts. Une mutation exige une authentification suffisante de l'allocation globale, même si un autre domaine est verrouillé. En l'absence des clés ou d'un index authentifié suffisant pour épingler ses blocs, refuser l'écriture. Un défaut critique bloque la publication et invalide les données en cache concernées. Aucune substitution silencieuse d'un trou, d'une ancienne page ou de zéros.
-
-## 6. Engagement et export
-
-F1 doit stabiliser ensemble les nouveaux chiffrés, tags, métadonnées CoW, références, emplacements modifiés et catalogue candidat. L'autorisation authentifiée de publier cette racine intervient après F1. F2 la stabilise avant tout acquittement. Un candidat correctement authentifié peut être présent sur disque avant publication. Sa seule présence ne permet pas au montage de le sélectionner. Les quatre copies du code Gray P5 assurent une propriété de déchirure sous leur modèle de panne. Elles ne prouvent pas qu'un détenteur de la clé de publication a choisi ce catalogue. Le format P7 devra démontrer la liaison entre sélecteur et racine sous écriture partielle et rejouer les frontières F1/F2 en 512 et 4 096 octets. Si la preuve est indéterminée, le contrôle refuse l'écriture et expose un diagnostic. [Publication existante](../src/shared_graph.rs) · [Reprise P1](novafs-p1-durabilite.md)
-
-L'archive autonome aurait une suite et une version propres. Une clé de transport fraîche protège les enregistrements. Elle est enveloppée pour un secret de sauvegarde autorisé, disponible indépendamment du pool source. Le manifeste authentifié lie l'identité d'archive, le domaine source, la vue, le reçu, la géométrie, les deux générations et le nombre d'enregistrements. Chaque tag couvre également la position, le LBA et la longueur attendue. Une clôture authentifiée couvre le manifeste, le nombre et l'ordre des enregistrements avec leur empreinte, et la fin de flux doit être exacte. À la restauration, vérifier les bornes, les tags et la clôture avant d'accepter l'archive ou d'engager la destination. Le moteur pourra relire une copie temporaire du **flux chiffré** sur descripteur exclusif et utiliser une page claire bornée en RAM. Les enregistrements logiques pourront alors être réencodés dans un domaine et un pool neufs. Le contrat de sauvegarde P5 conserve les identités FS/LV de lignée et attribue à la vue restaurée une nouvelle identité publique (pool, numéro de vue). Son domaine cryptographique de destination peut être neuf. Le détenteur de la clé d’archive peut fabriquer une archive valide. Pour prouver sa provenance à un tiers, conserver le reçu attendu par un canal de confiance indépendant. Un secret d'archive perdu rend cette sauvegarde inutilisable.
-
-L'export v1 transmet des pages logiques en clair et son lecteur les matérialise dans un fichier temporaire. Ni ce chemin, ni un export silencieux v1, ne conviennent à une vue chiffrée. L'archive autonome inclut potentiellement des octets d'un fichier supprimé, encore retenus par le prédécesseur. L'authenticité de l'archive n'atteste pas qu'il s'agit de la plus récente. [Export P5 et contrat A](novafs-p5-export.md) · [Chemins de sérialisation et de restauration](../src/shared_export.rs)
-
-## 7. Dépendances examinées
-
-| Usage | Candidat Rust | Licence et trajectoire |
-| --- | --- | --- |
-| AEAD, tag détaché | `chacha20poly1305` 0.11.0, XChaCha20-Poly1305 à 20 tours | MIT ou Apache-2.0. API en place, fonctions par défaut d'allocation et d'entropie désactivables, option `zeroize`. [Documentation de la bibliothèque](https://docs.rs/chacha20poly1305/0.11.0/chacha20poly1305/) · [Fonctionnalités](https://docs.rs/crate/chacha20poly1305/0.11.0/features) |
-| HKDF, MAC et SHA-256 | `hkdf` 0.12.4, `hmac` 0.12.1, `sha2` 0.10.9 déjà verrouillé | RustCrypto, MIT ou Apache-2.0. Cette famille utilise les interfaces digest 0.10 et permet un cœur sans API de l'hôte. [HKDF et dépendances](https://docs.rs/crate/hkdf/0.12.4) · [HMAC](https://docs.rs/crate/hmac/0.12.1) |
-| Phrase secrète | `argon2` 0.6.0 | MIT ou Apache-2.0. API à mémoire fournie par l'appelant, utilisable en environnement embarqué. Effacer également le tampon de blocs détenu par l'appelant. [Argon2](https://docs.rs/argon2/0.6.0/argon2/) · [API avec tampon](https://docs.rs/argon2/0.6.0/argon2/struct.Argon2.html#method.hash_password_into_with_memory) |
-| Secrets et entropie | `zeroize` 1.9.1 et adaptateur hôte `getrandom` 0.4.3 déjà verrouillé pour ce dernier | MIT ou Apache-2.0. `zeroize` est utilisable en `no_std`. Le moteur reçoit une source d'entropie faillible. Un futur port NovaOS devra fournir un CSPRNG qualifié avant d'autoriser l'écriture chiffrée. [Zeroize](https://docs.rs/zeroize/1.9.1/zeroize/) · [Getrandom](https://docs.rs/getrandom/0.4.3/getrandom/) |
-
-Ces dépendances sont des candidates. Le verrou P6 a été inspecté. Une compilation du graphe cryptographique final sur les deux cibles bare-metal, un contrôle des fonctionnalités transitives et des avis de sécurité des versions réellement verrouillées restent à effectuer avant livraison. Le futur cœur ne doit pas appeler de bibliothèque POSIX, de trousseau macOS ni de générateur de test en production.
-
-## 8. Qualification et reproduction
-
-Le test de bifurcation ci-dessous s'exécute depuis la racine du dépôt. Il construit les CLI du checkout P6 sur les cibles Darwin puis vérifie le comportement des deux branches sur des images temporaires ordinaires. Les numéros d'adresse attendus correspondent à la base auditée.
-
-```sh
-set -eu
-for isa in aarch64 x86_64; do
-    NOVAFS_TARGET="$isa-apple-darwin" novaFS/lab/run build --offline --bin novafs
-done
-python3 - <<'PY'
-from pathlib import Path
-from tempfile import TemporaryDirectory
-from struct import unpack_from
-import json
-import subprocess
-
-def allocation(image, contenu):
-    bloc = 4096
-    def entier(position):
-        return unpack_from("<Q", image, position)[0]
-    codes = [0, 1, 3, 2]
-    copies = [image[2 * bloc + off] for off in (256, 768, 1280, 3840)]
-    assert len(set(copies)) == 1
-    catalogue = (3 + codes.index(copies[0])) * bloc
-    assert image[catalogue:catalogue + 8] == b"NP6POOLC"
-    generation = entier(catalogue + 32)
-    racine = entier(catalogue + 128 + 72)
-    positions = []
-    for i in range(16):
-        feuille = entier(racine * bloc + 32 + 40 * i)
-        if feuille:
-            for j in range(64):
-                adresse = entier(feuille * bloc + 32 + 40 * j)
-                if adresse and image[adresse * bloc:(adresse + 1) * bloc] == contenu:
-                    positions.append((64 * i + j, adresse))
-    assert len(positions) == 1
-    return (generation, *positions[0])
-
-for isa in ("aarch64", "x86_64"):
-    cli = Path(f"novaFS/target/{isa}-apple-darwin/release/novafs").resolve()
-    for secteur in (512, 4096):
-        with TemporaryDirectory() as tmp:
-            def action(nom, src, dst, *args):
-                with (Path(tmp) / dst).open("wb") as sortie:
-                    commande = [cli, nom, "1024", str(secteur), *args]
-                    if src is None:
-                        subprocess.run(commande, stdout=sortie, check=True)
-                    else:
-                        with (Path(tmp) / src).open("rb") as entree:
-                            subprocess.run(commande, stdin=entree, stdout=sortie, check=True)
-            action("pool-format", None, "vide", "11"*16, "p6")
-            action("volume-create", "vide", "vol", "22"*16, "33"*16, "44"*16, "256", "none")
-            action("file-create", "vol", "base", "1", "/f")
-            origine = (Path(tmp) / "base").read_bytes()
-            for octet in (0x41, 0x42):
-                page = bytes([octet]) * 4096
-                action("file-write", "base", "branche", "1", "/f", "0", page.hex())
-                action("check-pool", "branche", "controle", "--full")
-                assert json.loads((Path(tmp) / "controle").read_text())["statut"] == "coherent"
-                action("file-read", "branche", "lecture", "1", "/f", "0", "4096")
-                assert (Path(tmp) / "lecture").read_bytes() == page
-                assert allocation((Path(tmp) / "branche").read_bytes(), page) == (4, 9, 22)
-            assert (Path(tmp) / "base").read_bytes() == origine
-            print(isa, secteur, "deux contenus validés à la génération 4, LBA 9, bloc 22")
-PY
-```
-
-Le script de bifurcation ci-dessus a été exécuté sur les quatre combinaisons du tableau. Le lanceur de validation P6 a également été rejoué sur la base auditée, sous macOS 27.2. Les effectifs d'injection ci-dessous cumulent les deux tailles de secteur sur chaque architecture.
-
-| Résultat réellement obtenu sur NovaFS **v0.9.8** | ARM64 natif | x86_64 sous Rosetta |
-| --- | ---: | ---: |
-| Tests Cargo standard / instrumentés réussis | 137 / 138 | 137 / 138 |
-| Opérations différentielles / durée | 1 000 000 / 24,481 s | 1 000 000 / 40,190 s |
-| P5, coupures / EIO / sélecteurs déchirés | 684 / 152 / 12 | 684 / 152 / 12 |
-| P6, coupures / erreurs d'écriture sur la mutation compressée | 234 / 40 | 234 / 40 |
-| P6, campagne aléatoire supplémentaire, coupures / échecs de flush | 48 / 48 | 48 / 48 |
-
-Les suites standard et instrumentées se recouvrent. Le million différentiel et deux autres scénarios normalement ignorés ont été lancés explicitement. Les mesures antérieures d'échange d'images et d'arrêt de VM restent décrites dans la qualification P6. Le présent audit n'a lancé aucun test fonctionnel P7. Le débit, les latences, le pic mémoire du moteur chiffré et le coût de déverrouillage P7 sont **non mesurés**. [Validation de référence P6](novafs-p6-compression.md)
-
-**Campagne à effectuer après arbitrage.** La première condition d'acceptation du futur moteur sera l'interopérabilité avec des vecteurs indépendants pour XChaCha, HKDF et Argon2id. Les tests de sécurité devront ensuite exercer les 30 points du cahier :
-
-| Points | Oracle de validation sur ARM64 et Rosetta, pour les deux secteurs |
+| Adresses physiques | Contenu |
 | --- | --- |
-| 1–3 et 28–29 | Rejouer les suites P0–P6, le million différentiel, les coupures et E/S historiques, les images des anciennes révisions et les échanges binaires. L'ancien écrivain doit refuser P7. |
-| 4–8 | Créer puis remonter un domaine neuf. Un mauvais secret ne livre aucun octet. Chaque emplacement correct déverrouille indépendamment. Le verrouillage invalide accès, cache et tickets. Vérifier l'effacement des buffers détenus et l'absence de clair dans l'image et les temporaires. |
-| 9–14 | Modifier un octet du chiffré, du tag, du nonce ou des longueurs. Permuter unités, domaines, en-têtes, emplacements et références en recalculant les sommes publiques. Attendre un refus d'authenticité, aucune publication et aucun appel au décompresseur sur l'unité refusée. Tester aussi le verdict structurel sans clé. |
-| 15–20 | Deux snapshots et deux clones du même domaine. Supprimer l'origine, lire tous les survivants et vérifier les octets après écritures partielles de 1 octet, 4 et 16 Kio. Vérifier LZ4 avant AEAD, repli brut des données incompressibles et maintien des droits et réservations. |
-| 21–24 | Saturer avant publication, déchirer sélecteur et descripteurs, faire échouer écritures, F1, F2 et tirages d'entropie. Comparer le contenu récupéré à un modèle indépendant, y compris après reprise de deux copies divergentes. Observer les appels de chiffrement sur toute la trace, y compris ceux qui ont échoué avant publication. Tester les défaillances du mécanisme de nonces retenu. |
-| 25–27 | Produire une archive, supprimer physiquement l'image source du laboratoire, restaurer avec la clé autorisée sur l'autre architecture et comparer les pages logiques. Retirer, réordonner, dupliquer et substituer des enregistrements et la clôture. Une destination préexistante doit conserver son reçu en cas d'échec. |
-| 30 et performances | Même charge qu'en P6, avec pools non chiffrés, domaines chiffrés bruts et LZ4, contenus mixtes et incompressibles, snapshots et clones. Mesurer débits, p50/p95/p99/max, CPU AEAD, écritures et amplification, F1/F2, déverrouillage, vérification et export/restauration. Publier séparément tas + piles du moteur (cible 7 Mio), pic KDF hôte et RSS sur chaque ISA. |
+| 0, 1 | En-tête `NP7POOLH`. Aux offsets 16 et 32 figurent l'identité du pool et sa taille. Les octets 40 à 111 contiennent le nonce, le tag et la maîtresse administrative enveloppée. |
+| 2 à 9 | Quatre paires d'attestations indépendantes. À la génération g, les indices sont 2 + 2(g mod 4) et le suivant. Chaque HMAC engage le pool, la base, l'emplacement, g, le digest de la banque et celui du parent. |
+| 10 à 45 | Quatre banques de neuf blocs. Chacune porte le répertoire des domaines, les sept blocs de contrôle du graphe interne, puis les HMAC des vues de la tête et du prédécesseur. L'ordre est couvert par le digest de banque signé après F1. |
+| À partir de 46 | Chaque unité réserve deux blocs contigus, en-tête canonique et corps de 4 Kio. L'indice CoW b ≥ 7 désigne le bloc physique 46 + 2(b − 7). Le dernier bloc isolé éventuel reste hors capacité. |
 
-Les campagnes déterministes de pannes pourront injecter un générateur réservé aux tests. Forcer un doublon permettra d'observer le comportement du profil choisi. Une longue série sans doublon ne démontre pas une unicité stricte. Une clé candidate ou un chiffré d'essai ne doit jamais quitter les fixtures jetables.
+Le répertoire accepte jusqu'à 17 domaines retenus. Le graphe admet 16 vues vivantes et conserve également les références du prédécesseur. Le HMAC de vue lie pool, domaine, identités FS/LV, génération du catalogue, identifiant, propriétaire, classe, politique, quota, racine physique, empreinte et emplacements de déverrouillage. Le crédit P3 s'applique à la capacité interne de 7 + ⌊(blocs physiques − 46)/2⌋. Chaque unité allouée consomme deux blocs, y compris sur un volume clair. Le coût du sidecar entre ainsi dans l'admission, même pour des pages incompressibles ou partagées.
 
-Pour rejouer les suites P6 de référence, depuis la racine :
+L'en-tête `NP7UNIT1` a une version explicite. Les 88 premiers octets forment les données associées. Ils fixent la suite, le type, l'encodage, le pool, le domaine, la portée logique, la position physique, la génération de naissance, les longueurs et le bitmap des slots. Les offsets 88–111 et 112–127 contiennent le nonce et le tag. Le reste est nul. Le SHA-256 du préfixe de séparation et de la paire complète identifie cette **instance immuable** dans sa référence parente. Une nouvelle écriture à la même adresse et à la même génération sur une branche sœur produit une autre référence. Une copie physique à une autre position ne vérifie pas les données associées attendues.
+
+La construction d'un pack LZ4 précède le scellement. Les positions d'un pack décrivent sa portée d'origine, même si un clone ne garde qu'un seul slot. Le vérificateur compare d'abord contexte et empreinte de la paire, vérifie le tag, déchiffre, confronte les longueurs et le bitmap au répertoire et contrôle les extents. Le contenu brut peut commencer par une signature LZ4. Seul le type de référence autorise le décodeur. [Enveloppe d'unité](../src/secure_unit.rs) · [Graphe et pin des blocs](../src/shared_graph.rs)
+
+## Publication, perte de fraîcheur et traitement des erreurs
+
+1. L'écrivain exclusif épingle les deux générations. Il prépare les nouveaux objets hors de leurs adresses, puis la nouvelle banque et les preuves de vue. Les opérations du graphe sur son préfixe privé restent en RAM. **F1** synchronise les dépendances et la banque.
+2. Après le succès de F1, le journal de NovaFS produit deux HMAC de publication pour deux blocs disjoints. **F2** précède le succès rendu au client. Dès qu'une attestation entière a persisté, la transaction peut être visible après une interruption, même si son appelant n'a reçu aucun acquittement. Une banque préparée seule ne choisit jamais la tête.
+3. Le montage opérationnel sélectionne la plus haute attestation authentifiée et exige son prédécesseur lié. Deux attestations valides incompatibles d'une même génération bloquent la reprise. Un échec sur le catalogue sélectionné ou ses dépendances interdit son utilisation. La perte d'une copie complète laisse la seconde disponible. Avant une réparation, l'écrivain draine, relit le support et vérifie les données des graphes vivants. Le contrôle hors ligne ne répare aucun octet. [Journal et tests](../src/secure_commit.rs)
+4. Un échec après l'émission d'une attestation rend le résultat indéterminé. Un échec après une écriture matérielle interdit le réemploi dans cette instance. Réouvrir le même support exclusif, réexaminer la tête et comparer le reçu client. Les résultats supposent des écritures confinées à la bonne adresse et des flushs fidèles au domaine de persistance déclaré.
+
+Un adversaire qui rejoue **les deux blocs d'attestation** peut reproduire l'état observable d'avant publication si l'ancienne banque et ses données existent encore. Il suffit de rétablir un ancien *état logique* valide, parfois en changeant très peu d'octets physiques. Deux branches légitimes dupliquées peuvent aussi avoir des têtes authentiques distinctes. La fraîcheur absolue exige un témoin récent indépendant qui lie identité, génération et racine. Un reçu conservé dans la même image peut reculer avec elle. Les essais sur simulateur, VM et images Darwin ne démontrent aucune persistance après coupure électrique d'un SSD.
+
+## Sauvegarde autonome et restauration
+
+Le détenteur fournit une clé de sauvegarde indépendante. À chaque export, le CSPRNG génère une identité d'archive et une maîtresse de transport fraîches. L'enveloppe protège cette dernière, puis des sous-clés séparées authentifient le manifeste, les enregistrements et la clôture. Les données associées de chaque page incluent le digest du contexte, son rang et son LBA. La clôture lie tous les octets précédents, leur ordre et le nombre de pages. Une fin exacte est exigée. Le manifeste reprend les identités de lignée et le reçu P5/P6 de la vue, en plus du domaine source.
+
+L'importeur conserve uniquement du chiffré dans son image temporaire. Il vérifie l'archive, la couverture exacte des deux générations FS et revalide chaque page relue. La restauration crée une **nouvelle maîtresse et un nouveau domaine**, y compris lors d'une deuxième restauration du même export. La destination réencode ses propres unités et conserve les identités FS/LV du contrat A. Aucune clé maîtresse source ni aucun pool source n'est nécessaire. La perte de la clé de sauvegarde rend cette archive inutilisable. Un détenteur de cette clé peut fabriquer une archive authentique. La preuve de provenance ou de fraîcheur exige un reçu externe de confiance. [Export authentifié](../src/secure_export.rs) · [Contrat A](novafs-p5-export.md)
+
+## Commandes et reproduction
+
+Les transformations de la CLI écrivent l'image résultante sur stdout. Pour conserver l'image d'entrée, rediriger stdout vers un **autre** fichier. Le provisionneur transmet la trame binaire `NP7KEYS1` par le pipe anonyme FD3. Elle contient l'identité attendue, le secret administratif et les moyens de déverrouillage des domaines nécessaires. Les commandes suivantes utilisent ces descripteurs hérités. Le parcours Python configure les pipes sous macOS et génère les secrets de test en mémoire. [Encodage de FD3 et codes de retour](novafs-p7-verification.md) · [Exemple complet de provisionnement](../lab/p7-cli.py)
+
+| Commande | Données supplémentaires sur FD4 |
+| --- | --- |
+| `pool-format BLOCS SECTEUR POOL_ID p7 --cles-fd3` | Aucune |
+| `volume-create BLOCS SECTEUR OWNER FS LV TAILLE none\|lz4 clair\|chiffre --cles-fd3` | Pour `chiffre`, longueur de phrase u16 LE, 1 à 1 024 octets de phrase, puis 32 octets de secours indépendants et EOF |
+| `file-write BLOCS SECTEUR OBJET CHEMIN OFFSET --donnees-fd4 --cles-fd3` | Jusqu'à 65 536 octets de contenu du fichier |
+| `export BLOCS SECTEUR OBJET --cles-fd3` | Clé de sauvegarde de 32 octets et EOF |
+| `check-export --cle-fd4` | Même clé de sauvegarde. L'archive arrive sur stdin |
+| `restore BLOCS SECTEUR NOUVEAU_POOL OWNER none\|lz4 --cles-fd3` | Clé de sauvegarde suivie des éléments de provisionnement du nouveau domaine |
+
+Les mêmes options de pool s'appliquent à `file-create`, `file-read`, `snapshot`, `clone`, `drop-view`, `advance`, `set-compression` et `list-views`. Le formatage P7 et l'enrôlement sont explicites. `check-pool` et `check` sans clé rendent un rapport structurel. Avec `--cles-fd3`, ils contrôlent également l'authenticité. L'archive P7 se contrôle indépendamment avec sa seule clé de sauvegarde.
 
 ```sh
-set -eu
 resultats=$(mktemp -d)
 for isa in aarch64 x86_64; do
-    python3 novaFS/lab/p6-validation.py "$isa" --sortie "$resultats/$isa.json"
+    NOVAFS_TARGET="$isa-apple-darwin" novaFS/lab/run test --offline --lib --test p7_secure --test p7_cli -- --test-threads=1
+    python3 novaFS/lab/p7-cli.py "$isa"
+    python3 novaFS/lab/p6-validation.py "$isa" --sortie "$resultats/historique-$isa.json"
 done
+python3 novaFS/lab/p6-lz4-interop.py > "$resultats/lz4.json"
+python3 novaFS/lab/p6-interop.py > "$resultats/interop-p6.json"
+python3 novaFS/lab/p6-historiques.py --support formats > "$resultats/anciens-formats.json"
+python3 novaFS/lab/p6-historiques.py --support pannes > "$resultats/pannes-support.json"
+python3 novaFS/lab/p7-no-std.py
+python3 novaFS/lab/p7-validation.py tout --sortie "$resultats"
 ```
+
+Le protocole et le script exacts du contre-exemple P6 se lisent avec `git show 0d72ebc:novaFS/docs/novafs-p7-chiffrement.md`, section 8. Ils peuvent être rejoués dans une extraction de `ea00a755`. Les commandes de vérification d’archives historiques construisent certains binaires via Git et les essais de VM requièrent QEMU.
+
+## Qualification sur ARM64 et x86_64 sous Rosetta
+
+Les deux exécutables Darwin ont tourné sur le Mac Apple Silicon, avec des secteurs de 512 et 4 096 octets. Les scénarios ci-dessous identifient l'oracle et la portée de chaque résultat. Les essais cryptographiques et les tests de pannes constituent une validation du prototype par ses auteurs. [Rapport par architecture](validation/v0.9.9/integration-p7.json) · [Qualification des primitives](novafs-p7-verification.md)
+
+| Exigences | Vérifications réalisées |
+| --- | --- |
+| 1–3, 33 | Suites historiques P0 à P6, scénarios ignorés lancés par leur banc, un million d'opérations différentielles par ISA, lectures des anciens formats, reprise des campagnes de panne et de saturation. |
+| 4–6 | Reproduction du contre-exemple P6. Bifurcation P7 sur deux copies et comparaison de nonces sous le CSPRNG réel. Six échecs d'entropie pendant le CoW par architecture. Validation par vecteurs indépendants sur la même source. |
+| 7–12 | Origines indépendantes de contenu identique, volume clair dans le même pool, phrase et récupération, mauvais secrets, verrouillage d'un seul domaine, remontage et lecture exacte. |
+| 13–19 | Snapshots et clones, suppression de l'origine, écritures divergentes et partielles, relecture des survivants, LZ4 et données incompressibles, campagnes à graines fixes avec oracle indépendant. |
+| 20–25, 36 | 30 altérations physiques par ISA, dont chiffrés, nonces, tags, longueurs, domaines et références. Une banque republiée sous une authentification administrative valide échoue si la preuve du domaine est fausse. Trames de clés et structures de taille hostile refusées. |
+| 26–29 | Préservation des crédits CoW à saturation. Par ISA, 582 variantes de coupure et 70 erreurs d'écriture ou de synchronisation sur le pool chiffré. Relecture des deux états admissibles, contrôle du prédécesseur et nouvelles écritures après reprise. |
+| 30–32, 34 | Export, destruction de la source et huit restaurations croisées au total. Clé erronée, clôture absente, données modifiées et enregistrements substitués rejetés. Les lecteurs anciens ont refusé la révision P7. |
+| 35 | Deux campagnes par ISA, 7 488 opérations chronométrées et 96 processus mesurés. Tas de départ retrouvé après destruction dans les 96 processus. Pic tas + pile hors KDF de 2,26 Mio en natif et 2,28 Mio sous Rosetta. |
+
+| Campagne finale par architecture | ARM64 natif | x86_64 sous Rosetta |
+| --- | ---: | ---: |
+| Tests Cargo standard / instrumentés, zéro échec | 163 / 164 | 163 / 164 |
+| Opérations différentielles / durée réelle | 1 000 000 / 25,670 s | 1 000 000 / 40,233 s |
+| Pénuries injectées / remontages du modèle | 54 643 / 1 000 | 54 643 / 1 000 |
+| Coupures P7 / erreurs d'écriture et de synchronisation P7 | 582 / 70 | 582 / 70 |
+| Commandes de bout en bout formatage → export → restauration, géométries réussies | 2 / 2 | 2 / 2 |
+
+Les suites standard et instrumentées se recouvrent. Le banc dédié a exercé les quatre scénarios ignorés dans la commande Cargo standard, dont le million différentiel. Le rapport conserve également les essais sur fichiers et les coupures de VM des protocoles antérieurs. [Résultats historiques complets](validation/v0.9.9/suites-historiques.json.gz)
+
+Sur le clone LZ4 à données répétitives, le p99 d'écriture P6/P7 chiffré passe de 12,34 à 34,84 ms sur ARM64 et de 12,28 à 69,47 ms sous Rosetta. Le prototype réinspecte la vue sur le chemin de lecture et rouvre le graphe sur le chemin de mutation. Il soumet deux blocs physiques par unité et neuf blocs de banque. Le coût existe aussi sur un volume P7 clair. Le pic du déverrouillage Argon2id, tas et pile inclus, atteint 66,06 et 66,05 Mio respectivement. Les distributions et les observations individuelles permettent de comparer par architecture, profil, opération, géométrie et répétition. [Comparaison P6/P7 et reproduction](novafs-p7-mesures.md)

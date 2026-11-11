@@ -10,18 +10,22 @@ use serde_json::{Value, json};
 use std::fs::{File, Metadata};
 use std::io::{self, Write};
 use std::os::{fd::AsFd, unix::fs::MetadataExt};
+#[path = "key_pipe.rs"]
+pub(crate) mod key_pipe;
+#[path = "check_p7.rs"]
+mod p7;
 
 pub(super) fn help(command: &str) -> String {
     if command == "check-export" {
-        return "novafs check-export < sauvegarde.nvx\nRapport JSON de l’export autonome vérifié. Alias : novafs check --export.".into();
+        return "novafs check-export [--cle-fd4] < sauvegarde.nvx\nRapport JSON de l’export autonome vérifié. Alias : novafs check --export.".into();
     }
     if command == "check" {
-        return "novafs check BLOCS SECTEUR FS_ID LV_ID < lv-p0.raw\nnovafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE [--full] < pool.raw\nnovafs check --export < sauvegarde.nvx\nRapport JSON hors ligne. Codes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète.".into();
+        return "novafs check BLOCS SECTEUR FS_ID LV_ID < lv-p0.raw\nnovafs check BLOCS SECTEUR POOL_ID OBJET EMPREINTE [--full] [--cles-fd3] < pool.raw\nnovafs check --export [--cle-fd4] < sauvegarde.nvx\nP7 sans clé : inspection structurelle (code 3). --cles-fd3 : pipe anonyme NP7KEYS1 et vérification complète.\nRapport JSON hors ligne. Codes : 0 cohérent, 1 incohérent, 2 usage, 3 analyse incomplète.".into();
     }
     let arguments = if command == "space" {
         "BLOCS SECTEUR FS_ID LV_ID (P0) ou BLOCS SECTEUR POOL_ID OBJET (P5 ou P6)"
     } else if command == "check-pool" {
-        "BLOCS SECTEUR [--full]"
+        "BLOCS SECTEUR [--full] [--cles-fd3] (P7 : structure sans clé, contrôle complet par pipe anonyme NP7KEYS1)"
     } else {
         "BLOCS SECTEUR"
     };
@@ -202,20 +206,36 @@ fn fingerprint(m: &Metadata) -> (u64, i64, i64, i64, i64) {
 }
 
 fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
-    let args = if matches!(args[0].as_str(), "check" | "check-pool")
-        && args.last().is_some_and(|a| a == "--full")
-    {
-        &args[..args.len() - 1]
-    } else {
-        args
-    };
+    let mut args = args;
+    let mut with_keys = false;
+    let mut full = false;
+    if matches!(args[0].as_str(), "check" | "check-pool") {
+        while let Some(flag) = args.last() {
+            match flag.as_str() {
+                "--cles-fd3" if !with_keys => with_keys = true,
+                "--full" if !full => full = true,
+                _ => break,
+            }
+            args = &args[..args.len() - 1];
+        }
+    }
     let usage = |e: Error| (Status::Usage, e.to_string());
     let interrupted = |e: io::Error| (Status::Incomplete, e.to_string());
-    if args == ["check-export"] || args == ["check", "--export"] {
+    let archive_p7 =
+        args == ["check-export", "--cle-fd4"] || args == ["check", "--export", "--cle-fd4"];
+    if args == ["check-export"] || args == ["check", "--export"] || archive_p7 {
+        if with_keys {
+            return Err((Status::Usage, help("check-export")));
+        }
         super::image_stream(&io::stdin()).map_err(usage)?;
         let before = metadata(&io::stdin()).map_err(interrupted)?;
-        let info =
-            novafs::shared_export::check_export(io::stdin().lock()).map_err(storage_failure)?;
+        let info = if archive_p7 {
+            let secret = super::secure::backup().map_err(usage)?;
+            novafs::secure_export::check_export(io::stdin().lock(), &secret)
+        } else {
+            novafs::shared_export::check_export(io::stdin().lock())
+        }
+        .map_err(storage_failure)?;
         if before.is_file()
             && fingerprint(&before) != fingerprint(&metadata(&io::stdin()).map_err(interrupted)?)
         {
@@ -224,7 +244,12 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
                 "export modifié pendant le contrôle".into(),
             ));
         }
-        return Ok((Status::Coherent, super::shared::archive_info(&info)));
+        let mut report = super::shared::archive_info(&info);
+        if archive_p7 {
+            report["format"] = json!("P7");
+            report["authenticite_verifiee"] = json!(true);
+        }
+        return Ok((Status::Coherent, report));
     }
     if args[0] == "check-export" {
         return Err((Status::Usage, help("check-export")));
@@ -277,7 +302,29 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
     }
     let dev = FileImage::from_file(fd.try_clone().map_err(interrupted)?, blocks, sector)
         .map_err(|e| (Status::Incomplete, e.to_string()))?;
-    let shared = match looks_like_pool(&dev) {
+    let secure = if matches!(args[0].as_str(), "check" | "check-pool") {
+        novafs::secure_pool::looks_like(&dev)
+    } else {
+        Ok(false)
+    };
+    if matches!(secure, Ok(true)) {
+        let result = p7::check(args, dev, with_keys)?;
+        if fingerprint(&before) != fingerprint(&fd.metadata().map_err(interrupted)?) {
+            return Err((
+                Status::Incomplete,
+                "image modifiée pendant le contrôle".into(),
+            ));
+        }
+        return Ok(result);
+    }
+    if with_keys {
+        secure.map_err(storage_failure)?;
+        return Err((
+            Status::Usage,
+            "le canal NP7KEYS1 requiert un pool P7".into(),
+        ));
+    }
+    let shared = match secure.and_then(|_| looks_like_pool(&dev)) {
         Ok(shared) => shared,
         Err(error) => {
             // Les contrôles P2 examinent les deux ancrages indépendamment, y compris
@@ -383,15 +430,15 @@ fn evaluate(args: &[String]) -> Result<(Status, Value), Failure> {
 
 pub(super) fn run(args: &[String]) -> u8 {
     let (status, mut result) = evaluate(args).unwrap_or_else(|(s, e)| (s, json!({"raison":e})));
-    result["schema"] = json!(
-        if args == ["check-export"] || args == ["check", "--export"] {
-            "novafs-export-1"
-        } else if matches!(args[0].as_str(), "space" | "space-pool") {
-            "novafs-space-1"
-        } else {
-            "novafs-check-1"
-        }
-    );
+    result["schema"] = json!(if args.first().is_some_and(|s| s == "check-export")
+        || args.get(1).is_some_and(|s| s == "--export")
+    {
+        "novafs-export-1"
+    } else if matches!(args[0].as_str(), "space" | "space-pool") {
+        "novafs-space-1"
+    } else {
+        "novafs-check-1"
+    });
     result["statut"] = json!(status.name());
     let mut output = io::stdout().lock();
     if serde_json::to_writer(&mut output, &result).is_err()

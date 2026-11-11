@@ -311,11 +311,15 @@ impl<D> Engine<D> {
     /// Les octets privés de l'overlay et les références de données viennent
     /// du même plan FS. Seul le pool peut les admettre après vérification du
     /// graphe, F1 et F2. Un cache indisponible reste un simple défaut de cache.
-    pub(crate) fn cache_published_data(&mut self, refs: &[Ref], pages: &BTreeMap<u64, Box<Block>>) {
+    pub(crate) fn cache_published_data(
+        &mut self,
+        refs: &[Ref],
+        pages: &BTreeMap<u64, crate::PrivatePage>,
+    ) {
         let cache = self.cache.get_mut().unwrap_or_else(|p| p.into_inner());
         for &r in refs {
             if let Some(page) = pages.get(&r.block) {
-                cache.remember(None, r, **page);
+                cache.remember(None, r, ***page);
             }
         }
     }
@@ -762,7 +766,7 @@ pub struct Tx<'a, D> {
     ids: Ids,
     m: Manifest,
     space: Space,
-    staged: BTreeMap<u64, Box<Block>>,
+    staged: BTreeMap<u64, crate::PrivatePage>,
     data_count: usize,
     data_blocks: [u64; 17],
     logical_bytes: u128,
@@ -772,7 +776,7 @@ pub struct Tx<'a, D> {
 pub(crate) struct Plan {
     head: Head,
     alloc: Allocation,
-    staged: BTreeMap<u64, Box<Block>>,
+    staged: BTreeMap<u64, crate::PrivatePage>,
     cost: ReservationCost,
 }
 impl<D: Device> View for Tx<'_, D> {
@@ -784,7 +788,7 @@ impl<D: Device> View for Tx<'_, D> {
     }
     fn raw(&self, b: u64) -> Result<Block> {
         if let Some(data) = self.staged.get(&b) {
-            Ok(**data)
+            Ok(***data)
         } else {
             self.dev.read(b)
         }
@@ -810,7 +814,7 @@ impl<D: Device> WriteTree for Tx<'_, D> {
             }
         };
         let (r, data) = node.encode(self.ids, b, self.m.previous + 1)?;
-        self.staged.insert(b, Box::new(data));
+        self.staged.insert(b, crate::private_page(data));
         Ok(r)
     }
     fn retire(&mut self, old: Ref) -> Result<()> {
@@ -865,7 +869,7 @@ impl<D: Device> Tx<'_, D> {
         self.data_blocks[self.data_count] = block;
         self.data_count += 1;
         let birth = self.m.previous + 1;
-        self.staged.insert(block, Box::new(*data));
+        self.staged.insert(block, crate::private_page(*data));
         Ok(Ref {
             block,
             birth,
@@ -947,7 +951,7 @@ impl<D: Device> Tx<'_, D> {
                 entries,
             };
             let (r, bytes) = node.encode(self.ids, b, g)?;
-            self.staged.insert(b, Box::new(bytes));
+            self.staged.insert(b, crate::private_page(bytes));
             children.push((key, r));
         }
         let root = if leaves == 1 {
@@ -962,12 +966,12 @@ impl<D: Device> Tx<'_, D> {
                     .collect(),
             };
             let (r, bytes) = node.encode(self.ids, refs[leaves], g)?;
-            self.staged.insert(r.block, Box::new(bytes));
+            self.staged.insert(r.block, crate::private_page(bytes));
             r
         };
         self.m.roots[Family::Space.index()] = root;
         let (reference, data) = self.m.encode(self.ids, mb, g)?;
-        self.staged.insert(mb, Box::new(data));
+        self.staged.insert(mb, crate::private_page(data));
         Ok(Plan {
             cost: ReservationCost {
                 data_blocks: self.data_count as u64,

@@ -64,6 +64,12 @@ pub(crate) struct ReadCursor {
     extent: Option<(u64, Run)>,
 }
 
+impl Drop for ReadCursor {
+    fn drop(&mut self) {
+        zeroize::Zeroize::zeroize(&mut self.path);
+    }
+}
+
 impl ReadCursor {
     fn resolve(&mut self, v: &impl View, path: &str) -> Result<Stat> {
         if self.path == path
@@ -74,7 +80,7 @@ impl ReadCursor {
         let stat = file(v, path)?;
         self.extent = None;
         self.stat = None;
-        self.path.clear();
+        zeroize::Zeroize::zeroize(&mut self.path);
         // Le nom a passé components() (1 024 octets maximum). La mémorisation
         // reste facultative si le tas refuse d'agrandir le tampon du chemin.
         if self.path.try_reserve_exact(path.len()).is_ok() {

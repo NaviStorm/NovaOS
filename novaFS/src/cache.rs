@@ -33,6 +33,12 @@ struct Entry {
     next: u16,
 }
 
+impl Drop for Entry {
+    fn drop(&mut self) {
+        zeroize::Zeroize::zeroize(self.data.as_mut());
+    }
+}
+
 // Le répertoire réserve des tailles puissances de deux sur les deux ABI.
 const _: () = assert!(size_of::<Entry>().is_power_of_two());
 const fn directory_bytes(slots: usize) -> usize {

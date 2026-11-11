@@ -1,5 +1,6 @@
 //! Graphe CoW du pool P5. Le complément de l'union des deux graphes protégés est
 //! libre. Aucun compteur de référence indépendant ne doit être rejoué après panne.
+use self::ObjectRole as Role;
 use crate::{Block, Compression, Device, Error, Ids, MAX_BLOCKS, Result, compression};
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
@@ -390,20 +391,28 @@ fn select(dev: &impl Device, pool: Key, p6: bool) -> Result<(Record, Option<Reco
     Ok((head, previous, false))
 }
 
-#[derive(Clone, Copy, PartialEq, Eq)]
-enum Role {
+/// Contexte attendu d'une page du graphe de partage. Les indices de feuille
+/// et de page portent sur la vue logique. Pour un pack, l'écriture indique
+/// le premier LBA du pack et la lecture indique le LBA demandé dans ce pack.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ObjectRole {
     Root,
     Leaf(u16),
     Data(u16),
+    FsMetadata(u16),
     Packed(u16),
 }
 
-impl Role {
+impl ObjectRole {
+    pub(crate) fn historical_hash(self, block: u64, page: &Block) -> Hash {
+        checksum(self.domain(), block, page)
+    }
+
     fn domain(self) -> &'static [u8] {
         match self {
             Role::Root => b"NovaFS.P5.root",
             Role::Leaf(_) => b"NovaFS.P5.leaf",
-            Role::Data(_) => b"NovaFS.P5.page",
+            Role::Data(_) | Role::FsMetadata(_) => b"NovaFS.P5.page",
             Role::Packed(_) => b"NovaFS.P6.lz4",
         }
     }
@@ -412,12 +421,7 @@ impl Role {
 fn checked_page(dev: &impl Device, r: PageRef, role: Role) -> Result<Block> {
     r.validate(dev.blocks())?;
     agree(r != PageRef::EMPTY, "page P5 vide inattendue")?;
-    let b = dev.read(r.block)?;
-    agree(
-        checksum(role.domain(), r.block, &b) == r.hash,
-        "checksum de page physique P5",
-    )?;
-    Ok(b)
+    dev.read_object(r.block, role, &r.hash)
 }
 
 fn pointers(dev: &impl Device, r: PageRef, role: Role, p6: bool) -> Result<Vec<PageRef>> {
@@ -587,7 +591,7 @@ impl Graph {
         })
     }
 
-    pub(crate) fn open(dev: &impl Device) -> Result<Self> {
+    fn load_catalogs(dev: &impl Device) -> Result<(Record, Option<Record>)> {
         agree(
             (FIXED + 1..=MAX_BLOCKS).contains(&dev.blocks()),
             "géométrie physique P5",
@@ -602,7 +606,11 @@ impl Graph {
             "géométrie, version ou identité du pool P5",
         )?;
         let (head, previous, _) = select(dev, pool, p6)?;
-        let mut g = Self {
+        Ok((head, previous))
+    }
+
+    fn index_roots(dev: &impl Device, head: Record, previous: Option<Record>) -> Self {
+        Self {
             head: head.cat,
             previous: previous.map(|v| v.cat),
             hash: head.hash,
@@ -612,7 +620,53 @@ impl Graph {
             cursor: FIXED,
             must_stabilize: true,
             poisoned: false,
-        };
+        }
+    }
+
+    fn p6_catalogs(dev: &impl Device, pool: Key) -> Result<(Record, Option<Record>)> {
+        let (head, previous) = Self::load_catalogs(dev)?;
+        agree(
+            head.cat.p6 && head.cat.pool == pool,
+            "identité du catalogue P6 interne",
+        )?;
+        Ok((head, previous))
+    }
+
+    pub(crate) fn visible_catalogs(dev: &impl Device, pool: Key) -> Result<Vec<Catalog>> {
+        let (head, previous) = Self::p6_catalogs(dev, pool)?;
+        Ok(std::iter::once(head.cat)
+            .chain(previous.map(|p| p.cat))
+            .collect())
+    }
+
+    pub(crate) fn views_at_head(dev: &impl Device, pool: Key) -> Result<Vec<Entry>> {
+        Ok(Self::p6_catalogs(dev, pool)?.0.cat.entries)
+    }
+
+    /// L'index temporaire contient uniquement la racine de cette vue. Son
+    /// emprunt immuable exclut toute allocation fondée sur un graphe partiel.
+    pub(crate) fn inspect_one<T>(
+        dev: &impl Device,
+        pool: Key,
+        id: u64,
+        inspect: impl FnOnce(&Graph, &Entry) -> Result<T>,
+    ) -> Result<T> {
+        let (head, previous) = Self::p6_catalogs(dev, pool)?;
+        let e = head
+            .cat
+            .entries
+            .iter()
+            .find(|e| e.id == id)
+            .ok_or(Error::NotFound)?
+            .clone();
+        let mut graph = Self::index_roots(dev, head, previous);
+        graph.pin(dev, &e, e.root, Role::Root, &mut Vec::new())?;
+        inspect(&graph, &e)
+    }
+
+    pub(crate) fn open(dev: &impl Device) -> Result<Self> {
+        let (head, previous) = Self::load_catalogs(dev)?;
+        let mut g = Self::index_roots(dev, head, previous);
         let entries: Vec<Entry> = g
             .protected_catalogs()
             .flat_map(|c| c.entries.iter().cloned())
@@ -651,7 +705,7 @@ impl Graph {
         Ok(self.lookup(root, lba)?.is_some_and(|r| r.packed))
     }
 
-    fn lookup(&self, root: PageRef, lba: u64) -> Result<Option<PageRef>> {
+    pub(crate) fn lookup(&self, root: PageRef, lba: u64) -> Result<Option<PageRef>> {
         if lba >= (WIDTH * LEAVES) as u64 {
             return Err(Error::Invalid("LBA hors traduction"));
         }
@@ -750,6 +804,7 @@ impl Graph {
             r.packed == matches!(role, Role::Packed(_)) && (!r.packed || self.is_p6()),
             "type d’arête de compression",
         )?;
+        dev.check_lineage(r.block, entry.ids)?;
         if let Some(a) = self.used.get_mut(&r.block) {
             agree(
                 a.hash == r.hash
@@ -1001,11 +1056,9 @@ impl Graph {
 
 fn store(graph: &mut Graph, dev: &mut impl Device, b: &Block, role: Role) -> Result<PageRef> {
     let block = graph.allocate()?;
-    let hash = checksum(role.domain(), block, b);
-    if let Err(cause) = dev.write(block, b) {
+    let hash = dev.write_object(block, b, role).inspect_err(|_| {
         graph.poisoned = true;
-        return Err(cause);
-    }
+    })?;
     Ok(PageRef {
         block,
         hash,
@@ -1013,26 +1066,47 @@ fn store(graph: &mut Graph, dev: &mut impl Device, b: &Block, role: Role) -> Res
     })
 }
 
-pub(crate) fn store_data(
+pub(crate) fn store_fs_page(
     graph: &mut Graph,
     dev: &mut impl Device,
+    lba: u64,
     data: &Block,
+    file_data: bool,
 ) -> Result<PageRef> {
     if *data == [0; 4096] {
         return Ok(PageRef::EMPTY);
     }
-    store(graph, dev, data, Role::Data(0))
+    let index = u16::try_from(lba).map_err(|_| Error::Invalid("LBA de la page"))?;
+    store(
+        graph,
+        dev,
+        data,
+        if file_data {
+            Role::Data(index)
+        } else {
+            Role::FsMetadata(index)
+        },
+    )
+}
+pub(crate) fn store_data(
+    graph: &mut Graph,
+    dev: &mut impl Device,
+    lba: u64,
+    data: &Block,
+) -> Result<PageRef> {
+    store_fs_page(graph, dev, lba, data, true)
 }
 
 pub(crate) fn store_unit(
     graph: &mut Graph,
     dev: &mut impl Device,
+    first_lba: u16,
     bytes: &Block,
 ) -> Result<PageRef> {
     if !graph.is_p6() {
         return Err(Error::Invalid("pool sans compression P6"));
     }
-    store(graph, dev, bytes, Role::Packed(0))
+    store(graph, dev, bytes, Role::Packed(first_lba))
 }
 
 fn store_pointers(
@@ -1146,7 +1220,7 @@ mod tests {
     fn test_graph(sector: u32) -> Result<(Graph, SimDevice, Entry, PageRef)> {
         let mut d = SimDevice::new(512, sector)?;
         let mut g = Graph::format(&mut d, POOL)?;
-        let page = store_data(&mut g, &mut d, &[0x74; 4096])?;
+        let page = store_data(&mut g, &mut d, 42, &[0x74; 4096])?;
         let r = patch_root(
             &mut g,
             &mut d,
@@ -1165,14 +1239,14 @@ mod tests {
             let mut graph = Graph::format(&mut dev, POOL)?;
             let mut changes = BTreeMap::new();
             for (i, lba) in [0, 5, 63, 64, 127, 1023].into_iter().enumerate() {
-                let page = store_data(&mut graph, &mut dev, &[i as u8 + 1; 4096])?;
+                let page = store_data(&mut graph, &mut dev, lba, &[i as u8 + 1; 4096])?;
                 changes.insert(lba, page);
             }
             let root = patch_root(&mut graph, &mut dev, PageRef::EMPTY, &changes)?;
             let mut first = origin(1, root);
             first.blocks = 1024;
             advance(&mut graph, &mut dev, vec![first.clone()])?;
-            let replacement = store_data(&mut graph, &mut dev, &[0x87; 4096])?;
+            let replacement = store_data(&mut graph, &mut dev, 127, &[0x87; 4096])?;
             let edits = BTreeMap::from([(63, PageRef::EMPTY), (127, replacement)]);
             let next = patch_root(&mut graph, &mut dev, root, &edits)?;
             first.root = next;
@@ -1231,7 +1305,7 @@ mod tests {
             let slots = [17, 18, 35, 63];
             let encoded = pack_at(&slots)?;
             let payload = compression::inspect(&encoded)?.encoded_bytes() as u64;
-            let pack = store_unit(&mut g, &mut d, &encoded)?;
+            let pack = store_unit(&mut g, &mut d, slots[0], &encoded)?;
             let changes = slots.into_iter().map(|n| (u64::from(n), pack)).collect();
             let root = patch_root(&mut g, &mut d, PageRef::EMPTY, &changes)?;
             let mut e = origin(1, root);
@@ -1294,7 +1368,7 @@ mod tests {
                     7 => lba = 72,                // même bit, feuille étrangère
                     _ => unreachable!(),
                 }
-                let pack = store_unit(&mut g, &mut d, &bytes)?;
+                let pack = store_unit(&mut g, &mut d, 8, &bytes)?;
                 let root = patch_root(
                     &mut g,
                     &mut d,
@@ -1343,7 +1417,7 @@ mod tests {
                 assert_eq!(&page[..8], b"NOVAP0FS");
                 assert_eq!(pack.push(lba as u16, &page)?, compression::Push::Added);
             }
-            let unit = store_unit(&mut graph, &mut disk, &pack.finish().unwrap())?;
+            let unit = store_unit(&mut graph, &mut disk, 0, &pack.finish().unwrap())?;
             entry.root = patch_root(
                 &mut graph,
                 &mut disk,
@@ -1370,7 +1444,7 @@ mod tests {
             let mut d = SimDevice::new(512, sector)?;
             let mut g = Graph::format_p6(&mut d, POOL)?;
             let raw_like_pack = pack_at(&[8, 9])?;
-            let raw = store_data(&mut g, &mut d, &raw_like_pack)?;
+            let raw = store_data(&mut g, &mut d, 8, &raw_like_pack)?;
             let root = patch_root(&mut g, &mut d, PageRef::EMPTY, &BTreeMap::from([(8, raw)]))?;
             advance(&mut g, &mut d, vec![origin(1, root)])?;
             assert_eq!(g.read_indexed_page(&d, root, 8)?, raw_like_pack);
@@ -1585,7 +1659,7 @@ mod tests {
                 ecritures: 0,
             };
             let result = if scenario == 0 {
-                store_data(&mut g, &mut d, &[3; 4096]).map(|_| ())
+                store_data(&mut g, &mut d, 0, &[3; 4096]).map(|_| ())
             } else {
                 advance(&mut g, &mut d, vec![e.clone()])
             };

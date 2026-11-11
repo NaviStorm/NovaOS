@@ -1,0 +1,125 @@
+{
+  "objet": "Publication P7 et intégration du pool sur support simulé",
+  "systeme": "macOS 27.2, hôte arm64",
+  "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+  "reproduction": "NOVAFS_TARGET=<aarch64|x86_64>-apple-darwin novaFS/lab/run test --offline --lib --test p7_secure -- --nocapture",
+  "empreintes_sources_sha256": {
+    "tests/p7_secure.rs": "b489d1e2d4dd2fd59267a8fb7d8ea4b4873f76d57505017829dc271319aee393",
+    "src/secure_commit.rs": "d5fca05f9bd75aa45b2b98f89b88a768ebe8ad82a35da465403921768e0ff670"
+  },
+  "executions": [
+    {
+      "cible": "aarch64-apple-darwin",
+      "execution": "natif",
+      "statut": 0,
+      "bibliotheque": {
+        "reussis": 54,
+        "ignores": 1,
+        "ignore": "compression::tests::corpus_liblz4_bidirectionnel, piloté séparément par p6-lz4-interop.py",
+        "secondes": 0.28
+      },
+      "integration": {
+        "reussis": 8,
+        "secondes": 14.62,
+        "tests": [
+          "campagnes_a_oracle_externe_et_saturation",
+          "clones_compression_export_restauration_et_divergence_de_deux_images",
+          "dommage_combine_aucune_reparation_avant_controle_du_graphe",
+          "entropie_indisponible_pendant_une_transaction",
+          "falsifications_reelles_dans_le_graphe_et_fermeture_des_mutations",
+          "frontieres_de_transaction_chiffree_et_eio",
+          "preuve_domaine_independante_de_la_publication_administrative",
+          "volumes_independants_contenus_identiques_verrouillage_et_coexistence"
+        ],
+        "coupures_et_erreurs_par_secteur": [
+          {
+            "octets": 512,
+            "variantes_coupure_et_persistance": 291,
+            "echecs_ecritures_et_flush": 35
+          },
+          {
+            "octets": 4096,
+            "variantes_coupure_et_persistance": 291,
+            "echecs_ecritures_et_flush": 35
+          }
+        ]
+      }
+    },
+    {
+      "cible": "x86_64-apple-darwin",
+      "execution": "Rosetta",
+      "statut": 0,
+      "bibliotheque": {
+        "reussis": 54,
+        "ignores": 1,
+        "ignore": "compression::tests::corpus_liblz4_bidirectionnel, piloté séparément par p6-lz4-interop.py",
+        "secondes": 0.5
+      },
+      "integration": {
+        "reussis": 8,
+        "secondes": 21.69,
+        "tests": [
+          "campagnes_a_oracle_externe_et_saturation",
+          "clones_compression_export_restauration_et_divergence_de_deux_images",
+          "dommage_combine_aucune_reparation_avant_controle_du_graphe",
+          "entropie_indisponible_pendant_une_transaction",
+          "falsifications_reelles_dans_le_graphe_et_fermeture_des_mutations",
+          "frontieres_de_transaction_chiffree_et_eio",
+          "preuve_domaine_independante_de_la_publication_administrative",
+          "volumes_independants_contenus_identiques_verrouillage_et_coexistence"
+        ],
+        "coupures_et_erreurs_par_secteur": [
+          {
+            "octets": 512,
+            "variantes_coupure_et_persistance": 291,
+            "echecs_ecritures_et_flush": 35
+          },
+          {
+            "octets": 4096,
+            "variantes_coupure_et_persistance": 291,
+            "echecs_ecritures_et_flush": 35
+          }
+        ]
+      }
+    }
+  ],
+  "effectifs_par_architecture": {
+    "geometries_secteur_octets": [
+      512,
+      4096
+    ],
+    "campagnes_avec_oracle": {
+      "graines": [
+        "0xeddfa3",
+        "0x9108ab"
+      ],
+      "operations_par_graine_et_geometrie": 48,
+      "total": 192,
+      "comparaison": "Octets de chaque vue après chaque opération, remontage tous les huit pas."
+    },
+    "integration": {
+      "falsifications_physiques": 30,
+      "refus_preuve_domaine_avec_publication_administrative_valide": 2,
+      "defauts_lecture_descriptor_ou_contenu": 4,
+      "pannes_de_la_source_d_entropie": 6,
+      "dommages_combines_attestation_et_donnee": 2,
+      "archives_restaurations_dans_pools_destinations_neufs": 4,
+      "rejets_de_troncatures_et_alterations_avant_restauration": 24,
+      "bifurcations_de_copies_verifiant_les_nonces": 2,
+      "saturation_des_credits_et_divergence_CoW_acceptee": 2
+    },
+    "journal_isole": {
+      "variantes_arret_et_persistance": 160,
+      "combinaisons_masques_de_dechirure": 72,
+      "corruptions_isolees_apres_acquittement": 4,
+      "erreurs_de_lecture": 16,
+      "echecs_ecriture_et_flush": 12,
+      "reponses_NoSpace_apres_effet": 10
+    }
+  },
+  "limites": [
+    "Le support simulé ne démontre pas la persistance électrique.",
+    "Le contrôle de nonces sur deux copies observe leurs tirages réels. La borne cryptographique repose sur le CSPRNG.",
+    "Les temps mesurent le banc entier. Les distributions des opérations et mesures de mémoire relèvent du banc de performances."
+  ]
+}

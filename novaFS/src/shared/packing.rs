@@ -9,6 +9,12 @@ pub(super) struct Group {
     first: Block,
 }
 
+impl Drop for Group {
+    fn drop(&mut self) {
+        zeroize::Zeroize::zeroize(&mut self.first);
+    }
+}
+
 impl Default for Group {
     fn default() -> Self {
         Self {
@@ -40,7 +46,7 @@ impl Group {
                 }
             }
             Push::Raw => {
-                refs.insert(lba, graph::store_data(graph, dev, data)?);
+                refs.insert(lba, graph::store_data(graph, dev, lba, data)?);
             }
             Push::Full => return Err(crate::Error::Invalid("pack vide refusé")),
         }
@@ -64,8 +70,8 @@ impl Group {
             return Ok(());
         }
         let reference = match pack.finish() {
-            Some(unit) => graph::store_unit(graph, dev, &unit)?,
-            None => graph::store_data(graph, dev, &self.first)?,
+            Some(unit) => graph::store_unit(graph, dev, slots[0], &unit)?,
+            None => graph::store_data(graph, dev, u64::from(slots[0]), &self.first)?,
         };
         for lba in &slots[..count] {
             refs.insert(u64::from(*lba), reference);

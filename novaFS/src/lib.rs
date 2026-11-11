@@ -1,8 +1,9 @@
-//! Prototype hôte NovaFS. Contenu P0, vues CoW P5 et compression des pools P6.
+//! Prototype hôte NovaFS. Contenu P0, vues CoW, compression et chiffrement de volumes.
 mod cache;
 pub use cache::CacheStats;
 pub mod codec;
 mod compression;
+pub mod crypto;
 #[path = "../lab/device.rs"]
 pub mod device;
 mod engine;
@@ -11,9 +12,14 @@ mod fs;
 #[path = "../lab/latency_probes.rs"]
 pub mod latency_probes;
 pub mod pool;
+pub mod secure_commit;
+pub mod secure_export;
+pub mod secure_pool;
+pub mod secure_unit;
 pub mod shared;
 pub mod shared_export;
 mod shared_graph;
+pub use shared_graph::ObjectRole;
 mod space;
 pub mod tree;
 
@@ -31,6 +37,11 @@ pub use fs::{Kind, Stat};
 pub const BLOCK_BYTES: usize = 4096;
 pub const MAX_BLOCKS: u64 = 2_097_152;
 pub type Block = [u8; BLOCK_BYTES];
+/// Pages privées d'une transaction, effacées sur toutes les sorties, y compris abandon.
+type PrivatePage = Box<zeroize::Zeroizing<Block>>;
+fn private_page(page: Block) -> PrivatePage {
+    Box::new(zeroize::Zeroizing::new(page))
+}
 
 /// Politique persistante appliquée aux nouvelles pages de données d'une vue.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -117,6 +128,37 @@ pub trait Device {
     fn read(&self, block: u64) -> Result<Block>;
     fn write(&mut self, block: u64, data: &Block) -> Result<()>;
     fn flush(&mut self) -> Result<()>;
+
+    /// Un adaptateur chiffré contrôle le domaine attendu et la sous-clé de la page.
+    fn typed_fs_pages(&self) -> bool {
+        false
+    }
+    fn check_file_class(&self, _b: u64, _file_data: bool) -> Result<()> {
+        Ok(())
+    }
+    fn check_lineage(&self, _block: u64, _ids: Ids) -> Result<()> {
+        Ok(())
+    }
+    fn read_object(
+        &self,
+        block: u64,
+        context: ObjectRole,
+        expected_hash: &[u8; 32],
+    ) -> Result<Block> {
+        let page = self.read(block)?;
+        if context.historical_hash(block, &page) != *expected_hash {
+            return Err(Error::Corrupt("checksum de page physique P5"));
+        }
+        Ok(page)
+    }
+
+    /// Renvoie la référence de l'objet effectivement écrit. Un support chiffré
+    /// lie sa référence à l'enveloppe persistante et authentifiée.
+    fn write_object(&mut self, block: u64, data: &Block, context: ObjectRole) -> Result<[u8; 32]> {
+        let hash = context.historical_hash(block, data);
+        self.write(block, data)?;
+        Ok(hash)
+    }
 }
 
 impl<D: Device> Device for &mut D {
@@ -134,5 +176,25 @@ impl<D: Device> Device for &mut D {
     }
     fn flush(&mut self) -> Result<()> {
         (**self).flush()
+    }
+    fn typed_fs_pages(&self) -> bool {
+        (**self).typed_fs_pages()
+    }
+    fn check_file_class(&self, b: u64, data: bool) -> Result<()> {
+        (**self).check_file_class(b, data)
+    }
+    fn check_lineage(&self, b: u64, ids: Ids) -> Result<()> {
+        (**self).check_lineage(b, ids)
+    }
+    fn read_object(
+        &self,
+        block: u64,
+        context: ObjectRole,
+        expected_hash: &[u8; 32],
+    ) -> Result<Block> {
+        (**self).read_object(block, context, expected_hash)
+    }
+    fn write_object(&mut self, block: u64, data: &Block, context: ObjectRole) -> Result<[u8; 32]> {
+        (**self).write_object(block, data, context)
     }
 }
