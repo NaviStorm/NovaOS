@@ -1,5 +1,7 @@
 # Installation AArch64 dans UTM — audit de v0.15.0
 
+**État de la qualification.** Sur disque VirtIO unique, aucun des deux firmwares AArch64 fournis par UTM n’attache le SID 48. L’IOMMU refuse son premier DMA avant toute lecture de secteur. Le timer physique et l’INTx du disque ont été livrés à une sonde EL1 sur GICv3 sans ITS. Le passage à l’installation reste suspendu à un arbitrage sur le pilote DXE et le transfert DMA. [Mesures et décision](#qualification-expérimentale-edk2-et-gicv3)
+
 La phase 0 a été réalisée sur `main` au commit `a250cb25b530f001debf256f6bfdf8afbc0bef90`. Avec le moteur livré dans UTM 5.0.8, le firmware exécute NovaOS v0.14.0, puis l’admission du disque échoue avant le lancement du shell. Le passage de la phase 1 à la phase 2 reste bloqué. NovaFS conserve sa version v0.9.13 et son format P9.
 
 ## Phase 0 — de l’UEFI au service de fichiers
@@ -164,3 +166,76 @@ Les commandes de la section « Contrôles du socle v0.14.0 » ont été réexéc
 | Opérations différentielles NovaFS | 1 000 000 en 25,249 s | 1 000 000 en 40,676 s |
 
 Chaque passe Cargo conserve quatre tests ignorés par défaut. Chaque campagne différentielle a compté 345 183 publications, 54 643 pénuries et 1 000 remontages audités. Les deux bancs d’interopérabilité NovaFS P8 et P9 se sont terminés avec le code zéro. Les essais de firmware ici décrits utilisent un disque avec secteurs de 512 octets. Les deux géométries figurent dans les régressions bloc. L’interface graphique UTM, le partitionnement depuis l’invité et la persistance après installation restent hors des résultats obtenus.
+
+## Qualification expérimentale EDK2 et GICv3
+
+Base vérifiée sur `main` au commit `e52a077d6fb4b527d8ddc75d8b16869f3af39d3b`, avec arbre propre. Le banc utilise les bibliothèques de l’application UTM 5.0.8 installée, QEMU 10.0.12, `virt-10.0`, TCG, un Cortex-A72 et 256 Mio. Chaque démarrage UEFI utilise un disque VirtIO unique en `00:06.0`, une image amorçable jetable en surcouche et des variables privées correspondant à la ROM. Le contrôleur en `00:05.0` impose `boot-bypass=off`. Le disque exige `iommu_platform=on`, avec ATS désactivé et zéro vecteur MSI-X.
+
+### Firmwares disponibles et initialisation précoce
+
+| Code AArch64 fourni par UTM | SHA-256 du code pflash | Modules identifiables dans le volume DXE |
+|---|---|---|
+| `edk2-aarch64-code.fd` | `ee769c4bf42a5350d33345fc1b16d00156fe0c25fb3c68debd003bd844e4e3fa` | 82 noms de modules distincts dans les chemins CodeView |
+| `edk2-aarch64-secure-code.fd` | `c85a57de1ac39e550a6529bd66a4214eb1d8c14dcda7e22dedf72566a769fbc7` | 84 noms |
+
+Les deux volumes LZMA contiennent des références à `ArmGicDxe`, `ArmTimerDxe`, `PciHostBridgeDxe`, `PciBusDxe`, `Virtio10` et `VirtioBlkDxe`. Aucun nom extrait ne désigne un pilote IOMMU ou SMMU. La preuve comportementale est la tentative du SID 48 avant le premier `ATTACH`. La révision source exacte des ROM reste inconnue. L’essai de la variante `-secure` utilise son modèle de variables fourni. Le refus précède la lecture de l’application EFI et toute vérification de sa signature sur ce disque.
+
+UTM 5.0.8 construit ses arguments avec GICv3 par défaut pour AArch64 et `virtualization=on` pour cette machine en TCG. Son générateur sélectionne le code pflash standard ou Secure Boot et prévoit le cas d’un pflash personnalisé. Cette possibilité permettrait d’essayer une construction séparée. Les essais utilisent le moteur de l’application directement, sans import de VM dans son interface graphique. [Générateur d’arguments UTM 5.0.8](https://github.com/utmapp/UTM/blob/v5.0.8/Configuration/UTMQemuConfiguration%2BArguments.swift#L548-L605)
+
+L’arbre de comparaison EDK II `edk2-stable202502`, commit `fbe0805b2091393406952e84724188f8c1941837`, fournit les interfaces nécessaires. `VirtioBlkDxe` négocie le bit 33, mappe l’anneau avant son activation, puis mappe l’en-tête, les données et le statut de chaque requête. Le transport moderne délègue à `EFI_PCI_IO_PROTOCOL.Map`. Le pont racine peut appeler `EDKII_IOMMU_PROTOCOL.Map` et le bus PCI appelle ensuite `SetAttribute` avec le handle de la fonction et les droits demandés. Le volume ArmVirtQemu examiné ne contient aucun fournisseur virtio-IOMMU pour ce contrôleur. Le module OVMF pour SEV/TDX vise la mémoire confidentielle x86. Le module ARM `NonCoherentIoMmuDxe` traite la cohérence mémoire et sa méthode `SetAttribute` retourne succès sans programmer de domaine. [Composition du volume ArmVirt](https://github.com/tianocore/edk2/blob/edk2-stable202502/ArmVirtPkg/ArmVirtQemuFvMain.fdf.inc) · [Pilote bloc](https://github.com/tianocore/edk2/blob/edk2-stable202502/OvmfPkg/VirtioBlkDxe/VirtioBlk.c) · [Transport PCI VirtIO 1.0](https://github.com/tianocore/edk2/blob/edk2-stable202502/OvmfPkg/Virtio10Dxe/Virtio10.c) · [Droits par fonction PCI](https://github.com/tianocore/edk2/blob/edk2-stable202502/MdeModulePkg/Bus/Pci/PciBusDxe/PciIo.c) · [Module de cohérence ARM](https://github.com/tianocore/edk2/blob/edk2-stable202502/EmbeddedPkg/Drivers/NonCoherentIoMmuDxe/NonCoherentIoMmuDxe.c)
+
+Le point d’intégration se situe dès la connexion du transport PCI. Dans la source examinée, `Virtio10BindingStart` demande la maîtrise de bus. La simple présence d’un DXE dans le volume, ou sa position dans la liste FDF, ne garantit donc pas l’ordre voulu. Il faudrait interdire la connexion du pilote de disque tant que le contrôleur de confiance n’a pas initialisé ses propres files et que le chemin PCI du disque n’est pas associé au SID attendu. Toute erreur d’attachement ou d’octroi doit empêcher la publication des adresses de file. [Connexion du transport](https://github.com/tianocore/edk2/blob/edk2-stable202502/OvmfPkg/Virtio10Dxe/Virtio10.c#L1058-L1140) · [Contrat IOMMU d’EDK II](https://github.com/tianocore/edk2/blob/edk2-stable202502/MdeModulePkg/Include/Protocol/IoMmu.h)
+
+### Matrice des démarrages et des interruptions
+
+| Moteur et entrée | Résultat observé | Portée |
+|---|---|---|
+| UTM, firmware standard, disque seul, GICv3 sans ITS | Première traduction en lecture après `DRIVER_OK`, SID 48 inconnu, IOVA `0x4e8ac000`. Zéro `ATTACH`, `MAP`, lecture ou écriture bloc en 30,007 s. | Refus avant le témoin de l’ESP, Limine et NovaOS. |
+| UTM, firmware Secure Boot, même disque et même GIC | Même SID et même direction, IOVA `0x4a9a7000`, mêmes compteurs nuls en 30,007 s. | L’ESP protégée reste inaccessible. |
+| UTM, mêmes deux ROM, avec `virtualization=on` (EL2 exposé) | Refus au même SID et à l’IOVA propre à chaque ROM. Zéro attachement, mappage ou opération bloc en 30,013 s (standard) et 30,008 s (Secure Boot). | La propriété supplémentaire du profil TCG d’UTM reproduit le blocage. |
+| UTM, sonde EL1 chargée en RAM par le banc, même GIC et disque en `00:06.0` | Timer physique 30 puis INTx 37, acquittés et terminés. | Qualification de la route de configuration du disque. Aucune file de données activée. |
+| UTM, GICv2 sur CD, témoin antérieur `e52a077` | Région MSI GICv2m `0x08020000–0x08020fff`, ouverture refusée avec `Route`. | Refus du bail avant attachement. |
+| QEMU 11.1.3, CD, GICv2 avec MSI désactivé, même témoin antérieur | NovaShell lit P9. Le domaine 1 du SID 48 reçoit sept mappages, puis sept retraits et un détachement. | Chemin NovaOS après le chargement par CD. |
+
+Les quatre essais UEFI ont utilisé le même disque amorçable (SHA-256 `bad1a5064c8502d2c6d07db494f38df05c86a70589c2883cedfc5393e1b7d93d`). Le seul INTID acquitté et terminé par les deux ROM, avec et sans exposition d’EL2, est 27. Les résultats portent sur TCG, des secteurs de 512 octets et un vCPU. Le démarrage par HVF et la validation de l’interface graphique UTM ne figurent pas dans cette campagne.
+
+Le DTB UTM annonce GICD à `0x08000000` (64 Kio), la région GICR à `0x080a0000` et INTA du slot 6 sur SPI 5, donc INTID 37, à niveau haut. Il n’annonce ni cadre GICv2m, ni ITS, ni `msi-map`. Le `iommu-map` conserve l’identité du RID 48 et exclut le RID 40 du contrôleur lui-même. Une réponse invitée `PROBE` sans réserve reste à mesurer pour le SID 48 sur cette topologie.
+
+Le firmware utilise l’interface système du GICv3. Dans le profil de référence, ses lectures de `ICC_IAR1` et écritures de `ICC_EOIR1` portent sur le timer virtuel 27. La sonde EL1 indépendante utilise le redistributeur et le timer physique non sécurisé 30. Après cette première IRQ, le banc porte de 1 à 2 Mio la capacité d’un fichier raw créé pour cet essai. Le disque lève INTA. Le gestionnaire reçoit 37, lit le bit de changement de configuration dans l’ISR VirtIO et la nouvelle capacité de 4 096 secteurs. La ligne retombe, le gestionnaire la masque, termine l’IRQ et vérifie les bits enable, pending et active à zéro. La maîtrise de bus PCI du disque reste coupée et les traces ne contiennent aucun DMA, attachement ou accès bloc. [Sonde EL1](../tests/gic3_el1/sonde.c) · [Notification de changement de capacité dans QEMU](https://github.com/qemu/qemu/blob/v10.0.0/hw/block/virtio-blk.c) · [Assertions sur les traces](../tests/qualification_gic3.py)
+
+La HAL livrée de NovaOS mappe une page du distributeur et l’interface CPU GICv2 à `0x08010000`. Pour utiliser le GICv3, elle doit sélectionner le bon profil avant son premier accès, mapper GICR et le registre de routage GICD du SPI, puis acquitter et terminer les IRQ via les registres `ICC_*`. La sonde démontre la livraison physique des deux sources sous TCG. L’ordonnanceur NovaOS, une interruption de **complétion** du disque, la purge pendant un bail et la révocation sous GICv3 restent à qualifier ensemble. [Mappages EL1](../kernel/src/arch/aarch64/paging.rs) · [HAL de production](../kernel/src/arch/aarch64/timer.rs)
+
+### Domaine DMA et transfert de responsabilité
+
+| Étape | Garantie mesurée ou condition à satisfaire |
+|---|---|
+| Reset et première traduction | Sur les ROM livrées, le SID inconnu est refusé avant la remise d’un secteur au modèle bloc. Le journal fournit une IOVA et une direction, sans identifier de LBA. |
+| Première lecture autorisée | Un DXE de confiance résident dans le pflash devrait initialiser ses files de contrôle privées, vérifier la topologie et les réserves par `PROBE`, puis attacher le SID 48 à un domaine vide, sans bypass. Chaque `MAP` doit être acquitté avant l’utilisation de la file. Le tampon de lecture ne doit accorder au disque que l’écriture. Les objets de l’anneau et les tampons communs doivent occuper des pages dédiées, sans données EFI voisines. Les autres SID restent refusés. Aucun démarrage mesuré n’a atteint cette étape sous UEFI. |
+| Sortie des services | Le callback amont de `VirtioBlkDxe` écrit zéro dans le statut. La révocation doit également arrêter les soumissions, drainer les transferts, confirmer le reset et l’arrêt de la maîtrise de bus, retirer les mappages et détacher le SID avant recyclage. Le `PciIoUnmap` amont ignore le retour de `SetAttribute(..., 0)` avant d’appeler `Unmap`. Le fournisseur doit retenir les pages tant que la révocation effective peut échouer. Un rejet de `MapKey`, une nouvelle tentative et une faute pendant le retrait doivent maintenir le refus ou la quarantaine. [Callback VirtIO](https://github.com/tianocore/edk2/blob/edk2-stable202502/OvmfPkg/VirtioBlkDxe/VirtioBlk.c#L1040-L1060) · [Ordre des événements DXE](https://github.com/tianocore/edk2/blob/edk2-stable202502/MdeModulePkg/Core/Dxe/DxeMain/DxeMain.c#L777-L818) |
+| Reprise par NovaOS | Le noyau utilise les cadres déclarés disponibles, puis restitue les cadres du chargeur avant l’ouverture du bail bloc. La garantie de quiescence doit donc être établie **avant la première réutilisation possible**. Le contrat Limine v0.14.0 ne transmet pas de preuve de retrait DMA. Sur la topologie historique, le pilote installe un domaine neuf et sept pages privées. Les tests vérifient le refus d’écriture sur un tampon en lecture seule ou démappé, le traitement d’une IRQ tardive, le retrait et les cadres maintenus en quarantaine en cas de transfert bloqué. [Entrée du noyau](../kernel/src/main.rs) · [Contrat de démarrage](../kernel/src/boot.rs) · [Domaine ARM](../kernel/src/hardware/block/viommu.rs) · [Retrait du bail](../kernel/src/hardware/block/lease.rs) |
+
+### Reproduction et régressions
+
+Sur macOS ARM64, avec les prérequis de l’arbitrage A, le Clang de Xcode et le `rust-lld` du toolchain stable, lancer depuis la racine du dépôt les commandes ci-dessous. Les deux supports pflash, leurs modèles de variables et le disque amorçable sont contrôlés par empreinte. Le banc conserve le DTB, les journaux et le bilan JSON dans un répertoire unique `novaOS/build/qualification-gic3-*/`. Les essais pflash demandent un socket Unix privé pour le TPM.
+
+```sh
+make -C novaOS ARCH=aarch64 kernel
+python3 novaOS/tests/qualification_gic3.py
+for arch in aarch64 x86_64; do
+    make -C novaOS ARCH="$arch" test elf-test lifecycle-test ipc-races block-test
+    python3 novaFS/lab/p51-validation-suites.py "$arch"
+done
+```
+
+| Contrôle réexécuté | AArch64 | x86_64 |
+|---|---:|---:|
+| Démarrages historiques NovaOS sous QEMU | 25/25 | 25/25 |
+| Groupes bloc, secteurs 512 et 4 096, isolation et révocation incluses | 24/24 | 24/24 |
+| ELF multipage, cycle de vie des processus, courses IPC | 3/3 | 3/3 |
+| NovaFS standard, exécutables Mach-O vérifiés | 192 réussis, natif | 192 réussis, Rosetta |
+| NovaFS instrumenté | 193 réussis, natif | 193 réussis, Rosetta |
+| NovaFS différentiel | 1 000 000 en 25,566 s | 1 000 000 en 50,223 s |
+
+Chaque passe Cargo compte quatre cas ignorés par défaut. La campagne différentielle séparée a vérifié, par architecture, 345 183 publications, 54 643 pénuries injectées et 1 000 remontages audités.
+
+**Arbitrage demandé.** Autoriser ou écarter le développement d’un pilote DXE virtio-IOMMU précoce et du contrat de remise à zéro vérifiable avant réemploi des pages, ainsi que l’intégration d’un profil GICv3 dans la HAL NovaOS. La recommandation est de poursuivre sur un firmware de laboratoire distinct avant de décider de sa distribution. La première lecture confinée de l’ESP, la reprise après échec de sortie EFI, la révocation des anciennes IOVA et le démarrage autonome de NovaShell sur P9 restent les critères d’acceptation. Ils sont inaccessibles avec les deux firmwares testés. L’adoption du firmware, les phases 2 à 4 et toute évolution d’ABI restent soumises à décision.

@@ -69,6 +69,13 @@ def routage(moteur, traces, version):
         assert subprocess.check_output(["fdtget", dtb, intc, "compatible"], text=True).strip() == "arm,gic-v3"
         enfants = subprocess.check_output(["fdtget", "-l", dtb, intc], text=True).splitlines()
         assert not any(n.startswith(("v2m@", "its@")) for n in enfants)
+        assert mots(intc, "reg") == [0, 0x8000000, 0, 0x10000, 0, 0x80a0000, 0, 0xf60000]
+        assert mots("/timer", "interrupts") == [1, 13, 4, 1, 14, 4, 1, 11, 4, 1, 10, 4]
+        # Les entrées iommu-map excluent le contrôleur (RID 40) de sa propre traduction.
+        noeuds = subprocess.check_output(["fdtget", "-l", dtb, pci], text=True).splitlines()
+        controleur, = [n for n in noeuds if n.startswith("virtio_iommu@")]
+        iommu = mots(f"{pci}/{controleur}", "phandle")[0]
+        assert mots(pci, "iommu-map") == [0, iommu, 0, 40, 41, iommu, 41, 65536 - 41]
     return dict(gic=version, intid=32 + routes[0][4], cadre_v2m=cadre, msi_map="msi-map" in proprietes)
 
 

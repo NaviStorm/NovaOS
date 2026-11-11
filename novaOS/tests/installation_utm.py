@@ -114,14 +114,16 @@ def observation(cmd, profil, traces, lecture):
                 pic_rss_emulateur_kio=pic_rss or None)
 
 
-def essai(tmp, traces, profil, *, tracer_dma=False):
+def essai(tmp, traces, profil, *, tracer_dma=False, code_efi=None, variables=None, traces_gic=False):
     utm = profil.startswith("utm-")
     cd = profil.endswith("-cd") or profil == "utm-optique-protegee"
     protege = profil != "utm-disque-temoin"
     emulateur = tmp / "qemu-aarch64-softmmu" if utm else "qemu-system-aarch64"
     carte = MACHINE + (",its=off" if utm else ",msi=off")
-    if profil == "utm-gic3-disque-protege":
+    if profil.startswith("utm-gic3-"):
         carte = "virt-10.0,gic-version=3,its=off"
+        if "-el2-" in profil:
+            carte += ",virtualization=on"
     with tempfile.TemporaryDirectory(dir=tmp) as dossier:
         etat = Path(dossier)
         socket = etat / "tpm"
@@ -139,8 +141,8 @@ def essai(tmp, traces, profil, *, tracer_dma=False):
                         "-cpu", "cortex-a72", "-smp", "1", "-m", "256M", "-nic", "none",
                         "-display", "none", "-device", "ramfb", "-rtc", "base=utc,clock=host",
                         "-serial", "stdio", "-monitor", "none", "-no-reboot",
-                        "-drive", f"if=pflash,unit=0,format=raw,readonly=on,file={FIRMWARE}/edk2-aarch64-code.fd",
-                        "-drive", f"if=pflash,unit=1,format=raw,snapshot=on,file={tmp}/vars.fd",
+                        "-drive", f"if=pflash,unit=0,format=raw,readonly=on,file={code_efi or FIRMWARE / 'edk2-aarch64-code.fd'}",
+                        "-drive", f"if=pflash,unit=1,format=raw,snapshot=on,file={variables or tmp / 'vars.fd'}",
                         "-chardev", f"socket,id=tch,path={socket}", "-tpmdev", "emulator,id=tpm0,chardev=tch",
                         "-device", "tpm-tis-device,tpmdev=tpm0", "-trace", "virtio_iommu_fill_resv_property"]
                 image = tmp / "cli.iso"
@@ -161,6 +163,9 @@ def essai(tmp, traces, profil, *, tracer_dma=False):
                     disque += ",bootindex=1"
                 args += ["-drive", f"if=none,id=d,format=raw,snapshot=on,file={image},cache=writeback,"
                          "werror=report,rerror=report", "-device", disque]
+                if traces_gic:
+                    for evenement in ("gicv3_icc_iar1_read", "gicv3_icc_eoir_write", "gicv3_dist_set_irq"):
+                        args.extend(["-trace", evenement])
                 if tracer_dma:
                     evenements = ["virtio_set_status", "virtio_iommu_attach", "virtio_iommu_map",
                                   "virtio_iommu_unmap", "virtio_iommu_detach", "virtio_iommu_report_fault",
