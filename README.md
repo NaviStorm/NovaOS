@@ -1,51 +1,90 @@
-# Monorepo NovaOS
+# NovaOS
 
-| Répertoire | Rôle |
-|---|---|
-| [novaOS/](novaOS/README.md) | Micro-noyau Rust `no_std` v0.10.0 pour x86_64 et AArch64. Il démarre sous UEFI avec Limine, exécute des processus isolés et fournit l’ABI native et l’IPC par capacités. Le stockage VirtIO optionnel est accessible par IPC sous QEMU. Le prompt de diagnostic avec saisie AZERTY fonctionne sur x86_64. |
-| [novaFS/](novaFS/README.md) | Système de fichiers indépendant v0.9.12. Le prototype macOS utilise des images jetables et prend en charge les transactions CoW, les snapshots, les clones, LZ4, le chiffrement et le scrub P8. NovaOS lance deux processus qui échangent les informations de stockage. Le moteur sur images s’exécute encore sur macOS. |
-| [components/](components/README.md) | Emplacements réservés aux applications, commandes et bibliothèques indépendantes. |
-| [distribution/](distribution/README.md) | Organisation prévue pour sélectionner les composants et assembler les images de distribution. |
+NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-## Compiler, démarrer et tester
+Dans NovaOS **v0.10.0**, on peut déjà suivre une requête de stockage depuis un processus utilisateur jusqu’à un disque VirtIO sous QEMU. Le système de fichiers **NovaFS v0.9.12** se développe dans le même dépôt. Son moteur transactionnel se teste indépendamment sur macOS.
 
-Exécuter ces commandes depuis la racine Git sur un Mac Apple Silicon. NovaOS utilise Rust stable avec les cibles `x86_64-unknown-none` et `aarch64-unknown-none-softfloat`, QEMU avec ses firmwares EDK II, xorriso et Python 3. Les deux configurations de développement produisent aujourd’hui un CD UEFI.
+## Philosophie et architecture
+
+Le micro-noyau fournit les espaces mémoire, la préemption et les communications entre processus (IPC). Une capacité désigne un point de communication et les opérations que son détenteur peut y effectuer. Ainsi, une application peut interroger le service NovaFS sans obtenir le droit de programmer le disque. Le pilote en espace utilisateur prépare les requêtes. Un composant de confiance dans le noyau contrôle les descripteurs DMA avant leur publication.
+
+Le noyau commun confie à une couche matérielle propre à chaque architecture les transitions de privilège, les interruptions et la pagination. Les essais sur les deux architectures éprouvent le même contrat utilisateur. Les mesures de latence et de mémoire accompagnent les tests de panne pour guider les choix de performance et de fiabilité.
+
+Le schéma suit le chemin de stockage. Les traits pleins indiquent les échanges actuels et les pointillés les intégrations prévues.
+
+```mermaid
+flowchart TD
+    app[Application utilisateur de diagnostic] --> ipc[IPC à capacités du micro-noyau]
+    apps[Applications utilisateur futures] -.-> ipc
+    ipc --> fs[Service utilisateur NovaFS]
+    fs -->|IPC| bloc[Service utilisateur bloc]
+    moteur[Moteur NovaFS sur macOS] -.->|portage prévu| fs
+    bloc -->|IPC| pilote[Pilote VirtIO utilisateur]
+    pilote --> noyau[Micro-noyau · médiation DMA et HAL]
+    noyau --> materiel[Matériel VirtIO émulé par QEMU]
+```
+
+## État du projet
+
+| Domaine | État | Ce que l’on peut utiliser ou suivre |
+|---|---|---|
+| Démarrage et affichage | Implémenté | UEFI avec Limine, framebuffer et journal série sur les deux architectures. |
+| Mémoire et exécution | Implémenté | Mémoire virtuelle protégée, tas noyau, ordonnanceur préemptif mono-CPU et processus isolés en Ring 3 ou EL0. |
+| ABI et services | Implémenté | Appels système natifs et IPC à capacités entre processus disposant d’espaces d’adressage distincts. |
+| Stockage bloc | Implémenté | Lecture, écriture et synchronisation sur un disque VirtIO optionnel. Le service bloc et le pilote s’exécutent en espace utilisateur. |
+| NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. Dans NovaOS, le service accède aux secteurs ; le montage d’un système de fichiers reste à réaliser. |
+| Interface texte | Implémenté | Le prompt de diagnostic du noyau accepte la saisie AZERTY sur x86_64. |
+| Environnement utilisateur | Prévu | Shell utilisateur, commandes, applications natives de distribution et gestion des comptes. |
+| Interface et distribution | Prévu | NovaUI et système hybride immuable. |
+
+## Compiler et démarrer
+
+Depuis la racine du dépôt, sur un Mac Apple Silicon, utiliser Rust stable avec les cibles `x86_64-unknown-none` et `aarch64-unknown-none-softfloat`, QEMU avec les firmwares EDK II, xorriso et Python 3.
 
 ```sh
 make -C novaOS ARCH=x86_64 build
 make -C novaOS ARCH=aarch64 build
 make -C novaOS ARCH=x86_64 run
 make -C novaOS ARCH=aarch64 run
-make -C novaOS ARCH=x86_64 test
-make -C novaOS ARCH=aarch64 test
 ```
 
-Les images se trouvent dans `novaOS/build/novaos.iso` et `novaOS/build/novaos-aarch64.iso`. Dans `novaOS/`, les commandes historiques `make ARCH=…` s’utilisent directement. Les commandes et chemins relatifs de la documentation du noyau prennent ce répertoire pour origine. [Machines QEMU, configuration UTM et cibles de test](novaOS/README.md)
+Les cibles `build` produisent respectivement `novaOS/build/novaos.iso` et `novaOS/build/novaos-aarch64.iso`. Les cibles `run` démarrent QEMU avec affichage et sortie série dans le terminal. Depuis `novaOS/`, omettre `-C novaOS`. [Configuration QEMU et UTM](novaOS/README.md)
 
-NovaFS dispose de son propre manifeste, de son verrou Cargo et de son lanceur Darwin. Sous Rosetta, installer aussi la cible Rust `x86_64-apple-darwin`. Le banc de validation ci-dessous exécute les suites standard et instrumentée ainsi que le million d’opérations différentielles pour chaque architecture.
+## Tester et approfondir
 
 ```sh
-novaFS/lab/run build --offline
-for isa in aarch64 x86_64; do
-    python3 novaFS/lab/p6-validation.py "$isa" --sortie "novaFS/target/validation-$isa.json"
-done
-python3 novaFS/lab/p8-validation.py cli --sortie novaFS/target/scrub.json
-python3 novaFS/lab/p8-validation.py mesures --sortie novaFS/target/mesures.json
+make -C novaOS ARCH=x86_64 test
+make -C novaOS ARCH=aarch64 test
+novaFS/lab/run test --offline
 ```
 
-Les deux workspaces Cargo sont indépendants. La configuration bare-metal appartient à `novaOS/.cargo/`. Les produits de compilation vont dans les répertoires `target/` respectifs. Les anciens répertoires locaux `build/` et `target/` à la racine restent ignorés par Git. Les bancs historiques NovaFS qui extraient un commit Git utilisent les chemins de cette révision. [Qualification et récupération NovaFS](novaFS/docs/novafs-p8-scrub.md)
+Les tests NovaOS exercent en VM le démarrage, les changements de privilège et l’ABI. Les cibles `ipc-test` et `block-test` du même Makefile couvrent respectivement les échanges à capacités et le disque virtuel, y compris les erreurs d’E/S et la relecture après redémarrage. [ABI native](novaOS/docs/abi.md) · [Validation IPC](novaOS/docs/mesures-v0.8.0.md) · [Qualification du stockage](novaOS/docs/stockage-bloc-v0.10.0.md)
 
-## Vérification de la collecte mémoire
+NovaFS utilise son propre workspace Cargo et des images jetables. Ses bancs macOS couvrent les coupures simulées, la corruption et la récupération. La validation croisée utilise ARM64 natif et x86_64 sous Rosetta. [Tests de coupure](novaFS/docs/novafs-p1-coupures.md) · [Vérification et réparation contrôlée](novaFS/docs/novafs-p8-scrub.md) · [Commandes des campagnes et relevés mémoire historiques](novaOS/docs/validation-reorganisation.md)
 
-Le banc P8 a effectué trois répétitions de chacune des quatre opérations sur des images de 16 Mio, pour chaque secteur logique (512 et 4 096 octets) et chaque architecture hôte. Les maxima suivants décrivent ces 48 observations. La pile est la taille réservée et le RSS inclut le processus Darwin.
+## Organisation du dépôt
 
-| NovaFS | RSS maximal (octets) | Pic du tas (octets) | Pile réservée (octets) | Allocations maximales par opération |
-|---|---:|---:|---:|---:|
-| ARM64 natif | 3 457 024 | 219 312 | 2 109 440 | 6 077 |
-| x86_64 sous Rosetta | 5 349 376 | 218 400 | 2 097 152 | 6 077 |
+```text
+OS/
+├── novaOS/         Micro-noyau, ABI, services, pilotes et bancs QEMU
+├── novaFS/         Moteur de fichiers indépendant et laboratoire macOS
+├── components/     Emplacement des futures commandes et applications
+├── distribution/   Emplacement des futurs manifestes et outils d’assemblage
+└── README.md
+```
 
-Le tas vivant a retrouvé sa valeur initiale dans les 16 séries. Pour reproduire ce contrôle de collecte, ajouter `--repetitions 3` à la commande de mesure ci-dessus. Dans les VM NovaOS de 128 Mio, la phase `repos_ui` a relevé 234 cadres résidents sur Q35 et 200 sur AArch64, en pages de 4 Kio. La matrice `make -C novaOS ARCH=… ram-test` conserve ses résultats dans `novaOS/build/`. À 64 Mio, les deux configurations de firmware et de chargeur s’arrêtent avant l’entrée du noyau.
+Les deux derniers répertoires sont en construction. Les images de développement se construisent aujourd’hui depuis le workspace NovaOS. [NovaOS](novaOS/README.md) · [NovaFS](novaFS/README.md) · [Composants](components/README.md) · [Distribution](distribution/README.md)
+
+## Feuille de route
+
+Le prochain enjeu du stockage est de monter un volume NovaFS dans le service utilisateur et de permettre aux applications d’y manipuler des fichiers. Les orientations à plus long terme comprennent un shell et des commandes utilisateur, des comptes et permissions, des compilateurs natifs et une interface graphique NovaUI. La compatibilité SwiftUI/AppKit reste exploratoire.
+
+La distribution vise une architecture hybride immuable, avec une base système mise à jour de manière atomique, un retour à la version précédente et des données utilisateur modifiables. Ce modèle reste à développer.
+
+## Contribuer
+
+Pour signaler un problème, indiquer le commit, l’architecture, la commande de reproduction et le résultat observé. Pour proposer une amélioration, décrire le besoin et le composant concerné. Une contribution au code gagne à inclure un test qui exerce le comportement modifié, les résultats sur les cibles concernées et la mise à jour du contrat documenté.
 
 ## Licences
 
-NovaOS est sous licence MIT. Les avis des dépendances embarquées accompagnent ses images dans `licenses/`. NovaFS est sous Mozilla Public License 2.0. La licence des futurs composants et de la distribution fera l’objet d’une décision explicite pour chaque livraison. [Licence NovaOS](novaOS/LICENSE) · [Licence NovaFS](novaFS/LICENSE)
+NovaOS est distribué sous licence MIT et NovaFS sous Mozilla Public License 2.0. Les avis des dépendances embarquées accompagnent les images NovaOS dans `licenses/`. Chaque autre composant relève de sa licence propre lorsqu’elle est définie. [Licence NovaOS](novaOS/LICENSE) · [Licence NovaFS](novaFS/LICENSE)
