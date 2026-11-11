@@ -907,3 +907,126 @@ fn p71_corruption_avant_drain_du_cache_volatil() -> Result<()> {
     }
     Ok(())
 }
+
+/// Compte les accès à une racine étrangère. La sonde n'accède pas à l'index
+/// du moteur et reste indépendante des horloges et des features de mesure.
+struct RootReads {
+    disk: SimDevice,
+    body: u64,
+    count: std::rc::Rc<std::cell::Cell<usize>>,
+}
+impl Device for RootReads {
+    fn mutation_lock(&self) -> Option<std::sync::Arc<Mutex<()>>> {
+        self.disk.mutation_lock()
+    }
+    fn blocks(&self) -> u64 {
+        self.disk.blocks()
+    }
+    fn read(&self, b: u64) -> Result<Block> {
+        if b == self.body {
+            self.count.set(self.count.get() + 1);
+        }
+        self.disk.read(b)
+    }
+    fn write(&mut self, b: u64, page: &Block) -> Result<()> {
+        self.disk.write(b, page)
+    }
+    fn flush(&mut self) -> Result<()> {
+        self.disk.flush()
+    }
+}
+
+#[test]
+fn p72_racine_etrangere_controlee_dans_chaque_transaction() -> Result<()> {
+    for sector in [512, 4096] {
+        let (mut p, ctl) = pool(2600, sector)?;
+        let (v, d) = volume(&mut p, 20, Compression::Lz4)?;
+        let (other, foreign) = volume(&mut p, 40, Compression::Lz4)?;
+        let bytes = donnees(8 * K, "mixte", 12);
+        p.write_file(other, "/f", 0, &bytes)?;
+        let body = obj(&ctl.snapshot().device(), foreign, p.generation())?
+            .into_iter()
+            .find(|(_, h)| h[48..56] == (1u64 << 32).to_le_bytes())
+            .expect("racine")
+            .0
+            + 1;
+        let snap = p.snapshot(other)?;
+        let clone = p.clone_snapshot(snap, OWNER)?;
+        p.remove(other)?;
+        let count = std::rc::Rc::new(std::cell::Cell::new(0));
+        let mut p = SecurePool::open(
+            RootReads {
+                disk: p.into_device(),
+                body,
+                count: count.clone(),
+            },
+            POOL,
+            &admin(),
+        )?;
+        for domain in [d, foreign] {
+            p.unlock(domain, Credential::Recovery(&recovery()))?;
+        }
+        p.advance()?;
+        for value in [11, 12] {
+            count.set(0);
+            p.write_file(v, "/f", 0, &[value; K])?;
+            // Une authentification lors du pin complet, puis une énumération
+            // indépendante des LBA. Le remontage FS utilise leurs arêtes vérifiées.
+            assert_eq!(count.get(), 2);
+            assert_eq!(p.read_file(clone, "/f", 0, bytes.len())?, bytes);
+        }
+        // Même sur un écrivain déjà actif, une réparation met fin au prêt
+        // du premier index. Le montage physique indépendant relit la racine.
+        let certificate = 2 + 2 * (p.generation() % 4);
+        ctl.replace_stable(certificate, [0; K])?;
+        count.set(0);
+        ctl.trace(None, None);
+        p.write_file(v, "/f", 0, b"apres reparation")?;
+        assert!(count.get() > 2);
+        assert_eq!(
+            ctl.events()
+                .iter()
+                .filter(|e| matches!(e, Event::FlushCompleted(_)))
+                .count(),
+            3
+        );
+        let g = p.generation();
+        alterer(&ctl, body, 40)?;
+        let stable = ctl.snapshot().bytes()?;
+        ctl.trace(None, None);
+        assert!(matches!(
+            p.write_file(v, "/f", 0, b"refus"),
+            Err(Error::Corrupt(_))
+        ));
+        assert_eq!(p.generation(), g);
+        assert!(
+            !ctl.events()
+                .iter()
+                .any(|e| matches!(e, Event::BeforeWrite(_)))
+        );
+        assert_eq!(ctl.snapshot().bytes()?, stable);
+    }
+    Ok(())
+}
+
+#[test]
+fn p72_banques_hors_rotation_et_predecesseur() -> Result<()> {
+    for sector in [512, 4096] {
+        let (mut p, ctl) = pool(1800, sector)?;
+        let (v, domain) = volume(&mut p, 21, Compression::Lz4)?;
+        p.write_file(v, "/f", 0, &[77; K])?;
+        p.advance()?;
+        let g = p.generation();
+        // Cette banque ne protège aucune vue. La prochaine publication la
+        // remplace en entier sous F1 avant d'émettre ses attestations.
+        alterer(&ctl, 10 + 9 * ((g + 1) % 4) + 8, 12)?;
+        p.write_file(v, "/f", 0, b"suivant")?;
+        let mut reopened = reouvrir(&ctl.snapshot(), &[domain])?;
+        reopened.check()?;
+        assert_eq!(reopened.read_file(v, "/f", 0, 7)?, b"suivant");
+        // La génération g n'est plus la tête, mais reste un parent protégé.
+        alterer(&ctl, 10 + 9 * (g % 4) + 8, 12)?;
+        refus_sans_ecriture(&mut p, &ctl, v)?;
+    }
+    Ok(())
+}

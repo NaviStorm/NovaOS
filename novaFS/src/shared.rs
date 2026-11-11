@@ -131,14 +131,15 @@ impl<D: Device> Device for Volume<'_, D> {
 
 fn mount_verified_volume<'a, D: Device>(
     dev: &'a D,
-    graph: &Graph,
+    graph: &'a Graph,
     e: &Entry,
+    indexed: bool,
 ) -> Result<Engine<Volume<'a, D>>> {
     let fs = Engine::mount(
         Volume {
             p6: graph.is_p6(),
             disk: dev,
-            index: None,
+            index: indexed.then_some(graph),
             root: e.root,
             blocks: e.blocks,
         },
@@ -202,7 +203,7 @@ pub(crate) fn read_one<D: Device>(
     len: usize,
 ) -> Result<Vec<u8>> {
     Graph::inspect_one(dev, pool, id, |graph, e| {
-        mount_verified_volume(dev, graph, e)?.read(path, offset, len)
+        mount_verified_volume(dev, graph, e, false)?.read(path, offset, len)
     })
 }
 
@@ -306,6 +307,20 @@ pub struct SharedPool<D> {
     health: AtomicU8,
 }
 
+/// Graphe entièrement contrôlé dans la section exclusive P7 courante.
+/// Le prêt du verrou interdit de conserver ce résultat au-delà de la transaction.
+pub(crate) struct VerifiedGraph<'guard> {
+    graph: Graph,
+    _exclusive: &'guard std::sync::MutexGuard<'guard, ()>,
+}
+
+impl VerifiedGraph<'_> {
+    /// L'appelant fournit la vue inscriptible du même support et du même préfixe.
+    pub(crate) fn attach<D: Device>(self, dev: D) -> SharedPool<D> {
+        SharedPool::from_graph(dev, self.graph)
+    }
+}
+
 impl<D: Device> SharedPool<D> {
     pub fn format(mut dev: D, pool: [u8; 16]) -> Result<Self> {
         let graph = Graph::format(&mut dev, pool)?;
@@ -329,7 +344,20 @@ impl<D: Device> SharedPool<D> {
         self.graph.is_p6()
     }
     pub fn open(dev: D) -> Result<Self> {
-        let graph = Graph::open(&dev)?;
+        let graph = Self::verify_graph(&dev, false)?;
+        Ok(Self::from_graph(dev, graph))
+    }
+    pub(crate) fn verify_exclusive<'g>(
+        dev: &D,
+        exclusive: &'g std::sync::MutexGuard<'g, ()>,
+    ) -> Result<VerifiedGraph<'g>> {
+        Ok(VerifiedGraph {
+            graph: Self::verify_graph(dev, true)?,
+            _exclusive: exclusive,
+        })
+    }
+    fn verify_graph(dev: &D, indexed: bool) -> Result<Graph> {
+        let graph = Graph::open(dev)?;
         let mut checked = Vec::new();
         for catalog in graph.protected_catalogs() {
             Self::validate_admission(&graph, catalog, dev.blocks(), None)
@@ -339,16 +367,19 @@ impl<D: Device> SharedPool<D> {
                 if checked.contains(&key) {
                     continue;
                 }
-                mount_verified_volume(&dev, &graph, e)?;
+                mount_verified_volume(dev, &graph, e, indexed)?;
                 checked.push(key);
             }
         }
-        Ok(Self {
+        Ok(graph)
+    }
+    fn from_graph(dev: D, graph: Graph) -> Self {
+        Self {
             dev,
             graph,
             cached: Mutex::default(),
             health: AtomicU8::new(0),
-        })
+        }
     }
     pub fn into_device(self) -> D {
         self.dev

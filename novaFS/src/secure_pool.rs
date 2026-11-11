@@ -3,7 +3,7 @@
 use crate::crypto::{Credential, Entropy, HostEntropy, SLOTS_BYTES, Secret, Slots};
 use crate::secure_commit::{CommitLog, Digest, Head};
 use crate::secure_unit::{self as unit, Context, Keys, Kind};
-use crate::shared::{ObjectInfo, SharedPool};
+use crate::shared::{ObjectInfo, SharedPool, VerifiedGraph};
 use crate::{Block, Compression, Device, Error, Ids, ObjectRole, Result};
 use sha2::{Digest as _, Sha256};
 use std::collections::BTreeMap;
@@ -413,7 +413,7 @@ impl<D: Device> Device for Media<'_, D> {
 
 /// Une sélection lit d’abord la banque du parent, puis la banque de tête.
 /// Seuls les objets des catalogues g et g−1 restent épinglés par le format P7.
-struct Validation<'a> {
+struct Validation<'a, 'guard> {
     expected: Head,
     pool: Id,
     admin: &'a Secret,
@@ -422,8 +422,9 @@ struct Validation<'a> {
     parent: Option<crate::shared_graph::Catalog>,
     state: Option<State>,
     full_graph: bool,
+    graph: Option<VerifiedGraph<'guard>>,
 }
-impl<'a> Validation<'a> {
+impl<'a, 'guard> Validation<'a, 'guard> {
     fn new(
         expected: Head,
         pool: Id,
@@ -440,9 +441,15 @@ impl<'a> Validation<'a> {
             parent: None,
             state: None,
             full_graph: true,
+            graph: None,
         }
     }
-    fn visit(&mut self, disk: &impl Device, h: &Head) -> Result<()> {
+    fn visit(
+        &mut self,
+        disk: &impl Device,
+        h: &Head,
+        exclusive: Option<&'guard std::sync::MutexGuard<'guard, ()>>,
+    ) -> Result<()> {
         let mut state = State::load(disk, self.pool, h)?;
         let size = coord(disk.blocks())?;
         let prefix = Prefix {
@@ -469,7 +476,7 @@ impl<'a> Validation<'a> {
             .verify_mac(&[b"NovaFS/P7/session/header", &header], self.header_mac)?;
         if self.full_graph {
             state.signed_views(size, self.pool, self.keys, None, true)?;
-            SharedPool::open(Media {
+            let media = Media {
                 disk: &mut ReadOnly(disk),
                 state: &mut state,
                 keys: self.keys,
@@ -478,7 +485,12 @@ impl<'a> Validation<'a> {
                 read_scope: None,
                 write_scope: None,
                 writer: None,
-            })?;
+            };
+            if let Some(guard) = exclusive {
+                self.graph = Some(SharedPool::verify_exclusive(&media, guard)?);
+            } else {
+                SharedPool::open(media)?;
+            }
         }
         self.state = Some(state);
         Ok(())
@@ -748,7 +760,7 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
         );
         validation.full_graph = full_graph;
         let log = CommitLog::open(&self.disk, 2, self.pool, &self.admin, |d, h| {
-            validation.visit(d, h)
+            validation.visit(d, h, None)
         })?;
         if log.head() != self.log.head() {
             return Err(corrupt());
@@ -786,11 +798,20 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
             &self.header_mac,
             &self.keys,
         );
+        // Aucun transfert lors d'une reprise ou d'une modification du répertoire
+        // de domaines. Le contrôle avant drain reste indépendant de celui d'après.
+        let exclusive = (!self.log.needs_drain() && domain.is_none()).then_some(&_exclusive);
         let verified = self
             .log
-            .resume(&mut self.disk, &self.admin, |d, h| validation.visit(d, h))
-            .and_then(|()| validation.state.ok_or_else(corrupt));
-        let mut state = match verified {
+            .resume(&mut self.disk, &self.admin, |d, h| {
+                validation.visit(d, h, exclusive)
+            })
+            .and_then(|repaired| {
+                let state = validation.state.ok_or_else(corrupt)?;
+                let graph = if repaired { None } else { validation.graph };
+                Ok((state, graph))
+            });
+        let (mut state, graph) = match verified {
             Ok(state) => state,
             Err(error) => {
                 self.failed = true;
@@ -822,7 +843,7 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
             .ok_or(Error::Limit("génération P7"))?;
         let submitted = std::cell::Cell::new(false);
         let result = (|| {
-            let mut engine = SharedPool::open(Media {
+            let media = Media {
                 disk: &mut self.disk,
                 state: &mut state,
                 keys: &self.keys,
@@ -831,7 +852,13 @@ impl<D: Device, E: Entropy> SecurePool<D, E> {
                 read_scope: None,
                 write_scope: Some(scope),
                 writer: Some((&mut self.entropy, &submitted)),
-            })?;
+            };
+            // Les références décrivent exactement la banque vérifiée sous ce
+            // verrou. La génération suivante ne sert qu'aux nouvelles unités.
+            let mut engine = match graph {
+                Some(verified) => verified.attach(media),
+                None => SharedPool::open(media)?,
+            };
             let start = engine.generation();
             let value = op(&mut engine)?;
             let changed = engine.generation() != start;

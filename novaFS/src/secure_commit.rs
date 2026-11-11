@@ -242,12 +242,14 @@ impl CommitLog {
     /// Sur le même périphérique exclusif, après drainage des anciennes E/S,
     /// stabilise la paire inspectée et complète ses attestations manquantes.
     /// L'échec de cet appel ou d'une publication impose une nouvelle inspection.
-    pub fn resume<D: Device>(
+    /// Signale une réparation et sa barrière pour que l'écrivain abandonne
+    /// tout index temporaire obtenu avant cette intervention sur le support.
+    pub(crate) fn resume<D: Device>(
         &mut self,
         d: &mut D,
         key: &Secret,
         verify: impl FnMut(&D, &Head) -> Result<()>,
-    ) -> Result<()> {
+    ) -> Result<bool> {
         self.check_key(key)?;
         if self.mode == Mode::Interrupted {
             return Err(Error::UnknownOutcome);
@@ -278,7 +280,7 @@ impl CommitLog {
             d.flush()?;
         }
         self.mode = Mode::Writable;
-        Ok(())
+        Ok(repaired)
     }
 
     /// La préparation écrit sur des blocs hors des deux graphes protégés,
