@@ -13,6 +13,7 @@ mod lexer;
 mod line_editor;
 mod parser;
 mod paths;
+mod script;
 
 fn session() -> rt::Result<()> {
     let mut fs = Client::new()?;
@@ -28,36 +29,59 @@ fn session() -> rt::Result<()> {
     if test && rt::call(tty::SPAWN, u64::MAX, 0, 0).status != rt::BAD_ARGUMENT {
         return Err(rt::REFUSED);
     }
-    let mut aliases = aliases::Aliases::default();
+    let mut frame = script::Frame::default();
     let mut history = history::History::configured()?;
     let mut input = input::Input::default();
-    loop {
+    let exit = loop {
         if test {
             console::edit(2)?;
         }
-        let command = line_editor::line(&mut input, &history)
-            .and_then(|s| {
-                history.remember(&s);
-                lexer::lex(&s)
-            })
-            .map(parser::parse);
-        match command {
-            Ok(Some(cmd)) => match executor::execute(&mut fs, cmd, test, &mut aliases) {
-                Ok(false) => break,
-                Ok(true) => {}
-                Err(e) => console::write(
+        let input_line = line_editor::line(&mut input, &history, "nsh> ");
+        let result = (|| {
+            let mut source = input_line?;
+            history.remember(&source);
+            let program = loop {
+                match parser::parse(&source) {
+                    Ok(p) => break p,
+                    Err(parser::Error::Incomplete) => {
+                        let more = line_editor::line(&mut input, &history, "...> ")?;
+                        if source.len() + 1 + more.len() > lexer::SOURCE_MAX {
+                            return Err(rt::LIMIT);
+                        }
+                        source.push('\n');
+                        source.push_str(&more);
+                    }
+                    Err(e) => return Err(e.status()),
+                }
+            };
+            let result = script::Engine::new(&mut fs, test)?.list(&mut frame, &program, 0, 0);
+            if let Err(code) = result {
+                frame.status = code;
+                console::write(
                     tty::ERROR,
-                    &alloc::format!("erreur : {}\n", console::reason(e)),
-                )?,
-            },
-            Ok(None) => {}
-            Err(e) => console::write(
-                tty::ERROR,
-                &alloc::format!("saisie refusée : {}\n", console::reason(e)),
-            )?,
+                    &alloc::format!("erreur : {}\n", console::reason(code)),
+                )?;
+                return Ok(script::Flow::Status(code));
+            }
+            result
+        })();
+        match result {
+            Ok(script::Flow::Exit(n)) => break n,
+            Ok(_) => (),
+            Err(e) => {
+                frame.status = e;
+                console::write(
+                    tty::ERROR,
+                    &alloc::format!("saisie refusée : {}\n", console::reason(e)),
+                )?;
+            }
         }
+    };
+    fs.close(0)?;
+    if exit != 0 {
+        return Err(exit);
     }
-    fs.close(0)
+    Ok(())
 }
 // Sûreté : appelé exclusivement par le point d'entrée de cet ELF avec sa pile privée.
 #[unsafe(no_mangle)]

@@ -1,4 +1,4 @@
-use super::{aliases::Aliases, builtins, capabilities::Grant, glob, parser::Invocation, paths};
+use super::{capabilities::Grant, paths};
 use alloc::{string::String, vec::Vec};
 use nova_cli::{
     command::{Program, operand},
@@ -7,34 +7,7 @@ use nova_cli::{
     options, process, protocol as w, runtime as rt, tty,
 };
 
-pub fn execute(
-    fs: &mut Client,
-    cmd: Invocation,
-    test: bool,
-    aliases: &mut Aliases,
-) -> rt::Result<bool> {
-    let cmd = aliases.expand(cmd)?;
-    match cmd.name.as_str() {
-        "alias" => return aliases.define(&cmd.args).map(|_| true),
-        "unalias" => return aliases.remove(&cmd.args).map(|_| true),
-        "exit" => {
-            return if cmd.args.is_empty() {
-                Ok(false)
-            } else {
-                Err(rt::BAD_ARGUMENT)
-            };
-        }
-        "cd" => {
-            let args = glob::arguments(fs, &cmd.args)?;
-            return builtins::cd(fs, &args).map(|_| true);
-        }
-        _ => {}
-    }
-    let Some(p) = Program::named(&cmd.name, test) else {
-        write(tty::ERROR, "commande inconnue\n")?;
-        return Ok(true);
-    };
-    let args = glob::arguments(fs, &cmd.args)?;
+pub fn execute(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Result<u64> {
     let strings: Vec<_> = args.iter().map(String::as_str).collect();
     // Le service conserve les vues isolées par paire pour cp/mv et par nom pour rm.
     // Valider le répertoire commun et toute l'expansion avant le premier lancement.
@@ -69,22 +42,22 @@ pub fn execute(
                 if let Some(dst) = dest {
                     pair.push(String::from(dst));
                 }
-                if !launch(fs, p, &pair, test)? {
+                let status = launch(fs, p, &pair, test)?;
+                if status != 0 {
                     write(
                         tty::ERROR,
                         &alloc::format!("lot interrompu après {i} opérande(s) traité(s)\n"),
                     )?;
-                    break;
+                    return Ok(status);
                 }
             }
-            return Ok(true);
+            return Ok(0);
         }
     }
-    launch(fs, p, &args, test)?;
-    Ok(true)
+    launch(fs, p, args, test)
 }
 
-fn launch(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Result<bool> {
+fn launch(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Result<u64> {
     let words: Vec<_> = args.iter().map(String::as_str).collect();
     let mut grant = Grant::new();
     let selection = operand(p, &words).and_then(|op| grant.select(fs, &op));
@@ -116,7 +89,7 @@ fn launch(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Resul
         } else if !test && code != 0 {
             write(tty::ERROR, &alloc::format!("statut {code}\n"))?;
         }
-        Ok(!fault && code == 0)
+        Ok(if fault { 128 } else { code })
     })();
     let freed = grant.release(fs);
     result.and_then(|v| freed.map(|_| v))

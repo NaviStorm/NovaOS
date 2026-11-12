@@ -4,7 +4,6 @@ use nova_cli::{
     console::{edit, write},
     runtime as rt, tty,
 };
-const PROMPT: &str = "nsh> ";
 // Fenêtre en octets : le rendu d'un scalaire imprimable occupe au plus sa taille UTF-8.
 const WINDOW: usize = 56;
 fn start_at(s: &str, mut i: usize) -> usize {
@@ -13,8 +12,12 @@ fn start_at(s: &str, mut i: usize) -> usize {
     }
     i
 }
-pub fn line(input: &mut Input, history: &super::history::History) -> rt::Result<String> {
-    write(tty::OUTPUT, PROMPT)?;
+pub fn line(
+    input: &mut Input,
+    history: &super::history::History,
+    prompt: &str,
+) -> rt::Result<String> {
+    write(tty::OUTPUT, prompt)?;
     let mut s = String::new();
     let (mut pos, mut left) = (0, 0);
     let mut invalid = None;
@@ -89,16 +92,16 @@ pub fn line(input: &mut Input, history: &super::history::History) -> rt::Result<
         }
         // Récrire la fenêtre entière évite de compter les colonnes des accents et des idéogrammes.
         edit(0)?;
-        write(tty::OUTPUT, PROMPT)?;
+        write(tty::OUTPUT, prompt)?;
         write(
             tty::OUTPUT,
             "                                                        ",
         )?;
         edit(0)?;
-        write(tty::OUTPUT, PROMPT)?;
+        write(tty::OUTPUT, prompt)?;
         write(tty::OUTPUT, &s[left..right])?;
         edit(0)?;
-        write(tty::OUTPUT, PROMPT)?;
+        write(tty::OUTPUT, prompt)?;
         write(tty::OUTPUT, &s[left..pos])?;
     }
 }

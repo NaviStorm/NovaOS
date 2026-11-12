@@ -651,17 +651,21 @@ pub(crate) fn initialiser(dev: &IpcDevice<'_>) -> rt::Result<()> {
     let utc = clock.sample()?;
     let mut fs = Engine::format_p9(dev, ids, Atime::Relative, Some(clock)).map_err(error)?;
     let contenu = b"NovaOS\n";
+    let script = include_bytes!("verification.nsh");
     if fs.times("/").map_err(error)?.btime != utc {
         return Err(w::CORRUPT);
     }
     fs.create("/systeme").map_err(error)?;
     fs.write("/systeme", 0, contenu).map_err(error)?;
+    fs.create("/verification.nsh").map_err(error)?;
+    fs.write("/verification.nsh", 0, script).map_err(error)?;
     let mut disk = fs.unmount().map_err(error)?;
     disk.flush().map_err(error)?;
     let fs = Engine::mount_current(disk, ids, Mode::ReadOnly).map_err(error)?;
     fs.verify().map_err(error)?;
     if fs.atime_policy() != Some(Atime::Relative)
         || fs.read("/systeme", 0, 64).map_err(error)? != contenu
+        || fs.read("/verification.nsh", 0, script.len() + 1).map_err(error)? != script
         || fs.times("/systeme").map_err(error)?.btime != utc
     {
         return Err(w::CORRUPT);

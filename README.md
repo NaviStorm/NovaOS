@@ -2,7 +2,7 @@
 
 NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-**NovaOS v0.15.1** installe un volume NovaFS P9 sur disque VirtIO vierge dans UTM 5.0.8 pour AArch64, puis démarre depuis le disque seul. Le shell série `nsh` résout les chemins relatifs et les motifs récursifs. Il délègue les copies, déplacements et retraits aux commandes isolées. **NovaFS v0.9.13** fournit aussi la migration explicite des images historiques sur macOS. [Image installable](distribution/images/novaos-0.15.1-utm-aarch64.tar.gz) · [Procédure UTM](novaOS/docs/cli-v0.15.1.md#image-et-installation-dans-utm) · [CLI native](novaOS/docs/cli-v0.15.1.md) · [Format et compatibilité](novaFS/docs/novafs-p9-timestamps.md)
+**NovaOS v0.16.0** installe un volume NovaFS P9 sur disque VirtIO vierge dans UTM 5.0.8 pour AArch64, puis démarre depuis le disque seul. Le shell série `nsh` exécute des scripts UTF-8 avec variables, conditions, boucles et motifs récursifs depuis le terminal. Il délègue les copies, déplacements et retraits aux commandes isolées. **NovaFS v0.9.13** fournit aussi la migration explicite des images historiques sur macOS. [Image installable](distribution/images/novaos-0.16.0-utm-aarch64.tar.gz) · [Procédure UTM](novaOS/docs/nsh-scripts-v0.16.0.md#installation-dans-utm) · [Scripts nsh](novaOS/docs/nsh-scripts-v0.16.0.md) · [Commandes natives](novaOS/docs/cli-v0.15.1.md) · [Format et compatibilité](novaFS/docs/novafs-p9-timestamps.md)
 
 ## Philosophie et architecture
 
@@ -34,7 +34,7 @@ flowchart TD
 | Stockage bloc | Implémenté | Lecture, écriture et synchronisation sur un disque VirtIO optionnel. Le service bloc et le pilote s’exécutent en espace utilisateur. |
 | NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. NovaOS expose le montage et les transactions sur les fichiers des volumes autonomes. |
 | Interface texte | Implémenté | Le prompt de diagnostic du noyau accepte la saisie AZERTY sur x86_64. |
-| Environnement utilisateur | Implémenté | Shell série avec édition UTF-8, historique privé et alias. Douze commandes isolées, dont `cp`, `mv`, `touch`, `more`, `wc` et `tail`. |
+| Environnement utilisateur | Implémenté | Shell série et interpréteur de scripts avec édition UTF-8, historique privé et alias. Commandes isolées, dont `cp`, `mv`, `touch`, `more`, `wc` et `tail`. |
 | Distribution UTM AArch64 | Qualifiée | Installation GPT et démarrage autonome sur un disque VirtIO avec NovaFS P9. |
 | Interface graphique et mises à jour | Prévu | NovaUI et système hybride immuable. |
 
@@ -60,6 +60,8 @@ make -C novaOS ARCH=x86_64 file-test
 make -C novaOS ARCH=aarch64 file-test
 make -C novaOS ARCH=x86_64 cli-test
 make -C novaOS ARCH=aarch64 cli-test
+make -C novaOS ARCH=aarch64 nsh-scripts-test
+make -C novaOS ARCH=x86_64 nsh-scripts-test
 novaFS/lab/run test --offline
 ```
 

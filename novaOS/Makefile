@@ -100,3 +100,8 @@ cli-p9-test: kernel
 nsh-test: kernel
 	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
 	python3 tests/nsh.py
+
+.PHONY: nsh-scripts-test
+nsh-scripts-test: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 tests/nsh_scripts.py
