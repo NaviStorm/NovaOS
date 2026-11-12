@@ -1,0 +1,78 @@
+{
+  "moteur": "QEMU emulator version 10.0.12",
+  "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+  "noyau_sha256": "19407976cea66eb0297a7b50e24d8afff818c4569c95866138a483f7b5db6b1f",
+  "source_sha256": "135ea0c80878dc785dabc273cc5071949b12d32d15e4137c2a6807800f205efe",
+  "essais": {
+    "crb-1": {
+      "marqueur": "Synchronous Exception at 0x252C8",
+      "secondes": 0.042,
+      "jalons_s": {
+        "uefi": 0.034
+      },
+      "operations_lecture_ecriture": {
+        "source": [
+          0,
+          0
+        ]
+      }
+    },
+    "crb-2": {
+      "marqueur": "Synchronous Exception at 0x252C8",
+      "secondes": 0.041,
+      "jalons_s": {
+        "uefi": 0.034
+      },
+      "operations_lecture_ecriture": {
+        "source": [
+          0,
+          0
+        ],
+        "cible": [
+          0,
+          0
+        ]
+      },
+      "cible_sha256_avant": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
+      "cible_sha256_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "tis-1": {
+      "marqueur": "DMA bilan Ok(())",
+      "secondes": 5.565,
+      "jalons_s": {
+        "uefi": 0.031,
+        "dxe": 0.275,
+        "chargeur": 5.393,
+        "sortie": 5.524,
+        "noyau": 5.558,
+        "lecture": 5.565
+      },
+      "operations_lecture_ecriture": {
+        "source": [
+          147,
+          0
+        ]
+      }
+    },
+    "tis-2": {
+      "marqueur": "Shell>",
+      "secondes": 10.405,
+      "jalons_s": {
+        "uefi": 0.034,
+        "dxe": 0.274
+      },
+      "operations_lecture_ecriture": {
+        "source": [
+          0,
+          0
+        ],
+        "cible": [
+          0,
+          0
+        ]
+      },
+      "cible_sha256_avant": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
+      "cible_sha256_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    }
+  }
+}

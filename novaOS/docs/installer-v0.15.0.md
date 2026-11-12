@@ -1,6 +1,6 @@
 # Installation AArch64 dans UTM — audit de v0.15.0
 
-**Qualification du 12 novembre 2026.** Sur le moteur AArch64 d’UTM 5.0.8, le DXE expérimental amorce un disque VirtIO unique, avec refus DMA dès le reset. NovaOS v0.14.0 reprend le disque et termine une lecture sous GICv3 sans ITS. Le témoin utilise un volume FAT de laboratoire. L’adoption du firmware et la reprise de l’installation attendent un nouvel arbitrage. [Mesures du prototype](#prototype-dxe-et-hal-gicv3)
+**Décision du 12 novembre 2026.** L’interface graphique d’UTM 5.0.8 importe les deux VM de qualification. Le firmware expérimental s’arrête dans le pilote TPM avant toute lecture VirtIO. Le témoin TIS sur le même moteur distingue un second blocage lorsque le support et la cible sont présents ensemble. L’installation est suspendue au premier jalon. NovaOS reste en v0.14.0 et NovaFS en v0.9.13 P9. [Matrice et arbitrage](#import-graphique-et-support-dinstallation)
 
 La phase 0 a été réalisée sur `main` au commit `a250cb25b530f001debf256f6bfdf8afbc0bef90`. Dans ce premier audit du moteur livré dans UTM 5.0.8, le firmware exécutait NovaOS v0.14.0, puis l’admission du disque échouait avant le lancement du shell. NovaFS conserve sa version v0.9.13 et son format P9.
 
@@ -342,3 +342,64 @@ L’hôte ARM64 a exécuté la cible native et la cible x86_64 sous Rosetta. Qua
 **Limites de validation.** Le générateur d’arguments d’UTM prévoit un pflash personnalisé. Les essais utilisent directement ses bibliothèques installées. L’import d’une VM par l’interface graphique, HVF, le matériel physique, le multiprocesseur et le démarrage signé avec des clés de distribution restent hors de la preuve. Le logiciel du contrôleur et les accès de plateforme de confiance, notamment le transport du firmware QEMU, sont dans le périmètre de confiance. Le profil DXE couvre exclusivement le disque identifié. Le retrait observé avec ATS désactivé porte sur les traductions du modèle QEMU. Un périphérique à cache de traduction propre ou un branchement à chaud demanderait un autre banc. Une panne en cours de retrait retient ses pages jusqu’à l’arrêt de la VM. [Générateur UTM 5.0.8](https://github.com/utmapp/UTM/blob/v5.0.8/Configuration/UTMQemuConfiguration%2BArguments.swift#L548-L605)
 
 **Prochaine décision.** Le prototype permet de proposer une qualification de distribution avec profil UTM importable, politique de signature et cycle de mise à jour du pflash. Son adoption et la reprise des phases de l’installateur nécessitent un arbitrage distinct. NovaOS reste en v0.14.0 et NovaFS en v0.9.13 P9.
+
+## Import graphique et support d’installation
+
+La mission d’installation a repris sur `main` à `bb0678d03a72682d3070611ca75c16de9ba5c2d2`, avec un arbre propre. Les essais utilisent le firmware normal et le noyau du prototype ci-dessus. Chaque paquet UTM possède son propre code pflash en lecture seule, ses variables et son état TPM. Le support FAT de qualification contient le témoin EFI, Limine et le noyau en mode `dma-qual`. Il est présenté en lecture seule. La seconde VM ajoute une cible jetable de 64 Mio, entièrement nulle, accessible en écriture. Les deux profils ont été ouverts et lancés dans la bibliothèque graphique d’UTM sur Apple Silicon. Le journal de lancement confirme TCG, un Cortex-A72, 256 Mio, GICv3 sans ITS, un TPM 2.0 CRB, le disque moderne avec `iommu_platform=on,ats=off,vectors=0` et l’IOMMU avec `boot-bypass=off`.
+
+| Point d’entrée et TPM | Disques présentés | Dernier jalon | E/S disque |
+|---|---|---|---|
+| Interface UTM, CRB | Support seul | Console UEFI, exception synchrone à `0x252C8` | Aucun événement VirtIO bloc observé |
+| Interface UTM, CRB | Support et cible vierge | Même exception, avant DXE | Aucun événement VirtIO bloc observé. Empreinte du conteneur cible identique avant/après |
+| Bibliothèques UTM, CRB | Support seul | Même exception | Source 0 lecture, 0 écriture |
+| Bibliothèques UTM, CRB | Support et cible vierge | Même exception | Source et cible 0 lecture, 0 écriture chacune |
+| Bibliothèques UTM, TIS | Support seul | NovaOS v0.14.0, lecture du motif de 512 octets au LBA 16, une INTx reçue et acquittée | Source 147 lectures terminées, 0 écriture |
+| Bibliothèques UTM, TIS | Support et cible vierge | Shell interne EDK II, aucune unité montée | Source et cible 0 lecture, 0 écriture chacune. Aucun ATTACH ni MAP dans la trace |
+
+Les compteurs du banc direct proviennent de `query-blockstats` pour chaque backend. Le changement TIS/CRB est la seule différence de périphérique dans chaque paire à nombre de disques constant. Chaque essai démarre à froid. Les deux campagnes de comparaison, puis la campagne chronométrée, ont donné les mêmes issues. Le SHA-256 du contenu brut de la cible avant et après les essais directs vaut `3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351`. Dans l’interface, l’empreinte du conteneur qcow2 cible vaut `1b7af784841125887e688254229e282829e17245d0e47fe7280da9b68a30d9e1` aux deux contrôles. Après l’arrêt de la VM, `qemu-img compare` confirme également l’égalité des 64 Mio de contenu logique avec une image entièrement nulle. [Résultats QMP](validation/import-utm/resultats.json) · [Consoles, exceptions, traces et commandes graphiques](validation/import-utm/journaux.tar.gz)
+
+**Arrêt dans le TPM.** Sur la machine `virt`, UTM construit `-device tpm-crb-device`. Le banc du prototype avait construit `tpm-tis-device`. Le journal d’exception ARM du contrôle CRB donne un Data Abort EL1, `ESR=0x96000050`, `ELR=0x252c8` et `FAR=0xc000068`. Dans le pflash de SHA-256 `0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77`, cette instruction est `str x1,[x0]` dans `Tcg2Pei/MmioWrite64Internal`. Elle correspond à l’écriture de l’adresse du tampon de réponse du CRB au déplacement `0x68`. Le DXE NovaIommu n’a pas encore pris la main. Une correction doit qualifier la largeur et la sémantique d’accès de ce registre sur le périphérique réellement fourni par UTM. [Générateur UTM 5.0.8](https://github.com/utmapp/UTM/blob/v5.0.8/Configuration/UTMQemuConfiguration%2BArguments.swift#L1271-L1290) · [Commande CRB d’EDK II](https://github.com/tianocore/edk2/blob/edk2-stable202502/SecurityPkg/Library/Tpm2DeviceLibDTpm/Tpm2Ptp.c#L268-L277)
+
+**Autorité DMA du support et de la cible.** Sous TIS, le témoin seul reçoit le domaine firmware 2 pour le SID 48, avec BME coupé jusqu’au premier MAP acquitté. Sa sortie UEFI annonce 463 droits, 463 retraits, zéro droit actif et BME coupé. Le domaine noyau 1 termine ensuite sa lecture. Avec les deux disques présents, `Identify` compte deux fonctions PCI modernes `1af4:1042` et renvoie `EFI_ACCESS_DENIED`. Le support amorçable lui-même reste inaccessible. Le firmware lie les jetons DMA à un seul handle et à une seule file de disque. Le noyau possède un bail exclusif global, une seule source d’interruption et recherche le SID `6 << 3`. Enfin, le client P9 traduit son bloc zéro au début du disque entier. Le sélectionner tel quel pour un volume partitionné exposerait la GPT. [Politique DXE](../firmware/NovaIommuDxe/Domain.c) · [Transport bloc](../kernel/src/hardware/block/mod.rs) · [Bail](../kernel/src/hardware/block/lease.rs) · [Vue bloc P9](../user/novafs/device.rs)
+
+**Arbitrage proposé.** Conserver le TPM CRB fourni par UTM et qualifier son accès MMIO dans un nouveau pflash privé. Pour le DMA, accorder au firmware uniquement le support désigné par le profil de démarrage de confiance. Recouper ce chemin avec la topologie PCI et l’IOMMU avant le premier DMA. Un chemin absent ou ambigu impose le refus. Charger les ressources de l’installateur en RAM, révoquer le domaine firmware, puis énumérer les cibles sous NovaOS. Attacher exclusivement la cible identifiée, avec inspection en lecture seule, contrôle de tous ses octets et confirmation de l’identité et de la capacité avant la première autorisation WRITE sur le disque. Même une lecture bloc exige des pages DMA inscriptibles pour les données et le statut. Le SID et le drapeau lecture seule ne suffisent pas à authentifier le rôle d’un disque. Cette politique séquentielle demande une décision sur la source de confiance et la durée des baux. Autoriser simultanément deux domaines imposerait de qualifier en plus la séparation de leurs files, interruptions, pages et chemins de révocation.
+
+**Installation et intégrité.** Aucun partitionnement n’a eu lieu. Les types, tailles et identifiants GPT, la vue bornée pour P9, le contrôle de disque vierge et le flux de confirmation restent à implémenter après arbitrage. Les cas disque absent, non vierge, trop petit, sélection multiple, interruption de partitionnement ou de copie, échec de synchronisation et vérification finale exigent un installateur exécutable. Le démarrage depuis la cible après retrait du support, les commandes NovaShell et la persistance de l’identité, du contenu et des dates après arrêt normal ou forcé restent à démontrer sur une installation. Les cibles Make `image`, `utm` et `installer` sont donc en attente. La construction EDK II utilise `TPM2_ENABLE=TRUE` avec la valeur par défaut `SECURE_BOOT_ENABLE=FALSE`. Les empreintes identifient les binaires du banc. Une chaîne signée avec des clés de distribution et une session NovaAuth restent à qualifier séparément. [Configuration ArmVirtQemu](https://github.com/tianocore/edk2/blob/edk2-stable202502/ArmVirtPkg/ArmVirtQemu.dsc#L24-L36)
+
+### Mesures et reproduction de cet audit
+
+Sur le témoin TIS monodisque, les premiers messages série arrivent à 0,031 s pour UEFI, 0,275 s pour le DXE, 5,393 s pour le lancement de Limine, 5,524 s pour la notification de sortie des services, 5,558 s pour la bannière NovaOS et 5,565 s pour la lecture. Ces instants sont relatifs au lancement du processus QEMU et relevés par sondage hôte toutes les 5 ms. Le noyau annonce 56 735 cadres libres. La durée individuelle des révocations et le pic de mémoire résident ne sont pas instrumentés dans ce profil. Le montage P9, le démarrage des services installés, la consommation par service, le temps d’installation, le débit d’écriture et le délai jusqu’à NovaShell n’ont pas de mesure sur un système installé.
+
+Depuis la racine du dépôt, utiliser le répertoire produit par `prototype_uefi.py` dans la procédure de construction précédente. Les deux scripts créent exclusivement de nouveaux répertoires et disques. Les UUID et les horodatages FAT propres à chaque exécution peuvent différer.
+
+```sh
+NOVA_ARTEFACTS="novaOS/build/prototype-dxe-7q2kfpno"  # remplacer par la sortie de sa construction
+NOVA_IMPORT="$(mktemp -d /tmp/nova-import.XXXXXXXX)"
+python3 novaOS/tests/profils_utm.py "$NOVA_ARTEFACTS" "$NOVA_IMPORT/profils"
+python3 novaOS/tests/controle_tpm_utm.py "$NOVA_ARTEFACTS" "$NOVA_IMPORT/mesures"
+```
+
+Dans UTM 5.0.8, ouvrir successivement `NovaOS-audit-un-disque.utm` et `NovaOS-audit-deux-disques.utm` via Fichier → Ouvrir. Démarrer chaque VM et observer sa console série. La commande effective figure dans `Data/debug.log` du paquet. Le script de comparaison utilise le QEMU et le swtpm installés avec UTM, ainsi qu’un socket Unix privé.
+
+### Validation du 12 novembre après l’import
+
+| Suite rejouée | AArch64 | x86_64 |
+|---|---:|---:|
+| Démarrages historiques | 25/25 | 25/25 |
+| Groupes bloc, isolation, révocation et persistance | 24/24 | 24/24 |
+| ELF, cycle processus et courses IPC | 3/3 | 3/3 |
+| CLI puis CLI P9, secteurs 512 et 4 096 octets | 2/2 + 2/2 | 2/2 + 2/2 |
+| NovaFS standard puis instrumenté | 192 + 193 | 192 + 193 |
+| Opérations différentielles NovaFS | 1 000 000 | 1 000 000 |
+
+Sur macOS ARM64, les binaires hôtes NovaFS sont respectivement Mach-O arm64 et x86_64. Rosetta rapporte `sysctl.proc_translated=1`. Quatre tests sont ignorés par défaut dans chacune des deux passes Cargo. Le banc relance séparément le différentiel et deux contrôles facultatifs. Les campagnes mémoire supplémentaires à 128 et 256 Mio, stockage et IPC passent sur les deux architectures. À 64 Mio, la suite historique classe explicitement l’ABI « non exécutée » avant l’entrée du noyau, avec une exigence firmware de 128 Mio sur ARM et une pénurie de mémoire du chargeur sur x86. Cette limite est distincte des 25 scénarios historiques.
+
+Le banc AArch64 du prototype a également rejoué les onze cas sur le moteur UTM avec TIS, dont le timer, les INTx répétées, le changement de slot, le second appel à `ExitBootServices`, la coupure en vol et la reprise. Au démarrage à froid, QEMU compte 464 MAP et 464 UNMAP firmware, pour 463 jetons, la file VirtIO occupant deux plages avec des droits distincts. Le scénario de réemploi retrouve 97 pages firmware réallouées. Les traces du défaut de retrait conservent cinq plages et la console confirme la quarantaine. Le démarrage à froid et la reprise normale finissent à zéro plage active. [Journaux et bilans des suites](validation/import-utm/journaux.tar.gz)
+
+```sh
+for arch in aarch64 x86_64; do
+    make -C novaOS ARCH="$arch" test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test
+    make -C novaOS ARCH="$arch" ram-test storage-test ipc-test
+    python3 novaFS/lab/p51-validation-suites.py "$arch"
+done
+```
