@@ -5,6 +5,8 @@ use crate::time::{Atime, Clock, Timestamp};
 use crate::{Ids, Mode};
 use alloc::sync::Arc;
 
+mod recuperation;
+
 #[derive(Clone, Copy)]
 struct Entree<'a> {
     parent: u64,
@@ -80,6 +82,19 @@ const IDS: Ids = Ids {
 };
 const ANCIEN: &[u8] = b"Premiere destination, persistante";
 const NOUVEAU: &[u8] = b"Deuxieme version, entierement synchronisee";
+
+/// Adaptateur du banc de snapshots chiffrés. Absent des bibliothèques clientes.
+pub(crate) fn remplacer_deux_fichiers_du_banc<D: Device>(fs: &mut Engine<D>) -> Result<()> {
+    let entree = |nom| -> Result<_> {
+        Ok(Entree {
+            parent: fs.root_id(),
+            nom,
+            id: fs.stat(nom)?.id,
+        })
+    };
+    let (source, cible) = (entree("source")?, entree("cible")?);
+    remplacer(fs, source, cible)
+}
 
 struct Horloge(i64);
 impl Clock for Horloge {

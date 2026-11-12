@@ -150,6 +150,13 @@ pub enum Persistence {
     Sectors { block: u64, mask: u8 },
     /// Support sans garantie d'atomicité du secteur choisi.
     Prefix { block: u64, bytes: usize },
+    /// Plage contiguë d'une commande volatile ; les autres octets restent stables.
+    #[cfg(test)]
+    Range {
+        block: u64,
+        offset: usize,
+        bytes: usize,
+    },
 }
 
 /// Erreur d'E/S ponctuelle, distincte d'une coupure du service. Une commande
@@ -283,6 +290,20 @@ impl State {
         Ok(())
     }
 
+    fn persist_range(&mut self, block: u64, offset: usize, bytes: usize) -> Result<()> {
+        self.medium.geometry.offset(block)?;
+        let end = offset
+            .checked_add(bytes)
+            .filter(|&end| end <= BLOCK as usize)
+            .ok_or(Error::Invalid("plage de déchirure"))?;
+        if let Some(v) = self.volatile.get(&block) {
+            let mut data = self.stable_block(block);
+            data[offset..end].copy_from_slice(&v.data[offset..end]);
+            self.persist(block, Arc::new(data));
+        }
+        Ok(())
+    }
+
     fn cut(&mut self, how: Persistence) -> Result<()> {
         match how {
             Persistence::None => {}
@@ -305,17 +326,13 @@ impl State {
                     self.persist(block, Arc::new(data));
                 }
             }
-            Persistence::Prefix { block, bytes } => {
-                self.medium.geometry.offset(block)?;
-                if bytes > BLOCK as usize {
-                    return Err(Error::Invalid("taille de déchirure"));
-                }
-                if let Some(v) = self.volatile.get(&block) {
-                    let mut data = self.stable_block(block);
-                    data[..bytes].copy_from_slice(&v.data[..bytes]);
-                    self.persist(block, Arc::new(data));
-                }
-            }
+            Persistence::Prefix { block, bytes } => self.persist_range(block, 0, bytes)?,
+            #[cfg(test)]
+            Persistence::Range {
+                block,
+                offset,
+                bytes,
+            } => self.persist_range(block, offset, bytes)?,
         }
         self.volatile.clear();
         self.trace = None;

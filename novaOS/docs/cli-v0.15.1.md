@@ -2,6 +2,16 @@
 
 Le 12 novembre 2026, la qualification a atteint la condition d’arrêt du §6 du mandat. Le remplacement d’un nom occupé requiert une opération que le moteur P9 et le service de fichiers n’exposent pas. La version distribuée reste NovaOS v0.15.0 avec NovaFS v0.9.13 P9. Les observations ci-dessous portent sur le commit `0f63772dd4ac7b40a21b61e9c36bfd6658282c06`, vérifié sur `main` propre avant l’essai.
 
+## Décision après l’audit des ancres déchirées
+
+Le blocage du montage normal après une déchirure n’est pas accepté pour v0.15.1. À partir de `03e267b9cf710d7d53612ba89064a9af156be054`, le banc montre pourquoi le seul disque P9 installé ne permet pas un repli automatique sûr : une coupure avant confirmation et une corruption après confirmation produisent la même image de 2 Mio. Dans le second cas, choisir la destination ancienne annulerait un remplacement déjà acquitté. Les 96 premiers octets contiennent le nouveau checksum ; la référence au manifeste à l’offset 136 est toujours ancienne.
+
+Sur ARM64 natif et sur x86_64 sous Rosetta, **par architecture**, 2 304 injections couvrent les deux slots, les deux opérations et les secteurs de 512 et 4 096 octets : 1 288 anciens états et 656 nouveaux états vérifiés au montage, 360 refus en RO et RW. Avec un reçu frais imposé par le banc, le parent engagé par la tête survivante a pu être retrouvé et la paire revalidée sur une copie en lecture seule. Le service installé ne dispose pas d’une telle autorité. Le pool chiffré conserve séparément ses attestations, son snapshot et son clone ; ces preuves ne sont pas disponibles sur le volume autonome. [Rapport, limites et reproduction](../../novaFS/docs/novafs-p9-ancres-dechirees.md) · [Résultats par architecture](../../novaFS/docs/validation/v0.9.13/ancres-dechirees.json)
+
+Les suites NovaFS ont réussi 196 tests standards, 197 instrumentés et 1 000 000 d’opérations différentielles par architecture. Les régressions NovaOS ont passé les 25 démarrages, 24 groupes bloc, 3 contrôles ELF/processus/IPC et 4 essais CLI par architecture, ainsi que les 11 scénarios DMA/GICv3 et 23 séquentiels sur AArch64.
+
+**Arbitrage demandé :** qualifier en priorité la publication indivisible de l’ancre sur le stockage cible ; à défaut, étudier un témoin externe authentifié résistant au recul. Aucun des deux n’est qualifié pour UTM par ces essais. NovaOS reste en v0.15.0, NovaFS en v0.9.13 P9 ; `cp`, `mv` et leurs droits IPC conservent leur comportement distribué.
+
 ## Qualification de la publication P9
 
 L’arbitrage suivant a autorisé une primitive transactionnelle à partir de `289c98d18545435076a1f1329d8647d69d05c9b7`, vérifié sur `main` propre. Le banc a exercé le moteur P9 avant l’intégration IPC. **La publication conserve la destination sous les coupures à secteurs entiers. Une écriture partielle à l’intérieur d’un secteur empêche le remontage normal.** Le scénario défaillant est reproductible sur ARM64 natif et sur x86_64 sous Rosetta. [Banc Rust](../../novaFS/src/fs/remplacement.rs) · [Contrat de récupération P9](../../novaFS/docs/novafs-recovery.md#qualification-du-remplacement-dun-fichier-sur-p9-12-novembre-2026)
@@ -47,7 +57,7 @@ Par architecture, les suites NovaFS comprennent les 192 et 193 tests historiques
 
 Le banc UTM QEMU 10.0.12 a réinstallé l’image distribuée v0.15.0 sur deux disques neufs (secteurs 512 et 4 096), redémarré deux fois sur chacun et contrôlé la persistance. Les 13 cas de refus par géométrie ont gardé la même empreinte SHA-256 et zéro écriture. Dans l’**interface graphique UTM 5.0.8**, une copie indépendante du disque installé de 512 octets a démarré deux fois sans support. Les huit combinaisons `cp`/`mv` avec comportement par défaut, `-i`, `-n` et `-f` ont confirmé les comportements de v0.15.0. Après redémarrage, `/ancien` faisait toujours zéro octet, `/persistant` et `/systeme` contenaient toujours `NovaOS` suivi de LF. La relecture hors ligne a vérifié les deux contenus depuis chacune des ancres, générations 9 et 10. Ces essais graphiques portent sur les commandes diffusées. [Résultats UTM](validation/cli-v0.15.1/publication-p9.json)
 
-**Arbitrage demandé.** Autoriser la poursuite avec le contrat P9 actuel qui refuse un montage à ancre déchirée et permet un diagnostic explicite en lecture seule, ou maintenir l’exigence de remontage automatique et qualifier d’abord un support garantissant la publication indivisible. Le format P9 et le refus de revenir automatiquement à un état potentiellement périmé sont préservés dans les deux options.
+**Suite donnée à cet arbitrage :** le repli vers un simple diagnostic RO a été refusé comme critère de livraison. La [qualification ciblée](#décision-après-laudit-des-ancres-déchirées) ci-dessus conserve l’exigence de remontage sûr.
 
 ## Pourquoi `cp` et `mv` refusent une destination existante
 

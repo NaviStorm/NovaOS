@@ -1,0 +1,238 @@
+{
+  "base": "03e267b9cf710d7d53612ba89064a9af156be054",
+  "date": "2026-11-12",
+  "novaos": "0.15.0",
+  "novafs": "0.9.13 P9",
+  "hote": "macOS ARM64 ; sysctl.proc_translated=1 en processus x86_64",
+  "architectures": {
+    "aarch64": {
+      "suites_novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "sondes": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=26.018"
+      },
+      "ancre_autonome": {
+        "combinaisons": 8,
+        "geometries": [
+          512,
+          4096
+        ],
+        "operations": [
+          "déplacement",
+          "publication d’une copie préparée"
+        ],
+        "slots": [
+          0,
+          1
+        ],
+        "plages_par_phase": 32,
+        "phases": 9,
+        "ancien": 1288,
+        "nouveau": 656,
+        "refus_ro_et_rw": 360,
+        "coupures_supplementaires_deux_blocs_avant_F1": 8,
+        "historiques_indiscernables_par_geometrie": [
+          {
+            "slot": 0,
+            "dernier_recu_coupure": 7,
+            "dernier_recu_corruption": 8,
+            "octets_identiques": 2097152
+          },
+          {
+            "slot": 1,
+            "dernier_recu_coupure": 6,
+            "dernier_recu_corruption": 7,
+            "octets_identiques": 2097152
+          }
+        ]
+      },
+      "pool_chiffre": {
+        "injections_par_geometrie": {
+          "512": 6,
+          "4096": 6
+        },
+        "objets_verifies": [
+          "origine",
+          "snapshot",
+          "clone divergent"
+        ]
+      },
+      "regressions_novaos": {
+        "demarrage.py": 25,
+        "elf.py": 1,
+        "cycle_processus.py": 1,
+        "ipc.py races": 1,
+        "bloc.py": 24,
+        "cli.py": 2,
+        "cli_p9.py": 2
+      }
+    },
+    "x86_64": {
+      "suites_novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "sondes": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=40.345"
+      },
+      "ancre_autonome": {
+        "combinaisons": 8,
+        "geometries": [
+          512,
+          4096
+        ],
+        "operations": [
+          "déplacement",
+          "publication d’une copie préparée"
+        ],
+        "slots": [
+          0,
+          1
+        ],
+        "plages_par_phase": 32,
+        "phases": 9,
+        "ancien": 1288,
+        "nouveau": 656,
+        "refus_ro_et_rw": 360,
+        "coupures_supplementaires_deux_blocs_avant_F1": 8,
+        "historiques_indiscernables_par_geometrie": [
+          {
+            "slot": 0,
+            "dernier_recu_coupure": 7,
+            "dernier_recu_corruption": 8,
+            "octets_identiques": 2097152
+          },
+          {
+            "slot": 1,
+            "dernier_recu_coupure": 6,
+            "dernier_recu_corruption": 7,
+            "octets_identiques": 2097152
+          }
+        ]
+      },
+      "pool_chiffre": {
+        "injections_par_geometrie": {
+          "512": 6,
+          "4096": 6
+        },
+        "objets_verifies": [
+          "origine",
+          "snapshot",
+          "clone divergent"
+        ]
+      },
+      "regressions_novaos": {
+        "demarrage.py": 25,
+        "elf.py": 1,
+        "cycle_processus.py": 1,
+        "ipc.py races": 1,
+        "bloc.py": 24,
+        "cli.py": 2,
+        "cli_p9.py": 2
+      }
+    }
+  },
+  "interoperabilite_lz4": {
+    "bibliotheque": "1.11.1",
+    "graine": "0x6e6f766146535036",
+    "architectures": {
+      "aarch64": {
+        "reference_vers_novafs": 256,
+        "novafs_vers_reference": 256,
+        "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+      },
+      "x86_64": {
+        "reference_vers_novafs": 256,
+        "novafs_vers_reference": 256,
+        "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+      }
+    },
+    "sha256_corpus": "c525b71ce2cf4dd9f9d3b324c2c984965e442daf137aff8d3a12535b92ae722c"
+  },
+  "regressions_dma_aarch64": {
+    "dma_gicv3": {
+      "noyau_sha256": "dee123b4f7dc1b06b0c2a8ec322d638d35d969222029bf83c23a1ad451342c46",
+      "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+      "utm": "5.0.8",
+      "moteur": "QEMU emulator version 10.0.12",
+      "scenarios": [
+        "froid",
+        "el2",
+        "protection",
+        "reemploi",
+        "cd",
+        "redemarrage",
+        "coupure",
+        "reprise",
+        "autre-slot",
+        "mapkey",
+        "retrait-suspendu"
+      ]
+    },
+    "dma_sequentiel": {
+      "noyau_sha256": "6d10d124ba2586a8eca0106ab051a221ffa4b5076c62e33e81ddc563b27285cf",
+      "pflash_sha256": "3660b1cad23b75102a923475c1ee457ffc0fd1ce085ae25813257f09d918263d",
+      "utm": "5.0.8",
+      "moteur": "QEMU emulator version 10.0.12",
+      "scenarios": [
+        "support",
+        "vierge",
+        "refus",
+        "confirmation-erronee",
+        "tis",
+        "deplaces",
+        "reemploi",
+        "redemarrage",
+        "fin",
+        "mbr",
+        "gpt",
+        "fat",
+        "novafs",
+        "trop-petit",
+        "erreur-lecture",
+        "mauvais-support",
+        "doublon",
+        "roles-inverses",
+        "support-inscriptible",
+        "tpm-absent",
+        "mauvaise-serie",
+        "quarantaine",
+        "coupure"
+      ]
+    }
+  }
+}

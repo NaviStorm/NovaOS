@@ -565,3 +565,5 @@ mod tests;
 
 #[cfg(test)]
 mod remplacement;
+#[cfg(test)]
+pub(crate) use remplacement::remplacer_deux_fichiers_du_banc;
