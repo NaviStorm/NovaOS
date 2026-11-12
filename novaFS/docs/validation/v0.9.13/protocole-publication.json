@@ -1,0 +1,393 @@
+{
+  "base": "729c5b0b9b6d65a3d1ad4755a6531f483f5bcf13",
+  "branche": "main",
+  "date": "2026-11-12",
+  "NovaOS": "0.15.0",
+  "NovaFS": "0.9.13 P9",
+  "hôte": "macOS 27.2 (26B123), ARM64",
+  "décision": "Arrêt avant intégration. La perte commune des deux copies d’une décision après succès est indiscernable d’une coupure avant leur écriture. Le format P9 est inchangé et le remplacement reste désactivé.",
+  "prototype": {
+    "portée": "SimDevice neuf uniquement, un seul domaine de panne. Pas de témoin externe. Aucune image P9 existante ni matériel UTM dans ce modèle.",
+    "cible": "fs::remplacement::protocole::injections::journal_sur_un_seul_support",
+    "architectures_avec_résultats_identiques": [
+      "aarch64",
+      "x86_64"
+    ],
+    "unité": "effectifs par architecture ; les totaux ne cumulent pas les deux architectures",
+    "barrières": "F1 après les cinq pages CoW; deux enregistrements à des adresses vierges; succès après F2.",
+    "journal": {
+      "paires": 3,
+      "octets_par_bloc": 4096,
+      "blocs_LV": 512,
+      "rotation": false,
+      "montage": "lecture seule ; un graphe incomplet ou une paire non vierge sans décision valide imposent un refus"
+    },
+    "coupures": {
+      "total": 10056,
+      "ancien_nouveau_refus": [
+        6744,
+        1280,
+        2032
+      ]
+    },
+    "réordonnancements": {
+      "total": 512,
+      "ancien_nouveau_refus": [
+        128,
+        12,
+        372
+      ]
+    },
+    "defauts_apres_succes": 236,
+    "erreurs_avant_F2": 32,
+    "erreurs_F2": 12,
+    "lecture_des_empreintes": [
+      "image complète après F1 sans décision = après succès puis effacement des deux copies = F2 mensonger suivi de la perte du cache",
+      "décision persistée, succès reçu = réponse perdue après complétion réelle de F2"
+    ],
+    "fixtures": [
+      {
+        "copie": false,
+        "coupures_ancien_nouveau_refus": [
+          1812,
+          446,
+          764
+        ],
+        "defauts_apres_succes": 59,
+        "dependances": 5,
+        "erreurs_F2": 3,
+        "erreurs_avant_F2": 8,
+        "evenements_deux_ordres": 54,
+        "generation": 7,
+        "octets_support": 2121728,
+        "plages": 17,
+        "secteur": 512,
+        "sha256_ambigu_et_publie": [
+          "e719cf6993844fb0f8d768cfe76ed1c1cd85d113b8602a6b226a516b600242ca",
+          "4ca612e7303dcb14c1882e6b9d33ad97a50dab871c44f0cd771696a45cb07434"
+        ],
+        "sous_ensembles_ancien_nouveau_refus": [
+          32,
+          3,
+          93
+        ]
+      },
+      {
+        "copie": true,
+        "coupures_ancien_nouveau_refus": [
+          1812,
+          446,
+          764
+        ],
+        "defauts_apres_succes": 59,
+        "dependances": 5,
+        "erreurs_F2": 3,
+        "erreurs_avant_F2": 8,
+        "evenements_deux_ordres": 54,
+        "generation": 10,
+        "octets_support": 2121728,
+        "plages": 17,
+        "secteur": 512,
+        "sha256_ambigu_et_publie": [
+          "bd3d29f0381d661264d2ee3380c78bbf38f4738e7bcec8ab2fd399091c362f89",
+          "60cd8c532381971417f476a64ce4cf9a911142abc56bd038010e8e8afc4d1e53"
+        ],
+        "sous_ensembles_ancien_nouveau_refus": [
+          32,
+          3,
+          93
+        ]
+      },
+      {
+        "copie": false,
+        "coupures_ancien_nouveau_refus": [
+          1560,
+          194,
+          252
+        ],
+        "defauts_apres_succes": 59,
+        "dependances": 5,
+        "erreurs_F2": 3,
+        "erreurs_avant_F2": 8,
+        "evenements_deux_ordres": 54,
+        "generation": 7,
+        "octets_support": 2121728,
+        "plages": 17,
+        "secteur": 4096,
+        "sha256_ambigu_et_publie": [
+          "e719cf6993844fb0f8d768cfe76ed1c1cd85d113b8602a6b226a516b600242ca",
+          "4ca612e7303dcb14c1882e6b9d33ad97a50dab871c44f0cd771696a45cb07434"
+        ],
+        "sous_ensembles_ancien_nouveau_refus": [
+          32,
+          3,
+          93
+        ]
+      },
+      {
+        "copie": true,
+        "coupures_ancien_nouveau_refus": [
+          1560,
+          194,
+          252
+        ],
+        "defauts_apres_succes": 59,
+        "dependances": 5,
+        "erreurs_F2": 3,
+        "erreurs_avant_F2": 8,
+        "evenements_deux_ordres": 54,
+        "generation": 10,
+        "octets_support": 2121728,
+        "plages": 17,
+        "secteur": 4096,
+        "sha256_ambigu_et_publie": [
+          "bd3d29f0381d661264d2ee3380c78bbf38f4738e7bcec8ab2fd399091c362f89",
+          "60cd8c532381971417f476a64ce4cf9a911142abc56bd038010e8e8afc4d1e53"
+        ],
+        "sous_ensembles_ancien_nouveau_refus": [
+          32,
+          3,
+          93
+        ]
+      }
+    ],
+    "compatibilité": {
+      "lecteur_P9_sur_LV_de_taille_correcte_après_succès_du_journal": "ancienne destination",
+      "lecteur_P9_sur_support_étendu": "refus",
+      "lecteur_expérimental_sur_P9_ordinaire": "refus"
+    },
+    "non_qualifié": [
+      "recul commun après succès",
+      "recyclage et collecte du journal",
+      "intégration du journal aux snapshots, clones et au pool chiffré",
+      "atomicité ou persistance électrique physique"
+    ]
+  },
+  "régressions": {
+    "aarch64": {
+      "exécution": "ARM64 natif",
+      "NovaFS_standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "NovaFS_instrumenté": {
+        "reussis": 197,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "différentiel": {
+        "graines": 100,
+        "opérations": 1000000,
+        "commits_observés": 345183,
+        "pénuries_injectées": 54643,
+        "remontages_et_audits": 1000,
+        "secondes": 26.422
+      },
+      "ancres_P9_historiques": {
+        "injections": 2304,
+        "ancien_nouveau_refus": [
+          1288,
+          656,
+          360
+        ],
+        "deux_blocs_à_F1": 8,
+        "paires_historiques_indiscernables": 4
+      },
+      "pool_chiffré_snapshot_clone_par_secteur": {
+        "512": 6,
+        "4096": 6
+      },
+      "compression_chiffrement_migration_tests_rejoués": {
+        "p6_compression": 4,
+        "p7_secure": 16,
+        "p9_pannes": 4
+      },
+      "interop_LZ4": {
+        "reference_vers_novafs": 256,
+        "novafs_vers_reference": 256,
+        "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+      },
+      "groupes_NovaOS_rejoués": {
+        "demarrage": 25,
+        "elf": 1,
+        "cycle_processus": 1,
+        "ipc races": 1,
+        "bloc": 24,
+        "cli": 2,
+        "cli_p9": 2
+      },
+      "relectures_images_UTM": 142
+    },
+    "x86_64": {
+      "exécution": "Rosetta, sysctl.proc_translated = 1",
+      "NovaFS_standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "NovaFS_instrumenté": {
+        "reussis": 197,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "différentiel": {
+        "graines": 100,
+        "opérations": 1000000,
+        "commits_observés": 345183,
+        "pénuries_injectées": 54643,
+        "remontages_et_audits": 1000,
+        "secondes": 40.443
+      },
+      "ancres_P9_historiques": {
+        "injections": 2304,
+        "ancien_nouveau_refus": [
+          1288,
+          656,
+          360
+        ],
+        "deux_blocs_à_F1": 8,
+        "paires_historiques_indiscernables": 4
+      },
+      "pool_chiffré_snapshot_clone_par_secteur": {
+        "512": 6,
+        "4096": 6
+      },
+      "compression_chiffrement_migration_tests_rejoués": {
+        "p6_compression": 4,
+        "p7_secure": 16,
+        "p9_pannes": 4
+      },
+      "interop_LZ4": {
+        "reference_vers_novafs": 256,
+        "novafs_vers_reference": 256,
+        "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+      },
+      "groupes_NovaOS_rejoués": {
+        "demarrage": 25,
+        "elf": 1,
+        "cycle_processus": 1,
+        "ipc races": 1,
+        "bloc": 24,
+        "cli": 2,
+        "cli_p9": 2
+      },
+      "relectures_images_UTM": 142
+    }
+  },
+  "UTM_AArch64": {
+    "version": "5.0.8",
+    "moteur": "QEMU emulator version 10.0.12",
+    "outil_image_hors_ligne": "qemu-img version 11.1.3",
+    "portée": "Régressions du protocole distribué; le journal expérimental ne tourne pas dans ces VM.",
+    "matrice": {
+      "cas": 142,
+      "états": {
+        "ancien": 60,
+        "nouveau": 58,
+        "refus": 24
+      },
+      "paires_indiscernables": 8,
+      "identique_octet_par_octet_à": "atomicite-utm.tsv",
+      "sha256": "9279aa7675d97ccec9caadcd48a81fdb73b3295fe3e9d3d0922150524b082ade",
+      "firmware_sha256": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "noyau_sonde_sha256": "6f034c8f56af04409df618a77f57b7142f6cc26f083ffecd9bd70ce07529f3db"
+    },
+    "systèmes_après_SIGKILL_et_redémarrage": [
+      {
+        "secteur": 512,
+        "format": "raw",
+        "geometrie_qom": [
+          512,
+          512
+        ],
+        "flush_cli": 8,
+        "signal": 9,
+        "fichier_relu": "/audit",
+        "contenu": "NovaOS\n"
+      },
+      {
+        "secteur": 512,
+        "format": "qcow2",
+        "geometrie_qom": [
+          512,
+          512
+        ],
+        "flush_cli": 8,
+        "signal": 9,
+        "fichier_relu": "/audit",
+        "contenu": "NovaOS\n"
+      },
+      {
+        "secteur": 4096,
+        "format": "raw",
+        "geometrie_qom": [
+          4096,
+          4096
+        ],
+        "flush_cli": 8,
+        "signal": 9,
+        "fichier_relu": "/audit",
+        "contenu": "NovaOS\n"
+      },
+      {
+        "secteur": 4096,
+        "format": "qcow2",
+        "geometrie_qom": [
+          4096,
+          4096
+        ],
+        "flush_cli": 8,
+        "signal": 9,
+        "fichier_relu": "/audit",
+        "contenu": "NovaOS\n"
+      }
+    ],
+    "dma_gicv3": {
+      "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+      "noyau_sha256": "dee123b4f7dc1b06b0c2a8ec322d638d35d969222029bf83c23a1ad451342c46",
+      "scénarios": [
+        "froid",
+        "el2",
+        "protection",
+        "reemploi",
+        "cd",
+        "redemarrage",
+        "coupure",
+        "reprise",
+        "autre-slot",
+        "mapkey",
+        "retrait-suspendu"
+      ]
+    },
+    "dma_sequentiel": {
+      "pflash_sha256": "3660b1cad23b75102a923475c1ee457ffc0fd1ce085ae25813257f09d918263d",
+      "noyau_sha256": "6d10d124ba2586a8eca0106ab051a221ffa4b5076c62e33e81ddc563b27285cf",
+      "scénarios": [
+        "support",
+        "vierge",
+        "refus",
+        "confirmation-erronee",
+        "tis",
+        "deplaces",
+        "reemploi",
+        "redemarrage",
+        "fin",
+        "mbr",
+        "gpt",
+        "fat",
+        "novafs",
+        "trop-petit",
+        "erreur-lecture",
+        "mauvais-support",
+        "doublon",
+        "roles-inverses",
+        "support-inscriptible",
+        "tpm-absent",
+        "mauvaise-serie",
+        "quarantaine",
+        "coupure"
+      ]
+    }
+  }
+}

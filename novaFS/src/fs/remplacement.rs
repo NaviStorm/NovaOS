@@ -5,6 +5,7 @@ use crate::time::{Atime, Clock, Timestamp};
 use crate::{Ids, Mode};
 use alloc::sync::Arc;
 
+mod protocole;
 mod recuperation;
 mod utm;
 
@@ -156,7 +157,7 @@ impl Cas {
         Ok((fs, controle))
     }
 
-    fn verifier(&self, fs: &Engine<SimDevice>, publie: bool) -> Result<()> {
+    fn verifier<D: Device>(&self, fs: &Engine<D>, publie: bool) -> Result<()> {
         fs.verify()?;
         let cible = fs.stat("/sortie/cible")?;
         let (id, contenu) = if publie {
