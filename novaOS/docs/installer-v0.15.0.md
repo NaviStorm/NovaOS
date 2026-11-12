@@ -1,6 +1,98 @@
-# Installation AArch64 dans UTM — audit de v0.15.0
+# Installation AArch64 dans UTM — NovaOS v0.15.0
 
-**État au 12 novembre 2026.** L’installation expérimentale GPT/P9 a démarré sur le seul disque VirtIO et retrouvé un fichier après redémarrage, en secteurs de 512 et 4 096 octets. Une coupure pendant l’écriture de la GPT a laissé la copie secondaire seule. La qualification s’arrête sur cette divergence. NovaOS reste en v0.14.0, NovaFS en v0.9.13 P9. [Essais et arbitrage GPT](#installation-native-et-coupure-gpt)
+**Version qualifiée le 12 novembre 2026.** NovaOS v0.15.0 installe NovaFS v0.9.13 P9 sur un disque VirtIO neuf et démarre ensuite depuis ce disque seul dans UTM 5.0.8. Une GPT secondaire isolée attribuable au profil est classée comme installation interrompue et refusée. [Procédure UTM](#installation-dans-utm-508) · [Résultats](#qualification-des-disques-interrompus)
+
+## Installation dans UTM 5.0.8
+
+L’archive AArch64 contient le support VirtIO en lecture seule, le firmware EDK II expérimental, le modèle de variables EFI, les licences et les empreintes de chaque fichier. Son SHA-256 est `1f7cc3404418a80e4f5c11e4af162e9d93754e7d8c829bf0d7b1c4be6af833cb`. Chaque VM reçoit sa propre pflash, son état TPM et un nouveau disque système. [Image installable](../../distribution/images/novaos-0.15.0-utm-aarch64.tar.gz)
+
+Sur macOS Apple Silicon, utiliser UTM 5.0.8, Python 3.11 ou ultérieur et `qemu-img`. Depuis la racine du dépôt, créer le paquet dans un nouveau répertoire.
+
+```sh
+NOVA_TRAVAIL="$(mktemp -d "$HOME/Documents/NovaOS-0.15.0.XXXXXXXX")"
+NOVA_DIST="$NOVA_TRAVAIL/novaos-0.15.0-utm-aarch64"
+NOVA_VM="$NOVA_TRAVAIL/machine/NovaOS-installation-AArch64.utm"
+tar -xzf distribution/images/novaos-0.15.0-utm-aarch64.tar.gz -C "$NOVA_TRAVAIL"
+(cd "$NOVA_DIST" && shasum -a 256 -c SHA256SUMS) &&
+    python3 novaOS/scripts/paquet_installation.py creer "$NOVA_DIST" "$NOVA_TRAVAIL/machine"
+```
+
+1. Dans **UTM → Fichier → Ouvrir**, sélectionner le paquet indiqué par le script. Vérifier son emplacement et démarrer. La console série doit afficher le SID 56, la série `NOVA-CIBLE-000000001`, 67 108 864 octets et `DISQUE vierge verifie`.
+2. Pour installer sur cette cible, saisir exactement `AUTORISER NOVA-CIBLE-000000001 67108864` puis Entrée. Attendre `INSTALLATION bilan Ok(())`. Si le disque est refusé, conserver le paquet et créer une nouvelle VM dans un autre répertoire avec la commande `creer`.
+3. Arrêter la VM. Dans la bibliothèque, sélectionner **Retirer** sur le **raccourci** du paquet externe. Le dialogue doit indiquer que les données seront conservées. Le script suivant contrôle une copie en lecture seule du disque arrêté, les GUID du profil, les CRC GPT, les bornes des partitions, les secteurs de démarrage FAT et les signatures des deux ancres P9. Il remplace atomiquement le plist.
+
+```sh
+python3 novaOS/scripts/paquet_installation.py systeme "$NOVA_VM"
+```
+
+4. Rouvrir **le même paquet** dans UTM et démarrer. La VM présente un seul disque VirtIO au slot 7, avec la désignation `NovaOS-System-v1` et `bootindex=1`. La source et les GUID d’installation sont déconnectés. Dans NovaShell, saisir successivement `cp /systeme /graphique`, `cat /graphique`, puis `exit`. Attendre `SYSTEME bilan Ok(())`.
+5. Arrêter puis démarrer de nouveau la VM. `cat /graphique` doit afficher `NovaOS`. Terminer avec `exit`. Les deux cycles utilisent le même disque, les mêmes variables EFI et le même TPM. [Générateur de paquet](../scripts/paquet_installation.py) · [Contrôle hors ligne](../scripts/verifier_gpt.py)
+
+Pour reconstruire les fichiers de distribution, suivre la [construction du firmware et des deux noyaux](#reproduire-le-prototype), puis exécuter les commandes ci-dessous depuis `novaOS/`. Les répertoires de sortie doivent être nouveaux. Les GUID du profil et les dates de création de la FAT du support varient entre constructions. Une seconde compilation depuis le répertoire de travail de `main` a produit des ELF d’empreintes différentes. Ces binaires ont également installé deux nouvelles cibles et relu le fichier persistant après redémarrage, en 512 et 4 096 octets. La reproductibilité bit à bit des ELF reste à établir. [Empreintes des deux constructions](validation/installation-utm-v0.15.0/resultats.json)
+
+```sh
+python3 scripts/paquet_installation.py construire "$NOVA_FV" "$NOVA_ELF" "$NOVA_ESSAI/distribution"
+python3 tests/installation_gpt.py "$NOVA_FV" "$NOVA_ELF" "$NOVA_ESSAI/qualification-512" --secteur 512 --securite
+python3 tests/installation_gpt.py "$NOVA_FV" "$NOVA_ELF" "$NOVA_ESSAI/qualification-4096" --secteur 4096 --securite
+```
+
+## Qualification des disques interrompus
+
+La campagne est partie de `main` propre à `eedee6478d255f592516b3994709279309bfc68b`. Le banc précédent arrêtait toute la qualification au constat d’une GPT secondaire isolée, alors que l’installateur refusait déjà la cible. L’arbitrage autorise un diagnostic de cette configuration et la poursuite sur un disque neuf. L’installateur ne possède aucune opération de réparation, de reprise ou de remise à zéro. [Banc de coupures et de refus](../tests/installation_gpt.py)
+
+| État affiché | Éléments vérifiés | Décision |
+|---|---|---|
+| Vierge vérifié | Identité, géométrie et lecture complète du disque. Après confirmation exacte, nouvelle identification et seconde lecture complète. | Autoriser ensuite la page DMA OUT de la cible. |
+| Installation existante | MBR et deux GPT NovaOS concordants, ESP correspondant au système de cette livraison, P9 monté en lecture seule avec les identifiants dérivés, vérification intégrale, politique d’horodatage et contenu attendu de `/systeme`. | Refuser. |
+| Installation interrompue | Tous les octets précédant le tableau secondaire sont nuls. Le tableau et l’en-tête occupent la fin exacte du disque avec leurs deux CRC valides, les types, noms et bornes attendus, et les trois GUID du profil. | Refuser et conserver le disque. |
+| Métadonnées incohérentes | CRC invalide, copie contradictoire, donnée supplémentaire avant une copie secondaire isolée, FAT contradictoire ou corruption P9 détectée. | Refuser. |
+| Non vierge, origine indéterminée | Données ordinaires, disposition étrangère ou copie secondaire valide dont les GUID diffèrent du profil. | Refuser sans attribuer d’historique. |
+| État indéterminé | Identité ou lecture incertaine, géométrie incompatible, contenu de l’ESP non confirmé ou lecture P9 indéterminée. | Refuser. |
+
+Le vérificateur ne suit que les emplacements bornés du profil et ne déduit jamais un état vierge de l’absence de signature. Le diagnostic P9 reçoit uniquement les droits READ et CLOSE sur la partition. La sortie de la classification termine l’essai. La saisie anticipée de la confirmation exacte a été testée sur les cibles occupées. [Admission et droits](../kernel/src/hardware/block/qualification.rs) · [Contrôles des deux copies](../kernel/src/hardware/block/gpt.rs) · [Reconnaissance P9](../user/novafs/files.rs)
+
+### Non-destruction et coupures
+
+Pour chaque taille de secteur, 13 tentatives ont une empreinte SHA-256 intégrale enregistrée avant et après, zéro octet écrit, zéro opération d’écriture et zéro FLUSH. Elles couvrent l’installation existante, la désignation ambiguë, le refus de consentement, l’erreur de lecture, la GPT interrompue, les deux CRC altérés séparément, la donnée supplémentaire, la donnée d’origine inconnue, le GUID étranger, l’ESP modifiée et les cibles coupées pendant l’ESP ou P9. Les compteurs portent aussi sur le support d’installation. [Empreintes par essai et compteurs QMP](validation/installation-utm-v0.15.0/resultats.json)
+
+| Secteur | Cible neuve | Préfixe entièrement nul après coupure GPT | Tableau et en-tête secondaires | SHA-256 avant et après le refus |
+|---|---:|---:|---:|---|
+| 512 octets | 64 Mio | 67 091 968 octets | 16 896 octets | `3cf5971dafdb3fc66e4cb03c25a758b2c3fbf5df3a28de9139f47c1f37fac06b` |
+| 4 096 octets | 268 Mio | 280 997 888 octets | 20 480 octets | `aa6c05573d26d0ffaceb23df5e52d19a80699d7f7ee284fae1f466f71b323575` |
+
+La coupure a tué le processus QEMU au premier FLUSH GPT suspendu. Le suffixe retrouvé est identique à la copie secondaire complète validée indépendamment avec les mêmes GUID. Deux autres coupures ont arrêté chaque VM pendant une écriture dans la partition concernée. Au prochain essai, l’ESP incomplète a donné `indetermine verification ESP` et P9 incomplet `metadonnees incoherentes`. Lors de la coupure d’un `cp` sur un système installé, le démarrage suivant a relu le fichier publié auparavant. Le changement de rôle hôte a également refusé, sans modification du plist ni du disque, un disque vierge et une copie à GPT secondaire seule. [Consoles série, traces et copies secondaires](validation/installation-utm-v0.15.0/preuves.tar.gz)
+
+### Matrice de démarrage et persistance
+
+| Exécution sur Apple Silicon | Installation | Deux démarrages à froid sans support | Vérification indépendante après arrêt |
+|---|---|---|---|
+| Interface UTM 5.0.8, 512 octets | Confirmation visible, GPT relue, ESP relue, bilan OK | NovaShell a créé et lu `/graphique`, puis l’a relu après redémarrage. Les deux sorties ont donné un bilan système OK. | GPT et ESP conformes. `verify` P9 a validé la génération 8 et l’extraction de `/graphique` a rendu `NovaOS\n`. |
+| Moteur UTM QEMU 10.0.12, 512 octets | 64 Mio, ESP LBA 2 048–124 927, P9 LBA 124 928–129 023 | Copie de `/systeme` vers `/persistant`, relecture aux deux démarrages | GPT et ESP conformes, génération P9 9, contenu persistant identique. |
+| Moteur UTM QEMU 10.0.12, 4 096 octets | 268 Mio, ESP LBA 256–67 839, P9 LBA 67 840–68 351 | Même séquence de création et de relecture | GPT et ESP conformes, génération P9 8, contenu persistant identique. |
+
+Le contrôle hôte a comparé tous les octets de chaque ESP au contenu préparé pour le chargeur, la configuration, les licences et le noyau avec ses exécutables EL0. `fsck_msdos -n` a réussi sur les trois volumes. La vérification P9 a utilisé les identifiants attendus hors du disque. Les commandes relevées dans les trois journaux graphiques confirment le retrait du backend source lors du premier redémarrage et son absence au second. Les traces de débogage de l’application sont tronquées. Les compteurs complets DMA proviennent des bancs directs. [Résultats et contrôles hôte](validation/installation-utm-v0.15.0/resultats.json)
+
+### DMA, interruptions et régressions
+
+À l’installation, EDK II détient le domaine 2 du SID 48 pour le support en lecture seule. Après révocation, le noyau rattache le SID 56 au domaine 1. En démarrage autonome, le SID 56 passe successivement du domaine 2 au domaine 1, après retrait complet. Sur les six exécutions directes positives, les traces montrent zéro écriture firmware, aucun défaut IOMMU et zéro plage active à la fermeture. Sur disque système, toutes les écritures du noyau sont contenues dans P9. GICv3 utilise INTx, sans ITS, ATS ni bypass. Les cas de délai de révocation restent en quarantaine. [Résultats DMA et journaux](validation/installation-utm-v0.15.0/preuves.tar.gz)
+
+| Contrôles exécutés | AArch64 | x86_64 |
+|---|---:|---:|
+| Démarrages / groupes bloc / ELF, processus et IPC / CLI | 25 / 24 / 3 / 4 | 25 / 24 / 3 / 4 |
+| NovaFS standard / instrumenté | 192 / 193 | 192 / 193 |
+| Opérations différentielles NovaFS | 1 000 000 | 1 000 000 |
+| Prototype DMA/GICv3 / cas DMA séquentiels | 11 / 23 | Profil matériel AArch64 |
+
+Les exécutables NovaFS sont Mach-O arm64 natif et x86_64 sous Rosetta, avec `sysctl.proc_translated=1` pour ce dernier. Chaque campagne différentielle compte 1 000 remontages audités. Les quatre tests ignorés par défaut dans chacune des deux passes Cargo figurent séparément dans les résultats. [Détail des régressions](validation/installation-utm-v0.15.0/resultats.json)
+
+| Géométrie | RSS QEMU en Kio, installation / premier démarrage / redémarrage | Pages invité libres, mêmes jalons au début du noyau |
+|---|---|---|
+| 512 | 209 616 / 176 336 / 169 424 | 54 880 / 56 933 / 56 933 |
+| 4 096 | 206 064 / 179 152 / 169 680 | 54 880 / 56 597 / 56 597 |
+
+La qualification graphique couvre le profil livré de 64 Mio en secteurs de 512 octets. Le profil 4 096 octets a été testé sur le moteur livré dans UTM. Le firmware reste expérimental et propre à la VM. Le périmètre est TCG, un Cortex-A72, un vCPU, 256 Mio, TPM CRB, GICv3 sans ITS et des périphériques VirtIO modernes désignés par l’hôte de confiance. Les coupures sont des arrêts du processus d’émulation avec le stockage hôte disponible. La perte physique du cache hôte, le matériel réel, HVF et Secure Boot restent hors qualification. NovaFS conserve le format P9 et sa version v0.9.13.
+
+## Historique de qualification
 
 La phase 0 a été réalisée sur `main` au commit `a250cb25b530f001debf256f6bfdf8afbc0bef90`. Dans ce premier audit du moteur livré dans UTM 5.0.8, le firmware exécutait NovaOS v0.14.0, puis l’admission du disque échouait avant le lancement du shell. NovaFS conserve sa version v0.9.13 et son format P9.
 
@@ -613,7 +705,7 @@ python3 tests/installation_gpt.py "$NOVA_FV" "$NOVA_ELF" "$NOVA_ESSAI/secteur409
 python3 tests/installation_gpt.py "$NOVA_FV" "$NOVA_ELF" "$NOVA_ESSAI/securite512" --securite
 ```
 
-La dernière commande écrit le bilan des refus puis retourne un échec si les deux signatures GPT divergent après coupure. Le pflash FV mesuré a pour SHA-256 `4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9`, l’ELF installateur `025f2bd6cd86cb325d280519f0852631c964d4f4894f7dd3323d6e9061061ab9` et l’ELF système `43ee0452444277bfda2a054f3bdd86a32b8d4ed9f884ffb9d2e484b56fb06565`. Les GUID de disque et de partitions sont renouvelés pour chaque essai.
+À la révision de cet audit, la dernière commande écrivait le bilan des refus puis retournait un échec si les deux signatures GPT divergeaient après coupure. Le pflash FV mesuré a pour SHA-256 `4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9`, l’ELF installateur `025f2bd6cd86cb325d280519f0852631c964d4f4894f7dd3323d6e9061061ab9` et l’ELF système `43ee0452444277bfda2a054f3bdd86a32b8d4ed9f884ffb9d2e484b56fb06565`. Les GUID de disque et de partitions sont renouvelés pour chaque essai.
 
 ### Régressions du prototype
 

@@ -10,7 +10,7 @@ fn probe() -> Result<()> {
         send(tx, id, &[WIRE_VERSION, op, 0, 0, 0, 0, 0, 0])?;
         let r = loop {
             match receive(rx) {
-                Err(TIMED_OUT) if mode == 43 && op == INFO => continue,
+                Err(TIMED_OUT) if matches!(mode, 43 | 44) && op == INFO => continue,
                 result => break result?,
             }
         };

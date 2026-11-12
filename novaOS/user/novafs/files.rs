@@ -601,8 +601,7 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
 }
 
 #[cfg(feature = "installation")]
-pub(crate) fn initialiser(dev: &IpcDevice<'_>) -> rt::Result<()> {
-    use novafs::{Ids, time::Atime};
+fn identifiants_installation() -> rt::Result<novafs::Ids> {
     let mut lv = [0; 16];
     lv[..8].copy_from_slice(&rt::config(2).to_le_bytes());
     lv[8..].copy_from_slice(&rt::config(3).to_le_bytes());
@@ -611,7 +610,43 @@ pub(crate) fn initialiser(dev: &IpcDevice<'_>) -> rt::Result<()> {
     }
     let mut fs_id = lv;
     fs_id[15] ^= 1;
-    let ids = Ids { fs: fs_id, lv };
+    Ok(novafs::Ids { fs: fs_id, lv })
+}
+
+#[cfg(feature = "installation")]
+pub(crate) fn classer(dev: &IpcDevice<'_>) -> rt::Result<()> {
+    let ids = identifiants_installation()?;
+    let inspecter = || -> novafs::Result<bool> {
+        let fs = Engine::mount_current(dev, ids, Mode::ReadOnly)?;
+        fs.verify()?;
+        if fs.atime_policy() != Some(novafs::time::Atime::Relative) {
+            return Ok(false);
+        }
+        match fs.read("/systeme", 0, 64) {
+            Ok(contenu) => Ok(contenu == b"NovaOS\n"),
+            Err(novafs::Error::NotFound | novafs::Error::IsDirectory) => Ok(false),
+            Err(e) => Err(e),
+        }
+    };
+    let msg: &[u8] = match inspecter() {
+        Ok(true) => b"DISQUE installation existante",
+        Ok(false) => b"DISQUE non vierge origine indeterminee",
+        Err(novafs::Error::Corrupt(_)) => b"DISQUE metadonnees incoherentes",
+        Err(_) => b"DISQUE indetermine lecture P9",
+    };
+    rt::value(rt::call(
+        rt::DEBUG_WRITE,
+        msg.as_ptr() as u64,
+        msg.len() as u64,
+        0,
+    ))?;
+    Ok(())
+}
+
+#[cfg(feature = "installation")]
+pub(crate) fn initialiser(dev: &IpcDevice<'_>) -> rt::Result<()> {
+    use novafs::time::Atime;
+    let ids = identifiants_installation()?;
     let clock = Arc::new(Civil(AtomicI64::new(0)));
     let utc = clock.sample()?;
     let mut fs = Engine::format_p9(dev, ids, Atime::Relative, Some(clock)).map_err(error)?;

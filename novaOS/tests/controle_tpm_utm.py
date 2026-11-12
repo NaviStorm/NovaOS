@@ -51,7 +51,7 @@ def mesurer(tmp, sortie, disque, artefacts, modele, nombre):
                 jalons = (("uefi", b"UEFI firmware"), ("dxe", b"NOVA DXE politique active"),
                           ("chargeur", b"OBS EFI StartImage Limine"),
                           ("sortie", b"OBS EFI notification ExitBootServices"),
-                          ("noyau", b"NovaOS v0.14.0"), ("lecture", b"DMA motif correct"))
+                          ("noyau", b"NovaOS v0.15.0"), ("lecture", b"DMA motif correct"))
                 while time.monotonic() - debut < 45 and vm.poll() is None:
                     s = serie.read_bytes() if serie.exists() else b""
                     for nom_jalon, texte in jalons:

@@ -7,6 +7,7 @@ from pathlib import Path
 import socket
 import struct
 import subprocess
+import sys
 import tempfile
 import time
 import uuid
@@ -17,7 +18,8 @@ from installation_utm import FIRMWARE, ROOT, UTM, empreinte, lanceurs
 from profils_utm import disque_sequentiel
 from prototype_uefi import image, pflash, qmp, tpm
 
-MIO = 1 << 20
+sys.path.insert(0, str(ROOT / "scripts"))
+from verifier_gpt import MIO, verifier_gpt
 
 
 def attendre(vm, path, marker, start=0, timeout=180):
@@ -34,45 +36,7 @@ def attendre(vm, path, marker, start=0, timeout=180):
     raise RuntimeError(f"{marker!r} absent dans {path}\n{text[-900:]!r}")
 
 
-def verifier_gpt(path, s, ids):
-    total = path.stat().st_size // s
-    with path.open("rb") as disk:
-        def lire(lba, n):
-            disk.seek(lba * s)
-            return disk.read(n)
-        mbr = lire(0,s)
-        assert mbr[450] == 0xee and mbr[510:512] == b"\x55\xaa"
-        assert struct.unpack_from("<II", mbr,454) == (1,total - 1)
-        entries = []
-        for lba, other in ((1,total-1),(total-1,1)):
-            hdr = bytearray(lire(lba,s))
-            assert hdr[:8] == b"EFI PART" and struct.unpack_from("<II",hdr,8) == (65536,92)
-            checksum, = struct.unpack_from("<I",hdr,16)
-            hdr[16:20] = bytes(4)
-            assert zlib.crc32(hdr[:92]) == checksum
-            assert struct.unpack_from("<QQ",hdr,24) == (lba,other)
-            assert hdr[56:72] == ids[:16]
-            entry, n, length, crc = struct.unpack_from("<QIII",hdr,72)
-            assert (n,length) == (128,128)
-            assert entry == (2 if lba==1 else lba-16384//s)
-            raw = lire(entry,n*length)
-            assert zlib.crc32(raw)==crc
-            entries.append(raw)
-        a,b=entries
-        assert a == b and a[256:]==bytes(len(a)-256)
-        assert a[:16] == uuid.UUID("c12a7328-f81f-11d2-ba4b-00a0c93ec93b").bytes_le
-        assert a[128:144] == uuid.UUID("3687f202-9e5a-4df6-83db-17bb308172f9").bytes_le
-        assert a[16:32]+a[144:160] == ids[16:]
-        esp,last=struct.unpack_from("<QQ",a,32)
-        p9,end=struct.unpack_from("<QQ",a,160)
-        assert esp < last < p9 < end < total-1-16384//s
-        assert all(l*s % MIO == 0 for l in (esp,p9,end+1))
-        assert lire(esp,s)[82:90] == b"FAT32   "
-        assert lire(p9,8) == lire(p9+4096//s,8) == b"NOVAP0FS"
-        return dict(esp=esp,p9=p9,fin_p9=end,taille_secteur=s)
-
-
-def machine(tmp, dossier, nom, source, cible, secteur, guids, action, *, doublon=False, coupure=False):
+def machine(tmp, dossier, nom, source, cible, secteur, guids, action, *, doublon=False, coupure=False, erreur_lecture=False):
     console = tmp / "uart"
     serie = dossier / (nom+".serial")
     trace = dossier / (nom+".trace")
@@ -88,6 +52,10 @@ def machine(tmp, dossier, nom, source, cible, secteur, guids, action, *, doublon
                 "-drive",f"if=none,id=source,format=raw,readonly=on,file={source}"]
         cmd += disque_sequentiel("source",6,True)
     backend = f"blkdebug::{cible}" if coupure else cible
+    if erreur_lecture:
+        config = tmp / "lecture.blkdebug"
+        config.write_text('[inject-error]\nevent = "read_aio"\nerrno = "5"\nsector = "16"\n')
+        backend = f"blkdebug:{config}:{cible}"
     cmd += ["-drive",f"if=none,id=cible,format=raw,file={backend},rerror=report,werror=report"]
     role = "NovaOS-Install-v1" if doublon else ("NovaOS-Target-v1" if source else "NovaOS-System-v1")
     dev = disque_sequentiel("cible",7,False,designation=role)
@@ -167,14 +135,35 @@ def securite(tmp, dossier, source, cible, secteur, guids, bilan, sauver):
         resultats[nom] = machine(tmp,dossier,nom,support,disque,secteur,guids,action,**options)
         sauver()
 
-    def refus(vm, canal, serie, trace):
-        attendre(vm,serie,b"CIBLE non vierge octet=")
-        attendre(vm,serie,b"INSTALLATION bilan Err(Device)")
-        assert b"confirmation requise" not in serie.read_bytes()
+    taille = cible.stat().st_size
+
+    def ecritures_nulles(vm, trace):
         fin = compteurs(vm)
         assert all(v["wr_bytes"] == v["wr_operations"] == 0 for v in fin.values())
-        assert b"virt_start=0x8006000 " not in trace.read_bytes()
-        return dict(fin=fin)
+        contenu = trace.read_bytes()
+        assert b"virt_start=0x8006000 " not in contenu
+        assert b"virtio_blk_handle_write " not in contenu
+        assert b"virtio_iommu_report_fault " not in contenu
+        return fin
+
+    def conserver(nom, disque, action, **options):
+        avant = empreinte(disque)
+        essai(nom, disque, source, action, **options)
+        apres = empreinte(disque)
+        resultats[nom].update(sha256_avant=avant, sha256_apres=apres)
+        sauver()
+        assert apres == avant, f"écriture sur le disque refusé {nom}"
+
+    def refuser(nom, disque, *etats, **options):
+        def action(vm, canal, serie, trace):
+            attendre(vm, serie, b"CIBLE serie=")
+            canal.sendall(f"AUTORISER {SERIE} {taille}\r".encode())
+            texte = attendre(vm, serie, b"INSTALLATION bilan Err(")
+            assert b"confirmation requise" not in texte and b"ecriture autorisee" not in texte
+            assert any(("DISQUE " + e).encode() in texte for e in etats), texte[-1200:]
+            etat = next(e for e in etats if ("DISQUE " + e).encode() in texte)
+            return dict(classe=etat, fin=ecritures_nulles(vm, trace))
+        conserver(nom, disque, action, **options)
 
     def ambigu(vm, canal, serie, trace):
         attendre(vm,serie,b"No mapping found")
@@ -184,10 +173,8 @@ def securite(tmp, dossier, source, cible, secteur, guids, bilan, sauver):
         assert b"virtio_iommu_attach " not in trace.read_bytes()
         return dict(fin=fin)
 
-    avant = empreinte(cible)
-    essai("non-vierge",cible,source,refus)
-    essai("ambigu",cible,source,ambigu,doublon=True)
-    assert empreinte(cible) == avant
+    refuser("non-vierge", cible, "installation existante")
+    conserver("ambigu", cible, ambigu, doublon=True)
 
     def suspension(vm, commande):
         retour = qmp(vm,"human-monitor-command",**{"command-line":f'qemu-io cible "{commande}"'})
@@ -212,7 +199,7 @@ def securite(tmp, dossier, source, cible, secteur, guids, bilan, sauver):
         attendre(vm,serie,b"SYSTEME bilan Ok(())")
         return dict(fin=compteurs(vm))
 
-    copie = dossier/"coupure-p9.raw"
+    copie = dossier/"coupure-copie-fichier.raw"
     with cible.open("rb") as src, copie.open("xb") as dst:
         shutil.copyfileobj(src,dst)
     essai("coupure-ecriture",copie,None,couper_ecriture,coupure=True)
@@ -220,7 +207,6 @@ def securite(tmp, dossier, source, cible, secteur, guids, bilan, sauver):
     verifier_gpt(copie,secteur,guids.read_bytes())
 
     incomplet = dossier/"coupure-installation.raw"
-    taille = cible.stat().st_size
     with incomplet.open("xb") as dst:
         dst.truncate(taille)
 
@@ -232,7 +218,8 @@ def securite(tmp, dossier, source, cible, secteur, guids, bilan, sauver):
         assert all(v["wr_bytes"] == v["wr_operations"] == 0 for v in stats.values())
         return dict(fin=stats)
 
-    essai("sans-consentement",incomplet,source,annuler)
+    conserver("sans-consentement", incomplet, annuler)
+    refuser("erreur-lecture", incomplet, "indetermine identification ou lecture", erreur_lecture=True)
     def couper_installation(vm,canal,serie,trace):
         attendre(vm,serie,PROMPT.encode())
         suspension(vm,"break flush_to_disk gpt")
@@ -249,19 +236,93 @@ def securite(tmp, dossier, source, cible, secteur, guids, bilan, sauver):
         return dict(frontiere="premier FLUSH GPT suspendu",fin=stats)
 
     essai("coupure-installation",incomplet,source,couper_installation,coupure=True)
-    with incomplet.open("rb") as disk:
-        debut=disk.read(2*secteur)
-        disk.seek(-secteur,2)
-        copie_gpt = disk.read(secteur)
-    etat=dict(mbr=debut[510:512]==b"\x55\xaa",primaire=debut[secteur:secteur+8]==b"EFI PART",
-              secondaire=copie_gpt[:8]==b"EFI PART")
-    resultats["etat_apres_coupure"] = etat
-    sauver()
-    avant = empreinte(incomplet)
-    essai("refus-apres-coupure",incomplet,source,refus)
-    assert empreinte(incomplet) == avant
-    if etat["primaire"] != etat["secondaire"]:
-        raise RuntimeError("Arrêt de qualification : GPT primaire et secondaire divergentes après coupure")
+    # L'image positive a déjà passé le décodage indépendant et les quatre CRC.
+    suffixe = 16384 + secteur
+    with incomplet.open("rb") as disk, cible.open("rb") as reference:
+        reste = taille - suffixe
+        while reste:
+            n = min(reste, MIO)
+            assert disk.read(n) == bytes(n)
+            reste -= n
+        reference.seek(-suffixe, 2)
+        secondaire = reference.read()
+        assert disk.read() == secondaire
+    resultats["etat_apres_coupure"] = dict(primaire=False, mbr=False, secondaire=True,
+                                          octets_nuls=taille-suffixe, octets_secondaires=suffixe)
+    refuser("refus-apres-coupure", incomplet, "installation interrompue")
+
+    def nouvelle(nom):
+        disque = dossier / (nom + ".raw")
+        with disque.open("xb") as f:
+            f.truncate(taille)
+        return disque
+
+    # Chaque fixture est indépendante de la pièce interrompue conservée.
+    for nom, position in (("crc-entete", -secteur+16), ("crc-tableau", -suffixe+32),
+                          ("donnee-supplementaire", 12345)):
+        disque = nouvelle(nom)
+        with disque.open("r+b") as f:
+            f.seek(-suffixe, 2)
+            f.write(secondaire)
+            f.seek(position, 2 if position < 0 else 0)
+            octet = f.read(1)[0]
+            f.seek(-1, 1)
+            f.write(bytes([octet ^ 1]))
+        refuser(nom, disque, "metadonnees incoherentes")
+
+    disque = nouvelle("origine-inconnue")
+    with disque.open("r+b") as f:
+        f.seek(taille//2)
+        f.write(b"Nova")
+    refuser("origine-inconnue", disque, "non vierge origine indeterminee")
+
+    # Une GPT valide avec un GUID de disque différent a une origine inconnue.
+    autre = bytearray(secondaire)
+    h = memoryview(autre)[-secteur:]
+    h[56:72] = uuid.uuid4().bytes_le
+    h[16:20] = bytes(4)
+    struct.pack_into("<I", h, 16, zlib.crc32(h[:92]))
+    disque = nouvelle("gpt-etrangere")
+    with disque.open("r+b") as f:
+        f.seek(-suffixe, 2)
+        f.write(autre)
+    refuser("gpt-etrangere", disque, "non vierge origine indeterminee")
+
+    # Les BPB et les deux GPT restent valides mais le contenu de l'ESP diffère.
+    disque = dossier / "esp-modifiee.raw"
+    with cible.open("rb") as src, disque.open("xb") as dst:
+        shutil.copyfileobj(src, dst)
+    with disque.open("r+b") as f:
+        f.seek(bilan["gpt"]["p9"] * secteur - 1)
+        f.write(b"X")
+    refuser("esp-modifiee", disque, "indetermine verification ESP")
+
+    for etape in ("esp", "p9"):
+        disque = nouvelle("coupure-" + etape)
+        def couper(vm, canal, serie, trace):
+            attendre(vm, serie, PROMPT.encode())
+            canal.sendall(f"AUTORISER {SERIE} {taille}\r".encode())
+            debut = bilan["gpt"][etape] * secteur // 512
+            fin = (bilan["gpt"]["p9"] if etape == "esp" else bilan["gpt"]["fin_p9"]+1) * secteur // 512
+            limite = time.monotonic()+180
+            with trace.open("rb") as journal:
+                while time.monotonic() < limite:
+                    position = journal.tell()
+                    ligne = journal.readline()
+                    if not ligne.endswith(b"\n"):
+                        journal.seek(position)
+                        time.sleep(.005)
+                        continue
+                    m = re.match(rb"virtio_blk_handle_write .* sector (\d+) nsectors", ligne)
+                    if m and debut <= int(m[1]) < fin:
+                        qmp(vm, "stop")
+                        assert b"INSTALLATION bilan Ok" not in serie.read_bytes()
+                        return dict(premier_lba_512=int(m[1]), fin=compteurs(vm))
+            raise RuntimeError("aucune écriture observée dans " + etape)
+        essai("coupure-"+etape, disque, source, couper, coupure=True)
+        refuser("refus-coupure-"+etape, disque, "metadonnees incoherentes",
+                "non vierge origine indeterminee", "indetermine lecture P9", "indetermine verification ESP")
+
 
 
 def main():
@@ -330,6 +391,7 @@ def main():
             sauver()
         if a.securite:
             securite(tmp, dossier, source, cible, a.secteur, guids, bilan, sauver)
+        assert empreinte(source) == bilan["support"]
 
 
 if __name__=="__main__":

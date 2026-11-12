@@ -111,7 +111,7 @@ fn identite(t: &mut Transport) -> Result<()> {
     Ok(())
 }
 
-fn verifier_zero(t: &mut Transport) -> Result<()> {
+fn premier_non_nul(t: &mut Transport) -> Result<Option<u64>> {
     let mut lba = 0;
     let data = t.p.0[20].mem;
     while lba < t.sectors {
@@ -129,14 +129,15 @@ fn verifier_zero(t: &mut Transport) -> Result<()> {
                 "CIBLE non vierge octet={}",
                 lba * t.size as u64 + premier as u64
             ));
-            return Err(Error::Device);
+            return Ok(Some(lba * t.size as u64 + premier as u64));
         }
         lba += blocs;
     }
     if t.d.geometry()? != (t.sectors, t.size) {
         return Err(Error::Geometry);
     }
-    t.unit.faults(&t.p)
+    t.unit.faults(&t.p)?;
+    Ok(None)
 }
 
 fn confirmer(capacite: u64) -> bool {
@@ -165,7 +166,13 @@ fn confirmer(capacite: u64) -> bool {
     }
 }
 
-fn inspecter(t: &mut Transport, profil: Roles, sid: u8) -> Result<bool> {
+enum Admission {
+    Confirmee,
+    Annulee,
+    Occupe(u64),
+}
+
+fn inspecter(t: &mut Transport, profil: Roles, sid: u8) -> Result<Admission> {
     identite(t)?;
     let capacite = t
         .sectors
@@ -178,17 +185,22 @@ fn inspecter(t: &mut Transport, profil: Roles, sid: u8) -> Result<bool> {
     if t.ro || capacite < MIN_OCTETS {
         return Err(Error::Geometry);
     }
-    verifier_zero(t)?;
+    if let Some(offset) = premier_non_nul(t)? {
+        return Ok(Admission::Occupe(offset));
+    }
     hal::log(format_args!("CIBLE vierge octets={capacite}"));
+    hal::log(format_args!("DISQUE vierge verifie"));
     if !confirmer(capacite) {
-        return Ok(false);
+        return Ok(Admission::Annulee);
     }
     if self::profil(false)? != profil || t.d.geometry()? != (t.sectors, t.size) || t.d.read_only() {
         return Err(Error::Geometry);
     }
     identite(t)?;
-    verifier_zero(t)?;
-    Ok(true)
+    if let Some(offset) = premier_non_nul(t)? {
+        return Ok(Admission::Occupe(offset));
+    }
+    Ok(Admission::Confirmee)
 }
 
 fn selection() -> Result<(Roles, u8)> {
@@ -222,16 +234,22 @@ pub(crate) fn executer() -> Result<()> {
     let (profil, sid) = selection()?;
     let mut t = Transport::open_disk(sid, false)?;
     let decision = inspecter(&mut t, profil, sid);
-    if let Ok(true) = decision {
+    if let Ok(Admission::Confirmee) = decision {
         // En cas d'acquittement incertain, les cadres restent épinglés jusqu'au reset de la VM.
         autoriser_sortie(&mut t)?;
         hal::log(format_args!("CIBLE droit WRITE accorde serie={SERIE}"));
-    } else if let Ok(false) = decision {
+    } else if let Ok(Admission::Annulee) = decision {
         hal::log(format_args!("CIBLE confirmation refusee"));
     }
     // La qualification s'arrête ici. Aucune commande OUT, aucun FLUSH, aucun formatage.
     t.close()?;
-    decision.map(|_| ())
+    match decision? {
+        Admission::Occupe(offset) => {
+            hal::log(format_args!("CIBLE refusee octet={offset}"));
+            Err(Error::Device)
+        }
+        _ => Ok(()),
+    }
 }
 
 // Le lanceur du noyau transfère le transport déjà contrôlé, sans nouvelle découverte PCI.
@@ -239,7 +257,17 @@ pub(crate) fn executer() -> Result<()> {
 fn publier(mut t: Transport, table: super::gpt::Table, mode: u64) -> Result<()> {
     t.first = table.volume;
     t.count = table.end - table.volume;
-    let key = super::lease::begin_with(15, || Ok(t))?;
+    let rights = if mode == 44 { 1 | 8 } else { 15 };
+    let mut owned = Some(t);
+    let key = match super::lease::begin_with(rights, || owned.take().ok_or(Error::State)) {
+        Ok(key) => key,
+        Err(error) => {
+            if let Some(disk) = owned {
+                disk.close()?;
+            }
+            return Err(error);
+        }
+    };
     if !crate::sched::process::storage::volume_avec(mode, Some((key, table.volume_id()))) {
         return Err(Error::Device);
     }
@@ -320,20 +348,74 @@ pub(crate) fn installer() -> Result<()> {
     let (roles, sid) = selection()?;
     // Trois EFI_GUID v4 frais, préparés pour cette installation dans le profil hôte.
     let input = fichier_fw(b"opt/novaos/gpt-guids")?;
-    if input.len() != 48 {
-        return Err(Error::Geometry);
+    // Le profil graphique transporte les mêmes octets en hexadécimal dans fw_cfg.
+    let mut raw = [0u8; 48];
+    match input.len() {
+        48 => raw.copy_from_slice(&input),
+        96 => {
+            for (out, pair) in raw.iter_mut().zip(input.chunks_exact(2)) {
+                let hex = core::str::from_utf8(pair).map_err(|_| Error::Geometry)?;
+                if !pair.iter().all(u8::is_ascii_hexdigit) {
+                    return Err(Error::Geometry);
+                }
+                *out = u8::from_str_radix(hex, 16).map_err(|_| Error::Geometry)?;
+            }
+        }
+        _ => return Err(Error::Geometry),
     }
-    let ids: [[u8; 16]; 3] =
-        core::array::from_fn(|i| input[16 * i..16 * i + 16].try_into().unwrap());
+    let ids: [[u8; 16]; 3] = core::array::from_fn(|i| raw[i * 16..i * 16 + 16].try_into().unwrap());
     if ids.iter().any(|id| id[7] >> 4 != 4 || id[8] >> 6 != 2) {
         return Err(Error::Geometry);
     }
     let mut t = Transport::open_disk(sid, false)?;
-    let preparer = (|| {
-        let table = super::gpt::Table::new(&t, ids)?;
-        if !inspecter(&mut t, roles, sid)? {
+    let table = match super::gpt::Table::new(&t, ids) {
+        Ok(table) => table,
+        Err(e) => {
+            hal::log(format_args!("DISQUE indetermine geometrie"));
+            t.close()?;
+            return Err(e);
+        }
+    };
+    match inspecter(&mut t, roles, sid) {
+        Ok(Admission::Confirmee) => (),
+        Ok(Admission::Annulee) => {
+            t.close()?;
             return Err(Error::State);
         }
+        Ok(Admission::Occupe(offset)) => {
+            use super::gpt::Etat;
+            match table.classer(&mut t, offset) {
+                Ok(Etat::Volume(volume)) => {
+                    // L'ESP doit contenir le système attendu avant d'en attribuer l'origine.
+                    if let Err(e) = esp(&mut t, &volume, false) {
+                        hal::log(format_args!("DISQUE indetermine verification ESP"));
+                        t.close()?;
+                        return Err(e);
+                    }
+                    // Aucun tampon OUT. Le service vérifie P9 sur un bail READ/CLOSE borné.
+                    publier(t, volume, 44)?;
+                }
+                classification => {
+                    let message = match classification {
+                        Ok(Etat::Interrompu) => "installation interrompue",
+                        Ok(Etat::Incoherent) => "metadonnees incoherentes",
+                        Ok(Etat::Occupe) => "non vierge origine indeterminee",
+                        Err(_) => "indetermine lecture",
+                        Ok(Etat::Volume(_)) => unreachable!(),
+                    };
+                    hal::log(format_args!("DISQUE {message}"));
+                    t.close()?;
+                }
+            }
+            return Err(Error::Device);
+        }
+        Err(e) => {
+            hal::log(format_args!("DISQUE indetermine identification ou lecture"));
+            t.close()?;
+            return Err(e);
+        }
+    }
+    let preparer = (|| {
         autoriser_sortie(&mut t)?;
         hal::log(format_args!("INSTALLATION ecriture autorisee SID={sid}"));
         table.transfer(&mut t, true)?;

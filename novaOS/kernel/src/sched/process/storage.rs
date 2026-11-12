@@ -291,7 +291,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         (
             if matches!(mode, 41 | 42) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/shell.elf"))
-            } else if mode >= 11 && mode != 43 {
+            } else if mode >= 11 && !matches!(mode, 43 | 44) {
                 FILE_CLIENT
             } else {
                 CONTROL

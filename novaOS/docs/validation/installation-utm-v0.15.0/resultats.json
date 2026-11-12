@@ -1,0 +1,1403 @@
+{
+  "reference": "eedee6478d255f592516b3994709279309bfc68b",
+  "novaos": "0.15.0",
+  "novafs": "0.9.13 P9",
+  "utm": "5.0.8",
+  "qemu": "10.0.12",
+  "campagnes": {
+    "512": {
+      "firmware": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "installateur": "0b05750aa3ee80a2250ae158b029357bafd6e7edac2634bcfe74cb237e7e2239",
+      "support": "ac4caed8314e5dcaa1b342027990ce5c4737ef49f2fd66e53b1a516af9d23f75",
+      "installation": {
+        "avant": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 16384,
+            "rd_bytes": 67108864,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          }
+        },
+        "fin": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 52939,
+            "rd_bytes": 199595520,
+            "wr_operations": 4099,
+            "wr_bytes": 2098688,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 209616,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              48
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 4099,
+          "plages_finales": 0
+        },
+        "pages_libres_initiales": 54880
+      },
+      "gpt": {
+        "esp": 2048,
+        "p9": 124928,
+        "fin_p9": 129023,
+        "taille_secteur": 512
+      },
+      "autonome": {
+        "fin": {
+          "cible": {
+            "rd_operations": 987,
+            "rd_bytes": 4484608,
+            "wr_operations": 192,
+            "wr_bytes": 98304,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 176336,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 192,
+          "plages_finales": 0
+        },
+        "pages_libres_initiales": 56933
+      },
+      "persistance": {
+        "fin": {
+          "cible": {
+            "rd_operations": 1115,
+            "rd_bytes": 4550144,
+            "wr_operations": 32,
+            "wr_bytes": 16384,
+            "flush_operations": 3
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 169424,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 32,
+          "plages_finales": 0
+        },
+        "pages_libres_initiales": 56933
+      },
+      "securite": {
+        "non-vierge": {
+          "classe": "installation existante",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 16310,
+              "rd_bytes": 63404544,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 199632,
+          "sha256_avant": "94a98dcb9c124082b1e7d22c47eb872ea3058d452c341b040ce5dd016f168d70",
+          "sha256_apres": "94a98dcb9c124082b1e7d22c47eb872ea3058d452c341b040ce5dd016f168d70"
+        },
+        "ambigu": {
+          "fin": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 93072,
+          "sha256_avant": "94a98dcb9c124082b1e7d22c47eb872ea3058d452c341b040ce5dd016f168d70",
+          "sha256_apres": "94a98dcb9c124082b1e7d22c47eb872ea3058d452c341b040ce5dd016f168d70"
+        },
+        "coupure-ecriture": {
+          "frontiere": "première écriture de cp suspendue",
+          "fin": {
+            "cible": {
+              "rd_operations": 1115,
+              "rd_bytes": 4550144,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 1
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 175680
+        },
+        "reprise-ecriture": {
+          "fin": {
+            "cible": {
+              "rd_operations": 1107,
+              "rd_bytes": 4546048,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 1
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 168288
+        },
+        "sans-consentement": {
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 189280,
+          "sha256_avant": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
+          "sha256_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        "erreur-lecture": {
+          "classe": "indetermine identification ou lecture",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 2,
+              "rd_bytes": 8192,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 178112,
+          "sha256_avant": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
+          "sha256_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+        },
+        "coupure-installation": {
+          "frontiere": "premier FLUSH GPT suspendu",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 32768,
+              "rd_bytes": 134217728,
+              "wr_operations": 33,
+              "wr_bytes": 16896,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176080
+        },
+        "etat_apres_coupure": {
+          "primaire": false,
+          "mbr": false,
+          "secondaire": true,
+          "octets_nuls": 67091968,
+          "octets_secondaires": 16896,
+          "crc_entete": "ce21912b",
+          "crc_tableau": "c0d7d7e9"
+        },
+        "refus-apres-coupure": {
+          "classe": "installation interrompue",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 16414,
+              "rd_bytes": 67109888,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 175904,
+          "sha256_avant": "3cf5971dafdb3fc66e4cb03c25a758b2c3fbf5df3a28de9139f47c1f37fac06b",
+          "sha256_apres": "3cf5971dafdb3fc66e4cb03c25a758b2c3fbf5df3a28de9139f47c1f37fac06b"
+        },
+        "crc-entete": {
+          "classe": "metadonnees incoherentes",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 16382,
+              "rd_bytes": 67093504,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176768,
+          "sha256_avant": "99ffeea308b98caa52bd9ba91a2511f3654f19266abcfa23ec9296ccc195915f",
+          "sha256_apres": "99ffeea308b98caa52bd9ba91a2511f3654f19266abcfa23ec9296ccc195915f"
+        },
+        "crc-tableau": {
+          "classe": "metadonnees incoherentes",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 16414,
+              "rd_bytes": 67109888,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 177968,
+          "sha256_avant": "0a3d0e4683a1801197f55f986344be966d53b1aef57529bfcd30e3994d785e7b",
+          "sha256_apres": "0a3d0e4683a1801197f55f986344be966d53b1aef57529bfcd30e3994d785e7b"
+        },
+        "donnee-supplementaire": {
+          "classe": "metadonnees incoherentes",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 38,
+              "rd_bytes": 33792,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 177616,
+          "sha256_avant": "aac1aeb6f5d486f689601697c90fb66b93504945aff60ab73333da2df7b49c54",
+          "sha256_apres": "aac1aeb6f5d486f689601697c90fb66b93504945aff60ab73333da2df7b49c54"
+        },
+        "origine-inconnue": {
+          "classe": "non vierge origine indeterminee",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 8195,
+              "rd_bytes": 33559552,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176032,
+          "sha256_avant": "891d4fe20add606e50ad8746fe157725439648a61db627f95c178caa86876805",
+          "sha256_apres": "891d4fe20add606e50ad8746fe157725439648a61db627f95c178caa86876805"
+        },
+        "gpt-etrangere": {
+          "classe": "non vierge origine indeterminee",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 16414,
+              "rd_bytes": 67109888,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 177968,
+          "sha256_avant": "9df000a6db248712393ce2a69d009b86094d231428aa6dfade27f093e73f2cb0",
+          "sha256_apres": "9df000a6db248712393ce2a69d009b86094d231428aa6dfade27f093e73f2cb0"
+        },
+        "esp-modifiee": {
+          "classe": "indetermine verification ESP",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 15430,
+              "rd_bytes": 62953984,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176976,
+          "sha256_avant": "c8a148fc0eeb49eb413769858811ecc709f3ede96e925dda911d7e47b2498bd2",
+          "sha256_apres": "c8a148fc0eeb49eb413769858811ecc709f3ede96e925dda911d7e47b2498bd2"
+        },
+        "coupure-esp": {
+          "premier_lba_512": 2048,
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 32835,
+              "rd_bytes": 134252032,
+              "wr_operations": 247,
+              "wr_bytes": 126464,
+              "flush_operations": 3
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 179664
+        },
+        "refus-coupure-esp": {
+          "classe": "indetermine verification ESP",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 324,
+              "rd_bytes": 1079808,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 175936,
+          "sha256_avant": "c516834bdb8e82762575297ef147119b180300256e30e75eac71f7b06b98a424",
+          "sha256_apres": "c516834bdb8e82762575297ef147119b180300256e30e75eac71f7b06b98a424"
+        },
+        "coupure-p9": {
+          "premier_lba_512": 124944,
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 52291,
+              "rd_bytes": 199263744,
+              "wr_operations": 3972,
+              "wr_bytes": 2033664,
+              "flush_operations": 4
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 178160
+        },
+        "refus-coupure-p9": {
+          "classe": "metadonnees incoherentes",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 15438,
+              "rd_bytes": 62958080,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 178720,
+          "sha256_avant": "ced2acb2829fa09b42581586dc99f38429c6500f715a51bdfeac3710042d0c19",
+          "sha256_apres": "ced2acb2829fa09b42581586dc99f38429c6500f715a51bdfeac3710042d0c19"
+        }
+      },
+      "hote": {
+        "gpt": {
+          "esp": 2048,
+          "p9": 124928,
+          "fin_p9": 129023,
+          "taille_secteur": 512
+        },
+        "fsck": 0,
+        "esp_sha256": "43f6b7537516a6f4c98bc3ed6ebffe33fcb4bcfbb5a3777de3e4fc2bd3306065",
+        "p9": "Vérification intégrale réussie, génération 9",
+        "ancres": [
+          "slot=0 génération=8 blocs=512 FS=ddd2962512fc6a45953098d7aceedd8e LV=ddd2962512fc6a45953098d7aceedd8f manifeste=7 sha256=ca260c7f8ff6d303c931dd3dfd9944579bacfe662a19f9090c4467156824e0c5",
+          "slot=1 génération=9 blocs=512 FS=ddd2962512fc6a45953098d7aceedd8e LV=ddd2962512fc6a45953098d7aceedd8f manifeste=10 sha256=6bb9b3529bfce81bb88afc1db3a5d15c9de8093420fbcd46998916d60ee30af5"
+        ],
+        "fichier": "/persistant",
+        "contenu": "NovaOS\n"
+      }
+    },
+    "4096": {
+      "firmware": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "installateur": "0b05750aa3ee80a2250ae158b029357bafd6e7edac2634bcfe74cb237e7e2239",
+      "support": "a9c87c17bde2cf4986881de2c250301a9af66f32fab4ba7326395a13ecdf9add",
+      "installation": {
+        "avant": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 68608,
+            "rd_bytes": 281018368,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          }
+        },
+        "fin": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 205404,
+            "rd_bytes": 841334784,
+            "wr_operations": 561,
+            "wr_bytes": 2297856,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 206064,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              48
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 561,
+          "plages_finales": 0
+        },
+        "pages_libres_initiales": 54880
+      },
+      "gpt": {
+        "esp": 256,
+        "p9": 67840,
+        "fin_p9": 68351,
+        "taille_secteur": 4096
+      },
+      "autonome": {
+        "fin": {
+          "cible": {
+            "rd_operations": 188,
+            "rd_bytes": 13635584,
+            "wr_operations": 20,
+            "wr_bytes": 81920,
+            "flush_operations": 9
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 179152,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 20,
+          "plages_finales": 0
+        },
+        "pages_libres_initiales": 56597
+      },
+      "persistance": {
+        "fin": {
+          "cible": {
+            "rd_operations": 205,
+            "rd_bytes": 13705216,
+            "wr_operations": 4,
+            "wr_bytes": 16384,
+            "flush_operations": 3
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 169680,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 4,
+          "plages_finales": 0
+        },
+        "pages_libres_initiales": 56597
+      },
+      "securite": {
+        "non-vierge": {
+          "classe": "installation existante",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 67708,
+              "rd_bytes": 277331968,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 195840,
+          "sha256_avant": "76ad41b3f2ada77539ce6d1d2312d72196d2074f1d535bd7be59087870dde666",
+          "sha256_apres": "76ad41b3f2ada77539ce6d1d2312d72196d2074f1d535bd7be59087870dde666"
+        },
+        "ambigu": {
+          "fin": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 92528,
+          "sha256_avant": "76ad41b3f2ada77539ce6d1d2312d72196d2074f1d535bd7be59087870dde666",
+          "sha256_apres": "76ad41b3f2ada77539ce6d1d2312d72196d2074f1d535bd7be59087870dde666"
+        },
+        "coupure-ecriture": {
+          "frontiere": "première écriture de cp suspendue",
+          "fin": {
+            "cible": {
+              "rd_operations": 205,
+              "rd_bytes": 13705216,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 1
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 177840
+        },
+        "reprise-ecriture": {
+          "fin": {
+            "cible": {
+              "rd_operations": 204,
+              "rd_bytes": 13701120,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 1
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 170544
+        },
+        "sans-consentement": {
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 68608,
+              "rd_bytes": 281018368,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 193152,
+          "sha256_avant": "483ec3eec23f28bbc8a8f9945993aa1313a338de247761159fd7918477e10ce0",
+          "sha256_apres": "483ec3eec23f28bbc8a8f9945993aa1313a338de247761159fd7918477e10ce0"
+        },
+        "erreur-lecture": {
+          "classe": "indetermine identification ou lecture",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 2,
+              "rd_bytes": 8192,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 175984,
+          "sha256_avant": "483ec3eec23f28bbc8a8f9945993aa1313a338de247761159fd7918477e10ce0",
+          "sha256_apres": "483ec3eec23f28bbc8a8f9945993aa1313a338de247761159fd7918477e10ce0"
+        },
+        "coupure-installation": {
+          "frontiere": "premier FLUSH GPT suspendu",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 137216,
+              "rd_bytes": 562036736,
+              "wr_operations": 5,
+              "wr_bytes": 20480,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176960
+        },
+        "etat_apres_coupure": {
+          "primaire": false,
+          "mbr": false,
+          "secondaire": true,
+          "octets_nuls": 280997888,
+          "octets_secondaires": 20480,
+          "crc_entete": "f8212178",
+          "crc_tableau": "3effe045"
+        },
+        "refus-apres-coupure": {
+          "classe": "installation interrompue",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 68610,
+              "rd_bytes": 281026560,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176800,
+          "sha256_avant": "aa6c05573d26d0ffaceb23df5e52d19a80699d7f7ee284fae1f466f71b323575",
+          "sha256_apres": "aa6c05573d26d0ffaceb23df5e52d19a80699d7f7ee284fae1f466f71b323575"
+        },
+        "crc-entete": {
+          "classe": "metadonnees incoherentes",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 68606,
+              "rd_bytes": 281010176,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 177792,
+          "sha256_avant": "c26d81f2a298e28ae4dbcd601731101f59913b06625190720969e4797603987e",
+          "sha256_apres": "c26d81f2a298e28ae4dbcd601731101f59913b06625190720969e4797603987e"
+        },
+        "crc-tableau": {
+          "classe": "metadonnees incoherentes",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 68610,
+              "rd_bytes": 281026560,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 177216,
+          "sha256_avant": "aa6a39eaa9851999909b113486ea87fbb4eb526c5bcf99faa51265de171d4387",
+          "sha256_apres": "aa6a39eaa9851999909b113486ea87fbb4eb526c5bcf99faa51265de171d4387"
+        },
+        "donnee-supplementaire": {
+          "classe": "metadonnees incoherentes",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 10,
+              "rd_bytes": 40960,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176960,
+          "sha256_avant": "198815ead44560af3b97e41a47d5af28b67961b4a1c8584dfe624a79047b85bd",
+          "sha256_apres": "198815ead44560af3b97e41a47d5af28b67961b4a1c8584dfe624a79047b85bd"
+        },
+        "origine-inconnue": {
+          "classe": "non vierge origine indeterminee",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 34307,
+              "rd_bytes": 140521472,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176400,
+          "sha256_avant": "c5ed3e8f732e2b25701222edcdb96897c2087fd90ea00e8acdd0d18f17a76155",
+          "sha256_apres": "c5ed3e8f732e2b25701222edcdb96897c2087fd90ea00e8acdd0d18f17a76155"
+        },
+        "gpt-etrangere": {
+          "classe": "non vierge origine indeterminee",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 68610,
+              "rd_bytes": 281026560,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176368,
+          "sha256_avant": "c840ebbc16b1c0f8014dfe301f11551cbe8a4c4f2aac92a1e7b0a292c2a3e4da",
+          "sha256_apres": "c840ebbc16b1c0f8014dfe301f11551cbe8a4c4f2aac92a1e7b0a292c2a3e4da"
+        },
+        "esp-modifiee": {
+          "classe": "indetermine verification ESP",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 67598,
+              "rd_bytes": 276881408,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 178128,
+          "sha256_avant": "5810e1cf9a25b506c2b13202aaa6ab40d3ea418ae14d0c7e81914990e2c7ca65",
+          "sha256_apres": "5810e1cf9a25b506c2b13202aaa6ab40d3ea418ae14d0c7e81914990e2c7ca65"
+        },
+        "coupure-esp": {
+          "premier_lba_512": 2048,
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 137227,
+              "rd_bytes": 562081792,
+              "wr_operations": 82,
+              "wr_bytes": 335872,
+              "flush_operations": 3
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 177616
+        },
+        "refus-coupure-esp": {
+          "classe": "indetermine verification ESP",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 244,
+              "rd_bytes": 999424,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 176608,
+          "sha256_avant": "3c306d238e40e46ab92dd5c68b34068735cab03c401ea1f1015359453679add9",
+          "sha256_apres": "3c306d238e40e46ab92dd5c68b34068735cab03c401ea1f1015359453679add9"
+        },
+        "coupure-p9": {
+          "premier_lba_512": 542736,
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 205323,
+              "rd_bytes": 841003008,
+              "wr_operations": 547,
+              "wr_bytes": 2240512,
+              "flush_operations": 4
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 179984
+        },
+        "refus-coupure-p9": {
+          "classe": "metadonnees incoherentes",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 67599,
+              "rd_bytes": 276885504,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 179456,
+          "sha256_avant": "214a43080af750eb5db63e7a75be6006ad46f42196280a70ccc06a9a6df90034",
+          "sha256_apres": "214a43080af750eb5db63e7a75be6006ad46f42196280a70ccc06a9a6df90034"
+        }
+      },
+      "hote": {
+        "gpt": {
+          "esp": 256,
+          "p9": 67840,
+          "fin_p9": 68351,
+          "taille_secteur": 4096
+        },
+        "fsck": 0,
+        "esp_sha256": "5a5bfd42a8e88cdb267e4e1e2e6f85da0c9c3195e9d4440f6769f22ca80b8df1",
+        "p9": "Vérification intégrale réussie, génération 8",
+        "ancres": [
+          "slot=0 génération=8 blocs=512 FS=07fbbe640159b64bbbb32c88b423d6c2 LV=07fbbe640159b64bbbb32c88b423d6c3 manifeste=7 sha256=e2f31422f59e80b4cb3bdd4f2ccabea95d19e227483452d2fc1bf20b39e006de",
+          "slot=1 génération=7 blocs=512 FS=07fbbe640159b64bbbb32c88b423d6c2 LV=07fbbe640159b64bbbb32c88b423d6c3 manifeste=14 sha256=1fd3ad79d721d09420bc51e72c09ca480980545d74700ca41b9cc60050a837fe"
+        ],
+        "fichier": "/persistant",
+        "contenu": "NovaOS\n"
+      }
+    }
+  },
+  "regressions": {
+    "aarch64": {
+      "demarrages": 25,
+      "elf_processus_ipc": 3,
+      "bloc": 24,
+      "cli": 4,
+      "novaFS_standard": 192,
+      "novaFS_instrumentes": 193,
+      "differentiel": 1000000
+    },
+    "x86_64": {
+      "demarrages": 25,
+      "elf_processus_ipc": 3,
+      "bloc": 24,
+      "cli": 4,
+      "novaFS_standard": 192,
+      "novaFS_instrumentes": 193,
+      "differentiel": 1000000
+    },
+    "dma_gicv3": [
+      "froid",
+      "el2",
+      "protection",
+      "reemploi",
+      "cd",
+      "redemarrage",
+      "coupure",
+      "reprise",
+      "autre-slot",
+      "mapkey",
+      "retrait-suspendu"
+    ],
+    "dma_sequentiel": [
+      "support",
+      "vierge",
+      "refus",
+      "confirmation-erronee",
+      "tis",
+      "deplaces",
+      "reemploi",
+      "redemarrage",
+      "fin",
+      "mbr",
+      "gpt",
+      "fat",
+      "novafs",
+      "trop-petit",
+      "erreur-lecture",
+      "mauvais-support",
+      "doublon",
+      "roles-inverses",
+      "support-inscriptible",
+      "tpm-absent",
+      "mauvaise-serie",
+      "quarantaine",
+      "coupure"
+    ]
+  },
+  "architectures_hote": {
+    "natif": "arm64",
+    "rosetta": "x86_64",
+    "sysctl.proc_translated_x86_64": 1
+  },
+  "graphique": {
+    "uuid": "6a4953b4-72fa-4760-84c0-aae166f98185",
+    "secteur": 512,
+    "taille_mio": 64,
+    "confirmation": "AUTORISER NOVA-CIBLE-000000001 67108864",
+    "installation": "INSTALLATION bilan Ok(())",
+    "premier_boot": [
+      "cp /systeme /graphique",
+      "cat /graphique",
+      "NovaOS",
+      "exit",
+      "SYSTEME bilan Ok(())"
+    ],
+    "second_boot": [
+      "cat /graphique",
+      "NovaOS",
+      "exit",
+      "SYSTEME bilan Ok(())"
+    ],
+    "hote": {
+      "gpt": {
+        "esp": 2048,
+        "p9": 124928,
+        "fin_p9": 129023,
+        "taille_secteur": 512
+      },
+      "fsck": 0,
+      "esp_sha256": "43f6b7537516a6f4c98bc3ed6ebffe33fcb4bcfbb5a3777de3e4fc2bd3306065",
+      "p9": "Vérification intégrale réussie, génération 8",
+      "ancres": [
+        "slot=0 génération=8 blocs=512 FS=a55ed0404fe7af49822a5cd9b1078af9 LV=a55ed0404fe7af49822a5cd9b1078af8 manifeste=7 sha256=53cb8a06cd73e875c75cf6eaecffdae7784ff8547aed2734e2c9051a78edb672",
+        "slot=1 génération=7 blocs=512 FS=a55ed0404fe7af49822a5cd9b1078af9 LV=a55ed0404fe7af49822a5cd9b1078af8 manifeste=14 sha256=926a34fa3b2b61c8077e518c22dba50991f1588d51a20d4255f2f430cb555ec6"
+      ],
+      "fichier": "/graphique",
+      "contenu": "NovaOS\n"
+    },
+    "empreintes_transition_identiques": [
+      "cible.qcow2",
+      "source.qcow2",
+      "variables.fd",
+      "tpmdata"
+    ],
+    "image_source_avant_apres": "1cf9c0cf92fdbd2b7d39235b88900c565789b9cbaf1a86bb0093a2b6ce8843d1",
+    "refus_role_systeme": {
+      "vierge": {
+        "erreur": "Disque système refusé (MBR protecteur)",
+        "disque_sha256_avant": "1b7af784841125887e688254229e282829e17245d0e47fe7280da9b68a30d9e1",
+        "disque_sha256_apres": "1b7af784841125887e688254229e282829e17245d0e47fe7280da9b68a30d9e1",
+        "plist_identique": true
+      },
+      "interrompue": {
+        "erreur": "Disque système refusé (MBR protecteur)",
+        "disque_sha256_avant": "99e8189dd4687838b0f3d82fab62e032b62d402f4edcd11d0f060558c9cc6dbd",
+        "disque_sha256_apres": "99e8189dd4687838b0f3d82fab62e032b62d402f4edcd11d0f060558c9cc6dbd",
+        "plist_identique": true
+      }
+    }
+  },
+  "sha256": {
+    "modele-vars.fd": "8b634c1e6bd11607850b69111f6c4dbd1583dbbd1460dac72dbacbdc1a4a130a",
+    "prototype.fd": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+    "installateur.qcow2": "1cf9c0cf92fdbd2b7d39235b88900c565789b9cbaf1a86bb0093a2b6ce8843d1",
+    "archive": "1f7cc3404418a80e4f5c11e4af162e9d93754e7d8c829bf0d7b1c4be6af833cb",
+    "installateur_elf": "0b05750aa3ee80a2250ae158b029357bafd6e7edac2634bcfe74cb237e7e2239",
+    "systeme_elf": "88100369db9e3bd5b0cb806ba3dd7ed79e31821a2d42a259770d4f75a2be0381",
+    "preuves": "ba0a6aad87764b6c91b62c754ee696237286cf2ad17a72f2032dfc974decea3e"
+  },
+  "reconstruction_depuis_main": {
+    "systeme_elf_sha256": "f52cd7e1865d8e76309ac8a326cab560c0a864c7741bf72a65defd937e36bcf6",
+    "install_elf_sha256": "ef92d0354ac38c32393a9a28bfd5fb114c730b5e1eb1019dfa333e4ef5f3b2fb",
+    "512": {
+      "firmware": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "installateur": "ef92d0354ac38c32393a9a28bfd5fb114c730b5e1eb1019dfa333e4ef5f3b2fb",
+      "support": "375010cb23b762fb51162c92961fbadf3228b24707ab846d8a0425e525eb0987",
+      "installation": {
+        "avant": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 16384,
+            "rd_bytes": 67108864,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          }
+        },
+        "fin": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 52939,
+            "rd_bytes": 199595520,
+            "wr_operations": 4100,
+            "wr_bytes": 2099200,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 215424,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              48
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 4100,
+          "plages_finales": 0
+        }
+      },
+      "gpt": {
+        "esp": 2048,
+        "p9": 124928,
+        "fin_p9": 129023,
+        "taille_secteur": 512
+      },
+      "autonome": {
+        "fin": {
+          "cible": {
+            "rd_operations": 987,
+            "rd_bytes": 4484608,
+            "wr_operations": 192,
+            "wr_bytes": 98304,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 179776,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 192,
+          "plages_finales": 0
+        }
+      },
+      "persistance": {
+        "fin": {
+          "cible": {
+            "rd_operations": 1115,
+            "rd_bytes": 4550144,
+            "wr_operations": 32,
+            "wr_bytes": 16384,
+            "flush_operations": 3
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 171904,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 32,
+          "plages_finales": 0
+        }
+      }
+    },
+    "4096": {
+      "firmware": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "installateur": "ef92d0354ac38c32393a9a28bfd5fb114c730b5e1eb1019dfa333e4ef5f3b2fb",
+      "support": "0dc098ba026a774b0fbea31b1e5b0a67ba7d7164d94f70744f210817985fa974",
+      "installation": {
+        "avant": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 68608,
+            "rd_bytes": 281018368,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          }
+        },
+        "fin": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 205404,
+            "rd_bytes": 841334784,
+            "wr_operations": 561,
+            "wr_bytes": 2297856,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 213760,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              48
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 561,
+          "plages_finales": 0
+        }
+      },
+      "gpt": {
+        "esp": 256,
+        "p9": 67840,
+        "fin_p9": 68351,
+        "taille_secteur": 4096
+      },
+      "autonome": {
+        "fin": {
+          "cible": {
+            "rd_operations": 188,
+            "rd_bytes": 13635584,
+            "wr_operations": 20,
+            "wr_bytes": 81920,
+            "flush_operations": 9
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 186560,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 20,
+          "plages_finales": 0
+        }
+      },
+      "persistance": {
+        "fin": {
+          "cible": {
+            "rd_operations": 205,
+            "rd_bytes": 13705216,
+            "wr_operations": 4,
+            "wr_bytes": 16384,
+            "flush_operations": 3
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 169408,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 4,
+          "plages_finales": 0
+        }
+      }
+    }
+  }
+}

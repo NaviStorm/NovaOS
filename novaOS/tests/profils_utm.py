@@ -2,6 +2,7 @@
 import argparse
 from pathlib import Path
 import plistlib
+import shutil
 import subprocess
 import tempfile
 import uuid
@@ -24,16 +25,21 @@ def disque_sequentiel(backend, slot, source, *, designation=None, serie=None):
             "-smbios", f"type=41,designation={role},instance=1,kind=other,pcidev={objet}"]
 
 
-def profil(destination, artefacts, support, avec_cible, sequentiel=False):
+def profil(destination, artefacts, support, avec_cible, sequentiel=False, installation=False):
     prefixe = "NovaOS-qualification-CRB-" if sequentiel else "NovaOS-audit-"
     nom = prefixe + ("deux-disques" if avec_cible else "un-disque")
+    if installation:
+        nom = "NovaOS-installation-AArch64"
     paquet = destination / (nom + ".utm")
     paquet.mkdir()
     data = paquet / "Data"
     data.mkdir()
     pflash(artefacts / "prototype.fd", data / "code.fd")
     pflash(artefacts / "modele-vars.fd", data / "variables.fd")
-    subprocess.run(["qemu-img", "convert", "-f", "raw", "-O", "qcow2", support,
+    if installation:
+        shutil.copyfile(support, data / "source.qcow2")
+    else:
+        subprocess.run(["qemu-img", "convert", "-f", "raw", "-O", "qcow2", support,
                     data / "source.qcow2"], check=True)
     lecteurs = [lecteur("code", "PFlash", "code.fd", True),
                 lecteur("variables", "PFlash", "variables.fd", False),
@@ -45,8 +51,11 @@ def profil(destination, artefacts, support, avec_cible, sequentiel=False):
         subprocess.run(["qemu-img", "create", "-f", "qcow2", data / "cible.qcow2", "64M"], check=True)
         lecteurs.append(lecteur("cible", "None", "cible.qcow2", False))
         disques.append(("cible", 7))
+    if installation:
+        ids = b"".join(uuid.uuid4().bytes_le for _ in range(3))
+        arguments += ["-fw_cfg", "name=opt/novaos/gpt-guids,string=" + ids.hex()]
     for ordre, (identifiant, slot) in enumerate(disques, start=1):
-        if sequentiel:
+        if sequentiel or installation:
             arguments += disque_sequentiel("drive" + identifiant, slot, identifiant == "source")
         else:
             arguments += ["-device", f"virtio-blk-pci,drive=drive{identifiant},addr={slot},"
@@ -69,6 +78,7 @@ def profil(destination, artefacts, support, avec_cible, sequentiel=False):
     with (paquet / "config.plist").open("xb") as fichier:
         plistlib.dump(config, fichier)
     print(paquet, flush=True)
+    return paquet
 
 
 def main():

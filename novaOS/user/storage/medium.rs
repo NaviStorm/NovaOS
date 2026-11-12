@@ -115,12 +115,16 @@ fn exercise(d: &mut Block, mode: u64) -> Result<()> {
         return Err(BAD_ARGUMENT);
     }
     #[cfg(feature = "installation")]
-    if mode == 43 {
-        if w::number(&info, 16) & 15 != 15 {
+    if matches!(mode, 43 | 44) {
+        let rights = if mode == 43 { 15 } else { 9 };
+        if w::number(&info, 16) != rights {
             return Err(DENIED);
         }
         let device =
             crate::device::IpcDevice::new(d, size as u32, count).map_err(crate::device::status)?;
+        if mode == 44 {
+            return crate::files::classer(&device);
+        }
         return crate::files::initialiser(&device);
     }
     if matches!(mode, 9 | 10) {

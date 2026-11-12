@@ -17,7 +17,7 @@ from session_cli import fixture_p9
 UTM = Path("/Applications/UTM.app/Contents")
 FIRMWARE = UTM / "Resources/qemu"
 MACHINE = "virt-10.0,gic-version=2"
-BANNER = b"NovaOS v0.14.0\r\n"
+BANNER = b"NovaOS v0.15.0\r\n"
 
 
 def empreinte(path):

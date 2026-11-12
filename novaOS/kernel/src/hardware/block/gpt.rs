@@ -182,3 +182,128 @@ impl Table {
         Ok(table)
     }
 }
+
+// Le diagnostic d'un disque occupé ne possède aucun droit d'écriture.
+#[cfg(feature = "installation-gpt")]
+pub(super) enum Etat {
+    Interrompu,
+    Incoherent,
+    Occupe,
+    Volume(Table),
+}
+
+#[cfg(feature = "installation-gpt")]
+enum Copie {
+    Absente,
+    Autre,
+    Invalide,
+    Nova(Table),
+}
+
+#[cfg(feature = "installation-gpt")]
+impl Table {
+    fn copie(t: &mut Transport, secondaire: bool) -> Result<Copie> {
+        let dernier = t.sectors - 1;
+        let lba = if secondaire { dernier } else { 1 };
+        let mut h = vec![0; t.size];
+        t.read(lba, &mut h)?;
+        if &h[..8] != b"EFI PART" {
+            return Ok(Copie::Absente);
+        }
+        let taille = u32::from_le_bytes(h[12..16].try_into().unwrap()) as usize;
+        if !(92..=t.size).contains(&taille) {
+            return Ok(Copie::Invalide);
+        }
+        let checksum = h[16..20].to_vec();
+        h[16..20].fill(0);
+        if crc(&h[..taille]).to_le_bytes() != checksum[..]
+            || h[24..32] != lba.to_le_bytes()
+            || h[32..40] != (if secondaire { 1 } else { dernier }).to_le_bytes()
+        {
+            return Ok(Copie::Invalide);
+        }
+        h[16..20].copy_from_slice(&checksum);
+        // Les dispositions étrangères restent occupées. Ne jamais suivre des
+        // bornes arbitraires pour conclure à l'origine NovaOS d'un disque.
+        if h[80..84] != 128u32.to_le_bytes() || h[84..88] != 128u32.to_le_bytes() {
+            return Ok(Copie::Autre);
+        }
+        let premier = if secondaire {
+            dernier - 16384 / t.size as u64
+        } else {
+            2
+        };
+        if h[72..80] != premier.to_le_bytes() {
+            return Ok(Copie::Autre);
+        }
+        let mut entries = vec![0; 16384];
+        for (i, bytes) in entries.chunks_exact_mut(t.size).enumerate() {
+            t.read(premier + i as u64, bytes)?;
+        }
+        let sum = crc(&entries);
+        if h[88..92] != sum.to_le_bytes() {
+            return Ok(Copie::Invalide);
+        }
+        if entries[..16] != ESP || entries[128..144] != P9 {
+            return Ok(Copie::Autre);
+        }
+        let ids = [
+            h[56..72].try_into().unwrap(),
+            entries[16..32].try_into().unwrap(),
+            entries[144..160].try_into().unwrap(),
+        ];
+        let Ok(table) = Table::new(t, ids) else {
+            return Ok(Copie::Invalide);
+        };
+        if entries != table.entries() || h != table.header(secondaire, sum) {
+            return Ok(Copie::Invalide);
+        }
+        Ok(Copie::Nova(table))
+    }
+
+    pub fn classer(&self, t: &mut Transport, premier_octet: u64) -> Result<Etat> {
+        let primaire = Self::copie(t, false)?;
+        let secondaire = Self::copie(t, true)?;
+        let etat = match (primaire, secondaire) {
+            (Copie::Absente, Copie::Nova(table)) => {
+                // La première passe a vérifié chaque octet avant le tableau.
+                // La comparaison de la copie inclut tous les octets restants.
+                let debut = (t.sectors - 1) * t.size as u64 - 16384;
+                if premier_octet == debut && table.ids == self.ids {
+                    Etat::Interrompu
+                } else if premier_octet == debut {
+                    Etat::Occupe
+                } else {
+                    Etat::Incoherent
+                }
+            }
+            (Copie::Nova(a), Copie::Nova(b)) if a.ids == b.ids => {
+                let mut secteur = vec![0; t.size];
+                t.read(0, &mut secteur)?;
+                if secteur != a.mbr() {
+                    return Ok(Etat::Incoherent);
+                }
+                t.read(a.esp, &mut secteur)?;
+                let mut secours = vec![0; t.size];
+                t.read(a.esp + 6, &mut secours)?;
+                if secteur != secours
+                    || secteur[510..512] != [0x55, 0xaa]
+                    || &secteur[82..90] != b"FAT32   "
+                    || secteur[11..13] != (t.size as u16).to_le_bytes()
+                    || u64::from(u32::from_le_bytes(secteur[32..36].try_into().unwrap()))
+                        != a.volume - a.esp
+                {
+                    Etat::Incoherent
+                } else {
+                    Etat::Volume(a)
+                }
+            }
+            (Copie::Invalide, _)
+            | (_, Copie::Invalide)
+            | (Copie::Nova(_), _)
+            | (_, Copie::Nova(_)) => Etat::Incoherent,
+            _ => Etat::Occupe,
+        };
+        Ok(etat)
+    }
+}
