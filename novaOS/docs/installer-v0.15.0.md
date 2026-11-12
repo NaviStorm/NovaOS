@@ -1,6 +1,6 @@
 # Installation AArch64 dans UTM — audit de v0.15.0
 
-**État au 12 novembre 2026.** Le pflash privé corrigé amorce le support protégé dans UTM graphique avec TPM CRB. NovaOS inspecte ensuite la cible dans son propre domaine DMA. Le banc mesure zéro écriture, y compris après confirmation. Le partitionnement et l’installation attendent un nouvel arbitrage. NovaOS reste en v0.14.0 et NovaFS en v0.9.13 P9. [Qualification TPM et DMA séquentielle](#qualification-tpm-et-dma-séquentielle)
+**État au 12 novembre 2026.** L’installation expérimentale GPT/P9 a démarré sur le seul disque VirtIO et retrouvé un fichier après redémarrage, en secteurs de 512 et 4 096 octets. Une coupure pendant l’écriture de la GPT a laissé la copie secondaire seule. La qualification s’arrête sur cette divergence. NovaOS reste en v0.14.0, NovaFS en v0.9.13 P9. [Essais et arbitrage GPT](#installation-native-et-coupure-gpt)
 
 La phase 0 a été réalisée sur `main` au commit `a250cb25b530f001debf256f6bfdf8afbc0bef90`. Dans ce premier audit du moteur livré dans UTM 5.0.8, le firmware exécutait NovaOS v0.14.0, puis l’admission du disque échouait avant le lancement du shell. NovaFS conserve sa version v0.9.13 et son format P9.
 
@@ -529,3 +529,104 @@ print("23 scénarios et reprise après coupure vérifiés")
 PY
 python3 novaOS/tests/prototype_traces.py "$NOVA_PREUVES/regressions/prototype"
 ```
+
+## Installation native et coupure GPT
+
+La campagne est partie de `1154752fe3e9c1c68c2f194e376d9c8d9da42bb3` sur `main` propre. Le moteur AArch64 livré dans UTM 5.0.8 a installé un disque brut de 64 Mio, puis un second de 268 Mio. Chaque cible a démarré deux fois seule. Le cas bloquant est la coupure au premier FLUSH de partitionnement. Les versions diffusées restent NovaOS v0.14.0 et NovaFS v0.9.13. [Résultats chiffrés](validation/installation-gpt/resultats.json) · [Journaux et secteurs de contrôle](validation/installation-gpt/preuves.tar.gz)
+
+### Disposition écrite et contrôles
+
+Le noyau lit la série de la cible avec GET_ID, présente son SID, sa capacité et sa taille de secteur, puis contrôle tous ses octets. Il attend la saisie exacte de `AUTORISER NOVA-CIBLE-000000001 <capacité en octets>`. Il vérifie une seconde fois le profil, la géométrie, la série et la surface entière avant le MAP du tampon OUT. Les deux passes sur le disque de 64 Mio représentent 134 217 728 octets avant la première écriture. Le banc crée le fichier cible de façon exclusive. Chaque installation reçoit trois GUID v4 frais du profil hôte, fournis au noyau en ordre EFI_GUID par `opt/novaos/gpt-guids`. [Sélection et consentement](../kernel/src/hardware/block/qualification.rs)
+
+| Secteur logique | Cible | ESP FAT32, LBA inclusifs | NovaFS P9, LBA inclusifs | En-tête primaire / secondaire |
+|---|---:|---:|---:|---:|
+| 512 octets | 64 Mio | 2 048 à 124 927 | 124 928 à 129 023 | 1 / 131 071 |
+| 4 096 octets | 268 Mio | 256 à 67 839 | 67 840 à 68 351 | 1 / 68 607 |
+
+Le LBA 0 contient le MBR protecteur de type `0xee`. Chaque tableau GPT comporte 128 entrées de 128 octets. Le noyau place les tableaux hors des partitions et aligne les deux partitions sur 1 Mio. Le type de l’ESP est `c12a7328-f81f-11d2-ba4b-00a0c93ec93b`. Le type privé de la partition P9 est `3687f202-9e5a-4df6-83db-17bb308172f9`. Le noyau écrit le tableau et l’en-tête secondaires, synchronise, écrit et synchronise les primaires, puis écrit et synchronise le MBR. Il relit chaque secteur de ces structures et le compare aux octets attendus. Un décodeur Python indépendant vérifie les deux CRC d’en-tête, les deux CRC de tableau, les GUID, les adresses réciproques et les bornes sur le fichier fermé. [Écriture native](../kernel/src/hardware/block/gpt.rs) · [Contrôle indépendant](../tests/installation_gpt.py) · [Spécification UEFI, chapitre 5](https://uefi.org/specs/UEFI/2.10/05_GUID_Partition_Table_Format.html)
+
+L’ESP contient `/EFI/BOOT/BOOTAA64.EFI`, `/boot/novaos.elf`, `/limine.conf` et `/licences.txt`. Les services utilisateur, NovaShell et les treize exécutables CLI v0.14.0 sont embarqués dans l’ELF système par le mécanisme existant. Les secteurs FAT32 non nuls proviennent d’un paquet construit avec cet ELF. L’installateur les écrit, synchronise et relit l’ESP entière, y compris l’espace attendu à zéro. Sur les deux images, `fsck_msdos -n` termine avec le code 0. [Préparation de l’ESP](../scripts/esp_installation.py) · [Construction des services et commandes](../kernel/build.rs)
+
+Le bail transmis au pilote EL0 expose uniquement les secteurs de la partition P9, avec son premier LBA présenté comme zéro. READ et WRITE vérifient les bornes relatives avant de traduire le LBA. Le service appelle `Engine::format_p9` sur cette vue et vérifie à nouveau qu’elle est vierge. Les deux volumes du banc ont 512 blocs de 4 Kio. Le GUID de partition identifie le LV. Le FS a un identifiant distinct dérivé du LV. L’initialisation vérifie l’heure de naissance de la racine, crée `/systeme`, écrit `NovaOS\n`, synchronise, remonte en lecture seule, vérifie le volume et relit le fichier et sa date de naissance. Au démarrage système, le noyau contrôle les deux GPT, et le service contrôle les identifiants et la politique P9 `Relative` avant le montage en écriture. [Vue bloc](../kernel/src/hardware/block/lease.rs) · [Formatage, horloge et montage EL0](../user/novafs/files.rs)
+
+### Profil UTM et passage de responsabilité
+
+Les essais directs utilisent les bibliothèques de QEMU 10.0.12 et de swtpm de l’application UTM 5.0.8 installée. Le profil est `virt-10.0,gic-version=3,its=off`, Cortex-A72 sous TCG, un vCPU, 256 Mio, RTC UTC, TPM CRB et console PL011. L’IOMMU est au slot 5 avec `granule=4k,aw-bits=48,boot-bypass=off`. Chaque disque utilise le transport PCI moderne, `iommu_platform=on,ats=off,num-queues=1,vectors=0`. Les variables EFI et l’état du TPM demeurent privés à la VM et persistent à travers les arrêts.
+
+1. Au démarrage d’installation, le support au slot 6 est réellement en lecture seule et désigné `NovaOS-Install-v1`. La cible au slot 7 est désignée `NovaOS-Target-v1`. Le support obtient seul le domaine UEFI 2. Le DXE contrôle le TPM, révoque les traductions, confirme le retrait et rend le bus avant la prise en charge de la cible par le domaine NovaOS 1. Le firmware et le noyau utilisent la désignation SMBIOS type 41 liée à l’objet PCI.
+2. Après l’installation, attendre `INSTALLATION bilan Ok(())` et l’arrêt du processus QEMU. Retirer le support et sa désignation. Conserver le même disque cible, ses variables EFI et son TPM. Attribuer au disque seul la désignation `NovaOS-System-v1` et `bootindex=1`. Le banc démarre un processus QEMU neuf pour chaque essai. Aucun CD ni fichier du support ne figure dans sa commande.
+3. Le pflash privé construit avec `--installation` reconnaît le rôle système exclusif. Le backend du disque système est inscriptible. Dans la chaîne EFI de confiance, Block I/O annonce un média en lecture seule, désactive le cache d’écriture et refuse les requêtes OUT et FLUSH dans le chemin VirtIO avant de créer les descripteurs. Le noyau vérifie le retrait firmware, la série et la GPT avant de publier le bail P9. Cette admission propre au disque installé conserve l’exigence VirtIO RO pour le support d’installation. Le firmware, le chargeur et le profil hôte font partie de la chaîne de confiance. [Admission du rôle](../firmware/NovaIommuDxe/Profil.c) · [Variante EDK II](../firmware/preparer.py)
+4. Dans NovaShell, le banc exécute `cp /systeme /persistant`, `cat /persistant` et `exit`. Au démarrage à froid suivant, `cat /persistant` retourne encore `NovaOS`. L’outil hôte NovaFS confirme ensuite l’intégrité complète et le contenu par une lecture indépendante sur les deux images.
+
+### Démarrages, pannes et mémoire
+
+| Essai | Observation |
+|---|---|
+| Installation, 512 et 4 096 octets | Confirmation exacte, GPT et ESP relues, formatage P9, quatre processus collectés, retrait du domaine acquitté. Aucun octet écrit sur le support source. |
+| Autonome puis persistance, deux géométries | Limine charge l’ELF depuis l’ESP du seul SID 56. NovaShell lit le fichier créé au démarrage précédent. Les traces ne contiennent aucune écriture bloc par UEFI. Les écritures NovaOS observées sur le système sont entièrement dans la partition P9. |
+| Cible déjà installée, consentement refusé, identités ambiguës | La cible installée est refusée à la première page non nulle. La réponse `NON` ferme le transport. Le doublon SMBIOS est refusé avant tout ATTACH et toute lecture bloc. Les trois essais comptent zéro écriture. |
+| Coupure pendant une écriture P9 | Sur une copie du système installé, blkdebug suspend la première écriture d’un nouveau `cp`. QMP confirme le point d’arrêt puis le banc tue QEMU. La VM suivante monte P9 et retrouve `/persistant`. |
+| Coupure pendant l’installation | La VM est tuée au premier FLUSH GPT suspendu. Après la coupure, la copie secondaire est complète, le MBR et la primaire sont absents. Au prochain lancement d’installation, la cible est refusée à l’octet 67 091 968, avant confirmation et sans écriture. |
+| Révocation, réemploi mémoire, quarantaine et GICv3 | Le banc monodisque historique rejoue ses 11 cas. Il retrouve 106 cadres firmware réalloués après retrait dans le cas dédié. L’injection d’UNMAP sans acquittement immobilise cinq plages et coupe BME. Sur les démarrages d’installation et de système normaux, les traces confirment zéro plage active avant la transmission au noyau, puis après la fermeture du bail. |
+
+Sur le système seul, SID 56 passe successivement par les domaines 2 puis 1. Pour les secteurs de 512 octets, le DXE compte 427 jetons accordés et retirés au démarrage système. Pour 4 096 octets, il en compte 238. À l’installation, il en compte 778 sur le support. Les journaux distinguent les mappages DMA, les requêtes bloc et les compteurs backend. La campagne de réemploi et de quarantaine utilise les pflash historiques dédiés, distincts du nouveau pflash.
+
+| Mémoire observable, VM de 256 Mio | Installation | Premier démarrage autonome | Deuxième démarrage autonome |
+|---|---:|---:|---:|
+| Pages de 4 Kio libres à l’initialisation, secteur 512 | 54 880 | 56 935 | 56 935 |
+| Pages de 4 Kio libres à l’initialisation, secteur 4 096 | 54 880 | 56 599 | 56 599 |
+| RSS QEMU en Kio au dernier jalon, campagne 512 de sécurité | 221 392 | 184 096 | 168 032 |
+| RSS QEMU en Kio au dernier jalon, campagne 4 096 | 208 112 | 184 816 | 170 736 |
+
+Ces mesures hôtes sont des échantillons ponctuels. La campagne mesure séparément la restitution des cadres dans les suites historiques.
+
+### Critère d’arrêt et arbitrage
+
+Sur le disque de 64 Mio vierge, blkdebug a retenu le premier `flush_to_disk` après 33 écritures acquittées, soit 16 896 octets. Les deux vérifications de virginité avaient lu 134 217 728 octets. Le consentement avait été enregistré. Au moment de l’arrêt, QMP comptait zéro FLUSH achevé. La relecture indépendante trouve les LBA 0 et 1 entièrement à zéro, le tableau secondaire au LBA 131 039 et son en-tête au dernier LBA, 131 071. Les CRC32 recalculés sont `aa14d425` pour l’en-tête et `6a8b88a4` pour le tableau. Le SHA-256 de la cible interrompue est `d8ceaa00d55691a7c740e3b1883ddba78e691899f65fccee4d62e806b9db1ee4`. Il reste identique après le refus de réinstallation. La panne reproduite est une mort du processus QEMU avec conservation du cache hôte. Elle ne couvre pas la perte d’alimentation du Mac ni tous les ordres de persistance d’un disque physique.
+
+**Arbitrage proposé.** Autoriser explicitement le classement d’une copie GPT secondaire orpheline comme installation interrompue, maintenir son refus et reprendre uniquement sur un nouveau disque vierge. Si la présence de deux GPT valides est exigée à toute coupure, même avant publication du MBR, le transport actuel expose des écritures et barrières séparées. Il faudrait alors arbitrer un mécanisme de publication atomique à l’échelle du disque. Le prototype n’effectue aucune réparation ou remise à zéro automatique.
+
+La campagne s’arrête avant distribution, promotion de version, import graphique de ce nouveau profil et élargissement de la matrice de coupures. Les deux géométries ont été vérifiées avec le moteur livré dans UTM. L’induction d’une panne GPT a porté sur la cible de 512 octets. Un premier essai de développement avait pris un mutex dans une section critique avant la création du volume. Le passage direct du GUID au lanceur a corrigé ce défaut. Les essais finaux repartent de nouveaux disques vierges.
+
+### Reproduire le prototype
+
+Sur macOS ARM64, préparer une copie privée de la révision EDK II et les outils indiqués dans la procédure de construction précédente. Utiliser Bash, définir `NOVA_SRC` à la racine du dépôt, `NOVA_LAB` au répertoire de construction EDK II et exécuter `edksetup.sh` dans le même shell que `build`. Le dossier des résultats et les cibles du banc sont créés exclusivement. Le firmware livré avec UTM reste installé à son emplacement d’origine.
+
+```sh
+set -e
+NOVA_ESSAI="$(mktemp -d /tmp/nova-gpt.XXXXXXXX)"
+cd "$NOVA_LAB/edk2"
+python3 "$NOVA_SRC/novaOS/firmware/preparer.py" "$PWD" --installation
+build -a AARCH64 -t CLANGDWARF -b RELEASE -p ArmVirtPkg/ArmVirtQemu.dsc -n 6 -D TPM2_ENABLE=TRUE
+NOVA_FV="$PWD/Build/ArmVirtQemu-AARCH64/RELEASE_CLANGDWARF/FV"
+
+cd "$NOVA_SRC/novaOS"
+export RUSTC="$(rustup which --toolchain stable rustc)"
+NOVA_TARGET=aarch64-unknown-none-softfloat
+rustup run stable cargo build --offline --locked --release --target "$NOVA_TARGET" \
+  --features systeme-gpt --target-dir "$NOVA_ESSAI/systeme"
+python3 scripts/esp_installation.py "$NOVA_ESSAI/systeme/$NOVA_TARGET/release/novaos" "$NOVA_ESSAI/esp"
+NOVA_ESP="$NOVA_ESSAI/esp" rustup run stable cargo build --offline --locked --release \
+  --target "$NOVA_TARGET" --features installation-gpt --target-dir "$NOVA_ESSAI/install"
+NOVA_ELF="$NOVA_ESSAI/install/$NOVA_TARGET/release/novaos"
+python3 tests/installation_gpt.py "$NOVA_FV" "$NOVA_ELF" "$NOVA_ESSAI/secteur4096" --secteur 4096
+python3 tests/installation_gpt.py "$NOVA_FV" "$NOVA_ELF" "$NOVA_ESSAI/securite512" --securite
+```
+
+La dernière commande écrit le bilan des refus puis retourne un échec si les deux signatures GPT divergent après coupure. Le pflash FV mesuré a pour SHA-256 `4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9`, l’ELF installateur `025f2bd6cd86cb325d280519f0852631c964d4f4894f7dd3323d6e9061061ab9` et l’ELF système `43ee0452444277bfda2a054f3bdd86a32b8d4ed9f884ffb9d2e484b56fb06565`. Les GUID de disque et de partitions sont renouvelés pour chaque essai.
+
+### Régressions du prototype
+
+| Suite rejouée | AArch64 | x86_64 |
+|---|---:|---:|
+| Démarrages historiques | 25/25 | 25/25 |
+| Groupes bloc | 24/24 | 24/24 |
+| ELF, cycle de vie des processus et courses IPC | 3/3 | 3/3 |
+| CLI et CLI P9, secteurs de 512 et 4 096 octets | 4/4 | 4/4 |
+| NovaFS standard puis instrumenté | 192/192 puis 193/193 | 192/192 puis 193/193 |
+| Opérations différentielles NovaFS | 1 000 000 | 1 000 000 |
+| DMA et GICv3 du prototype historique | 11/11 | GICv3 spécifique à AArch64 |
+
+Les exécutables NovaFS ont été contrôlés par en-tête Mach-O. L’hôte est ARM64 natif. Sous x86_64, `sysctl.proc_translated` vaut 1. Chaque différentiel constate 345 183 publications, 54 643 pénuries injectées et 1 000 remontages audités. Les effectifs standards et instrumentés comptent les tests réussis. Le banc lance aussi séparément les contrôles facultatifs. Les nouveaux essais d’installation exigent la machine AArch64 avec le pflash ArmVirt. [Banc NovaFS](../../novaFS/lab/p51-validation-suites.py) · [Résultats des campagnes](validation/installation-gpt/resultats.json)
+
+L’archive contient les consoles série, les traces bloc et IOMMU des deux géométries, les jalons de régression et les deux extrémités du disque interrompu. Les identifiants d’objets QEMU dans les traces bloc sont anonymisés par VM. Les adresses de traduction de l’invité et les LBA restent disponibles. Les clés et l’état du TPM sont exclus. [Archive des preuves](validation/installation-gpt/preuves.tar.gz)

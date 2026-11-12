@@ -157,6 +157,24 @@ impl Session<'_, '_> {
                     crate::qualification::stop(b"COUPURE remontage");
                 }
                 let ids = Anchor::decode(&first, 0).map_err(error)?.ids;
+                let mut lv = [0u8; 16];
+                if rt::config(1) == 41 {
+                    lv[..8].copy_from_slice(&rt::config(2).to_le_bytes());
+                    lv[8..].copy_from_slice(&rt::config(3).to_le_bytes());
+                }
+                if lv != [0; 16] {
+                    let mut fs_id = lv;
+                    fs_id[15] ^= 1;
+                    if ids != (novafs::Ids { fs: fs_id, lv }) {
+                        return Err(w::CORRUPT);
+                    }
+                    let check =
+                        Engine::mount_current(self.dev, ids, Mode::ReadOnly).map_err(error)?;
+                    if check.atime_policy() != Some(novafs::time::Atime::Relative) {
+                        return Err(w::UNSUPPORTED);
+                    }
+                    check.unmount().map_err(error)?;
+                }
                 let mode = if self.writable {
                     Mode::ReadWrite
                 } else {
@@ -580,4 +598,39 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             return Ok(());
         }
     }
+}
+
+#[cfg(feature = "installation")]
+pub(crate) fn initialiser(dev: &IpcDevice<'_>) -> rt::Result<()> {
+    use novafs::{Ids, time::Atime};
+    let mut lv = [0; 16];
+    lv[..8].copy_from_slice(&rt::config(2).to_le_bytes());
+    lv[8..].copy_from_slice(&rt::config(3).to_le_bytes());
+    if lv == [0; 16] {
+        return Err(rt::BAD_ARGUMENT);
+    }
+    let mut fs_id = lv;
+    fs_id[15] ^= 1;
+    let ids = Ids { fs: fs_id, lv };
+    let clock = Arc::new(Civil(AtomicI64::new(0)));
+    let utc = clock.sample()?;
+    let mut fs = Engine::format_p9(dev, ids, Atime::Relative, Some(clock)).map_err(error)?;
+    let contenu = b"NovaOS\n";
+    if fs.times("/").map_err(error)?.btime != utc {
+        return Err(w::CORRUPT);
+    }
+    fs.create("/systeme").map_err(error)?;
+    fs.write("/systeme", 0, contenu).map_err(error)?;
+    let mut disk = fs.unmount().map_err(error)?;
+    disk.flush().map_err(error)?;
+    let fs = Engine::mount_current(disk, ids, Mode::ReadOnly).map_err(error)?;
+    fs.verify().map_err(error)?;
+    if fs.atime_policy() != Some(Atime::Relative)
+        || fs.read("/systeme", 0, 64).map_err(error)? != contenu
+        || fs.times("/systeme").map_err(error)?.btime != utc
+    {
+        return Err(w::CORRUPT);
+    }
+    fs.unmount().map_err(error)?;
+    Ok(())
 }

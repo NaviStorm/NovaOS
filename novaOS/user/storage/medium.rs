@@ -114,6 +114,15 @@ fn exercise(d: &mut Block, mode: u64) -> Result<()> {
     if !matches!(size, 512 | 4096) || count == 0 {
         return Err(BAD_ARGUMENT);
     }
+    #[cfg(feature = "installation")]
+    if mode == 43 {
+        if w::number(&info, 16) & 15 != 15 {
+            return Err(DENIED);
+        }
+        let device =
+            crate::device::IpcDevice::new(d, size as u32, count).map_err(crate::device::status)?;
+        return crate::files::initialiser(&device);
+    }
     if matches!(mode, 9 | 10) {
         use novafs::Device;
         let mut device =

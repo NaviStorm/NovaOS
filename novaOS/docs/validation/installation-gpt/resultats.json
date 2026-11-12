@@ -1,0 +1,438 @@
+{
+  "reference": "1154752fe3e9c1c68c2f194e376d9c8d9da42bb3",
+  "utm": "5.0.8",
+  "qemu": "10.0.12",
+  "architecture": "aarch64",
+  "novaos": "0.14.0",
+  "novafs": "0.9.13 P9",
+  "statut": "arrêt après coupure GPT",
+  "campagnes": {
+    "512": {
+      "firmware": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "installateur": "025f2bd6cd86cb325d280519f0852631c964d4f4894f7dd3323d6e9061061ab9",
+      "support": "925dc64a4f109784c5aedbeeb7383bf801a15413f34475121f79b0aed0dcf46c",
+      "installation": {
+        "avant": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 16384,
+            "rd_bytes": 67108864,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          }
+        },
+        "fin": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 52939,
+            "rd_bytes": 199595520,
+            "wr_operations": 4101,
+            "wr_bytes": 2099712,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 221392,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              48
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 4101,
+          "plages_finales": 0
+        },
+        "pages_libres_init": 54880
+      },
+      "gpt": {
+        "esp": 2048,
+        "p9": 124928,
+        "fin_p9": 129023,
+        "taille_secteur": 512
+      },
+      "autonome": {
+        "fin": {
+          "cible": {
+            "rd_operations": 987,
+            "rd_bytes": 4484608,
+            "wr_operations": 192,
+            "wr_bytes": 98304,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 184096,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 192,
+          "plages_finales": 0
+        },
+        "pages_libres_init": 56935
+      },
+      "persistance": {
+        "fin": {
+          "cible": {
+            "rd_operations": 1107,
+            "rd_bytes": 4546048,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 1
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 168032,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 0,
+          "plages_finales": 0
+        },
+        "pages_libres_init": 56935
+      },
+      "securite": {
+        "non-vierge": {
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 1,
+              "rd_bytes": 4096,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 193904
+        },
+        "ambigu": {
+          "fin": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 95472
+        },
+        "coupure-ecriture": {
+          "frontiere": "première écriture de cp suspendue",
+          "fin": {
+            "cible": {
+              "rd_operations": 1115,
+              "rd_bytes": 4550144,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 1
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 177360
+        },
+        "reprise-ecriture": {
+          "fin": {
+            "cible": {
+              "rd_operations": 1107,
+              "rd_bytes": 4546048,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 1
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 168128
+        },
+        "sans-consentement": {
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 192576
+        },
+        "coupure-installation": {
+          "frontiere": "premier FLUSH GPT suspendu",
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 32768,
+              "rd_bytes": 134217728,
+              "wr_operations": 33,
+              "wr_bytes": 16896,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 175904
+        },
+        "etat_apres_coupure": {
+          "mbr": false,
+          "primaire": false,
+          "secondaire": true
+        },
+        "refus-apres-coupure": {
+          "fin": {
+            "source": {
+              "rd_operations": 259,
+              "rd_bytes": 8208896,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 16380,
+              "rd_bytes": 67092480,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "rss_emulateur_kio_au_jalon": 175632
+        }
+      },
+      "controle_hote": {
+        "campagne": "utm512b",
+        "image_sha256": "14c2176122e0c57a77359de3e3a040515e0e59850195ff3b514ac035263b93f5",
+        "verification": {
+          "verify": "Vérification intégrale réussie, génération 9\n",
+          "salvage": "NovaOS\n"
+        }
+      },
+      "image_finale_sha256": "b359b4f04845ae9b52d6572f19ba9a7ada7b2d07240b71e1afaf01abaa60d359"
+    },
+    "4096": {
+      "firmware": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "installateur": "025f2bd6cd86cb325d280519f0852631c964d4f4894f7dd3323d6e9061061ab9",
+      "support": "e8775f3d9cd0d39a8081725ed1c0ab558f609ee61324c9582211fea1cb4c9fc8",
+      "installation": {
+        "avant": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 68608,
+            "rd_bytes": 281018368,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          }
+        },
+        "fin": {
+          "source": {
+            "rd_operations": 259,
+            "rd_bytes": 8208896,
+            "wr_operations": 0,
+            "wr_bytes": 0,
+            "flush_operations": 0
+          },
+          "cible": {
+            "rd_operations": 205404,
+            "rd_bytes": 841334784,
+            "wr_operations": 561,
+            "wr_bytes": 2297856,
+            "flush_operations": 11
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 208112,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              48
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 561,
+          "plages_finales": 0
+        },
+        "pages_libres_init": 54880
+      },
+      "gpt": {
+        "esp": 256,
+        "p9": 67840,
+        "fin_p9": 68351,
+        "taille_secteur": 4096
+      },
+      "autonome": {
+        "fin": {
+          "cible": {
+            "rd_operations": 188,
+            "rd_bytes": 13635584,
+            "wr_operations": 20,
+            "wr_bytes": 81920,
+            "flush_operations": 9
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 184816,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 20,
+          "plages_finales": 0
+        },
+        "pages_libres_init": 56599
+      },
+      "persistance": {
+        "fin": {
+          "cible": {
+            "rd_operations": 205,
+            "rd_bytes": 13705216,
+            "wr_operations": 4,
+            "wr_bytes": 16384,
+            "flush_operations": 3
+          }
+        },
+        "rss_emulateur_kio_au_jalon": 170736,
+        "dma": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 4,
+          "plages_finales": 0
+        },
+        "pages_libres_init": 56599
+      },
+      "controle_hote": {
+        "campagne": "utm4k",
+        "image_sha256": "cad3680ecc56a20b87d61505e2d7d1a90a1a1ab5b6e65d9a60aa3ad48c0c8f59",
+        "verification": {
+          "verify": "Vérification intégrale réussie, génération 8\n",
+          "salvage": "NovaOS\n"
+        }
+      },
+      "image_finale_sha256": "cad3680ecc56a20b87d61505e2d7d1a90a1a1ab5b6e65d9a60aa3ad48c0c8f59"
+    }
+  },
+  "coupure_gpt": {
+    "disque_sha256": "d8ceaa00d55691a7c740e3b1883ddba78e691899f65fccee4d62e806b9db1ee4",
+    "lba_tableau_secondaire": 131039,
+    "lba_entete_secondaire": 131071,
+    "crc_entete": "aa14d425",
+    "crc_tableau": "6a8b88a4",
+    "premier_octet_non_nul": 67091968
+  },
+  "regressions": {
+    "dma_gicv3_aarch64": [
+      "froid",
+      "el2",
+      "protection",
+      "reemploi",
+      "cd",
+      "redemarrage",
+      "coupure",
+      "reprise",
+      "autre-slot",
+      "mapkey",
+      "retrait-suspendu"
+    ],
+    "architectures": {
+      "aarch64": {
+        "demarrages": 25,
+        "elf_processus_ipc": 3,
+        "bloc": 24,
+        "cli": 4,
+        "novafs_standard": 192,
+        "novafs_instrumentes": 193,
+        "differentiel": 1000000
+      },
+      "x86_64": {
+        "demarrages": 25,
+        "elf_processus_ipc": 3,
+        "bloc": 24,
+        "cli": 4,
+        "novafs_standard": 192,
+        "novafs_instrumentes": 193,
+        "differentiel": 1000000
+      }
+    }
+  },
+  "elf_systeme_sha256": "43ee0452444277bfda2a054f3bdd86a32b8d4ed9f884ffb9d2e484b56fb06565",
+  "preuves_sha256": "41815bb74620de7e1190b06e31541193b708a5d95cb55dab1ea7cad28bc0e0c6"
+}

@@ -4,7 +4,7 @@
 #include <Protocol/Smbios.h>
 #include <Protocol/Tcg2Protocol.h>
 
-EFI_STATUS NovaRoles (UINT32 *Source, UINT32 *Target) {
+EFI_STATUS NovaRoles (UINT32 *Source, UINT32 *Target, BOOLEAN *System) {
   EFI_SMBIOS_PROTOCOL *Smbios;
   EFI_STATUS S = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **)&Smbios);
   if (EFI_ERROR (S)) {
@@ -13,6 +13,7 @@ EFI_STATUS NovaRoles (UINT32 *Source, UINT32 *Target) {
   EFI_SMBIOS_HANDLE Handle = SMBIOS_HANDLE_PI_RESERVED;
   EFI_SMBIOS_TYPE Type = SMBIOS_TYPE_ONBOARD_DEVICES_EXTENDED_INFORMATION;
   EFI_SMBIOS_TABLE_HEADER *Record;
+  *System = FALSE;
   *Source = *Target = MAX_UINT32;
   while ((S = Smbios->GetNext (Smbios, &Handle, &Type, &Record, NULL)) == EFI_SUCCESS) {
     if (Record->Length != sizeof (SMBIOS_TABLE_TYPE41)) {
@@ -27,6 +28,9 @@ EFI_STATUS NovaRoles (UINT32 *Source, UINT32 *Target) {
     UINT32 *Role;
     if (AsciiStrCmp (Name, "NovaOS-Install-v1") == 0) {
       Role = Source;
+    } else if (AsciiStrCmp (Name, "NovaOS-System-v1") == 0) {
+      *System = TRUE;
+      Role = Source;
     } else if (AsciiStrCmp (Name, "NovaOS-Target-v1") == 0) {
       Role = Target;
     } else {
@@ -38,7 +42,7 @@ EFI_STATUS NovaRoles (UINT32 *Source, UINT32 *Target) {
     }
     *Role = Port->DevFuncNum;
   }
-  if (S != EFI_NOT_FOUND || *Source == MAX_UINT32 || *Source == *Target) {
+  if (S != EFI_NOT_FOUND || *Source == MAX_UINT32 || *Source == *Target || (*System && *Target != MAX_UINT32)) {
     return EFI_ACCESS_DENIED;
   }
   return EFI_SUCCESS;

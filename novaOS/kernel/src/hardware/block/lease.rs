@@ -29,6 +29,9 @@ struct Session {
     phase: Phase,
 }
 pub(crate) fn begin_session(rights: u8) -> Result<u64> {
+    begin_with(rights, Transport::open)
+}
+pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Transport>) -> Result<u64> {
     let mut s = SESSION.lock();
     if s.quarantine || s.device.is_some() || OWNER.load(Ordering::Acquire) != 0 {
         return Err(Error::Quarantine);
@@ -37,7 +40,7 @@ pub(crate) fn begin_session(rights: u8) -> Result<u64> {
         .try_update(Ordering::AcqRel, Ordering::Acquire, |v| v.checked_add(1))
         .map_err(|_| Error::State)?
         + 1;
-    match Transport::open() {
+    match open() {
         Ok(d) => {
             s.device = Some(d);
             s.phase = Phase::Empty;
@@ -145,14 +148,14 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
         (INFO, BEGIN, Phase::Empty) => {
             put(w, 4, d.size as u32);
             put(w, 16, u32::from(rights));
-            w[8..16].copy_from_slice(&d.sectors.to_le_bytes());
+            w[8..16].copy_from_slice(&d.count.to_le_bytes());
         }
         (READ, BEGIN, Phase::Empty) => {
-            if l >= d.sectors {
+            if l >= d.count {
                 return Err(abi::BAD_ARGUMENT);
             }
             metrics::begin();
-            if d.begin_read(l).is_err() {
+            if d.begin_read(d.first + l).is_err() {
                 s.phase = Phase::Closed;
                 return Err(abi::REFUSED);
             }
@@ -182,7 +185,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
             };
         }
         (WRITE, BEGIN, Phase::Empty) => {
-            if l >= d.sectors {
+            if l >= d.count {
                 return Err(abi::BAD_ARGUMENT);
             }
             metrics::begin();
@@ -200,7 +203,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
             s.phase = Phase::Writing(l, at + n);
         }
         (WRITE, END, Phase::Writing(old, at)) if l == old && at == d.size => {
-            if d.output(l, false).is_err() {
+            if d.output(d.first + l, false).is_err() {
                 s.phase = Phase::Closed;
                 return Err(abi::REFUSED);
             }

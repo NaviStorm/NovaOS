@@ -783,6 +783,15 @@ pub(super) fn launch_block<const N: usize>(
     key: u64,
     mode: u64,
 ) -> Res<[Child; N]> {
+    launch_block_identifie(images, key, mode, None)
+}
+
+pub(super) fn launch_block_identifie<const N: usize>(
+    images: [(&'static [u8], u32); N],
+    key: u64,
+    mode: u64,
+    volume: Option<[u8; 16]>,
+) -> Res<[Child; N]> {
     assert!(matches!(N, 3..=5));
     let private = crate::hardware::block::private_frames().map_err(|_| DENIED)?;
     let _guard = Guard::new();
@@ -819,6 +828,16 @@ pub(super) fn launch_block<const N: usize>(
             })
             .unwrap();
         }
+        if let Some(guid) = volume {
+            let space = s.processes.get(consumer).space.as_ref().unwrap();
+            heap::with_pages(|m| {
+                for (i, chunk) in guid.chunks_exact(8).enumerate() {
+                    space.write_data(m, 2 + i, u64::from_le_bytes(chunk.try_into().unwrap()));
+                }
+                Ok(())
+            })
+            .unwrap();
+        }
         for (i, member) in group[3..].iter().enumerate() {
             let control = member.0;
             let a = s.ipc.create(consumer)?;
@@ -829,7 +848,8 @@ pub(super) fn launch_block<const N: usize>(
             if shell {
                 use crate::terminal::*;
                 let trace = if mode == 42 { QUALIFY } else { 0 };
-                s.processes.get_mut(control).terminal = INPUT | OUTPUT | ERROR | EDIT | LAUNCH | trace;
+                s.processes.get_mut(control).terminal =
+                    INPUT | OUTPUT | ERROR | EDIT | LAUNCH | trace;
             }
             let rx = s.ipc.derive(consumer, b, control, RECEIVE.into())?;
             s.ipc.locals.get_mut(control.slot).bootstrap = tx;

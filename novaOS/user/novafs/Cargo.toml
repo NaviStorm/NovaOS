@@ -11,6 +11,9 @@ name = "novaos-storage"
 path = "main.rs"
 test = false
 
+[features]
+installation = []
+
 [dependencies]
 novafs = { path = "../../../novaFS" }
 zeroize = { version = "1.9.1", default-features = false }

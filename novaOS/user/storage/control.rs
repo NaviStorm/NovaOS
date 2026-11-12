@@ -8,7 +8,12 @@ fn probe() -> Result<()> {
     // Seule l'interface de session du service NovaFS est visible ici.
     for (id, op) in [(1, INFO), (2, FIN)] {
         send(tx, id, &[WIRE_VERSION, op, 0, 0, 0, 0, 0, 0])?;
-        let r = receive(rx)?;
+        let r = loop {
+            match receive(rx) {
+                Err(TIMED_OUT) if mode == 43 && op == INFO => continue,
+                result => break result?,
+            }
+        };
         if r.kind != 1
             || r.len != 12
             || r.tag != id

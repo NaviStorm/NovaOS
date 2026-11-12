@@ -13,6 +13,8 @@ bench = false
 [features]
 gicv3-lab = []
 dma-sequentiel = ["gicv3-lab"]
+systeme-gpt = ["dma-sequentiel"]
+installation-gpt = ["systeme-gpt"]
 
 [dependencies]
 limine = "=0.5.0"

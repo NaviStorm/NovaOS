@@ -65,6 +65,18 @@ fn main_thread() {
     let scenario = args.as_slice();
     #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
     if cfg!(feature = "dma-sequentiel") {
+        #[cfg(feature = "installation-gpt")]
+        if scenario == b"installer-gpt" {
+            let r = hardware::block::qualification::installer();
+            log(format_args!("INSTALLATION bilan {r:?}"));
+            hal::cpu::halt()
+        }
+        #[cfg(feature = "systeme-gpt")]
+        if scenario == b"systeme-gpt" {
+            let r = hardware::block::qualification::systeme();
+            log(format_args!("SYSTEME bilan {r:?}"));
+            hal::cpu::halt()
+        }
         #[cfg(feature = "dma-sequentiel")]
         if matches!(scenario, b"dma-sequentiel" | b"dma-sequentiel-reemploi") {
             if scenario == b"dma-sequentiel-reemploi" {

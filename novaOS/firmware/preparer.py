@@ -8,7 +8,7 @@ REVISION = "fbe0805b2091393406952e84724188f8c1941837"
 MODULE = "ArmVirtPkg/NovaIommuDxe/NovaIommuDxe.inf"
 
 
-def preparer(root, retrait_suspendu=False, crb=False, sequentiel=False, retrait_transfert=False):
+def preparer(root, retrait_suspendu=False, crb=False, sequentiel=False, retrait_transfert=False, installation=False):
     def git(*arguments):
         return subprocess.check_output(["git", "-C", root, *arguments])
 
@@ -90,7 +90,24 @@ def preparer(root, retrait_suspendu=False, crb=False, sequentiel=False, retrait_
             result = result.replace(old, new)
         data = result.encode().replace(b"\n", line_end)
         path = root / name
-        if path.read_bytes() not in (original, data):
+        admis = {original, data}
+        if name == "OvmfPkg/VirtioBlkDxe/VirtioBlk.c":
+            # Le pflash d'installation ne soumet que des requêtes IN, aussi sur le disque système.
+            lecture = result
+            for avant, apres in [
+                ("  BlockSize = Dev->BlockIoMedia.BlockSize;",
+                 "  if (RequestIsWrite) {\n    return EFI_WRITE_PROTECTED;\n  }\n  BlockSize = Dev->BlockIoMedia.BlockSize;"),
+                ("(BOOLEAN)((Features & VIRTIO_BLK_F_RO) != 0);", "TRUE;"),
+                ("(BOOLEAN)((Features & VIRTIO_BLK_F_FLUSH) != 0);", "FALSE;"),
+            ]:
+                if lecture.count(avant) != 1:
+                    raise ValueError(f"Contexte VirtIO-blk inattendu : {avant}")
+                lecture = lecture.replace(avant, apres)
+            lecture = lecture.encode().replace(b"\n", line_end)
+            admis.add(lecture)
+            if installation:
+                data = lecture
+        if path.read_bytes() not in admis:
             raise ValueError(f"Modification locale dans {path}")
         changes[path] = original if name == tpm and not (crb or sequentiel) else data
     source = Path(__file__).with_name("NovaIommuDxe")
@@ -100,6 +117,7 @@ def preparer(root, retrait_suspendu=False, crb=False, sequentiel=False, retrait_
         path = source / name
         if path.name == "Domain.c" and (retrait_suspendu or sequentiel):
             flags = ("#define NOVA_BANC_RETRAIT_SUSPENDU 1\n" if retrait_suspendu else "")
+            flags += "#define NOVA_INSTALLATION 1\n" if installation else ""
             flags += "#define NOVA_SEQUENTIEL 1\n" if sequentiel else ""
             flags += "#define NOVA_BANC_RETRAIT_TRANSFERT 1\n" if retrait_transfert else ""
             (dest / path.name).write_text(flags + path.read_text())
@@ -116,7 +134,10 @@ if __name__ == "__main__":
     parser.add_argument("--crb", action="store_true", help="qualifier le tampon fixe du TPM CRB")
     parser.add_argument("--sequentiel", action="store_true", help="CRB et admission du support nommé par le profil")
     parser.add_argument("--retrait-transfert", action="store_true", help="banc séquentiel, retenir le premier retrait à la sortie")
+    parser.add_argument("--installation", action="store_true", help="profil séquentiel et disque système, Block I/O UEFI en lecture seule")
     args = parser.parse_args()
+    if args.installation and (args.retrait_suspendu or args.retrait_transfert):
+        parser.error("le pflash d’installation exclut les injections de panne")
     if args.retrait_transfert and (not args.sequentiel or args.retrait_suspendu):
         parser.error("--retrait-transfert requiert --sequentiel et exclut --retrait-suspendu")
-    preparer(args.edk2.resolve(), args.retrait_suspendu, args.crb, args.sequentiel, args.retrait_transfert)
+    preparer(args.edk2.resolve(), args.retrait_suspendu, args.crb, args.sequentiel or args.installation, args.retrait_transfert, args.installation)

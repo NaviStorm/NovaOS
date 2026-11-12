@@ -13,6 +13,7 @@ STATIC BOOLEAN Attached, Starting;
 STATIC BOOLEAN SuspendUnmap;
 #endif
 #ifdef NOVA_SEQUENTIEL
+STATIC BOOLEAN SystemDisk;
 STATIC EFI_HANDLE TargetHandle;
 STATIC EFI_PCI_IO_PROTOCOL *TargetPci;
 #endif
@@ -131,7 +132,12 @@ STATIC EFI_STATUS Identify (EFI_HANDLE Requested) {
 #ifdef NOVA_SEQUENTIEL
   UINT32 Source, Target;
   BOOLEAN TargetSeen = FALSE;
-  S = NovaRoles (&Source, &Target);
+  S = NovaRoles (&Source, &Target, &SystemDisk);
+#ifndef NOVA_INSTALLATION
+  if (!EFI_ERROR (S) && SystemDisk) {
+    S = EFI_ACCESS_DENIED;
+  }
+#endif
   if (EFI_ERROR (S)) {
     NovaLog ("NOVA DXE identite SMBIOS refusee %r\r\n", S);
     return S;
@@ -321,13 +327,17 @@ EFI_STATUS NovaAttach (EFI_HANDLE Handle) {
     NovaStop ("ACCESS_PLATFORM");
   }
 #ifdef NOVA_SEQUENTIEL
-  if ((Features & BIT5) == 0) {
+  if (!SystemDisk && (Features & BIT5) == 0) {
     NovaLog ("NOVA DXE support inscriptible refuse\r\n");
     Starting = FALSE;
     return EFI_ACCESS_DENIED;
   }
   NovaCheck (NovaCheckTpm (), "TPM2 GetCapability");
-  NovaLog ("NOVA DXE source NovaOS-Install-v1 sid=%u lecture seule\r\n", DiskSid);
+  if (SystemDisk) {
+    NovaLog ("NOVA DXE systeme NovaOS-System-v1 sid=%u lecture seule EFI\r\n", DiskSid);
+  } else {
+    NovaLog ("NOVA DXE source NovaOS-Install-v1 sid=%u lecture seule\r\n", DiskSid);
+  }
 #endif
   if (Config (36, 1) != 0) {
     NovaStop ("bypass au démarrage");

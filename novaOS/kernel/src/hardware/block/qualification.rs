@@ -18,7 +18,7 @@ struct Roles {
     cible: Option<u8>,
 }
 
-fn table_smbios() -> Result<Vec<u8>> {
+fn fichier_fw(nom: &[u8]) -> Result<Vec<u8>> {
     // Port PIO de fw_cfg sur virt. Sélecteur big-endian, flux d'octets sans DMA.
     let io = Region::map(0x0902_0000, 300, PAGE)?;
     io.w16(8, 0x19u16.to_be()); // FW_CFG_FILE_DIR
@@ -30,7 +30,7 @@ fn table_smbios() -> Result<Vec<u8>> {
     for _ in 0..nombre {
         let e: [u8; 64] = core::array::from_fn(|_| io.r8(0));
         let fin = e[8..].iter().position(|&x| x == 0).ok_or(Error::Geometry)? + 8;
-        if &e[8..fin] == b"etc/smbios/smbios-tables" {
+        if &e[8..fin] == nom {
             let taille = u32::from_be_bytes(e[..4].try_into().unwrap()) as usize;
             let select = u16::from_be_bytes([e[4], e[5]]);
             if entree.is_some() || !(6..=65536).contains(&taille) || select < 0x20 {
@@ -48,8 +48,8 @@ fn table_smbios() -> Result<Vec<u8>> {
     Ok(table)
 }
 
-fn roles() -> Result<Roles> {
-    let table = table_smbios()?;
+fn profil(systeme: bool) -> Result<Roles> {
+    let table = fichier_fw(b"etc/smbios/smbios-tables")?;
     let mut suite = table.as_slice();
     let (mut source, mut cible) = (None, None);
     loop {
@@ -69,7 +69,9 @@ fn roles() -> Result<Roles> {
             }
             let nom = chaines[..fin].split(|&x| x == 0).next().unwrap_or_default();
             let role = match nom {
-                SOURCE => Some(&mut source),
+                SOURCE if !systeme => Some(&mut source),
+                b"NovaOS-System-v1" if systeme => Some(&mut source),
+                SOURCE | b"NovaOS-System-v1" => return Err(Error::Geometry),
                 CIBLE => Some(&mut cible),
                 _ => None,
             };
@@ -91,7 +93,7 @@ fn roles() -> Result<Roles> {
         }
     }
     let source = source.ok_or(Error::Absent)?;
-    if cible == Some(source) {
+    if cible == Some(source) || (systeme && cible.is_some()) {
         return Err(Error::Geometry);
     }
     Ok(Roles { source, cible })
@@ -181,7 +183,7 @@ fn inspecter(t: &mut Transport, profil: Roles, sid: u8) -> Result<bool> {
     if !confirmer(capacite) {
         return Ok(false);
     }
-    if roles()? != profil || t.d.geometry()? != (t.sectors, t.size) || t.d.read_only() {
+    if self::profil(false)? != profil || t.d.geometry()? != (t.sectors, t.size) || t.d.read_only() {
         return Err(Error::Geometry);
     }
     identite(t)?;
@@ -189,8 +191,8 @@ fn inspecter(t: &mut Transport, profil: Roles, sid: u8) -> Result<bool> {
     Ok(true)
 }
 
-pub(crate) fn executer() -> Result<()> {
-    let profil = roles()?;
+fn selection() -> Result<(Roles, u8)> {
+    let profil = profil(false)?;
     let source = Config::open(profil.source)?;
     if source.get(0, 4) != 0x1042_1af4 || source.get(4, 2) & 4 != 0 {
         hal::log(format_args!(
@@ -204,15 +206,25 @@ pub(crate) fn executer() -> Result<()> {
         hal::log(format_args!("CIBLE absente"));
         return Err(Error::Absent);
     };
+    Ok((profil, sid))
+}
+
+fn autoriser_sortie(t: &mut Transport) -> Result<()> {
+    if t.unit.map(&t.p, 6, t.p.0[22].pa, 1).is_err() {
+        t.d.cfg.master(false);
+        return Err(Error::Quarantine);
+    }
+    t.output_mapped = true;
+    Ok(())
+}
+
+pub(crate) fn executer() -> Result<()> {
+    let (profil, sid) = selection()?;
     let mut t = Transport::open_disk(sid, false)?;
     let decision = inspecter(&mut t, profil, sid);
     if let Ok(true) = decision {
         // En cas d'acquittement incertain, les cadres restent épinglés jusqu'au reset de la VM.
-        if t.unit.map(&t.p, 6, t.p.0[22].pa, 1).is_err() {
-            t.d.cfg.master(false);
-            return Err(Error::Quarantine);
-        }
-        t.output_mapped = true;
+        autoriser_sortie(&mut t)?;
         hal::log(format_args!("CIBLE droit WRITE accorde serie={SERIE}"));
     } else if let Ok(false) = decision {
         hal::log(format_args!("CIBLE confirmation refusee"));
@@ -220,4 +232,128 @@ pub(crate) fn executer() -> Result<()> {
     // La qualification s'arrête ici. Aucune commande OUT, aucun FLUSH, aucun formatage.
     t.close()?;
     decision.map(|_| ())
+}
+
+// Le lanceur du noyau transfère le transport déjà contrôlé, sans nouvelle découverte PCI.
+#[cfg(feature = "systeme-gpt")]
+fn publier(mut t: Transport, table: super::gpt::Table, mode: u64) -> Result<()> {
+    t.first = table.volume;
+    t.count = table.end - table.volume;
+    let key = super::lease::begin_with(15, || Ok(t))?;
+    if !crate::sched::process::storage::volume_avec(mode, Some((key, table.volume_id()))) {
+        return Err(Error::Device);
+    }
+    Ok(())
+}
+
+#[cfg(feature = "systeme-gpt")]
+pub(crate) fn systeme() -> Result<()> {
+    let sid = profil(true)?.source;
+    let mut t = Transport::open_disk(sid, false)?;
+    let verified = (|| {
+        identite(&mut t)?;
+        if t.ro {
+            return Err(Error::Geometry);
+        }
+        super::gpt::Table::open(&mut t)
+    })();
+    let table = match verified {
+        Ok(v) => v,
+        Err(e) => {
+            t.close()?;
+            return Err(e);
+        }
+    };
+    autoriser_sortie(&mut t)?;
+    publier(t, table, 41)
+}
+
+#[cfg(feature = "installation-gpt")]
+fn esp(t: &mut Transport, table: &super::gpt::Table, write: bool) -> Result<()> {
+    let paquet: &[u8] = if t.size == 512 {
+        include_bytes!(concat!(env!("NOVA_ESP"), "/esp-512.bin"))
+    } else {
+        include_bytes!(concat!(env!("NOVA_ESP"), "/esp-4096.bin"))
+    };
+    let stride = t.size + 4;
+    if paquet.is_empty() || paquet.len() % stride != 0 {
+        return Err(Error::Geometry);
+    }
+    let index = |r: &[u8]| u64::from(u32::from_le_bytes(r[..4].try_into().unwrap()));
+    let mut last = None;
+    for r in paquet.chunks_exact(stride) {
+        let lba = index(r);
+        if last.is_some_and(|v| lba <= v) || lba >= table.volume - table.esp {
+            return Err(Error::Geometry);
+        }
+        last = Some(lba);
+    }
+    if write {
+        for r in paquet.chunks_exact(stride) {
+            t.p.0[22].mem.put(0, &r[4..]);
+            t.output(table.esp + index(r), false)?;
+        }
+        return t.output(0, true);
+    }
+    let mut buf = vec![0; PAGE];
+    let mut records = paquet.chunks_exact(stride).peekable();
+    for start in (table.esp..table.volume).step_by(PAGE / t.size) {
+        t.begin_input(start, 0, PAGE)?;
+        t.finish(1 + PAGE as u32)?;
+        t.p.0[20].mem.bytes(0, &mut buf);
+        for (i, bytes) in buf.chunks_exact(t.size).enumerate() {
+            let lba = start + i as u64 - table.esp;
+            if records.peek().is_some_and(|r| index(r) == lba) {
+                if bytes != &records.next().unwrap()[4..] {
+                    return Err(Error::Device);
+                }
+            } else if bytes.iter().any(|&b| b != 0) {
+                return Err(Error::Device);
+            }
+        }
+    }
+    Ok(())
+}
+
+#[cfg(feature = "installation-gpt")]
+pub(crate) fn installer() -> Result<()> {
+    let (roles, sid) = selection()?;
+    // Trois EFI_GUID v4 frais, préparés pour cette installation dans le profil hôte.
+    let input = fichier_fw(b"opt/novaos/gpt-guids")?;
+    if input.len() != 48 {
+        return Err(Error::Geometry);
+    }
+    let ids: [[u8; 16]; 3] =
+        core::array::from_fn(|i| input[16 * i..16 * i + 16].try_into().unwrap());
+    if ids.iter().any(|id| id[7] >> 4 != 4 || id[8] >> 6 != 2) {
+        return Err(Error::Geometry);
+    }
+    let mut t = Transport::open_disk(sid, false)?;
+    let preparer = (|| {
+        let table = super::gpt::Table::new(&t, ids)?;
+        if !inspecter(&mut t, roles, sid)? {
+            return Err(Error::State);
+        }
+        autoriser_sortie(&mut t)?;
+        hal::log(format_args!("INSTALLATION ecriture autorisee SID={sid}"));
+        table.transfer(&mut t, true)?;
+        table.transfer(&mut t, false)?;
+        hal::log(format_args!(
+            "INSTALLATION GPT verifiee ESP={} P9={} fin={}",
+            table.esp, table.volume, table.end
+        ));
+        esp(&mut t, &table, true)?;
+        esp(&mut t, &table, false)?;
+        hal::log(format_args!("INSTALLATION ESP relue"));
+        Ok(table)
+    })();
+    let table = match preparer {
+        Ok(v) => v,
+        Err(Error::Quarantine) => return Err(Error::Quarantine),
+        Err(e) => {
+            t.close()?;
+            return Err(e);
+        }
+    };
+    publier(t, table, 43)
 }

@@ -255,6 +255,9 @@ const MEDIA: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-media.bin
 const CONTROL: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-control.bin"));
 const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fileclient.bin"));
 pub(crate) fn volume(mode: u64) -> bool {
+    volume_avec(mode, None)
+}
+pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     use crate::hardware::block;
     FILE_TIMING.store(matches!(mode, 25 | 36 | 42), Ordering::Relaxed);
     let start = heap::audit(true);
@@ -274,7 +277,7 @@ pub(crate) fn volume(mode: u64) -> bool {
     } else {
         1 | 8
     };
-    let key = match block::begin_session(rights) {
+    let key = match session.map_or_else(|| block::begin_session(rights), |(key, _)| Ok(key)) {
         Ok(v) => v,
         Err(e) => {
             hal::log(format_args!("BLOC ouverture refusee {e:?}"));
@@ -288,7 +291,7 @@ pub(crate) fn volume(mode: u64) -> bool {
         (
             if matches!(mode, 41 | 42) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/shell.elf"))
-            } else if mode >= 11 {
+            } else if mode >= 11 && mode != 43 {
                 FILE_CLIENT
             } else {
                 CONTROL
@@ -301,7 +304,8 @@ pub(crate) fn volume(mode: u64) -> bool {
         ipc::launch_block([r, s, d, a, (FILE_CLIENT, 0)], key, mode)
             .map(|[r, s, d, a, p]| ([r, s, d, a], Some(p)))
     } else {
-        ipc::launch_block(members, key, mode).map(|group| (group, None))
+        ipc::launch_block_identifie(members, key, mode, session.map(|(_, id)| id))
+            .map(|group| (group, None))
     };
     let ([relay, service, driver, app], peer) = match group {
         Ok(v) => v,

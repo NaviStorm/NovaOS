@@ -20,7 +20,7 @@ VOID NovaLog (CONST CHAR8 *Format, ...);
 VOID NovaStop (CONST CHAR8 *Reason);
 VOID NovaCheck (EFI_STATUS Status, CONST CHAR8 *Step);
 EFI_STATUS NovaTopology (VOID);
-EFI_STATUS NovaRoles (UINT32 *Source, UINT32 *Target);
+EFI_STATUS NovaRoles (UINT32 *Source, UINT32 *Target, BOOLEAN *System);
 EFI_STATUS NovaCheckTpm (VOID);
 EFI_STATUS NovaAttach (EFI_HANDLE Handle);
 EFI_STATUS NovaRingLayout (UINTN Pages, UINTN *ReadPages, UINT16 *QueueSize);

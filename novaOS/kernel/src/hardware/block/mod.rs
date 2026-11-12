@@ -1,4 +1,6 @@
 //! Transport du disque de données dédié. Toutes les adresses matérielles sont privées.
+#[cfg(all(target_arch = "aarch64", feature = "systeme-gpt"))]
+mod gpt;
 mod io;
 mod lease;
 pub(crate) mod metrics;
@@ -139,6 +141,9 @@ struct Transport {
     q: Queue,
     state: Lifecycle,
     sectors: u64,
+    // Vue publiée aux services. Le transport interne conserve la géométrie physique.
+    first: u64,
+    count: u64,
     size: usize,
     pending: Option<u64>,
     ro: bool,
@@ -196,6 +201,8 @@ impl Transport {
             q,
             state,
             sectors,
+            first: 0,
+            count: sectors,
             size,
             pending: None,
             ro,

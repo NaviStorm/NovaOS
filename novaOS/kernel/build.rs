@@ -103,8 +103,12 @@ fn main() {
         &format!("-Clink-arg=-T{}", linker.display()),
     ]
     .join("\x1f");
-    let result = Command::new(env::var_os("CARGO").unwrap())
-        .args(["build", "--release", "--locked", "--target", &target])
+    let mut cargo_service = Command::new(env::var_os("CARGO").unwrap());
+    cargo_service.args(["build", "--release", "--locked", "--target", &target]);
+    if env::var_os("CARGO_FEATURE_INSTALLATION_GPT").is_some() {
+        cargo_service.args(["--features", "installation"]);
+    }
+    let result = cargo_service
         .current_dir(service)
         .env("CARGO_TARGET_DIR", &work)
         .env("CARGO_ENCODED_RUSTFLAGS", &flags)
