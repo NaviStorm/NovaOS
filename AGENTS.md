@@ -1,0 +1,18 @@
+# Consignes communes au monorepo
+
+## Reprendre le travail
+
+- Au début d’une tâche et après une reprise de contexte, vérifier la branche, les modifications locales et le commit complet avec `git status --short --branch` et `git rev-parse HEAD`. Si la référence du mandat a changé, examiner les commits intervenus et préserver le travail présent.
+- Avant de travailler dans un composant, lire ses consignes locales. Pour un changement qui traverse la frontière entre système et stockage, lire les deux fichiers et vérifier le contrat des deux côtés. [Consignes NovaOS](novaOS/AGENTS.md) · [Consignes NovaFS](novaFS/AGENTS.md)
+- Travailler et répondre en français, avec concision, sans introduction ni conclusion. Pour une réponse de code, fournir uniquement le bloc nouveau ou corrigé. Expliquer la cause d’un bug corrigé et fournir les bilans expressément demandés.
+
+## Composants et décisions
+
+- `novaOS/` contient le micro-noyau, la HAL, l’ABI native, les services et les pilotes. `novaFS/` possède le moteur portable, le format disque et son laboratoire. `components/` contient NovaShell, les commandes et leur bibliothèque. `distribution/` rassemble les livraisons. Préserver les workspaces et les licences respectives, MIT pour NovaOS et les composants CLI, MPL-2.0 pour NovaFS. [Organisation du dépôt](README.md) · [Composants utilisateur](components/README.md) · [Distribution](distribution/README.md)
+- Pour établir ce qui est livré, recouper le manifeste, le chemin réellement utilisé et le rapport de livraison. Pour une qualification, préciser le profil et le modèle de panne exercés. En cas d’écart, dater les résultats et retrouver l’arbitrage applicable. Signaler tout désaccord encore ouvert. Le VFS générique est une proposition. NovaUI et les mises à jour du système hybride immuable figurent dans la feuille de route. [Proposition VFS](novaFS/docs/vfs-architecture.md) · [Feuille de route](README.md#feuille-de-route)
+- Au commit `afe6d5c`, le jalon publié est NovaOS v0.15.0 avec NovaFS v0.9.13 P9. Leurs versions, le numéro d’ABI et le format disque évoluent séparément. Une rupture de compatibilité, une extension des droits existants ou l’intégration d’un prototype exige un arbitrage qui couvre ce changement. NovaOS v0.15.1, NovaFS P10 et le remplacement d’une destination restent hors de cette livraison. Actualiser ces repères lors d’une nouvelle livraison validée. [Installation publiée](novaOS/docs/installer-v0.15.0.md) · [Décision sur la publication transactionnelle](novaFS/docs/novafs-publication-conditionnelle.md#régressions-et-arbitrage)
+
+## Validation et commits
+
+- Exécuter les suites applicables au changement sur les deux architectures selon les consignes locales. Distinguer invités QEMU, exécution Darwin ARM64 native, x86_64 sous Rosetta et application UTM. Consigner le commit, les commandes, les profils, les résultats observés et la raison de tout essai non exécuté. Pour une modification documentaire, vérifier les références, les commandes et la portée des affirmations.
+- Committer les changements de code validés sur la branche convenue. Respecter le libellé demandé. À défaut, les commits récents emploient `<composant> vX.Y.Z — <objet>` et précisent `Audit` ou `Spécification` pour ces travaux. Un audit conserve la version qu’il examine. Avant livraison, contrôler le diff indexé, son périmètre et `git diff --cached --check`, puis vérifier le `HEAD` et l’état du dépôt après le commit.

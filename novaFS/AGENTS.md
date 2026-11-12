@@ -1,0 +1,24 @@
+# Consignes NovaFS
+
+## Moteur et compatibilité
+
+- Maintenir un seul moteur dans `src/`, utilisable avec `core` et `alloc` sur cible nue. Le laboratoire Darwin fournit le backend fichier, les outils et les sondes hôtes. Utiliser les interfaces du moteur pour le périphérique bloc, l’horloge et l’entropie. Le service utilisateur de NovaOS transporte les requêtes bloc par IPC. Le système installé monte les volumes autonomes. La prise en charge native des pools chiffrés reste ouverte. [Cœur portable](docs/novafs-coeur-portable.md) · [Adaptateur bloc de NovaOS](../novaOS/user/novafs/device.rs) · [Périmètre natif](../README.md#feuille-de-route)
+- Conserver NovaFS v0.9.13 P9 et la lisibilité des images historiques selon leur profil. Une migration P8 vers P9 est explicite, hors ligne, sur une nouvelle image distincte. Contrôler l’empreinte de la source et vérifier la candidate avant publication. Préserver les identités et les dates inconnues selon le contrat de migration. Tout changement du format P9 relève d’un nouvel arbitrage. [Format P9 et migration](docs/novafs-p9-timestamps.md)
+- Préserver les snapshots en lecture seule, les clones inscriptibles et les blocs partagés encore référencés. Dans les lignées chiffrées, respecter la séparation des domaines et des clés, demander un nonce neuf à chaque scellement, y compris après abandon, et vérifier l’authentification avant décompression. Une erreur d’entropie ou d’authentification doit être propagée. [Partage CoW](docs/novafs-p5-partage.md) · [Contrat cryptographique P9](docs/novafs-p9-timestamps.md#migration-et-domaines)
+
+## Publication et récupération
+
+- Pour un volume autonome, écrire les dépendances CoW et le manifeste, attendre F1, écrire l’ancre alternée, attendre F2, puis acquitter. Préserver l’exclusivité de l’écrivain et la validation des deux générations au remontage en écriture. Après la genèse, les deux ancres portent normalement des générations successives. [Ordre de publication et reprise](docs/novafs-recovery.md) · [Disposition des ancres P9](docs/novafs-p9-ancres-dechirees.md#ce-qui-est-écrit-et-ce-que-le-montage-peut-prouver)
+- En cas d’ancre déchirée et de paire invérifiable, conserver le refus du montage normal en lecture comme en écriture. Deux historiques peuvent laisser exactement les mêmes octets avec des confirmations différentes. Le sauvetage explicite sur copie vérifie le slot choisi en lecture seule et rend une fraîcheur indéterminée. Préserver la source et exclure toute promotion automatique d’un manifeste préparé ou d’une génération plus ancienne. Le retour intégral à une ancienne image valide est indétectable à partir du seul disque. [Preuve d’ambiguïté](docs/novafs-p9-ancres-dechirees.md#pourquoi-on-ne-peut-pas-choisir-automatiquement-la-tête-survivante) · [Sauvetage](README.md)
+- PC1 (`NVPUBC01`) est un protocole de laboratoire distinct de P9. Ses garanties dépendent de la persistance des écritures synchronisées, de la survie d’une décision authentique et de l’intégrité et de la disponibilité des blocs référencés. Un FLUSH réussi ne prouve pas l’atomicité de l’ancre. UTM a exercé la coupure de la VM sur un Mac alimenté. L’essai R02 de perte d’alimentation reste ouvert faute de banc dédié. Garder PC1 et le remplacement transactionnel hors du moteur livré et des interfaces clientes jusqu’à nouvel arbitrage. [Spécification et qualification PC1](docs/novafs-publication-conditionnelle.md)
+
+## Validation
+
+Depuis la racine, utiliser Rust stable et le verrou Cargo du workspace. Le banc suivant exécute les suites Cargo et le différentiel sur ARM64 natif et x86_64 sous Rosetta. L’installateur v0.15.0 avait été qualifié avec 192 tests standards et 193 instrumentés. L’audit `afe6d5c` en compte 196 et 197 par architecture, ainsi que 1 000 000 d’opérations différentielles. [Lanceur Darwin](lab/run) · [Qualification de l’installateur](../novaOS/docs/installer-v0.15.0.md#dma-interruptions-et-régressions) · [Résultats de l’audit](docs/novafs-publication-conditionnelle.md#régressions-et-arbitrage)
+
+```sh
+python3 -B novaFS/lab/p51-validation-suites.py aarch64
+python3 -B novaFS/lab/p51-validation-suites.py x86_64
+```
+
+Pour la récupération, rejouer aussi les 2 304 injections historiques par architecture sur secteurs de 512 et 4 096 octets. Tester l’interopérabilité dans les deux sens, les snapshots et clones, le chiffrement, la compression et la migration selon les chemins touchés. Utiliser des images jetables et relire indépendamment les générations après coupure. Pour un changement du cœur portable, vérifier aussi les deux cibles nues et les régressions NovaOS concernées. [Commandes d’injection](docs/novafs-p9-ancres-dechirees.md#reproduction) · [Échanges interarchitectures](lab/test-interop.py) · [Compilation du cœur portable](docs/novafs-coeur-portable.md#reproduction)

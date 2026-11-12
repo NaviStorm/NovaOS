@@ -1,0 +1,25 @@
+# Consignes NovaOS
+
+## Noyau, ABI et services
+
+- Conserver le micro-noyau Rust `no_std`, la HAL propre à chaque architecture et l’isolation des processus en Ring 3 sur x86_64 et en EL0 sur AArch64. L’ABI est native. Les options inspirées de GNU appartiennent aux programmes utilisateur et n’imposent aucune sémantique POSIX au noyau. [Architecture](README.md) · [ABI native](docs/abi.md) · [Contrat CLI](docs/cli-v0.14.0.md)
+- Préserver les sélecteurs, les conventions de retour, les trames IPC et les droits des clients existants. Vérifier la capacité dans la table locale, les droits effectivement délégués et toute la plage mémoire avant la copie. Maintenir les bornes des files et l’effet de la révocation sur les descendants. [Définitions partagées](abi/native.rs) · [ABI IPC](docs/ipc-abi.md) · [Invariants de sécurité](docs/ipc-security.md)
+- Garder le chemin de stockage en espace utilisateur du client au service NovaFS, puis au service bloc et au pilote VirtIO. Le noyau valide et publie les descripteurs DMA. Le service de fichiers utilise le cœur de `novaFS/` et ses droits propres. Le shell délègue aux commandes isolées les objets et opérations sélectionnés. [Stockage bloc](docs/stockage-bloc-v0.10.0.md) · [Intégration du moteur](docs/novafs-integration-v0.11.0.md) · [Espace de noms](docs/namespace-v0.12.0.md)
+- Dans la CLI livrée, `cp` et `mv` publient vers un nom libre après résolution du répertoire de destination. Si ce nom est occupé, même une confirmation interactive ne permet pas son remplacement. Conserver les droits IPC existants et écarter tout contournement par suppression puis renommage. Le rapport v0.15.1 documente le banc de remplacement et la décision d’arrêt. [Comportement livré](docs/cli-v0.14.0.md) · [Audit du remplacement](docs/cli-v0.15.1.md)
+
+## Démarrage et protection du disque
+
+- L’ISO AArch64 de développement utilise GICv2. Le profil d’installation qualifié utilise UTM 5.0.8, QEMU 10.0.12, un firmware EDK II privé expérimental, TPM CRB, GICv3 sans ITS et le disque VirtIO en INTx. Conserver le refus DMA par défaut dès UEFI. [Machines de développement](README.md#machines-virtuelles) · [Profil UTM qualifié](docs/installer-v0.15.0.md#dma-interruptions-et-régressions)
+- À l’installation, seul le support en lecture seule est rattaché au domaine firmware 2 (SID 48). NovaOS rattache la cible au domaine 1 (SID 56) après révocation. Au démarrage autonome, le disque système (SID 56) passe successivement du domaine 2 au domaine 1. Exiger la fin des transferts, le retrait confirmé des traductions et le détachement avant réemploi des cadres. Une révocation incertaine impose la quarantaine. [Qualification de la transition DMA](docs/installer-v0.15.0.md)
+- L’installateur exige une cible unique explicitement sélectionnée, entièrement lue et vierge. Après confirmation exacte, il revérifie identité et contenu avant écriture. Une GPT secondaire isolée désigne une installation interrompue si le préfixe est entièrement nul et que la copie correspond au profil NovaOS vérifié. Tout état occupé, incohérent ou indéterminé entraîne un refus sans écriture, FLUSH ni réparation. Pour poursuivre, utiliser un disque neuf. [Classification et contrôles de non-destruction](docs/installer-v0.15.0.md#qualification-des-disques-interrompus)
+
+## Validation
+
+Depuis la racine, la régression de référence couvre par architecture 25 démarrages, 24 groupes bloc, trois contrôles ELF/processus/IPC et quatre essais CLI. [Cibles du Makefile](Makefile) · [Résultats par architecture](docs/installer-v0.15.0.md#dma-interruptions-et-régressions)
+
+```sh
+make -C novaOS ARCH=aarch64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test
+make -C novaOS ARCH=x86_64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test
+```
+
+Pour le chemin DMA AArch64, conserver les 11 scénarios DMA/GICv3 et les 23 scénarios de DMA séquentielle. Pour l’installateur, exercer les secteurs de 512 et 4 096 octets, comparer les SHA-256 avant et après refus et relire les données après démarrage autonome. Qualifier séparément l’application UTM et son moteur QEMU. La matrice d’installation publiée couvre l’interface UTM en 512 octets et le moteur dans les deux géométries. [Banc DMA/GICv3](tests/prototype_uefi.py) · [Banc séquentiel](tests/dma_sequentiel.py) · [Matrice d’installation](docs/installer-v0.15.0.md#matrice-de-démarrage-et-persistance)
