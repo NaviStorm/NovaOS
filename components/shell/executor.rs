@@ -9,6 +9,23 @@ use nova_cli::{
 
 pub fn execute(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Result<u64> {
     let strings: Vec<_> = args.iter().map(String::as_str).collect();
+    if p == Program::Vi
+        && let Ok(nova_cli::command::Operand::Edit(name)) = operand(p, &strings)
+    {
+        return super::vi::run(fs, name, args, test, super::vi::Trial::Normal);
+    }
+    if test
+        && p == Program::Probe
+        && let [probe @ ("vi-revoque" | "vi-concurrence")] = strings.as_slice()
+    {
+        let trial = if *probe == "vi-revoque" {
+            super::vi::Trial::Revoke
+        } else {
+            super::vi::Trial::Concurrent
+        };
+        let name = "vi-essai.nsh";
+        return super::vi::run(fs, name, &[String::from(name)], true, trial);
+    }
     // Le service conserve les vues isolées par paire pour cp/mv et par nom pour rm.
     // Valider le répertoire commun et toute l'expansion avant le premier lancement.
     if let Ok(o) = options::parse(p, &strings)

@@ -1,6 +1,6 @@
 # NovaOS v0.16.0
 
-L’installateur AArch64 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable](../distribution/images/novaos-0.16.0-utm-aarch64.tar.gz) · [Installation et qualification](docs/nsh-scripts-v0.16.0.md#installation-dans-utm)
+L’installateur AArch64 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable](../distribution/images/novaos-0.16.0-vi-utm-aarch64.tar.gz) · [Installation et qualification](docs/vi-v0.16.0.md#installation-dans-utm)
 
 Depuis la racine du monorepo : `make -C novaOS ARCH=x86_64 block-test` ou `make -C novaOS ARCH=aarch64 block-test`. Pour un démarrage graphique avec une image raw existante : `make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512` (AArch64 : `ARCH=aarch64`, secteur 512 ou 4096).
 
@@ -32,6 +32,8 @@ make -C novaOS ARCH=aarch64 cli
 ```
 
 Depuis le terminal, `nsh fichier.nsh` lit un fichier du volume et `nsh -c 'echo "$$"'` affiche le PID du shell. Le disque installé contient `/verification.nsh`. [Grammaire, exemples et qualification](docs/nsh-scripts-v0.16.0.md)
+
+Pour écrire un script, ouvrir `vi bonjour.nsh`, appuyer sur `i`, saisir le texte, puis utiliser Échap et `:wq`. Pour un fichier existant, `:w autre-nom` demande confirmation au terminal et conserve l’original. [Guide de vi](docs/vi-v0.16.0.md)
 
 Un nouveau volume de démonstration utilise le profil P9 et contient `/documents/exemple.txt`. Les commandes externes s’exécutent en Ring 3 ou EL0. `exit` ferme la session. Dans le terminal QEMU, Ctrl-A puis X quitte l’émulateur. [Commandes, droits et validation](docs/cli-v0.14.0.md)
 
@@ -69,6 +71,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 | --- | --- |
 | `make build` | Compile le noyau et crée l’ISO UEFI. |
 | `make run` | Ouvre l’écran QEMU et affiche COM1 dans le terminal. Fermer la fenêtre pour quitter. |
+| `make vi-test` | Ouvre l’éditeur dans la VM, vérifie les octets sauvegardés, une publication concurrente, la révocation et un redémarrage sur les deux géométries. |
 | `make nsh-scripts-test` | Exécute les scripts, les limites, la révocation et la reprise après interruption sur des secteurs de 512 et 4 096 octets. |
 | `make cli-test` | Exerce la session série et ses programmes sur des secteurs de 512 et 4 096 octets avec redémarrages. |
 | `make test` | Exécute les scénarios QEMU de démarrage, de mémoire virtuelle, de tas de multitâche, de processus, d’ABI et d’IPC pour la cible choisie. Nécessite Python 3. |

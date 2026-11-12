@@ -131,6 +131,7 @@ fn main() {
         "libraries",
         "coreutils",
         "shell",
+        "vi",
     ] {
         println!(
             "cargo::rerun-if-changed={}",
@@ -148,7 +149,7 @@ fn main() {
     let mut catalog = String::from("&[");
     for name in [
         "pwd", "ls", "cat", "head", "mkdir", "rm", "probe", "cp", "mv", "touch", "more", "wc",
-        "tail", "rmdir", "nsh",
+        "tail", "rmdir", "vi", "nsh",
     ] {
         let path = out.join(format!("{name}.elf"));
         std::fs::copy(work.join(&target).join("release").join(name), &path).unwrap();

@@ -20,9 +20,16 @@ impl Client {
     }
     /// Vue temporaire fournie au processus enfant par le lanceur.
     pub fn scoped() -> rt::Result<Self> {
-        let mut c = Self::new()?;
-        c.session = 1;
-        Ok(c)
+        Ok(Self::scoped_ports(rt::channels()?))
+    }
+    pub fn scoped_ports((tx, rx): (u64, u64)) -> Self {
+        Self {
+            tx,
+            rx,
+            tag: 0,
+            session: 1,
+            disconnected: false,
+        }
     }
     pub fn give(&self, source: u64, rights: u32) -> rt::Result<()> {
         let offer = rt::GiveV1 {

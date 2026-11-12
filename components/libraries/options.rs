@@ -48,6 +48,7 @@ pub fn usage(p: Program) -> &'static str {
         Mkdir => "mkdir [--] répertoire",
         Rm => "rm [-fivrR] [--] chemin...",
         Rmdir => "rmdir [-v] [--] répertoire...",
+        Vi => "vi [--] fichier",
         Pwd => "pwd [-LP]",
         Probe => "@probe scénario",
     }

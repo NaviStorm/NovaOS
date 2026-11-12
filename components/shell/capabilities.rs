@@ -12,6 +12,7 @@ impl Grant {
     }
     pub fn select(&mut self, fs: &mut Client, operand: &Operand) -> rt::Result<()> {
         let (scope, handle, leaf) = match operand {
+            Operand::Edit(_) => return Err(rt::BAD_ARGUMENT),
             Operand::Info(_) | Operand::Noop => return Ok(()),
             Operand::Batch(opts, program) => {
                 use nova_cli::command::Program::*;
@@ -102,11 +103,20 @@ impl Grant {
                 (scope, dir, alloc::string::String::from(name))
             }
         };
+        self.delegate(fs, scope, handle, leaf.as_bytes())
+    }
+    pub fn delegate(
+        &mut self,
+        fs: &mut Client,
+        scope: u8,
+        handle: u64,
+        leaf: &[u8],
+    ) -> rt::Result<()> {
         self.channels.0 = rt::value(rt::call(rt::IPC_CREATE, 0, 0, 0))?;
         self.channels.1 = rt::value(rt::call(rt::IPC_CREATE, 0, 0, 0))?;
         fs.give(self.channels.0, rt::RECEIVE)?;
         fs.give(self.channels.1, rt::SEND)?;
-        fs.delegate(scope, handle, leaf.as_bytes())
+        fs.delegate(scope, handle, leaf)
     }
     pub fn release(&mut self, fs: &mut Client) -> rt::Result<()> {
         // Détruire les racines réveille le service, y compris après une faute du fils.

@@ -1,6 +1,6 @@
 //! Les remontées utilisent la racine déjà détenue par la session de nsh.
 //! Aucun chemin contenant « .. » ne traverse le protocole de fichiers.
-use alloc::string::String;
+use alloc::{string::String, vec};
 use nova_cli::{fileapi::Client, protocol as w, runtime as rt};
 
 fn directory_id(fs: &mut Client, path: &str) -> rt::Result<u64> {
@@ -70,4 +70,42 @@ pub fn resolve(fs: &mut Client, path: &str) -> rt::Result<String> {
         directory_id(fs, &result)?;
     }
     Ok(result)
+}
+
+pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String> {
+    let h = fs.open_at(0, path.as_bytes(), w::READABLE)?;
+    let read = (|| {
+        let before = fs.simple(w::STAT, h)?;
+        let len = w::word(&before, w::PAYLOAD + 16);
+        if len > max as u64 {
+            return Err(rt::LIMIT);
+        }
+        let mut bytes = vec![0; len as usize];
+        let n = fs.read(h, 0, &mut bytes)?;
+        let after = fs.simple(w::STAT, h)?;
+        if n != bytes.len()
+            || w::word(&before, w::PAYLOAD) != w::word(&after, w::PAYLOAD)
+            || w::word(&after, w::PAYLOAD + 16) != len
+        {
+            return Err(rt::REVOKED);
+        }
+        // READ peut publier atime sur P9. Le service ne sert aucun autre
+        // écrivain pendant cette lecture synchrone sur le handle épinglé.
+        // En cas de révision nouvelle, comparer aussi le contenu jusqu'à EOF.
+        if w::word(&before, w::PAYLOAD + 8) != w::word(&after, w::PAYLOAD + 8) {
+            let mut check = [0; w::FRAGMENT];
+            for (i, chunk) in bytes.chunks(check.len()).enumerate() {
+                let count = fs.read(h, (i * w::FRAGMENT) as u64, &mut check)?;
+                if count != chunk.len() || &check[..count] != chunk {
+                    return Err(rt::REVOKED);
+                }
+            }
+            if fs.read(h, len, &mut check[..1])? != 0 {
+                return Err(rt::REVOKED);
+            }
+        }
+        String::from_utf8(bytes).map_err(|_| rt::BAD_ARGUMENT)
+    })();
+    fs.close(h)?;
+    read
 }

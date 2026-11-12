@@ -16,6 +16,7 @@ pub enum Program {
     Wc,
     Tail,
     Rmdir,
+    Vi,
 }
 impl Program {
     pub fn named(s: &str, test: bool) -> Option<Self> {
@@ -33,6 +34,7 @@ impl Program {
             "mkdir" => Self::Mkdir,
             "rm" => Self::Rm,
             "rmdir" => Self::Rmdir,
+            "vi" => Self::Vi,
             "@probe" if test => Self::Probe,
             _ => return None,
         })
@@ -41,6 +43,7 @@ impl Program {
 pub enum Operand<'a> {
     Info(bool),
     Batch(crate::options::Options<'a>, Program),
+    Edit(&'a str),
     Cwd,
     Create(&'a str),
     Remove(crate::options::Options<'a>, Program),
@@ -76,6 +79,7 @@ pub fn operand<'a>(p: Program, args: &[&'a str]) -> Result<Operand<'a>, u64> {
     let args = options.files.as_slice();
     Ok(match (p, args) {
         (Pwd, []) => Operand::Cwd,
+        (Vi, [name]) => Operand::Edit(name),
         (Mkdir, [path]) => Operand::Create(path),
         (Probe, [s]) => Operand::Probe(s),
         _ => return Err(BAD_ARGUMENT),

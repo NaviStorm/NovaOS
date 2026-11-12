@@ -8,7 +8,6 @@ use super::{
 use alloc::{
     collections::BTreeMap,
     string::{String, ToString},
-    vec,
     vec::Vec,
 };
 use nova_cli::{command::Program, console, fileapi::Client, protocol as w, runtime as rt, tty};
@@ -356,41 +355,7 @@ impl<'a> Engine<'a> {
             return Err(rt::LIMIT);
         }
         let path = paths::resolve(self.fs, path)?;
-        let h = self.fs.open_at(0, path.as_bytes(), w::READABLE)?;
-        let read = (|| {
-            let before = self.fs.simple(w::STAT, h)?;
-            let len = w::word(&before, w::PAYLOAD + 16);
-            if len > lexer::SOURCE_MAX as u64 {
-                return Err(rt::LIMIT);
-            }
-            let mut bytes = vec![0; len as usize];
-            let n = self.fs.read(h, 0, &mut bytes)?;
-            let after = self.fs.simple(w::STAT, h)?;
-            if n != bytes.len()
-                || w::word(&before, w::PAYLOAD) != w::word(&after, w::PAYLOAD)
-                || w::word(&after, w::PAYLOAD + 16) != len
-            {
-                return Err(rt::REVOKED);
-            }
-            // READ peut publier atime sur P9. Le service ne sert aucun autre
-            // écrivain pendant cette lecture synchrone sur le handle épinglé.
-            // En cas de révision nouvelle, comparer aussi le contenu jusqu'à EOF.
-            if w::word(&before, w::PAYLOAD + 8) != w::word(&after, w::PAYLOAD + 8) {
-                let mut check = [0; w::FRAGMENT];
-                for (i, chunk) in bytes.chunks(check.len()).enumerate() {
-                    let count = self.fs.read(h, (i * w::FRAGMENT) as u64, &mut check)?;
-                    if count != chunk.len() || &check[..count] != chunk {
-                        return Err(rt::REVOKED);
-                    }
-                }
-                if self.fs.read(h, len, &mut check[..1])? != 0 {
-                    return Err(rt::REVOKED);
-                }
-            }
-            String::from_utf8(bytes).map_err(|_| rt::BAD_ARGUMENT)
-        })();
-        self.fs.close(h)?;
-        let source = read?;
+        let source = paths::read_text(self.fs, &path, lexer::SOURCE_MAX)?;
         if direct || source.starts_with("#!") {
             if source.lines().next() != Some("#!/bin/nsh") {
                 return Err(rt::BAD_ARGUMENT);

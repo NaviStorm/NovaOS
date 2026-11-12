@@ -91,6 +91,8 @@ Les arguments positionnels, l’arithmétique, les substitutions de commande, la
 
 ## Installation dans UTM
 
+Cette section décrit l’image d’origine du moteur de scripts. Pour la distribution incluant l’éditeur, suivre [l’installation avec vi](vi-v0.16.0.md#installation-dans-utm).
+
 Sur Mac Apple Silicon avec UTM 5.0.8 et `qemu-img`, exécuter depuis la racine du dépôt. L’archive AArch64 a pour SHA-256 `a1d462e7913fd6b77c39420dde67cb7d4b6050c50d597637bd81a970bbefe1a9`. [Image installable](../../distribution/images/novaos-0.16.0-utm-aarch64.tar.gz)
 
 ```sh

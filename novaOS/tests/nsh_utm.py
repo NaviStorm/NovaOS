@@ -110,6 +110,22 @@ def transfert(console, marque, sid):
     return serie
 
 
+def script_vi(console):
+    os.write(console.fd, b"vi recettes/edite.nsh\r")
+    console.attendre(b"vi [NORMAL]")
+    os.write(console.fd, "i#!/bin/nsh\recho 'Écrit dans vi'\r\x1b:wq\r".encode())
+    console.attendre(b"nsh> ")
+    assert "Écrit dans vi\r\n".encode() in console.ligne("./recettes/edite.nsh")
+    os.write(console.fd, b"vi recettes/edite.nsh\r")
+    console.attendre(b"vi [NORMAL]")
+    os.write(console.fd, b":w recettes/autre.nsh\r")
+    console.attendre("Saisir OUI puis Entrée : ".encode())
+    os.write(console.fd, b"OUI\r")
+    console.attendre("fichier enregistré".encode())
+    os.write(console.fd, b":q\r")
+    console.attendre(b"nsh> ")
+
+
 def qualifier(distribution, dest):
     dest.mkdir()
     support = distribution / "installateur.qcow2"
@@ -145,6 +161,7 @@ def qualifier(distribution, dest):
             assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script
             out = console.ligne("nsh -c 'test -f /verification.nsh && cp /verification.nsh recettes/preuve.nsh'")
             assert b"statut " not in out and b"erreur" not in out
+            script_vi(console)
             console.ligne("exit", b"SYSTEME bilan Ok(())")
         with demarrer(machine, dest / "persistance.serial") as console:
             transfert(console, b"nsh> ", 56)
@@ -152,12 +169,15 @@ def qualifier(distribution, dest):
             assert b"recettes/preuve.txt" in console.ligne("ls -d -- **/*.txt")
             script = console.ligne("./recettes/preuve.nsh")
             assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script
+            for path in ("edite.nsh", "autre.nsh"):
+                assert "Écrit dans vi\r\n".encode() in console.ligne("./recettes/" + path)
             assert b"controle-16" in console.ligne("nsh -c 'x=controle-16; echo $x'")
             console.ligne("exit", b"SYSTEME bilan Ok(())")
     assert digest(support) == original
     return dict(application="UTM", profil="AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
                 serie="PTY de l’application", installation=True, support_sha256=original,
                 disque_installe_sha256=cible, demarrages_autonomes=2, contenu_relu="NovaOS\n",
+                scripts_vi_relus=["recettes/edite.nsh", "recettes/autre.nsh"],
                 script_installe="/verification.nsh", script_execute_apres_redemarrage="./recettes/preuve.nsh")
 
 

@@ -14,6 +14,7 @@ mod line_editor;
 mod parser;
 mod paths;
 mod script;
+mod vi;
 
 fn session() -> rt::Result<()> {
     let mut fs = Client::new()?;

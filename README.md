@@ -2,7 +2,7 @@
 
 NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-**NovaOS v0.16.0** installe un volume NovaFS P9 sur disque VirtIO vierge dans UTM 5.0.8 pour AArch64, puis démarre depuis le disque seul. Le shell série `nsh` exécute des scripts UTF-8 avec variables, conditions, boucles et motifs récursifs depuis le terminal. Il délègue les copies, déplacements et retraits aux commandes isolées. **NovaFS v0.9.13** fournit aussi la migration explicite des images historiques sur macOS. [Image installable](distribution/images/novaos-0.16.0-utm-aarch64.tar.gz) · [Procédure UTM](novaOS/docs/nsh-scripts-v0.16.0.md#installation-dans-utm) · [Scripts nsh](novaOS/docs/nsh-scripts-v0.16.0.md) · [Commandes natives](novaOS/docs/cli-v0.15.1.md) · [Format et compatibilité](novaFS/docs/novafs-p9-timestamps.md)
+**NovaOS v0.16.0** installe un volume NovaFS P9 sur disque VirtIO vierge dans UTM 5.0.8 pour AArch64, puis démarre depuis le disque seul. Le shell série `nsh` exécute des scripts UTF-8 avec variables, conditions, boucles et motifs récursifs depuis le terminal. L’éditeur natif `vi` crée des scripts et enregistre les modifications d’un fichier existant sous un nouveau nom. Il est lancé par le shell, qui délègue les copies, déplacements et retraits aux commandes isolées. **NovaFS v0.9.13** fournit aussi la migration explicite des images historiques sur macOS. [Image installable](distribution/images/novaos-0.16.0-vi-utm-aarch64.tar.gz) · [Procédure UTM](novaOS/docs/vi-v0.16.0.md#installation-dans-utm) · [Éditeur vi](novaOS/docs/vi-v0.16.0.md) · [Scripts nsh](novaOS/docs/nsh-scripts-v0.16.0.md) · [Commandes natives](novaOS/docs/cli-v0.15.1.md) · [Format et compatibilité](novaFS/docs/novafs-p9-timestamps.md)
 
 ## Philosophie et architecture
 
@@ -62,6 +62,8 @@ make -C novaOS ARCH=x86_64 cli-test
 make -C novaOS ARCH=aarch64 cli-test
 make -C novaOS ARCH=aarch64 nsh-scripts-test
 make -C novaOS ARCH=x86_64 nsh-scripts-test
+make -C novaOS ARCH=aarch64 vi-test
+make -C novaOS ARCH=x86_64 vi-test
 novaFS/lab/run test --offline
 ```
 

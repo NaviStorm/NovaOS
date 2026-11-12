@@ -7,6 +7,7 @@
 - Garder le chemin de stockage en espace utilisateur du client au service NovaFS, puis au service bloc et au pilote VirtIO. Le noyau valide et publie les descripteurs DMA. Le service de fichiers utilise le cœur de `novaFS/` et ses droits propres. Le shell `nsh` délègue aux commandes isolées les objets et opérations sélectionnés. [Stockage bloc](docs/stockage-bloc-v0.10.0.md) · [Intégration du moteur](docs/novafs-integration-v0.11.0.md) · [Espace de noms](docs/namespace-v0.12.0.md)
 - Dans la CLI livrée, `cp` et `mv` publient vers un nom libre après résolution du répertoire de destination. Si ce nom est occupé, même une confirmation interactive ne permet pas son remplacement. Conserver les droits IPC existants et écarter tout contournement par suppression puis renommage. Les délégations additionnelles sont distinctes et révocables, pour un répertoire vide nommé ou un arbre de retrait identifié. La remontée et les motifs récursifs relèvent de `nsh` et respectent la racine de session. [Comportement livré et audit du remplacement](docs/cli-v0.15.1.md)
 - Garder le même analyseur et le même exécuteur pour le terminal, les fichiers et `nsh -c`. Un appel imbriqué hérite des seules variables exportées. Préserver les bornes de travail, les protections de guillemets, le court-circuit et les délégations par commande. [Contrat des scripts](docs/nsh-scripts-v0.16.0.md)
+- Garder `vi` dans un ELF utilisateur isolé. Seul `nsh` lit la réponse de confirmation et sélectionne la nouvelle destination dans la racine autorisée. Une sauvegarde refuse les noms occupés et conserve le tampon après un refus. [Contrat de l’éditeur](docs/vi-v0.16.0.md)
 
 ## Démarrage et protection du disque
 
@@ -19,8 +20,8 @@
 Depuis la racine, la régression de référence couvre par architecture 25 démarrages, 24 groupes bloc, trois contrôles ELF/processus/IPC et quatre essais CLI. Ajouter le banc spécifique de `nsh`, avec les deux géométries. [Cibles du Makefile](Makefile) · [Résultats par architecture](docs/installer-v0.15.0.md#dma-interruptions-et-régressions)
 
 ```sh
-make -C novaOS ARCH=aarch64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test
-make -C novaOS ARCH=x86_64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test
+make -C novaOS ARCH=aarch64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test vi-test
+make -C novaOS ARCH=x86_64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test vi-test
 ```
 
 Pour le chemin DMA AArch64, conserver les 11 scénarios DMA/GICv3 et les 23 scénarios de DMA séquentielle. Pour l’installateur, exercer les secteurs de 512 et 4 096 octets, comparer les SHA-256 avant et après refus et relire les données après démarrage autonome. Qualifier séparément l’application UTM et son moteur QEMU. La matrice d’installation publiée couvre l’interface UTM en 512 octets et le moteur dans les deux géométries. [Banc DMA/GICv3](tests/prototype_uefi.py) · [Banc séquentiel](tests/dma_sequentiel.py) · [Matrice d’installation](docs/installer-v0.15.0.md#matrice-de-démarrage-et-persistance)

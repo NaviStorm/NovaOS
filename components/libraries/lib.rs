@@ -17,3 +17,4 @@ pub mod tty;
 
 pub mod directory;
 pub mod options;
+pub mod vi_wire;
