@@ -1,0 +1,446 @@
+{
+  "utm": "5.0.8",
+  "moteur": "QEMU emulator version 10.0.12",
+  "noyau_sha256": "19407976cea66eb0297a7b50e24d8afff818c4569c95866138a483f7b5db6b1f",
+  "firmware_sha256": "244dc012cce6893ffb8d9f79b3db9d2788027249f6ad54401f80dad3220ee1e6",
+  "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+  "modele_vars_sha256": "8b634c1e6bd11607850b69111f6c4dbd1583dbbd1460dac72dbacbdc1a4a130a",
+  "pflash_sans_ack_sha256": "ea093fcac15f539d2090fe8f67551a4c5d96e999c6ab395cd64b63898ec5735b",
+  "disques": {
+    "dma-qual": "33f363aeba1c888b16e3a4ac78966cc9eaeef7f1ffb743074d50adf52b5f9093",
+    "dma-fence": "729094facfec56d00951cffd24a8680a53a4f88348477eb0beff305bb6b8db71",
+    "dma-reemploi": "95974d2a6a062386cc9c027285a49ec4e9f8a451f17d2167435f0c34cfdec45c",
+    "mapkey": "d97aae59673b23bdcec00cacffc11fe2f4c7149a888bf652c6d435cede5c9ea4"
+  },
+  "essais": {
+    "froid": {
+      "sid": 48,
+      "domaines": [
+        2,
+        1
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 464,
+        "traductions": 3635,
+        "lectures": 146,
+        "unmap": 464,
+        "detach": 1
+      },
+      "noyau": {
+        "attach": 1,
+        "map": 7,
+        "traductions": 23,
+        "lectures": 1,
+        "unmap": 7,
+        "detach": 1
+      },
+      "jetons_retires": [
+        463
+      ],
+      "lectures_lba16": 1,
+      "pages_efi_distinctes": 97,
+      "reemplois_pages_dxe": 1335,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 159,
+        "2": 304,
+        "3": 1
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 1,
+      "eoi_intx37": 1,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "96247a2d03353989214ab828ad948a00bb9ca2bd8aebc7dca331166f82096ca3",
+      "trace_sha256": "3e3beb16cbc7db9bf9c7d5fad06a20224449d2dfbb1984d651b0c309a6714110"
+    },
+    "el2": {
+      "sid": 48,
+      "domaines": [
+        2,
+        1
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 464,
+        "traductions": 3635,
+        "lectures": 146,
+        "unmap": 464,
+        "detach": 1
+      },
+      "noyau": {
+        "attach": 1,
+        "map": 7,
+        "traductions": 23,
+        "lectures": 1,
+        "unmap": 7,
+        "detach": 1
+      },
+      "jetons_retires": [
+        463
+      ],
+      "lectures_lba16": 1,
+      "pages_efi_distinctes": 97,
+      "reemplois_pages_dxe": 1335,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 159,
+        "2": 304,
+        "3": 1
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 1,
+      "eoi_intx37": 1,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "96247a2d03353989214ab828ad948a00bb9ca2bd8aebc7dca331166f82096ca3",
+      "trace_sha256": "322746cc38807d962fe3104c8b4c750bf97634647476808d277e0ad5e9ba7a50"
+    },
+    "protection": {
+      "sid": 48,
+      "domaines": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 464,
+        "traductions": 3635,
+        "lectures": 146,
+        "unmap": 464,
+        "detach": 1
+      },
+      "noyau": {
+        "attach": 5,
+        "map": 38,
+        "traductions": 371,
+        "unmap": 38,
+        "lectures": 5,
+        "detach": 5
+      },
+      "jetons_retires": [
+        463
+      ],
+      "lectures_lba16": 5,
+      "pages_efi_distinctes": 97,
+      "reemplois_pages_dxe": 1335,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 159,
+        "2": 304,
+        "3": 1
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 2,
+      "eoi_intx37": 4,
+      "refus_de_traduction": 258,
+      "fautes": 16,
+      "serie_sha256": "3122dd3b07614b7b4557a78f6f9b68197aba42d7654bfa84f63822e22f8ca989",
+      "trace_sha256": "bcf5078c1ae5bde7bc3d4a8ee93834095cd8805dedac7bc98e02d9bc0e0365d0"
+    },
+    "reemploi": {
+      "sid": 48,
+      "domaines": [
+        2,
+        1
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 464,
+        "traductions": 3635,
+        "lectures": 146,
+        "unmap": 464,
+        "detach": 1
+      },
+      "noyau": {
+        "attach": 1,
+        "map": 7,
+        "traductions": 23,
+        "lectures": 1,
+        "unmap": 7,
+        "detach": 1
+      },
+      "jetons_retires": [
+        463
+      ],
+      "lectures_lba16": 1,
+      "pages_efi_distinctes": 97,
+      "reemplois_pages_dxe": 1335,
+      "pages_efi_reallouees_par_noyau": 97,
+      "droits_map": {
+        "1": 159,
+        "2": 304,
+        "3": 1
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 1,
+      "eoi_intx37": 1,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "9785f53dd27073c53a419b839b8e347b25bcadeaf0663e0bde1ce32b2697c58c",
+      "trace_sha256": "4b42997a52b4f556fed25f7979bd044b685b1b1e8e38dad7c09f0721c632e65e"
+    },
+    "cd": {
+      "sid": 48,
+      "domaines": [
+        2,
+        1
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 473,
+        "traductions": 3686,
+        "lectures": 149,
+        "unmap": 473,
+        "detach": 1
+      },
+      "noyau": {
+        "attach": 1,
+        "map": 7,
+        "traductions": 23,
+        "lectures": 1,
+        "unmap": 7,
+        "detach": 1
+      },
+      "jetons_retires": [
+        472
+      ],
+      "lectures_lba16": 1,
+      "pages_efi_distinctes": 101,
+      "reemplois_pages_dxe": 1340,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 162,
+        "2": 310,
+        "3": 1
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 1,
+      "eoi_intx37": 1,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "cda5c4ad8c7bc8567b2d3f1b7b75fe5dcf15f4f98f326e1f1a8af4694926a3f0",
+      "trace_sha256": "52bea2badedc32fa283f86e160f9cc68ff03e1a5e60cfb48deab4c5e6a840e4d"
+    },
+    "redemarrage": {
+      "sid": 48,
+      "domaines": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "firmware": {
+        "attach": 2,
+        "map": 928,
+        "traductions": 7270,
+        "lectures": 292,
+        "unmap": 928,
+        "detach": 2
+      },
+      "noyau": {
+        "attach": 2,
+        "map": 14,
+        "traductions": 46,
+        "lectures": 2,
+        "unmap": 14,
+        "detach": 2
+      },
+      "jetons_retires": [
+        463,
+        463
+      ],
+      "lectures_lba16": 2,
+      "pages_efi_distinctes": 106,
+      "reemplois_pages_dxe": 2661,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 318,
+        "2": 608,
+        "3": 2
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 2,
+      "eoi_intx37": 2,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "3b98bc93c913b7137042faafb94c2b89c563855eda20c0089a56e569d25850e3",
+      "trace_sha256": "6a634269d9bd5032c70ba5d620d9b05e8e3415779dbbbac702285cc09767b956"
+    },
+    "coupure": {
+      "sid": 48,
+      "domaines": [
+        2
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 5,
+        "traductions": 20,
+        "lectures": 1
+      },
+      "noyau": {},
+      "jetons_retires": [],
+      "lectures_lba16": 0,
+      "pages_efi_distinctes": 6,
+      "reemplois_pages_dxe": 0,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 2,
+        "2": 2,
+        "3": 1
+      },
+      "plages_actives_finales": 5,
+      "eoi_ppi30": 0,
+      "eoi_intx37": 0,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "fcad0346fc2c2ac70efbc8e3b9be152971e4b7fd1b172e3e55ed541508bf0465",
+      "trace_sha256": "0a8a1a63390bb4b0950ceae7b630772138404b057e18003fd0874954c32a9bb1"
+    },
+    "reprise": {
+      "sid": 48,
+      "domaines": [
+        2,
+        1
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 464,
+        "traductions": 3635,
+        "lectures": 146,
+        "unmap": 464,
+        "detach": 1
+      },
+      "noyau": {
+        "attach": 1,
+        "map": 7,
+        "traductions": 23,
+        "lectures": 1,
+        "unmap": 7,
+        "detach": 1
+      },
+      "jetons_retires": [
+        463
+      ],
+      "lectures_lba16": 1,
+      "pages_efi_distinctes": 106,
+      "reemplois_pages_dxe": 1326,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 159,
+        "2": 304,
+        "3": 1
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 1,
+      "eoi_intx37": 1,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "96247a2d03353989214ab828ad948a00bb9ca2bd8aebc7dca331166f82096ca3",
+      "trace_sha256": "8cc18e6508b337ef5599265b80206e135a158c91dcb2813efc38364cc5c42651"
+    },
+    "autre-slot": {
+      "sid": 56,
+      "domaines": [
+        2
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 464,
+        "traductions": 3635,
+        "lectures": 146,
+        "unmap": 464,
+        "detach": 1
+      },
+      "noyau": {},
+      "jetons_retires": [
+        463
+      ],
+      "lectures_lba16": 0,
+      "pages_efi_distinctes": 97,
+      "reemplois_pages_dxe": 1335,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 159,
+        "2": 304,
+        "3": 1
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 0,
+      "eoi_intx37": 0,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "5fa929c59a425c7f51ec30451482e2bd53c1864295fb894188299530732e388c",
+      "trace_sha256": "28e115032876e63c8fa0dcd9e021679806616d0b85ff5c56ef8cbc5f3a75e42e"
+    },
+    "mapkey": {
+      "sid": 48,
+      "domaines": [
+        2
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 74,
+        "traductions": 488,
+        "lectures": 20,
+        "unmap": 74,
+        "detach": 1
+      },
+      "noyau": {},
+      "jetons_retires": [
+        73
+      ],
+      "lectures_lba16": 0,
+      "pages_efi_distinctes": 40,
+      "reemplois_pages_dxe": 87,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 27,
+        "2": 46,
+        "3": 1
+      },
+      "plages_actives_finales": 0,
+      "eoi_ppi30": 0,
+      "eoi_intx37": 0,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "d0dba8b46151c7e18bb60a9628bf4740ca3f9916e36ad40fe85e9736fe8663b1",
+      "trace_sha256": "57e2ec2ba2aaa58f0515c75decae17eee71a7e9f2389d3df2ab9c57b0d74c5e3"
+    },
+    "retrait-suspendu": {
+      "sid": 48,
+      "domaines": [
+        2
+      ],
+      "firmware": {
+        "attach": 1,
+        "map": 5,
+        "traductions": 23,
+        "lectures": 1
+      },
+      "noyau": {},
+      "jetons_retires": [],
+      "lectures_lba16": 0,
+      "pages_efi_distinctes": 6,
+      "reemplois_pages_dxe": 0,
+      "pages_efi_reallouees_par_noyau": 0,
+      "droits_map": {
+        "1": 2,
+        "2": 2,
+        "3": 1
+      },
+      "plages_actives_finales": 5,
+      "eoi_ppi30": 0,
+      "eoi_intx37": 0,
+      "refus_de_traduction": 0,
+      "fautes": 0,
+      "serie_sha256": "9f6e3db01415498529da90c29dc47d8960867162840b9e9c4039dbc47393dcf4",
+      "trace_sha256": "c2d2c03c7ad2e63e362bbc3082831f3be83a6b1d3af184270ad52a7288f8be90"
+    }
+  }
+}

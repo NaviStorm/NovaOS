@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: MIT
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = NovaIommuDxe
+  FILE_GUID = 8817cf7d-f984-4c8c-8d64-768363dacbeb
+  MODULE_TYPE = DXE_DRIVER
+  VERSION_STRING = 0.1
+  ENTRY_POINT = NovaEntry
+
+[Sources.AARCH64]
+  Domain.c
+  Mapping.c
+  Nova.h
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  OvmfPkg/OvmfPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  PrintLib
+  SerialPortLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  VirtioLib
+
+[Protocols]
+  gEdkiiIoMmuProtocolGuid
+  gEfiPciIoProtocolGuid
+  gFdtClientProtocolGuid
+  gVirtioDeviceProtocolGuid
+
+[Guids]
+  gEfiEventBeforeExitBootServicesGuid
+
+[Depex]
+  gFdtClientProtocolGuid AND gEfiCpuArchProtocolGuid

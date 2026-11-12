@@ -10,12 +10,13 @@ import tempfile
 from installation_utm import BANNER, FIRMWARE, ROOT, empreinte, essai, fixture_p9, lanceurs
 
 
-def support_temoin(tmp):
+def support_temoin(tmp, noyau=None, scenario="cli", *, mapkey=False):
     manifest = ROOT / "tests/uefi_temoin/Cargo.toml"
     cible = "aarch64-unknown-uefi"
     rustc = subprocess.check_output(["rustup", "which", "--toolchain", "stable", "rustc"], text=True).strip()
     subprocess.run(["rustup", "run", "stable", "cargo", "build", "--offline", "--locked",
-                    "--release", "--target", cible, "--manifest-path", manifest, "--target-dir", tmp / "cargo"],
+                    "--release", *(["--features", "mapkey-lab"] if mapkey else []),
+                    "--target", cible, "--manifest-path", manifest, "--target-dir", tmp / "cargo"],
                    env={**os.environ, "RUSTC": rustc}, check=True)
     racine = tmp / "iso"
     efi = tmp / "esp/EFI/BOOT"
@@ -28,8 +29,9 @@ def support_temoin(tmp):
     shutil.copytree(efi.parent, racine / "EFI")
     subprocess.run(["qemu-img", "convert", "-f", "raw", "-O", "raw", f"fat:floppy:{efi.parents[1]}",
                     racine / "boot/efi.img"], check=True)
-    shutil.copyfile(ROOT / "target/aarch64-unknown-none-softfloat/release/novaos", racine / "boot/novaos.elf")
-    (racine / "limine.conf").write_bytes((ROOT / "boot/limine.conf").read_bytes() + b"    cmdline: cli\n")
+    shutil.copyfile(noyau or ROOT / "target/aarch64-unknown-none-softfloat/release/novaos",
+                    racine / "boot/novaos.elf")
+    (racine / "limine.conf").write_bytes((ROOT / "boot/limine.conf").read_bytes() + f"    cmdline: {scenario}\n".encode())
     subprocess.run(["xorriso", "-as", "mkisofs", "-R", "-J", "-V", "NOVAOBS", "-e", "boot/efi.img",
                     "-no-emul-boot", "-efi-boot-part", "--efi-boot-image", "--protective-msdos-label",
                     "-o", tmp / "cli.iso", racine], check=True)

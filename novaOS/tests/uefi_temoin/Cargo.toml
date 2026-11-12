@@ -11,5 +11,8 @@ publish = false
 name = "temoin-efi"
 path = "main.rs"
 
+[features]
+mapkey-lab = []
+
 [dependencies]
 r-efi = "=6.0.0"

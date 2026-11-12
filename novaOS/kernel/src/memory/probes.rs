@@ -197,3 +197,48 @@ impl HeldFrames {
         }
     }
 }
+
+#[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
+impl Memory {
+    /// Le banc hôte recoupe ces pages exclusivement allouées par NovaOS avec
+    /// les anciennes traductions EFI. Aucune adresse physique ne vient du banc.
+    pub(crate) fn verify_firmware_reuse(&mut self) -> Result<()> {
+        let before = self.free_pages();
+        let mut held = self.hold_for_probe(0)?;
+        let mut frame = held.0;
+        let mut span = None;
+        let mut count = 0;
+        while frame != 0 {
+            let pointer = self.frames.direct(frame);
+            let cookie = frame ^ 0x4e4f_5641_444d_4100;
+            // Sûreté : held possède toute la page. Le premier mot relie la
+            // liste, le deuxième appartient exclusivement au nouveau propriétaire.
+            let next = unsafe {
+                pointer.add(1).write_volatile(cookie);
+                assert_eq!(pointer.add(1).read_volatile(), cookie);
+                pointer.read()
+            };
+            let (low, high) = match span {
+                Some((low, high)) if frame + PAGE == low => (frame, high),
+                Some((low, high)) if frame == high => (low, frame + PAGE),
+                previous => {
+                    if let Some((low, high)) = previous {
+                        log(format_args!("DMA pages reutilisees {low:#x} {high:#x}"));
+                    }
+                    (frame, frame + PAGE)
+                }
+            };
+            span = Some((low, high));
+            count += 1;
+            frame = next;
+        }
+        if let Some((low, high)) = span {
+            log(format_args!("DMA pages reutilisees {low:#x} {high:#x}"));
+        }
+        held.restore_to(self, before);
+        if count != before || self.free_pages() != before {
+            return Err(Error::Verification);
+        }
+        Ok(())
+    }
+}

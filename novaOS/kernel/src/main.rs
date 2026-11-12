@@ -134,6 +134,11 @@ fn main_thread() {
     if matches!(scenario, b"dma-user" | b"dma-flight") {
         sched::process::storage::qualify_transport(scenario == b"dma-flight");
     }
+    #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
+    if scenario == b"dma-reemploi" {
+        heap::with_pages(memory::Memory::verify_firmware_reuse).expect("réemploi des cadres EFI");
+        hardware::block::probe();
+    }
     if scenario == b"dma-qual" {
         hardware::block::probe();
     }

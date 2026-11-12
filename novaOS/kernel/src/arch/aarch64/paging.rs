@@ -87,8 +87,10 @@ pub fn map_devices(space: &AddressSpace, frames: &mut Frames) -> Result<()> {
         (serial::VA, serial::PA),
         (super::rtc::VA, super::rtc::PA),
         (timer::DIST, timer::DIST_PA),
-        (timer::CPU, timer::CPU_PA),
-    ] {
+    ]
+    .into_iter()
+    .chain(super::gic::PAGES.iter().copied())
+    {
         if frames.info.entries.iter().any(|e| {
             crate::memory::mapped(e.entry_type) && e.base < pa + 4096 && e.base + e.length > pa
         }) {

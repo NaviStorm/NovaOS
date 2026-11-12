@@ -1,8 +1,8 @@
 # Installation AArch64 dans UTM — audit de v0.15.0
 
-**État de la qualification.** Sur disque VirtIO unique, aucun des deux firmwares AArch64 fournis par UTM n’attache le SID 48. L’IOMMU refuse son premier DMA avant toute lecture de secteur. Le timer physique et l’INTx du disque ont été livrés à une sonde EL1 sur GICv3 sans ITS. Le passage à l’installation reste suspendu à un arbitrage sur le pilote DXE et le transfert DMA. [Mesures et décision](#qualification-expérimentale-edk2-et-gicv3)
+**Qualification du 12 novembre 2026.** Sur le moteur AArch64 d’UTM 5.0.8, le DXE expérimental amorce un disque VirtIO unique, avec refus DMA dès le reset. NovaOS v0.14.0 reprend le disque et termine une lecture sous GICv3 sans ITS. Le témoin utilise un volume FAT de laboratoire. L’adoption du firmware et la reprise de l’installation attendent un nouvel arbitrage. [Mesures du prototype](#prototype-dxe-et-hal-gicv3)
 
-La phase 0 a été réalisée sur `main` au commit `a250cb25b530f001debf256f6bfdf8afbc0bef90`. Avec le moteur livré dans UTM 5.0.8, le firmware exécute NovaOS v0.14.0, puis l’admission du disque échoue avant le lancement du shell. Le passage de la phase 1 à la phase 2 reste bloqué. NovaFS conserve sa version v0.9.13 et son format P9.
+La phase 0 a été réalisée sur `main` au commit `a250cb25b530f001debf256f6bfdf8afbc0bef90`. Dans ce premier audit du moteur livré dans UTM 5.0.8, le firmware exécutait NovaOS v0.14.0, puis l’admission du disque échouait avant le lancement du shell. NovaFS conserve sa version v0.9.13 et son format P9.
 
 ## Phase 0 — de l’UEFI au service de fichiers
 
@@ -238,4 +238,107 @@ done
 
 Chaque passe Cargo compte quatre cas ignorés par défaut. La campagne différentielle séparée a vérifié, par architecture, 345 183 publications, 54 643 pénuries injectées et 1 000 remontages audités.
 
-**Arbitrage demandé.** Autoriser ou écarter le développement d’un pilote DXE virtio-IOMMU précoce et du contrat de remise à zéro vérifiable avant réemploi des pages, ainsi que l’intégration d’un profil GICv3 dans la HAL NovaOS. La recommandation est de poursuivre sur un firmware de laboratoire distinct avant de décider de sa distribution. La première lecture confinée de l’ESP, la reprise après échec de sortie EFI, la révocation des anciennes IOVA et le démarrage autonome de NovaShell sur P9 restent les critères d’acceptation. Ils sont inaccessibles avec les deux firmwares testés. L’adoption du firmware, les phases 2 à 4 et toute évolution d’ABI restent soumises à décision.
+**Arbitrage au commit `572bbd7`.** Autoriser ou écarter le développement d’un pilote DXE virtio-IOMMU précoce et du contrat de remise à zéro vérifiable avant réemploi des pages, ainsi que l’intégration d’un profil GICv3 dans la HAL NovaOS. La recommandation est de poursuivre sur un firmware de laboratoire distinct avant de décider de sa distribution. La première lecture confinée de l’ESP, la reprise après échec de sortie EFI, la révocation des anciennes IOVA et le démarrage autonome de NovaShell sur P9 restent les critères d’acceptation. Ils sont inaccessibles avec les deux firmwares testés. L’adoption du firmware, les phases 2 à 4 et toute évolution d’ABI restent soumises à décision.
+
+## Prototype DXE et HAL GICv3
+
+Le travail part du HEAD propre `572bbd79057826dc5accbb2e139c51f572822064` sur `main`. Le pflash expérimental charge, depuis le seul disque, le témoin EFI, le Limine du dépôt et le noyau. Après la sortie d’UEFI, NovaOS vérifie le contenu de 512 octets au LBA 16, reçoit l’INTx de complétion et ferme son domaine. Le secteur porte un motif connu du banc, dans l’espace libre entre le MBR et la partition FAT. Le démarrage de NovaShell sur une installation P9 autonome reste à qualifier. [Banc UTM](../tests/prototype_uefi.py) · [Mesures par essai](validation/prototype-uefi/resultats.json) · [Journaux bruts compressés](validation/prototype-uefi/journaux.tar.gz)
+
+### Protection avant la première lecture
+
+Dans l’exemple Intel, le PEIM récupère les informations VT-d, prépare les unités de remappage, construit les tables et active la traduction. Le DXE expose les méthodes d’association et de retrait de l’interface IOMMU d’EDK II. La description DMAR, les tables de contexte et les commandes d’invalidation de ce matériel sont spécifiques à Intel. L’apport retenu pour NovaOS est l’ordre des opérations entre fournisseur de protection, bus PCI et client disque. [PEI Intel VT-d](https://github.com/tianocore/edk2-platforms/blob/master/Silicon/Intel/IntelSiliconPkg/Feature/VTd/IntelVTdDmarPei/IntelVTdDmarPei.c#L669-L703) · [DXE Intel VT-d](https://github.com/tianocore/edk2-platforms/blob/master/Silicon/Intel/IntelSiliconPkg/Feature/VTd/IntelVTdDxe/IntelVTdDxe.c)
+
+Le pilote virtio-IOMMU de Linux associe les identifiants décrits par le firmware, transmet les droits de lecture et d’écriture et synchronise les demandes soumises à la virtqueue. Dans QEMU 10, le traitement d’un retrait notifie les plages, retire l’entrée de la table du domaine puis produit `virtio_iommu_unmap_done`. Un reset du périphérique conserve la valeur de bypass, tandis qu’un reset système la rétablit depuis `boot-bypass`. Le prototype vérifie chaque réponse de la file avant de changer le propriétaire d’une page. Les sources Linux et QEMU ont servi à l’étude du protocole. Les sources originales du DXE portent la licence MIT du projet. Les fichiers EDK II modifiés dans la copie de travail conservent leurs notices amont. [VirtIO 1.3, §5.13](https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html) · [Linux v6.14](https://github.com/torvalds/linux/blob/v6.14/drivers/iommu/virtio-iommu.c) · [Retrait dans QEMU 10](https://github.com/qemu/qemu/blob/v10.0.0/hw/virtio/virtio-iommu.c#L790-L830) · [Reset du modèle QEMU](https://github.com/qemu/qemu/blob/v10.0.0/hw/virtio/virtio-iommu.c#L1282-L1295)
+
+Le firmware de banc provient d’`ArmVirtQemu.dsc`, révision EDK II `fbe0805b2091393406952e84724188f8c1941837` (`edk2-stable202502`), en AARCH64 RELEASE avec TPM 2.0. La construction inclut `NovaIommuDxe` dans le volume flash. La dépendance du pont racine PCI impose la présence d’`EDKII_IOMMU_PROTOCOL`. Le transport VirtIO moderne active le décodage de ses BAR et diffère la maîtrise de bus. Le bus PCI annule un jeton dont l’autorisation a échoué et propage une erreur de retrait. Le pilote bloc vérifie aussi la longueur rendue par l’anneau utilisé. [Configuration de la copie EDK II](../firmware/preparer.py) · [Contrat IOMMU EDK II](https://github.com/tianocore/edk2/blob/edk2-stable202502/MdeModulePkg/Include/Protocol/IoMmu.h)
+
+1. Le modèle démarre avec `boot-bypass=off`. Le DXE vérifie la topologie FDT et son `iommu-map`. Pour ce profil, le segment PCI est en correspondance RID/SID sur toute sa plage, à l’exception du contrôleur. Il recoupe le RID de ce contrôleur avec son identité PCI, puis identifie l’unique disque moderne `1af4:1042` par son handle et son emplacement PCI. Le slot 6 donne le SID 48 et le slot 7 donne le SID 56. Une demande provenant du contrôleur SCSI ne reçoit aucun droit.
+2. Le contrôleur utilise deux files privées en RAM, une pour les commandes et une pour les fautes. Le DXE vérifie le granule de 4 Kio, les plages d’IOVA et de domaines, `ACCESS_PLATFORM` pour le disque, le bypass à zéro et une réponse `PROBE` sans réserve. Il attend le succès d’`ATTACH` au domaine vide 2. Les premiers `MAP` couvrent l’anneau du disque. Le DXE active ensuite sa maîtrise de bus et relit le bit BME.
+3. Chaque transfert possède un jeton et une IOVA qui progresse pendant cette exécution du firmware. L’en-tête et les données destinées au disque passent par des pages privées initialement à zéro, lisibles par le périphérique. Les données de lecture et l’octet de statut ne lui accordent que l’écriture. Les descripteurs et la partie disponible de l’anneau sont en lecture seule. La partie utilisée occupe une page privée bidirectionnelle sur le banc. La file de contrôle, les métadonnées DXE et la pile du demandeur restent hors des mappages du disque.
+4. Avant une révocation, le fournisseur vérifie les indices disponible/utilisé et l’identité du descripteur terminé. Il émet `UNMAP` sur chaque plage entière. La progression de la file, la barrière mémoire, l’identité du descripteur, la longueur et le statut de la réponse sont contrôlés. La recopie vers le demandeur puis la restitution des pages de transit viennent après cet acquittement. Une réponse incertaine coupe la maîtrise de bus du disque et immobilise les pages. [Domaine et commandes](../firmware/NovaIommuDxe/Domain.c) · [Mappages et propriétaires](../firmware/NovaIommuDxe/Mapping.c)
+
+### Sortie d’UEFI et reprise par NovaOS
+
+Le callback `BeforeExitBootServices` ferme l’admission. Seul l’anneau du disque au repos peut encore être publié. Le DXE vérifie le reset du disque et la lecture de BME à zéro, retire les deux plages de l’anneau et attend `DETACH`. Il vérifie ensuite le reset du contrôleur, sa maîtrise de bus à zéro, le bypass toujours nul et l’égalité du nombre de jetons accordés et révoqués. Il réalise ce retrait sans allocation ni libération EFI. Au premier appel, EDK II délivre cet événement avant la validation du `MapKey`. Le témoin à clé périmée observe le refus, relit la carte mémoire et réussit sa deuxième sortie avec le domaine déjà fermé. [Ordre des événements dans le cœur DXE](https://github.com/tianocore/edk2/blob/edk2-stable202502/MdeModulePkg/Core/Dxe/DxeMain/DxeMain.c#L777-L818) · [Témoin EFI](../tests/uefi_temoin/main.rs)
+
+Le noyau peut alors initialiser son allocateur et reprendre les pages du chargeur. À la découverte PCI, le profil expérimental vérifie BME et le statut VirtIO à zéro avant sa propre remise en état. Il attache le disque au domaine 1 et y accorde sept pages privées. Le banc recoupe les plages physiques du firmware avec les cadres réellement obtenus de l’allocateur NovaOS et écrits puis relus par leur nouveau propriétaire. Lors de l’essai dédié, les 97 pages physiques distinctes historiquement mappées par le DXE ont été réallouées de cette manière. Ce recoupement est fait sur l’hôte et n’ajoute aucun champ à l’ABI Limine ou NovaOS. [Découverte PCI](../kernel/src/hardware/block/pci.rs) · [Domaine du noyau](../kernel/src/hardware/block/viommu.rs) · [Sonde de réemploi](../kernel/src/memory/probes.rs)
+
+### HAL et matrice de démarrage
+
+La fonctionnalité Cargo `gicv3-lab` sélectionne le contrôleur du banc pour AArch64. La HAL vérifie la révision GICD et l’affinité GICR du PE, réveille son redistributeur, configure le groupe 1 et route le SPI à niveau haut vers ce PE. Elle relit les priorités du timer physique PPI 30 (`0x80`) et du disque SPI 37 (`0x40`), le masque CPU et le mode EOI. Le gestionnaire acquitte avec `ICC_IAR1_EL1`, traite l’ISR VirtIO et termine par `ICC_EOIR1_EL1`. La lecture de test exige un nouvel index utilisé, la longueur de 513 octets incluant le statut, un statut de succès, un nouvel IRQ et le motif attendu. Le DTB et le `PROBE` du disque concordent sur l’absence de fenêtre MSI. Le pilote bloc exige une ligne INTx exclusive. [HAL du banc](../kernel/src/arch/aarch64/gicv3.rs) · [Complétion du transport](../kernel/src/hardware/block/mod.rs) · [Contrôle des traces](../tests/prototype_traces.py)
+
+| Configuration ou épreuve | Résultat observé |
+|---|---|
+| Pflash standard et Secure Boot **livrés par UTM**, disque seul protégé, GICv3 sans ITS, avec ou sans EL2 | Les quatre témoins de l’audit `572bbd7` refusent le premier DMA du SID inconnu avant toute lecture bloc. Ces mesures ont été conservées. |
+| **DXE expérimental**, disque seul au slot 6, démarrage à froid | 146 lectures bloc par le firmware. 463 jetons accordés et retirés, soit 464 plages après séparation de l’anneau. Le noyau lit le LBA 16, vérifie ses 512 octets, reçoit et acquitte l’INTx 37, puis retire ses sept mappages. |
+| Même disque, `virtualization=on` | Même passage du reset à la lecture vérifiée. Le modèle TCG et le profil GICv3 sont ceux du moteur fourni dans UTM. |
+| Disque seul déplacé au slot 7 | Le DXE découvre le SID 56, charge Limine et le noyau, puis ferme son domaine. Le profil PCI NovaOS, fixé au slot 6 et à l’INTx 37, retourne `Absent`. |
+| CD prioritaire sur VirtIO-SCSI protégé, disque au slot 6 | Le DXE refuse le RID 8 du contrôleur optique. BDS sélectionne le disque. NovaOS complète la lecture. Un amorçage **depuis le CD** demanderait un domaine et un pilote optique qualifiés. |
+| Redémarrage QMP dans la même VM | Deux séquences complètes d’attachement, de lecture, de retrait et de détachement par propriétaire. Les mêmes variables EFI privées servent aux deux démarrages. |
+| Arrêt forcé pendant la première lecture EFI | `blkdebug` confirme la suspension de la requête. Le compteur du backend indique zéro lecture et zéro écriture terminées. Cinq plages restent épinglées à la destruction de la VM. Une nouvelle VM reprend avec les mêmes variables et le même disque et termine la lecture noyau. |
+| Première clé de carte mémoire volontairement périmée | Un seul retrait du domaine firmware, refus de la première sortie, puis réussite de la seconde tentative. Le témoin termine après EFI. |
+| Variante négative qui retient le premier `UNMAP` avant publication | Délai du canal de contrôle, BME relu à zéro, cinq plages conservées en quarantaine. La série ne franchit pas la sortie EFI. |
+| Témoin historique QEMU 11.1.3 avec CD et `msi=off` | La lecture P9 depuis NovaShell reste un résultat historique distinct. |
+
+Le test négatif côté noyau exerce son propre tampon privé, d’abord en lecture seule pour le disque, puis démappé. Dans les deux cas, le témoin mémoire reste intact et le contrôleur signale une faute. Le test masque une IRQ de lecture en vol, retire le bail, purge la route et vérifie le nouveau propriétaire. Une IRQ tardive est acquittée sans livraison à l’ancien client. Pour chaque démarrage positif, le vérificateur indépendant associe chaque traduction observée au SID, à la plage et aux droits actifs. Il rapproche les retraits demandés des événements `unmap_done` du modèle et exige un ensemble vide au détachement. Les deux arrêts avec pages épinglées ont leurs propres critères. [Journal et compteurs par profil](validation/prototype-uefi/resultats.json)
+
+### Reproduction
+
+Sur macOS ARM64, le banc utilise UTM 5.0.8 dans `/Applications`, ses bibliothèques QEMU 10.0.12 et swtpm, le socket Unix privé du TPM, Xcode Command Line Tools, LLVM/LLD, ACPICA (`iasl`), Rust stable, `qemu-img`, `xorriso` et Python 3.11 ou ultérieur. Les cibles Rust sont `aarch64-unknown-uefi` et `aarch64-unknown-none-softfloat`. Depuis la racine du dépôt, utiliser une copie de travail jetable. Les commandes de construction EDK II ci-dessous s’exécutent dans Bash.
+
+```sh
+set -e
+NOVA_SRC="$PWD"
+NOVA_LAB="$(mktemp -d /tmp/nova-uefi.XXXXXXXX)"
+git clone --depth 1 --branch edk2-stable202502 https://github.com/tianocore/edk2.git "$NOVA_LAB/edk2"
+cd "$NOVA_LAB/edk2"
+git submodule update --init --depth 1 --jobs 5 \
+  BaseTools/Source/C/BrotliCompress/brotli MdeModulePkg/Library/BrotliCustomDecompressLib/brotli \
+  MdePkg/Library/BaseFdtLib/libfdt MdePkg/Library/MipiSysTLib/mipisyst \
+  CryptoPkg/Library/OpensslLib/openssl CryptoPkg/Library/MbedTlsLib/mbedtls \
+  MdeModulePkg/Universal/RegularExpressionDxe/oniguruma SecurityPkg/DeviceSecurity/SpdmLib/libspdm
+make -C BaseTools/Source/C -j6 CC=/usr/bin/clang CXX=/usr/bin/clang++ EXTRA_OPTFLAGS=-Wno-error
+export CLANGDWARF_BIN="$(brew --prefix llvm)/bin/"
+export PATH="$(brew --prefix lld)/bin:$(brew --prefix acpica)/bin:${CLANGDWARF_BIN}:$PATH"
+export PYTHON_COMMAND="$(command -v python3)"
+. ./edksetup.sh
+for variante in normal sans-ack; do
+    options=()
+    if [ "$variante" = sans-ack ]; then options+=(--retrait-suspendu); fi
+    python3 "$NOVA_SRC/novaOS/firmware/preparer.py" "$PWD" "${options[@]}"
+    build -a AARCH64 -t CLANGDWARF -b RELEASE -p ArmVirtPkg/ArmVirtQemu.dsc -n 6 -D TPM2_ENABLE=TRUE
+    mkdir -p "$NOVA_LAB/$variante"
+    cp Build/ArmVirtQemu-AARCH64/RELEASE_CLANGDWARF/FV/QEMU_{EFI,VARS}.fd "$NOVA_LAB/$variante/"
+done
+cd "$NOVA_SRC/novaOS"
+RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked \
+  --target aarch64-unknown-none-softfloat --features gicv3-lab --target-dir "$NOVA_LAB/kernel"
+python3 tests/prototype_uefi.py "$NOVA_LAB/normal" "$NOVA_LAB/kernel/aarch64-unknown-none-softfloat/release/novaos" \
+  --fv-sans-ack "$NOVA_LAB/sans-ack"
+```
+
+Le banc prépare des pflash de 64 Mio, un disque FAT jetable et des variables privées pour chaque scénario. Il conserve les ROM, l’ELF, les traces invitées et hôtes et leurs empreintes dans le répertoire `build/prototype-dxe-*` affiché au lancement. Pour vérifier les preuves archivées du 12 novembre, depuis la racine du dépôt, exécuter les commandes suivantes.
+
+```sh
+NOVA_PREUVES="$(mktemp -d /tmp/nova-preuves.XXXXXXXX)"
+tar -xzf novaOS/docs/validation/prototype-uefi/journaux.tar.gz -C "$NOVA_PREUVES"
+python3 novaOS/tests/prototype_traces.py "$NOVA_PREUVES"
+```
+
+### Régressions, limites et décision
+
+| Contrôle rejoué | AArch64 | x86_64 |
+|---|---:|---:|
+| NovaOS, scénarios historiques de démarrage | 25/25 | 25/25 |
+| NovaOS, groupes bloc sur secteurs de 512 et 4 096 octets, isolation et révocation comprises | 24/24 | 24/24 |
+| NovaOS, ELF, cycle des processus et courses IPC | 3/3 | 3/3 |
+| NovaFS v0.9.13, tests standards puis instrumentés | 192 puis 193 | 192 puis 193 |
+| NovaFS, opérations différentielles | 1 000 000 | 1 000 000 |
+
+L’hôte ARM64 a exécuté la cible native et la cible x86_64 sous Rosetta. Quatre cas sont ignorés par défaut dans chaque passe Cargo. Par architecture, le différentiel a observé 345 183 publications, 54 643 pénuries injectées et 1 000 remontages audités. Les exécutables de contrôle ARM64 et x86_64 ont été identifiés par leur en-tête Mach-O. L’indicateur macOS `sysctl.proc_translated` valait 1 sous x86_64. Les deux contrôles d’interopérabilité NovaFS P8/P9 se sont également terminés avec le code zéro. Les journaux des régressions accompagnent les traces du prototype.
+
+**Périmètre démontré.** Les mesures couvrent un vCPU, TCG Cortex-A72, 256 Mio, `virt-10.0`, des secteurs de 512 octets, un disque moderne avec `iommu_platform=on,ats=off,vectors=0`, le contrôleur virtio-IOMMU de QEMU et une chaîne EFI de confiance. Le domaine firmware et la HAL sont expérimentaux. Le profil HHDM, l’ABI, le format P9 et les variantes historiques du noyau conservent leurs contrats. Le DXE refuse la demande suivante à l’épuisement de sa plage d’IOVA ou des 32 jetons simultanés.
+
+**Limites de validation.** Le générateur d’arguments d’UTM prévoit un pflash personnalisé. Les essais utilisent directement ses bibliothèques installées. L’import d’une VM par l’interface graphique, HVF, le matériel physique, le multiprocesseur et le démarrage signé avec des clés de distribution restent hors de la preuve. Le logiciel du contrôleur et les accès de plateforme de confiance, notamment le transport du firmware QEMU, sont dans le périmètre de confiance. Le profil DXE couvre exclusivement le disque identifié. Le retrait observé avec ATS désactivé porte sur les traductions du modèle QEMU. Un périphérique à cache de traduction propre ou un branchement à chaud demanderait un autre banc. Une panne en cours de retrait retient ses pages jusqu’à l’arrêt de la VM. [Générateur UTM 5.0.8](https://github.com/utmapp/UTM/blob/v5.0.8/Configuration/UTMQemuConfiguration%2BArguments.swift#L548-L605)
+
+**Prochaine décision.** Le prototype permet de proposer une qualification de distribution avec profil UTM importable, politique de signature et cycle de mise à jour du pflash. Son adoption et la reprise des phases de l’installateur nécessitent un arbitrage distinct. NovaOS reste en v0.14.0 et NovaFS en v0.9.13 P9.

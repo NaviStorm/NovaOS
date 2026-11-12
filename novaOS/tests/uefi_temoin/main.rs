@@ -42,6 +42,40 @@ struct Chemin<const N: usize> {
     nom: [u16; N],
 }
 
+// Témoin indépendant du noyau. Après une première sortie refusée, limiter
+// les appels aux services mémoire et à la nouvelle tentative de sortie.
+fn verifier_mapkey(h: efi::Handle, bs: &efi::BootServices) -> ! {
+    #[repr(align(8))]
+    struct Carte([u8; 32768]);
+    static mut CARTE: Carte = Carte([0; 32768]);
+    // Sûreté : appel unique sur le BSP. La carte statique est alignée et reste
+    // vivante après la sortie. Les marqueurs série ne dépendent pas de l’UEFI.
+    unsafe {
+        assert_eq!(
+            (bs.exit_boot_services)(h, usize::MAX),
+            efi::Status::INVALID_PARAMETER
+        );
+        serie(b"OBS EFI MapKey refusee\r\n");
+        let mut taille = 32768;
+        let (mut cle, mut pas, mut version) = (0, 0, 0);
+        assert_eq!(
+            (bs.get_memory_map)(
+                &mut taille,
+                (&raw mut CARTE.0).cast(),
+                &mut cle,
+                &mut pas,
+                &mut version
+            ),
+            efi::Status::SUCCESS
+        );
+        assert_eq!((bs.exit_boot_services)(h, cle), efi::Status::SUCCESS);
+    }
+    serie(b"OBS EFI seconde sortie reussie\r\n");
+    loop {
+        core::hint::spin_loop();
+    }
+}
+
 fn lancer(h: efi::Handle, bs: &efi::BootServices) -> efi::Status {
     let mut interface = ptr::null_mut();
     let mut guid = IO_MMU;
@@ -52,6 +86,10 @@ fn lancer(h: efi::Handle, bs: &efi::BootServices) -> efi::Status {
         efi::Status::SUCCESS if !interface.is_null() => serie(b"OBS EFI IoMmu present\r\n"),
         efi::Status::NOT_FOUND => serie(b"OBS EFI IoMmu absent\r\n"),
         _ => return efi::Status::DEVICE_ERROR,
+    }
+
+    if cfg!(feature = "mapkey-lab") {
+        verifier_mapkey(h, bs);
     }
 
     let mut image = ptr::null_mut();

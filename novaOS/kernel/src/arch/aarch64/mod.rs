@@ -1,6 +1,12 @@
 //! Amorçage de la machine QEMU virt sous UEFI/Limine.
 pub(crate) mod context;
 mod exceptions;
+#[cfg(not(feature = "gicv3-lab"))]
+#[path = "gicv2.rs"]
+mod gic;
+#[cfg(feature = "gicv3-lab")]
+#[path = "gicv3.rs"]
+mod gic;
 pub(crate) mod paging;
 pub(crate) mod rtc;
 pub(crate) mod serial;

@@ -211,6 +211,10 @@ impl Device {
         let [Some(common), Some(notify), Some(isr), Some(specific)] = regions else {
             return Err(Error::Geometry);
         };
+        #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
+        if cfg.get(4, 2) & 4 != 0 || common.r8(20) != 0 {
+            return Err(Error::Quarantine);
+        }
         cfg.intx(false);
         if let Some((c, _, _)) = msix {
             cfg.put(c + 2, 2, (cfg.get(c + 2, 2) | 0x4000) & !0x8000)

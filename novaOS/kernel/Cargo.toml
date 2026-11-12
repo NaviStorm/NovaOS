@@ -10,6 +10,9 @@ path = "src/main.rs"
 test = false
 bench = false
 
+[features]
+gicv3-lab = []
+
 [dependencies]
 limine = "=0.5.0"
 font8x8 = { version = "0.3.1", default-features = false }
