@@ -6,6 +6,15 @@ pub const OUTPUT: u8 = 2;
 pub const ERROR: u8 = 4;
 /// Style du nom d’un répertoire sur le terminal série, exige OUTPUT.
 pub const DIRECTORY_COLOR: u8 = 64;
+/// Présentation VT réservée au propriétaire de la session interactive (INPUT | OUTPUT | EDIT).
+pub const SCREEN: u8 = 65;
+pub const ENTER_SCREEN: u64 = 0;
+pub const LEAVE_SCREEN: u64 = 1;
+pub const POSITION: u64 = 2;
+pub const ERASE_EOL: u64 = 3;
+pub const QUERY_SIZE: u64 = 4;
+pub const READ_TIMED: u64 = 5;
+pub const MAX_AXIS: u16 = 999;
 pub const EDIT: u8 = 8;
 pub const LAUNCH: u8 = 16;
 pub const QUALIFY: u8 = 32;

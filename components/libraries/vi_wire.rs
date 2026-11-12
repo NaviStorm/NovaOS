@@ -15,6 +15,10 @@ pub const TEXT: u8 = 6;
 pub const SAVE: u8 = 7;
 pub const FIN: u8 = 8;
 
+pub const VIEW: u8 = 9;
+pub const LOCATE: u8 = 10;
+pub const CLEAR_TAIL: u8 = 11;
+
 pub struct Link {
     channels: (u64, u64),
     tag: u64,

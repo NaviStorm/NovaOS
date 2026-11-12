@@ -1,10 +1,10 @@
-# NovaOS v0.16.1
+# NovaOS v0.16.2
 
-L’installateur AArch64 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable](../distribution/images/novaos-0.16.1-utm-aarch64.tar.gz) · [Installation et qualification](docs/vi-v0.16.1.md#installation-dans-utm)
+L’installateur AArch64 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable](../distribution/images/novaos-0.16.2-utm-aarch64.tar.gz) · [Installation et qualification](docs/vi-v0.16.2.md#installation-dans-utm)
 
 Depuis la racine du monorepo : `make -C novaOS ARCH=x86_64 block-test` ou `make -C novaOS ARCH=aarch64 block-test`. Pour un démarrage graphique avec une image raw existante : `make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512` (AArch64 : `ARCH=aarch64`, secteur 512 ou 4096).
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.16.1`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.16.2`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
@@ -33,7 +33,7 @@ make -C novaOS ARCH=aarch64 cli
 
 Depuis le terminal, `nsh fichier.nsh` lit un fichier du volume et `nsh -c 'echo "$$"'` affiche le PID du shell. Le disque installé contient `/verification.nsh`. [Grammaire, exemples et qualification](docs/nsh-scripts-v0.16.0.md)
 
-Pour écrire un script, ouvrir `vi bonjour.nsh`, appuyer sur `i`, saisir le texte, puis utiliser Échap et `:wq`. Pour un fichier existant, `:w autre-nom` demande confirmation au terminal et conserve l’original. En mode normal, `u` annule un groupe et Ctrl+R le rétablit. [Guide de vi](docs/vi-v0.16.1.md)
+Pour écrire un script, ouvrir `vi bonjour.nsh`, appuyer sur `i`, saisir le texte, puis utiliser Échap et `:wq`. Pour un fichier existant, `:w autre-nom` demande confirmation au terminal et conserve l’original. En mode normal, `u` annule un groupe et Ctrl+R le rétablit. [Guide de vi](docs/vi-v0.16.2.md)
 
 Un nouveau volume de démonstration utilise le profil P9 et contient `/documents/exemple.txt`. Les commandes externes s’exécutent en Ring 3 ou EL0. `exit` ferme la session. Dans le terminal QEMU, Ctrl-A puis X quitte l’émulateur. [Commandes, droits et validation](docs/cli-v0.14.0.md)
 

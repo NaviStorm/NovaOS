@@ -193,9 +193,66 @@ fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
     Ok(128)
 }
 
+/// Chaque contrôle est construit ici. Aucune chaîne de contrôle ne provient d’un client.
+fn present(action: u64, argument: u64) -> Result<u64, u64> {
+    use crate::arch::serial;
+    use crate::terminal::*;
+    if action == READ_TIMED && (1..=500).contains(&argument) {
+        let start = crate::sched::ticks();
+        loop {
+            if let Some(b) = serial::input() {
+                return Ok(b.into());
+            }
+            if crate::sched::ticks().wrapping_sub(start) >= argument {
+                return Err(TIMED_OUT);
+            }
+            sleep(1)
+        }
+    }
+    let _guard = Guard::new();
+    if action == POSITION {
+        let row = argument >> 16;
+        let col = argument & 0xffff;
+        if !(1..=u64::from(MAX_AXIS)).contains(&row) || !(1..=u64::from(MAX_AXIS)).contains(&col) {
+            return Err(BAD_ARGUMENT);
+        }
+        // Trois chiffres au plus par axe. CUP accepte les zéros initiaux.
+        let mut seq = *b"\x1b[000;000H";
+        decimal(&mut seq[2..5], row);
+        decimal(&mut seq[6..9], col);
+        serial::output(core::str::from_utf8(&seq).unwrap()).map_err(|_| REFUSED)?;
+        return Ok(0);
+    }
+    if argument != 0 {
+        return Err(BAD_ARGUMENT);
+    }
+    let sequence = match action {
+        ENTER_SCREEN => "\x1b[?1049h",
+        LEAVE_SCREEN => "\x1b[?1049l",
+        ERASE_EOL => "\x1b[K",
+        QUERY_SIZE => "\x1b7\x1b[999;999H\x1b[6n\x1b8",
+        _ => return Err(BAD_ARGUMENT),
+    };
+    serial::output(sequence).map_err(|_| REFUSED)?;
+    Ok(0)
+}
+fn decimal(digits: &mut [u8], mut value: u64) {
+    for digit in digits.iter_mut().rev() {
+        *digit = b'0' + (value % 10) as u8;
+        value /= 10;
+    }
+}
+
 fn console_io(port: u64, address: u64, len: u64) -> Result<u64, u64> {
     use crate::terminal::*;
     let right = u8::try_from(port).map_err(|_| BAD_ARGUMENT)?;
+    if right == SCREEN {
+        let owner = INPUT | OUTPUT | EDIT;
+        if with(|s| s.processes.get(caller(s)).terminal & owner != owner) {
+            return Err(DENIED);
+        }
+        return present(address, len);
+    }
     let color = right == DIRECTORY_COLOR;
     let right = if color { OUTPUT } else { right };
     if !matches!(right, INPUT | OUTPUT | ERROR | EDIT) {

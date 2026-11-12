@@ -106,7 +106,7 @@ def transfert(console, marque, sid):
     assert f"ATTACH sid={sid} domaine=2 bypass=0 BME=0".encode() in serie
     bilan = re.search(rb"NOVA DXE SORTIE droits=(\d+) retraits=(\d+) actifs=0 BME=0 bypass=0", serie)
     assert bilan and int(bilan[1]) == int(bilan[2]) > 0
-    assert b"NovaOS v0.16.1" in serie and b"GICv3 groupe=1" in serie
+    assert b"NovaOS v0.16.2" in serie and b"GICv3 groupe=1" in serie
     return serie
 
 
@@ -153,6 +153,21 @@ def grand_fichier(console):
     console.attendre(b"nsh> ")
 
 
+def verifier_persistance(console):
+    transfert(console, b"nsh> ", 56)
+    assert b"NovaOS\r\n" in console.ligne("cat recettes/preuve.txt")
+    assert b"recettes/preuve.txt" in console.ligne("ls -d -- **/*.txt")
+    script = console.ligne("./recettes/preuve.nsh")
+    assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script
+    for path in ("edite.nsh", "autre.nsh"):
+        assert "Écrit dans vi\r\n".encode() in console.ligne("./recettes/" + path)
+    for name, prefix in (("volume.txt", ""), ("volume-edite.txt", "YX")):
+        content = (prefix + (VI_LINE+"\r\n")*VI_LINES).encode()
+        assert content in console.ligne("cat recettes/"+name)
+    assert b"controle-16" in console.ligne("nsh -c 'x=controle-16; echo $x'")
+    console.ligne("exit", b"SYSTEME bilan Ok(())")
+
+
 def qualifier(distribution, dest):
     dest.mkdir()
     support = distribution / "installateur.qcow2"
@@ -178,11 +193,11 @@ def qualifier(distribution, dest):
     with enregistrer(autonome, ident) as machine:
         with demarrer(machine, dest / "autonome.serial") as console:
             transfert(console, b"nsh> ", 56)
-            assert b"NovaOS 0.16.1" in console.ligne("ls --version")
+            assert b"NovaOS 0.16.2" in console.ligne("ls --version")
             for cmd in ["mkdir recettes", "cp /systeme recettes/preuve.txt", "cd recettes", "cd .."]:
                 out = console.ligne(cmd)
                 assert b"statut " not in out and b"erreur" not in out, (cmd, out)
-            assert b"NovaOS 0.16.1" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
+            assert b"NovaOS 0.16.2" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
             assert b"NovaOS\r\n" in console.ligne("cat **/*.txt")
             script = console.ligne("nsh /verification.nsh")
             assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script
@@ -192,18 +207,7 @@ def qualifier(distribution, dest):
             grand_fichier(console)
             console.ligne("exit", b"SYSTEME bilan Ok(())")
         with demarrer(machine, dest / "persistance.serial") as console:
-            transfert(console, b"nsh> ", 56)
-            assert b"NovaOS\r\n" in console.ligne("cat recettes/preuve.txt")
-            assert b"recettes/preuve.txt" in console.ligne("ls -d -- **/*.txt")
-            script = console.ligne("./recettes/preuve.nsh")
-            assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script
-            for path in ("edite.nsh", "autre.nsh"):
-                assert "Écrit dans vi\r\n".encode() in console.ligne("./recettes/" + path)
-            for name, prefix in (("volume.txt", ""), ("volume-edite.txt", "YX")):
-                content = (prefix + (VI_LINE+"\r\n")*VI_LINES).encode()
-                assert content in console.ligne("cat recettes/"+name)
-            assert b"controle-16" in console.ligne("nsh -c 'x=controle-16; echo $x'")
-            console.ligne("exit", b"SYSTEME bilan Ok(())")
+            verifier_persistance(console)
     assert digest(support) == original
     return dict(application="UTM", profil="AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
                 serie="PTY de l’application", installation=True, support_sha256=original,

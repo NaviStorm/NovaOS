@@ -142,9 +142,9 @@ def check(arch, sector, work):
         for name, operands in (("rm", "1.txt A.txt"), ("rmdir", "../archive ../sortie"),
                                ("cp", "1.txt A.txt ../sortie"), ("mv", "1.txt A.txt ../sortie")):
             run(f"{name} --help {operands}", contains=[name + " ["])
-            run(f"{name} --version {operands}", contains=["NovaOS 0.16.1"])
+            run(f"{name} --version {operands}", contains=["NovaOS 0.16.2"])
         run("cp --help 1.txt A.txt ../absent", contains=["cp ["])
-        run("mv --version 1.txt A.txt ../absent", contains=["NovaOS 0.16.1"])
+        run("mv --version 1.txt A.txt ../absent", contains=["NovaOS 0.16.2"])
         run("cat 1.txt A.txt", contains=["unmajuscule"])
         run("ls -d ../archive ../sortie", contains=["../archive", "../sortie"])
         run("ls ../sortie", absent=["1.txt", "A.txt"])

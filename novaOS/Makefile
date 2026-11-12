@@ -120,3 +120,8 @@ vi-memoire-test:
 vi-volumes-test: kernel
 	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
 	python3 tests/vi_volumes.py
+
+.PHONY: vi-ecran-test
+vi-ecran-test: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 tests/vi_ecran.py

@@ -8,6 +8,9 @@ Le port privé du pilote utilise `0x10040`. La préparation de v0.11.0 attribue 
 
 La v0.13.0 attribue `0x10042` à `SPAWN` et `0x10043` à `CONSOLE`. Ces appels utilisent les mêmes registres et conventions de retour sur les deux architectures. [Lancement, arguments et droits du terminal](cli-v0.13.0.md#contrat-de-lancement-et-de-console)
 
+La v0.16.2 ajoute le sélecteur de présentation 65 à `CONSOLE`. Il exige les droits conjoints du propriétaire de la session interactive. [Opérations et bornes](vi-v0.16.2.md#contrat-terminal)
+
+
 ## Appel et retour
 
 | Architecture | Instruction | Sélecteur | Arguments a, b, c | Retour statut, valeur |

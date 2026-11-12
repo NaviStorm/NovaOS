@@ -48,6 +48,8 @@ fn verify() -> rt::Result<()> {
         ["droits"] => {
             if rt::call(tty::SPAWN, 0, 0, 0).status != rt::DENIED
                 || rt::call(tty::CONSOLE, tty::INPUT.into(), 0, 0).status != rt::DENIED
+                || rt::call(tty::CONSOLE, tty::SCREEN.into(), tty::ENTER_SCREEN, 0).status
+                    != rt::DENIED
             {
                 return Err(rt::REFUSED);
             }

@@ -41,7 +41,7 @@ def trial(arch, folder):
     sector = 4096
     image, ids = prepare(folder, sector)
     rows = []
-    with Terminal(arch, sector, image, "vi-volumes-0161", test=True) as t:
+    with Terminal(arch, sector, image, "vi-volumes", test=True) as t:
         t.until(b"nsh> ", 900)
 
         def command(raw, marker):

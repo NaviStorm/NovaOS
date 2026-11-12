@@ -1,5 +1,7 @@
 # NovaOS v0.16.1 — Tester vi
 
+Les essais historiques ci-dessous qualifient le tampon et le stockage. Le défaut de défilement observé dans la fenêtre Terminal UTM est corrigé en v0.16.2. [Image, procédure et captures du rendu corrigé](vi-v0.16.2.md)
+
 ## Essai au terminal
 
 Au prompt `nsh>`, ouvrir `vi essai.txt` avec un nom libre. Appuyer sur `i`, écrire `été`, puis Échap. Appuyer sur `a`, ajouter `!` et revenir en mode normal avec Échap.

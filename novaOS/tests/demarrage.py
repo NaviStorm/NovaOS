@@ -14,14 +14,14 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
-BANNER = b"NovaOS v0.16.1\r\n"
+BANNER = b"NovaOS v0.16.2\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "5b15f1f5d32775a1681c45f64c66b99ced21a531cbcc339227b56ee8e611576c",
-    "demarrage": "e6ff8a2ba05f4bda5b2ffd8392bcd6d8b08c0073ffbbd53cf0a701d6811ee786",
-    "composition": "b6b75f39931a6c6d4eefab0dfbb3c78ded30782bcbea0c2e5886a82f83f2c0be",
-    "frappe": "e31cfa340fb51881bc94d6f7ae730679b6b694fa36ed3054bc9edac996e59be2",
-    "saisie": "ccba94c1c96d9f6d8d4f4fbc80231d632da3e2173bb8efd133ecc27d1b1b3541",
+    "demarrage-aarch64": "70a203b9a9e93fcf9c11bc408ccb28d0080d987a0bb1b72f112f8b65bc564b9d",
+    "demarrage": "ca5e476b572078c0514450b47f91f0450442e2245271d0b875a32e716544615f",
+    "composition": "058e3cf4aa636222b104b41de43f20352e1c80a53d4d96a0ac6f62e3a11cbbd4",
+    "frappe": "a169d1e899bd6124854351f1c19161a467bebd774f33dcae4d8b51963cc09dfa",
+    "saisie": "40bfe348f065c831343f9e30c5ac6e6f05b64a132b9cb96c7ea5118d56bf4c0e",
 }
 
 

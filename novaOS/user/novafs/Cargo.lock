@@ -308,7 +308,7 @@ dependencies = [
 
 [[package]]
 name = "novaos-storage"
-version = "0.16.1"
+version = "0.16.2"
 dependencies = [
  "dlmalloc",
  "novafs",

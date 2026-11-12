@@ -1,0 +1,279 @@
+{
+  "base": "b75e51a0c48f12c3c27b76ab983e71ce000ab3be",
+  "date": "2026-11-12",
+  "novaos": "0.16.2",
+  "novafs": "0.9.13 P9",
+  "utm": "5.0.8",
+  "qemu_utm": "10.0.12",
+  "qemu_developpement": "11.1.3",
+  "archive": {
+    "nom": "novaos-0.16.2-utm-aarch64.tar.gz",
+    "sha256": "0c97eeffebe82c488f43fe479e83d4758568d9d00599d53510bb1e920a9f3c06",
+    "fichiers_verifies": 27
+  },
+  "support_sha256": "060b2f0736a7a44d8e27c19ae8e2d65b392315f78c4b5e033abb9fc8c848ff97",
+  "terminal_utm": {
+    "mode": "Terminal",
+    "cellules_initiales": [
+      80,
+      24
+    ],
+    "frappes": 20,
+    "lignes_ajoutees": 20,
+    "relecture_p9": {
+      "generation": 13,
+      "fichiers": {
+        "/toto": {
+          "octets": 200,
+          "sha256": "f0dc81a6cdc66d0678aca031b12d4b8c6eb5ef8fa4a9f3999d0edbd1c3e7babd"
+        },
+        "/nouveau": {
+          "octets": 9,
+          "sha256": "8f87cf38443e7f5e2ba2b758fc7c6858fe2f18b3db404a7b979aa5733f8e015e"
+        }
+      }
+    },
+    "captures": {
+      "01-vingt-caracteres.jpg": "79f41d576fe2bc9686a585a5d19d33300a8e7f9d6d59587e89da201915e25251",
+      "02-navigation.jpg": "f903fded6f7a45639f3a5e1755e39838904bea092cd41149dbd232f38702adc8",
+      "03-commande.jpg": "6a65280e02b38ccf17e97df813479e8c3069fc9fe7a14920f97ebaa9f78efff1",
+      "04-sauvegarde.jpg": "12dbae148a2e56d89cc68a61d117eac759e6fbeb28fcc603ad12e5c155b476a7",
+      "05-redimensionnement.jpg": "35c00290e2fd480f511ca6f7b506396e92e1ff261dfa6c8de0f0ade38e2076c1",
+      "06-apres-redemarrage.jpg": "a087cf5949e934f0aae8cd09bb436f537357b37daf97b528a90cb173c2e67203"
+    }
+  },
+  "pty_utm": {
+    "installation": true,
+    "demarrages_autonomes": 2,
+    "octets_relus": [
+      66560,
+      66562
+    ]
+  },
+  "architectures": {
+    "aarch64": {
+      "demarrages": 25,
+      "bloc": 24,
+      "elf_processus_ipc": 3,
+      "cli": 4,
+      "fichiers_namespace": 68,
+      "nsh_par_geometrie": 113,
+      "scripts_par_geometrie": 31,
+      "vi_memoire": 6,
+      "vi": [
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "elf_collectes": 14,
+          "fichiers_relus": 13,
+          "pic_pages_privees_observe": 94,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_allocation_octets": 536870912,
+          "script_apres_redemarrage": true
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "elf_collectes": 14,
+          "fichiers_relus": 13,
+          "pic_pages_privees_observe": 94,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_allocation_octets": 536870912,
+          "script_apres_redemarrage": true
+        }
+      ],
+      "vi_ecran": [
+        [
+          48,
+          12
+        ],
+        [
+          36,
+          8
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "vi_volumes": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 1674.003709,
+          "insertion_ms": 1.668916,
+          "suppression_ms": 0.802709,
+          "navigation_G_ms": 1.081792,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 12034.60775,
+          "insertion_ms": 2.718042,
+          "suppression_ms": 1.051542,
+          "navigation_G_ms": 1.330875,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 174977.0685,
+          "insertion_ms": 3.552166,
+          "suppression_ms": 5.208917,
+          "navigation_G_ms": 3.723542,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 668879.583083,
+          "insertion_ms": 15.446042,
+          "suppression_ms": 16.766417,
+          "navigation_G_ms": 13.238375,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ],
+      "novafs": {
+        "standards": 196,
+        "instrumentes": 197,
+        "injections_ancres": 2304,
+        "injections_pool": 12,
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=25.687"
+      }
+    },
+    "x86_64": {
+      "demarrages": 25,
+      "bloc": 24,
+      "elf_processus_ipc": 3,
+      "cli": 4,
+      "fichiers_namespace": 68,
+      "nsh_par_geometrie": 113,
+      "scripts_par_geometrie": 31,
+      "vi_memoire": 6,
+      "vi": [
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "elf_collectes": 14,
+          "fichiers_relus": 13,
+          "pic_pages_privees_observe": 94,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_allocation_octets": 536870912,
+          "script_apres_redemarrage": true
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "elf_collectes": 14,
+          "fichiers_relus": 13,
+          "pic_pages_privees_observe": 94,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_allocation_octets": 536870912,
+          "script_apres_redemarrage": true
+        }
+      ],
+      "vi_ecran": [
+        [
+          48,
+          12
+        ],
+        [
+          36,
+          8
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "vi_volumes": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 1464.997375,
+          "insertion_ms": 2.123667,
+          "suppression_ms": 0.804917,
+          "navigation_G_ms": 0.903917,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 9741.569625,
+          "insertion_ms": 1.868416,
+          "suppression_ms": 0.757,
+          "navigation_G_ms": 1.028292,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 155784.797,
+          "insertion_ms": 3.488709,
+          "suppression_ms": 1.09575,
+          "navigation_G_ms": 3.865209,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 592391.535083,
+          "insertion_ms": 98.78275,
+          "suppression_ms": 2.359833,
+          "navigation_G_ms": 13.584167,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ],
+      "novafs": {
+        "standards": 196,
+        "instrumentes": 197,
+        "injections_ancres": 2304,
+        "injections_pool": 12,
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=44.219"
+      }
+    }
+  },
+  "dma": {
+    "gicv3": 11,
+    "sequentiel": 23
+  },
+  "gpt": {
+    "512": {
+      "cas": 19,
+      "refus_sans_ecriture": 13
+    },
+    "4096": {
+      "cas": 19,
+      "refus_sans_ecriture": 13
+    }
+  }
+}

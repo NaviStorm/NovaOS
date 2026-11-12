@@ -5,6 +5,7 @@ mod buffer;
 mod editor;
 mod gap;
 mod history;
+mod screen;
 mod terminal;
 
 use alloc::{string::String, vec::Vec};
