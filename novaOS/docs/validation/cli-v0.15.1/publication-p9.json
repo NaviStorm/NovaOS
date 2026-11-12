@@ -1,0 +1,383 @@
+{
+  "base": "289c98d18545435076a1f1329d8647d69d05c9b7",
+  "novaos": "0.15.0",
+  "novafs": "0.9.13 P9",
+  "architectures": {
+    "aarch64": {
+      "execution": "native",
+      "novaos": {
+        "demarrage": [
+          "aarch64",
+          "aarch64-abi-test-256",
+          "aarch64-abi-test-256-pan",
+          "aarch64-storage-test",
+          "aarch64-proc-test",
+          "aarch64-proc-boot-fault",
+          "aarch64-mem-test",
+          "aarch64-mem-ro",
+          "aarch64-mem-alias",
+          "aarch64-mem-page-ro",
+          "aarch64-mem-nx",
+          "aarch64-mem-absent",
+          "aarch64-heap-test",
+          "aarch64-heap-oom",
+          "aarch64-heap-corrupt",
+          "aarch64-heap-guard",
+          "aarch64-heap-infallible",
+          "aarch64-heap-reentrant",
+          "aarch64-heap-metadata",
+          "aarch64-sched-test",
+          "aarch64-sched-guard",
+          "aarch64-sched-fpu",
+          "aarch64-sched-stress",
+          "aarch64-sched-endurance-15s",
+          "aarch64-ipc-test-256"
+        ],
+        "elf": [
+          "aarch64-elf-test"
+        ],
+        "cycle_processus": [
+          "aarch64-proc-lifecycle"
+        ],
+        "ipc races": [
+          "aarch64-ipc-races-256"
+        ],
+        "bloc": [
+          "aarch64/512 : motif invité et retrait",
+          "aarch64/512 : protections DMA et interruption pendante",
+          "aarch64/512 : baux, descripteurs, panne et relance",
+          "aarch64/512 : panne en vol et quarantaine",
+          "aarch64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "aarch64/512 : eio-read",
+          "aarch64/512 : eio-write",
+          "aarch64/512 : eio-flush",
+          "aarch64/512 : droit en écriture refusé",
+          "aarch64/512 : profil de démarrage manuel en lecture seule",
+          "aarch64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "aarch64/512 : Device NovaFS, refus du support RO transmis au client",
+          "aarch64/4096 : motif invité et retrait",
+          "aarch64/4096 : protections DMA et interruption pendante",
+          "aarch64/4096 : baux, descripteurs, panne et relance",
+          "aarch64/4096 : panne en vol et quarantaine",
+          "aarch64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "aarch64/4096 : eio-read",
+          "aarch64/4096 : eio-write",
+          "aarch64/4096 : eio-flush",
+          "aarch64/4096 : droit en écriture refusé",
+          "aarch64/4096 : profil de démarrage manuel en lecture seule",
+          "aarch64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "aarch64/4096 : Device NovaFS, refus du support RO transmis au client"
+        ],
+        "cli": [
+          "aarch64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+          "aarch64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44"
+        ],
+        "cli_p9": [
+          "aarch64/512 : commandes, dates, contrôle Darwin et remontage",
+          "aarch64/4096 : commandes, dates, contrôle Darwin et remontage"
+        ]
+      },
+      "novafs": {
+        "standard": {
+          "reussis": 193,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "sondes": {
+          "reussis": 194,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=26.207"
+      }
+    },
+    "x86_64": {
+      "execution": "Rosetta (sysctl.proc_translated=1)",
+      "novaos": {
+        "demarrage": [
+          "std",
+          "none",
+          "x86_64-abi-test-256",
+          "x86_64-storage-test",
+          "x86_64-proc-test",
+          "x86_64-proc-boot-fault",
+          "x86_64-mem-test",
+          "x86_64-mem-ro",
+          "x86_64-mem-alias",
+          "x86_64-mem-page-ro",
+          "x86_64-mem-nx",
+          "x86_64-mem-absent",
+          "x86_64-heap-test",
+          "x86_64-heap-oom",
+          "x86_64-heap-corrupt",
+          "x86_64-heap-guard",
+          "x86_64-heap-infallible",
+          "x86_64-heap-reentrant",
+          "x86_64-heap-metadata",
+          "x86_64-sched-test",
+          "x86_64-sched-guard",
+          "x86_64-sched-fpu",
+          "x86_64-sched-stress",
+          "x86_64-sched-endurance-15s",
+          "x86_64-ipc-test-256"
+        ],
+        "elf": [
+          "x86_64-elf-test"
+        ],
+        "cycle_processus": [
+          "x86_64-proc-lifecycle"
+        ],
+        "ipc races": [
+          "x86_64-ipc-races-256"
+        ],
+        "bloc": [
+          "x86_64/512 : motif invité et retrait",
+          "x86_64/512 : protections DMA et interruption pendante",
+          "x86_64/512 : baux, descripteurs, panne et relance",
+          "x86_64/512 : panne en vol et quarantaine",
+          "x86_64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "x86_64/512 : eio-read",
+          "x86_64/512 : eio-write",
+          "x86_64/512 : eio-flush",
+          "x86_64/512 : droit en écriture refusé",
+          "x86_64/512 : profil de démarrage manuel en lecture seule",
+          "x86_64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "x86_64/512 : Device NovaFS, refus du support RO transmis au client",
+          "x86_64/4096 : motif invité et retrait",
+          "x86_64/4096 : protections DMA et interruption pendante",
+          "x86_64/4096 : baux, descripteurs, panne et relance",
+          "x86_64/4096 : panne en vol et quarantaine",
+          "x86_64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "x86_64/4096 : eio-read",
+          "x86_64/4096 : eio-write",
+          "x86_64/4096 : eio-flush",
+          "x86_64/4096 : droit en écriture refusé",
+          "x86_64/4096 : profil de démarrage manuel en lecture seule",
+          "x86_64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "x86_64/4096 : Device NovaFS, refus du support RO transmis au client"
+        ],
+        "cli": [
+          "x86_64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+          "x86_64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44"
+        ],
+        "cli_p9": [
+          "x86_64/512 : commandes, dates, contrôle Darwin et remontage",
+          "x86_64/4096 : commandes, dates, contrôle Darwin et remontage"
+        ]
+      },
+      "novafs": {
+        "standard": {
+          "reussis": 193,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "sondes": {
+          "reussis": 194,
+          "echecs": 0,
+          "ignores": 4
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=40.613"
+      }
+    }
+  },
+  "remplacement_sur_support_simule": {
+    "publication": "transaction privée au banc ; préparations de copie déjà synchronisées",
+    "cas_par_architecture": 8,
+    "evenements_par_cas": 24,
+    "politiques_volatile_par_evenement": [
+      "perte totale",
+      "toutes les écritures en ordre inverse"
+    ],
+    "masques_avant_F2_par_cas": {
+      "512": 256,
+      "4096": 2
+    },
+    "secondes_coupures_par_cas": 2,
+    "dechirure_octets": 96,
+    "montage_RO_RW": "Corrupt",
+    "sauvetage": "ancienne destination vérifiée, image identique octet par octet"
+  },
+  "dma_gicv3": {
+    "utm": "5.0.8",
+    "moteur": "QEMU emulator version 10.0.12",
+    "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+    "noyau_sha256": "dee123b4f7dc1b06b0c2a8ec322d638d35d969222029bf83c23a1ad451342c46",
+    "essais": [
+      "froid",
+      "el2",
+      "protection",
+      "reemploi",
+      "cd",
+      "redemarrage",
+      "coupure",
+      "reprise",
+      "autre-slot",
+      "mapkey",
+      "retrait-suspendu"
+    ]
+  },
+  "dma_sequentiel": {
+    "utm": "5.0.8",
+    "moteur": "QEMU emulator version 10.0.12",
+    "pflash_sha256": "3660b1cad23b75102a923475c1ee457ffc0fd1ce085ae25813257f09d918263d",
+    "noyau_sha256": "6d10d124ba2586a8eca0106ab051a221ffa4b5076c62e33e81ddc563b27285cf",
+    "essais": [
+      "support",
+      "vierge",
+      "refus",
+      "confirmation-erronee",
+      "tis",
+      "deplaces",
+      "reemploi",
+      "redemarrage",
+      "fin",
+      "mbr",
+      "gpt",
+      "fat",
+      "novafs",
+      "trop-petit",
+      "erreur-lecture",
+      "mauvais-support",
+      "doublon",
+      "roles-inverses",
+      "support-inscriptible",
+      "tpm-absent",
+      "mauvaise-serie",
+      "quarantaine",
+      "coupure"
+    ]
+  },
+  "installation": {
+    "512": {
+      "firmware_sha256": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "installateur_elf_sha256": "0b05750aa3ee80a2250ae158b029357bafd6e7edac2634bcfe74cb237e7e2239",
+      "gpt": {
+        "esp": 2048,
+        "p9": 124928,
+        "fin_p9": 129023,
+        "taille_secteur": 512
+      },
+      "essais": [
+        "non-vierge",
+        "ambigu",
+        "coupure-ecriture",
+        "reprise-ecriture",
+        "sans-consentement",
+        "erreur-lecture",
+        "coupure-installation",
+        "etat_apres_coupure",
+        "refus-apres-coupure",
+        "crc-entete",
+        "crc-tableau",
+        "donnee-supplementaire",
+        "origine-inconnue",
+        "gpt-etrangere",
+        "esp-modifiee",
+        "coupure-esp",
+        "refus-coupure-esp",
+        "coupure-p9",
+        "refus-coupure-p9"
+      ],
+      "sha256_identique_avant_apres_refus": {
+        "non-vierge": "7520e4b232f439a7a9ad3023691a7045966e9caf7d66450f4b12b81057032362",
+        "ambigu": "7520e4b232f439a7a9ad3023691a7045966e9caf7d66450f4b12b81057032362",
+        "sans-consentement": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
+        "erreur-lecture": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
+        "refus-apres-coupure": "3c41b22f09b04175e5cdb17b67082a5890610ce6a88f7a56516a5b1561ad8b2c",
+        "crc-entete": "d3432600b851dd89477ba7e837472d4a9592467134b9074d8e9d69bd34d06700",
+        "crc-tableau": "bb8f92313563a08c1c54314d4479a1c12c72952f7afffb8893e69b99e620f09b",
+        "donnee-supplementaire": "aea3bba3686b671c97f14ecb67d939adf1b80df9ccb5286b10827687f215f2a1",
+        "origine-inconnue": "891d4fe20add606e50ad8746fe157725439648a61db627f95c178caa86876805",
+        "gpt-etrangere": "f19b2391c9ce594d6036de4f26608c009ecb03c7bbb080b3ef451b197e175c75",
+        "esp-modifiee": "114a821cce17e3bc0c2a62e98f6e0fe67987f70ee61ce2a087e694a87b0d1c01",
+        "refus-coupure-esp": "9b62830b64c849d3a7504b9bd608946147d389bb34a4687b2961bf5c24b049fa",
+        "refus-coupure-p9": "dfb53ebadf971e8bf7af0735878de717e7365726dc411f75a575b7327ac52c80"
+      }
+    },
+    "4096": {
+      "firmware_sha256": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+      "installateur_elf_sha256": "0b05750aa3ee80a2250ae158b029357bafd6e7edac2634bcfe74cb237e7e2239",
+      "gpt": {
+        "esp": 256,
+        "p9": 67840,
+        "fin_p9": 68351,
+        "taille_secteur": 4096
+      },
+      "essais": [
+        "non-vierge",
+        "ambigu",
+        "coupure-ecriture",
+        "reprise-ecriture",
+        "sans-consentement",
+        "erreur-lecture",
+        "coupure-installation",
+        "etat_apres_coupure",
+        "refus-apres-coupure",
+        "crc-entete",
+        "crc-tableau",
+        "donnee-supplementaire",
+        "origine-inconnue",
+        "gpt-etrangere",
+        "esp-modifiee",
+        "coupure-esp",
+        "refus-coupure-esp",
+        "coupure-p9",
+        "refus-coupure-p9"
+      ],
+      "sha256_identique_avant_apres_refus": {
+        "non-vierge": "9b619480feff7084759165b38a3422c5c4723f533013f38edd6bfcc43b5d9a09",
+        "ambigu": "9b619480feff7084759165b38a3422c5c4723f533013f38edd6bfcc43b5d9a09",
+        "sans-consentement": "483ec3eec23f28bbc8a8f9945993aa1313a338de247761159fd7918477e10ce0",
+        "erreur-lecture": "483ec3eec23f28bbc8a8f9945993aa1313a338de247761159fd7918477e10ce0",
+        "refus-apres-coupure": "3aecae0ca7e220b358e82736c730b8bd0d6235a6b9daaa3b86238e5a3ae9992f",
+        "crc-entete": "7211828ecaf1be03053e53bba3157b4d18931a49629c8299b5161af334209d90",
+        "crc-tableau": "fde5b2725e4bdabe0416aabe5b1e40f99eb2c2ff394a1be1b08cc1a718020e6e",
+        "donnee-supplementaire": "55e022ffce01df5ab1c54da83d5b8aa05f8aa23512036634e42ab74534bd3688",
+        "origine-inconnue": "c5ed3e8f732e2b25701222edcdb96897c2087fd90ea00e8acdd0d18f17a76155",
+        "gpt-etrangere": "f39b32c269d3b523f7de1176d934041a89ca5082d096213ac471c7095b7c92bc",
+        "esp-modifiee": "502f9ce07b83f2d9c3b459a8f71027c11716fed66cead5f498117107e8fc4787",
+        "refus-coupure-esp": "0a31a339f4fe6bed256acff549a510f87b78b82c02ef80b555dab1e8f702c0c2",
+        "refus-coupure-p9": "83ff867be77955146b549832bb5e0ada5ccc734c538fffb664a94665d51b3b37"
+      }
+    }
+  },
+  "utm_graphique": {
+    "utm": "5.0.8",
+    "moteur": "10.0.12",
+    "secteur": 512,
+    "demarrages_autonomes": 2,
+    "cp_mv_defaut": 27,
+    "cp_mv_i_accord": 27,
+    "cp_mv_f": 3,
+    "cp_mv_n": "invite sans erreur",
+    "generations_relues": [
+      9,
+      10
+    ],
+    "sha256_fichiers": {
+      "/ancien": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/systeme": "26168da719b7251c9001fc856ffbdb4a148f7ac6a8bcc925116215242ca29f59",
+      "/persistant": "26168da719b7251c9001fc856ffbdb4a148f7ac6a8bcc925116215242ca29f59"
+    }
+  }
+}

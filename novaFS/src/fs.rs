@@ -562,3 +562,6 @@ impl<D: Device> Engine<D> {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod remplacement;

@@ -2,6 +2,53 @@
 
 Le 12 novembre 2026, la qualification a atteint la condition d’arrêt du §6 du mandat. Le remplacement d’un nom occupé requiert une opération que le moteur P9 et le service de fichiers n’exposent pas. La version distribuée reste NovaOS v0.15.0 avec NovaFS v0.9.13 P9. Les observations ci-dessous portent sur le commit `0f63772dd4ac7b40a21b61e9c36bfd6658282c06`, vérifié sur `main` propre avant l’essai.
 
+## Qualification de la publication P9
+
+L’arbitrage suivant a autorisé une primitive transactionnelle à partir de `289c98d18545435076a1f1329d8647d69d05c9b7`, vérifié sur `main` propre. Le banc a exercé le moteur P9 avant l’intégration IPC. **La publication conserve la destination sous les coupures à secteurs entiers. Une écriture partielle à l’intérieur d’un secteur empêche le remontage normal.** Le scénario défaillant est reproductible sur ARM64 natif et sur x86_64 sous Rosetta. [Banc Rust](../../novaFS/src/fs/remplacement.rs) · [Contrat de récupération P9](../../novaFS/docs/novafs-recovery.md#qualification-du-remplacement-dun-fichier-sur-p9-12-novembre-2026)
+
+| Opération testée | Avant publication | Après publication durable |
+| --- | --- | --- |
+| Déplacement entre répertoires | L’original et l’ancienne destination occupent deux noms distincts. | Le nom destination désigne l’ID de l’original, le nom source est libre. |
+| Publication d’une copie préparée et synchronisée | L’original, la candidate et l’ancienne destination ont des ID distincts. | Le nom destination désigne l’ID de la candidate. Le nom et le contenu de l’original subsistent. |
+
+Les deux cas passent de l’ancien au nouvel état en une génération. Le banc vérifie aussi le refus d’une destination dont l’identité diffère de celle sélectionnée, sans E/S de mutation. Le `ctime` du fichier entrant prend l’heure de publication, ses `btime`, `mtime` et `atime` sont conservés. La collecte de l’objet évincé, le total logique et la vérification intégrale réussissent sur la publication complète. Pour `cp`, la candidate est déjà nommée dans la fixture avant le début des injections. L’invisibilité d’une copie partielle et la récupération d’une candidate abandonnée pendant sa préparation restent à démontrer avant de livrer la commande.
+
+| Coupure ou défaut injecté | Résultat sur les deux architectures, pour les deux opérations |
+| --- | --- |
+| À chacun des 24 événements, perte de toutes les écritures volatiles ou persistance de toutes en ordre inverse | La destination présente exactement l’ancienne ou la nouvelle identité et le contenu correspondant. Après l’effet de F2, le nouveau reçu est obligatoire, même si sa réponse est perdue. |
+| Avant l’effet de F2, chaque sous-ensemble de secteurs entiers de l’ancre | 256 masques en 512 octets, 2 en 4 096 octets. Les slots A et B ont été testés indépendamment. Aucune destination absente. |
+| Seconde coupure pendant le flush de récupération RW | Après nouvelle ouverture, même contenu et même identité, que la génération sélectionnée soit l’ancienne ou la nouvelle. |
+| Avant l’effet de F2, seuls les 96 premiers octets de l’ancre sont stabilisés | Montage normal refusé en RO et en RW. L’autre slot permet l’extraction vérifiée de l’ancienne destination en lecture seule. Les vérifications ne changent aucun octet du disque. |
+
+Le dernier cas représente une déchirure à l’intérieur du secteur. Il a été injecté sur un périphérique simulé. Le pilote VirtIO du profil UTM négocie notamment la géométrie et le flush. Cette négociation ne fournit pas d’attestation d’écriture indivisible jusqu’au support de l’hôte. La cause de l’arrêt est l’indisponibilité du volume après déchirure, et aucune suppression de la destination n’a été observée. [Négociation du pilote](../kernel/src/hardware/block/mod.rs) · [Règle historique en cas d’ancre illisible](../../novaFS/docs/novafs-recovery.md#sélection-au-redémarrage)
+
+La primitive reste privée au banc `cfg(test)`. Les trames IPC, les droits de montage et les délégations des clients v0.15.0 conservent leur définition. L’exposition envisagée requiert une délégation supplémentaire, limitée aux objets sélectionnés, indépendante de `DIR_ALL`. Le service devrait revérifier les identités et droits source et destination à la publication, gérer les poignées actives et refuser un objet hors délégation même avec `-f`. Ces contrôles devront être qualifiés avant toute activation. Les comportements disponibles de `cp` et `mv` restent ceux décrits ci-dessous. La préparation de la copie par le service, les snapshots et clones de la **nouvelle** opération, la surprotection et son utilisation dans une VM installée ne sont pas qualifiés.
+
+Le contrat CLI autorisé prévoit le remplacement par défaut pour les fichiers ordinaires avec cette délégation, une confirmation préalable avec `-i`, la conservation de la destination avec `-n` et la suppression de la confirmation ordinaire avec `-f`. La réponse à l’invite, le chemin absolu et les droits historiques de la racine ne conféreraient aucun droit de remplacement.
+
+Pour reproduire la matrice du remplacement depuis la racine du dépôt, exécuter les deux commandes sur le Mac de qualification.
+
+```sh
+NOVAFS_TARGET=aarch64-apple-darwin novaFS/lab/run test --offline --lib fs::remplacement:: -- --nocapture
+NOVAFS_TARGET=x86_64-apple-darwin novaFS/lab/run test --offline --lib fs::remplacement:: -- --nocapture
+```
+
+### Régressions rejouées après l’arbitrage
+
+| Contrôle | ARM64 | x86_64 sous Rosetta pour NovaFS, invité QEMU pour NovaOS |
+| --- | ---: | ---: |
+| Démarrages NovaOS / groupes bloc | 25 / 24 | 25 / 24 |
+| ELF, cycle des processus, courses IPC / essais CLI | 3 / 4 | 3 / 4 |
+| NovaFS standard / instrumenté, témoin de remplacement inclus | 193 / 194 | 193 / 194 |
+| Différentiel NovaFS | 1 000 000 opérations | 1 000 000 opérations |
+| DMA/GICv3 / DMA séquentiel sur le moteur UTM | 11 / 23 | Spécifique à AArch64 |
+
+Par architecture, les suites NovaFS comprennent les 192 et 193 tests historiques, dont ceux des snapshots, clones, chiffrement, compression et migrations, plus le témoin. Le différentiel enregistre 345 183 publications, 54 643 pénuries injectées et 1 000 remontages audités. La matrice finale du remplacement a aussi été relancée séparément. Un premier essai DMA/GICv3 avait utilisé l’ELF archivé v0.14.0 et échoué au contrôle de bannière. Les 11 résultats retenus utilisent l’ELF v0.15.0 recompilé et l’oracle historique inchangé. [Effectifs, scénarios et empreintes](validation/cli-v0.15.1/publication-p9.json)
+
+Le banc UTM QEMU 10.0.12 a réinstallé l’image distribuée v0.15.0 sur deux disques neufs (secteurs 512 et 4 096), redémarré deux fois sur chacun et contrôlé la persistance. Les 13 cas de refus par géométrie ont gardé la même empreinte SHA-256 et zéro écriture. Dans l’**interface graphique UTM 5.0.8**, une copie indépendante du disque installé de 512 octets a démarré deux fois sans support. Les huit combinaisons `cp`/`mv` avec comportement par défaut, `-i`, `-n` et `-f` ont confirmé les comportements de v0.15.0. Après redémarrage, `/ancien` faisait toujours zéro octet, `/persistant` et `/systeme` contenaient toujours `NovaOS` suivi de LF. La relecture hors ligne a vérifié les deux contenus depuis chacune des ancres, générations 9 et 10. Ces essais graphiques portent sur les commandes diffusées. [Résultats UTM](validation/cli-v0.15.1/publication-p9.json)
+
+**Arbitrage demandé.** Autoriser la poursuite avec le contrat P9 actuel qui refuse un montage à ancre déchirée et permet un diagnostic explicite en lecture seule, ou maintenir l’exigence de remontage automatique et qualifier d’abord un support garantissant la publication indivisible. Le format P9 et le refus de revenir automatiquement à un état potentiellement périmé sont préservés dans les deux options.
+
 ## Pourquoi `cp` et `mv` refusent une destination existante
 
 1. Dans les deux commandes, si la source et la destination sont deux fichiers distincts et que la destination existe, le comportement par défaut retourne `EXISTS`. L’option `-n` termine avec succès en laissant les deux fichiers en place. Avec `-i`, un refus laisse également les deux en place, mais même une réponse affirmative aboutit à `EXISTS`. Le parseur refuse `-f`. [Traitement de la collision](../../components/coreutils/transfer.rs)
@@ -76,13 +123,13 @@ VM arrêtée, `qemu-img check` a validé le QCOW2. Sur sa copie brute, le vérif
 - **Expansion des motifs.** Le lexer enlève les guillemets et échappements sans garder l’information nécessaire pour distinguer un joker actif d’un joker littéral. Les motifs `*`, `?`, `[abc]`, `[a-z]` et `[!abc]` restent à implémenter, avec tri déterministe, traitement des noms cachés et conservation des motifs sans correspondance. L’énumération nécessite la capacité du répertoire concerné. Le contrat de lancement limite la liste à 32 arguments et 2 560 octets, et le service prépare au plus 32 cibles. Une expansion limitée seulement par les ressources demande aussi un moyen de transmettre les opérandes et leurs délégations au-delà de cette trame. [Lexer](../../components/shell/lexer.rs) · [ABI terminal](../abi/terminal.rs) · [Lancement](../../components/libraries/process.rs)
 - **Arguments multiples.** Le catalogue accepte déjà plusieurs opérandes pour `ls`, `cat`, `wc` et `more`. Il exige exactement deux opérandes pour `cp` et `mv` et un chemin pour `rm`. Le traitement de plusieurs sources vers un même répertoire reste à qualifier. L’essai de `ls` a vérifié l’affichage et les options combinées. Les contrôles comparatifs détaillés de tri et les mesures antérieures figurent dans la qualification CLI v0.14.0. [Catalogue](../../components/libraries/command.rs) · [Qualification CLI](cli-v0.14.0.md)
 
-## Mesures et régressions
+## Mesures et régressions de l’audit initial
 
 La VM disposait de 256 Mio. Au démarrage autonome après coupure, le noyau a annoncé 56 913 pages libres. Une exécution chronométrée du témoin hôte, toutes tailles de secteur comprises, a duré 14,88 ms en AArch64 (RSS maximal 6 963 200 octets) et 17,98 ms sous Rosetta (12 640 256 octets). Ces mesures utilisent l’horloge monotone hôte et `wait4` sur le processus du témoin, lancement compris. Il n’existe pas de mesure de latence ou de consommation d’une nouvelle CLI à ce stade.
 
-Cet audit a exécuté le témoin sur deux architectures, l’installation graphique sur disque neuf, deux démarrages autonomes AArch64 et la relecture hors ligne. La condition d’arrêt a précédé toute modification des exécutables. Les 25 scénarios de démarrage par architecture, les 24 groupes bloc, les 3 contrôles ELF/processus/IPC, les 4 essais CLI, les 11 scénarios DMA/GICv3, les suites NovaFS de 192 et 193 tests et le million d’opérations différentielles par architecture n’ont pas été relancés pour v0.15.1. Leurs derniers résultats concernent la version distribuée. [Campagne de référence](installer-v0.15.0.md)
+Le premier audit a exécuté le témoin sur deux architectures, l’installation graphique sur disque neuf, deux démarrages autonomes AArch64 et la relecture hors ligne. Les suites complètes ont été relancées après l’arbitrage du remplacement. [Campagne de référence](installer-v0.15.0.md) · [Rejeu après arbitrage](#régressions-rejouées-après-larbitrage)
 
-## Arbitrage demandé
+## Arbitrage initial accordé au commit 289c98d
 
 Autoriser la conception et la qualification d’une opération **supplémentaire** de remplacement transactionnel de fichier ordinaire dans le moteur P9 et d’une délégation explicite dans le service NovaFS. Les anciens appels conserveraient leur refus de collision. La proposition vise le format P9 existant. Toute nécessité d’en modifier l’encodage exige un nouvel arbitrage.
 
