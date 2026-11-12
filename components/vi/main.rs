@@ -5,10 +5,10 @@ mod buffer;
 mod editor;
 mod gap;
 mod history;
+mod paging;
 mod screen;
 mod terminal;
 
-use alloc::{string::String, vec::Vec};
 use nova_cli::{
     command::{Operand, Program, operand},
     console, process, runtime as rt, tty, vi_wire as wire,
@@ -16,14 +16,20 @@ use nova_cli::{
 
 impl editor::Storage for wire::Link {
     fn publish(&mut self, name: &str, text: &[u8]) -> rt::Result<()> {
-        let mut sizes = [0; 10];
+        let mut sizes = [0; 18];
         sizes[..2].copy_from_slice(
             &u16::try_from(name.len())
                 .map_err(|_| rt::LIMIT)?
                 .to_le_bytes(),
         );
-        sizes[2..].copy_from_slice(&(text.len() as u64).to_le_bytes());
-        self.ask(wire::BEGIN, &sizes)?;
+        sizes[2..10].copy_from_slice(&(text.len() as u64).to_le_bytes());
+        let n = if let Some(off) = self.suffix {
+            sizes[10..].copy_from_slice(&(off as u64).to_le_bytes());
+            18
+        } else {
+            10
+        };
+        self.ask(wire::BEGIN, &sizes[..n])?;
         for part in name.as_bytes().chunks(wire::CHUNK) {
             self.ask(wire::NAME, part)?;
         }
@@ -62,17 +68,7 @@ fn session() -> rt::Result<()> {
         }
         let exists = r.payload[1] == 1;
         let len = wire::length(&r.payload[2..10])?;
-        let mut content = Vec::new();
-        content.try_reserve_exact(len).map_err(|_| rt::NO_MEMORY)?;
-        while content.len() < len {
-            let r = link.ask(wire::READ, &(content.len() as u64).to_le_bytes())?;
-            let data = &r.payload[1..r.len as usize];
-            if data.is_empty() || data.len() > len - content.len() {
-                return Err(rt::BAD_ARGUMENT);
-            }
-            content.extend_from_slice(data);
-        }
-        let text = String::from_utf8(content).map_err(|_| rt::BAD_ARGUMENT)?;
+        let (text, mut tail) = paging::prefix(&mut link, len)?;
         let mut editor = editor::Editor::new(name, text, exists).map_err(|msg| {
             let _ = console::write(tty::ERROR, msg);
             let _ = console::write(tty::ERROR, "\n");
@@ -82,7 +78,7 @@ fn session() -> rt::Result<()> {
                 rt::BAD_ARGUMENT
             }
         })?;
-        terminal::edit(&mut editor, &mut link)
+        terminal::edit(&mut editor, &mut link, &mut tail)
     })();
     let finish = link.ask(wire::FIN, &[]).map(|_| ());
     outcome.and(finish)

@@ -1,0 +1,1544 @@
+{
+  "reference": "562cf137457e4ab8d8e9038dcd957a9a4dfe43b8",
+  "novaos": "0.16.4",
+  "novaFS": "0.9.13 P9",
+  "qemu_direct": "11.1.3 TCG, 1 vCPU, RAM 256 Mio, disque brut / 4096, UART 24x80",
+  "date": "2026-11-12",
+  "compilateur": "rustc 1.99.1",
+  "hote": "Darwin arm64 ; sysctl.proc_translated=1 sous x86_64",
+  "archives": {
+    "image": "novaos-0.16.4-utm-aarch64.tar.gz",
+    "sha256": "0ecb76b4e4375cc87a7daa0a3f7f7ad5add3014b3935a1b9f715cc05a02e7fb3"
+  },
+  "architectures": {
+    "aarch64": {
+      "comparaison_appariee": {
+        "v0.16.3": [
+          {
+            "octets": 4194304,
+            "lecture_et_lancement_ms": 671166.106,
+            "transfert_et_preparation_ms": 1896.268,
+            "premier_rendu_ms": 5.119,
+            "ouverture_ms": 673067.493,
+            "navigation_G_ms": 1.304,
+            "transfert_avant_oui_ms": 2074.831,
+            "publication_apres_oui_ms": 43922.861,
+            "resident_vi_kio": [
+              312,
+              4536,
+              12920
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 6.1,
+            "sauvegarde_totale_ms": 45997.692
+          },
+          {
+            "octets": 1048576,
+            "lecture_et_lancement_ms": 167861.017,
+            "transfert_et_preparation_ms": 467.622,
+            "premier_rendu_ms": 8.35,
+            "ouverture_ms": 168336.989,
+            "navigation_G_ms": 1.198,
+            "transfert_avant_oui_ms": 472.636,
+            "publication_apres_oui_ms": 11169.727,
+            "resident_vi_kio": [
+              312,
+              1464,
+              3704
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 6.1,
+            "sauvegarde_totale_ms": 11642.363
+          },
+          {
+            "octets": 65536,
+            "lecture_et_lancement_ms": 10316.234,
+            "transfert_et_preparation_ms": 30.088,
+            "premier_rendu_ms": 4.487,
+            "ouverture_ms": 10350.809,
+            "navigation_G_ms": 1.211,
+            "transfert_avant_oui_ms": 33.461,
+            "publication_apres_oui_ms": 952.747,
+            "resident_vi_kio": [
+              312,
+              504,
+              632
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 6.2,
+            "sauvegarde_totale_ms": 986.208
+          },
+          {
+            "octets": 1024,
+            "lecture_et_lancement_ms": 235.328,
+            "transfert_et_preparation_ms": 2.575,
+            "premier_rendu_ms": 4.516,
+            "ouverture_ms": 242.42,
+            "navigation_G_ms": 0.782,
+            "transfert_avant_oui_ms": 5.021,
+            "publication_apres_oui_ms": 290.142,
+            "resident_vi_kio": [
+              312,
+              376,
+              376
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 4.25,
+            "sauvegarde_totale_ms": 295.163
+          }
+        ],
+        "v0.16.4": [
+          {
+            "octets": 4194304,
+            "lecture_et_lancement_ms": 32942.066,
+            "transfert_et_preparation_ms": 1929.647,
+            "premier_rendu_ms": 5.498,
+            "ouverture_ms": 34877.211,
+            "navigation_G_ms": 1.394,
+            "transfert_avant_oui_ms": 2098.923,
+            "publication_apres_oui_ms": 48104.277,
+            "resident_vi_kio": [
+              312,
+              4536,
+              12920
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 124.34,
+            "sauvegarde_totale_ms": 50203.2
+          },
+          {
+            "octets": 1048576,
+            "lecture_et_lancement_ms": 8491.302,
+            "transfert_et_preparation_ms": 505.099,
+            "premier_rendu_ms": 7.992,
+            "ouverture_ms": 9004.392,
+            "navigation_G_ms": 1.216,
+            "transfert_avant_oui_ms": 489.21,
+            "publication_apres_oui_ms": 12068.813,
+            "resident_vi_kio": [
+              312,
+              1464,
+              3704
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 120.59,
+            "sauvegarde_totale_ms": 12558.023
+          },
+          {
+            "octets": 65536,
+            "lecture_et_lancement_ms": 503.791,
+            "transfert_et_preparation_ms": 32.993,
+            "premier_rendu_ms": 8.324,
+            "ouverture_ms": 545.107,
+            "navigation_G_ms": 1.182,
+            "transfert_avant_oui_ms": 36.494,
+            "publication_apres_oui_ms": 1308.616,
+            "resident_vi_kio": [
+              312,
+              504,
+              632
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 127.04,
+            "sauvegarde_totale_ms": 1345.11
+          },
+          {
+            "octets": 1024,
+            "lecture_et_lancement_ms": 88.292,
+            "transfert_et_preparation_ms": 2.713,
+            "premier_rendu_ms": 8.396,
+            "ouverture_ms": 99.401,
+            "navigation_G_ms": 6.606,
+            "transfert_avant_oui_ms": 5.432,
+            "publication_apres_oui_ms": 312.997,
+            "resident_vi_kio": [
+              312,
+              376,
+              376
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 11.33,
+            "sauvegarde_totale_ms": 318.429
+          }
+        ]
+      },
+      "echantillons_resident": {
+        "avant": {
+          "service": {
+            "nombre_echantillons": 17,
+            "maximum_kio": 1648
+          },
+          "nsh": {
+            "nombre_echantillons": 17,
+            "maximum_kio": 8644
+          }
+        },
+        "apres": {
+          "service": {
+            "nombre_echantillons": 17,
+            "maximum_kio": 1648
+          },
+          "nsh": {
+            "nombre_echantillons": 17,
+            "maximum_kio": 8644
+          }
+        }
+      },
+      "contre_mesure_v0164": [
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 119.227,
+          "transfert_et_preparation_ms": 4.385,
+          "premier_rendu_ms": 5.15,
+          "ouverture_ms": 128.762,
+          "navigation_G_ms": 0.881,
+          "transfert_avant_oui_ms": 6.963,
+          "publication_apres_oui_ms": 311.023,
+          "resident_vi_kio": [
+            312,
+            376,
+            376
+          ]
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 492.434,
+          "transfert_et_preparation_ms": 36.995,
+          "premier_rendu_ms": 8.382,
+          "ouverture_ms": 537.812,
+          "navigation_G_ms": 1.271,
+          "transfert_avant_oui_ms": 37.676,
+          "publication_apres_oui_ms": 991.345,
+          "resident_vi_kio": [
+            312,
+            504,
+            632
+          ]
+        },
+        {
+          "octets": 1048576,
+          "lecture_et_lancement_ms": 8376.734,
+          "transfert_et_preparation_ms": 483.755,
+          "premier_rendu_ms": 4.881,
+          "ouverture_ms": 8865.369,
+          "navigation_G_ms": 1.233,
+          "transfert_avant_oui_ms": 482.604,
+          "publication_apres_oui_ms": 11423.694,
+          "resident_vi_kio": [
+            312,
+            1464,
+            3704
+          ]
+        },
+        {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 33241.023,
+          "transfert_et_preparation_ms": 1937.466,
+          "premier_rendu_ms": 5.014,
+          "ouverture_ms": 35183.504,
+          "navigation_G_ms": 1.223,
+          "transfert_avant_oui_ms": 2150.14,
+          "publication_apres_oui_ms": 46702.097,
+          "resident_vi_kio": [
+            312,
+            4536,
+            12920
+          ]
+        }
+      ],
+      "diagnostic_initial_0163": [
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 227.994,
+          "transfert_et_preparation_ms": 3.757,
+          "premier_rendu_ms": 4.544,
+          "ouverture_ms": 236.294,
+          "navigation_G_ms": 0.849,
+          "publication_apres_oui_ms": 243.19
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 9190.829,
+          "transfert_et_preparation_ms": 32.214,
+          "premier_rendu_ms": 7.79,
+          "ouverture_ms": 9230.834,
+          "navigation_G_ms": 1.0,
+          "publication_apres_oui_ms": 623.049
+        }
+      ],
+      "historique_volumes_0163": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 1589.000083,
+          "insertion_ms": 1.661834,
+          "suppression_ms": 0.75425,
+          "navigation_G_ms": 0.982042,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 10587.816708,
+          "insertion_ms": 2.654834,
+          "suppression_ms": 1.032291,
+          "navigation_G_ms": 1.007583,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 165366.763041,
+          "insertion_ms": 3.127875,
+          "suppression_ms": 4.566,
+          "navigation_G_ms": 3.599334,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 681778.409417,
+          "insertion_ms": 15.893292,
+          "suppression_ms": 16.812958,
+          "navigation_G_ms": 12.498916,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ],
+      "volumes_0164": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 375.177875,
+          "insertion_ms": 1.661958,
+          "suppression_ms": 0.937166,
+          "navigation_G_ms": 0.904834,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 743.038708,
+          "insertion_ms": 2.488333,
+          "suppression_ms": 0.996833,
+          "navigation_G_ms": 1.037541,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 9046.879125,
+          "insertion_ms": 3.287167,
+          "suppression_ms": 4.762708,
+          "navigation_G_ms": 3.876,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 34819.662375,
+          "insertion_ms": 15.591583,
+          "suppression_ms": 16.73825,
+          "navigation_G_ms": 12.586,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ],
+      "sondes": {
+        "avant": {
+          "phases": [
+            {
+              "octets": 1024,
+              "lecture_et_lancement_ms": 260.865,
+              "transfert_et_preparation_ms": 4.603,
+              "transfert_sonde_ms": 0.768,
+              "preparation_sonde_ms": 0.373,
+              "premier_rendu_ms": 4.831,
+              "ouverture_ms": 270.298,
+              "navigation_G_ms": 1.029,
+              "transfert_avant_oui_ms": 7.049,
+              "publication_apres_oui_ms": 277.097,
+              "resident_vi_kio": [
+                312,
+                376,
+                376
+              ]
+            },
+            {
+              "octets": 65536,
+              "lecture_et_lancement_ms": 10290.715,
+              "transfert_et_preparation_ms": 36.657,
+              "transfert_sonde_ms": 33.418,
+              "preparation_sonde_ms": 0.946,
+              "premier_rendu_ms": 9.531,
+              "ouverture_ms": 10336.903,
+              "navigation_G_ms": 1.354,
+              "transfert_avant_oui_ms": 34.418,
+              "publication_apres_oui_ms": 712.769,
+              "resident_vi_kio": [
+                312,
+                504,
+                632
+              ]
+            }
+          ],
+          "compteurs": [
+            "VI-PROF shell-entree alloc=19 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF shell-charge alloc=22 tas=65536 pic=65536 rpc=30 read=25 moteur=25",
+            "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+            "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+            "VI-PROF vi-dessine alloc=29 tas=65536 pic=65536 rpc=52 read=0 moteur=0",
+            "VI-PROF shell-fin alloc=33 tas=65536 pic=65536 rpc=34 read=25 moteur=25",
+            "VI-PROF shell-entree alloc=53 tas=65536 pic=65536 rpc=34 read=25 moteur=25",
+            "VI-PROF shell-charge alloc=56 tas=196608 pic=196608 rpc=1529 read=1516 moteur=1516",
+            "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF vi-recu alloc=3 tas=196608 pic=196608 rpc=518 read=0 moteur=0",
+            "VI-PROF vi-prepare alloc=4 tas=196608 pic=196608 rpc=518 read=0 moteur=0",
+            "VI-PROF vi-dessine alloc=30 tas=196608 pic=196608 rpc=546 read=0 moteur=0",
+            "VI-PROF shell-fin alloc=73 tas=393216 pic=393216 rpc=1533 read=1516 moteur=1516"
+          ],
+          "service": [
+            "FS-PROF op=17 h=1 alloc=169 tas=65536 pic=65536 pages=49",
+            "FS-PROF op=17 h=1 alloc=13636 tas=131072 pic=131072 pages=813",
+            "FS-PROF op=7 h=1 alloc=27065 tas=131072 pic=131072 pages=1558"
+          ],
+          "pics_visibles_au_processus": [
+            {
+              "octets": 65536,
+              "pic_resident_prive_vi_kio": 632,
+              "allocations_vi_reussies": 40,
+              "tas_pic_octets": 327680
+            },
+            {
+              "octets": 1024,
+              "pic_resident_prive_vi_kio": 376,
+              "allocations_vi_reussies": 38,
+              "tas_pic_octets": 65536
+            }
+          ]
+        },
+        "apres": {
+          "phases": [
+            {
+              "octets": 1024,
+              "lecture_et_lancement_ms": 113.121,
+              "transfert_et_preparation_ms": 4.361,
+              "transfert_sonde_ms": 0.002,
+              "preparation_sonde_ms": 0.001,
+              "premier_rendu_ms": 4.627,
+              "ouverture_ms": 122.109,
+              "navigation_G_ms": 3.796,
+              "transfert_avant_oui_ms": 8.173,
+              "publication_apres_oui_ms": 278.644,
+              "resident_vi_kio": [
+                312,
+                376,
+                376
+              ]
+            },
+            {
+              "octets": 65536,
+              "lecture_et_lancement_ms": 499.426,
+              "transfert_et_preparation_ms": 39.628,
+              "transfert_sonde_ms": 36.103,
+              "preparation_sonde_ms": 0.967,
+              "premier_rendu_ms": 10.599,
+              "ouverture_ms": 549.652,
+              "navigation_G_ms": 1.47,
+              "transfert_avant_oui_ms": 38.125,
+              "publication_apres_oui_ms": 737.824,
+              "resident_vi_kio": [
+                312,
+                504,
+                632
+              ]
+            }
+          ],
+          "compteurs": [
+            "VI-PROF shell-entree alloc=19 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF shell-charge alloc=22 tas=65536 pic=65536 rpc=30 read=25 moteur=3",
+            "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+            "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+            "VI-PROF vi-dessine alloc=29 tas=65536 pic=65536 rpc=52 read=0 moteur=0",
+            "VI-PROF shell-fin alloc=33 tas=65536 pic=65536 rpc=34 read=25 moteur=3",
+            "VI-PROF shell-entree alloc=53 tas=65536 pic=65536 rpc=34 read=25 moteur=3",
+            "VI-PROF shell-charge alloc=56 tas=196608 pic=196608 rpc=1543 read=1530 moteur=36",
+            "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF vi-recu alloc=3 tas=196608 pic=196608 rpc=518 read=0 moteur=0",
+            "VI-PROF vi-prepare alloc=4 tas=196608 pic=196608 rpc=518 read=0 moteur=0",
+            "VI-PROF vi-dessine alloc=30 tas=196608 pic=196608 rpc=546 read=0 moteur=0",
+            "VI-PROF shell-fin alloc=73 tas=393216 pic=393216 rpc=1547 read=1530 moteur=36"
+          ],
+          "service": [
+            "FS-PROF op=17 h=1 alloc=169 tas=65536 pic=65536 pages=49",
+            "FS-PROF op=17 h=1 alloc=514 tas=131072 pic=131072 pages=84",
+            "FS-PROF op=7 h=1 alloc=821 tas=131072 pic=131072 pages=100"
+          ],
+          "pics_visibles_au_processus": [
+            {
+              "octets": 4194304,
+              "pic_resident_prive_vi_kio": 12920,
+              "allocations_vi_reussies": 41,
+              "tas_pic_octets": 12910592
+            },
+            {
+              "octets": 1048576,
+              "pic_resident_prive_vi_kio": 3704,
+              "allocations_vi_reussies": 41,
+              "tas_pic_octets": 3473408
+            },
+            {
+              "octets": 65536,
+              "pic_resident_prive_vi_kio": 632,
+              "allocations_vi_reussies": 40,
+              "tas_pic_octets": 327680
+            },
+            {
+              "octets": 1024,
+              "pic_resident_prive_vi_kio": 376,
+              "allocations_vi_reussies": 38,
+              "tas_pic_octets": 65536
+            }
+          ]
+        }
+      },
+      "exploration_16M": {
+        "distribution": "MOUNT: client TIMED_OUT (8), pas de prompt ni de lancement de vi",
+        "traces": [
+          "BLOC bilan mode=42 service=Exit(5) bloc=Exit(11) pilote=Exit(5) client=Exit(8) retrait=Ok(()) cycles_retrait=41625"
+        ],
+        "traces_temoin": [
+          "BLOC bilan mode=42 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(8) retrait=Ok(()) cycles_retrait=47938"
+        ],
+        "montage_reception_prolongee": [
+          {
+            "octets": 16777216,
+            "lecture_et_lancement_ms": 129999.264,
+            "transfert_et_preparation_ms": 7784.266,
+            "premier_rendu_ms": 4.967,
+            "ouverture_ms": 137788.498,
+            "navigation_G_ms": 1.478,
+            "resident_vi_kio": [
+              312,
+              16824
+            ]
+          }
+        ]
+      },
+      "tests": {
+        "demarrages": [
+          "aarch64",
+          "aarch64-abi-test-256",
+          "aarch64-abi-test-256-pan",
+          "aarch64-storage-test",
+          "aarch64-proc-test",
+          "aarch64-proc-boot-fault",
+          "aarch64-mem-test",
+          "aarch64-mem-ro",
+          "aarch64-mem-alias",
+          "aarch64-mem-page-ro",
+          "aarch64-mem-nx",
+          "aarch64-mem-absent",
+          "aarch64-heap-test",
+          "aarch64-heap-oom",
+          "aarch64-heap-corrupt",
+          "aarch64-heap-guard",
+          "aarch64-heap-infallible",
+          "aarch64-heap-reentrant",
+          "aarch64-heap-metadata",
+          "aarch64-sched-test",
+          "aarch64-sched-guard",
+          "aarch64-sched-fpu",
+          "aarch64-sched-stress",
+          "aarch64-sched-endurance-15s",
+          "aarch64-ipc-test-256"
+        ],
+        "bloc": [
+          "aarch64/512 : motif invité et retrait",
+          "aarch64/512 : protections DMA et interruption pendante",
+          "aarch64/512 : baux, descripteurs, panne et relance",
+          "aarch64/512 : panne en vol et quarantaine",
+          "aarch64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "aarch64/512 : eio-read",
+          "aarch64/512 : eio-write",
+          "aarch64/512 : eio-flush",
+          "aarch64/512 : droit en écriture refusé",
+          "aarch64/512 : profil de démarrage manuel en lecture seule",
+          "aarch64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "aarch64/512 : Device NovaFS, refus du support RO transmis au client",
+          "aarch64/4096 : motif invité et retrait",
+          "aarch64/4096 : protections DMA et interruption pendante",
+          "aarch64/4096 : baux, descripteurs, panne et relance",
+          "aarch64/4096 : panne en vol et quarantaine",
+          "aarch64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "aarch64/4096 : eio-read",
+          "aarch64/4096 : eio-write",
+          "aarch64/4096 : eio-flush",
+          "aarch64/4096 : droit en écriture refusé",
+          "aarch64/4096 : profil de démarrage manuel en lecture seule",
+          "aarch64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "aarch64/4096 : Device NovaFS, refus du support RO transmis au client"
+        ],
+        "elf_processus_ipc": [
+          "aarch64-elf-test",
+          "aarch64-proc-lifecycle",
+          "aarch64-ipc-races-256"
+        ],
+        "secteurs": {
+          "512": {
+            "nsh_kio": 452,
+            "vi": {
+              "architecture": "aarch64",
+              "secteur": 512,
+              "elf_collectes": 16,
+              "fichiers_relus": 16,
+              "pic_pages_privees_observe": 94,
+              "refus_concurrent": true,
+              "revocation": true,
+              "refus_allocation_octets": 536870912,
+              "script_apres_redemarrage": true,
+              "octets_apres_redemarrage": true
+            },
+            "cli_p9": true,
+            "scripts": 31,
+            "interface_nsh": 113,
+            "cli": 4,
+            "incidents": [
+              "NT01",
+              "NT02",
+              "NT03"
+            ],
+            "options_et_clavier": 84,
+            "mutations": 21,
+            "fenetres_et_delegation": true
+          },
+          "4096": {
+            "nsh_kio": 452,
+            "vi": {
+              "architecture": "aarch64",
+              "secteur": 4096,
+              "elf_collectes": 16,
+              "fichiers_relus": 16,
+              "pic_pages_privees_observe": 94,
+              "refus_concurrent": true,
+              "revocation": true,
+              "refus_allocation_octets": 536870912,
+              "script_apres_redemarrage": true,
+              "octets_apres_redemarrage": true
+            },
+            "cli_p9": true,
+            "scripts": 31,
+            "interface_nsh": 113,
+            "cli": 4,
+            "incidents": [
+              "NT01",
+              "NT02",
+              "NT03"
+            ],
+            "options_et_clavier": 84,
+            "mutations": 21,
+            "fenetres_et_delegation": true
+          }
+        },
+        "fichiers": [
+          "aarch64/512 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+          "aarch64/512 : files-data, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : files-meta, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : files-f1-before, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : files-f1-after, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+          "aarch64/512 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+          "aarch64/512 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+          "aarch64/512 : files-close, generation 6, oracle nouveau, remontage RO",
+          "aarch64/512 : files-remount, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : eio-lecture, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : eio-f1, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : eio-f2, generation 6, oracle nouveau, remontage RO",
+          "aarch64/512 : abandon-client, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+          "aarch64/512 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+          "aarch64/512 : pool p5 intact après refus RW",
+          "aarch64/512 : pool p6 intact après refus RW",
+          "aarch64/512 : pool p7 intact après refus RW",
+          "aarch64/512 : mesures fichiers et restitution sur deux sessions",
+          "aarch64/4096 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+          "aarch64/4096 : files-data, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : files-meta, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : files-f1-before, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : files-f1-after, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+          "aarch64/4096 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+          "aarch64/4096 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+          "aarch64/4096 : files-close, generation 6, oracle nouveau, remontage RO",
+          "aarch64/4096 : files-remount, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : eio-lecture, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : eio-f1, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : eio-f2, generation 6, oracle nouveau, remontage RO",
+          "aarch64/4096 : abandon-client, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+          "aarch64/4096 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+          "aarch64/4096 : pool p5 intact après refus RW",
+          "aarch64/4096 : pool p6 intact après refus RW",
+          "aarch64/4096 : pool p7 intact après refus RW",
+          "aarch64/4096 : mesures fichiers et restitution sur deux sessions"
+        ],
+        "mesures_tampon_hote": [
+          "MESURE octets=1024 ouvert=1024 modifie=145132 historique=139232 premiere_ns=750 insertion_ns=14 effacement_ns=37 mouvement_ns=7",
+          "MESURE octets=8192 ouvert=8192 modifie=160224 historique=139232 premiere_ns=1125 insertion_ns=17 effacement_ns=37 mouvement_ns=7",
+          "MESURE octets=65536 ouvert=65536 modifie=286688 historique=139232 premiere_ns=7000 insertion_ns=13 effacement_ns=37 mouvement_ns=7",
+          "MESURE octets=1048576 ouvert=1048576 modifie=2301920 historique=139232 premiere_ns=201667 insertion_ns=14 effacement_ns=40 mouvement_ns=7",
+          "MESURE octets=4194304 ouvert=4194304 modifie=8593376 historique=139232 premiere_ns=758834 insertion_ns=13 effacement_ns=38 mouvement_ns=7",
+          "MESURE octets=16777216 ouvert=16777216 modifie=33759200 historique=139232 premiere_ns=2982750 insertion_ns=17 effacement_ns=39 mouvement_ns=7"
+        ],
+        "novaFS": {
+          "standard": {
+            "reussis": 196,
+            "echecs": 0,
+            "ignores": 6
+          },
+          "sondes": {
+            "reussis": 197,
+            "echecs": 0,
+            "ignores": 6
+          },
+          "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=26.724",
+          "injections_ancres": 2304,
+          "refus_attendus": 360
+        }
+      }
+    },
+    "x86_64": {
+      "comparaison_appariee": {
+        "v0.16.3": [
+          {
+            "octets": 4194304,
+            "lecture_et_lancement_ms": 597539.022,
+            "transfert_et_preparation_ms": 1617.047,
+            "premier_rendu_ms": 4.474,
+            "ouverture_ms": 599160.543,
+            "navigation_G_ms": 1.243,
+            "transfert_avant_oui_ms": 1707.766,
+            "publication_apres_oui_ms": 38292.53,
+            "resident_vi_kio": [
+              312,
+              4536,
+              12920
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 6.85,
+            "sauvegarde_totale_ms": 40000.296
+          },
+          {
+            "octets": 1048576,
+            "lecture_et_lancement_ms": 148215.103,
+            "transfert_et_preparation_ms": 418.148,
+            "premier_rendu_ms": 5.385,
+            "ouverture_ms": 148638.636,
+            "navigation_G_ms": 1.114,
+            "transfert_avant_oui_ms": 407.311,
+            "publication_apres_oui_ms": 9801.77,
+            "resident_vi_kio": [
+              312,
+              1464,
+              3704
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 6.91,
+            "sauvegarde_totale_ms": 10209.081
+          },
+          {
+            "octets": 65536,
+            "lecture_et_lancement_ms": 10396.91,
+            "transfert_et_preparation_ms": 27.696,
+            "premier_rendu_ms": 5.648,
+            "ouverture_ms": 10430.254,
+            "navigation_G_ms": 1.221,
+            "transfert_avant_oui_ms": 32.009,
+            "publication_apres_oui_ms": 874.98,
+            "resident_vi_kio": [
+              312,
+              504,
+              632
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 6.16,
+            "sauvegarde_totale_ms": 906.989
+          },
+          {
+            "octets": 1024,
+            "lecture_et_lancement_ms": 217.749,
+            "transfert_et_preparation_ms": 2.606,
+            "premier_rendu_ms": 5.877,
+            "ouverture_ms": 226.232,
+            "navigation_G_ms": 0.947,
+            "transfert_avant_oui_ms": 5.328,
+            "publication_apres_oui_ms": 266.852,
+            "resident_vi_kio": [
+              312,
+              376,
+              376
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 4.59,
+            "sauvegarde_totale_ms": 272.18
+          }
+        ],
+        "v0.16.4": [
+          {
+            "octets": 4194304,
+            "lecture_et_lancement_ms": 27500.05,
+            "transfert_et_preparation_ms": 1686.623,
+            "premier_rendu_ms": 5.018,
+            "ouverture_ms": 29191.69,
+            "navigation_G_ms": 1.307,
+            "transfert_avant_oui_ms": 1758.968,
+            "publication_apres_oui_ms": 40462.178,
+            "resident_vi_kio": [
+              312,
+              4536,
+              12920
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 148.95,
+            "sauvegarde_totale_ms": 42221.146
+          },
+          {
+            "octets": 1048576,
+            "lecture_et_lancement_ms": 7798.374,
+            "transfert_et_preparation_ms": 428.579,
+            "premier_rendu_ms": 9.088,
+            "ouverture_ms": 8236.042,
+            "navigation_G_ms": 1.247,
+            "transfert_avant_oui_ms": 427.918,
+            "publication_apres_oui_ms": 10300.218,
+            "resident_vi_kio": [
+              312,
+              1464,
+              3704
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 131.31,
+            "sauvegarde_totale_ms": 10728.136
+          },
+          {
+            "octets": 65536,
+            "lecture_et_lancement_ms": 428.743,
+            "transfert_et_preparation_ms": 28.399,
+            "premier_rendu_ms": 4.462,
+            "ouverture_ms": 461.604,
+            "navigation_G_ms": 1.199,
+            "transfert_avant_oui_ms": 30.9,
+            "publication_apres_oui_ms": 914.359,
+            "resident_vi_kio": [
+              312,
+              504,
+              632
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 149.27,
+            "sauvegarde_totale_ms": 945.259
+          },
+          {
+            "octets": 1024,
+            "lecture_et_lancement_ms": 87.273,
+            "transfert_et_preparation_ms": 0.005,
+            "premier_rendu_ms": 9.589,
+            "ouverture_ms": 96.867,
+            "navigation_G_ms": 0.587,
+            "transfert_avant_oui_ms": 4.658,
+            "publication_apres_oui_ms": 276.024,
+            "resident_vi_kio": [
+              312,
+              376,
+              376
+            ],
+            "debit_utile_lecture_et_lancement_kio_s": 11.46,
+            "sauvegarde_totale_ms": 280.682
+          }
+        ]
+      },
+      "echantillons_resident": {
+        "avant": {
+          "service": {
+            "nombre_echantillons": 17,
+            "maximum_kio": 1668
+          },
+          "nsh": {
+            "nombre_echantillons": 17,
+            "maximum_kio": 8660
+          }
+        },
+        "apres": {
+          "service": {
+            "nombre_echantillons": 17,
+            "maximum_kio": 1668
+          },
+          "nsh": {
+            "nombre_echantillons": 17,
+            "maximum_kio": 8660
+          }
+        }
+      },
+      "contre_mesure_v0164": [
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 86.369,
+          "transfert_et_preparation_ms": 2.745,
+          "premier_rendu_ms": 4.691,
+          "ouverture_ms": 93.805,
+          "navigation_G_ms": 0.954,
+          "transfert_avant_oui_ms": 6.398,
+          "publication_apres_oui_ms": 289.239,
+          "resident_vi_kio": [
+            312,
+            376,
+            376
+          ]
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 413.09,
+          "transfert_et_preparation_ms": 26.484,
+          "premier_rendu_ms": 4.035,
+          "ouverture_ms": 443.609,
+          "navigation_G_ms": 1.101,
+          "transfert_avant_oui_ms": 29.777,
+          "publication_apres_oui_ms": 870.173,
+          "resident_vi_kio": [
+            312,
+            504,
+            632
+          ]
+        },
+        {
+          "octets": 1048576,
+          "lecture_et_lancement_ms": 7161.443,
+          "transfert_et_preparation_ms": 404.753,
+          "premier_rendu_ms": 4.197,
+          "ouverture_ms": 7570.393,
+          "navigation_G_ms": 1.182,
+          "transfert_avant_oui_ms": 413.341,
+          "publication_apres_oui_ms": 9865.641,
+          "resident_vi_kio": [
+            312,
+            1464,
+            3704
+          ]
+        },
+        {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 28303.495,
+          "transfert_et_preparation_ms": 1645.388,
+          "premier_rendu_ms": 3.954,
+          "ouverture_ms": 29952.837,
+          "navigation_G_ms": 1.099,
+          "transfert_avant_oui_ms": 1710.308,
+          "publication_apres_oui_ms": 38260.048,
+          "resident_vi_kio": [
+            312,
+            4536,
+            12920
+          ]
+        }
+      ],
+      "diagnostic_initial_0163": [
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 188.675,
+          "transfert_et_preparation_ms": 2.311,
+          "premier_rendu_ms": 4.021,
+          "ouverture_ms": 195.006,
+          "navigation_G_ms": 0.881,
+          "publication_apres_oui_ms": 205.786
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 8213.249,
+          "transfert_et_preparation_ms": 24.951,
+          "premier_rendu_ms": 5.306,
+          "ouverture_ms": 8243.505,
+          "navigation_G_ms": 1.061,
+          "publication_apres_oui_ms": 573.541
+        }
+      ],
+      "historique_volumes_0163": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 1367.633417,
+          "insertion_ms": 1.766709,
+          "suppression_ms": 0.750791,
+          "navigation_G_ms": 0.782583,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 9624.13075,
+          "insertion_ms": 1.77075,
+          "suppression_ms": 0.702958,
+          "navigation_G_ms": 4.669292,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 150082.964333,
+          "insertion_ms": 3.37275,
+          "suppression_ms": 1.206,
+          "navigation_G_ms": 3.935125,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 576587.758375,
+          "insertion_ms": 95.31375,
+          "suppression_ms": 2.064625,
+          "navigation_G_ms": 12.992,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ],
+      "volumes_0164": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 279.133291,
+          "insertion_ms": 1.674875,
+          "suppression_ms": 0.6375,
+          "navigation_G_ms": 0.864167,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 592.233792,
+          "insertion_ms": 2.124709,
+          "suppression_ms": 0.939083,
+          "navigation_G_ms": 1.175792,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 7874.877375,
+          "insertion_ms": 3.694417,
+          "suppression_ms": 1.0785,
+          "navigation_G_ms": 4.109959,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 30573.274375,
+          "insertion_ms": 98.660333,
+          "suppression_ms": 2.189958,
+          "navigation_G_ms": 13.191458,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ],
+      "sondes": {
+        "avant": {
+          "phases": [
+            {
+              "octets": 1024,
+              "lecture_et_lancement_ms": 229.524,
+              "transfert_et_preparation_ms": 4.483,
+              "transfert_sonde_ms": 0.003,
+              "preparation_sonde_ms": 0.001,
+              "premier_rendu_ms": 4.491,
+              "ouverture_ms": 238.498,
+              "navigation_G_ms": 1.193,
+              "transfert_avant_oui_ms": 6.889,
+              "publication_apres_oui_ms": 261.752,
+              "resident_vi_kio": [
+                312,
+                376,
+                376
+              ]
+            },
+            {
+              "octets": 65536,
+              "lecture_et_lancement_ms": 9875.673,
+              "transfert_et_preparation_ms": 27.947,
+              "transfert_sonde_ms": 25.061,
+              "preparation_sonde_ms": 0.971,
+              "premier_rendu_ms": 4.112,
+              "ouverture_ms": 9907.731,
+              "navigation_G_ms": 1.349,
+              "transfert_avant_oui_ms": 31.732,
+              "publication_apres_oui_ms": 694.999,
+              "resident_vi_kio": [
+                312,
+                504,
+                632
+              ]
+            }
+          ],
+          "compteurs": [
+            "VI-PROF shell-entree alloc=19 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF shell-charge alloc=22 tas=65536 pic=65536 rpc=30 read=25 moteur=25",
+            "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+            "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+            "VI-PROF vi-dessine alloc=29 tas=65536 pic=65536 rpc=52 read=0 moteur=0",
+            "VI-PROF shell-fin alloc=33 tas=65536 pic=65536 rpc=34 read=25 moteur=25",
+            "VI-PROF shell-entree alloc=53 tas=65536 pic=65536 rpc=34 read=25 moteur=25",
+            "VI-PROF shell-charge alloc=56 tas=196608 pic=196608 rpc=1529 read=1516 moteur=1516",
+            "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF vi-recu alloc=3 tas=196608 pic=196608 rpc=518 read=0 moteur=0",
+            "VI-PROF vi-prepare alloc=4 tas=196608 pic=196608 rpc=518 read=0 moteur=0",
+            "VI-PROF vi-dessine alloc=30 tas=196608 pic=196608 rpc=546 read=0 moteur=0",
+            "VI-PROF shell-fin alloc=73 tas=393216 pic=393216 rpc=1533 read=1516 moteur=1516"
+          ],
+          "service": [
+            "FS-PROF op=17 h=1 alloc=169 tas=65536 pic=65536 pages=49",
+            "FS-PROF op=17 h=1 alloc=13636 tas=131072 pic=131072 pages=813",
+            "FS-PROF op=7 h=1 alloc=27065 tas=131072 pic=131072 pages=1558"
+          ],
+          "pics_visibles_au_processus": [
+            {
+              "octets": 65536,
+              "pic_resident_prive_vi_kio": 632,
+              "allocations_vi_reussies": 40,
+              "tas_pic_octets": 327680
+            },
+            {
+              "octets": 1024,
+              "pic_resident_prive_vi_kio": 376,
+              "allocations_vi_reussies": 38,
+              "tas_pic_octets": 65536
+            }
+          ]
+        },
+        "apres": {
+          "phases": [
+            {
+              "octets": 1024,
+              "lecture_et_lancement_ms": 83.304,
+              "transfert_et_preparation_ms": 3.401,
+              "transfert_sonde_ms": 0.73,
+              "preparation_sonde_ms": 0.406,
+              "premier_rendu_ms": 4.311,
+              "ouverture_ms": 91.016,
+              "navigation_G_ms": 1.086,
+              "transfert_avant_oui_ms": 6.493,
+              "publication_apres_oui_ms": 235.354,
+              "resident_vi_kio": [
+                312,
+                376,
+                376
+              ]
+            },
+            {
+              "octets": 65536,
+              "lecture_et_lancement_ms": 430.2,
+              "transfert_et_preparation_ms": 28.559,
+              "transfert_sonde_ms": 25.561,
+              "preparation_sonde_ms": 0.973,
+              "premier_rendu_ms": 3.863,
+              "ouverture_ms": 462.622,
+              "navigation_G_ms": 1.162,
+              "transfert_avant_oui_ms": 31.139,
+              "publication_apres_oui_ms": 624.594,
+              "resident_vi_kio": [
+                312,
+                504,
+                632
+              ]
+            }
+          ],
+          "compteurs": [
+            "VI-PROF shell-entree alloc=19 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF shell-charge alloc=22 tas=65536 pic=65536 rpc=30 read=25 moteur=3",
+            "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+            "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+            "VI-PROF vi-dessine alloc=29 tas=65536 pic=65536 rpc=52 read=0 moteur=0",
+            "VI-PROF shell-fin alloc=33 tas=65536 pic=65536 rpc=34 read=25 moteur=3",
+            "VI-PROF shell-entree alloc=53 tas=65536 pic=65536 rpc=34 read=25 moteur=3",
+            "VI-PROF shell-charge alloc=56 tas=196608 pic=196608 rpc=1543 read=1530 moteur=36",
+            "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+            "VI-PROF vi-recu alloc=3 tas=196608 pic=196608 rpc=518 read=0 moteur=0",
+            "VI-PROF vi-prepare alloc=4 tas=196608 pic=196608 rpc=518 read=0 moteur=0",
+            "VI-PROF vi-dessine alloc=30 tas=196608 pic=196608 rpc=546 read=0 moteur=0",
+            "VI-PROF shell-fin alloc=73 tas=393216 pic=393216 rpc=1547 read=1530 moteur=36"
+          ],
+          "service": [
+            "FS-PROF op=17 h=1 alloc=169 tas=65536 pic=65536 pages=49",
+            "FS-PROF op=17 h=1 alloc=514 tas=131072 pic=131072 pages=84",
+            "FS-PROF op=7 h=1 alloc=821 tas=131072 pic=131072 pages=100"
+          ],
+          "pics_visibles_au_processus": [
+            {
+              "octets": 4194304,
+              "pic_resident_prive_vi_kio": 12920,
+              "allocations_vi_reussies": 41,
+              "tas_pic_octets": 12910592
+            },
+            {
+              "octets": 1048576,
+              "pic_resident_prive_vi_kio": 3704,
+              "allocations_vi_reussies": 41,
+              "tas_pic_octets": 3473408
+            },
+            {
+              "octets": 65536,
+              "pic_resident_prive_vi_kio": 632,
+              "allocations_vi_reussies": 40,
+              "tas_pic_octets": 327680
+            },
+            {
+              "octets": 1024,
+              "pic_resident_prive_vi_kio": 376,
+              "allocations_vi_reussies": 38,
+              "tas_pic_octets": 65536
+            }
+          ]
+        }
+      },
+      "exploration_16M": {
+        "distribution": "MOUNT: client TIMED_OUT (8), pas de prompt ni de lancement de vi",
+        "traces": [
+          "BLOC bilan mode=42 service=Exit(5) bloc=Exit(11) pilote=Exit(5) client=Exit(8) retrait=Ok(()) cycles_retrait=954000"
+        ],
+        "traces_temoin": [
+          "BLOC bilan mode=42 service=Exit(5) bloc=Exit(11) pilote=Exit(5) client=Exit(8) retrait=Ok(()) cycles_retrait=889000"
+        ],
+        "montage_reception_prolongee": [
+          {
+            "octets": 16777216,
+            "lecture_et_lancement_ms": 114017.36,
+            "transfert_et_preparation_ms": 6525.187,
+            "premier_rendu_ms": 4.58,
+            "ouverture_ms": 120547.127,
+            "navigation_G_ms": 1.376,
+            "resident_vi_kio": [
+              312,
+              16824
+            ]
+          }
+        ]
+      },
+      "tests": {
+        "demarrages": [
+          "std",
+          "none",
+          "x86_64-abi-test-256",
+          "x86_64-storage-test",
+          "x86_64-proc-test",
+          "x86_64-proc-boot-fault",
+          "x86_64-mem-test",
+          "x86_64-mem-ro",
+          "x86_64-mem-alias",
+          "x86_64-mem-page-ro",
+          "x86_64-mem-nx",
+          "x86_64-mem-absent",
+          "x86_64-heap-test",
+          "x86_64-heap-oom",
+          "x86_64-heap-corrupt",
+          "x86_64-heap-guard",
+          "x86_64-heap-infallible",
+          "x86_64-heap-reentrant",
+          "x86_64-heap-metadata",
+          "x86_64-sched-test",
+          "x86_64-sched-guard",
+          "x86_64-sched-fpu",
+          "x86_64-sched-stress",
+          "x86_64-sched-endurance-15s",
+          "x86_64-ipc-test-256"
+        ],
+        "bloc": [
+          "x86_64/512 : motif invité et retrait",
+          "x86_64/512 : protections DMA et interruption pendante",
+          "x86_64/512 : baux, descripteurs, panne et relance",
+          "x86_64/512 : panne en vol et quarantaine",
+          "x86_64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "x86_64/512 : eio-read",
+          "x86_64/512 : eio-write",
+          "x86_64/512 : eio-flush",
+          "x86_64/512 : droit en écriture refusé",
+          "x86_64/512 : profil de démarrage manuel en lecture seule",
+          "x86_64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "x86_64/512 : Device NovaFS, refus du support RO transmis au client",
+          "x86_64/4096 : motif invité et retrait",
+          "x86_64/4096 : protections DMA et interruption pendante",
+          "x86_64/4096 : baux, descripteurs, panne et relance",
+          "x86_64/4096 : panne en vol et quarantaine",
+          "x86_64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "x86_64/4096 : eio-read",
+          "x86_64/4096 : eio-write",
+          "x86_64/4096 : eio-flush",
+          "x86_64/4096 : droit en écriture refusé",
+          "x86_64/4096 : profil de démarrage manuel en lecture seule",
+          "x86_64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "x86_64/4096 : Device NovaFS, refus du support RO transmis au client"
+        ],
+        "elf_processus_ipc": [
+          "x86_64-elf-test",
+          "x86_64-proc-lifecycle",
+          "x86_64-ipc-races-256"
+        ],
+        "secteurs": {
+          "512": {
+            "nsh_kio": 468,
+            "vi": {
+              "architecture": "x86_64",
+              "secteur": 512,
+              "elf_collectes": 16,
+              "fichiers_relus": 16,
+              "pic_pages_privees_observe": 94,
+              "refus_concurrent": true,
+              "revocation": true,
+              "refus_allocation_octets": 536870912,
+              "script_apres_redemarrage": true,
+              "octets_apres_redemarrage": true
+            },
+            "cli_p9": true,
+            "scripts": 31,
+            "interface_nsh": 113,
+            "cli": 4,
+            "incidents": [
+              "NT01",
+              "NT02",
+              "NT03"
+            ],
+            "options_et_clavier": 84,
+            "mutations": 21,
+            "fenetres_et_delegation": true
+          },
+          "4096": {
+            "nsh_kio": 468,
+            "vi": {
+              "architecture": "x86_64",
+              "secteur": 4096,
+              "elf_collectes": 16,
+              "fichiers_relus": 16,
+              "pic_pages_privees_observe": 94,
+              "refus_concurrent": true,
+              "revocation": true,
+              "refus_allocation_octets": 536870912,
+              "script_apres_redemarrage": true,
+              "octets_apres_redemarrage": true
+            },
+            "cli_p9": true,
+            "scripts": 31,
+            "interface_nsh": 113,
+            "cli": 4,
+            "incidents": [
+              "NT01",
+              "NT02",
+              "NT03"
+            ],
+            "options_et_clavier": 84,
+            "mutations": 21,
+            "fenetres_et_delegation": true
+          }
+        },
+        "fichiers": [
+          "x86_64/512 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+          "x86_64/512 : files-data, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : files-meta, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : files-f1-before, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : files-f1-after, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+          "x86_64/512 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+          "x86_64/512 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+          "x86_64/512 : files-close, generation 6, oracle nouveau, remontage RO",
+          "x86_64/512 : files-remount, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : eio-lecture, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : eio-f1, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : eio-f2, generation 6, oracle nouveau, remontage RO",
+          "x86_64/512 : abandon-client, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+          "x86_64/512 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+          "x86_64/512 : pool p5 intact après refus RW",
+          "x86_64/512 : pool p6 intact après refus RW",
+          "x86_64/512 : pool p7 intact après refus RW",
+          "x86_64/512 : mesures fichiers et restitution sur deux sessions",
+          "x86_64/4096 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+          "x86_64/4096 : files-data, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : files-meta, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : files-f1-before, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : files-f1-after, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+          "x86_64/4096 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+          "x86_64/4096 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+          "x86_64/4096 : files-close, generation 6, oracle nouveau, remontage RO",
+          "x86_64/4096 : files-remount, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : eio-lecture, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : eio-f1, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : eio-f2, generation 6, oracle nouveau, remontage RO",
+          "x86_64/4096 : abandon-client, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+          "x86_64/4096 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+          "x86_64/4096 : pool p5 intact après refus RW",
+          "x86_64/4096 : pool p6 intact après refus RW",
+          "x86_64/4096 : pool p7 intact après refus RW",
+          "x86_64/4096 : mesures fichiers et restitution sur deux sessions"
+        ],
+        "mesures_tampon_hote": [
+          "MESURE octets=1024 ouvert=1024 modifie=145132 historique=139232 premiere_ns=1541 insertion_ns=28 effacement_ns=122 mouvement_ns=6",
+          "MESURE octets=8192 ouvert=8192 modifie=160224 historique=139232 premiere_ns=3000 insertion_ns=19 effacement_ns=76 mouvement_ns=5",
+          "MESURE octets=65536 ouvert=65536 modifie=286688 historique=139232 premiere_ns=23667 insertion_ns=17 effacement_ns=86 mouvement_ns=5",
+          "MESURE octets=1048576 ouvert=1048576 modifie=2301920 historique=139232 premiere_ns=521375 insertion_ns=17 effacement_ns=70 mouvement_ns=6",
+          "MESURE octets=4194304 ouvert=4194304 modifie=8593376 historique=139232 premiere_ns=2087708 insertion_ns=19 effacement_ns=105 mouvement_ns=5",
+          "MESURE octets=16777216 ouvert=16777216 modifie=33759200 historique=139232 premiere_ns=7774792 insertion_ns=26 effacement_ns=115 mouvement_ns=5"
+        ],
+        "novaFS": {
+          "standard": {
+            "reussis": 196,
+            "echecs": 0,
+            "ignores": 6
+          },
+          "sondes": {
+            "reussis": 197,
+            "echecs": 0,
+            "ignores": 6
+          },
+          "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=42.226",
+          "injections_ancres": 2304,
+          "refus_attendus": 360
+        }
+      }
+    }
+  },
+  "utm": {
+    "version": "5.0.8",
+    "qemu": "QEMU emulator version 10.0.12",
+    "profil": "application, AArch64, disque système QCOW2 / 512, CPR 24x80",
+    "temoin": {
+      "application": "UTM",
+      "profil": "AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+      "serie": "PTY de l’application",
+      "installation": true,
+      "support_sha256": "b870ea7ee985626a77677be848248a2653571801812cf9f460c30723e8f54970",
+      "disque_installe_sha256": "ed4d2c1154eed90daf4f14b951c10ec2cce009a5ab80dd9696f6eed1d24e079a",
+      "demarrages_autonomes": 2,
+      "contenu_relu": "NovaOS\n",
+      "ouverture_vi_ms": 92360.044625,
+      "reouverture_apres_redemarrage_ms": 48540.593292,
+      "octets_vi_relus": [
+        66560,
+        66562
+      ],
+      "scripts_vi_relus": [
+        "recettes/edite.nsh",
+        "recettes/autre.nsh"
+      ],
+      "script_installe": "/verification.nsh",
+      "script_execute_apres_redemarrage": "./recettes/preuve.nsh"
+    },
+    "livre": {
+      "reouverture_apres_redemarrage_ms": 3470.774542,
+      "octets_vi_relus": [
+        66560,
+        66562
+      ],
+      "support_sha256": "62a2be94c9d25f728f62ad94b942e8703b3a992527227a4719db34b21927a8c0",
+      "incident": "reprise après fermeture application UTM",
+      "profil": "GICv3 QCOW2/512 24x80",
+      "demarrages_autonomes_verifies": 2
+    },
+    "gic": [
+      "froid",
+      "el2",
+      "protection",
+      "reemploi",
+      "cd",
+      "redemarrage",
+      "coupure",
+      "reprise",
+      "autre-slot",
+      "mapkey",
+      "retrait-suspendu"
+    ],
+    "dma": [
+      "support",
+      "vierge",
+      "refus",
+      "confirmation-erronee",
+      "tis",
+      "deplaces",
+      "reemploi",
+      "redemarrage",
+      "fin",
+      "mbr",
+      "gpt",
+      "fat",
+      "novafs",
+      "trop-petit",
+      "erreur-lecture",
+      "mauvais-support",
+      "doublon",
+      "roles-inverses",
+      "support-inscriptible",
+      "tpm-absent",
+      "mauvaise-serie",
+      "quarantaine",
+      "coupure"
+    ],
+    "gpt4096": [
+      "non-vierge",
+      "ambigu",
+      "coupure-ecriture",
+      "reprise-ecriture",
+      "sans-consentement",
+      "erreur-lecture",
+      "coupure-installation",
+      "etat_apres_coupure",
+      "refus-apres-coupure",
+      "crc-entete",
+      "crc-tableau",
+      "donnee-supplementaire",
+      "origine-inconnue",
+      "gpt-etrangere",
+      "esp-modifiee",
+      "coupure-esp",
+      "refus-coupure-esp",
+      "coupure-p9",
+      "refus-coupure-p9"
+    ]
+  }
+}

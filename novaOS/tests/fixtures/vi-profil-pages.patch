@@ -1,0 +1,164 @@
+--- a/novaOS/user/heap.rs
++++ b/novaOS/user/heap.rs
+@@ -7,0 +8,4 @@
++use core::sync::atomic::{AtomicUsize, Ordering::Relaxed};
++pub static ALLOCS: AtomicUsize = AtomicUsize::new(0);
++pub static CURRENT: AtomicUsize = AtomicUsize::new(0);
++pub static HIGH: AtomicUsize = AtomicUsize::new(0);
+@@ -22,0 +27 @@
++            HIGH.fetch_max(CURRENT.fetch_add(n, Relaxed) + n, Relaxed);
+@@ -33 +38 @@
+-        new < old
++        let ok = new < old
+@@ -36 +41,3 @@
+-                .is_some_and(|end| resize(end, base + new))
++                .is_some_and(|end| resize(end, base + new));
++        if ok { CURRENT.fetch_sub(old-new, Relaxed); }
++        ok
+@@ -58 +65,3 @@
+-        unsafe { self.0.lock().malloc(l.size(), l.align()) }
++        let p = unsafe { self.0.lock().malloc(l.size(), l.align()) };
++        if !p.is_null() { ALLOCS.fetch_add(1, Relaxed); }
++        p
+--- a/components/libraries/lib.rs
++++ b/components/libraries/lib.rs
+@@ -8,5 +8,5 @@
+ pub mod command;
+ pub mod console;
+-#[path = "../../novaOS/user/storage/fileapi.rs"]
++#[path = "sonde_fileapi.rs"]
+ pub mod fileapi;
+ pub mod process;
+@@ -19,2 +19,24 @@
+ pub mod options;
+ pub mod vi_wire;
++
++// Sonde du banc uniquement : formatage sur la pile, un DEBUG_WRITE par jalon.
++pub use core::sync::atomic::{AtomicUsize, Ordering::Relaxed};
++pub static READS: AtomicUsize = AtomicUsize::new(0);
++pub static ENGINE: AtomicUsize = AtomicUsize::new(0);
++pub fn profile(label: &str, rpc: u64) {
++    use core::fmt::Write;
++    struct Message([u8;128],usize);
++    impl Write for Message {
++        fn write_str(&mut self, s:&str) -> core::fmt::Result {
++            let end=self.1+s.len();
++            self.0.get_mut(self.1..end).ok_or(core::fmt::Error)?.copy_from_slice(s.as_bytes());
++            self.1=end; Ok(())
++        }
++    }
++    let mut b=Message([0;128],0);
++    let mem=heap::CURRENT.load(Relaxed);
++    write!(b,"VI-PROF {} alloc={} tas={} pic={} rpc={} read={} moteur={}",label,
++        heap::ALLOCS.load(Relaxed),mem,heap::HIGH.swap(mem,Relaxed),rpc,
++        READS.load(Relaxed),ENGINE.load(Relaxed)).unwrap();
++    runtime::value(runtime::call(runtime::DEBUG_WRITE,b.0.as_ptr() as u64,b.1 as u64,0)).unwrap();
++}
+--- a/components/libraries/sonde_fileapi.rs
++++ b/components/libraries/sonde_fileapi.rs
+@@ -59,5 +59,7 @@
+         self.request(q).map(|_| ())
+     }
++    pub fn profile(&self,label:&str) { crate::profile(label,self.tag); }
+     pub fn request(&mut self, q: w::Frame) -> rt::Result<w::Frame> {
++        if q[1] == w::READ { crate::READS.fetch_add(1, crate::Relaxed); if q[2] != w::CONTINUE { crate::ENGINE.fetch_add(1, crate::Relaxed); } }
+         if self.disconnected {
+             return Err(rt::CLOSED);
+--- a/components/libraries/vi_wire.rs
++++ b/components/libraries/vi_wire.rs
+@@ -31,4 +31,5 @@
+         })
+     }
++    pub fn profile(&self,label:&str) { crate::profile(label,self.tag); }
+     pub fn ask(&mut self, op: u8, bytes: &[u8]) -> rt::Result<rt::ReceiveV1> {
+         if bytes.len() > CHUNK {
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -432,6 +432,7 @@
+     if !name.chars().all(console::safe) {
+         return Err(rt::BAD_ARGUMENT);
+     }
++    fs.profile("shell-entree");
+     let path = paths::resolve(fs, name)?;
+     let source = match Source::open(fs, &path) {
+         Ok(s) => Some(s),
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -452,6 +452,7 @@
+         Source::Pages(p) => Some(p.handle()),
+         _ => None,
+     });
++    fs.profile("shell-charge");
+     let mut ports = Grant::new();
+     let mut child = None;
+     let result = (|| {
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -472,6 +472,7 @@
+         }
+         .serve(ports.channels)
+     })();
++    fs.profile("shell-fin");
+     let closed = pinned.map_or(Ok(()), |h| fs.close(h));
+     let released = ports.release(fs).and(closed);
+     let Some(child) = child else {
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -68,6 +68,7 @@
+         }
+         let exists = r.payload[1] == 1;
+         let len = wire::length(&r.payload[2..10])?;
++        link.profile("vi-entree");
+         let (text, mut tail) = paging::prefix(&mut link, len)?;
+         let mut editor = editor::Editor::new(name, text, exists).map_err(|msg| {
+             let _ = console::write(tty::ERROR, msg);
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -70,6 +70,7 @@
+         let len = wire::length(&r.payload[2..10])?;
+         link.profile("vi-entree");
+         let (text, mut tail) = paging::prefix(&mut link, len)?;
++        link.profile("vi-recu");
+         let mut editor = editor::Editor::new(name, text, exists).map_err(|msg| {
+             let _ = console::write(tty::ERROR, msg);
+             let _ = console::write(tty::ERROR, "\n");
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -80,6 +80,7 @@
+                 rt::BAD_ARGUMENT
+             }
+         })?;
++        link.profile("vi-prepare");
+         terminal::edit(&mut editor, &mut link, &mut tail)
+     })();
+     let finish = link.ask(wire::FIN, &[]).map(|_| ());
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -83,6 +83,7 @@
+         link.profile("vi-prepare");
+         terminal::edit(&mut editor, &mut link, &mut tail)
+     })();
++    link.profile("vi-fin");
+     let finish = link.ask(wire::FIN, &[]).map(|_| ());
+     outcome.and(finish)
+ }
+--- a/components/vi/terminal.rs
++++ b/components/vi/terminal.rs
+@@ -81,6 +81,7 @@
+     let mut ss3: Option<BeforeEsc> = None;
+     let mut sequence: Option<(BeforeEsc, bool)> = None;
+     screen.draw(e, link)?;
++    link.profile("vi-dessine");
+     loop {
+         let Some(key) = keys.next(link)? else {
+             screen.geometry(link, false)?;
+--- a/components/vi/paging.rs
++++ b/components/vi/paging.rs
+@@ -128,6 +128,7 @@
+         self.view_start = self.len - tail.len();
+         let offset = rows - tail.bytes().filter(|b| *b == b'\n').count();
+         self.skipped_rows = offset - prefix_rows;
++        link.profile("fin-index");
+         let window = Buffer::new(tail)?;
+         e.parked = Some(core::mem::replace(&mut e.buf, window));
+         e.row_base = offset;

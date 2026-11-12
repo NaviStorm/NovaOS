@@ -13,6 +13,8 @@ pub enum Mode {
 }
 pub struct Editor {
     pub buf: Buffer,
+    pub parked: Option<Buffer>,
+    pub row_base: usize,
     pub name: String,
     pub exists: bool,
     pub mode: Mode,
@@ -35,6 +37,8 @@ impl Editor {
         label.push_str(name);
         Ok(Self {
             buf: Buffer::new(text)?,
+            parked: None,
+            row_base: 0,
             name: label,
             exists,
             mode: Mode::Normal,
@@ -43,6 +47,12 @@ impl Editor {
             pending: None,
             message: "",
         })
+    }
+    pub fn dirty(&self) -> bool {
+        self.parked.as_ref().unwrap_or(&self.buf).dirty()
+    }
+    pub fn prefix_key(&self) -> Option<char> {
+        self.pending
     }
     pub fn escape(&mut self) {
         self.pending = None;
@@ -93,19 +103,21 @@ impl Editor {
             self.message = "fichier existant : remplacement refusé";
             return false;
         }
-        match io.publish(name, self.buf.compact().as_bytes()) {
+        let text = self.parked.as_mut().unwrap_or(&mut self.buf);
+        match io.publish(name, text.compact().as_bytes()) {
             Ok(()) => {
                 if let Some(name) = other {
                     self.name.clear();
                     self.name.push_str(name);
                 }
                 self.exists = true;
-                self.buf.saved();
+                text.saved();
                 self.message = "fichier enregistré";
                 true
             }
             Err(e) => {
                 self.message = match e {
+                    nova_cli::vi_wire::CONFLICT => "conflit : la source a changé",
                     w::EXISTS => "fichier existant : remplacement refusé",
                     rt::DENIED => "destination non autorisée",
                     w::UNCERTAIN => "publication incertaine : vérifier le disque",
@@ -128,9 +140,9 @@ impl Editor {
         }
         match prompt.as_str() {
             "q!" => return true,
-            "q" if !self.buf.dirty() => return true,
+            "q" if !self.dirty() => return true,
             "q" => self.message = "modifications non sauvegardées",
-            "x" if self.exists && !self.buf.dirty() => return true,
+            "x" if self.exists && !self.dirty() => return true,
             "x" | "wq" => return self.write(None, io),
             "w" => {
                 self.write(None, io);

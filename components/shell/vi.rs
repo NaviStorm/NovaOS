@@ -1,6 +1,9 @@
 //! Le terminal conserve l'entrée série. L'enfant ne reçoit que le dialogue de sa session.
+#[path = "vi_source.rs"]
+mod backing;
 use super::{capabilities::Grant, paths};
 use alloc::{collections::VecDeque, string::String, vec::Vec};
+use backing::Source;
 use nova_cli::{
     command::Program, console, fileapi::Client, process, protocol as w, runtime as rt, tty,
     vi_wire as wire,
@@ -19,10 +22,14 @@ fn publish(
     data: &[u8],
     confirm: Option<&mut Input>,
     revoke: bool,
+    source: Option<(&str, &mut backing::Pages, usize)>,
 ) -> rt::Result<()> {
     fs.simple(w::STAGE, 0)?;
-    // Seule cible du groupe : un répertoire ne peut pas devenir une destination implicite de cp.
+    // La destination est sélectionnée en premier : un répertoire ne peut pas devenir une destination implicite de cp.
     fs.at(w::STAGE, 0, path.as_bytes(), w::SELECT_NEW)?;
+    if let Some((path, _, _)) = &source {
+        fs.at(w::STAGE, 0, path.as_bytes(), w::SELECT_FILE)?;
+    }
     let mut grant = Grant::new();
     let result = (|| {
         grant.delegate(fs, w::GROUP, 0, &[])?;
@@ -54,6 +61,9 @@ fn publish(
         for (index, chunk) in data.chunks(w::MAX_WRITE).enumerate() {
             view.write(h, (index * w::MAX_WRITE) as u64, chunk)?;
             view.sync(h)?;
+        }
+        if let Some((_, pages, off)) = source {
+            pages.copy_tail(&mut view, h, off, data.len() as u64)?;
         }
         view.close(h)?;
         view.simple(w::PUBLISH_COPY, 1)?;
@@ -202,6 +212,7 @@ struct Upload {
     text: Vec<u8>,
     name_len: usize,
     text_len: usize,
+    suffix: Option<usize>,
 }
 fn append(to: &mut Vec<u8>, part: &[u8], max: usize) -> rt::Result<()> {
     if part.is_empty() || part.len() > max - to.len() {
@@ -223,7 +234,8 @@ struct Session<'a> {
     input: Input,
     measure: bool,
     first_key: bool,
-    source: Option<String>,
+    source: Option<Source>,
+    path: &'a str,
     upload: Option<Upload>,
     trial: Trial,
 }
@@ -241,6 +253,9 @@ impl Session<'_> {
             return Err(rt::BAD_ARGUMENT);
         }
         core::str::from_utf8(&upload.text).map_err(|_| rt::BAD_ARGUMENT)?;
+        if let Some(Source::Pages(ref mut p)) = self.source {
+            p.check(self.fs, self.path)?;
+        }
         let path = paths::resolve(self.fs, name)?;
         // L'ancien fichier reste protégé même si un autre acteur retire son nom.
         if name == self.original && self.source.is_some() {
@@ -255,7 +270,7 @@ impl Session<'_> {
         // Injection d'un autre acquittement entre le dernier contrôle et CREATE_NEW.
         if self.trial == Trial::Concurrent {
             self.trial = Trial::Normal;
-            publish(self.fs, &path, b"tiers\n", None, false)?;
+            publish(self.fs, &path, b"tiers\n", None, false, None)?;
         }
         let revoke = self.trial == Trial::Revoke;
         self.trial = Trial::Normal;
@@ -265,28 +280,34 @@ impl Session<'_> {
             &upload.text,
             (name != self.original).then_some(&mut self.input),
             revoke,
+            match (&mut self.source, upload.suffix) {
+                (Some(Source::Pages(p)), Some(off)) => Some((self.path, p, off)),
+                (_, None) => None,
+                _ => return Err(rt::BAD_ARGUMENT),
+            },
         )
     }
     fn reply(&mut self, op: u8, data: &[u8], out: &mut [u8]) -> rt::Result<usize> {
         match (op, data) {
             (wire::INFO, []) => {
                 out[0] = u8::from(self.source.is_some());
-                let len = self.source.as_ref().map_or(0, String::len);
+                let len = self.source.as_ref().map_or(0, Source::len);
                 out[1..9].copy_from_slice(&(len as u64).to_le_bytes());
                 Ok(9)
             }
+            (wire::VERIFY, []) => {
+                if let Some(Source::Pages(p)) = &mut self.source {
+                    p.check(self.fs, self.path)?;
+                }
+                Ok(0)
+            }
             (wire::READ, offset) => {
                 let at = wire::length(offset)?;
-                let bytes = self
-                    .source
-                    .as_deref()
-                    .unwrap_or("")
-                    .as_bytes()
-                    .get(at..)
-                    .ok_or(rt::BAD_ARGUMENT)?;
-                let n = bytes.len().min(out.len());
-                out[..n].copy_from_slice(&bytes[..n]);
-                Ok(n)
+                match self.source.as_mut() {
+                    Some(s) => s.read(self.fs, at, out),
+                    None if at == 0 => Ok(0),
+                    None => Err(rt::BAD_ARGUMENT),
+                }
             }
             (wire::VIEW, [refresh @ 0..=1]) => {
                 if self.measure && core::mem::take(&mut self.first_key) {
@@ -325,10 +346,19 @@ impl Session<'_> {
                 out[0] = self.input.key()?;
                 Ok(1)
             }
-            (wire::BEGIN, sizes) if sizes.len() == 10 => {
+            (wire::BEGIN, sizes) if matches!(sizes.len(), 10 | 18) => {
                 self.upload = None;
                 let name_len = usize::from(u16::from_le_bytes([sizes[0], sizes[1]]));
-                let text_len = wire::length(&sizes[2..])?;
+                let text_len = wire::length(&sizes[2..10])?;
+                let suffix = if sizes.len() == 18 {
+                    let off = wire::length(&sizes[10..])?;
+                    match &self.source {
+                        Some(src @ Source::Pages(_)) if off < src.len() => Some(off),
+                        _ => return Err(rt::BAD_ARGUMENT),
+                    }
+                } else {
+                    None
+                };
                 if name_len == 0 || name_len > w::PATH_MAX {
                     return Err(rt::BAD_ARGUMENT);
                 }
@@ -339,6 +369,7 @@ impl Session<'_> {
                     text,
                     name_len,
                     text_len,
+                    suffix,
                 });
                 Ok(0)
             }
@@ -402,7 +433,7 @@ pub fn run(
         return Err(rt::BAD_ARGUMENT);
     }
     let path = paths::resolve(fs, name)?;
-    let source = match paths::read_text(fs, &path, usize::MAX) {
+    let source = match Source::open(fs, &path) {
         Ok(s) => Some(s),
         Err(w::NOT_FOUND) => {
             let (parent, leaf) = path.rsplit_once('/').unwrap_or((".", &path));
@@ -416,6 +447,10 @@ pub fn run(
         }
         Err(e) => return Err(e),
     };
+    let pinned = source.as_ref().and_then(|s| match s {
+        Source::Pages(p) => Some(p.handle()),
+        _ => None,
+    });
     let mut ports = Grant::new();
     let mut child = None;
     let result = (|| {
@@ -425,6 +460,7 @@ pub fn run(
         Session {
             fs,
             original: name,
+            path: &path,
             input: Input::default(),
             first_key: true,
             measure: test,
@@ -434,7 +470,8 @@ pub fn run(
         }
         .serve(ports.channels)
     })();
-    let released = ports.release(fs);
+    let closed = pinned.map_or(Ok(()), |h| fs.close(h));
+    let released = ports.release(fs).and(closed);
     let Some(child) = child else {
         result?;
         return Err(rt::REFUSED);

@@ -14,8 +14,12 @@ pub const CREATE: u8 = 4;
 pub const DISCARD: u8 = 1;
 pub const START: u8 = 1;
 pub const CONTINUE: u8 = 2;
+/// Début de fenêtre conditionné à la révision (u64 à PAYLOAD).
+pub const IF_REVISION: u8 = 3;
 pub const PAYLOAD: usize = 40;
 pub const FRAGMENT: usize = 128 - PAYLOAD;
+/// Une lecture logique du courtier, transférée par fragments sur la même capacité.
+pub const READ_WINDOW: usize = 4096;
 pub const MAX_WRITE: usize = 64 * 1024;
 pub const NOT_FOUND: u64 = 20;
 pub const CORRUPT: u64 = 21;

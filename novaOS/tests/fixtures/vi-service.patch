@@ -1,0 +1,33 @@
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -75,4 +75,6 @@
+     }
+ }
++use core::sync::atomic::{AtomicUsize, Ordering::Relaxed};
++pub static PAGE_READS: AtomicUsize = AtomicUsize::new(0);
+ impl Device for &IpcDevice<'_> {
+     fn blocks(&self) -> u64 {
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -84,4 +84,5 @@
+         let mut page = [0; 4096];
+         self.transfer(block, &mut page, false)?;
++        PAGE_READS.fetch_add(1, Relaxed);
+         Ok(page)
+     }
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -224,4 +224,13 @@
+             self.clock.sample()?;
+         }
++        if (op == w::STAT || op == w::CLOSE) && !client.scoped && handle != 0 {
++            use crate::heap::{ALLOCS, CURRENT, HIGH};
++            use core::sync::atomic::Ordering::Relaxed;
++            let current = CURRENT.load(Relaxed);
++            let msg = alloc::format!("FS-PROF op={} h={} alloc={} tas={} pic={} pages={}",
++                 op, handle, ALLOCS.load(Relaxed), current, HIGH.swap(current,Relaxed),
++                 crate::device::PAGE_READS.load(Relaxed));
++            let _ = rt::call(rt::DEBUG_WRITE, msg.as_ptr() as u64, msg.len() as u64, 0);
++        }
+         if (w::PATH_FRAGMENT..=w::GETCWD).contains(&op) {
+             return self.directory_request(client, other, q, a);

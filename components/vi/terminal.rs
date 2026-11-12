@@ -69,7 +69,11 @@ struct BeforeEsc {
     mode: Mode,
     at: usize,
 }
-pub fn edit(e: &mut Editor, link: &mut wire::Link) -> rt::Result<()> {
+pub fn edit(
+    e: &mut Editor,
+    link: &mut wire::Link,
+    tail: &mut super::paging::Tail,
+) -> rt::Result<()> {
     let mut keys = Keys::new();
     let mut screen = Screen::default();
     screen.geometry(link, true)?;
@@ -93,11 +97,20 @@ pub fn edit(e: &mut Editor, link: &mut wire::Link) -> rt::Result<()> {
             if matches!(key, 'A' | 'B' | 'C' | 'D') {
                 e.mode = before.mode;
                 e.buf.at = before.at;
-                e.arrow(key);
+                if let Err(msg) = tail.before(e, key, true, link) {
+                    e.message = msg;
+                } else {
+                    e.arrow(key);
+                }
                 screen.draw(e, link)?;
                 continue;
             }
             // Esc suivi de la commande normale O : le prochain caractère lève l'ambiguïté SS3.
+            if let Err(msg) = tail.before(e, 'O', false, link) {
+                e.message = msg;
+                screen.draw(e, link)?;
+                continue;
+            }
             e.key('O', link);
         }
         if key == '\x1b' {
@@ -113,7 +126,11 @@ pub fn edit(e: &mut Editor, link: &mut wire::Link) -> rt::Result<()> {
                 e.mode = before.mode;
                 e.buf.at = before.at;
                 if plain && matches!(key, 'A' | 'B' | 'C' | 'D') {
-                    e.arrow(key);
+                    if let Err(msg) = tail.before(e, key, true, link) {
+                        e.message = msg;
+                    } else {
+                        e.arrow(key);
+                    }
                 } else {
                     e.message = "séquence clavier refusée";
                 }
@@ -133,6 +150,11 @@ pub fn edit(e: &mut Editor, link: &mut wire::Link) -> rt::Result<()> {
                 sequence = Some((before, true));
             }
             continue;
+        } else if let Err(msg) = tail.before(e, key, false, link) {
+            if submitting || e.mode == Mode::Search && key == '\n' {
+                e.mode = Mode::Normal;
+            }
+            e.message = msg;
         } else if e.key(key, link) {
             return Ok(());
         }

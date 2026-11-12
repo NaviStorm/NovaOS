@@ -1,0 +1,30 @@
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -303,6 +303,14 @@
+             }
+             (wire::READ, offset) => {
+                 let at = wire::length(offset)?;
++                // Banc isolé : écriture de même taille par un second handle, synchronisée
++                // avant la toute première lecture de la page encore absente de vi.
++                if self.trial==Trial::Concurrent && at>=wire::PAGE {
++                    self.trial=Trial::Normal;
++                    let h=self.fs.open_at(0,self.path.as_bytes(),w::WRITABLE)?;
++                    self.fs.write(h,at as u64,b"!")?;
++                    self.fs.sync(h)?;self.fs.close(h)?;
++                }
+                 match self.source.as_mut() {
+                     Some(s) => s.read(self.fs, at, out),
+                     None if at == 0 => Ok(0),
+@@ -388,6 +396,12 @@
+                 if self.measure {
+                     self.input.leave()?;
+                     console::edit(2)?;
++                }
++                if self.trial==Trial::Concurrent && matches!(&self.source,Some(Source::Pages(_))) {
++                    self.trial=Trial::Normal;
++                    let h=self.fs.open_at(0,self.path.as_bytes(),w::WRITABLE)?;
++                    self.fs.write(h,12345,b"?")?;
++                    self.fs.sync(h)?;self.fs.close(h)?;
+                 }
+                 self.save()?;
+                 Ok(0)

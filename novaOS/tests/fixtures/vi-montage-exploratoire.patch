@@ -1,0 +1,19 @@
+--- a/novaOS/user/storage/fileapi.rs
++++ b/novaOS/user/storage/fileapi.rs
+@@ -64,7 +64,15 @@
+         }
+         self.tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
+         rt::send_for(self.tx, self.tag, &q, 15000)?;
+-        let r = rt::receive_for(self.rx, 15000)
++        let mut received = rt::receive_for(self.rx, 15000);
++        // Banc 16 Mio uniquement : garder la même requête MOUNT et la même capacité.
++        for _ in 0..7 {
++            if q[1] != w::MOUNT || !matches!(received, Err(rt::TIMED_OUT)) {
++                break;
++            }
++            received = rt::receive_for(self.rx, 15000);
++        }
++        let r = received
+             .and_then(|r| {
+                 if r.kind == 1 && r.tag == self.tag && r.len == 128 && r.payload[..2] == q[..2] {
+                     Ok(r)

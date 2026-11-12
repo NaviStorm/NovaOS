@@ -128,9 +128,72 @@ impl Client {
         Ok(w::word(&self.request(q)?, 16))
     }
     pub fn read(&mut self, h: u64, off: u64, out: &mut [u8]) -> rt::Result<usize> {
+        self.read_fragments(h, off, out, false)
+    }
+
+    /// Les fragments sont toujours reçus sur le canal local du fichier ouvert.
+    pub fn read_grouped(&mut self, h: u64, off: u64, out: &mut [u8]) -> rt::Result<usize> {
+        let mut done = 0;
+        for window in out.chunks_mut(w::READ_WINDOW) {
+            let offset = off.checked_add(done as u64).ok_or(rt::BAD_ARGUMENT)?;
+            let n = self.read_fragments(h, offset, window, window.len() > w::FRAGMENT)?;
+            done += n;
+            if n != window.len() {
+                break;
+            }
+        }
+        Ok(done)
+    }
+
+    /// La révision n’est acquise qu’après réception de toute la fenêtre.
+    pub fn read_version(&mut self, h: u64, off: u64, out: &mut [u8], rev: u64) -> rt::Result<u64> {
+        if out.is_empty() || out.len() > w::READ_WINDOW {
+            return Err(rt::BAD_ARGUMENT);
+        }
+        let len = out.len();
+        let mut next = rev;
+        for (index, chunk) in out.chunks_mut(w::FRAGMENT).enumerate() {
+            let mut q = w::frame(w::READ, self.session, h);
+            if index == 0 {
+                q[2] = w::IF_REVISION;
+                w::set(&mut q, w::PAYLOAD, rev);
+            } else {
+                q[2] = w::CONTINUE;
+            }
+            w::size(&mut q, chunk.len());
+            w::set(
+                &mut q,
+                24,
+                off.checked_add((index * w::FRAGMENT) as u64)
+                    .ok_or(rt::LIMIT)?,
+            );
+            w::set(&mut q, 32, len as u64);
+            let a = self.request(q)?;
+            if w::length(&a) != chunk.len() {
+                return Err(rt::REVOKED);
+            }
+            if index == 0 {
+                next = w::word(&a, 32);
+            }
+            chunk.copy_from_slice(&a[w::PAYLOAD..w::PAYLOAD + chunk.len()]);
+        }
+        Ok(next)
+    }
+    fn read_fragments(
+        &mut self,
+        h: u64,
+        off: u64,
+        out: &mut [u8],
+        grouped: bool,
+    ) -> rt::Result<usize> {
+        let total = out.len();
         let mut done = 0;
         for chunk in out.chunks_mut(w::FRAGMENT) {
             let mut q = w::frame(w::READ, self.session, h);
+            if grouped {
+                q[2] = if done == 0 { w::START } else { w::CONTINUE };
+                w::set(&mut q, 32, total as u64);
+            }
             w::size(&mut q, chunk.len());
             w::set(
                 &mut q,

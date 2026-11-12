@@ -125,6 +125,12 @@ pub(super) fn admit(c: &mut Client, targets: &[Target]) -> rt::Result<()> {
     c.handles
         .try_reserve(targets.len())
         .map_err(|_| rt::NO_MEMORY)?;
+    if let [dest, src] = targets
+        && dest.scope == w::SELECT_NEW
+        && src.scope == w::SELECT_FILE
+    {
+        c.copy_source = Some(2);
+    }
     for (i, t) in targets.iter().enumerate() {
         let rights = match t.scope {
             w::SELECT_FILE => w::READABLE,

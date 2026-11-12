@@ -1,0 +1,24 @@
+--- a/components/coreutils/text.rs
++++ b/components/coreutils/text.rs
+@@ -17,2 +17,5 @@
+     if !matches!(c.read_grouped(h,start,&mut buf[..176]),Err(rt::BAD_ARGUMENT | rt::DENIED)) {
++        return Err(rt::REFUSED);
++    }
++    if !matches!(c.read_version(h,start,&mut buf[..176],0),Err(rt::BAD_ARGUMENT | rt::DENIED)) {
+         return Err(rt::REFUSED);
+--- a/novaOS/user/storage/fileclient.rs
++++ b/novaOS/user/storage/fileclient.rs
+@@ -76,2 +76,13 @@
+     }
++    let stat=c.simple(w::STAT,f)?;
++    let rev=w::word(&stat,w::PAYLOAD+8);
++    let mut pinned=[0xa5;176];
++    ensure(c.read_version(f,0,&mut pinned,rev^1).err()==Some(rt::REVOKED))?;
++    ensure(pinned==[0xa5;176])?;
++    let current=c.read_version(f,0,&mut pinned,rev)?;
++    ensure(pinned==expected[..176] && current==w::word(&c.simple(w::STAT,f)?,w::PAYLOAD+8))?;
++    let mut invalid=frame(w::IF_REVISION,c.session,f,0,176,88);
++    w::set(&mut invalid,w::PAYLOAD,current);
++    invalid[w::PAYLOAD+8]=1;
++    ensure(c.request(invalid).err()==Some(rt::BAD_ARGUMENT))?;
+     let second = c.open(b"/sortie",w::READABLE)?;

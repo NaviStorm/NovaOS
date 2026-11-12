@@ -151,6 +151,39 @@ impl History {
             self.applied > 0
         }
     }
+    /// Les pages lues depuis l'édition ont pu occuper le trou laissé par une
+    /// suppression. Réserver le maximum du groupe avant sa première mutation.
+    pub fn growth(&self, redo: bool) -> usize {
+        let mut i = self.applied;
+        let (mut delta, mut peak) = (0isize, 0isize);
+        loop {
+            let index = if redo {
+                i
+            } else if let Some(n) = i.checked_sub(1) {
+                n
+            } else {
+                break;
+            };
+            let Some(edit) = self.edits.get(index) else {
+                break;
+            };
+            let d = edit.inserted.len() as isize - edit.removed.len() as isize;
+            delta += if redo { d } else { -d };
+            peak = peak.max(delta);
+            if redo {
+                i += 1;
+                if self.edits.get(i).is_none_or(|e| e.first) {
+                    break;
+                }
+            } else {
+                i -= 1;
+                if edit.first {
+                    break;
+                }
+            }
+        }
+        peak as usize
+    }
     pub fn replay(&mut self, gap: &mut Gap, redo: bool) -> Option<usize> {
         self.boundary();
         loop {

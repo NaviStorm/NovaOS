@@ -46,6 +46,15 @@ struct File {
     kind: Kind,
     rights: u8,
 }
+/// Le propriétaire est la session Client. Chaque fragment doit retrouver le handle vivant.
+struct ReadWindow {
+    handle: u64,
+    start: u64,
+    total: usize,
+    generation: u64,
+    sent: usize,
+    bytes: Vec<u8>,
+}
 struct Pending {
     file: u64,
     offset: u64,
@@ -63,9 +72,11 @@ struct Client {
     mounted: bool,
     closed: bool,
     scoped: bool,
+    copy_source: Option<u64>,
     rights: u8,
     cwd: (u64, u8),
     handles: Vec<File>,
+    read_window: Option<ReadWindow>,
     paths: [PathInput; 2],
     targets: Vec<selected::Target>,
     copy: Option<(u64, String, u64)>,
@@ -77,9 +88,11 @@ impl Client {
             mounted: false,
             closed: false,
             scoped: false,
+            copy_source: None,
             rights,
             cwd: (0, 0),
             handles: Vec::new(),
+            read_window: None,
             paths: Default::default(),
             targets: Vec::new(),
             copy: None,
@@ -135,6 +148,8 @@ impl Session<'_, '_> {
                 | w::READDIR
         ) {
             n
+        } else if op == w::READ && flags == w::IF_REVISION {
+            8
         } else {
             0
         };
@@ -142,6 +157,9 @@ impl Session<'_, '_> {
         let plain = flags == 0 && n == 0 && offset == 0 && total == 0;
         if let Some(e) = self.failed {
             return Err(e);
+        }
+        if !(op == w::READ && flags == w::CONTINUE) {
+            client.read_window = None;
         }
         if op == w::MOUNT {
             shape(plain && session == 0 && handle == 0)?;
@@ -200,6 +218,7 @@ impl Session<'_, '_> {
             w::READ | w::READDIR | w::MKDIR_AT | w::RMDIR | w::UNLINK_AT | w::RENAME_AT | w::SYNC
         ) || matches!(op, w::OPEN | w::OPEN_AT) && flags & w::CREATE != 0;
         if needs_date
+            && !(op == w::READ && flags == w::CONTINUE)
             && self.writable
             && self
                 .fs
@@ -325,7 +344,7 @@ impl Session<'_, '_> {
                 shape(file.kind == Kind::File)?;
                 match op {
                     w::READ => {
-                        shape(flags == 0 && total == 0 && offset.checked_add(n as u64).is_some())?;
+                        shape(offset.checked_add(n as u64).is_some())?;
                         if file.rights & w::READABLE == 0 {
                             return Err(rt::DENIED);
                         }
@@ -336,6 +355,66 @@ impl Session<'_, '_> {
                         {
                             return Err(w::BUSY);
                         }
+                        if flags != 0 {
+                            shape(
+                                (!client.scoped
+                                    || (client.copy_source == Some(handle) && flags != w::START))
+                                    && matches!(flags, w::START | w::CONTINUE | w::IF_REVISION)
+                                    && (1..=w::READ_WINDOW as u64).contains(&total)
+                                    && n != 0,
+                            )?;
+                            if self.pending.is_some() {
+                                return Err(w::BUSY);
+                            }
+                            let total = total as usize;
+                            let mut window = if flags != w::CONTINUE {
+                                shape(
+                                    offset.checked_add(total as u64).is_some()
+                                        && n == total.min(w::FRAGMENT),
+                                )?;
+                                // Pas d’interposition entre comparaison, lecture et publication de
+                                // la révision résultant d’une éventuelle mise à jour de la date.
+                                if flags == w::IF_REVISION
+                                    && fs.stat_id(file.id).map_err(error)?.revision
+                                        != w::word(q, w::PAYLOAD)
+                                {
+                                    return Err(rt::REVOKED);
+                                }
+                                let bytes =
+                                    fs.read_access_id(file.id, offset, total).map_err(error)?;
+                                if flags == w::IF_REVISION {
+                                    w::set(a, 32, fs.stat_id(file.id).map_err(error)?.revision);
+                                }
+                                ReadWindow {
+                                    handle,
+                                    start: offset,
+                                    total,
+                                    generation: fs.generation(),
+                                    sent: 0,
+                                    bytes,
+                                }
+                            } else {
+                                client.read_window.take().ok_or(rt::REVOKED)?
+                            };
+                            if window.handle != handle || window.generation != fs.generation() {
+                                return Err(rt::REVOKED);
+                            }
+                            shape(
+                                window.total == total
+                                    && window.start + window.sent as u64 == offset
+                                    && n == (total - window.sent).min(w::FRAGMENT),
+                            )?;
+                            let count = n.min(window.bytes.len() - window.sent);
+                            a[w::PAYLOAD..w::PAYLOAD + count]
+                                .copy_from_slice(&window.bytes[window.sent..window.sent + count]);
+                            w::size(a, count);
+                            window.sent += count;
+                            if count == n && window.sent < total {
+                                client.read_window = Some(window);
+                            }
+                            return Ok(());
+                        }
+                        shape(total == 0)?;
                         let bytes = fs.read_access_id(file.id, offset, n).map_err(error)?;
                         a[w::PAYLOAD..w::PAYLOAD + bytes.len()].copy_from_slice(&bytes);
                         let mut count = bytes.len();
@@ -665,7 +744,10 @@ pub(crate) fn initialiser(dev: &IpcDevice<'_>) -> rt::Result<()> {
     fs.verify().map_err(error)?;
     if fs.atime_policy() != Some(Atime::Relative)
         || fs.read("/systeme", 0, 64).map_err(error)? != contenu
-        || fs.read("/verification.nsh", 0, script.len() + 1).map_err(error)? != script
+        || fs
+            .read("/verification.nsh", 0, script.len() + 1)
+            .map_err(error)?
+            != script
         || fs.times("/systeme").map_err(error)?.btime != utc
     {
         return Err(w::CORRUPT);

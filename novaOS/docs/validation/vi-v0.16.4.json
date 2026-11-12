@@ -1,0 +1,1464 @@
+{
+  "reference": "562cf137457e4ab8d8e9038dcd957a9a4dfe43b8",
+  "image_sha256": "88f70a1f45b4b0a09027bc665cce5df6418f4f52af35cfeb51183f866d9a121c",
+  "mesure": "12–13 novembre 2026, QEMU 11.1.3 TCG 1 vCPU 256 Mio, terminal 24x80, mesures murales",
+  "macos": {
+    "version": "VIM - Vi IMproved 9.1 (2024 Jan 02, compiled Oct  3 2026 17:07:02)",
+    "donnees_denses": true,
+    "cache": "après création, non purgé",
+    "resultats": [
+      {
+        "octets": 100000000,
+        "premier_ecran_ms": 136.742
+      },
+      {
+        "octets": 104857600,
+        "premier_ecran_ms": 143.757
+      }
+    ]
+  },
+  "architectures": {
+    "aarch64": {
+      "denses": [
+        {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 32.927,
+          "transfert_et_preparation_ms": 82.058,
+          "retour_G_ms": 8.256,
+          "premier_rendu_ms": 7.904,
+          "ouverture_ms": 122.888,
+          "navigation_G_ms": 19222.565,
+          "transfert_avant_oui_ms": 11.187,
+          "publication_apres_oui_ms": 65725.199,
+          "resident_vi_kio": [
+            316,
+            380,
+            444
+          ]
+        },
+        {
+          "octets": 1048576,
+          "lecture_et_lancement_ms": 14.836,
+          "transfert_et_preparation_ms": 73.687,
+          "retour_G_ms": 8.216,
+          "premier_rendu_ms": 10.504,
+          "ouverture_ms": 99.027,
+          "navigation_G_ms": 4746.864,
+          "transfert_avant_oui_ms": 9.093,
+          "publication_apres_oui_ms": 16460.495,
+          "resident_vi_kio": [
+            316,
+            380,
+            444
+          ]
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 17.661,
+          "transfert_et_preparation_ms": 73.248,
+          "retour_G_ms": 1.283,
+          "premier_rendu_ms": 5.927,
+          "ouverture_ms": 96.837,
+          "navigation_G_ms": 288.503,
+          "transfert_avant_oui_ms": 8.46,
+          "publication_apres_oui_ms": 1185.134,
+          "resident_vi_kio": [
+            316,
+            380,
+            444
+          ]
+        },
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 83.928,
+          "transfert_et_preparation_ms": 7.01,
+          "retour_G_ms": 0.32,
+          "premier_rendu_ms": 9.086,
+          "ouverture_ms": 100.024,
+          "navigation_G_ms": 0.81,
+          "transfert_avant_oui_ms": 5.029,
+          "publication_apres_oui_ms": 295.774,
+          "resident_vi_kio": [
+            316,
+            380,
+            380
+          ]
+        }
+      ],
+      "sondes": [
+        {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 32.432,
+          "transfert_et_preparation_ms": 82.522,
+          "transfert_sonde_ms": 78.724,
+          "preparation_sonde_ms": 0.326,
+          "retour_G_ms": 8.28,
+          "premier_rendu_ms": 4.745,
+          "ouverture_ms": 119.7,
+          "navigation_G_ms": 19369.482,
+          "transfert_avant_oui_ms": 11.637,
+          "publication_apres_oui_ms": 65591.469,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 1048576,
+          "lecture_et_lancement_ms": 14.82,
+          "transfert_et_preparation_ms": 72.884,
+          "transfert_sonde_ms": 66.359,
+          "preparation_sonde_ms": 0.325,
+          "retour_G_ms": 8.044,
+          "premier_rendu_ms": 5.946,
+          "ouverture_ms": 93.651,
+          "navigation_G_ms": 4780.085,
+          "transfert_avant_oui_ms": 9.261,
+          "publication_apres_oui_ms": 16599.713,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 16.776,
+          "transfert_et_preparation_ms": 74.211,
+          "transfert_sonde_ms": 67.374,
+          "preparation_sonde_ms": 0.325,
+          "retour_G_ms": 1.323,
+          "premier_rendu_ms": 8.805,
+          "ouverture_ms": 99.792,
+          "navigation_G_ms": 291.912,
+          "transfert_avant_oui_ms": 8.85,
+          "publication_apres_oui_ms": 1192.477,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 83.592,
+          "transfert_et_preparation_ms": 7.646,
+          "transfert_sonde_ms": 0.817,
+          "preparation_sonde_ms": 0.291,
+          "retour_G_ms": 0.426,
+          "premier_rendu_ms": 7.485,
+          "ouverture_ms": 98.722,
+          "navigation_G_ms": 0.873,
+          "transfert_avant_oui_ms": 5.144,
+          "publication_apres_oui_ms": 300.381,
+          "resident_vi_kio": [
+            320,
+            384,
+            384
+          ]
+        }
+      ],
+      "compteurs_vi": [
+        {
+          "octets": 4194304,
+          "pic_tas_vi_octets": 131072,
+          "allocations_vi": 52,
+          "resident_pic_sonde_kio": 448
+        },
+        {
+          "octets": 1048576,
+          "pic_tas_vi_octets": 131072,
+          "allocations_vi": 52,
+          "resident_pic_sonde_kio": 448
+        },
+        {
+          "octets": 65536,
+          "pic_tas_vi_octets": 131072,
+          "allocations_vi": 51,
+          "resident_pic_sonde_kio": 448
+        },
+        {
+          "octets": 1024,
+          "pic_tas_vi_octets": 65536,
+          "allocations_vi": 38,
+          "resident_pic_sonde_kio": 384
+        }
+      ],
+      "marqueurs": [
+        "VI-PROF shell-entree alloc=20 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF shell-charge alloc=23 tas=65536 pic=65536 rpc=4 read=0 moteur=0",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF fin-index alloc=40 tas=131072 pic=131072 rpc=33822 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=52 tas=131072 pic=131072 rpc=33964 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=37 tas=196608 pic=196608 rpc=48139 read=96209 moteur=2047",
+        "VI-PROF shell-entree alloc=57 tas=196608 pic=196608 rpc=48140 read=96209 moteur=2047",
+        "VI-PROF shell-charge alloc=60 tas=196608 pic=196608 rpc=48143 read=96209 moteur=2047",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF fin-index alloc=40 tas=131072 pic=131072 rpc=8478 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=52 tas=131072 pic=131072 rpc=8620 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=74 tas=196608 pic=196608 rpc=60182 read=120226 moteur=2558",
+        "VI-PROF shell-entree alloc=94 tas=196608 pic=196608 rpc=60183 read=120226 moteur=2558",
+        "VI-PROF shell-charge alloc=97 tas=196608 pic=196608 rpc=60186 read=120226 moteur=2558",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF fin-index alloc=40 tas=131072 pic=131072 rpc=558 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=51 tas=131072 pic=131072 rpc=694 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=111 tas=196608 pic=196608 rpc=60945 read=121683 moteur=2589",
+        "VI-PROF shell-entree alloc=130 tas=196608 pic=196608 rpc=60946 read=121683 moteur=2589",
+        "VI-PROF shell-charge alloc=133 tas=196608 pic=196608 rpc=60976 read=121708 moteur=2592",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=29 tas=65536 pic=65536 rpc=52 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=38 tas=65536 pic=65536 rpc=167 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=144 tas=196608 pic=196608 rpc=60980 read=121708 moteur=2592"
+      ],
+      "marqueurs_service": [
+        "FS-PROF op=7 h=1 alloc=690971 tas=1310720 pic=1310720 pages=17593",
+        "FS-PROF op=7 h=3 alloc=860498 tas=1310720 pic=1310720 pages=19932",
+        "FS-PROF op=7 h=5 alloc=873735 tas=1310720 pic=1310720 pages=20090",
+        "FS-PROF op=17 h=7 alloc=873880 tas=1310720 pic=1310720 pages=20092",
+        "FS-PROF op=17 h=7 alloc=874123 tas=1310720 pic=1310720 pages=20096",
+        "FS-PROF op=7 h=7 alloc=874340 tas=1310720 pic=1310720 pages=20098"
+      ],
+      "creux_secteurs_512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 149.36,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 111.833,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 106.171,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 105.111,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 101.376,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": false
+      },
+      "creux_secteurs_4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 108.796,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 78.674,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 77.255,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 76.129,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 75.762,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": true,
+        "conflit_sauvegarde_sans_lecture": true,
+        "publication_depuis_vue_finale": 131073,
+        "publication_deux_zones": 131074
+      },
+      "essais_deux_zones_512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 144.46,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 104.716,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 106.471,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 99.506,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 96.755,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": true,
+        "conflit_sauvegarde_sans_lecture": true,
+        "publication_depuis_vue_finale": 131073,
+        "publication_deux_zones": 131074
+      },
+      "octets_relus_final_deux_zones": 131074,
+      "production_100M_et_1G": [
+        {
+          "architecture": "aarch64",
+          "octets_denses": 104857600,
+          "montage": false,
+          "statut_client": 8,
+          "vi_lance": false
+        },
+        {
+          "architecture": "aarch64",
+          "octets_denses": 1073741824,
+          "montage": false,
+          "statut_client": 8,
+          "vi_lance": false
+        }
+      ],
+      "exploration_16M": {
+        "octets": 16777216,
+        "lecture_et_lancement_ms": 32.235,
+        "transfert_et_preparation_ms": 84.663,
+        "retour_G_ms": 7.767,
+        "premier_rendu_ms": 4.703,
+        "ouverture_ms": 121.601,
+        "navigation_G_ms": 75524.05,
+        "resident_vi_kio": [
+          316,
+          380
+        ]
+      },
+      "regressions_novaos": {
+        "demarrages": [
+          "aarch64",
+          "aarch64-abi-test-256",
+          "aarch64-abi-test-256-pan",
+          "aarch64-storage-test",
+          "aarch64-proc-test",
+          "aarch64-proc-boot-fault",
+          "aarch64-mem-test",
+          "aarch64-mem-ro",
+          "aarch64-mem-alias",
+          "aarch64-mem-page-ro",
+          "aarch64-mem-nx",
+          "aarch64-mem-absent",
+          "aarch64-heap-test",
+          "aarch64-heap-oom",
+          "aarch64-heap-corrupt",
+          "aarch64-heap-guard",
+          "aarch64-heap-infallible",
+          "aarch64-heap-reentrant",
+          "aarch64-heap-metadata",
+          "aarch64-sched-test",
+          "aarch64-sched-guard",
+          "aarch64-sched-fpu",
+          "aarch64-sched-stress",
+          "aarch64-sched-endurance-15s",
+          "aarch64-ipc-test-256"
+        ],
+        "bloc": [
+          "aarch64/512 : motif invité et retrait",
+          "aarch64/512 : protections DMA et interruption pendante",
+          "aarch64/512 : baux, descripteurs, panne et relance",
+          "aarch64/512 : panne en vol et quarantaine",
+          "aarch64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "aarch64/512 : eio-read",
+          "aarch64/512 : eio-write",
+          "aarch64/512 : eio-flush",
+          "aarch64/512 : droit en écriture refusé",
+          "aarch64/512 : profil de démarrage manuel en lecture seule",
+          "aarch64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "aarch64/512 : Device NovaFS, refus du support RO transmis au client",
+          "aarch64/4096 : motif invité et retrait",
+          "aarch64/4096 : protections DMA et interruption pendante",
+          "aarch64/4096 : baux, descripteurs, panne et relance",
+          "aarch64/4096 : panne en vol et quarantaine",
+          "aarch64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "aarch64/4096 : eio-read",
+          "aarch64/4096 : eio-write",
+          "aarch64/4096 : eio-flush",
+          "aarch64/4096 : droit en écriture refusé",
+          "aarch64/4096 : profil de démarrage manuel en lecture seule",
+          "aarch64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "aarch64/4096 : Device NovaFS, refus du support RO transmis au client"
+        ],
+        "elf_processus_ipc": [
+          "aarch64-elf-test",
+          "aarch64-proc-lifecycle",
+          "aarch64-ipc-races-256"
+        ],
+        "vi_secteurs": {
+          "512": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "elf_collectes": 17,
+            "fichiers_relus": 16,
+            "pic_pages_privees_observe": 95,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_source_creuse_binaire_octets": 536870912,
+            "script_apres_redemarrage": true,
+            "octets_apres_redemarrage": true
+          },
+          "4096": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "elf_collectes": 17,
+            "fichiers_relus": 16,
+            "pic_pages_privees_observe": 95,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_source_creuse_binaire_octets": 536870912,
+            "script_apres_redemarrage": true,
+            "octets_apres_redemarrage": true
+          }
+        },
+        "vi_volumes": [
+          {
+            "octets": 8192,
+            "ouverture_ms": 390.847833,
+            "insertion_ms": 3.249542,
+            "suppression_ms": 1.42225,
+            "navigation_G_ms": 1.607208,
+            "pages_privees_pile_comprise": [
+              79,
+              95,
+              95
+            ]
+          },
+          {
+            "octets": 65536,
+            "ouverture_ms": 332.221084,
+            "insertion_ms": 3.561541,
+            "suppression_ms": 1.476917,
+            "navigation_G_ms": 289.349334,
+            "pages_privees_pile_comprise": [
+              79,
+              95,
+              111
+            ]
+          },
+          {
+            "octets": 1048576,
+            "ouverture_ms": 335.567125,
+            "insertion_ms": 2.222584,
+            "suppression_ms": 0.966667,
+            "navigation_G_ms": 4545.512583,
+            "pages_privees_pile_comprise": [
+              79,
+              95,
+              111
+            ]
+          },
+          {
+            "octets": 4194304,
+            "ouverture_ms": 342.35525,
+            "insertion_ms": 3.278625,
+            "suppression_ms": 1.745083,
+            "navigation_G_ms": 18850.983917,
+            "pages_privees_pile_comprise": [
+              79,
+              95,
+              111
+            ]
+          }
+        ],
+        "nsh_kio": 460,
+        "memoire_darwin_tests": 7
+      },
+      "index_apres_edition_4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 108.707,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 73.668,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 79.539,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 80.728,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 75.689,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": false,
+        "conflit_sauvegarde_sans_lecture": false,
+        "index_apres_insertion_ligne": true,
+        "publication_depuis_vue_finale": 131073,
+        "publication_deux_zones": 131074
+      },
+      "revision_et_portees_512_4096": true,
+      "production_dense_16M": {
+        "architecture": "aarch64",
+        "octets_denses": 16777216,
+        "montage": false,
+        "statut_client": 8,
+        "vi_lance": false
+      },
+      "essais_deux_zones_4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 108.796,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 78.674,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 77.255,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 76.129,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 75.762,
+            "resident_lancement_et_premier_ecran_kio": [
+              316,
+              380
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": true,
+        "conflit_sauvegarde_sans_lecture": true,
+        "publication_depuis_vue_finale": 131073,
+        "publication_deux_zones": 131074
+      },
+      "edition_deux_zones_128K_resident_kio": [
+        316,
+        380,
+        444,
+        636
+      ]
+    },
+    "x86_64": {
+      "denses": [
+        {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 20.351,
+          "transfert_et_preparation_ms": 70.242,
+          "retour_G_ms": 7.334,
+          "premier_rendu_ms": 4.681,
+          "ouverture_ms": 95.274,
+          "navigation_G_ms": 16957.808,
+          "transfert_avant_oui_ms": 11.303,
+          "publication_apres_oui_ms": 57526.062,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 1048576,
+          "lecture_et_lancement_ms": 13.244,
+          "transfert_et_preparation_ms": 64.296,
+          "retour_G_ms": 7.25,
+          "premier_rendu_ms": 5.787,
+          "ouverture_ms": 83.327,
+          "navigation_G_ms": 4244.816,
+          "transfert_avant_oui_ms": 9.424,
+          "publication_apres_oui_ms": 14414.505,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 15.632,
+          "transfert_et_preparation_ms": 64.117,
+          "retour_G_ms": 1.336,
+          "premier_rendu_ms": 7.006,
+          "ouverture_ms": 86.755,
+          "navigation_G_ms": 255.392,
+          "transfert_avant_oui_ms": 8.777,
+          "publication_apres_oui_ms": 1025.04,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 73.464,
+          "transfert_et_preparation_ms": 6.673,
+          "retour_G_ms": 0.296,
+          "premier_rendu_ms": 5.54,
+          "ouverture_ms": 85.676,
+          "navigation_G_ms": 0.852,
+          "transfert_avant_oui_ms": 4.796,
+          "publication_apres_oui_ms": 256.239,
+          "resident_vi_kio": [
+            320,
+            384,
+            384
+          ]
+        }
+      ],
+      "sondes": [
+        {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 19.957,
+          "transfert_et_preparation_ms": 70.179,
+          "transfert_sonde_ms": 67.915,
+          "preparation_sonde_ms": 0.331,
+          "retour_G_ms": 7.119,
+          "premier_rendu_ms": 4.139,
+          "ouverture_ms": 94.275,
+          "navigation_G_ms": 16857.812,
+          "transfert_avant_oui_ms": 10.418,
+          "publication_apres_oui_ms": 56920.614,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 1048576,
+          "lecture_et_lancement_ms": 16.126,
+          "transfert_et_preparation_ms": 71.041,
+          "transfert_sonde_ms": 65.106,
+          "preparation_sonde_ms": 0.003,
+          "retour_G_ms": 7.235,
+          "premier_rendu_ms": 4.26,
+          "ouverture_ms": 91.427,
+          "navigation_G_ms": 4162.579,
+          "transfert_avant_oui_ms": 8.495,
+          "publication_apres_oui_ms": 14297.623,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 14.752,
+          "transfert_et_preparation_ms": 64.654,
+          "transfert_sonde_ms": 58.091,
+          "preparation_sonde_ms": 0.324,
+          "retour_G_ms": 1.256,
+          "premier_rendu_ms": 7.071,
+          "ouverture_ms": 86.477,
+          "navigation_G_ms": 250.9,
+          "transfert_avant_oui_ms": 7.756,
+          "publication_apres_oui_ms": 1030.111,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 76.105,
+          "transfert_et_preparation_ms": 7.705,
+          "transfert_sonde_ms": 0.85,
+          "preparation_sonde_ms": 0.364,
+          "retour_G_ms": 0.259,
+          "premier_rendu_ms": 7.733,
+          "ouverture_ms": 91.544,
+          "navigation_G_ms": 1.006,
+          "transfert_avant_oui_ms": 4.741,
+          "publication_apres_oui_ms": 256.283,
+          "resident_vi_kio": [
+            320,
+            384,
+            384
+          ]
+        }
+      ],
+      "compteurs_vi": [
+        {
+          "octets": 4194304,
+          "pic_tas_vi_octets": 131072,
+          "allocations_vi": 52,
+          "resident_pic_sonde_kio": 448
+        },
+        {
+          "octets": 1048576,
+          "pic_tas_vi_octets": 131072,
+          "allocations_vi": 52,
+          "resident_pic_sonde_kio": 448
+        },
+        {
+          "octets": 65536,
+          "pic_tas_vi_octets": 131072,
+          "allocations_vi": 51,
+          "resident_pic_sonde_kio": 448
+        },
+        {
+          "octets": 1024,
+          "pic_tas_vi_octets": 65536,
+          "allocations_vi": 38,
+          "resident_pic_sonde_kio": 384
+        }
+      ],
+      "marqueurs": [
+        "VI-PROF shell-entree alloc=20 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF shell-charge alloc=23 tas=65536 pic=65536 rpc=4 read=0 moteur=0",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF fin-index alloc=40 tas=131072 pic=131072 rpc=33822 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=52 tas=131072 pic=131072 rpc=33964 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=37 tas=196608 pic=196608 rpc=48139 read=96209 moteur=2047",
+        "VI-PROF shell-entree alloc=57 tas=196608 pic=196608 rpc=48140 read=96209 moteur=2047",
+        "VI-PROF shell-charge alloc=60 tas=196608 pic=196608 rpc=48143 read=96209 moteur=2047",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF fin-index alloc=40 tas=131072 pic=131072 rpc=8478 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=52 tas=131072 pic=131072 rpc=8620 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=74 tas=196608 pic=196608 rpc=60182 read=120226 moteur=2558",
+        "VI-PROF shell-entree alloc=94 tas=196608 pic=196608 rpc=60183 read=120226 moteur=2558",
+        "VI-PROF shell-charge alloc=97 tas=196608 pic=196608 rpc=60186 read=120226 moteur=2558",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF fin-index alloc=40 tas=131072 pic=131072 rpc=558 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=51 tas=131072 pic=131072 rpc=694 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=111 tas=196608 pic=196608 rpc=60945 read=121683 moteur=2589",
+        "VI-PROF shell-entree alloc=130 tas=196608 pic=196608 rpc=60946 read=121683 moteur=2589",
+        "VI-PROF shell-charge alloc=133 tas=196608 pic=196608 rpc=60976 read=121708 moteur=2592",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=10 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=29 tas=65536 pic=65536 rpc=52 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=38 tas=65536 pic=65536 rpc=167 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=144 tas=196608 pic=196608 rpc=60980 read=121708 moteur=2592"
+      ],
+      "marqueurs_service": [
+        "FS-PROF op=7 h=1 alloc=690971 tas=1310720 pic=1310720 pages=17593",
+        "FS-PROF op=7 h=3 alloc=860498 tas=1310720 pic=1310720 pages=19932",
+        "FS-PROF op=7 h=5 alloc=873735 tas=1310720 pic=1310720 pages=20090",
+        "FS-PROF op=17 h=7 alloc=873880 tas=1310720 pic=1310720 pages=20092",
+        "FS-PROF op=17 h=7 alloc=874123 tas=1310720 pic=1310720 pages=20096",
+        "FS-PROF op=7 h=7 alloc=874340 tas=1310720 pic=1310720 pages=20098"
+      ],
+      "creux_secteurs_512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 118.841,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 88.924,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 89.344,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 89.3,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 91.626,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": false
+      },
+      "creux_secteurs_4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 86.097,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 62.855,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 64.168,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 64.279,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 65.428,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": true,
+        "conflit_sauvegarde_sans_lecture": true,
+        "publication_depuis_vue_finale": 131073,
+        "publication_deux_zones": 131074
+      },
+      "essais_deux_zones_512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 117.19,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 86.928,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 90.135,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 84.62,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 84.204,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": true,
+        "conflit_sauvegarde_sans_lecture": true,
+        "publication_depuis_vue_finale": 131073,
+        "publication_deux_zones": 131074
+      },
+      "octets_relus_final_deux_zones": 131074,
+      "production_100M_et_1G": [
+        {
+          "architecture": "x86_64",
+          "octets_denses": 104857600,
+          "montage": false,
+          "statut_client": 8,
+          "vi_lance": false
+        },
+        {
+          "architecture": "x86_64",
+          "octets_denses": 1073741824,
+          "montage": false,
+          "statut_client": 8,
+          "vi_lance": false
+        }
+      ],
+      "exploration_16M": {
+        "octets": 16777216,
+        "lecture_et_lancement_ms": 20.707,
+        "transfert_et_preparation_ms": 74.05,
+        "retour_G_ms": 7.401,
+        "premier_rendu_ms": 4.202,
+        "ouverture_ms": 98.959,
+        "navigation_G_ms": 67098.695,
+        "resident_vi_kio": [
+          320,
+          384
+        ]
+      },
+      "regressions_novaos": {
+        "demarrages": [
+          "std",
+          "none",
+          "x86_64-abi-test-256",
+          "x86_64-storage-test",
+          "x86_64-proc-test",
+          "x86_64-proc-boot-fault",
+          "x86_64-mem-test",
+          "x86_64-mem-ro",
+          "x86_64-mem-alias",
+          "x86_64-mem-page-ro",
+          "x86_64-mem-nx",
+          "x86_64-mem-absent",
+          "x86_64-heap-test",
+          "x86_64-heap-oom",
+          "x86_64-heap-corrupt",
+          "x86_64-heap-guard",
+          "x86_64-heap-infallible",
+          "x86_64-heap-reentrant",
+          "x86_64-heap-metadata",
+          "x86_64-sched-test",
+          "x86_64-sched-guard",
+          "x86_64-sched-fpu",
+          "x86_64-sched-stress",
+          "x86_64-sched-endurance-15s",
+          "x86_64-ipc-test-256"
+        ],
+        "bloc": [
+          "x86_64/512 : motif invité et retrait",
+          "x86_64/512 : protections DMA et interruption pendante",
+          "x86_64/512 : baux, descripteurs, panne et relance",
+          "x86_64/512 : panne en vol et quarantaine",
+          "x86_64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "x86_64/512 : eio-read",
+          "x86_64/512 : eio-write",
+          "x86_64/512 : eio-flush",
+          "x86_64/512 : droit en écriture refusé",
+          "x86_64/512 : profil de démarrage manuel en lecture seule",
+          "x86_64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "x86_64/512 : Device NovaFS, refus du support RO transmis au client",
+          "x86_64/4096 : motif invité et retrait",
+          "x86_64/4096 : protections DMA et interruption pendante",
+          "x86_64/4096 : baux, descripteurs, panne et relance",
+          "x86_64/4096 : panne en vol et quarantaine",
+          "x86_64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+          "x86_64/4096 : eio-read",
+          "x86_64/4096 : eio-write",
+          "x86_64/4096 : eio-flush",
+          "x86_64/4096 : droit en écriture refusé",
+          "x86_64/4096 : profil de démarrage manuel en lecture seule",
+          "x86_64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+          "x86_64/4096 : Device NovaFS, refus du support RO transmis au client"
+        ],
+        "elf_processus_ipc": [
+          "x86_64-elf-test",
+          "x86_64-proc-lifecycle",
+          "x86_64-ipc-races-256"
+        ],
+        "vi_secteurs": {
+          "512": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "elf_collectes": 17,
+            "fichiers_relus": 16,
+            "pic_pages_privees_observe": 96,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_source_creuse_binaire_octets": 536870912,
+            "script_apres_redemarrage": true,
+            "octets_apres_redemarrage": true
+          },
+          "4096": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "elf_collectes": 17,
+            "fichiers_relus": 16,
+            "pic_pages_privees_observe": 96,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_source_creuse_binaire_octets": 536870912,
+            "script_apres_redemarrage": true,
+            "octets_apres_redemarrage": true
+          }
+        },
+        "vi_volumes": [
+          {
+            "octets": 8192,
+            "ouverture_ms": 283.370667,
+            "insertion_ms": 1.710916,
+            "suppression_ms": 0.813584,
+            "navigation_G_ms": 0.862833,
+            "pages_privees_pile_comprise": [
+              80,
+              96,
+              96
+            ]
+          },
+          {
+            "octets": 65536,
+            "ouverture_ms": 242.571333,
+            "insertion_ms": 1.831209,
+            "suppression_ms": 0.752958,
+            "navigation_G_ms": 256.134333,
+            "pages_privees_pile_comprise": [
+              80,
+              96,
+              112
+            ]
+          },
+          {
+            "octets": 1048576,
+            "ouverture_ms": 244.015042,
+            "insertion_ms": 1.777375,
+            "suppression_ms": 0.811042,
+            "navigation_G_ms": 4144.434708,
+            "pages_privees_pile_comprise": [
+              80,
+              96,
+              112
+            ]
+          },
+          {
+            "octets": 4194304,
+            "ouverture_ms": 244.002334,
+            "insertion_ms": 1.771667,
+            "suppression_ms": 0.745125,
+            "navigation_G_ms": 16892.733541,
+            "pages_privees_pile_comprise": [
+              80,
+              96,
+              112
+            ]
+          }
+        ],
+        "nsh_kio": 472,
+        "memoire_darwin_tests": 7
+      },
+      "index_apres_edition_4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 86.682,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 64.239,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 66.59,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 64.703,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 64.935,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": false,
+        "conflit_sauvegarde_sans_lecture": false,
+        "index_apres_insertion_ligne": true,
+        "publication_depuis_vue_finale": 131073,
+        "publication_deux_zones": 131074
+      },
+      "revision_et_portees_512_4096": true,
+      "production_dense_16M": {
+        "architecture": "x86_64",
+        "octets_denses": 16777216,
+        "montage": false,
+        "statut_client": 8,
+        "vi_lance": false
+      },
+      "essais_deux_zones_4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "creux": [
+          {
+            "octets_logiques": 1048576,
+            "premier_ecran_ms": 86.097,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 4194304,
+            "premier_ecran_ms": 62.855,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 16777216,
+            "premier_ecran_ms": 64.168,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 104857600,
+            "premier_ecran_ms": 64.279,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          },
+          {
+            "octets_logiques": 1073741824,
+            "premier_ecran_ms": 65.428,
+            "resident_lancement_et_premier_ecran_kio": [
+              320,
+              384
+            ]
+          }
+        ],
+        "publication_dense_octets": 28673,
+        "suffixe_invalide_refuse": true,
+        "conflit_injecte": true,
+        "conflit_sauvegarde_sans_lecture": true,
+        "publication_depuis_vue_finale": 131073,
+        "publication_deux_zones": 131074
+      },
+      "edition_deux_zones_128K_resident_kio": [
+        320,
+        384,
+        448,
+        640
+      ]
+    }
+  },
+  "regressions_novafs": {
+    "aarch64": {
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 197,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=26.724",
+      "injections_ancres": 2304,
+      "refus_attendus": 360
+    },
+    "x86_64": {
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 197,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=42.226",
+      "injections_ancres": 2304,
+      "refus_attendus": 360
+    }
+  },
+  "regressions_dma_gic_gpt": {
+    "dma": [
+      "support",
+      "vierge",
+      "refus",
+      "confirmation-erronee",
+      "tis",
+      "deplaces",
+      "reemploi",
+      "redemarrage",
+      "fin",
+      "mbr",
+      "gpt",
+      "fat",
+      "novafs",
+      "trop-petit",
+      "erreur-lecture",
+      "mauvais-support",
+      "doublon",
+      "roles-inverses",
+      "support-inscriptible",
+      "tpm-absent",
+      "mauvaise-serie",
+      "quarantaine",
+      "coupure"
+    ],
+    "gic": [
+      "froid",
+      "el2",
+      "protection",
+      "reemploi",
+      "cd",
+      "redemarrage",
+      "coupure",
+      "reprise",
+      "autre-slot",
+      "mapkey",
+      "retrait-suspendu"
+    ],
+    "gpt4096": [
+      "non-vierge",
+      "ambigu",
+      "coupure-ecriture",
+      "reprise-ecriture",
+      "sans-consentement",
+      "erreur-lecture",
+      "coupure-installation",
+      "etat_apres_coupure",
+      "refus-apres-coupure",
+      "crc-entete",
+      "crc-tableau",
+      "donnee-supplementaire",
+      "origine-inconnue",
+      "gpt-etrangere",
+      "esp-modifiee",
+      "coupure-esp",
+      "refus-coupure-esp",
+      "coupure-p9",
+      "refus-coupure-p9"
+    ]
+  },
+  "utm": {
+    "application": "UTM",
+    "profil": "AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+    "serie": "PTY de l’application",
+    "installation": true,
+    "support_sha256": "b21130c07a0fb3e0eb7fe0a361424574f3278145052772ae319af4a46ea2b20e",
+    "disque_installe_sha256": "0b365c44fa7c88731f70a50d093b0bbfbfedb0bb4c4c121d5980ac4cdae25192",
+    "demarrages_autonomes": 2,
+    "contenu_relu": "NovaOS\n",
+    "ouverture_vi_ms": 810.098458,
+    "reouverture_apres_redemarrage_ms": 716.410916,
+    "octets_vi_relus": [
+      66560,
+      66562
+    ],
+    "scripts_vi_relus": [
+      "recettes/edite.nsh",
+      "recettes/autre.nsh"
+    ],
+    "script_installe": "/verification.nsh",
+    "script_execute_apres_redemarrage": "./recettes/preuve.nsh"
+  },
+  "images_denses_verifiees": {
+    "16": {
+      "image_octets": 33554432,
+      "sha256": "42d3bbbc6eb7fdb4bd73aeccc0b52ffbabe0f0ee2c98e84e3dfc299268858357",
+      "relecture": "16777216 octets denses relus à l’identique"
+    },
+    "100": {
+      "image_octets": 209715200,
+      "sha256": "59485e017bb6854a1b7eef65393f6c735e0a11dd38e8de1a289331f3feea0c90",
+      "relecture": "104857600 octets denses relus à l’identique"
+    },
+    "1024": {
+      "image_octets": 2147483648,
+      "sha256": "304e1904a5e559b8f92a7902ac8594cc306f0495ccc64486b6a52ff2b3b4bad4",
+      "relecture": "1073741824 octets denses relus à l’identique"
+    }
+  },
+  "qualification_visuelle": {
+    "fenetre": false,
+    "motif": "Session macOS verrouillée lors du contrôle graphique. Qualification UTM via PTY effectuée séparément."
+  }
+}

@@ -8,12 +8,14 @@ import tempfile
 
 from cli import HOST, ROOT, Terminal
 
+FRONTIERE = b"x" * 4095 + "猫".encode()
 SOURCE = "premier\r\nété\nfin".encode()
 
 
 def fixture(folder, sector):
     files = {"source": SOURCE, "vide": b"", "long": b"L" * 8192,
              "grand": b"A" * 8193, "lignes": b"\n" * 512, "invalide": b"A\xff",
+             "frontiere": FRONTIERE, "tronque": FRONTIERE[:-1], "nul": b"a\0b",
              "controle": b"\x1b[2J", "occupe": b"protege"}
     # La taille logique du fichier creux dépasse la RAM de l'invité (256 Mio).
     commands = ["mkdir /d", "create /penurie", "write /penurie 536870911 5a"]
@@ -55,9 +57,15 @@ def trial(arch, sector, folder):
 
         t.line("vi --help", has=["vi [--] fichier"])
         t.line("vi /../secret", has=["accès refusé"])
-        t.line("vi penurie", has=["mémoire insuffisante"])
+        t.line("vi penurie", has=["contrôle interdit"])
         t.line("ls -l penurie", has=["536870912"])
         t.line("vi invalide", has=["argument invalide"])
+        t.line("vi tronque", has=["argument invalide"])
+        t.line("vi nul", has=["contrôle interdit"])
+        open_vi("vi frontiere")
+        send("$")
+        wait("1:4096")
+        leave(":q")
         open_vi("vi grand")
         send("$")
         wait("1:8193")
@@ -162,25 +170,30 @@ def trial(arch, sector, folder):
         with image.open("rb") as raw:
             return subprocess.check_output([HOST, cmd, "1024", str(sector), *args], stdin=raw)
 
-    host("verify", fs, lv)
-    slots = re.findall(r"slot=(\d+) génération=(\d+)".encode(), host("inspect"))
-    slot, _ = max(slots, key=lambda e: int(e[1]))
-    expected = {"/source": SOURCE, "/d/copie": "premier\r\néYté\nfin".encode(),
+    expected = {"/frontiere": FRONTIERE, "/tronque": FRONTIERE[:-1], "/nul": b"a\0b",
+                "/source": SOURCE, "/d/copie": "premier\r\néYté\nfin".encode(),
                 "/occupe": b"protege", "/vide": b"", "/long": b"L"*8192,
                 "/d/long-copie": b"L"*8192+b"X", "/neuf": b"",
                 "/d/script.nsh": script.encode(), "/vi-essai.nsh": b"tiers\n",
                 "/d/repris": b"revu", "/historique": "été!Z".encode(), "/touches": b"haut\nAB", "/fleches": b"1X2\n34Z"}
-    for path, content in expected.items():
-        actual = host("salvage", fs, lv, slot, path)
-        assert actual == content, (path, actual[:160], content[:160])
+    def verify_bytes():
+        host("verify", fs, lv)
+        slots = re.findall(r"slot=(\d+) génération=(\d+)".encode(), host("inspect"))
+        slot, _ = max(slots, key=lambda e: int(e[1]))
+        for path, content in expected.items():
+            actual = host("salvage", fs, lv, slot, path)
+            assert actual == content, (path, actual[:160], content[:160])
+
+    verify_bytes()
     with Terminal(arch, sector, image, "vi-reprise") as t:
         t.until(b"nsh> ")
         t.line("./d/script.nsh", has=["\r\nvi persistant été\r\n"])
         t.exit()
+    verify_bytes()
     return dict(architecture=arch, secteur=sector, elf_collectes=len(pids),
                 fichiers_relus=len(expected), pic_pages_privees_observe=max(samples),
-                refus_concurrent=True, revocation=True, refus_allocation_octets=536870912,
-                script_apres_redemarrage=True)
+                refus_concurrent=True, revocation=True, refus_source_creuse_binaire_octets=536870912,
+                script_apres_redemarrage=True, octets_apres_redemarrage=True)
 
 
 if __name__ == "__main__":

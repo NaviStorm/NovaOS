@@ -6,6 +6,9 @@ pub fn length(data: &[u8]) -> rt::Result<usize> {
     usize::try_from(n).map_err(|_| rt::LIMIT)
 }
 pub const CHUNK: usize = 127;
+pub const EAGER: usize = 16 * 1024;
+pub const PAGE: usize = 4096;
+pub const CONFLICT: u64 = 40;
 pub const INFO: u8 = 1;
 pub const READ: u8 = 2;
 pub const KEY: u8 = 3;
@@ -18,8 +21,25 @@ pub const FIN: u8 = 8;
 pub const VIEW: u8 = 9;
 pub const LOCATE: u8 = 10;
 pub const CLEAR_TAIL: u8 = 11;
+pub const VERIFY: u8 = 12;
 
+/// Un caractère UTF-8 ou un CRLF incomplet sera relu avec la page suivante.
+pub fn text_prefix(bytes: &[u8], last: bool) -> rt::Result<&str> {
+    let text = match core::str::from_utf8(bytes) {
+        Ok(s) => s,
+        Err(e) if !last && e.error_len().is_none() => {
+            core::str::from_utf8(&bytes[..e.valid_up_to()]).map_err(|_| rt::BAD_ARGUMENT)?
+        }
+        _ => return Err(rt::BAD_ARGUMENT),
+    };
+    Ok(if !last {
+        text.strip_suffix('\r').unwrap_or(text)
+    } else {
+        text
+    })
+}
 pub struct Link {
+    pub suffix: Option<usize>,
     channels: (u64, u64),
     tag: u64,
 }
@@ -28,6 +48,7 @@ impl Link {
         Ok(Self {
             channels: rt::channels()?,
             tag: 0,
+            suffix: None,
         })
     }
     pub fn ask(&mut self, op: u8, bytes: &[u8]) -> rt::Result<rt::ReceiveV1> {

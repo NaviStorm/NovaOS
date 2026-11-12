@@ -157,7 +157,12 @@ impl Screen {
                 );
                 begin = e.buf.newline(end).map(|n| n + 1);
             } else {
-                self.line.push('~');
+                self.line
+                    .push(if link.suffix.is_some() && e.parked.is_none() {
+                        '…'
+                    } else {
+                        '~'
+                    });
             }
             self.paint(y, link)?;
         }
@@ -167,7 +172,7 @@ impl Screen {
             Mode::Command => "COMMANDE",
             Mode::Search => "RECHERCHE",
         };
-        let state = if e.buf.dirty() {
+        let state = if e.dirty() {
             "modifié"
         } else if e.exists {
             "enregistré"
@@ -179,9 +184,12 @@ impl Screen {
             self.label,
             "vi [{mode}] {} [{state}] {}:{}",
             e.name,
-            row + 1,
+            e.row_base + row + 1,
             e.buf.col() + 1
         );
+        if link.suffix.is_some() {
+            self.label.push_str(" · lecture partielle");
+        }
         if self.rows >= 3 {
             project(&mut self.line, self.label.chars(), 0, self.cols);
             self.paint(height, link)?;

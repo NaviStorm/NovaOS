@@ -37,10 +37,11 @@ class Terminal:
         self.vm.wait()
         self.log.close()
 
-    def until(self, marker, timeout=60):
+    def until(self, marker, timeout=60, *, refus=None):
         deadline = time.monotonic() + timeout
         while marker not in self.pending:
-            if b"Panique du noyau" in self.pending or time.monotonic() > deadline:
+            rejected = refus is not None and refus in self.pending
+            if rejected or b"Panique du noyau" in self.pending or time.monotonic() > deadline:
                 raise RuntimeError(f"{self.archive} : attente de {marker!r}, fin {self.pending[-1800:]!r}")
             if not select.select([self.vm.stdout], [], [], 0.2)[0]:
                 continue

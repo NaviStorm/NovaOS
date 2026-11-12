@@ -73,6 +73,26 @@ pub fn resolve(fs: &mut Client, path: &str) -> rt::Result<String> {
 }
 
 pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String> {
+    read_checked(fs, path, max, Client::read, &mut [0; w::FRAGMENT])
+}
+
+pub fn read_editor_text(fs: &mut Client, path: &str) -> rt::Result<String> {
+    read_checked(
+        fs,
+        path,
+        nova_cli::vi_wire::EAGER,
+        Client::read_grouped,
+        &mut [0; w::READ_WINDOW],
+    )
+}
+
+fn read_checked(
+    fs: &mut Client,
+    path: &str,
+    max: usize,
+    read: fn(&mut Client, u64, u64, &mut [u8]) -> rt::Result<usize>,
+    check: &mut [u8],
+) -> rt::Result<String> {
     let h = fs.open_at(0, path.as_bytes(), w::READABLE)?;
     let read = (|| {
         let before = fs.simple(w::STAT, h)?;
@@ -85,7 +105,7 @@ pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String> 
             .try_reserve_exact(len as usize)
             .map_err(|_| rt::NO_MEMORY)?;
         bytes.resize(len as usize, 0);
-        let n = fs.read(h, 0, &mut bytes)?;
+        let n = read(fs, h, 0, &mut bytes)?;
         let after = fs.simple(w::STAT, h)?;
         if n != bytes.len()
             || w::word(&before, w::PAYLOAD) != w::word(&after, w::PAYLOAD)
@@ -97,9 +117,9 @@ pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String> 
         // écrivain pendant cette lecture synchrone sur le handle épinglé.
         // En cas de révision nouvelle, comparer aussi le contenu jusqu'à EOF.
         if w::word(&before, w::PAYLOAD + 8) != w::word(&after, w::PAYLOAD + 8) {
-            let mut check = [0; w::FRAGMENT];
+            let stride = check.len();
             for (i, chunk) in bytes.chunks(check.len()).enumerate() {
-                let count = fs.read(h, (i * w::FRAGMENT) as u64, &mut check)?;
+                let count = read(fs, h, (i * stride) as u64, check)?;
                 if count != chunk.len() || &check[..count] != chunk {
                     return Err(rt::REVOKED);
                 }

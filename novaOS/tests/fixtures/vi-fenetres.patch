@@ -1,0 +1,75 @@
+--- a/novaOS/user/storage/fileclient.rs
++++ b/novaOS/user/storage/fileclient.rs
+@@ -47,6 +47,44 @@
+     c.close(f)?;
+     log(b"ech close");
+     c.close(0)?;
++    Ok(())
++}
++// Banc privé : aucune requête supplémentaire dans les images distribuées.
++fn windows(c: &mut Client, f: u64, expected: &[u8]) -> rt::Result<()> {
++    let mut data = [0xa5; 177];
++    let at = expected.len()-88;
++    ensure(c.read_grouped(f, at as u64, &mut data)? == 88)?;
++    ensure(data[..88] == expected[at..] && data[88..] == [0xa5; 89])?;
++    let frame = |flag, session, handle, off, total, n| {
++        let mut q = w::frame(w::READ, session, handle);
++        q[2] = flag;
++        w::set(&mut q, 24, off);
++        w::set(&mut q, 32, total);
++        w::size(&mut q, n);
++        q
++    };
++    let start = frame(w::START, c.session, f, 0, 176, 88);
++    let next = frame(w::CONTINUE, c.session, f, 88, 176, 88);
++    ensure(c.request(next).err() == Some(rt::REVOKED))?;
++    for (off, total, count) in [(u64::MAX,176,88), (0,4097,88), (0,176,87)] {
++        ensure(c.request(frame(w::START,c.session,f,off,total,count)).err() == Some(rt::BAD_ARGUMENT))?;
++    }
++    for (off,total) in [(87,176),(89,176),(88,175)] {
++        c.request(start)?;
++        ensure(c.request(frame(w::CONTINUE,c.session,f,off,total,88)).err() == Some(rt::BAD_ARGUMENT))?;
++        ensure(c.request(next).err() == Some(rt::REVOKED))?;
++    }
++    let second = c.open(b"/sortie",w::READABLE)?;
++    c.request(start)?;
++    ensure(c.request(frame(w::CONTINUE,c.session,second,88,176,88)).err() == Some(rt::REVOKED))?;
++    c.request(start)?;
++    ensure(c.request(frame(w::CONTINUE,c.session^1,f,88,176,88)).err() == Some(rt::DENIED))?;
++    let a=c.request(next)?;
++    ensure(w::length(&a)==88 && a[w::PAYLOAD..]==expected[88..176])?;
++    ensure(c.request(next).err() == Some(rt::REVOKED))?;
++    c.request(start)?;
++    c.close(second)?;
++    ensure(c.request(next).err() == Some(rt::REVOKED))?;
+     Ok(())
+ }
+ fn probe() -> rt::Result<()> {
+@@ -153,6 +191,8 @@
+         ensure(c.read(other, 0, &mut probe)? == published && probe == old)?;
+         let mut staged = [0; 32];
+         ensure(c.read(f, 4077, &mut staged)? == 32 && staged == pattern[4077..4109])?;
++        let mut buf = [0u8; 176];
++        ensure(c.read_grouped(other, 0, &mut buf).err() == Some(w::BUSY))?;
+         ensure(c.close(f).err() == Some(w::BUSY))?;
+         c.sync(f)?;
+         ensure(c.read(other, 0, &mut probe)? == probe.len() && probe == pattern[..16])?;
+@@ -166,6 +206,7 @@
+     expected[4091..4106].copy_from_slice(b"NovaFS-partiel!");
+     let mut actual = [0; 4232];
+     ensure(c.read(f, 0, &mut actual)? == expected.len() && actual[..expected.len()] == expected)?;
++    windows(&mut c, f, &expected)?;
+     log(b"FICHIERS octets verifies");
+     c.close(f)?;
+     c.close(0)?;
+--- a/components/coreutils/text.rs
++++ b/components/coreutils/text.rs
+@@ -14,4 +14,8 @@
+ ) -> rt::Result<()> {
+     let mut buf = [0u8; CHUNK + 3];
++    // Une vue déléguée ne peut pas transformer READ en une lecture anticipée.
++    if !matches!(c.read_grouped(h,start,&mut buf[..176]),Err(rt::BAD_ARGUMENT | rt::DENIED)) {
++        return Err(rt::REFUSED);
++    }
+     let mut carry = 0;
+     while start < end || carry != 0 {

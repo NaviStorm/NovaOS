@@ -198,7 +198,7 @@ fn mesure_tampon() {
         std::mem::size_of::<Buffer>(),
         empty.allocated()
     );
-    for n in [8192, 65536, 1048576, 4194304] {
+    for n in [1024, 8192, 65536, 1048576, 4194304, 16777216] {
         let mut b = Buffer::new("A".repeat(n)).unwrap();
         b.at = n / 2;
         let opened = b.allocated();
@@ -234,4 +234,20 @@ fn mesure_tampon() {
         b.undo_redo(true).unwrap();
         b.undo_redo(true).unwrap();
     }
+}
+
+#[test]
+fn annulation_apres_lecture_de_pages() {
+    let old = "u".repeat(4095) + "\n";
+    let mut b = Buffer::new(old.clone()).unwrap();
+    b.change();
+    b.delete_line().unwrap();
+    b.extend_source(&"a".repeat(4096)).unwrap();
+    let before = b.compact().to_owned();
+    assert!(panne(0, || b.undo_redo(false)).is_err());
+    assert_eq!(b.compact(), before);
+    b.undo_redo(false).unwrap();
+    assert_eq!(b.compact(), old + &before);
+    b.undo_redo(true).unwrap();
+    assert_eq!(b.compact(), before);
 }

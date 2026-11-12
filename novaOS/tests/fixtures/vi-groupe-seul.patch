@@ -1,0 +1,165 @@
+diff --git a/components/shell/paths.rs b/components/shell/paths.rs
+index be97880..d42c397 100644
+--- a/components/shell/paths.rs
++++ b/components/shell/paths.rs
+@@ -75,0 +76,20 @@ pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String>
++    read_checked(fs, path, max, Client::read, &mut [0; w::FRAGMENT])
++}
++
++pub fn read_editor_text(fs: &mut Client, path: &str) -> rt::Result<String> {
++    read_checked(
++        fs,
++        path,
++        usize::MAX,
++        Client::read_grouped,
++        &mut [0; w::READ_WINDOW],
++    )
++}
++
++fn read_checked(
++    fs: &mut Client,
++    path: &str,
++    max: usize,
++    read: fn(&mut Client, u64, u64, &mut [u8]) -> rt::Result<usize>,
++    check: &mut [u8],
++) -> rt::Result<String> {
+@@ -88 +108 @@ pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String>
+-        let n = fs.read(h, 0, &mut bytes)?;
++        let n = read(fs, h, 0, &mut bytes)?;
+@@ -100 +120 @@ pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String>
+-            let mut check = [0; w::FRAGMENT];
++            let stride = check.len();
+@@ -102 +122 @@ pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String>
+-                let count = fs.read(h, (i * w::FRAGMENT) as u64, &mut check)?;
++                let count = read(fs, h, (i * stride) as u64, check)?;
+diff --git a/components/shell/vi.rs b/components/shell/vi.rs
+index 833a694..1308a27 100644
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -405 +405 @@ pub fn run(
+-    let source = match paths::read_text(fs, &path, usize::MAX) {
++    let source = match paths::read_editor_text(fs, &path) {
+diff --git a/novaOS/abi/files.rs b/novaOS/abi/files.rs
+index d343d6d..0069259 100644
+--- a/novaOS/abi/files.rs
++++ b/novaOS/abi/files.rs
+@@ -18,0 +19,2 @@ pub const FRAGMENT: usize = 128 - PAYLOAD;
++/// Une lecture logique du courtier, transférée par fragments sur la même capacité.
++pub const READ_WINDOW: usize = 4096;
+diff --git a/novaOS/user/novafs/files.rs b/novaOS/user/novafs/files.rs
+index c8aa271..7ef301e 100644
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -48,0 +49,9 @@ struct File {
++/// Le propriétaire est la session Client. Chaque fragment doit retrouver le handle vivant.
++struct ReadWindow {
++    handle: u64,
++    start: u64,
++    total: usize,
++    generation: u64,
++    sent: usize,
++    bytes: Vec<u8>,
++}
+@@ -68,0 +78 @@ struct Client {
++    read_window: Option<ReadWindow>,
+@@ -82,0 +93 @@ impl Client {
++            read_window: None,
+@@ -145,0 +157,3 @@ impl Session<'_, '_> {
++        if !(op == w::READ && flags == w::CONTINUE) {
++            client.read_window = None;
++        }
+@@ -202,0 +217 @@ impl Session<'_, '_> {
++            && !(op == w::READ && flags == w::CONTINUE)
+@@ -328 +343 @@ impl Session<'_, '_> {
+-                        shape(flags == 0 && total == 0 && offset.checked_add(n as u64).is_some())?;
++                        shape(offset.checked_add(n as u64).is_some())?;
+@@ -338,0 +354,48 @@ impl Session<'_, '_> {
++                        if flags != 0 {
++                            shape(
++                                !client.scoped
++                                    && matches!(flags, w::START | w::CONTINUE)
++                                    && (1..=w::READ_WINDOW as u64).contains(&total)
++                                    && n != 0,
++                            )?;
++                            if self.pending.is_some() {
++                                return Err(w::BUSY);
++                            }
++                            let total = total as usize;
++                            let mut window = if flags == w::START {
++                                shape(
++                                    offset.checked_add(total as u64).is_some()
++                                        && n == total.min(w::FRAGMENT),
++                                )?;
++                                let bytes =
++                                    fs.read_access_id(file.id, offset, total).map_err(error)?;
++                                ReadWindow {
++                                    handle,
++                                    start: offset,
++                                    total,
++                                    generation: fs.generation(),
++                                    sent: 0,
++                                    bytes,
++                                }
++                            } else {
++                                client.read_window.take().ok_or(rt::REVOKED)?
++                            };
++                            if window.handle != handle || window.generation != fs.generation() {
++                                return Err(rt::REVOKED);
++                            }
++                            shape(
++                                window.total == total
++                                    && window.start + window.sent as u64 == offset
++                                    && n == (total - window.sent).min(w::FRAGMENT),
++                            )?;
++                            let count = n.min(window.bytes.len() - window.sent);
++                            a[w::PAYLOAD..w::PAYLOAD + count]
++                                .copy_from_slice(&window.bytes[window.sent..window.sent + count]);
++                            w::size(a, count);
++                            window.sent += count;
++                            if count == n && window.sent < total {
++                                client.read_window = Some(window);
++                            }
++                            return Ok(());
++                        }
++                        shape(total == 0)?;
+@@ -668 +731,4 @@ pub(crate) fn initialiser(dev: &IpcDevice<'_>) -> rt::Result<()> {
+-        || fs.read("/verification.nsh", 0, script.len() + 1).map_err(error)? != script
++        || fs
++            .read("/verification.nsh", 0, script.len() + 1)
++            .map_err(error)?
++            != script
+diff --git a/novaOS/user/storage/fileapi.rs b/novaOS/user/storage/fileapi.rs
+index e9168f9..2da0179 100644
+--- a/novaOS/user/storage/fileapi.rs
++++ b/novaOS/user/storage/fileapi.rs
+@@ -130,0 +131,25 @@ impl Client {
++        self.read_fragments(h, off, out, false)
++    }
++
++    /// Les fragments sont toujours reçus sur le canal local du fichier ouvert.
++    pub fn read_grouped(&mut self, h: u64, off: u64, out: &mut [u8]) -> rt::Result<usize> {
++        let mut done = 0;
++        for window in out.chunks_mut(w::READ_WINDOW) {
++            let offset = off.checked_add(done as u64).ok_or(rt::BAD_ARGUMENT)?;
++            let n = self.read_fragments(h, offset, window, window.len() > w::FRAGMENT)?;
++            done += n;
++            if n != window.len() {
++                break;
++            }
++        }
++        Ok(done)
++    }
++
++    fn read_fragments(
++        &mut self,
++        h: u64,
++        off: u64,
++        out: &mut [u8],
++        grouped: bool,
++    ) -> rt::Result<usize> {
++        let total = out.len();
+@@ -133,0 +159,4 @@ impl Client {
++            if grouped {
++                q[2] = if done == 0 { w::START } else { w::CONTINUE };
++                w::set(&mut q, 32, total as u64);
++            }

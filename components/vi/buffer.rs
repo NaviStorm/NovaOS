@@ -11,7 +11,7 @@ pub struct Buffer {
     eol: &'static str,
 }
 impl Buffer {
-    pub fn new(input: String) -> Result<Self, &'static str> {
+    pub fn validate(input: &str) -> Result<(), &'static str> {
         if input
             .match_indices('\r')
             .any(|(i, _)| !input[i..].starts_with("\r\n"))
@@ -21,6 +21,28 @@ impl Buffer {
         {
             return Err("contrôle interdit dans le texte");
         }
+        Ok(())
+    }
+    pub fn source_eol(&mut self, crlf: bool) {
+        self.eol = if crlf { "\r\n" } else { "\n" };
+    }
+    pub fn extend_source(&mut self, tail: &str) -> Result<(), &'static str> {
+        // Réserver les deux représentations avant de toucher aux octets. Le journal
+        // décrit uniquement des éditions du préfixe déjà présent.
+        if let Some(saved) = &mut self.saved {
+            saved
+                .try_reserve(tail.len())
+                .map_err(|_| "mémoire insuffisante")?;
+        }
+        self.text.reserve(tail.len())?;
+        self.text.replace(self.len(), 0, tail);
+        if let Some(saved) = &mut self.saved {
+            saved.push_str(tail);
+        }
+        Ok(())
+    }
+    pub fn new(input: String) -> Result<Self, &'static str> {
+        Self::validate(&input)?;
         let eol = match input.find('\n') {
             Some(n) if input[..n].ends_with('\r') => "\r\n",
             _ => "\n",
@@ -84,6 +106,7 @@ impl Buffer {
         if self.saved.is_none() {
             self.saved = Some(self.remember()?);
         }
+        self.text.reserve(self.history.growth(redo))?;
         self.at = self.history.replay(&mut self.text, redo).unwrap();
         self.normal();
         Ok(())
