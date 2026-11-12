@@ -1,0 +1,470 @@
+{
+  "date": "2026-11-12",
+  "base": "79f27b6da601900a2c62f9dde418f047a9c4cf0b",
+  "branche": "main",
+  "novaos": "0.15.0",
+  "novafs": "0.9.13 P9",
+  "decision": "atomicité non qualifiée",
+  "moteur": {
+    "utm": "5.0.8",
+    "qemu": "QEMU emulator version 10.0.12",
+    "outil_hors_ligne": "qemu-img version 11.1.3",
+    "framework_sha256": "16d48f6e3e83fdabb760ac01f17f2c69af844f3403be77fad51c692189896f5f",
+    "archive_distribution_sha256": "1f7cc3404418a80e4f5c11e4af162e9d93754e7d8c829bf0d7b1c4be6af833cb",
+    "firmware_sha256": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+    "noyau_sonde_sha256": "6f034c8f56af04409df618a77f57b7142f6cc26f083ffecd9bd70ce07529f3db",
+    "support_sonde_sha256_avant_et_apres": "07037d517b4992b09998d6b07a96bd467af9bc7dd93bde4b35a5b014c167e014",
+    "installateur_brut_sha256_avant_et_apres": "064ee2b7d3c195b7a628878df38f8ff31aae1d24b8bbc2cc92b04ffc76666c50",
+    "profil_gui_archive": "utm/autonome.log dans novaOS/docs/validation/installation-utm-v0.15.0/preuves.tar.gz",
+    "archive_journal_gui_sha256": "ba0a6aad87764b6c91b62c754ee696237286cf2ad17a72f2032dfc974decea3e"
+  },
+  "hote": {
+    "systeme": "macOS 27.2 (26B123) ARM64",
+    "fichiers": "APFS local",
+    "support": "SSD Apple Fabric",
+    "device_block_size_volume": 4096,
+    "device_block_size_disque": 4096,
+    "statvfs_f_frsize": 4096,
+    "taille_physique_atomique_sous_perte_alimentation": null,
+    "backend_fichier_arm64": [
+      "0x4967b8: bl _qemu_fdatasync",
+      "0x8d69d0: b _fsync (stub)"
+    ],
+    "coupures_alimentation_hote": 0,
+    "sysctl_proc_translated_x86_64": 1
+  },
+  "matrice": {
+    "fichier": "atomicite-utm.tsv",
+    "sha256": "9279aa7675d97ccec9caadcd48a81fdb73b3295fe3e9d3d0922150524b082ade",
+    "disques": 142,
+    "total": {
+      "ancien": 60,
+      "nouveau": 58,
+      "refus": 24
+    },
+    "par_placement": {
+      "position_gpt": {
+        "ancien": 48,
+        "nouveau": 48,
+        "refus": 0
+      },
+      "ancres_decalees": {
+        "ancien": 8,
+        "nouveau": 10,
+        "refus": 12
+      },
+      "plage_imposee": {
+        "ancien": 4,
+        "nouveau": 0,
+        "refus": 12
+      }
+    },
+    "par_geometrie_et_format": {
+      "512-raw": {
+        "ancien": 15,
+        "nouveau": 15,
+        "refus": 6
+      },
+      "512-qcow2": {
+        "ancien": 15,
+        "nouveau": 15,
+        "refus": 6
+      },
+      "4096-raw": {
+        "ancien": 15,
+        "nouveau": 14,
+        "refus": 6
+      },
+      "4096-qcow2": {
+        "ancien": 15,
+        "nouveau": 14,
+        "refus": 6
+      }
+    },
+    "arret_ordonne": 8,
+    "sigkill": 134,
+    "breakpoints_atteints": {
+      "flush_to_disk": 16,
+      "write_aio": 8
+    },
+    "taille_lv_octets": 2097152
+  },
+  "historiques_ambigus": [
+    {
+      "succes": "512-raw-mv-succes-0",
+      "prefixe": "512-raw-mv-avant-F2-0-0-96",
+      "octets": 2097152,
+      "sha256_identique": "a64b35f12e3baca15fed3047a0cab29cd7323abf69e82b77d628a7f30f14e67f"
+    },
+    {
+      "succes": "512-raw-cp-succes-0",
+      "prefixe": "512-raw-cp-premier-secteur-416",
+      "octets": 2097152,
+      "sha256_identique": "ef22059767cd2bbc387616cf0761c086379e664a3950df67f0ad4e553f423266"
+    },
+    {
+      "succes": "512-qcow2-mv-succes-0",
+      "prefixe": "512-qcow2-mv-avant-F2-0-0-96",
+      "octets": 2097152,
+      "sha256_identique": "a64b35f12e3baca15fed3047a0cab29cd7323abf69e82b77d628a7f30f14e67f"
+    },
+    {
+      "succes": "512-qcow2-cp-succes-0",
+      "prefixe": "512-qcow2-cp-premier-secteur-416",
+      "octets": 2097152,
+      "sha256_identique": "ef22059767cd2bbc387616cf0761c086379e664a3950df67f0ad4e553f423266"
+    },
+    {
+      "succes": "4096-raw-mv-succes-0",
+      "prefixe": "4096-raw-mv-avant-F2-0-0-96",
+      "octets": 2097152,
+      "sha256_identique": "a64b35f12e3baca15fed3047a0cab29cd7323abf69e82b77d628a7f30f14e67f"
+    },
+    {
+      "succes": "4096-raw-cp-succes-0",
+      "prefixe": "4096-raw-cp-premier-secteur-4000",
+      "octets": 2097152,
+      "sha256_identique": "ef22059767cd2bbc387616cf0761c086379e664a3950df67f0ad4e553f423266"
+    },
+    {
+      "succes": "4096-qcow2-mv-succes-0",
+      "prefixe": "4096-qcow2-mv-avant-F2-0-0-96",
+      "octets": 2097152,
+      "sha256_identique": "a64b35f12e3baca15fed3047a0cab29cd7323abf69e82b77d628a7f30f14e67f"
+    },
+    {
+      "succes": "4096-qcow2-cp-succes-0",
+      "prefixe": "4096-qcow2-cp-premier-secteur-4000",
+      "octets": 2097152,
+      "sha256_identique": "ef22059767cd2bbc387616cf0761c086379e664a3950df67f0ad4e553f423266"
+    }
+  ],
+  "disques_systeme": [
+    {
+      "secteur": 512,
+      "format": "raw",
+      "lba_p9": 124928,
+      "cache": {
+        "no-flush": false,
+        "direct": false,
+        "writeback": true
+      },
+      "geometrie_qom": [
+        512,
+        512
+      ],
+      "geometrie_explicite": true,
+      "cluster": null,
+      "flush_cli": 8,
+      "signal": 9,
+      "fichier_relu": "/audit",
+      "contenu": "NovaOS\n",
+      "dma_remontage": {
+        "attaches": [
+          [
+            2,
+            56
+          ],
+          [
+            1,
+            56
+          ]
+        ],
+        "ecritures_uefi": 0,
+        "ecritures_noyau": 32,
+        "plages_finales": 0
+      },
+      "slots_successifs": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "out_par_ancre": 8,
+      "unites_filaires_512_par_out": 1
+    },
+    {
+      "secteur": 512,
+      "format": "qcow2",
+      "lba_p9": 124928,
+      "cache": {
+        "no-flush": false,
+        "direct": false,
+        "writeback": true
+      },
+      "geometrie_qom": [
+        512,
+        512
+      ],
+      "geometrie_explicite": false,
+      "cluster": 65536,
+      "flush_cli": 8,
+      "signal": 9,
+      "fichier_relu": "/audit",
+      "contenu": "NovaOS\n",
+      "dma_remontage": {
+        "attaches": [
+          [
+            2,
+            56
+          ],
+          [
+            1,
+            56
+          ]
+        ],
+        "ecritures_uefi": 0,
+        "ecritures_noyau": 32,
+        "plages_finales": 0
+      },
+      "slots_successifs": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "out_par_ancre": 8,
+      "unites_filaires_512_par_out": 1,
+      "qcow2_compat": "1.1",
+      "lazy_refcounts": false,
+      "fichier_parent": null
+    },
+    {
+      "secteur": 4096,
+      "format": "raw",
+      "lba_p9": 67840,
+      "cache": {
+        "no-flush": false,
+        "direct": false,
+        "writeback": true
+      },
+      "geometrie_qom": [
+        4096,
+        4096
+      ],
+      "geometrie_explicite": true,
+      "cluster": null,
+      "flush_cli": 8,
+      "signal": 9,
+      "fichier_relu": "/audit",
+      "contenu": "NovaOS\n",
+      "dma_remontage": {
+        "attaches": [
+          [
+            2,
+            56
+          ],
+          [
+            1,
+            56
+          ]
+        ],
+        "ecritures_uefi": 0,
+        "ecritures_noyau": 4,
+        "plages_finales": 0
+      },
+      "slots_successifs": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "out_par_ancre": 1,
+      "unites_filaires_512_par_out": 8
+    },
+    {
+      "secteur": 4096,
+      "format": "qcow2",
+      "lba_p9": 67840,
+      "cache": {
+        "no-flush": false,
+        "direct": false,
+        "writeback": true
+      },
+      "geometrie_qom": [
+        4096,
+        4096
+      ],
+      "geometrie_explicite": true,
+      "cluster": 65536,
+      "flush_cli": 8,
+      "signal": 9,
+      "fichier_relu": "/audit",
+      "contenu": "NovaOS\n",
+      "dma_remontage": {
+        "attaches": [
+          [
+            2,
+            56
+          ],
+          [
+            1,
+            56
+          ]
+        ],
+        "ecritures_uefi": 0,
+        "ecritures_noyau": 4,
+        "plages_finales": 0
+      },
+      "slots_successifs": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "out_par_ancre": 1,
+      "unites_filaires_512_par_out": 8,
+      "qcow2_compat": "1.1",
+      "lazy_refcounts": false,
+      "fichier_parent": null
+    }
+  ],
+  "regressions": {
+    "aarch64": {
+      "novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 5
+        },
+        "sondes": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 5
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=25.720",
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        }
+      },
+      "injections_historiques": {
+        "total": 2304,
+        "ancien": 1288,
+        "nouveau": 656,
+        "refus": 360,
+        "supplement_deux_blocs": 8,
+        "paires_images_ambiguës": 4
+      },
+      "lz4": {
+        "reference_vers_novafs": 256,
+        "novafs_vers_reference": 256,
+        "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+      },
+      "volumes_utm_verifies_ro_et_rw": 142,
+      "novaos_groupes_rejoues": {
+        "demarrage": 25,
+        "elf": 1,
+        "cycle_processus": 1,
+        "ipc races": 1,
+        "bloc": 24,
+        "cli": 2,
+        "cli_p9": 2
+      }
+    },
+    "x86_64": {
+      "novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 5
+        },
+        "sondes": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 5
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=40.648",
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        }
+      },
+      "injections_historiques": {
+        "total": 2304,
+        "ancien": 1288,
+        "nouveau": 656,
+        "refus": 360,
+        "supplement_deux_blocs": 8,
+        "paires_images_ambiguës": 4
+      },
+      "lz4": {
+        "reference_vers_novafs": 256,
+        "novafs_vers_reference": 256,
+        "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+      },
+      "volumes_utm_verifies_ro_et_rw": 142,
+      "novaos_groupes_rejoues": {
+        "demarrage": 25,
+        "elf": 1,
+        "cycle_processus": 1,
+        "ipc races": 1,
+        "bloc": 24,
+        "cli": 2,
+        "cli_p9": 2
+      }
+    }
+  },
+  "dma_gicv3": {
+    "utm": "5.0.8",
+    "moteur": "QEMU emulator version 10.0.12",
+    "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+    "noyau_sha256": "dee123b4f7dc1b06b0c2a8ec322d638d35d969222029bf83c23a1ad451342c46",
+    "essais": [
+      "froid",
+      "el2",
+      "protection",
+      "reemploi",
+      "cd",
+      "redemarrage",
+      "coupure",
+      "reprise",
+      "autre-slot",
+      "mapkey",
+      "retrait-suspendu"
+    ]
+  },
+  "dma_sequentiel": {
+    "utm": "5.0.8",
+    "moteur": "QEMU emulator version 10.0.12",
+    "pflash_sha256": "3660b1cad23b75102a923475c1ee457ffc0fd1ce085ae25813257f09d918263d",
+    "noyau_sha256": "6d10d124ba2586a8eca0106ab051a221ffa4b5076c62e33e81ddc563b27285cf",
+    "essais": [
+      "support",
+      "vierge",
+      "refus",
+      "confirmation-erronee",
+      "tis",
+      "deplaces",
+      "reemploi",
+      "redemarrage",
+      "fin",
+      "mbr",
+      "gpt",
+      "fat",
+      "novafs",
+      "trop-petit",
+      "erreur-lecture",
+      "mauvais-support",
+      "doublon",
+      "roles-inverses",
+      "support-inscriptible",
+      "tpm-absent",
+      "mauvaise-serie",
+      "quarantaine",
+      "coupure"
+    ]
+  }
+}

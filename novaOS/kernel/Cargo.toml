@@ -13,6 +13,7 @@ bench = false
 [features]
 gicv3-lab = []
 dma-sequentiel = ["gicv3-lab"]
+ancres-p9-lab = ["dma-sequentiel"]
 systeme-gpt = ["dma-sequentiel"]
 installation-gpt = ["systeme-gpt"]
 

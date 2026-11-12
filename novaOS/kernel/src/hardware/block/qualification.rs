@@ -12,6 +12,9 @@ const CIBLE: &[u8] = b"NovaOS-Target-v1";
 const SERIE: &str = "NOVA-CIBLE-000000001";
 const MIN_OCTETS: u64 = 64 << 20;
 
+#[cfg(feature = "ancres-p9-lab")]
+pub(crate) mod ancres;
+
 #[derive(Clone, Copy, Eq, PartialEq)]
 struct Roles {
     source: u8,

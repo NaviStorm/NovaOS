@@ -36,7 +36,8 @@ def attendre(vm, path, marker, start=0, timeout=180):
     raise RuntimeError(f"{marker!r} absent dans {path}\n{text[-900:]!r}")
 
 
-def machine(tmp, dossier, nom, source, cible, secteur, guids, action, *, doublon=False, coupure=False, erreur_lecture=False):
+def machine(tmp, dossier, nom, source, cible, secteur, guids, action, *, doublon=False, coupure=False,
+            erreur_lecture=False, format_cible="raw", arret_force=False):
     console = tmp / "uart"
     serie = dossier / (nom+".serial")
     trace = dossier / (nom+".trace")
@@ -56,10 +57,13 @@ def machine(tmp, dossier, nom, source, cible, secteur, guids, action, *, doublon
         config = tmp / "lecture.blkdebug"
         config.write_text('[inject-error]\nevent = "read_aio"\nerrno = "5"\nsector = "16"\n')
         backend = f"blkdebug:{config}:{cible}"
-    cmd += ["-drive",f"if=none,id=cible,format=raw,file={backend},rerror=report,werror=report"]
+    assert format_cible in ("raw", "qcow2")
+    options = ",discard=unmap,detect-zeroes=unmap" if format_cible == "qcow2" else ""
+    cmd += ["-drive",f"if=none,id=cible,format={format_cible},file={backend},rerror=report,werror=report{options}"]
     role = "NovaOS-Install-v1" if doublon else ("NovaOS-Target-v1" if source else "NovaOS-System-v1")
     dev = disque_sequentiel("cible",7,False,designation=role)
-    dev[1] += f",logical_block_size={secteur},physical_block_size={secteur}"
+    if secteur is not None:
+        dev[1] += f",logical_block_size={secteur},physical_block_size={secteur}"
     if not source:
         dev[1] += ",bootindex=1"
     cmd += dev
@@ -78,11 +82,12 @@ def machine(tmp, dossier, nom, source, cible, secteur, guids, action, *, doublon
                     qmp(vm,"cont")
                     stats=action(vm,canal,serie,trace)
                     stats["rss_emulateur_kio_au_jalon"] = int(subprocess.check_output(["ps","-o","rss=","-p",str(vm.pid)]))
-                    if coupure:
+                    if coupure or arret_force:
                         vm.kill()
                     else:
                         qmp(vm,"quit")
-                vm.wait(timeout=10)
+                code = vm.wait(timeout=10)
+                assert code == (-9 if coupure or arret_force else 0)
             finally:
                 if vm.poll() is None:
                     vm.kill()

@@ -65,6 +65,12 @@ fn main_thread() {
     let scenario = args.as_slice();
     #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
     if cfg!(feature = "dma-sequentiel") {
+        #[cfg(feature = "ancres-p9-lab")]
+        if scenario == b"ancres-p9-lab" {
+            let r = hardware::block::qualification::ancres::executer();
+            log(format_args!("P9LAB fin {r:?}"));
+            hal::cpu::halt()
+        }
         #[cfg(feature = "installation-gpt")]
         if scenario == b"installer-gpt" {
             let r = hardware::block::qualification::installer();
