@@ -27,10 +27,15 @@ pub trait Storage {
 }
 
 impl Editor {
-    pub fn new(name: &str, text: &str, exists: bool) -> Result<Self, &'static str> {
+    pub fn new(name: &str, text: String, exists: bool) -> Result<Self, &'static str> {
+        let mut label = String::new();
+        label
+            .try_reserve_exact(name.len())
+            .map_err(|_| "mémoire insuffisante")?;
+        label.push_str(name);
         Ok(Self {
             buf: Buffer::new(text)?,
-            name: name.into(),
+            name: label,
             exists,
             mode: Mode::Normal,
             prompt: String::new(),
@@ -41,11 +46,15 @@ impl Editor {
     }
     pub fn escape(&mut self) {
         self.pending = None;
-        if self.mode == Mode::Insert {
+        let inserted = self.mode == Mode::Insert;
+        if inserted {
             self.buf.left();
         }
         self.mode = Mode::Normal;
         self.buf.normal();
+        if inserted {
+            self.buf.finish();
+        }
     }
     pub fn arrow(&mut self, key: char) {
         self.pending = None;
@@ -70,15 +79,25 @@ impl Editor {
         };
     }
     fn write(&mut self, other: Option<&str>, io: &mut impl Storage) -> bool {
+        if let Some(name) = other
+            && self
+                .name
+                .try_reserve(name.len().saturating_sub(self.name.len()))
+                .is_err()
+        {
+            self.message = "mémoire insuffisante";
+            return false;
+        }
         let name = other.unwrap_or(&self.name);
         if self.exists && name == self.name {
             self.message = "fichier existant : remplacement refusé";
             return false;
         }
-        match io.publish(name, self.buf.text.as_bytes()) {
+        match io.publish(name, self.buf.compact().as_bytes()) {
             Ok(()) => {
                 if let Some(name) = other {
-                    self.name = name.into();
+                    self.name.clear();
+                    self.name.push_str(name);
                 }
                 self.exists = true;
                 self.buf.saved();
@@ -132,7 +151,11 @@ impl Editor {
                     self.prompt.pop();
                 }
                 c if console::safe(c) && self.prompt.len() + c.len_utf8() <= PROMPT_MAX => {
-                    self.prompt.push(c)
+                    if self.prompt.try_reserve(c.len_utf8()).is_err() {
+                        self.message = "mémoire insuffisante";
+                    } else {
+                        self.prompt.push(c);
+                    }
                 }
                 _ => self.message = "caractère ou longueur refusés",
             }
@@ -206,8 +229,8 @@ impl Editor {
                     self.buf.change();
                     self.buf.delete()
                 }
-                'u' if self.buf.undo() => Ok(()),
-                'u' => Err("aucune annulation"),
+                'u' => self.buf.undo_redo(false),
+                '\x12' => self.buf.undo_redo(true),
                 '/' | ':' => {
                     self.prompt.clear();
                     self.mode = if key == '/' {
@@ -226,6 +249,8 @@ impl Editor {
         };
         if let Err(error) = result {
             self.message = error;
+        } else if self.buf.truncated() {
+            self.message = "groupe hors budget d’annulation";
         }
         false
     }

@@ -1,6 +1,6 @@
 //! Les remontées utilisent la racine déjà détenue par la session de nsh.
 //! Aucun chemin contenant « .. » ne traverse le protocole de fichiers.
-use alloc::{string::String, vec};
+use alloc::{string::String, vec::Vec};
 use nova_cli::{fileapi::Client, protocol as w, runtime as rt};
 
 fn directory_id(fs: &mut Client, path: &str) -> rt::Result<u64> {
@@ -80,7 +80,11 @@ pub fn read_text(fs: &mut Client, path: &str, max: usize) -> rt::Result<String> 
         if len > max as u64 {
             return Err(rt::LIMIT);
         }
-        let mut bytes = vec![0; len as usize];
+        let mut bytes = Vec::new();
+        bytes
+            .try_reserve_exact(len as usize)
+            .map_err(|_| rt::NO_MEMORY)?;
+        bytes.resize(len as usize, 0);
         let n = fs.read(h, 0, &mut bytes)?;
         let after = fs.simple(w::STAT, h)?;
         if n != bytes.len()

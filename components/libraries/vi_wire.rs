@@ -1,7 +1,10 @@
 //! Dialogue privé entre nsh et l'ELF vi. Aucun de ces messages n'est un appel noyau ou NovaFS.
 use crate::runtime as rt;
 
-pub const BYTES: usize = 8192;
+pub fn length(data: &[u8]) -> rt::Result<usize> {
+    let n = u64::from_le_bytes(data.try_into().map_err(|_| rt::BAD_ARGUMENT)?);
+    usize::try_from(n).map_err(|_| rt::LIMIT)
+}
 pub const CHUNK: usize = 127;
 pub const INFO: u8 = 1;
 pub const READ: u8 = 2;

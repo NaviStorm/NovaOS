@@ -3,6 +3,8 @@
 extern crate alloc;
 mod buffer;
 mod editor;
+mod gap;
+mod history;
 mod terminal;
 
 use alloc::{string::String, vec::Vec};
@@ -13,16 +15,21 @@ use nova_cli::{
 
 impl editor::Storage for wire::Link {
     fn publish(&mut self, name: &str, text: &[u8]) -> rt::Result<()> {
-        self.ask(wire::BEGIN, &[])?;
+        let mut sizes = [0; 10];
+        sizes[..2].copy_from_slice(
+            &u16::try_from(name.len())
+                .map_err(|_| rt::LIMIT)?
+                .to_le_bytes(),
+        );
+        sizes[2..].copy_from_slice(&(text.len() as u64).to_le_bytes());
+        self.ask(wire::BEGIN, &sizes)?;
         for part in name.as_bytes().chunks(wire::CHUNK) {
             self.ask(wire::NAME, part)?;
         }
         for part in text.chunks(wire::CHUNK) {
             self.ask(wire::TEXT, part)?;
         }
-        let [a, b] = (name.len() as u16).to_le_bytes();
-        let [c, d] = (text.len() as u16).to_le_bytes();
-        self.ask(wire::SAVE, &[a, b, c, d])?;
+        self.ask(wire::SAVE, &[])?;
         Ok(())
     }
 }
@@ -49,33 +56,31 @@ fn session() -> rt::Result<()> {
     let mut link = wire::Link::new()?;
     let outcome = (|| {
         let r = link.ask(wire::INFO, &[])?;
-        if r.len != 2 || r.payload[1] > 1 {
+        if r.len != 10 || r.payload[1] > 1 {
             return Err(rt::BAD_ARGUMENT);
         }
         let exists = r.payload[1] == 1;
+        let len = wire::length(&r.payload[2..10])?;
         let mut content = Vec::new();
-        loop {
-            let r = link.ask(wire::READ, &(content.len() as u16).to_le_bytes())?;
+        content.try_reserve_exact(len).map_err(|_| rt::NO_MEMORY)?;
+        while content.len() < len {
+            let r = link.ask(wire::READ, &(content.len() as u64).to_le_bytes())?;
             let data = &r.payload[1..r.len as usize];
-            if data.is_empty() {
-                break;
+            if data.is_empty() || data.len() > len - content.len() {
+                return Err(rt::BAD_ARGUMENT);
             }
-            if content.len() + data.len() > wire::BYTES {
-                return Err(rt::LIMIT);
-            }
-            content.try_reserve(data.len()).map_err(|_| rt::NO_MEMORY)?;
             content.extend_from_slice(data);
         }
         let text = String::from_utf8(content).map_err(|_| rt::BAD_ARGUMENT)?;
-        let mut editor = editor::Editor::new(name, &text, exists).map_err(|msg| {
-            let _ = console::write(tty::ERROR, &alloc::format!("{msg}\n"));
-            if msg == "limite du tampon" {
-                rt::LIMIT
+        let mut editor = editor::Editor::new(name, text, exists).map_err(|msg| {
+            let _ = console::write(tty::ERROR, msg);
+            let _ = console::write(tty::ERROR, "\n");
+            if msg == "mémoire insuffisante" {
+                rt::NO_MEMORY
             } else {
                 rt::BAD_ARGUMENT
             }
         })?;
-        drop(text);
         terminal::edit(&mut editor, &mut link)
     })();
     let finish = link.ask(wire::FIN, &[]).map(|_| ());
@@ -86,7 +91,9 @@ fn session() -> rt::Result<()> {
 extern "C" fn run() -> ! {
     let r = session();
     if let Err(e) = r {
-        let _ = console::write(tty::ERROR, &alloc::format!("vi : {}\n", console::reason(e)));
+        let _ = console::write(tty::ERROR, "vi : ");
+        let _ = console::write(tty::ERROR, console::reason(e));
+        let _ = console::write(tty::ERROR, "\n");
     }
     rt::exit(r.err().unwrap_or(0))
 }

@@ -15,7 +15,8 @@ def fixture(folder, sector):
     files = {"source": SOURCE, "vide": b"", "long": b"L" * 8192,
              "grand": b"A" * 8193, "lignes": b"\n" * 512, "invalide": b"A\xff",
              "controle": b"\x1b[2J", "occupe": b"protege"}
-    commands = ["mkdir /d"]
+    # La taille logique du fichier creux dépasse la RAM de l'invité (256 Mio).
+    commands = ["mkdir /d", "create /penurie", "write /penurie 536870911 5a"]
     for name, data in files.items():
         commands.append(f"create /{name}")
         for at in range(0, len(data), 512):
@@ -54,9 +55,17 @@ def trial(arch, sector, folder):
 
         t.line("vi --help", has=["vi [--] fichier"])
         t.line("vi /../secret", has=["accès refusé"])
+        t.line("vi penurie", has=["mémoire insuffisante"])
+        t.line("ls -l penurie", has=["536870912"])
         t.line("vi invalide", has=["argument invalide"])
-        t.line("vi grand", has=["limite atteinte"])
-        t.line("vi lignes", has=["limite du tampon"])
+        open_vi("vi grand")
+        send("$")
+        wait("1:8193")
+        leave(":q")
+        open_vi("vi lignes")
+        send("G")
+        wait("513:1")
+        leave(":q")
         t.line("vi controle", has=["contrôle interdit"])
         t.line("vi d", has=["est un répertoire"])
 
@@ -108,7 +117,7 @@ def trial(arch, sector, folder):
         send("$")
         wait("1:8192")
         send("aX")
-        wait("limite du tampon")
+        wait("1:8194")
         send("\x1b:w d/long-copie\r")
         wait("Saisir OUI puis Entrée : ")
         send("OUI\r")
@@ -118,6 +127,13 @@ def trial(arch, sector, folder):
         send(b"i12\r34\x1b[A\x1bODX\x1b[B\x1b[CZ\xff")
         wait("caractère refusé")
         send("\x1b")
+        leave(":wq")
+        open_vi("vi historique")
+        send("iété\x1ba!\x1bxxuuuu")
+        wait("historique [nouveau] 1:1")
+        send("\x12\x12\x12\x12uu")
+        send("aZ\x1b\x12")
+        wait("aucun rétablissement")
         leave(":wq")
         open_vi("vi neuf")
         leave(":x")
@@ -151,9 +167,9 @@ def trial(arch, sector, folder):
     slot, _ = max(slots, key=lambda e: int(e[1]))
     expected = {"/source": SOURCE, "/d/copie": "premier\r\néYté\nfin".encode(),
                 "/occupe": b"protege", "/vide": b"", "/long": b"L"*8192,
-                "/d/long-copie": b"L"*8192, "/neuf": b"",
+                "/d/long-copie": b"L"*8192+b"X", "/neuf": b"",
                 "/d/script.nsh": script.encode(), "/vi-essai.nsh": b"tiers\n",
-                "/d/repris": b"revu", "/touches": b"haut\nAB", "/fleches": b"1X2\n34Z"}
+                "/d/repris": b"revu", "/historique": "été!Z".encode(), "/touches": b"haut\nAB", "/fleches": b"1X2\n34Z"}
     for path, content in expected.items():
         actual = host("salvage", fs, lv, slot, path)
         assert actual == content, (path, actual[:160], content[:160])
@@ -163,7 +179,8 @@ def trial(arch, sector, folder):
         t.exit()
     return dict(architecture=arch, secteur=sector, elf_collectes=len(pids),
                 fichiers_relus=len(expected), pic_pages_privees_observe=max(samples),
-                refus_concurrent=True, revocation=True, script_apres_redemarrage=True)
+                refus_concurrent=True, revocation=True, refus_allocation_octets=536870912,
+                script_apres_redemarrage=True)
 
 
 if __name__ == "__main__":

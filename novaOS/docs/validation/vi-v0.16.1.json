@@ -1,0 +1,398 @@
+{
+  "base": "a372444abf1a71e52f81d7c0ee574ffa7ce26311",
+  "date": "2026-11-12",
+  "novaos": "0.16.1",
+  "novafs": "0.9.13 P9",
+  "systeme_hote": "macOS 27.2",
+  "rust": "1.99.1",
+  "qemu_developpement": "11.1.3",
+  "utm": "5.0.8",
+  "qemu_utm": "10.0.12",
+  "archive": {
+    "nom": "novaos-0.16.1-utm-aarch64.tar.gz",
+    "sha256": "43d46a78beecd65b357821e98a9549231185972c47cc77c7fcba6902c6db01c2",
+    "octets": 3672809,
+    "fichiers_verifies": 27
+  },
+  "application_utm": {
+    "application": "UTM",
+    "profil": "AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+    "serie": "PTY de l’application",
+    "installation": true,
+    "support_sha256": "97ffbeece7696f367ac6e7944b197985b977b2a5f55a842461be41bb81a14274",
+    "disque_installe_sha256": "5e3ed0f395ec0d848b0e0a7b685a65e83952a79f706905a1b5d40f9c2bade7ec",
+    "demarrages_autonomes": 2,
+    "contenu_relu": "NovaOS\n",
+    "octets_vi_relus": [
+      66560,
+      66562
+    ],
+    "scripts_vi_relus": [
+      "recettes/edite.nsh",
+      "recettes/autre.nsh"
+    ],
+    "script_installe": "/verification.nsh",
+    "script_execute_apres_redemarrage": "./recettes/preuve.nsh"
+  },
+  "architectures": {
+    "aarch64": {
+      "elf_sha256": "68ff28ac969ef3fb464929f0e2c7cc60fd04cf28e57ce99b77ec9ef613a9dd2c",
+      "demarrages": 25,
+      "bloc": 24,
+      "elf_processus_ipc": 3,
+      "cli": 4,
+      "fichiers_namespace": 68,
+      "nsh_par_geometrie": 113,
+      "scripts_par_geometrie": 31,
+      "vi": [
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "elf_collectes": 14,
+          "fichiers_relus": 13,
+          "pic_pages_privees_observe": 94,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_allocation_octets": 536870912,
+          "script_apres_redemarrage": true
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "elf_collectes": 14,
+          "fichiers_relus": 13,
+          "pic_pages_privees_observe": 94,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_allocation_octets": 536870912,
+          "script_apres_redemarrage": true
+        }
+      ],
+      "volumes_p9": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 1460.798125,
+          "insertion_ms": 1.730458,
+          "suppression_ms": 0.769875,
+          "navigation_G_ms": 5.079334,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 11228.004667,
+          "insertion_ms": 2.16075,
+          "suppression_ms": 0.929167,
+          "navigation_G_ms": 0.612542,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 184305.992,
+          "insertion_ms": 3.923792,
+          "suppression_ms": 5.062875,
+          "navigation_G_ms": 3.546458,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 663272.307917,
+          "insertion_ms": 18.43225,
+          "suppression_ms": 17.715125,
+          "navigation_G_ms": 12.206833,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ],
+      "fichiers_volumes_relus": 8,
+      "tests_memoire_darwin": 6,
+      "tampon_vide": {
+        "structure": 152,
+        "tas": 0
+      },
+      "mesures_tampon_darwin": [
+        {
+          "octets": 8192,
+          "ouvert": 8192,
+          "modifie": 160224,
+          "historique": 139232,
+          "premiere_ns": 1834,
+          "insertion_ns": 17,
+          "effacement_ns": 39,
+          "mouvement_ns": 7
+        },
+        {
+          "octets": 65536,
+          "ouvert": 65536,
+          "modifie": 286688,
+          "historique": 139232,
+          "premiere_ns": 7583,
+          "insertion_ns": 15,
+          "effacement_ns": 37,
+          "mouvement_ns": 7
+        },
+        {
+          "octets": 1048576,
+          "ouvert": 1048576,
+          "modifie": 2301920,
+          "historique": 139232,
+          "premiere_ns": 185084,
+          "insertion_ns": 12,
+          "effacement_ns": 39,
+          "mouvement_ns": 7
+        },
+        {
+          "octets": 4194304,
+          "ouvert": 4194304,
+          "modifie": 8593376,
+          "historique": 139232,
+          "premiere_ns": 768000,
+          "insertion_ns": 14,
+          "effacement_ns": 39,
+          "mouvement_ns": 7
+        }
+      ],
+      "novafs": {
+        "standards": 196,
+        "instrumentes": 197,
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=25.223",
+        "injections_ancres": 2304,
+        "injections_pool": 12
+      }
+    },
+    "x86_64": {
+      "elf_sha256": "d820799a846c0d0a93be5dc546fd7acba2fc9a2076cd3c6d1554af729ae3e00f",
+      "demarrages": 25,
+      "bloc": 24,
+      "elf_processus_ipc": 3,
+      "cli": 4,
+      "fichiers_namespace": 68,
+      "nsh_par_geometrie": 113,
+      "scripts_par_geometrie": 31,
+      "vi": [
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "elf_collectes": 14,
+          "fichiers_relus": 13,
+          "pic_pages_privees_observe": 94,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_allocation_octets": 536870912,
+          "script_apres_redemarrage": true
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "elf_collectes": 14,
+          "fichiers_relus": 13,
+          "pic_pages_privees_observe": 94,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_allocation_octets": 536870912,
+          "script_apres_redemarrage": true
+        }
+      ],
+      "volumes_p9": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 1274.827708,
+          "insertion_ms": 1.403875,
+          "suppression_ms": 0.49675,
+          "navigation_G_ms": 0.404417,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 9374.508875,
+          "insertion_ms": 4.513667,
+          "suppression_ms": 4.057,
+          "navigation_G_ms": 4.2125,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 160153.449083,
+          "insertion_ms": 3.7695,
+          "suppression_ms": 2.720125,
+          "navigation_G_ms": 3.654375,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 571392.151875,
+          "insertion_ms": 97.770583,
+          "suppression_ms": 8.712667,
+          "navigation_G_ms": 12.875875,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ],
+      "fichiers_volumes_relus": 8,
+      "tests_memoire_darwin": 6,
+      "tampon_vide": {
+        "structure": 152,
+        "tas": 0
+      },
+      "mesures_tampon_darwin": [
+        {
+          "octets": 8192,
+          "ouvert": 8192,
+          "modifie": 160224,
+          "historique": 139232,
+          "premiere_ns": 5292,
+          "insertion_ns": 22,
+          "effacement_ns": 119,
+          "mouvement_ns": 6
+        },
+        {
+          "octets": 65536,
+          "ouvert": 65536,
+          "modifie": 286688,
+          "historique": 139232,
+          "premiere_ns": 25791,
+          "insertion_ns": 18,
+          "effacement_ns": 89,
+          "mouvement_ns": 5
+        },
+        {
+          "octets": 1048576,
+          "ouvert": 1048576,
+          "modifie": 2301920,
+          "historique": 139232,
+          "premiere_ns": 527292,
+          "insertion_ns": 18,
+          "effacement_ns": 70,
+          "mouvement_ns": 6
+        },
+        {
+          "octets": 4194304,
+          "ouvert": 4194304,
+          "modifie": 8593376,
+          "historique": 139232,
+          "premiere_ns": 2235709,
+          "insertion_ns": 24,
+          "effacement_ns": 75,
+          "mouvement_ns": 5
+        }
+      ],
+      "novafs": {
+        "standards": 196,
+        "instrumentes": 197,
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=40.298",
+        "injections_ancres": 2304,
+        "injections_pool": 12
+      }
+    }
+  },
+  "dma": {
+    "gicv3": 11,
+    "sequentiel": 23,
+    "elf_gicv3": "b57fc7aba3ba1720cb9eda7000bd13c22cce0ea2788a698f2887629c2c94e513",
+    "elf_sequentiel": "fc4c0ed430e221a8822b2e5935bea15092fb5ff3f7869fdf3092a8c75f07faec"
+  },
+  "gpt": {
+    "512": {
+      "scenarios": 19,
+      "refus_sans_ecriture": 13,
+      "elf_installateur_sha256": "94cb4c1fdde2e4384b4d75ddb9a67fb24cfecc9bd62bc78a03fdfce7277e6045"
+    },
+    "4096": {
+      "scenarios": 19,
+      "refus_sans_ecriture": 13,
+      "elf_installateur_sha256": "94cb4c1fdde2e4384b4d75ddb9a67fb24cfecc9bd62bc78a03fdfce7277e6045"
+    }
+  },
+  "interop": {
+    "p9": [
+      {
+        "producteur": "aarch64-apple-darwin",
+        "lecteur": "x86_64-apple-darwin",
+        "secteur": 512,
+        "lignees": 2,
+        "octets_compares": 59017,
+        "restaurations": 2,
+        "images_source_et_alias_verifiees": true
+      },
+      {
+        "producteur": "aarch64-apple-darwin",
+        "lecteur": "x86_64-apple-darwin",
+        "secteur": 4096,
+        "lignees": 2,
+        "octets_compares": 59017,
+        "restaurations": 2,
+        "images_source_et_alias_verifiees": true
+      },
+      {
+        "producteur": "x86_64-apple-darwin",
+        "lecteur": "aarch64-apple-darwin",
+        "secteur": 512,
+        "lignees": 2,
+        "octets_compares": 59017,
+        "restaurations": 2,
+        "images_source_et_alias_verifiees": true
+      },
+      {
+        "producteur": "x86_64-apple-darwin",
+        "lecteur": "aarch64-apple-darwin",
+        "secteur": 4096,
+        "lignees": 2,
+        "octets_compares": 59017,
+        "restaurations": 2,
+        "images_source_et_alias_verifiees": true
+      }
+    ],
+    "cli_p8": [
+      {
+        "producteur": "aarch64",
+        "lecteur": "x86_64",
+        "secteur": 512
+      },
+      {
+        "producteur": "aarch64",
+        "lecteur": "x86_64",
+        "secteur": 4096
+      },
+      {
+        "producteur": "x86_64",
+        "lecteur": "aarch64",
+        "secteur": 512
+      },
+      {
+        "producteur": "x86_64",
+        "lecteur": "aarch64",
+        "secteur": 4096
+      }
+    ],
+    "f01_sha256": "b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+  }
+}

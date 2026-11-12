@@ -110,3 +110,13 @@ nsh-scripts-test: kernel
 vi-test: kernel
 	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
 	python3 tests/vi.py
+
+.PHONY: vi-memoire-test vi-volumes-test
+vi-memoire-test:
+	mkdir -p build
+	rustup run stable rustc --edition 2024 -O --test --target "$(ARCH)-apple-darwin" tests/vi_memoire.rs -o "build/vi-memoire-$(ARCH)"
+	"build/vi-memoire-$(ARCH)" --nocapture --test-threads=1
+
+vi-volumes-test: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 tests/vi_volumes.py

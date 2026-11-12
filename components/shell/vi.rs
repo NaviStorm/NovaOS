@@ -48,10 +48,13 @@ fn publish(
             };
         }
         let h = w::word(&opened?, 16);
-        if !data.is_empty() {
-            view.write(h, 0, data)?;
+        if data.is_empty() {
+            view.sync(h)?;
         }
-        view.sync(h)?;
+        for (index, chunk) in data.chunks(w::MAX_WRITE).enumerate() {
+            view.write(h, (index * w::MAX_WRITE) as u64, chunk)?;
+            view.sync(h)?;
+        }
         view.close(h)?;
         view.simple(w::PUBLISH_COPY, 1)?;
         Ok(())
@@ -101,13 +104,19 @@ impl Input {
 struct Upload {
     name: Vec<u8>,
     text: Vec<u8>,
+    name_len: usize,
+    text_len: usize,
 }
 fn append(to: &mut Vec<u8>, part: &[u8], max: usize) -> rt::Result<()> {
-    if part.is_empty() || to.len() + part.len() > max {
+    if part.is_empty() || part.len() > max - to.len() {
         return Err(rt::LIMIT);
     }
-    to.try_reserve_exact(part.len())
-        .map_err(|_| rt::NO_MEMORY)?;
+    if to.capacity() - to.len() < part.len() {
+        let increment = to.len().clamp(128, 65536).min(max - to.len());
+        to.try_reserve_exact(part.len().max(increment))
+            .or_else(|_| to.try_reserve_exact(part.len()))
+            .map_err(|_| rt::NO_MEMORY)?;
+    }
     to.extend_from_slice(part);
     Ok(())
 }
@@ -123,14 +132,9 @@ struct Session<'a> {
     trial: Trial,
 }
 impl Session<'_> {
-    fn save(&mut self, sizes: &[u8]) -> rt::Result<()> {
+    fn save(&mut self) -> rt::Result<()> {
         let upload = self.upload.take().ok_or(rt::BAD_ARGUMENT)?;
-        let &[a, b, c, d] = sizes else {
-            return Err(rt::BAD_ARGUMENT);
-        };
-        if upload.name.len() != u16::from_le_bytes([a, b]) as usize
-            || upload.text.len() != u16::from_le_bytes([c, d]) as usize
-        {
+        if upload.name.len() != upload.name_len || upload.text.len() != upload.text_len {
             return Err(rt::BAD_ARGUMENT);
         }
         let name = core::str::from_utf8(&upload.name).map_err(|_| rt::BAD_ARGUMENT)?;
@@ -171,10 +175,12 @@ impl Session<'_> {
         match (op, data) {
             (wire::INFO, []) => {
                 out[0] = u8::from(self.source.is_some());
-                Ok(1)
+                let len = self.source.as_ref().map_or(0, String::len);
+                out[1..9].copy_from_slice(&(len as u64).to_le_bytes());
+                Ok(9)
             }
-            (wire::READ, [lo, hi]) => {
-                let at = u16::from_le_bytes([*lo, *hi]) as usize;
+            (wire::READ, offset) => {
+                let at = wire::length(offset)?;
                 let bytes = self
                     .source
                     .as_deref()
@@ -193,29 +199,39 @@ impl Session<'_> {
                 out[0] = self.input.key()?;
                 Ok(1)
             }
-            (wire::BEGIN, []) => {
+            (wire::BEGIN, sizes) if sizes.len() == 10 => {
+                self.upload = None;
+                let name_len = usize::from(u16::from_le_bytes([sizes[0], sizes[1]]));
+                let text_len = wire::length(&sizes[2..])?;
+                if name_len == 0 || name_len > w::PATH_MAX {
+                    return Err(rt::BAD_ARGUMENT);
+                }
+                let name = Vec::new();
+                let text = Vec::new();
                 self.upload = Some(Upload {
-                    name: Vec::new(),
-                    text: Vec::new(),
+                    name,
+                    text,
+                    name_len,
+                    text_len,
                 });
                 Ok(0)
             }
             (wire::NAME | wire::TEXT, part) => {
                 let state = self.upload.as_mut().ok_or(rt::BAD_ARGUMENT)?;
                 if op == wire::NAME && state.text.is_empty() {
-                    append(&mut state.name, part, w::PATH_MAX)?
-                } else if op == wire::TEXT && !state.name.is_empty() {
-                    append(&mut state.text, part, wire::BYTES)?
+                    append(&mut state.name, part, state.name_len)?
+                } else if op == wire::TEXT && state.name.len() == state.name_len {
+                    append(&mut state.text, part, state.text_len)?
                 } else {
                     return Err(rt::BAD_ARGUMENT);
                 }
                 Ok(0)
             }
-            (wire::SAVE, sizes) => {
+            (wire::SAVE, []) => {
                 if self.measure {
                     console::edit(2)?;
                 }
-                self.save(sizes)?;
+                self.save()?;
                 Ok(0)
             }
             (wire::FIN, []) => Ok(0),
@@ -259,7 +275,7 @@ pub fn run(
         return Err(rt::BAD_ARGUMENT);
     }
     let path = paths::resolve(fs, name)?;
-    let source = match paths::read_text(fs, &path, wire::BYTES) {
+    let source = match paths::read_text(fs, &path, usize::MAX) {
         Ok(s) => Some(s),
         Err(w::NOT_FOUND) => {
             let (parent, leaf) = path.rsplit_once('/').unwrap_or((".", &path));

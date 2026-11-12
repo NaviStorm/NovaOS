@@ -1,5 +1,7 @@
 # NovaOS v0.16.0 — Éditeur vi
 
+Cette page décrit la livraison v0.16.0. Le guide de v0.16.1 présente le tampon dynamique, Ctrl+R, les mesures et la nouvelle image UTM. [Tester vi v0.16.1](vi-v0.16.1.md)
+
 Au prompt `nsh>`, `vi bonjour.nsh` ouvre un fichier texte ou prépare un tampon vide si le nom est libre. Appuyer sur `i`, puis saisir ces deux lignes :
 
 ```sh

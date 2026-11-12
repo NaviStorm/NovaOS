@@ -106,7 +106,7 @@ def transfert(console, marque, sid):
     assert f"ATTACH sid={sid} domaine=2 bypass=0 BME=0".encode() in serie
     bilan = re.search(rb"NOVA DXE SORTIE droits=(\d+) retraits=(\d+) actifs=0 BME=0 bypass=0", serie)
     assert bilan and int(bilan[1]) == int(bilan[2]) > 0
-    assert b"NovaOS v0.16.0" in serie and b"GICv3 groupe=1" in serie
+    assert b"NovaOS v0.16.1" in serie and b"GICv3 groupe=1" in serie
     return serie
 
 
@@ -119,6 +119,33 @@ def script_vi(console):
     os.write(console.fd, b"vi recettes/edite.nsh\r")
     console.attendre(b"vi [NORMAL]")
     os.write(console.fd, b":w recettes/autre.nsh\r")
+    console.attendre("Saisir OUI puis Entrée : ".encode())
+    os.write(console.fd, b"OUI\r")
+    console.attendre("fichier enregistré".encode())
+    os.write(console.fd, b":q\r")
+    console.attendre(b"nsh> ")
+
+
+VI_LINE = "1234567890abcdef" * 4
+VI_LINES = 1024
+
+
+def grand_fichier(console):
+    """La source de qualification est créée au clavier dans l'éditeur installé."""
+    name = "recettes/volume.txt"
+    os.write(console.fd, f"vi {name}\r".encode())
+    console.attendre(f"{name} [nouveau] 1:1".encode())
+    os.write(console.fd, b"i")
+    for row in range(VI_LINES):
+        os.write(console.fd, (VI_LINE+"\r").encode())
+        console.attendre(f"{name} [modifié] {row+2}:1".encode())
+    os.write(console.fd, b"\x1b:wq\r")
+    console.attendre(b"nsh> ")
+    os.write(console.fd, f"vi {name}\r".encode())
+    console.attendre(f"{name} [enregistré] 1:1".encode())
+    os.write(console.fd, b"iX\x1biY\x1buu")
+    console.attendre(f"{name} [enregistré] 1:1".encode())
+    os.write(console.fd, b"\x12\x12:w recettes/volume-edite.txt\r")
     console.attendre("Saisir OUI puis Entrée : ".encode())
     os.write(console.fd, b"OUI\r")
     console.attendre("fichier enregistré".encode())
@@ -151,17 +178,18 @@ def qualifier(distribution, dest):
     with enregistrer(autonome, ident) as machine:
         with demarrer(machine, dest / "autonome.serial") as console:
             transfert(console, b"nsh> ", 56)
-            assert b"NovaOS 0.16.0" in console.ligne("ls --version")
+            assert b"NovaOS 0.16.1" in console.ligne("ls --version")
             for cmd in ["mkdir recettes", "cp /systeme recettes/preuve.txt", "cd recettes", "cd .."]:
                 out = console.ligne(cmd)
                 assert b"statut " not in out and b"erreur" not in out, (cmd, out)
-            assert b"NovaOS 0.16.0" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
+            assert b"NovaOS 0.16.1" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
             assert b"NovaOS\r\n" in console.ligne("cat **/*.txt")
             script = console.ligne("nsh /verification.nsh")
             assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script
             out = console.ligne("nsh -c 'test -f /verification.nsh && cp /verification.nsh recettes/preuve.nsh'")
             assert b"statut " not in out and b"erreur" not in out
             script_vi(console)
+            grand_fichier(console)
             console.ligne("exit", b"SYSTEME bilan Ok(())")
         with demarrer(machine, dest / "persistance.serial") as console:
             transfert(console, b"nsh> ", 56)
@@ -171,12 +199,16 @@ def qualifier(distribution, dest):
             assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script
             for path in ("edite.nsh", "autre.nsh"):
                 assert "Écrit dans vi\r\n".encode() in console.ligne("./recettes/" + path)
+            for name, prefix in (("volume.txt", ""), ("volume-edite.txt", "YX")):
+                content = (prefix + (VI_LINE+"\r\n")*VI_LINES).encode()
+                assert content in console.ligne("cat recettes/"+name)
             assert b"controle-16" in console.ligne("nsh -c 'x=controle-16; echo $x'")
             console.ligne("exit", b"SYSTEME bilan Ok(())")
     assert digest(support) == original
     return dict(application="UTM", profil="AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
                 serie="PTY de l’application", installation=True, support_sha256=original,
                 disque_installe_sha256=cible, demarrages_autonomes=2, contenu_relu="NovaOS\n",
+                octets_vi_relus=[(len(VI_LINE)+1)*VI_LINES, (len(VI_LINE)+1)*VI_LINES+2],
                 scripts_vi_relus=["recettes/edite.nsh", "recettes/autre.nsh"],
                 script_installe="/verification.nsh", script_execute_apres_redemarrage="./recettes/preuve.nsh")
 

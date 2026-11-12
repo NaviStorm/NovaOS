@@ -25,43 +25,57 @@ fn display(out: &mut String, c: char) {
         out.push('�')
     }
 }
-pub fn draw(e: &Editor) -> rt::Result<()> {
+fn draw(e: &Editor, out: &mut String) -> rt::Result<()> {
     let row = e.buf.row();
     let first = row.saturating_sub(ROWS / 2);
     let start = e.buf.start();
-    let pos = e.buf.text[start..e.buf.at]
-        .chars()
+    let pos = e
+        .buf
+        .parts(start..e.buf.at)
+        .into_iter()
+        .flat_map(str::chars)
         .map(width)
         .sum::<usize>();
     let left = pos.saturating_sub(WIDTH - 8);
-    let mut out = String::new();
+    out.clear();
     out.push('\n');
-    for (j, line) in e.buf.text.split('\n').skip(first).take(ROWS).enumerate() {
+    let mut begin = start;
+    for _ in first..row {
+        begin = e.buf.start_at(begin - 1);
+    }
+    for j in 0..ROWS {
         let current = first + j == row;
-        let line = line.strip_suffix('\r').unwrap_or(line);
+        let end = e.buf.end_from(begin);
         let _ = write!(out, "{:>3} ", first + j + 1);
         let mut col = 0;
-        for (i, c) in line
-            .char_indices()
-            .chain(core::iter::once((line.len(), '\0')))
+        let mut offset = begin;
+        for c in e
+            .buf
+            .parts(begin..end)
+            .into_iter()
+            .flat_map(str::chars)
+            .chain(core::iter::once('\0'))
         {
             if col >= left && col < left + WIDTH {
-                if current && i == e.buf.at - start {
+                if current && offset == e.buf.at {
                     out.push('▏');
                 }
                 if c != '\0' {
-                    display(&mut out, c);
+                    display(out, c);
                 }
             }
             if c == '\0' {
                 break;
             }
+            offset += c.len_utf8();
             col += width(c);
             if col >= left + WIDTH {
                 break;
             }
         }
         out.push('\n');
+        let Some(n) = e.buf.newline(end) else { break };
+        begin = n + 1;
     }
     let mode = match e.mode {
         Mode::Insert => "INSERTION",
@@ -94,7 +108,7 @@ pub fn draw(e: &Editor) -> rt::Result<()> {
             e.prompt
         );
     }
-    console::printable(tty::OUTPUT, &out)
+    console::printable(tty::OUTPUT, out)
 }
 
 pub struct Keys {
@@ -153,10 +167,16 @@ struct BeforeEsc {
 }
 pub fn edit(e: &mut Editor, link: &mut wire::Link) -> rt::Result<()> {
     let mut keys = Keys::new();
+    // Largeur maximale en octets des lignes, du chemin, de la commande et du statut.
+    let mut out = String::new();
+    out.try_reserve_exact(
+        ROWS * (WIDTH * 4 + 48) + nova_cli::protocol::PATH_MAX + super::editor::PROMPT_MAX + 256,
+    )
+    .map_err(|_| rt::NO_MEMORY)?;
     let mut escaped = None;
     let mut ss3: Option<BeforeEsc> = None;
     let mut sequence: Option<(BeforeEsc, bool)> = None;
-    draw(e)?;
+    draw(e, &mut out)?;
     loop {
         let key = keys.next(link)?;
         if let Some(before) = ss3.take() {
@@ -164,7 +184,7 @@ pub fn edit(e: &mut Editor, link: &mut wire::Link) -> rt::Result<()> {
                 e.mode = before.mode;
                 e.buf.at = before.at;
                 e.arrow(key);
-                draw(e)?;
+                draw(e, &mut out)?;
                 continue;
             }
             // Esc suivi de la commande normale O : le prochain caractère lève l'ambiguïté SS3.
@@ -206,6 +226,6 @@ pub fn edit(e: &mut Editor, link: &mut wire::Link) -> rt::Result<()> {
         } else if e.key(key, link) {
             return Ok(());
         }
-        draw(e)?;
+        draw(e, &mut out)?;
     }
 }
