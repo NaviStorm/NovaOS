@@ -1,13 +1,17 @@
-//! GICv3 du banc virt-10.0, un PE, sans ITS. L’INTA du slot 6 est SPI 5.
+//! GICv3 du banc virt-10.0, un PE, sans ITS. Les quatre INTx PCI sont les SPI 3 à 6.
 use super::timer::{DIST, PPI, counter, counter_hz, read, write};
 use core::arch::asm;
+use core::sync::atomic::{AtomicU32, Ordering};
 
 const REDIST: u64 = DIST + 0x3000;
 const SGI: u64 = DIST + 0x4000;
 const ROUTES: u64 = DIST + 0x5000;
 const IDS: u64 = DIST + 0x6000;
-const DISK: u32 = 37;
-const BIT: u32 = 1 << (DISK - 32);
+static DISK: AtomicU32 = AtomicU32::new(37);
+
+pub(super) fn disk_id() -> u32 {
+    DISK.load(Ordering::Acquire)
+}
 
 pub(super) const PAGES: &[(u64, u64)] = &[
     (REDIST, 0x080a_0000),
@@ -59,19 +63,13 @@ pub(super) fn init() {
     write(SGI, 0x80, read(SGI, 0x80) | (1 << PPI));
     priority(SGI, PPI, 0x80);
     write(SGI, 0x100, 1 << PPI);
-    write(DIST, 0x84, read(DIST, 0x84) | BIT);
-    write(DIST, 0xc08, read(DIST, 0xc08) & !(2 << ((DISK % 16) * 2)));
-    priority(DIST, DISK, 0x40);
-    write(DIST, 0x284, BIT);
     let routed = disabled | (1 << 4);
     write(DIST, 0, routed);
     wait_clear(DIST, 0, 1 << 31);
     // Sûreté : le cadre IROUTER est mappé Device. Le BSP utilise les registres
     // système EL1, groupe 1, EOI combiné à la désactivation.
     unsafe {
-        let route = (ROUTES + u64::from(DISK) * 8) as *mut u64;
-        route.write_volatile(affinity);
-        assert_eq!(route.read_volatile(), affinity);
+        configure_disk(disk_id());
         write(DIST, 0, routed | 2);
         wait_clear(DIST, 0, 1 << 31);
         let sre: u64;
@@ -107,7 +105,37 @@ pub(super) fn end(ack: u32) {
 }
 
 pub(crate) fn disk_line(enable: bool) {
-    write(DIST, if enable { 0x104 } else { 0x184 }, BIT);
+    let bit = 1 << (disk_id() - 32);
+    write(DIST, if enable { 0x104 } else { 0x184 }, bit);
     wait_clear(DIST, 0, 1 << 31);
-    assert_eq!(read(DIST, 0x104) & BIT != 0, enable);
+    assert_eq!(read(DIST, 0x104) & bit != 0, enable);
+}
+
+fn configure_disk(id: u32) {
+    let bit = 1 << (id - 32);
+    write(DIST, 0x84, read(DIST, 0x84) | bit);
+    write(DIST, 0xc08, read(DIST, 0xc08) & !(2 << ((id % 16) * 2)));
+    priority(DIST, id, 0x40);
+    write(DIST, 0x284, bit);
+    let affinity = super::cpu_id() as u64;
+    // Sûreté : IROUTER est mappé Device, la ligne sélectionnée est masquée.
+    unsafe {
+        let reg = (ROUTES + u64::from(id) * 8) as *mut u64;
+        reg.write_volatile(affinity);
+        assert_eq!(reg.read_volatile(), affinity);
+    }
+}
+
+pub(super) fn select_disk(id: u32) -> crate::hardware::block::Result<()> {
+    let _guard = crate::hal::interrupts::Guard::new();
+    if !(35..=38).contains(&id) {
+        return Err(crate::hardware::block::Error::Route);
+    }
+    let bits = (1 << (id - 32)) | (1 << (disk_id() - 32));
+    if (read(DIST, 0x104) | read(DIST, 0x204) | read(DIST, 0x304)) & bits != 0 {
+        return Err(crate::hardware::block::Error::Route);
+    }
+    configure_disk(id);
+    DISK.store(id, Ordering::Release);
+    Ok(())
 }

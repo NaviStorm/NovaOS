@@ -212,8 +212,22 @@ impl Device {
             return Err(Error::Geometry);
         };
         #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
-        if cfg.get(4, 2) & 4 != 0 || common.r8(20) != 0 {
-            return Err(Error::Quarantine);
+        {
+            if cfg.get(4, 2) & 4 != 0 {
+                return Err(Error::Quarantine);
+            }
+            // Un contrôleur ignoré par UEFI peut avoir MSE=0. Une lecture de
+            // son BAR renverrait 0xff. Activer le seul décodage CPU et vérifier
+            // que la fonction ne peut toujours pas initier de transactions.
+            cfg.master(false);
+            if cfg.get(4, 2) & 7 != 2 || common.r8(20) != 0 {
+                crate::hal::log(format_args!(
+                    "DMA transfert refuse SID={bdf} commande={:#x} statut={:#x}",
+                    cfg.get(4, 2),
+                    common.r8(20)
+                ));
+                return Err(Error::Quarantine);
+            }
         }
         cfg.intx(false);
         if let Some((c, _, _)) = msix {
@@ -284,7 +298,12 @@ impl Device {
 }
 
 #[cfg(target_arch = "aarch64")]
-pub(super) fn exclusive_intx() -> Result<()> {
+pub(super) fn exclusive_intx(sid: u8) -> Result<()> {
+    if Config::open(sid)?.get(0x3d, 1) != 1 {
+        return Err(Error::Route);
+    }
+    // interrupt-map de virt-10.0, INTA..INTD, masque PCI 0x1800.
+    let route = u32::from(sid / 8) % 4;
     for slot in 0..32 {
         let cfg = Config::open(slot * 8)?;
         if cfg.get(0, 2) == 0xffff {
@@ -300,17 +319,10 @@ pub(super) fn exclusive_intx() -> Result<()> {
             if f.get(0xe, 1) & 127 != 0 || pin > 4 {
                 return Err(Error::Geometry);
             }
-            if pin != 0
-                && (u32::from(slot) + pin - 1) % 4 == 2
-                && !(slot == 6 && function == 0 && pin == 1)
-            {
+            if pin != 0 && (u32::from(slot) + pin - 1) % 4 == route && slot * 8 + function != sid {
                 return Err(Error::Route);
             }
         }
     }
-    if Config::open(48)?.get(0x3d, 1) == 1 {
-        Ok(())
-    } else {
-        Err(Error::Route)
-    }
+    crate::hal::timer::select_disk(35 + route)
 }

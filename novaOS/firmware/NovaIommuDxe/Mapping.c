@@ -198,7 +198,7 @@ STATIC VOID Revoke (MAPPING *M) {
         NovaStop ("retrait anneau avec tampons actifs");
       }
     }
-    NovaQuiesce ();
+    NovaQuiesce (Closed);
     MasterOn = FALSE;
     DiskRing = NULL;
   }

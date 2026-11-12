@@ -6,9 +6,6 @@ extern crate alloc;
 
 #[path = "../../abi/native.rs"]
 mod abi;
-#[allow(dead_code)]
-#[path = "../../abi/terminal.rs"]
-mod terminal;
 mod arch;
 mod boot;
 mod console;
@@ -18,6 +15,9 @@ mod heap;
 mod input;
 mod memory;
 mod sched;
+#[allow(dead_code)]
+#[path = "../../abi/terminal.rs"]
+mod terminal;
 
 use core::panic::PanicInfo;
 use hal::log;
@@ -63,6 +63,21 @@ fn main_thread() {
         Err(e) => panic!("Restitution du chargeur : {e:?}"),
     }
     let scenario = args.as_slice();
+    #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
+    if cfg!(feature = "dma-sequentiel") {
+        #[cfg(feature = "dma-sequentiel")]
+        if matches!(scenario, b"dma-sequentiel" | b"dma-sequentiel-reemploi") {
+            if scenario == b"dma-sequentiel-reemploi" {
+                heap::with_pages(memory::Memory::verify_firmware_reuse)
+                    .expect("réemploi des cadres EFI");
+            }
+            let resultat = hardware::block::qualification::executer();
+            hal::log(format_args!("CIBLE bilan {resultat:?}"));
+        } else {
+            hal::log(format_args!("CIBLE mode de demarrage refuse"));
+        }
+        hal::cpu::halt()
+    }
     if scenario.starts_with(b"sched-") {
         sched::test(scenario);
     }

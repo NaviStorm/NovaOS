@@ -14,8 +14,19 @@ def lecteur(nom, interface, fichier, lecture_seule):
                 ImageType="Disk", ReadOnly=lecture_seule)
 
 
-def profil(destination, artefacts, support, avec_cible):
-    nom = "NovaOS-audit-" + ("deux-disques" if avec_cible else "un-disque")
+def disque_sequentiel(backend, slot, source, *, designation=None, serie=None):
+    objet = "support" if source else "destination"
+    role = designation or ("NovaOS-Install-v1" if source else "NovaOS-Target-v1")
+    serie = serie or ("NOVA-MEDIA-000000001" if source else "NOVA-CIBLE-000000001")
+    dev = (f"virtio-blk-pci,id={objet},drive={backend},serial={serie},addr={slot:x},disable-legacy=on,"
+           "iommu_platform=on,ats=off,num-queues=1,vectors=0")
+    return ["-device", dev + (",bootindex=1" if source else ""),
+            "-smbios", f"type=41,designation={role},instance=1,kind=other,pcidev={objet}"]
+
+
+def profil(destination, artefacts, support, avec_cible, sequentiel=False):
+    prefixe = "NovaOS-qualification-CRB-" if sequentiel else "NovaOS-audit-"
+    nom = prefixe + ("deux-disques" if avec_cible else "un-disque")
     paquet = destination / (nom + ".utm")
     paquet.mkdir()
     data = paquet / "Data"
@@ -35,8 +46,11 @@ def profil(destination, artefacts, support, avec_cible):
         lecteurs.append(lecteur("cible", "None", "cible.qcow2", False))
         disques.append(("cible", 7))
     for ordre, (identifiant, slot) in enumerate(disques, start=1):
-        arguments += ["-device", f"virtio-blk-pci,drive=drive{identifiant},addr={slot},"
-                      f"disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,bootindex={ordre}"]
+        if sequentiel:
+            arguments += disque_sequentiel("drive" + identifiant, slot, identifiant == "source")
+        else:
+            arguments += ["-device", f"virtio-blk-pci,drive=drive{identifiant},addr={slot},"
+                          f"disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,bootindex={ordre}"]
     for evenement in ("virtio_iommu_attach", "virtio_iommu_detach", "virtio_iommu_unmap_done",
                       "virtio_iommu_report_fault", "virtio_blk_handle_read", "virtio_blk_handle_write"):
         arguments += ["-trace", evenement]
@@ -61,12 +75,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("artefacts", type=Path, help="répertoire de sortie de prototype_uefi.py")
     parser.add_argument("destination", type=Path, help="nouveau répertoire, créé exclusivement")
+    parser.add_argument("--sequentiel", action="store_true", help="firmware et noyau de qualification séquentielle")
     args = parser.parse_args()
     args.destination.mkdir()
     with tempfile.TemporaryDirectory() as tmp:
-        support = image(Path(tmp) / "temoin", args.artefacts / "novaos.elf", "dma-qual")
+        scenario = "dma-sequentiel" if args.sequentiel else "dma-qual"
+        support = image(Path(tmp) / "temoin", args.artefacts / "novaos.elf", scenario)
         for avec_cible in (False, True):
-            profil(args.destination, args.artefacts, support, avec_cible)
+            profil(args.destination, args.artefacts, support, avec_cible, args.sequentiel)
 
 
 if __name__ == "__main__":

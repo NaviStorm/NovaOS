@@ -9,6 +9,7 @@
 
 [Sources.AARCH64]
   Domain.c
+  Profil.c
   Mapping.c
   Nova.h
 
@@ -33,6 +34,8 @@
   gEfiPciIoProtocolGuid
   gFdtClientProtocolGuid
   gVirtioDeviceProtocolGuid
+  gEfiSmbiosProtocolGuid
+  gEfiTcg2ProtocolGuid
 
 [Guids]
   gEfiEventBeforeExitBootServicesGuid

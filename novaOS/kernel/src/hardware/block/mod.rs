@@ -3,6 +3,8 @@ mod io;
 mod lease;
 pub(crate) mod metrics;
 mod pci;
+#[cfg(all(target_arch = "aarch64", feature = "dma-sequentiel"))]
+pub(crate) mod qualification;
 mod queue;
 pub(crate) use lease::publication_unique;
 pub(crate) use lease::{
@@ -140,16 +142,21 @@ struct Transport {
     size: usize,
     pending: Option<u64>,
     ro: bool,
+    // La page de données OUT n'est traduite qu'après l'admission en écriture.
+    output_mapped: bool,
     started: u64,
     kind: usize,
 }
 impl Transport {
     fn open() -> Result<Self> {
+        Self::open_disk(SID as u8, true)
+    }
+    fn open_disk(sid: u8, output_mapped: bool) -> Result<Self> {
         let mut state = Lifecycle(State::Initial);
-        let d = Device::discover(SID as u8, 0x1042, 288)?;
+        let d = Device::discover(sid, 0x1042, 288)?;
         let p = Pages::new()?;
         state.next(State::Initial, State::Granted)?;
-        let mut unit = domain::Domain::start(&p).map_err(|e| {
+        let mut unit = domain::Domain::start(&p, sid).map_err(|e| {
             if e == Error::Absent {
                 Error::Feature
             } else {
@@ -160,7 +167,8 @@ impl Transport {
         // QEMU lit used.idx à l’activation. La seule page mixte est celle de
         // l’anneau utilisé ; aucune donnée client n’y réside.
         let rights = [1, 1, 3, 1, 2, 2, 1];
-        for (n, r) in rights.into_iter().enumerate() {
+        let mapped = if output_mapped { 7 } else { 6 };
+        for (n, &r) in rights[..mapped].iter().enumerate() {
             unit.map(&p, n, frame(&p, 16 + n).pa, r)?
         }
         let ro = d.read_only();
@@ -191,18 +199,30 @@ impl Transport {
             size,
             pending: None,
             ro,
+            output_mapped,
             started: 0,
             kind: 0,
         })
     }
     fn begin_read(&mut self, lba: u64) -> Result<()> {
+        self.begin_input(lba, 0, self.size)
+    }
+    // Seules les opérations IN (0) et GET_ID (8) ont une chaîne de réception.
+    fn begin_input(&mut self, lba: u64, opcode: u32, bytes: usize) -> Result<()> {
         if self.state.0 != State::Running {
             return Err(Error::State);
         }
         if self.pending.is_some() {
             return Err(Error::State);
         }
-        if lba >= self.sectors {
+        if bytes == 0
+            || bytes > PAGE
+            || lba >= self.sectors
+            || (opcode == 0
+                && (bytes % self.size != 0 || (bytes / self.size) as u64 > self.sectors - lba))
+            || (opcode == 8 && (lba != 0 || bytes != 20))
+            || !matches!(opcode, 0 | 8)
+        {
             return Err(Error::Geometry);
         }
         let sector = lba
@@ -210,7 +230,7 @@ impl Transport {
             .ok_or(Error::Geometry)?;
         self.unit.faults(&self.p)?;
         let h = self.p.0[19].mem;
-        h.w32(0, 0);
+        h.w32(0, opcode);
         h.w32(4, 0);
         h.w64(8, sector);
         self.p.0[21].mem.w8(0, 0xff);
@@ -223,7 +243,7 @@ impl Transport {
         );
         self.q.submit(&[
             Segment::new(addr(3), 16, false),
-            Segment::new(addr(4), self.size as u32, true),
+            Segment::new(addr(4), bytes as u32, true),
             Segment::new(addr(5), 1, true),
         ])?;
         KICKS.fetch_add(1, Ordering::Release);
@@ -260,6 +280,9 @@ impl Transport {
         Ok(())
     }
     fn output(&mut self, lba: u64, flush: bool) -> Result<()> {
+        if !self.output_mapped {
+            return Err(Error::State);
+        }
         if self.ro && !flush {
             return Err(Error::Device);
         }
@@ -311,7 +334,8 @@ impl Transport {
         USED_ADDR.store(0, Ordering::Release);
         EXPECT.store(0, Ordering::Release);
         self.state.next(State::Quiet, State::IrqRevoked)?;
-        for n in 0..7 {
+        let mapped = if self.output_mapped { 7 } else { 6 };
+        for n in 0..mapped {
             self.unit.map(&self.p, n, 0, 0)?
         }
         self.unit.stop(&self.p)?;

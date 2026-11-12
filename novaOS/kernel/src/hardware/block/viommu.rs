@@ -1,17 +1,18 @@
 //! Contrôleur virtio-IOMMU de virt, jamais accessible au pilote EL0.
 use super::{
-    Device, Error, Pages, Queue, Result, SID, Segment,
+    Device, Error, Pages, Queue, Result, Segment,
     io::{barrier, wait},
 };
 use crate::hal::timer;
 pub(super) struct Domain {
+    sid: u8,
     unit: Device,
     requests: Queue,
     events: Queue,
 }
 impl Domain {
-    pub fn start(p: &Pages) -> Result<Self> {
-        super::pci::exclusive_intx()?;
+    pub fn start(p: &Pages, sid: u8) -> Result<Self> {
+        super::pci::exclusive_intx(sid)?;
         let unit = Device::discover(5 << 3, 0x1057, 272)?;
         unit.cfg.intx(false);
         unit.start((1 << 32) | 0x57)?;
@@ -31,20 +32,21 @@ impl Domain {
         unit.ready()?;
         events.faults(p.0[8]);
         let mut d = Self {
+            sid,
             unit,
             requests,
             events,
         };
         let req = p.0[6].mem;
         req.w32(0, 5);
-        req.w32(4, u32::from(SID)); // PROBE, valider aussi les réserves MSI
+        req.w32(4, u32::from(sid)); // PROBE, valider aussi les réserves MSI
         d.request(p, 72, 516)?;
         if (0..512).any(|i| p.0[7].mem.r8(i) != 0) {
             return Err(Error::Route);
         }
         req.w32(0, 1);
         req.w32(4, 1);
-        req.w32(8, u32::from(SID));
+        req.w32(8, u32::from(sid));
         req.w32(12, 0);
         req.w32(16, 0);
         d.request(p, 20, 4)?;
@@ -58,7 +60,7 @@ impl Domain {
             Segment::new(p.0[6].pa, n, false),
             Segment::new(p.0[7].pa, res, true),
         ])?;
-        if self.requests.completed()? != res || p.0[7].mem.r8(res as usize - 4) != 0 {
+        if self.requests.completed()? != res || p.0[7].mem.r32(res as usize - 4) != 0 {
             return Err(Error::Fault);
         }
         Ok(())
@@ -105,7 +107,7 @@ impl Domain {
         let req = p.0[6].mem;
         req.w32(0, 2);
         req.w32(4, 1);
-        req.w32(8, u32::from(SID));
+        req.w32(8, u32::from(self.sid));
         req.w32(12, 0);
         req.w32(16, 0); // réservé
         self.request(p, 20, 4)?;

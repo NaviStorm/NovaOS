@@ -35,10 +35,10 @@ def image(tmp, noyau, scenario):
 
 
 @contextmanager
-def tpm(tmp, traces, nom):
+def tpm(tmp, traces, nom, etat=None):
     with tempfile.TemporaryDirectory(dir=tmp) as dossier, (traces / (nom + ".tpm")).open("xb") as journal:
         socket = Path(dossier) / "tpm"
-        with subprocess.Popen([tmp / "swtpm.0", "--tpm2", "--tpmstate", f"dir={dossier}",
+        with subprocess.Popen([tmp / "swtpm.0", "--tpm2", "--tpmstate", f"dir={etat or dossier}",
                                "--ctrl", f"type=unixio,path={socket}", "--terminate"],
                               stdout=journal, stderr=journal) as proc:
             try:

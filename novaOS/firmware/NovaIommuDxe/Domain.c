@@ -9,6 +9,13 @@ STATIC VIRTIO_DEVICE_PROTOCOL *Disk, *Unit;
 STATIC VRING Requests, Events;
 STATIC UINT8 *Command, *Reply, *Fault;
 STATIC BOOLEAN Attached, Starting;
+#ifdef NOVA_BANC_RETRAIT_TRANSFERT
+STATIC BOOLEAN SuspendUnmap;
+#endif
+#ifdef NOVA_SEQUENTIEL
+STATIC EFI_HANDLE TargetHandle;
+STATIC EFI_PCI_IO_PROTOCOL *TargetPci;
+#endif
 
 VOID NovaLog (CONST CHAR8 *Format, ...) {
   CHAR8 Text[160];
@@ -120,8 +127,18 @@ VOID NovaMaster (BOOLEAN Enable) {
 STATIC EFI_STATUS Identify (EFI_HANDLE Requested) {
   EFI_HANDLE *Handles, Controller = NULL;
   UINTN Count, Disks = 0;
-  EFI_STATUS S =
-      gBS->LocateHandleBuffer (ByProtocol, &gEfiPciIoProtocolGuid, NULL, &Count, &Handles);
+  EFI_STATUS S;
+#ifdef NOVA_SEQUENTIEL
+  UINT32 Source, Target;
+  BOOLEAN TargetSeen = FALSE;
+  S = NovaRoles (&Source, &Target);
+  if (EFI_ERROR (S)) {
+    NovaLog ("NOVA DXE identite SMBIOS refusee %r\r\n", S);
+    return S;
+  }
+#endif
+  DiskHandle = NULL;
+  S = gBS->LocateHandleBuffer (ByProtocol, &gEfiPciIoProtocolGuid, NULL, &Count, &Handles);
   if (EFI_ERROR (S)) {
     return S;
   }
@@ -144,6 +161,21 @@ STATIC EFI_STATUS Identify (EFI_HANDLE Requested) {
       UnitPci = Pci;
     }
     if (PciId == 0x10421af4U) {
+#ifdef NOVA_SEQUENTIEL
+      if (IsMaster (Pci)) {
+        NovaStop ("BME disque avant admission");
+      }
+      if (Rid == Target) {
+        TargetSeen = TRUE;
+        TargetHandle = Handles[I];
+        TargetPci = Pci;
+        continue;
+      }
+      if (Rid != Source) {
+        gBS->FreePool (Handles);
+        return EFI_ACCESS_DENIED;
+      }
+#endif
       ++Disks;
       DiskHandle = Handles[I];
       DiskPci = Pci;
@@ -151,6 +183,11 @@ STATIC EFI_STATUS Identify (EFI_HANDLE Requested) {
     }
   }
   gBS->FreePool (Handles);
+#ifdef NOVA_SEQUENTIEL
+  if ((Target != MAX_UINT32 && !TargetSeen) || Target == UnitRid) {
+    return EFI_ACCESS_DENIED;
+  }
+#endif
   if (Disks != 1 || Controller == NULL || DiskHandle != Requested || DiskSid == UnitRid) {
     DiskHandle = NULL;
     return EFI_ACCESS_DENIED;
@@ -206,6 +243,8 @@ STATIC VOID Request (UINT32 InSize, UINT32 OutSize) {
 #ifdef NOVA_BANC_RETRAIT_SUSPENDU
   // Témoin négatif : retenir UNMAP avant publication, garder toutes les pages.
   if (Command[0] != 4)
+#elif defined (NOVA_BANC_RETRAIT_TRANSFERT)
+  if (Command[0] != 4 || !SuspendUnmap)
 #endif
   {
     *Requests.Avail.Idx = Next;
@@ -281,6 +320,15 @@ EFI_STATUS NovaAttach (EFI_HANDLE Handle) {
   if ((Features & (BIT32 | BIT33)) != (BIT32 | BIT33)) {
     NovaStop ("ACCESS_PLATFORM");
   }
+#ifdef NOVA_SEQUENTIEL
+  if ((Features & BIT5) == 0) {
+    NovaLog ("NOVA DXE support inscriptible refuse\r\n");
+    Starting = FALSE;
+    return EFI_ACCESS_DENIED;
+  }
+  NovaCheck (NovaCheckTpm (), "TPM2 GetCapability");
+  NovaLog ("NOVA DXE source NovaOS-Install-v1 sid=%u lecture seule\r\n", DiskSid);
+#endif
   if (Config (36, 1) != 0) {
     NovaStop ("bypass au démarrage");
   }
@@ -360,10 +408,36 @@ VOID NovaUnmapRange (UINT64 Iova, UINTN Pages) {
   Request (28, 4);
 }
 
-VOID NovaQuiesce (VOID) {
+VOID NovaQuiesce (BOOLEAN Transfert) {
   if (Attached) {
     Reset (Disk);
     NovaMaster (FALSE);
+#ifdef NOVA_BANC_RETRAIT_TRANSFERT
+    if (Transfert) {
+      SuspendUnmap = TRUE;
+      NovaLog ("NOVA DXE retrait anneau suspendu BME=0\r\n");
+    }
+#endif
+#ifdef NOVA_SEQUENTIEL
+    if (TargetPci != NULL) {
+      VIRTIO_DEVICE_PROTOCOL *TargetDev;
+      if (IsMaster (TargetPci)) {
+        NovaStop ("BME cible avant transfert");
+      }
+      // VirtioBlkDxe peut avoir marqué FAILED après le refus de sa première file.
+      // Le reset est une écriture de registre CPU, sans domaine ni requête bloc.
+      EFI_STATUS S = gBS->HandleProtocol (TargetHandle, &gVirtioDeviceProtocolGuid, (VOID **)&TargetDev);
+      if (S == EFI_SUCCESS) {
+        Reset (TargetDev);
+      } else if (S != EFI_UNSUPPORTED) {
+        NovaStop ("transport cible");
+      }
+      if (IsMaster (TargetPci)) {
+        NovaStop ("BME cible apres reset");
+      }
+      NovaLog ("NOVA DXE transfert cible BME=0 domaine=aucun\r\n");
+    }
+#endif
   }
 }
 

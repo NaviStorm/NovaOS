@@ -1,6 +1,28 @@
 //! Timer physique non sécurisé d’EL1 de la machine virt.
 use super::gic;
 pub(crate) use super::gic::disk_line;
+#[cfg(feature = "gicv3-lab")]
+pub(crate) fn select_disk(id: u32) -> crate::hardware::block::Result<()> {
+    gic::select_disk(id)
+}
+#[cfg(not(feature = "gicv3-lab"))]
+pub(crate) fn select_disk(id: u32) -> crate::hardware::block::Result<()> {
+    if id == 37 {
+        Ok(())
+    } else {
+        Err(crate::hardware::block::Error::Route)
+    }
+}
+fn disk_id() -> u32 {
+    #[cfg(feature = "gicv3-lab")]
+    {
+        gic::disk_id()
+    }
+    #[cfg(not(feature = "gicv3-lab"))]
+    {
+        37
+    }
+}
 use crate::sched;
 use core::{
     arch::asm,
@@ -50,7 +72,7 @@ pub(super) extern "C" fn irq(state: usize) {
     }
     if id == PPI {
         arm();
-    } else if id == 37 {
+    } else if id == disk_id() {
         if !crate::hardware::block::interrupt() {
             disk_line(false)
         }
@@ -87,13 +109,14 @@ pub fn counter_hz() -> u64 {
 }
 
 pub(crate) fn purge_disk() -> crate::hardware::block::Result<()> {
-    write(DIST, 0x284, 1 << 5);
-    if (read(DIST, 0x204) | read(DIST, 0x304) | read(DIST, 0x104)) & (1 << 5) == 0 {
+    let bit = 1 << (disk_id() - 32);
+    write(DIST, 0x284, bit);
+    if (read(DIST, 0x204) | read(DIST, 0x304) | read(DIST, 0x104)) & bit == 0 {
         Ok(())
     } else {
         Err(crate::hardware::block::Error::Quarantine)
     }
 }
 pub(crate) fn disk_pending() -> bool {
-    read(DIST, 0x204) & (1 << 5) != 0
+    read(DIST, 0x204) & (1 << (disk_id() - 32)) != 0
 }

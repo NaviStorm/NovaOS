@@ -22,7 +22,10 @@ pub(super) struct Domain {
     record: usize,
 }
 impl Domain {
-    pub fn start(p: &Pages) -> Result<Self> {
+    pub fn start(p: &Pages, sid: u8) -> Result<Self> {
+        if u16::from(sid) != SID {
+            return Err(Error::Route);
+        }
         if let Some(mut prior) = PARKED.lock().take() {
             if prior.regs.r32(0x1c) & RUN != RUN
                 || prior.anchors[1].mem.r64(16 * usize::from(SID)) != 0

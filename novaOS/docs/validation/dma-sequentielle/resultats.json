@@ -1,0 +1,1663 @@
+{
+  "moteur": "QEMU emulator version 10.0.12",
+  "utm": "5.0.8",
+  "pflash_sha256": "3660b1cad23b75102a923475c1ee457ffc0fd1ce085ae25813257f09d918263d",
+  "noyau_sha256": "976ab6a85c492cc9089396577607d47e41f56773399dfc2c6e03df672699e6a6",
+  "source_sha256": "6a2e8a6a186eb11778bd44f0e0071f86a388be4b9a0b94efbc6017bade949800",
+  "essais": {
+    "support": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE absente",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.84,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 36,
+      "intid_cible": null,
+      "eoi_cible": 0,
+      "pages_firmware": 104,
+      "pages_reallouees": 0
+    },
+    "vierge": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE confirmation requise",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "page_out_au_jalon": false,
+          "bme_source_a_la_confirmation": false,
+          "confirmation": true,
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 32768,
+              "rd_bytes": 134217728,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 7.105,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 1,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 32768,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 32770,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "refus": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE confirmation requise",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "page_out_au_jalon": false,
+          "bme_source_a_la_confirmation": false,
+          "confirmation": false,
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 6.36,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 16384,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 16385,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "confirmation-erronee": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE confirmation requise",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "page_out_au_jalon": false,
+          "bme_source_a_la_confirmation": false,
+          "confirmation": false,
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 6.374,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 16384,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 16385,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "tis": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE confirmation requise",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "page_out_au_jalon": false,
+          "bme_source_a_la_confirmation": false,
+          "confirmation": true,
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 32768,
+              "rd_bytes": 134217728,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          }
+        }
+      ],
+      "secondes": 7.082,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 1,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 32768,
+      "commandes_crb_start": 0,
+      "intid_cible": 38,
+      "eoi_cible": 32770,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "deplaces": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE confirmation requise",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "page_out_au_jalon": false,
+          "bme_source_a_la_confirmation": false,
+          "confirmation": false,
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 6.38,
+      "attaches": [
+        [
+          "2",
+          "56"
+        ],
+        [
+          "1",
+          "48"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 16384,
+      "commandes_crb_start": 36,
+      "intid_cible": 37,
+      "eoi_cible": 16385,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "reemploi": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE confirmation requise",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "page_out_au_jalon": false,
+          "bme_source_a_la_confirmation": false,
+          "confirmation": false,
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 6.515,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 16384,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 16385,
+      "pages_firmware": 107,
+      "pages_reallouees": 107,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "redemarrage": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE confirmation requise",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "page_out_au_jalon": false,
+          "bme_source_a_la_confirmation": false,
+          "confirmation": true,
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 32768,
+              "rd_bytes": 134217728,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        },
+        {
+          "confirmation": false,
+          "page_out_au_jalon": false,
+          "fin": {
+            "source": {
+              "rd_operations": 196,
+              "rd_bytes": 5866496,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 24
+            },
+            "cible": {
+              "rd_operations": 49152,
+              "rd_bytes": 201326592,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          }
+        }
+      ],
+      "secondes": 13.52,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ],
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 1,
+      "lectures_bloc_uefi": 196,
+      "lectures_bloc_novaos": 49152,
+      "commandes_crb_start": 72,
+      "intid_cible": 38,
+      "eoi_cible": 49155,
+      "pages_firmware": 125,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "fin": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE non vierge octet=67108863",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 6.332,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 16384,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 16385,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "75f9aa766c5e4c7c37e239ff62816017736205629d2996a34cce2bd405238461"
+    },
+    "mbr": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE non vierge octet=510",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 1,
+              "rd_bytes": 4096,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 1,
+              "rd_bytes": 4096,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.594,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 1,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 2,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "d623c9782ff03cc2114e6e215c75633a3333ac3849b36ac42c3cbee77199b944"
+    },
+    "gpt": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE non vierge octet=512",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 1,
+              "rd_bytes": 4096,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 1,
+              "rd_bytes": 4096,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.597,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 1,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 2,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "a715eede858e39de4166c90f4b7959549426b1ed515f2891e12a7fb96b76b226"
+    },
+    "fat": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE non vierge octet=82",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 1,
+              "rd_bytes": 4096,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 1,
+              "rd_bytes": 4096,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.638,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 1,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 2,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "e19750e528fae066d48bf55f7ccc239a311f17f61f8c3ecf3363816c2247b5d7"
+    },
+    "novafs": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE non vierge octet=4096",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 2,
+              "rd_bytes": 8192,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 2,
+              "rd_bytes": 8192,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.609,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 2,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 3,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "ae350ef8e2ad83913da8b6b642752bd23a7a24994a1273fbe7492d2475c89159"
+    },
+    "trop-petit": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE bilan Err(Geometry)",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.653,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 1,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8"
+    },
+    "erreur-lecture": {
+      "phases": [
+        {
+          "premier_jalon": "BLOC erreur peripherique",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 2,
+              "rd_bytes": 8192,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 2,
+              "rd_bytes": 8192,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.63,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 3,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 4,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "mauvais-support": {
+      "phases": [
+        {
+          "premier_jalon": "No mapping found",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.432,
+      "attaches": [],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 0,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 32,
+      "intid_cible": null,
+      "eoi_cible": 0,
+      "pages_firmware": 0,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "doublon": {
+      "phases": [
+        {
+          "premier_jalon": "No mapping found",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.495,
+      "attaches": [],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 0,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 32,
+      "intid_cible": null,
+      "eoi_cible": 0,
+      "pages_firmware": 0,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "roles-inverses": {
+      "phases": [
+        {
+          "premier_jalon": "No mapping found",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.45,
+      "attaches": [],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 0,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 32,
+      "intid_cible": null,
+      "eoi_cible": 0,
+      "pages_firmware": 0,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "support-inscriptible": {
+      "phases": [
+        {
+          "premier_jalon": "No mapping found",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.462,
+      "attaches": [],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 0,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 32,
+      "intid_cible": null,
+      "eoi_cible": 0,
+      "pages_firmware": 0,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "tpm-absent": {
+      "phases": [
+        {
+          "premier_jalon": "NOVA DXE QUARANTAINE TPM2 GetCapability",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          }
+        }
+      ],
+      "secondes": 0.232,
+      "attaches": [],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 0,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 0,
+      "intid_cible": null,
+      "eoi_cible": 0,
+      "pages_firmware": 0,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "mauvaise-serie": {
+      "phases": [
+        {
+          "premier_jalon": "CIBLE bilan Err(Device)",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.602,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ],
+        [
+          "1",
+          "56"
+        ]
+      ],
+      "plages_actives_finales": 0,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 36,
+      "intid_cible": 38,
+      "eoi_cible": 1,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "quarantaine": {
+      "phases": [
+        {
+          "premier_jalon": "NOVA DXE QUARANTAINE",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 6.542,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ]
+      ],
+      "plages_actives_finales": 2,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 34,
+      "intid_cible": null,
+      "eoi_cible": 0,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "coupure": {
+      "phases": [
+        {
+          "premier_jalon": "NOVA DXE retrait anneau suspendu",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 0,
+              "rd_bytes": 0,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "secondes": 5.553,
+      "attaches": [
+        [
+          "2",
+          "48"
+        ]
+      ],
+      "plages_actives_finales": 2,
+      "maps_page_out": 0,
+      "lectures_bloc_uefi": 98,
+      "lectures_bloc_novaos": 0,
+      "commandes_crb_start": 34,
+      "intid_cible": null,
+      "eoi_cible": 0,
+      "pages_firmware": 107,
+      "pages_reallouees": 0,
+      "reprise": [
+        {
+          "premier_jalon": "CIBLE confirmation requise",
+          "au_jalon": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "page_out_au_jalon": false,
+          "bme_source_a_la_confirmation": false,
+          "confirmation": false,
+          "fin": {
+            "source": {
+              "rd_operations": 98,
+              "rd_bytes": 2933248,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 12
+            },
+            "cible": {
+              "rd_operations": 16384,
+              "rd_bytes": 67108864,
+              "wr_operations": 0,
+              "wr_bytes": 0,
+              "flush_operations": 0
+            }
+          },
+          "crb_mots_0x58_a_0x6c_avant_uefi": [
+            3968,
+            201326720,
+            0,
+            3968,
+            201326720,
+            0
+          ]
+        }
+      ],
+      "traces_reprise": {
+        "attaches": [
+          [
+            "2",
+            "48"
+          ],
+          [
+            "1",
+            "56"
+          ]
+        ],
+        "plages_actives_finales": 0,
+        "maps_page_out": 0,
+        "lectures_bloc_uefi": 98,
+        "lectures_bloc_novaos": 16384,
+        "commandes_crb_start": 36,
+        "intid_cible": 38,
+        "eoi_cible": 16385,
+        "pages_firmware": 105,
+        "pages_reallouees": 0
+      },
+      "cible_sha256_avant_apres": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    }
+  },
+  "edk2": {
+    "revision": "fbe0805b2091393406952e84724188f8c1941837",
+    "firmware_sha256": "7d620d2ce2fb3d82eae47ef8aa953bc64096cdf2e4a70e785582088109a4a604",
+    "variables_modele_sha256": "8b634c1e6bd11607850b69111f6c4dbd1583dbbd1460dac72dbacbdc1a4a130a",
+    "injection_retrait_sha256": "52e3213b3847273189a344464126f24dbe3403c6eec84032daeb246f4729e61d",
+    "firmware_utm_installe_sha256": "ee769c4bf42a5350d33345fc1b16d00156fe0c25fb3c68debd003bd844e4e3fa"
+  },
+  "regressions": {
+    "par_architecture": {
+      "aarch64": {
+        "demarrages": 25,
+        "bloc": 24,
+        "elf_processus_ipc": 3,
+        "cli_cli_p9": 4,
+        "novafs_standard": 192,
+        "novafs_instrumente": 193,
+        "differentiel": 1000000
+      },
+      "x86_64": {
+        "demarrages": 25,
+        "bloc": 24,
+        "elf_processus_ipc": 3,
+        "cli_cli_p9": 4,
+        "novafs_standard": 192,
+        "novafs_instrumente": 193,
+        "differentiel": 1000000
+      }
+    },
+    "prototype_dma_gicv3_aarch64": 11,
+    "execution_hote": {
+      "aarch64": "arm64 natif",
+      "x86_64": "Rosetta, sysctl.proc_translated=1"
+    }
+  },
+  "graphique": {
+    "un-disque": {
+      "frontend": "UTM graphique 5.0.8, TPM intégré CRB",
+      "source_raw_sha256": "240d9dd5c948e38e570d366a94ef0602544ede8150b29b674e8f02639ad5f3df",
+      "lecture_console": "CIBLE absente, bilan Err(Absent)",
+      "sha256_debug_log_original": "edc55ae892ff82be66c36e0b15a95ce2a442ad8dafb9394350d5022467740539"
+    },
+    "deux-disques": {
+      "frontend": "UTM graphique 5.0.8, TPM intégré CRB",
+      "source_raw_sha256": "240d9dd5c948e38e570d366a94ef0602544ede8150b29b674e8f02639ad5f3df",
+      "lecture_console": "CIBLE vierge octets=67108864, NON, confirmation refusee, bilan Ok(())",
+      "sha256_debug_log_original": "3ef14a170de882aa4ecd3a2b57ecd82ad1ea45e98d018b7126395433e7a6f033",
+      "cible_apres_compare_raw_sha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351"
+    },
+    "tis": {
+      "configuration_native": "CRB imposé sur virt",
+      "socket_prive": "Operation not permitted",
+      "socket_dans_paquet": "Operation not permitted",
+      "execution_firmware": false
+    }
+  },
+  "comptage": {
+    "scenarios_sequentiels": 23,
+    "reprise_apres_coupure": 1,
+    "second_demarrage_dans_redemarrage": 1
+  }
+}

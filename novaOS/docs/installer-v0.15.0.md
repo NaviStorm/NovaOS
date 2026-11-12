@@ -1,6 +1,6 @@
 # Installation AArch64 dans UTM — audit de v0.15.0
 
-**Décision du 12 novembre 2026.** L’interface graphique d’UTM 5.0.8 importe les deux VM de qualification. Le firmware expérimental s’arrête dans le pilote TPM avant toute lecture VirtIO. Le témoin TIS sur le même moteur distingue un second blocage lorsque le support et la cible sont présents ensemble. L’installation est suspendue au premier jalon. NovaOS reste en v0.14.0 et NovaFS en v0.9.13 P9. [Matrice et arbitrage](#import-graphique-et-support-dinstallation)
+**État au 12 novembre 2026.** Le pflash privé corrigé amorce le support protégé dans UTM graphique avec TPM CRB. NovaOS inspecte ensuite la cible dans son propre domaine DMA. Le banc mesure zéro écriture, y compris après confirmation. Le partitionnement et l’installation attendent un nouvel arbitrage. NovaOS reste en v0.14.0 et NovaFS en v0.9.13 P9. [Qualification TPM et DMA séquentielle](#qualification-tpm-et-dma-séquentielle)
 
 La phase 0 a été réalisée sur `main` au commit `a250cb25b530f001debf256f6bfdf8afbc0bef90`. Dans ce premier audit du moteur livré dans UTM 5.0.8, le firmware exécutait NovaOS v0.14.0, puis l’admission du disque échouait avant le lancement du shell. NovaFS conserve sa version v0.9.13 et son format P9.
 
@@ -402,4 +402,130 @@ for arch in aarch64 x86_64; do
     make -C novaOS ARCH="$arch" ram-test storage-test ipc-test
     python3 novaFS/lab/p51-validation-suites.py "$arch"
 done
+```
+
+## Qualification TPM et DMA séquentielle
+
+Le point de départ est le HEAD propre `a1a528124120ba31ea8fa4fc300953b0ff0bdfcc` de `main`. Les essais utilisent le QEMU 10.0.12 d’UTM 5.0.8 sur Apple Silicon, un vCPU Cortex-A72 sous TCG, 256 Mio et `virt-10.0` avec GICv3 sans ITS. Le disque d’amorçage contient l’ESP FAT de qualification, le témoin EFI, Limine et le noyau. Il reste en lecture seule. La cible est un second fichier jetable. Aucun CD n’est nécessaire pour ces démarrages.
+
+### Défaut CRB et correction du pflash privé
+
+L’exception enregistrée avec le pflash précédent provient de `Tcg2Pei`. À `ELR=0x252c8`, `str x1,[x0]` tente d’écrire huit octets à `FAR=0x0c000068`, l’adresse de réponse `TPM_CRB_CTRL_RSP_ADDR` de la localité 0. L’adresse est alignée sur huit octets. Le syndrome `ESR=0x96000050` indique une écriture avec abort externe synchrone à EL1. Cette instruction précède le démarrage du DXE et l’accès au support. Le périphérique sysbus d’UTM utilise le modèle commun CRB dont les écritures MMIO valides sont limitées à quatre octets. Le modèle initialise lui-même les adresses et tailles des tampons au reset. Ces deux propriétés expliquent à la fois l’arrêt et le choix du correctif. [Exception et témoin antérieurs](validation/import-utm/journaux.tar.gz) · [Transport EDK II d’origine](https://github.com/tianocore/edk2/blob/edk2-stable202502/SecurityPkg/Library/Tpm2DeviceLibDTpm/Tpm2Ptp.c#L265-L300) · [Largeur MMIO dans le moteur livré](https://github.com/utmapp/qemu/blob/v10.0.12-utm/hw/tpm/tpm_crb_common.c#L117-L124) · [Descripteurs au reset](https://github.com/utmapp/qemu/blob/v10.0.12-utm/hw/tpm/tpm_crb_common.c#L185-L200)
+
+La spécification TCG distingue la FIFO TIS et l’interface CRB. En TIS, le pilote échange les octets par la FIFO et utilise l’état, le compteur de rafale et la commande de départ. En CRB, il remplit un tampon de commande, déclenche START, attend sa complétion et lit la réponse. Le profil PC Client à tampon intégré décrit des registres d’adresse et de taille en lecture seule. La disposition du tampon dépend de l’interface et de la plateforme. [TCG PTP 1.07, §6.5.2 et §6.5.3](https://trustedcomputinggroup.org/wp-content/uploads/PC-Client-Specific-Platform-TPM-Profile-for-TPM-2p0-v1p07_Pub.pdf#page=110)
+
+Avant la première instruction invitée, QMP lit six mots de 32 bits à partir de `0x0c000058`. Les descripteurs de commande et de réponse indiquent tous deux une capacité de `0xf80` octets, une adresse basse `0x0c000080` et une adresse haute nulle. Dans la copie privée d’EDK II, le transport CRB lit ces valeurs, exige ce tampon intégré et vérifie les bornes de commande, d’en-tête et de réponse. Il conserve la procédure de localité, les délais, START, l’annulation et le retour à l’état idle. Une disposition inattendue produit une erreur firmware. Les registres descriptifs ne reçoivent aucune écriture dans les traces corrigées. [Préparation de la copie privée](../firmware/preparer.py) · [Relevé QMP et tests du transport](../tests/dma_sequentiel.py)
+
+Avant le premier domaine disque, le DXE exige le protocole EFI TCG2, un TPM présent et une réponse réelle à `TPM2_GetCapability(TPM_PT_MANUFACTURER)`. Il vérifie le tag, la taille, le code retour, le sélecteur, le nombre, la propriété et la valeur. CRB et TIS ont tous deux retourné `0x49424d00` via swtpm. Le témoin sans périphérique TPM s’arrête en quarantaine avant tout ATTACH ou accès disque. Ce contrôle établit le fonctionnement du transport TPM2 dans cette VM. L’attestation d’une plateforme et la validation de signatures de distribution demandent des essais distincts. [Contrôle EFI TCG2](../firmware/NovaIommuDxe/Profil.c)
+
+### Identité et passage de responsabilité
+
+1. **Profil.** Deux entrées SMBIOS de type 41 lient les désignations `NovaOS-Install-v1` et `NovaOS-Target-v1` aux objets QEMU `support` et `destination` par `pcidev`. QEMU inscrit le BDF réel de chaque objet. Le DXE exige l’unicité des rôles, vérifie le segment, le bus, la fonction, les identifiants du contrôleur et des disques, la traduction RID/SID du DTB et le bit VirtIO RO du support. Un support absent, inscriptible, ambigu ou mal désigné ferme l’accès. Une cible déclarée doit exister. Le profil et l’association de ses objets à leurs fichiers sont de confiance. Une substitution du fichier source par l’administrateur de l’hôte échappe à cette vérification. [Générateur du profil](../tests/profils_utm.py) · [SMBIOS QEMU](https://github.com/utmapp/qemu/blob/v10.0.12-utm/hw/smbios/smbios.c) · [Admission DXE](../firmware/NovaIommuDxe/Domain.c)
+2. **UEFI.** Le fournisseur EDK II IOMMU est une dépendance du pont PCI. Les deux disques démarrent avec BME à zéro. Seul le support obtient le domaine 2 après PROBE sans réserve et ATTACH acquitté. Ses premiers MAP de file précèdent son BME et sa première lecture. La cible conserve BME à zéro et aucune traduction pendant la phase firmware. Le contrôleur impose `boot-bypass=off`, les disques exigent ACCESS_PLATFORM et le profil désactive ATS. [Mappages et notification de sortie](../firmware/NovaIommuDxe/Mapping.c)
+3. **Avant ExitBootServices.** Le DXE ferme les admissions, contrôle la dernière complétion et l’absence de transaction pendante, réinitialise le disque, relit BME, puis retire les plages de file. Chaque UNMAP et le DETACH exigent la progression de l’anneau utilisé, le descripteur et la longueur attendus, un statut nul et une file de fautes vide. Après le reset du contrôleur, le DXE vérifie encore le refus par défaut. Sur le moteur qualifié, le traitement UNMAP invalide les traductions et efface la plage avant la réponse. Un acquittement incertain immobilise les pages et empêche la remise de contrôle. [Retrait dans QEMU](https://github.com/utmapp/qemu/blob/v10.0.12-utm/hw/virtio/virtio-iommu.c) · [Séquence firmware](../firmware/NovaIommuDxe/Domain.c)
+4. **NovaOS.** Le noyau relit la table du profil par le port MMIO de fw_cfg, sans DMA, et contrôle que le support a rendu sa maîtrise de bus. Il vérifie le BDF et le type de la cible. UEFI peut avoir remis `PCI_COMMAND` à zéro sur la fonction refusée. Une lecture de BAR donnait alors `0xff`. Le noyau active uniquement le décodage mémoire CPU, relit MSE=1 et BME=0 et vérifie le statut VirtIO de reset. Il crée son domaine 1 et six traductions privées pour le minimum requis par IN et GET_ID. GET_ID confirme les vingt octets de la série `NOVA-CIBLE-000000001` avant la première lecture de secteur. La ligne PCI INTA exclusive est dirigée vers l’INTID 38 au slot 7 et 37 au slot 6. [Découverte PCI](../kernel/src/hardware/block/pci.rs) · [Domaine noyau](../kernel/src/hardware/block/viommu.rs) · [HAL GICv3](../kernel/src/arch/aarch64/gicv3.rs)
+5. **Contrôle et consentement.** Le noyau exige une géométrie cohérente, une cible accessible en écriture et un minimum expérimental de 64 Mio. Il préremplit le tampon de réception avec un motif non nul, contrôle l’interruption, la longueur utilisée et le statut de chaque lecture puis examine tous les octets. Le premier octet non nul provoque le refus, quelle que soit sa signification. Le terminal affiche série, SID, capacité et taille de secteur. Après purge des frappes anticipées, il exige la saisie exacte de `AUTORISER <série> <capacité en octets>`. Sur confirmation, le noyau revérifie le profil, la géométrie, la série et toute la surface. Il crée alors la septième traduction qui permet au disque de lire le tampon destiné aux commandes OUT. Le banc referme immédiatement le domaine. Aucun bail bloc n’est publié à EL0 et aucune commande OUT ou FLUSH n’est émise par l’inspection. [Inspection et confirmation](../kernel/src/hardware/block/qualification.rs) · [Droits du transport](../kernel/src/hardware/block/mod.rs)
+
+### Matrice de démarrage et preuves de refus
+
+| Point d’entrée ou cas | Observation |
+|---|---|
+| UTM graphique, CRB intégré, support seul | Le témoin EFI lance Limine, NovaOS v0.14.0 affiche `CIBLE absente` puis `Err(Absent)`. |
+| UTM graphique, CRB intégré, support et cible | La console affiche le retrait de 319 droits sur 319, zéro actif et BME=0. Elle présente la série, le SID 56, les 67 108 864 octets vérifiés et des secteurs de 512 octets. La saisie `NON` produit `confirmation refusee` et `Ok(())`. |
+| UTM graphique, TIS avec TPM logiciel privé | Le générateur intégré sélectionne CRB pour `virt-10.0`. Deux essais avec `tpm-tis-device` et swtpm externe ont échoué avant l’entrée du firmware. Le moteur rapporte `Operation not permitted` sur le socket privé, y compris à l’intérieur du paquet ouvert par UTM. |
+| QEMU direct, CRB et TIS, cible vierge | Pour chaque interface, 16 384 lectures de 4 096 octets au premier prompt. Après confirmation correcte, 16 384 nouvelles lectures, un seul MAP du tampon OUT puis son retrait. Zéro écriture. |
+| Refus explicite ou confirmation avec capacité erronée | Une seule passe, aucun MAP du tampon OUT. |
+| Objets PCI déplacés, secteurs de 4 096 octets | Le support passe au SID 56 et la cible au SID 48. Le noyau reçoit l’INTID 37 et termine le contrôle complet. |
+| Rôle absent, dupliqué, inversé ou support inscriptible | Aucun domaine, aucune opération bloc sur les deux disques. |
+| TPM absent | Arrêt explicite sur GetCapability, deux BME à zéro, aucun domaine. |
+| Série cible incorrecte ou capacité de 4 Mio | GET_ID reçoit une complétion. Aucune lecture de secteur, aucun prompt et aucune autorisation d’écriture. |
+| Signatures MBR, GPT, FAT et NovaFS | Refus respectivement aux octets 510, 512, 82 et 4 096 des images préparées. |
+| Donnée au dernier octet | Le noyau lit les 64 Mio et refuse l’octet 67 108 863. |
+| Erreur de lecture injectée au secteur 16 | Deux pages lues, puis erreur d’E/S et fermeture du domaine sans confirmation. |
+| Réemploi après retrait | Les 107 cadres physiques distincts mappés par le DXE dans cet essai sont tous observés parmi les cadres réalloués par NovaOS. |
+| UNMAP suspendu à la transition | Deux plages de l’anneau restent actives dans le domaine firmware, les deux BME disque sont à zéro et le noyau ne démarre pas. |
+| Coupure au même point, puis reprise | La VM est arrêtée avant libération. Le même disque, les mêmes variables et l’état persistant du swtpm servent à la reprise avec le pflash normal. Le nouveau démarrage inspecte la cible et attend un nouveau consentement. |
+| Redémarrage après confirmation | Un reset système dans le même QEMU et le même swtpm réinitialise le droit. Le second démarrage relit 64 Mio, redemande confirmation et prend en compte le refus. |
+
+Les deux profils CRB graphiques ont été amorcés avec l’ELF final. Les journaux de lancement confirment le périphérique TPM, les rôles SMBIOS, les pflash privés et les options d’isolation. Leurs traces de débogage s’arrêtent pendant les premières lectures UEFI. Les résultats de fin de démarrage proviennent de la console série visible dans UTM. Une comparaison hors ligne de l’intégralité des 64 Mio de la cible graphique donne une image identique au témoin nul. Les compteurs QMP par phase et la chronologie complète des deux domaines proviennent du banc direct. [Sélection native de l’interface TPM](https://github.com/utmapp/UTM/blob/v5.0.8/Configuration/UTMQemuConfiguration%2BArguments.swift#L1271-L1290)
+
+Sur le cas CRB à deux disques, la série compte 319 jetons firmware. Les deux parties de l’anneau expliquent les 320 MAP et 320 UNMAP observés. Le DETACH du support précède l’ATTACH de la cible. Les lectures de chaque phase sont attribuées à un seul objet bloc. Avant la première saisie, QMP compte 67 108 864 octets lus et zéro écrit sur la cible. La trace contient les six pages du domaine 1 et ne comporte aucun MAP de l’IOVA OUT `0x08006000`. Après la saisie correcte, QMP compte 134 217 728 octets lus, zéro opération d’écriture et zéro octet écrit. Les 32 770 fins d’interruption INTID 38 correspondent aux deux GET_ID et aux 32 768 lectures. Le SHA-256 du contenu brut de la cible reste `3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351`. Les compteurs de synchronisation du backend peuvent avancer lors d’un reset. Les compteurs de données, le chemin des commandes et les empreintes sont vérifiés séparément. [Compteurs par phase et empreintes](validation/dma-sequentielle/resultats.json) · [Journaux de qualification](validation/dma-sequentielle/journaux.tar.gz)
+
+### Régressions et limites
+
+| Suite rejouée | AArch64 | x86_64 |
+|---|---:|---:|
+| Démarrages historiques | 25/25 | 25/25 |
+| Groupes bloc, secteurs de 512 et 4 096 octets | 24/24 | 24/24 |
+| ELF, processus et IPC | 3/3 | 3/3 |
+| CLI et CLI P9 | 4/4 | 4/4 |
+| NovaFS standard et instrumenté | 192 et 193 | 192 et 193 |
+| Opérations différentielles NovaFS | 1 000 000 | 1 000 000 |
+| Prototype historique DMA/GICv3 avec TPM TIS | 11/11 | GICv3 spécifique à ARM |
+
+Les exécutables de test NovaFS ont été contrôlés par leur en-tête Mach-O. ARM64 s’exécute en natif, x86_64 sous Rosetta (`sysctl.proc_translated=1`). Les quatre cas ignorés par défaut dans chacune des passes Cargo sont comptabilisés dans les bilans. Le pilote de validation exécute aussi le différentiel et les contrôles facultatifs prévus. Par architecture, le différentiel a observé 345 183 publications, 54 643 pénuries injectées et 1 000 remontages audités. [Banc NovaFS](../../novaFS/lab/p51-validation-suites.py) · [Résultats et journaux](validation/dma-sequentielle/journaux.tar.gz)
+
+Cette qualification couvre un profil statique, un vCPU, les deux tailles de secteur testées et une chaîne firmware/chargeur de confiance. Le contrôle d’identité repose sur le profil et le périphérique émulé. La persistance de l’exclusivité du fichier cible côté hôte fait partie des hypothèses du test. Le seuil de 64 Mio sert au banc et ne dimensionne aucune future partition. HVF, le matériel physique, le hotplug, les caches de traduction ATS et une distribution signée avec clés de production restent à qualifier. L’ABI et NovaFS P9 conservent leurs versions. Le prochain arbitrage peut autoriser un prototype de partitionnement sur une cible explicitement confirmée, avec vue de partition bornée et essais de coupure propres à l’installateur. Le démarrage autonome depuis une installation P9 reste à démontrer.
+
+### Reproduire le jalon
+
+Réutiliser l’environnement de construction EDK II décrit plus haut, sur une copie privée de la révision indiquée. Les quatre constructions emploient `TPM2_ENABLE=TRUE`. Pour les onze scénarios historiques, utiliser la politique monodisque avec `--crb`, puis `--crb --retrait-suspendu` pour son injection. Pour le banc séquentiel et les deux paquets UTM, exécuter dans Bash les commandes suivantes, avec `NOVA_SRC` et `NOVA_LAB` définis comme dans la procédure précédente.
+
+```sh
+set -e
+cd "$NOVA_LAB/edk2"
+for variante in sequentiel retrait-transfert; do
+    options=(--sequentiel)
+    if [ "$variante" = retrait-transfert ]; then options+=(--retrait-transfert); fi
+    python3 "$NOVA_SRC/novaOS/firmware/preparer.py" "$PWD" "${options[@]}"
+    build -a AARCH64 -t CLANGDWARF -b RELEASE -p ArmVirtPkg/ArmVirtQemu.dsc -n 6 -D TPM2_ENABLE=TRUE
+    mkdir "$NOVA_LAB/$variante"
+    cp Build/ArmVirtQemu-AARCH64/RELEASE_CLANGDWARF/FV/QEMU_{EFI,VARS}.fd "$NOVA_LAB/$variante/"
+done
+
+cd "$NOVA_SRC/novaOS"
+RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked \
+  --target aarch64-unknown-none-softfloat --features dma-sequentiel --target-dir "$NOVA_LAB/kernel-sequentiel"
+NOVA_ELF="$NOVA_LAB/kernel-sequentiel/aarch64-unknown-none-softfloat/release/novaos"
+python3 tests/dma_sequentiel.py "$NOVA_LAB/sequentiel" "$NOVA_ELF" "$NOVA_LAB/mesures-sequentielles" \
+  --fv-suspendu "$NOVA_LAB/retrait-transfert"
+
+mkdir "$NOVA_LAB/paquet"
+cp "$NOVA_ELF" "$NOVA_LAB/paquet/novaos.elf"
+cp "$NOVA_LAB/sequentiel/QEMU_EFI.fd" "$NOVA_LAB/paquet/prototype.fd"
+cp "$NOVA_LAB/sequentiel/QEMU_VARS.fd" "$NOVA_LAB/paquet/modele-vars.fd"
+python3 tests/profils_utm.py "$NOVA_LAB/paquet" "$NOVA_LAB/UTM" --sequentiel
+```
+
+Dans UTM, ouvrir chaque paquet CRB et démarrer sa VM. Chaque VM a ses propres variables EFI et son propre état TPM. La banque `Data/code.fd` vaut 64 Mio après remplissage. Les empreintes identifient la construction testée. Le compilateur EDK II inscrit sa date de construction et les systèmes FAT de test portent des métadonnées d’exécution.
+
+| Artefact testé | SHA-256 |
+|---|---|
+| FV séquentiel privé, 3 Mio | `7d620d2ce2fb3d82eae47ef8aa953bc64096cdf2e4a70e785582088109a4a604` |
+| Banque pflash séquentielle, 64 Mio | `3660b1cad23b75102a923475c1ee457ffc0fd1ce085ae25813257f09d918263d` |
+| ELF de qualification AArch64 | `976ab6a85c492cc9089396577607d47e41f56773399dfc2c6e03df672699e6a6` |
+| FV privé avec injection à la sortie | `52e3213b3847273189a344464126f24dbe3403c6eec84032daeb246f4729e61d` |
+| Code EDK II fourni par UTM 5.0.8, mesuré après la campagne | `ee769c4bf42a5350d33345fc1b16d00156fe0c25fb3c68debd003bd844e4e3fa` |
+
+Les adaptations s’appliquent à la copie locale d’EDK II et conservent les notices amont. Les sources QEMU, Linux et Intel VT-d servent de références documentaires. La livraison Git comprend les modifications, les mesures et les journaux. [Licence EDK II](../licenses/edk2.txt) · [Source UTM de QEMU 10.0.12](https://github.com/utmapp/UTM/blob/v5.0.8/patches/sources#L24)
+
+Pour vérifier les preuves archivées depuis la racine du dépôt, extraire l’archive dans un nouveau répertoire. Les traces séquentielles conservent les événements IOMMU, bloc, EOI et registres de contrôle CRB. Le contenu des tampons TPM est exclu et les pointeurs d’objets bloc hôtes sont remplacés par des identifiants distincts par VM. Les journaux graphiques contiennent la commande effective et les événements sélectionnés. Les bilans NovaFS, les jalons NovaOS et les traces du prototype historique figurent dans `regressions/`.
+
+```sh
+NOVA_PREUVES="$(mktemp -d /tmp/nova-relecture.XXXXXXXX)"
+tar -xzf novaOS/docs/validation/dma-sequentielle/journaux.tar.gz -C "$NOVA_PREUVES"
+PYTHONPATH=novaOS/tests python3 - "$NOVA_PREUVES/sequentiel" <<'PY'
+import json
+import sys
+from pathlib import Path
+from dma_sequentiel import CAS, Cas, PROMPT, traces
+dossier = Path(sys.argv[1])
+essais = json.loads(Path("novaOS/docs/validation/dma-sequentielle/resultats.json").read_text())["essais"]
+for nom, cas in {**CAS, "reprise": Cas(PROMPT)}.items():
+    attendu = essais["coupure"]["traces_reprise"] if nom == "reprise" else essais[nom]
+    obtenu = json.loads(json.dumps(traces(dossier, nom, cas)))
+    assert all(attendu[k] == valeur for k, valeur in obtenu.items()), nom
+print("23 scénarios et reprise après coupure vérifiés")
+PY
+python3 novaOS/tests/prototype_traces.py "$NOVA_PREUVES/regressions/prototype"
 ```
