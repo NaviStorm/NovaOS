@@ -1,3 +1,4 @@
+use super::builtins::console_action;
 use super::input::{Input, Key};
 use alloc::string::String;
 use nova_cli::{
@@ -15,16 +16,30 @@ fn start_at(s: &str, mut i: usize) -> usize {
 pub fn line(
     input: &mut Input,
     history: &super::history::History,
+    fs: &mut nova_cli::fileapi::Client,
+    aliases: &super::aliases::Aliases,
     prompt: &str,
 ) -> rt::Result<String> {
+    console_action(tty::FRESH_LINE)?;
     write(tty::OUTPUT, prompt)?;
     let mut s = String::new();
     let (mut pos, mut left) = (0, 0);
     let mut invalid = None;
     let mut index = history.len();
     let mut draft = (String::new(), 0);
+    let mut last_tab = false;
     loop {
-        match input.next()? {
+        let key = input.next()?;
+        let repeat = last_tab;
+        last_tab = matches!(key, Key::Tab);
+        match key {
+            Key::Tab => {
+                if !super::completion::complete(fs, aliases, &mut s, &mut pos, repeat)
+                    .unwrap_or(false)
+                {
+                    continue;
+                }
+            }
             Key::Enter => {
                 write(tty::OUTPUT, "\n")?;
                 return invalid.map_or(Ok(s), Err);
@@ -92,12 +107,7 @@ pub fn line(
         }
         // Récrire la fenêtre entière évite de compter les colonnes des accents et des idéogrammes.
         edit(0)?;
-        write(tty::OUTPUT, prompt)?;
-        write(
-            tty::OUTPUT,
-            "                                                        ",
-        )?;
-        edit(0)?;
+        console_action(tty::ERASE_EOL)?;
         write(tty::OUTPUT, prompt)?;
         write(tty::OUTPUT, &s[left..right])?;
         edit(0)?;

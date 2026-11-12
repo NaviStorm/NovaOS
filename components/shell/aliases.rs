@@ -9,6 +9,9 @@ use nova_cli::{console, runtime as rt, tty};
 #[derive(Default)]
 pub struct Aliases(BTreeMap<String, Vec<String>>);
 impl Aliases {
+    pub fn names(&self) -> impl Iterator<Item = &str> {
+        self.0.keys().map(String::as_str)
+    }
     pub fn define(&mut self, args: &[Word], script: bool) -> rt::Result<()> {
         if args.is_empty() {
             for (name, words) in &self.0 {

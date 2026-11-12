@@ -4,7 +4,7 @@ Le workspace Cargo construit un ELF Rust `no_std + alloc` par programme, pour x8
 
 | Répertoire | Contenu |
 |---|---|
-| `shell/` | Analyseur et exécuteur partagés par le terminal, les fichiers et `nsh -c`. Édition UTF-8, variables, conditions, boucles, globbing et délégation de capacités. L’historique est privé à la session. |
+| `shell/` | Analyseur et exécuteur partagés par le terminal, les fichiers et `nsh -c`. Édition UTF-8, variables, conditions, boucles, globbing et délégation de capacités. Tab complète les commandes et les chemins. L’historique est privé à la session. [Commandes du terminal et portée de ps/top](../novaOS/docs/nsh-v0.16.3.md) |
 | `vi/` | Éditeur modal UTF-8 dans son propre ELF. Le terminal garde l’entrée série et confirme chaque autre destination de sauvegarde. [Rendu et essais dans UTM](../novaOS/docs/vi-v0.16.2.md) · [Commandes et protections](../novaOS/docs/vi-v0.16.1.md) |
 | `coreutils/` | Programmes isolés `pwd`, `ls`, `cat`, `head`, `mkdir`, `rm`, `rmdir`, `cp`, `mv`, `touch`, `more`, `wc` et `tail`. L’ELF `probe` sert à la qualification. |
 | `libraries/` | Catalogue, protocole de lancement, attente, flux de texte et accès au client IPC commun. |

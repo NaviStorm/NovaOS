@@ -1,6 +1,7 @@
 //! Dispatch commun des appels natifs. Les adresses de l’appelant restent des entiers.
 use super::*;
 use crate::abi::*;
+use core::sync::atomic::{AtomicBool, Ordering};
 
 fn caller(s: &Core) -> Pid {
     s.thread(s.current).owner.expect("appel hors processus")
@@ -140,6 +141,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
             hal::interrupts::mask();
             finish(Outcome::Exit(a), pc, level);
         }
+        crate::terminal::PROCESS_SAMPLE => sample_process(a, b, c),
         crate::terminal::SPAWN => ipc::spawn_program(a, b, c),
         crate::terminal::CONSOLE => console_io(a, b, c),
         PROCESS_WAIT => wait(a, b, c),
@@ -193,6 +195,11 @@ fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
     Ok(128)
 }
 
+// Un seul terminal série. Les deux écrans possèdent chacun leur position.
+static LINE_OPEN: AtomicBool = AtomicBool::new(false);
+static SAVED_LINE_OPEN: AtomicBool = AtomicBool::new(false);
+static ALTERNATE: AtomicBool = AtomicBool::new(false);
+
 /// Chaque contrôle est construit ici. Aucune chaîne de contrôle ne provient d’un client.
 fn present(action: u64, argument: u64) -> Result<u64, u64> {
     use crate::arch::serial;
@@ -227,6 +234,9 @@ fn present(action: u64, argument: u64) -> Result<u64, u64> {
         return Err(BAD_ARGUMENT);
     }
     let sequence = match action {
+        FRESH_LINE if !LINE_OPEN.load(Ordering::Relaxed) => return Ok(0),
+        FRESH_LINE => "\r\n",
+        CLEAR_SCREEN => "\x1b[2J\x1b[H",
         ENTER_SCREEN => "\x1b[?1049h",
         LEAVE_SCREEN => "\x1b[?1049l",
         ERASE_EOL => "\x1b[K",
@@ -234,7 +244,55 @@ fn present(action: u64, argument: u64) -> Result<u64, u64> {
         _ => return Err(BAD_ARGUMENT),
     };
     serial::output(sequence).map_err(|_| REFUSED)?;
+    match action {
+        ENTER_SCREEN if !ALTERNATE.swap(true, Ordering::Relaxed) => {
+            SAVED_LINE_OPEN.store(LINE_OPEN.swap(false, Ordering::Relaxed), Ordering::Relaxed);
+        }
+        LEAVE_SCREEN if ALTERNATE.swap(false, Ordering::Relaxed) => {
+            LINE_OPEN.store(SAVED_LINE_OPEN.load(Ordering::Relaxed), Ordering::Relaxed);
+        }
+        FRESH_LINE | CLEAR_SCREEN => LINE_OPEN.store(false, Ordering::Relaxed),
+        _ => (),
+    }
     Ok(0)
+}
+/// Les indices sont relatifs au lanceur. Aucun PID numérique ne désigne une cible.
+fn sample_process(index: u64, address: u64, len: u64) -> Result<u64, u64> {
+    use crate::terminal::{OBSERVE_SESSION, SAMPLE_BYTES};
+    with(|s| {
+        let owner = s.processes.get(caller(s));
+        if owner.terminal & OBSERVE_SESSION == 0 {
+            return Err(DENIED);
+        }
+        let space = owner.space.as_ref().unwrap();
+        if len != SAMPLE_BYTES as u64 {
+            return Err(BAD_ARGUMENT);
+        }
+        let target = match index {
+            0 => owner,
+            1 => match owner.wait_right {
+                Some(right) => s.processes.get(right.target),
+                None => return Ok(0),
+            },
+            _ => return Err(BAD_ARGUMENT),
+        };
+        let pages = target.space.as_ref().map_or(0, |space| {
+            let (data, stack) = space.page_counts();
+            (data + stack) as u64
+        });
+        let mut buf = [0; SAMPLE_BYTES];
+        for (dst, value) in buf.chunks_exact_mut(8).zip([
+            target.pid.number,
+            u64::from(target.space.is_some()),
+            pages,
+        ]) {
+            dst.copy_from_slice(&value.to_le_bytes());
+        }
+        if !heap::with_pages(|m| Ok(space.copy_to_user(m, address, &buf))).unwrap() {
+            return Err(BAD_ADDRESS);
+        }
+        Ok(1)
+    })
 }
 fn decimal(digits: &mut [u8], mut value: u64) {
     for digit in digits.iter_mut().rev() {
@@ -338,5 +396,6 @@ fn console_io(port: u64, address: u64, len: u64) -> Result<u64, u64> {
     if color {
         crate::arch::serial::output("\x1b[0m").map_err(|_| REFUSED)?;
     }
+    LINE_OPEN.store(!text.ends_with('\n'), Ordering::Relaxed);
     Ok(len)
 }

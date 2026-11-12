@@ -20,8 +20,10 @@
 Depuis la racine, la régression de référence couvre par architecture 25 démarrages, 24 groupes bloc, trois contrôles ELF/processus/IPC et quatre essais CLI. Ajouter le banc spécifique de `nsh`, avec les deux géométries. [Cibles du Makefile](Makefile) · [Résultats par architecture](docs/installer-v0.15.0.md#dma-interruptions-et-régressions)
 
 ```sh
-make -C novaOS ARCH=aarch64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test vi-test
-make -C novaOS ARCH=x86_64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test vi-test
+make -C novaOS ARCH=aarch64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test nsh-terminal-test vi-test
+make -C novaOS ARCH=x86_64 test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test nsh-terminal-test vi-test
 ```
 
 Pour le chemin DMA AArch64, conserver les 11 scénarios DMA/GICv3 et les 23 scénarios de DMA séquentielle. Pour l’installateur, exercer les secteurs de 512 et 4 096 octets, comparer les SHA-256 avant et après refus et relire les données après démarrage autonome. Qualifier séparément l’application UTM et son moteur QEMU. La matrice d’installation publiée couvre l’interface UTM en 512 octets et le moteur dans les deux géométries. [Banc DMA/GICv3](tests/prototype_uefi.py) · [Banc séquentiel](tests/dma_sequentiel.py) · [Matrice d’installation](docs/installer-v0.15.0.md#matrice-de-démarrage-et-persistance)
+
+Pour `ps` et `top`, conserver le droit dédié du lanceur et les deux indices de session. Un PID lu dans une ligne de sortie ne constitue pas un droit. [Contrat de l’observation](docs/abi.md#observation-de-la-session-depuis-v0163)

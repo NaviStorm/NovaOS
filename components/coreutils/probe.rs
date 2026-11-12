@@ -46,7 +46,8 @@ fn verify() -> rt::Result<()> {
             Ok(())
         }
         ["droits"] => {
-            if rt::call(tty::SPAWN, 0, 0, 0).status != rt::DENIED
+            if rt::call(tty::PROCESS_SAMPLE, 0, 0, tty::SAMPLE_BYTES as u64).status != rt::DENIED
+                || rt::call(tty::SPAWN, 0, 0, 0).status != rt::DENIED
                 || rt::call(tty::CONSOLE, tty::INPUT.into(), 0, 0).status != rt::DENIED
                 || rt::call(tty::CONSOLE, tty::SCREEN.into(), tty::ENTER_SCREEN, 0).status
                     != rt::DENIED

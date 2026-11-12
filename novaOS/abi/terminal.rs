@@ -14,9 +14,16 @@ pub const POSITION: u64 = 2;
 pub const ERASE_EOL: u64 = 3;
 pub const QUERY_SIZE: u64 = 4;
 pub const READ_TIMED: u64 = 5;
+pub const FRESH_LINE: u64 = 6;
+pub const CLEAR_SCREEN: u64 = 7;
 pub const MAX_AXIS: u16 = 999;
 pub const EDIT: u8 = 8;
 pub const LAUNCH: u8 = 16;
+/// Autorité locale du shell. SPAWN ne la transmet pas aux enfants.
+pub const OBSERVE_SESSION: u8 = 128;
+pub const PROCESS_SAMPLE: u64 = 0x10045;
+/// PID, vivant (1) ou terminé (0), et nombre de pages privées de 4 Kio.
+pub const SAMPLE_BYTES: usize = 24;
 pub const QUALIFY: u8 = 32;
 pub const HEADER: usize = 40;
 pub const ARG_MAX: usize = 2560;

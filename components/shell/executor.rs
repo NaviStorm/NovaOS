@@ -90,7 +90,24 @@ fn launch(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Resul
         {
             rt::value(rt::call(rt::IPC_REVOKE, channels.0, 0, 0))?;
         }
+        // La sonde négative s'exécute dans un enfant privé du droit d'observation.
+        // Le parent garde sa référence même si l'enfant termine avant la mesure.
+        let sample_valid = if test && p == Program::Probe && words.as_slice() == ["droits"] {
+            let mut sample = [0u64; 3];
+            let count = rt::value(rt::call(
+                tty::PROCESS_SAMPLE,
+                1,
+                sample.as_mut_ptr() as u64,
+                tty::SAMPLE_BYTES as u64,
+            ));
+            count == Ok(1) && sample[0] != 0 && sample[0] != rt::call(rt::PROCESS_ID, 0, 0, 0).value
+        } else {
+            true
+        };
         let (fault, code) = process::wait(key)?;
+        if !sample_valid {
+            return Err(rt::REFUSED);
+        }
         if test {
             write(
                 tty::OUTPUT,

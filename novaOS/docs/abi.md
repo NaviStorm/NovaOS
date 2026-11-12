@@ -76,3 +76,10 @@ La validation complète et le transfert par le HHDM superviseur s’effectuent s
 ## Migration et limites
 
 Les binaires de démonstration v0.6.0 utilisant `int 0x81` ou `svc #0x51` doivent être recompilés. L’image livrée utilise les six sélecteurs natifs. Le système reste mono-CPU, avec un seul thread utilisateur créé par processus et un espace à adresses fixes. Le mot de transition x86, la synchronisation locale et les invalidations de TLB devront évoluer pour plusieurs CPU. Le quota du journal est par processus. Les validations portent sur QEMU TCG et l’isolation architecturale.
+
+
+## Observation de la session depuis v0.16.3
+
+`PROCESS_SAMPLE` (0x10045) exige le droit local `OBSERVE_SESSION` (0x80) attribué à la création du lanceur interactif. Les arguments sont un indice, une adresse utilisateur et une taille de 24 octets. L’indice 0 sélectionne l’appelant. L’indice 1 sélectionne l’enfant que son droit d’attente désigne encore, y compris après sa sortie et avant la collecte. Le noyau vérifie le droit avant de consulter la cible. Pour un objet présent, il copie trois entiers u64 little-endian (PID, vivant = 1 ou terminé = 0, pages privées de 4 Kio) et renvoie 1. Lorsque l’enfant est absent il renvoie 0 sans écrire. Un indice inconnu ou une taille incorrecte donnent BAD_ARGUMENT. Une destination inaccessible pour un objet présent donne BAD_ADDRESS. Le lancement d’un ELF filtre les ports transmis et exclut le droit d’observation. La fin de la session détruit l’autorité du lanceur. [Définitions natives](../abi/terminal.rs) · [Qualification](nsh-v0.16.3.md)
+
+Sur le port SCREEN, FRESH_LINE (6) termine la ligne si le dernier texte du terminal la laisse ouverte. CLEAR_SCREEN (7) efface l’écran et place le curseur en haut à gauche. L’entrée en écran alternatif conserve l’état de ligne de l’écran principal. À la sortie, le terminal restaure cet état pour une reprise à la bonne ligne. Ces deux nouvelles actions exigent les droits INPUT, OUTPUT et EDIT du propriétaire du terminal et un argument nul.

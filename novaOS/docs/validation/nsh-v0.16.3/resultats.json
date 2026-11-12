@@ -1,0 +1,516 @@
+{
+  "reference": "fd5a7d7ce29dbb2fabeb9409f7985c0d625a9ca2",
+  "date": "2026-11-12",
+  "novaos": "0.16.3",
+  "novafs": "0.9.13 P9",
+  "qemu_direct": "11.1.3",
+  "rustc": "1.99.1",
+  "indicateur_rosetta": 1,
+  "archives": {
+    "novaos-0.16.3-utm-aarch64.tar.gz": "85e7a0a177130010519b98351e3e6f2b7943c52284601e1632588462388a1dc1"
+  },
+  "utm": {
+    "version": "5.0.8",
+    "moteur": "QEMU emulator version 10.0.12",
+    "application_512": {
+      "application": "UTM",
+      "profil": "AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+      "serie": "PTY de l’application",
+      "installation": true,
+      "support_sha256": "b870ea7ee985626a77677be848248a2653571801812cf9f460c30723e8f54970",
+      "disque_installe_sha256": "ece88419034053a05a56c0c314c52ceabee031a8735c31306eb98883d17fc99b",
+      "demarrages_autonomes": 2,
+      "contenu_relu": "NovaOS\n",
+      "octets_vi_relus": [
+        66560,
+        66562
+      ],
+      "scripts_vi_relus": [
+        "recettes/edite.nsh",
+        "recettes/autre.nsh"
+      ],
+      "script_installe": "/verification.nsh",
+      "script_execute_apres_redemarrage": "./recettes/preuve.nsh"
+    },
+    "installation_4096": {
+      "gpt": {
+        "esp": 256,
+        "p9": 67840,
+        "fin_p9": 68351,
+        "taille_secteur": 4096
+      },
+      "phases": {
+        "installation": {
+          "attaches": [
+            [
+              2,
+              48
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 619,
+          "plages_finales": 0
+        },
+        "autonome": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 20,
+          "plages_finales": 0
+        },
+        "persistance": {
+          "attaches": [
+            [
+              2,
+              56
+            ],
+            [
+              1,
+              56
+            ]
+          ],
+          "ecritures_uefi": 0,
+          "ecritures_noyau": 4,
+          "plages_finales": 0
+        }
+      }
+    },
+    "captures_4096": {
+      "top-4096.jpg": "3d64d3242015f1960b4b11b321dff87b3492bdf562501e528f9e3a11e270ba38",
+      "utm-4096.jpg": "abba5b235f69339ce322cf687eb1c9696ec286458fd84d3c002f7a094df7bbaa",
+      "vi-4096.jpg": "6fd93b5ded17e88b340ea2977c441848494b5ef567933b0505ec14823dd451c2"
+    }
+  },
+  "scenarios_gic": [
+    "froid",
+    "el2",
+    "protection",
+    "reemploi",
+    "cd",
+    "redemarrage",
+    "coupure",
+    "reprise",
+    "autre-slot",
+    "mapkey",
+    "retrait-suspendu"
+  ],
+  "scenarios_dma": [
+    "support",
+    "vierge",
+    "refus",
+    "confirmation-erronee",
+    "tis",
+    "deplaces",
+    "reemploi",
+    "redemarrage",
+    "fin",
+    "mbr",
+    "gpt",
+    "fat",
+    "novafs",
+    "trop-petit",
+    "erreur-lecture",
+    "mauvais-support",
+    "doublon",
+    "roles-inverses",
+    "support-inscriptible",
+    "tpm-absent",
+    "mauvaise-serie",
+    "quarantaine",
+    "coupure"
+  ],
+  "architectures": {
+    "aarch64": {
+      "demarrages": [
+        "aarch64",
+        "aarch64-abi-test-256",
+        "aarch64-abi-test-256-pan",
+        "aarch64-storage-test",
+        "aarch64-proc-test",
+        "aarch64-proc-boot-fault",
+        "aarch64-mem-test",
+        "aarch64-mem-ro",
+        "aarch64-mem-alias",
+        "aarch64-mem-page-ro",
+        "aarch64-mem-nx",
+        "aarch64-mem-absent",
+        "aarch64-heap-test",
+        "aarch64-heap-oom",
+        "aarch64-heap-corrupt",
+        "aarch64-heap-guard",
+        "aarch64-heap-infallible",
+        "aarch64-heap-reentrant",
+        "aarch64-heap-metadata",
+        "aarch64-sched-test",
+        "aarch64-sched-guard",
+        "aarch64-sched-fpu",
+        "aarch64-sched-stress",
+        "aarch64-sched-endurance-15s",
+        "aarch64-ipc-test-256"
+      ],
+      "bloc": [
+        "aarch64/512 : motif invité et retrait",
+        "aarch64/512 : protections DMA et interruption pendante",
+        "aarch64/512 : baux, descripteurs, panne et relance",
+        "aarch64/512 : panne en vol et quarantaine",
+        "aarch64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+        "aarch64/512 : eio-read",
+        "aarch64/512 : eio-write",
+        "aarch64/512 : eio-flush",
+        "aarch64/512 : droit en écriture refusé",
+        "aarch64/512 : profil de démarrage manuel en lecture seule",
+        "aarch64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+        "aarch64/512 : Device NovaFS, refus du support RO transmis au client",
+        "aarch64/4096 : motif invité et retrait",
+        "aarch64/4096 : protections DMA et interruption pendante",
+        "aarch64/4096 : baux, descripteurs, panne et relance",
+        "aarch64/4096 : panne en vol et quarantaine",
+        "aarch64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+        "aarch64/4096 : eio-read",
+        "aarch64/4096 : eio-write",
+        "aarch64/4096 : eio-flush",
+        "aarch64/4096 : droit en écriture refusé",
+        "aarch64/4096 : profil de démarrage manuel en lecture seule",
+        "aarch64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+        "aarch64/4096 : Device NovaFS, refus du support RO transmis au client"
+      ],
+      "elf_processus_ipc": [
+        "aarch64-elf-test",
+        "aarch64-proc-lifecycle",
+        "aarch64-ipc-races-256"
+      ],
+      "secteurs": {
+        "512": {
+          "nsh_kio": 452,
+          "incidents": [
+            "NT01",
+            "NT02",
+            "NT03"
+          ],
+          "scripts_commandes": 31,
+          "scripts_pic_pages": 113,
+          "nsh_commandes": 113,
+          "vi": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "elf_collectes": 14,
+            "fichiers_relus": 13,
+            "pic_pages_privees_observe": 94,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_allocation_octets": 536870912,
+            "script_apres_redemarrage": true
+          },
+          "options_clavier_limites": 84,
+          "mutations_avec_remontage": 21,
+          "cli_p9_memoire": {
+            "pic_resident_observe_pages": 1250,
+            "pic_resident_remontage_pages": 1280,
+            "allocations_cadres_remontage": 1478,
+            "cadres_retenus_final": 3,
+            "buddy_final_octets": 10272
+          }
+        },
+        "4096": {
+          "nsh_kio": 452,
+          "incidents": [
+            "NT01",
+            "NT02",
+            "NT03"
+          ],
+          "scripts_commandes": 31,
+          "scripts_pic_pages": 113,
+          "nsh_commandes": 113,
+          "vi": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "elf_collectes": 14,
+            "fichiers_relus": 13,
+            "pic_pages_privees_observe": 94,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_allocation_octets": 536870912,
+            "script_apres_redemarrage": true
+          },
+          "options_clavier_limites": 84,
+          "mutations_avec_remontage": 21,
+          "cli_p9_memoire": {
+            "pic_resident_observe_pages": 1250,
+            "pic_resident_remontage_pages": 1280,
+            "allocations_cadres_remontage": 1478,
+            "cadres_retenus_final": 3,
+            "buddy_final_octets": 10272
+          }
+        }
+      },
+      "ecran_vi": "20 frappes, 20 lignes, 48×12, 36×8, 1×1, 80×24",
+      "novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "instrumente": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=25.775",
+        "injections_ancres": 2304,
+        "refus_attendus": 360
+      },
+      "volumes_vi": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 1589.000083,
+          "insertion_ms": 1.661834,
+          "suppression_ms": 0.75425,
+          "navigation_G_ms": 0.982042,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 10587.816708,
+          "insertion_ms": 2.654834,
+          "suppression_ms": 1.032291,
+          "navigation_G_ms": 1.007583,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 165366.763041,
+          "insertion_ms": 3.127875,
+          "suppression_ms": 4.566,
+          "navigation_G_ms": 3.599334,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 681778.409417,
+          "insertion_ms": 15.893292,
+          "suppression_ms": 16.812958,
+          "navigation_G_ms": 12.498916,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ]
+    },
+    "x86_64": {
+      "demarrages": [
+        "std",
+        "none",
+        "x86_64-abi-test-256",
+        "x86_64-storage-test",
+        "x86_64-proc-test",
+        "x86_64-proc-boot-fault",
+        "x86_64-mem-test",
+        "x86_64-mem-ro",
+        "x86_64-mem-alias",
+        "x86_64-mem-page-ro",
+        "x86_64-mem-nx",
+        "x86_64-mem-absent",
+        "x86_64-heap-test",
+        "x86_64-heap-oom",
+        "x86_64-heap-corrupt",
+        "x86_64-heap-guard",
+        "x86_64-heap-infallible",
+        "x86_64-heap-reentrant",
+        "x86_64-heap-metadata",
+        "x86_64-sched-test",
+        "x86_64-sched-guard",
+        "x86_64-sched-fpu",
+        "x86_64-sched-stress",
+        "x86_64-sched-endurance-15s",
+        "x86_64-ipc-test-256"
+      ],
+      "bloc": [
+        "x86_64/512 : motif invité et retrait",
+        "x86_64/512 : protections DMA et interruption pendante",
+        "x86_64/512 : baux, descripteurs, panne et relance",
+        "x86_64/512 : panne en vol et quarantaine",
+        "x86_64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+        "x86_64/512 : eio-read",
+        "x86_64/512 : eio-write",
+        "x86_64/512 : eio-flush",
+        "x86_64/512 : droit en écriture refusé",
+        "x86_64/512 : profil de démarrage manuel en lecture seule",
+        "x86_64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+        "x86_64/512 : Device NovaFS, refus du support RO transmis au client",
+        "x86_64/4096 : motif invité et retrait",
+        "x86_64/4096 : protections DMA et interruption pendante",
+        "x86_64/4096 : baux, descripteurs, panne et relance",
+        "x86_64/4096 : panne en vol et quarantaine",
+        "x86_64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+        "x86_64/4096 : eio-read",
+        "x86_64/4096 : eio-write",
+        "x86_64/4096 : eio-flush",
+        "x86_64/4096 : droit en écriture refusé",
+        "x86_64/4096 : profil de démarrage manuel en lecture seule",
+        "x86_64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+        "x86_64/4096 : Device NovaFS, refus du support RO transmis au client"
+      ],
+      "elf_processus_ipc": [
+        "x86_64-elf-test",
+        "x86_64-proc-lifecycle",
+        "x86_64-ipc-races-256"
+      ],
+      "secteurs": {
+        "512": {
+          "nsh_kio": 468,
+          "incidents": [
+            "NT01",
+            "NT02",
+            "NT03"
+          ],
+          "scripts_commandes": 31,
+          "scripts_pic_pages": 117,
+          "nsh_commandes": 113,
+          "vi": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "elf_collectes": 14,
+            "fichiers_relus": 13,
+            "pic_pages_privees_observe": 94,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_allocation_octets": 536870912,
+            "script_apres_redemarrage": true
+          },
+          "options_clavier_limites": 84,
+          "mutations_avec_remontage": 21,
+          "cli_p9_memoire": {
+            "pic_resident_observe_pages": 1297,
+            "pic_resident_remontage_pages": 1327,
+            "allocations_cadres_remontage": 1488,
+            "cadres_retenus_final": 12,
+            "buddy_final_octets": 9248
+          }
+        },
+        "4096": {
+          "nsh_kio": 468,
+          "incidents": [
+            "NT01",
+            "NT02",
+            "NT03"
+          ],
+          "scripts_commandes": 31,
+          "scripts_pic_pages": 117,
+          "nsh_commandes": 113,
+          "vi": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "elf_collectes": 14,
+            "fichiers_relus": 13,
+            "pic_pages_privees_observe": 94,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_allocation_octets": 536870912,
+            "script_apres_redemarrage": true
+          },
+          "options_clavier_limites": 84,
+          "mutations_avec_remontage": 21,
+          "cli_p9_memoire": {
+            "pic_resident_observe_pages": 1297,
+            "pic_resident_remontage_pages": 1327,
+            "allocations_cadres_remontage": 1488,
+            "cadres_retenus_final": 12,
+            "buddy_final_octets": 9248
+          }
+        }
+      },
+      "ecran_vi": "20 frappes, 20 lignes, 48×12, 36×8, 1×1, 80×24",
+      "novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "instrumente": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=41.388",
+        "injections_ancres": 2304,
+        "refus_attendus": 360
+      },
+      "volumes_vi": [
+        {
+          "octets": 8192,
+          "ouverture_ms": 1367.633417,
+          "insertion_ms": 1.766709,
+          "suppression_ms": 0.750791,
+          "navigation_G_ms": 0.782583,
+          "pages_privees_pile_comprise": [
+            78,
+            94,
+            94
+          ]
+        },
+        {
+          "octets": 65536,
+          "ouverture_ms": 9624.13075,
+          "insertion_ms": 1.77075,
+          "suppression_ms": 0.702958,
+          "navigation_G_ms": 4.669292,
+          "pages_privees_pile_comprise": [
+            78,
+            126,
+            158
+          ]
+        },
+        {
+          "octets": 1048576,
+          "ouverture_ms": 150082.964333,
+          "insertion_ms": 3.37275,
+          "suppression_ms": 1.206,
+          "navigation_G_ms": 3.935125,
+          "pages_privees_pile_comprise": [
+            78,
+            366,
+            926
+          ]
+        },
+        {
+          "octets": 4194304,
+          "ouverture_ms": 576587.758375,
+          "insertion_ms": 95.31375,
+          "suppression_ms": 2.064625,
+          "navigation_G_ms": 12.992,
+          "pages_privees_pile_comprise": [
+            78,
+            1134,
+            3230
+          ]
+        }
+      ]
+    }
+  }
+}

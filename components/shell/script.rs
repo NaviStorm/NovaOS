@@ -19,7 +19,7 @@ const VAR_BYTES: usize = 4096;
 #[derive(Default)]
 pub struct Frame {
     vars: BTreeMap<String, (String, bool)>,
-    aliases: Aliases,
+    pub(super) aliases: Aliases,
     pub status: u64,
 }
 impl Frame {
@@ -72,14 +72,20 @@ pub struct Engine<'a> {
     test: bool,
     pid: String,
     left: usize,
+    history: &'a super::history::History,
 }
 impl<'a> Engine<'a> {
-    pub fn new(fs: &'a mut Client, test: bool) -> rt::Result<Self> {
+    pub fn new(
+        fs: &'a mut Client,
+        test: bool,
+        history: &'a super::history::History,
+    ) -> rt::Result<Self> {
         Ok(Self {
             fs,
             test,
             pid: rt::value(rt::call(rt::PROCESS_ID, 0, 0, 0))?.to_string(),
             left: STEPS,
+            history,
         })
     }
     fn step(&mut self) -> rt::Result<()> {
@@ -277,6 +283,30 @@ impl<'a> Engine<'a> {
                 } else {
                     Flow::Continue
                 });
+            }
+            "clear" | "history" | "help" | "ps" | "top" => {
+                if !args.is_empty() {
+                    return Err(rt::BAD_ARGUMENT);
+                }
+                match name.as_str() {
+                    "clear" => builtins::console_action(tty::CLEAR_SCREEN)?,
+                    "help" => {
+                        console::write(tty::OUTPUT, builtins::COMMANDS)?;
+                        console::write(tty::OUTPUT, "\n")?;
+                    }
+                    "history" if depth == 0 => {
+                        for i in 0..self.history.len() {
+                            console::printable(
+                                tty::OUTPUT,
+                                &alloc::format!("{}  {}\n", i + 1, self.history.get(i).unwrap()),
+                            )?;
+                        }
+                    }
+                    "history" => return Err(rt::DENIED),
+                    "ps" | "top" => builtins::monitor(name == "top")?,
+                    _ => unreachable!(),
+                }
+                0
             }
             "echo" => {
                 console::printable(tty::OUTPUT, &args.join(" "))?;

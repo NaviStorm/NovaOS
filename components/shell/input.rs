@@ -9,6 +9,7 @@ pub enum Key {
     Left,
     Right,
     Erase,
+    Tab,
     Enter,
     Char(char),
     Invalid,
@@ -36,6 +37,7 @@ impl Input {
                 self.skip_lf = b == 13;
                 Key::Enter
             }
+            9 => Key::Tab,
             8 | 127 => Key::Erase,
             1 => Key::Home,
             5 => Key::End,

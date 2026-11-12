@@ -106,7 +106,7 @@ def transfert(console, marque, sid):
     assert f"ATTACH sid={sid} domaine=2 bypass=0 BME=0".encode() in serie
     bilan = re.search(rb"NOVA DXE SORTIE droits=(\d+) retraits=(\d+) actifs=0 BME=0 bypass=0", serie)
     assert bilan and int(bilan[1]) == int(bilan[2]) > 0
-    assert b"NovaOS v0.16.2" in serie and b"GICv3 groupe=1" in serie
+    assert b"NovaOS v0.16.3" in serie and b"GICv3 groupe=1" in serie
     return serie
 
 
@@ -193,11 +193,19 @@ def qualifier(distribution, dest):
     with enregistrer(autonome, ident) as machine:
         with demarrer(machine, dest / "autonome.serial") as console:
             transfert(console, b"nsh> ", 56)
-            assert b"NovaOS 0.16.2" in console.ligne("ls --version")
+            assert b"NovaOS 0.16.3" in console.ligne("ls --version")
+            assert b"/\r\nnsh> " in console.ligne("pw\t")
+            assert b"NovaOS\r\nnsh> " in console.ligne("cat /syst\t")
+            assert b"Nova\r\nnsh> " in console.ligne("head -c4 /systeme")
+            assert b"cat /systeme" in console.ligne("history")
+            assert b"nsh  vivant" in console.ligne("ps")
+            console.ligne("top", b"q pour quitter")
+            os.write(console.fd, b"q")
+            console.attendre(b"nsh> ")
             for cmd in ["mkdir recettes", "cp /systeme recettes/preuve.txt", "cd recettes", "cd .."]:
                 out = console.ligne(cmd)
                 assert b"statut " not in out and b"erreur" not in out, (cmd, out)
-            assert b"NovaOS 0.16.2" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
+            assert b"NovaOS 0.16.3" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
             assert b"NovaOS\r\n" in console.ligne("cat **/*.txt")
             script = console.ligne("nsh /verification.nsh")
             assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script

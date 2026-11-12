@@ -10,17 +10,38 @@ pub fn entries(c: &mut Client, h: u64) -> rt::Result<Vec<Entry>> {
 
 pub fn entries_bounded(c: &mut Client, h: u64, limit: usize) -> rt::Result<Vec<Entry>> {
     let mut rows = Vec::new();
+    visit_names(c, h, limit, |c, name| {
+        let stat = c.at(w::LOOKUP_AT, h, name.as_bytes(), 0)?;
+        rows.try_reserve(1).map_err(|_| rt::NO_MEMORY)?;
+        rows.push(Entry {
+            name: String::from(name),
+            stat,
+        });
+        Ok(())
+    })?;
+    Ok(rows)
+}
+
+/// Le curseur et le nom en cours sont les seuls tampons retenus pour une liste filtrée.
+pub fn visit_names(
+    c: &mut Client,
+    h: u64,
+    limit: usize,
+    mut visit: impl FnMut(&mut Client, &str) -> rt::Result<()>,
+) -> rt::Result<()> {
+    let mut remaining = limit;
+    let mut name = Vec::new();
     let mut after = Vec::new();
     let mut generation = 0;
     loop {
-        let mut name = Vec::new();
+        name.clear();
         loop {
             let a = c.readdir_fragment(h, &after, name.len() as u64, generation)?;
             generation = w::word(&a, 24);
             let n = w::length(&a);
             let len = w::word(&a, 32);
             if len == 0 && name.is_empty() {
-                return Ok(rows);
+                return Ok(());
             }
             if n == 0 || n > w::FRAGMENT || len > 255 || name.len() as u64 + n as u64 > len {
                 return Err(rt::REFUSED);
@@ -30,16 +51,9 @@ pub fn entries_bounded(c: &mut Client, h: u64, limit: usize) -> rt::Result<Vec<E
                 break;
             }
         }
-        if rows.len() >= limit {
-            return Err(rt::LIMIT);
-        }
-        let stat = c.at(w::LOOKUP_AT, h, &name, 0)?;
-        after = name.clone();
-        rows.try_reserve(1).map_err(|_| rt::NO_MEMORY)?;
-        rows.push(Entry {
-            name: String::from_utf8(name).map_err(|_| rt::REFUSED)?,
-            stat,
-        });
+        remaining = remaining.checked_sub(1).ok_or(rt::LIMIT)?;
+        visit(c, core::str::from_utf8(&name).map_err(|_| rt::REFUSED)?)?;
+        core::mem::swap(&mut name, &mut after);
     }
 }
 

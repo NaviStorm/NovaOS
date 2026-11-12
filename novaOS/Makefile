@@ -125,3 +125,8 @@ vi-volumes-test: kernel
 vi-ecran-test: kernel
 	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
 	python3 tests/vi_ecran.py
+
+.PHONY: nsh-terminal-test
+nsh-terminal-test: kernel
+	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+	python3 tests/nsh_terminal.py

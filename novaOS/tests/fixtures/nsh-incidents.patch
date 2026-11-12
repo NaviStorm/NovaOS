@@ -1,0 +1,62 @@
+--- a/components/coreutils/text.rs
++++ b/components/coreutils/text.rs
+@@ -51,0 +52,7 @@
++        if start == CHUNK as u64 && end > start {
++            // Une ligne de rendez-vous informe le conducteur après les 704 premiers octets.
++            console::write(tty::OUTPUT, "RENDEZVOUS-LECTURE\n")?;
++            while c.simple(w::STAT, h).is_ok() {
++                rt::call(rt::THREAD_YIELD, 0, 0, 0);
++            }
++        }
+--- a/components/shell/executor.rs
++++ b/components/shell/executor.rs
+@@ -92,0 +93,4 @@
++        if p == Program::Cat && words.as_slice() == ["/lignes"] {
++            rt::value(rt::call(tty::CONSOLE, tty::INPUT.into(), 0, 0))?;
++            rt::value(rt::call(rt::IPC_REVOKE, channels.0, 0, 0))?;
++        }
+--- a/components/shell/glob.rs
++++ b/components/shell/glob.rs
+@@ -5 +5 @@
+-use nova_cli::{directory::entries_bounded, fileapi::Client, protocol as w, runtime as rt, tty};
++use nova_cli::{directory::entries_hook, fileapi::Client, protocol as w, runtime as rt, tty};
+@@ -210 +210,18 @@
+-            Ok((id, entries_bounded(fs, dir, budget.entries)?))
++            Ok((
++                id,
++                entries_hook(fs, dir, budget.entries, |client, name| {
++                    if name == "concurrent" {
++                        let args = [String::from("incident/nouveau")];
++                        let code = super::executor::execute(
++                            client,
++                            nova_cli::command::Program::Mkdir,
++                            &args,
++                            false,
++                        )?;
++                        if code != 0 {
++                            return Err(code);
++                        }
++                    }
++                    Ok(())
++                })?,
++            ))
+--- a/components/libraries/directory.rs
++++ b/components/libraries/directory.rs
+@@ -11,0 +12,8 @@
++    entries_hook(c, h, limit, |_, _| Ok(()))
++}
++pub fn entries_hook(
++    c: &mut Client,
++    h: u64,
++    limit: usize,
++    mut hook: impl FnMut(&mut Client, &str) -> rt::Result<()>,
++) -> rt::Result<Vec<Entry>> {
+@@ -15 +23,7 @@
+-        rows.try_reserve(1).map_err(|_| rt::NO_MEMORY)?;
++        hook(c, name)?;
++        let extra = if name == "penurie" {
++            (512 << 20) / core::mem::size_of::<Entry>()
++        } else {
++            1
++        };
++        rows.try_reserve(extra).map_err(|_| rt::NO_MEMORY)?;

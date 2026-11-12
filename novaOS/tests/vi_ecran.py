@@ -94,14 +94,21 @@ def trial(arch, folder):
         screen = Ecran(8, 36)
         frame("toto [modifié] 1:1", 1, 1)
         assert screen.lines[0].rstrip() == word[:-1]
+        write(b"\x0c")
+        assert term.until(query) == query
+        write(b"\x1b[24;80R")
+        screen = Ecran(24, 80)
+        frame("toto [modifié] 1:1", 1, 1)
+        assert screen.lines[0].rstrip() == word[:-1]
+        assert screen.lines[22].startswith("vi [NORMAL]")
         write(b":q!")
-        screen.feed(term.until(cup(8, 4)))
+        screen.feed(term.until(cup(24, 4)))
         assert screen.lines[-1].rstrip() == ":q!"
         write(b"\r")
         term.until(b"\x1b[?1049l")
         term.until(b"nsh> ")
         term.exit()
-    print(f"{arch} — 20 frappes, 20 lignes, trois géométries, lignes modifiées, curseur, retour à nsh", flush=True)
+    print(f"{arch} — 20 frappes, 20 lignes, quatre géométries dont 80 × 24, lignes modifiées, curseur, retour à nsh", flush=True)
 
 
 if __name__ == "__main__":

@@ -131,7 +131,7 @@ def mesures(dossier, nom):
             assert len(sorties) == boots == texte.count("DMA bilan Ok(())")
             sequence = (r"NOVA DXE politique active avant PCI.*?NOVA DXE ATTACH.*?premier MAP acquitte, BME=1"
                         r".*?OBS EFI StartImage Limine.*?NOVA DXE SORTIE.*?OBS EFI notification ExitBootServices"
-                        r".*?MMU : sections et alias verifies.*?NovaOS v0[.](?:15[.][01]|16[.][012])\b.*?DMA bilan Ok")
+                        r".*?MMU : sections et alias verifies.*?NovaOS v0[.](?:15[.][01]|16[.][0123])\b.*?DMA bilan Ok")
             assert len(re.findall(sequence, texte, re.S)) == boots
             priorites = re.findall(r"GICv3 groupe=1 PMR=(0x\w+) PPI30=0x80 SPI37=0x40", texte)
             assert len(priorites) == boots and all(int(p, 16) > 0x80 for p in priorites)

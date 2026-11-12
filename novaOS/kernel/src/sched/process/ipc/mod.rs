@@ -849,7 +849,7 @@ pub(super) fn launch_block_identifie<const N: usize>(
                 use crate::terminal::*;
                 let trace = if mode == 42 { QUALIFY } else { 0 };
                 s.processes.get_mut(control).terminal =
-                    INPUT | OUTPUT | ERROR | EDIT | LAUNCH | trace;
+                    INPUT | OUTPUT | ERROR | EDIT | LAUNCH | OBSERVE_SESSION | trace;
             }
             let rx = s.ipc.derive(consumer, b, control, RECEIVE.into())?;
             s.ipc.locals.get_mut(control.slot).bootstrap = tx;

@@ -5,6 +5,7 @@ use nova_cli::{console, fileapi::Client, runtime as rt, tty};
 mod aliases;
 mod builtins;
 mod capabilities;
+mod completion;
 mod executor;
 mod glob;
 mod history;
@@ -37,7 +38,7 @@ fn session() -> rt::Result<()> {
         if test {
             console::edit(2)?;
         }
-        let input_line = line_editor::line(&mut input, &history, "nsh> ");
+        let input_line = line_editor::line(&mut input, &history, &mut fs, &frame.aliases, "nsh> ");
         let result = (|| {
             let mut source = input_line?;
             history.remember(&source);
@@ -45,7 +46,13 @@ fn session() -> rt::Result<()> {
                 match parser::parse(&source) {
                     Ok(p) => break p,
                     Err(parser::Error::Incomplete) => {
-                        let more = line_editor::line(&mut input, &history, "...> ")?;
+                        let more = line_editor::line(
+                            &mut input,
+                            &history,
+                            &mut fs,
+                            &frame.aliases,
+                            "...> ",
+                        )?;
                         if source.len() + 1 + more.len() > lexer::SOURCE_MAX {
                             return Err(rt::LIMIT);
                         }
@@ -55,7 +62,8 @@ fn session() -> rt::Result<()> {
                     Err(e) => return Err(e.status()),
                 }
             };
-            let result = script::Engine::new(&mut fs, test)?.list(&mut frame, &program, 0, 0);
+            let result =
+                script::Engine::new(&mut fs, test, &history)?.list(&mut frame, &program, 0, 0);
             if let Err(code) = result {
                 frame.status = code;
                 console::write(
