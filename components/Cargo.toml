@@ -1,6 +1,6 @@
 [package]
 name = "nova-cli"
-version = "0.14.0"
+version = "0.15.1"
 edition = "2024"
 publish = false
 license = "MIT"
@@ -25,7 +25,7 @@ codegen-units = 1
 strip = true
 
 [[bin]]
-name = "shell"
+name = "nsh"
 path = "shell/main.rs"
 test = false
 
@@ -92,4 +92,9 @@ test = false
 [[bin]]
 name = "tail"
 path = "coreutils/tail.rs"
+test = false
+
+[[bin]]
+name = "rmdir"
+path = "coreutils/rmdir.rs"
 test = false

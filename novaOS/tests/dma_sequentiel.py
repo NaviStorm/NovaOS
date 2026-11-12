@@ -147,7 +147,7 @@ def observer(vm, canal, serie, trace, cas, nom):
         assert fin["cible"]["rd_bytes"] == (offset // 4096 + 1) * 4096
     if cas.suspendu:
         assert not etat_pci(vm, cas.source) and not etat_pci(vm, cas.cible)
-        assert b"NovaOS v0.15.0" not in serie.read_bytes()
+        assert b"NovaOS v" not in serie.read_bytes()
     resultat["fin"] = fin
     return resultat
 

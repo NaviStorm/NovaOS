@@ -148,12 +148,15 @@ fn main() {
     let mut catalog = String::from("&[");
     for name in [
         "pwd", "ls", "cat", "head", "mkdir", "rm", "probe", "cp", "mv", "touch", "more", "wc",
-        "tail", "shell",
+        "tail", "rmdir", "nsh",
     ] {
         let path = out.join(format!("{name}.elf"));
         std::fs::copy(work.join(&target).join("release").join(name), &path).unwrap();
-        if name != "shell" {
+        if name != "nsh" {
             catalog.push_str(&format!("(include_bytes!({path:?}),{}),", name == "probe"));
+        } else {
+            // Nom historique de l’image privée du lanceur, même ELF nsh.
+            std::fs::copy(&path, out.join("shell.elf")).unwrap();
         }
     }
     catalog.push(']');

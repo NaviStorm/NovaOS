@@ -52,7 +52,7 @@ def check(arch, sector, tmp, oracle):
     old_hash=hashlib.sha256(old.read_bytes()).digest()
     # Même service et même CLI sur le volume historique, avant la migration.
     with Terminal(arch, sector, old, "profil-historique", test=True) as terminal:
-        terminal.until(b"nova> ")
+        terminal.until(b"nsh> ")
         terminal.line("ls -l documents", has=["mtime=inconnue"], status="sortie 0")
         terminal.line("ls -t documents", has=["indisponible"], status="sortie 25")
         terminal.line("touch -- -nom", has=["indisponible"], status="sortie 25")
@@ -85,7 +85,7 @@ def check(arch, sector, tmp, oracle):
     with Terminal(arch,sector,image,"p9-commandes",test=True) as t:
         t.until(b"BLOC chaine novaFS=")
         begin=time.monotonic()
-        t.until(b"nova> ")
+        t.until(b"nsh> ")
         times["publication_invite"]=(time.monotonic()-begin)*1000
         def run(cmd, has=(), status=0, absent=()):
             times[str(cmd)]=t.line(cmd,status=(f"sortie {status}" if status is not None else None),
@@ -118,7 +118,7 @@ def check(arch, sector, tmp, oracle):
             t.vm.stdin.write(cmd+b"\n")
             t.until(b"[o/N] ")
             t.vm.stdin.write(answer+b"\n")
-            assert f"[statut sortie {code}]".encode() in t.until(b"nova> ")
+            assert f"[statut sortie {code}]".encode() in t.until(b"nsh> ")
         run("cp -R documents double")
         run("cp -r documents documents",status=3)
         run("cat double/exemple.txt",["NovaOS"])
@@ -154,8 +154,8 @@ def check(arch, sector, tmp, oracle):
             if key==b"\n":
                 t.until(b"--More--")
                 t.vm.stdin.write(b"q")
-            t.until(b"nova> ")
-        for name in ("pwd","ls","cat","head","tail","touch","cp","mv","wc","more","mkdir","rm"):
+            t.until(b"nsh> ")
+        for name in ("pwd","ls","cat","head","tail","touch","cp","mv","wc","more","mkdir","rm","rmdir"):
             run(name+" --help",[name])
             run(name+" --version",["NovaOS "])
         run("alias l='ls -latr --color'",status=None)
@@ -192,7 +192,7 @@ def check(arch, sector, tmp, oracle):
     assert hidden[3:5]==[b"?",b"?"]
     serie=t.archive.read_text(errors="replace")
     launched=re.findall(r"CLI spawn image=(\d+) pid=(\d+)",serie)
-    assert {int(image) for image,_ in launched}==set(range(13))
+    assert {int(image) for image,_ in launched}==set(range(14))
     level="Ring3" if arch=="x86_64" else "EL0"
     pids={pid for _,pid in launched}
     assert pids<=set(re.findall(rf"PROC pid=(\d+) niveau={level} pc=",serie))
@@ -204,7 +204,7 @@ def check(arch, sector, tmp, oracle):
     memory["pages_privees_phases"]=bypid
     memory["pic_resident_observe_pages"]=max(map(int,re.findall(r" resident=(\d+)",serie)))
     with Terminal(arch,sector,image,"p9-remontage",test=True) as t:
-        t.until(b"nova> ")
+        t.until(b"nsh> ")
         t.line(b"\x1b[A",absent=[b"CLI spawn image=", b"commande inconnue"])
         t.line("l",has=["commande inconnue"])
         t.line(b"\x1b[A",has=["commande inconnue"])

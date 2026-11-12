@@ -1,6 +1,168 @@
-# NovaShell v0.15.1 — audit du remplacement de fichiers
+# nsh et commandes natives de NovaOS v0.15.1
 
-Le 12 novembre 2026, la qualification a atteint la condition d’arrêt du §6 du mandat. Le remplacement d’un nom occupé requiert une opération que le moteur P9 et le service de fichiers n’exposent pas. La version distribuée reste NovaOS v0.15.0 avec NovaFS v0.9.13 P9. Les observations ci-dessous portent sur le commit `0f63772dd4ac7b40a21b61e9c36bfd6658282c06`, vérifié sur `main` propre avant l’essai.
+## Exécutable et navigation
+
+Le shell interactif s’appelle `nsh`. Le noyau lance `nsh.elf` et le terminal série affiche `nsh> `. La construction conserve une copie identique nommée `shell.elf` pour les outils existants. Les numéros d’image des anciennes commandes sont stables. Les images v0.15.0 conservent leur interpréteur embarqué. Le prompt de diagnostic graphique x86_64 reste `nova>`. Le chemin proposé pour un futur interpréteur de scripts est `/bin/nsh`. Cette version lance les ELF de son catalogue et ne traite ni scripts ni lignes `#!`. [Construction des ELF](../kernel/build.rs) · [Lancement du shell](../kernel/src/sched/process/storage.rs) · [Catalogue](../../components/libraries/command.rs)
+
+La session porte le répertoire courant et la racine de son volume. Pour remonter avec `..`, le shell obtient le chemin courant par fragments d’une même génération, vérifie son identité, ouvre le parent avec le droit de traversée et vérifie que l’entrée désigne encore le même enfant. Arrivé à la racine, un `..` supplémentaire échoue. Un composant absent ou un fichier suivi de `/..`, `/.` ou d’une barre finale échoue également. Les doubles séparateurs sont invalides. Une commande enfant reçoit les objets sélectionnés par le shell. [Résolution des chemins](../../components/shell/paths.rs) · [Protocole des espaces de noms](namespace-v0.12.0.md)
+
+## Expansion des noms
+
+| Mot de la ligne de commande | Correspondance |
+| --- | --- |
+| `*`, `?` | Zéro ou plusieurs scalaires Unicode, ou exactement un, à l’intérieur d’un composant. |
+| `[abc]`, `[0-9]`, `[a-z]`, `[A-Z]`, `[!abc]` | Ensemble, intervalle inclusif ou complément. Ordre des scalaires, sensible à la casse. Un intervalle inversé est invalide. Un crochet ouvrant sans fermeture est littéral. |
+| `**` | Composant entier formé de deux étoiles actives. Il accepte zéro répertoire intermédiaire et peut poursuivre la descente. Une séquence d’étoiles dans `ab**cd` reste locale au nom. |
+| `**/*`, `**/*.txt` | Entrées visibles récursivement, ou noms en `.txt` dès le répertoire courant. Un même chemin apparaît une seule fois par motif. |
+| `src/**/test?.rs` | Inclut `src/test1.rs` et les noms correspondants dans ses descendants. `src/*/test?.rs` impose exactement un intermédiaire. |
+| `'*.rs'`, `"*.rs"`, `\*.rs` | L’étoile protégée reste littérale. Les autres segments du même argument peuvent comporter des opérateurs actifs. |
+| `.*`, `.cache/**/*.txt` | Une entrée cachée exige un point littéral en tête de son composant. La descente implicite de `**` ignore les répertoires cachés. |
+
+Les résultats sont triés par octets UTF-8 pour chaque opérande, puis insérés dans l’ordre de la ligne. Un nom relatif commençant par un tiret reçoit le préfixe `./`. Un motif sans correspondance est transmis littéralement. Une barre finale sélectionne les répertoires. Un préfixe explicite suivi de `/**` peut désigner ce répertoire lui-même. À la racine implicite d’un motif, `**` ne génère pas d’entrée `.`. Les chemins ne sont pas normalisés en Unicode. Un `..` après un composant de motif est refusé.
+
+L’expansion se termine avant tout lancement. Elle ouvre les répertoires avec traversée et énumération, vérifie les identités sur la branche en cours et descend uniquement dans des objets de type répertoire. P9 expose fichiers et répertoires. La recherche est bornée à 32 niveaux, 128 énumérations et 1 024 entrées examinées par ligne. Une limite atteinte ou une erreur de parcours annule l’expansion. La ligne contient au plus 2 048 octets et la trame de lancement 32 arguments dans 2 560 octets, longueurs comprises. Un composant accepte 255 octets et un chemin transmis au service 1 024. [Lexer et protections](../../components/shell/lexer.rs) · [Expansion et limites](../../components/shell/glob.rs) · [ABI terminal](../abi/terminal.rs)
+
+## Opérations et autorité
+
+- `rmdir nom` reçoit la délégation 7, limitée au retrait du répertoire nommé et identifié s’il est vide. Une entrée ordinaire, un répertoire occupé ou non vide, le répertoire courant et ses ancêtres sont refusés.
+- `rm -r nom` reçoit la délégation 8, limitée au nom sélectionné et à ses descendants. Le service épingle l’identité, vérifie les handles dérivés et n’accepte qu’un nom simple par descente. Il autorise l’inspection et le retrait dans cet arbre. L’ouverture du contenu, la création, le renommage, la remontée et la résolution ambiante restent refusés. L’ancienne délégation 5 conserve son seul retrait de fichier nommé.
+- `rm -ri` demande une réponse avant de descendre, puis avant de retirer chaque objet. Une réponse négative conserve l’objet ainsi que ses ancêtres nécessaires. La marche en profondeur vérifie l’identité avant chaque retrait, dans la limite de 32 niveaux et 1 024 descendants par opérande. Chaque suppression acquittée est une transaction distincte. Une coupure permet de retrouver le préfixe déjà exécuté. Une erreur arrête la commande et indique combien de retraits ont réussi.
+- `cp` et `mv` reçoivent une sélection source/destination par enfant. Avec plusieurs sources, le dernier opérande doit d’abord désigner un répertoire. `nsh` attend et révoque chaque délégation avant la suivante. Le premier échec arrête le lot. Les opérations précédentes conservent leurs effets. `mv` renomme aussi les répertoires. `cp -R` prépare sa copie et demande la publication vers un nom libre.
+- `--help` et `--version` lancent un seul processus sans capacité de fichiers, quel que soit le nombre d’opérandes. Le premier essai du découpage des lots perdait ces options en reconstruisant les arguments. Le correctif conserve la demande d’information entière. Les tests vérifient les deux options pour `rm`, `rmdir`, `cp` et `mv`, puis relisent les sources et les répertoires concernés.
+- Sur collision, `-n` conserve les deux objets et réussit, `-i` demande confirmation et une réponse affirmative aboutit à `EXISTS` (27). `-f` supprime la demande et aboutit au même refus. Les options de politique se traitent de gauche à droite. Un opérande identique à sa destination demeure invalide. Aucune délégation ne permet d’effacer une destination pour rendre un transfert possible.
+
+Les canaux de premier plan sont révocables. Le service contrôle le numéro d’opération, l’identité et les droits, y compris lorsque le processus client s’interrompt. Ces deux délégations sont les seules extensions du protocole fichiers v2. Le format NovaFS v0.9.13 P9 et les mécanismes CoW, snapshots, chiffrement et récupération appartiennent au moteur existant. Le protocole PC1 et le remplacement transactionnel restent expérimentaux. [Délégations du service](../user/novafs/files/delegated.rs) · [Sélection par le shell](../../components/shell/capabilities.rs) · [Parcours des retraits](../../components/coreutils/removal.rs) · [Audit de publication](../../novaFS/docs/novafs-publication-conditionnelle.md)
+
+## Options GNU et différences de comportement
+
+Le relevé utilise le manuel GNU Coreutils 9.12 et l’aide de ses neuf exécutables sur Darwin. Les commandes NovaOS reconnaissent `--help`, `--version` et le séparateur `--`. Les options courtes se groupent. Les noms longs doivent être complets. Une option inconnue ou une valeur invalide renvoie 3 et désigne l’argument fautif. L’entrée standard POSIX et le système de permissions Unix ne font pas partie de ces contrats. [Manuel GNU Coreutils](https://www.gnu.org/software/coreutils/manual/coreutils.html) · [Analyse partagée des options](../../components/libraries/options.rs)
+
+| Commande | Options disponibles | Comportement à connaître |
+| --- | --- | --- |
+| `ls` | `-a/--all -A/--almost-all -d/--directory -F/--classify -h/--human-readable -l -1 -r/--reverse -R/--recursive -S -t -w/--width`, `--color[=always\|auto\|never]` | `-a` inclut `.` et les cachés, `-A` les cachés. Aucun parent synthétique. Le dernier tri `-t/-S` et le dernier format `-1/-l` prévalent. Les dates inconnues passent après les dates connues. `-F` marque les répertoires. |
+| `cp` | `-r/-R/--recursive -f/--force -i/--interactive -n/--no-clobber -v/--verbose` | Copie ordinaire ou récursive vers un nom libre, plusieurs sources vers un répertoire. `-n` laisse le nom occupé intact. |
+| `mv` | `-f/--force -i/--interactive -n/--no-clobber -v/--verbose` | Renommage dans le volume, fichiers et répertoires. Même règle de collision. |
+| `rm` | `-r/-R/--recursive -f/--force -i/--interactive -v/--verbose` | `-f` tolère les noms absents et la liste vide. `-f/-i` sélectionnent la dernière politique donnée. `-i` exige une réponse par objet. |
+| `rmdir` | `-v/--verbose` | Retrait des seuls répertoires vides demandés. Un refus sur un opérande arrête le lot. |
+| `cat` | Options communes | Concaténation en ordre d’arguments. Le terminal protège les caractères de contrôle. La copie binaire utilise `cp`. |
+| `head`, `tail` | `-n/--lines -c/--bytes -q/--quiet/--silent -v/--verbose` | Dix lignes par défaut. Compteurs décimaux non signés, zéro admis. La dernière unité et la dernière option d’en-tête prévalent. Aucun suivi en continu. |
+| `wc` | `-l/--lines -w/--words -c/--bytes -m/--chars -L/--max-line-length` | Compte les octets, scalaires, mots, lignes ou colonnes selon la sélection. Plusieurs fichiers donnent un total. |
+
+### Options GNU refusées
+
+Les listes ci-dessous donnent les formes courtes et longues restantes du relevé. Les valeurs des options GNU disponibles seulement en partie sont précisées après la table. Les options qui demandent propriétaire, ACL, contexte de sécurité Unix, liens, informations de périphérique ou entrée standard n’accordent aucun droit supplémentaire.
+
+| Commande | Formes courtes refusées | Formes longues refusées |
+| --- | --- | --- |
+| `ls` | `-b -B -c -C -D -f -g -G -H -i -I -k -L -m -n -N -o -p -q -Q -s -T -u -U -v -x -X -Z` | `--author --escape --block-size --ignore-backups --dired --file-type --format --full-time --group-directories-first --no-group --si --dereference-command-line --dereference-command-line-symlink-to-dir --hide --hyperlink --indicator-style --inode --ignore --kibibytes --dereference --numeric-uid-gid --literal --hide-control-chars --show-control-chars --quote-name --quoting-style --size --sort --time --time-style --tabsize --context --zero` |
+| `cp` | `-a -b -d -H -L -P -l -p -s -S -t -T -u -x -Z` | `--archive --attributes-only --backup --copy-contents --debug --dereference --no-dereference --keep-directory-symlink --link --preserve --no-preserve --parents --reflink --remove-destination --sparse --strip-trailing-slashes --symbolic-link --suffix --target-directory --no-target-directory --update --one-file-system --context` |
+| `mv` | `-b -S -t -T -u -Z` | `--backup --debug --exchange --no-copy --strip-trailing-slashes --suffix --target-directory --no-target-directory --update --context` |
+| `rm` | `-I -d` | `--one-file-system --no-preserve-root --preserve-root --dir` |
+| `rmdir` | `-p` | `--ignore-fail-on-non-empty --parents` |
+| `cat` | `-A -b -e -E -n -s -t -T -u -v` | `--show-all --number-nonblank --show-ends --number --squeeze-blank --show-tabs --show-nonprinting` |
+| `head` | `-z` | `--zero-terminated` |
+| `tail` | `-f -F -s -z` | `--debug --follow --max-unchanged-stats --pid --retry --sleep-interval --zero-terminated` |
+| `wc` | Aucune du relevé | `--debug --files0-from --total` |
+
+`ls --classify` accepte la forme sans valeur. Les valeurs GNU de `--classify=WHEN` et de `rm --interactive=WHEN`, les suffixes multiplicatifs de `head/tail` et leurs positions signées sont refusés. Les options GNU qui changent le rendu sont détaillées dans la table des formes disponibles. Les commandes `pwd`, `touch`, `mkdir` et `more` conservent leur contrat antérieur. [Manuel GNU de cp](https://www.gnu.org/software/coreutils/manual/html_node/cp-invocation.html) · [Commandes historiques](cli-v0.14.0.md)
+
+## Affichage et mesure
+
+Sur P9, `ls -l` aligne les colonnes de type, taille, mtime UTC et nom. La largeur du champ de taille est celle de la valeur affichée la plus longue du groupe. Une date sans fraction se termine par `Z`. Une fraction significative garde ses chiffres jusqu’à la nanoseconde. Le tri utilise toujours les secondes et les nanosecondes stockées. Une date absente affiche `inconnue`. Aucun propriétaire, groupe ou mode Unix n’est synthétisé.
+
+La série ne fournit pas de notification de redimensionnement. `-w N` ou `--width=N` fixe la largeur effective pour le nom, `0` désactive le retour imposé. À défaut, `NOVA_MORE_COLUMNS` à la construction vaut 80. Un nom qui déborde passe sous les métadonnées, puis s’affiche entier, avec calcul des largeurs Unicode et des échappements. Sur un terminal plus étroit que la partie métadonnées, le terminal replie également cette partie. L’ancien profil sans dates conserve son rendu historique. [Rendu de ls](../../components/coreutils/ls.rs)
+
+
+## Résultats de qualification
+
+Qualification du 12 novembre 2026, à partir de `c4bd4c18c64884a98fca7e4bfa16b6dacad7155b`. Les invités NovaOS ont tourné sous QEMU 11.1.3 pour le développement et sous le moteur 10.0.12 d’UTM 5.0.8 pour les profils d’installation et DMA. Les exécutables Darwin de NovaFS ont tourné sur macOS 27.2, en ARM64 natif et en x86_64 sous Rosetta. [Résultats, compteurs et empreintes](validation/cli-v0.15.1/nsh.json)
+
+| Suite réussie | AArch64 | x86_64 |
+| --- | ---: | ---: |
+| Démarrages historiques | 25 | 25 |
+| Groupes bloc | 24 | 24 |
+| Contrôles ELF, cycle de vie et courses IPC | 3 | 3 |
+| Essais CLI historiques | 4 | 4 |
+| Groupes fichiers et espaces de noms, deux géométries réunies | 68 | 68 |
+| Commandes du banc `nsh`, secteurs 512 puis 4 096 octets | 113 + 113 | 113 + 113 |
+| NovaFS standards / instrumentés | 196 / 197 | 196 / 197 |
+| Injections sur les ancres / opérations différentielles NovaFS | 2 304 / 1 000 000 | 2 304 / 1 000 000 |
+| DMA/GICv3 / DMA séquentielle sur le moteur UTM | 11 / 23 | Profil ARM |
+
+Les quatre essais de `nsh` comparent les correspondances, leur ordre, les classes, les guillemets, les échappements et les fichiers cachés. Des processus isolés vérifient le confinement et la révocation des deux nouvelles délégations. Dans chaque géométrie, le banc interrompt `rm -riv coupure` après l’acquittement du retrait d’`alpha`, au dialogue suivant. Un lecteur hôte contrôle P9 avant le remontage invité. `beta` et le témoin extérieur retrouvent leur contenu, et `alpha` reste absent. Les oracles GNU exercent les transferts vers un nom libre et les retraits. Les essais d’interopérabilité relisent P9 dans les deux sens entre architectures ainsi que les fixtures CLI P8 aux deux tailles de secteur. [Banc interactif](../tests/nsh.py) · [Interopérabilité P9](../../novaFS/lab/p9-interop.py)
+
+| Mémoire physique invitée en Kio, pages de 4 Kio | AArch64 | x86_64 |
+| --- | ---: | ---: |
+| Pages privées de `nsh`, pile incluse | 400 | 408 |
+| Pages privées au lancement de `rm` / `rmdir` | 296 / 284 | 296 / 284 |
+| Pic résident échantillonné pendant la session CLI P9 | 4 844 | 5 020 |
+| Pic au remontage, mesuré à chaque allocation | 4 964 | 5 140 |
+| Allocations de cadres au remontage (nombre) | 1 465 | 1 473 |
+
+Les mesures sont identiques sur secteurs de 512 et 4 096 octets pour une même architecture. Par rapport au banc CLI v0.14.0, les pages privées du shell augmentent de 20 Kio sur AArch64 et de 24 Kio sur x86_64. Le pic échantillonné augmente respectivement de 124 et 156 Kio. Après fermeture, le banc retrouve trois cadres de tables sur AArch64 et douze cadres sur x86_64, avec le même nombre d’octets du Buddy qu’à l’ouverture. [Méthode et mesures de référence](cli-v0.14.0.md#mesures-de-qualification)
+
+Sur le moteur d’UTM, l’installateur a installé GPT, l’ESP et P9, démarré depuis la cible seule puis relu les données aux deux géométries. Pour chacune, treize refus ont conservé le SHA-256 de la cible, avec zéro écriture et zéro FLUSH sur ce disque. [Banc GPT](../tests/installation_gpt.py) · [Empreintes par refus](validation/cli-v0.15.1/nsh.json)
+
+Présenté au noyau installé aux deux géométries, un volume expérimental PC1 a été refusé avec `Geometry` pour le type GPT privé et `Device` pour une fausse étiquette P9. Dans les quatre cas, le service a refusé le montage avant l’ouverture de `nsh`. Les images sources et les disques présentés ont conservé leurs empreintes, avec zéro écriture et zéro FLUSH sur la cible. [Banc de compatibilité des lecteurs](../tests/publication_compatibilite.py)
+
+Dans **l’application UTM**, l’archive distribuée a installé le système sur une cible QCOW2 de 64 Mio, secteurs de 512 octets. Le support a conservé son SHA-256. Après son retrait, un premier démarrage a créé `recettes/preuve.txt`. Après arrêt complet de la VM, un second démarrage a relu `NovaOS` et retrouvé ce chemin avec `**/*.txt`. Les traces firmware comptent 805 droits et 805 retraits à l’installation (SID 48), puis 436 et 436 à chaque démarrage autonome (SID 56), avec zéro droit actif, BME et bypass nuls à la transition. Le terminal graphique natif d’UTM a également affiché `nsh>`, donné `NovaOS 0.15.1` pour `ls --version`, lu `/systeme` et terminé sur `SYSTEME bilan Ok(())`. La géométrie 4 096 a été exercée sur le moteur QEMU d’UTM. Les coupures de VM décrites ici laissent le Mac alimenté. [Banc de l’application UTM](../tests/nsh_utm.py)
+
+Rejouer depuis la racine sur le Mac équipé des deux cibles Rust et de GNU Coreutils. La dernière commande attend l’archive extraite dans `NOVA_DIST` et un chemin de sortie neuf pour les VM jetables.
+
+```sh
+for arch in aarch64 x86_64; do
+    make -C novaOS ARCH="$arch" test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test file-test namespace-test || exit 1
+    python3 -B novaFS/lab/p51-validation-suites.py "$arch" || exit 1
+    NOVAFS_TARGET="$arch-apple-darwin" novaFS/lab/run test --offline --lib fs::remplacement:: -- --nocapture || exit 1
+    NOVAFS_TARGET="$arch-apple-darwin" novaFS/lab/run test --offline --lib qualification_ancres -- --nocapture || exit 1
+done
+python3 -B novaOS/tests/nsh_utm.py "$NOVA_DIST" "$NOVA_TRAVAIL/qualification-utm"
+```
+
+## Image et installation dans UTM
+
+L’archive de livraison contient l’installateur QCOW2 en lecture seule, le firmware privé expérimental, le modèle de variables EFI et les licences. Son SHA-256 est `f22af0a9cdd8d45c313a85da1e736ced2b524d5056b211d2f15ef8cfa498b674`. La procédure utilise UTM 5.0.8 sur Mac Apple Silicon, QEMU 10.0.12 intégré et `qemu-img` sur l’hôte. [Archive UTM AArch64](../../distribution/images/novaos-0.15.1-utm-aarch64.tar.gz)
+
+Depuis la racine, créer une VM et sa cible vierge de 64 Mio dans un répertoire neuf.
+
+```sh
+NOVA_TRAVAIL="$(mktemp -d "$HOME/Documents/NovaOS-0.15.1.XXXXXXXX")"
+NOVA_DIST="$NOVA_TRAVAIL/novaos-0.15.1-utm-aarch64"
+NOVA_VM="$NOVA_TRAVAIL/machine/NovaOS-installation-AArch64.utm"
+tar -xzf distribution/images/novaos-0.15.1-utm-aarch64.tar.gz -C "$NOVA_TRAVAIL"
+(cd "$NOVA_DIST" && shasum -a 256 -c SHA256SUMS) &&
+    python3 novaOS/scripts/paquet_installation.py creer "$NOVA_DIST" "$NOVA_TRAVAIL/machine"
+```
+
+1. Ouvrir le paquet `.utm` dans UTM et démarrer. Attendre la fin de la vérification du disque vierge. Contrôler la série `NOVA-CIBLE-000000001`, le SID 56 et les 67 108 864 octets.
+2. Saisir `AUTORISER NOVA-CIBLE-000000001 67108864` uniquement pour cette cible. Attendre `INSTALLATION bilan Ok(())`, puis arrêter la VM. Tout disque refusé doit être conservé tel quel.
+3. Retirer le **raccourci** de la bibliothèque comme indiqué dans la procédure GPT, conserver les fichiers sur le Mac et exécuter `python3 novaOS/scripts/paquet_installation.py systeme "$NOVA_VM"`. Le script vérifie le disque installé puis retire le support de la configuration.
+4. Rouvrir le même paquet, démarrer et attendre `nsh>`. Exécuter `mkdir recettes`, `cp /systeme recettes/preuve.txt`, `cat recettes/preuve.txt` puis `exit`. Après `SYSTEME bilan Ok(())`, arrêter et redémarrer. `cat recettes/preuve.txt` relit `NovaOS` sur le même disque. [Procédure et protections GPT](installer-v0.15.0.md#installation-dans-utm-508)
+
+Pour reconstruire l’installateur depuis les sources, extraire et vérifier l’archive ci-dessus dans `NOVA_DIST`. Depuis `novaOS/`, construire les deux ELF avec Rust stable et leur verrou Cargo, puis créer le support dans un nouveau répertoire. Le profil de développement ISO et le profil UTM ont des configurations d’interruptions différentes. [Construction du paquet](../scripts/paquet_installation.py) · [Préparation des secteurs EFI](../scripts/esp_installation.py)
+
+```sh
+mkdir -p build
+NOVA_BUILD="$(mktemp -d "$PWD/build/nsh-install.XXXXXXXX")"
+NOVA_TARGET=aarch64-unknown-none-softfloat
+mkdir "$NOVA_BUILD/fv"
+cp "$NOVA_DIST/prototype.fd" "$NOVA_BUILD/fv/QEMU_EFI.fd"
+cp "$NOVA_DIST/modele-vars.fd" "$NOVA_BUILD/fv/QEMU_VARS.fd"
+export RUSTC="$(rustup which --toolchain stable rustc)"
+rustup run stable cargo build --offline --locked --release --target "$NOVA_TARGET" \
+    --features systeme-gpt --target-dir "$NOVA_BUILD/systeme"
+python3 scripts/esp_installation.py "$NOVA_BUILD/systeme/$NOVA_TARGET/release/novaos" "$NOVA_BUILD/esp"
+NOVA_ESP="$NOVA_BUILD/esp" rustup run stable cargo build --offline --locked --release --target "$NOVA_TARGET" \
+    --features installation-gpt --target-dir "$NOVA_BUILD/installation"
+python3 scripts/paquet_installation.py construire "$NOVA_BUILD/fv" \
+    "$NOVA_BUILD/installation/$NOVA_TARGET/release/novaos" "$NOVA_BUILD/distribution"
+```
+
+## Historique des audits du remplacement
+
+Les sections suivantes sont les rapports antérieurs à la consolidation de `nsh`. Les mentions de version distribuée et les demandes d’arbitrage y décrivent la situation au commit cité. La règle de refus d’un remplacement reste applicable dans v0.15.1.
+
+Le 12 novembre 2026, la qualification a atteint la condition d’arrêt du §6 du mandat. Le remplacement d’un nom occupé requiert une opération que le moteur P9 et le service de fichiers n’exposent pas. La version distribuée lors de cet audit était NovaOS v0.15.0 avec NovaFS v0.9.13 P9. Les observations ci-dessous portent sur le commit `0f63772dd4ac7b40a21b61e9c36bfd6658282c06`, vérifié sur `main` propre avant l’essai.
 
 ## Décision après l’audit des ancres déchirées
 

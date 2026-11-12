@@ -2,7 +2,7 @@
 
 NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-**NovaOS v0.15.0** installe un volume NovaFS P9 sur disque VirtIO vierge dans UTM 5.0.8 pour AArch64, puis démarre depuis le disque seul. Le shell série permet de copier, déplacer et dater des fichiers, de consulter leur contenu et de les trier par date de modification. Chaque commande externe s’exécute dans son propre processus. **NovaFS v0.9.13** fournit aussi la migration explicite des images historiques sur macOS. [Image installable](distribution/images/novaos-0.15.0-utm-aarch64.tar.gz) · [Procédure UTM](novaOS/docs/installer-v0.15.0.md#installation-dans-utm-508) · [CLI native](novaOS/docs/cli-v0.14.0.md) · [Format et compatibilité](novaFS/docs/novafs-p9-timestamps.md)
+**NovaOS v0.15.1** installe un volume NovaFS P9 sur disque VirtIO vierge dans UTM 5.0.8 pour AArch64, puis démarre depuis le disque seul. Le shell série `nsh` résout les chemins relatifs et les motifs récursifs. Il délègue les copies, déplacements et retraits aux commandes isolées. **NovaFS v0.9.13** fournit aussi la migration explicite des images historiques sur macOS. [Image installable](distribution/images/novaos-0.15.1-utm-aarch64.tar.gz) · [Procédure UTM](novaOS/docs/cli-v0.15.1.md#image-et-installation-dans-utm) · [CLI native](novaOS/docs/cli-v0.15.1.md) · [Format et compatibilité](novaFS/docs/novafs-p9-timestamps.md)
 
 ## Philosophie et architecture
 
@@ -49,7 +49,7 @@ make -C novaOS ARCH=x86_64 cli
 make -C novaOS ARCH=aarch64 cli
 ```
 
-Les cibles `build` produisent respectivement `novaOS/build/novaos.iso` et `novaOS/build/novaos-aarch64.iso`. La cible `cli` ouvre le shell dans le terminal et conserve son volume de démonstration entre démarrages. La cible `run` sans image ouvre la fenêtre graphique de diagnostic. Depuis `novaOS/`, omettre `-C novaOS`. [Shell, commandes et image de démonstration](novaOS/docs/cli-v0.14.0.md) · [Configuration QEMU et UTM](novaOS/README.md)
+Les cibles `build` produisent respectivement `novaOS/build/novaos.iso` et `novaOS/build/novaos-aarch64.iso`. La cible `cli` ouvre le shell dans le terminal et conserve son volume de démonstration entre démarrages. La cible `run` sans image ouvre la fenêtre graphique de diagnostic. Depuis `novaOS/`, omettre `-C novaOS`. [Shell, commandes et image de démonstration](novaOS/docs/cli-v0.15.1.md) · [Configuration QEMU et UTM](novaOS/README.md)
 
 ## Tester et approfondir
 

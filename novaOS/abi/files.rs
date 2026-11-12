@@ -98,3 +98,7 @@ pub const TOUCH_SELECTED: u8 = 25;
 pub const SELECT_COPY_TREE: u8 = 8;
 pub const SELECT_COPY_DEST: u8 = 9;
 pub const PUBLISH_COPY: u8 = 26;
+
+// Portées supplémentaires. REMOVE_ENTRY demeure limité à UNLINK_AT.
+pub const REMOVE_EMPTY_DIR: u8 = 7;
+pub const REMOVE_TREE: u8 = 8;

@@ -1,16 +1,17 @@
-use super::{builtins, capabilities::Grant, parser::Invocation};
-use alloc::vec::Vec;
+use super::{aliases::Aliases, builtins, capabilities::Grant, glob, parser::Invocation, paths};
+use alloc::{string::String, vec::Vec};
 use nova_cli::{
     command::{Program, operand},
     console::write,
     fileapi::Client,
-    process, runtime as rt, tty,
+    options, process, protocol as w, runtime as rt, tty,
 };
+
 pub fn execute(
     fs: &mut Client,
     cmd: Invocation,
     test: bool,
-    aliases: &mut super::aliases::Aliases,
+    aliases: &mut Aliases,
 ) -> rt::Result<bool> {
     let cmd = aliases.expand(cmd)?;
     match cmd.name.as_str() {
@@ -23,21 +24,80 @@ pub fn execute(
                 Err(rt::BAD_ARGUMENT)
             };
         }
-        "cd" => return builtins::cd(fs, &cmd.args).map(|_| true),
+        "cd" => {
+            let args = glob::arguments(fs, &cmd.args)?;
+            return builtins::cd(fs, &args).map(|_| true);
+        }
         _ => {}
     }
     let Some(p) = Program::named(&cmd.name, test) else {
         write(tty::ERROR, "commande inconnue\n")?;
         return Ok(true);
     };
-    let args: Vec<_> = cmd.args.iter().map(|s| s.as_str()).collect();
+    let args = glob::arguments(fs, &cmd.args)?;
+    let strings: Vec<_> = args.iter().map(String::as_str).collect();
+    // Le service conserve les vues isolées par paire pour cp/mv et par nom pour rm.
+    // Valider le répertoire commun et toute l'expansion avant le premier lancement.
+    if let Ok(o) = options::parse(p, &strings)
+        && !o.help
+        && !o.version
+    {
+        let transfer = matches!(p, Program::Cp | Program::Mv);
+        let removal = matches!(p, Program::Rm | Program::Rmdir);
+        if (transfer && o.files.len() > 2) || (removal && o.files.len() > 1) {
+            let mut files = o.files.as_slice();
+            let dest = if transfer {
+                let (last, sources) = files.split_last().unwrap();
+                let path = paths::resolve(fs, last)?;
+                let h = fs.directory(0, path.as_bytes(), w::TRAVERSE)?;
+                fs.simple(w::DIR_CLOSE, h)?;
+                files = sources;
+                Some(*last)
+            } else {
+                None
+            };
+            let mut parameters = Vec::new();
+            for &c in b"finvrR" {
+                if o.has(c) {
+                    parameters.push(alloc::format!("-{}", char::from(c)));
+                }
+            }
+            parameters.push(String::from("--"));
+            for (i, name) in files.iter().enumerate() {
+                let mut pair = parameters.clone();
+                pair.push(String::from(*name));
+                if let Some(dst) = dest {
+                    pair.push(String::from(dst));
+                }
+                if !launch(fs, p, &pair, test)? {
+                    write(
+                        tty::ERROR,
+                        &alloc::format!("lot interrompu après {i} opérande(s) traité(s)\n"),
+                    )?;
+                    break;
+                }
+            }
+            return Ok(true);
+        }
+    }
+    launch(fs, p, &args, test)?;
+    Ok(true)
+}
+
+fn launch(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Result<bool> {
+    let words: Vec<_> = args.iter().map(String::as_str).collect();
     let mut grant = Grant::new();
-    let selection = operand(p, &args).and_then(|op| grant.select(fs, &op));
+    let selection = operand(p, &words).and_then(|op| grant.select(fs, &op));
     let status = selection.err().unwrap_or(0);
     let channels = if status == 0 { grant.channels } else { (0, 0) };
     let result = (|| {
-        let key = process::spawn(p, &cmd.args, channels, status)?;
-        if p == Program::Probe && args == ["revocation"] {
+        let key = process::spawn(p, args, channels, status)?;
+        if p == Program::Probe
+            && matches!(
+                words.as_slice(),
+                ["revocation" | "arbre-revoque" | "vide-revoque"]
+            )
+        {
             rt::value(rt::call(rt::IPC_REVOKE, channels.0, 0, 0))?;
         }
         let (fault, code) = process::wait(key)?;
@@ -56,7 +116,7 @@ pub fn execute(
         } else if !test && code != 0 {
             write(tty::ERROR, &alloc::format!("statut {code}\n"))?;
         }
-        Ok(true)
+        Ok(!fault && code == 0)
     })();
     let freed = grant.release(fs);
     result.and_then(|v| freed.map(|_| v))

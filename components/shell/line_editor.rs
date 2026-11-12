@@ -4,7 +4,7 @@ use nova_cli::{
     console::{edit, write},
     runtime as rt, tty,
 };
-const PROMPT: &str = "nova> ";
+const PROMPT: &str = "nsh> ";
 // Fenêtre en octets : le rendu d'un scalaire imprimable occupe au plus sa taille UTF-8.
 const WINDOW: usize = 56;
 fn start_at(s: &str, mut i: usize) -> usize {

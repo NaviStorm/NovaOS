@@ -97,7 +97,7 @@ def phases(profil, journal):
             assert not any(evenements.values())
         else:
             ordre(BANNER, b"virtio_iommu_attach ", b"virtio_iommu_map ", b"virtio_blk_handle_read ",
-                  b"nova> ", b"virtio_iommu_unmap ", b"virtio_iommu_detach ", b"BLOC session terminee ok=true")
+                  b"nsh> ", b"virtio_iommu_unmap ", b"virtio_iommu_detach ", b"BLOC session terminee ok=true")
             assert evenements["iommu_map"] == evenements["iommu_unmap"] == 7
             assert evenements["iommu_attach"] == evenements["iommu_detach"] == 1
             assert b"virtio_iommu_attach domain=1 endpoint=48" in data

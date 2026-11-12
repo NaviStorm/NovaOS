@@ -8,7 +8,17 @@ use nova_cli::{
 pub fn run(p: Program, command: impl FnOnce(&mut Client, Operand<'_>) -> rt::Result<()>) -> ! {
     let r = (|| {
         let args = process::arguments()?;
-        let op = operand(p, &args)?;
+        let op = operand(p, &args).inspect_err(|_| {
+            if let Some(option) = nova_cli::options::invalid_option(p, &args) {
+                let _ = console::printable(
+                    tty::ERROR,
+                    &alloc::format!("option ou valeur non prise en charge : {option}\n"),
+                );
+            }
+        })?;
+        if matches!(op, Operand::Noop) {
+            return Ok(());
+        }
         if let Operand::Info(help) = op {
             let text = if help {
                 nova_cli::options::usage(p)
@@ -19,6 +29,11 @@ pub fn run(p: Program, command: impl FnOnce(&mut Client, Operand<'_>) -> rt::Res
             return console::write(tty::OUTPUT, "\n");
         }
         let prep = rt::config(3);
+        if prep == nova_cli::protocol::NOT_FOUND
+            && matches!(&op, Operand::Remove(o, Program::Rm) if o.has(b'f'))
+        {
+            return Ok(());
+        }
         if prep != 0 {
             return Err(prep);
         }

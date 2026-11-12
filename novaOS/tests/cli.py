@@ -59,7 +59,7 @@ class Terminal:
         self.vm.stdin.write(raw + b"\n")
         # Le rafraîchissement de l'éditeur réimprime parfois l'invite avant Entrée.
         echo = self.until(b"\r\n")
-        out = echo + self.until(b"nova> ")
+        out = echo + self.until(b"nsh> ")
         if status is not None:
             has = (*has, f"[statut {status}]")
         for expected in has:
@@ -91,7 +91,7 @@ def verify_image(image, sector):
 def interactive(terminal):
     terminal.until(b"BLOC chaine novaFS=")
     published = time.monotonic()
-    terminal.until(b"nova> ")
+    terminal.until(b"nsh> ")
     ready = time.monotonic()
     measures = {
         "demarrage_ms": (ready - terminal.start) * 1000,
@@ -122,7 +122,10 @@ def interactive(terminal):
     run("pwd" + " a" * 33, has=["limite atteinte"])
     run("pwd a b", status="sortie 3", has=["argument invalide"])
     run("head -n -1 /lignes", status="sortie 3")
+    run("cd ..")
+    run("pwd", status="sortie 0", has=[b"\r\n/\r\n"])
     run("cd ..", has=["accès refusé"])
+    run("cd documents")
     run("cd absent", has=["introuvable"])
     run("cat exemple.txt", status="sortie 20", has=["introuvable"])
     run("rm /documents", status="sortie 24", has=["occupé"])
@@ -140,7 +143,7 @@ def interactive(terminal):
     run("head /lignes", status="sortie 0", has=[b"ligne 9\r\n"], absent=[b"ligne 10\r\n"])
     run("head -n 80 /lignes", status="sortie 0", has=[b"ligne 15\r\nfin"])
     run("cat /controle", status="sortie 0", has=[br"avant\u{1b}[31m\u{0}apres"], absent=[b"\x1b[31m"])
-    run("rm -rf documents", status="sortie 3")
+    run("rm -rf /", status="sortie 5", has=["accès refusé"])
     run("rm /p", status="sortie 30", has=["est un répertoire"])
 
     root = [b"\r\n/\r\n"]
@@ -188,7 +191,7 @@ def check(arch, sector, tmp):
     assert committed > initial
 
     with Terminal(arch, sector, image, "remontage") as t:
-        t.until(b"nova> ")
+        t.until(b"nsh> ")
         t.line("cd documents")
         t.line("ls", has=["répertoire répertoire neuf"], absent=[b"exemple.txt"])
         t.line("cat exemple.txt", has=["introuvable", "statut 20"])
@@ -198,13 +201,13 @@ def check(arch, sector, tmp):
     assert verify_image(image, sector) == committed
 
     with Terminal(arch, sector, image, "coupure") as t:
-        t.until(b"nova> ")
+        t.until(b"nsh> ")
         t.line("mkdir confirme", absent=[b"erreur", b"statut "])
         # La sortie du contexte tue QEMU avant exit/CLOSE.
     after = verify_image(image, sector)
     assert after == committed + 1, (committed, after)
     with Terminal(arch, sector, image, "apres-coupure") as t:
-        t.until(b"nova> ")
+        t.until(b"nsh> ")
         t.line("cd confirme")
         t.line("pwd", has=[b"/confirme\r\n"])
         t.exit()

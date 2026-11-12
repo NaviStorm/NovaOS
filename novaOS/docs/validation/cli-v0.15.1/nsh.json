@@ -1,0 +1,402 @@
+{
+  "novaos": "0.15.1",
+  "novafs": "0.9.13 P9",
+  "base": "c4bd4c18c64884a98fca7e4bfa16b6dacad7155b",
+  "hote": {
+    "macos": "27.2",
+    "cpu": "arm64",
+    "novafs_x86_64": "Rosetta 2",
+    "rust": "1.99.1",
+    "gnu_coreutils": "9.12",
+    "qemu_developpement": "11.1.3",
+    "utm": "5.0.8",
+    "qemu_utm": "10.0.12"
+  },
+  "livraison": {
+    "archive_sha256": "f22af0a9cdd8d45c313a85da1e736ced2b524d5056b211d2f15ef8cfa498b674",
+    "octets": 3528655,
+    "entrees_sha256_verifiees": 27,
+    "support_qcow2_sha256": "7127ae24bcfa5dc80d03ca06e0574f10dc46d7cdc74713abc9a9df08cabc84c5",
+    "firmware_sha256": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9"
+  },
+  "architectures": {
+    "aarch64": {
+      "novaos": {
+        "demarrages": 25,
+        "elf_processus_ipc": 3,
+        "groupes_bloc": 24,
+        "essais_cli_historiques": 4,
+        "groupes_fichiers_et_espaces_de_noms": 68,
+        "nsh_par_secteur": {
+          "512": {
+            "commandes": 113,
+            "coupure": "alpha retiré, beta et témoin intègres"
+          },
+          "4096": {
+            "commandes": 113,
+            "coupure": "alpha retiré, beta et témoin intègres"
+          }
+        },
+        "memoire_cli_p9_par_secteur": {
+          "512": {
+            "page_octets": 4096,
+            "nsh_pages_privees_pile_comprise": 100,
+            "rm_pages_au_lancement": 74,
+            "rmdir_pages_au_lancement": 71,
+            "pic_resident_observe_pages": 1211,
+            "pic_resident_remontage_pages": 1241,
+            "allocations_cadres_remontage": 1465,
+            "cadres_retenus_final": 3,
+            "buddy_final_octets": 10272
+          },
+          "4096": {
+            "page_octets": 4096,
+            "nsh_pages_privees_pile_comprise": 100,
+            "rm_pages_au_lancement": 74,
+            "rmdir_pages_au_lancement": 71,
+            "pic_resident_observe_pages": 1211,
+            "pic_resident_remontage_pages": 1241,
+            "allocations_cadres_remontage": 1465,
+            "cadres_retenus_final": 3,
+            "buddy_final_octets": 10272
+          }
+        }
+      },
+      "novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "instrumentes": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "differentiel": {
+          "graines": 100,
+          "operations": 1000000,
+          "commits": 345183,
+          "penuries": 54643,
+          "remontages_et_audits": 1000
+        },
+        "injections_ancres": {
+          "total": 2304,
+          "ancien": 1288,
+          "nouveau": 656,
+          "refus": 360
+        }
+      }
+    },
+    "x86_64": {
+      "novaos": {
+        "demarrages": 25,
+        "elf_processus_ipc": 3,
+        "groupes_bloc": 24,
+        "essais_cli_historiques": 4,
+        "groupes_fichiers_et_espaces_de_noms": 68,
+        "nsh_par_secteur": {
+          "512": {
+            "commandes": 113,
+            "coupure": "alpha retiré, beta et témoin intègres"
+          },
+          "4096": {
+            "commandes": 113,
+            "coupure": "alpha retiré, beta et témoin intègres"
+          }
+        },
+        "memoire_cli_p9_par_secteur": {
+          "512": {
+            "page_octets": 4096,
+            "nsh_pages_privees_pile_comprise": 102,
+            "rm_pages_au_lancement": 74,
+            "rmdir_pages_au_lancement": 71,
+            "pic_resident_observe_pages": 1255,
+            "pic_resident_remontage_pages": 1285,
+            "allocations_cadres_remontage": 1473,
+            "cadres_retenus_final": 12,
+            "buddy_final_octets": 9248
+          },
+          "4096": {
+            "page_octets": 4096,
+            "nsh_pages_privees_pile_comprise": 102,
+            "rm_pages_au_lancement": 74,
+            "rmdir_pages_au_lancement": 71,
+            "pic_resident_observe_pages": 1255,
+            "pic_resident_remontage_pages": 1285,
+            "allocations_cadres_remontage": 1473,
+            "cadres_retenus_final": 12,
+            "buddy_final_octets": 9248
+          }
+        }
+      },
+      "novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "instrumentes": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "differentiel": {
+          "graines": 100,
+          "operations": 1000000,
+          "commits": 345183,
+          "penuries": 54643,
+          "remontages_et_audits": 1000
+        },
+        "injections_ancres": {
+          "total": 2304,
+          "ancien": 1288,
+          "nouveau": 656,
+          "refus": 360
+        }
+      }
+    }
+  },
+  "interop_p9": [
+    {
+      "producteur": "aarch64-apple-darwin",
+      "lecteur": "x86_64-apple-darwin",
+      "secteur": 512,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "aarch64-apple-darwin",
+      "lecteur": "x86_64-apple-darwin",
+      "secteur": 4096,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "x86_64-apple-darwin",
+      "lecteur": "aarch64-apple-darwin",
+      "secteur": 512,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "x86_64-apple-darwin",
+      "lecteur": "aarch64-apple-darwin",
+      "secteur": 4096,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    }
+  ],
+  "interop_p8_cli": [
+    {
+      "architecture": "aarch64",
+      "producteur": "x86_64",
+      "secteur": 512
+    },
+    {
+      "architecture": "x86_64",
+      "producteur": "aarch64",
+      "secteur": 512
+    },
+    {
+      "architecture": "aarch64",
+      "producteur": "x86_64",
+      "secteur": 4096
+    },
+    {
+      "architecture": "x86_64",
+      "producteur": "aarch64",
+      "secteur": 4096
+    }
+  ],
+  "aarch64_moteur_utm": {
+    "dma_gicv3": [
+      "froid",
+      "el2",
+      "protection",
+      "reemploi",
+      "cd",
+      "redemarrage",
+      "coupure",
+      "reprise",
+      "autre-slot",
+      "mapkey",
+      "retrait-suspendu"
+    ],
+    "dma_sequentiel": [
+      "support",
+      "vierge",
+      "refus",
+      "confirmation-erronee",
+      "tis",
+      "deplaces",
+      "reemploi",
+      "redemarrage",
+      "fin",
+      "mbr",
+      "gpt",
+      "fat",
+      "novafs",
+      "trop-petit",
+      "erreur-lecture",
+      "mauvais-support",
+      "doublon",
+      "roles-inverses",
+      "support-inscriptible",
+      "tpm-absent",
+      "mauvaise-serie",
+      "quarantaine",
+      "coupure"
+    ],
+    "gpt_par_secteur": {
+      "512": {
+        "gpt": {
+          "esp": 2048,
+          "p9": 124928,
+          "fin_p9": 129023,
+          "taille_secteur": 512
+        },
+        "installateur_elf_sha256": "6fbd4f94117d002929d2d36823fb35a921bd4cfbea3a5230983a2b9e40fecd8c",
+        "installation_autonome_et_persistance": "réussis",
+        "refus_sans_ecriture_sans_flush_sha256_avant_et_apres": {
+          "non-vierge": "08cd7092e34523c4489fa3eed1952754b0175f93442fcdf5c02fb01040634cda",
+          "ambigu": "08cd7092e34523c4489fa3eed1952754b0175f93442fcdf5c02fb01040634cda",
+          "sans-consentement": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
+          "erreur-lecture": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
+          "refus-apres-coupure": "0de67b6540199e666129e91c15da5b5eaff33e618b2d10a9185d18e276c60104",
+          "crc-entete": "2804b0f0457183823ae83d76aeb91385e730e3049fe24e3183bef01a0cac550c",
+          "crc-tableau": "118fe1a37e376d2ce4d4692a97241b971a5af85422d1aeff14b786766a7995fe",
+          "donnee-supplementaire": "b1d0ba1a2ff51a1ab29ba2e10e266d58e0e60b4bcad6da58c62e9960898f3fae",
+          "origine-inconnue": "891d4fe20add606e50ad8746fe157725439648a61db627f95c178caa86876805",
+          "gpt-etrangere": "72c1d4cc8e5f8f1c5f44cce2beca04e0cfe98343ef2f5736826baafa3e12d272",
+          "esp-modifiee": "43b1be7a63ed433cee36bed1f887d0fc18a5b1cd9b3ce65db03d097400cf3791",
+          "refus-coupure-esp": "300b65fc7f086a5c4f086ac7cec70bba775b79bb8c8cac2f708deb152ab568c7",
+          "refus-coupure-p9": "b7e852494f9ba9d84e9463775554fe1f1e0edbde0a7b815f1289701264b86fc0"
+        }
+      },
+      "4096": {
+        "gpt": {
+          "esp": 256,
+          "p9": 67840,
+          "fin_p9": 68351,
+          "taille_secteur": 4096
+        },
+        "installateur_elf_sha256": "6fbd4f94117d002929d2d36823fb35a921bd4cfbea3a5230983a2b9e40fecd8c",
+        "installation_autonome_et_persistance": "réussis",
+        "refus_sans_ecriture_sans_flush_sha256_avant_et_apres": {
+          "non-vierge": "ed7e8fad828f9b0469557075dc2871f83947a9b5572a879a26c80444bd080420",
+          "ambigu": "ed7e8fad828f9b0469557075dc2871f83947a9b5572a879a26c80444bd080420",
+          "sans-consentement": "483ec3eec23f28bbc8a8f9945993aa1313a338de247761159fd7918477e10ce0",
+          "erreur-lecture": "483ec3eec23f28bbc8a8f9945993aa1313a338de247761159fd7918477e10ce0",
+          "refus-apres-coupure": "60efe6cdc48354573db76d942f0736da502d901dd4a88a316b6e4b817e0d481a",
+          "crc-entete": "ee22136c1cef2311448917630fcf69eeff96280da57a493a5c191dc6680d15a1",
+          "crc-tableau": "14b6169616e85e6d72e8cee264ff492cd726e3e8c75262076a1063c8c90b8b0d",
+          "donnee-supplementaire": "06843a2fc864737e2a7f83e60b82a383e016a46aa161c733ec1ab2a3e8674e5c",
+          "origine-inconnue": "c5ed3e8f732e2b25701222edcdb96897c2087fd90ea00e8acdd0d18f17a76155",
+          "gpt-etrangere": "cd61b949a7787ffb4fc715bb6d022d886d783e1af7a90cb59ef9f487215f84b0",
+          "esp-modifiee": "3298b36a8b33b822006f50dd2b3479e2f2515826510dd4c69df803e45659d9ba",
+          "refus-coupure-esp": "0e19938fe6fa424dc53335d526fe6615979cfc043797d4b4f7619b8f56f256df",
+          "refus-coupure-p9": "53d23ab512ccf0918252f9f893fd29d57455c5896ab2ff666a75259cd8c86cd4"
+        }
+      }
+    },
+    "noyau_dma_gicv3_sha256": "afc1be467c8614e78195341625e5f58fe51e0878303541c9d3755241b927d8e6",
+    "noyau_dma_sequentiel_sha256": "a1e13b0c665516d44f51df18dd0284d9f891c8d12453cabcb4b7e55bd77b8425",
+    "refus_pc1_au_montage": [
+      {
+        "profil": "512-type-pc1",
+        "sha256_avant_apres": "355251f9240001c0b08daf100c8e0ae0d6544047c7c7ab9b5414a42b1833ddd7",
+        "source": "08cd7092e34523c4489fa3eed1952754b0175f93442fcdf5c02fb01040634cda",
+        "lectures": 148,
+        "ecritures": 0,
+        "flush": 0,
+        "refus": "Geometry"
+      },
+      {
+        "profil": "512-etiquette-p9",
+        "sha256_avant_apres": "6dcb446e539e7c62916888afa5d8fc4760b0d76f20e14ed7282b8cc78b4baf17",
+        "source": "08cd7092e34523c4489fa3eed1952754b0175f93442fcdf5c02fb01040634cda",
+        "lectures": 222,
+        "ecritures": 0,
+        "flush": 0,
+        "refus": "Device"
+      },
+      {
+        "profil": "4096-type-pc1",
+        "sha256_avant_apres": "ad813054a64c0f93e18fefe659328aa1a51fec9f54669654b7a8e5233b5f8579",
+        "source": "ed7e8fad828f9b0469557075dc2871f83947a9b5572a879a26c80444bd080420",
+        "lectures": 83,
+        "ecritures": 0,
+        "flush": 0,
+        "refus": "Geometry"
+      },
+      {
+        "profil": "4096-etiquette-p9",
+        "sha256_avant_apres": "ac63d883a3d9188cfd53eda729764014b174e9131ed369551c33f3d6356949e0",
+        "source": "ed7e8fad828f9b0469557075dc2871f83947a9b5572a879a26c80444bd080420",
+        "lectures": 94,
+        "ecritures": 0,
+        "flush": 0,
+        "refus": "Device"
+      }
+    ]
+  },
+  "application_utm": {
+    "application": "UTM",
+    "profil": "AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+    "serie": "PTY de l’application",
+    "installation": true,
+    "support_sha256": "7127ae24bcfa5dc80d03ca06e0574f10dc46d7cdc74713abc9a9df08cabc84c5",
+    "disque_installe_sha256": "0b2ddd705f47b1c272e392045dd1976c37d2014dc505a48e00de083079e94b0f",
+    "demarrages_autonomes": 2,
+    "contenu_relu": "NovaOS\n",
+    "transitions_dma": {
+      "installation": {
+        "sid": 48,
+        "droits": 805,
+        "retraits": 805,
+        "actifs": 0,
+        "bme": 0,
+        "bypass": 0
+      },
+      "autonome": {
+        "sid": 56,
+        "droits": 436,
+        "retraits": 436,
+        "actifs": 0,
+        "bme": 0,
+        "bypass": 0
+      },
+      "persistance": {
+        "sid": 56,
+        "droits": 436,
+        "retraits": 436,
+        "actifs": 0,
+        "bme": 0,
+        "bypass": 0
+      }
+    },
+    "terminal_graphique_natif": {
+      "mode": "Terminal",
+      "source": "clone du disque système installé, seul",
+      "version": "NovaOS 0.15.1",
+      "commande": "cat /systeme",
+      "contenu_relu": "NovaOS\n",
+      "droits": 436,
+      "retraits": 436,
+      "actifs": 0,
+      "bme": 0,
+      "bypass": 0,
+      "sortie": "SYSTEME bilan Ok(())",
+      "commande_information_avant_relecture": "rm --version /systeme /systeme"
+    }
+  }
+}

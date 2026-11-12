@@ -15,6 +15,7 @@ pub enum Program {
     More,
     Wc,
     Tail,
+    Rmdir,
 }
 impl Program {
     pub fn named(s: &str, test: bool) -> Option<Self> {
@@ -31,6 +32,7 @@ impl Program {
             "head" => Self::Head,
             "mkdir" => Self::Mkdir,
             "rm" => Self::Rm,
+            "rmdir" => Self::Rmdir,
             "@probe" if test => Self::Probe,
             _ => return None,
         })
@@ -41,7 +43,8 @@ pub enum Operand<'a> {
     Batch(crate::options::Options<'a>, Program),
     Cwd,
     Create(&'a str),
-    Remove(&'a str),
+    Remove(crate::options::Options<'a>, Program),
+    Noop,
     Probe(&'a str),
 }
 pub fn operand<'a>(p: Program, args: &[&'a str]) -> Result<Operand<'a>, u64> {
@@ -61,11 +64,19 @@ pub fn operand<'a>(p: Program, args: &[&'a str]) -> Result<Operand<'a>, u64> {
         }
         _ => {}
     }
+    if matches!(p, Rm | Rmdir) {
+        if p == Rm && count == 0 && options.has(b'f') {
+            return Ok(Operand::Noop);
+        }
+        if count != 1 {
+            return Err(BAD_ARGUMENT);
+        }
+        return Ok(Operand::Remove(options, p));
+    }
     let args = options.files.as_slice();
     Ok(match (p, args) {
         (Pwd, []) => Operand::Cwd,
         (Mkdir, [path]) => Operand::Create(path),
-        (Rm, [path]) => Operand::Remove(path),
         (Probe, [s]) => Operand::Probe(s),
         _ => return Err(BAD_ARGUMENT),
     })

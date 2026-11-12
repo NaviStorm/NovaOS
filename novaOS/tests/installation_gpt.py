@@ -187,7 +187,7 @@ def securite(tmp, dossier, source, cible, secteur, guids, bilan, sauver):
             raise RuntimeError(retour)
 
     def couper_ecriture(vm, canal, serie, trace):
-        attendre(vm,serie,b"nova> ")
+        attendre(vm,serie,b"nsh> ")
         suspension(vm,"break write_aio publication")
         debut = trace.stat().st_size
         canal.sendall(b"cp /systeme /nouveau\r")
@@ -196,7 +196,7 @@ def securite(tmp, dossier, source, cible, secteur, guids, bilan, sauver):
         return dict(frontiere="première écriture de cp suspendue",fin=compteurs(vm))
 
     def relire(vm, canal, serie, trace):
-        attendre(vm,serie,b"nova> ")
+        attendre(vm,serie,b"nsh> ")
         start = serie.stat().st_size
         canal.sendall(b"cat /persistant\r")
         attendre(vm,serie,b"NovaOS\r\n",start)
@@ -380,14 +380,14 @@ def main():
         sauver()
         for nom in ("autonome","persistance"):
             def shell(vm,canal,serie,trace):
-                attendre(vm,serie,b"nova> ")
+                attendre(vm,serie,b"nsh> ")
                 def commande(ligne,retour):
                     start=serie.stat().st_size
                     canal.sendall(ligne.encode()+b"\r")
                     texte=attendre(vm,serie,retour,start)
                     assert b"indisponible" not in texte
                 if nom=="autonome":
-                    commande("cp /systeme /persistant",b"nova> ")
+                    commande("cp /systeme /persistant",b"nsh> ")
                 commande("cat /persistant",b"NovaOS\r\n")
                 commande("exit",b"SYSTEME bilan Ok(())")
                 return dict(fin=compteurs(vm))

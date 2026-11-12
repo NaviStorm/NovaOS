@@ -21,7 +21,7 @@ pub fn spawn(p: Program, args: &[String], channels: (u64, u64), status: u64) -> 
     let reads_input = status == 0
         && channels.0 != 0
         && (p == Program::More
-            || matches!(p, Program::Cp | Program::Mv)
+            || matches!(p, Program::Cp | Program::Mv | Program::Rm)
                 && crate::options::parse(p, &args.iter().map(String::as_str).collect::<Vec<_>>())?
                     .has(b'i'));
     let streams = tty::ERROR

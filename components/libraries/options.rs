@@ -13,6 +13,7 @@ pub struct Options<'a> {
     flags: u64,
     pub files: Vec<&'a str>,
     pub count: u64,
+    pub columns: Option<u16>,
     pub bytes: bool,
     pub color: Color,
     pub help: bool,
@@ -35,17 +36,18 @@ impl Options<'_> {
 pub fn usage(p: Program) -> &'static str {
     use Program::*;
     match p {
-        Ls => "ls [-aAlhrRSt1dF] [--color[=always|auto|never]] [chemin...]",
+        Ls => "ls [-aAlhrRSt1dF] [-w COLONNES] [--color[=always|auto|never]] [chemin...]",
         Cat => "cat [--] fichier...",
         Head => "head [-qv] [-n N | -c N] fichier...",
         Tail => "tail [-qv] [-n N | -c N] fichier...",
         Wc => "wc [-lwcmL] fichier...",
-        Cp => "cp [-invRr] source destination",
-        Mv => "mv [-inv] source destination",
+        Cp => "cp [-finvRr] source... destination",
+        Mv => "mv [-finv] source... destination",
         Touch => "touch [-amc] fichier...",
         More => "more fichier...",
         Mkdir => "mkdir [--] répertoire",
-        Rm => "rm [--] fichier",
+        Rm => "rm [-fivrR] [--] chemin...",
+        Rmdir => "rmdir [-v] [--] répertoire...",
         Pwd => "pwd [-LP]",
         Probe => "@probe scénario",
     }
@@ -53,11 +55,13 @@ pub fn usage(p: Program) -> &'static str {
 fn allowed(p: Program) -> &'static [u8] {
     use Program::*;
     match p {
-        Ls => b"aAlhrRSt1dF",
+        Ls => b"aAlhrRSt1dFw",
         Head | Tail => b"ncvq",
         Wc => b"lwcmL",
-        Cp => b"invRr",
-        Mv => b"inv",
+        Cp => b"finvRr",
+        Rm => b"fivrR",
+        Rmdir => b"v",
+        Mv => b"finv",
         Touch => b"amc",
         Pwd => b"LP",
         _ => b"",
@@ -66,10 +70,11 @@ fn allowed(p: Program) -> &'static [u8] {
 fn named(p: Program, text: &str) -> Option<u8> {
     use Program::*;
     Some(match (p, text) {
+        (Ls, "width") => b'w',
         (Ls, "all") => b'a',
         (Ls, "almost-all") => b'A',
         (Ls, "human-readable") => b'h',
-        (Ls | Cp, "recursive") => b'R',
+        (Ls | Cp | Rm, "recursive") => b'R',
         (Ls, "reverse") => b'r',
         (Ls, "directory") => b'd',
         (Ls, "classify") => b'F',
@@ -82,8 +87,9 @@ fn named(p: Program, text: &str) -> Option<u8> {
         }
         (Head | Tail | Wc, "bytes") => b'c',
         (Head | Tail, "quiet" | "silent") => b'q',
-        (Head | Tail | Cp | Mv, "verbose") => b'v',
-        (Cp | Mv, "interactive") => b'i',
+        (Head | Tail | Cp | Mv | Rm | Rmdir, "verbose") => b'v',
+        (Cp | Mv | Rm, "force") => b'f',
+        (Cp | Mv | Rm, "interactive") => b'i',
         (Cp | Mv, "no-clobber") => b'n',
         (Touch, "no-create") => b'c',
         (Wc, "words") => b'w',
@@ -95,10 +101,24 @@ fn named(p: Program, text: &str) -> Option<u8> {
     })
 }
 pub fn parse<'a>(p: Program, args: &[&'a str]) -> rt::Result<Options<'a>> {
+    parse_with_context(p, args, &mut None)
+}
+
+pub fn invalid_option<'a>(p: Program, args: &[&'a str]) -> Option<&'a str> {
+    let mut option = None;
+    parse_with_context(p, args, &mut option).err().and(option)
+}
+
+fn parse_with_context<'a>(
+    p: Program,
+    args: &[&'a str],
+    current: &mut Option<&'a str>,
+) -> rt::Result<Options<'a>> {
     let mut o = Options {
         flags: 0,
         files: Vec::new(),
         count: 10,
+        columns: None,
         bytes: false,
         color: Color::Never,
         help: false,
@@ -115,6 +135,7 @@ pub fn parse<'a>(p: Program, args: &[&'a str]) -> rt::Result<Options<'a>> {
             end = true;
             continue;
         }
+        *current = Some(arg);
         let long = arg.strip_prefix("--");
         let (chars, value);
         let short;
@@ -147,7 +168,9 @@ pub fn parse<'a>(p: Program, args: &[&'a str]) -> rt::Result<Options<'a>> {
             if !allowed(p).contains(&c) {
                 return Err(rt::BAD_ARGUMENT);
             }
-            if matches!(p, Program::Head | Program::Tail) && matches!(c, b'n' | b'c') {
+            if (matches!(p, Program::Head | Program::Tail) && matches!(c, b'n' | b'c'))
+                || (p == Program::Ls && c == b'w')
+            {
                 let digits = if let Some(v) = value {
                     v
                 } else if i + 1 < chars.len() {
@@ -158,24 +181,34 @@ pub fn parse<'a>(p: Program, args: &[&'a str]) -> rt::Result<Options<'a>> {
                 if digits.is_empty() || !digits.bytes().all(|v| v.is_ascii_digit()) {
                     return Err(rt::BAD_ARGUMENT);
                 }
-                o.count = digits.parse().map_err(|_| rt::BAD_ARGUMENT)?;
-                o.bytes = c == b'c';
+                if p == Program::Ls {
+                    o.columns = Some(digits.parse().map_err(|_| rt::BAD_ARGUMENT)?);
+                } else {
+                    o.count = digits.parse().map_err(|_| rt::BAD_ARGUMENT)?;
+                    o.bytes = c == b'c';
+                }
                 break;
             }
             if value.is_some() {
                 return Err(rt::BAD_ARGUMENT);
             }
-            if c != b'1' {
+            if p == Program::Ls && c == b'1' {
+                o.flags &= !bit(b'l');
+            } else {
                 o.flags |= bit(c);
             }
             if matches!(p, Program::Head | Program::Tail) && matches!(c, b'q' | b'v') {
                 o.flags &= !bit(if c == b'q' { b'v' } else { b'q' });
             }
-            if matches!(p, Program::Cp | Program::Mv) && matches!(c, b'i' | b'n') {
-                o.flags &= !bit(if c == b'i' { b'n' } else { b'i' });
+            if matches!(p, Program::Cp | Program::Mv | Program::Rm) && b"inf".contains(&c) {
+                for &other in b"inf" {
+                    if c != other {
+                        o.flags &= !bit(other);
+                    }
+                }
             }
-            if p == Program::Ls && matches!(c, b'a' | b'A') {
-                o.flags &= !bit(if c == b'a' { b'A' } else { b'a' });
+            if p == Program::Ls && o.has(b'a') {
+                o.flags &= !bit(b'A');
             }
             if p == Program::Ls && matches!(c, b't' | b'S') {
                 o.flags &= !bit(if c == b't' { b'S' } else { b't' });

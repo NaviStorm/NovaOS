@@ -6,11 +6,13 @@ mod aliases;
 mod builtins;
 mod capabilities;
 mod executor;
+mod glob;
 mod history;
 mod input;
 mod lexer;
 mod line_editor;
 mod parser;
+mod paths;
 
 fn session() -> rt::Result<()> {
     let mut fs = Client::new()?;

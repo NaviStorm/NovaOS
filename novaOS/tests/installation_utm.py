@@ -10,6 +10,8 @@ import sys
 import tempfile
 import time
 
+from demarrage import BANNER
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from session_cli import fixture_p9
@@ -17,7 +19,6 @@ from session_cli import fixture_p9
 UTM = Path("/Applications/UTM.app/Contents")
 FIRMWARE = UTM / "Resources/qemu"
 MACHINE = "virt-10.0,gic-version=2"
-BANNER = b"NovaOS v0.15.0\r\n"
 
 
 def empreinte(path):
@@ -81,11 +82,11 @@ def observation(cmd, profil, traces, lecture):
                 # Les traces de lectures peuvent occuper plusieurs Mio. Garder le
                 # chevauchement nécessaire aux marqueurs coupés entre deux lectures.
                 recent = sortie[-(len(paquet) + 128):]
-                if lecture and invite is None and b"nova> " in recent:
+                if lecture and invite is None and b"nsh> " in recent:
                     invite = time.monotonic() - start
                     vm.stdin.write(b"cat /documents/exemple.txt\n")
                 # La ligne précédente peut être une trace QEMU terminée par LF.
-                if lecture and invite is not None and not lu and b"\nNovaOS\r\nnova> " in recent:
+                if lecture and invite is not None and not lu and b"\nNovaOS\r\nnsh> " in recent:
                     lu = True
                     vm.stdin.write(b"exit\n")
                 if (b"BLOC session terminee ok=true\r\n" in recent or

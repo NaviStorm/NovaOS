@@ -1,4 +1,4 @@
-"""Présente PC1 au noyau installé v0.15.0 et au service P9 livrés, sans écrire d'image P9."""
+"""Présente PC1 au lecteur de la version NovaOS installée sur les disques fournis."""
 import argparse
 import json
 from pathlib import Path
@@ -86,11 +86,11 @@ def main():
                 def action(vm, canal, serie, trace):
                     if prive:
                         texte = attendre(vm,serie,b"SYSTEME bilan Err(Geometry)",timeout=75)
-                        assert b"nova> " not in texte
+                        assert all(invite not in texte for invite in (b"nova> ", b"nsh> "))
                     else:
                         # Le chemin distribué peut refuser à l'initialisation ou au premier accès.
                         texte = attendre(vm,serie,b"BLOC bilan mode=41",timeout=75)
-                        assert b"nova> " not in texte
+                        assert all(invite not in texte for invite in (b"nova> ", b"nsh> "))
                         texte = attendre(vm,serie,b"SYSTEME bilan Err(",timeout=20)
                     stats = compteurs(vm)["cible"]
                     assert stats["wr_bytes"] == stats["flush_operations"] == 0

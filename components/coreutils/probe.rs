@@ -2,6 +2,12 @@
 #![no_main]
 //! Image accessible uniquement dans le profil de qualification.
 use nova_cli::{fileapi::Client, process, protocol as w, runtime as rt, tty};
+fn ambient_refused(c: &mut Client) -> bool {
+    c.open(b"/temoin", w::READABLE).err() == Some(rt::DENIED)
+        && c.at(w::MKDIR_AT, 1, b"intrus", 0).err() == Some(rt::DENIED)
+        && c.cwd_fragment(0, 0).err() == Some(rt::DENIED)
+}
+
 fn verify() -> rt::Result<()> {
     let args = process::arguments()?;
     match args.as_slice() {
@@ -54,15 +60,44 @@ fn verify() -> rt::Result<()> {
             c.cwd_fragment(0, 0)?;
             Ok(())
         }
-        ["revocation"] => {
+        ["arbre" | "vide" | "ancien-retrait"] => {
+            let mut c = Client::scoped()?;
+            let mut denied = ambient_refused(&mut c);
+            if args[0] == "arbre" {
+                denied &= c.at(w::UNLINK_AT, 1, b"../temoin", 0).err() == Some(rt::DENIED)
+                    && c.at(w::RMDIR, 1, b"/probe-vide", 0).err() == Some(rt::DENIED)
+                    && c.directory(1, b".", w::ADD).err() == Some(rt::DENIED);
+                c.simple(w::STAT, 1)?;
+            } else {
+                denied &= c.simple(w::STAT, 1).err() == Some(rt::DENIED)
+                    && matches!(
+                        c.at(w::UNLINK_AT, 1, b"temoin", 0),
+                        Err(rt::DENIED | rt::BAD_ARGUMENT)
+                    );
+                if args[0] == "ancien-retrait" {
+                    denied &= c.simple(w::RMDIR, 0).err() == Some(rt::DENIED);
+                } else {
+                    denied &= c.simple(w::UNLINK_AT, 0).err() == Some(rt::DENIED);
+                }
+            }
+            if denied { Ok(()) } else { Err(rt::REFUSED) }
+        }
+        ["revocation" | "arbre-revoque" | "vide-revoque"] => {
             let mut c = match Client::scoped() {
                 Ok(c) => c,
                 Err(rt::DENIED | rt::REVOKED) => return Ok(()),
                 Err(e) => return Err(e),
             };
             for _ in 0..64 {
-                match c.cwd_fragment(0, 0) {
-                    Err(rt::DENIED | rt::REVOKED | rt::CLOSED) => return Ok(()),
+                let response = match args[0] {
+                    "arbre-revoque" => c.simple(w::STAT, 1),
+                    "vide-revoque" => c.simple(w::RMDIR, 0),
+                    _ => c.cwd_fragment(0, 0),
+                };
+                match response {
+                    Err(rt::REVOKED | rt::CLOSED | rt::DENIED) => return Ok(()),
+                    Err(w::NOT_EMPTY) if args[0] == "vide-revoque" => {}
+                    Ok(_) if args[0] == "vide-revoque" => return Err(rt::REFUSED),
                     Ok(_) => {}
                     Err(e) => return Err(e),
                 }

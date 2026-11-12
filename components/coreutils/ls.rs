@@ -11,6 +11,7 @@ use nova_cli::{
     options::{Color, Options},
     protocol as w, runtime as rt, tty,
 };
+use unicode_width::{UnicodeWidthChar, UnicodeWidthStr};
 
 fn modified(a: &w::Frame) -> Option<(i64, u32)> {
     if w::length(a) != 73 {
@@ -36,8 +37,14 @@ fn date(t: Option<(i64, u32)>) -> String {
     let month = if m < 10 { m + 3 } else { m - 9 };
     let year = y + era * 400 + i64::from(month <= 2);
     let s = sec.rem_euclid(86400);
+    let fraction = format!(".{ns:09}");
+    let fraction = if ns == 0 {
+        ""
+    } else {
+        fraction.trim_end_matches('0')
+    };
     format!(
-        "{year:04}-{month:02}-{day:02} {:02}:{:02}:{:02}.{ns:09}Z",
+        "{year:04}-{month:02}-{day:02} {:02}:{:02}:{:02}{fraction}Z",
         s / 3600,
         s / 60 % 60,
         s % 60
@@ -88,31 +95,88 @@ fn compare(a: &Entry, b: &Entry, o: &Options) -> core::cmp::Ordering {
     }
 }
 
-fn show(e: &Entry, o: &Options) -> rt::Result<()> {
+fn display_rows(rows: &[Entry], o: &Options) -> rt::Result<()> {
+    let mut size_width = 0;
+    let mut date_width = 0;
+    if o.has(b'l') {
+        for e in rows {
+            size_width = size_width.max(size(w::word(&e.stat, w::PAYLOAD + 16), o.has(b'h')).len());
+            date_width = date_width.max(date(modified(&e.stat)).len());
+        }
+    }
+    let columns = match o.columns {
+        Some(n) => usize::from(n),
+        None => option_env!("NOVA_MORE_COLUMNS")
+            .unwrap_or("80")
+            .parse()
+            .map_err(|_| rt::BAD_ARGUMENT)?,
+    };
+    for entry in rows {
+        show(entry, o, size_width, date_width, columns)?;
+    }
+    Ok(())
+}
+
+fn character_width(c: char) -> usize {
+    if console::safe(c) {
+        c.width().unwrap_or(0)
+    } else {
+        format!("\\u{{{:x}}}", u32::from(c)).len()
+    }
+}
+
+fn show(
+    e: &Entry,
+    o: &Options,
+    size_width: usize,
+    date_width: usize,
+    columns: usize,
+) -> rt::Result<()> {
     let dir = e.stat[w::PAYLOAD + 24] == 2;
     let kind = if dir { "répertoire" } else { "fichier" };
     let p9 = w::length(&e.stat) == 73;
+    let mut used = 0;
     if o.has(b'l') && p9 {
-        console::write(
-            tty::OUTPUT,
-            &format!(
-                "{kind}  {}  {}  ",
-                size(w::word(&e.stat, w::PAYLOAD + 16), o.has(b'h')),
-                date(modified(&e.stat))
-            ),
-        )?;
+        let prefix = format!(
+            "{kind:<10}  {:>size_width$}  {:<date_width$}  ",
+            size(w::word(&e.stat, w::PAYLOAD + 16), o.has(b'h')),
+            date(modified(&e.stat))
+        );
+        used = prefix.width();
+        console::write(tty::OUTPUT, &prefix)?;
     } else if !p9 {
-        console::write(tty::OUTPUT, &format!("{kind} "))?
+        console::write(tty::OUTPUT, &format!("{kind} "))?;
     }
-    let color = o.color != Color::Never && dir;
-    console::printable(
-        if color {
-            tty::DIRECTORY_COLOR
-        } else {
-            tty::OUTPUT
-        },
-        &e.name,
-    )?;
+    let port = if o.color != Color::Never && dir {
+        tty::DIRECTORY_COLOR
+    } else {
+        tty::OUTPUT
+    };
+    if p9
+        && o.has(b'l')
+        && columns != 0
+        && used
+            + e.name.chars().map(character_width).sum::<usize>()
+            + usize::from(dir && o.has(b'F'))
+            > columns
+    {
+        console::write(tty::OUTPUT, "\n")?;
+        let mut start = 0;
+        let mut width = 0;
+        for (i, c) in e.name.char_indices() {
+            let n = character_width(c);
+            if width > 0 && n > 0 && width + n > columns {
+                console::printable(port, &e.name[start..i])?;
+                console::write(tty::OUTPUT, "\n")?;
+                start = i;
+                width = 0;
+            }
+            width += n;
+        }
+        console::printable(port, &e.name[start..])?;
+    } else {
+        console::printable(port, &e.name)?;
+    }
     if dir && o.has(b'F') {
         console::write(tty::OUTPUT, "/")?
     }
@@ -147,9 +211,7 @@ fn walk(
             });
         }
         rows.sort_unstable_by(|a, b| compare(a, b, o));
-        for e in &rows {
-            show(e, o)?
-        }
+        display_rows(&rows, o)?;
         Ok(rows)
     })?;
     if o.has(b'R') {
@@ -196,9 +258,7 @@ fn list(c: &mut Client, op: Operand) -> rt::Result<()> {
     }
     files.sort_unstable_by(|a, b| compare(a, b, &o));
     dirs.sort_unstable_by(|(_, a), (_, b)| compare(a, b, &o));
-    for e in files {
-        show(&e, &o)?
-    }
+    display_rows(&files, &o)?;
     for (dir, entry) in dirs {
         let name = entry.name.as_str();
         if paths.len() > 1 || o.has(b'R') {

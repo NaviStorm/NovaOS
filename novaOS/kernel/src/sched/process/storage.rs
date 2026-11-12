@@ -290,7 +290,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         (DISK, 0),
         (
             if matches!(mode, 41 | 42) {
-                include_bytes!(concat!(env!("OUT_DIR"), "/shell.elf"))
+                include_bytes!(concat!(env!("OUT_DIR"), "/nsh.elf"))
             } else if mode >= 11 && !matches!(mode, 43 | 44) {
                 FILE_CLIENT
             } else {

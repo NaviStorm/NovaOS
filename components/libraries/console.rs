@@ -43,6 +43,7 @@ pub fn reason(e: u64) -> &'static str {
         w::EXISTS => "existe déjà",
         w::NOT_FOUND => "introuvable",
         w::IS_DIR => "est un répertoire",
+        w::NOT_EMPTY => "répertoire non vide",
         w::NOT_DIR => "répertoire attendu",
         w::UNCERTAIN => "publication incertaine",
         w::IO => "erreur d’E/S",
