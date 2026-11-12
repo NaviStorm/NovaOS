@@ -1,0 +1,117 @@
+nom	secteur	format	signal	point	out_soumises	out	flush_soumis	flush	flush_activation	flush_qmp	ack	temoin	redemarre	etat	rang	activation_us	transaction_us	F1_us	F2_us	sha256
+512-raw-pause-0	512	raw	9		0	0	0	0	1	1	False	False	True	sain	1	132.0				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+512-raw-pause-1	512	raw	9		8	8	0	0	1	1	False	False	True	sain	1	168.0				89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9
+512-raw-pause-2	512	raw	9		16	16	0	0	1	1	False	False	True	indéterminé	1	108.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-raw-pause-3	512	raw	9		16	16	1	1	1	2	False	False	True	indéterminé	1	122.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-raw-pause-4	512	raw	9		16	16	1	1	1	2	False	False	True	indéterminé	1	110.992				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-raw-pause-5	512	raw	9		24	24	1	1	1	2	False	False	True	dégradé	2	162.992				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+512-raw-pause-6	512	raw	9		32	32	1	1	1	2	False	False	True	sain	2	104.0				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-pause-7	512	raw	9		32	32	2	2	1	3	False	False	True	sain	2	100.992				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-pause-8	512	raw	9		32	32	2	2	1	3	False	False	True	sain	2	130.992				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-pause-9	512	raw	9		32	32	2	2	1	3	True	False	True	sain	2	112.992	4078.992	91.008	98.992	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-pause-10	512	raw	9		17	17	1	1	1	2	False	False	True	indéterminé	1	104.992				82e2af4f2ac1164af5669fe27cfc82eb4f461428d09550dfc69343096c2ee1bc
+512-raw-pause-11	512	raw	9		0	0	0	0	0	0	False	False	True	sain	1					34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+512-raw-pause-12	512	raw	9		0	0	0	0	1	1	False	False	True	sain	1	116.0				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+512-raw-pendant-0	512	raw	9	write_aio	1	0	0	0	1	1	False	False	True	sain	1	120.992				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+512-raw-pendant-1	512	raw	9	write_aio	9	8	0	0	1	1	False	False	True	sain	1	107.008				89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9
+512-raw-pendant-2	512	raw	9	flush_to_disk	16	16	1	0	1	1	False	False	True	indéterminé	1	104.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-raw-pendant-4	512	raw	9	write_aio	17	16	1	1	1	2	False	False	True	indéterminé	1	108.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-raw-pendant-5	512	raw	9	write_aio	25	24	1	1	1	2	False	False	True	dégradé	2	113.008				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+512-raw-pendant-6	512	raw	9	flush_to_disk	32	32	2	1	1	2	False	False	True	sain	2	117.008				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-ordonné-0	512	raw	0		32	32	2	2	1	3	True	False	True	sain	2	140.992	4502.0	112.0	92.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-témoin-0	512	raw	0		16	16	2	2	1	3	False	True	False	dégradé	2	130.0	1442.0	104.992	82.992	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-raw-témoin-1	512	raw	0		16	16	2	2	1	3	False	True	False	dégradé	2	124.0	1234.0	82.992	69.008	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-raw-ordonné-1	512	raw	0		32	32	2	2	1	3	True	False	False	sain	2	124.992	5098.0	114.992	130.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-ordonné-2	512	raw	0		32	32	2	2	1	3	True	False	False	sain	2	110.0	3487.008	65.008	92.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-témoin-2	512	raw	0		16	16	2	2	1	3	False	True	False	dégradé	2	106.992	2068.992	706.0	268.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-raw-témoin-3	512	raw	0		16	16	2	2	1	3	False	True	False	dégradé	2	148.0	1742.0	92.0	80.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-raw-ordonné-3	512	raw	0		32	32	2	2	1	3	True	False	False	sain	2	110.0	4625.008	80.0	104.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-ordonné-4	512	raw	0		32	32	2	2	1	3	True	False	False	sain	2	109.008	3248.992	64.0	78.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-raw-témoin-4	512	raw	0		16	16	2	2	1	3	False	True	False	dégradé	2	140.992	1114.0	82.0	56.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-qcow2-pause-0	512	qcow2	9		0	0	0	0	1	1	False	False	True	sain	1	124.992				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+512-qcow2-pause-1	512	qcow2	9		8	8	0	0	1	1	False	False	True	sain	1	256.0				89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9
+512-qcow2-pause-2	512	qcow2	9		16	16	0	0	1	1	False	False	True	indéterminé	1	104.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-qcow2-pause-3	512	qcow2	9		16	16	1	1	1	2	False	False	True	indéterminé	1	105.008				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-qcow2-pause-4	512	qcow2	9		16	16	1	1	1	2	False	False	True	indéterminé	1	116.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-qcow2-pause-5	512	qcow2	9		24	24	1	1	1	2	False	False	True	dégradé	2	94.0				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+512-qcow2-pause-6	512	qcow2	9		32	32	1	1	1	2	False	False	True	sain	2	100.0				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-pause-7	512	qcow2	9		32	32	2	2	1	3	False	False	True	sain	2	122.992				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-pause-8	512	qcow2	9		32	32	2	2	1	3	False	False	True	sain	2	107.008				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-pause-9	512	qcow2	9		32	32	2	2	1	3	True	False	True	sain	2	107.008	4682.992	152.0	135.008	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-pause-10	512	qcow2	9		17	17	1	1	1	2	False	False	True	indéterminé	1	252.992				82e2af4f2ac1164af5669fe27cfc82eb4f461428d09550dfc69343096c2ee1bc
+512-qcow2-pause-11	512	qcow2	9		0	0	0	0	0	0	False	False	True	sain	1					34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+512-qcow2-pause-12	512	qcow2	9		0	0	0	0	1	1	False	False	True	sain	1	115.008				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+512-qcow2-pendant-0	512	qcow2	9	write_aio	1	0	0	0	1	1	False	False	True	sain	1	114.992				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+512-qcow2-pendant-1	512	qcow2	9	write_aio	9	8	0	0	1	1	False	False	True	sain	1	98.0				89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9
+512-qcow2-pendant-2	512	qcow2	9	flush_to_disk	16	16	1	0	1	1	False	False	True	indéterminé	1	107.008				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-qcow2-pendant-4	512	qcow2	9	write_aio	17	16	1	1	1	2	False	False	True	indéterminé	1	108.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+512-qcow2-pendant-5	512	qcow2	9	write_aio	25	24	1	1	1	2	False	False	True	dégradé	2	104.0				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+512-qcow2-pendant-6	512	qcow2	9	flush_to_disk	32	32	2	1	1	2	False	False	True	sain	2	110.0				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-ordonné-0	512	qcow2	0		32	32	2	2	1	3	True	False	True	sain	2	110.0	3460.0	76.0	112.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-témoin-0	512	qcow2	0		16	16	2	2	1	3	False	True	False	dégradé	2	106.0	1690.992	122.0	108.992	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-qcow2-témoin-1	512	qcow2	0		16	16	2	2	1	3	False	True	False	dégradé	2	121.008	1552.0	129.008	95.008	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-qcow2-ordonné-1	512	qcow2	0		32	32	2	2	1	3	True	False	False	sain	2	131.008	3950.0	94.992	84.992	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-ordonné-2	512	qcow2	0		32	32	2	2	1	3	True	False	False	sain	2	104.992	3666.992	83.008	106.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-témoin-2	512	qcow2	0		16	16	2	2	1	3	False	True	False	dégradé	2	126.992	1750.992	148.992	104.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-qcow2-témoin-3	512	qcow2	0		16	16	2	2	1	3	False	True	False	dégradé	2	114.0	1692.0	118.0	120.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+512-qcow2-ordonné-3	512	qcow2	0		32	32	2	2	1	3	True	False	False	sain	2	121.008	4017.008	118.0	111.008	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-ordonné-4	512	qcow2	0		32	32	2	2	1	3	True	False	False	sain	2	154.992	4672.992	121.008	100.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+512-qcow2-témoin-4	512	qcow2	0		16	16	2	2	1	3	False	True	False	dégradé	2	110.0	946.0	76.0	79.008	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-raw-pause-0	4096	raw	9		0	0	0	0	1	1	False	False	True	sain	1	112.0				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+4096-raw-pause-1	4096	raw	9		1	1	0	0	1	1	False	False	True	sain	1	98.992				89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9
+4096-raw-pause-2	4096	raw	9		2	2	0	0	1	1	False	False	True	indéterminé	1	104.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-raw-pause-3	4096	raw	9		2	2	1	1	1	2	False	False	True	indéterminé	1	97.008				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-raw-pause-4	4096	raw	9		2	2	1	1	1	2	False	False	True	indéterminé	1	110.992				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-raw-pause-5	4096	raw	9		3	3	1	1	1	2	False	False	True	dégradé	2	124.0				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+4096-raw-pause-6	4096	raw	9		4	4	1	1	1	2	False	False	True	sain	2	103.008				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-pause-7	4096	raw	9		4	4	2	2	1	3	False	False	True	sain	2	106.992				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-pause-8	4096	raw	9		4	4	2	2	1	3	False	False	True	sain	2	110.0				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-pause-9	4096	raw	9		4	4	2	2	1	3	True	False	True	sain	2	106.992	1642.0	106.992	94.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-pause-10	4096	raw	9		3	3	1	1	1	2	False	False	True	dégradé	2	114.0				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+4096-raw-pause-11	4096	raw	9		0	0	0	0	0	0	False	False	True	sain	1					34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+4096-raw-pause-12	4096	raw	9		0	0	0	0	1	1	False	False	True	sain	1	99.008				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+4096-raw-pendant-0	4096	raw	9	write_aio	1	0	0	0	1	1	False	False	True	sain	1	110.0				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+4096-raw-pendant-1	4096	raw	9	write_aio	2	1	0	0	1	1	False	False	True	sain	1	111.008				89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9
+4096-raw-pendant-2	4096	raw	9	flush_to_disk	2	2	1	0	1	1	False	False	True	indéterminé	1	106.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-raw-pendant-4	4096	raw	9	write_aio	3	2	1	1	1	2	False	False	True	indéterminé	1	96.992				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-raw-pendant-5	4096	raw	9	write_aio	4	3	1	1	1	2	False	False	True	dégradé	2	97.008				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+4096-raw-pendant-6	4096	raw	9	flush_to_disk	4	4	2	1	1	2	False	False	True	sain	2	106.0				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-ordonné-0	4096	raw	0		4	4	2	2	1	3	True	False	True	sain	2	102.0	1678.992	110.992	96.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-témoin-0	4096	raw	0		2	2	2	2	1	3	False	True	False	dégradé	2	91.008	526.0	80.0	59.008	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-raw-témoin-1	4096	raw	0		2	2	2	2	1	3	False	True	False	dégradé	2	106.0	684.992	138.992	86.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-raw-ordonné-1	4096	raw	0		4	4	2	2	1	3	True	False	False	sain	2	96.992	1643.008	71.008	116.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-ordonné-2	4096	raw	0		4	4	2	2	1	3	True	False	False	sain	2	93.008	1780.0	110.992	125.008	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-témoin-2	4096	raw	0		2	2	2	2	1	3	False	True	False	dégradé	2	100.0	562.0	107.008	84.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-raw-témoin-3	4096	raw	0		2	2	2	2	1	3	False	True	False	dégradé	2	102.992	622.992	118.0	85.008	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-raw-ordonné-3	4096	raw	0		4	4	2	2	1	3	True	False	False	sain	2	118.0	1676.992	114.0	160.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-ordonné-4	4096	raw	0		4	4	2	2	1	3	True	False	False	sain	2	114.992	1756.0	108.0	125.008	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-raw-témoin-4	4096	raw	0		2	2	2	2	1	3	False	True	False	dégradé	2	122.992	497.008	84.0	66.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-qcow2-pause-0	4096	qcow2	9		0	0	0	0	1	1	False	False	True	sain	1	112.992				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+4096-qcow2-pause-1	4096	qcow2	9		1	1	0	0	1	1	False	False	True	sain	1	108.0				89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9
+4096-qcow2-pause-2	4096	qcow2	9		2	2	0	0	1	1	False	False	True	indéterminé	1	103.008				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-qcow2-pause-3	4096	qcow2	9		2	2	1	1	1	2	False	False	True	indéterminé	1	116.992				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-qcow2-pause-4	4096	qcow2	9		2	2	1	1	1	2	False	False	True	indéterminé	1	117.008				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-qcow2-pause-5	4096	qcow2	9		3	3	1	1	1	2	False	False	True	dégradé	2	116.992				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+4096-qcow2-pause-6	4096	qcow2	9		4	4	1	1	1	2	False	False	True	sain	2	92.992				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-pause-7	4096	qcow2	9		4	4	2	2	1	3	False	False	True	sain	2	99.008				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-pause-8	4096	qcow2	9		4	4	2	2	1	3	False	False	True	sain	2	103.008				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-pause-9	4096	qcow2	9		4	4	2	2	1	3	True	False	True	sain	2	108.0	2021.008	368.0	152.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-pause-10	4096	qcow2	9		3	3	1	1	1	2	False	False	True	dégradé	2	108.0				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+4096-qcow2-pause-11	4096	qcow2	9		0	0	0	0	0	0	False	False	True	sain	1					34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+4096-qcow2-pause-12	4096	qcow2	9		0	0	0	0	1	1	False	False	True	sain	1	96.0				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+4096-qcow2-pendant-0	4096	qcow2	9	write_aio	1	0	0	0	1	1	False	False	True	sain	1	106.992				34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47
+4096-qcow2-pendant-1	4096	qcow2	9	write_aio	2	1	0	0	1	1	False	False	True	sain	1	104.0				89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9
+4096-qcow2-pendant-2	4096	qcow2	9	flush_to_disk	2	2	1	0	1	1	False	False	True	indéterminé	1	94.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-qcow2-pendant-4	4096	qcow2	9	write_aio	3	2	1	1	1	2	False	False	True	indéterminé	1	114.0				ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244
+4096-qcow2-pendant-5	4096	qcow2	9	write_aio	4	3	1	1	1	2	False	False	True	dégradé	2	104.0				ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369
+4096-qcow2-pendant-6	4096	qcow2	9	flush_to_disk	4	4	2	1	1	2	False	False	True	sain	2	112.0				748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-ordonné-0	4096	qcow2	0		4	4	2	2	1	3	True	False	True	sain	2	105.008	1980.0	369.008	150.992	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-témoin-0	4096	qcow2	0		2	2	2	2	1	3	False	True	False	dégradé	2	118.0	642.0	123.008	104.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-qcow2-témoin-1	4096	qcow2	0		2	2	2	2	1	3	False	True	False	dégradé	2	103.008	504.992	56.0	56.992	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-qcow2-ordonné-1	4096	qcow2	0		4	4	2	2	1	3	True	False	False	sain	2	94.992	1682.0	104.0	116.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-ordonné-2	4096	qcow2	0		4	4	2	2	1	3	True	False	False	sain	2	96.0	1614.0	94.0	106.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-témoin-2	4096	qcow2	0		2	2	2	2	1	3	False	True	False	dégradé	2	106.0	507.008	73.008	60.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-qcow2-témoin-3	4096	qcow2	0		2	2	2	2	1	3	False	True	False	dégradé	2	106.992	587.008	94.0	104.0	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d
+4096-qcow2-ordonné-3	4096	qcow2	0		4	4	2	2	1	3	True	False	False	sain	2	110.0	1573.008	82.0	132.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-ordonné-4	4096	qcow2	0		4	4	2	2	1	3	True	False	False	sain	2	98.992	1592.992	98.0	108.0	748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2
+4096-qcow2-témoin-4	4096	qcow2	0		2	2	2	2	1	3	False	True	False	dégradé	2	88.0	832.0	362.0	82.992	94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d

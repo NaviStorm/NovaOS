@@ -14,12 +14,15 @@ bench = false
 gicv3-lab = []
 dma-sequentiel = ["gicv3-lab"]
 ancres-p9-lab = ["dma-sequentiel"]
+pc1-lab = ["ancres-p9-lab", "dep:sha2", "dep:hmac"]
 systeme-gpt = ["dma-sequentiel"]
 installation-gpt = ["systeme-gpt"]
 
 [dependencies]
 limine = "=0.5.0"
 font8x8 = { version = "0.3.1", default-features = false }
+sha2 = { version = "=0.10.9", default-features = false, features = ["force-soft"], optional = true }
+hmac = { version = "=0.12.1", default-features = false, optional = true }
 
 [target.'cfg(target_arch = "x86_64")'.dependencies]
 pc-keyboard = "0.9.0"

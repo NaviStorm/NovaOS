@@ -133,7 +133,7 @@ Les descendants autorisés peuvent partager les anciennes unités de leur domain
 
 ## 7. Matrice de conformité et prérequis matériels
 
-Cette matrice définit les essais de qualification d’une future implémentation. La rédaction a permis deux contrôles limités, le recalcul indépendant des vecteurs et un essai de refus par le lecteur P9 sur ces octets (§8). Les campagnes de coupures antérieures concernent le journal de laboratoire à deux copies et le format P9 distribué.
+Cette matrice définit les essais de qualification. La rédaction initiale a permis le recalcul indépendant des vecteurs et un essai de refus par le lecteur P9 (§8). La campagne du 12 novembre 2026 exerce cette révision dans un banc privé sur support VirtIO. Les résultats et le domaine de panne effectivement couvert figurent au §10.
 
 ### Qualification en simulation
 
@@ -188,6 +188,107 @@ Ainsi, après confirmation du rang 2, effacer la page 1 laisse la décision de l
 
 La révision proposée consomme trois pages de contrôle par génération, soit 12 Kio, en plus de la racine et des objets CoW neufs. F1 et F2 sont sur le chemin de confirmation. Le lecteur parcourt `3J` pages de contrôle, puis les objets nécessaires. Le plafond de générations et l’absence de recyclage bornent la durée d’usage. Ces choix permettent une lecture indépendante et une comparaison de toutes les preuves avant d’étudier une collecte.
 
-Un prochain arbitrage peut porter sur un banc isolé utilisant le codec de test, deux lecteurs indépendants et les essais S01 à S11. Une proposition de liaison à NovaFS devrait ensuite documenter son codec de catalogue, le périmètre des clés, l’exclusivité, le dimensionnement et la preuve de refus des lecteurs historiques. Une qualification physique réclame à la fois un contrat couvrant la panne annoncée et les essais R01 à R03 cohérents avec ce contrat.
+Le banc isolé utilise le codec de test, deux implémentations de lecture et les essais S01 à S11. Une proposition de liaison à NovaFS devrait documenter son codec de catalogue, le périmètre des clés, l’exclusivité, le dimensionnement et la preuve de refus des lecteurs historiques. Une qualification physique réclame à la fois un contrat couvrant la panne annoncée et les essais R01 à R03 cohérents avec ce contrat.
 
 Arrêter la qualification si une ancienne voie de montage expose une tête périmée, si un succès manque sous H1 à H3, si la liaison proposée exige de changer P9, si les frontières de persistance restent imprécises ou si un défaut cryptographique permet la substitution, la réutilisation d’un nonce ou l’accès à une vue sans ses droits. Chaque écart doit être soumis à arbitrage avec l’image, le reçu et le chemin d’E/S concernés. Les décisions sur NovaOS v0.15.1, NovaFS P10 et l’activation du remplacement relèvent d’un mandat ultérieur.
+
+## 10. Qualification UTM du 12 novembre 2026
+
+**Décision de qualification.** Sur les 96 essais PC1 du banc VirtIO, les 24 reçus effectivement remis désignent exactement la génération 2 relue. L’application UTM a remis un reçu supplémentaire, vérifié après arrêt et export. Les essais couvrent la perte de la VM sur un Mac qui reste alimenté. La persistance après coupure électrique, la survie d’une copie et la disponibilité de son graphe après un dommage physique commun restent non qualifiées. Le remplacement d’une destination par `cp` ou `mv` reste désactivé dans NovaOS v0.15.0. [Matrice par démarrage](validation/v0.9.13/publication-conditionnelle-utm.tsv) · [Résultats et empreintes](validation/v0.9.13/publication-conditionnelle-utm.json) · [Images, traces et reçus](validation/v0.9.13/publication-conditionnelle-utm-preuves.tar.gz)
+
+### Chemin de persistance
+
+Le banc part du commit `f6570774edee724cfdac78f72fc8304f065b1bb4` sur `main`. Le framework AArch64 provient d’UTM 5.0.8, build 128, QEMU 10.0.12. L’outil `qemu-img` 11.1.3 intervient hors VM pour la préparation, la vérification QCOW2 et l’extraction. Les quatre profils utilisent le firmware EDK2 expérimental archivé, GICv3 sans ITS, TPM CRB et VirtIO-IOMMU sans bypass. Le support EFI est en lecture seule. Le firmware libère son domaine pour le SID 48 et la sonde rattache la cible de test au domaine du SID 56. Chaque nouveau disque porte un identifiant de banc à vérifier avant toute sortie. [Sonde invitée](../../novaOS/kernel/src/hardware/block/qualification/ancres/pc1.rs) · [Lanceur et contrôles QMP](../../novaOS/tests/publication_conditionnelle.py)
+
+| Composant | Configuration constatée | Portée du contrat |
+| --- | --- | --- |
+| VirtIO Block et QEMU | OUT ordinaires et FLUSH. QMP confirme des secteurs logiques et physiques annoncés de 512/512 ou 4 096/4 096 octets, `writeback=true`, `direct=false`, `no-flush=false`. | Une écriture volatile peut être partielle. L’écrivain attend ses complétions et clôt la phase par un FLUSH. Le backend détermine le domaine de persistance effectif. [VirtIO 1.2, §5.2.6](https://docs.oasis-open.org/virtio/virtio/v1.2/virtio-v1.2.html) · [Modes de cache QEMU](https://qemu.readthedocs.io/en/stable-10.0/system/invocation.html) |
+| Image brute ou QCOW2 | Fichiers neufs sur le même volume APFS. QCOW2 compat 1.1, clusters de 64 Kio, sans fichier parent. Les fichiers QCOW2 acquis ont passé `qemu-img check` sans réparation. | Les tables et les compteurs de références QCOW2 participent à la disponibilité des deux copies. Dans la fenêtre d’1 Mio, A(2), I(2) et la racine occupent le premier cluster invité. B(2) occupe le seizième. A et B sont distants de 1 008 Kio. [Format QCOW2](https://www.qemu.org/docs/master/interop/qcow2.html) |
+| Backend Darwin | Empreinte du framework `16d48f6e3e83fdabb760ac01f17f2c69af844f3403be77fad51c692189896f5f`. Désassemblage ARM64 revérifié, appel de `_qemu_fdatasync` à `0x4967b8`, branche vers `_fsync` à `0x8d69d0`. | Darwin prévoit une demande supplémentaire au périphérique avec `F_FULLFSYNC`. Le chemin observé termine par `fsync`. La persistance physique de F2 sur perte électrique reste à établir. [Backend fichier](https://github.com/qemu/qemu/blob/v10.0.12/block/file-posix.c) · [Contrat Darwin](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fcntl.2.html) |
+| Mac et stockage | Mac16,5, Apple M4 Max, firmware système 20457.41.3, macOS 27.2 (26B123), APFS 3288.41.1. Volume `disk3s5` sur `disk0s2`, SSD interne APPLE SSD AP2048Z, Apple Fabric, révision 241.40.4. Unité adressable hôte de 4 096 octets. | Le contrat de protection des caches du contrôleur, une unité de dommage physique et la séparation physique de A, B et des objets restent inconnus pour cette configuration. |
+
+**H1.** L’ordre a été observé jusqu’aux complétions invitées et aux compteurs du backend. Les écritures acquittées se retrouvent après destruction du processus. **H2.** Chaque acquisition après reçu contient deux décisions complètes. Des corruptions imposées sur des copies en mémoire confirment la récupération avec une seule décision authentique. **H3.** La sonde a relu la racine du vecteur et les décisions. La simulation a étendu la vérification au catalogue et aux unités brutes, compressées et scellées. Ces observations laissent ouverte la survie de la traduction QCOW2, de la racine et des unités après une panne physique commune.
+
+### Matrice S01 à S11
+
+Les onze scénarios ont été exécutés en ARM64 natif et en x86_64 sous Rosetta, avec les deux tailles de secteur. Le lecteur ouvre une image figée et vérifie les zones I/A/B avant d’accorder un état. L’oracle de coupure conserve séparément les reçus remis. Une inspection compare le SHA-256 du support entier avant et après. Les catalogues de déplacement et de copie produits sur chaque architecture ont aussi été rouverts sur l’autre. [Simulateur et injections](../lab/pc1/simulation.py) · [Lecteur RO](../lab/pc1/lecture.py) · [Catalogue de vues du banc](../lab/pc1/vues.py)
+
+| Scénario | Résultat |
+| --- | --- |
+| S01. Encodage | Les dix valeurs du §8 concordent. Les essais couvrent identité, rôle, version, capacité, adresse, champs réservés et genèse privée de décision. |
+| S02. Chronologie | Coupures aux soumissions, effets, complétions, relectures et remise du reçu. Un redémarrage de l’inspection ou une seconde coupure à l’activation laisse un graphe vérifiable ou un diagnostic explicite. |
+| S03. Déchirures | 1 090 inspections en 512 et 74 en 4 096 par architecture. Les cas incluent préfixes, suffixes, plages internes, les 256 ou 2 masques de secteurs de chaque page et des déchirures simultanées de A et B. |
+| S04. Ordre et erreurs | Les deux ordres de préparation et de publication ont été permutés. EIO, délai et échec de F1 empêchent le reçu. Après une F2 en erreur, zéro, une ou deux copies peuvent avoir persisté. Une tête dont la racine manque est refusée. |
+| S05. Dommage local | Une copie absente, illisible, transplantée ou portant un MAC incorrect laisse le rang 2 en RO dégradé si l’autre est authentique. Une racine devenue illisible interdit le montage de cette tête. Le rang 1 reste extractible sur demande avec signalement de l’anomalie. |
+| S06. Ambiguïté | L’image entière après F1 est identique à celle d’un succès suivi de la perte de A+B en présence de I. Le lecteur rend « indéterminé » dans les deux historiques. Un FLUSH mensonger peut produire cette même image après reçu. Un retour intégral à l’ancienne image authentique est indétectable sans information supplémentaire. |
+| S07. Filiation | Forks authentiques, parent incorrect, trou, identifiant de transaction réutilisé et saturation ont été exercés. I permet de retrouver un ancêtre engagé par un descendant. La disparition de ses trois enregistrements impose le refus. |
+| S08. Vues | Le catalogue expérimental conserve contenu, identité, date, droits, source, destination, snapshot et clone aux coupures de publication. Après divergence du clone et retrait de l’origine, les deux vues retenues se rouvrent. Un identifiant de transaction ayant perdu sa réponse désigne une seule opération. |
+| S09. Confidentialité | Le codec de paires NovaFS vérifie les quatre combinaisons brut/LZ4 et clair/scellé. Par géométrie et architecture, le banc a compté 12 demandes de nonce, 10 nonces distincts et deux échecs injectés. La branche indépendante et la restauration emploient chacune un nouveau domaine et une nouvelle maîtresse de contenu. Le partage immuable ne demande aucun tirage. Une clé erronée, un domaine verrouillé, un mauvais tag, une longueur altérée ou une substitution interdisent la lecture. [Contrôles Rust](../examples/pc1-controles.rs) |
+| S10. Compatibilité | Moteur distribué en RO et RW, sauvetage des deux slots et outils historiques ont refusé étendue entière, préfixe, genèse partielle et fausse signature. Le lecteur PC1 a refusé l’ancien P9 et la géométrie du journal historique. En complément, quatre démarrages NovaOS v0.15.0 ont refusé les deux GPT privées (`Geometry`) ou les deux fausses étiquettes P9 (`Device`). Chaque disque a conservé son SHA-256, avec zéro OUT et zéro FLUSH. [Essais GPT](../../novaOS/tests/publication_compatibilite.py) |
+| S11. Écrivain | Dans le modèle à propriétaire unique, des commandes retardées doivent être drainées. Une intention stabilisée empêche la signature d’un second corps. L’exclusivité entre copies indépendantes d’un fichier ou entre deux Mac reste hors du banc. |
+
+Les images P9 servant de références ont été ouvertes en lecture. Le contrôle final a retrouvé les mêmes SHA-256 pour 160 images et fixtures historiques et pour sept archives ou binaires, dont l’installateur distribué.
+
+### R01 à R03 et résultats de relecture
+
+Les 116 essais du moteur comprennent 96 essais PC1 et 20 témoins d’E/S chronométrés. Chaque ligne repart d’un disque neuf de 64 Mio (secteur 512) ou de 268 Mio (secteur 4 096). L’étendue PC1 fait 256 pages. Avant RW, la sonde vérifie toute la genèse, attend le FLUSH d’activation puis vérifie à nouveau. Après F1 elle relit I et la racine avant de produire les tags de décision. Après F2 elle relit A et B et remet le reçu. La ligne série remet le rang et l’identifiant du corps. L’oracle les associe aux identités FS/volume/lignée et à l’identifiant de transaction fixés au §8. Le transport de reçus multivolumes reste hors du banc. Le pilote soumet un secteur par OUT. Les 24 arrêts en cours d’E/S ont utilisé les points d’arrêt `write_aio` ou `flush_to_disk` du backend fichier, avec contrôle des soumissions et des complétions. Les autres points incluent un arrêt entre deux secteurs de A, après F2 avant le reçu, et immédiatement après sa remise.
+
+| Secteur et image | PC1 / témoin | SIGKILL / arrêt ordonné | Rang 1 sain / indéterminé | Rang 2 dégradé / sain | Reçus PC1 retrouvés |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 512, brut | 24 / 5 | 19 / 10 | 6 / 6 | 2 / 10 | 6 / 6 |
+| 512, QCOW2 | 24 / 5 | 19 / 10 | 6 / 6 | 2 / 10 | 6 / 6 |
+| 4 096, brut | 24 / 5 | 19 / 10 | 6 / 5 | 3 / 10 | 6 / 6 |
+| 4 096, QCOW2 | 24 / 5 | 19 / 10 | 6 / 5 | 3 / 10 | 6 / 6 |
+
+Les colonnes de rang comptent uniquement les essais PC1. Après le premier secteur de A, 512 octets laissent manquer son MAC. En 4 096, une seule OUT contient toute la décision A. La génération 2 est alors récupérable en RO dégradé, avant F2 et avant tout reçu.
+
+- **R01, moteur et application.** 76 processus ont reçu SIGKILL et 40 se sont terminés sur demande après fermeture du pilote. La comparaison porte sur tout le Mio de PC1, la marque et les zéros du reste du disque virtuel. Dans 80 cas, une deuxième VM a relu tout le Mio sur VirtIO sans OUT ni FLUSH. En complément, l’application UTM a réellement importé et démarré le profil QCOW2/512, fourni sa console PTY et remis le reçu de rang 2. Après `utmctl stop --force`, l’export relu contient le SHA-256 `748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2`. Les autres couples format/secteur ont été exercés sur son moteur. Le Mac de travail est resté en fonctionnement. [Banc de l’application](../../novaOS/tests/publication_utm_app.py)
+- **R02, perte d’alimentation.** Non exécuté. L’utilisateur a confirmé l’absence de banc dédié dont l’alimentation puisse être interrompue indépendamment et les images relues après remise sous tension. Le redémarrage de l’hôte et la perte de son alimentation comptent chacun zéro essai.
+- **R03, relecture indépendante.** Les deux architectures ont relu en RO les 116 acquisitions du moteur. Le lecteur Python contrôle les champs, les MAC et la chaîne. Un oracle Rust indépendant utilise HKDF/HMAC et les identifiants des deux corps figés au §8. Tous les diagnostics concordent. Les 116 acquisitions donnent sept contenus d’étendue distincts. L’export de l’application a aussi été vérifié sur les deux architectures. Les dommages unitaires injectés après acquisition de chaque reçu proviennent de copies en mémoire. Aucun dommage spontané n’a été observé dans ces images. [Oracle Rust indépendant](../lab/pc1/vecteur.rs)
+
+### Coût observé
+
+Médianes en microsecondes, cinq transactions sans pause par mode et par profil. L’horloge est le compteur architectural AArch64 sous TCG. La durée transactionnelle va de la première OUT à la production du reçu, après vérification, hors inspection initiale et FLUSH d’activation. Le témoin publie le même objet avec un seul sélecteur et deux FLUSH. Il mesure le coût de ce chemin d’E/S sur le même banc. Le temps complet d’un `cp` P9 en production demanderait une mesure distincte.
+
+| Profil | PC1 | Témoin | F1 PC1 | F2 PC1 | FLUSH d’activation PC1 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 512, brut | 4 502 | 1 442 | 80 | 92 | 110 |
+| 512, QCOW2 | 3 950 | 1 691 | 95 | 106 | 121 |
+| 4 096, brut | 1 679 | 562 | 111 | 125 | 102 |
+| 4 096, QCOW2 | 1 614 | 587 | 98 | 116 | 99 |
+
+Chaque publication réussie a achevé **deux FLUSH de transaction**. L’écart au témoin est de zéro FLUSH par transaction. Le passage initial en RW ajoute **un FLUSH par activation**. PC1 ajoute deux pages d’écriture et quatre pages de relecture pour le vecteur à un seul objet. Ainsi le compteur indique 32 OUT contre 16 en 512 et 4 contre 2 en 4 096. Les temps individuels et les étendues min–max sont conservés avec les résultats. [Mesures individuelles](validation/v0.9.13/publication-conditionnelle-utm.tsv)
+
+### Régressions et arbitrage
+
+Lors de la mise au point, la construction instrumentée de l’auxiliaire Rust a révélé un import manquant des sondes de compression. Cet import a été corrigé dans l’auxiliaire avant la validation complète. Sur chaque architecture, 196 tests standards, 197 instrumentés, 2 304 injections d’ancres et 1 000 000 d’opérations différentielles ont réussi. Le journal expérimental antérieur a aussi rejoué 10 056 coupures et le lecteur P9 a revérifié 142 images UTM historiques par architecture. NovaOS a réussi ses 25 démarrages, 24 groupes bloc, trois contrôles ELF/processus/IPC et quatre essais CLI par architecture. La campagne AArch64 a réussi les 11 scénarios DMA/GICv3 et les 23 scénarios de politique DMA séquentielle. [Résultats de qualification](validation/v0.9.13/publication-conditionnelle-utm.json)
+
+Le maintien du refus de remplacement est recommandé. Une qualification de perte d’alimentation demanderait un contrat précisant le domaine réellement persisté jusqu’au SSD, la couverture des métadonnées d’image, la panne qui laisse une copie et ses objets disponibles, puis un R02 sur banc dédié cohérent avec ce contrat. Les observations actuelles permettent de conserver PC1 comme prototype de laboratoire. Toute intégration dans NovaOS ou évolution du format demande un nouvel arbitrage.
+
+### Reproduire la campagne
+
+Depuis la racine du dépôt, définir `BANC` comme un nouveau répertoire local et `HIST` comme le répertoire de l’audit historique contenant `fixtures`, `systeme-512` et `systeme-4096`. Les commandes de préparation de ces fixtures et des régressions figurent dans le rapport d’ancres. Le banc UTM exige macOS, UTM 5.0.8, Rosetta et les cibles Rust Darwin et AArch64 invité. [Préparation du banc historique](novafs-p9-ancres-dechirees.md#rejouer-la-qualification-sur-le-mac-utm)
+
+~~~sh
+mkdir "$BANC"
+BANC=$(cd "$BANC" && pwd)
+HIST=$(cd "$HIST" && pwd)
+(cd novaOS && RUSTC="$(rustup which --toolchain stable rustc)" \
+    rustup run stable cargo build --release --locked --offline \
+    --target aarch64-unknown-none-softfloat --features pc1-lab --target-dir "$BANC/noyau")
+for arch in aarch64 x86_64; do
+    NOVAFS_TARGET="$arch-apple-darwin" novaFS/lab/run build --offline --bin novafs --example pc1-controles
+done
+/usr/bin/arch -arm64 /usr/bin/python3 -B novaFS/lab/pc1/simulation.py "$BANC/arm" --ancien "$HIST/fixtures"
+/usr/bin/arch -x86_64 /usr/bin/python3 -B novaFS/lab/pc1/simulation.py "$BANC/x86" --ancien "$HIST/fixtures"
+/usr/bin/arch -arm64 /usr/bin/python3 -B novaFS/lab/pc1/simulation.py "$BANC/arm-vues.json" --echanger "$BANC/x86"
+/usr/bin/arch -x86_64 /usr/bin/python3 -B novaFS/lab/pc1/simulation.py "$BANC/x86-vues.json" --echanger "$BANC/arm"
+python3 -B novaOS/tests/publication_conditionnelle.py \
+    "$BANC/noyau/aarch64-unknown-none-softfloat/release/novaos" "$BANC/moteur" --paralleles 3
+python3 -B novaOS/tests/publication_utm_app.py "$BANC/moteur" "$BANC/application"
+python3 -B novaOS/tests/publication_compatibilite.py "$HIST" "$BANC/moteur" "$BANC/gpt"
+for arch in arm64 x86_64; do
+    /usr/bin/arch "-$arch" /usr/bin/python3 -B novaFS/lab/pc1/simulation.py \
+        "$BANC/relecture-$arch.json" --croiser "$BANC/moteur/resultats.json"
+done
+~~~

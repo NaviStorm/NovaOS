@@ -1,0 +1,421 @@
+{
+  "date": "2026-11-12",
+  "base": "f6570774edee724cfdac78f72fc8304f065b1bb4",
+  "branche": "main",
+  "novaos": "0.15.0",
+  "novafs": "0.9.13 P9",
+  "decision": "Préconditions physiques non qualifiées. Résultats expérimentaux sur panne de VM.",
+  "stockage": {
+    "utm": "5.0.8",
+    "qemu": "QEMU emulator version 10.0.12",
+    "source": "b22a7fc3a67614c7f9ba2a425a96aa1844cb33f37d7c4dd6c58e795548eb5a79",
+    "firmware": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+    "noyau": "0098a52b57b72b67b6ab13ae8ae5edb5835691de617fb7dcb716f66f24e6ffb2",
+    "UTM_build": 128,
+    "framework_arm64_sha256": "16d48f6e3e83fdabb760ac01f17f2c69af844f3403be77fad51c692189896f5f",
+    "outil_hors_ligne": "qemu-img 11.1.3",
+    "image_qcow2": "compat=1.1, clusters 65536, sans backing",
+    "cache_QMP": {
+      "writeback": true,
+      "direct": false,
+      "no-flush": false
+    },
+    "hote": "Mac16,5, Apple M4 Max, macOS 27.2 (26B123), firmware système 20457.41.3",
+    "fs": "APFS 3288.41.1, disk3s5 sur disk0s2, blocs adressables 4096",
+    "support": "APPLE SSD AP2048Z interne, Apple Fabric, révision 241.40.4",
+    "chemin_arm64": [
+      "4967b8: bl _qemu_fdatasync",
+      "8d69d0: b stub _fsync"
+    ],
+    "essais_alimentation": 0,
+    "redemarrages_mac": 0,
+    "contrat_PL_sous_H1_H2_H3": null
+  },
+  "simulation": {
+    "aarch64": {
+      "architecture": "aarch64",
+      "secteurs": {
+        "512": {
+          "inspections": {
+            "S01": 6,
+            "S02": 74,
+            "S03": 1090,
+            "S04": 68,
+            "S05": 17,
+            "S06": 7,
+            "S07": 10,
+            "S08": 54,
+            "S09": 28,
+            "S10": 33,
+            "S11": 2
+          },
+          "unités": "4 paires, 12 demandes, 10 nonces distincts, 2 pannes d'entropie, partage sans tirage"
+        },
+        "4096": {
+          "inspections": {
+            "S01": 6,
+            "S02": 74,
+            "S03": 74,
+            "S04": 68,
+            "S05": 17,
+            "S06": 7,
+            "S07": 10,
+            "S08": 54,
+            "S09": 28,
+            "S10": 33,
+            "S11": 2
+          },
+          "unités": "4 paires, 12 demandes, 10 nonces distincts, 2 pannes d'entropie, partage sans tirage"
+        }
+      }
+    },
+    "x86_64": {
+      "architecture": "x86_64",
+      "secteurs": {
+        "512": {
+          "inspections": {
+            "S01": 6,
+            "S02": 74,
+            "S03": 1090,
+            "S04": 68,
+            "S05": 17,
+            "S06": 7,
+            "S07": 10,
+            "S08": 54,
+            "S09": 28,
+            "S10": 33,
+            "S11": 2
+          },
+          "unités": "4 paires, 12 demandes, 10 nonces distincts, 2 pannes d'entropie, partage sans tirage"
+        },
+        "4096": {
+          "inspections": {
+            "S01": 6,
+            "S02": 74,
+            "S03": 74,
+            "S04": 68,
+            "S05": 17,
+            "S06": 7,
+            "S07": 10,
+            "S08": 54,
+            "S09": 28,
+            "S10": 33,
+            "S11": 2
+          },
+          "unités": "4 paires, 12 demandes, 10 nonces distincts, 2 pannes d'entropie, partage sans tirage"
+        }
+      }
+    }
+  },
+  "R01": {
+    "512-raw": {
+      "pc1": 24,
+      "temoins": 5,
+      "arrets_ordonnes": 10,
+      "sigkill": 19,
+      "redemarrages_RO": 20,
+      "recus": 6,
+      "etats_pc1": {
+        "1-sain": 6,
+        "1-indéterminé": 6,
+        "2-dégradé": 2,
+        "2-sain": 10
+      },
+      "cluster": null,
+      "ordonné": {
+        "n": 5,
+        "us_transaction_mediane": 4502.0,
+        "us_transaction_min_max": [
+          3248.992,
+          5098.0
+        ],
+        "us_F1_mediane": 80.0,
+        "us_F2_mediane": 92.0,
+        "us_flush_activation_mediane": 110.0,
+        "out_par_transaction": 32,
+        "flush_par_transaction": 2
+      },
+      "témoin": {
+        "n": 5,
+        "us_transaction_mediane": 1442.0,
+        "us_transaction_min_max": [
+          1114.0,
+          2068.992
+        ],
+        "us_F1_mediane": 92.0,
+        "us_F2_mediane": 80.0,
+        "us_flush_activation_mediane": 130.0,
+        "out_par_transaction": 16,
+        "flush_par_transaction": 2
+      }
+    },
+    "512-qcow2": {
+      "pc1": 24,
+      "temoins": 5,
+      "arrets_ordonnes": 10,
+      "sigkill": 19,
+      "redemarrages_RO": 20,
+      "recus": 6,
+      "etats_pc1": {
+        "1-sain": 6,
+        "1-indéterminé": 6,
+        "2-dégradé": 2,
+        "2-sain": 10
+      },
+      "cluster": 65536,
+      "ordonné": {
+        "n": 5,
+        "us_transaction_mediane": 3950.0,
+        "us_transaction_min_max": [
+          3460.0,
+          4672.992
+        ],
+        "us_F1_mediane": 94.992,
+        "us_F2_mediane": 106.0,
+        "us_flush_activation_mediane": 121.008,
+        "out_par_transaction": 32,
+        "flush_par_transaction": 2
+      },
+      "témoin": {
+        "n": 5,
+        "us_transaction_mediane": 1690.992,
+        "us_transaction_min_max": [
+          946.0,
+          1750.992
+        ],
+        "us_F1_mediane": 122.0,
+        "us_F2_mediane": 104.0,
+        "us_flush_activation_mediane": 114.0,
+        "out_par_transaction": 16,
+        "flush_par_transaction": 2
+      }
+    },
+    "4096-raw": {
+      "pc1": 24,
+      "temoins": 5,
+      "arrets_ordonnes": 10,
+      "sigkill": 19,
+      "redemarrages_RO": 20,
+      "recus": 6,
+      "etats_pc1": {
+        "1-sain": 6,
+        "1-indéterminé": 5,
+        "2-dégradé": 3,
+        "2-sain": 10
+      },
+      "cluster": null,
+      "ordonné": {
+        "n": 5,
+        "us_transaction_mediane": 1678.992,
+        "us_transaction_min_max": [
+          1643.008,
+          1780.0
+        ],
+        "us_F1_mediane": 110.992,
+        "us_F2_mediane": 125.008,
+        "us_flush_activation_mediane": 102.0,
+        "out_par_transaction": 4,
+        "flush_par_transaction": 2
+      },
+      "témoin": {
+        "n": 5,
+        "us_transaction_mediane": 562.0,
+        "us_transaction_min_max": [
+          497.008,
+          684.992
+        ],
+        "us_F1_mediane": 107.008,
+        "us_F2_mediane": 84.0,
+        "us_flush_activation_mediane": 102.992,
+        "out_par_transaction": 2,
+        "flush_par_transaction": 2
+      }
+    },
+    "4096-qcow2": {
+      "pc1": 24,
+      "temoins": 5,
+      "arrets_ordonnes": 10,
+      "sigkill": 19,
+      "redemarrages_RO": 20,
+      "recus": 6,
+      "etats_pc1": {
+        "1-sain": 6,
+        "1-indéterminé": 5,
+        "2-dégradé": 3,
+        "2-sain": 10
+      },
+      "cluster": 65536,
+      "ordonné": {
+        "n": 5,
+        "us_transaction_mediane": 1614.0,
+        "us_transaction_min_max": [
+          1573.008,
+          1980.0
+        ],
+        "us_F1_mediane": 98.0,
+        "us_F2_mediane": 116.0,
+        "us_flush_activation_mediane": 98.992,
+        "out_par_transaction": 4,
+        "flush_par_transaction": 2
+      },
+      "témoin": {
+        "n": 5,
+        "us_transaction_mediane": 587.008,
+        "us_transaction_min_max": [
+          504.992,
+          832.0
+        ],
+        "us_F1_mediane": 94.0,
+        "us_F2_mediane": 82.992,
+        "us_flush_activation_mediane": 106.0,
+        "out_par_transaction": 2,
+        "flush_par_transaction": 2
+      }
+    }
+  },
+  "R02": "Non exécuté, aucun banc matériel dédié disponible.",
+  "R03": {
+    "acquisitions_moteur": 116,
+    "acquisition_application": 1,
+    "lecteurs": [
+      "Python 3.9.6",
+      "RustCrypto spécialisé aux deux vecteurs"
+    ],
+    "architectures": [
+      "ARM64 natif",
+      "x86_64 Rosetta"
+    ],
+    "sha256_etendues_distinctes": [
+      "34c190b0cf1397f9f2a9969e6aabfd4dc8481416209bbf1fe07454b2ff0dfe47",
+      "748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2",
+      "82e2af4f2ac1164af5669fe27cfc82eb4f461428d09550dfc69343096c2ee1bc",
+      "89e7800d2a7e7c2edd1e9bc4cbc20dc7ea9e6e985276a6274f8d3d1aea5d1de9",
+      "94ac813327d4804657caa78b05845e7661f5d03d945ee4309aed5a988338bd0d",
+      "ccad6b429e0521bf4712d77da29bfdd2156845eccf5fd3f553a85ec6e9b9c244",
+      "ce51cdbfa5a9f09fb8a37ad5d2a5002b74283214308eb25b8dfca03d06f01369"
+    ],
+    "acquisitions_avec_injection_sur_copie": 24,
+    "injections_sur_copies_par_architecture": 48
+  },
+  "application": {
+    "nom": "NovaFS-PC1-7195b0dcde3e",
+    "uuid": "C990DA6E-B7F1-4F5F-B6CE-0A5BC0D4849F",
+    "rang": 2,
+    "sha256": "748be82d059cb5c698bde7a9ac84390ef27cbb06a9a2006cb302d7f4911fa5d2",
+    "secteur": 512,
+    "format": "qcow2",
+    "arret": "utmctl stop --force",
+    "source_qcow2": "48e259371b5b8cc1119c31841a26ef114fed99e50640066430c1cd3d96ddc3c6"
+  },
+  "compatibilite_GPT": [
+    {
+      "profil": "512-type-pc1",
+      "sha256_avant_apres": "f446afa78ef232548af5c7dbc78fc165a2a7982738c2a53fdb63b32d4fbc6d88",
+      "source": "019b6f9282aa729dbdec2a68b14e03e2de07704d15825de88fd9db3847d00871",
+      "lectures": 145,
+      "ecritures": 0,
+      "flush": 0,
+      "rss_emulateur_kio_au_jalon": 327376
+    },
+    {
+      "profil": "512-etiquette-p9",
+      "sha256_avant_apres": "2e399454cb01c19d50f006ed6856209360937aaa296816d60996caa569611d7f",
+      "source": "019b6f9282aa729dbdec2a68b14e03e2de07704d15825de88fd9db3847d00871",
+      "lectures": 219,
+      "ecritures": 0,
+      "flush": 0,
+      "rss_emulateur_kio_au_jalon": 321376
+    },
+    {
+      "profil": "4096-type-pc1",
+      "sha256_avant_apres": "7f87726f7cfb40797ac1069e17c54afbb325ee4554d51a1371ef858a3e53e24d",
+      "source": "b68d9abf6a68389eda6b4abd474cbf54fa9033292ef42e7892e6b6a0718c5110",
+      "lectures": 82,
+      "ecritures": 0,
+      "flush": 0,
+      "rss_emulateur_kio_au_jalon": 319600
+    },
+    {
+      "profil": "4096-etiquette-p9",
+      "sha256_avant_apres": "00a7af69e9041ef47ce80f7702eac6f7a44cc45546e94df1df6f631b76c93d5d",
+      "source": "b68d9abf6a68389eda6b4abd474cbf54fa9033292ef42e7892e6b6a0718c5110",
+      "lectures": 93,
+      "ecritures": 0,
+      "flush": 0,
+      "rss_emulateur_kio_au_jalon": 327440
+    }
+  ],
+  "regressions": {
+    "aarch64": {
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "instrumentes": {
+        "reussis": 197,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=25.310",
+      "injections_ancres": [
+        1288,
+        656,
+        360
+      ],
+      "coupures_journal_historique": 10056,
+      "images_UTM_P9_relues": 142,
+      "pools_chiffres": 12,
+      "novaos": {
+        "demarrage": 25,
+        "elf": 1,
+        "cycle_processus": 1,
+        "ipc": 1,
+        "bloc": 24,
+        "cli": 2,
+        "cli_p9": 2
+      }
+    },
+    "x86_64": {
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "instrumentes": {
+        "reussis": 197,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=40.792",
+      "injections_ancres": [
+        1288,
+        656,
+        360
+      ],
+      "coupures_journal_historique": 10056,
+      "images_UTM_P9_relues": 142,
+      "pools_chiffres": 12,
+      "novaos": {
+        "demarrage": 25,
+        "elf": 1,
+        "cycle_processus": 1,
+        "ipc": 1,
+        "bloc": 24,
+        "cli": 2,
+        "cli_p9": 2
+      }
+    }
+  },
+  "dma_gicv3_aarch64": 11,
+  "dma_sequentielle_aarch64": 23,
+  "integrite_historique": {
+    "archives_et_binaires": 7,
+    "images_et_fixtures": 160,
+    "sha256_modifies": 0
+  },
+  "preuves": {
+    "publication-conditionnelle-utm.tsv": "bad7047a09d8eb3b19e1661b46ae7d970f3c8fea35244f6aeb7c9e44c0c47364",
+    "publication-conditionnelle-utm-preuves.tar.gz": "cfd058fa1d34578f1643472169de92de8d22664876e4080677e6ca95b6b09704"
+  }
+}

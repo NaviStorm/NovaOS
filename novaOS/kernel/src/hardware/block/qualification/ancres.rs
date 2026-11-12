@@ -2,6 +2,9 @@
 //! désigne que des secteurs de la fenêtre d'essai sur un disque marqué jetable.
 use super::*;
 
+#[cfg(feature = "pc1-lab")]
+mod pc1;
+
 const MARQUE: &[u8; 8] = b"NVP9LAB1";
 const FLUSH: u32 = u32::MAX;
 const MIO: u64 = 1 << 20;
@@ -67,6 +70,12 @@ pub(crate) fn executer() -> Result<()> {
     }
     let entree = fichier_fw(b"opt/novaos/ancres-p9-lab")?;
     let mut t = Transport::open_disk(sid, false)?;
+    #[cfg(feature = "pc1-lab")]
+    if entree.starts_with(b"PC1:") {
+        let resultat = pc1::essai(&mut t, &entree[4..]);
+        t.close()?;
+        return resultat;
+    }
     let (pause, ops) = match plan(&mut t, &entree) {
         Ok(plan) => plan,
         Err(e) => {
