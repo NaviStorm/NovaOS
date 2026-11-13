@@ -1,7 +1,8 @@
 """Relecture de disques GPT/P9 jetables après publication ou coupure dans UTM."""
 import argparse
-from contextlib import ExitStack
+from contextlib import ExitStack, nullcontext
 import fcntl
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -137,9 +138,51 @@ def observer_disque(moniteur, mesures):
     mesures.append({k: stats[k] for k in champs})
 
 
+def allocation_importee(paquet, machine, cible):
+    """Mesurer le disque de la VM importée et arrêtée en vérifiant son identité."""
+    try:
+        config = plistlib.loads((paquet / "config.plist").read_bytes())
+        if uuid.UUID(config["Information"]["UUID"]) != uuid.UUID(machine):
+            raise ValueError("UUID du paquet différent de la VM importée")
+        if [d["ImageName"] for d in config["Drive"]].count(cible) != 1:
+            raise ValueError("Disque cible absent ou ambigu dans la configuration importée")
+        disque = paquet / "Data" / cible
+        stat = disque.stat()
+        def interroger(op):
+            contenu = subprocess.run(["qemu-img", op, "--output=json", disque],
+                                     capture_output=True, check=True, timeout=30)
+            return json.loads(contenu.stdout)
+        info = interroger("info")
+        couverture = interroger("map")
+        fin = presents = donnees = zeros = 0
+        for plage in couverture:
+            if plage["start"] != fin or plage["length"] <= 0 or plage["depth"] != 0:
+                raise ValueError("Cartographie discontinue ou image avec parent")
+            taille = plage["length"]
+            fin += taille
+            if plage["present"]:
+                presents += taille
+            if plage["data"]:
+                donnees += taille
+            if plage["zero"]:
+                zeros += taille
+        if fin != info["virtual-size"] or info.get("backing-filename"):
+            raise ValueError("Cartographie incomplète ou image avec parent")
+        return dict(disponible=True, paquet=paquet.name, uuid=str(uuid.UUID(machine)), disque=cible,
+                    info={k: info[k] for k in ("format", "virtual-size", "actual-size", "cluster-size") if k in info},
+                    octets_fichier=stat.st_size, octets_alloues_hote=stat.st_blocks*512,
+                    plages=len(couverture), octets_presents=presents, octets_absents=fin-presents,
+                    octets_data=donnees, octets_zero=zeros)
+    except (OSError, subprocess.SubprocessError, ValueError, KeyError, plistlib.InvalidFileException) as erreur:
+        return dict(disponible=False, motif=str(erreur))
+
+
 def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True,
           format_image="qcow2", coupure=None, preallocation=False, repetition=1, moniteur_hote=False,
-          sortie_arriere_plan=False):
+          sortie_arriere_plan=False, profil_charge=None, arriere_plan=False):
+    if arriere_plan and sortie_arriere_plan:
+        raise ValueError("Politiques d’arrière-plan incompatibles")
+    politique = "-b" if arriere_plan else "-B" if sortie_arriere_plan else "ordinaire"
     out.mkdir()
     volume, raw = out/"volume.raw", out/"neuf.raw"
     etat = json.loads(subprocess.check_output([generateur, "--image", volume, str(s), "utm"]))
@@ -157,6 +200,8 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
     for name in ("code.fd", "variables.fd"):
         shutil.copyfile(template/"Data"/name, data/name)
     args = config["QEMU"]["AdditionalArguments"]
+    if profil_charge:
+        args.extend(["-name", "NovaOS,debug-threads=on"])
     compteurs_hote = []
     temps_cpu = []
     pos, = [i for i, v in enumerate(args) if v.startswith("virtio-blk-pci,")]
@@ -185,14 +230,44 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
         fiche.write_bytes(plistlib.dumps(config))
     journal = out/"sauvegarde.serial"
     with enregistrer(paquet, ident) as machine:
+        if profil_charge:
+            # UTM 5.0.8 expose l'UUID par AppleScript. Les journaux du moteur
+            # rattachent le paquet importé à ce répertoire du conteneur Darwin.
+            documents = Path.home() / "Library/Containers/com.utmapp.UTM/Data/Documents"
+            image_importee = allocation_importee(documents / paquet.name, machine, cible)
+            if image_importee["disponible"]:
+                image_importee["provenance"] = "paquet UTM arrêté"
+            else:
+                # Les protections du conteneur de l’application peuvent interdire stat.
+                # Examiner dans ce cas l’export qu’UTM produit de sa copie arrêtée.
+                chemin_export = out/"allocation-avant-demarrage.utm"
+                exporter(machine, chemin_export)
+                refus = image_importee["motif"]
+                image_importee = allocation_importee(chemin_export, machine, cible)
+                image_importee.update(provenance="export UTM à froid avant premier démarrage",
+                                      lecture_conteneur=refus.split(":", 1)[0])
         with demarrer(machine, journal) as c, ExitStack() as pile:
             transfert(c, b"nsh> ", 56)
             moniteur = ouvrir_moniteur(machine, out, pile) if moniteur_hote else None
             moteur = CpuMoteur.pour_utm(machine) if moniteur_hote else None
-            if sortie_arriere_plan:
+            if profil_charge:
+                from charge_hote import charger
+                from vcpu_darwin import SondeVcpu
+                os.write(moniteur.fd, b"info cpus\r")
+                reponse = moniteur.attendre(b"thread_id=", 10) + moniteur.attendre(b"\n", 10)
+                moniteur.attendre(b"(qemu) ", 10)
+                tids = re.findall(rb"CPU #\d+: thread_id=(\d+)", reponse)
+                if len(tids) != 1:
+                    raise RuntimeError(f"CPU du moniteur non identifié {reponse!r}")
+                vcpu = SondeVcpu(moteur.pid, int(tids[0]))
+                mesures_vcpu = {}
+            if politique != "ordinaire":
                 # Le PID appartient au lanceur du seul UUID jetable ouvert par ce banc.
-                moteur = moteur or CpuMoteur.pour_utm(machine)
-                subprocess.run(["/usr/sbin/taskpolicy", "-B", "-p", str(moteur.pid)], check=True)
+                cible_moteur = CpuMoteur.pour_utm(machine)
+                if moteur is not None and cible_moteur.pid != moteur.pid:
+                    raise RuntimeError("Le moteur associé à l’UUID a changé")
+                moteur = cible_moteur
+                subprocess.run(["/usr/sbin/taskpolicy", politique, "-p", str(moteur.pid)], check=True)
             nom = "nouveau" if cas == "neuf-4m" else "source"
             for i, nom_copie in enumerate(destinations):
                 if cas == "neuf-4m":
@@ -206,7 +281,20 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
                                     lambda texte: c.attendre(texte.encode(), 180))
                 observer = (lambda: observer_disque(moniteur, compteurs_hote)) if moniteur else None
                 observer_cpu = (lambda: temps_cpu.append(moteur.relever())) if moniteur_hote else None
-                depart, accord, acquit = publier(c, nom, nom_copie, coupure, observer, observer_cpu)
+                if profil_charge:
+                    def observer_cpu():
+                        if temps_cpu:
+                            temps_cpu.append(moteur.relever())
+                            mesures_vcpu.update(vcpu.terminer())
+                        else:
+                            vcpu.demarrer()
+                            temps_cpu.append(moteur.relever())
+                with charger(profil_charge, out) if profil_charge else nullcontext() as charge:
+                    depart, accord, acquit = publier(c, nom, nom_copie, coupure, observer, observer_cpu)
+                if profil_charge and any(not ouvrier["arrete_par_banc"] or
+                                         not ouvrier["debut_ns"] <= depart <= acquit <= ouvrier["fin_ns"]
+                                         for ouvrier in charge["ouvriers"]):
+                    raise RuntimeError("Charge incomplète au cours de la sauvegarde")
                 if i == 0:
                     attendu, debut, oui, fin = contenu, depart, accord, acquit
                 else:
@@ -256,10 +344,19 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
         avant_disque, apres_disque = compteurs_hote
         hote["backend_hmp"] = {k: v - avant_disque[k] for k, v in apres_disque.items()}
         hote["cpu_hote_qemu"] = moteur.difference(*temps_cpu)
+        if profil_charge:
+            avant_cpu, apres_cpu = temps_cpu
+            # Compteur Mach agrégé sur tous les threads du processus QEMU.
+            ticks = apres_cpu.runnable_time - avant_cpu.runnable_time
+            hote["cpu_hote_qemu"]["runnable_ns"] = ticks * moteur.base.numer // moteur.base.denom
+            hote.update(vcpu=mesures_vcpu, charge_hote=charge, commande_monotone_ns=[debut, oui, fin],
+                        image_importee=image_importee, sha256_destination=hashlib.sha256(attendu).hexdigest())
         for op, nom in (("rd", "lecture"), ("wr", "ecriture"), ("flush", "flush")):
-            assert hote["backend_hmp"][op + "_operations"] == compteur["bloc"][nom]["nombre"]
+            if sonde:
+                assert hote["backend_hmp"][op + "_operations"] == compteur["bloc"][nom]["nombre"]
+        assert hote["backend_hmp"]["flush_operations"] == 2
     return dict(cas=cas, index_parcouru=index, sonde=sonde, traces_bloc=traces_bloc, preallocation=preallocation,
-                sortie_arriere_plan=sortie_arriere_plan,
+                sortie_arriere_plan=sortie_arriere_plan, politique_demandee=politique,
                 repetitions=repetitions,
                 image_initiale={k: etat_image[k] for k in ("format", "virtual-size", "actual-size", "cluster-size")
                                 if k in etat_image}, pic_cadres_session=pic, sauvegarde_ms=round((fin-debut)/1e6, 3),
@@ -274,9 +371,14 @@ if __name__ == "__main__":
     p.add_argument("secteur", type=int, choices=[512, 4096])
     p.add_argument("--format", choices=("raw", "qcow2"), default="qcow2", help="format du disque jetable")
     p.add_argument("--preallocation", action="store_true", help="préallouer complètement le QCOW2 jetable avant UTM")
+    p.add_argument("--profil-charge", choices=("repos", "cpu", "memoire", "stockage"),
+                   help="mesurer le thread vCPU et la charge Darwin pendant la sauvegarde")
     p.add_argument("--moniteur-hote", action="store_true", help="compter les E/S hôte du disque dans l'application instrumentée")
-    p.add_argument("--sortie-arriere-plan", action="store_true",
-                   help="témoin distinct, demander à Darwin la sortie d’arrière-plan du seul processus QEMU jetable")
+    politique = p.add_mutually_exclusive_group()
+    politique.add_argument("--sortie-arriere-plan", action="store_true",
+                           help="demander la sortie d’arrière-plan du seul processus QEMU jetable")
+    politique.add_argument("--arriere-plan", action="store_true",
+                           help="demander l’arrière-plan du seul processus QEMU jetable")
     p.add_argument("--repetition", type=int, choices=(1, 2), default=1,
                    help="deux copies localisées vers des noms distincts sur le même support")
     p.add_argument("--sans-sonde", action="store_true")
@@ -291,10 +393,12 @@ if __name__ == "__main__":
         p.error("--index accompagne le cas debut")
     if a.preallocation and a.format != "qcow2":
         p.error("--preallocation requiert QCOW2")
-    if a.moniteur_hote and (a.sans_sonde or a.coupure or a.repetition != 1):
+    if a.profil_charge:
+        a.moniteur_hote = True
+    if a.moniteur_hote and ((a.sans_sonde and not a.profil_charge) or a.coupure or a.repetition != 1):
         p.error("--moniteur-hote requiert une publication instrumentée sans coupure")
-    if a.sortie_arriere_plan and (a.coupure or a.repetition != 1):
-        p.error("--sortie-arriere-plan requiert une seule sauvegarde sans coupure")
+    if (a.sortie_arriere_plan or a.arriere_plan) and (a.coupure or a.repetition != 1):
+        p.error("Les témoins de politique requièrent une seule sauvegarde sans coupure")
     if a.repetition > 1 and (a.coupure or not a.sans_sonde or a.cas not in LOCALISES or a.index):
         p.error("--repetition requiert une édition localisée hors sonde")
     if a.coupure and (a.cas != "ajout-4m" or not a.sans_sonde):
@@ -304,5 +408,6 @@ if __name__ == "__main__":
         fcntl.flock(verrou, fcntl.LOCK_EX)
         r = essai(a.profil_systeme, a.elf_systeme, a.generateur.resolve(), a.secteur,
                   a.sortie.resolve(), not a.sans_sonde, a.index, a.cas, not a.sans_traces_bloc,
-                  a.format, a.coupure, a.preallocation, a.repetition, a.moniteur_hote, a.sortie_arriere_plan)
+                  a.format, a.coupure, a.preallocation, a.repetition, a.moniteur_hote,
+                  a.sortie_arriere_plan, a.profil_charge, a.arriere_plan)
     (a.sortie/"resultats.json").write_text(json.dumps(r, ensure_ascii=False, indent=2)+"\n")

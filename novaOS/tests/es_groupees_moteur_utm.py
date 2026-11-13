@@ -132,7 +132,8 @@ if __name__ == '__main__':
     for champ in ('profil', 'elf', 'generateur', 'sortie'):
         p.add_argument(champ, type=Path)
     p.add_argument('secteur', type=int, choices=(512, 4096))
-    p.add_argument('--cas', choices=('remplacer-multiple', 'ajout-4m-milieu', 'ajout-4m-multiple'), required=True)
+    p.add_argument('--cas', choices=('inserer-debut', 'inserer-milieu', 'remplacer-multiple',
+                                     'ajout-4m-milieu', 'ajout-4m-multiple'), required=True)
     p.add_argument('--format', choices=('raw', 'qcow2'), default='qcow2')
     p.add_argument('--sonde', action='store_true')
     p.add_argument('--arriere-plan', action='store_true',

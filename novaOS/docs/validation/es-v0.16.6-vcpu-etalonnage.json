@@ -1,0 +1,454 @@
+{
+  "hote": "Darwin ARM64",
+  "branche": "codex/es-groupees-0166",
+  "base": "b79d1133dd0dbde9aabfaa88e14a3c593708f4b2",
+  "periode_demandee_ns": 10000000,
+  "calcul_puis_sommeil": [
+    {
+      "reference_thread_time_ns": 120013416,
+      "observe_ns": 120040000,
+      "ecoule_ns": 373513687,
+      "lectures": 33,
+      "intervalle_max_ns": 12619812
+    },
+    {
+      "reference_thread_time_ns": 120012250,
+      "observe_ns": 120040000,
+      "ecoule_ns": 374264375,
+      "lectures": 33,
+      "intervalle_max_ns": 12551167
+    },
+    {
+      "reference_thread_time_ns": 120012375,
+      "observe_ns": 120040000,
+      "ecoule_ns": 371502646,
+      "lectures": 32,
+      "intervalle_max_ns": 12538979
+    },
+    {
+      "reference_thread_time_ns": 120013167,
+      "observe_ns": 120052000,
+      "ecoule_ns": 374071959,
+      "lectures": 33,
+      "intervalle_max_ns": 12618500
+    },
+    {
+      "reference_thread_time_ns": 120014417,
+      "observe_ns": 120044000,
+      "ecoule_ns": 373965667,
+      "lectures": 33,
+      "intervalle_max_ns": 12542875
+    },
+    {
+      "reference_thread_time_ns": 120012625,
+      "observe_ns": 120047000,
+      "ecoule_ns": 375948146,
+      "lectures": 34,
+      "intervalle_max_ns": 12554646
+    }
+  ],
+  "calcul_interrompu_par_parent": [
+    {
+      "reference_thread_time_ns": 300001791,
+      "observe_ns": 300025000,
+      "ecoule_ns": 553552563,
+      "lectures": 47,
+      "intervalle_max_ns": 12553021,
+      "pause_confirmee_par_waitpid": {
+        "temps_arrete_ns": 253169250,
+        "cpu_durant_arret_ns": 0,
+        "etats_aux_bornes": [
+          3,
+          3
+        ],
+        "lectures": 21,
+        "etats_echantillonnes": [
+          3
+        ]
+      }
+    },
+    {
+      "reference_thread_time_ns": 300001541,
+      "observe_ns": 300027000,
+      "ecoule_ns": 555480916,
+      "lectures": 47,
+      "intervalle_max_ns": 12598041,
+      "pause_confirmee_par_waitpid": {
+        "temps_arrete_ns": 255034458,
+        "cpu_durant_arret_ns": 0,
+        "etats_aux_bornes": [
+          3,
+          3
+        ],
+        "lectures": 20,
+        "etats_echantillonnes": [
+          3
+        ]
+      }
+    },
+    {
+      "reference_thread_time_ns": 300001625,
+      "observe_ns": 300026000,
+      "ecoule_ns": 550881813,
+      "lectures": 47,
+      "intervalle_max_ns": 12551688,
+      "pause_confirmee_par_waitpid": {
+        "temps_arrete_ns": 250435042,
+        "cpu_durant_arret_ns": 0,
+        "etats_aux_bornes": [
+          3,
+          3
+        ],
+        "lectures": 20,
+        "etats_echantillonnes": [
+          3
+        ]
+      }
+    },
+    {
+      "reference_thread_time_ns": 300002125,
+      "observe_ns": 300033000,
+      "ecoule_ns": 555398563,
+      "lectures": 47,
+      "intervalle_max_ns": 12543729,
+      "pause_confirmee_par_waitpid": {
+        "temps_arrete_ns": 255033000,
+        "cpu_durant_arret_ns": 0,
+        "etats_aux_bornes": [
+          3,
+          3
+        ],
+        "lectures": 20,
+        "etats_echantillonnes": [
+          3
+        ]
+      }
+    },
+    {
+      "reference_thread_time_ns": 300001250,
+      "observe_ns": 300025000,
+      "ecoule_ns": 553214938,
+      "lectures": 48,
+      "intervalle_max_ns": 12599813,
+      "pause_confirmee_par_waitpid": {
+        "temps_arrete_ns": 252590834,
+        "cpu_durant_arret_ns": 0,
+        "etats_aux_bornes": [
+          3,
+          3
+        ],
+        "lectures": 21,
+        "etats_echantillonnes": [
+          3
+        ]
+      }
+    },
+    {
+      "reference_thread_time_ns": 300002416,
+      "observe_ns": 300038000,
+      "ecoule_ns": 552486875,
+      "lectures": 48,
+      "intervalle_max_ns": 12553354,
+      "pause_confirmee_par_waitpid": {
+        "temps_arrete_ns": 251929167,
+        "cpu_durant_arret_ns": 0,
+        "etats_aux_bornes": [
+          3,
+          3
+        ],
+        "lectures": 21,
+        "etats_echantillonnes": [
+          3
+        ]
+      }
+    }
+  ],
+  "extension_niveaux_cpu": {
+    "calcul_et_sommeil": [
+      {
+        "reference_thread_time_ns": 120041500,
+        "observe_ns": 120106000,
+        "ecoule_ns": 375395417,
+        "lectures": 32,
+        "intervalle_max_ns": 12670500,
+        "niveaux_cpu": {
+          "noms_sysctl": [
+            "Performance",
+            "Efficiency"
+          ],
+          "numer": 125,
+          "denom": 3,
+          "premier_appel_monotone_ns": [
+            13661626927625,
+            13661626930041
+          ],
+          "dernier_appel_monotone_ns": [
+            13662002405000,
+            13662002415458
+          ],
+          "deltas": [
+            {
+              "nom": "Performance",
+              "utilisateur_ns": 86826208,
+              "systeme_ns": 33155375,
+              "cpu_ns": 119981583,
+              "instructions": 2434258175,
+              "cycles": 504686412
+            },
+            {
+              "nom": "Efficiency",
+              "utilisateur_ns": 75416,
+              "systeme_ns": 49083,
+              "cpu_ns": 124499,
+              "instructions": 149452,
+              "cycles": 296698
+            }
+          ]
+        }
+      },
+      {
+        "reference_thread_time_ns": 120041000,
+        "observe_ns": 120129000,
+        "ecoule_ns": 375357855,
+        "lectures": 32,
+        "intervalle_max_ns": 12664125,
+        "niveaux_cpu": {
+          "noms_sysctl": [
+            "Performance",
+            "Efficiency"
+          ],
+          "numer": 125,
+          "denom": 3,
+          "premier_appel_monotone_ns": [
+            13662075499583,
+            13662075501958
+          ],
+          "dernier_appel_monotone_ns": [
+            13662450913250,
+            13662450924250
+          ],
+          "deltas": [
+            {
+              "nom": "Performance",
+              "utilisateur_ns": 87171333,
+              "systeme_ns": 32841916,
+              "cpu_ns": 120013249,
+              "instructions": 2429463688,
+              "cycles": 504402859
+            },
+            {
+              "nom": "Efficiency",
+              "utilisateur_ns": 78791,
+              "systeme_ns": 37000,
+              "cpu_ns": 115791,
+              "instructions": 35741,
+              "cycles": 141857
+            }
+          ]
+        }
+      },
+      {
+        "reference_thread_time_ns": 120026833,
+        "observe_ns": 120070000,
+        "ecoule_ns": 375252583,
+        "lectures": 32,
+        "intervalle_max_ns": 12597042,
+        "niveaux_cpu": {
+          "noms_sysctl": [
+            "Performance",
+            "Efficiency"
+          ],
+          "numer": 125,
+          "denom": 3,
+          "premier_appel_monotone_ns": [
+            13662526772208,
+            13662526775291
+          ],
+          "dernier_appel_monotone_ns": [
+            13662902076541,
+            13662902086375
+          ],
+          "deltas": [
+            {
+              "nom": "Performance",
+              "utilisateur_ns": 88505541,
+              "systeme_ns": 31509708,
+              "cpu_ns": 120015249,
+              "instructions": 2412363531,
+              "cycles": 517752137
+            },
+            {
+              "nom": "Efficiency",
+              "utilisateur_ns": 37458,
+              "systeme_ns": 17208,
+              "cpu_ns": 54666,
+              "instructions": 32402,
+              "cycles": 78803
+            }
+          ]
+        }
+      }
+    ],
+    "interruption_confirmee": [
+      {
+        "reference_thread_time_ns": 300002125,
+        "observe_ns": 300034000,
+        "ecoule_ns": 561032917,
+        "lectures": 48,
+        "intervalle_max_ns": 12629083,
+        "niveaux_cpu": {
+          "noms_sysctl": [
+            "Performance",
+            "Efficiency"
+          ],
+          "numer": 125,
+          "denom": 3,
+          "premier_appel_monotone_ns": [
+            13662981201541,
+            13662981205125
+          ],
+          "dernier_appel_monotone_ns": [
+            13663542261416,
+            13663542264291
+          ],
+          "deltas": [
+            {
+              "nom": "Performance",
+              "utilisateur_ns": 217573000,
+              "systeme_ns": 81797041,
+              "cpu_ns": 299370041,
+              "instructions": 5781347727,
+              "cycles": 1209130684
+            },
+            {
+              "nom": "Efficiency",
+              "utilisateur_ns": 331041,
+              "systeme_ns": 332833,
+              "cpu_ns": 663874,
+              "instructions": 2902564,
+              "cycles": 1360222
+            }
+          ]
+        },
+        "pause_confirmee_par_waitpid": {
+          "temps_arrete_ns": 255033042,
+          "cpu_durant_arret_ns": 0,
+          "etats_aux_bornes": [
+            3,
+            3
+          ],
+          "lectures": 20,
+          "etats_echantillonnes": [
+            3
+          ]
+        }
+      },
+      {
+        "reference_thread_time_ns": 300001667,
+        "observe_ns": 300031000,
+        "ecoule_ns": 561259834,
+        "lectures": 47,
+        "intervalle_max_ns": 12602146,
+        "niveaux_cpu": {
+          "noms_sysctl": [
+            "Performance",
+            "Efficiency"
+          ],
+          "numer": 125,
+          "denom": 3,
+          "premier_appel_monotone_ns": [
+            13663614567666,
+            13663614570083
+          ],
+          "dernier_appel_monotone_ns": [
+            13664175852208,
+            13664175855166
+          ],
+          "deltas": [
+            {
+              "nom": "Performance",
+              "utilisateur_ns": 216583833,
+              "systeme_ns": 82778583,
+              "cpu_ns": 299362416,
+              "instructions": 5857297107,
+              "cycles": 1218756309
+            },
+            {
+              "nom": "Efficiency",
+              "utilisateur_ns": 217916,
+              "systeme_ns": 450416,
+              "cpu_ns": 668332,
+              "instructions": 2237241,
+              "cycles": 1244722
+            }
+          ]
+        },
+        "pause_confirmee_par_waitpid": {
+          "temps_arrete_ns": 255039208,
+          "cpu_durant_arret_ns": 0,
+          "etats_aux_bornes": [
+            3,
+            3
+          ],
+          "lectures": 20,
+          "etats_echantillonnes": [
+            3
+          ]
+        }
+      },
+      {
+        "reference_thread_time_ns": 300002667,
+        "observe_ns": 300031000,
+        "ecoule_ns": 554002480,
+        "lectures": 47,
+        "intervalle_max_ns": 12573542,
+        "niveaux_cpu": {
+          "noms_sysctl": [
+            "Performance",
+            "Efficiency"
+          ],
+          "numer": 125,
+          "denom": 3,
+          "premier_appel_monotone_ns": [
+            13664254287166,
+            13664254292708
+          ],
+          "dernier_appel_monotone_ns": [
+            13664808315375,
+            13664808318416
+          ],
+          "deltas": [
+            {
+              "nom": "Performance",
+              "utilisateur_ns": 218186916,
+              "systeme_ns": 81789041,
+              "cpu_ns": 299975957,
+              "instructions": 6094138344,
+              "cycles": 1277629802
+            },
+            {
+              "nom": "Efficiency",
+              "utilisateur_ns": 21375,
+              "systeme_ns": 33583,
+              "cpu_ns": 54958,
+              "instructions": 163491,
+              "cycles": 103248
+            }
+          ]
+        },
+        "pause_confirmee_par_waitpid": {
+          "temps_arrete_ns": 253059875,
+          "cpu_durant_arret_ns": 0,
+          "etats_aux_bornes": [
+            3,
+            3
+          ],
+          "lectures": 21,
+          "etats_echantillonnes": [
+            3
+          ]
+        }
+      }
+    ]
+  }
+}

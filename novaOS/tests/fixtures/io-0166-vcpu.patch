@@ -1,0 +1,63 @@
+--- a/novaOS/kernel/src/sched/mod.rs
++++ b/novaOS/kernel/src/sched/mod.rs
+@@ -263,6 +263,7 @@
+             // jusqu’à la collecte sur une pile tierce. La moitié haute est commune.
+             unsafe { t.space.activate() };
+         }
++        crate::mesures_save::passage_idle(old == IDLE, next == IDLE);
+         self.current = next;
+         if matches!(why, Reason::Tick(_)) && old != IDLE && next != IDLE {
+             self.stats.preemptions += 1;
+--- a/novaOS/tests/compteur_sauvegarde.rs
++++ b/novaOS/tests/compteur_sauvegarde.rs
+@@ -87,9 +87,28 @@
+         BULK[usize::from(!put)].fetch_add(1, Relaxed);
+     }
+ }
++static FLUSH: [AtomicU64; 2] = [const { AtomicU64::new(0) }; 2];
++static ENTREE_IDLE: AtomicU64 = AtomicU64::new(0);
++static IDLE: AtomicU64 = AtomicU64::new(0);
++
++pub fn passage_idle(ancien: bool, nouveau: bool) {
++    if ancien == nouveau || !ACTIVE.load(Relaxed) {
++        return;
++    }
++    let maintenant = hal::timer::counter();
++    if nouveau {
++        ENTREE_IDLE.store(maintenant, Relaxed);
++    } else {
++        IDLE.fetch_add(maintenant - ENTREE_IDLE.load(Relaxed), Relaxed);
++    }
++}
++
+ pub fn bloc(op: usize, d: u64) {
+     if op < 3 && ACTIVE.load(Relaxed) {
+-        HW[2 * op].fetch_add(1, Relaxed);
++        let numero = HW[2 * op].fetch_add(1, Relaxed);
++        if op == 2 && numero < 2 {
++            FLUSH[numero as usize].store(d, Relaxed);
++        }
+         HW[2 * op + 1].fetch_add(d, Relaxed);
+     }
+ }
+@@ -109,6 +128,8 @@
+             .chain(&APPELS_FILE)
+             .chain(&HW)
+             .chain(&DMA)
++            .chain(&FLUSH)
++            .chain([&IDLE, &ENTREE_IDLE])
+             .chain([&GIFTS, &UNKNOWN])
+         {
+             c.store(0, Relaxed);
+@@ -182,6 +203,11 @@
+     }
+     ACTIVE.store(false, Relaxed);
+     hal::log(format_args!(
++        "SAVE repos={} flush_physiques={:?}",
++        IDLE.load(Relaxed),
++        FLUSH.each_ref().map(|c| c.load(Relaxed))
++    ));
++    hal::log(format_args!(
+         "SAVE dma={:?}",
+         DMA.each_ref().map(|v| v.load(Relaxed))
+     ));

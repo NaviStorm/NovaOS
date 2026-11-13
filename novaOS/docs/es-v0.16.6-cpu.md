@@ -266,3 +266,5 @@ Pour reproduire le témoin de planification, ajouter `--arriere-plan` au banc du
 ```sh
 python3 -B novaOS/tests/es_groupees_verifier_mesures.py novaOS/docs/validation/es-v0.16.6-cpu.json --exiger-seuil
 ```
+
+Les mesures du thread TCG, de chaque requête FLUSH et de la charge hôte ont fait l’objet d’une campagne ultérieure sur les mêmes scénarios. [Qualification des latences dans UTM](es-v0.16.6-vcpu.md)
