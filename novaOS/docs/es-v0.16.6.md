@@ -2,6 +2,8 @@
 
 **État au 13 novembre 2026.** Prototype sur la branche `codex/es-groupees-0166`, à partir de `3193bc9108bdc771f4627f57c84e093375cc9ea4`. Le système publié reste NovaOS v0.16.5, NovaFS v0.9.13 P9. La décision MOA couvre l'expérimentation. L'intégration attend la revue MOE/MOA. [Résultats du prototype](#sauvegarde-dans-les-invités-novaos) · [Mesures vérifiées](validation/es-v0.16.6.json)
 
+[Qualification élargie : éditions arbitraires, coupures F1/F2 et application UTM](es-v0.16.6-qualification.md).
+
 ## Audit préalable
 
 Référence mesurée sur les deux architectures, QEMU TCG, une VM neuve, un fichier dense de 4 Mio, une insertion en tête et une sauvegarde sous un nom libre. L'histogramme compte un SEND suivi d'un RECEIVE réussi par le processus NovaFS, y compris le service de ses clients et le relais bloc. Le relais exécute à son tour chaque demande sur le pilote. Son trafic supplémentaire ne double pas le compteur publié. [Traces v0.16.5](validation/es-v0.16.5.json)

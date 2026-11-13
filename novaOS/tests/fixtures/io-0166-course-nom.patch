@@ -1,0 +1,28 @@
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -419,9 +419,22 @@
+                 }
+                 if self.trial==Trial::Concurrent && matches!(&self.source,Some(Source::Pages(_))) {
+                     self.trial=Trial::Normal;
+-                    let h=self.fs.open_at(0,self.path.as_bytes(),w::WRITABLE)?;
+-                    self.fs.write(h,12345,b"?")?;
+-                    self.fs.sync(h)?;self.fs.close(h)?;
++                    if self.upload.as_ref().is_some_and(|u| u.name == b"renom-test") {
++                        let nom = self.path.as_bytes();
++                        if self.fs.at(w::UNLINK_AT, 0, nom, 0).err() != Some(w::BUSY) {
++                            return Err(rt::REFUSED);
++                        }
++                        self.fs.rename(0, nom, 0, b"source-deplacee")?;
++                        let h = self.fs.open_at(0, nom, w::CREATE | w::WRITABLE)?;
++                        self.fs.write(h, 0, b"tiers")?;
++                        self.fs.sync(h)?;
++                        self.fs.close(h)?;
++                    } else {
++                        let h = self.fs.open_at(0, self.path.as_bytes(), w::WRITABLE)?;
++                        self.fs.write(h, 12345, b"?")?;
++                        self.fs.sync(h)?;
++                        self.fs.close(h)?;
++                    }
+                 }
+                 self.save()?;
+                 Ok(0)

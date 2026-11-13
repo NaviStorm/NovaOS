@@ -207,7 +207,7 @@
              "link-arg=-T{}",
              user.join(if file_client {
 -                "novafs/service.ld"
-+                "storage/groupe.ld"
++                if name == "storage/disk" { "storage/groupe.ld" } else { "novafs/service.ld" }
              } else {
                  "demo.ld"
 @@ -84,4 +84,5 @@

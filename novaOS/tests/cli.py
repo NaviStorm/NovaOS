@@ -17,14 +17,21 @@ from session_cli import HOST, LONG, fixture, machine
 
 
 class Terminal:
-    def __init__(self, arch, sector, image, label, test=False):
+    def __init__(self, arch, sector, image, label, test=False, *, qmp_bloc=None):
         cmd, env = machine(arch, sector, image, test)
+        if qmp_bloc is not None:
+            # Ce descripteur privé évite tout serveur QMP sur le réseau.
+            index = cmd.index("-drive") + 1
+            origine = "file=" + str(image.resolve()) + ","
+            assert origine in cmd[index]
+            cmd[index] = cmd[index].replace(origine, "file=blkdebug::" + str(image.resolve()) + ",")
+            cmd += ["-chardev", f"socket,id=banc,fd={qmp_bloc}", "-mon", "chardev=banc,mode=control"]
         self.archive = ROOT / "build" / f"cli-{arch}-{sector}-{label}.serial"
         self.log = self.archive.open("wb")
         self.start = time.monotonic()
         self.vm = subprocess.Popen(
             cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT, bufsize=0,
+            stderr=subprocess.STDOUT, bufsize=0, pass_fds=() if qmp_bloc is None else (qmp_bloc,),
         )
         self.pending = b""
 

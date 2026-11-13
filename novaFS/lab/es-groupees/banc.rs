@@ -4,6 +4,7 @@ mod front;
 #[allow(dead_code)]
 #[path = "../heap_meter.rs"]
 mod heap_meter;
+mod images;
 use file::FileBloc;
 use novafs::{
     BlocGroupe, Block, Device, Engine, Error, Ids, Mode, Result, Stat,
@@ -272,9 +273,27 @@ fn coupures(secteur: u32) -> Result<Value> {
         Err(Error::Exists)
     ));
     verifie(&fs, "/copie", b"intact")?;
+    let ancienne_revision = fs.stat(SOURCE)?;
+    fs.unlink(SOURCE)?;
+    for remplace in [false, true] {
+        if remplace {
+            fs.create(SOURCE)?;
+            fs.write(SOURCE, 0, b"nouvel objet")?;
+            assert_ne!(fs.stat(SOURCE)?.id, ancienne_revision.id);
+        }
+        assert!(
+            fs.sauvegarde_labo(ancienne_revision, fs.root_id(), "interdit", b'X')
+                .is_err()
+        );
+        assert!(matches!(fs.stat("/interdit"), Err(Error::NotFound)));
+    }
+    let fs = montage(&fs.unmount()?.0.into_inner().control().snapshot())?;
+    verifie(&fs, SOURCE, b"nouvel objet")?;
+    verifie(&fs, "/copie", b"intact")?;
+    assert!(matches!(fs.stat("/interdit"), Err(Error::NotFound)));
     Ok(
         json!({"secteur":secteur,"frontieres":frontieres.len(),"injections":courues,
-        "ancien":issues[0],"nouveau":issues[1],"refus":issues[2],"acquit_persistant":true,"conflits":2}),
+        "ancien":issues[0],"nouveau":issues[1],"refus":issues[2],"acquit_persistant":true,"conflits":4}),
     )
 }
 
@@ -362,6 +381,22 @@ fn retrait_transaction(secteur: u32) -> Result<()> {
 
 fn main() -> Result<()> {
     let a: Vec<_> = std::env::args().collect();
+    if let [_, op, chemin, secteur, profil] = a.as_slice()
+        && op == "--image"
+    {
+        if !matches!(profil.as_str(), "dense" | "fragmente" | "sature" | "utm") {
+            return Err(Error::Invalid("profil de qualification"));
+        }
+        println!(
+            "{}",
+            images::creer(
+                chemin.as_ref(),
+                secteur.parse().map_err(|_| Error::Invalid("secteur"))?,
+                profil
+            )?
+        );
+        return Ok(());
+    }
     if a.get(1).is_some_and(|s| s == "--pilote") {
         return file::pilote(a[2].parse().unwrap(), a[3].parse().unwrap());
     }

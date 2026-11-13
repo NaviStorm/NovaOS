@@ -1,0 +1,37 @@
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -149,6 +149,23 @@
+         self.qualification.before_flush();
+         if self.groupe.get() && !self.attente.borrow().0.is_empty() {
+             let mut pending = self.attente.borrow_mut();
++            let rang = self.rang_bar.get() + 1;
++            match (self.coupe.get(), rang) {
++                (4, 1) => crate::qualification::stop(b"COUPURE groupe avant-f1"),
++                (5, 2) => crate::qualification::stop(b"COUPURE groupe avant-f2"),
++                (6, 1) | (7, 2) => {
++                    use crate::runtime as rt;
++                    let label = b"COUPURE groupe armer";
++                    rt::call(rt::DEBUG_WRITE, label.as_ptr() as u64, label.len() as u64, 0);
++                    // Même rendez-vous borné que FaultProbe ; le banc exige wait_break.
++                    if !matches!(rt::receive_for(rt::config(4), 250), Err(rt::TIMED_OUT)) {
++                        rt::exit(rt::BAD_ARGUMENT);
++                    }
++                    let pret = b"COUPURE groupe soumission";
++                    rt::call(rt::DEBUG_WRITE, pret.as_ptr() as u64, pret.len() as u64, 0);
++                }
++                _ => (),
++            }
+             self.lot(&pending.0, 2, pending.1.as_ptr() as u64)?;
+             let f = self.rang_bar.get() + 1;
+             self.rang_bar.set(f);
+@@ -190,6 +207,10 @@
+     pub(crate) fn point_coupure(&self, n: &str) {
+         self.rang_bar.set(0);
+         self.coupe.set(match n {
++            "coupure-avant-f1" => 4,
++            "coupure-avant-f2" => 5,
++            "coupure-vol-f1" => 6,
++            "coupure-vol-f2" => 7,
+             "coupure-pages" => 1,
+             "coupure-f1" => 2,
+             "coupure-f2" => 3,

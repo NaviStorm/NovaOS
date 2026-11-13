@@ -1,0 +1,22 @@
+--- a/novaOS/kernel/src/hardware/block/qualification.rs
++++ b/novaOS/kernel/src/hardware/block/qualification.rs
+@@ -296,7 +296,7 @@
+         }
+     };
+     autoriser_sortie(&mut t)?;
+-    publier(t, table, 41)
++    publier(t, table, 42)
+ }
+
+ #[cfg(feature = "installation-gpt")]
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -183,7 +183,7 @@
+                 }
+                 let ids = Anchor::decode(&first, 0).map_err(error)?.ids;
+                 let mut lv = [0u8; 16];
+-                if rt::config(1) == 41 {
++                if matches!(rt::config(1), 41 | 42) {
+                     lv[..8].copy_from_slice(&rt::config(2).to_le_bytes());
+                     lv[8..].copy_from_slice(&rt::config(3).to_le_bytes());
+                 }
