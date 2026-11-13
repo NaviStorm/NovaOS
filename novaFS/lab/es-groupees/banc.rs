@@ -189,10 +189,42 @@ fn montage(s: &SimSnapshot) -> Result<Engine<Sim>> {
     Engine::mount_current(Sim(RefCell::new(s.device())), IDS, Mode::ReadWrite)
 }
 
-fn coupures(secteur: u32) -> Result<Value> {
+fn coupures(secteur: u32, plages: bool) -> Result<Value> {
     let n = 16384 + 127;
     let original = contenu(n);
-    let nouveau = [b"X".as_slice(), &original].concat();
+    let mut litteral = "É".repeat(2053).into_bytes();
+    litteral.extend_from_slice("🦊".as_bytes());
+    let positions = [[4095, 7, 4106], [8194, 33, 0], [n as u64, 0, 4]];
+    let nouveau = if plages {
+        [
+            &original[..4095],
+            &litteral[..4106],
+            &original[4102..8194],
+            &original[8227..],
+            &litteral[4106..],
+        ]
+        .concat()
+    } else {
+        [b"X".as_slice(), &original].concat()
+    };
+    let publier = |fs: &mut Engine<Sim>, st, nom| {
+        if plages {
+            fs.sauvegarde_plages(
+                Some(st),
+                fs.root_id(),
+                nom,
+                &positions,
+                litteral.len() as u64,
+                |pos, buf| {
+                    let i = pos as usize;
+                    buf.copy_from_slice(&litteral[i..i + buf.len()]);
+                    Ok(())
+                },
+            )
+        } else {
+            fs.sauvegarde_labo(st, fs.root_id(), nom, b'X')
+        }
+    };
     let snap = fixture(SimDevice::new(512, secteur)?, n)?
         .control()
         .snapshot();
@@ -207,7 +239,7 @@ fn coupures(secteur: u32) -> Result<Value> {
         let st = fs.stat(SOURCE)?;
         anchor = (fs.generation() + 1) % 2;
         ctl.trace(None, None);
-        fs.sauvegarde_labo(st, fs.root_id(), "copie", b'X')?;
+        publier(&mut fs, st, "copie")?;
         frontieres.extend(ctl.events());
         assert_eq!(
             frontieres
@@ -234,7 +266,7 @@ fn coupures(secteur: u32) -> Result<Value> {
             let mut fs = Engine::mount_current(Sim(RefCell::new(d)), IDS, Mode::ReadWrite)?;
             let st = fs.stat(SOURCE)?;
             ctl.trace(Some(i), None);
-            assert!(fs.sauvegarde_labo(st, fs.root_id(), "copie", b'X').is_err());
+            assert!(publier(&mut fs, st, "copie").is_err());
             ctl.power_cut(how)?;
             let cold = Engine::mount_current(ctl.snapshot().device(), IDS, Mode::ReadOnly);
             match cold {
@@ -261,15 +293,13 @@ fn coupures(secteur: u32) -> Result<Value> {
     let mut fs = montage(&snap)?;
     let ancien = fs.stat(SOURCE)?;
     fs.write(SOURCE, 1, b"B")?;
-    assert!(
-        fs.sauvegarde_labo(ancien, fs.root_id(), "copie", b'X')
-            .is_err()
-    );
+    assert!(publier(&mut fs, ancien, "copie").is_err());
     assert!(matches!(fs.stat("/copie"), Err(Error::NotFound)));
     fs.create("/copie")?;
     fs.write("/copie", 0, b"intact")?;
+    let concurrent = fs.stat(SOURCE)?;
     assert!(matches!(
-        fs.sauvegarde_labo(fs.stat(SOURCE)?, fs.root_id(), "copie", b'X'),
+        publier(&mut fs, concurrent, "copie"),
         Err(Error::Exists)
     ));
     verifie(&fs, "/copie", b"intact")?;
@@ -281,10 +311,7 @@ fn coupures(secteur: u32) -> Result<Value> {
             fs.write(SOURCE, 0, b"nouvel objet")?;
             assert_ne!(fs.stat(SOURCE)?.id, ancienne_revision.id);
         }
-        assert!(
-            fs.sauvegarde_labo(ancienne_revision, fs.root_id(), "interdit", b'X')
-                .is_err()
-        );
+        assert!(publier(&mut fs, ancienne_revision, "interdit").is_err());
         assert!(matches!(fs.stat("/interdit"), Err(Error::NotFound)));
     }
     let fs = montage(&fs.unmount()?.0.into_inner().control().snapshot())?;
@@ -292,9 +319,80 @@ fn coupures(secteur: u32) -> Result<Value> {
     verifie(&fs, "/copie", b"intact")?;
     assert!(matches!(fs.stat("/interdit"), Err(Error::NotFound)));
     Ok(
-        json!({"secteur":secteur,"frontieres":frontieres.len(),"injections":courues,
+        json!({"secteur":secteur,"plages":plages,"frontieres":frontieres.len(),"injections":courues,
         "ancien":issues[0],"nouveau":issues[1],"refus":issues[2],"acquit_persistant":true,"conflits":4}),
     )
+}
+
+// Chaque échec conserve le nom libre et la génération active. Tester aussi un
+// scalaire sur deux lots de 1 Mio et un CR/LF sur deux pages.
+fn refus_et_validation(secteur: u32) -> Result<()> {
+    let d = fixture(SimDevice::new(1024, secteur)?, 32)?;
+    let mut fs = Engine::mount_current(Sim(RefCell::new(d)), IDS, Mode::ReadWrite)?;
+    let parent = fs.root_id();
+    let st = fs.stat(SOURCE)?;
+    let generation = fs.generation();
+    for (ops, lit) in [
+        (vec![[35, 1, 0]], vec![]),
+        (vec![[6, 9, 0], [9, 5, 1]], vec![65]),
+        (vec![[0, 0, 2]], vec![65]),
+        (vec![[0, 0, 2]], vec![0xc0, 0x80]),
+        (vec![[0, 0, 3]], vec![0xed, 0xa0, 0x80]),
+        (vec![[0, 0, 2]], vec![0xc2, 0x81]),
+        (vec![[32, 0, 1]], vec![0xf0]),
+        (vec![[32, 0, 1]], vec![13]),
+    ] {
+        assert!(
+            fs.sauvegarde_plages(
+                Some(st),
+                parent,
+                "refus",
+                &ops,
+                lit.len() as u64,
+                |at, b| {
+                    b.copy_from_slice(&lit[at as usize..at as usize + b.len()]);
+                    Ok(())
+                }
+            )
+            .is_err()
+        );
+        assert_eq!(fs.generation(), generation);
+        assert!(matches!(fs.stat("/refus"), Err(Error::NotFound)));
+    }
+    let mut texte = vec![b'a'; (1 << 20) + 8];
+    texte[4095..4097].copy_from_slice(b"\r\n");
+    texte[(1 << 20) - 1..(1 << 20) + 3].copy_from_slice("🦊".as_bytes());
+    let ops = [[0, 0, texte.len() as u64]];
+    for retrait in [Some(0usize), Some(1 << 20), None] {
+        let resultat = fs.sauvegarde_plages(
+            None,
+            parent,
+            "frontiere",
+            &ops,
+            texte.len() as u64,
+            |at, b| {
+                if retrait.is_some_and(|p| at as usize >= p) {
+                    return Err(Error::Invalid("révocation simulée"));
+                }
+                b.copy_from_slice(&texte[at as usize..at as usize + b.len()]);
+                Ok(())
+            },
+        );
+        if retrait.is_some() {
+            assert!(resultat.is_err());
+            assert_eq!(fs.generation(), generation);
+            assert!(matches!(fs.stat("/frontiere"), Err(Error::NotFound)));
+        } else {
+            resultat?;
+        }
+    }
+    let cold = Engine::mount_current(
+        fs.unmount()?.0.into_inner().control().snapshot().device(),
+        IDS,
+        Mode::ReadOnly,
+    )?;
+    cold.verify()?;
+    verifie(&cold, "/frontiere", &texte)
 }
 
 fn concurrence(secteur: u32) -> Result<()> {
@@ -412,7 +510,9 @@ fn main() -> Result<()> {
         concurrence(secteur)?;
         retrait_transaction(secteur)?;
         ecrivains(secteur)?;
-        pannes.push(coupures(secteur)?);
+        pannes.push(coupures(secteur, false)?);
+        pannes.push(coupures(secteur, true)?);
+        refus_et_validation(secteur)?;
         for _ in 0..3 {
             for groupe in [false, true] {
                 mesures.push(magasin(secteur, groupe)?);
@@ -421,7 +521,7 @@ fn main() -> Result<()> {
     }
     println!(
         "{}",
-        json!({"mesures":mesures,"coupures":pannes,"retrait_deux_commandes":[512,4096],"deux_ecrivains_concurrents":[512,4096],"transaction_revoquee":[512,4096]})
+        json!({"mesures":mesures,"coupures":pannes,"plages_invalides_et_unicode":[512,4096],"retrait_deux_commandes":[512,4096],"deux_ecrivains_concurrents":[512,4096],"transaction_revoquee":[512,4096]})
     );
     Ok(())
 }

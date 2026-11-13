@@ -1,0 +1,177 @@
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -367,4 +367,5 @@
+         self.pending = Some(seen);
+         drop(irq);
++        crate::sched::process::ipc::injecte_retrait();
+         self.finish(1)
+     }
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -398,2 +398,60 @@
+     }
+ }
++
++// Banc uniquement. Intercaler le retrait après le kick OUT de la première page,
++// avant de consommer le descripteur used ou d'acquitter la demande au pilote.
++use core::sync::atomic::{AtomicU64, Ordering::SeqCst};
++static RETRAIT: AtomicU64 = AtomicU64::new(0);
++static KICK: AtomicU64 = AtomicU64::new(0);
++pub(crate) fn arme_retrait(cap: u64) -> Res<u64> {
++    with(|s| {
++        let pid = s.thread(s.current).owner.unwrap();
++        let node = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
++        let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(DENIED)?;
++        if lane.handles[1] != cap || lane.parties[1] != pid.number {
++            return Err(DENIED);
++        }
++        RETRAIT.store(node.endpoint.0, SeqCst);
++        Ok(0)
++    })
++}
++pub(crate) fn retrait_arme() -> bool {
++    RETRAIT.load(SeqCst) != 0
++}
++pub(crate) fn injecte_retrait() {
++    let ep = RETRAIT.load(SeqCst);
++    if ep == 0 || KICK.load(SeqCst) != 0 {
++        return;
++    }
++    with(|s| {
++        let lane = s.ipc.ends.get(Reference(ep).slot()).bulk.unwrap();
++        let Some(r) = lane.reservation else {
++            return;
++        };
++        if r.lire || !r.en_vol {
++            return;
++        }
++        let root = s.ipc.node(lane.nodes[0]).unwrap();
++        assert_eq!(s.ipc.retrait_lot(root, true), Err(WOULD_BLOCK));
++        KICK.store(crate::hardware::block::kicks(), SeqCst);
++    })
++}
++pub(crate) fn confirme_retrait(cap: u64) -> bool {
++    let kick = KICK.load(SeqCst);
++    if kick == 0 {
++        return false;
++    }
++    with(|s| {
++        let pid = s.thread(s.current).owner.unwrap();
++        let root = s.ipc.lookup(pid, cap, MANAGE).unwrap();
++        assert_eq!(root.endpoint.0, RETRAIT.load(SeqCst));
++        assert_eq!(s.ipc.retrait_lot(root, true), Ok(()));
++        assert_eq!(s.ipc.revoke(root), 1);
++        assert!(s.ipc.ends.get(root.endpoint.slot()).bulk.is_none());
++        assert_eq!(crate::hardware::block::kicks(), kick);
++        KICK.store(0, SeqCst);
++        RETRAIT.store(0, SeqCst);
++    });
++    crate::hal::log(format_args!("COUPURE groupe retrait"));
++    true
++}
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -10,4 +10,5 @@
+ use pool::{Bits, Pool};
+ mod bulk;
++pub(crate) use bulk::{arme_retrait, confirme_retrait, injecte_retrait, retrait_arme};
+ mod scelle;
+ pub(super) use scelle::appel as pret;
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -118,4 +118,5 @@
+         0x1002e..=0x10030 | 0x10032 => ipc::lot(id, a, b, c),
+         0x10031 if b == 56 && c == 0 => commande_lot(a),
++        0x10033 if b == 0 && c == 0 => ipc::arme_retrait(a),
+         0x10034..=0x10039 => ipc::pret(id, a, b, c),
+         IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
+@@ -483,7 +484,14 @@
+         return Err(BAD_ADDRESS);
+     }
++    if op == 3 && ipc::retrait_arme() {
++        let voisin = block::wire::lba(&w) ^ 1;
++        assert!(!ipc::admis(cap, tag, i, n, op, voisin, false));
++    }
+     let autorise = || ipc::admis(cap, tag, i, n, op, block::wire::lba(&w), true);
+     let resultat = block::commande_groupee(pid.number, key, &w, &mut page, autorise);
+     ipc::termine(cap, tag, op, resultat.is_ok());
++    if ipc::confirme_retrait(cap) {
++        return Err(REVOKED);
++    }
+     resultat?;
+     if op == 2
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -19,4 +19,6 @@
+     geometry: Geometry,
+     count: u64,
++    coupe: Cell<u8>,
++    rang_bar: Cell<u8>,
+     failed: Cell<bool>,
+     groupe: Cell<bool>,
+@@ -42,4 +44,6 @@
+             geometry: Geometry::new(count, size)?,
+             count,
++            coupe: Cell::new(0),
++            rang_bar: Cell::new(0),
+             failed: Cell::new(false),
+             groupe: Cell::new(false),
+@@ -147,4 +151,11 @@
+             let mut pending = self.attente.borrow_mut();
+             self.lot(&pending.0, 2, pending.1.as_ptr() as u64)?;
++            let f = self.rang_bar.get() + 1;
++            self.rang_bar.set(f);
++            match (self.coupe.get(), f) {
++                (2, 1) => crate::qualification::stop(b"COUPURE groupe f1"),
++                (3, 2) => crate::qualification::stop(b"COUPURE groupe f2"),
++                _ => (),
++            }
+             pending.1.iter_mut().for_each(|p| p.fill(0));
+             pending.0.clear();
+@@ -169,8 +180,21 @@
+             return Err(Error::Invalid("longueur lot"));
+         }
+-        self.lot(b, 1, p.as_ptr() as u64)
++        self.lot(b, 1, p.as_ptr() as u64)?;
++        if self.coupe.get() == 1 {
++            crate::qualification::stop(b"COUPURE groupe pages");
++        }
++        Ok(())
+     }
+ }
+ impl IpcDevice<'_> {
++    pub(crate) fn point_coupure(&self, n: &str) {
++        self.rang_bar.set(0);
++        self.coupe.set(match n {
++            "coupure-pages" => 1,
++            "coupure-f1" => 2,
++            "coupure-f2" => 3,
++            _ => 0,
++        });
++    }
+     pub(crate) fn groupe<T>(&self, action: impl FnOnce() -> T) -> T {
+         self.groupe.set(true);
+--- a/novaOS/user/novafs/files/selected.rs
++++ b/novaOS/user/novafs/files/selected.rs
+@@ -220,4 +220,8 @@
+         s.clock.sample()?;
+         s.dev.start_probe();
++        s.dev.point_coupure(&dest.name);
++        if dest.name == "coupure-retrait" {
++            rt::value(rt::call(0x10033, rt::config(10), 0, 0))?;
++        }
+         s.dev
+             .groupe(|| fs.sauvegarde_labo(st, dest.id, &dest.name, q[2]))
+--- a/novaOS/user/novafs/files/plan.rs
++++ b/novaOS/user/novafs/files/plan.rs
+@@ -84,6 +84,10 @@
+         s.clock.sample()?;
+         let fs = s.fs.as_mut().ok_or(rt::CLOSED)?;
+         s.dev.start_probe();
++        s.dev.point_coupure(&dest.name);
++        if dest.name=="coupure-retrait" {
++            rt::value(rt::call(0x10033,rt::config(10),0,0))?;
++        }
+         let mut interruption = None;
+         let r = s.dev.groupe(|| {
+             fs.sauvegarde_plages(

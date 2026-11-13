@@ -10,7 +10,7 @@ use std::process::{Child, Command, Stdio};
 use std::sync::{Arc, Condvar, Mutex};
 use zeroize::Zeroizing;
 
-const MAX: usize = 128;
+const MAX: usize = 256;
 const READ: u8 = 1;
 const WRITE: u8 = 2;
 const FLUSH: u8 = 3;

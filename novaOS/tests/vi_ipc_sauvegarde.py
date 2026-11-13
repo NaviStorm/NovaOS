@@ -49,7 +49,7 @@ def bilan(journal, mesure):
     if lots:
         ((vecteur, marques),) = lots
         lectures, pages_lues, ecritures, pages_ecrites, avec_flush, pages_finales = json.loads(vecteur)
-        assert 0 < lectures <= pages_lues <= physical["lecture"]["nombre"]
+        assert 0 <= lectures <= pages_lues <= physical["lecture"]["nombre"]
         assert 0 < ecritures <= pages_ecrites
         assert 0 < avec_flush <= pages_finales
         assert pages_ecrites + pages_finales <= physical["ecriture"]["nombre"]
@@ -66,16 +66,33 @@ def bilan(journal, mesure):
                                               soumet=soumet, termine=termine), lots=json.loads(vecteur), preparation_et_donnees_ms=ms(f1),
                       metadonnees_et_F1_ms=ms(apres_f1-f1),
                       ancre_et_F2_ms=ms(apres_f2-f2), persistance_acquise_ms=ms(apres_f2))
+    moteur = re.findall(r"SAVE durees_moteur=(\[[^\]]+\])", text)
+    if moteur:
+        phases["phases_moteur_ms"] = dict(zip(
+            ("sha256_source", "sha256_candidate_et_extents", "validation_texte", "reservation_pages"),
+            map(ms, json.loads(moteur[0])), strict=True))
+    durees = re.findall(r"SAVE durees_lots=(\[[^\]]+\])", text)
+    if durees:
+        lecture, ecriture = map(ms, json.loads(durees[0]))
+        phases.update(lots_bloc_lecture_ms=lecture, lots_bloc_ecriture_ms=ecriture)
     assert counts["moteur_bloc"] == counts["bloc_pilote"] == requetes
     gifts = int(fields["dons"])
     total = sum(counts.values()) + gifts
     elapsed = round(row["transfert_avant_oui_ms"] + row["publication_apres_oui_ms"], 3)
-    return dict(ipc_par_liaison=counts, dons_acquittes=gifts, total=total,
+    prets = re.findall(r"SAVE pret_local=(\[[^\]]+\])", text)
+    locaux_pret = json.loads(prets[0]) if prets else [0] * 6
+    assert len(locaux_pret) == 6
+    # Compter aussi les contrôles du prêt (sceller, déléguer, admettre, retirer,
+    # libérer). Les copies synchrones internes sont ventilées comme les copies bloc.
+    controles_pret = sum(locaux_pret) - locaux_pret[2]
+    conservateur = total + sum(controls.values()) + controles_pret
+    return dict(appels_locaux_pret=locaux_pret, avec_copies_locales_pret=conservateur + locaux_pret[2],
+                ipc_par_liaison=counts, dons_acquittes=gifts, total=total,
                 controles_noyau_locaux=controls, put=int(fields["put"]), take=int(fields["take"]), bloc=physical,
-                total_avec_controles_locaux=total + sum(controls.values()), **phases, appel_publish_ms=ms(fields["duree"]),
+                total_avec_controles_locaux=conservateur, **phases, appel_publish_ms=ms(fields["duree"]),
                 commande_au_succes_ms=elapsed, oui_au_succes_ms=row["publication_apres_oui_ms"],
                 session_compteur_historique=int(re.search(r"STOCKAGE trafic tours=(\d+)", text)[1]),
-                ipc_conforme=total + sum(controls.values()) <= 64, temps_conforme=elapsed < 1000)
+                ipc_conforme=conservateur <= 64, temps_conforme=elapsed < 1000)
 
 
 if __name__ == "__main__":

@@ -10,10 +10,15 @@ static COUNTS: [AtomicU64; 25] = [const { AtomicU64::new(0) }; 25];
 static GIFTS: AtomicU64 = AtomicU64::new(0);
 static LOCAL: [AtomicU64; 7] = [const { AtomicU64::new(0) }; 7];
 static UNKNOWN: AtomicU64 = AtomicU64::new(0);
+static PRET: [AtomicU64; 6] = [const { AtomicU64::new(0) }; 6];
 static BULK: [AtomicU64; 2] = [const { AtomicU64::new(0) }; 2];
 static PHASE: [AtomicU64; 3] = [const { AtomicU64::new(0) }; 3];
 static LOTS: [AtomicU64; 6] = [const { AtomicU64::new(0) }; 6];
 static BARRIERES: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
+static TEMPS_LOTS: [AtomicU64; 2] = [const { AtomicU64::new(0) }; 2];
+static DUREE_MOTEUR: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
+static ENTREE_MOTEUR: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
+static ENTREE_LOT: AtomicU64 = AtomicU64::new(0);
 static APPELS_FILE: [AtomicU64; 5] = [const { AtomicU64::new(0) }; 5];
 static HW: [AtomicU64; 6] = [const { AtomicU64::new(0) }; 6];
 
@@ -60,6 +65,9 @@ pub fn control(id: u64) {
     LOCAL[i].fetch_add(1, Relaxed);
 }
 pub fn appel_file(id: u64) {
+    if ACTIVE.load(Relaxed) && (0x10034..=0x10039).contains(&id) {
+        PRET[(id - 0x10034) as usize].fetch_add(1, Relaxed);
+    }
     if ACTIVE.load(Relaxed) && (0x1002e..=0x10032).contains(&id) {
         APPELS_FILE[(id - 0x1002e) as usize].fetch_add(1, Relaxed);
     }
@@ -81,9 +89,12 @@ pub fn marker(pid: u64, s: &[u8]) -> bool {
         for c in COUNTS
             .iter()
             .chain(&BULK)
+            .chain(&PRET)
             .chain(&LOCAL)
             .chain(&LOTS)
             .chain(&BARRIERES)
+            .chain(&TEMPS_LOTS)
+            .chain(&DUREE_MOTEUR)
             .chain(&PHASE)
             .chain(&APPELS_FILE)
             .chain(&HW)
@@ -99,10 +110,33 @@ pub fn marker(pid: u64, s: &[u8]) -> bool {
     if !ACTIVE.load(Relaxed) {
         return false;
     }
+    if pid == 2 && s.len() == 5 && &s[..3] == b"CPU" && s[3] < 4 && s[4] <= 1 {
+        let i = usize::from(s[3]);
+        if s[4] == 0 {
+            ENTREE_MOTEUR[i].store(now, Relaxed);
+        } else {
+            DUREE_MOTEUR[i].fetch_add(now - ENTREE_MOTEUR[i].load(Relaxed), Relaxed);
+        }
+        return true;
+    }
     if pid == 3 && s.len() == 13 && &s[..4] == b"LOT " && s[4] < 3 {
         let i = 2 * usize::from(s[4]);
         LOTS[i].fetch_add(1, Relaxed);
         LOTS[i + 1].fetch_add(u64::from_le_bytes(s[5..].try_into().unwrap()), Relaxed);
+        return true;
+    }
+    if pid == 2
+        && matches!(
+            s,
+            b"LOTS lire" | b"LOTS ecrire" | b"LOTS lu" | b"LOTS ecrit"
+        )
+    {
+        if matches!(s, b"LOTS lire" | b"LOTS ecrire") {
+            ENTREE_LOT.store(now, Relaxed);
+        } else {
+            let i = usize::from(s == b"LOTS ecrit");
+            TEMPS_LOTS[i].fetch_add(now - ENTREE_LOT.load(Relaxed), Relaxed);
+        }
         return true;
     }
     if pid == 2 && matches!(s, b"LOT flush debut" | b"LOT flush fin") {
@@ -131,7 +165,23 @@ pub fn marker(pid: u64, s: &[u8]) -> bool {
         return false;
     }
     ACTIVE.store(false, Relaxed);
-    if LOTS[0].load(Relaxed) > 0 {
+    hal::log(format_args!(
+        "SAVE pret_local={:?}",
+        PRET.each_ref().map(|v| v.load(Relaxed))
+    ));
+    if DUREE_MOTEUR.iter().any(|t| t.load(Relaxed) > 0) {
+        hal::log(format_args!(
+            "SAVE durees_moteur={:?}",
+            DUREE_MOTEUR.each_ref().map(|t| t.load(Relaxed))
+        ));
+    }
+    if TEMPS_LOTS.iter().any(|t| t.load(Relaxed) > 0) {
+        hal::log(format_args!(
+            "SAVE durees_lots={:?}",
+            TEMPS_LOTS.each_ref().map(|t| t.load(Relaxed))
+        ));
+    }
+    if LOTS[2].load(Relaxed) > 0 {
         hal::log(format_args!(
             "SAVE groupes={:?} barrieres={:?}",
             LOTS.each_ref().map(|v| v.load(Relaxed)),

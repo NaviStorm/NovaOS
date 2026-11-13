@@ -57,20 +57,32 @@ class Console:
     def __init__(self, fd, journal):
         self.fd, self.journal, self.pending = fd, journal, b""
 
-    def attendre(self, marker, timeout=900):
+    def _lecture(self, marqueurs, timeout):
         fin = time.monotonic() + timeout
-        while marker not in self.pending:
-            if time.monotonic() >= fin:
-                raise TimeoutError((marker, self.pending[-1400:]))
-            if select.select([self.fd], [], [], .2)[0]:
+        while True:
+            vus = [(i, m) for m in marqueurs if (i := self.pending.find(m)) >= 0]
+            if vus:
+                _, marque = min(vus)
+                avant, _, self.pending = self.pending.partition(marque)
+                return marque, avant + marque
+            restant = fin - time.monotonic()
+            if restant <= 0:
+                raise TimeoutError((marqueurs, self.pending[-1400:]))
+            if select.select([self.fd], [], [], min(.2, restant))[0]:
                 bloc = os.read(self.fd, 65536)
                 if not bloc:
-                    raise EOFError(marker)
+                    raise EOFError(marqueurs)
                 self.journal.write(bloc)
                 self.journal.flush()
                 self.pending += bloc
-        before, _, self.pending = self.pending.partition(marker)
-        return before + marker
+
+    def attendre(self, marker, timeout=900):
+        return self._lecture((marker,), timeout)[1]
+
+    def attendre_une(self, marqueurs, timeout):
+        """Première réponse terminale reconnue, succès ou refus du service."""
+        marque, _ = self._lecture(tuple(m.encode() for m in marqueurs), timeout)
+        return marque.decode()
 
     def ligne(self, commande, fin=b"nsh> "):
         os.write(self.fd, commande.encode()+b"\r")

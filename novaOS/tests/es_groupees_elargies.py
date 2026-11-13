@@ -15,7 +15,10 @@ from vi_ipc_sauvegarde import bilan
 TAILLE = 4 << 20
 SEQUENCE = b"A" * 126 + b"Z\n"
 MILIEU = TAILLE // 2
-CAS = ("debut", "milieu", "fin", "multiple", "fragmente", "sature", "index")
+LOCALISES = tuple(f"{op}-{pos}" for op in ("inserer", "supprimer", "remplacer")
+                  for pos in ("debut", "milieu", "fin", "multiple"))
+GRANDS = ("ajout-4m", "neuf-4m", "ajout-4m-milieu", "ajout-4m-fin", "ajout-4m-multiple")
+CAS = (*LOCALISES, *GRANDS, "debut", "milieu", "fin", "multiple", "fragmente", "sature", "index")
 
 
 def original():
@@ -24,8 +27,62 @@ def original():
     return bytes(contenu)
 
 
+def grande_insertion():
+    return bytes(32 + (i * 17 + i // 4096) % 95 for i in range(TAILLE))
+
+
 def operation(cas, envoyer, attendre):
     source = original()
+    if cas in GRANDS:
+        # Ctrl+P n'est câblé que dans la fixture de charge. La même mutation
+        # du gap buffer et la même sauvegarde que dans l'éditeur sont exercées.
+        position = 0
+        if cas == "neuf-4m":
+            source = b""
+        if cas == "ajout-4m-multiple":
+            envoyer("Gk$x")
+            source = source[:TAILLE - 2] + source[TAILLE - 1:]
+        if cas in ("ajout-4m-milieu", "ajout-4m-multiple"):
+            envoyer("gg0/MILIEU\r")
+            attendre("16385:1")
+            position = MILIEU
+        elif cas == "ajout-4m-fin":
+            envoyer("G")
+            attendre("32769:1")
+            position = TAILLE
+        envoyer("\x10")
+        attendre("préparation de charge terminée")
+        texte = grande_insertion()
+        contenu = source[:position] + texte + source[position:]
+        if cas == "ajout-4m-multiple":
+            envoyer("gg0iΩ\x1b")
+            contenu = "Ω".encode() + contenu
+        return contenu
+    if cas in LOCALISES:
+        op, pos = cas.split("-")
+        lieux = {"debut": 0, "milieu": MILIEU, "fin": TAILLE - 2}
+        selection = ["fin", "milieu", "debut"] if pos == "multiple" else [pos]
+        attendu = source
+        for lieu in selection:
+            at = lieux[lieu]
+            if lieu == "fin":
+                envoyer("Gk$")
+            elif lieu == "milieu":
+                envoyer("/MILIEU\r")
+                attendre("16385:1")
+            else:
+                envoyer("gg0")
+            if op == "inserer":
+                envoyer("iΩ\x1b")
+                attendu = attendu[:at] + "Ω".encode() + attendu[at:]
+            elif op == "supprimer":
+                envoyer("x")
+                attendu = attendu[:at] + attendu[at + 1:]
+            else:
+                # x en fin de ligne ramène le curseur au caractère précédent.
+                envoyer("xaé\x1b" if lieu == "fin" else "xié\x1b")
+                attendu = attendu[:at] + "é".encode() + attendu[at + 1:]
+        return attendu
     if cas in ("milieu", "multiple"):
         envoyer("/MILIEU\r")
         attendre("source [enregistré] 16385:1")
@@ -46,7 +103,7 @@ def operation(cas, envoyer, attendre):
     return b"X" + source
 
 
-def verifier(image, secteur, blocs, attendu, ids=("61"*16, "62"*16), tiers=None):
+def verifier(image, secteur, blocs, attendu, ids=("61"*16, "62"*16), tiers=None, destination="copie"):
     def lire(op, *args, check=True):
         with image.open("rb") as f:
             return subprocess.run([HOST, op, str(blocs), str(secteur), *args],
@@ -59,7 +116,7 @@ def verifier(image, secteur, blocs, attendu, ids=("61"*16, "62"*16), tiers=None)
     if tiers is not None:
         contenu = lire("salvage", *ids, slot, "/tiers").stdout
         assert len(contenu) == tiers and contenu == b"S"*tiers
-    dest = lire("salvage", *ids, slot, "/copie", check=False)
+    dest = lire("salvage", *ids, slot, "/" + destination, check=False)
     if attendu is None:
         assert dest.returncode and b"NotFound" in dest.stderr
     else:
@@ -94,14 +151,16 @@ def essai(a, secteur, cas, generateur, dossier, sonde=True):
         def wait(s):
             return t.until(s.encode(), 100, refus=b"Panique du noyau")
         wait("nsh> ")
-        send("vi source\n")
+        nom = "nouveau" if cas == "neuf-4m" else "source"
+        send(f"vi {nom}\n")
         wait("\x1b[6n")
         send("\x1b[24;80R")
-        wait("source [enregistré] 1:1")
+        etat_initial = "nouveau" if cas == "neuf-4m" else "enregistré"
+        wait(f"{nom} [{etat_initial}] 1:1")
         attendu = operation(cas, send, wait)
         # Les dernières frappes précèdent la fenêtre chronométrée.
         send(":")
-        wait("vi [COMMANDE] source [modifié]")
+        wait(f"vi [COMMANDE] {nom} [modifié]")
         depart = time.monotonic_ns()
         send("w copie\r")
         wait("Saisir OUI puis Entrée : ")

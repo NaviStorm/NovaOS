@@ -2,6 +2,8 @@
 
 **Décision proposée : garder le prototype désactivé et hors de main.** La préparation CoW groupée sait publier un nouveau fichier après une insertion ASCII en tête. Elle ne couvre pas les éditions générales, peut refuser un texte UTF-8 valide et ne garantit pas la seconde sur le profil UTM qualifié. Les résultats ci-dessous portent sur la branche expérimentale issue de `84721b29c38c365e94b55aaa652899dd649ec9c2`. NovaOS livré reste v0.16.5 et NovaFS v0.9.13 P9. [Audit et mesures antérieurs](es-v0.16.6.md) · [Mesures par exécution](validation/es-v0.16.6-elargie.json)
 
+La campagne suivante étend la préparation aux éditions quelconques et au prêt multipage immuable. Les chiffres de cette page restent ceux du premier prototype. [Qualification des plages et du prêt multipage](es-v0.16.6-plages.md)
+
 ## Mesure de sauvegarde
 
 Mac ARM64, macOS 27.2 (26B123). QEMU direct 11.1.3, TCG, un vCPU, 256 Mio, disque VirtIO brut en writeback ; application UTM 5.0.8, moteur 10.0.12, Cortex-A72 émulé, 256 Mio, QCOW2, GICv3 sans ITS, TPM CRB et IOMMU sans bypass. L’application UTM a importé et démarré **une nouvelle VM par essai** ; son port série PTY dessert le véritable nsh et le véritable vi. Le firmware privé, les deux GPT, le GUID de la partition et les identités P9 sont contrôlés. Seule la fixture du système jetable active le profil expérimental 42. Il n'est pas nécessaire de réinstaller ni de modifier une VM personnelle.

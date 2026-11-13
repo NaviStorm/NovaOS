@@ -1,0 +1,2010 @@
+--- a/components/libraries/vi_wire.rs
++++ b/components/libraries/vi_wire.rs
+@@ -17,6 +17,9 @@
+ pub const TEXT: u8 = 6;
+ pub const SAVE: u8 = 7;
+ pub const TEXT_PAGE: u8 = 13;
++pub const PLAN: u8 = 14;
++pub const PLAN_INLINE: usize = 64;
++pub const MAX_PLAN: usize = 8 * 1024 * 1024;
+ pub const FIN: u8 = 8;
+
+ pub const VIEW: u8 = 9;
+@@ -40,6 +43,7 @@
+     })
+ }
+ pub struct Link {
++    pub mode_plan: u8,
+     pub suffix: Option<usize>,
+     channels: (u64, u64),
+     tag: u64,
+@@ -47,10 +51,56 @@
+ impl Link {
+     pub fn new() -> rt::Result<Self> {
+         Ok(Self {
++            mode_plan: 0,
+             channels: rt::channels()?,
+             tag: 0,
+             suffix: None,
+         })
++    }
++    pub fn publier_plan(&mut self, nom: &str, paquet: &[u8]) -> rt::Result<()> {
++        let mut debut = [0u8; 11];
++        debut[..2].copy_from_slice(
++            &u16::try_from(nom.len())
++                .map_err(|_| rt::LIMIT)?
++                .to_le_bytes(),
++        );
++        debut[2..10].copy_from_slice(&(paquet.len() as u64).to_le_bytes());
++        debut[10] = self.mode_plan;
++        self.ask(BEGIN, &debut)?;
++        for part in nom.as_bytes().chunks(CHUNK) {
++            self.ask(NAME, part)?;
++        }
++        if paquet.len() <= PLAN_INLINE {
++            self.ask(PLAN, paquet)?;
++            self.ask(SAVE, &[])?;
++            return Ok(());
++        }
++        let tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
++        let cap = self.channels.0;
++        rt::bulk::pret(
++            0x10034,
++            cap,
++            tag,
++            paquet.as_ptr() as u64,
++            paquet.len() as u64,
++            0,
++        )?;
++        let r = self
++            .ask(PLAN, &[])
++            .and_then(|_| self.ask(SAVE, &[]))
++            .map(|_| ());
++        // Le moteur ou la fermeture du groupe libère normalement le prêt. La
++        // frontière de publication peut rester active après perte de la réponse.
++        loop {
++            match rt::bulk::pret(0x10038, cap, tag, 0, 0, 0) {
++                Ok(_) | Err(rt::REVOKED) => break,
++                Err(rt::WOULD_BLOCK) => {
++                    rt::call(rt::THREAD_YIELD, 0, 0, 0);
++                }
++                Err(_) => rt::exit(crate::protocol::UNCERTAIN),
++            }
++        }
++        r
+     }
+     pub fn page(&mut self, bytes: &[u8]) -> rt::Result<()> {
+         let tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -16,16 +16,25 @@
+     Concurrent,
+ }
+
++struct Plan<'a> {
++    inline: &'a [u8],
++    len: usize,
++    port: u64,
++    tag: u64,
++}
+ fn publish(
+     fs: &mut Client,
+     path: &str,
+     data: &[u8],
+     confirm: Option<&mut Input>,
+     revoke: bool,
++    plan_p9: bool,
+     mut source: Option<(&str, &mut backing::Pages, usize)>,
++    plan: Option<Plan>,
+ ) -> rt::Result<()> {
+-    let labo = rt::config(1) == 42 && !revoke;
++    let labo = plan_p9 && !revoke;
+     if labo
++        && plan.is_none()
+         && let Some((_, p, off)) = &mut source
+         && *off <= 4096
+     {
+@@ -52,6 +61,25 @@
+             if !input.consent(path)? {
+                 return Err(rt::DENIED);
+             }
++        }
++        if let Some(plan) = plan {
++            if !labo {
++                return Err(if revoke { rt::REVOKED } else { rt::DENIED });
++            }
++            let mut q = w::frame(30, view.session, 1);
++            if let Some((_, p, _)) = &source {
++                w::set(&mut q, 24, p.identite());
++                w::set(&mut q, 32, p.revision());
++                w::set(&mut q, 40, p.longueur() as u64);
++            }
++            w::set(&mut q, 48, plan.len as u64);
++            if plan.tag != 0 {
++                rt::bulk::pret(0x10035, plan.port, plan.tag, ports.0, plan.len as u64, 0)?;
++                w::set(&mut q, 56, plan.tag);
++            } else {
++                q[64..64 + plan.inline.len()].copy_from_slice(plan.inline);
++            }
++            return view.request(q).map(|_| ());
+         }
+         if labo
+             && let Some((_, p, off)) = &source
+@@ -233,6 +261,8 @@
+     name_len: usize,
+     text_len: usize,
+     suffix: Option<usize>,
++    plan: u8,
++    recu: Option<(u64, u64)>,
+ }
+ fn append(to: &mut Vec<u8>, part: &[u8], max: usize) -> rt::Result<()> {
+     if part.is_empty() || part.len() > max - to.len() {
+@@ -253,6 +283,7 @@
+     original: &'a str,
+     input: Input,
+     measure: bool,
++    plan_p9: bool,
+     first_key: bool,
+     source: Option<Source>,
+     path: &'a str,
+@@ -262,7 +293,13 @@
+ impl Session<'_> {
+     fn save(&mut self) -> rt::Result<()> {
+         let upload = self.upload.take().ok_or(rt::BAD_ARGUMENT)?;
+-        if upload.name.len() != upload.name_len || upload.text.len() != upload.text_len {
++        if upload.name.len() != upload.name_len
++            || if upload.plan != 0 {
++                upload.recu.is_none()
++            } else {
++                upload.text.len() != upload.text_len
++            }
++        {
+             return Err(rt::BAD_ARGUMENT);
+         }
+         let name = core::str::from_utf8(&upload.name).map_err(|_| rt::BAD_ARGUMENT)?;
+@@ -272,7 +309,9 @@
+         {
+             return Err(rt::BAD_ARGUMENT);
+         }
+-        core::str::from_utf8(&upload.text).map_err(|_| rt::BAD_ARGUMENT)?;
++        if upload.plan == 0 {
++            core::str::from_utf8(&upload.text).map_err(|_| rt::BAD_ARGUMENT)?;
++        }
+         if let Some(Source::Pages(ref mut p)) = self.source {
+             p.check(self.fs, self.path)?;
+         }
+@@ -290,7 +329,16 @@
+         // Injection d'un autre acquittement entre le dernier contrôle et CREATE_NEW.
+         if self.trial == Trial::Concurrent {
+             self.trial = Trial::Normal;
+-            publish(self.fs, &path, b"tiers\n", None, false, None)?;
++            publish(
++                self.fs,
++                &path,
++                b"tiers\n",
++                None,
++                false,
++                self.plan_p9,
++                None,
++                None,
++            )?;
+         }
+         let revoke = self.trial == Trial::Revoke;
+         self.trial = Trial::Normal;
+@@ -300,11 +348,19 @@
+             &upload.text,
+             (name != self.original).then_some(&mut self.input),
+             revoke,
++            self.plan_p9,
+             match (&mut self.source, upload.suffix) {
++                (Some(Source::Pages(p)), _) if upload.plan == 1 => Some((self.path, p, 0)),
+                 (Some(Source::Pages(p)), Some(off)) => Some((self.path, p, off)),
+                 (_, None) => None,
+                 _ => return Err(rt::BAD_ARGUMENT),
+             },
++            upload.recu.map(|(port, tag)| Plan {
++                inline: &upload.text,
++                len: upload.text_len,
++                port,
++                tag,
++            }),
+         )
+     }
+     fn reply(&mut self, op: u8, data: &[u8], out: &mut [u8]) -> rt::Result<usize> {
+@@ -313,6 +369,14 @@
+                 out[0] = u8::from(self.source.is_some());
+                 let len = self.source.as_ref().map_or(0, Source::len);
+                 out[1..9].copy_from_slice(&(len as u64).to_le_bytes());
++                if self.plan_p9 {
++                    out[9] = if matches!(self.source, Some(Source::Pages(_))) {
++                        1
++                    } else {
++                        2
++                    };
++                    return Ok(10);
++                }
+                 Ok(9)
+             }
+             (wire::VERIFY, []) => {
+@@ -366,10 +430,26 @@
+                 out[0] = self.input.key()?;
+                 Ok(1)
+             }
+-            (wire::BEGIN, sizes) if matches!(sizes.len(), 10 | 18) => {
++            (wire::BEGIN, sizes) if matches!(sizes.len(), 10 | 11 | 18) => {
+                 self.upload = None;
+                 let name_len = usize::from(u16::from_le_bytes([sizes[0], sizes[1]]));
+                 let text_len = wire::length(&sizes[2..10])?;
++                let plan = if sizes.len() == 11 {
++                    let mode = if matches!(self.source, Some(Source::Pages(_))) {
++                        1
++                    } else {
++                        2
++                    };
++                    if !self.plan_p9
++                        || sizes[10] != mode
++                        || !(8..=wire::MAX_PLAN).contains(&text_len)
++                    {
++                        return Err(rt::BAD_ARGUMENT);
++                    }
++                    mode
++                } else {
++                    0
++                };
+                 let suffix = if sizes.len() == 18 {
+                     let off = wire::length(&sizes[10..])?;
+                     match &self.source {
+@@ -389,15 +469,21 @@
+                     text,
+                     name_len,
+                     text_len,
++                    plan,
++                    recu: None,
+                     suffix,
+                 });
+                 Ok(0)
+             }
+             (wire::NAME | wire::TEXT, part) => {
+                 let state = self.upload.as_mut().ok_or(rt::BAD_ARGUMENT)?;
++                if state.recu.is_some() {
++                    return Err(rt::BAD_ARGUMENT);
++                }
+                 if op == wire::NAME && state.text.is_empty() {
+                     append(&mut state.name, part, state.name_len)?
+-                } else if op == wire::TEXT && state.name.len() == state.name_len {
++                } else if state.plan == 0 && op == wire::TEXT && state.name.len() == state.name_len
++                {
+                     append(&mut state.text, part, state.text_len)?
+                 } else {
+                     return Err(rt::BAD_ARGUMENT);
+@@ -427,11 +513,33 @@
+             let op = request.payload[0];
+             let data = &request.payload[1..request.len as usize];
+             let mut frame = [0; 128];
+-            let answer = if op == wire::TEXT_PAGE {
++            let answer = if op == wire::PLAN {
++                (|| {
++                    let u = self.upload.as_mut().ok_or(rt::BAD_ARGUMENT)?;
++                    if u.plan == 0 || u.recu.is_some() || u.name.len() != u.name_len {
++                        return Err(rt::BAD_ARGUMENT);
++                    }
++                    let tag = if u.text_len > wire::PLAN_INLINE {
++                        if !data.is_empty() {
++                            return Err(rt::BAD_ARGUMENT);
++                        }
++                        last
++                    } else {
++                        if data.len() != u.text_len {
++                            return Err(rt::BAD_ARGUMENT);
++                        }
++                        append(&mut u.text, data, u.text_len)?;
++                        0
++                    };
++                    u.recu = Some((channels.0, tag));
++                    Ok(0)
++                })()
++            } else if op == wire::TEXT_PAGE {
+                 (|| {
+                     let n = wire::length(data)?;
+                     let u = self.upload.as_mut().ok_or(rt::BAD_ARGUMENT)?;
+-                    if !(1..=4096).contains(&n)
++                    if u.plan != 0
++                        || !(1..=4096).contains(&n)
+                         || u.name.len() != u.name_len
+                         || n > u.text_len - u.text.len()
+                     {
+@@ -472,6 +580,7 @@
+         return Err(rt::BAD_ARGUMENT);
+     }
+     let path = paths::resolve(fs, name)?;
++    let plan_p9 = rt::config(1) == 42 && w::length(&fs.at(w::LOOKUP_AT, 0, b"/", 0)?) == 73;
+     let source = match Source::open(fs, &path) {
+         Ok(s) => Some(s),
+         Err(w::NOT_FOUND) => {
+@@ -503,6 +612,7 @@
+             input: Input::default(),
+             first_key: true,
+             measure: test,
++            plan_p9,
+             source,
+             upload: None,
+             trial,
+--- a/components/vi/buffer.rs
++++ b/components/vi/buffer.rs
+@@ -23,6 +23,9 @@
+         }
+         Ok(())
+     }
++    pub fn crlf(&self) -> bool {
++        self.eol == "\r\n"
++    }
+     pub fn source_eol(&mut self, crlf: bool) {
+         self.eol = if crlf { "\r\n" } else { "\n" };
+     }
+@@ -35,9 +38,24 @@
+                 .map_err(|_| "mémoire insuffisante")?;
+         }
+         self.text.reserve(tail.len())?;
+-        self.text.replace(self.len(), 0, tail);
++        self.text.prolonger(tail);
+         if let Some(saved) = &mut self.saved {
+             saved.push_str(tail);
++        }
++        Ok(())
++    }
++    pub fn prepend_source(&mut self, s: &str) -> Result<(), &'static str> {
++        self.text.reserve(s.len())?;
++        if let Some(orig) = &mut self.saved {
++            orig.try_reserve(s.len())
++                .map_err(|_| "mémoire insuffisante")?;
++            orig.insert_str(0, s);
++        }
++        self.text.prepend(s);
++        self.history.decaler(s.len());
++        self.at += s.len();
++        if let Some(n) = s.find('\n') {
++            self.source_eol(s[..n].ends_with('\r'));
+         }
+         Ok(())
+     }
+@@ -60,6 +78,9 @@
+     }
+     pub fn parts(&self, r: Range<usize>) -> [&str; 2] {
+         self.text.parts(r)
++    }
++    pub fn visiter(&self, source: bool, f: impl FnMut(usize, usize, Range<usize>)) {
++        self.text.plages.visiter(self.len(), source, f);
+     }
+     pub fn compact(&mut self) -> &str {
+         self.text.compact()
+@@ -282,6 +303,13 @@
+             Ok(())
+         }
+     }
++    pub fn trouve_apres(&mut self, needle: &str) -> Option<usize> {
++        let at = self.next();
++        self.compact()[at..].find(needle).map(|i| i + at)
++    }
++    pub fn a_edite(&self) -> bool {
++        self.saved.is_some() || self.history.available(false) || self.history.available(true)
++    }
+     pub fn search(&mut self, needle: &str) -> bool {
+         if needle.is_empty() {
+             return false;
+--- a/components/vi/editor.rs
++++ b/components/vi/editor.rs
+@@ -15,6 +15,7 @@
+     pub buf: Buffer,
+     pub parked: Option<Buffer>,
+     pub row_base: usize,
++    pub fenetre: Option<usize>,
+     pub name: String,
+     pub exists: bool,
+     pub mode: Mode,
+@@ -25,6 +26,14 @@
+ }
+
+ pub trait Storage {
++    fn publish_buffer(
++        &mut self,
++        name: &str,
++        buf: &mut Buffer,
++        _fin: Option<(usize, &mut Buffer)>,
++    ) -> rt::Result<()> {
++        self.publish(name, buf.compact().as_bytes())
++    }
+     fn publish(&mut self, name: &str, text: &[u8]) -> rt::Result<()>;
+ }
+
+@@ -39,6 +48,7 @@
+             buf: Buffer::new(text)?,
+             parked: None,
+             row_base: 0,
++            fenetre: None,
+             name: label,
+             exists,
+             mode: Mode::Normal,
+@@ -49,7 +59,7 @@
+         })
+     }
+     pub fn dirty(&self) -> bool {
+-        self.parked.as_ref().unwrap_or(&self.buf).dirty()
++        self.buf.dirty() || self.parked.as_ref().is_some_and(Buffer::dirty)
+     }
+     pub fn prefix_key(&self) -> Option<char> {
+         self.pending
+@@ -79,6 +89,13 @@
+             'C' => self.buf.right(inserting),
+             'D' => self.buf.left(),
+             _ => (),
++        }
++    }
++    pub fn motif(&self) -> &str {
++        if self.mode == Mode::Search && !self.prompt.is_empty() {
++            &self.prompt
++        } else {
++            &self.last_search
+         }
+     }
+     fn find(&mut self) {
+@@ -103,8 +120,12 @@
+             self.message = "fichier existant : remplacement refusé";
+             return false;
+         }
+-        let text = self.parked.as_mut().unwrap_or(&mut self.buf);
+-        match io.publish(name, text.compact().as_bytes()) {
++        let (text, mut fin) = match (&mut self.parked, self.fenetre) {
++            (Some(p), Some(base)) => (p, Some((base, &mut self.buf))),
++            (Some(p), None) => (p, None),
++            (None, _) => (&mut self.buf, None),
++        };
++        match io.publish_buffer(name, text, fin.as_mut().map(|(base, b)| (*base, &mut **b))) {
+             Ok(()) => {
+                 if let Some(name) = other {
+                     self.name.clear();
+@@ -112,6 +133,9 @@
+                 }
+                 self.exists = true;
+                 text.saved();
++                if let Some((_, b)) = fin {
++                    b.saved();
++                }
+                 self.message = "fichier enregistré";
+                 true
+             }
+--- a/components/vi/gap.rs
++++ b/components/vi/gap.rs
+@@ -2,7 +2,10 @@
+ use alloc::{string::String, vec::Vec};
+ use core::ops::Range;
+
++#[path = "plages.rs"]
++mod plages;
+ pub struct Gap {
++    pub(super) plages: plages::Plages,
+     bytes: Vec<u8>,
+     left: usize,
+     right: usize,
+@@ -18,6 +21,7 @@
+         let end = text.len();
+         let row = lines(text.as_bytes());
+         Self {
++            plages: plages::Plages::origine(end),
+             bytes: text.into_bytes(),
+             left: end,
+             right: end,
+@@ -100,6 +104,19 @@
+         Ok(())
+     }
+     pub fn replace(&mut self, at: usize, removed: usize, new: &str) {
++        self.plages.changer(at, removed, new.len());
++        self.remplacer(at, removed, new);
++    }
++    pub fn prepend(&mut self, s: &str) {
++        self.plages.prepend(s.len());
++        self.remplacer(0, 0, s);
++    }
++    pub fn prolonger(&mut self, s: &str) {
++        let at = self.len();
++        self.plages.prolonger(at, s.len());
++        self.remplacer(at, 0, s);
++    }
++    fn remplacer(&mut self, at: usize, removed: usize, new: &str) {
+         assert!(self.boundary(at + removed));
+         self.move_to(at);
+         self.right += removed;
+--- a/components/vi/history.rs
++++ b/components/vi/history.rs
+@@ -80,7 +80,7 @@
+             }
+             return Ok(());
+         }
+-        if range.len() > PAYLOAD {
++        if range.len().saturating_add(new.len()) > PAYLOAD {
+             *self = Self {
+                 overflow: true,
+                 ..Self::default()
+@@ -144,6 +144,13 @@
+             self.overflow = true;
+         }
+     }
++    pub fn decaler(&mut self, n: usize) {
++        for e in &mut self.edits {
++            e.offset += n;
++            e.before += n;
++            e.after += n;
++        }
++    }
+     pub fn available(&self, redo: bool) -> bool {
+         if redo {
+             self.applied < self.edits.len()
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -6,6 +6,7 @@
+ mod gap;
+ mod history;
+ mod paging;
++mod plan;
+ mod screen;
+ mod terminal;
+
+@@ -15,6 +16,18 @@
+ };
+
+ impl editor::Storage for wire::Link {
++    fn publish_buffer(
++        &mut self,
++        name: &str,
++        buf: &mut buffer::Buffer,
++        fin: Option<(usize, &mut buffer::Buffer)>,
++    ) -> rt::Result<()> {
++        if self.mode_plan != 0 {
++            plan::publier(self, name, buf, fin.map(|(at, b)| (at, &*b)))
++        } else {
++            self.publish(name, buf.compact().as_bytes())
++        }
++    }
+     fn publish(&mut self, name: &str, text: &[u8]) -> rt::Result<()> {
+         let mut sizes = [0; 18];
+         sizes[..2].copy_from_slice(
+@@ -71,11 +84,15 @@
+     let mut link = wire::Link::new()?;
+     let outcome = (|| {
+         let r = link.ask(wire::INFO, &[])?;
+-        if r.len != 10 || r.payload[1] > 1 {
++        if !matches!(r.len, 10 | 11)
++            || r.payload[1] > 1
++            || (r.len == 11 && !matches!(r.payload[10], 1 | 2))
++        {
+             return Err(rt::BAD_ARGUMENT);
+         }
+         let exists = r.payload[1] == 1;
+         let len = wire::length(&r.payload[2..10])?;
++        link.mode_plan = if r.len == 11 { r.payload[10] } else { 0 };
+         let (text, mut tail) = paging::prefix(&mut link, len)?;
+         let mut editor = editor::Editor::new(name, text, exists).map_err(|msg| {
+             let _ = console::write(tty::ERROR, msg);
+--- a/components/vi/paging.rs
++++ b/components/vi/paging.rs
+@@ -82,6 +82,7 @@
+         let mut kept = alloc::collections::VecDeque::new();
+         kept.try_reserve(8).map_err(|_| "mémoire insuffisante")?;
+         let mut bytes = 0;
++        let mut crlf = self.first_eol.then(|| e.buf.crlf());
+         let mut rows = e
+             .buf
+             .parts(0..e.buf.len())
+@@ -106,6 +107,11 @@
+             };
+             let s = self.page(link, at, reuse).map_err(reason)?;
+             Buffer::validate(&s)?;
++            if crlf.is_none()
++                && let Some(i) = s.find('\n')
++            {
++                crlf = Some(s[..i].ends_with('\r'));
++            }
+             rows += s.bytes().filter(|b| *b == b'\n').count();
+             at += s.len();
+             bytes += s.len();
+@@ -128,16 +134,44 @@
+         self.view_start = self.len - tail.len();
+         let offset = rows - tail.bytes().filter(|b| *b == b'\n').count();
+         self.skipped_rows = offset - prefix_rows;
+-        let window = Buffer::new(tail)?;
++        let mut window = Buffer::new(tail)?;
++        window.source_eol(crlf.unwrap_or(false));
+         e.parked = Some(core::mem::replace(&mut e.buf, window));
+         e.row_base = offset;
+         Ok(true)
+     }
+     fn restore(&mut self, e: &mut Editor) -> usize {
++        e.fenetre = None;
+         let at = e.buf.at;
+         self.cached_end = Some(core::mem::replace(&mut e.buf, e.parked.take().unwrap()));
+         e.row_base = 0;
+         e.buf.len() + (self.view_start - self.next) + at
++    }
++    fn fusionner(&mut self, e: &mut Editor, link: &mut wire::Link) -> Result<(), &'static str> {
++        let prefixe = e.parked.as_ref().ok_or("fenêtre absente")?;
++        let mut avant = String::new();
++        avant
++            .try_reserve_exact(self.view_start)
++            .map_err(|_| "mémoire insuffisante")?;
++        for p in prefixe.parts(0..prefixe.len()) {
++            avant.push_str(p);
++        }
++        let mut at = self.next;
++        while at < self.view_start {
++            let page = self.page(link, at, Vec::new()).map_err(reason)?;
++            Buffer::validate(&page)?;
++            let n = page.len().min(self.view_start - at);
++            avant.push_str(&page[..n]);
++            at += n;
++        }
++        e.buf.prepend_source(&avant)?;
++        e.parked = None;
++        e.row_base = 0;
++        e.fenetre = None;
++        self.next = self.len;
++        self.cached_end = None;
++        link.suffix = None;
++        Ok(())
+     }
+     /// Aucune opération ne doit prendre la limite du préfixe pour la fin du fichier.
+     pub fn before(
+@@ -149,6 +183,44 @@
+     ) -> Result<(), &'static str> {
+         if !self.pending() {
+             return Ok(());
++        }
++        if link.mode_plan == 1 && e.parked.is_some() && e.fenetre.is_some() {
++            if e.mode == Mode::Insert && key == '\x08' && e.buf.at == 0 && e.buf.a_edite() {
++                self.fusionner(e, link)?;
++                return Ok(());
++            }
++            let edition = matches!(e.mode, Mode::Insert | Mode::Command)
++                || e.mode == Mode::Normal
++                    && !arrow
++                    && matches!(key, 'a' | 'i' | 'o' | 'O' | 'x' | 'd' | 'u' | '\x12')
++                    && (e.buf.start() > 0 || matches!(key, 'u' | '\x12'));
++            if edition
++                && (e.buf.start() > 0 || e.mode == Mode::Command || !matches!(key, '\x08' | 'd'))
++            {
++                // Une fenêtre déjà éditée garde ses coordonnées d'origine jusqu'à
++                // sa fusion. Le préfixe n'est jamais déplacé sous un offset d'édition.
++                if !matches!(key, 'u' | '\x12') || e.buf.a_edite() {
++                    return Ok(());
++                }
++            }
++            let gg = e.mode == Mode::Normal && key == 'g' && e.prefix_key() == Some('g');
++            let navigation = e.mode == Mode::Normal
++                && (if arrow {
++                    key != 'A' || e.buf.start() > 0
++                } else {
++                    matches!(key, 'h' | 'j' | 'l' | '0' | '$' | 'G' | 'g' | ':' | '/')
++                        || key == 'k' && e.buf.start() > 0
++                });
++            if e.buf.a_edite()
++                && (gg
++                    || (!navigation && e.mode != Mode::Search)
++                    || (e.mode == Mode::Search && key == '\n'))
++            {
++                // Les changements des deux fenêtres et leurs historiques doivent
++                // être réunis avant une commande qui franchit l'intervalle absent.
++                self.fusionner(e, link)?;
++                return Ok(());
++            }
+         }
+         if e.parked.is_some() {
+             if e.mode == Mode::Normal && !arrow && key == 'g' && e.prefix_key() == Some('g') {
+@@ -186,6 +258,9 @@
+             && self.len - self.next > 8 * wire::PAGE
+             && self.end_view(e, link)?
+         {
++            if link.mode_plan == 1 && !e.parked.as_ref().unwrap().a_edite() {
++                e.fenetre = Some(self.view_start);
++            }
+             return Ok(());
+         }
+         let global = !arrow
+@@ -196,6 +271,33 @@
+                 Mode::Insert => false,
+             };
+         if global {
++            if link.mode_plan == 1
++                && (e.mode == Mode::Search || key == 'n')
++                && !e.motif().is_empty()
++            {
++                // Lire jusqu'au premier résultat complet, y compris si le motif
++                // chevauche deux fenêtres. Lire la fin seulement pour le rebouclage.
++                let mut motif = String::new();
++                motif
++                    .try_reserve_exact(e.motif().len())
++                    .map_err(|_| "mémoire insuffisante")?;
++                motif.push_str(e.motif());
++                if e.buf.trouve_apres(&motif).is_none() {
++                    while self.pending() {
++                        let ancien = e.buf.len();
++                        self.more(e, link)?;
++                        let v = e.buf.compact();
++                        let mut start = ancien.saturating_sub(motif.len());
++                        while !v.is_char_boundary(start) {
++                            start += 1;
++                        }
++                        if v[start..].contains(&motif) && e.buf.trouve_apres(&motif).is_some() {
++                            break;
++                        }
++                    }
++                }
++                return Ok(());
++            }
+             while self.pending() {
+                 self.more(e, link)?;
+             }
+--- /dev/null
++++ b/components/vi/plages.rs
+@@ -0,0 +1,146 @@
++//! Intervalles du tampon qui proviennent encore de la source épinglée.
++//! Les octets des insertions restent seulement dans le gap buffer.
++use alloc::vec::Vec;
++
++#[derive(Clone, Copy)]
++struct Intervalle {
++    courant: usize,
++    source: usize,
++    len: usize,
++}
++#[derive(Default)]
++pub(crate) struct Plages {
++    gardes: Vec<Intervalle>,
++    pub(super) origine: usize,
++    actif: bool,
++    litteral: bool,
++}
++impl Plages {
++    pub fn origine(n: usize) -> Self {
++        Self {
++            origine: n,
++            ..Default::default()
++        }
++    }
++    fn reserver(&mut self, n: usize) -> bool {
++        // En cas de fragmentation extrême, transmettre le préfixe représenté
++        // littéralement. Aucun octet n'est perdu lors de l'éviction de l'index.
++        if self.litteral {
++            return false;
++        }
++        if self.gardes.len() + n > 2048 || self.gardes.try_reserve(n).is_err() {
++            self.gardes.clear();
++            self.litteral = true;
++            return false;
++        }
++        true
++    }
++    pub fn changer(&mut self, at: usize, retire: usize, ajoute: usize) {
++        if !self.reserver(2) {
++            return;
++        }
++        if !self.actif {
++            self.actif = true;
++            if self.origine != 0 {
++                self.gardes.push(Intervalle {
++                    courant: 0,
++                    source: 0,
++                    len: self.origine,
++                });
++            }
++        }
++        let fin = at + retire;
++        let mut droite = None;
++        for g in &mut self.gardes {
++            let bout = g.courant + g.len;
++            if bout <= at {
++                continue;
++            }
++            if g.courant >= fin {
++                g.courant = g.courant - retire + ajoute;
++                continue;
++            }
++            let avant = at.saturating_sub(g.courant);
++            let apres = bout.saturating_sub(fin);
++            if apres != 0 {
++                let d = Intervalle {
++                    courant: at + ajoute,
++                    source: g.source + (fin - g.courant),
++                    len: apres,
++                };
++                if avant == 0 {
++                    *g = d;
++                    continue;
++                }
++                droite = Some(d);
++            }
++            g.len = avant;
++        }
++        self.gardes.retain(|g| g.len != 0);
++        if let Some(d) = droite {
++            let i = self.gardes.partition_point(|g| g.courant < d.courant);
++            self.gardes.insert(i, d);
++        }
++    }
++    pub fn prolonger(&mut self, at: usize, n: usize) {
++        if self.actif && n != 0 && self.reserver(1) {
++            if let Some(g) = self.gardes.last_mut()
++                && g.source + g.len == self.origine
++                && g.courant + g.len == at
++            {
++                g.len += n;
++            } else {
++                self.gardes.push(Intervalle {
++                    courant: at,
++                    source: self.origine,
++                    len: n,
++                });
++            }
++        }
++        self.origine += n;
++    }
++    pub fn prepend(&mut self, n: usize) {
++        if self.actif && self.reserver(1) {
++            for g in &mut self.gardes {
++                g.source += n;
++                g.courant += n;
++            }
++            self.gardes.insert(
++                0,
++                Intervalle {
++                    source: 0,
++                    courant: 0,
++                    len: n,
++                },
++            );
++        }
++        self.origine += n;
++    }
++    pub(crate) fn visiter(
++        &self,
++        n: usize,
++        source: bool,
++        mut f: impl FnMut(usize, usize, core::ops::Range<usize>),
++    ) {
++        if !source {
++            if n != 0 {
++                f(0, 0, 0..n);
++            }
++            return;
++        }
++        if !self.actif && !self.litteral {
++            return;
++        }
++        let (mut at, mut pos) = (0, 0);
++        for g in &self.gardes {
++            if g.source != at || g.courant != pos {
++                f(at, g.source - at, pos..g.courant);
++            }
++            at = g.source + g.len;
++            pos = g.courant + g.len;
++        }
++        if at != self.origine || pos != n {
++            f(at, self.origine - at, pos..n);
++        }
++    }
++}
+--- /dev/null
++++ b/components/vi/plan.rs
+@@ -0,0 +1,72 @@
++//! Paquet compact. La grande forme possède ses pages entières jusqu'au retour du prêt.
++use super::buffer::Buffer;
++use alloc::alloc::{Layout, alloc_zeroed, dealloc};
++use core::ptr::NonNull;
++use nova_cli::{runtime as rt, vi_wire as wire};
++
++struct Lot {
++    ptr: NonNull<u8>,
++    layout: Layout,
++}
++impl Lot {
++    fn new(n: usize) -> rt::Result<Self> {
++        let layout =
++            Layout::from_size_align(n.next_multiple_of(4096), 4096).map_err(|_| rt::LIMIT)?;
++        // Sûreté : ce Layout non vide réserve des pages entières exclusives au paquet.
++        let ptr = NonNull::new(unsafe { alloc_zeroed(layout) }).ok_or(rt::NO_MEMORY)?;
++        Ok(Self { ptr, layout })
++    }
++}
++impl Drop for Lot {
++    fn drop(&mut self) {
++        // Sûreté : aucune référence au contenu ne survit à ce propriétaire.
++        unsafe { dealloc(self.ptr.as_ptr(), self.layout) }
++    }
++}
++
++pub fn publier(
++    link: &mut wire::Link,
++    nom: &str,
++    b: &Buffer,
++    fin: Option<(usize, &Buffer)>,
++) -> rt::Result<()> {
++    let source = link.mode_plan == 1;
++    let mut count = 0usize;
++    let mut bytes = 0usize;
++    let fenetres = [Some((0, b)), fin];
++    for (_, b) in fenetres.into_iter().flatten() {
++        b.visiter(source, |_, _, r| {
++            count += 1;
++            bytes += r.len();
++        });
++    }
++    let en_tete = 8 + count * 24;
++    let taille = en_tete
++        .checked_add(bytes)
++        .filter(|&n| n <= wire::MAX_PLAN)
++        .ok_or(rt::LIMIT)?;
++    let mut court = [0u8; wire::PLAN_INLINE];
++    let lot;
++    let paquet = if taille <= court.len() {
++        &mut court[..taille]
++    } else {
++        lot = Lot::new(taille)?;
++        // Sûreté : allocation alignée et initialisée, emprunt unique pendant l'encodage.
++        unsafe { core::slice::from_raw_parts_mut(lot.ptr.as_ptr(), taille) }
++    };
++    paquet[..8].copy_from_slice(&(count as u64).to_le_bytes());
++    let (mut i, mut j) = (8, en_tete);
++    for (base, b) in fenetres.into_iter().flatten() {
++        b.visiter(source, |at, retire, r| {
++            for v in [base + at, retire, r.len()] {
++                paquet[i..i + 8].copy_from_slice(&(v as u64).to_le_bytes());
++                i += 8;
++            }
++            for s in b.parts(r) {
++                paquet[j..j + s.len()].copy_from_slice(s.as_bytes());
++                j += s.len();
++            }
++        });
++    }
++    link.publier_plan(nom, paquet)
++}
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -32,7 +32,11 @@
+         let linker = format!(
+             "link-arg=-T{}",
+             user.join(if file_client {
+-                if name == "storage/disk" { "storage/groupe.ld" } else { "novafs/service.ld" }
++                if name == "storage/disk" {
++                    "storage/groupe.ld"
++                } else {
++                    "novafs/service.ld"
++                }
+             } else {
+                 "demo.ld"
+             })
+@@ -83,6 +87,7 @@
+             .expect("compilation du programme utilisateur");
+         assert!(ok.success(), "édition de liens de {name}");
+     }
++    println!("cargo::rerun-if-changed=../../novaFS/lab/es-groupees/preparation.rs");
+     println!("cargo::rerun-if-changed=../../novaFS/lab/es-groupees/preparation.rs");
+     println!("cargo::rerun-if-changed=../../novaFS/src");
+     println!("cargo::rerun-if-changed=../../novaFS/Cargo.toml");
+--- a/novaOS/kernel/src/memory/tables.rs
++++ b/novaOS/kernel/src/memory/tables.rs
+@@ -141,6 +141,15 @@
+             tables[level + 1] = child;
+         }
+         Ok(tables)
++    }
++
++    pub(super) fn acces_pret(&self, frames: &mut Frames, va: u64, access: super::Access) {
++        let table = self.path(frames, va).expect("page privée du prêt")[3];
++        let slot = indices(va)[3];
++        let old = frames.entry(table, slot);
++        let desc = paging::user_leaf(old & PHYS_MASK, access, paging::cache(old, 3));
++        frames.put(table, slot, desc);
++        paging::invalidate(va);
+     }
+
+     pub(crate) fn descriptor(&self, frames: &Frames, va: u64) -> Result<u64> {
+--- a/novaOS/kernel/src/memory/user.rs
++++ b/novaOS/kernel/src/memory/user.rs
+@@ -18,6 +18,7 @@
+     loaded: usize,
+     stack_extra: usize,
+     heap_pages: usize,
++    pret: Option<(u64, u64)>,
+ }
+
+ impl UserSpace {
+@@ -109,6 +110,7 @@
+             loaded: 0,
+             stack_extra: 0,
+             heap_pages: 0,
++            pret: None,
+         };
+         let result = (|| {
+             if let Some(e) = elf {
+@@ -200,6 +202,9 @@
+         if expected != old || !(HEAP..=(1 << 47)).contains(&end) || end % PAGE != 0 {
+             return Err(Error::Geometry);
+         }
++        if self.pret.is_some_and(|(_, fin)| end < fin) {
++            return Err(Error::Reserved);
++        }
+         if end > old {
+             if (end - old) / PAGE > m.frames.available {
+                 return Err(Error::Exhausted);
+@@ -219,6 +224,36 @@
+         }
+         self.heap_pages = ((end - HEAP) / PAGE) as usize;
+         Ok(end)
++    }
++    pub(crate) fn sceller_pret(&mut self, m: &mut Memory, base: u64, len: u64) -> bool {
++        let Some(fin) = base
++            .checked_add(len)
++            .and_then(|v| v.checked_next_multiple_of(PAGE))
++        else {
++            return false;
++        };
++        if self.pret.is_some()
++            || base < HEAP
++            || base % PAGE != 0
++            || fin > self.heap_end()
++            || !(base..fin)
++                .step_by(PAGE as usize)
++                .all(|va| self.frame_for(m, va, true).is_some())
++        {
++            return false;
++        }
++        for va in (base..fin).step_by(PAGE as usize) {
++            self.tables.acces_pret(&mut m.frames, va, Access::ReadOnly);
++        }
++        self.pret = Some((base, fin));
++        true
++    }
++    pub(crate) fn rendre_pret(&mut self, m: &mut Memory) {
++        if let Some((base, fin)) = self.pret.take() {
++            for va in (base..fin).step_by(PAGE as usize) {
++                self.tables.acces_pret(&mut m.frames, va, Access::ReadWrite);
++            }
++        }
+     }
+     fn frame_for(&self, m: &Memory, va: u64, write: bool) -> Option<u64> {
+         let page = va & !(PAGE - 1);
+@@ -275,6 +310,56 @@
+         Some(parts)
+     }
+
++    /// Transfert privé en un passage de copie après validation des deux plages.
++    /// L'appelant détient Core et Memory pour la durée des deux parcours.
++    pub(crate) fn copier_vers(
++        &self,
++        autre: &UserSpace,
++        m: &Memory,
++        src: u64,
++        dst: u64,
++        len: usize,
++    ) -> bool {
++        if self.tables.root == autre.tables.root
++            || len == 0
++            || src.checked_add(len as u64).is_none_or(|fin| fin > 1 << 47)
++            || dst.checked_add(len as u64).is_none_or(|fin| fin > 1 << 47)
++        {
++            return false;
++        }
++        let regle = |at: usize| {
++            let s = src + at as u64;
++            let d = dst + at as u64;
++            let os = (s % PAGE) as usize;
++            let od = (d % PAGE) as usize;
++            let n = (len - at).min(PAGE as usize - os).min(PAGE as usize - od);
++            let fs = self.frame_for(m, s, false)?;
++            let fd = autre.frame_for(m, d, true)?;
++            (fs != fd).then(|| {
++                (
++                    m.frames.direct(fs).cast::<u8>().wrapping_add(os),
++                    m.frames.direct(fd).cast::<u8>().wrapping_add(od),
++                    n,
++                )
++            })
++        };
++        let mut au = 0;
++        while au < len {
++            let Some((_, _, n)) = regle(au) else {
++                return false;
++            };
++            au += n;
++        }
++        au = 0;
++        while au < len {
++            let (src, dst, n) = regle(au).expect("plages privées verrouillées");
++            // Sûreté : les cadres RAM appartiennent à deux espaces privés distincts,
++            // sont disjoints et gardent leur propriétaire sous les verrous.
++            unsafe { core::ptr::copy_nonoverlapping(src, dst, n) };
++            au += n;
++        }
++        true
++    }
+     pub(crate) fn copy_from_user(&self, m: &mut Memory, va: u64, out: &mut [u8]) -> bool {
+         let Some(parts) = self.segments(m, va, out.len(), false) else {
+             return false;
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -4,10 +4,12 @@
+
+ #[derive(Clone, Copy)]
+ pub(super) struct Lane {
++    pub(super) editeur: bool,
++    pub(super) dernier_pret: u64,
+     slot: usize,
+-    parties: [u64; 2],
++    pub(super) parties: [u64; 2],
+     pub(super) nodes: [Reference; 2],
+-    handles: [u64; 2],
++    pub(super) handles: [u64; 2],
+     owner: usize,
+     tag: u64,
+     len: usize,
+@@ -29,6 +31,8 @@
+         let slot = self.pages_bulk.vacant()?;
+         self.pages_bulk.insert(slot, [0; BULK_MAX])?;
+         self.ends.get_mut(ep.slot()).bulk = Some(Lane {
++            editeur: false,
++            dernier_pret: 0,
+             slot,
+             nodes: [root.id, peer.id],
+             parties: [a.number, b.number],
+@@ -171,7 +175,7 @@
+         }
+         let mot = |i: usize| u64::from_le_bytes(buf[i * 8..i * 8 + 8].try_into().unwrap());
+         let (tag, addr, taille, direction) = (mot(0), mot(1), mot(2), mot(3));
+-        if tag == 0 || direction > 2 || !(1..=128).contains(&taille) {
++        if tag == 0 || direction > 2 || !(1..=256).contains(&taille) {
+             return Err(BAD_ARGUMENT);
+         }
+         let lire = direction == 0;
+@@ -248,16 +252,14 @@
+         }
+         let autre = s.processes.get(r.moteur).space.as_ref().ok_or(REVOKED)?;
+         let p = r.base + 4096 * r.index as u64;
+-        let scratch = &mut [0u8; 4096];
+         let ok = heap::with_pages(|m| {
+             Ok(if lire {
+-                espace.copy_from_user(m, addr, scratch) && autre.copy_to_user(m, p, scratch)
++                espace.copier_vers(autre, m, addr, p, 4096)
+             } else {
+-                autre.copy_from_user(m, p, scratch) && espace.copy_to_user(m, addr, scratch)
++                autre.copier_vers(espace, m, p, addr, 4096)
+             })
+         })
+         .unwrap();
+-        scratch.fill(0);
+         if !ok {
+             return Err(BAD_ADDRESS);
+         }
+@@ -291,7 +293,7 @@
+         let Some(r) = lane.reservation.as_mut() else {
+             return false;
+         };
+-        let correspond = if index < n && index < 128 {
++        let correspond = if index < n && index < 256 {
+             let debut = index as usize * 8;
+             let liste = s.ipc.pages_bulk.get(lane.slot);
+             lba == u64::from_le_bytes(liste[debut..debut + 8].try_into().unwrap())
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -9,6 +9,9 @@
+ mod pool;
+ use pool::{Bits, Pool};
+ mod bulk;
++mod scelle;
++pub(super) use scelle::appel as pret;
++pub(in crate::sched) use scelle::collecter;
+ mod probes;
+ mod traffic;
+ pub(super) use bulk::{admis, lot, termine, transfer};
+@@ -141,6 +144,8 @@
+     locals: Locals,
+     waits: Waits,
+     pages_bulk: bulk::Buffers,
++    pret: Option<scelle::Pret>,
++    moteur_pret: Option<Pid>,
+     incarnation: u64,
+     issued: u64,
+     wakes: u32,
+@@ -157,6 +162,8 @@
+             locals: Pool::new(),
+             waits: Pool::new(),
+             pages_bulk: bulk::Buffers::new(),
++            pret: None,
++            moteur_pret: None,
+             incarnation: 0,
+             issued: 0,
+             wakes: 0,
+@@ -871,6 +878,7 @@
+             }
+         }
+         if mode == 42 {
++            s.ipc.moteur_pret = Some(consumer);
+             let root = s.ipc.create(consumer)?;
+             let peer = s.ipc.derive(consumer, root, device, RECEIVE.into())?;
+             s.ipc.bind_lane(consumer, root, device, peer)?;
+--- /dev/null
++++ b/novaOS/kernel/src/sched/process/ipc/probes/pret.rs
+@@ -0,0 +1,110 @@
++use super::*;
++
++pub(super) fn contrat() {
++    let (enfants, [nsh, vi, fs, tiers]) = group([ALL, SEND, RECEIVE, ALL]);
++    let (root, voie, autre) = (nsh.boot(), vi.boot(), tiers.boot());
++    let (dest, lecteur) = with(|s| {
++        s.ipc.bind_lane(nsh.0, root, vi.0, voie).unwrap();
++        let ep = s.ipc.lookup(nsh.0, root, MANAGE).unwrap().endpoint;
++        s.ipc.ends.get_mut(ep.slot()).bulk.as_mut().unwrap().editeur = true;
++        s.ipc.moteur_pret = Some(fs.0);
++        let d = s.ipc.create(nsh.0).unwrap();
++        let l = s.ipc.derive(nsh.0, d, fs.0, RECEIVE.into()).unwrap();
++        (d, l)
++    });
++    let base = vi.memory(|s, m| s.resize_heap(m, 0, 0).unwrap());
++    for acteur in [vi, fs] {
++        acteur.memory(|s, m| s.resize_heap(m, base, base + 8192).unwrap());
++    }
++    vi.put(base, &[0x62; 4096]);
++    vi.put(base + 4096, &[0xb5; 4096]);
++    let demande = |a: Actor, op, cap, tag, addr, len, off| {
++        let mut d = [0u8; 32];
++        for (p, v) in d.chunks_exact_mut(8).zip([tag as u64, addr, len, off]) {
++            p.copy_from_slice(&v.to_le_bytes());
++        }
++        a.put(DESC, &d);
++        a.call(op, cap, DESC, 32)
++    };
++    assert_eq!(
++        demande(vi, 0x10034, voie, 1, base + 1, 4097, 0),
++        Err(BAD_ARGUMENT)
++    );
++    assert_eq!(
++        demande(vi, 0x10034, voie, 1, base, 8193, 0),
++        Err(BAD_ADDRESS)
++    );
++    assert_eq!(demande(vi, 0x10034, voie, 1, base, 8192, 0), Ok(8192));
++    assert!(vi.memory(|s, m| !s.copy_to_user(m, base + 4095, &[1, 2])
++        && s.resize_heap(m, base + 8192, base).is_err()));
++    assert_eq!(
++        demande(tiers, 0x10035, autre, 1, dest, 8192, 0),
++        Err(DENIED)
++    );
++    assert_eq!(demande(nsh, 0x10035, root, 1, dest, 8192, 0), Ok(0));
++    assert_eq!(
++        demande(fs, 0x10036, lecteur, 2, base, 8192, 0),
++        Err(REVOKED)
++    );
++    fs.put(base + 4096, &[9]);
++    assert_eq!(
++        demande(fs, 0x10036, lecteur, 1, base + 4096, 8192, 0),
++        Err(BAD_ADDRESS)
++    );
++    assert_eq!(fs.bytes::<1>(base + 4096), [9]);
++    assert_eq!(
++        demande(fs, 0x10036, lecteur, 1, base, 8192, 1),
++        Err(BAD_ARGUMENT)
++    );
++    assert_eq!(demande(fs, 0x10036, lecteur, 1, base, 8192, 0), Ok(8192));
++    assert_eq!(fs.bytes::<2>(base + 4095), [0x62, 0xb5]);
++    assert_eq!(demande(vi, 0x10038, voie, 1, 0, 0, 0), Ok(0));
++    assert_eq!(demande(fs, 0x10037, lecteur, 1, 0, 0, 0), Err(REVOKED));
++    assert!(vi.memory(|s, m| s.copy_to_user(m, base, &[3])));
++    assert_eq!(demande(vi, 0x10034, voie, 2, base, 8192, 0), Ok(8192));
++    assert_eq!(demande(nsh, 0x10035, root, 2, dest, 8192, 0), Ok(0));
++    assert_eq!(demande(fs, 0x10037, lecteur, 2, 0, 0, 0), Ok(0));
++    assert_eq!(nsh.call(IPC_REVOKE, dest, 0, 0), Err(WOULD_BLOCK));
++    assert_eq!(demande(vi, 0x10038, voie, 2, 0, 0, 0), Err(WOULD_BLOCK));
++    assert_eq!(demande(fs, 0x10039, lecteur, 2, 0, 0, 0), Ok(0));
++    assert_eq!(nsh.call(IPC_REVOKE, dest, 0, 0), Ok(1));
++    assert!(vi.memory(|s, m| s.copy_to_user(m, base + 4096, &[4])));
++    assert_eq!(demande(vi, 0x10034, voie, 3, base, 8192, 0), Ok(8192));
++    let lecteur = with(|s| s.ipc.derive(nsh.0, dest, fs.0, RECEIVE.into()).unwrap());
++    assert_eq!(demande(nsh, 0x10035, root, 3, dest, 8192, 0), Ok(0));
++    // Lancer les deux acteurs avant d'attendre leurs réponses. La lecture est
++    // soit complète, soit refusée sans modification de la destination.
++    fs.put(base, &[0x88; 4096]);
++    fs.put(base + 4096, &[0x88; 4096]);
++    let mut d = [0u8; 32];
++    d[..8].copy_from_slice(&3u64.to_le_bytes());
++    vi.put(DESC, &d);
++    d[8..16].copy_from_slice(&base.to_le_bytes());
++    d[16..24].copy_from_slice(&8192u64.to_le_bytes());
++    fs.put(DESC, &d);
++    fs.start(0x10036, lecteur, DESC, 32);
++    vi.start(0x10038, voie, DESC, 32);
++    match fs.result() {
++        Ok(8192) => assert_eq!(fs.bytes::<2>(base + 4095), [0x62, 4]),
++        Err(REVOKED) => assert_eq!(fs.bytes::<2>(base + 4095), [0x88; 2]),
++        autre => panic!("lecture en concurrence {autre:?}"),
++    }
++    assert_eq!(vi.result(), Ok(0));
++    assert_eq!(demande(fs, 0x10037, lecteur, 3, 0, 0, 0), Err(REVOKED));
++    assert_eq!(demande(vi, 0x10034, voie, 4, base, 8192, 0), Ok(8192));
++    assert_eq!(demande(nsh, 0x10035, root, 4, dest, 8192, 0), Ok(0));
++    assert!(nsh.call(IPC_REVOKE, dest, 0, 0).is_ok());
++    assert!(vi.memory(|s, m| s.copy_to_user(m, base + 32, &[5])));
++    let lecteur = with(|s| s.ipc.derive(nsh.0, dest, fs.0, RECEIVE.into()).unwrap());
++    assert_eq!(demande(vi, 0x10034, voie, 5, base, 8192, 0), Ok(8192));
++    assert_eq!(demande(nsh, 0x10035, root, 5, dest, 8192, 0), Ok(0));
++    assert_eq!(demande(fs, 0x10037, lecteur, 5, 0, 0, 0), Ok(0));
++    let [shell, editeur, moteur, tiers_enfant] = enfants;
++    vi.start(u64::MAX - 3, 0, 0, 0);
++    assert!(matches!(editeur.join(), Outcome::Fault(f) if f.address == base + 4096));
++    assert_eq!(nsh.call(IPC_REVOKE, dest, 0, 0), Err(WOULD_BLOCK));
++    assert_eq!(demande(fs, 0x10039, lecteur, 5, 0, 0, 0), Ok(0));
++    assert_eq!(nsh.call(IPC_REVOKE, dest, 0, 0), Ok(1));
++    with(|s| s.ipc.moteur_pret = None);
++    stop([shell, moteur, tiers_enfant], [nsh, fs, tiers]);
++}
+--- a/novaOS/kernel/src/sched/process/ipc/probes.rs
++++ b/novaOS/kernel/src/sched/process/ipc/probes.rs
+@@ -5,6 +5,7 @@
+ mod contract;
+ mod limits;
+ mod perf;
++mod pret;
+ mod races;
+ pub(super) static PAUSED: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
+ static EXIT_ON_RESUME: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
+@@ -267,6 +268,7 @@
+         ("T10", t10),
+         ("lots", bulk::contract),
+         ("file-revocable", bulk::file_revocable),
++        ("pret-multipage", pret::contrat),
+         ("T11", contract::revoke_inflight),
+         ("T12/T18", contract::deaths),
+         ("T04/T11", races::stale_and_move),
+--- /dev/null
++++ b/novaOS/kernel/src/sched/process/ipc/scelle.rs
+@@ -0,0 +1,218 @@
++//! Un prêt synchrone conserve ses pages dans le tas de l'éditeur. Le courtier
++//! délègue une lecture bornée au seul moteur de la session de qualification.
++use super::*;
++
++#[derive(Clone, Copy)]
++pub(super) struct Pret {
++    source: Pid,
++    voie: Reference,
++    courtier: Reference,
++    lecteur: Option<Reference>,
++    tag: u64,
++    base: u64,
++    len: u64,
++    publication: bool,
++}
++
++impl Pret {
++    pub(super) fn concerne(self, id: Reference) -> bool {
++        self.voie == id || self.courtier == id || self.lecteur == Some(id)
++    }
++}
++
++impl Domain {
++    fn vivant(&self, id: Reference) -> bool {
++        self.node(id)
++            .is_some_and(|n| n.holder != ABSENT && n.key != 0)
++    }
++    pub(super) fn garde_pret(&self, n: Node, descendants: bool) -> Res<()> {
++        if let Some(p) = self.pret
++            && p.publication
++        {
++            let atteint = |id: Reference| {
++                if descendants {
++                    id != n.id && self.descendants(n).has(id.slot())
++                } else {
++                    id == n.id
++                        || self.node(id).is_some_and(|v| {
++                            v.endpoint == n.endpoint
++                                && n.id == self.ends.get(n.endpoint.slot()).root
++                        })
++                }
++            };
++            if atteint(p.voie) || atteint(p.courtier) || p.lecteur.is_some_and(atteint) {
++                return Err(WOULD_BLOCK);
++            }
++        }
++        Ok(())
++    }
++}
++
++fn terminer(s: &mut Core) {
++    if let Some(p) = s.ipc.pret.take()
++        && let Some(proc) = &mut s.processes.slots[p.source.slot]
++        && proc.pid == p.source
++        && let Some(space) = &mut proc.space
++    {
++        heap::with_pages(|m| {
++            space.rendre_pret(m);
++            Ok(())
++        })
++        .unwrap();
++    }
++}
++
++pub(in crate::sched) fn collecter(s: &mut Core) {
++    if s.ipc.pret.is_some_and(|p| {
++        // Après admission, le moteur a fini de lire les pages. Une disparition
++        // de l'éditeur ne peut plus annuler une décision en cours de publication.
++        p.lecteur.is_some_and(|id| !s.ipc.vivant(id))
++            || !p.publication && (!s.ipc.vivant(p.voie) || !s.ipc.vivant(p.courtier))
++    }) {
++        terminer(s);
++    }
++}
++
++pub(in crate::sched::process) fn appel(op: u64, cap: u64, desc: u64, size: u64) -> Res<u64> {
++    if size != 32 || desc % 8 != 0 {
++        return Err(BAD_ARGUMENT);
++    }
++    with(|s| {
++        collecter(s);
++        let pid = s.thread(s.current).owner.unwrap();
++        let droits = match op {
++            0x10035 => MANAGE,
++            0x10036 | 0x10037 | 0x10039 => RECEIVE,
++            _ => SEND,
++        };
++        let node = s.ipc.lookup(pid, cap, droits)?;
++        let espace = s.processes.get(pid).space.as_ref().ok_or(REVOKED)?;
++        let mut buf = [0u8; 32];
++        if !heap::with_pages(|m| Ok(espace.copy_from_user(m, desc, &mut buf))).unwrap() {
++            return Err(BAD_ADDRESS);
++        }
++        let word = |i: usize| u64::from_le_bytes(buf[i * 8..i * 8 + 8].try_into().unwrap());
++        let (tag, addr, len, off) = (word(0), word(1), word(2), word(3));
++        if tag == 0 {
++            return Err(BAD_ARGUMENT);
++        }
++        if op == 0x10034 {
++            if s.ipc.pret.is_some() {
++                return Err(WOULD_BLOCK);
++            }
++            let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(DENIED)?;
++            if !lane.editeur
++                || lane.nodes[1] != node.id
++                || lane.handles[1] != cap
++                || lane.parties[1] != pid.number
++            {
++                return Err(DENIED);
++            }
++            if tag <= lane.dernier_pret
++                || off != 0
++                || len == 0
++                || len > 8 * 1024 * 1024
++                || addr % 4096 != 0
++            {
++                return Err(BAD_ARGUMENT);
++            }
++            let espace = s.processes.get_mut(pid).space.as_mut().unwrap();
++            if !heap::with_pages(|m| Ok(espace.sceller_pret(m, addr, len))).unwrap() {
++                return Err(BAD_ADDRESS);
++            }
++            s.ipc
++                .ends
++                .get_mut(node.endpoint.slot())
++                .bulk
++                .as_mut()
++                .unwrap()
++                .dernier_pret = tag;
++            s.ipc.pret = Some(Pret {
++                source: pid,
++                voie: node.id,
++                courtier: lane.nodes[0],
++                lecteur: None,
++                tag,
++                base: addr,
++                len,
++                publication: false,
++            });
++            return Ok(len);
++        }
++        let p = s.ipc.pret.ok_or(REVOKED)?;
++        if p.tag != tag {
++            return Err(REVOKED);
++        }
++        match op {
++            0x10035 => {
++                if node.id != p.courtier || p.lecteur.is_some() || len != p.len || off != 0 {
++                    return Err(DENIED);
++                }
++                let root = s.ipc.lookup(pid, addr, MANAGE | SEND)?;
++                if root.id != s.ipc.ends.get(root.endpoint.slot()).root {
++                    return Err(DENIED);
++                }
++                let service = s.ipc.moteur_pret.ok_or(DENIED)?;
++                let mut candidats = s.ipc.nodes.ids().map(|i| *s.ipc.nodes.get(i)).filter(|v| {
++                    v.parent == root.id
++                        && v.rights == RECEIVE
++                        && v.holder as usize == service.slot
++                        && v.key != 0
++                });
++                let v = candidats.next().ok_or(DENIED)?;
++                if candidats.next().is_some()
++                    || s.processes.slots[service.slot]
++                        .as_ref()
++                        .is_none_or(|proc| proc.pid != service)
++                {
++                    return Err(DENIED);
++                }
++                s.ipc.pret.as_mut().unwrap().lecteur = Some(v.id);
++                Ok(0)
++            }
++            0x10036 => {
++                if p.lecteur != Some(node.id) || p.publication {
++                    return Err(DENIED);
++                }
++                if len == 0
++                    || len > 1024 * 1024
++                    || off.checked_add(len).is_none_or(|x| x > p.len)
++                    || addr.checked_add(len).is_none_or(|x| x > 1 << 47)
++                {
++                    return Err(BAD_ARGUMENT);
++                }
++                let source = s.processes.get(p.source).space.as_ref().ok_or(REVOKED)?;
++                let ok = heap::with_pages(|m| {
++                    Ok(source.copier_vers(espace, m, p.base + off, addr, len as usize))
++                })
++                .unwrap();
++                if ok { Ok(len) } else { Err(BAD_ADDRESS) }
++            }
++            0x10037 => {
++                if p.lecteur != Some(node.id) || [addr, len, off] != [0; 3] || p.publication {
++                    return Err(DENIED);
++                }
++                s.ipc.pret.as_mut().unwrap().publication = true;
++                Ok(0)
++            }
++            0x10038 => {
++                if node.id != p.voie || [addr, len, off] != [0; 3] {
++                    return Err(DENIED);
++                }
++                if p.publication {
++                    return Err(WOULD_BLOCK);
++                }
++                terminer(s);
++                Ok(0)
++            }
++            0x10039 => {
++                if p.lecteur != Some(node.id) || [addr, len, off] != [0; 3] {
++                    return Err(DENIED);
++                }
++                terminer(s);
++                Ok(0)
++            }
++            _ => Err(BAD_ARGUMENT),
++        }
++    })
++}
+--- a/novaOS/kernel/src/sched/process/ipc/spawn.rs
++++ b/novaOS/kernel/src/sched/process/ipc/spawn.rs
+@@ -58,6 +58,14 @@
+             let rx = s.ipc.derive(parent, output, pid, RECEIVE.into())?;
+             if number == 14 && authority & tty::QUALIFY != 0 {
+                 s.ipc.bind_lane(parent, input, pid, tx)?;
++                let n = s.ipc.lookup(parent, input, MANAGE)?;
++                s.ipc
++                    .ends
++                    .get_mut(n.endpoint.slot())
++                    .bulk
++                    .as_mut()
++                    .unwrap()
++                    .editeur = true;
+             }
+             s.ipc.locals.get_mut(pid.slot).bootstrap = tx;
+             heap::with_pages(|m| {
+--- a/novaOS/kernel/src/sched/process/ipc/traffic.rs
++++ b/novaOS/kernel/src/sched/process/ipc/traffic.rs
+@@ -338,6 +338,7 @@
+         let n = self.lookup(p, a, need)?;
+         let ep = n.endpoint;
+         if matches!(id, IPC_CLOSE | IPC_REVOKE) {
++            self.garde_pret(n, id == IPC_REVOKE)?;
+             self.retrait_lot(n, id == IPC_REVOKE)?;
+         }
+         let value = match id {
+@@ -432,6 +433,9 @@
+                 let source = self.lookup(p, word(&buf, 16), GRANT)?;
+                 let rights = Self::check_mask(source, mask.into())?;
+                 if mode == 2 {
++                    if self.pret.is_some_and(|p| p.concerne(source.id)) {
++                        return Err(REFUSED);
++                    }
+                     if self
+                         .ends
+                         .get(source.endpoint.slot())
+@@ -535,6 +539,7 @@
+                 s.ipc.metrics.round = entry;
+             }
+             let r = s.ipc.step(p, tid, space, id, args, ticks());
++            collecter(s);
+             s.flush_ipc();
+             let cookie = if r == Ok(None) {
+                 s.ipc.waits.get(tid.slot).cookie
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -117,6 +117,7 @@
+     let result = match id {
+         0x1002e..=0x10030 | 0x10032 => ipc::lot(id, a, b, c),
+         0x10031 if b == 56 && c == 0 => commande_lot(a),
++        0x10034..=0x10039 => ipc::pret(id, a, b, c),
+         IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
+         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
+         crate::hardware::block::wire::PAGE_PORTAL => device_page(a, b, c),
+--- a/novaOS/kernel/src/sched/process.rs
++++ b/novaOS/kernel/src/sched/process.rs
+@@ -199,6 +199,7 @@
+         let pid = s.thread(s.current).owner.expect("exception hors processus");
+         crate::hardware::block::died(pid.number);
+         s.ipc.death(pid, ticks());
++        ipc::collecter(s);
+         s.flush_ipc();
+         s.ipc.collect();
+         let p = s.processes.get_mut(pid);
+--- a/novaOS/user/ipc.rs
++++ b/novaOS/user/ipc.rs
+@@ -159,6 +159,13 @@
+             // Sûreté : faute volontaire confinée à ce processus de test.
+             unsafe { (0xffffffff80000000u64 as *const u64).read_volatile() };
+         }
++        if op == u64::MAX - 3 {
++            // Sonde Ring3/EL0 : deuxième page de notre propre tas de deux pages.
++            // Le prêt actif doit provoquer une faute en écriture sur cette page.
++            let page = ((1usize << 46) + 4096) as *mut u8;
++            unsafe { page.write_volatile(0xc7) };
++            call(PROCESS_EXIT, 1, 0, 0);
++        }
+         let r = match op {
+             x if x == u64::MAX - 1 => exchange(read(1), read(2), read(3) != 0),
+             x if x == u64::MAX - 2 => background(read(1)),
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -183,10 +183,10 @@
+         r
+     }
+     fn lot(&self, b: &[u64], write: u8, addr: u64) -> Result<()> {
+-        if b.is_empty() || b.len() > 128 {
++        if b.is_empty() || b.len() > 256 {
+             return Err(Error::Invalid("taille du lot"));
+         }
+-        let mut lbas = [0; 128];
++        let mut lbas = [0; 256];
+         for (l, &b) in lbas.iter_mut().zip(b) {
+             *l = self.geometry.sectors(b, 1)?.0;
+         }
+--- a/novaOS/user/novafs/files/delegated.rs
++++ b/novaOS/user/novafs/files/delegated.rs
+@@ -182,6 +182,9 @@
+         let op = q[1];
+         shape(q[0] == w::VERSION && q[3] == 0 && q[6..8] == [0; 2] && w::word(q, 8) == 1)?;
+         if self.kind == w::GROUP {
++            if op == 30 {
++                return plan::publier(s, &self.client, &self.targets, q, self.ports.rx);
++            }
+             return selected::execute(s, &mut self.client, owner, &self.targets, q, a);
+         }
+         if matches!(self.kind, w::REMOVE_EMPTY_DIR | w::REMOVE_TREE) {
+--- /dev/null
++++ b/novaOS/user/novafs/files/plan.rs
+@@ -0,0 +1,119 @@
++//! La sélection de nom et le prêt doivent appartenir à la même délégation.
++use super::*;
++
++pub(super) fn publier(
++    s: &mut Session,
++    c: &Client,
++    targets: &[selected::Target],
++    q: &Frame,
++    port: u64,
++) -> rt::Result<()> {
++    if rt::config(11) == 0 {
++        return Err(rt::DENIED);
++    }
++    if s.pending.is_some() || c.copy.is_some() || !s.writable {
++        return Err(w::BUSY);
++    }
++    shape(w::word(q, 16) == 1 && q[2] == 0 && q[4..8] == [0; 4])?;
++    let (dest, source) = match targets {
++        [d] if q[24..48] == [0; 24] => (d, None),
++        [d, src] if src.scope == w::SELECT_FILE && src.kind == Kind::File => {
++            let fs = s.fs.as_ref().ok_or(rt::CLOSED)?;
++            let st = fs.stat_id(src.id).map_err(error)?;
++            if (st.id, st.revision, st.size) != (w::word(q, 24), w::word(q, 32), w::word(q, 40)) {
++                return Err(rt::REVOKED);
++            }
++            (d, Some(st))
++        }
++        _ => return Err(rt::DENIED),
++    };
++    if dest.scope != w::SELECT_NEW || dest.name.is_empty() {
++        return Err(rt::DENIED);
++    }
++    let len = w::word(q, 48);
++    let tag = w::word(q, 56);
++    shape((8..=8 * 1024 * 1024).contains(&len))?;
++    let scelle = len > 64;
++    shape(if scelle {
++        tag != 0 && q[64..].iter().all(|&b| b == 0)
++    } else {
++        tag == 0 && q[64 + len as usize..].iter().all(|&b| b == 0)
++    })?;
++    let lire = |at: u64, buf: &mut [u8]| -> rt::Result<()> {
++        if at.checked_add(buf.len() as u64).is_none_or(|v| v > len) {
++            return Err(rt::BAD_ARGUMENT);
++        }
++        if scelle {
++            let n = rt::bulk::pret(
++                0x10036,
++                port,
++                tag,
++                buf.as_mut_ptr() as u64,
++                buf.len() as u64,
++                at,
++            )?;
++            shape(n == buf.len() as u64)
++        } else {
++            buf.copy_from_slice(&q[64 + at as usize..64 + at as usize + buf.len()]);
++            Ok(())
++        }
++    };
++    let resultat = (|| {
++        let mut n = [0u8; 8];
++        lire(0, &mut n)?;
++        let n = u64::from_le_bytes(n);
++        shape(n <= 2049 && 8 + n * 24 <= len)?;
++        let debut = 8 + n * 24;
++        let mut entetes = Vec::new();
++        entetes
++            .try_reserve_exact(n as usize * 24)
++            .map_err(|_| rt::NO_MEMORY)?;
++        entetes.resize(n as usize * 24, 0);
++        if n != 0 {
++            lire(8, &mut entetes)?;
++        }
++        let mut plages = Vec::new();
++        plages
++            .try_reserve_exact(n as usize)
++            .map_err(|_| rt::NO_MEMORY)?;
++        for e in entetes.chunks_exact(24) {
++            plages.push(core::array::from_fn(|i| {
++                u64::from_le_bytes(e[8 * i..8 * i + 8].try_into().unwrap())
++            }));
++        }
++        s.clock.sample()?;
++        let fs = s.fs.as_mut().ok_or(rt::CLOSED)?;
++        s.dev.start_probe();
++        let mut interruption = None;
++        let r = s.dev.groupe(|| {
++            fs.sauvegarde_plages(
++                source,
++                dest.id,
++                &dest.name,
++                &plages,
++                len - debut,
++                |pos, b| {
++                    let r = if b.is_empty() && scelle {
++                        rt::bulk::pret(0x10037, port, tag, 0, 0, 0).map(|_| ())
++                    } else if b.is_empty() {
++                        Ok(())
++                    } else {
++                        lire(debut + pos, b)
++                    };
++                    r.map_err(|e| {
++                        interruption = Some(e);
++                        novafs::Error::Invalid("prêt retiré")
++                    })
++                },
++            )
++        });
++        r.map_err(|e| interruption.unwrap_or_else(|| namespace::error(e)))
++    })();
++    if scelle {
++        let relache = rt::bulk::pret(0x10039, port, tag, 0, 0, 0);
++        if resultat.is_ok() && relache.is_err() {
++            return Err(w::UNCERTAIN);
++        }
++    }
++    resultat
++}
+--- a/novaOS/user/novafs/files/selected.rs
++++ b/novaOS/user/novafs/files/selected.rs
+@@ -3,10 +3,10 @@
+ use super::*;
+
+ pub(super) struct Target {
+-    scope: u8,
+-    id: u64,
+-    name: String,
+-    kind: Kind,
++    pub(super) scope: u8,
++    pub(super) id: u64,
++    pub(super) name: String,
++    pub(super) kind: Kind,
+     basename: String,
+ }
+
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -547,6 +547,7 @@
+ }
+ mod delegated;
+ mod namespace;
++mod plan;
+ mod selected;
+
+ use crate::runtime::bulk;
+--- a/novaOS/user/storage/disk.rs
++++ b/novaOS/user/storage/disk.rs
+@@ -75,7 +75,7 @@
+             let result = (|| -> Result<()> {
+                 let p = page.as_deref_mut().ok_or(DENIED)?;
+                 let n = wire::number(&r.0, 4) as usize;
+-                let mut offsets = [0; 1024];
++                let mut offsets = [0; 2048];
+                 bulk::take(config(11), m.tag, &mut offsets[..n * 8])?;
+                 let write = r.0[1] != wire::READ;
+                 let args = [
+--- a/novaOS/user/storage/fileapi.rs
++++ b/novaOS/user/storage/fileapi.rs
+@@ -86,7 +86,8 @@
+             self.disconnected = true;
+             if matches!(
+                 q[1],
+-                29 | w::CREATE_NEW
++                29 | 30
++                    | w::CREATE_NEW
+                     | w::COPY_RANGE
+                     | w::PUBLISH_COPY
+                     | w::TOUCH_SELECTED
+--- a/novaOS/user/storage/medium.rs
++++ b/novaOS/user/storage/medium.rs
+@@ -15,7 +15,7 @@
+     fn exchange(&mut self, buf: &mut w::Wire) -> Result<()> {
+         self.tag = self.tag.checked_add(1).ok_or(LIMIT)?;
+         send(self.tx, self.tag, buf)?;
+-        let r = receive(self.rx)?;
++        let r = receive_for(self.rx, w::attente_lot(buf, TIMEOUT))?;
+         if r.tag != self.tag || r.kind != 1 {
+             return Err(BAD_ARGUMENT);
+         }
+@@ -56,7 +56,7 @@
+     }
+     pub(crate) fn lot(&mut self, op: u8, cap: u64, lbas: &[u64], page: u64) -> Result<()> {
+         let n = lbas.len();
+-        if n == 0 || n > 128 {
++        if n == 0 || n > 256 {
+             return Err(BAD_ARGUMENT);
+         }
+         let tag = self.tag.checked_add(1).ok_or(LIMIT)?;
+@@ -72,7 +72,7 @@
+             },
+             0,
+         ];
+-        let mut offsets = [0u8; 1024];
++        let mut offsets = [0u8; 2048];
+         for (p, b) in offsets.chunks_exact_mut(8).zip(lbas) {
+             p.copy_from_slice(&b.to_le_bytes());
+         }
+--- a/novaOS/user/storage/relay.rs
++++ b/novaOS/user/storage/relay.rs
+@@ -21,7 +21,7 @@
+         }
+         last = m.tag;
+         send(lower.0, m.tag, &m.payload)?;
+-        let answer = receive(lower.1)?;
++        let answer = receive_for(lower.1, wire::attente_lot(&m.payload, TIMEOUT))?;
+         if answer.kind != 1 || answer.tag != m.tag || !matches!(answer.len, 1 | 128) {
+             return Err(BAD_ARGUMENT);
+         }
+--- a/novaOS/abi/block.rs
++++ b/novaOS/abi/block.rs
+@@ -11,6 +11,15 @@
+ pub const END: u8 = 2;
+ /// Trame PAGE, phase 3 : exactement 4096 octets, transférés par la boîte dédiée.
+ pub const PAGE_PHASE: u8 = 3;
++/// Délai borné d'un lot déjà livré. Le contrat historique d'un secteur garde son délai.
++/// Jusqu'à 4 ms par page en plus d'une seconde de marge, plafonné à 2,024 s à 250 Hz.
++pub fn attente_lot(w: &Wire, secteur: u64) -> u64 {
++    if w[2] == 4 && matches!(w[1], READ | WRITE | 6) {
++        secteur + u64::from(number(w, 4).min(256))
++    } else {
++        secteur
++    }
++}
+ pub const PAGE_PORTAL: u64 = 0x10046;
+ pub const ALL_RIGHTS: u8 = 31;
+ pub const MAX: usize = 96;
+@@ -42,7 +51,7 @@
+     }
+     if w[2] == 4 {
+         return matches!(w[1], READ | WRITE | 6)
+-            && (1..=128).contains(&n)
++            && (1..=256).contains(&n)
+             && w[16..].iter().all(|&b| b == 0)
+             && lba(w) == 0;
+     }
+--- a/novaOS/abi/bulk_call.rs
++++ b/novaOS/abi/bulk_call.rs
+@@ -21,3 +21,15 @@
+ pub fn take(cap: u64, tag: u64, dst: &mut [u8]) -> rt::Result<()> {
+     exchange(rt::IPC_TAKE, cap, tag, dst.as_mut_ptr() as u64, dst.len())
+ }
++
++pub fn pret(
++    op: u64,
++    cap: u64,
++    tag: u64,
++    adresse: u64,
++    longueur: u64,
++    offset: u64,
++) -> rt::Result<u64> {
++    let d = [tag, adresse, longueur, offset];
++    rt::value(rt::call(op, cap, d.as_ptr() as u64, 32))
++}
+--- a/novaOS/tests/ipc.py
++++ b/novaOS/tests/ipc.py
+@@ -107,7 +107,7 @@
+                     assert "courses" in result and len(result["traces"]) == 30
+                 if mode == "test":
+                     covered = {t for name in cases for t in name.split("/")}
+-                    assert covered == ({f"T{i:02}" for i in range(1, 19)} - {"T09", "T17"}) | {"lots", "file-revocable"}
++                    assert covered == ({f"T{i:02}" for i in range(1, 19)} - {"T09", "T17"}) | {"lots", "file-revocable", "pret-multipage"}
+                     assert phases["ipc_repos"] == phases["ipc_detruits"] == phases["ipc_reprise"]
+                     assert phases["ipc_repos"]["ipc"] == 0 and phases["ipc_repos"]["retenu"] <= 2048
+                     assert phases["ipc_saturation"]["ipc"] + 3 <= 128
+--- a/novaOS/tests/vi_memoire.rs
++++ b/novaOS/tests/vi_memoire.rs
+@@ -251,3 +251,48 @@
+     b.undo_redo(true).unwrap();
+     assert_eq!(b.compact(), before);
+ }
++
++#[test]
++fn plages_sur_editions_et_annulations() {
++    let original = "a".repeat(257);
++    let mut b = Buffer::new(original.clone()).unwrap();
++    let mut reference = original.clone();
++    let mut seed = 17usize;
++    let verifier = |b: &Buffer, attendu: &str| {
++        let mut au = 0;
++        let mut reconstitue = String::new();
++        b.visiter(true, |at, del, r| {
++            assert!(au <= at && at + del <= original.len());
++            reconstitue.push_str(&original[au..at]);
++            for p in b.parts(r) {
++                reconstitue.push_str(p);
++            }
++            au = at + del;
++        });
++        reconstitue.push_str(&original[au..]);
++        assert_eq!(reconstitue, attendu);
++    };
++    for i in 0..700 {
++        seed = seed.wrapping_mul(1664525).wrapping_add(1013904223);
++        let j = seed % reference.chars().count();
++        let at = reference.char_indices().nth(j).unwrap().0;
++        let avant = reference.clone();
++        b.at = at;
++        b.change();
++        if i % 3 == 0 && reference.len() > 1 {
++            let end = at + reference[at..].chars().next().unwrap().len_utf8();
++            b.delete().unwrap();
++            reference.replace_range(at..end, "");
++        } else {
++            b.insert('Ω').unwrap();
++            reference.insert(at, 'Ω');
++        }
++        verifier(&b, &reference);
++        if i % 9 == 0 {
++            b.undo_redo(false).unwrap();
++            verifier(&b, &avant);
++            b.undo_redo(true).unwrap();
++            verifier(&b, &reference);
++        }
++    }
++}

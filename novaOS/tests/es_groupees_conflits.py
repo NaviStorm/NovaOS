@@ -30,22 +30,11 @@ def essai(arch, secteur, dossier):
             attendre("modifications non sauvegardées")
             ecrire(":q!\r")
             attendre("nsh> ")
-        # Source valide avec un caractère UTF-8/CRLF hors de la première page :
-        # la voie ASCII du prototype peut refuser ; ne pas compter cela comme un succès.
         ouvrir("vi bords", "bords")
         ecrire("iZ\x1b:w copie-bords\r")
         attendre("Saisir OUI puis Entrée : ")
         ecrire("OUI\r")
-        # Pour éviter de confondre un redraw avec le résultat, attendre la prochaine
-        # interrogation de taille, puis identifier le message de l'éditeur.
-        rendu = t.until(b"\x1b[6n", 60)
-        succes = "fichier enregistré".encode() in rendu
-        refuse = b"argument invalide" in rendu
-        assert succes != refuse, rendu[-500:]
-        publie = succes
-        if refuse:
-            ecrire(":q\r")
-            attendre("modifications non sauvegardées")
+        attendre("fichier enregistré")
         ecrire(":q!\r")
         attendre("nsh> ")
         t.exit()
@@ -59,13 +48,12 @@ def essai(arch, secteur, dossier):
     tiers[4096], tiers[12345] = ord("!"), ord("?")
     for nom, attendu in [("source-deplacee", tiers), ("vi-essai.nsh", b"tiers"), ("bords", EDGES)]:
         assert lire("salvage", *ids, slot, "/"+nom).stdout == attendu
-    for nom in ["jamais", "renom-test", *([] if publie else ["copie-bords"])]:
+    for nom in ["jamais", "renom-test"]:
         r = lire("salvage", *ids, slot, "/"+nom, check=False)
         assert r.returncode and b"NotFound" in r.stderr
-    if publie:
-        assert lire("salvage", *ids, slot, "/copie-bords").stdout == b"Z"+EDGES
+    assert lire("salvage", *ids, slot, "/copie-bords").stdout == b"Z"+EDGES
     return dict(architecture=arch, secteur=secteur, ecriture_concurrente=True, suppression_ouverte_refusee=True,
-                remplacement_du_nom_detecte=True, modifications_locales_conservees=True, bords_utf8_publies=publie)
+                remplacement_du_nom_detecte=True, modifications_locales_conservees=True, bords_utf8_publies=True)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
-"""Application UTM, GPT et P9 sur un QCOW2 neuf ; deux démarrages du système."""
+"""Relecture de disques GPT/P9 jetables après publication ou coupure dans UTM."""
 import argparse
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -12,7 +13,7 @@ import time
 import uuid
 import zlib
 
-from es_groupees_elargies import operation, verifier
+from es_groupees_elargies import GRANDS, LOCALISES, operation, verifier
 from nsh_utm import demarrer, enregistrer, exporter, nommer, reouvrir_vi, transfert
 from publication_conditionnelle import convertir
 from esp_installation import construire
@@ -64,11 +65,24 @@ def image(raw, volume, elf, s):
     return ids
 
 
-def essai(template, elf, generateur, s, out, sonde, index, cas):
+def relire_export(paquet, cible, s, ids, blocs, attendu, destination):
+    relu = paquet.with_suffix(".raw")
+    convertir(paquet/"Data"/cible, Path(cible).suffix[1:], relu, "raw")
+    table = verifier_gpt(relu, s, ids)
+    extrait = paquet.with_suffix(".p9")
+    with relu.open("rb") as d, extrait.open("xb") as part:
+        d.seek(table["p9"]*s)
+        part.write(d.read((table["fin_p9"]-table["p9"]+1)*s))
+    return verifier(extrait, s, blocs, attendu, IDS, destination=destination)
+
+
+def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True,
+          format_image="qcow2", coupure=None):
     out.mkdir()
     volume, raw = out/"volume.raw", out/"neuf.raw"
     etat = json.loads(subprocess.check_output([generateur, "--image", volume, str(s), "utm"]))
-    avant = verifier(volume, s, etat["blocs"], None, IDS)
+    destination = "coupure-" + coupure if coupure else "copie"
+    avant = verifier(volume, s, etat["blocs"], None, IDS, destination=destination)
     ids = image(raw, volume, elf, s)
     paquet = out/"prototype.utm"
     data = paquet/"Data"
@@ -80,42 +94,71 @@ def essai(template, elf, generateur, s, out, sonde, index, cas):
     args = config["QEMU"]["AdditionalArguments"]
     pos, = [i for i, v in enumerate(args) if v.startswith("virtio-blk-pci,")]
     args[pos] += f",logical_block_size={s},physical_block_size={s}"
+    if not traces_bloc:
+        # Témoin de mesure : conserver toutes les traces IOMMU du profil.
+        traces = {"virtio_blk_handle_read", "virtio_blk_handle_write"}
+        for event in traces:
+            i = args.index(event)
+            assert i > 0 and args[i - 1] == "-trace"
+            del args[i - 1 : i + 1]
+    cible = "cible." + format_image
+    config["Drive"][2]["ImageName"] = cible
     (paquet/"config.plist").write_bytes(plistlib.dumps(config))
-    convertir(raw, "raw", data/"cible.qcow2", "qcow2")
+    convertir(raw, "raw", data/cible, format_image)
     paquet, ident = nommer(paquet, "cow")
     journal = out/"sauvegarde.serial"
     with enregistrer(paquet, ident) as machine:
         with demarrer(machine, journal) as c:
             transfert(c, b"nsh> ", 56)
-            reouvrir_vi(c, "source")
+            nom = "nouveau" if cas == "neuf-4m" else "source"
+            if cas == "neuf-4m":
+                os.write(c.fd, b"vi nouveau\n")
+                c.attendre(b"\x1b[6n")
+                os.write(c.fd, b"\x1b[24;80R")
+                c.attendre(b"nouveau [nouveau] 1:1")
+            else:
+                reouvrir_vi(c, nom)
             attendu = operation("index" if index else cas, lambda texte: os.write(c.fd, texte.encode()),
                                lambda texte: c.attendre(texte.encode(), 180))
             os.write(c.fd, b":")
-            c.attendre("vi [COMMANDE] source [modifié]".encode())
+            c.attendre(f"vi [COMMANDE] {nom} [modifié]".encode())
             debut = time.monotonic_ns()
-            os.write(c.fd, b"w copie\r")
+            os.write(c.fd, f"w {destination}\r".encode())
             c.attendre("Saisir OUI puis Entrée : ".encode())
             oui = time.monotonic_ns()
             os.write(c.fd, b"OUI\r")
-            c.attendre("fichier enregistré".encode())
+            succes = "fichier enregistré"
+            repere = "COUPURE groupe " + coupure if coupure else succes
+            reponses = (succes, "erreur d’E/S", "publication incertaine", "capacité révoquée",
+                        "échec de l’opération", "destination non autorisée")
+            marque = c.attendre_une(reponses + ((repere,) if coupure else ()), 180)
+            if marque != repere:
+                raise RuntimeError(f"{cas} dans UTM : {marque}")
             fin = time.monotonic_ns()
-            os.write(c.fd, b":q\r")
-            c.attendre(b"nsh> ")
-            c.ligne("exit", b"SYSTEME bilan Ok(())")
+            if not coupure:
+                os.write(c.fd, b":q\r")
+                c.attendre(b"nsh> ")
+                c.ligne("exit", b"SYSTEME bilan Ok(())")
+        if coupure:
+            # Le moteur reste suspendu sur la frontière jusqu'au stop --force de demarrer.
+            if coupure != "f2":
+                attendu = None
+            archive = out/"interrompu.utm"
+            exporter(machine, archive)
+            immediat = relire_export(archive, cible, s, ids, etat["blocs"], attendu, destination)
         with demarrer(machine, out/"reprise.serial") as c:
             transfert(c, b"nsh> ", 56)
-            reouvrir_vi(c, "copie")
+            reouvrir_vi(c, destination if attendu is not None else "source")
             os.write(c.fd, b":q\r")
             c.attendre(b"nsh> ")
             c.ligne("exit", b"SYSTEME bilan Ok(())")
         exporter(machine, out/"relu.utm")
-    relu = out/"relu.raw"
-    convertir(out/"relu.utm/Data/cible.qcow2", "qcow2", relu, "raw")
-    table = verifier_gpt(relu, s, ids)
-    with relu.open("rb") as d, (out/"extrait.raw").open("xb") as part:
-        d.seek(table["p9"]*s)
-        part.write(d.read((table["fin_p9"]-table["p9"]+1)*s))
-    apres = verifier(out/"extrait.raw", s, etat["blocs"], attendu, IDS)
+    apres = relire_export(out/"relu.utm", cible, s, ids, etat["blocs"], attendu, destination)
+    if coupure:
+        return dict(frontiere=coupure, secteur=s, environnement=f"UTM {format_image.upper()}",
+                    arret="utmctl stop --force", acquit_avant_coupure=False, octets_inseres=4*MIO,
+                    avant=avant, juste_apres_coupure=immediat, apres_redemarrage=apres,
+                    destination_complete=attendu is not None, source_et_destination_verifiees=True)
     mesure = out/"mesure.json"
     mesure.write_text(json.dumps([dict(octets=4*MIO, transfert_avant_oui_ms=(oui-debut)/1e6,
                                       publication_apres_oui_ms=(fin-oui)/1e6)]))
@@ -126,8 +169,8 @@ def essai(template, elf, generateur, s, out, sonde, index, cas):
         assert "SAVE from=" not in trace
         compteur = None
     pic = int(re.search(r"BLOC memoire [^\n]*pic_cadres=(\d+)", trace)[1])
-    return dict(cas=cas, index_parcouru=index, sonde=sonde, pic_cadres_session=pic, sauvegarde_ms=round((fin-debut)/1e6, 3),
-                apres_oui_ms=round((fin-oui)/1e6, 3), secteur=s, environnement="UTM QCOW2", avant=avant, apres=apres, redemarrages=1,
+    return dict(cas=cas, index_parcouru=index, sonde=sonde, traces_bloc=traces_bloc, pic_cadres_session=pic, sauvegarde_ms=round((fin-debut)/1e6, 3),
+                apres_oui_ms=round((fin-oui)/1e6, 3), secteur=s, environnement=f"UTM {format_image.upper()}", avant=avant, apres=apres, redemarrages=1,
                 octets_relus=True, compteur=compteur)
 
 
@@ -136,11 +179,23 @@ if __name__ == "__main__":
     for champ in ("profil_systeme", "elf_systeme", "generateur", "sortie"):
         p.add_argument(champ, type=Path)
     p.add_argument("secteur", type=int, choices=[512, 4096])
+    p.add_argument("--format", choices=("raw", "qcow2"), default="qcow2", help="format du disque jetable")
     p.add_argument("--sans-sonde", action="store_true")
+    p.add_argument("--sans-traces-bloc", action="store_true",
+                   help="mesure témoin sans trace QEMU par lecture/écriture, avec les traces IOMMU")
     p.add_argument("--index", action="store_true", help="rejouer le parcours G/gg de la référence")
-    p.add_argument("--cas", choices=("debut", "milieu", "fin", "multiple"), default="debut")
+    p.add_argument("--coupure", choices=("pages", "f1", "f2"),
+                   help="arrêt forcé au point du moteur, avec --cas ajout-4m et les fixtures de coupure")
+    p.add_argument("--cas", choices=("debut", "milieu", "fin", "multiple", *LOCALISES, *GRANDS), default="debut")
     a = p.parse_args()
     if a.index and a.cas != "debut":
         p.error("--index accompagne le cas debut")
-    r = essai(a.profil_systeme, a.elf_systeme, a.generateur.resolve(), a.secteur, a.sortie.resolve(), not a.sans_sonde, a.index, a.cas)
+    if a.coupure and (a.cas != "ajout-4m" or not a.sans_sonde):
+        p.error("--coupure requiert --cas ajout-4m et --sans-sonde")
+    # Un seul banc UTM par campagne pour mesurer le profil à charge maîtrisée.
+    with (a.sortie.resolve().parent / ".mesure-utm.lock").open("a") as verrou:
+        fcntl.flock(verrou, fcntl.LOCK_EX)
+        r = essai(a.profil_systeme, a.elf_systeme, a.generateur.resolve(), a.secteur,
+                  a.sortie.resolve(), not a.sans_sonde, a.index, a.cas, not a.sans_traces_bloc,
+                  a.format, a.coupure)
     (a.sortie/"resultats.json").write_text(json.dumps(r, ensure_ascii=False, indent=2)+"\n")

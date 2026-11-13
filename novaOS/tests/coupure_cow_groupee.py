@@ -13,10 +13,11 @@ import time
 
 from cli import Terminal
 import vi_volumes as volumes
+from es_groupees_elargies import grande_insertion
 
 TAILLE = 512 * 1024 + 128
 
-def essai(arch, secteur, point, dossier, taille=TAILLE):
+def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False):
     volumes.SIZES = (taille,)
     volumes.BLOCKS = 4096 if taille == 4 << 20 else 1024
     image, ids = volumes.prepare(dossier, secteur)
@@ -42,7 +43,8 @@ def essai(arch, secteur, point, dossier, taille=TAILLE):
         t.until(b"\x1b[6n")
         t.vm.stdin.write(b"\x1b[24;80R")
         t.until(f"{source} [enregistré] 1:1".encode())
-        t.vm.stdin.write(f"iX\x1b:w {destination}\r".encode())
+        touches = "\x10" if multipage else "iX\x1b"
+        t.vm.stdin.write(f"{touches}:w {destination}\r".encode())
         t.until("Saisir OUI puis Entrée : ".encode())
         t.vm.stdin.write(b"OUI\r")
         avant = t.until(b"COUPURE groupe " + (b"armer" if vol else point.encode()), 45)
@@ -63,6 +65,8 @@ def essai(arch, secteur, point, dossier, taille=TAILLE):
             return subprocess.run([volumes.HOST, op, str(volumes.BLOCKS), str(secteur), *args],
                                   stdin=f, capture_output=True, check=check)
 
+    insertion = grande_insertion() if multipage else b"X"
+
     def verifier():
         h("verify", *ids)
         slots = re.findall(r"slot=(\d+) génération=(\d+)".encode(), h("inspect").stdout)
@@ -71,7 +75,7 @@ def essai(arch, secteur, point, dossier, taille=TAILLE):
         assert h("salvage", *ids, actif, "/" + source).stdout == original
         dest = h("salvage", *ids, actif, "/" + destination, check=False)
         if point == "f2" or (point == "vol-f2" and dest.returncode == 0):
-            assert dest.returncode == 0 and dest.stdout == b"X" + original
+            assert dest.returncode == 0 and dest.stdout == insertion + original
         else:
             assert dest.returncode != 0 and b"NotFound" in dest.stderr
 
@@ -82,7 +86,7 @@ def essai(arch, secteur, point, dossier, taille=TAILLE):
         t.until(b"nsh> ", 180)
         t.exit()
     assert verifier() == publie
-    return dict(frontiere=point, octets_source=taille, montage_normal=True, relecture_exacte=True,
+    return dict(frontiere=point, octets_source=taille, multipage=multipage, montage_normal=True, relecture_exacte=True,
                 destination_complete=publie, flush_termines_au_point=stats, acquit_avant_coupure=False)
 
 if __name__ == "__main__":
@@ -92,6 +96,7 @@ if __name__ == "__main__":
     p.add_argument("rapport", type=Path)
     p.add_argument("--barrieres", action="store_true", help="requiert aussi io-0166-barrieres.patch")
     p.add_argument("--taille", type=int, choices=(TAILLE, 4 << 20), default=TAILLE)
+    p.add_argument("--multipage", action="store_true", help="inclut la fixture de charge de 4 Mio")
     args = p.parse_args()
     essais = []
     points = ("pages", "f1", "f2", "retrait")
@@ -99,5 +104,5 @@ if __name__ == "__main__":
         points += ("avant-f1", "vol-f1", "avant-f2", "vol-f2")
     for point in points:
         with tempfile.TemporaryDirectory(prefix="nova-cow-groupe-") as dossier:
-            essais.append(essai(args.architecture, args.secteur, point, Path(dossier), args.taille))
+            essais.append(essai(args.architecture, args.secteur, point, Path(dossier), args.taille, args.multipage))
     args.rapport.write_text(json.dumps(essais, indent=2, ensure_ascii=False) + "\n")

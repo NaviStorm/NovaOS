@@ -1,0 +1,25 @@
+--- a/components/vi/terminal.rs
++++ b/components/vi/terminal.rs
+@@ -88,4 +88,12 @@
+             continue;
+         };
++        // Banc jetable en profil 42. Prépare la frappe hors de la mesure :w.
++        if key=='\x10' && link.mode_plan!=0 && e.mode==Mode::Normal {
++            let mut data=alloc::string::String::new();
++            data.try_reserve_exact(4<<20).map_err(|_|rt::NO_MEMORY)?;
++            for i in 0..4<<20 {data.push((32+(i*17+i/4096)%95) as u8 as char);}
++            e.buf.charge_labo(&data).map_err(|_|rt::NO_MEMORY)?;
++            e.message="préparation de charge terminée";screen.draw(e,link)?;continue;
++        }
+         if key == '\x0c' {
+             screen.geometry(link, true)?;
+--- a/components/vi/buffer.rs
++++ b/components/vi/buffer.rs
+@@ -83,4 +83,7 @@
+         self.text.plages.visiter(self.len(), source, f);
+     }
++    pub fn charge_labo(&mut self,s:&str)->Result<(),&'static str>{
++        self.change();self.replace(self.at..self.at,s,self.at)?;self.finish();Ok(())
++    }
+     pub fn compact(&mut self) -> &str {
+         self.text.compact()
