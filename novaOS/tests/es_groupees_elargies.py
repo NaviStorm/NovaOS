@@ -124,7 +124,7 @@ def verifier(image, secteur, blocs, attendu, ids=("61"*16, "62"*16), tiers=None,
     return sorted(int(g) for _, g in generations)
 
 
-def essai(a, secteur, cas, generateur, dossier, sonde=True):
+def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None):
     image = dossier/"volume.raw"
     profil = cas if cas in ("fragmente", "sature") else "dense"
     etat = json.loads(subprocess.check_output([generateur, "--image", image, str(secteur), profil]))
@@ -135,7 +135,7 @@ def essai(a, secteur, cas, generateur, dossier, sonde=True):
         # L'ouverture seule peut publier atime ; comparer à une copie de la même image.
         clone = dossier/"temoin.raw"
         shutil.copyfile(image, clone)
-        with Terminal(a, secteur, clone, "elargi-temoin-lecture", test=True) as ctl:
+        with Terminal(a, secteur, clone, "elargi-temoin-lecture", test=True, entries=entries) as ctl:
             ctl.until(b"nsh> ")
             ctl.vm.stdin.write(b"vi source\n")
             ctl.until(b"\x1b[6n")
@@ -145,7 +145,7 @@ def essai(a, secteur, cas, generateur, dossier, sonde=True):
             ctl.until(b"nsh> ")
             ctl.exit()
         temoin = verifier(clone, secteur, etat["blocs"], None, tiers=tiers)
-    with Terminal(a, secteur, image, "elargi-"+cas, test=True) as t:
+    with Terminal(a, secteur, image, "elargi-"+cas, test=True, entries=entries) as t:
         def send(s):
             t.vm.stdin.write(s.encode())
         def wait(s):
@@ -186,13 +186,15 @@ def essai(a, secteur, cas, generateur, dossier, sonde=True):
         mesure = dossier/"mesure.json"
         mesure.write_text(json.dumps([row]))
         compte = bilan(t.archive, mesure)
+        if entries is not None:
+            assert 0 < compte["dma"]["max_pages_par_chaine"] <= entries - 2
     if not sonde:
         assert "SAVE from=" not in text
     pic_cadres = int(re.search(r"BLOC memoire [^\n]*pic_cadres=(\d+)", text)[1])
     mem = {}
     for pid, pages, pile in re.findall(r"CLI mem pid=(\d+) privees=(\d+) pile=(\d+)", text):
         mem[pid] = max(mem.get(pid, 0), 4*(int(pages)+int(pile)))
-    return dict(architecture=a, secteur=secteur, cas=cas, **etat, avant=avant, apres=apres, temoin_lecture=temoin,
+    return dict(architecture=a, secteur=secteur, cas=cas, entrees_file=entries, **etat, avant=avant, apres=apres, temoin_lecture=temoin,
                 pic_cadres_session=pic_cadres, sonde=sonde, memoire_observee_kio=mem, chemin=(
                     "refuse" if attendu is None else "non_instrumente" if not sonde else
                     "groupe" if "lots" in compte else "historique"),
@@ -208,7 +210,9 @@ if __name__ == "__main__":
     arg.add_argument("generateur", type=Path)
     arg.add_argument("rapport", type=Path)
     arg.add_argument("--sans-sonde", action="store_true")
+    arg.add_argument("--entrees-file", type=int, choices=(8, 16, 32, 64, 128, 256))
     args = arg.parse_args()
     with tempfile.TemporaryDirectory(prefix="nova-elargi-") as d:
-        r = essai(args.arch, args.secteur, args.cas, args.generateur.resolve(), Path(d), not args.sans_sonde)
+        r = essai(args.arch, args.secteur, args.cas, args.generateur.resolve(), Path(d), not args.sans_sonde,
+                  args.entrees_file)
     args.rapport.write_text(json.dumps(r, indent=2, ensure_ascii=False)+"\n")

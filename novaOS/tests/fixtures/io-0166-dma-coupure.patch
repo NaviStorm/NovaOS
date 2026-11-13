@@ -1,0 +1,45 @@
+--- a/novaOS/kernel/src/hardware/block/arena.rs
++++ b/novaOS/kernel/src/hardware/block/arena.rs
+@@ -145,4 +145,7 @@
+         self.pending = Some(seen);
+         drop(irq);
++        if d.ecrire {
++            crate::sched::process::ipc::injecte_retrait();
++        }
+         let complet = self.finish(if d.ecrire { 1 } else { 1 + bytes as u32 });
+         if complet.is_err() {
+@@ -156,4 +159,5 @@
+         };
+         let fin = d.terminer(true, copie.is_ok());
++        if d.confirmer_retrait() { return Err(Error::State); }
+         trace_dma::groupe(
+             d.ecrire,
+--- a/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
+@@ -133,4 +133,5 @@
+         })
+     }
++    pub(crate) fn confirmer_retrait(self)->bool {super::confirme_retrait(self.cap)}
+     pub(crate) fn terminer(self, complet: bool, livre: bool) -> Res<()> {
+         with(|s| {
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -197,4 +197,12 @@
+             return Err(Error::Invalid("longueur lot"));
+         }
++        if self.coupe.get()==8 {
++            use crate::runtime as rt;
++            let label=b"COUPURE groupe armer";
++            rt::call(rt::DEBUG_WRITE,label.as_ptr() as u64,label.len() as u64,0);
++            if !matches!(rt::receive_for(rt::config(4),250),Err(rt::TIMED_OUT)) {rt::exit(rt::BAD_ARGUMENT);}
++            let go=b"COUPURE groupe soumission";
++            rt::call(rt::DEBUG_WRITE,go.as_ptr() as u64,go.len() as u64,0);
++        }
+         self.lot(b, 1, p.as_ptr() as u64)?;
+         if self.coupe.get() == 1 {
+@@ -208,4 +216,5 @@
+         self.rang_bar.set(0);
+         self.coupe.set(match n {
++            "coupure-vol-ecriture" => 8,
+             "coupure-avant-f1" => 4,
+             "coupure-avant-f2" => 5,

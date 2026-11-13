@@ -65,23 +65,48 @@ def image(raw, volume, elf, s):
     return ids
 
 
-def relire_export(paquet, cible, s, ids, blocs, attendu, destination):
-    relu = paquet.with_suffix(".raw")
-    convertir(paquet/"Data"/cible, Path(cible).suffix[1:], relu, "raw")
+def relire_systeme(disque, fmt, relu, s, ids, blocs, attendu, destination):
+    convertir(disque, fmt, relu, "raw")
     table = verifier_gpt(relu, s, ids)
-    extrait = paquet.with_suffix(".p9")
+    extrait = relu.with_suffix(".p9")
     with relu.open("rb") as d, extrait.open("xb") as part:
         d.seek(table["p9"]*s)
         part.write(d.read((table["fin_p9"]-table["p9"]+1)*s))
     return verifier(extrait, s, blocs, attendu, IDS, destination=destination)
 
 
+def relire_export(paquet, cible, s, ids, blocs, attendu, destination):
+    return relire_systeme(paquet/"Data"/cible, Path(cible).suffix[1:], paquet.with_suffix(".raw"),
+                          s, ids, blocs, attendu, destination)
+
+
+def publier(c, nom, destination, coupure):
+    os.write(c.fd, b":")
+    c.attendre(f"vi [COMMANDE] {nom} [modifié]".encode())
+    debut = time.monotonic_ns()
+    os.write(c.fd, f"w {destination}\r".encode())
+    c.attendre("Saisir OUI puis Entrée : ".encode())
+    oui = time.monotonic_ns()
+    os.write(c.fd, b"OUI\r")
+    succes = "fichier enregistré"
+    repere = "COUPURE groupe " + coupure if coupure else succes
+    reponses = (succes, "erreur d’E/S", "publication incertaine", "capacité révoquée",
+                "échec de l’opération", "destination non autorisée")
+    marque = c.attendre_une(reponses + ((repere,) if coupure else ()), 180)
+    if marque != repere:
+        raise RuntimeError(f"Sauvegarde UTM de {nom} vers {destination} : {marque}")
+    return debut, oui, time.monotonic_ns()
+
+
 def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True,
-          format_image="qcow2", coupure=None):
+          format_image="qcow2", coupure=None, preallocation=False, repetition=1):
     out.mkdir()
     volume, raw = out/"volume.raw", out/"neuf.raw"
     etat = json.loads(subprocess.check_output([generateur, "--image", volume, str(s), "utm"]))
+    repetitions = []
     destination = "coupure-" + coupure if coupure else "copie"
+    destinations = [f"copie-{i}" for i in range(1, repetition + 1)] if repetition > 1 else [destination]
+    destination = destinations[0]
     avant = verifier(volume, s, etat["blocs"], None, IDS, destination=destination)
     ids = image(raw, volume, elf, s)
     paquet = out/"prototype.utm"
@@ -104,40 +129,40 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
     cible = "cible." + format_image
     config["Drive"][2]["ImageName"] = cible
     (paquet/"config.plist").write_bytes(plistlib.dumps(config))
-    convertir(raw, "raw", data/cible, format_image)
+    if preallocation:
+        subprocess.run(["qemu-img", "convert", "-f", "raw", "-O", "qcow2",
+                        "-o", "preallocation=full", raw, data/cible], check=True)
+    else:
+        convertir(raw, "raw", data/cible, format_image)
+    etat_image = json.loads(subprocess.check_output(["qemu-img", "info", "--output=json", data/cible]))
     paquet, ident = nommer(paquet, "cow")
     journal = out/"sauvegarde.serial"
     with enregistrer(paquet, ident) as machine:
         with demarrer(machine, journal) as c:
             transfert(c, b"nsh> ", 56)
             nom = "nouveau" if cas == "neuf-4m" else "source"
-            if cas == "neuf-4m":
-                os.write(c.fd, b"vi nouveau\n")
-                c.attendre(b"\x1b[6n")
-                os.write(c.fd, b"\x1b[24;80R")
-                c.attendre(b"nouveau [nouveau] 1:1")
-            else:
-                reouvrir_vi(c, nom)
-            attendu = operation("index" if index else cas, lambda texte: os.write(c.fd, texte.encode()),
-                               lambda texte: c.attendre(texte.encode(), 180))
-            os.write(c.fd, b":")
-            c.attendre(f"vi [COMMANDE] {nom} [modifié]".encode())
-            debut = time.monotonic_ns()
-            os.write(c.fd, f"w {destination}\r".encode())
-            c.attendre("Saisir OUI puis Entrée : ".encode())
-            oui = time.monotonic_ns()
-            os.write(c.fd, b"OUI\r")
-            succes = "fichier enregistré"
-            repere = "COUPURE groupe " + coupure if coupure else succes
-            reponses = (succes, "erreur d’E/S", "publication incertaine", "capacité révoquée",
-                        "échec de l’opération", "destination non autorisée")
-            marque = c.attendre_une(reponses + ((repere,) if coupure else ()), 180)
-            if marque != repere:
-                raise RuntimeError(f"{cas} dans UTM : {marque}")
-            fin = time.monotonic_ns()
+            for i, nom_copie in enumerate(destinations):
+                if cas == "neuf-4m":
+                    os.write(c.fd, b"vi nouveau\n")
+                    c.attendre(b"\x1b[6n")
+                    os.write(c.fd, b"\x1b[24;80R")
+                    c.attendre(b"nouveau [nouveau] 1:1")
+                else:
+                    reouvrir_vi(c, nom)
+                contenu = operation("index" if index else cas, lambda texte: os.write(c.fd, texte.encode()),
+                                    lambda texte: c.attendre(texte.encode(), 180))
+                depart, accord, acquit = publier(c, nom, nom_copie, coupure)
+                if i == 0:
+                    attendu, debut, oui, fin = contenu, depart, accord, acquit
+                else:
+                    assert contenu == attendu
+                if repetition > 1:
+                    repetitions.append(dict(destination=nom_copie, sauvegarde_ms=round((acquit-depart)/1e6, 3),
+                                            apres_oui_ms=round((acquit-accord)/1e6, 3)))
+                if not coupure:
+                    os.write(c.fd, b":q\r")
+                    c.attendre(b"nsh> ")
             if not coupure:
-                os.write(c.fd, b":q\r")
-                c.attendre(b"nsh> ")
                 c.ligne("exit", b"SYSTEME bilan Ok(())")
         if coupure:
             # Le moteur reste suspendu sur la frontière jusqu'au stop --force de demarrer.
@@ -154,6 +179,8 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
             c.ligne("exit", b"SYSTEME bilan Ok(())")
         exporter(machine, out/"relu.utm")
     apres = relire_export(out/"relu.utm", cible, s, ids, etat["blocs"], attendu, destination)
+    for nom_copie in destinations[1:]:
+        verifier(out/"relu.p9", s, etat["blocs"], attendu, IDS, destination=nom_copie)
     if coupure:
         return dict(frontiere=coupure, secteur=s, environnement=f"UTM {format_image.upper()}",
                     arret="utmctl stop --force", acquit_avant_coupure=False, octets_inseres=4*MIO,
@@ -169,7 +196,10 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
         assert "SAVE from=" not in trace
         compteur = None
     pic = int(re.search(r"BLOC memoire [^\n]*pic_cadres=(\d+)", trace)[1])
-    return dict(cas=cas, index_parcouru=index, sonde=sonde, traces_bloc=traces_bloc, pic_cadres_session=pic, sauvegarde_ms=round((fin-debut)/1e6, 3),
+    return dict(cas=cas, index_parcouru=index, sonde=sonde, traces_bloc=traces_bloc, preallocation=preallocation,
+                repetitions=repetitions,
+                image_initiale={k: etat_image[k] for k in ("format", "virtual-size", "actual-size", "cluster-size")
+                                if k in etat_image}, pic_cadres_session=pic, sauvegarde_ms=round((fin-debut)/1e6, 3),
                 apres_oui_ms=round((fin-oui)/1e6, 3), secteur=s, environnement=f"UTM {format_image.upper()}", avant=avant, apres=apres, redemarrages=1,
                 octets_relus=True, compteur=compteur)
 
@@ -180,6 +210,9 @@ if __name__ == "__main__":
         p.add_argument(champ, type=Path)
     p.add_argument("secteur", type=int, choices=[512, 4096])
     p.add_argument("--format", choices=("raw", "qcow2"), default="qcow2", help="format du disque jetable")
+    p.add_argument("--preallocation", action="store_true", help="préallouer complètement le QCOW2 jetable avant UTM")
+    p.add_argument("--repetition", type=int, choices=(1, 2), default=1,
+                   help="deux copies localisées vers des noms distincts sur le même support")
     p.add_argument("--sans-sonde", action="store_true")
     p.add_argument("--sans-traces-bloc", action="store_true",
                    help="mesure témoin sans trace QEMU par lecture/écriture, avec les traces IOMMU")
@@ -190,6 +223,10 @@ if __name__ == "__main__":
     a = p.parse_args()
     if a.index and a.cas != "debut":
         p.error("--index accompagne le cas debut")
+    if a.preallocation and a.format != "qcow2":
+        p.error("--preallocation requiert QCOW2")
+    if a.repetition > 1 and (a.coupure or not a.sans_sonde or a.cas not in LOCALISES or a.index):
+        p.error("--repetition requiert une édition localisée hors sonde")
     if a.coupure and (a.cas != "ajout-4m" or not a.sans_sonde):
         p.error("--coupure requiert --cas ajout-4m et --sans-sonde")
     # Un seul banc UTM par campagne pour mesurer le profil à charge maîtrisée.
@@ -197,5 +234,5 @@ if __name__ == "__main__":
         fcntl.flock(verrou, fcntl.LOCK_EX)
         r = essai(a.profil_systeme, a.elf_systeme, a.generateur.resolve(), a.secteur,
                   a.sortie.resolve(), not a.sans_sonde, a.index, a.cas, not a.sans_traces_bloc,
-                  a.format, a.coupure)
+                  a.format, a.coupure, a.preallocation, a.repetition)
     (a.sortie/"resultats.json").write_text(json.dumps(r, ensure_ascii=False, indent=2)+"\n")

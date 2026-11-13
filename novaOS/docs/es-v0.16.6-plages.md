@@ -1,5 +1,7 @@
 # NovaOS v0.16.6 — Éditions par plages et prêt multipage
 
+La campagne suivante mesure le regroupement des requêtes physiques, les interruptions et la restitution des cadres dans QEMU et UTM. [Qualification VirtIO-blk multipage](es-v0.16.6-dma.md)
+
 ## Portée et mesure
 
 Qualification du prototype issu de `1719e7440de772d2f40b274936d7316a0cccb07c`, sur `codex/es-groupees-0166`. Le résultat porte sur la création d'une copie vers un **nom libre** avec confirmation dans le vrai `nsh`. L'image livrée reste NovaOS v0.16.5 et son lecteur NovaFS v0.9.13 P9. Les fixtures sont appliquées dans des copies du dépôt. [Audit précédent](es-v0.16.6-qualification.md) · [Relevés par exécution](validation/es-v0.16.6-plages.json)

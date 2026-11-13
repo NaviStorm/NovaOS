@@ -1,0 +1,143 @@
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -3,4 +3,5 @@
+ mod gpt;
+ mod io;
++mod trace_dma;
+ pub(crate) use lease::commande_groupee;
+ mod lease;
+@@ -55,4 +56,5 @@
+ /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
+ pub(crate) fn interrupt() -> bool {
++    let entree=trace_dma::temps();
+     let addr = ISR.load(Ordering::Acquire);
+     if addr != 0 {
+@@ -71,4 +73,5 @@
+                 EXPECT.store(0, Ordering::Release);
+                 IRQS.fetch_add(1, Ordering::Release);
++                trace_dma::irq(entree);
+             } else {
+                 STRAYS.fetch_add(1, Ordering::Relaxed);
+@@ -153,4 +156,5 @@
+     // La page de données OUT n'est traduite qu'après l'admission en écriture.
+     output_mapped: bool,
++    dernier_kick: u64,
+     started: u64,
+     kind: usize,
+@@ -211,4 +215,5 @@
+             ro,
+             output_mapped,
++            dernier_kick: 0,
+             started: 0,
+             kind: 0,
+@@ -270,4 +275,5 @@
+             Segment::new(addr(5), 1, true),
+         ])?;
++        self.dernier_kick=trace_dma::soumis(self.started);
+         KICKS.fetch_add(1, Ordering::Release);
+         self.pending = Some(n);
+@@ -281,4 +287,5 @@
+         let n = self.pending.ok_or(Error::State)?;
+         let used = self.q.completed()?;
++        let collecte=trace_dma::temps();
+         wait(|| IRQS.load(Ordering::Acquire) != n)?;
+         self.unit.faults(&self.p)?;
+@@ -291,4 +298,5 @@
+             return Err(Error::Device);
+         }
++        trace_dma::acquitte(self.dernier_kick,collecte);
+         metrics::record(self.kind, self.started);
+         self.pending = None;
+@@ -364,4 +372,5 @@
+                 .submit(&[head, Segment::new(addr(6), bytes as u32, false), status])?
+         }
++        self.dernier_kick=trace_dma::soumis(self.started);
+         KICKS.fetch_add(1, Ordering::Release);
+         self.pending = Some(seen);
+--- /dev/null
++++ b/novaOS/kernel/src/hardware/block/trace_dma.rs
+@@ -0,0 +1,39 @@
++//! Compteurs BSP uniquement dans l'invité de métrologie.
++use crate::{hal, mesures_save as mesure};
++use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
++static KICK: AtomicU64 = AtomicU64::new(0);
++pub(super) fn temps() -> u64 {
++    if mesure::dma_active() {
++        hal::timer::counter()
++    } else {
++        0
++    }
++}
++pub(super) fn soumis(debut: u64) -> u64 {
++    let fin = temps();
++    if fin != 0 {
++        mesure::dma_ajouter(8, 1);
++        mesure::dma_ajouter(9, fin.saturating_sub(debut));
++        KICK.store(fin, Relaxed);
++    }
++    fin
++}
++pub(super) fn acquitte(kick: u64, used: u64) {
++    if kick != 0 {
++        mesure::dma_ajouter(10, used.saturating_sub(kick));
++        mesure::dma_ajouter(11, temps().saturating_sub(used));
++    }
++}
++pub(super) fn irq(entree: u64) {
++    if entree != 0 {
++        mesure::dma_ajouter(12, 1);
++        mesure::dma_ajouter(13, temps().saturating_sub(entree));
++        mesure::dma_ajouter(14, entree.saturating_sub(KICK.load(Relaxed)));
++    }
++}
++pub(super) fn copie(entree: u64, ecrire: bool) {
++    if entree != 0 {
++        mesure::dma_ajouter(6 + usize::from(ecrire), temps() - entree);
++        mesure::dma_ajouter(usize::from(ecrire),1);
++    }
++}
+--- a/novaOS/kernel/src/hardware/block/lease.rs
++++ b/novaOS/kernel/src/hardware/block/lease.rs
+@@ -285,10 +285,12 @@
+     metrics::begin();
+     let result = if write {
++        let avant=trace_dma::temps();
+         d.p.0[22].mem.write_page(page);
++        trace_dma::copie(avant,true);
+         d.sortie_autorisee(start, false, 4096, controle)
+     } else {
+         d.entree_autorisee(start, 0, 4096, controle)
+             .and_then(|()| d.finish(4097))
+-            .map(|()| d.p.0[20].mem.read_page(page))
++            .map(|()| {let avant=trace_dma::temps();d.p.0[20].mem.read_page(page);trace_dma::copie(avant,false);})
+     };
+     if result.is_err() {
+--- a/novaOS/tests/compteur_sauvegarde.rs
++++ b/novaOS/tests/compteur_sauvegarde.rs
+@@ -3,4 +3,11 @@
+ use crate::hal;
+ use core::sync::atomic::{AtomicBool, AtomicU64, Ordering::Relaxed};
++static DMA: [AtomicU64; 15] = [const { AtomicU64::new(0) }; 15];
++pub(crate) fn dma_active() -> bool {
++    ACTIVE.load(Relaxed)
++}
++pub(crate) fn dma_ajouter(i: usize, n: u64) {
++    DMA[i].fetch_add(n, Relaxed);
++}
+ static ACTIVE: AtomicBool = AtomicBool::new(false);
+ static EDITOR: AtomicU64 = AtomicU64::new(0);
+@@ -99,4 +106,5 @@
+             .chain(&APPELS_FILE)
+             .chain(&HW)
++            .chain(&DMA)
+             .chain([&GIFTS, &UNKNOWN])
+         {
+@@ -167,4 +175,8 @@
+     ACTIVE.store(false, Relaxed);
+     hal::log(format_args!(
++        "SAVE dma_4k={:?}",
++        DMA.each_ref().map(|v| v.load(Relaxed))
++    ));
++    hal::log(format_args!(
+         "SAVE pret_local={:?}",
+         PRET.each_ref().map(|v| v.load(Relaxed))

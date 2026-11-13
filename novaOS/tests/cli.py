@@ -17,14 +17,20 @@ from session_cli import HOST, LONG, fixture, machine
 
 
 class Terminal:
-    def __init__(self, arch, sector, image, label, test=False, *, qmp_bloc=None):
+    def __init__(self, arch, sector, image, label, test=False, *, qmp_bloc=None, defaut_bloc=None, entries=None):
         cmd, env = machine(arch, sector, image, test)
-        if qmp_bloc is not None:
-            # Ce descripteur privé évite tout serveur QMP sur le réseau.
+        if entries is not None:
+            assert entries in (8, 16, 32, 64, 128, 256)
+            index, = [i for i, arg in enumerate(cmd) if str(arg).startswith("virtio-blk-pci,id=b,")]
+            cmd[index] += f",queue-size={entries}"
+        if qmp_bloc is not None or defaut_bloc is not None:
             index = cmd.index("-drive") + 1
             origine = "file=" + str(image.resolve()) + ","
             assert origine in cmd[index]
-            cmd[index] = cmd[index].replace(origine, "file=blkdebug::" + str(image.resolve()) + ",")
+            config = str(defaut_bloc.resolve()) if defaut_bloc is not None else ""
+            cmd[index] = cmd[index].replace(origine, f"file=blkdebug:{config}:{image.resolve()},")
+        if qmp_bloc is not None:
+            # Ce descripteur privé évite tout serveur QMP sur le réseau.
             cmd += ["-chardev", f"socket,id=banc,fd={qmp_bloc}", "-mon", "chardev=banc,mode=control"]
         self.archive = ROOT / "build" / f"cli-{arch}-{sector}-{label}.serial"
         self.log = self.archive.open("wb")

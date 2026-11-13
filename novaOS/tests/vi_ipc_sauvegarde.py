@@ -49,23 +49,56 @@ def bilan(journal, mesure):
     if lots:
         ((vecteur, marques),) = lots
         lectures, pages_lues, ecritures, pages_ecrites, avec_flush, pages_finales = json.loads(vecteur)
-        assert 0 <= lectures <= pages_lues <= physical["lecture"]["nombre"]
+        dma = re.findall(r"SAVE dma=(\[[^\]]+\])", text)
+        assert 0 <= lectures <= pages_lues
         assert 0 < ecritures <= pages_ecrites
         assert 0 < avec_flush <= pages_finales
-        assert pages_ecrites + pages_finales <= physical["ecriture"]["nombre"]
         assert physical["flush"]["nombre"] == avec_flush == 2
-        requetes += lectures + ecritures - pages_lues - pages_ecrites - pages_finales
         f1, apres_f1, f2, apres_f2 = json.loads(marques)
         assert 0 < f1 < apres_f1 <= f2 < apres_f2 <= int(fields["duree"])
         (appels,) = re.findall(r"SAVE appels_file=(\[[^\]]+\])", text)
         reserve, copie, position, soumet, termine = json.loads(appels)
         assert reserve == termine == lectures + ecritures + avec_flush
-        assert copie == position == pages_lues + pages_ecrites + pages_finales
-        assert soumet == copie + avec_flush
+        if dma:
+            (trace,) = dma
+            (groupes_in, groupes_out, pages_in, pages_out, maximum, cadres, copie_in, copie_out,
+             kicks, soumission, used, acquit, irq, traitement_irq, delai_irq) = json.loads(trace)
+            assert pages_in == pages_lues and pages_out == pages_ecrites + pages_finales
+            assert 0 <= groupes_in <= min(pages_in, physical["lecture"]["nombre"])
+            assert 0 < groupes_out <= min(pages_out, physical["ecriture"]["nombre"])
+            assert 1 <= maximum <= 64 and maximum <= cadres <= 128
+            assert kicks == irq == submits
+            assert copie == position == 0 and soumet == avec_flush
+            requetes += lectures + ecritures - groupes_in - groupes_out
+        else:
+            assert pages_lues <= physical["lecture"]["nombre"]
+            assert pages_ecrites + pages_finales <= physical["ecriture"]["nombre"]
+            assert copie == position == pages_lues + pages_ecrites + pages_finales
+            assert soumet == copie + avec_flush
+            requetes += lectures + ecritures - pages_lues - pages_ecrites - pages_finales
         phases = dict(appels_file_locaux=dict(reserve=reserve, copie=copie, position=position,
                                               soumet=soumet, termine=termine), lots=json.loads(vecteur), preparation_et_donnees_ms=ms(f1),
                       metadonnees_et_F1_ms=ms(apres_f1-f1),
                       ancre_et_F2_ms=ms(apres_f2-f2), persistance_acquise_ms=ms(apres_f2))
+        if dma:
+            phases["dma"] = dict(groupes_in=groupes_in, groupes_out=groupes_out, pages_in=pages_in,
+                                 pages_out=pages_out, max_pages_par_chaine=maximum, cadres_arene=cadres,
+                                 kicks=kicks, irq=irq, copie_in_ms=ms(copie_in), copie_out_ms=ms(copie_out),
+                                 soumission_ms=ms(soumission), kick_a_used_observe_ms=ms(used),
+                                 used_a_acquittement_ms=ms(acquit), traitement_irq_ms=ms(traitement_irq),
+                                 kick_a_entree_irq_ms=ms(delai_irq))
+        temoin = re.findall(r"SAVE dma_4k=(\[[^\]]+\])", text)
+        if temoin:
+            (trace,) = temoin
+            lectures_dma, ecritures_dma, *mesures = json.loads(trace)
+            zero = mesures[:4]
+            copie_in, copie_out, kicks, soumission, used, acquit, irq, traitement_irq, delai_irq = mesures[4:]
+            assert not dma and zero == [0, 0, 0, 0] and kicks == irq == submits
+            assert lectures_dma == physical["lecture"]["nombre"] and ecritures_dma == physical["ecriture"]["nombre"]
+            phases["dma_4k"] = dict(kicks=kicks, irq=irq, copie_in_ms=ms(copie_in), copie_out_ms=ms(copie_out),
+                                    soumission_ms=ms(soumission), kick_a_used_observe_ms=ms(used),
+                                    used_a_acquittement_ms=ms(acquit), traitement_irq_ms=ms(traitement_irq),
+                                    kick_a_entree_irq_ms=ms(delai_irq))
     moteur = re.findall(r"SAVE durees_moteur=(\[[^\]]+\])", text)
     if moteur:
         phases["phases_moteur_ms"] = dict(zip(
