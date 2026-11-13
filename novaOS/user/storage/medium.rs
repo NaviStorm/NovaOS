@@ -4,6 +4,7 @@ use crate::runtime::*;
 #[allow(dead_code)]
 #[path = "../../abi/block.rs"]
 mod w;
+use crate::runtime::bulk;
 pub(crate) struct Block {
     tx: u64,
     rx: u64,
@@ -27,6 +28,31 @@ impl Block {
         }
         *buf = r.payload;
         Ok(())
+    }
+    fn page_frame(op: u8, lba: u64) -> w::Wire {
+        let mut frame = w::blank(op);
+        frame[2] = w::PAGE_PHASE;
+        w::put(&mut frame, 4, 4096);
+        frame[8..16].copy_from_slice(&lba.to_le_bytes());
+        frame
+    }
+    fn exchange_page(&mut self, op: u8, lba: u64) -> Result<()> {
+        let expected = Self::page_frame(op, lba);
+        let mut frame = expected;
+        self.exchange(&mut frame)?;
+        if frame != expected {
+            return Err(BAD_ARGUMENT);
+        }
+        Ok(())
+    }
+    pub(crate) fn read_page(&mut self, lba: u64, cap: u64, out: &mut [u8; 4096]) -> Result<()> {
+        self.exchange_page(w::READ, lba)?;
+        bulk::take(cap, self.tag, out)
+    }
+    pub(crate) fn write_page(&mut self, lba: u64, cap: u64, data: &[u8; 4096]) -> Result<()> {
+        let tag = self.tag.checked_add(1).ok_or(LIMIT)?;
+        bulk::put(cap, tag, data)?;
+        self.exchange_page(w::WRITE, lba)
     }
     fn command(&mut self, op: u8) -> Result<w::Wire> {
         let mut b = w::blank(op);

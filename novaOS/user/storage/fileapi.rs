@@ -1,6 +1,8 @@
 //! Bibliothèque native sur deux capacités privées. Les handles sont locaux à la session.
+use crate::runtime::bulk;
 use crate::{protocol as w, runtime as rt};
 pub struct Client {
+    bulk_reads: bool,
     tx: u64,
     rx: u64,
     tag: u64,
@@ -16,6 +18,7 @@ impl Client {
             tag: 0,
             session: 0,
             disconnected: false,
+            bulk_reads: false,
         })
     }
     /// Vue temporaire fournie au processus enfant par le lanceur.
@@ -29,6 +32,7 @@ impl Client {
             tag: 0,
             session: 1,
             disconnected: false,
+            bulk_reads: false,
         }
     }
     pub fn give(&self, source: u64, rights: u32) -> rt::Result<()> {
@@ -110,7 +114,9 @@ impl Client {
     pub fn mount(&mut self) -> rt::Result<()> {
         let mut q = w::frame(w::MOUNT, 0, 0);
         q[2] = w::MOUNT_PROGRESS;
-        self.session = w::word(&self.request(q)?, 8);
+        let answer = self.request(q)?;
+        self.session = w::word(&answer, 8);
+        self.bulk_reads = self.session != 0 && w::word(&answer, 16) == w::PAGE_FEATURE;
         if self.session == 0 {
             Err(rt::BAD_ARGUMENT)
         } else {
@@ -158,6 +164,18 @@ impl Client {
     pub fn read_version(&mut self, h: u64, off: u64, out: &mut [u8], rev: u64) -> rt::Result<u64> {
         if out.is_empty() || out.len() > w::READ_WINDOW {
             return Err(rt::BAD_ARGUMENT);
+        }
+        if self.bulk_reads && out.len() > w::FRAGMENT {
+            let mut q = w::frame(w::READ_PAGE, self.session, h);
+            w::set(&mut q, 24, off);
+            w::set(&mut q, 32, out.len() as u64);
+            w::set(&mut q, 40, rev);
+            let a = self.request(q)?;
+            if w::word(&a, 24) != out.len() as u64 {
+                return Err(rt::REVOKED);
+            }
+            bulk::take(self.rx, self.tag, out).inspect_err(|_| self.disconnected = true)?;
+            return Ok(w::word(&a, 32));
         }
         let len = out.len();
         let mut next = rev;

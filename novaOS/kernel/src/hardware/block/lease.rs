@@ -222,6 +222,51 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
     Ok(())
 }
 
+/// Portail page : les adresses de la chaîne sont construites dans le noyau.
+pub(crate) fn page_command(
+    pid: u64,
+    key: u64,
+    w: &wire::Wire,
+    page: &mut [u8; 4096],
+) -> core::result::Result<(), u64> {
+    let mut s = SESSION.lock();
+    if !admit(pid, key) || s.quarantine {
+        return Err(abi::REVOKED);
+    }
+    if !wire::syntax(w) || w[2] != wire::PAGE_PHASE {
+        return Err(abi::BAD_ARGUMENT);
+    }
+    let write = w[1] == wire::WRITE;
+    if s.rights & (if write { 2 } else { 1 }) == 0 {
+        return Err(abi::DENIED);
+    }
+    if s.phase != Phase::Empty {
+        return Err(abi::REFUSED);
+    }
+    let d = s.device.as_mut().ok_or(abi::CLOSED)?;
+    let lba = wire::lba(w);
+    let sectors = (4096 / d.size) as u64;
+    if lba.checked_add(sectors).is_none_or(|end| end > d.count) {
+        return Err(abi::BAD_ARGUMENT);
+    }
+    let start = d.first.checked_add(lba).ok_or(abi::BAD_ARGUMENT)?;
+    metrics::begin();
+    let result = if write {
+        d.p.0[22].mem.write_page(page);
+        d.output_bytes(start, false, 4096)
+    } else {
+        d.begin_input(start, 0, 4096)
+            .and_then(|()| d.finish(4097))
+            .map(|()| d.p.0[20].mem.read_page(page))
+    };
+    if result.is_err() {
+        s.phase = Phase::Closed;
+        return Err(abi::REFUSED);
+    }
+    metrics::end(4096);
+    Ok(())
+}
+
 pub(crate) fn private_frames() -> Result<[u64; 24]> {
     let s = SESSION.lock();
     let d = s.device.as_ref().ok_or(Error::State)?;

@@ -288,8 +288,17 @@ impl<D: Device> Engine<D> {
             let mut used = 0;
             let mut logical = first_page;
             while logical < after_last {
-                let extent = covering(tx, id, logical)?;
+                // L’index de pages d’un fichier validé ne contient aucun extent
+                // au-delà de son ancienne taille. Un append non aligné
+                // conserve toutefois le contrôle et la réécriture de la page de bord.
+                let beyond_eof = logical >= obj.stat.size.div_ceil(BLOCK_BYTES);
+                let extent = if beyond_eof {
+                    None
+                } else {
+                    covering(tx, id, logical)?
+                };
                 let stop = match &extent {
+                    None if beyond_eof => after_last,
                     Some((first, run)) => run.end(*first)?.min(after_last),
                     None => logical + 1,
                 };

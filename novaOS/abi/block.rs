@@ -9,6 +9,9 @@ pub const CLOSE: u8 = 5;
 pub const BEGIN: u8 = 0;
 pub const PIECE: u8 = 1;
 pub const END: u8 = 2;
+/// Trame PAGE, phase 3 : exactement 4096 octets, transférés par la boîte dédiée.
+pub const PAGE_PHASE: u8 = 3;
+pub const PAGE_PORTAL: u64 = 0x10046;
 pub const ALL_RIGHTS: u8 = 31;
 pub const MAX: usize = 96;
 pub type Wire = [u8; 128];
@@ -34,6 +37,9 @@ pub fn syntax(w: &Wire) -> bool {
         return false;
     }
     let n = number(w, 4) as usize;
+    if matches!(w[1], READ | WRITE) && w[2] == PAGE_PHASE {
+        return n == 4096 && number(w, 16) == 0 && w[32..].iter().all(|&b| b == 0);
+    }
     if n > MAX {
         return false;
     }

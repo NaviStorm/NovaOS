@@ -96,6 +96,18 @@ impl Region {
             self.w8(off + i, *v)
         }
     }
+    /// Pages de données DMA uniquement, après collecte IN ou avant soumission OUT.
+    /// Le mapping est aligné et les accès ne touchent aucun registre MMIO.
+    pub fn read_page(self, out: &mut [u8; PAGE]) {
+        for (i, bytes) in out.chunks_exact_mut(8).enumerate() {
+            bytes.copy_from_slice(&self.r64(i * 8).to_ne_bytes());
+        }
+    }
+    pub fn write_page(self, input: &[u8; PAGE]) {
+        for (i, bytes) in input.chunks_exact(8).enumerate() {
+            self.w64(i * 8, u64::from_ne_bytes(bytes.try_into().unwrap()));
+        }
+    }
     pub fn base(self) -> usize {
         self.base
     }

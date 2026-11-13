@@ -115,7 +115,9 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     context::enable();
     let [a, b, c] = args;
     let result = match id {
+        IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
+        crate::hardware::block::wire::PAGE_PORTAL => device_page(a, b, c),
         crate::hardware::block::PORTAL => device(a, b, c),
         HEAP_RESIZE if c == 0 => with(|s| {
             let pid = caller(s);
@@ -158,6 +160,45 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
 }
 
 // Port privé du pilote élu. Les seize appels ABI v1 et leurs sélecteurs restent inchangés.
+#[inline(never)]
+fn device_page(key: u64, desc: u64, addr: u64) -> Result<u64, u64> {
+    use crate::hardware::block;
+    let pid = with(|s| caller(s));
+    if !block::admit(pid.number, key) {
+        return Err(DENIED);
+    }
+    if desc % 8 != 0 {
+        return Err(BAD_ARGUMENT);
+    }
+    let mut w = [0; 128];
+    let mut page = [0; 4096];
+    let valid = with(|s| {
+        let space = s.processes.get(pid).space.as_ref().unwrap();
+        heap::with_pages(|m| {
+            Ok(space.copy_from_user(m, desc, &mut w)
+                && if w[1] == block::wire::WRITE {
+                    space.copy_from_user(m, addr, &mut page)
+                } else {
+                    space.writable(m, addr, page.len())
+                })
+        })
+        .unwrap()
+    });
+    if !valid {
+        return Err(BAD_ADDRESS);
+    }
+    block::page_command(pid.number, key, &w, &mut page)?;
+    if w[1] == block::wire::READ
+        && !with(|s| {
+            let space = s.processes.get(pid).space.as_ref().unwrap();
+            heap::with_pages(|m| Ok(space.copy_to_user(m, addr, &page))).unwrap()
+        })
+    {
+        return Err(BAD_ADDRESS);
+    }
+    Ok(4096)
+}
+
 fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
     use crate::hardware::block;
     let pid = with(|s| caller(s));

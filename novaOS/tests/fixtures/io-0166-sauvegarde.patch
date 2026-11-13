@@ -1,0 +1,116 @@
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -29,6 +29,8 @@
+         } else {
+             10
+         };
++        let mark = |s: &[u8]| { rt::call(rt::DEBUG_WRITE,s.as_ptr() as u64,s.len() as u64,0); };
++        mark(b"SAVE start");
+         self.ask(wire::BEGIN, &sizes[..n])?;
+         for part in name.as_bytes().chunks(wire::CHUNK) {
+             self.ask(wire::NAME, part)?;
+@@ -37,6 +39,7 @@
+             self.ask(wire::TEXT, part)?;
+         }
+         self.ask(wire::SAVE, &[])?;
++        mark(b"SAVE end");
+         Ok(())
+     }
+ }
+--- a/novaOS/kernel/src/main.rs
++++ b/novaOS/kernel/src/main.rs
+@@ -14,6 +14,8 @@
+ mod heap;
+ mod input;
+ mod memory;
++#[path = "../../tests/compteur_sauvegarde.rs"]
++mod mesures_save;
+ mod sched;
+ #[allow(dead_code)]
+ #[path = "../../abi/terminal.rs"]
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -13,6 +13,13 @@
+     }
+     let mut buf = [0u8; DEBUG_MAX];
+     let bytes = &mut buf[..len as usize];
++    if with(|s| {
++        let pid = caller(s);
++        let process = s.processes.get(pid);
++        if process.terminal & crate::terminal::QUALIFY == 0 && pid.number != 2 { return false; }
++        let ok = heap::with_pages(|m| Ok(process.space.as_ref().unwrap().copy_from_user(m,addr,bytes))).unwrap();
++        ok && crate::mesures_save::marker(pid.number, bytes)
++    }) { return Ok(len); }
+     let pid = with(|s| {
+         let p = s.processes.get_mut(caller(s));
+         if p.debug_messages >= 16 {
+--- a/novaOS/kernel/src/sched/process/ipc/traffic.rs
++++ b/novaOS/kernel/src/sched/process/ipc/traffic.rs
+@@ -273,6 +273,11 @@
+                     Head::Notification => self.ends.get(ep.slot()).notified_at,
+                     Head::Offer(i) => self.metrics.admitted[i],
+                 };
++                if let Head::Offer(i) = head {
++                    crate::mesures_save::delivery(self.waits.get(i).pid.number, pid.number, kind);
++                } else {
++                    crate::mesures_save::unexpected();
++                }
+                 match head {
+                     Head::Deposit => {
+                         let e = self.ends.get_mut(ep.slot());
+@@ -520,6 +525,7 @@
+                 0
+             };
+             let end = metrics::stamp();
++            if r.is_ok_and(|v| v.is_some()) { crate::mesures_save::control(id); }
+             if r.is_ok_and(|v| v.is_some()) && s.ipc.metrics.includes(p) {
+                 s.ipc.metrics.sample(6, entry, end);
+                 if p.number == s.ipc.metrics.focus && id == IPC_RECEIVE {
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -108,6 +108,7 @@
+                 buf.fill(0);
+                 lane.len = 0;
+             }
++            crate::mesures_save::lot(put);
+             Ok(Ok(len))
+         })
+         .unwrap()
+--- a/novaOS/kernel/src/hardware/block/metrics.rs
++++ b/novaOS/kernel/src/hardware/block/metrics.rs
+@@ -48,6 +48,7 @@
+         return;
+     }
+     let d = hal::timer::counter().wrapping_sub(begin).max(1);
++    crate::mesures_save::bloc(idx,d);
+     let p = d.ilog2() as usize;
+     let n = (p * 8 + (((d - (1 << p)) as u128 * 8) >> p) as usize).min(255);
+     let mut s = STATS.lock();
+--- a/novaOS/user/novafs/files/selected.rs
++++ b/novaOS/user/novafs/files/selected.rs
+@@ -403,6 +403,8 @@
+     if fs.atime_policy().is_some() {
+         s.clock.sample()?;
+     }
++    let mark = |s: &[u8]| { rt::call(rt::DEBUG_WRITE,s.as_ptr() as u64,s.len() as u64,0); };
++    mark(b"SAVE read");
+     let bytes = fs.read_access_id(src.id, source_at, len).map_err(error)?;
+     shape(bytes.len() == len)?;
+     let next = fs.stat_id(src.id).map_err(error)?.revision;
+@@ -415,10 +417,13 @@
+         s.clock.sample()?;
+     }
+     s.dev.start_probe();
+-    fs.prepare_write_id(dest.id, dst_at, &bytes[..used])
+-        .map_err(error)?
+-        .commit()
++    mark(b"SAVE prepare");
++    let plan = fs.prepare_write_id(dest.id, dst_at, &bytes[..used])
+         .map_err(error)?;
++    mark(b"SAVE commit");
++    plan.commit()
++        .map_err(error)?;
++    mark(b"SAVE lot-end");
+     w::set(a, 24, used as u64);
+     w::set(a, 32, next);
+     Ok(())

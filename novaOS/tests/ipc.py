@@ -107,7 +107,7 @@ def campaign(arch, mode="test", seconds=0, ram=256):
                     assert "courses" in result and len(result["traces"]) == 30
                 if mode == "test":
                     covered = {t for name in cases for t in name.split("/")}
-                    assert covered == {f"T{i:02}" for i in range(1, 19)} - {"T09", "T17"}
+                    assert covered == ({f"T{i:02}" for i in range(1, 19)} - {"T09", "T17"}) | {"lots"}
                     assert phases["ipc_repos"] == phases["ipc_detruits"] == phases["ipc_reprise"]
                     assert phases["ipc_repos"]["ipc"] == 0 and phases["ipc_repos"]["retenu"] <= 2048
                     assert phases["ipc_saturation"]["ipc"] + 3 <= 128

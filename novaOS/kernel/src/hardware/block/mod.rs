@@ -9,8 +9,10 @@ mod pci;
 pub(crate) mod qualification;
 mod queue;
 pub(crate) use lease::publication_unique;
+pub(crate) use lease::wire;
 pub(crate) use lease::{
-    PORTAL, admit, attach, begin_session, command, died, inflight, private_frames, retire,
+    PORTAL, admit, attach, begin_session, command, died, inflight, page_command, private_frames,
+    retire,
 };
 #[cfg(target_arch = "x86_64")]
 #[path = "vtd.rs"]
@@ -287,6 +289,16 @@ impl Transport {
         Ok(())
     }
     fn output(&mut self, lba: u64, flush: bool) -> Result<()> {
+        self.output_bytes(lba, flush, self.size)
+    }
+    fn output_bytes(&mut self, lba: u64, flush: bool, bytes: usize) -> Result<()> {
+        if bytes == 0
+            || bytes > PAGE
+            || bytes % self.size != 0
+            || (!flush && (bytes / self.size) as u64 > self.sectors.saturating_sub(lba))
+        {
+            return Err(Error::Geometry);
+        }
         if !self.output_mapped {
             return Err(Error::State);
         }
@@ -321,7 +333,7 @@ impl Transport {
             self.q.submit(&[head, status])?
         } else {
             self.q
-                .submit(&[head, Segment::new(addr(6), self.size as u32, false), status])?
+                .submit(&[head, Segment::new(addr(6), bytes as u32, false), status])?
         }
         KICKS.fetch_add(1, Ordering::Release);
         self.pending = Some(seen);

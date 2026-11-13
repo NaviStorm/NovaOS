@@ -27,3 +27,10 @@ opt-level = "s"
 lto = true
 codegen-units = 1
 strip = true
+
+# Chemin chaud du contrôle P9. Le backend portable SHA-256 reste identique.
+[profile.release.package.novafs]
+opt-level = 2
+
+[profile.release.package.sha2]
+opt-level = 3

@@ -120,3 +120,6 @@ pub const REMOVE_TREE: u8 = 8;
 /// Aucune publication de nom. Flag 1 : texte UTF-8 du profil éditeur.
 pub const COPY_RANGE: u8 = 27;
 pub const TEXT_RANGE: u8 = 1;
+
+pub const READ_PAGE: u8 = 28;
+pub const PAGE_FEATURE: u64 = 1;

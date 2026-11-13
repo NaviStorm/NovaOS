@@ -133,7 +133,15 @@ impl Pages {
         }
         self.start = None;
         while pos < self.len {
-            let n = (self.len - pos).min(w::MAX_WRITE);
+            // Terminer les lots intermédiaires à une frontière de page cible.
+            // Une insertion d’un octet ne doit pas faire relire et republier
+            // la même page de bord à chaque transaction suivante.
+            let remaining = self.len - pos;
+            let n = if remaining <= w::MAX_WRITE {
+                remaining
+            } else {
+                w::MAX_WRITE - (dst % w::READ_WINDOW as u64) as usize
+            };
             let mut q = w::frame(w::COPY_RANGE, view.session, dest);
             q[2] = w::TEXT_RANGE;
             w::set(&mut q, 24, pos as u64);

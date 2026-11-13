@@ -1,0 +1,1183 @@
+--- a/components/libraries/vi_wire.rs
++++ b/components/libraries/vi_wire.rs
+@@ -17,4 +17,5 @@
+ pub const TEXT: u8 = 6;
+ pub const SAVE: u8 = 7;
++pub const TEXT_PAGE: u8 = 13;
+ pub const FIN: u8 = 8;
+
+@@ -52,4 +53,10 @@
+         })
+     }
++    pub fn page(&mut self, bytes: &[u8]) -> rt::Result<()> {
++        let tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
++        rt::bulk::put(self.channels.0, tag, bytes)?;
++        self.ask(TEXT_PAGE, &(bytes.len() as u64).to_le_bytes())?;
++        Ok(())
++    }
+     pub fn ask(&mut self, op: u8, bytes: &[u8]) -> rt::Result<rt::ReceiveV1> {
+         if bytes.len() > CHUNK {
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -23,6 +23,13 @@
+     confirm: Option<&mut Input>,
+     revoke: bool,
+-    source: Option<(&str, &mut backing::Pages, usize)>,
++    mut source: Option<(&str, &mut backing::Pages, usize)>,
+ ) -> rt::Result<()> {
++    let labo = rt::config(1) == 42 && !revoke;
++    if labo
++        && let Some((_, p, off)) = &mut source
++        && *off <= 4096
++    {
++        p.prefixe(fs)?;
++    }
+     fs.simple(w::STAGE, 0)?;
+     // La destination est sélectionnée en premier : un répertoire ne peut pas devenir une destination implicite de cp.
+@@ -46,4 +53,17 @@
+                 return Err(rt::DENIED);
+             }
++        }
++        if labo
++            && let Some((_, p, off)) = &source
++            && let Some(octet) = p.insertion(data, *off)
++        {
++            let mut q = w::frame(29, view.session, 1);
++            q[2] = octet;
++            w::set(&mut q, 24, p.identite());
++            w::set(&mut q, 32, p.revision());
++            w::set(&mut q, 40, p.longueur() as u64);
++            // Le prototype refuse les profils de texte qu'il ne peut valider.
++            view.request(q)?;
++            return Ok(());
+         }
+         let opened = view.simple(w::CREATE_NEW, 1);
+@@ -408,5 +428,24 @@
+             let data = &request.payload[1..request.len as usize];
+             let mut frame = [0; 128];
+-            let n = match self.reply(op, data, &mut frame[1..]) {
++            let answer = if op == wire::TEXT_PAGE {
++                (|| {
++                    let n = wire::length(data)?;
++                    let u = self.upload.as_mut().ok_or(rt::BAD_ARGUMENT)?;
++                    if !(1..=4096).contains(&n)
++                        || u.name.len() != u.name_len
++                        || n > u.text_len - u.text.len()
++                    {
++                        return Err(rt::BAD_ARGUMENT);
++                    }
++                    u.text.try_reserve(n).map_err(|_| rt::NO_MEMORY)?;
++                    let at = u.text.len();
++                    u.text.resize(at + n, 0);
++                    rt::bulk::take(channels.0, last, &mut u.text[at..])?;
++                    Ok(0)
++                })()
++            } else {
++                self.reply(op, data, &mut frame[1..])
++            };
++            let n = match answer {
+                 Ok(n) => n,
+                 Err(e) => {
+--- a/components/shell/vi_source.rs
++++ b/components/shell/vi_source.rs
+@@ -60,4 +60,25 @@
+ }
+ impl Pages {
++    pub fn prefixe(&mut self, fs: &mut Client) -> rt::Result<()> {
++        self.slice(fs, 0).map(|_| ())
++    }
++    pub fn identite(&self) -> u64 {
++        self.id
++    }
++    pub fn revision(&self) -> u64 {
++        self.rev
++    }
++    pub fn longueur(&self) -> usize {
++        self.len
++    }
++    pub fn insertion(&self, bytes: &[u8], off: usize) -> Option<u8> {
++        (self.start == Some(0)
++            && off > 0
++            && off == self.bytes.len()
++            && bytes.len() == off + 1
++            && bytes[1..] == self.bytes[..]
++            && bytes[0].is_ascii_graphic())
++        .then(|| bytes[0])
++    }
+     pub fn handle(&self) -> u64 {
+         self.h
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -34,6 +34,14 @@
+             self.ask(wire::NAME, part)?;
+         }
+-        for part in text.chunks(wire::CHUNK) {
+-            self.ask(wire::TEXT, part)?;
++        for part in text.chunks(4096) {
++            match self.page(part) {
++                Ok(()) => (),
++                Err(rt::DENIED) => {
++                    for small in part.chunks(wire::CHUNK) {
++                        self.ask(wire::TEXT, small)?;
++                    }
++                }
++                Err(e) => return Err(e),
++            }
+         }
+         self.ask(wire::SAVE, &[])?;
+--- a/novaFS/src/engine.rs
++++ b/novaFS/src/engine.rs
+@@ -507,13 +507,13 @@
+         self.head.reference
+     }
+-    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
++    #[cfg(feature = "prototype-es-groupees")]
+     pub(crate) fn dev_labo(&self) -> &D {
+         &self.dev
+     }
+-    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
++    #[cfg(feature = "prototype-es-groupees")]
+     pub(crate) fn manque_labo(&self, f: Family, r: Ref) -> Result<bool> {
+         Ok(self.cached(Some(f), r)?.is_none())
+     }
+-    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
++    #[cfg(feature = "prototype-es-groupees")]
+     pub(crate) fn cache_labo(&self, f: Family, r: Ref, b: Block) -> Result<()> {
+         self.remember_checked(Some(f), r, b)
+@@ -982,5 +982,5 @@
+         Ok(())
+     }
+-    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
++    #[cfg(feature = "prototype-es-groupees")]
+     pub(crate) fn reserve_stream_page(&mut self) -> Result<u64> {
+         // Le fork de Space exclut les deux générations montables. Une seule
+@@ -989,5 +989,5 @@
+     }
+
+-    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
++    #[cfg(feature = "prototype-es-groupees")]
+     pub(crate) fn stream_device(&self) -> &D {
+         self.dev
+--- a/novaFS/src/fs.rs
++++ b/novaFS/src/fs.rs
+@@ -3,8 +3,8 @@
+ mod check;
+ mod data;
+-#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
++#[cfg(feature = "prototype-es-groupees")]
+ #[path = "../lab/es-groupees/preparation.rs"]
+ mod groupe;
+-#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
++#[cfg(feature = "prototype-es-groupees")]
+ pub use groupe::BlocGroupe;
+ mod record;
+--- a/novaFS/src/lib.rs
++++ b/novaFS/src/lib.rs
+@@ -45,7 +45,7 @@
+     VolumePolicy,
+ };
++#[cfg(feature = "prototype-es-groupees")]
++pub use fs::BlocGroupe;
+ pub use fs::{Kind, Stat};
+-#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+-pub use fs::BlocGroupe;
+
+ pub const BLOCK_BYTES: usize = 4096;
+--- a/novaOS/abi/block.rs
++++ b/novaOS/abi/block.rs
+@@ -41,4 +41,10 @@
+         return n == 4096 && number(w, 16) == 0 && w[32..].iter().all(|&b| b == 0);
+     }
++    if w[2] == 4 {
++        return matches!(w[1], READ | WRITE | 6)
++            && (1..=128).contains(&n)
++            && w[16..].iter().all(|&b| b == 0)
++            && lba(w) == 0;
++    }
+     if n > MAX {
+         return false;
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -29,9 +29,9 @@
+     ] {
+         let output = out.join(format!("{}.bin", name.replace('/', "-")));
+-        let file_client = name == "storage/fileclient";
++        let file_client = matches!(name, "storage/fileclient" | "storage/disk");
+         let linker = format!(
+             "link-arg=-T{}",
+             user.join(if file_client {
+-                "novafs/service.ld"
++                "storage/groupe.ld"
+             } else {
+                 "demo.ld"
+@@ -84,4 +84,5 @@
+         assert!(ok.success(), "édition de liens de {name}");
+     }
++    println!("cargo::rerun-if-changed=../../novaFS/lab/es-groupees/preparation.rs");
+     println!("cargo::rerun-if-changed=../../novaFS/src");
+     println!("cargo::rerun-if-changed=../../novaFS/Cargo.toml");
+--- a/novaOS/kernel/src/hardware/block/lease.rs
++++ b/novaOS/kernel/src/hardware/block/lease.rs
+@@ -230,7 +230,39 @@
+     page: &mut [u8; 4096],
+ ) -> core::result::Result<(), u64> {
++    if w[1] != wire::WRITE && w[1] != wire::READ {
++        return Err(abi::BAD_ARGUMENT);
++    }
++    commande_groupee(pid, key, w, page, || true)
++}
++pub(crate) fn commande_groupee(
++    pid: u64,
++    key: u64,
++    w: &wire::Wire,
++    page: &mut [u8; 4096],
++    controle: impl FnOnce() -> bool,
++) -> core::result::Result<(), u64> {
+     let mut s = SESSION.lock();
+     if !admit(pid, key) || s.quarantine {
+         return Err(abi::REVOKED);
++    }
++    if w[1] == wire::FLUSH {
++        if s.phase != Phase::Empty || s.rights & 4 == 0 || w[2] != wire::BEGIN || wire::lba(w) != 0
++        {
++            return Err(abi::DENIED);
++        }
++        let d = s.device.as_mut().ok_or(abi::CLOSED)?;
++        if !descriptors(d.size, w) {
++            return Err(abi::BAD_ARGUMENT);
++        }
++        let mut forme = *w;
++        forme[32..].fill(0);
++        if !wire::syntax(&forme) {
++            return Err(abi::BAD_ARGUMENT);
++        }
++        if d.sortie_autorisee(0, true, d.size, controle).is_err() {
++            s.phase = Phase::Closed;
++            return Err(abi::REFUSED);
++        }
++        return Ok(());
+     }
+     if !wire::syntax(w) || w[2] != wire::PAGE_PHASE {
+@@ -254,7 +286,7 @@
+     let result = if write {
+         d.p.0[22].mem.write_page(page);
+-        d.output_bytes(start, false, 4096)
++        d.sortie_autorisee(start, false, 4096, controle)
+     } else {
+-        d.begin_input(start, 0, 4096)
++        d.entree_autorisee(start, 0, 4096, controle)
+             .and_then(|()| d.finish(4097))
+             .map(|()| d.p.0[20].mem.read_page(page))
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -3,4 +3,5 @@
+ mod gpt;
+ mod io;
++pub(crate) use lease::commande_groupee;
+ mod lease;
+ pub(crate) mod metrics;
+@@ -219,4 +220,13 @@
+     // Seules les opérations IN (0) et GET_ID (8) ont une chaîne de réception.
+     fn begin_input(&mut self, lba: u64, opcode: u32, bytes: usize) -> Result<()> {
++        self.entree_autorisee(lba, opcode, bytes, || true)
++    }
++    fn entree_autorisee(
++        &mut self,
++        lba: u64,
++        opcode: u32,
++        bytes: usize,
++        controle: impl FnOnce() -> bool,
++    ) -> Result<()> {
+         if self.state.0 != State::Running {
+             return Err(Error::State);
+@@ -246,4 +256,8 @@
+         self.started = metrics::stamp();
+         self.kind = 0;
++        let irq = crate::hal::interrupts::Guard::new();
++        if !controle() {
++            return Err(Error::State);
++        }
+         let n = IRQS.load(Ordering::Acquire);
+         EXPECT.store(
+@@ -258,4 +272,5 @@
+         KICKS.fetch_add(1, Ordering::Release);
+         self.pending = Some(n);
++        drop(irq);
+         Ok(())
+     }
+@@ -293,4 +308,13 @@
+     }
+     fn output_bytes(&mut self, lba: u64, flush: bool, bytes: usize) -> Result<()> {
++        self.sortie_autorisee(lba, flush, bytes, || true)
++    }
++    fn sortie_autorisee(
++        &mut self,
++        lba: u64,
++        flush: bool,
++        bytes: usize,
++        controle: impl FnOnce() -> bool,
++    ) -> Result<()> {
+         if bytes == 0
+             || bytes > PAGE
+@@ -325,4 +349,8 @@
+         self.started = metrics::stamp();
+         self.kind = if flush { 2 } else { 1 };
++        let irq = crate::hal::interrupts::Guard::new();
++        if !controle() {
++            return Err(Error::State);
++        }
+         let seen = IRQS.load(Ordering::Acquire);
+         EXPECT.store(
+@@ -338,4 +366,5 @@
+         KICKS.fetch_add(1, Ordering::Release);
+         self.pending = Some(seen);
++        drop(irq);
+         self.finish(1)
+     }
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -12,4 +12,6 @@
+     tag: u64,
+     len: usize,
++    reservation: Option<Reservation>,
++    dernier_lot: u64,
+ }
+
+@@ -17,5 +19,8 @@
+     pub(super) fn bind_lane(&mut self, a: Pid, ka: u64, b: Pid, kb: u64) -> Res<()> {
+         let root = self.lookup(a, ka, MANAGE)?;
+-        let peer = self.lookup(b, kb, RECEIVE)?;
++        let peer = self.lookup(b, kb, 0)?;
++        if peer.rights & (RECEIVE | SEND) == 0 {
++            return Err(DENIED);
++        }
+         let ep = root.endpoint;
+         if a.number == b.number || peer.endpoint != ep || self.ends.get(ep.slot()).bulk.is_some() {
+@@ -32,4 +37,6 @@
+             tag: 0,
+             len: 0,
++            reservation: None,
++            dernier_lot: 0,
+         });
+         Ok(())
+@@ -68,5 +75,5 @@
+             .position(|&p| p == pid.number)
+             .ok_or(DENIED)?;
+-        if lane.handles[side] != key {
++        if lane.handles[side] != key || lane.reservation.is_some() {
+             return Err(DENIED);
+         }
+@@ -114,2 +121,279 @@
+     })
+ }
++
++// Le pilote copie une seule page à la fois. Aucun pointeur physique ni mapping
++// du moteur ne lui est remis. Chaque transfert résout à nouveau les deux capacités.
++#[derive(Clone, Copy)]
++struct Reservation {
++    moteur: Pid,
++    tag: u64,
++    lire: bool,
++    base: u64,
++    n: usize,
++    index: usize,
++    effectues: usize,
++    en_vol: bool,
++    retrait: bool,
++    doute: bool,
++    flush: bool,
++    exige_flush: bool,
++}
++pub(in crate::sched::process) fn lot(op: u64, cap: u64, desc: u64, size: u64) -> Res<u64> {
++    let attendu = if op == 0x1002e { 40 } else { 32 };
++    if size != attendu || desc % 8 != 0 {
++        return Err(BAD_ARGUMENT);
++    }
++    with(|s| {
++        let pid = s.thread(s.current).owner.unwrap();
++        let n = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
++        let pair = s
++            .ipc
++            .ends
++            .get_mut(n.endpoint.slot())
++            .bulk
++            .as_mut()
++            .ok_or(DENIED)?;
++        // Seule la paire privée du profil CLI possède SEND et RECEIVE aux deux extrémités.
++        let side = pair
++            .parties
++            .iter()
++            .position(|&p| p == pid.number)
++            .ok_or(DENIED)?;
++        if pair.handles[side] != cap || pair.len != 0 {
++            return Err(DENIED);
++        }
++        let espace = s.processes.get(pid).space.as_ref().ok_or(REVOKED)?;
++        let mut buf = [0u8; 40];
++        if !heap::with_pages(|m| Ok(espace.copy_from_user(m, desc, &mut buf[..attendu as usize])))
++            .unwrap()
++        {
++            return Err(BAD_ADDRESS);
++        }
++        let mot = |i: usize| u64::from_le_bytes(buf[i * 8..i * 8 + 8].try_into().unwrap());
++        let (tag, addr, taille, direction) = (mot(0), mot(1), mot(2), mot(3));
++        if tag == 0 || direction > 2 || !(1..=128).contains(&taille) {
++            return Err(BAD_ARGUMENT);
++        }
++        let lire = direction == 0;
++        if op == 0x1002e {
++            if side != 1 || pair.reservation.is_some() || tag <= pair.dernier_lot {
++                return Err(DENIED);
++            }
++            if addr
++                .checked_add(taille * 4096)
++                .is_none_or(|v| v > (1 << 47))
++            {
++                return Err(BAD_ADDRESS);
++            }
++            // L'aire appartient au seul moteur. Une lecture du disque requiert RW.
++            let ok = heap::with_pages(|m| {
++                Ok((0..taille).all(|i| espace.writable(m, addr + 4096 * i, 4096)))
++            })
++            .unwrap();
++            if !ok {
++                return Err(BAD_ADDRESS);
++            }
++            let adresses = &mut s.ipc.pages_bulk.get_mut(pair.slot)[..8 * taille as usize];
++            if !heap::with_pages(|m| Ok(espace.copy_from_user(m, mot(4), adresses))).unwrap() {
++                adresses.fill(0);
++                return Err(BAD_ADDRESS);
++            }
++            pair.dernier_lot = tag;
++            pair.reservation = Some(Reservation {
++                moteur: pid,
++                tag,
++                lire,
++                base: addr,
++                n: taille as usize,
++                index: 0,
++                effectues: 0,
++                en_vol: false,
++                retrait: false,
++                doute: false,
++                flush: false,
++                exige_flush: direction == 2,
++            });
++            return Ok(0);
++        }
++        if side != 0 {
++            return Err(DENIED);
++        }
++        let r = pair.reservation.as_mut().ok_or(REVOKED)?;
++        if r.retrait || r.doute {
++            return Err(REVOKED);
++        }
++        if r.tag != tag
++            || r.n != taille as usize
++            || r.lire != lire
++            || r.exige_flush != (direction == 2)
++        {
++            return Err(REFUSED);
++        }
++        if op == 0x10032 {
++            if r.index != r.n || r.effectues != r.n || r.en_vol || r.flush != r.exige_flush {
++                return Err(REFUSED);
++            }
++            s.ipc.pages_bulk.get_mut(pair.slot)[..8 * r.n].fill(0);
++            pair.reservation = None;
++            return Ok(0);
++        }
++        if r.index >= r.n {
++            return Err(REFUSED);
++        }
++        if op == 0x10030 {
++            return Ok(r.index as u64);
++        }
++        if lire && r.effectues != r.index + 1 {
++            return Err(REFUSED);
++        }
++        let autre = s.processes.get(r.moteur).space.as_ref().ok_or(REVOKED)?;
++        let p = r.base + 4096 * r.index as u64;
++        let scratch = &mut [0u8; 4096];
++        let ok = heap::with_pages(|m| {
++            Ok(if lire {
++                espace.copy_from_user(m, addr, scratch) && autre.copy_to_user(m, p, scratch)
++            } else {
++                autre.copy_from_user(m, p, scratch) && espace.copy_to_user(m, addr, scratch)
++            })
++        })
++        .unwrap();
++        scratch.fill(0);
++        if !ok {
++            return Err(BAD_ADDRESS);
++        }
++        r.index += 1;
++
++        Ok(4096)
++    })
++}
++
++// Vérification brève au moment où la chaîne devient visible dans la virtqueue.
++pub(in crate::sched::process) fn admis(
++    cap: u64,
++    tag: u64,
++    index: u64,
++    n: u64,
++    op: u8,
++    lba: u64,
++    soumission: bool,
++) -> bool {
++    with(|s| {
++        let pid = s.thread(s.current).owner.unwrap();
++        let Ok(node) = s.ipc.lookup(pid, cap, SEND | RECEIVE) else {
++            return false;
++        };
++        let Some(lane) = s.ipc.ends.get_mut(node.endpoint.slot()).bulk.as_mut() else {
++            return false;
++        };
++        if lane.parties[0] != pid.number || lane.handles[0] != cap {
++            return false;
++        }
++        let Some(r) = lane.reservation.as_mut() else {
++            return false;
++        };
++        let correspond = if index < n && index < 128 {
++            let debut = index as usize * 8;
++            let liste = s.ipc.pages_bulk.get(lane.slot);
++            lba == u64::from_le_bytes(liste[debut..debut + 8].try_into().unwrap())
++        } else {
++            op == 4 && lba == 0
++        };
++        let ok = correspond
++            && !r.en_vol
++            && !r.retrait
++            && !r.doute
++            && !r.flush
++            && r.effectues as u64 == index
++            && r.tag == tag
++            && r.n as u64 == n
++            && match op {
++                2 => r.lire && index < n && r.index as u64 == index,
++                3 => !r.lire && index < n && r.index as u64 == index + 1,
++                4 => r.exige_flush && !r.lire && index == n && r.index == r.n,
++                _ => false,
++            };
++        if ok && soumission {
++            r.en_vol = true;
++        }
++        ok
++    })
++}
++
++pub(in crate::sched::process) fn termine(cap: u64, tag: u64, op: u8, success: bool) {
++    with(|s| {
++        let pid = s.thread(s.current).owner.unwrap();
++        let Ok(node) = s.ipc.lookup(pid, cap, SEND | RECEIVE) else {
++            return;
++        };
++        let Some(lane) = s.ipc.ends.get_mut(node.endpoint.slot()).bulk.as_mut() else {
++            return;
++        };
++        let Some(r) = lane.reservation.as_mut() else {
++            return;
++        };
++        if lane.parties[0] != pid.number || lane.handles[0] != cap || r.tag != tag || !r.en_vol {
++            return;
++        }
++        r.en_vol = false;
++        if success {
++            if op == 4 {
++                r.flush = true;
++            } else {
++                r.effectues += 1;
++            }
++        } else {
++            r.doute = true;
++        }
++    })
++}
++
++impl Domain {
++    // Le retrait ferme immédiatement l'admission. L'appelant réessaie après WOULD_BLOCK.
++    // REFUSED interdit de déclarer la révocation terminée en cas de DMA incertain.
++    pub(super) fn retrait_lot(&mut self, n: Node, descendance: bool) -> Res<()> {
++        let Some(lane) = self.ends.get(n.endpoint.slot()).bulk else {
++            return Ok(());
++        };
++        let touche = if descendance {
++            let descendants = self.descendants(n);
++            lane.nodes
++                .iter()
++                .any(|id| *id != n.id && descendants.has(id.slot()))
++        } else {
++            lane.nodes.contains(&n.id)
++        };
++        if !touche {
++            return Ok(());
++        }
++        if let Some(r) = self
++            .ends
++            .get_mut(n.endpoint.slot())
++            .bulk
++            .as_mut()
++            .and_then(|l| l.reservation.as_mut())
++        {
++            r.retrait = true;
++            if r.doute {
++                return Err(REFUSED);
++            }
++            if r.en_vol {
++                return Err(WOULD_BLOCK);
++            }
++        }
++        Ok(())
++    }
++}
++
++impl Domain {
++    pub(super) fn sonde_vol(&mut self, ep: Reference, actif: bool) {
++        self.ends
++            .get_mut(ep.slot())
++            .bulk
++            .as_mut()
++            .unwrap()
++            .reservation
++            .as_mut()
++            .unwrap()
++            .en_vol = actif;
++    }
++}
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -12,5 +12,5 @@
+ mod probes;
+ mod traffic;
+-pub(super) use bulk::transfer;
++pub(super) use bulk::{admis, lot, termine, transfer};
+ pub(crate) use probes::{quiet, run};
+
+@@ -871,4 +871,17 @@
+             }
+         }
++        if mode == 42 {
++            let root = s.ipc.create(consumer)?;
++            let peer = s.ipc.derive(consumer, root, device, RECEIVE.into())?;
++            s.ipc.bind_lane(consumer, root, device, peer)?;
++            for (p, h) in [(consumer, root), (device, peer)] {
++                let space = s.processes.get(p).space.as_ref().unwrap();
++                heap::with_pages(|m| {
++                    space.write_data(m, 11, h);
++                    Ok(())
++                })
++                .unwrap();
++            }
++        }
+         if let Some(guid) = volume {
+             let space = s.processes.get(consumer).space.as_ref().unwrap();
+--- a/novaOS/kernel/src/sched/process/ipc/probes.rs
++++ b/novaOS/kernel/src/sched/process/ipc/probes.rs
+@@ -267,4 +267,5 @@
+         ("T10", t10),
+         ("lots", bulk::contract),
++        ("file-revocable", bulk::file_revocable),
+         ("T11", contract::revoke_inflight),
+         ("T12/T18", contract::deaths),
+--- a/novaOS/kernel/src/sched/process/ipc/probes/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/probes/bulk.rs
+@@ -60,2 +60,62 @@
+     stop(children, [owner, reader, stranger]);
+ }
++
++pub(super) fn file_revocable() {
++    let (children, [pilote, moteur, tiers]) = group([ALL, SEND | RECEIVE, ALL]);
++    let root = pilote.boot();
++    let peer = moteur.boot();
++    with(|s| s.ipc.bind_lane(pilote.0, root, moteur.0, peer)).unwrap();
++    let base = user::DATA + 4096;
++    for acteur in [moteur, pilote] {
++        acteur.memory(|s, m| s.add_second_data(m).unwrap());
++    }
++    let args = |a: Actor, tag: u64| {
++        let mut buf = [0; 40];
++        for (p, v) in buf.chunks_exact_mut(8).zip([tag, base, 1, 1, base]) {
++            p.copy_from_slice(&v.to_le_bytes());
++        }
++        a.put(DESC, &buf);
++    };
++    args(moteur, 71);
++    args(pilote, 71);
++    args(tiers, 71);
++    assert_eq!(tiers.call(0x1002e, tiers.boot(), DESC, 40), Err(DENIED));
++    assert_eq!(moteur.call(0x1002e, peer, DESC, 40), Ok(0));
++    assert_eq!(moteur.call(0x1002e, peer, DESC, 40), Err(DENIED));
++    args(pilote, 72);
++    assert_eq!(pilote.call(0x1002f, root, DESC, 32), Err(REFUSED));
++    args(pilote, 71);
++    assert_eq!(pilote.call(0x10030, root, DESC, 32), Ok(0));
++    assert_eq!(moteur.call(IPC_CLOSE, peer, 0, 0), Ok(0));
++    assert_eq!(pilote.call(0x1002f, root, DESC, 32), Err(DENIED));
++    assert_eq!(pilote.bytes::<16>(base), [0; 16]);
++    let nouveau = with(|s| {
++        s.ipc
++            .derive(pilote.0, root, moteur.0, (SEND | RECEIVE).into())
++    })
++    .unwrap();
++    with(|s| s.ipc.bind_lane(pilote.0, root, moteur.0, nouveau)).unwrap();
++    assert_eq!(pilote.call(0x10030, root, DESC, 32), Err(REVOKED));
++    assert_eq!(moteur.call(0x1002e, peer, DESC, 40), Err(DENIED));
++    args(moteur, 72);
++    args(pilote, 72);
++    moteur.put(base, &[0xba; 16]);
++    assert_eq!(moteur.call(0x1002e, nouveau, DESC, 40), Ok(0));
++    assert_eq!(pilote.call(0x1002f, root, DESC, 32), Ok(4096));
++    assert_eq!(pilote.bytes::<16>(base), [0xba; 16]);
++    assert_eq!(pilote.call(0x10032, root, DESC, 32), Err(REFUSED));
++    // La sonde suspend une soumission admise avant sa complétion.
++    with(|s| {
++        let e = s.ipc.lookup(pilote.0, root, 0).unwrap().endpoint;
++        s.ipc.sonde_vol(e, true);
++    });
++    assert_eq!(pilote.call(IPC_REVOKE, root, 0, 0), Err(WOULD_BLOCK));
++    assert_eq!(pilote.call(0x10030, root, DESC, 32), Err(REVOKED));
++    with(|s| {
++        let e = s.ipc.lookup(pilote.0, root, 0).unwrap().endpoint;
++        s.ipc.sonde_vol(e, false);
++    });
++    assert_eq!(pilote.call(IPC_REVOKE, root, 0, 0), Ok(2));
++    assert_eq!(pilote.call(0x10032, root, DESC, 32), Err(DENIED));
++    stop(children, [pilote, moteur, tiers]);
++}
+--- a/novaOS/kernel/src/sched/process/ipc/spawn.rs
++++ b/novaOS/kernel/src/sched/process/ipc/spawn.rs
+@@ -57,4 +57,7 @@
+             let tx = s.ipc.derive(parent, input, pid, SEND.into())?;
+             let rx = s.ipc.derive(parent, output, pid, RECEIVE.into())?;
++            if number == 14 && authority & tty::QUALIFY != 0 {
++                s.ipc.bind_lane(parent, input, pid, tx)?;
++            }
+             s.ipc.locals.get_mut(pid.slot).bootstrap = tx;
+             heap::with_pages(|m| {
+--- a/novaOS/kernel/src/sched/process/ipc/traffic.rs
++++ b/novaOS/kernel/src/sched/process/ipc/traffic.rs
+@@ -236,4 +236,15 @@
+                             };
+                             let moved = child.0 == 0;
++                            if moved
++                                && self.lookup(offer.pid, source.key, GRANT).is_ok_and(|n| {
++                                    self.ends
++                                        .get(n.endpoint.slot())
++                                        .bulk
++                                        .is_some_and(|l| l.nodes.contains(&n.id))
++                                })
++                            {
++                                self.complete(i, Err(REFUSED));
++                                return Err(REFUSED);
++                            }
+                             let id = if moved { source.node } else { child };
+                             install = Some((slot, key, id, moved));
+@@ -327,4 +338,7 @@
+         let n = self.lookup(p, a, need)?;
+         let ep = n.endpoint;
++        if matches!(id, IPC_CLOSE | IPC_REVOKE) {
++            self.retrait_lot(n, id == IPC_REVOKE)?;
++        }
+         let value = match id {
+             IPC_DUP => self.derive(p, a, p, b)?,
+@@ -419,4 +433,12 @@
+                 let rights = Self::check_mask(source, mask.into())?;
+                 if mode == 2 {
++                    if self
++                        .ends
++                        .get(source.endpoint.slot())
++                        .bulk
++                        .is_some_and(|l| l.nodes.contains(&source.id))
++                    {
++                        return Err(REFUSED);
++                    }
+                     if source.parent.0 == 0 {
+                         return Err(DENIED);
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -116,4 +116,6 @@
+     let [a, b, c] = args;
+     let result = match id {
++        0x1002e..=0x10030 | 0x10032 => ipc::lot(id, a, b, c),
++        0x10031 if b == 56 && c == 0 => commande_lot(a),
+         IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
+         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
+@@ -441,2 +443,63 @@
+     Ok(len)
+ }
++
++#[inline(never)]
++fn commande_lot(ptr: u64) -> Result<u64, u64> {
++    use crate::hardware::block;
++    let pid = with(|s| caller(s));
++    let mut q = [0u8; 56];
++    let lire = |addr: u64, out: &mut [u8]| {
++        with(|s| {
++            heap::with_pages(|m| {
++                Ok(s.processes
++                    .get(pid)
++                    .space
++                    .as_ref()
++                    .unwrap()
++                    .copy_from_user(m, addr, out))
++            })
++            .unwrap()
++        })
++    };
++    if ptr % 8 != 0 || !lire(ptr, &mut q) {
++        return Err(BAD_ADDRESS);
++    }
++    let mot = |i: usize| u64::from_le_bytes(q[i * 8..i * 8 + 8].try_into().unwrap());
++    let (tag, cap, key, d, adresse, i, n) =
++        (mot(0), mot(1), mot(2), mot(3), mot(4), mot(5), mot(6));
++    if !block::admit(pid.number, key) {
++        return Err(DENIED);
++    }
++    let mut w = [0; 128];
++    let mut page = [0; 4096];
++    if d % 8 != 0 || !lire(d, &mut w) {
++        return Err(BAD_ADDRESS);
++    }
++    let op = w[1];
++    if !ipc::admis(cap, tag, i, n, op, block::wire::lba(&w), false) {
++        return Err(REVOKED);
++    }
++    if op == 3 && !lire(adresse, &mut page) {
++        return Err(BAD_ADDRESS);
++    }
++    let autorise = || ipc::admis(cap, tag, i, n, op, block::wire::lba(&w), true);
++    let resultat = block::commande_groupee(pid.number, key, &w, &mut page, autorise);
++    ipc::termine(cap, tag, op, resultat.is_ok());
++    resultat?;
++    if op == 2
++        && !with(|s| {
++            heap::with_pages(|m| {
++                Ok(s.processes
++                    .get(pid)
++                    .space
++                    .as_ref()
++                    .unwrap()
++                    .copy_to_user(m, adresse, &page))
++            })
++            .unwrap()
++        })
++    {
++        return Err(BAD_ADDRESS);
++    }
++    Ok(0)
++}
+--- a/novaOS/tests/ipc.py
++++ b/novaOS/tests/ipc.py
+@@ -108,5 +108,5 @@
+                 if mode == "test":
+                     covered = {t for name in cases for t in name.split("/")}
+-                    assert covered == ({f"T{i:02}" for i in range(1, 19)} - {"T09", "T17"}) | {"lots"}
++                    assert covered == ({f"T{i:02}" for i in range(1, 19)} - {"T09", "T17"}) | {"lots", "file-revocable"}
+                     assert phases["ipc_repos"] == phases["ipc_detruits"] == phases["ipc_reprise"]
+                     assert phases["ipc_repos"]["ipc"] == 0 and phases["ipc_repos"]["retenu"] <= 2048
+--- a/novaOS/user/novafs/Cargo.toml
++++ b/novaOS/user/novafs/Cargo.toml
+@@ -16,5 +16,5 @@
+
+ [dependencies]
+-novafs = { path = "../../../novaFS" }
++novafs = { path = "../../../novaFS", features = ["prototype-es-groupees"] }
+ zeroize = { version = "1.9.1", default-features = false }
+ dlmalloc = "0.2.14"
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -20,4 +20,9 @@
+     count: u64,
+     failed: Cell<bool>,
++    groupe: Cell<bool>,
++    attente: RefCell<(
++        alloc::vec::Vec<u64>,
++        zeroize::Zeroizing<alloc::vec::Vec<novafs::Block>>,
++    )>,
+     qualification: crate::qualification::FaultProbe,
+     progress: Cell<Option<(u64, u64, u64)>>,
+@@ -38,4 +43,9 @@
+             count,
+             failed: Cell::new(false),
++            groupe: Cell::new(false),
++            attente: RefCell::new((
++                alloc::vec::Vec::new(),
++                zeroize::Zeroizing::new(alloc::vec::Vec::new()),
++            )),
+             qualification: Default::default(),
+             progress: Cell::new(None),
+@@ -111,4 +121,15 @@
+     }
+     fn write(&mut self, block: u64, data: &novafs::Block) -> Result<()> {
++        if self.groupe.get() {
++            let mut pending = self.attente.borrow_mut();
++            if pending.0.len() >= 64 {
++                return Err(Error::Limit("métadonnées groupées"));
++            }
++            pending.0.try_reserve(1).map_err(|_| Error::NoMemory)?;
++            pending.1.try_reserve(1).map_err(|_| Error::NoMemory)?;
++            pending.0.push(block);
++            pending.1.push(*data);
++            return Ok(());
++        }
+         let cap = crate::runtime::config(10);
+         if cap == 0 {
+@@ -123,7 +144,63 @@
+     fn flush(&mut self) -> Result<()> {
+         self.qualification.before_flush();
+-        self.exchange(Block::flush)?;
++        if self.groupe.get() && !self.attente.borrow().0.is_empty() {
++            let mut pending = self.attente.borrow_mut();
++            self.lot(&pending.0, 2, pending.1.as_ptr() as u64)?;
++            pending.1.iter_mut().for_each(|p| p.fill(0));
++            pending.0.clear();
++            pending.1.clear();
++        } else {
++            self.exchange(Block::flush)?;
++        }
+         self.qualification.after_flush();
+         Ok(())
+     }
+ }
++
++impl novafs::BlocGroupe for &IpcDevice<'_> {
++    fn lire_lot(&self, b: &[u64], p: &mut [novafs::Block]) -> Result<()> {
++        if b.len() != p.len() {
++            return Err(Error::Invalid("longueur lot"));
++        }
++        self.lot(b, 0, p.as_mut_ptr() as u64)
++    }
++    fn ecrire_lot(&self, b: &[u64], p: &[novafs::Block]) -> Result<()> {
++        if b.len() != p.len() {
++            return Err(Error::Invalid("longueur lot"));
++        }
++        self.lot(b, 1, p.as_ptr() as u64)
++    }
++}
++impl IpcDevice<'_> {
++    pub(crate) fn groupe<T>(&self, action: impl FnOnce() -> T) -> T {
++        self.groupe.set(true);
++        let r = action();
++        self.groupe.set(false);
++        let mut pending = self.attente.borrow_mut();
++        pending.1.iter_mut().for_each(|p| p.fill(0));
++        pending.0.clear();
++        pending.1.clear();
++        r
++    }
++    fn lot(&self, b: &[u64], write: u8, addr: u64) -> Result<()> {
++        if b.is_empty() || b.len() > 128 {
++            return Err(Error::Invalid("taille du lot"));
++        }
++        let mut lbas = [0; 128];
++        for (l, &b) in lbas.iter_mut().zip(b) {
++            *l = self.geometry.sectors(b, 1)?.0;
++        }
++        self.exchange(|s| {
++            s.lot(
++                match write {
++                    0 => 2,
++                    1 => 3,
++                    _ => 6,
++                },
++                crate::runtime::config(10),
++                &lbas[..b.len()],
++                addr,
++            )
++        })
++    }
++}
+--- a/novaOS/user/novafs/files/selected.rs
++++ b/novaOS/user/novafs/files/selected.rs
+@@ -195,4 +195,34 @@
+     let op = q[1];
+     let key = w::word(q, 16);
++    if op == 29 {
++        if rt::config(11) == 0 {
++            return Err(rt::DENIED);
++        }
++        shape(key == 1 && q[3..8] == [0; 5] && q[48..].iter().all(|&x| x == 0))?;
++        if s.pending.is_some() || c.copy.is_some() || !s.writable {
++            return Err(w::BUSY);
++        }
++        let [dest, src] = targets else {
++            return Err(rt::DENIED);
++        };
++        if dest.scope != w::SELECT_NEW
++            || src.scope != w::SELECT_FILE
++            || src.kind != Kind::File
++            || dest.name.is_empty()
++        {
++            return Err(rt::DENIED);
++        }
++        let fs = s.fs.as_mut().ok_or(rt::CLOSED)?;
++        let st = fs.stat_id(src.id).map_err(error)?;
++        if (st.id, st.revision, st.size) != (w::word(q, 24), w::word(q, 32), w::word(q, 40)) {
++            return Err(rt::REVOKED);
++        }
++        s.clock.sample()?;
++        s.dev.start_probe();
++        s.dev
++            .groupe(|| fs.sauvegarde_labo(st, dest.id, &dest.name, q[2]))
++            .map_err(error)?;
++        return Ok(());
++    }
+     if op == w::COPY_RANGE {
+         return copy_range(s, c, q, a);
+--- a/novaOS/user/storage/disk.rs
++++ b/novaOS/user/storage/disk.rs
+@@ -72,4 +72,68 @@
+         last = m.tag;
+         let mut r = Request(m.payload);
++        if r.0[2] == 4 {
++            let result = (|| -> Result<()> {
++                let p = page.as_deref_mut().ok_or(DENIED)?;
++                let n = wire::number(&r.0, 4) as usize;
++                let mut offsets = [0; 1024];
++                bulk::take(config(11), m.tag, &mut offsets[..n * 8])?;
++                let write = r.0[1] != wire::READ;
++                let args = [
++                    m.tag,
++                    p.as_mut_ptr() as u64,
++                    n as u64,
++                    if r.0[1] == 6 { 2 } else { u64::from(write) },
++                ];
++                for (i, b) in offsets[..n * 8].chunks_exact(8).enumerate() {
++                    if value(call(0x10030, lane, args.as_ptr() as u64, 32))? != i as u64 {
++                        return Err(REVOKED);
++                    }
++                    let mut w = Request(wire::blank(if write { wire::WRITE } else { wire::READ }));
++                    w.0[2] = wire::PAGE_PHASE;
++                    wire::put(&mut w.0, 4, 4096);
++                    w.0[8..16].copy_from_slice(b);
++                    if write {
++                        value(call(0x1002f, lane, args.as_ptr() as u64, 32))?;
++                    }
++                    // Le portail vérifie le bail groupé au point de soumission.
++                    let action = [
++                        m.tag,
++                        lane,
++                        key,
++                        (&raw const w) as u64,
++                        p.as_mut_ptr() as u64,
++                        i as u64,
++                        n as u64,
++                    ];
++                    value(call(0x10031, action.as_ptr() as u64, 56, 0))?;
++                    if !write {
++                        value(call(0x1002f, lane, args.as_ptr() as u64, 32))?;
++                    }
++                }
++                if r.0[1] == 6 {
++                    let mut f = Request(wire::blank(wire::FLUSH));
++                    if !describe(&mut f.0, size) {
++                        return Err(BAD_ARGUMENT);
++                    }
++                    let action = [
++                        m.tag,
++                        lane,
++                        key,
++                        (&raw const f) as u64,
++                        0,
++                        n as u64,
++                        n as u64,
++                    ];
++                    value(call(0x10031, action.as_ptr() as u64, 56, 0))?;
++                }
++                value(call(0x10032, lane, args.as_ptr() as u64, 32))?;
++                Ok(())
++            })();
++            match result {
++                Ok(()) => send(output, m.tag, &r.0)?,
++                Err(e) => send(output, m.tag, &[e as u8])?,
++            }
++            continue;
++        }
+         if r.0[2] == wire::PAGE_PHASE {
+             let result: Result<()> = (|| {
+--- a/novaOS/user/storage/fileapi.rs
++++ b/novaOS/user/storage/fileapi.rs
+@@ -87,5 +87,5 @@
+             if matches!(
+                 q[1],
+-                w::CREATE_NEW
++                29 | w::CREATE_NEW
+                     | w::COPY_RANGE
+                     | w::PUBLISH_COPY
+--- /dev/null
++++ b/novaOS/user/storage/groupe.ld
+@@ -0,0 +1,18 @@
++ENTRY(_start)
++PHDRS {
++  text PT_LOAD FLAGS(5);
++  ro PT_LOAD FLAGS(4);
++  rw PT_LOAD FLAGS(6);
++  stack PT_GNU_STACK FLAGS(6);
++}
++SECTIONS {
++  . = 0x1000000;
++  .text : { KEEP(*(.text.demo)) *(.text .text.*) } :text
++  . = ALIGN(4096);
++  .rodata : { *(.rodata .rodata.* .data.rel.ro .data.rel.ro.* .got .got.*) } :ro
++  . = ALIGN(4096);
++  .data : { *(.data .data.*) } :rw
++  .bss (NOLOAD) : { *(.bss .bss.* COMMON) } :rw
++  .stack_reserve (NOLOAD) : { . += 16K; } :stack
++  /DISCARD/ : { *(.eh_frame* .note* .comment) }
++}
+--- a/novaOS/user/storage/medium.rs
++++ b/novaOS/user/storage/medium.rs
+@@ -54,4 +54,41 @@
+         bulk::put(cap, tag, data)?;
+         self.exchange_page(w::WRITE, lba)
++    }
++    pub(crate) fn lot(&mut self, op: u8, cap: u64, lbas: &[u64], page: u64) -> Result<()> {
++        let n = lbas.len();
++        if n == 0 || n > 128 {
++            return Err(BAD_ARGUMENT);
++        }
++        let tag = self.tag.checked_add(1).ok_or(LIMIT)?;
++        let mut desc = [
++            tag,
++            page,
++            n as u64,
++            match op {
++                w::READ => 0,
++                w::WRITE => 1,
++                6 => 2,
++                _ => return Err(BAD_ARGUMENT),
++            },
++            0,
++        ];
++        let mut offsets = [0u8; 1024];
++        for (p, b) in offsets.chunks_exact_mut(8).zip(lbas) {
++            p.copy_from_slice(&b.to_le_bytes());
++        }
++        // Le pilote retire la table avant de parcourir la réservation. Elle est
++        // déposée sur un second canal, séparé du flux de pages en cours.
++        bulk::put(config(11), tag, &offsets[..n * 8])?;
++        desc[4] = offsets.as_ptr() as u64;
++        value(call(0x1002e, cap, desc.as_ptr() as u64, 40))?;
++        let mut frame = w::blank(op);
++        frame[2] = 4;
++        w::put(&mut frame, 4, n as u32);
++        let expected = frame;
++        self.exchange(&mut frame)?;
++        if frame != expected {
++            return Err(BAD_ARGUMENT);
++        }
++        Ok(())
+     }
+     fn command(&mut self, op: u8) -> Result<w::Wire> {
+--- a/novaOS/user/storage/runtime.rs
++++ b/novaOS/user/storage/runtime.rs
+@@ -55,5 +55,5 @@
+
+ pub fn config(word: usize) -> u64 {
+-    assert!(word <= 10);
++    assert!(word <= 11);
+     // Sûreté : le lanceur initialise les mots alignés de la page DATA privée
+     // avant publication. Ce sont des valeurs locales, jamais des pointeurs.

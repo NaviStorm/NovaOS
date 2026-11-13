@@ -61,7 +61,7 @@ if __name__=="__main__":
                 result=dict(montage=True,vi_lance=True,premier_ecran_ms=round((time.monotonic_ns()-start)/1e6,3))
                 result["demarrage_jusqu_au_shell_ms"]=round(boot,3)
                 if a.sondes: result["montage_service_ms"]=montage_ms
-                if a.mio==100:
+                if a.mio in (100,1024):
                     # Entrer réellement dans la fenêtre suivante (32 lignes de 128 octets).
                     start=time.monotonic_ns()
                     t.vm.stdin.write(b"j"*40)

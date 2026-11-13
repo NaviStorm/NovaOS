@@ -2,6 +2,9 @@
 #[allow(dead_code)]
 #[path = "../../abi/native.rs"]
 pub mod abi;
+#[allow(dead_code)]
+#[path = "../../abi/bulk_call.rs"]
+pub mod bulk;
 #[path = "../gate.rs"]
 mod gate;
 pub use abi::*;
@@ -51,7 +54,7 @@ pub fn channels() -> Result<(u64, u64)> {
 }
 
 pub fn config(word: usize) -> u64 {
-    assert!(word < 10);
+    assert!(word <= 10);
     // Sûreté : le lanceur initialise les mots alignés de la page DATA privée
     // avant publication. Ce sont des valeurs locales, jamais des pointeurs.
     unsafe { (0x401000 as *const u64).add(word).read_volatile() }

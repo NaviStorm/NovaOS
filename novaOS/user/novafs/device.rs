@@ -88,7 +88,13 @@ impl Device for &IpcDevice<'_> {
     }
     fn read(&self, block: u64) -> Result<novafs::Block> {
         let mut page = [0; 4096];
-        self.transfer(block, &mut page, false)?;
+        let cap = crate::runtime::config(10);
+        if cap == 0 {
+            self.transfer(block, &mut page, false)?;
+        } else {
+            let (first, _) = self.geometry.sectors(block, 1)?;
+            self.exchange(|s| s.read_page(first, cap, &mut page))?;
+        }
         if let Some((port, tag, n)) = self.progress.get() {
             let n = n
                 .checked_add(1)
@@ -104,7 +110,15 @@ impl Device for &IpcDevice<'_> {
         Ok(page)
     }
     fn write(&mut self, block: u64, data: &novafs::Block) -> Result<()> {
-        self.transfer(block, &mut *zeroize::Zeroizing::new(*data), true)
+        let cap = crate::runtime::config(10);
+        if cap == 0 {
+            return self.transfer(block, &mut *zeroize::Zeroizing::new(*data), true);
+        }
+        let (first, _) = self.geometry.sectors(block, 1)?;
+        self.exchange(|s| s.write_page(first, cap, data))?;
+        self.qualification
+            .sector(block, true, data.starts_with(b"NOVAP0FS"));
+        Ok(())
     }
     fn flush(&mut self) -> Result<()> {
         self.qualification.before_flush();

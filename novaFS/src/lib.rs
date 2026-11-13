@@ -45,6 +45,8 @@ pub use engine::{
     VolumePolicy,
 };
 pub use fs::{Kind, Stat};
+#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+pub use fs::BlocGroupe;
 
 pub const BLOCK_BYTES: usize = 4096;
 pub const MAX_BLOCKS: u64 = 2_097_152;
