@@ -101,9 +101,13 @@ def bilan(journal, mesure):
                                     kick_a_entree_irq_ms=ms(delai_irq))
     moteur = re.findall(r"SAVE durees_moteur=(\[[^\]]+\])", text)
     if moteur:
-        phases["phases_moteur_ms"] = dict(zip(
-            ("sha256_source", "sha256_candidate_et_extents", "validation_texte", "reservation_pages"),
-            map(ms, json.loads(moteur[0])), strict=True))
+        ticks = json.loads(moteur[0])
+        noms = ("sha256_source", "sha256_candidate_et_extents", "validation_texte", "reservation_pages")
+        if len(ticks) != 4:
+            noms = ("sha256_source", "sha256_candidate", "validation_texte", "reservation_pages",
+                    "construction_extents", "copie_source_et_pret", "allocation_fenetres",
+                    "recherche_extents", "effacement_liberation")
+        phases["phases_moteur_ms"] = dict(zip(noms, map(ms, ticks), strict=True))
     durees = re.findall(r"SAVE durees_lots=(\[[^\]]+\])", text)
     if durees:
         lecture, ecriture = map(ms, json.loads(durees[0]))

@@ -533,3 +533,7 @@ pub fn remove(s: &mut impl WriteTree, root: Ref, f: Family, key: &[u8]) -> Resul
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+#[path = "../lab/es-groupees/arbre.rs"]
+pub(crate) mod ajout;

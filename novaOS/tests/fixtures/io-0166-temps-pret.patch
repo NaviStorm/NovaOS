@@ -1,0 +1,41 @@
+--- a/novaOS/kernel/src/memory/user.rs
++++ b/novaOS/kernel/src/memory/user.rs
+@@ -227,4 +227,5 @@
+     }
+     pub(crate) fn sceller_pret(&mut self, m: &mut Memory, base: u64, len: u64) -> bool {
++        let depart = crate::hal::timer::counter();
+         let Some(fin) = base
+             .checked_add(len)
+@@ -243,7 +244,16 @@
+             return false;
+         }
++        let valide = crate::hal::timer::counter();
+         for va in (base..fin).step_by(PAGE as usize) {
+             self.tables.acces_pret(&mut m.frames, va, Access::ReadOnly);
+         }
++        let terme = crate::hal::timer::counter();
++        crate::arch::serial::line(format_args!(
++            "TEMPS_PRET sceller {} {} {} {}",
++            (fin - base) / PAGE,
++            valide - depart,
++            terme - valide,
++            crate::hal::timer::counter_hz(),
++        ));
+         self.pret = Some((base, fin));
+         true
+@@ -251,7 +261,15 @@
+     pub(crate) fn rendre_pret(&mut self, m: &mut Memory) {
+         if let Some((base, fin)) = self.pret.take() {
++            let depart = crate::hal::timer::counter();
+             for va in (base..fin).step_by(PAGE as usize) {
+                 self.tables.acces_pret(&mut m.frames, va, Access::ReadWrite);
+             }
++            let terme = crate::hal::timer::counter();
++            crate::arch::serial::line(format_args!(
++                "TEMPS_PRET rendre {} {} {}",
++                (fin - base) / PAGE,
++                terme - depart,
++                crate::hal::timer::counter_hz(),
++            ));
+         }
+     }

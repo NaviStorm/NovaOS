@@ -1,0 +1,69 @@
+--- a/components/vi/screen.rs
++++ b/components/vi/screen.rs
+@@ -127,6 +127,27 @@
+             self.cursor = None;
+         }
+         self.line.clear();
++        Ok(())
++    }
++    fn projeter_invite(&mut self, e: &Editor) -> (usize, usize) {
++        self.label.clear();
++        self.label
++            .push(if e.mode == Mode::Search { '/' } else { ':' });
++        self.label.push_str(&e.prompt);
++        let fin = self.label.chars().map(width).sum::<usize>();
++        let gauche = fin.saturating_sub(self.cols - 1);
++        project(&mut self.line, self.label.chars(), gauche, self.cols);
++        (self.rows - 1, fin - gauche)
++    }
++
++    /// La frappe a uniquement changé le texte de la commande ou de la recherche.
++    pub fn invite(&mut self, e: &Editor, link: &mut wire::Link) -> rt::Result<()> {
++        let target = self.projeter_invite(e);
++        self.paint(self.rows - 1, link)?;
++        if self.cursor != Some(target) {
++            locate(link, target.0, target.1)?;
++            self.cursor = Some(target);
++        }
+         Ok(())
+     }
+     pub fn draw(&mut self, e: &Editor, link: &mut wire::Link) -> rt::Result<()> {
+@@ -196,14 +217,7 @@
+         }
+         let mut target = (row - self.top, cell - self.left);
+         if matches!(e.mode, Mode::Command | Mode::Search) {
+-            self.label.clear();
+-            self.label
+-                .push(if e.mode == Mode::Search { '/' } else { ':' });
+-            self.label.push_str(&e.prompt);
+-            let end = self.label.chars().map(width).sum::<usize>();
+-            let left = end.saturating_sub(self.cols - 1);
+-            project(&mut self.line, self.label.chars(), left, self.cols);
+-            target = (self.rows - 1, end - left);
++            target = self.projeter_invite(e);
+         } else if self.rows > 1 {
+             project(&mut self.line, e.message.chars(), 0, self.cols);
+         }
+--- a/components/vi/terminal.rs
++++ b/components/vi/terminal.rs
+@@ -100,6 +100,20 @@
+             screen.draw(e, link)?;
+             continue;
+         }
++        // L'invite déjà projetée est seule modifiée par une frappe ordinaire.
++        // Entrée, Esc, les séquences de navigation et les changements de géométrie
++        // gardent leur chemin normal, avec vérification de la source si nécessaire.
++        if link.mode_plan != 0
++            && matches!(e.mode, Mode::Command | Mode::Search)
++            && escaped.is_none()
++            && ss3.is_none()
++            && sequence.is_none()
++            && (key == '\x08' || (key != '\n' && key != '\x1b' && nova_cli::console::safe(key)))
++        {
++            e.key(key, link);
++            screen.invite(e, link)?;
++            continue;
++        }
+         let submitting = e.mode == Mode::Command && key == '\n';
+         if let Some(before) = ss3.take() {
+             if matches!(key, 'A' | 'B' | 'C' | 'D') {

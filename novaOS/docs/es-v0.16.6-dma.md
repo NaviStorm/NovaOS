@@ -282,3 +282,5 @@ python3 -B novaOS/tests/es_groupees_moteur_utm.py "$PROFIL_UTM" "$ELF" "$GENERAT
 La géométrie et le format peuvent être changés séparément. Avec l’ELF instrumenté, ajouter `--sonde` au témoin du moteur. La fixture `io-0166-dma-attente-experimentale` se superpose uniquement à un invité multipage hors sonde destiné à l’essai WFI/HLT.
 
 Les options `--format raw`, `--sans-traces-bloc` et `--preallocation` isolent respectivement le format brut, le coût des deux traces bloc et le provisionnement du QCOW2. Les traces IOMMU et les barrières du pilote restent actives. [Banc de l'application UTM](../tests/es_groupees_utm.py)
+
+La qualification suivante suit le coût des empreintes, des extents, des copies et des allocations jusqu’à F2, avec les compteurs du disque dans l’application UTM. [Optimisation CPU et mesures individuelles](es-v0.16.6-cpu.md)

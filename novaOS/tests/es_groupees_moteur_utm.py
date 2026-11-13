@@ -12,6 +12,7 @@ import subprocess
 import tempfile
 
 from bloc import qmp
+from cpu_hote_utm import CpuMoteur
 from es_groupees_elargies import operation, verifier
 from es_groupees_utm import IDS, image, publier, relire_systeme
 from installation_utm import FIRMWARE, lanceurs
@@ -22,7 +23,7 @@ from vi_ipc_sauvegarde import bilan
 
 
 @contextmanager
-def demarrer(binaires, sortie, config, disque, fmt, boot):
+def demarrer(binaires, sortie, config, disque, fmt, boot, arriere_plan=False):
     serie = binaires / 'serie'
     code = sortie / 'code.fd'
     variables = sortie / 'variables.fd'
@@ -39,6 +40,9 @@ def demarrer(binaires, sortie, config, disque, fmt, boot):
                 '-device', 'virtserialport,chardev=agent,name=org.qemu.guest_agent.0',
                 '-chardev', f'socket,id=tch,path={sock}', '-tpmdev', 'emulator,id=tpm0,chardev=tch',
                 '-device', 'tpm-crb-device,tpmdev=tpm0', *config['QEMU']['AdditionalArguments']]
+        if arriere_plan:
+            # Appliqué au seul processus de ce témoin, jamais à l'application UTM.
+            args = ['/usr/sbin/taskpolicy', '-b', *args]
         with (sortie/f'{boot}.qemu').open('xb') as log, subprocess.Popen(
             args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log, bufsize=0
         ) as vm:
@@ -83,20 +87,24 @@ def essai(a):
         binaires = Path(temporaire)
         lanceurs(binaires)
         version = subprocess.check_output([binaires/'qemu-aarch64-softmmu', '--version'], text=True).splitlines()[0]
-        with demarrer(binaires, out, config, disque, a.format, 'sauvegarde') as (c, vm):
+        with demarrer(binaires, out, config, disque, a.format, 'sauvegarde', a.arriere_plan) as (c, vm):
             transfert(c, b'nsh> ', 56)
             reouvrir_vi(c, 'source')
             attendu = operation(a.cas, lambda t: os.write(c.fd, t.encode()), lambda t: c.attendre(t.encode(), 180))
             avant_backend = mesures_backend(vm) if a.sonde else None
             compteurs = None
-            debut, oui, fin = publier(c, 'source', 'copie', None)
+            temps_cpu = []
+            moteur_cpu = CpuMoteur(vm.pid) if a.sonde else None
+            mesure_cpu = (lambda: temps_cpu.append(moteur_cpu.relever())) if a.sonde else None
+            debut, oui, fin = publier(c, 'source', 'copie', None, mesurer_cpu=mesure_cpu)
+            cout_cpu = moteur_cpu.difference(*temps_cpu) if a.sonde else None
             if avant_backend is not None:
                 compteurs = {k: v - avant_backend[k] for k, v in mesures_backend(vm).items()}
                 assert all(v >= 0 for v in compteurs.values()) and compteurs['flush_operations'] >= 2
             os.write(c.fd, b':q\r')
             c.attendre(b'nsh> ')
             c.ligne('exit', b'SYSTEME bilan Ok(())')
-        with demarrer(binaires, out, config, disque, a.format, 'reprise') as (c, _):
+        with demarrer(binaires, out, config, disque, a.format, 'reprise', a.arriere_plan) as (c, _):
             transfert(c, b'nsh> ', 56)
             reouvrir_vi(c, 'copie')
             os.write(c.fd, b':q\r')
@@ -111,11 +119,12 @@ def essai(a):
     if not a.sonde:
         assert b'SAVE from=' not in (out/'sauvegarde.serial').read_bytes()
     return dict(moteur=version, secteur=a.secteur, format=a.format, cas=a.cas, sonde=a.sonde,
+                arriere_plan=a.arriere_plan,
                 sauvegarde_ms=round((fin-debut)/1e6, 3), apres_oui_ms=round((fin-oui)/1e6, 3),
                 avant=avant, apres=apres, octets_relus=len(attendu),
                 destination_sha256=hashlib.sha256(attendu).hexdigest(),
                 noyau_sha256=hashlib.sha256(a.elf.read_bytes()).hexdigest(),
-                compteur=cpt, backend_qmp=compteurs)
+                compteur=cpt, backend_qmp=compteurs, cpu_hote_qemu=cout_cpu)
 
 
 if __name__ == '__main__':
@@ -123,9 +132,11 @@ if __name__ == '__main__':
     for champ in ('profil', 'elf', 'generateur', 'sortie'):
         p.add_argument(champ, type=Path)
     p.add_argument('secteur', type=int, choices=(512, 4096))
-    p.add_argument('--cas', choices=('remplacer-multiple', 'ajout-4m-multiple'), required=True)
+    p.add_argument('--cas', choices=('remplacer-multiple', 'ajout-4m-milieu', 'ajout-4m-multiple'), required=True)
     p.add_argument('--format', choices=('raw', 'qcow2'), default='qcow2')
     p.add_argument('--sonde', action='store_true')
+    p.add_argument('--arriere-plan', action='store_true',
+                   help='témoin Darwin en arrière-plan, sur le seul moteur direct de la VM jetable')
     a = p.parse_args()
     resultat = essai(a)
     (a.sortie/'resultats.json').write_text(json.dumps(resultat, ensure_ascii=False, indent=2) + '\n')

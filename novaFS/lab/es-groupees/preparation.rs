@@ -1,10 +1,13 @@
 //! Publication expérimentale d'une candidate neuve par plages de la source épinglée.
 //! Chaque page émise avant F1 est réservée dans le fork privé de Space.
 use super::*;
+use crate::tree::ajout::{Ajout, intervalle};
 use crate::{Block, codec::data_hash, time::Atime};
-use zeroize::Zeroizing;
+use zeroize::{Zeroize, Zeroizing};
 
 pub trait BlocGroupe: Device {
+    /// Sonde facultative du laboratoire. Le périphérique chronométré hors sonde ne fait aucun appel.
+    fn phase_labo(&self, _etape: u8, _fin: bool) {}
     fn lire_lot(&self, blocs: &[u64], pages: &mut [Block]) -> Result<()>;
     fn ecrire_lot(&self, blocs: &[u64], pages: &[Block]) -> Result<()>;
 }
@@ -31,35 +34,30 @@ impl Texte {
         }
         Ok(())
     }
-    fn lire(&mut self, mut s: &[u8]) -> Result<()> {
-        // Huit octets imprimables ASCII sont huit scalaires UTF-8 valides.
-        // Le bit de poids fort distingue le chemin Unicode. Les deux bits
-        // suivants détectent un octet inférieur à 0x20. Une addition de 1
-        // par octet ASCII (sans retenue) détecte les octets DEL à 0x7f.
-        if self.n == 0 && !self.cr {
-            const HAUT: u64 = 0x8080808080808080;
-            const UN: u64 = 0x0101010101010101;
-            let mut mots = s.chunks_exact(8);
-            let rapide = mots.by_ref().all(|octets| {
-                let v = u64::from_ne_bytes(octets.try_into().unwrap());
-                let bas = !((v << 1) | (v << 2));
-                if (v | (v.wrapping_add(UN)) | bas) & HAUT == 0 {
-                    true
-                } else {
-                    octets
-                        .iter()
-                        .all(|b| matches!(b, b' '..=b'~' | b'\n' | b'\t'))
-                }
-            });
-            if rapide
-                && mots
-                    .remainder()
-                    .iter()
-                    .all(|b| matches!(b, b' '..=b'~' | b'\n' | b'\t'))
-            {
-                return Ok(());
+    fn ascii(s: &[u8]) -> bool {
+        const HAUT: u64 = 0x8080808080808080;
+        const UN: u64 = 0x0101010101010101;
+        let simple = |b: &u8| matches!(b, b' '..=b'~' | b'\n' | b'\t');
+        let (mots, fin) = s.as_chunks::<8>();
+        mots.iter().all(|mot| {
+            let v = u64::from_ne_bytes(*mot);
+            let bas = !((v << 1) | (v << 2));
+            (v | v.wrapping_add(UN) | bas) & HAUT == 0 || mot.iter().all(simple)
+        }) && fin.iter().all(simple)
+    }
+    fn neutre(&self) -> bool {
+        self.n == 0 && !self.cr
+    }
+    fn lire(&mut self, s: &[u8]) -> Result<()> {
+        // Un caractère non ASCII provoque au plus 256 octets de reprise.
+        for morceau in s.chunks(256) {
+            if !self.neutre() || !Self::ascii(morceau) {
+                self.unicode(morceau)?;
             }
         }
+        Ok(())
+    }
+    fn unicode(&mut self, mut s: &[u8]) -> Result<()> {
         while self.n != 0 && !s.is_empty() {
             self.reste[self.n] = s[0];
             self.n += 1;
@@ -95,16 +93,32 @@ impl Texte {
     }
 }
 
-fn lot(octets: u64) -> Result<Zeroizing<Vec<Block>>> {
+/// Une seule réservation, sans déplacement. Effacer par mots aussi sur les
+/// sorties d'erreur, avant le retour des pages au tas privé.
+struct Lot(Vec<Block>);
+impl Drop for Lot {
+    fn drop(&mut self) {
+        // Sûreté : les octets sont initialisés, aucun autre emprunt n'est vivant.
+        // Tous les motifs de bits représentent des u64 valides. align_to_mut
+        // retourne les bords séparément, quelle que soit la base de l'allocation.
+        let (debut, mots, fin) = unsafe { self.0.as_flattened_mut().align_to_mut::<u64>() };
+        debut.zeroize();
+        mots.zeroize();
+        fin.zeroize();
+        self.0.spare_capacity_mut().zeroize();
+    }
+}
+fn lot(octets: u64) -> Result<Lot> {
     let n = octets.div_ceil(4096).min(PAGES as u64) as usize;
-    let mut pages = Zeroizing::new(Vec::new());
+    let mut pages = Vec::new();
     pages.try_reserve_exact(n).map_err(|_| Error::NoMemory)?;
     pages.resize(n, [0; 4096]);
-    Ok(pages)
+    Ok(Lot(pages))
 }
 
 struct Candidate {
-    pages: Zeroizing<Vec<Block>>,
+    pages: Lot,
+    index: Option<Ajout>,
     utilise: usize,
     premiere: u64,
     texte: Texte,
@@ -117,41 +131,54 @@ impl Candidate {
         if n == 0 {
             return Ok(());
         }
-        let pages = &mut self.pages[..n];
+        let pages = &mut self.pages.0[..n];
         let fin = self.utilise % 4096;
         if fin != 0 {
             pages[n - 1][fin..].fill(0);
         }
         let mut adresses = [0u64; PAGES];
+        tx.stream_device().phase_labo(3, false);
         for adresse in &mut adresses[..n] {
             *adresse = tx.reserve_stream_page()?;
         }
+        tx.stream_device().phase_labo(3, true);
         tx.stream_device().ecrire_lot(&adresses[..n], pages)?;
+        let mut empreintes = [[0u8; 32]; PAGES];
+        tx.stream_device().phase_labo(1, false);
+        for (i, page) in pages.iter().enumerate() {
+            empreintes[i] = data_hash(tx.ids(), adresses[i], self.naissance, page);
+        }
+        tx.stream_device().phase_labo(1, true);
+        tx.stream_device().phase_labo(4, false);
+        if self.index.is_none() {
+            self.index = Some(Ajout::ouvrir(tx, root(tx, Family::Extents))?);
+        }
+        let index = self.index.as_mut().unwrap();
+        let mut run = Run {
+            first: 0,
+            birth: self.naissance,
+            hashes: Vec::new(),
+        };
+        run.hashes
+            .try_reserve_exact(MAX_RUN)
+            .map_err(|_| Error::NoMemory)?;
         let mut i = 0;
         while i < n {
             let debut = i;
-            let mut hashes = Vec::new();
-            hashes
-                .try_reserve_exact(MAX_RUN)
-                .map_err(|_| Error::NoMemory)?;
-            loop {
-                hashes.push(data_hash(tx.ids(), adresses[i], self.naissance, &pages[i]));
+            i += 1;
+            while i < n && i - debut < MAX_RUN && adresses[i] == adresses[i - 1] + 1 {
                 i += 1;
-                if i == n || i - debut == MAX_RUN || adresses[i] != adresses[i - 1] + 1 {
-                    break;
-                }
             }
-            let run = Run {
-                first: adresses[debut],
-                birth: self.naissance,
-                hashes,
-            };
-            tx.put(
-                Family::Extents,
+            run.first = adresses[debut];
+            run.hashes.clear();
+            run.hashes.extend_from_slice(&empreintes[debut..i]);
+            index.ajouter(
+                tx,
                 extent_key(self.id, self.premiere + debut as u64).to_vec(),
                 run.encode(),
             )?;
         }
+        tx.stream_device().phase_labo(4, true);
         self.premiere += n as u64;
         self.utilise = 0;
         Ok(())
@@ -160,16 +187,23 @@ impl Candidate {
         &mut self,
         tx: &mut Tx<D>,
         mut n: u64,
+        ascii_verifie: bool,
         mut lire: impl FnMut(&mut [u8]) -> Result<()>,
     ) -> Result<()> {
         while n > 0 {
-            let place = &mut self.pages.as_mut_slice().as_flattened_mut()[self.utilise..];
+            let place = &mut self.pages.0.as_mut_slice().as_flattened_mut()[self.utilise..];
             let taille = n.min(place.len() as u64) as usize;
+            tx.stream_device().phase_labo(5, false);
             lire(&mut place[..taille])?;
-            self.texte.lire(&place[..taille])?;
+            tx.stream_device().phase_labo(5, true);
+            tx.stream_device().phase_labo(2, false);
+            if !ascii_verifie || !self.texte.neutre() {
+                self.texte.lire(&place[..taille])?;
+            }
+            tx.stream_device().phase_labo(2, true);
             self.utilise += taille;
             n -= taille as u64;
-            if self.utilise == self.pages.len() * 4096 {
+            if self.utilise == self.pages.0.len() * 4096 {
                 self.vider(tx)?;
             }
         }
@@ -247,7 +281,9 @@ impl<D: BlocGroupe> Engine<D> {
             tx.manifest_mut().next_oid = id.checked_add(1).ok_or(Error::Limit("id"))?;
             tx.resize_logical(0, taille)?;
             let naissance = generation(tx)?;
+            tx.stream_device().phase_labo(6, false);
             let mut sortie = Candidate {
+                index: None,
                 pages: lot(taille)?,
                 utilise: 0,
                 premiere: 0,
@@ -257,8 +293,9 @@ impl<D: BlocGroupe> Engine<D> {
             };
             let mut entree = lot(longueur)?;
             let mut refs = Vec::new();
-            refs.try_reserve_exact(entree.len())
+            refs.try_reserve_exact(entree.0.len())
                 .map_err(|_| Error::NoMemory)?;
+            tx.stream_device().phase_labo(6, true);
             let mut adresses = [0u64; PAGES];
             let mut texte = Texte::default();
             let (mut plage, mut literal, mut ignorer) = (0, 0, 0);
@@ -267,34 +304,66 @@ impl<D: BlocGroupe> Engine<D> {
                 let n = (longueur - pos).min((PAGES * 4096) as u64) as usize;
                 let np = n.div_ceil(4096);
                 refs.clear();
-                if let Some(st) = source {
-                    while refs.len() < np {
-                        let index = pos / BLOCK_BYTES + refs.len() as u64;
-                        let (start, run) = data::covering(tx, st.id, index)?
-                            .ok_or(Error::Invalid("source creuse hors profil"))?;
-                        let j = (index - start) as usize;
-                        let k = (np - refs.len()).min(run.hashes.len() - j);
-                        refs.extend((j..j + k).map(|i| run.reference(i)));
+                if let Some(st) = source
+                    && np != 0
+                {
+                    tx.stream_device().phase_labo(7, false);
+                    let debut = pos / BLOCK_BYTES;
+                    let fin = debut + np as u64;
+                    // Une fenêtre peut commencer à l'intérieur d'un extent de 16 blocs.
+                    let bas = debut.saturating_sub(MAX_RUN as u64 - 1);
+                    intervalle(
+                        tx,
+                        root(tx, Family::Extents),
+                        &extent_key(st.id, bas),
+                        &extent_key(st.id, fin),
+                        |k, v| {
+                            let (_, premier) = parse_extent_key(k)?;
+                            let run = Run::decode(v, tx.manifest().blocks, naissance)?;
+                            let limite = run.end(premier)?.min(fin);
+                            let suivant = debut + refs.len() as u64;
+                            if limite <= debut {
+                                return Ok(());
+                            }
+                            if premier.max(debut) != suivant {
+                                return Err(Error::Invalid("source creuse ou extents superposés"));
+                            }
+                            refs.extend(
+                                (suivant..limite).map(|j| run.reference((j - premier) as usize)),
+                            );
+                            Ok(())
+                        },
+                    )?;
+                    if refs.len() != np {
+                        return Err(Error::Invalid("source creuse hors profil"));
                     }
+                    tx.stream_device().phase_labo(7, true);
                 }
                 if np != 0 {
                     for (a, r) in adresses.iter_mut().zip(&refs) {
                         *a = r.block;
                     }
                     tx.stream_device()
-                        .lire_lot(&adresses[..np], &mut entree[..np])?;
-                    for (r, page) in refs.iter().zip(&entree[..np]) {
+                        .lire_lot(&adresses[..np], &mut entree.0[..np])?;
+                    tx.stream_device().phase_labo(0, false);
+                    for (r, page) in refs.iter().zip(&entree.0[..np]) {
                         if data_hash(tx.ids(), r.block, r.birth, page) != r.hash {
                             return Err(Error::Corrupt("page source du lot"));
                         }
                     }
+                    tx.stream_device().phase_labo(0, true);
                     let pad = n % 4096;
-                    if pad != 0 && entree[np - 1][pad..].iter().any(|&x| x != 0) {
+                    if pad != 0 && entree.0[np - 1][pad..].iter().any(|&x| x != 0) {
                         return Err(Error::Corrupt("bourrage source"));
                     }
                 }
-                let data = &entree.as_slice().as_flattened()[..n];
-                texte.lire(data)?;
+                let data = &entree.0.as_flattened()[..n];
+                tx.stream_device().phase_labo(2, false);
+                let ascii = texte.neutre() && Texte::ascii(data);
+                if !ascii {
+                    texte.lire(data)?;
+                }
+                tx.stream_device().phase_labo(2, true);
                 let fin = pos + n as u64;
                 loop {
                     pos = ignorer.min(fin).max(pos);
@@ -302,7 +371,7 @@ impl<D: BlocGroupe> Engine<D> {
                     let limite = prochaine.map_or(longueur, |p| p[0]).min(fin);
                     if pos < limite {
                         let mut first = n - (fin - pos) as usize;
-                        sortie.ecrire(tx, limite - pos, |buf| {
+                        sortie.ecrire(tx, limite - pos, ascii, |buf| {
                             buf.copy_from_slice(&data[first..first + buf.len()]);
                             first += buf.len();
                             Ok(())
@@ -312,7 +381,7 @@ impl<D: BlocGroupe> Engine<D> {
                     let Some(&[at, retire, ajoute]) = prochaine.filter(|p| p[0] == pos) else {
                         break;
                     };
-                    sortie.ecrire(tx, ajoute, |buf| {
+                    sortie.ecrire(tx, ajoute, false, |buf| {
                         lire(literal, buf)?;
                         literal += buf.len() as u64;
                         Ok(())
@@ -327,6 +396,16 @@ impl<D: BlocGroupe> Engine<D> {
             texte.fin()?;
             sortie.texte.fin()?;
             sortie.vider(tx)?;
+            tx.stream_device().phase_labo(4, false);
+            if let Some(index) = sortie.index.take() {
+                let r = index.terminer(tx)?;
+                tx.manifest_mut().roots[Family::Extents.index()] = r;
+            }
+            tx.stream_device().phase_labo(4, true);
+            tx.stream_device().phase_labo(8, false);
+            drop(entree);
+            drop(sortie);
+            tx.stream_device().phase_labo(8, true);
             // Point d’admission final après la dernière lecture du prêt et avant F1.
             lire(literal, &mut [])?;
             if let Some(o) = &mut origine

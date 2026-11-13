@@ -16,8 +16,8 @@ static PHASE: [AtomicU64; 3] = [const { AtomicU64::new(0) }; 3];
 static LOTS: [AtomicU64; 6] = [const { AtomicU64::new(0) }; 6];
 static BARRIERES: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
 static TEMPS_LOTS: [AtomicU64; 2] = [const { AtomicU64::new(0) }; 2];
-static DUREE_MOTEUR: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
-static ENTREE_MOTEUR: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
+static DUREE_MOTEUR: [AtomicU64; 9] = [const { AtomicU64::new(0) }; 9];
+static ENTREE_MOTEUR: [AtomicU64; 9] = [const { AtomicU64::new(0) }; 9];
 static ENTREE_LOT: AtomicU64 = AtomicU64::new(0);
 static APPELS_FILE: [AtomicU64; 5] = [const { AtomicU64::new(0) }; 5];
 static HW: [AtomicU64; 6] = [const { AtomicU64::new(0) }; 6];
@@ -110,7 +110,12 @@ pub fn marker(pid: u64, s: &[u8]) -> bool {
     if !ACTIVE.load(Relaxed) {
         return false;
     }
-    if pid == 2 && s.len() == 5 && &s[..3] == b"CPU" && s[3] < 4 && s[4] <= 1 {
+    if pid == 2
+        && s.len() == 5
+        && &s[..3] == b"CPU"
+        && usize::from(s[3]) < DUREE_MOTEUR.len()
+        && s[4] <= 1
+    {
         let i = usize::from(s[3]);
         if s[4] == 0 {
             ENTREE_MOTEUR[i].store(now, Relaxed);

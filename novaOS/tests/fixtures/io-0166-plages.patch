@@ -984,7 +984,7 @@
              .expect("compilation du programme utilisateur");
          assert!(ok.success(), "édition de liens de {name}");
      }
-+    println!("cargo::rerun-if-changed=../../novaFS/lab/es-groupees/preparation.rs");
++    println!("cargo::rerun-if-changed=../../novaFS/lab/es-groupees/arbre.rs");
      println!("cargo::rerun-if-changed=../../novaFS/lab/es-groupees/preparation.rs");
      println!("cargo::rerun-if-changed=../../novaFS/src");
      println!("cargo::rerun-if-changed=../../novaFS/Cargo.toml");
@@ -2008,3 +2008,8 @@
 +        }
 +    }
 +}
+--- a/novaFS/src/tree.rs
++++ b/novaFS/src/tree.rs
+@@ -537 +537 @@
+-#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
++#[cfg(feature = "prototype-es-groupees")]

@@ -1,5 +1,6 @@
 """Relecture de disques GPT/P9 jetables après publication ou coupure dans UTM."""
 import argparse
+from contextlib import ExitStack
 import fcntl
 import json
 import os
@@ -10,15 +11,18 @@ import shutil
 import struct
 import subprocess
 import time
+import tty
 import uuid
 import zlib
 
 from es_groupees_elargies import GRANDS, LOCALISES, operation, verifier
-from nsh_utm import demarrer, enregistrer, exporter, nommer, reouvrir_vi, transfert
+from nsh_utm import Console, demarrer, enregistrer, exporter, nommer, reouvrir_vi, transfert
 from publication_conditionnelle import convertir
+from publication_utm_app import script
 from esp_installation import construire
 from verifier_gpt import verifier_gpt
 from vi_ipc_sauvegarde import bilan
+from cpu_hote_utm import CpuMoteur
 
 MIO = 1 << 20
 LV = bytes([0x62])*16
@@ -80,9 +84,13 @@ def relire_export(paquet, cible, s, ids, blocs, attendu, destination):
                           s, ids, blocs, attendu, destination)
 
 
-def publier(c, nom, destination, coupure):
+def publier(c, nom, destination, coupure, observer=None, mesurer_cpu=None):
     os.write(c.fd, b":")
     c.attendre(f"vi [COMMANDE] {nom} [modifié]".encode())
+    if observer:
+        observer()
+    if mesurer_cpu:
+        mesurer_cpu()
     debut = time.monotonic_ns()
     os.write(c.fd, f"w {destination}\r".encode())
     c.attendre("Saisir OUI puis Entrée : ".encode())
@@ -95,11 +103,43 @@ def publier(c, nom, destination, coupure):
     marque = c.attendre_une(reponses + ((repere,) if coupure else ()), 180)
     if marque != repere:
         raise RuntimeError(f"Sauvegarde UTM de {nom} vers {destination} : {marque}")
-    return debut, oui, time.monotonic_ns()
+    fin = time.monotonic_ns()
+    if mesurer_cpu:
+        mesurer_cpu()
+    if observer:
+        observer()
+    return debut, oui, fin
+
+
+def ouvrir_moniteur(machine, out, pile):
+    port = script(['tell application "UTM" to return address of second serial port of '
+                   '(virtual machine id (item 1 of argv))'], machine)
+    if not port.startswith(("/dev/tty", "/dev/pty")):
+        raise ValueError(f"Port moniteur inattendu {port!r}")
+    fd = os.open(port, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+    pile.callback(os.close, fd)
+    tty.setraw(fd)
+    moniteur = Console(fd, pile.enter_context((out / "moniteur.log").open("xb")))
+    os.write(fd, b"\r")
+    moniteur.attendre(b"(qemu) ", 10)
+    return moniteur
+
+
+def observer_disque(moniteur, mesures):
+    """info blockstats du second PTY de la VM, hors fenêtre chronométrée."""
+    os.write(moniteur.fd, b"info blockstats\r")
+    moniteur.attendre(b"drivecible: ", 10)
+    ligne = moniteur.attendre(b"\n", 10)
+    moniteur.attendre(b"(qemu) ", 10)
+    stats = {k.decode(): int(v) for k, v in re.findall(rb"(\w+)=(\d+)", ligne)}
+    champs = ("rd_operations", "wr_operations", "flush_operations", "rd_bytes", "wr_bytes",
+              "rd_total_time_ns", "wr_total_time_ns", "flush_total_time_ns")
+    mesures.append({k: stats[k] for k in champs})
 
 
 def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True,
-          format_image="qcow2", coupure=None, preallocation=False, repetition=1):
+          format_image="qcow2", coupure=None, preallocation=False, repetition=1, moniteur_hote=False,
+          sortie_arriere_plan=False):
     out.mkdir()
     volume, raw = out/"volume.raw", out/"neuf.raw"
     etat = json.loads(subprocess.check_output([generateur, "--image", volume, str(s), "utm"]))
@@ -117,6 +157,8 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
     for name in ("code.fd", "variables.fd"):
         shutil.copyfile(template/"Data"/name, data/name)
     args = config["QEMU"]["AdditionalArguments"]
+    compteurs_hote = []
+    temps_cpu = []
     pos, = [i for i, v in enumerate(args) if v.startswith("virtio-blk-pci,")]
     args[pos] += f",logical_block_size={s},physical_block_size={s}"
     if not traces_bloc:
@@ -136,10 +178,21 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
         convertir(raw, "raw", data/cible, format_image)
     etat_image = json.loads(subprocess.check_output(["qemu-img", "info", "--output=json", data/cible]))
     paquet, ident = nommer(paquet, "cow")
+    if moniteur_hote:
+        fiche = paquet / "config.plist"
+        config = plistlib.loads(fiche.read_bytes())
+        config["Serial"].append(dict(Mode="Ptty", Target="Monitor"))
+        fiche.write_bytes(plistlib.dumps(config))
     journal = out/"sauvegarde.serial"
     with enregistrer(paquet, ident) as machine:
-        with demarrer(machine, journal) as c:
+        with demarrer(machine, journal) as c, ExitStack() as pile:
             transfert(c, b"nsh> ", 56)
+            moniteur = ouvrir_moniteur(machine, out, pile) if moniteur_hote else None
+            moteur = CpuMoteur.pour_utm(machine) if moniteur_hote else None
+            if sortie_arriere_plan:
+                # Le PID appartient au lanceur du seul UUID jetable ouvert par ce banc.
+                moteur = moteur or CpuMoteur.pour_utm(machine)
+                subprocess.run(["/usr/sbin/taskpolicy", "-B", "-p", str(moteur.pid)], check=True)
             nom = "nouveau" if cas == "neuf-4m" else "source"
             for i, nom_copie in enumerate(destinations):
                 if cas == "neuf-4m":
@@ -151,7 +204,9 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
                     reouvrir_vi(c, nom)
                 contenu = operation("index" if index else cas, lambda texte: os.write(c.fd, texte.encode()),
                                     lambda texte: c.attendre(texte.encode(), 180))
-                depart, accord, acquit = publier(c, nom, nom_copie, coupure)
+                observer = (lambda: observer_disque(moniteur, compteurs_hote)) if moniteur else None
+                observer_cpu = (lambda: temps_cpu.append(moteur.relever())) if moniteur_hote else None
+                depart, accord, acquit = publier(c, nom, nom_copie, coupure, observer, observer_cpu)
                 if i == 0:
                     attendu, debut, oui, fin = contenu, depart, accord, acquit
                 else:
@@ -196,12 +251,20 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
         assert "SAVE from=" not in trace
         compteur = None
     pic = int(re.search(r"BLOC memoire [^\n]*pic_cadres=(\d+)", trace)[1])
+    hote = {}
+    if moniteur_hote:
+        avant_disque, apres_disque = compteurs_hote
+        hote["backend_hmp"] = {k: v - avant_disque[k] for k, v in apres_disque.items()}
+        hote["cpu_hote_qemu"] = moteur.difference(*temps_cpu)
+        for op, nom in (("rd", "lecture"), ("wr", "ecriture"), ("flush", "flush")):
+            assert hote["backend_hmp"][op + "_operations"] == compteur["bloc"][nom]["nombre"]
     return dict(cas=cas, index_parcouru=index, sonde=sonde, traces_bloc=traces_bloc, preallocation=preallocation,
+                sortie_arriere_plan=sortie_arriere_plan,
                 repetitions=repetitions,
                 image_initiale={k: etat_image[k] for k in ("format", "virtual-size", "actual-size", "cluster-size")
                                 if k in etat_image}, pic_cadres_session=pic, sauvegarde_ms=round((fin-debut)/1e6, 3),
                 apres_oui_ms=round((fin-oui)/1e6, 3), secteur=s, environnement=f"UTM {format_image.upper()}", avant=avant, apres=apres, redemarrages=1,
-                octets_relus=True, compteur=compteur)
+                octets_relus=True, compteur=compteur, **hote)
 
 
 if __name__ == "__main__":
@@ -211,6 +274,9 @@ if __name__ == "__main__":
     p.add_argument("secteur", type=int, choices=[512, 4096])
     p.add_argument("--format", choices=("raw", "qcow2"), default="qcow2", help="format du disque jetable")
     p.add_argument("--preallocation", action="store_true", help="préallouer complètement le QCOW2 jetable avant UTM")
+    p.add_argument("--moniteur-hote", action="store_true", help="compter les E/S hôte du disque dans l'application instrumentée")
+    p.add_argument("--sortie-arriere-plan", action="store_true",
+                   help="témoin distinct, demander à Darwin la sortie d’arrière-plan du seul processus QEMU jetable")
     p.add_argument("--repetition", type=int, choices=(1, 2), default=1,
                    help="deux copies localisées vers des noms distincts sur le même support")
     p.add_argument("--sans-sonde", action="store_true")
@@ -225,6 +291,10 @@ if __name__ == "__main__":
         p.error("--index accompagne le cas debut")
     if a.preallocation and a.format != "qcow2":
         p.error("--preallocation requiert QCOW2")
+    if a.moniteur_hote and (a.sans_sonde or a.coupure or a.repetition != 1):
+        p.error("--moniteur-hote requiert une publication instrumentée sans coupure")
+    if a.sortie_arriere_plan and (a.coupure or a.repetition != 1):
+        p.error("--sortie-arriere-plan requiert une seule sauvegarde sans coupure")
     if a.repetition > 1 and (a.coupure or not a.sans_sonde or a.cas not in LOCALISES or a.index):
         p.error("--repetition requiert une édition localisée hors sonde")
     if a.coupure and (a.cas != "ajout-4m" or not a.sans_sonde):
@@ -234,5 +304,5 @@ if __name__ == "__main__":
         fcntl.flock(verrou, fcntl.LOCK_EX)
         r = essai(a.profil_systeme, a.elf_systeme, a.generateur.resolve(), a.secteur,
                   a.sortie.resolve(), not a.sans_sonde, a.index, a.cas, not a.sans_traces_bloc,
-                  a.format, a.coupure, a.preallocation, a.repetition)
+                  a.format, a.coupure, a.preallocation, a.repetition, a.moniteur_hote, a.sortie_arriere_plan)
     (a.sortie/"resultats.json").write_text(json.dumps(r, ensure_ascii=False, indent=2)+"\n")
