@@ -1,6 +1,6 @@
 # Distribution NovaOS
 
-NovaOS v0.16.4 fournit un installateur AArch64 pour UTM 5.0.8 avec le shell de scripts, l’éditeur `vi` et NovaFS v0.9.13 P9. L’archive contient le support QCOW2 en lecture seule et le firmware expérimental propre à chaque VM. [Télécharger l’image](images/novaos-0.16.4-utm-aarch64.tar.gz) · [Créer la VM et installer NovaOS](../novaOS/docs/vi-v0.16.4.md#installation-dans-utm)
+NovaOS v0.16.5 fournit un installateur AArch64 pour UTM 5.0.8 avec le shell de scripts, l’éditeur `vi` et NovaFS v0.9.13 P9. L’archive contient le support QCOW2 en lecture seule et le firmware expérimental propre à chaque VM. [Télécharger l’image](images/novaos-0.16.5-utm-aarch64.tar.gz) · [Créer la VM et installer NovaOS](../novaOS/docs/es-v0.16.5.md#installation-dans-utm)
 
 | Emplacement | Usage |
 |---|---|

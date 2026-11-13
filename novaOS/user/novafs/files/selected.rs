@@ -194,6 +194,9 @@ pub(super) fn execute(
 ) -> rt::Result<()> {
     let op = q[1];
     let key = w::word(q, 16);
+    if op == w::COPY_RANGE {
+        return copy_range(s, c, q, a);
+    }
     if op == w::PATH_FRAGMENT {
         return s.dispatch(c, Some(owner), q, a);
     }
@@ -357,6 +360,93 @@ pub(super) fn execute(
             _ => return Err(rt::DENIED),
         }
         s.dispatch(c, Some(owner), q, a)
+    }
+}
+
+/// Le service traite une seule requête et ne quitte jamais le groupe exclusif.
+fn copy_range(s: &mut Session, c: &Client, q: &Frame, a: &mut Frame) -> rt::Result<()> {
+    let dest = c.handle(w::word(q, 16))?;
+    let src = c.handle(c.copy_source.ok_or(rt::DENIED)?)?;
+    if dest.rights & w::WRITABLE == 0
+        || src.rights & w::READABLE == 0
+        || c.copy.as_ref().is_none_or(|(_, _, id)| *id != dest.id)
+        || src.id == dest.id
+    {
+        return Err(rt::DENIED);
+    }
+    shape(
+        matches!(q[2], 0 | w::TEXT_RANGE) && q[4..8] == [0; 4] && q[56..].iter().all(|x| *x == 0),
+    )?;
+    if s.pending.is_some() {
+        return Err(w::BUSY);
+    }
+    let source_at = w::word(q, 24);
+    let dst_at = w::word(q, 32);
+    let expected = w::word(q, 40);
+    let len = usize::try_from(w::word(q, 48)).map_err(|_| rt::BAD_ARGUMENT)?;
+    shape((1..=w::MAX_WRITE).contains(&len))?;
+    let fs = s.fs.as_mut().ok_or(rt::CLOSED)?;
+    let st = fs.stat_id(src.id).map_err(error)?;
+    if st.revision != expected {
+        return Err(rt::REVOKED);
+    }
+    let end = source_at.checked_add(len as u64).ok_or(rt::BAD_ARGUMENT)?;
+    shape(
+        end <= st.size
+            && dst_at
+                .checked_add(len as u64)
+                .is_some_and(|n| n <= i64::MAX as u64),
+    )?;
+    if fs.stat_id(dest.id).map_err(error)?.size != dst_at {
+        return Err(rt::REVOKED);
+    }
+    if fs.atime_policy().is_some() {
+        s.clock.sample()?;
+    }
+    let bytes = fs.read_access_id(src.id, source_at, len).map_err(error)?;
+    shape(bytes.len() == len)?;
+    let next = fs.stat_id(src.id).map_err(error)?.revision;
+    let used = if q[2] == w::TEXT_RANGE {
+        text_length(&bytes, end == st.size).ok_or(rt::BAD_ARGUMENT)?
+    } else {
+        len
+    };
+    if fs.atime_policy().is_some() {
+        s.clock.sample()?;
+    }
+    s.dev.start_probe();
+    fs.prepare_write_id(dest.id, dst_at, &bytes[..used])
+        .map_err(error)?
+        .commit()
+        .map_err(error)?;
+    w::set(a, 24, used as u64);
+    w::set(a, 32, next);
+    Ok(())
+}
+
+/// Une fin UTF-8 ou CRLF incomplète est relue au prochain lot.
+fn text_length(data: &[u8], last: bool) -> Option<usize> {
+    let text = match core::str::from_utf8(data) {
+        Ok(s) => s,
+        Err(e) if !last && e.error_len().is_none() => {
+            core::str::from_utf8(&data[..e.valid_up_to()]).ok()?
+        }
+        _ => return None,
+    };
+    let s = if last {
+        text
+    } else {
+        text.strip_suffix('\r').unwrap_or(text)
+    };
+    if s.is_empty()
+        || s.match_indices('\r')
+            .any(|(i, _)| !s[i..].starts_with("\r\n"))
+        || s.chars()
+            .any(|c| c.is_control() && !matches!(c, '\n' | '\r' | '\t'))
+    {
+        None
+    } else {
+        Some(s.len())
     }
 }
 

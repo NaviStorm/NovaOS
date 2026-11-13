@@ -131,42 +131,29 @@ impl Pages {
         if pos > self.len {
             return Err(rt::BAD_ARGUMENT);
         }
-        let mut batch = Vec::new();
-        batch
-            .try_reserve_exact(w::MAX_WRITE)
-            .map_err(|_| rt::NO_MEMORY)?;
         self.start = None;
         while pos < self.len {
-            let n = (self.len - pos).min(w::READ_WINDOW);
-            self.bytes.resize(n, 0);
-            self.rev = match view.read_version(2, pos as u64, &mut self.bytes, self.rev) {
+            let n = (self.len - pos).min(w::MAX_WRITE);
+            let mut q = w::frame(w::COPY_RANGE, view.session, dest);
+            q[2] = w::TEXT_RANGE;
+            w::set(&mut q, 24, pos as u64);
+            w::set(&mut q, 32, dst);
+            w::set(&mut q, 40, self.rev);
+            w::set(&mut q, 48, n as u64);
+            let a = match view.request(q) {
                 Err(rt::REVOKED | w::NOT_FOUND) => {
                     self.conflict = true;
                     return Err(wire::CONFLICT);
                 }
                 r => r?,
             };
-            let s = wire::text_prefix(&self.bytes, pos + n == self.len)?;
-            if s.is_empty()
-                || s.match_indices('\r')
-                    .any(|(i, _)| !s[i..].starts_with("\r\n"))
-                || s.chars()
-                    .any(|c| c.is_control() && !matches!(c, '\n' | '\r' | '\t'))
-            {
+            let copied = usize::try_from(w::word(&a, 24)).map_err(|_| rt::BAD_ARGUMENT)?;
+            if copied == 0 || copied > n {
                 return Err(rt::BAD_ARGUMENT);
             }
-            if batch.len() + s.len() > w::MAX_WRITE {
-                view.write(dest, dst, &batch)?;
-                view.sync(dest)?;
-                dst = dst.checked_add(batch.len() as u64).ok_or(rt::LIMIT)?;
-                batch.clear();
-            }
-            batch.extend_from_slice(s.as_bytes());
-            pos += s.len();
-        }
-        if !batch.is_empty() {
-            view.write(dest, dst, &batch)?;
-            view.sync(dest)?;
+            self.rev = w::word(&a, 32);
+            pos += copied;
+            dst = dst.checked_add(copied as u64).ok_or(rt::LIMIT)?;
         }
         Ok(())
     }

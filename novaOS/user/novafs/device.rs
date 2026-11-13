@@ -20,6 +20,7 @@ pub(crate) struct IpcDevice<'a> {
     count: u64,
     failed: Cell<bool>,
     qualification: crate::qualification::FaultProbe,
+    progress: Cell<Option<(u64, u64, u64)>>,
 }
 impl<'a> IpcDevice<'a> {
     pub(crate) fn new(session: &'a mut Block, size: u32, sectors: u64) -> Result<Self> {
@@ -37,10 +38,17 @@ impl<'a> IpcDevice<'a> {
             count,
             failed: Cell::new(false),
             qualification: Default::default(),
+            progress: Cell::new(None),
         })
     }
     pub(crate) fn close(&self) -> Result<()> {
         self.exchange(Block::close)
+    }
+    pub(crate) fn report_mount<T>(&self, port: u64, tag: u64, f: impl FnOnce() -> T) -> T {
+        self.progress.set(Some((port, tag, 0)));
+        let r = f();
+        self.progress.set(None);
+        r
     }
     pub(crate) fn start_probe(&self) {
         self.qualification.arm()
@@ -81,6 +89,18 @@ impl Device for &IpcDevice<'_> {
     fn read(&self, block: u64) -> Result<novafs::Block> {
         let mut page = [0; 4096];
         self.transfer(block, &mut page, false)?;
+        if let Some((port, tag, n)) = self.progress.get() {
+            let n = n
+                .checked_add(1)
+                .ok_or(Error::Limit("compteur de montage"))?;
+            if n.is_multiple_of(crate::protocol::MOUNT_STEP) {
+                let f = crate::protocol::mount_progress(n);
+                crate::runtime::send(port, tag, &f).map_err(|status| {
+                    Error::Io(novafs::io::Error(novafs::io::ErrorKind::Status(status)))
+                })?;
+            }
+            self.progress.set(Some((port, tag, n)));
+        }
         Ok(page)
     }
     fn write(&mut self, block: u64, data: &novafs::Block) -> Result<()> {

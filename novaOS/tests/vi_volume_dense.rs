@@ -33,6 +33,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         fs: [0x31; 16],
         lv: [0x62; 16],
     };
+    let creation = std::time::Instant::now();
     let mut fs = Engine::format_p9(dev, ids, Atime::Relative, Some(Arc::new(Civil)))?;
     let name = format!("/f{len}");
     fs.create(&name)?;
@@ -47,13 +48,22 @@ fn main() -> Result<(), Box<dyn Error>> {
             eprintln!("{} Mio écrits", (off + data.len()) >> 20);
         }
     }
-    let fs = Engine::mount_current(fs.unmount()?, ids, Mode::ReadOnly)?;
+    let dev = fs.unmount()?;
+    let creation_ms = creation.elapsed().as_secs_f64() * 1000.;
+    let montage = std::time::Instant::now();
+    let fs = Engine::mount_current(dev, ids, Mode::ReadOnly)?;
+    let montage_ms = montage.elapsed().as_secs_f64() * 1000.;
+    let lecture = std::time::Instant::now();
     let st = fs.stat(&name)?;
     assert_eq!(st.size, len as u64);
     for off in (0..len).step_by(data.len()) {
         assert_eq!(fs.inspect_id(st.id, off as u64, data.len())?, data);
     }
     fs.unmount()?;
+    println!(
+        "creation_ms={creation_ms:.3} montage_ms={montage_ms:.3} relecture_ms={:.3}",
+        lecture.elapsed().as_secs_f64() * 1000.
+    );
     println!("{len} octets denses relus à l’identique");
     Ok(())
 }

@@ -1,0 +1,48 @@
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -399,9 +399,14 @@
+                 }
+                 if self.trial==Trial::Concurrent && matches!(&self.source,Some(Source::Pages(_))) {
+                     self.trial=Trial::Normal;
+-                    let h=self.fs.open_at(0,self.path.as_bytes(),w::WRITABLE)?;
++                    if self.upload.as_ref().is_some_and(|u| u.name==b"renom-test") {
++                        if self.fs.at(w::UNLINK_AT,0,self.path.as_bytes(),0).err()!=Some(w::BUSY) {return Err(rt::REFUSED);}
++                        self.fs.rename(0,self.path.as_bytes(),0,b"source-deplacee")?;
++                        let h=self.fs.open_at(0,self.path.as_bytes(),w::CREATE|w::WRITABLE)?;
++                        self.fs.write(h,0,b"tiers")?;self.fs.sync(h)?;self.fs.close(h)?;
++                    } else {let h=self.fs.open_at(0,self.path.as_bytes(),w::WRITABLE)?;
+                     self.fs.write(h,12345,b"?")?;
+-                    self.fs.sync(h)?;self.fs.close(h)?;
++                    self.fs.sync(h)?;self.fs.close(h)?;}
+                 }
+                 self.save()?;
+                 Ok(0)
+--- a/components/shell/vi_source.rs
++++ b/components/shell/vi_source.rs
+@@ -140,6 +140,16 @@
+             w::set(&mut q, 32, dst);
+             w::set(&mut q, 40, self.rev);
+             w::set(&mut q, 48, n as u64);
++            for (at,value,status) in [(16,2,rt::DENIED),(24,u64::MAX,rt::BAD_ARGUMENT),
++                (32,dst+1,rt::REVOKED),(40,self.rev^1,rt::REVOKED),
++                (48,65537,rt::BAD_ARGUMENT),(56,1,rt::BAD_ARGUMENT)] {
++                let mut bad=q;w::set(&mut bad,at,value);
++                if view.request(bad).err()!=Some(status) {return Err(rt::REFUSED);}
++            }
++            let mut bad = q; bad[2] = 2;
++            if view.request(bad).err() != Some(rt::BAD_ARGUMENT) {return Err(rt::REFUSED);}
++            // La fixture « dense » contient exactement 28 Kio de texte UTF-8.
++            if self.len == 28*1024 {q[2]=0;}
+             let a = match view.request(q) {
+                 Err(rt::REVOKED | w::NOT_FOUND) => {
+                     self.conflict = true;
+--- a/components/coreutils/text.rs
++++ b/components/coreutils/text.rs
+@@ -20,6 +20,7 @@
+     if !matches!(c.read_version(h,start,&mut buf[..176],0),Err(rt::BAD_ARGUMENT | rt::DENIED)) {
+         return Err(rt::REFUSED);
+     }
++    if !matches!(c.simple(w::COPY_RANGE,h),Err(rt::DENIED|rt::BAD_ARGUMENT)) {return Err(rt::REFUSED);}
+     let mut carry = 0;
+     while start < end || carry != 0 {
+         let limit = (end - start).min(CHUNK as u64) as usize;

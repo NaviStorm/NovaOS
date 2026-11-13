@@ -1,0 +1,65 @@
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -82,6 +82,8 @@
+         })
+     }
+ }
++use core::sync::atomic::{AtomicUsize, Ordering::Relaxed};
++pub static PAGE_READS: AtomicUsize = AtomicUsize::new(0);
+ impl Device for &IpcDevice<'_> {
+     fn blocks(&self) -> u64 {
+         self.count
+@@ -89,6 +91,7 @@
+     fn read(&self, block: u64) -> Result<novafs::Block> {
+         let mut page = [0; 4096];
+         self.transfer(block, &mut page, false)?;
++        PAGE_READS.fetch_add(1, Relaxed);
+         if let Some((port, tag, n)) = self.progress.get() {
+             let n = n
+                 .checked_add(1)
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -174,6 +174,7 @@
+                 return Err(w::BUSY);
+             }
+             if self.fs.is_none() {
++                let _=rt::call(rt::DEBUG_WRITE,b"IO-MONTAGE debut".as_ptr() as u64,16,0);
+                 let first = self.dev.read(0).map_err(error)?;
+                 if &first[..8] != b"NOVAP0FS" {
+                     return Err(w::UNSUPPORTED);
+@@ -211,6 +212,9 @@
+                     fs.set_clock(self.clock.clone());
+                 }
+                 self.fs = Some(fs);
++                use core::sync::atomic::Ordering::Relaxed;
++                let msg=alloc::format!("IO-MONTAGE fin pages={} alloc={} tas={} pic={}",crate::device::PAGE_READS.load(Relaxed),crate::heap::ALLOCS.load(Relaxed),crate::heap::CURRENT.load(Relaxed),crate::heap::HIGH.load(Relaxed));
++                let _=rt::call(rt::DEBUG_WRITE,msg.as_ptr() as u64,msg.len() as u64,0);
+             }
+             client.cwd = (self.fs.as_ref().unwrap().root_id(), client.rights);
+             client.mounted = true;
+@@ -233,6 +237,15 @@
+                 .is_some_and(|fs| fs.atime_policy().is_some())
+         {
+             self.clock.sample()?;
++        }
++        if (op == w::STAT || op == w::CLOSE) && !client.scoped && handle != 0 {
++            use crate::heap::{ALLOCS, CURRENT, HIGH};
++            use core::sync::atomic::Ordering::Relaxed;
++            let current = CURRENT.load(Relaxed);
++            let msg = alloc::format!("FS-PROF op={} h={} alloc={} tas={} pic={} pages={}",
++                 op, handle, ALLOCS.load(Relaxed), current, HIGH.swap(current,Relaxed),
++                 crate::device::PAGE_READS.load(Relaxed));
++            let _ = rt::call(rt::DEBUG_WRITE, msg.as_ptr() as u64, msg.len() as u64, 0);
+         }
+         if (w::PATH_FRAGMENT..=w::GETCWD).contains(&op) {
+             return self.directory_request(client, other, q, a);
+--- a/components/shell/vi.rs
++++ b/components/shell/vi.rs
+@@ -67,6 +67,7 @@
+         }
+         view.close(h)?;
+         view.simple(w::PUBLISH_COPY, 1)?;
++        view.profile("publication");
+         Ok(())
+     })();
+     let closed = grant.release(fs);

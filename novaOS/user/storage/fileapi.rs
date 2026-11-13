@@ -64,34 +64,41 @@ impl Client {
         }
         self.tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
         rt::send_for(self.tx, self.tag, &q, 15000)?;
-        let r = rt::receive_for(self.rx, 15000)
-            .and_then(|r| {
-                if r.kind == 1 && r.tag == self.tag && r.len == 128 && r.payload[..2] == q[..2] {
-                    Ok(r)
-                } else {
-                    Err(rt::BAD_ARGUMENT)
-                }
-            })
-            .map_err(|e| {
-                self.disconnected = true;
-                if matches!(
-                    q[1],
-                    w::CREATE_NEW
-                        | w::PUBLISH_COPY
-                        | w::TOUCH_SELECTED
-                        | w::MOVE_SELECTED
-                        | w::SYNC
-                        | w::MKDIR_AT
-                        | w::RMDIR
-                        | w::RENAME_AT
-                        | w::UNLINK_AT
-                ) || (matches!(q[1], w::OPEN | w::OPEN_AT) && q[2] & w::CREATE != 0)
-                {
-                    w::UNCERTAIN
-                } else {
-                    e
-                }
-            })?;
+        let mut pages = 0u64;
+        let r = (|| loop {
+            let r = rt::receive_for(self.rx, 15000)?;
+            if r.kind != 1 || r.tag != self.tag || r.len != 128 || r.payload[..2] != q[..2] {
+                return Err(rt::BAD_ARGUMENT);
+            }
+            if q[1] != w::MOUNT || r.payload[2] == 0 {
+                return Ok(r);
+            }
+            pages = pages.checked_add(w::MOUNT_STEP).ok_or(rt::LIMIT)?;
+            if q[2] != w::MOUNT_PROGRESS || r.payload != w::mount_progress(pages) {
+                return Err(rt::BAD_ARGUMENT);
+            }
+        })()
+        .map_err(|e| {
+            self.disconnected = true;
+            if matches!(
+                q[1],
+                w::CREATE_NEW
+                    | w::COPY_RANGE
+                    | w::PUBLISH_COPY
+                    | w::TOUCH_SELECTED
+                    | w::MOVE_SELECTED
+                    | w::SYNC
+                    | w::MKDIR_AT
+                    | w::RMDIR
+                    | w::RENAME_AT
+                    | w::UNLINK_AT
+            ) || (matches!(q[1], w::OPEN | w::OPEN_AT) && q[2] & w::CREATE != 0)
+            {
+                w::UNCERTAIN
+            } else {
+                e
+            }
+        })?;
         if r.payload[3] != 0 {
             return Err(r.payload[3] as u64);
         }
@@ -101,7 +108,9 @@ impl Client {
         self.request(w::frame(op, self.session, h))
     }
     pub fn mount(&mut self) -> rt::Result<()> {
-        self.session = w::word(&self.simple(w::MOUNT, 0)?, 8);
+        let mut q = w::frame(w::MOUNT, 0, 0);
+        q[2] = w::MOUNT_PROGRESS;
+        self.session = w::word(&self.request(q)?, 8);
         if self.session == 0 {
             Err(rt::BAD_ARGUMENT)
         } else {

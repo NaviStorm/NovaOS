@@ -139,6 +139,9 @@ pub(crate) fn check_shared_data(
     walk(v, Family::Extents, |key, value| {
         let (id, first) = parse_extent_key(key)?;
         let run = Run::decode(value, v.manifest().blocks, generation(v)?)?;
+        // Les deux vues sont immuables pendant ce contrôle. Une recherche vaut
+        // pour son intervalle, jamais pour le prochain extent ou propriétaire.
+        let mut matched: Option<(u64, u64, Run)> = None;
         for i in 0..run.hashes.len() {
             let r = run.reference(i);
             if !shared(r.block) {
@@ -147,10 +150,14 @@ pub(crate) fn check_shared_data(
             let logical = first
                 .checked_add(i as u64)
                 .ok_or(Error::Corrupt("offset d’extent partagé"))?;
-            let Some((start, other_run)) = data::covering(other, id, logical)? else {
-                return Err(Error::Corrupt("autre propriétaire du bloc partagé"));
-            };
-            if other_run.reference((logical - start) as usize) != r {
+            if matched.as_ref().is_none_or(|(_, end, _)| logical >= *end) {
+                let Some((start, extent)) = data::covering(other, id, logical)? else {
+                    return Err(Error::Corrupt("autre propriétaire du bloc partagé"));
+                };
+                matched = Some((start, extent.end(start)?, extent));
+            }
+            let (start, _, extent) = matched.as_ref().unwrap();
+            if extent.reference((logical - *start) as usize) != r {
                 return Err(Error::Corrupt("bloc partagé réattribué ou modifié"));
             }
         }

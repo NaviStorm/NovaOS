@@ -2,6 +2,15 @@
 pub type Frame = [u8; 128];
 pub const VERSION: u8 = 2;
 pub const MOUNT: u8 = 1;
+/// Opt-in privé : réponse intermédiaire après 256 pages de 4 Kio effectivement lues.
+pub const MOUNT_PROGRESS: u8 = 1;
+pub const MOUNT_STEP: u64 = 256;
+pub fn mount_progress(pages: u64) -> Frame {
+    let mut f = frame(MOUNT, 0, 0);
+    f[2] = MOUNT_PROGRESS;
+    set(&mut f, 32, pages);
+    f
+}
 pub const INFO: u8 = 2;
 pub const OPEN: u8 = 3;
 pub const READ: u8 = 4;
@@ -106,3 +115,8 @@ pub const PUBLISH_COPY: u8 = 26;
 // Portées supplémentaires. REMOVE_ENTRY demeure limité à UNLINK_AT.
 pub const REMOVE_EMPTY_DIR: u8 = 7;
 pub const REMOVE_TREE: u8 = 8;
+
+/// Copier dans la candidate privée via les deux handles déjà sélectionnés.
+/// Aucune publication de nom. Flag 1 : texte UTF-8 du profil éditeur.
+pub const COPY_RANGE: u8 = 27;
+pub const TEXT_RANGE: u8 = 1;

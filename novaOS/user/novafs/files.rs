@@ -162,7 +162,14 @@ impl Session<'_, '_> {
             client.read_window = None;
         }
         if op == w::MOUNT {
-            shape(plain && session == 0 && handle == 0)?;
+            shape(
+                matches!(flags, 0 | w::MOUNT_PROGRESS)
+                    && n == 0
+                    && offset == 0
+                    && total == 0
+                    && session == 0
+                    && handle == 0,
+            )?;
             if client.mounted {
                 return Err(w::BUSY);
             }
@@ -625,6 +632,10 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
                 delegated::prepare(&s, client, &m.payload, &mut admission).map(|g| grant = Some(g))
             } else if cli && m.payload[1] == w::STAGE {
                 selected::stage(&s, client, &m.payload)
+            } else if m.payload[1] == w::MOUNT && m.payload[2] == w::MOUNT_PROGRESS {
+                dev.report_mount(ports[i].1, m.tag, || {
+                    s.dispatch(client, other, &m.payload, &mut a)
+                })
             } else {
                 s.dispatch(client, other, &m.payload, &mut a)
             }

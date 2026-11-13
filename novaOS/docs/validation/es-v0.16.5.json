@@ -1,0 +1,2422 @@
+{
+  "reference_v0164": "202313a7b27c052a94954c5de89a170d16dfdffd",
+  "qemu": "11.1.3 TCG, 1 vCPU, 256 Mio, terminal série 80 × 24, cache hôte non purgé",
+  "image_sha256": "3dc8847c047554e05abed22d36cde2f40cf68e8e24e00c78aa1d66bcb37d2a11",
+  "architectures": {
+    "aarch64": {
+      "serie_v0165": [
+        {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 92.152,
+          "transfert_et_preparation_ms": 208.077,
+          "retour_G_ms": 8.687,
+          "premier_rendu_ms": 13.068,
+          "ouverture_ms": 313.298,
+          "navigation_G_ms": 20744.675,
+          "transfert_avant_oui_ms": 11.571,
+          "publication_apres_oui_ms": 40238.601,
+          "resident_vi_kio": [
+            316,
+            380,
+            444
+          ]
+        },
+        {
+          "octets": 1048576,
+          "lecture_et_lancement_ms": 14.885,
+          "transfert_et_preparation_ms": 75.027,
+          "retour_G_ms": 8.202,
+          "premier_rendu_ms": 4.46,
+          "ouverture_ms": 94.373,
+          "navigation_G_ms": 4864.272,
+          "transfert_avant_oui_ms": 9.367,
+          "publication_apres_oui_ms": 9226.292,
+          "resident_vi_kio": [
+            316,
+            380,
+            444
+          ]
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 17.453,
+          "transfert_et_preparation_ms": 73.948,
+          "retour_G_ms": 1.4,
+          "premier_rendu_ms": 5.743,
+          "ouverture_ms": 97.144,
+          "navigation_G_ms": 293.261,
+          "transfert_avant_oui_ms": 8.581,
+          "publication_apres_oui_ms": 761.269,
+          "resident_vi_kio": [
+            316,
+            380,
+            444
+          ]
+        },
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 86.43,
+          "transfert_et_preparation_ms": 6.993,
+          "retour_G_ms": 0.377,
+          "premier_rendu_ms": 7.187,
+          "ouverture_ms": 100.61,
+          "navigation_G_ms": 0.844,
+          "transfert_avant_oui_ms": 5.372,
+          "publication_apres_oui_ms": 295.446,
+          "resident_vi_kio": [
+            316,
+            380,
+            380
+          ]
+        }
+      ],
+      "v0.16.4_isole": {
+        "temps": {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 32.277,
+          "transfert_et_preparation_ms": 80.501,
+          "retour_G_ms": 7.81,
+          "premier_rendu_ms": 4.674,
+          "ouverture_ms": 117.451,
+          "navigation_G_ms": 19259.686,
+          "transfert_avant_oui_ms": 10.938,
+          "publication_apres_oui_ms": 66073.761,
+          "resident_vi_kio": [
+            316,
+            380,
+            444
+          ]
+        },
+        "ipc_ns": {
+          "n": 920450,
+          "p50": 147456,
+          "p95": 180224,
+          "p99": 212992,
+          "max": 32312000
+        },
+        "bloc": {
+          "read": {
+            "n": 15741,
+            "p50": 196608,
+            "p95": 245760,
+            "p99": 294912,
+            "max": 32302992,
+            "moyenne": 196880
+          },
+          "write": {
+            "n": 1511,
+            "p50": 57344,
+            "p95": 90112,
+            "p99": 122880,
+            "max": 1388992,
+            "moyenne": 61536
+          },
+          "flush": {
+            "n": 137,
+            "p50": 122880,
+            "p95": 491520,
+            "p99": 524288,
+            "max": 584992,
+            "moyenne": 237696
+          },
+          "copie_read": {
+            "n": 676863,
+            "p50": 1024,
+            "p95": 1024,
+            "p99": 1024,
+            "max": 85008,
+            "moyenne": 864
+          },
+          "copie_write": {
+            "n": 64973,
+            "p50": 1024,
+            "p95": 1024,
+            "p99": 2048,
+            "max": 59008,
+            "moyenne": 864
+          },
+          "validation": {
+            "n": 17389,
+            "p50": 2048,
+            "p95": 5120,
+            "p99": 7168,
+            "max": 988000,
+            "moyenne": 2720
+          }
+        },
+        "cadres": {
+          "cadres_init": 62601,
+          "cadres_fin": 62598,
+          "allocations": 858,
+          "pic_cadres": 858,
+          "buddy_init": 10272,
+          "buddy_fin": 10272,
+          "hz": 62500000,
+          "retrait_ns": 632000
+        },
+        "resident_kio": {
+          "2": [
+            496,
+            496,
+            496,
+            1520,
+            1712
+          ],
+          "4": [
+            396,
+            460,
+            460,
+            460,
+            588
+          ]
+        }
+      },
+      "v0.16.5_isole": {
+        "temps": {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 35.003,
+          "transfert_et_preparation_ms": 91.147,
+          "retour_G_ms": 8.844,
+          "premier_rendu_ms": 7.99,
+          "ouverture_ms": 134.14,
+          "navigation_G_ms": 20520.332,
+          "transfert_avant_oui_ms": 12.974,
+          "publication_apres_oui_ms": 37135.219,
+          "resident_vi_kio": [
+            316,
+            380,
+            444
+          ]
+        },
+        "ipc_ns": {
+          "n": 477785,
+          "p50": 147456,
+          "p95": 180224,
+          "p99": 245760,
+          "max": 56043008
+        },
+        "bloc": {
+          "read": {
+            "n": 8031,
+            "p50": 212992,
+            "p95": 294912,
+            "p99": 458752,
+            "max": 38586000,
+            "moyenne": 241824
+          },
+          "write": {
+            "n": 1511,
+            "p50": 90112,
+            "p95": 524288,
+            "p99": 1179648,
+            "max": 1822992,
+            "moyenne": 153680
+          },
+          "flush": {
+            "n": 137,
+            "p50": 196608,
+            "p95": 1179648,
+            "p99": 5767168,
+            "max": 6486000,
+            "moyenne": 439504
+          },
+          "copie_read": {
+            "n": 345333,
+            "p50": 1024,
+            "p95": 1024,
+            "p99": 1024,
+            "max": 352000,
+            "moyenne": 848
+          },
+          "copie_write": {
+            "n": 64973,
+            "p50": 1024,
+            "p95": 1024,
+            "p99": 2048,
+            "max": 70000,
+            "moyenne": 864
+          },
+          "validation": {
+            "n": 9679,
+            "p50": 3072,
+            "p95": 7168,
+            "p99": 9216,
+            "max": 249008,
+            "moyenne": 3568
+          }
+        },
+        "cadres": {
+          "cadres_init": 62598,
+          "cadres_fin": 62595,
+          "allocations": 827,
+          "pic_cadres": 827,
+          "buddy_init": 10272,
+          "buddy_fin": 10272,
+          "hz": 62500000,
+          "retrait_ns": 690000
+        },
+        "resident_kio": {
+          "2": [
+            564,
+            564,
+            564,
+            1524,
+            1716
+          ],
+          "4": [
+            396,
+            460,
+            460,
+            460,
+            460
+          ]
+        }
+      },
+      "sondes_sauvegarde": [
+        "IO-MONTAGE fin pages=2198 alloc=17412 tas=131072 pic=131072",
+        "VI-PROF shell-entree alloc=20 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF shell-charge alloc=23 tas=65536 pic=65536 rpc=4 read=0 moteur=0",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF fin-index alloc=40 tas=131072 pic=131072 rpc=33822 read=0 moteur=0",
+        "VI-PROF publication alloc=36 tas=65536 pic=65536 rpc=116 read=48128 moteur=1024",
+        "VI-PROF vi-fin alloc=52 tas=131072 pic=131072 rpc=33964 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=36 tas=65536 pic=65536 rpc=48139 read=48128 moteur=1024",
+        "FS-PROF op=7 h=1 alloc=229767 tas=1310720 pic=1310720 pages=8031"
+      ],
+      "sondes_montage_16": [
+        "IO-MONTAGE fin pages=8794 alloc=115371 tas=131072 pic=131072",
+        "VI-PROF shell-entree alloc=21 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF shell-charge alloc=24 tas=65536 pic=65536 rpc=4 read=0 moteur=0",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=33 tas=65536 pic=65536 rpc=70 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=27 tas=65536 pic=65536 rpc=51 read=47 moteur=1",
+        "FS-PROF op=7 h=1 alloc=115583 tas=131072 pic=131072 pages=8803"
+      ],
+      "montage_seul_16": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "octets_denses": 16777216,
+        "montage": true,
+        "vi_lance": true,
+        "premier_ecran_ms": 502.449,
+        "demarrage_jusqu_au_shell_ms": 62956.632,
+        "montage_service_ms": 57266.632
+      },
+      "resident_vi_100_mio_kio": [
+        316,
+        380
+      ],
+      "vm_denses": {
+        "4096/16": {
+          "essai": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "octets_denses": 16777216,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 124.558,
+            "demarrage_jusqu_au_shell_ms": 66008.115,
+            "navigation_fin_ms": 77431.425
+          },
+          "navigation": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "octets_denses": 16777216,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 124.558,
+            "demarrage_jusqu_au_shell_ms": 66008.115,
+            "navigation_fin_ms": 77431.425
+          }
+        },
+        "4096/100": {
+          "essai": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "octets_denses": 104857600,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 160.978,
+            "demarrage_jusqu_au_shell_ms": 405653.311
+          },
+          "navigation": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "octets_denses": 104857600,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 132.042,
+            "demarrage_jusqu_au_shell_ms": 369918.777,
+            "navigation_40_lignes_ms": 38.175
+          }
+        },
+        "4096/1024": {
+          "essai": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "octets_denses": 1073741824,
+            "observation_s": 75,
+            "issue": "limite du banc hôte",
+            "vi_lance": false,
+            "lots_bloc_32": 319
+          },
+          "navigation": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "octets_denses": 1073741824,
+            "observation_s": 75,
+            "issue": "limite du banc hôte",
+            "vi_lance": false,
+            "lots_bloc_32": 319
+          }
+        },
+        "512/16": {
+          "essai": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "octets_denses": 16777216,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 182.188,
+            "demarrage_jusqu_au_shell_ms": 93225.129
+          },
+          "navigation": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "octets_denses": 16777216,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 173.751,
+            "demarrage_jusqu_au_shell_ms": 88780.171,
+            "navigation_fin_ms": 107747.68
+          }
+        },
+        "512/100": {
+          "essai": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "octets_denses": 104857600,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 184.519,
+            "demarrage_jusqu_au_shell_ms": 524946.52,
+            "navigation_40_lignes_ms": 46.537
+          },
+          "navigation": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "octets_denses": 104857600,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 184.519,
+            "demarrage_jusqu_au_shell_ms": 524946.52,
+            "navigation_40_lignes_ms": 46.537
+          }
+        },
+        "512/1024": {
+          "essai": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "octets_denses": 1073741824,
+            "observation_s": 75,
+            "issue": "limite du banc hôte",
+            "vi_lance": false,
+            "lots_bloc_32": 1828
+          },
+          "navigation": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "octets_denses": 1073741824,
+            "observation_s": 75,
+            "issue": "limite du banc hôte",
+            "vi_lance": false,
+            "lots_bloc_32": 1828
+          }
+        }
+      },
+      "integrite": {
+        "512": {
+          "production": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "creux": [
+              {
+                "octets_logiques": 1048576,
+                "premier_ecran_ms": 164.816,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 4194304,
+                "premier_ecran_ms": 110.613,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 16777216,
+                "premier_ecran_ms": 119.647,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 104857600,
+                "premier_ecran_ms": 124.327,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 1073741824,
+                "premier_ecran_ms": 132.937,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              }
+            ],
+            "publication_dense_octets": 28673,
+            "bords_64k_valides": true,
+            "erreur_apres_premier_lot": true,
+            "suffixe_invalide_refuse": true,
+            "conflit_injecte": false,
+            "conflit_sauvegarde_sans_lecture": false,
+            "suppression_refusee_et_nom_remplace": false,
+            "index_apres_insertion_ligne": true,
+            "publication_depuis_vue_finale": 131073,
+            "publication_deux_zones": 131074
+          },
+          "concurrence_et_portees": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "creux": [
+              {
+                "octets_logiques": 1048576,
+                "premier_ecran_ms": 165.442,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 4194304,
+                "premier_ecran_ms": 112.416,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 16777216,
+                "premier_ecran_ms": 107.113,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 104857600,
+                "premier_ecran_ms": 109.289,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 1073741824,
+                "premier_ecran_ms": 108.569,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              }
+            ],
+            "publication_dense_octets": 28673,
+            "bords_64k_valides": true,
+            "erreur_apres_premier_lot": true,
+            "suffixe_invalide_refuse": true,
+            "conflit_injecte": true,
+            "conflit_sauvegarde_sans_lecture": true,
+            "suppression_refusee_et_nom_remplace": true,
+            "index_apres_insertion_ligne": true,
+            "publication_depuis_vue_finale": 131073,
+            "publication_deux_zones": 131074
+          },
+          "arret_apres_premier_lot": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "coupure": "après F2 du premier lot",
+            "remontage_normal": true,
+            "octets_source_relus": 135171,
+            "nom_final_absent": true
+          }
+        },
+        "4096": {
+          "production": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "creux": [
+              {
+                "octets_logiques": 1048576,
+                "premier_ecran_ms": 117.824,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 4194304,
+                "premier_ecran_ms": 77.539,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 16777216,
+                "premier_ecran_ms": 74.556,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 104857600,
+                "premier_ecran_ms": 78.242,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 1073741824,
+                "premier_ecran_ms": 75.184,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              }
+            ],
+            "publication_dense_octets": 28673,
+            "bords_64k_valides": true,
+            "erreur_apres_premier_lot": true,
+            "suffixe_invalide_refuse": true,
+            "conflit_injecte": false,
+            "conflit_sauvegarde_sans_lecture": false,
+            "suppression_refusee_et_nom_remplace": false,
+            "index_apres_insertion_ligne": true,
+            "publication_depuis_vue_finale": 131073,
+            "publication_deux_zones": 131074
+          },
+          "concurrence_et_portees": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "creux": [
+              {
+                "octets_logiques": 1048576,
+                "premier_ecran_ms": 117.935,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 4194304,
+                "premier_ecran_ms": 81.702,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 16777216,
+                "premier_ecran_ms": 75.98,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 104857600,
+                "premier_ecran_ms": 74.784,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              },
+              {
+                "octets_logiques": 1073741824,
+                "premier_ecran_ms": 78.376,
+                "resident_lancement_et_premier_ecran_kio": [
+                  316,
+                  380
+                ]
+              }
+            ],
+            "publication_dense_octets": 28673,
+            "bords_64k_valides": true,
+            "erreur_apres_premier_lot": true,
+            "suffixe_invalide_refuse": true,
+            "conflit_injecte": true,
+            "conflit_sauvegarde_sans_lecture": true,
+            "suppression_refusee_et_nom_remplace": true,
+            "index_apres_insertion_ligne": true,
+            "publication_depuis_vue_finale": 131073,
+            "publication_deux_zones": 131074
+          },
+          "arret_apres_premier_lot": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "coupure": "après F2 du premier lot",
+            "remontage_normal": true,
+            "octets_source_relus": 135171,
+            "nom_final_absent": true
+          }
+        }
+      },
+      "novaFS": {
+        "architecture": "aarch64",
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "sondes": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=25.681",
+        "pannes_p5": {
+          "512": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ],
+          "4096": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ]
+        },
+        "controles_p51_standard": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "controles_p51_sondes": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "migration": [
+          "MIGRATION secteur=512 frontières=96",
+          "MIGRATION secteur=4096 frontières=96"
+        ],
+        "permutations": [
+          "PERMUTATIONS secteur=512 ordres=24",
+          "PERMUTATIONS secteur=4096 ordres=24"
+        ],
+        "saturation": [
+          "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+          "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+        ],
+        "aleatoire": [
+          "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+        ],
+        "restitution": [
+          "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=183024 après=183024",
+          "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=183024 après=183024",
+          "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=183024 après=183024",
+          "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=183024 après=183024"
+        ]
+      },
+      "progression_et_portees": {
+        "progression": [
+          "test aucune_progression_inventee_ou_rejouee ... ok",
+          "test arrivee_apres_deux_avancees ... ok",
+          "test silence_et_retrait_ne_relancent_pas_la_requete ... ok"
+        ],
+        "cli_hors_groupe": [
+          "OK — aarch64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+          "OK — aarch64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44"
+        ]
+      },
+      "injections_ancres": 2304,
+      "novaOS": {
+        "groupes": {
+          "demarrage.py": [
+            "aarch64",
+            "aarch64-abi-test-256",
+            "aarch64-abi-test-256-pan",
+            "aarch64-storage-test",
+            "aarch64-proc-test",
+            "aarch64-proc-boot-fault",
+            "aarch64-mem-test",
+            "aarch64-mem-ro",
+            "aarch64-mem-alias",
+            "aarch64-mem-page-ro",
+            "aarch64-mem-nx",
+            "aarch64-mem-absent",
+            "aarch64-heap-test",
+            "aarch64-heap-oom",
+            "aarch64-heap-corrupt",
+            "aarch64-heap-guard",
+            "aarch64-heap-infallible",
+            "aarch64-heap-reentrant",
+            "aarch64-heap-metadata",
+            "aarch64-sched-test",
+            "aarch64-sched-guard",
+            "aarch64-sched-fpu",
+            "aarch64-sched-stress",
+            "aarch64-sched-endurance-15s",
+            "aarch64-ipc-test-256"
+          ],
+          "elf.py": [
+            "aarch64-elf-test"
+          ],
+          "cycle_processus.py": [
+            "aarch64-proc-lifecycle"
+          ],
+          "ipc.py": [
+            "aarch64-ipc-races-256"
+          ],
+          "bloc.py": [
+            "aarch64/512 : motif invité et retrait",
+            "aarch64/512 : protections DMA et interruption pendante",
+            "aarch64/512 : baux, descripteurs, panne et relance",
+            "aarch64/512 : panne en vol et quarantaine",
+            "aarch64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+            "aarch64/512 : eio-read",
+            "aarch64/512 : eio-write",
+            "aarch64/512 : eio-flush",
+            "aarch64/512 : droit en écriture refusé",
+            "aarch64/512 : profil de démarrage manuel en lecture seule",
+            "aarch64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+            "aarch64/512 : Device NovaFS, refus du support RO transmis au client",
+            "aarch64/4096 : motif invité et retrait",
+            "aarch64/4096 : protections DMA et interruption pendante",
+            "aarch64/4096 : baux, descripteurs, panne et relance",
+            "aarch64/4096 : panne en vol et quarantaine",
+            "aarch64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+            "aarch64/4096 : eio-read",
+            "aarch64/4096 : eio-write",
+            "aarch64/4096 : eio-flush",
+            "aarch64/4096 : droit en écriture refusé",
+            "aarch64/4096 : profil de démarrage manuel en lecture seule",
+            "aarch64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+            "aarch64/4096 : Device NovaFS, refus du support RO transmis au client"
+          ],
+          "fichiers.py": [
+            "aarch64/512 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+            "aarch64/512 : files-data, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : files-meta, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : files-f1-before, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : files-f1-after, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+            "aarch64/512 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+            "aarch64/512 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+            "aarch64/512 : files-close, generation 6, oracle nouveau, remontage RO",
+            "aarch64/512 : files-remount, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : eio-lecture, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : eio-f1, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : eio-f2, generation 6, oracle nouveau, remontage RO",
+            "aarch64/512 : abandon-client, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+            "aarch64/512 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+            "aarch64/512 : pool p5 intact après refus RW",
+            "aarch64/512 : pool p6 intact après refus RW",
+            "aarch64/512 : pool p7 intact après refus RW",
+            "aarch64/512 : mesures fichiers et restitution sur deux sessions",
+            "aarch64/4096 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+            "aarch64/4096 : files-data, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : files-meta, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : files-f1-before, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : files-f1-after, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+            "aarch64/4096 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+            "aarch64/4096 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+            "aarch64/4096 : files-close, generation 6, oracle nouveau, remontage RO",
+            "aarch64/4096 : files-remount, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : eio-lecture, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : eio-f1, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : eio-f2, generation 6, oracle nouveau, remontage RO",
+            "aarch64/4096 : abandon-client, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+            "aarch64/4096 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+            "aarch64/4096 : pool p5 intact après refus RW",
+            "aarch64/4096 : pool p6 intact après refus RW",
+            "aarch64/4096 : pool p7 intact après refus RW",
+            "aarch64/4096 : mesures fichiers et restitution sur deux sessions"
+          ],
+          "namespace.py": [
+            "aarch64/512 : deux clients, mutations et refus, identité conservée à 1 074 octets après redémarrage",
+            "aarch64/512 : chemins de 1023, 1024, 1025, 4096 et 8192 octets, refus au niveau 33",
+            "aarch64/512 : namespace-f1-before G10 ancien",
+            "aarch64/512 : namespace-f1-inflight G10 ancien",
+            "aarch64/512 : namespace-f1-after G10 ancien",
+            "aarch64/512 : namespace-f2-before G11 nouveau",
+            "aarch64/512 : namespace-f2-inflight G11 nouveau",
+            "aarch64/512 : namespace-f2-after G11 nouveau",
+            "aarch64/512 : namespace-rename G11 nouveau",
+            "aarch64/512 : nom-eio-write G10 ancien",
+            "aarch64/512 : nom-eio-f1 G10 ancien",
+            "aarch64/512 : nom-eio-f2 G11 nouveau",
+            "aarch64/4096 : deux clients, mutations et refus, identité conservée à 1 074 octets après redémarrage",
+            "aarch64/4096 : chemins de 1023, 1024, 1025, 4096 et 8192 octets, refus au niveau 33",
+            "aarch64/4096 : namespace-f1-before G10 ancien",
+            "aarch64/4096 : namespace-f1-inflight G10 ancien",
+            "aarch64/4096 : namespace-f1-after G10 ancien",
+            "aarch64/4096 : namespace-f2-before G11 nouveau",
+            "aarch64/4096 : namespace-f2-inflight G11 nouveau",
+            "aarch64/4096 : namespace-f2-after G11 nouveau",
+            "aarch64/4096 : namespace-rename G11 nouveau",
+            "aarch64/4096 : nom-eio-write G10 ancien",
+            "aarch64/4096 : nom-eio-f1 G10 ancien",
+            "aarch64/4096 : nom-eio-f2 G11 nouveau"
+          ],
+          "cli.py": [
+            "aarch64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+            "aarch64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44"
+          ],
+          "cli_p9.py": [
+            "aarch64/512 : commandes, dates, contrôle Darwin et remontage",
+            "aarch64/4096 : commandes, dates, contrôle Darwin et remontage"
+          ],
+          "nsh.py": [],
+          "nsh_scripts.py": [],
+          "nsh_terminal.py": [],
+          "vi.py": [],
+          "vi_ecran.py": []
+        },
+        "nsh": {
+          "512": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "commandes": 113,
+            "coupure": "alpha retiré, beta et témoin intègres"
+          },
+          "4096": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "commandes": 113,
+            "coupure": "alpha retiré, beta et témoin intègres"
+          }
+        },
+        "vi_memoire_darwin": 7,
+        "client_progression": 3,
+        "vi_volumes": [
+          {
+            "octets": 8192,
+            "ouverture_ms": 348.793667,
+            "insertion_ms": 1.741708,
+            "suppression_ms": 0.836958,
+            "navigation_G_ms": 0.928292,
+            "pages_privees_pile_comprise": [
+              79,
+              95,
+              95
+            ]
+          },
+          {
+            "octets": 65536,
+            "ouverture_ms": 288.089875,
+            "insertion_ms": 1.6965,
+            "suppression_ms": 0.93625,
+            "navigation_G_ms": 306.31575,
+            "pages_privees_pile_comprise": [
+              79,
+              95,
+              111
+            ]
+          },
+          {
+            "octets": 1048576,
+            "ouverture_ms": 292.408333,
+            "insertion_ms": 1.7315,
+            "suppression_ms": 0.839833,
+            "navigation_G_ms": 4976.616,
+            "pages_privees_pile_comprise": [
+              79,
+              95,
+              111
+            ]
+          },
+          {
+            "octets": 4194304,
+            "ouverture_ms": 295.213875,
+            "insertion_ms": 1.768208,
+            "suppression_ms": 0.873292,
+            "navigation_G_ms": 19962.273708,
+            "pages_privees_pile_comprise": [
+              79,
+              95,
+              111
+            ]
+          }
+        ],
+        "vi": {
+          "512": {
+            "architecture": "aarch64",
+            "secteur": 512,
+            "elf_collectes": 17,
+            "fichiers_relus": 16,
+            "pic_pages_privees_observe": 95,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_source_creuse_binaire_octets": 536870912,
+            "script_apres_redemarrage": true,
+            "octets_apres_redemarrage": true
+          },
+          "4096": {
+            "architecture": "aarch64",
+            "secteur": 4096,
+            "elf_collectes": 17,
+            "fichiers_relus": 16,
+            "pic_pages_privees_observe": 95,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_source_creuse_binaire_octets": 536870912,
+            "script_apres_redemarrage": true,
+            "octets_apres_redemarrage": true
+          }
+        }
+      }
+    },
+    "x86_64": {
+      "serie_v0165": [
+        {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 20.863,
+          "transfert_et_preparation_ms": 69.453,
+          "retour_G_ms": 7.488,
+          "premier_rendu_ms": 4.434,
+          "ouverture_ms": 94.749,
+          "navigation_G_ms": 16832.193,
+          "transfert_avant_oui_ms": 11.757,
+          "publication_apres_oui_ms": 33469.025,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 1048576,
+          "lecture_et_lancement_ms": 18.639,
+          "transfert_et_preparation_ms": 68.484,
+          "retour_G_ms": 7.515,
+          "premier_rendu_ms": 5.398,
+          "ouverture_ms": 92.521,
+          "navigation_G_ms": 5729.385,
+          "transfert_avant_oui_ms": 10.511,
+          "publication_apres_oui_ms": 7972.941,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 65536,
+          "lecture_et_lancement_ms": 12.926,
+          "transfert_et_preparation_ms": 64.2,
+          "retour_G_ms": 1.355,
+          "premier_rendu_ms": 4.079,
+          "ouverture_ms": 81.206,
+          "navigation_G_ms": 254.544,
+          "transfert_avant_oui_ms": 8.616,
+          "publication_apres_oui_ms": 652.522,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        {
+          "octets": 1024,
+          "lecture_et_lancement_ms": 71.133,
+          "transfert_et_preparation_ms": 7.022,
+          "retour_G_ms": 0.29,
+          "premier_rendu_ms": 5.465,
+          "ouverture_ms": 83.62,
+          "navigation_G_ms": 0.93,
+          "transfert_avant_oui_ms": 4.851,
+          "publication_apres_oui_ms": 256.193,
+          "resident_vi_kio": [
+            320,
+            384,
+            384
+          ]
+        }
+      ],
+      "v0.16.4_isole": {
+        "temps": {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 19.829,
+          "transfert_et_preparation_ms": 70.537,
+          "retour_G_ms": 7.316,
+          "premier_rendu_ms": 9.264,
+          "ouverture_ms": 99.63,
+          "navigation_G_ms": 17379.88,
+          "transfert_avant_oui_ms": 11.906,
+          "publication_apres_oui_ms": 58974.616,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        "ipc_ns": {
+          "n": 920450,
+          "p50": 122968,
+          "p95": 147562,
+          "p99": 180354,
+          "max": 12815261
+        },
+        "bloc": {
+          "read": {
+            "n": 15741,
+            "p50": 163958,
+            "p95": 213146,
+            "p99": 245937,
+            "max": 1774282,
+            "moyenne": 163201
+          },
+          "write": {
+            "n": 1511,
+            "p50": 53286,
+            "p95": 90177,
+            "p99": 122968,
+            "max": 176127,
+            "moyenne": 54722
+          },
+          "flush": {
+            "n": 137,
+            "p50": 122968,
+            "p95": 491875,
+            "p99": 524667,
+            "max": 526380,
+            "moyenne": 231356
+          },
+          "copie_read": {
+            "n": 676863,
+            "p50": 1024,
+            "p95": 1024,
+            "p99": 1024,
+            "max": 102073,
+            "moyenne": 596
+          },
+          "copie_write": {
+            "n": 64973,
+            "p50": 1024,
+            "p95": 1024,
+            "p99": 1024,
+            "max": 72052,
+            "moyenne": 601
+          },
+          "validation": {
+            "n": 17389,
+            "p50": 2049,
+            "p95": 4098,
+            "p99": 6148,
+            "max": 251181,
+            "moyenne": 2151
+          }
+        },
+        "cadres": {
+          "cadres_init": 63162,
+          "cadres_fin": 63150,
+          "allocations": 867,
+          "pic_cadres": 867,
+          "buddy_init": 9248,
+          "buddy_fin": 9248,
+          "hz": 999277343,
+          "retrait_ns": 774559
+        },
+        "resident_kio": {
+          "2": [
+            516,
+            516,
+            516,
+            1540,
+            1732
+          ],
+          "4": [
+            408,
+            472,
+            472,
+            472,
+            600
+          ]
+        }
+      },
+      "v0.16.5_isole": {
+        "temps": {
+          "octets": 4194304,
+          "lecture_et_lancement_ms": 19.616,
+          "transfert_et_preparation_ms": 70.097,
+          "retour_G_ms": 11.709,
+          "premier_rendu_ms": 4.368,
+          "ouverture_ms": 94.081,
+          "navigation_G_ms": 17390.531,
+          "transfert_avant_oui_ms": 15.971,
+          "publication_apres_oui_ms": 33403.295,
+          "resident_vi_kio": [
+            320,
+            384,
+            448
+          ]
+        },
+        "ipc_ns": {
+          "n": 477785,
+          "p50": 122509,
+          "p95": 163345,
+          "p99": 228683,
+          "max": 72766710
+        },
+        "bloc": {
+          "read": {
+            "n": 8031,
+            "p50": 179680,
+            "p95": 245018,
+            "p99": 424698,
+            "max": 17306606,
+            "moyenne": 198275
+          },
+          "write": {
+            "n": 1511,
+            "p50": 65338,
+            "p95": 122509,
+            "p99": 228683,
+            "max": 8051624,
+            "moyenne": 90207
+          },
+          "flush": {
+            "n": 137,
+            "p50": 147010,
+            "p95": 5227055,
+            "p99": 16726578,
+            "max": 72557344,
+            "moyenne": 1315381
+          },
+          "copie_read": {
+            "n": 345333,
+            "p50": 1020,
+            "p95": 1020,
+            "p99": 1020,
+            "max": 224320,
+            "moyenne": 596
+          },
+          "copie_write": {
+            "n": 64973,
+            "p50": 1020,
+            "p95": 1020,
+            "p99": 1020,
+            "max": 79758,
+            "moyenne": 604
+          },
+          "validation": {
+            "n": 9679,
+            "p50": 3062,
+            "p95": 6125,
+            "p99": 8167,
+            "max": 269185,
+            "moyenne": 3180
+          }
+        },
+        "cadres": {
+          "cadres_init": 63159,
+          "cadres_fin": 63147,
+          "allocations": 836,
+          "pic_cadres": 836,
+          "buddy_init": 9248,
+          "buddy_fin": 9248,
+          "hz": 1003027343,
+          "retrait_ns": 818522
+        },
+        "resident_kio": {
+          "2": [
+            584,
+            584,
+            584,
+            1544,
+            1736
+          ],
+          "4": [
+            408,
+            472,
+            472,
+            472,
+            472
+          ]
+        }
+      },
+      "sondes_sauvegarde": [
+        "IO-MONTAGE fin pages=2198 alloc=17412 tas=131072 pic=131072",
+        "VI-PROF shell-entree alloc=20 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF shell-charge alloc=23 tas=65536 pic=65536 rpc=4 read=0 moteur=0",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF fin-index alloc=40 tas=131072 pic=131072 rpc=33822 read=0 moteur=0",
+        "VI-PROF publication alloc=36 tas=65536 pic=65536 rpc=116 read=48128 moteur=1024",
+        "VI-PROF vi-fin alloc=52 tas=131072 pic=131072 rpc=33964 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=36 tas=65536 pic=65536 rpc=48139 read=48128 moteur=1024",
+        "FS-PROF op=7 h=1 alloc=229767 tas=1310720 pic=1310720 pages=8031"
+      ],
+      "sondes_montage_16": [
+        "IO-MONTAGE fin pages=8794 alloc=115371 tas=131072 pic=131072",
+        "VI-PROF shell-entree alloc=21 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF shell-charge alloc=24 tas=65536 pic=65536 rpc=4 read=0 moteur=0",
+        "VI-PROF vi-entree alloc=2 tas=65536 pic=65536 rpc=1 read=0 moteur=0",
+        "VI-PROF vi-recu alloc=3 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-prepare alloc=4 tas=65536 pic=65536 rpc=34 read=0 moteur=0",
+        "VI-PROF vi-dessine alloc=30 tas=65536 pic=65536 rpc=62 read=0 moteur=0",
+        "VI-PROF vi-fin alloc=33 tas=65536 pic=65536 rpc=70 read=0 moteur=0",
+        "VI-PROF shell-fin alloc=27 tas=65536 pic=65536 rpc=51 read=47 moteur=1",
+        "FS-PROF op=7 h=1 alloc=115583 tas=131072 pic=131072 pages=8803"
+      ],
+      "montage_seul_16": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "octets_denses": 16777216,
+        "montage": true,
+        "vi_lance": true,
+        "premier_ecran_ms": 113.936,
+        "demarrage_jusqu_au_shell_ms": 51971.5,
+        "montage_service_ms": 50122.676
+      },
+      "resident_vi_100_mio_kio": [
+        320,
+        384
+      ],
+      "vm_denses": {
+        "4096/16": {
+          "essai": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "octets_denses": 16777216,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 100.688,
+            "demarrage_jusqu_au_shell_ms": 53793.011,
+            "navigation_fin_ms": 68163.84
+          },
+          "navigation": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "octets_denses": 16777216,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 100.688,
+            "demarrage_jusqu_au_shell_ms": 53793.011,
+            "navigation_fin_ms": 68163.84
+          }
+        },
+        "4096/100": {
+          "essai": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "octets_denses": 104857600,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 108.435,
+            "demarrage_jusqu_au_shell_ms": 343288.111
+          },
+          "navigation": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "octets_denses": 104857600,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 116.529,
+            "demarrage_jusqu_au_shell_ms": 315998.841,
+            "navigation_40_lignes_ms": 40.362
+          }
+        },
+        "4096/1024": {
+          "essai": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "octets_denses": 1073741824,
+            "observation_s": 75,
+            "issue": "limite du banc hôte",
+            "vi_lance": false,
+            "lots_bloc_32": 401
+          },
+          "navigation": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "octets_denses": 1073741824,
+            "observation_s": 75,
+            "issue": "limite du banc hôte",
+            "vi_lance": false,
+            "lots_bloc_32": 401
+          }
+        },
+        "512/16": {
+          "essai": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "octets_denses": 16777216,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 149.577,
+            "demarrage_jusqu_au_shell_ms": 73153.055
+          },
+          "navigation": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "octets_denses": 16777216,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 137.432,
+            "demarrage_jusqu_au_shell_ms": 72070.92,
+            "navigation_fin_ms": 92650.926
+          }
+        },
+        "512/100": {
+          "essai": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "octets_denses": 104857600,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 137.82,
+            "demarrage_jusqu_au_shell_ms": 436958.756,
+            "navigation_40_lignes_ms": 41.841
+          },
+          "navigation": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "octets_denses": 104857600,
+            "montage": true,
+            "vi_lance": true,
+            "premier_ecran_ms": 137.82,
+            "demarrage_jusqu_au_shell_ms": 436958.756,
+            "navigation_40_lignes_ms": 41.841
+          }
+        },
+        "512/1024": {
+          "essai": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "octets_denses": 1073741824,
+            "observation_s": 75,
+            "issue": "limite du banc hôte",
+            "vi_lance": false,
+            "lots_bloc_32": 2284
+          },
+          "navigation": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "octets_denses": 1073741824,
+            "observation_s": 75,
+            "issue": "limite du banc hôte",
+            "vi_lance": false,
+            "lots_bloc_32": 2284
+          }
+        }
+      },
+      "integrite": {
+        "512": {
+          "production": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "creux": [
+              {
+                "octets_logiques": 1048576,
+                "premier_ecran_ms": 148.924,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 4194304,
+                "premier_ecran_ms": 102.395,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 16777216,
+                "premier_ecran_ms": 95.499,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 104857600,
+                "premier_ecran_ms": 91.292,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 1073741824,
+                "premier_ecran_ms": 95.615,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              }
+            ],
+            "publication_dense_octets": 28673,
+            "bords_64k_valides": true,
+            "erreur_apres_premier_lot": true,
+            "suffixe_invalide_refuse": true,
+            "conflit_injecte": false,
+            "conflit_sauvegarde_sans_lecture": false,
+            "suppression_refusee_et_nom_remplace": false,
+            "index_apres_insertion_ligne": true,
+            "publication_depuis_vue_finale": 131073,
+            "publication_deux_zones": 131074
+          },
+          "concurrence_et_portees": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "creux": [
+              {
+                "octets_logiques": 1048576,
+                "premier_ecran_ms": 134.283,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 4194304,
+                "premier_ecran_ms": 93.49,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 16777216,
+                "premier_ecran_ms": 96.526,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 104857600,
+                "premier_ecran_ms": 95.38,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 1073741824,
+                "premier_ecran_ms": 91.819,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              }
+            ],
+            "publication_dense_octets": 28673,
+            "bords_64k_valides": true,
+            "erreur_apres_premier_lot": true,
+            "suffixe_invalide_refuse": true,
+            "conflit_injecte": true,
+            "conflit_sauvegarde_sans_lecture": true,
+            "suppression_refusee_et_nom_remplace": true,
+            "index_apres_insertion_ligne": true,
+            "publication_depuis_vue_finale": 131073,
+            "publication_deux_zones": 131074
+          },
+          "arret_apres_premier_lot": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "coupure": "après F2 du premier lot",
+            "remontage_normal": true,
+            "octets_source_relus": 135171,
+            "nom_final_absent": true
+          }
+        },
+        "4096": {
+          "production": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "creux": [
+              {
+                "octets_logiques": 1048576,
+                "premier_ecran_ms": 99.093,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 4194304,
+                "premier_ecran_ms": 73.927,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 16777216,
+                "premier_ecran_ms": 71.084,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 104857600,
+                "premier_ecran_ms": 72.658,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 1073741824,
+                "premier_ecran_ms": 70.501,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              }
+            ],
+            "publication_dense_octets": 28673,
+            "bords_64k_valides": true,
+            "erreur_apres_premier_lot": true,
+            "suffixe_invalide_refuse": true,
+            "conflit_injecte": false,
+            "conflit_sauvegarde_sans_lecture": false,
+            "suppression_refusee_et_nom_remplace": false,
+            "index_apres_insertion_ligne": true,
+            "publication_depuis_vue_finale": 131073,
+            "publication_deux_zones": 131074
+          },
+          "concurrence_et_portees": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "creux": [
+              {
+                "octets_logiques": 1048576,
+                "premier_ecran_ms": 98.108,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 4194304,
+                "premier_ecran_ms": 70.966,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 16777216,
+                "premier_ecran_ms": 71.235,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 104857600,
+                "premier_ecran_ms": 72.191,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              },
+              {
+                "octets_logiques": 1073741824,
+                "premier_ecran_ms": 71.984,
+                "resident_lancement_et_premier_ecran_kio": [
+                  320,
+                  384
+                ]
+              }
+            ],
+            "publication_dense_octets": 28673,
+            "bords_64k_valides": true,
+            "erreur_apres_premier_lot": true,
+            "suffixe_invalide_refuse": true,
+            "conflit_injecte": true,
+            "conflit_sauvegarde_sans_lecture": true,
+            "suppression_refusee_et_nom_remplace": true,
+            "index_apres_insertion_ligne": true,
+            "publication_depuis_vue_finale": 131073,
+            "publication_deux_zones": 131074
+          },
+          "arret_apres_premier_lot": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "coupure": "après F2 du premier lot",
+            "remontage_normal": true,
+            "octets_source_relus": 135171,
+            "nom_final_absent": true
+          }
+        }
+      },
+      "novaFS": {
+        "architecture": "x86_64",
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "sondes": {
+          "reussis": 197,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=44.103",
+        "pannes_p5": {
+          "512": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ],
+          "4096": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ]
+        },
+        "controles_p51_standard": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "controles_p51_sondes": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "migration": [
+          "MIGRATION secteur=512 frontières=96",
+          "MIGRATION secteur=4096 frontières=96"
+        ],
+        "permutations": [
+          "PERMUTATIONS secteur=512 ordres=24",
+          "PERMUTATIONS secteur=4096 ordres=24"
+        ],
+        "saturation": [
+          "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+          "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+        ],
+        "aleatoire": [
+          "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+        ],
+        "restitution": [
+          "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=167936 après=167936",
+          "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=167936 après=167936",
+          "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=167936 après=167936",
+          "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=167936 après=167936"
+        ]
+      },
+      "progression_et_portees": {
+        "progression": [
+          "test arrivee_apres_deux_avancees ... ok",
+          "test aucune_progression_inventee_ou_rejouee ... ok",
+          "test silence_et_retrait_ne_relancent_pas_la_requete ... ok"
+        ],
+        "cli_hors_groupe": [
+          "OK — x86_64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+          "OK — x86_64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44"
+        ]
+      },
+      "injections_ancres": 2304,
+      "novaOS": {
+        "groupes": {
+          "demarrage.py": [
+            "std",
+            "none",
+            "x86_64-abi-test-256",
+            "x86_64-storage-test",
+            "x86_64-proc-test",
+            "x86_64-proc-boot-fault",
+            "x86_64-mem-test",
+            "x86_64-mem-ro",
+            "x86_64-mem-alias",
+            "x86_64-mem-page-ro",
+            "x86_64-mem-nx",
+            "x86_64-mem-absent",
+            "x86_64-heap-test",
+            "x86_64-heap-oom",
+            "x86_64-heap-corrupt",
+            "x86_64-heap-guard",
+            "x86_64-heap-infallible",
+            "x86_64-heap-reentrant",
+            "x86_64-heap-metadata",
+            "x86_64-sched-test",
+            "x86_64-sched-guard",
+            "x86_64-sched-fpu",
+            "x86_64-sched-stress",
+            "x86_64-sched-endurance-15s",
+            "x86_64-ipc-test-256"
+          ],
+          "elf.py": [
+            "x86_64-elf-test"
+          ],
+          "cycle_processus.py": [
+            "x86_64-proc-lifecycle"
+          ],
+          "ipc.py": [
+            "x86_64-ipc-races-256"
+          ],
+          "bloc.py": [
+            "x86_64/512 : motif invité et retrait",
+            "x86_64/512 : protections DMA et interruption pendante",
+            "x86_64/512 : baux, descripteurs, panne et relance",
+            "x86_64/512 : panne en vol et quarantaine",
+            "x86_64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+            "x86_64/512 : eio-read",
+            "x86_64/512 : eio-write",
+            "x86_64/512 : eio-flush",
+            "x86_64/512 : droit en écriture refusé",
+            "x86_64/512 : profil de démarrage manuel en lecture seule",
+            "x86_64/512 : Device NovaFS, page complète de 4 Kio entre deux VM",
+            "x86_64/512 : Device NovaFS, refus du support RO transmis au client",
+            "x86_64/4096 : motif invité et retrait",
+            "x86_64/4096 : protections DMA et interruption pendante",
+            "x86_64/4096 : baux, descripteurs, panne et relance",
+            "x86_64/4096 : panne en vol et quarantaine",
+            "x86_64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+            "x86_64/4096 : eio-read",
+            "x86_64/4096 : eio-write",
+            "x86_64/4096 : eio-flush",
+            "x86_64/4096 : droit en écriture refusé",
+            "x86_64/4096 : profil de démarrage manuel en lecture seule",
+            "x86_64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM",
+            "x86_64/4096 : Device NovaFS, refus du support RO transmis au client"
+          ],
+          "fichiers.py": [
+            "x86_64/512 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+            "x86_64/512 : files-data, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : files-meta, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : files-f1-before, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : files-f1-after, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+            "x86_64/512 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+            "x86_64/512 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+            "x86_64/512 : files-close, generation 6, oracle nouveau, remontage RO",
+            "x86_64/512 : files-remount, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : eio-lecture, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : eio-f1, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : eio-f2, generation 6, oracle nouveau, remontage RO",
+            "x86_64/512 : abandon-client, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+            "x86_64/512 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+            "x86_64/512 : pool p5 intact après refus RW",
+            "x86_64/512 : pool p6 intact après refus RW",
+            "x86_64/512 : pool p7 intact après refus RW",
+            "x86_64/512 : mesures fichiers et restitution sur deux sessions",
+            "x86_64/4096 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+            "x86_64/4096 : files-data, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : files-meta, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : files-f1-before, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : files-f1-after, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+            "x86_64/4096 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+            "x86_64/4096 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+            "x86_64/4096 : files-close, generation 6, oracle nouveau, remontage RO",
+            "x86_64/4096 : files-remount, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : eio-lecture, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : eio-f1, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : eio-f2, generation 6, oracle nouveau, remontage RO",
+            "x86_64/4096 : abandon-client, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+            "x86_64/4096 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+            "x86_64/4096 : pool p5 intact après refus RW",
+            "x86_64/4096 : pool p6 intact après refus RW",
+            "x86_64/4096 : pool p7 intact après refus RW",
+            "x86_64/4096 : mesures fichiers et restitution sur deux sessions"
+          ],
+          "namespace.py": [
+            "x86_64/512 : deux clients, mutations et refus, identité conservée à 1 074 octets après redémarrage",
+            "x86_64/512 : chemins de 1023, 1024, 1025, 4096 et 8192 octets, refus au niveau 33",
+            "x86_64/512 : namespace-f1-before G10 ancien",
+            "x86_64/512 : namespace-f1-inflight G10 ancien",
+            "x86_64/512 : namespace-f1-after G10 ancien",
+            "x86_64/512 : namespace-f2-before G11 nouveau",
+            "x86_64/512 : namespace-f2-inflight G11 nouveau",
+            "x86_64/512 : namespace-f2-after G11 nouveau",
+            "x86_64/512 : namespace-rename G11 nouveau",
+            "x86_64/512 : nom-eio-write G10 ancien",
+            "x86_64/512 : nom-eio-f1 G10 ancien",
+            "x86_64/512 : nom-eio-f2 G11 nouveau",
+            "x86_64/4096 : deux clients, mutations et refus, identité conservée à 1 074 octets après redémarrage",
+            "x86_64/4096 : chemins de 1023, 1024, 1025, 4096 et 8192 octets, refus au niveau 33",
+            "x86_64/4096 : namespace-f1-before G10 ancien",
+            "x86_64/4096 : namespace-f1-inflight G10 ancien",
+            "x86_64/4096 : namespace-f1-after G10 ancien",
+            "x86_64/4096 : namespace-f2-before G11 nouveau",
+            "x86_64/4096 : namespace-f2-inflight G11 nouveau",
+            "x86_64/4096 : namespace-f2-after G11 nouveau",
+            "x86_64/4096 : namespace-rename G11 nouveau",
+            "x86_64/4096 : nom-eio-write G10 ancien",
+            "x86_64/4096 : nom-eio-f1 G10 ancien",
+            "x86_64/4096 : nom-eio-f2 G11 nouveau"
+          ],
+          "cli.py": [
+            "x86_64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+            "x86_64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44"
+          ],
+          "cli_p9.py": [
+            "x86_64/512 : commandes, dates, contrôle Darwin et remontage",
+            "x86_64/4096 : commandes, dates, contrôle Darwin et remontage"
+          ],
+          "nsh.py": [],
+          "nsh_scripts.py": [],
+          "nsh_terminal.py": [],
+          "vi.py": [],
+          "vi_ecran.py": []
+        },
+        "nsh": {
+          "512": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "commandes": 113,
+            "coupure": "alpha retiré, beta et témoin intègres"
+          },
+          "4096": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "commandes": 113,
+            "coupure": "alpha retiré, beta et témoin intègres"
+          }
+        },
+        "vi_memoire_darwin": 7,
+        "client_progression": 3,
+        "vi_volumes": [
+          {
+            "octets": 8192,
+            "ouverture_ms": 287.682584,
+            "insertion_ms": 2.090542,
+            "suppression_ms": 0.782083,
+            "navigation_G_ms": 0.911208,
+            "pages_privees_pile_comprise": [
+              80,
+              96,
+              96
+            ]
+          },
+          {
+            "octets": 65536,
+            "ouverture_ms": 243.090791,
+            "insertion_ms": 2.014333,
+            "suppression_ms": 0.847875,
+            "navigation_G_ms": 269.20425,
+            "pages_privees_pile_comprise": [
+              80,
+              96,
+              112
+            ]
+          },
+          {
+            "octets": 1048576,
+            "ouverture_ms": 244.17,
+            "insertion_ms": 1.994,
+            "suppression_ms": 0.844791,
+            "navigation_G_ms": 4466.333084,
+            "pages_privees_pile_comprise": [
+              80,
+              96,
+              112
+            ]
+          },
+          {
+            "octets": 4194304,
+            "ouverture_ms": 247.861334,
+            "insertion_ms": 3.599042,
+            "suppression_ms": 4.012417,
+            "navigation_G_ms": 17036.090375,
+            "pages_privees_pile_comprise": [
+              80,
+              96,
+              112
+            ]
+          }
+        ],
+        "vi": {
+          "512": {
+            "architecture": "x86_64",
+            "secteur": 512,
+            "elf_collectes": 17,
+            "fichiers_relus": 16,
+            "pic_pages_privees_observe": 96,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_source_creuse_binaire_octets": 536870912,
+            "script_apres_redemarrage": true,
+            "octets_apres_redemarrage": true
+          },
+          "4096": {
+            "architecture": "x86_64",
+            "secteur": 4096,
+            "elf_collectes": 17,
+            "fichiers_relus": 16,
+            "pic_pages_privees_observe": 96,
+            "refus_concurrent": true,
+            "revocation": true,
+            "refus_source_creuse_binaire_octets": 536870912,
+            "script_apres_redemarrage": true,
+            "octets_apres_redemarrage": true
+          }
+        }
+      }
+    }
+  },
+  "utm": {
+    "application": "UTM",
+    "profil": "AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+    "serie": "PTY de l’application",
+    "installation": true,
+    "support_sha256": "96c001ae6b7090f5ba31c2b6aa97fdcd77e767b1f6df2eef2324b32d1e5c1de3",
+    "disque_installe_sha256": "66b93fe866d3ee735641be452cd878a76510012d137d33600cb70bbd5450ff67",
+    "demarrages_autonomes": 2,
+    "contenu_relu": "NovaOS\n",
+    "ouverture_vi_ms": 786.529375,
+    "reouverture_apres_redemarrage_ms": 69.75775,
+    "octets_vi_relus": [
+      66560,
+      66562
+    ],
+    "scripts_vi_relus": [
+      "recettes/edite.nsh",
+      "recettes/autre.nsh"
+    ],
+    "script_installe": "/verification.nsh",
+    "script_execute_apres_redemarrage": "./recettes/preuve.nsh"
+  },
+  "images_denses": {
+    "16": {
+      "image_octets": 33554432,
+      "sha256": "42d3bbbc6eb7fdb4bd73aeccc0b52ffbabe0f0ee2c98e84e3dfc299268858357",
+      "relecture": "16777216 octets denses relus à l’identique"
+    },
+    "100": {
+      "image_octets": 209715200,
+      "sha256": "59485e017bb6854a1b7eef65393f6c735e0a11dd38e8de1a289331f3feea0c90",
+      "relecture": "104857600 octets denses relus à l’identique"
+    },
+    "1024": {
+      "image_octets": 2147483648,
+      "sha256": "304e1904a5e559b8f92a7902ac8594cc306f0495ccc64486b6a52ff2b3b4bad4",
+      "relecture": "1073741824 octets denses relus à l’identique"
+    }
+  },
+  "montage_hote": {
+    "avant": [
+      {
+        "mio": 16,
+        "secteur": 4096,
+        "montage_ns": 340333333,
+        "backend_ns": 71651018,
+        "lectures_4k": 34157
+      },
+      {
+        "mio": 100,
+        "secteur": 4096,
+        "montage_ns": 2111988125,
+        "backend_ns": 450419343,
+        "lectures_4k": 213961
+      },
+      {
+        "mio": 1024,
+        "secteur": 4096,
+        "montage_ns": 25647894167,
+        "backend_ns": 4213640054,
+        "lectures_4k": 2716105
+      }
+    ],
+    "apres": [
+      {
+        "mio": 16,
+        "secteur": 4096,
+        "montage_ns": 110576792,
+        "backend_ns": 7077554,
+        "lectures_4k": 12737
+      },
+      {
+        "mio": 100,
+        "secteur": 4096,
+        "montage_ns": 622077416,
+        "backend_ns": 40928659,
+        "lectures_4k": 79687
+      },
+      {
+        "mio": 1024,
+        "secteur": 4096,
+        "montage_ns": 6933617708,
+        "backend_ns": 443435450,
+        "lectures_4k": 881865
+      }
+    ],
+    "cache": [
+      {
+        "mio": 16,
+        "secteur": 4096,
+        "montage_ns": 116820291,
+        "backend_ns": 6179291,
+        "lectures_4k": 8793
+      },
+      {
+        "mio": 100,
+        "secteur": 4096,
+        "montage_ns": 703582958,
+        "backend_ns": 35948768,
+        "lectures_4k": 55007
+      },
+      {
+        "mio": 1024,
+        "secteur": 4096,
+        "montage_ns": 7775874958,
+        "backend_ns": 366761193,
+        "lectures_4k": 563079
+      }
+    ]
+  },
+  "creation_hote_ms": {
+    "16": {
+      "creation": 2372.677,
+      "montage": 110.122,
+      "relecture": 52.718
+    },
+    "100": {
+      "creation": 13144.769,
+      "montage": 682.489,
+      "relecture": 326.982
+    },
+    "1024": {
+      "creation": 144572.777,
+      "montage": 8465.915,
+      "relecture": 3931.613
+    }
+  },
+  "qualification_AArch64": {
+    "dma": [
+      "support",
+      "vierge",
+      "refus",
+      "confirmation-erronee",
+      "tis",
+      "deplaces",
+      "reemploi",
+      "redemarrage",
+      "fin",
+      "mbr",
+      "gpt",
+      "fat",
+      "novafs",
+      "trop-petit",
+      "erreur-lecture",
+      "mauvais-support",
+      "doublon",
+      "roles-inverses",
+      "support-inscriptible",
+      "tpm-absent",
+      "mauvaise-serie",
+      "quarantaine",
+      "coupure"
+    ],
+    "gic": [
+      "froid",
+      "el2",
+      "protection",
+      "reemploi",
+      "cd",
+      "redemarrage",
+      "coupure",
+      "reprise",
+      "autre-slot",
+      "mapkey",
+      "retrait-suspendu"
+    ],
+    "gpt_4096": [
+      "non-vierge",
+      "ambigu",
+      "coupure-ecriture",
+      "reprise-ecriture",
+      "sans-consentement",
+      "erreur-lecture",
+      "coupure-installation",
+      "etat_apres_coupure",
+      "refus-apres-coupure",
+      "crc-entete",
+      "crc-tableau",
+      "donnee-supplementaire",
+      "origine-inconnue",
+      "gpt-etrangere",
+      "esp-modifiee",
+      "coupure-esp",
+      "refus-coupure-esp",
+      "coupure-p9",
+      "refus-coupure-p9"
+    ]
+  },
+  "interop_P9": [
+    {
+      "producteur": "aarch64-apple-darwin",
+      "lecteur": "x86_64-apple-darwin",
+      "secteur": 512,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "aarch64-apple-darwin",
+      "lecteur": "x86_64-apple-darwin",
+      "secteur": 4096,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "x86_64-apple-darwin",
+      "lecteur": "aarch64-apple-darwin",
+      "secteur": 512,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    },
+    {
+      "producteur": "x86_64-apple-darwin",
+      "lecteur": "aarch64-apple-darwin",
+      "secteur": 4096,
+      "lignees": 2,
+      "octets_compares": 59017,
+      "restaurations": 2,
+      "images_source_et_alias_verifiees": true
+    }
+  ],
+  "interop_F01": [
+    "F01 aarch64-apple-darwin secteur=512 → x86_64-apple-darwin secteur=512 : montage RO, lecture, validation",
+    "F01 aarch64-apple-darwin secteur=512 → x86_64-apple-darwin secteur=4096 : montage RO, lecture, validation",
+    "F01 aarch64-apple-darwin secteur=4096 → x86_64-apple-darwin secteur=512 : montage RO, lecture, validation",
+    "F01 aarch64-apple-darwin secteur=4096 → x86_64-apple-darwin secteur=4096 : montage RO, lecture, validation",
+    "F01 x86_64-apple-darwin secteur=512 → aarch64-apple-darwin secteur=512 : montage RO, lecture, validation",
+    "F01 x86_64-apple-darwin secteur=512 → aarch64-apple-darwin secteur=4096 : montage RO, lecture, validation",
+    "F01 x86_64-apple-darwin secteur=4096 → aarch64-apple-darwin secteur=512 : montage RO, lecture, validation",
+    "F01 x86_64-apple-darwin secteur=4096 → aarch64-apple-darwin secteur=4096 : montage RO, lecture, validation",
+    "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+  ],
+  "compilation_coeur_sans_os": [
+    "x86_64-unknown-none",
+    "aarch64-unknown-none-softfloat"
+  ]
+}

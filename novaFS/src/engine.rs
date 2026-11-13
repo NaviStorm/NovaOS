@@ -92,6 +92,8 @@ struct DiskView<'a, D> {
     m: &'a Manifest,
     // Adresse certaine d'une erreur de référence, d'E/S ou de checksum.
     failed_block: Cell<Option<u64>>,
+    // Uniquement pour l’inspection d’une paire immuable. Aucun payload admis.
+    metadata: Option<core::cell::RefCell<crate::cache::Cache>>,
 }
 impl<'a, D> DiskView<'a, D> {
     fn new(dev: &'a D, ids: Ids, m: &'a Manifest) -> Self {
@@ -100,7 +102,14 @@ impl<'a, D> DiskView<'a, D> {
             ids,
             m,
             failed_block: Cell::new(None),
+            metadata: None,
         }
+    }
+    fn cache_metadata(&mut self) -> Result<()> {
+        let mut cache = crate::cache::Cache::default();
+        cache.set_budget(32 * 1024)?;
+        self.metadata = Some(core::cell::RefCell::new(cache));
+        Ok(())
     }
     fn at<T>(&self, block: u64, result: Result<T>) -> Result<T> {
         result.inspect_err(|_| self.failed_block.set(Some(block)))
@@ -109,8 +118,17 @@ impl<'a, D> DiskView<'a, D> {
 impl<D: Device> ReadTree for DiskView<'_, D> {
     fn read(&self, r: Ref, f: Family) -> Result<Node> {
         self.at(r.block, r.validate(self.m.blocks, self.m.previous + 1))?;
+        if let Some(cache) = &self.metadata
+            && let Some(bytes) = cache.borrow_mut().get(Some(f), r)
+        {
+            return self.at(r.block, Node::decode(&bytes, self.ids, r, f));
+        }
         let bytes = self.raw(r.block)?;
-        self.at(r.block, Node::decode(&bytes, self.ids, r, f))
+        let node = self.at(r.block, Node::decode(&bytes, self.ids, r, f))?;
+        if let Some(cache) = &self.metadata {
+            cache.borrow_mut().remember(Some(f), r, bytes);
+        }
+        Ok(node)
     }
 }
 impl<D: Device> View for DiskView<'_, D> {
@@ -250,8 +268,12 @@ fn inspect_heads<D: Device>(
     if low.reference.birth > high.reference.birth {
         core::mem::swap(&mut low, &mut high);
     }
-    let hv = DiskView::new(dev, ids, &high.m);
-    let lv = DiskView::new(dev, ids, &low.m);
+    let mut hv = DiskView::new(dev, ids, &high.m);
+    let mut lv = DiskView::new(dev, ids, &low.m);
+    if full {
+        hv.cache_metadata()?;
+        lv.cache_metadata()?;
+    }
     if high.reference.birth == 1 && high.reference == low.reference {
         let (alloc, _) = check_generation(&hv, &high, None, full)?;
         return Ok((high, alloc));

@@ -1,0 +1,12 @@
+--- a/novaOS/user/novafs/files/selected.rs
++++ b/novaOS/user/novafs/files/selected.rs
+@@ -419,6 +419,9 @@
+         .map_err(error)?
+         .commit()
+         .map_err(error)?;
++    if source_at < 65536 && end > 65536 {
++        crate::qualification::stop(b"COUPURE COPY_RANGE lot durable");
++    }
+     w::set(a, 24, used as u64);
+     w::set(a, 32, next);
+     Ok(())

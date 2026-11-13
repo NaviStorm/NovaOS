@@ -13,6 +13,9 @@ LINE = b"page: " + b"A" * 121 + b"\n"
 # UTF-8 et CRLF coupés entre deux lectures, au milieu des données non affichées.
 DENSE = LINE * 32 + b"x" * 4095 + "猫".encode() + b"\r\n" + b"a" * 4090 + b"\r\n" + LINE * 128
 LARGE = LINE * 1024
+# Le préfixe de vi finit à 4096. Le premier lot du service coupe le scalaire,
+# et le lot suivant tombe entre CR et LF. Le dernier octet n'est pas un LF.
+EDGES = LINE * 32 + b"a"*65535 + "猫".encode() + b"b"*(65536-4) + b"\r\nfin"
 
 
 def fixture(root, sector):
@@ -21,7 +24,7 @@ def fixture(root, sector):
     for n in SIZES:
         commands += [f"create /f{n}", f"write /f{n} 0 {(LINE * 64).hex()}",
                      f"write /f{n} {n-1} 5a"]
-    for name, data in [("dense", DENSE), ("invalide", DENSE+b"\xff"), ("vi-essai.nsh", DENSE), ("grand", LARGE)]:
+    for name, data in [("dense", DENSE), ("invalide", DENSE+b"\xff"), ("vi-essai.nsh", DENSE), ("grand", LARGE), ("bords", EDGES), ("tardif", EDGES+b"\xff")]:
         commands.append(f"create /{name}")
         commands.extend(f"write /{name} {at} {data[at:at+65536].hex()}" for at in range(0,len(data),65536))
     with (root / "base.raw").open("x+b") as base, image.open("xb") as out:
@@ -34,7 +37,7 @@ def fixture(root, sector):
     return image, ids
 
 
-def trial(arch, sector, directory, inject):
+def trial(arch, sector, directory, inject, rename=False):
     image, ids = fixture(directory, sector)
     rows = []
     with Terminal(arch, sector, image, "vi-pages", test=True) as t:
@@ -68,6 +71,14 @@ def trial(arch, sector, directory, inject):
         wait("fichier enregistré")
         send(":q\r")
         wait("nsh> ")
+        for name, dest, valid in [("bords","bords-ok",True),("tardif","bords-non",False)]:
+            start("vi "+name,name)
+            send("iZ\x1b:w "+dest+"\r")
+            wait("Saisir OUI puis Entrée : ")
+            send("OUI\r")
+            wait("fichier enregistré" if valid else "argument invalide")
+            send(":q\r" if valid else ":q!\r")
+            wait("nsh> ")
         start("vi invalide", "invalide")
         send("iZ\x1b:w refuse\r")
         wait("Saisir OUI puis Entrée : ")
@@ -117,6 +128,14 @@ def trial(arch, sector, directory, inject):
             wait("modifications non sauvegardées")
             send(":q!\r")
             wait("nsh> ")
+        if rename:
+            start("@probe vi-concurrence", "vi-essai.nsh")
+            send("iK\x1b:w renom-test\r")
+            assert b"Saisir OUI" not in wait("conflit : la source a changé")
+            send(":q\r")
+            wait("modifications non sauvegardées")
+            send(":q!\r")
+            wait("nsh> ")
         t.exit()
 
     def host(op,*args,ok=True):
@@ -129,6 +148,10 @@ def trial(arch, sector, directory, inject):
     for name,expected in [("dense",DENSE),("copie",b"Z"+DENSE),("invalide",DENSE+b"\xff"),
                           ("depuis-fin",b"Z"+LARGE),("deux-zones",b"Z"+LARGE+b"Y"),("grand",LARGE)]:
         assert host("salvage",*ids,slot,"/"+name).stdout==expected
+    assert host("salvage",*ids,slot,"/bords-ok").stdout==b"Z"+EDGES
+    assert host("salvage",*ids,slot,"/tardif").stdout==EDGES+b"\xff"
+    missing=host("salvage",*ids,slot,"/bords-non",ok=False)
+    assert missing.returncode and b"NotFound" in missing.stderr
     missing=host("salvage",*ids,slot,"/refuse",ok=False)
     assert missing.returncode and b"NotFound" in missing.stderr, missing.stderr
     if inject:
@@ -137,7 +160,11 @@ def trial(arch, sector, directory, inject):
         expected=bytearray(DENSE)
         expected[4096]=ord("!")
         expected[12345]=ord("?")
-        assert host("salvage",*ids,slot,"/vi-essai.nsh").stdout==expected
+        assert host("salvage",*ids,slot,"/source-deplacee" if rename else "/vi-essai.nsh").stdout==expected
+        if rename:
+            assert host("salvage",*ids,slot,"/vi-essai.nsh").stdout==b"tiers"
+            absent=host("salvage",*ids,slot,"/renom-test",ok=False)
+            assert absent.returncode and b"NotFound" in absent.stderr
     raw=t.archive.read_bytes()
     pids=re.findall(rb"CLI spawn image=14 pid=(\d+)",raw)
     for row,pid in zip(rows,pids):
@@ -145,8 +172,8 @@ def trial(arch, sector, directory, inject):
         assert len(values)>=2
         row["resident_lancement_et_premier_ecran_kio"]=[4*(int(p)+int(s)) for p,s in values[:2]]
     return dict(architecture=arch,secteur=sector,creux=rows,publication_dense_octets=len(DENSE)+1,
-                suffixe_invalide_refuse=True,conflit_injecte=inject,conflit_sauvegarde_sans_lecture=inject,
-                index_apres_insertion_ligne=True,publication_depuis_vue_finale=len(LARGE)+1,publication_deux_zones=len(LARGE)+2)
+                bords_64k_valides=True,erreur_apres_premier_lot=True,suffixe_invalide_refuse=True,conflit_injecte=inject,conflit_sauvegarde_sans_lecture=inject,
+                suppression_refusee_et_nom_remplace=rename,index_apres_insertion_ligne=True,publication_depuis_vue_finale=len(LARGE)+1,publication_deux_zones=len(LARGE)+2)
 
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
@@ -154,7 +181,9 @@ if __name__=="__main__":
     p.add_argument("rapport",type=Path)
     p.add_argument("--secteur",type=int,choices=[512,4096],default=4096)
     p.add_argument("--injection",action="store_true",help="uniquement avec le patch de concurrence")
+    p.add_argument("--remplacement",action="store_true",help="sonde additionnelle io-0165-contrats.patch")
     args=p.parse_args()
+    if args.remplacement and not args.injection: p.error("--injection requis")
     with tempfile.TemporaryDirectory(prefix="nova-vi-pages-") as d:
-        result=trial(args.arch,args.secteur,Path(d),args.injection)
+        result=trial(args.arch,args.secteur,Path(d),args.injection,args.remplacement)
     args.rapport.write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n")
