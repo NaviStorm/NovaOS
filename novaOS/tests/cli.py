@@ -22,8 +22,8 @@ class Terminal:
                  journal=None, diagnostic=False):
         if diagnostic and journal is None:
             raise ValueError("Le diagnostic requiert un journal privé.")
-        if diagnostic:
-            # Chaque passage conserve le média ayant effectivement démarré la VM.
+        if journal is not None:
+            # Chaque passage journalisé conserve le média ayant effectivement démarré la VM.
             cmd, env = machine(arch, sector, image, test, iso=journal.with_suffix(".iso").resolve())
         else:
             cmd, env = machine(arch, sector, image, test)
@@ -42,15 +42,17 @@ class Terminal:
             cmd += ["-chardev", f"socket,id=banc,fd={qmp_bloc}", "-mon", "chardev=banc,mode=control"]
         self.archive_commune = ROOT / "build" / f"cli-{arch}-{sector}-{label}.serial"
         self.archive = self.archive_commune if journal is None else journal
-        self.diagnostic = diagnostic
+        self.journal_prive = journal is not None
         if diagnostic:
-            from preuves_stockage import configuration_vm
             trace = journal.with_suffix(".virtio.log")
             cmd += ["-trace", f"enable=virtio_blk_*,file={trace}"]
+        if self.journal_prive:
+            from preuves_stockage import configuration_vm
             configuration_vm(journal, cmd, env, arch, sector)
+        if diagnostic:
             # qemu.sh trace son exec, avec le CPU, les pflash et les options effectives.
             cmd.insert(1, "-x")
-        self.log = self.archive.open("xb" if diagnostic else "wb")
+        self.log = self.archive.open("xb" if self.journal_prive else "wb")
         self.start = time.monotonic()
         erreurs = None
         try:
@@ -76,7 +78,7 @@ class Terminal:
         if self.vm.poll() is None:
             self.vm.kill()
         self.vm.wait()
-        if self.diagnostic:
+        if self.journal_prive:
             # Après la mort de QEMU, récupérer les derniers octets déjà en pipe.
             while select.select([self.vm.stdout], [], [], 0)[0]:
                 morceau = os.read(self.vm.stdout.fileno(), 65536)
