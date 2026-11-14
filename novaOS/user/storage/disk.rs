@@ -4,6 +4,7 @@ mod runtime;
 #[allow(dead_code)]
 #[path = "../../abi/block.rs"]
 mod wire;
+use crate::runtime::bulk;
 use runtime::*;
 #[repr(align(8))]
 struct Request(wire::Wire);
@@ -43,6 +44,21 @@ fn driver() -> Result<()> {
             }
         }
     }
+    let lane = config(10);
+    let page = if lane != 0 {
+        let base = value(call(HEAP_RESIZE, 0, 0, 0))?;
+        value(call(
+            HEAP_RESIZE,
+            base,
+            base.checked_add(4096).ok_or(LIMIT)?,
+            0,
+        ))?;
+        // Sûreté : le pilote vient de réserver cette page privée, qu'il conserve seul.
+        Some(unsafe { &mut *(base as *mut [u8; 4096]) })
+    } else {
+        None
+    };
+    let mut page = page;
     let mut last = 0;
     loop {
         let m = match receive_for(input, 5000) {
@@ -55,6 +71,38 @@ fn driver() -> Result<()> {
         }
         last = m.tag;
         let mut r = Request(m.payload);
+        if r.0[2] == wire::PAGE_PHASE {
+            let result: Result<()> = (|| {
+                let data = page.as_deref_mut().ok_or(DENIED)?;
+                let write = r.0[1] == wire::WRITE;
+                if write {
+                    bulk::take(lane, m.tag, data)?;
+                }
+                value(call(
+                    wire::PAGE_PORTAL,
+                    key,
+                    (&raw const r) as u64,
+                    data.as_mut_ptr() as u64,
+                ))?;
+                if !write {
+                    bulk::put(lane, m.tag, data)?;
+                }
+                Ok(())
+            })();
+            match result {
+                Ok(()) => send(output, m.tag, &r.0)?,
+                Err(e) => send(output, m.tag, &[e as u8])?,
+            }
+            continue;
+        }
+        if r.0[1] == wire::DISCOVER {
+            // Intersection locale avant la réponse du véritable portail autorisé.
+            let mut bits = wire::number(&r.0, 40) & wire::IMPLEMENTED;
+            if page.is_none() {
+                bits = 0;
+            }
+            wire::put(&mut r.0, 40, bits);
+        }
         if matches!(
             (r.0[1], r.0[2]),
             (wire::READ, wire::BEGIN) | (wire::WRITE, wire::END) | (wire::FLUSH, wire::BEGIN)

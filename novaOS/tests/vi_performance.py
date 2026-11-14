@@ -15,8 +15,7 @@ def ms(start, end):
     return round((end - start) / 1e6, 3)
 
 
-def run(arch, sizes, directory, probes=False, read_only=False, revisit=False):
-    sector = 4096
+def run(arch, sizes, directory, probes=False, read_only=False, revisit=False, sector=4096):
     if any(n <= 0 or n % len(volumes.LINE) for n in sizes) or len(set(sizes)) != len(sizes):
         raise ValueError("Tailles positives distinctes, multiples de 128 octets")
     volumes.SIZES = sizes
@@ -117,10 +116,12 @@ if __name__ == "__main__":
     p.add_argument("arch", choices=["aarch64", "x86_64"])
     p.add_argument("rapport", type=Path)
     p.add_argument("sizes", type=int, nargs="+")
+    p.add_argument("--secteur", type=int, choices=(512, 4096), default=4096)
     p.add_argument("--sondes", action="store_true", help="image isolée avec vi-profil.patch")
     p.add_argument("--lecture-seule", action="store_true", help="ouvrir, aller à la fin et quitter sans sauvegarde")
     p.add_argument("--retour-fin",action="store_true",help="répéter G après gg pour chronométrer l’index")
     args = p.parse_args()
     with tempfile.TemporaryDirectory(prefix="nova-vi-perf-") as tmp:
-        result = run(args.arch, tuple(args.sizes), Path(tmp), args.sondes, args.lecture_seule,args.retour_fin)
+        result = run(args.arch, tuple(args.sizes), Path(tmp), args.sondes,
+                     args.lecture_seule, args.retour_fin, args.secteur)
     args.rapport.write_text(json.dumps(result, indent=2) + "\n")

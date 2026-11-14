@@ -115,7 +115,9 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     context::enable();
     let [a, b, c] = args;
     let result = match id {
+        IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
+        crate::hardware::block::wire::PAGE_PORTAL => device_page(a, b, c),
         crate::hardware::block::PORTAL => device(a, b, c),
         HEAP_RESIZE if c == 0 => with(|s| {
             let pid = caller(s);
@@ -131,6 +133,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         HEAP_RESIZE => Err(BAD_ARGUMENT),
         CLOCK_UTC if args == [0; 3] => crate::arch::rtc::seconds().ok_or(REFUSED),
         CLOCK_UTC => Err(BAD_ARGUMENT),
+        IPC_FEATURES => ipc::features(a, b, c),
         PROCESS_ID => Ok(with(|s| caller(s).number)),
         THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
         THREAD_YIELD => {
@@ -158,6 +161,47 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
 }
 
 // Port privé du pilote élu. Les seize appels ABI v1 et leurs sélecteurs restent inchangés.
+#[inline(never)]
+fn device_page(key: u64, desc: u64, addr: u64) -> Result<u64, u64> {
+    use crate::hardware::block;
+    let pid = with(|s| caller(s));
+    if !block::admit(pid.number, key) {
+        return Err(DENIED);
+    }
+    if desc % 8 != 0 {
+        return Err(BAD_ARGUMENT);
+    }
+    let mut w = [0; 128];
+    let mut page = [0; 4096];
+    let valid = with(|s| {
+        let space = s.processes.get(pid).space.as_ref().unwrap();
+        heap::with_pages(|m| {
+            Ok(space.copy_from_user(m, desc, &mut w)
+                && if w[1] == block::wire::WRITE {
+                    space.copy_from_user(m, addr, &mut page)
+                } else {
+                    space.writable(m, addr, page.len())
+                })
+        })
+        .unwrap()
+    });
+    if !valid {
+        return Err(BAD_ADDRESS);
+    }
+    block::page_command(pid.number, key, &w, &mut page)?;
+    copier_reponse_disque(
+        pid,
+        key,
+        addr,
+        if w[1] == block::wire::READ {
+            &page
+        } else {
+            &[]
+        },
+    )?;
+    Ok(4096)
+}
+
 fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
     use crate::hardware::block;
     let pid = with(|s| caller(s));
@@ -179,20 +223,28 @@ fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
         return Err(BAD_ADDRESS);
     }
     block::command(pid.number, key, &mut wire)?;
-    if !with(|s| {
-        heap::with_pages(|m| {
-            Ok(s.processes
-                .get(pid)
-                .space
-                .as_ref()
-                .unwrap()
-                .copy_to_user(m, addr, &wire))
-        })
-        .unwrap()
-    }) {
-        return Err(BAD_ADDRESS);
-    }
+    copier_reponse_disque(pid, key, addr, &wire)?;
     Ok(128)
+}
+
+// Sur le BSP, aucun décès ou retrait ne peut séparer cette admission de la copie.
+fn copier_reponse_disque(pid: Pid, key: u64, addr: u64, octets: &[u8]) -> Result<(), u64> {
+    with(|s| livrer_disque(s, pid, key, addr, octets))
+}
+
+fn livrer_disque(s: &Core, pid: Pid, key: u64, addr: u64, octets: &[u8]) -> Result<(), u64> {
+    if !crate::hardware::block::admit(pid.number, key) {
+        return Err(REVOKED);
+    }
+    if octets.is_empty() {
+        return Ok(());
+    }
+    let espace = s.processes.get(pid).space.as_ref().ok_or(REVOKED)?;
+    if heap::with_pages(|m| Ok(espace.copy_to_user(m, addr, octets))).unwrap() {
+        Ok(())
+    } else {
+        Err(BAD_ADDRESS)
+    }
 }
 
 // Un seul terminal série. Les deux écrans possèdent chacun leur position.

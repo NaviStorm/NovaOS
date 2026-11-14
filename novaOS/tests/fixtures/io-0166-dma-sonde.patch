@@ -1,0 +1,95 @@
+--- a/novaOS/kernel/src/hardware/block/trace_dma.rs
++++ b/novaOS/kernel/src/hardware/block/trace_dma.rs
+@@ -1,17 +1,46 @@
+-//! Points de mesure remplacés uniquement dans l'image instrumentée.
+-#[inline(always)]
++//! Compteurs BSP uniquement dans l'invité de métrologie.
++use crate::{hal, mesures_save as mesure};
++use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
++static KICK: AtomicU64 = AtomicU64::new(0);
+ pub(super) fn temps() -> u64 {
+-    0
++    if mesure::dma_active() {
++        hal::timer::counter()
++    } else {
++        0
++    }
+ }
+-#[inline(always)]
+-pub(super) fn soumis(_: u64) -> u64 {
+-    0
++pub(super) fn soumis(debut: u64) -> u64 {
++    let fin = temps();
++    if fin != 0 {
++        mesure::dma_ajouter(8, 1);
++        mesure::dma_ajouter(9, fin.saturating_sub(debut));
++        KICK.store(fin, Relaxed);
++    }
++    fin
+ }
+-#[inline(always)]
+-pub(super) fn acquitte(_: u64, _: u64) {}
+-#[inline(always)]
+-pub(super) fn irq(_: u64) {}
+-#[inline(always)]
+-pub(super) fn groupe(_: bool, _: usize, _: usize) {}
+-#[inline(always)]
+-pub(super) fn copie(_: u64, _: bool) {}
++pub(super) fn acquitte(kick: u64, used: u64) {
++    if kick != 0 {
++        mesure::dma_ajouter(10, used.saturating_sub(kick));
++        mesure::dma_ajouter(11, temps().saturating_sub(used));
++    }
++}
++pub(super) fn irq(entree: u64) {
++    if entree != 0 {
++        mesure::dma_ajouter(12, 1);
++        mesure::dma_ajouter(13, temps().saturating_sub(entree));
++        mesure::dma_ajouter(14, entree.saturating_sub(KICK.load(Relaxed)));
++    }
++}
++pub(super) fn groupe(ecrire: bool, n: usize, cadres: usize) {
++    if mesure::dma_active() {
++        mesure::dma_ajouter(usize::from(ecrire), 1);
++        mesure::dma_ajouter(2 + usize::from(ecrire), n as u64);
++        mesure::dma_max(4, n as u64);
++        mesure::dma_max(5, cadres as u64);
++    }
++}
++pub(super) fn copie(entree: u64, ecrire: bool) {
++    if entree != 0 {
++        mesure::dma_ajouter(6 + usize::from(ecrire), temps() - entree);
++    }
++}
+--- a/novaOS/tests/compteur_sauvegarde.rs
++++ b/novaOS/tests/compteur_sauvegarde.rs
+@@ -3,4 +3,14 @@
+ use crate::hal;
+ use core::sync::atomic::{AtomicBool, AtomicU64, Ordering::Relaxed};
++static DMA: [AtomicU64; 15] = [const { AtomicU64::new(0) }; 15];
++pub(crate) fn dma_active() -> bool {
++    ACTIVE.load(Relaxed)
++}
++pub(crate) fn dma_ajouter(i: usize, n: u64) {
++    DMA[i].fetch_add(n, Relaxed);
++}
++pub(crate) fn dma_max(i: usize, n: u64) {
++    DMA[i].fetch_max(n, Relaxed);
++}
+ static ACTIVE: AtomicBool = AtomicBool::new(false);
+ static EDITOR: AtomicU64 = AtomicU64::new(0);
+@@ -99,4 +109,5 @@
+             .chain(&APPELS_FILE)
+             .chain(&HW)
++            .chain(&DMA)
+             .chain([&GIFTS, &UNKNOWN])
+         {
+@@ -167,4 +178,8 @@
+     ACTIVE.store(false, Relaxed);
+     hal::log(format_args!(
++        "SAVE dma={:?}",
++        DMA.each_ref().map(|v| v.load(Relaxed))
++    ));
++    hal::log(format_args!(
+         "SAVE pret_local={:?}",
+         PRET.each_ref().map(|v| v.load(Relaxed))

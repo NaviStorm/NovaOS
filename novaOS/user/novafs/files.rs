@@ -549,6 +549,54 @@ mod delegated;
 mod namespace;
 mod selected;
 
+use crate::runtime::bulk;
+impl Session<'_, '_> {
+    fn read_page(
+        &mut self,
+        c: &Client,
+        port: u64,
+        tag: u64,
+        q: &Frame,
+        a: &mut Frame,
+    ) -> rt::Result<()> {
+        shape(q[0] == w::VERSION && q[2..8] == [0; 6] && q[48..].iter().all(|b| *b == 0))?;
+        if !c.mounted || w::word(q, 8) != c.id || c.scoped {
+            return Err(rt::DENIED);
+        }
+        if let Some(e) = self.failed {
+            return Err(e);
+        }
+        if self.pending.is_some() {
+            return Err(w::BUSY);
+        }
+        let f = c.handle(w::word(q, 16))?;
+        if f.kind != Kind::File || f.rights & w::READABLE == 0 {
+            return Err(rt::DENIED);
+        }
+        let offset = w::word(q, 24);
+        let len = w::word(q, 32);
+        shape((1..=4096).contains(&len) && offset.checked_add(len).is_some())?;
+        let fs = self.fs.as_mut().ok_or(rt::CLOSED)?;
+        let st = fs.stat_id(f.id).map_err(error)?;
+        if st.revision != w::word(q, 40) || offset + len > st.size {
+            return Err(rt::REVOKED);
+        }
+        if self.writable && fs.atime_policy().is_some() {
+            self.clock.sample()?;
+        }
+        let bytes = fs
+            .read_access_id(f.id, offset, len as usize)
+            .map_err(error)?;
+        if bytes.len() as u64 != len {
+            return Err(rt::REVOKED);
+        }
+        let revision = fs.stat_id(f.id).map_err(error)?.revision;
+        bulk::put(port, tag, &bytes)?;
+        w::set(a, 24, len);
+        w::set(a, 32, revision);
+        Ok(())
+    }
+}
 pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Result<()> {
     let mut s = Session {
         dev,
@@ -632,6 +680,9 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
                 delegated::prepare(&s, client, &m.payload, &mut admission).map(|g| grant = Some(g))
             } else if cli && m.payload[1] == w::STAGE {
                 selected::stage(&s, client, &m.payload)
+            } else if cli && m.payload[1] == w::READ_PAGE {
+                client.read_window = None;
+                s.read_page(client, ports[i].1, m.tag, &m.payload, &mut a)
             } else if m.payload[1] == w::MOUNT && m.payload[2] == w::MOUNT_PROGRESS {
                 dev.report_mount(ports[i].1, m.tag, || {
                     s.dispatch(client, other, &m.payload, &mut a)
@@ -640,6 +691,14 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
                 s.dispatch(client, other, &m.payload, &mut a)
             }
         };
+        if cli
+            && r.is_ok()
+            && m.payload[1] == w::MOUNT
+            && m.payload[2] == w::MOUNT_PROGRESS
+            && rt::bulk::features(ports[i].1, rt::SEND)? & rt::IPC_FEATURE_PAGE != 0
+        {
+            w::set(&mut a, 16, w::PAGE_FEATURE);
+        }
         if let Err(e) = r {
             a = w::frame(m.payload[1], 0, 0);
             a[3] = e as u8;

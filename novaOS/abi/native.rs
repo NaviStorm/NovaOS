@@ -48,6 +48,18 @@ pub const IPC_GIVE: u64 = 0x10026;
 pub const IPC_NOTIFY: u64 = 0x10027;
 pub const IPC_CANCEL: u64 = 0x10028;
 pub const IPC_BOOTSTRAP: u64 = 0x10029;
+/// Copie bornée sur un canal de lot configuré explicitement au lancement.
+pub const IPC_PUT: u64 = 0x1002c;
+pub const IPC_TAKE: u64 = 0x1002d;
+pub const BULK_MAX: usize = 4096;
+#[repr(C)]
+pub struct BulkV1 {
+    pub version: u32,
+    pub size: u32,
+    pub tag: u64,
+    pub address: u64,
+    pub length: u64,
+}
 pub const SEND: u32 = 1;
 pub const RECEIVE: u32 = 2;
 pub const GRANT: u32 = 4;
@@ -135,3 +147,7 @@ const _: () = assert!(
         && core::mem::offset_of!(GiveV1, mode) == 36
         && core::mem::offset_of!(GiveV1, reserved) == 40
 );
+
+/// Découverte sans transfert sur un endpoint local vivant. (cap, SEND ou RECEIVE, version 1).
+pub const IPC_FEATURES: u64 = 0x1003b;
+pub const IPC_FEATURE_PAGE: u64 = 1;

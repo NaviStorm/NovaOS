@@ -1,0 +1,31 @@
+--- a/novaOS/kernel/src/sched/process/ipc/probes/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/probes/bulk.rs
+@@ -6,7 +6,19 @@
+     let root = owner.boot();
+     let peer = reader.boot();
+     let other = stranger.boot();
++    assert_eq!(owner.call(IPC_FEATURES, root, u64::from(SEND), 1), Ok(0));
+     with(|s| s.ipc.bind_lane(owner.0, root, reader.0, peer)).unwrap();
++    for (acteur, cap, direction) in [(owner, root, SEND), (reader, peer, RECEIVE)] {
++        assert_eq!(acteur.call(IPC_FEATURES, cap, u64::from(direction), 1), Ok(IPC_FEATURE_PAGE));
++        for version in [0, 2, u64::MAX] {
++            assert_eq!(acteur.call(IPC_FEATURES, cap, u64::from(direction), version), Err(BAD_ARGUMENT));
++        }
++        for sens in [0, u64::from(SEND | RECEIVE), u64::MAX] {
++            assert_eq!(acteur.call(IPC_FEATURES, cap, sens, 1), Err(BAD_ARGUMENT));
++        }
++    }
++    assert_eq!(stranger.call(IPC_FEATURES, other, u64::from(SEND), 1), Ok(0));
++    assert_eq!(reader.call(IPC_FEATURES, peer, u64::from(SEND), 1), Err(DENIED));
+     let descriptor = |actor: Actor, tag: u64, address: u64, length: u64| {
+         let mut bytes = [0; 32];
+         for (chunk, value) in bytes
+@@ -55,6 +67,8 @@
+     assert_eq!(reader.call(IPC_TAKE, peer, DESC, 32), Err(REFUSED));
+     assert_eq!(owner.call(IPC_PUT, root, DESC, 32), Ok(32));
+     assert_eq!(owner.call(IPC_REVOKE, root, 0, 0), Ok(2));
++    assert_eq!(reader.call(IPC_FEATURES, peer, u64::from(RECEIVE), 1), Err(DENIED));
++    assert_eq!(owner.call(IPC_FEATURES, root, u64::from(SEND), 1), Ok(0));
+     assert_eq!(reader.call(IPC_TAKE, peer, DESC, 32), Err(DENIED));
+     assert_eq!(owner.call(IPC_PUT, root, DESC, 32), Err(DENIED));
+     stop(children, [owner, reader, stranger]);

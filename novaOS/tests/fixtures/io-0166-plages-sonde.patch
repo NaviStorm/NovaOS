@@ -1,0 +1,62 @@
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -23,7 +23,11 @@
+         fin: Option<(usize, &mut buffer::Buffer)>,
+     ) -> rt::Result<()> {
+         if self.mode_plan != 0 {
+-            plan::publier(self, name, buf, fin.map(|(at, b)| (at, &*b)))
++            let marque=|s:&[u8]| {rt::call(rt::DEBUG_WRITE,s.as_ptr() as u64,s.len() as u64,0);};
++            marque(b"SAVE start");
++            let r=plan::publier(self, name, buf, fin.map(|(at, b)| (at, &*b)));
++            if r.is_ok(){marque(b"SAVE end");}
++            r
+         } else {
+             self.publish(name, buf.compact().as_bytes())
+         }
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -174,7 +174,7 @@
+     };
+     hal::interrupts::mask();
+     with(|s| s.thread_mut(s.current).in_syscall = false);
+-    if result.is_ok() {
++    if result.is_ok() || (0x10034..=0x10039).contains(&id) {
+         crate::mesures_save::appel_file(id);
+     }
+     match result {
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -158,17 +158,31 @@
+ }
+
+ impl novafs::BlocGroupe for &IpcDevice<'_> {
++    fn phase_labo(&self, etape: u8, fin: bool) {
++        let s = [b'C', b'P', b'U', etape, u8::from(fin)];
++        crate::runtime::call(crate::runtime::DEBUG_WRITE, s.as_ptr() as u64, s.len() as u64, 0);
++    }
+     fn lire_lot(&self, b: &[u64], p: &mut [novafs::Block]) -> Result<()> {
+         if b.len() != p.len() {
+             return Err(Error::Invalid("longueur lot"));
+         }
+-        self.lot(b, 0, p.as_mut_ptr() as u64)
++        let debut = b"LOTS lire";
++        crate::runtime::call(crate::runtime::DEBUG_WRITE, debut.as_ptr() as u64, debut.len() as u64, 0);
++        let r = self.lot(b, 0, p.as_mut_ptr() as u64);
++        let fin = b"LOTS lu";
++        crate::runtime::call(crate::runtime::DEBUG_WRITE, fin.as_ptr() as u64, fin.len() as u64, 0);
++        r
+     }
+     fn ecrire_lot(&self, b: &[u64], p: &[novafs::Block]) -> Result<()> {
+         if b.len() != p.len() {
+             return Err(Error::Invalid("longueur lot"));
+         }
+-        self.lot(b, 1, p.as_ptr() as u64)
++        let debut = b"LOTS ecrire";
++        crate::runtime::call(crate::runtime::DEBUG_WRITE, debut.as_ptr() as u64, debut.len() as u64, 0);
++        let r = self.lot(b, 1, p.as_ptr() as u64);
++        let fin = b"LOTS ecrit";
++        crate::runtime::call(crate::runtime::DEBUG_WRITE, fin.as_ptr() as u64, fin.len() as u64, 0);
++        r
+     }
+ }
+ impl IpcDevice<'_> {

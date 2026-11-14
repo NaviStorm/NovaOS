@@ -1,0 +1,41 @@
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -293,5 +293,5 @@
+     fn finish(&mut self, expected: u32) -> Result<()> {
+         let n = self.pending.ok_or(Error::State)?;
+-        let used = self.q.completed()?;
++        let used = self.collecter_irq(n)?;
+         let collecte = trace_dma::temps();
+         wait(|| IRQS.load(Ordering::Acquire) != n)?;
+--- a/novaOS/kernel/src/hardware/block/arena.rs
++++ b/novaOS/kernel/src/hardware/block/arena.rs
+@@ -84,4 +84,29 @@
+ }
+ impl Transport {
++    // Qualification d'une attente de complétion par IRQ sur le BSP.
++    // Recontrôler l'indice sous masque avant WFI ou STI/HLT prévient un réveil perdu.
++    pub(super) fn collecter_irq(&self, precedent: u64) -> Result<u32> {
++        if self.arena.cadres.iter().all(Vec::is_empty) {
++            return self.q.completed();
++        }
++        let debut = crate::sched::ticks();
++        for _ in 0..1024 {
++            let garde = hal::interrupts::Guard::new();
++            if self.q.pages[2].mem.r16(2) == self.q.index
++                && IRQS.load(Ordering::Acquire) != precedent
++            {
++                drop(garde);
++                return self.q.completed();
++            }
++            if !garde.was_enabled()
++                || crate::sched::ticks().wrapping_sub(debut) > u64::from(crate::sched::HZ)
++            {
++                return Err(Error::Timeout);
++            }
++            crate::arch::context::idle_wait();
++            drop(garde);
++        }
++        Err(Error::Timeout)
++    }
+     pub(super) fn chaine_dma(
+         &mut self,

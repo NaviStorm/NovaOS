@@ -1,0 +1,58 @@
+{
+  "sources": {
+    "decouverte_trames.rs": "bd4e947ec0a057b59a2c30ee7f78b1f788cfafbe63d9e2e59ea002e38fd30f68",
+    "block.rs": "a9ac4883ab29c2f4a8a8cb35e1ff3d3c1fc064bca77e4606633c9bb1f390890a",
+    "files.rs": "a01cd53cd68dd4179ce4130e705902ce2c2c81263f195bc8821e210ebbafe835",
+    "native.rs": "4d8b2b4debad75395c789870bdbc0a57b0e5daa800fdd317e0d037dc92134768",
+    "vi_wire.rs": "f544c4749ea90eae62569864bf6ae1a8909fe35667a7d498eb54ffe7165aad27",
+    "io-0166-decouverte-droits.patch": "8575cd437ba1175080cdb04e431fad316008320f513268ad1dd3eeb193daca03"
+  },
+  "essais": [
+    {
+      "architecture": "aarch64",
+      "environnement": "Darwin",
+      "sha256_executable": "b78bf1bcd9ab0dddb1ef3956fa27f928b8f2942298fa9294a7c55c0aeea6006f",
+      "sortie": [
+        "",
+        "running 5 tests",
+        "test bloc_version_sens_et_champs_reserves ... ok",
+        "test fichier_session_version_masque_et_anciens_opcodes ... ok",
+        "test reponse_bloc_historique_et_reference_exacte ... ok",
+        "test vi_erreurs_historiques_erreurs_transport_et_revocation ... ok",
+        "test vi_masques_autorises_et_champs_invalides ... ok",
+        "",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        ""
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "environnement": "Darwin",
+      "sha256_executable": "f156999dd47b090204e1a06f49e055476390c96422e5fa582e35f8d7c06bd791",
+      "sortie": [
+        "",
+        "running 5 tests",
+        "test bloc_version_sens_et_champs_reserves ... ok",
+        "test fichier_session_version_masque_et_anciens_opcodes ... ok",
+        "test reponse_bloc_historique_et_reference_exacte ... ok",
+        "test vi_erreurs_historiques_erreurs_transport_et_revocation ... ok",
+        "test vi_masques_autorises_et_champs_invalides ... ok",
+        "",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        ""
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "environnement": "QEMU",
+      "sha256_elf": "59cfb02b7eb708e94f7817416e4e88ecff5d4706ea3fdf4fe0703e235815ca67",
+      "sortie": "OK — aarch64-ipc-test-256"
+    },
+    {
+      "architecture": "x86_64",
+      "environnement": "QEMU",
+      "sha256_elf": "4dc95ad51a62cec4430626453e8b5aba789b8a4fadef264e23f0764be4776115",
+      "sortie": "OK — x86_64-ipc-test-256"
+    }
+  ]
+}

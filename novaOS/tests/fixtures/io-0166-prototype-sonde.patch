@@ -1,0 +1,156 @@
+--- a/components/vi/main.rs
++++ b/components/vi/main.rs
+@@ -30,4 +30,8 @@
+             10
+         };
++        let mark = |s: &[u8]| {
++            rt::call(rt::DEBUG_WRITE, s.as_ptr() as u64, s.len() as u64, 0);
++        };
++        mark(b"SAVE start");
+         self.ask(wire::BEGIN, &sizes[..n])?;
+         for part in name.as_bytes().chunks(wire::CHUNK) {
+@@ -46,4 +50,5 @@
+         }
+         self.ask(wire::SAVE, &[])?;
++        mark(b"SAVE end");
+         Ok(())
+     }
+--- a/novaOS/kernel/src/hardware/block/metrics.rs
++++ b/novaOS/kernel/src/hardware/block/metrics.rs
+@@ -49,4 +49,5 @@
+     }
+     let d = hal::timer::counter().wrapping_sub(begin).max(1);
++    crate::mesures_save::bloc(idx, d);
+     let p = d.ilog2() as usize;
+     let n = (p * 8 + (((d - (1 << p)) as u128 * 8) >> p) as usize).min(255);
+--- a/novaOS/kernel/src/main.rs
++++ b/novaOS/kernel/src/main.rs
+@@ -15,4 +15,6 @@
+ mod input;
+ mod memory;
++#[path = "../../tests/compteur_sauvegarde.rs"]
++mod mesures_save;
+ mod sched;
+ #[allow(dead_code)]
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -116,4 +116,5 @@
+                 lane.len = 0;
+             }
++            crate::mesures_save::lot(put);
+             Ok(Ok(len))
+         })
+--- a/novaOS/kernel/src/sched/process/ipc/traffic.rs
++++ b/novaOS/kernel/src/sched/process/ipc/traffic.rs
+@@ -285,4 +285,9 @@
+                     Head::Offer(i) => self.metrics.admitted[i],
+                 };
++                if let Head::Offer(i) = head {
++                    crate::mesures_save::delivery(self.waits.get(i).pid.number, pid.number, kind);
++                } else {
++                    crate::mesures_save::unexpected();
++                }
+                 match head {
+                     Head::Deposit => {
+@@ -543,4 +548,7 @@
+             };
+             let end = metrics::stamp();
++            if r.is_ok_and(|v| v.is_some()) {
++                crate::mesures_save::control(id);
++            }
+             if r.is_ok_and(|v| v.is_some()) && s.ipc.metrics.includes(p) {
+                 s.ipc.metrics.sample(6, entry, end);
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -14,4 +14,22 @@
+     let mut buf = [0u8; DEBUG_MAX];
+     let bytes = &mut buf[..len as usize];
++    if with(|s| {
++        let pid = caller(s);
++        let process = s.processes.get(pid);
++        if process.terminal & crate::terminal::QUALIFY == 0 && !matches!(pid.number, 2 | 3) {
++            return false;
++        }
++        let ok = heap::with_pages(|m| {
++            Ok(process
++                .space
++                .as_ref()
++                .unwrap()
++                .copy_from_user(m, addr, bytes))
++        })
++        .unwrap();
++        ok && crate::mesures_save::marker(pid.number, bytes)
++    }) {
++        return Ok(len);
++    }
+     let pid = with(|s| {
+         let p = s.processes.get_mut(caller(s));
+@@ -156,4 +174,7 @@
+     hal::interrupts::mask();
+     with(|s| s.thread_mut(s.current).in_syscall = false);
++    if result.is_ok() {
++        crate::mesures_save::appel_file(id);
++    }
+     match result {
+         Ok(value) => Reply { status: OK, value },
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -146,5 +146,15 @@
+         if self.groupe.get() && !self.attente.borrow().0.is_empty() {
+             let mut pending = self.attente.borrow_mut();
++            let mark = |s: &[u8]| {
++                crate::runtime::call(
++                    crate::runtime::DEBUG_WRITE,
++                    s.as_ptr() as u64,
++                    s.len() as u64,
++                    0,
++                );
++            };
++            mark(b"LOT flush debut");
+             self.lot(&pending.0, 2, pending.1.as_ptr() as u64)?;
++            mark(b"LOT flush fin");
+             pending.1.iter_mut().for_each(|p| p.fill(0));
+             pending.0.clear();
+--- a/novaOS/user/novafs/files/selected.rs
++++ b/novaOS/user/novafs/files/selected.rs
+@@ -434,4 +434,8 @@
+         s.clock.sample()?;
+     }
++    let mark = |s: &[u8]| {
++        rt::call(rt::DEBUG_WRITE, s.as_ptr() as u64, s.len() as u64, 0);
++    };
++    mark(b"SAVE read");
+     let bytes = fs.read_access_id(src.id, source_at, len).map_err(error)?;
+     shape(bytes.len() == len)?;
+@@ -446,8 +450,11 @@
+     }
+     s.dev.start_probe();
+-    fs.prepare_write_id(dest.id, dst_at, &bytes[..used])
+-        .map_err(error)?
+-        .commit()
++    mark(b"SAVE prepare");
++    let plan = fs
++        .prepare_write_id(dest.id, dst_at, &bytes[..used])
+         .map_err(error)?;
++    mark(b"SAVE commit");
++    plan.commit().map_err(error)?;
++    mark(b"SAVE lot-end");
+     w::set(a, 24, used as u64);
+     w::set(a, 32, next);
+--- a/novaOS/user/storage/disk.rs
++++ b/novaOS/user/storage/disk.rs
+@@ -73,4 +73,14 @@
+         let mut r = Request(m.payload);
+         if r.0[2] == 4 {
++            let mut qualif = *b"LOT 0........";
++            qualif[4] = if r.0[1] == 6 {
++                2
++            } else if r.0[1] == wire::READ {
++                0
++            } else {
++                1
++            };
++            qualif[5..].copy_from_slice(&(wire::number(&r.0, 4) as u64).to_le_bytes());
++            call(DEBUG_WRITE, qualif.as_ptr() as u64, qualif.len() as u64, 0);
+             let result = (|| -> Result<()> {
+                 let p = page.as_deref_mut().ok_or(DENIED)?;

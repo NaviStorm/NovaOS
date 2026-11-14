@@ -1,0 +1,799 @@
+--- /dev/null
++++ b/novaOS/kernel/src/hardware/block/arena.rs
+@@ -0,0 +1,173 @@
++//! Arène superviseur du prototype. Une seule chaîne en vol sur le BSP.
++use super::*;
++use crate::sched::process::ipc::DemandeDma;
++use alloc::vec::Vec;
++
++pub(super) const MAX: usize = 64;
++const BASE: usize = 8; // n=7 reste non traduit.
++fn slot(ecrire: bool, i: usize) -> usize {
++    BASE + usize::from(ecrire) * MAX + i
++}
++pub(super) fn traduction(n: usize, pa: u64, droits: u32) -> bool {
++    if pa % PAGE as u64 != 0 || (pa == 0) != (droits == 0) {
++        return false;
++    }
++    if n < 7 {
++        return droits <= 3;
++    }
++    (BASE..BASE + 2 * MAX).contains(&n)
++        && (droits == 0 || droits == if n < BASE + MAX { 2 } else { 1 })
++}
++pub(super) struct Arena {
++    pub limite: usize,
++    cadres: [Vec<Frame>; 2],
++    retraits: [usize; 2],
++}
++impl Arena {
++    pub fn new(limite: usize) -> Self {
++        Self {
++            limite,
++            cadres: [Vec::new(), Vec::new()],
++            retraits: [0; 2],
++        }
++    }
++    fn assurer(
++        &mut self,
++        unite: &mut domain::Domain,
++        p: &Pages,
++        ecrire: bool,
++        n: usize,
++    ) -> Result<()> {
++        if n == 0 || n > self.limite || n > MAX {
++            return Err(Error::Geometry);
++        }
++        let cadres = &mut self.cadres[usize::from(ecrire)];
++        cadres
++            .try_reserve_exact(n.saturating_sub(cadres.len()))
++            .map_err(|_| Error::Memory)?;
++        while cadres.len() < n {
++            let i = cadres.len();
++            let f = Frame::allocate()?;
++            // Initialiser aussi les pages que le périphérique pourra lire avant le premier OUT.
++            // Sûreté : le cadre vient d'être alloué et n'a pas encore de traduction IOMMU.
++            unsafe {
++                (f.mem.base() as *mut u8).write_bytes(0, PAGE);
++            }
++            cadres.push(f); // Conserver le cadre même si l'acquittement MAP est incertain.
++            unite.map(p, slot(ecrire, i), f.pa, if ecrire { 1 } else { 2 })?;
++        }
++        Ok(())
++    }
++    pub fn retirer(&mut self, unite: &mut domain::Domain, p: &Pages) -> Result<()> {
++        for (sens, cadres) in self.cadres.iter().enumerate() {
++            while self.retraits[sens] < cadres.len() {
++                unite.retirer_slot(p, slot(sens == 1, self.retraits[sens]))?;
++                self.retraits[sens] += 1;
++            }
++        }
++        Ok(())
++    }
++    /// # Safety
++    /// Le reset, le retrait de toutes les traductions et le détachement ont été acquittés.
++    pub unsafe fn liberer(self) {
++        for f in self.cadres.into_iter().flatten() {
++            // Sûreté : quiescence et arrêt du domaine garantis par l'appelant.
++            unsafe {
++                crate::memory::release_dma(f.pa);
++            }
++        }
++    }
++    fn copier(&self, d: DemandeDma) -> core::result::Result<(), u64> {
++        let t = trace_dma::temps();
++        let pages = &self.cadres[usize::from(d.ecrire)];
++        let r = d.copier(|i| pages[i].mem.base());
++        trace_dma::copie(t, d.ecrire);
++        r
++    }
++}
++impl Transport {
++    pub(super) fn chaine_dma(
++        &mut self,
++        d: DemandeDma,
++        depart: u64,
++        pas: u64,
++        bail_actif: impl Fn() -> bool,
++    ) -> Result<()> {
++        let bytes = d.nombre.checked_mul(PAGE).ok_or(Error::Geometry)?;
++        if self.pending.is_some()
++            || bytes == 0
++            || d.nombre > self.arena.limite
++            || d.nombre > MAX
++            || d.nombre + 2 > usize::from(self.q.entries)
++            || (d.ecrire && (self.ro || !self.output_mapped))
++            || depart
++                .checked_add((bytes / self.size) as u64)
++                .is_none_or(|fin| fin > self.sectors)
++        {
++            return Err(Error::State);
++        }
++        let sector = depart
++            .checked_mul((self.size / 512) as u64)
++            .ok_or(Error::Geometry)?;
++        self.unit.faults(&self.p)?;
++        self.arena
++            .assurer(&mut self.unit, &self.p, d.ecrire, d.nombre)?;
++        if d.ecrire {
++            self.arena.copier(d).map_err(|_| Error::State)?;
++        }
++        let h = self.p.0[19].mem;
++        h.w32(0, u32::from(d.ecrire));
++        h.w32(4, 0);
++        h.w64(8, sector);
++        self.p.0[21].mem.w8(0, 0xff);
++        let mut parts = [Segment::new(0, 0, false); MAX + 2];
++        parts[0] = Segment::new(addr(3), 16, false);
++        for (i, part) in parts[1..1 + d.nombre].iter_mut().enumerate() {
++            *part = Segment::new(addr(slot(d.ecrire, i)), PAGE as u32, !d.ecrire);
++        }
++        parts[1 + d.nombre] = Segment::new(addr(5), 1, true);
++        self.kind = usize::from(d.ecrire);
++        self.started = metrics::stamp();
++        let irq = hal::interrupts::Guard::new();
++        if !bail_actif() {
++            return Err(Error::State);
++        }
++        d.verifier(pas, true).map_err(|_| Error::State)?;
++        let seen = IRQS.load(Ordering::Acquire);
++        EXPECT.store(
++            0x10000 | u64::from(self.q.index.wrapping_add(1)),
++            Ordering::Release,
++        );
++        if let Err(erreur) = self.q.submit(&parts[..d.nombre + 2]) {
++            let _ = d.terminer(false, false);
++            return Err(erreur);
++        }
++        self.dernier_kick = trace_dma::soumis(self.started);
++        KICKS.fetch_add(1, Ordering::Release);
++        self.pending = Some(seen);
++        drop(irq);
++        let complet = self.finish(if d.ecrire { 1 } else { 1 + bytes as u32 });
++        if complet.is_err() {
++            let _ = d.terminer(false, false); // doute : le retrait ne déclare jamais le DMA terminé.
++            return complet;
++        }
++        // Vérifier de nouveau le bail et rendre la réponse sous le même masque BSP.
++        // Les contrôles des deux extrémités IPC se font dans copier et terminer.
++        let garde = hal::interrupts::Guard::new();
++        let copie = if !bail_actif() {
++            Err(crate::abi::REVOKED)
++        } else if d.ecrire {
++            Ok(())
++        } else {
++            self.arena.copier(d)
++        };
++        let fin = d.terminer(true, copie.is_ok());
++        drop(garde);
++        trace_dma::groupe(
++            d.ecrire,
++            d.nombre,
++            self.arena.cadres[0].len() + self.arena.cadres[1].len(),
++        );
++        copie.and(fin).map_err(|_| Error::State)
++    }
++}
+--- a/novaOS/kernel/src/hardware/block/lease.rs
++++ b/novaOS/kernel/src/hardware/block/lease.rs
+@@ -372,2 +372,45 @@
+         .is_some_and(|d| d.q.index == 1 && d.p.0[17].mem.r16(2) == 1)
+ }
++
++/// Le pilote ne donne que des LBA relatifs à la partition et le rang déjà réservé.
++pub(crate) fn multipage(
++    pid: u64,
++    key: u64,
++    mut demande: crate::sched::process::ipc::DemandeDma,
++) -> core::result::Result<u64, u64> {
++    let mut s = SESSION.lock();
++    if !admit(pid, key) || s.quarantine {
++        return Err(abi::REVOKED);
++    }
++    if s.rights & (if demande.ecrire { 2 } else { 1 }) == 0 {
++        return Err(abi::DENIED);
++    }
++    if s.phase != Phase::Empty {
++        return Err(abi::REFUSED);
++    }
++    let d = s.device.as_deref_mut().ok_or(abi::CLOSED)?;
++    let pas = (PAGE / d.size) as u64;
++    demande.nombre = demande.nombre.min(d.arena.limite);
++    demande.verifier(pas, false)?;
++    let secteurs = (demande.nombre as u64)
++        .checked_mul(pas)
++        .ok_or(abi::BAD_ARGUMENT)?;
++    if demande
++        .premier
++        .checked_add(secteurs)
++        .is_none_or(|fin| fin > d.count)
++    {
++        return Err(abi::BAD_ARGUMENT);
++    }
++    let depart = d
++        .first
++        .checked_add(demande.premier)
++        .ok_or(abi::BAD_ARGUMENT)?;
++    if d.chaine_dma(demande, depart, pas, || admit(pid, key))
++        .is_err()
++    {
++        s.phase = Phase::Closed;
++        return Err(abi::REFUSED);
++    }
++    Ok(demande.nombre as u64)
++}
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -1,7 +1,9 @@
+ //! Transport du disque de données dédié. Toutes les adresses matérielles sont privées.
++mod arena;
+ #[cfg(all(target_arch = "aarch64", feature = "systeme-gpt"))]
+ mod gpt;
+ mod io;
+-pub(crate) use lease::commande_groupee;
++mod trace_dma;
++pub(crate) use lease::{commande_groupee, multipage};
+ mod lease;
+ pub(crate) mod metrics;
+@@ -59,4 +61,5 @@
+ /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
+ pub(crate) fn interrupt() -> bool {
++    let entree = trace_dma::temps();
+     let addr = ISR.load(Ordering::Acquire);
+     if addr != 0 {
+@@ -75,4 +78,5 @@
+                 EXPECT.store(0, Ordering::Release);
+                 IRQS.fetch_add(1, Ordering::Release);
++                trace_dma::irq(entree);
+             } else {
+                 STRAYS.fetch_add(1, Ordering::Relaxed);
+@@ -121,4 +125,6 @@
+     output_mapped: bool,
+     traductions: usize,
++    arena: arena::Arena,
++    dernier_kick: u64,
+     started: u64,
+     kind: usize,
+@@ -183,4 +189,5 @@
+             Segment::new(addr(5), 1, true),
+         ])?;
++        self.dernier_kick = trace_dma::soumis(self.started);
+         KICKS.fetch_add(1, Ordering::Release);
+         self.pending = Some(n);
+@@ -194,4 +201,5 @@
+         let n = self.pending.ok_or(Error::State)?;
+         let used = self.q.completed()?;
++        let collecte = trace_dma::temps();
+         wait(|| IRQS.load(Ordering::Acquire) != n)?;
+         self.unit.faults(&self.p)?;
+@@ -204,4 +212,5 @@
+             return Err(Error::Device);
+         }
++        trace_dma::acquitte(self.dernier_kick, collecte);
+         metrics::record(self.kind, self.started);
+         self.pending = None;
+@@ -277,4 +286,5 @@
+                 .submit(&[head, Segment::new(addr(6), bytes as u32, false), status])?
+         }
++        self.dernier_kick = trace_dma::soumis(self.started);
+         KICKS.fetch_add(1, Ordering::Release);
+         self.pending = Some(seen);
+--- a/novaOS/kernel/src/hardware/block/pci.rs
++++ b/novaOS/kernel/src/hardware/block/pci.rs
+@@ -251,4 +251,30 @@
+         super::io::wait(|| self.common.r8(20) == 0)
+     }
++    pub fn limits_features(&self) -> u64 {
++        self.common.w32(0, 0);
++        u64::from(self.common.r32(4) & 6)
++    }
++    pub fn segments(&self, features: u64) -> Result<usize> {
++        for _ in 0..4 {
++            let revision = self.common.r8(21);
++            let bytes = if features & 2 != 0 {
++                self.specific.r32(8)
++            } else {
++                u32::MAX
++            };
++            let segments = if features & 4 != 0 {
++                self.specific.r32(12)
++            } else {
++                1
++            };
++            if self.common.r8(21) == revision {
++                if bytes < PAGE as u32 || segments == 0 {
++                    return Err(Error::Feature);
++                }
++                return Ok((segments as usize).min(super::arena::MAX));
++            }
++        }
++        Err(Error::Geometry)
++    }
+     pub fn read_only(&self) -> bool {
+         self.common.w32(0, 0);
+--- a/novaOS/kernel/src/hardware/block/queue.rs
++++ b/novaOS/kernel/src/hardware/block/queue.rs
+@@ -20,9 +20,25 @@
+     door: Region,
+     number: u16,
++    pub entries: u16,
+     pub index: u16,
+ }
+ impl Queue {
++    #[cfg(target_arch = "aarch64")]
+     pub fn new(device: Device, number: u16, pages: [Frame; 3], dma: [u64; 3]) -> Result<Self> {
++        Self::sized(device, number, pages, dma, ENTRIES)
++    }
++    pub fn sized(
++        device: Device,
++        number: u16,
++        pages: [Frame; 3],
++        dma: [u64; 3],
++        limit: u16,
++    ) -> Result<Self> {
+         device.common.w16(22, number);
++        let offered = device.common.r16(24);
++        if !limit.is_power_of_two() || limit > 128 || !offered.is_power_of_two() {
++            return Err(Error::Queue);
++        }
++        let entries = offered.min(limit);
+         if device.common.r16(28) != 0 || device.common.r16(24) < ENTRIES {
+             return Err(Error::Queue);
+@@ -37,5 +53,8 @@
+             }
+         }
+-        device.common.w16(24, ENTRIES);
++        device.common.w16(24, entries);
++        if device.common.r16(24) != entries {
++            return Err(Error::Queue);
++        }
+         for (i, addr) in dma.into_iter().enumerate() {
+             device.common.w32(32 + i * 8, addr as u32);
+@@ -51,9 +70,13 @@
+             door,
+             number,
++            entries,
+             index: 0,
+         })
+     }
+     pub fn submit(&mut self, parts: &[Segment]) -> Result<()> {
+-        if self.pages[2].mem.r16(2) != self.index || parts.is_empty() || parts.len() > 3 {
++        if self.pages[2].mem.r16(2) != self.index
++            || parts.is_empty()
++            || parts.len() > usize::from(self.entries)
++        {
+             return Err(Error::Queue);
+         }
+@@ -72,5 +95,5 @@
+         self.pages[1]
+             .mem
+-            .w16(4 + 2 * usize::from(self.index % ENTRIES), 0);
++            .w16(4 + 2 * usize::from(self.index % self.entries), 0);
+         barrier();
+         self.index = self.index.wrapping_add(1);
+@@ -82,5 +105,5 @@
+     pub fn completed(&self) -> Result<u32> {
+         wait(|| self.pages[2].mem.r16(2) == self.index)?;
+-        let pos = 4 + 8 * usize::from(self.index.wrapping_sub(1) % ENTRIES);
++        let pos = 4 + 8 * usize::from(self.index.wrapping_sub(1) % self.entries);
+         if self.pages[2].mem.r32(pos) != 0 {
+             return Err(Error::Queue);
+--- /dev/null
++++ b/novaOS/kernel/src/hardware/block/trace_dma.rs
+@@ -0,0 +1,17 @@
++//! Points de mesure remplacés uniquement dans l'image instrumentée.
++#[inline(always)]
++pub(super) fn temps() -> u64 {
++    0
++}
++#[inline(always)]
++pub(super) fn soumis(_: u64) -> u64 {
++    0
++}
++#[inline(always)]
++pub(super) fn acquitte(_: u64, _: u64) {}
++#[inline(always)]
++pub(super) fn irq(_: u64) {}
++#[inline(always)]
++pub(super) fn groupe(_: bool, _: usize, _: usize) {}
++#[inline(always)]
++pub(super) fn copie(_: u64, _: bool) {}
+--- a/novaOS/kernel/src/hardware/block/viommu.rs
++++ b/novaOS/kernel/src/hardware/block/viommu.rs
+@@ -98,5 +98,5 @@
+     }
+     pub fn map(&mut self, p: &Pages, n: usize, pa: u64, rights: u32) -> Result<()> {
+-        if n >= 7 || pa % 4096 != 0 || rights > 3 {
++        if !super::arena::traduction(n, pa, rights) || super::addr(n) + 4095 > self.unit.specific.r64(16) {
+             return Err(Error::Geometry);
+         }
+--- a/novaOS/kernel/src/hardware/block/vtd.rs
++++ b/novaOS/kernel/src/hardware/block/vtd.rs
+@@ -147,5 +147,5 @@
+     }
+     pub fn map(&mut self, p: &Pages, n: usize, pa: u64, rights: u32) -> Result<()> {
+-        if n >= 7 || pa % 4096 != 0 || rights > 3 {
++        if !super::arena::traduction(n, pa, rights) {
+             return Err(Error::Geometry);
+         }
+--- a/novaOS/kernel/src/memory/user.rs
++++ b/novaOS/kernel/src/memory/user.rs
+@@ -516,2 +516,28 @@
+     assert!(Elf::parse(&image[..ph + 55]).is_err());
+ }
++
++impl UserSpace {
++    /// # Safety
++    /// dma désigne un cadre privé de 4096 octets, distinct des pages utilisateur.
++    /// L'appelant tient Memory et possède l'usage CPU exclusif du cadre pour cette copie.
++    pub(crate) unsafe fn copier_dma(&self, m: &Memory, va: u64, dma: *mut u8, vers_dma: bool) {
++        let parties = self
++            .segments(m, va, 4096, !vers_dma)
++            .expect("plage DMA prévalidée sous Memory");
++        let mut debut = 0;
++        for (usager, n) in parties {
++            if n == 0 {
++                continue;
++            }
++            // Sûreté : les deux plages disjointes sont validées et épinglées.
++            unsafe {
++                if vers_dma {
++                    core::ptr::copy_nonoverlapping(usager, dma.add(debut), n);
++                } else {
++                    core::ptr::copy_nonoverlapping(dma.add(debut), usager, n);
++                }
++            }
++            debut += n;
++        }
++    }
++}
+--- /dev/null
++++ b/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
+@@ -0,0 +1,168 @@
++//! La liste de LBA figée par le moteur est la seule autorité du lot.
++use super::*;
++
++#[derive(Clone, Copy)]
++pub(crate) struct DemandeDma {
++    tag: u64,
++    cap: u64,
++    pub premier: u64,
++    index: usize,
++    total: usize,
++    pub nombre: usize,
++    pub ecrire: bool,
++}
++impl DemandeDma {
++    pub(crate) fn nouvelle(
++        tag: u64,
++        cap: u64,
++        premier: u64,
++        index: u64,
++        total: u64,
++        nombre: u64,
++        direction: u64,
++    ) -> Res<Self> {
++        if tag == 0
++            || !(1..=256).contains(&total)
++            || index >= total
++            || nombre == 0
++            || nombre > total - index
++            || direction > 1
++        {
++            return Err(BAD_ARGUMENT);
++        }
++        Ok(Self {
++            tag,
++            cap,
++            premier,
++            index: index as usize,
++            total: total as usize,
++            nombre: nombre as usize,
++            ecrire: direction == 1,
++        })
++    }
++    fn bail(self, s: &Core) -> Res<(Reference, Lane, Reservation)> {
++        let pid = s.thread(s.current).owner.ok_or(DENIED)?;
++        let node = s.ipc.lookup(pid, self.cap, SEND | RECEIVE)?;
++        let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(REVOKED)?;
++        let r = lane.reservation.ok_or(REVOKED)?;
++        if lane.nodes[0] != node.id
++            || lane.parties[0] != pid.number
++            || lane.handles[0] != self.cap
++            || lane.parties[1] != r.moteur.number
++        {
++            return Err(DENIED);
++        }
++        let moteur = s.processes.slots[r.moteur.slot]
++            .as_ref()
++            .filter(|p| p.pid == r.moteur && p.space.is_some())
++            .ok_or(REVOKED)?;
++        let pair = s.ipc.lookup(moteur.pid, lane.handles[1], SEND | RECEIVE)?;
++        if pair.id != lane.nodes[1]
++            || pair.endpoint != node.endpoint
++            || r.tag != self.tag
++            || r.n != self.total
++            || r.index != self.index
++            || r.effectues != self.index
++            || r.lire == self.ecrire
++            || r.flush
++            || r.doute
++        {
++            return Err(REFUSED);
++        }
++        Ok((node.endpoint, lane, r))
++    }
++    // Les deux vérifications encadrent la préparation DMA. La dernière s'exécute
++    // sans interruption jusqu'à la publication de avail.idx et au doorbell.
++    pub(crate) fn verifier(self, pas: u64, soumettre: bool) -> Res<()> {
++        with(|s| {
++            let (ep, lane, r) = self.bail(s)?;
++            if r.retrait || r.en_vol {
++                return Err(REVOKED);
++            }
++            let offsets = s.ipc.pages_bulk.get(lane.slot);
++            for j in 0..self.nombre {
++                let debut = (self.index + j) * 8;
++                let attendu = u64::from_le_bytes(offsets[debut..debut + 8].try_into().unwrap());
++                if self.premier.checked_add(j as u64 * pas) != Some(attendu) {
++                    return Err(REFUSED);
++                }
++            }
++            if soumettre {
++                s.ipc
++                    .ends
++                    .get_mut(ep.slot())
++                    .bulk
++                    .as_mut()
++                    .unwrap()
++                    .reservation
++                    .as_mut()
++                    .unwrap()
++                    .en_vol = true;
++            }
++            Ok(())
++        })
++    }
++    pub(crate) fn copier(self, page: impl Fn(usize) -> usize) -> Res<()> {
++        with(|s| {
++            let (_, _, r) = self.bail(s)?;
++            if r.retrait || r.en_vol == self.ecrire {
++                return Err(REVOKED);
++            }
++            let espace = s.processes.get(r.moteur).space.as_ref().ok_or(REVOKED)?;
++            let base = r.base + 4096 * self.index as u64;
++            heap::with_pages(|m| {
++                // Aucune copie partielle vers le moteur si une traduction manque.
++                if !(0..self.nombre).all(|i| espace.writable(m, base + 4096 * i as u64, 4096)) {
++                    return Ok(Err(BAD_ADDRESS));
++                }
++                for i in 0..self.nombre {
++                    // Sûreté : le transport fournit l'alias superviseur d'un cadre épinglé privé.
++                    // OUT précède le kick ; IN suit used, l'IRQ, la longueur et le statut.
++                    unsafe {
++                        espace.copier_dma(
++                            m,
++                            base + 4096 * i as u64,
++                            page(i) as *mut u8,
++                            self.ecrire,
++                        );
++                    }
++                }
++                Ok(Ok(()))
++            })
++            .unwrap()
++        })
++    }
++    pub(crate) fn terminer(self, complet: bool, livre: bool) -> Res<()> {
++        with(|s| {
++            let (ep, _, r) = self.bail(s)?;
++            if !r.en_vol {
++                return Err(REFUSED);
++            }
++            let r = s
++                .ipc
++                .ends
++                .get_mut(ep.slot())
++                .bulk
++                .as_mut()
++                .unwrap()
++                .reservation
++                .as_mut()
++                .unwrap();
++            r.en_vol = false;
++            if !complet {
++                r.doute = true;
++                return Err(REFUSED);
++            }
++            if r.retrait {
++                return Err(REVOKED);
++            }
++            if !livre {
++                r.retrait = true; // DMA terminé, livraison refusée et nouvel envoi interdit.
++                return Err(BAD_ADDRESS);
++            }
++            r.index += self.nombre;
++            r.effectues += self.nombre;
++            Ok(())
++        })
++    }
++}
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -1,4 +1,5 @@
+ //! Une page superviseur par paire explicitement reliée. La boîte ne sert pas de file IPC.
+ use super::*;
++pub(crate) mod multipage;
+ pub(super) type Buffers = Pool<[u8; BULK_MAX], 8, 84, 1>;
+
+@@ -227,4 +228,7 @@
+             return Err(REVOKED);
+         }
++        if r.en_vol {
++            return Err(WOULD_BLOCK);
++        }
+         if r.tag != tag
+             || r.n != taille as usize
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -15,4 +15,5 @@
+ mod probes;
+ mod traffic;
++pub(crate) use bulk::multipage::DemandeDma;
+ pub(super) use bulk::{admis, lot, termine, transfer};
+ pub(crate) use probes::{quiet, run};
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -116,4 +116,5 @@
+     let [a, b, c] = args;
+     let result = match id {
++        0x1003a if b == 64 && c == 0 => commande_dma(a),
+         0x1002e..=0x10030 | 0x10032 => ipc::lot(id, a, b, c),
+         0x10031 if b == 56 && c == 0 => commande_lot(a),
+@@ -505,2 +506,28 @@
+     Ok(0)
+ }
++
++#[inline(never)]
++fn commande_dma(ptr: u64) -> Result<u64, u64> {
++    let (pid, q) = with(|s| {
++        let pid = caller(s);
++        let mut q = [0u8; 64];
++        if ptr % 8 != 0
++            || !heap::with_pages(|m| {
++                Ok(s.processes
++                    .get(pid)
++                    .space
++                    .as_ref()
++                    .unwrap()
++                    .copy_from_user(m, ptr, &mut q))
++            })
++            .unwrap()
++        {
++            return Err(BAD_ADDRESS);
++        }
++        Ok((pid, q))
++    })?;
++    let mot = |i: usize| u64::from_le_bytes(q[i * 8..i * 8 + 8].try_into().unwrap());
++    let demande =
++        ipc::DemandeDma::nouvelle(mot(0), mot(1), mot(3), mot(4), mot(5), mot(6), mot(7))?;
++    crate::hardware::block::multipage(pid.number, mot(2), demande)
++}
+--- a/novaOS/user/storage/disk.rs
++++ b/novaOS/user/storage/disk.rs
+@@ -85,29 +85,32 @@
+                     if r.0[1] == 6 { 2 } else { u64::from(write) },
+                 ];
+-                for (i, b) in offsets[..n * 8].chunks_exact(8).enumerate() {
+-                    if value(call(0x10030, lane, args.as_ptr() as u64, 32))? != i as u64 {
+-                        return Err(REVOKED);
++                let secteur_par_page = 4096 / u64::from(size);
++                let lba =
++                    |i: usize| u64::from_le_bytes(offsets[8 * i..8 * i + 8].try_into().unwrap());
++                let mut i = 0;
++                while i < n {
++                    let premier = lba(i);
++                    let mut suite = 1;
++                    while i + suite < n
++                        && premier.checked_add(secteur_par_page * suite as u64)
++                            == Some(lba(i + suite))
++                    {
++                        suite += 1;
+                     }
+-                    let mut w = Request(wire::blank(if write { wire::WRITE } else { wire::READ }));
+-                    w.0[2] = wire::PAGE_PHASE;
+-                    wire::put(&mut w.0, 4, 4096);
+-                    w.0[8..16].copy_from_slice(b);
+-                    if write {
+-                        value(call(0x1002f, lane, args.as_ptr() as u64, 32))?;
+-                    }
+-                    // Le portail vérifie le bail groupé au point de soumission.
+                     let action = [
+                         m.tag,
+                         lane,
+                         key,
+-                        (&raw const w) as u64,
+-                        p.as_mut_ptr() as u64,
++                        premier,
+                         i as u64,
+                         n as u64,
++                        suite as u64,
++                        u64::from(write),
+                     ];
+-                    value(call(0x10031, action.as_ptr() as u64, 56, 0))?;
+-                    if !write {
+-                        value(call(0x1002f, lane, args.as_ptr() as u64, 32))?;
++                    let effectue = value(call(0x1003a, action.as_ptr() as u64, 64, 0))? as usize;
++                    if effectue == 0 || effectue > suite {
++                        return Err(REFUSED);
+                     }
++                    i += effectue;
+                 }
+                 if r.0[1] == 6 {
+--- a/novaOS/kernel/src/hardware/block/ownership.rs
++++ b/novaOS/kernel/src/hardware/block/ownership.rs
+@@ -28,4 +28,5 @@
+     route: bool,
+     traductions: usize,
++    arena: arena::Arena,
+     etape: Etape,
+ }
+@@ -46,4 +47,5 @@
+                 route: false,
+                 traductions: 0,
++                arena: arena::Arena::new(0),
+                 etape: Etape::Drainage,
+             })
+@@ -73,5 +75,7 @@
+             let d = r.d;
+             let ro = d.read_only();
+-            d.start(VIRTIO | if ro { 1 << 5 } else { 0 })?;
++            let limites = d.limits_features();
++            d.start(VIRTIO | limites | if ro { 1 << 5 } else { 0 })?;
++            let segments = d.segments(limites)?;
+             let (sectors, size) = d.geometry()?;
+             r.route = true;
+@@ -80,11 +84,13 @@
+             ISR.store(d.isr.base() as u64, Ordering::Release);
+             unit.route(&r.p, d, true)?;
+-            let q = Queue::new(
++            let q = Queue::sized(
+                 d,
+                 0,
+                 [r.p.0[16], r.p.0[17], r.p.0[18]],
+                 [addr(0), addr(1), addr(2)],
++                if segments > 1 { 128 } else { queue::ENTRIES },
+             )?;
+             USED_ADDR.store((r.p.0[18].mem.base() + 2) as u64, Ordering::Release);
++            r.arena.limite = segments.min(usize::from(q.entries) - 2);
+             d.ready()?;
+             unit.faults(&r.p)?;
+@@ -111,4 +117,6 @@
+             output_mapped: sortie,
+             traductions: r.traductions,
++            arena: r.arena,
++            dernier_kick: 0,
+             started: 0,
+             kind: 0,
+@@ -124,4 +132,5 @@
+             route: true,
+             traductions: t.traductions,
++            arena: t.arena,
+             etape: Etape::Drainage,
+         }
+@@ -167,4 +176,5 @@
+                 self.traductions = n;
+             }
++            self.arena.retirer(unit, &self.p)?;
+             self.etape = Etape::Domaine;
+         }
+@@ -194,5 +204,8 @@
+         barrier();
+         // Sûreté : lot jamais publié ou retrait acquitté et porte IRQ purgée.
+-        unsafe { self.p.release() };
++        unsafe {
++            self.arena.liberer();
++            self.p.release();
++        }
+         OCCUPE.store(false, Ordering::Release);
+         Ok(())

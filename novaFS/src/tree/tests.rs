@@ -244,3 +244,77 @@ fn cle_profonde_ne_deborde_pas_sur_le_sous_arbre_voisin() {
     // gauche dépasse pourtant la borne 5 qui n'existe que dans son grand-parent.
     assert!(walk(&store, root, Family::Objects, |_| Ok(()), |_, _| Ok(())).is_err());
 }
+
+#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+#[test]
+fn ajout_extents_sur_plusieurs_niveaux_et_lecture_par_intervalle() {
+    fn cle(i: u64) -> [u8; 16] {
+        let mut k = [0; 16];
+        k[..8].copy_from_slice(&3u64.to_le_bytes());
+        k[8..].copy_from_slice(&i.to_le_bytes());
+        k
+    }
+    fn valeur(i: u64) -> Vec<u8> {
+        let mut v = vec![i as u8; 18 + 16 * 32];
+        v[..8].copy_from_slice(&(2 + 16 * i).to_le_bytes());
+        v[8..10].copy_from_slice(&16u16.to_le_bytes());
+        v[10..18].copy_from_slice(&1u64.to_le_bytes());
+        v
+    }
+    let f = Family::Extents;
+    let mut s = Store::new();
+    let mut racine = Ref::ZERO;
+    for i in 0..45 {
+        racine = put(&mut s, racine, f, &cle(i), &valeur(i)).unwrap();
+    }
+    let ancienne = racine;
+    s.birth += 1;
+    let mut ajout = ajout::Ajout::ouvrir(&s, racine).unwrap();
+    assert!(ajout.ajouter(&mut s, cle(44).to_vec(), valeur(44)).is_err());
+    for i in 45..950 {
+        ajout.ajouter(&mut s, cle(i).to_vec(), valeur(i)).unwrap();
+    }
+    racine = ajout.terminer(&mut s).unwrap();
+    assert!(s.read(racine, f).unwrap().level >= 2);
+    for (r, n) in [(ancienne, 45), (racine, 950)] {
+        let mut i = 0;
+        walk(
+            &s,
+            r,
+            f,
+            |_| Ok(()),
+            |k, v| {
+                assert_eq!((k, v), (cle(i).as_slice(), valeur(i).as_slice()));
+                i += 1;
+                Ok(())
+            },
+        )
+        .unwrap();
+        assert_eq!(i, n);
+    }
+    for (lo, hi) in [(0, 1), (27, 901), (949, 960), (950, 999), (3, 3)] {
+        let mut i = lo;
+        ajout::intervalle(&s, racine, &cle(lo), &cle(hi), |k, v| {
+            assert_eq!((k, v), (cle(i).as_slice(), valeur(i).as_slice()));
+            i += 1;
+            Ok(())
+        })
+        .unwrap();
+        assert_eq!(i, hi.min(950));
+    }
+    // Sceller à nouveau une feuille dont la dernière clé dépasse le voisin du
+    // grand-parent. Les références complètes et les minima restent vérifiables.
+    let mut sommet = s.read(racine, f).unwrap();
+    assert_eq!(sommet.level, 2);
+    let (_, mut gauche) = load_child(&s, &sommet, 0).unwrap();
+    let dernier = gauche.entries.len() - 1;
+    let (_, mut feuille) = load_child(&s, &gauche, dernier).unwrap();
+    assert!(feuille.entries.len() > 1);
+    feuille.entries.last_mut().unwrap().0 = sommet.entries[1].0.clone();
+    let ref_feuille = s.store(None, &feuille).unwrap();
+    gauche.entries[dernier].1 = ref_feuille.to_bytes().to_vec();
+    let ref_gauche = s.store(None, &gauche).unwrap();
+    sommet.entries[0].1 = ref_gauche.to_bytes().to_vec();
+    let incoherente = s.store(None, &sommet).unwrap();
+    assert!(ajout::intervalle(&s, incoherente, &cle(0), &cle(950), |_, _| Ok(())).is_err());
+}

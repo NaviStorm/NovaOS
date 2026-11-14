@@ -1,0 +1,31 @@
+--- a/novaOS/user/novafs/files/selected.rs
++++ b/novaOS/user/novafs/files/selected.rs
+@@ -403,8 +403,11 @@
+     if fs.atime_policy().is_some() {
+         s.clock.sample()?;
+     }
++    let mark = |m: &[u8]| { if rt::config(1)==42 { rt::call(rt::DEBUG_WRITE,m.as_ptr() as u64,m.len() as u64,0); } };
++    mark(b"ech debut");
+     let bytes = fs.read_access_id(src.id, source_at, len).map_err(error)?;
+     shape(bytes.len() == len)?;
++    mark(b"ech lecture");
+     let next = fs.stat_id(src.id).map_err(error)?.revision;
+     let used = if q[2] == w::TEXT_RANGE {
+         text_length(&bytes, end == st.size).ok_or(rt::BAD_ARGUMENT)?
+@@ -415,10 +418,13 @@
+         s.clock.sample()?;
+     }
+     s.dev.start_probe();
+-    fs.prepare_write_id(dest.id, dst_at, &bytes[..used])
+-        .map_err(error)?
+-        .commit()
++    mark(b"ech validation");
++    let prepared=fs.prepare_write_id(dest.id, dst_at, &bytes[..used])
+         .map_err(error)?;
++    mark(b"ech preparation");
++    prepared.commit()
++        .map_err(error)?;
++    mark(b"ech durable");
+     w::set(a, 24, used as u64);
+     w::set(a, 32, next);
+     Ok(())

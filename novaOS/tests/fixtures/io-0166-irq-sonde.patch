@@ -1,0 +1,37 @@
+--- a/novaOS/kernel/src/hardware/block/attente_irq.rs
++++ b/novaOS/kernel/src/hardware/block/attente_irq.rs
+@@ -27,6 +27,7 @@
+
+ // Remplacé uniquement dans l'archive instrumentée.
+-#[inline(always)]
+-pub(super) fn noter(_: usize) {}
++pub(super) fn noter(i: usize) {
++    crate::mesures_save::attente_irq(i);
++}
+
+ fn reveiller(compteur: usize) {
+--- a/novaOS/tests/compteur_sauvegarde.rs
++++ b/novaOS/tests/compteur_sauvegarde.rs
+@@ -3,4 +3,10 @@
+ use crate::hal;
+ use core::sync::atomic::{AtomicBool, AtomicU64, Ordering::Relaxed};
++static ATTENTE_IRQ: [AtomicU64; 8] = [const { AtomicU64::new(0) }; 8];
++pub(crate) fn attente_irq(i: usize) {
++    if dma_active() {
++        ATTENTE_IRQ[i].fetch_add(1, Relaxed);
++    }
++}
+ static DMA: [AtomicU64; 15] = [const { AtomicU64::new(0) }; 15];
+ pub(crate) fn dma_active() -> bool {
+@@ -127,4 +133,5 @@
+             .chain(&PHASE)
+             .chain(&APPELS_FILE)
++            .chain(&ATTENTE_IRQ)
+             .chain(&HW)
+             .chain(&DMA)
+@@ -212,4 +219,5 @@
+         DMA.each_ref().map(|v| v.load(Relaxed))
+     ));
++    hal::log(format_args!("SAVE attente_irq={:?}", ATTENTE_IRQ.each_ref().map(|v| v.load(Relaxed))));
+     hal::log(format_args!(
+         "SAVE pret_local={:?}",

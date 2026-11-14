@@ -12,8 +12,17 @@ const ENTRY: usize = 4;
 
 use crate::sched::sync::Mutex;
 static PARKED: Mutex<Option<Domain>> = Mutex::new(None);
-#[derive(Clone, Copy)]
+#[derive(PartialEq, Eq)]
+enum Installation {
+    Racine,
+    Interruptions,
+    File,
+    Active,
+    Stationnee,
+}
 pub(super) struct Domain {
+    phase: Installation,
+    en_vol: bool,
     anchors: [Frame; 9],
     regs: Region,
     apic: Region,
@@ -22,23 +31,20 @@ pub(super) struct Domain {
     record: usize,
 }
 impl Domain {
-    pub fn start(p: &Pages, sid: u8) -> Result<Self> {
+    pub fn preparer(sid: u8) -> Result<Self> {
         if u16::from(sid) != SID {
             return Err(Error::Route);
         }
-        if let Some(mut prior) = PARKED.lock().take() {
-            if prior.regs.r32(0x1c) & RUN != RUN
-                || prior.anchors[1].mem.r64(16 * usize::from(SID)) != 0
-            {
-                return Err(Error::Quarantine);
+        {
+            let mut garee = PARKED.lock();
+            if let Some(prior) = garee.as_ref() {
+                if prior.regs.r32(0x1c) & RUN != RUN
+                    || prior.anchors[1].mem.r64(16 * usize::from(SID)) != 0
+                {
+                    return Err(Error::Quarantine);
+                }
+                return Ok(garee.take().unwrap());
             }
-            prior.anchors[1].mem.w64(16 * usize::from(SID) + 8, 0x102);
-            prior.anchors[1]
-                .mem
-                .w64(16 * usize::from(SID), prior.anchors[2].pa | 1);
-            barrier();
-            prior.invalidate(p, &[0x11, 0xd2, 4])?;
-            return Ok(prior);
         }
         let regs = Region::map(0xfed9_0000, 320, 4096)?;
         let (lo, hi): (u32, u32);
@@ -81,7 +87,9 @@ impl Domain {
                 }
             }
         }
-        let mut d = Self {
+        let d = Self {
+            phase: Installation::Racine,
+            en_vol: false,
             anchors,
             regs,
             apic,
@@ -98,29 +106,65 @@ impl Domain {
                 anchors[3 + level].pa | 3,
             );
         }
-        barrier();
-        regs.w64(0x20, anchors[0].pa);
-        regs.w32(0x18, 1 << 30);
-        wait(|| regs.r32(0x1c) & (1 << 30) != 0)?;
-        regs.w64(0xb8, anchors[6].pa | 0x803);
-        regs.w32(0x18, 1 << 24);
-        wait(|| regs.r32(0x1c) & (1 << 24) != 0)?;
-        // Le modèle conserve IQT d'une incarnation à la suivante, même si
-        // IQH est remis à zéro à l'activation. Ne jamais rejouer une queue retirée.
-        regs.w64(0x88, 0);
-        if regs.r64(0x88) != 0 {
-            return Err(Error::Quarantine);
-        }
-        regs.w64(0x90, anchors[7].pa);
-        regs.w32(0x18, RUN);
-        wait(|| regs.r32(0x1c) & 0xc7800000 == 0xc7000000)?;
-        if regs.r64(0xb8) != anchors[6].pa | 0x803 {
-            return Err(Error::Route);
-        }
-        d.invalidate(p, &[0x11, 0xd2, 4])?; // IOTLB global avec drainage lecture et écriture
         Ok(d)
     }
+    // Les neuf cadres appartiennent à la machine après publication de RTADDR.
+    // Une reprise termine l'étape amorcée sans réinitialiser un anneau actif.
+    fn activer(&mut self) -> Result<()> {
+        let regs = self.regs;
+        let anchors = &self.anchors;
+        if self.phase == Installation::Racine {
+            barrier();
+            regs.w64(0x20, anchors[0].pa);
+            regs.w32(0x18, 1 << 30);
+            wait(|| regs.r32(0x1c) & (1 << 30) != 0)?;
+            self.phase = Installation::Interruptions;
+        }
+        if self.phase == Installation::Interruptions {
+            regs.w64(0xb8, anchors[6].pa | 0x803);
+            regs.w32(0x18, 1 << 24);
+            wait(|| regs.r32(0x1c) & (1 << 24) != 0)?;
+            regs.w64(0x88, 0);
+            if regs.r64(0x88) != 0 {
+                return Err(Error::Quarantine);
+            }
+            regs.w64(0x90, anchors[7].pa);
+            regs.w32(0x18, RUN);
+            self.phase = Installation::File;
+        }
+        if self.phase == Installation::File {
+            wait(|| regs.r32(0x1c) & 0xc7800000 == 0xc7000000)?;
+            if regs.r64(0xb8) != anchors[6].pa | 0x803 {
+                return Err(Error::Route);
+            }
+            self.phase = Installation::Active;
+        }
+        Ok(())
+    }
+    pub fn start(&mut self, p: &Pages) -> Result<()> {
+        self.activer()?;
+        if self.phase == Installation::Stationnee {
+            self.anchors[1].mem.w64(16 * usize::from(SID) + 8, 0x102);
+            self.anchors[1]
+                .mem
+                .w64(16 * usize::from(SID), self.anchors[2].pa | 1);
+            barrier();
+            self.phase = Installation::Active;
+        }
+        self.invalidate(p, &[0x11, 0xd2, 4])
+    }
+    fn collecter(&mut self) -> Result<()> {
+        if self.en_vol {
+            wait(|| self.anchors[8].mem.r32(0) == self.cookie || self.regs.r32(0x34) & 0x10 != 0)?;
+            if self.regs.r32(0x34) & 0x10 != 0 || self.regs.r64(0x80) != u64::from(self.tail) {
+                return Err(Error::Quarantine);
+            }
+            self.en_vol = false;
+        }
+        Ok(())
+    }
     fn invalidate(&mut self, _p: &Pages, kinds: &[u64]) -> Result<()> {
+        self.collecter()?;
         self.cookie = self.cookie.checked_add(1).ok_or(Error::State)?;
         self.anchors[8].mem.w32(0, 0);
         for (lo, hi) in kinds
@@ -138,12 +182,9 @@ impl Domain {
             self.tail = (self.tail + 16) % 4096;
         }
         barrier();
+        self.en_vol = true;
         self.regs.w64(0x88, u64::from(self.tail));
-        wait(|| self.anchors[8].mem.r32(0) == self.cookie || self.regs.r32(0x34) & 0x10 != 0)?;
-        if self.regs.r32(0x34) & 0x10 != 0 || self.regs.r64(0x80) != u64::from(self.tail) {
-            return Err(Error::Quarantine);
-        }
-        Ok(())
+        self.collecter()
     }
     pub fn map(&mut self, p: &Pages, n: usize, pa: u64, rights: u32) -> Result<()> {
         if n >= 7 || pa % 4096 != 0 || rights > 3 {
@@ -207,7 +248,12 @@ impl Domain {
             Ok(())
         }
     }
+    pub fn retirer_slot(&mut self, p: &Pages, n: usize) -> Result<()> {
+        self.map(p, n, 0, 0)
+    }
     pub fn stop(&mut self, p: &Pages) -> Result<()> {
+        self.activer()?;
+        self.collecter()?;
         self.anchors[1].mem.w64(16 * usize::from(SID), 0);
         self.invalidate(p, &[0x11, 0xd2])?;
         // Un échec d'accès attendu appartient à cette incarnation. Ne jamais
@@ -233,12 +279,14 @@ impl Domain {
         if self.regs.r32(0x1c) & RUN != RUN {
             return Err(Error::Quarantine);
         }
-        let mut parked = PARKED.lock();
-        if parked.is_some() {
-            return Err(Error::State);
-        }
-        *parked = Some(*self);
+        self.phase = Installation::Stationnee;
         Ok(())
+    }
+    pub fn garer(self) {
+        assert!(self.phase == Installation::Stationnee && !self.en_vol);
+        let mut parked = PARKED.lock();
+        assert!(parked.is_none());
+        *parked = Some(self);
     }
 }
 impl Domain {

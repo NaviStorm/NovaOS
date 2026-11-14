@@ -8,6 +8,7 @@ use crate::{abi, sched::sync::Mutex};
 pub(crate) use wire::PORTAL;
 static OWNER: AtomicU64 = AtomicU64::new(0);
 static EPOCH: AtomicU64 = AtomicU64::new(0);
+static ACTIF: AtomicU64 = AtomicU64::new(0);
 static SESSION: Mutex<Session> = Mutex::new(Session {
     device: None,
     quarantine: false,
@@ -23,7 +24,7 @@ enum Phase {
     Closed,
 }
 struct Session {
-    device: Option<Transport>,
+    device: Option<Bail>,
     quarantine: bool,
     rights: u8,
     phase: Phase,
@@ -31,7 +32,7 @@ struct Session {
 pub(crate) fn begin_session(rights: u8) -> Result<u64> {
     begin_with(rights, Transport::open)
 }
-pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Transport>) -> Result<u64> {
+pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Bail>) -> Result<u64> {
     let mut s = SESSION.lock();
     if s.quarantine || s.device.is_some() || OWNER.load(Ordering::Acquire) != 0 {
         return Err(Error::Quarantine);
@@ -50,6 +51,7 @@ pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Transport>) -
                 } else {
                     255
                 });
+            ACTIF.store(epoch, Ordering::Release);
             Ok(epoch)
         }
         Err(e) => {
@@ -62,8 +64,9 @@ pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Transport>) -
 }
 /// Le lanceur a construit le processus, dont le PID ne sera jamais réutilisé.
 pub(crate) fn attach(pid: u64, epoch: u64) -> bool {
-    epoch != 0
-        && EPOCH.load(Ordering::Acquire) == epoch
+    pid != 0
+        && epoch != 0
+        && ACTIF.load(Ordering::Acquire) == epoch
         && OWNER
             .compare_exchange(0, pid, Ordering::AcqRel, Ordering::Acquire)
             .is_ok()
@@ -72,26 +75,27 @@ pub(crate) fn admit(pid: u64, key: u64) -> bool {
     pid != 0
         && OWNER.load(Ordering::Acquire) == pid
         && key != 0
-        && EPOCH.load(Ordering::Acquire) == key
+        && ACTIF.load(Ordering::Acquire) == key
 }
 pub(crate) fn died(pid: u64) {
-    let _ = OWNER.compare_exchange(pid, 0, Ordering::AcqRel, Ordering::Acquire);
+    if pid != 0
+        && OWNER
+            .compare_exchange(pid, 0, Ordering::AcqRel, Ordering::Acquire)
+            .is_ok()
+    {
+        ACTIF.store(0, Ordering::Release);
+    }
 }
 pub(crate) fn retire() -> Result<()> {
-    OWNER.store(0, Ordering::Release);
     let mut s = SESSION.lock();
-    // Sur QEMU un reset d'un backend encore suspendu peut bloquer le vCPU
-    // dans l'accès MMIO lui-même. Attendre le retour de la seule chaîne avant
-    // ce registre. Le délai expire côté invité, jamais dans un reset bloquant.
-    let d = s.device.as_ref().ok_or(Error::State)?;
-    if d.pending.is_some() && d.q.completed().is_err() {
-        s.phase = Phase::Closed;
-        s.quarantine = true;
-        return Err(Error::Quarantine);
-    }
-    let device = s.device.take().ok_or(Error::State)?;
+    ACTIF.store(0, Ordering::Release);
+    OWNER.store(0, Ordering::Release);
     s.phase = Phase::Closed;
-    if let Err(err) = device.close() {
+    let retrait = match s.device.take() {
+        Some(d) => d.close(),
+        None => ownership::reprendre(),
+    };
+    if let Err(err) = retrait {
         s.quarantine = true;
         return Err(err);
     }
@@ -120,7 +124,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
         return Err(abi::BAD_ARGUMENT);
     }
     let right = match w[1] {
-        INFO | READ => 1,
+        INFO | READ | DISCOVER => 1,
         WRITE => 2,
         FLUSH => 4,
         CLOSE => 8,
@@ -134,7 +138,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
     if phase == Phase::Closed {
         return Err(abi::CLOSED);
     }
-    let d = s.device.as_mut().ok_or(abi::CLOSED)?;
+    let d = s.device.as_deref_mut().ok_or(abi::CLOSED)?;
     let op = w[1];
     let l = lba(w);
     if hw {
@@ -145,6 +149,9 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
         w[32..].fill(0);
     }
     match (op, w[2], phase) {
+        (DISCOVER, BEGIN, Phase::Empty) => {
+            *w = discovery(number(w, 40) & IMPLEMENTED, true);
+        }
         (INFO, BEGIN, Phase::Empty) => {
             put(w, 4, d.size as u32);
             put(w, 16, u32::from(rights));
@@ -155,7 +162,9 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
                 return Err(abi::BAD_ARGUMENT);
             }
             metrics::begin();
-            if d.begin_read(d.first + l).is_err() {
+            if d.entree_autorisee(d.first + l, 0, d.size, || admit(pid, key))
+                .is_err()
+            {
                 s.phase = Phase::Closed;
                 return Err(abi::REFUSED);
             }
@@ -203,7 +212,9 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
             s.phase = Phase::Writing(l, at + n);
         }
         (WRITE, END, Phase::Writing(old, at)) if l == old && at == d.size => {
-            if d.output(d.first + l, false).is_err() {
+            if d.sortie_autorisee(d.first + l, false, d.size, || admit(pid, key))
+                .is_err()
+            {
                 s.phase = Phase::Closed;
                 return Err(abi::REFUSED);
             }
@@ -211,7 +222,9 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
             s.phase = Phase::Empty;
         }
         (FLUSH, BEGIN, Phase::Empty) => {
-            if d.output(0, true).is_err() {
+            if d.sortie_autorisee(0, true, d.size, || admit(pid, key))
+                .is_err()
+            {
                 s.phase = Phase::Closed;
                 return Err(abi::REFUSED);
             }
@@ -219,6 +232,51 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
         (CLOSE, BEGIN, Phase::Empty) => s.phase = Phase::Closed,
         _ => return Err(abi::BAD_ARGUMENT),
     }
+    Ok(())
+}
+
+/// Portail page : les adresses de la chaîne sont construites dans le noyau.
+pub(crate) fn page_command(
+    pid: u64,
+    key: u64,
+    w: &wire::Wire,
+    page: &mut [u8; 4096],
+) -> core::result::Result<(), u64> {
+    let mut s = SESSION.lock();
+    if !admit(pid, key) || s.quarantine {
+        return Err(abi::REVOKED);
+    }
+    if !wire::syntax(w) || w[2] != wire::PAGE_PHASE {
+        return Err(abi::BAD_ARGUMENT);
+    }
+    let write = w[1] == wire::WRITE;
+    if s.rights & (if write { 2 } else { 1 }) == 0 {
+        return Err(abi::DENIED);
+    }
+    if s.phase != Phase::Empty {
+        return Err(abi::REFUSED);
+    }
+    let d = s.device.as_deref_mut().ok_or(abi::CLOSED)?;
+    let lba = wire::lba(w);
+    let sectors = (4096 / d.size) as u64;
+    if lba.checked_add(sectors).is_none_or(|end| end > d.count) {
+        return Err(abi::BAD_ARGUMENT);
+    }
+    let start = d.first.checked_add(lba).ok_or(abi::BAD_ARGUMENT)?;
+    metrics::begin();
+    let result = if write {
+        d.p.0[22].mem.write_page(page);
+        d.sortie_autorisee(start, false, 4096, || admit(pid, key))
+    } else {
+        d.entree_autorisee(start, 0, 4096, || admit(pid, key))
+            .and_then(|()| d.finish(4097))
+            .map(|()| d.p.0[20].mem.read_page(page))
+    };
+    if result.is_err() {
+        s.phase = Phase::Closed;
+        return Err(abi::REFUSED);
+    }
+    metrics::end(4096);
     Ok(())
 }
 

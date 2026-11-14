@@ -1,0 +1,25 @@
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -133,6 +133,9 @@
+         HEAP_RESIZE => Err(BAD_ARGUMENT),
+         CLOCK_UTC if args == [0; 3] => crate::arch::rtc::seconds().ok_or(REFUSED),
+         CLOCK_UTC => Err(BAD_ARGUMENT),
+-        IPC_FEATURES => ipc::features(a, b, c),
++        IPC_FEATURES => {
++            crate::mesures_save::control(id);
++            ipc::features(a, b, c)
++        }
+         PROCESS_ID => Ok(with(|s| caller(s).number)),
+         THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
+--- a/novaOS/tests/compteur_sauvegarde.rs
++++ b/novaOS/tests/compteur_sauvegarde.rs
+@@ -10,3 +10,3 @@
+ static GIFTS: AtomicU64 = AtomicU64::new(0);
+-static LOCAL: [AtomicU64; 7] = [const { AtomicU64::new(0) }; 7];
++static LOCAL: [AtomicU64; 8] = [const { AtomicU64::new(0) }; 8];
+ static UNKNOWN: AtomicU64 = AtomicU64::new(0);
+@@ -61,3 +61,4 @@
+         IPC_BOOTSTRAP => 6,
++        IPC_FEATURES => 7,
+         _ => return,
+     };

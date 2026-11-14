@@ -2,6 +2,11 @@
 use alloc::{borrow::ToOwned, string::String, vec::Vec};
 mod check;
 mod data;
+#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+#[path = "../lab/es-groupees/preparation.rs"]
+mod groupe;
+#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+pub use groupe::BlocGroupe;
 mod record;
 use crate::{
     Device, Engine, Error, Result, Tx, View,

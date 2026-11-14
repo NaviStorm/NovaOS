@@ -1,0 +1,72 @@
+{
+  "chemin": "classique",
+  "plateforme": "utm-aarch64",
+  "cas": "inserer-milieu",
+  "secteur": 512,
+  "releve": "ordinaire",
+  "revision": "a0e7b000c5bf4d3246361ad13978540ec5c4aaf2",
+  "bilan_livraison_sha256": "1e902a9911e81fb847073ac45b84e3a854fb56fb8be8a29199f880ca476f40f6",
+  "noyau_sha256": "3dc5217ad014f5d3b7791f753ebff1f5aa78c7bd5abd1c07db65ad86538944f6",
+  "serial_sha256": "caca59f8eed16ae6325b3c86061cd0c6c1030092524f6e2ae29f7515082c6907",
+  "mesure_sha256": "8b2759e502c523e6aebd3a9cc23be5b81b5f650eabc01346972360ea0fab246c",
+  "serial_reprise_sha256": "a1eacd53d502dbd306c46f4f03af32b37c1d86af55c2301e819b7848ef8fc4b4",
+  "moniteur_sha256": "8fd7d71d0dc3b99bdb26bc4c8e5f96b4298a3ab72e4cef382595d0fbac9e1f64",
+  "sauvegarde_ms": 29816.822,
+  "apres_oui_ms": 18255.931,
+  "redemarrages": 1,
+  "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+  "avant": [
+    65,
+    66
+  ],
+  "apres": [
+    134,
+    135
+  ],
+  "image_initiale": {
+    "format": "qcow2",
+    "virtual-size": 81788928,
+    "actual-size": 7471104,
+    "cluster-size": 65536
+  },
+  "backend_hmp": {
+    "rd_operations": 196,
+    "wr_operations": 1443,
+    "flush_operations": 134,
+    "rd_bytes": 802816,
+    "wr_bytes": 5910528,
+    "rd_total_time_ns": 33342000,
+    "wr_total_time_ns": 169900000,
+    "flush_total_time_ns": 94163000
+  },
+  "octets_relus": true,
+  "reproduction_elf": {
+    "service_embarque": "storage-media.bin",
+    "taille": 185752,
+    "offset_dans_elf": 765800,
+    "sha256_service_paquet": "ae96a9afcfae5e99f640fa52cb6f91740d69c0045bfabff4a4ed02c034f899f6",
+    "sha256_service_export": "0d788ed5f0b8457e7124b7a3129a0be8e337d6a49202e62d1b461a80412f0a4f",
+    "autres_octets_PT_LOAD_identiques": true
+  },
+  "extraire_du_paquet": {
+    "revision": "a0e7b000c5bf4d3246361ad13978540ec5c4aaf2",
+    "sha256_archive": "e53e8b8190633dda5214b20dbda9d568aca07980fe71d24b7db234dc6c23926a",
+    "sha256_support_extrait": "fe878e38bc26dade3c9279bec97782d73425ccfff03168b933fc434a777090b9",
+    "sha256_elf_installateur_extrait_fat": "15e65e9bf760cd0bb5812702c6a46d5f73a7284d26e70601dd9ae75ccdd0194e",
+    "sha256_elf_systeme_extrait_fat_apres_installation": "3dc5217ad014f5d3b7791f753ebff1f5aa78c7bd5abd1c07db65ad86538944f6",
+    "esp_embarquees": {
+      "512": {
+        "debut_elf": 263720,
+        "taille_octets": 2251308,
+        "sha256": "619e1ac0ff13e51545a4ad64ef4e597b3e08f23c30ae5c5979ed3d7d324a34b7",
+        "sha256_boot_novaos_elf": "3dc5217ad014f5d3b7791f753ebff1f5aa78c7bd5abd1c07db65ad86538944f6"
+      },
+      "4096": {
+        "debut_elf": 2515028,
+        "taille_octets": 2447700,
+        "sha256": "209cf31e0311afdf333734735611809d8557ed07c238b41ed35bf161bb30171a",
+        "sha256_boot_novaos_elf": "3dc5217ad014f5d3b7791f753ebff1f5aa78c7bd5abd1c07db65ad86538944f6"
+      }
+    }
+  }
+}

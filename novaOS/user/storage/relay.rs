@@ -10,7 +10,7 @@ fn serve() -> Result<()> {
     let lower = (config(2), config(3));
     let mut last = 0;
     loop {
-        let m = match receive_for(input, 5000) {
+        let mut m = match receive_for(input, 5000) {
             Err(TIMED_OUT) if matches!(config(1), 41 | 42) => continue,
             r => r?,
         };
@@ -19,11 +19,20 @@ fn serve() -> Result<()> {
             send(output, m.tag, &[BAD_ARGUMENT as u8])?;
             continue;
         }
+        if m.payload[1] == wire::DISCOVER {
+            let bits = wire::number(&m.payload, 40) & wire::IMPLEMENTED;
+            wire::put(&mut m.payload, 40, bits);
+        }
         last = m.tag;
         send(lower.0, m.tag, &m.payload)?;
         let answer = receive(lower.1)?;
         if answer.kind != 1 || answer.tag != m.tag || !matches!(answer.len, 1 | 128) {
             return Err(BAD_ARGUMENT);
+        }
+        if m.payload[1] == wire::DISCOVER && answer.len == 128
+            && wire::offered(&answer.payload, wire::number(&m.payload, 40)).is_none()
+        {
+            return Err(REFUSED);
         }
         send(output, m.tag, &answer.payload[..answer.len as usize])?;
         if m.payload[1] == wire::CLOSE && answer.len == 128 {

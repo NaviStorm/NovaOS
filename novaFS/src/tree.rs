@@ -149,6 +149,12 @@ impl Node {
 
     pub fn decode(bytes: &Block, ids: Ids, r: Ref, family: Family) -> Result<Self> {
         check_meta(bytes, TREE, ids, r)?;
+        Self::decode_verified(bytes, r, family)
+    }
+
+    /// Appel interne réservé à une page privée déjà authentifiée pour la
+    /// même famille et la même référence complète, dans le cache de ce volume.
+    pub(crate) fn decode_verified(bytes: &Block, r: Ref, family: Family) -> Result<Self> {
         let count = usize::from(le16(&bytes[100..102]));
         let level = bytes[98];
         // Chaque cellule, même vide, exigerait 2 octets de table, 4
@@ -527,3 +533,7 @@ pub fn remove(s: &mut impl WriteTree, root: Ref, f: Family, key: &[u8]) -> Resul
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+#[path = "../lab/es-groupees/arbre.rs"]
+pub(crate) mod ajout;

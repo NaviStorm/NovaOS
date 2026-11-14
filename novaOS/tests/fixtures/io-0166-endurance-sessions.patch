@@ -1,0 +1,45 @@
+--- a/novaOS/kernel/src/main.rs
++++ b/novaOS/kernel/src/main.rs
+@@ -147,7 +147,9 @@
+         b"storage-eio" => Some(8),
+         _ => None,
+     } {
+-        let ok = if mode == 28 {
++        let ok = if mode == 42 {
++            sched::process::storage::endurance_cli()
++        } else if mode == 28 {
+             !sched::process::storage::volume(mode) && sched::process::storage::volume(13)
+         } else if matches!(mode, 25 | 36) {
+             sched::process::storage::file_perf(mode)
+--- a/novaOS/kernel/src/sched/process/storage.rs
++++ b/novaOS/kernel/src/sched/process/storage.rs
+@@ -362,8 +362,29 @@
+         && [a, s, d, b].iter().all(|x| *x == Outcome::Exit(0))
+         && retired.is_ok()
+ }
+
++/// Qualification privée : remonter le même disque et détruire la chaîne à chaque tour.
++pub(crate) fn endurance_cli() -> bool {
++    let mut reference = None;
++    for tour in 1..=64 {
++        if !volume(42) {
++            return false;
++        }
++        let repos = heap::audit(true);
++        let ipc = with(|s| (s.processes.slots.iter().flatten().count(), s.ipc.pages()));
++        let attendu = *reference.get_or_insert(repos);
++        hal::log(format_args!(
++            "ENDURANCE tour={tour} libres={} blocs={} occupes={} engages={} processus={} pages_ipc={}",
++            repos.free_pages, repos.blocks, repos.occupied, repos.committed, ipc.0, ipc.1
++        ));
++        if repos != attendu || ipc != (0, 0) {
++            return false;
++        }
++    }
++    true
++}
++
+ pub(crate) fn file_perf(mode: u64) -> bool {
+     if !volume(mode) {
+         return false;
+     }

@@ -251,7 +251,7 @@ impl UserSpace {
         len: usize,
         write: bool,
     ) -> Option<[(*mut u8, usize); 2]> {
-        if len == 0 || len > crate::abi::DEBUG_MAX || va.checked_add(len as u64)? > (1 << 47) {
+        if len == 0 || len > PAGE as usize || va.checked_add(len as u64)? > (1 << 47) {
             return None;
         }
         let mut parts = [(core::ptr::null_mut(), 0); 2];

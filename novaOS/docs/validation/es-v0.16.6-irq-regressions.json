@@ -1,0 +1,3948 @@
+{
+  "base": "4ae44124b42ad9cf971ee8c134cb2e4145aa17c5",
+  "branche": "codex/es-groupees-0166",
+  "fixture_irq_sha256": "3b7ed8f1fce2336bc65dc1062716dadd7322650173b0ee76eab2e89d20a198be",
+  "noyaux_irq_sha256": {
+    "coupe": {
+      "aarch64": "c7666cae2152aaf8143d10746a99760282540ebacda95a675f244e61bdfcfabe",
+      "x86_64": "7ba6a9f7955e6a0de91ed913e69bad3ba889b91df76772346ed5d4be0f519fbe"
+    },
+    "course": {
+      "aarch64": "f26374f43bedad5a0951866930c4b5e514cc3101e657de2de92766260216679b",
+      "x86_64": "a913cbde4350ec3ef9924fe9721a00746d097b9fe3dda1c58378ffacdbfc6d08"
+    },
+    "defauts": {
+      "aarch64": "888f7cf3d812ffdf8d662e6e92cc7d1cc036b9d5c8ef495f8665bb6756d61105",
+      "x86_64": "76163c81876b9a0d7206f8d0ed8f72ee336b8eef5e373ce91bf53cb7f014794e"
+    },
+    "regression": {
+      "aarch64": "6b60d8621ba4d5264bba4c3c47f253558758960e68fbe28c8b83061022945946",
+      "x86_64": "be539f0863f57c0ed23a2aef57db79beae2ed2f6819aa5f7648f5cff1e20d5a5"
+    },
+    "sans": {
+      "aarch64": "e99ad8617364d07aeb7fbe179af5672b089bfa6ee7ba97365350479c5384ca29",
+      "x86_64": "3a04b6685e08daef54ced873dc5a794a0a5b5f499694865fb87efde3105b030b"
+    },
+    "sonde": {
+      "aarch64": "de2a00778cf88ea7b3d9e677e0fb263d64a4bfe5b4d4cc550bd19910cbbaf6b4",
+      "x86_64": "a8a5429a8032b8b389b1b0796c5045975c8a6772aedad11ac154a6fee1a8e03b"
+    },
+    "utm-coupe": {
+      "aarch64": "dd0f622b2940dfbf71446f68b5ae5a7e31e21ed8e220367ff9e30ab13ef4dfd6"
+    }
+  },
+  "preuves_sources": [
+    {
+      "profil": "coupe",
+      "sources_identiques": 245,
+      "liste_sha256": "bb4fbedc9e2e29d602a62d853c6eea9beed9c1c71836eb73cd3120d7e14965b2"
+    },
+    {
+      "profil": "course",
+      "sources_identiques": 242,
+      "liste_sha256": "853335cccc746ddeef635d59e8e5244521d3a992ff8dbe7ec8e27a01a9b68c1c"
+    },
+    {
+      "profil": "defauts",
+      "sources_identiques": 245,
+      "liste_sha256": "bb4fbedc9e2e29d602a62d853c6eea9beed9c1c71836eb73cd3120d7e14965b2"
+    },
+    {
+      "profil": "regression",
+      "sources_identiques": 242,
+      "liste_sha256": "9dfe22b5106a85d3b847fe8e913f1107789d3c3d27925c0e3471cd58b963eace"
+    },
+    {
+      "profil": "sans",
+      "sources_identiques": 241,
+      "liste_sha256": "20744515b9d57b06e526f99517f1b20894cfe60621dc68c0ba6367562a453449"
+    },
+    {
+      "profil": "sonde",
+      "sources_identiques": 248,
+      "liste_sha256": "bc4914d51a0fa5a2421bfa57bf95f340e80f0218d7afec3edcf476eca54f3fed"
+    },
+    {
+      "profil": "utm-coupe",
+      "sources_identiques": 245,
+      "liste_sha256": "bb4fbedc9e2e29d602a62d853c6eea9beed9c1c71836eb73cd3120d7e14965b2"
+    }
+  ],
+  "procedure_sources": "Sept profils extraits par git archive sur la base. Comparaison binaire des fichiers de kernel/src, ABI, user, components, novaFS/src, novaFS/lab/es-groupees et compteur_sauvegarde.rs avec une deuxième archive produite par les mêmes fixtures figées.",
+  "temoin_polling": {
+    "noyaux_sha256": {
+      "aarch64": "ba0e2eea092392de7eed5fb39dbad69768bfa1fcf91d2bdfc38e2350c70a4663",
+      "x86_64": "53994e4a74318de98ebb3a9d12ee853583e3367b5a60b3bb893638d2fb60c6d7"
+    },
+    "commandes": [
+      "poll-aarch64-512",
+      "poll-aarch64-4096",
+      "poll-x86_64-512",
+      "poll-x86_64-4096"
+    ]
+  },
+  "novaos": {
+    "aarch64": {
+      "vi-ecran-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "test": {
+        "marques_ok": 25,
+        "limites": []
+      },
+      "elf-test": {
+        "marques_ok": 1,
+        "limites": []
+      },
+      "lifecycle-test": {
+        "marques_ok": 1,
+        "limites": []
+      },
+      "ipc-races": {
+        "marques_ok": 1,
+        "limites": []
+      },
+      "block-test": {
+        "marques_ok": 24,
+        "limites": []
+      },
+      "file-test": {
+        "marques_ok": 44,
+        "limites": []
+      },
+      "namespace-test": {
+        "marques_ok": 24,
+        "limites": []
+      },
+      "cli-test": {
+        "marques_ok": 2,
+        "limites": []
+      },
+      "cli-p9-test": {
+        "marques_ok": 2,
+        "limites": []
+      },
+      "nsh-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "nsh-scripts-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "nsh-terminal-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "vi-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "vi-volumes-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "vi-memoire-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "mount-progress-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "ipc-perf": {
+        "marques_ok": 1,
+        "limites": []
+      },
+      "ram-test": {
+        "marques_ok": 4,
+        "limites": [
+          "NON EXÉCUTÉ (amorçage) — aarch64-abi-test-64"
+        ]
+      },
+      "block-perf": {
+        "marques_ok": 2,
+        "limites": []
+      }
+    },
+    "x86_64": {
+      "vi-ecran-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "test": {
+        "marques_ok": 25,
+        "limites": []
+      },
+      "elf-test": {
+        "marques_ok": 1,
+        "limites": []
+      },
+      "lifecycle-test": {
+        "marques_ok": 1,
+        "limites": []
+      },
+      "ipc-races": {
+        "marques_ok": 1,
+        "limites": []
+      },
+      "block-test": {
+        "marques_ok": 24,
+        "limites": []
+      },
+      "file-test": {
+        "marques_ok": 44,
+        "limites": []
+      },
+      "namespace-test": {
+        "marques_ok": 24,
+        "limites": []
+      },
+      "cli-test": {
+        "marques_ok": 2,
+        "limites": []
+      },
+      "cli-p9-test": {
+        "marques_ok": 2,
+        "limites": []
+      },
+      "nsh-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "nsh-scripts-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "nsh-terminal-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "vi-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "vi-volumes-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "vi-memoire-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "mount-progress-test": {
+        "marques_ok": 0,
+        "limites": []
+      },
+      "ipc-perf": {
+        "marques_ok": 1,
+        "limites": []
+      },
+      "ram-test": {
+        "marques_ok": 4,
+        "limites": [
+          "NON EXÉCUTÉ (amorçage) — x86_64-abi-test-64"
+        ]
+      },
+      "block-perf": {
+        "marques_ok": 2,
+        "limites": []
+      }
+    }
+  },
+  "novafs": {
+    "aarch64": {
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 199,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "modele": {
+        "reussis": 1,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "options": {
+        "reussis": 2,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=14.520",
+      "pannes_p5": {
+        "512": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ],
+        "4096": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ]
+      },
+      "migration": [
+        "MIGRATION secteur=512 frontières=96",
+        "MIGRATION secteur=4096 frontières=96"
+      ],
+      "permutations": [
+        "PERMUTATIONS secteur=512 ordres=24",
+        "PERMUTATIONS secteur=4096 ordres=24"
+      ],
+      "injections_ancres": 2304,
+      "ancres_pool": [
+        "POOL_ANCRE secteur=512 injections=6 origine_snapshot_clone=vérifiés clés_erronées=refus",
+        "POOL_ANCRE secteur=4096 injections=6 origine_snapshot_clone=vérifiés clés_erronées=refus"
+      ],
+      "cow": {
+        "coupures": [
+          {
+            "acquit_persistant": true,
+            "ancien": 105,
+            "conflits": 4,
+            "frontieres": 39,
+            "injections": 117,
+            "nouveau": 9,
+            "plages": false,
+            "refus": 3,
+            "secteur": 512
+          },
+          {
+            "acquit_persistant": true,
+            "ancien": 114,
+            "conflits": 4,
+            "frontieres": 42,
+            "injections": 126,
+            "nouveau": 9,
+            "plages": true,
+            "refus": 3,
+            "secteur": 512
+          },
+          {
+            "acquit_persistant": true,
+            "ancien": 105,
+            "conflits": 4,
+            "frontieres": 39,
+            "injections": 117,
+            "nouveau": 9,
+            "plages": false,
+            "refus": 3,
+            "secteur": 4096
+          },
+          {
+            "acquit_persistant": true,
+            "ancien": 114,
+            "conflits": 4,
+            "frontieres": 42,
+            "injections": 126,
+            "nouveau": 9,
+            "plages": true,
+            "refus": 3,
+            "secteur": 4096
+          }
+        ],
+        "deux_ecrivains_concurrents": [
+          512,
+          4096
+        ],
+        "plages_invalides_et_unicode": [
+          512,
+          4096
+        ],
+        "retrait_deux_commandes": [
+          512,
+          4096
+        ],
+        "transaction_revoquee": [
+          512,
+          4096
+        ]
+      }
+    },
+    "x86_64": {
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 199,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "modele": {
+        "reussis": 1,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "options": {
+        "reussis": 2,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=22.601",
+      "pannes_p5": {
+        "512": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ],
+        "4096": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ]
+      },
+      "migration": [
+        "MIGRATION secteur=512 frontières=96",
+        "MIGRATION secteur=4096 frontières=96"
+      ],
+      "permutations": [
+        "PERMUTATIONS secteur=512 ordres=24",
+        "PERMUTATIONS secteur=4096 ordres=24"
+      ],
+      "injections_ancres": 2304,
+      "ancres_pool": [
+        "POOL_ANCRE secteur=512 injections=6 origine_snapshot_clone=vérifiés clés_erronées=refus",
+        "POOL_ANCRE secteur=4096 injections=6 origine_snapshot_clone=vérifiés clés_erronées=refus"
+      ],
+      "cow": {
+        "coupures": [
+          {
+            "acquit_persistant": true,
+            "ancien": 105,
+            "conflits": 4,
+            "frontieres": 39,
+            "injections": 117,
+            "nouveau": 9,
+            "plages": false,
+            "refus": 3,
+            "secteur": 512
+          },
+          {
+            "acquit_persistant": true,
+            "ancien": 114,
+            "conflits": 4,
+            "frontieres": 42,
+            "injections": 126,
+            "nouveau": 9,
+            "plages": true,
+            "refus": 3,
+            "secteur": 512
+          },
+          {
+            "acquit_persistant": true,
+            "ancien": 105,
+            "conflits": 4,
+            "frontieres": 39,
+            "injections": 117,
+            "nouveau": 9,
+            "plages": false,
+            "refus": 3,
+            "secteur": 4096
+          },
+          {
+            "acquit_persistant": true,
+            "ancien": 114,
+            "conflits": 4,
+            "frontieres": 42,
+            "injections": 126,
+            "nouveau": 9,
+            "plages": true,
+            "refus": 3,
+            "secteur": 4096
+          }
+        ],
+        "deux_ecrivains_concurrents": [
+          512,
+          4096
+        ],
+        "plages_invalides_et_unicode": [
+          512,
+          4096
+        ],
+        "retrait_deux_commandes": [
+          512,
+          4096
+        ],
+        "transaction_revoquee": [
+          512,
+          4096
+        ]
+      }
+    }
+  },
+  "securite_qemu": {
+    "aarch64": {
+      "512": {
+        "course": {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "ecriture_concurrente": true,
+          "suppression_ouverte_refusee": true,
+          "remplacement_du_nom_detecte": true,
+          "modifications_locales_conservees": true,
+          "bords_utf8_publies": true
+        },
+        "coupures": [
+          {
+            "frontiere": "pages",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f1",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f2",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": 4,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-ecriture",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "defauts": [
+          {
+            "frontiere": "retrait-vol",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "controles",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true
+          },
+          {
+            "frontiere": "longueur",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 8192,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 8192,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "refus_saturation": {
+          "generations": [
+            72,
+            73
+          ],
+          "nom_absent": true
+        },
+        "fragmentation": {
+          "extents": 983,
+          "destination_sha256": "d6ec23d6b25ef85ef53e9afd4515f081998911fc1341d7ab2cf3c719b9f5d326"
+        },
+        "file_huit_entrees": {
+          "max_pages_par_chaine": 6,
+          "sha256_destination": "d6ec23d6b25ef85ef53e9afd4515f081998911fc1341d7ab2cf3c719b9f5d326"
+        },
+        "invite_rejouee": true
+      },
+      "4096": {
+        "course": {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "ecriture_concurrente": true,
+          "suppression_ouverte_refusee": true,
+          "remplacement_du_nom_detecte": true,
+          "modifications_locales_conservees": true,
+          "bords_utf8_publies": true
+        },
+        "coupures": [
+          {
+            "frontiere": "pages",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f1",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f2",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": 4,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-ecriture",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "defauts": [
+          {
+            "frontiere": "retrait-vol",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "controles",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true
+          },
+          {
+            "frontiere": "longueur",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 8192,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 8192,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "refus_saturation": {
+          "generations": [
+            72,
+            73
+          ],
+          "nom_absent": true
+        },
+        "fragmentation": {
+          "extents": 983,
+          "destination_sha256": "d6ec23d6b25ef85ef53e9afd4515f081998911fc1341d7ab2cf3c719b9f5d326"
+        },
+        "file_huit_entrees": {
+          "max_pages_par_chaine": 6,
+          "sha256_destination": "d6ec23d6b25ef85ef53e9afd4515f081998911fc1341d7ab2cf3c719b9f5d326"
+        },
+        "invite_rejouee": true
+      }
+    },
+    "x86_64": {
+      "512": {
+        "course": {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "ecriture_concurrente": true,
+          "suppression_ouverte_refusee": true,
+          "remplacement_du_nom_detecte": true,
+          "modifications_locales_conservees": true,
+          "bords_utf8_publies": true
+        },
+        "coupures": [
+          {
+            "frontiere": "pages",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f1",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f2",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": 4,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-ecriture",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "defauts": [
+          {
+            "frontiere": "retrait-vol",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "controles",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true
+          },
+          {
+            "frontiere": "longueur",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 8192,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 8192,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "refus_saturation": {
+          "generations": [
+            72,
+            73
+          ],
+          "nom_absent": true
+        },
+        "fragmentation": {
+          "extents": 983,
+          "destination_sha256": "d6ec23d6b25ef85ef53e9afd4515f081998911fc1341d7ab2cf3c719b9f5d326"
+        },
+        "file_huit_entrees": {
+          "max_pages_par_chaine": 6,
+          "sha256_destination": "d6ec23d6b25ef85ef53e9afd4515f081998911fc1341d7ab2cf3c719b9f5d326"
+        },
+        "invite_rejouee": true
+      },
+      "4096": {
+        "course": {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "ecriture_concurrente": true,
+          "suppression_ouverte_refusee": true,
+          "remplacement_du_nom_detecte": true,
+          "modifications_locales_conservees": true,
+          "bords_utf8_publies": true
+        },
+        "coupures": [
+          {
+            "frontiere": "pages",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f1",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f2",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": 4,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-ecriture",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "defauts": [
+          {
+            "frontiere": "retrait-vol",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "controles",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true
+          },
+          {
+            "frontiere": "longueur",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 8192,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 8192,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "refus_saturation": {
+          "generations": [
+            72,
+            73
+          ],
+          "nom_absent": true
+        },
+        "fragmentation": {
+          "extents": 983,
+          "destination_sha256": "d6ec23d6b25ef85ef53e9afd4515f081998911fc1341d7ab2cf3c719b9f5d326"
+        },
+        "file_huit_entrees": {
+          "max_pages_par_chaine": 6,
+          "sha256_destination": "d6ec23d6b25ef85ef53e9afd4515f081998911fc1341d7ab2cf3c719b9f5d326"
+        },
+        "invite_rejouee": true
+      }
+    }
+  },
+  "interop": {
+    "p9": [
+      {
+        "producteur": "aarch64-apple-darwin",
+        "lecteur": "x86_64-apple-darwin",
+        "secteur": 512,
+        "lignees": 2,
+        "octets_compares": 59017,
+        "restaurations": 2,
+        "images_source_et_alias_verifiees": true
+      },
+      {
+        "producteur": "aarch64-apple-darwin",
+        "lecteur": "x86_64-apple-darwin",
+        "secteur": 4096,
+        "lignees": 2,
+        "octets_compares": 59017,
+        "restaurations": 2,
+        "images_source_et_alias_verifiees": true
+      },
+      {
+        "producteur": "x86_64-apple-darwin",
+        "lecteur": "aarch64-apple-darwin",
+        "secteur": 512,
+        "lignees": 2,
+        "octets_compares": 59017,
+        "restaurations": 2,
+        "images_source_et_alias_verifiees": true
+      },
+      {
+        "producteur": "x86_64-apple-darwin",
+        "lecteur": "aarch64-apple-darwin",
+        "secteur": 4096,
+        "lignees": 2,
+        "octets_compares": 59017,
+        "restaurations": 2,
+        "images_source_et_alias_verifiees": true
+      }
+    ],
+    "lz4": {
+      "bibliotheque": "1.11.1",
+      "graine": "0x6e6f766146535036",
+      "architectures": {
+        "aarch64": {
+          "reference_vers_novafs": 256,
+          "novafs_vers_reference": 256,
+          "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+        },
+        "x86_64": {
+          "reference_vers_novafs": 256,
+          "novafs_vers_reference": 256,
+          "sha256_flux_novafs": "5c238ecd1cd1158b285babd96cd387dcd887fa10ab47b2488b1bcc5ded0a07db"
+        }
+      },
+      "sha256_corpus": "c525b71ce2cf4dd9f9d3b324c2c984965e442daf137aff8d3a12535b92ae722c"
+    },
+    "F01": [
+      "F01 aarch64-apple-darwin secteur=512 → x86_64-apple-darwin secteur=512 : montage RO, lecture, validation",
+      "F01 aarch64-apple-darwin secteur=512 → x86_64-apple-darwin secteur=4096 : montage RO, lecture, validation",
+      "F01 aarch64-apple-darwin secteur=4096 → x86_64-apple-darwin secteur=512 : montage RO, lecture, validation",
+      "F01 aarch64-apple-darwin secteur=4096 → x86_64-apple-darwin secteur=4096 : montage RO, lecture, validation",
+      "F01 x86_64-apple-darwin secteur=512 → aarch64-apple-darwin secteur=512 : montage RO, lecture, validation",
+      "F01 x86_64-apple-darwin secteur=512 → aarch64-apple-darwin secteur=4096 : montage RO, lecture, validation",
+      "F01 x86_64-apple-darwin secteur=4096 → aarch64-apple-darwin secteur=512 : montage RO, lecture, validation",
+      "F01 x86_64-apple-darwin secteur=4096 → aarch64-apple-darwin secteur=4096 : montage RO, lecture, validation",
+      "Quatre images identiques, 1572864 octets, SHA-256 b90960a793d8d8243bb455903c6f96d5b4ddcf13cb800c398b004729574ec5b0"
+    ]
+  },
+  "microprogrammes": {
+    "polling": {
+      "gicv3-lab": {
+        "utm": "5.0.8",
+        "moteur": "QEMU emulator version 10.0.12",
+        "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+        "noyau_sha256": "ec986c561347f3168a116ceaea4ed98d261d2017188bee1d122275f3156b333b",
+        "scenarios": [
+          "froid",
+          "el2",
+          "protection",
+          "reemploi",
+          "cd",
+          "redemarrage",
+          "coupure",
+          "reprise",
+          "autre-slot",
+          "mapkey",
+          "retrait-suspendu"
+        ]
+      },
+      "dma-sequentiel": {
+        "utm": "5.0.8",
+        "moteur": "QEMU emulator version 10.0.12",
+        "pflash_sha256": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "noyau_sha256": "48e0e3502c150b68a0cb37dad699aafa5e99ef3b3079f75923e057cb98297009",
+        "scenarios": [
+          "support",
+          "vierge",
+          "refus",
+          "confirmation-erronee",
+          "tis",
+          "deplaces",
+          "reemploi",
+          "redemarrage",
+          "fin",
+          "mbr",
+          "gpt",
+          "fat",
+          "novafs",
+          "trop-petit",
+          "erreur-lecture",
+          "mauvais-support",
+          "doublon",
+          "roles-inverses",
+          "support-inscriptible",
+          "tpm-absent",
+          "mauvaise-serie",
+          "quarantaine",
+          "coupure"
+        ]
+      }
+    },
+    "irq": {
+      "gicv3-lab": {
+        "utm": "5.0.8",
+        "moteur": "QEMU emulator version 10.0.12",
+        "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+        "noyau_sha256": "7a894415ec041752b32f8696fbc8c32acf85a2a21684950d5731c5b039ed0be7",
+        "scenarios": [
+          "froid",
+          "el2",
+          "protection",
+          "reemploi",
+          "cd",
+          "redemarrage",
+          "coupure",
+          "reprise",
+          "autre-slot",
+          "mapkey",
+          "retrait-suspendu"
+        ]
+      },
+      "dma-sequentiel": {
+        "utm": "5.0.8",
+        "moteur": "QEMU emulator version 10.0.12",
+        "pflash_sha256": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "noyau_sha256": "5f7983a462ce214b4208450b91c218c158219990b461ff2be12282cafcc57cfe",
+        "scenarios": [
+          "support",
+          "vierge",
+          "refus",
+          "confirmation-erronee",
+          "tis",
+          "deplaces",
+          "reemploi",
+          "redemarrage",
+          "fin",
+          "mbr",
+          "gpt",
+          "fat",
+          "novafs",
+          "trop-petit",
+          "erreur-lecture",
+          "mauvais-support",
+          "doublon",
+          "roles-inverses",
+          "support-inscriptible",
+          "tpm-absent",
+          "mauvaise-serie",
+          "quarantaine",
+          "coupure"
+        ]
+      }
+    }
+  },
+  "coupures_utm_finales": [
+    {
+      "frontiere": "pages",
+      "secteur": 512,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        66,
+        67
+      ],
+      "apres_redemarrage": [
+        66,
+        67
+      ],
+      "destination_complete": false,
+      "source_et_destination_verifiees": true,
+      "sha256": {
+        "export_qcow2_apres_coupure": "dc16200d1e5d4930c1bc29067587a94673bb618a82f6860b4d660b28f55ced7a",
+        "export_qcow2_relecture": "dc16200d1e5d4930c1bc29067587a94673bb618a82f6860b4d660b28f55ced7a",
+        "partition_p9_apres_coupure": "5ba8564b9a2014ab9e28c2dbb1538ce000ff15c4e7dda311d5cbe58e3a2c35bc",
+        "partition_p9_relecture": "5ba8564b9a2014ab9e28c2dbb1538ce000ff15c4e7dda311d5cbe58e3a2c35bc",
+        "console_avant_coupure": "da6d9723f7623239186f5d4e2e4499d5ee3a97bc602fbff2c1744d4d11a5a696",
+        "console_reprise": "a2b4b5849797264d4b43a0ad4743319a8a5b69c877f2523f5e0f4d664a19e10c"
+      }
+    },
+    {
+      "frontiere": "pages",
+      "secteur": 4096,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        66,
+        67
+      ],
+      "apres_redemarrage": [
+        66,
+        67
+      ],
+      "destination_complete": false,
+      "source_et_destination_verifiees": true,
+      "sha256": {
+        "export_qcow2_apres_coupure": "dd454d66cc7f733a07752386b6bc6dfeb1eb4580c29a66036527a89b6e81870a",
+        "export_qcow2_relecture": "dd454d66cc7f733a07752386b6bc6dfeb1eb4580c29a66036527a89b6e81870a",
+        "partition_p9_apres_coupure": "cc057aafd69f5b433d4ec1a33db872815b639d360e61acf9721a8ac0f21fe8c2",
+        "partition_p9_relecture": "cc057aafd69f5b433d4ec1a33db872815b639d360e61acf9721a8ac0f21fe8c2",
+        "console_avant_coupure": "93fafd473b319b72b711073e7da95137028c19689b1df64fbd1e0d3aa74587f4",
+        "console_reprise": "e705f73577bf8e0e411f7e5d810871621fd3d601c29e6cacb7035b17bc512e0a"
+      }
+    },
+    {
+      "frontiere": "f1",
+      "secteur": 512,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        66,
+        67
+      ],
+      "apres_redemarrage": [
+        66,
+        67
+      ],
+      "destination_complete": false,
+      "source_et_destination_verifiees": true,
+      "sha256": {
+        "export_qcow2_apres_coupure": "1cbf1d63b337ef2c7e61145fdaf2280fc90ed5d93c77d08c035a10e43a9283c9",
+        "export_qcow2_relecture": "1cbf1d63b337ef2c7e61145fdaf2280fc90ed5d93c77d08c035a10e43a9283c9",
+        "partition_p9_apres_coupure": "46ebaf0716b66f927fee78021d40ad5e5fbb401252cfdcf4a406ae058a536456",
+        "partition_p9_relecture": "46ebaf0716b66f927fee78021d40ad5e5fbb401252cfdcf4a406ae058a536456",
+        "console_avant_coupure": "ee729ddc9ece06949d1c9d7fb4dfbedb660ac56f6f8855d49f2382305f764de5",
+        "console_reprise": "226df0afeb083d51c03c596e5c772b78a78198cfc99859e1511bd78e9a17f0ee"
+      }
+    },
+    {
+      "frontiere": "f1",
+      "secteur": 4096,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        66,
+        67
+      ],
+      "apres_redemarrage": [
+        66,
+        67
+      ],
+      "destination_complete": false,
+      "source_et_destination_verifiees": true,
+      "sha256": {
+        "export_qcow2_apres_coupure": "33f9ea599161fe223ad188f92f4e8950e35da28617ba9743b07c013e971f09a6",
+        "export_qcow2_relecture": "33f9ea599161fe223ad188f92f4e8950e35da28617ba9743b07c013e971f09a6",
+        "partition_p9_apres_coupure": "bc1bb0aee96991ee96c10c03956c67f5e32409d4cfba5c84164d67ae4ebb162e",
+        "partition_p9_relecture": "bc1bb0aee96991ee96c10c03956c67f5e32409d4cfba5c84164d67ae4ebb162e",
+        "console_avant_coupure": "3d0fa37ce1c69cca76e1156bec02a52d60293ab6e079692a100e2eea68ec6df2",
+        "console_reprise": "71469b6e6eaa4bd3ad8885345261af553a689b29265bf323a8b44c650c83b4af"
+      }
+    },
+    {
+      "frontiere": "f2",
+      "secteur": 512,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        67,
+        68
+      ],
+      "apres_redemarrage": [
+        68,
+        69
+      ],
+      "destination_complete": true,
+      "source_et_destination_verifiees": true,
+      "sha256": {
+        "export_qcow2_apres_coupure": "b5033d6a4b2b5164fb9347bac49ec732185e2f8ae4e6769b5ee301fed1afcf70",
+        "export_qcow2_relecture": "ae814ee2d83188f39b2e76ad93badb567e8e85c9967876f8c996f9322d89b56c",
+        "partition_p9_apres_coupure": "b5c902aa1dc6b4757e524069988f8d9b8bc1ff805763489de3e810c7dc415e27",
+        "partition_p9_relecture": "985aa6febbf85bfc6399b277c0f5be7139a62468016a142016f3361ebffa91f5",
+        "console_avant_coupure": "12128cf789c46285f02c407c5064248f9d77ede08cd52ac39fbc4e31c763aa2c",
+        "console_reprise": "7f7c65c003efc043c6b40da6f3b34d2f38a4119599eea4946caf0a8390e311f6"
+      }
+    },
+    {
+      "frontiere": "f2",
+      "secteur": 4096,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        67,
+        68
+      ],
+      "apres_redemarrage": [
+        68,
+        69
+      ],
+      "destination_complete": true,
+      "source_et_destination_verifiees": true,
+      "sha256": {
+        "export_qcow2_apres_coupure": "832a1ee693e38f6c36fa2a1f160319c2e01c8f996e78bb5e47264392ef058709",
+        "export_qcow2_relecture": "28605b274367542218d489bca3ceaf4ad0bce78b7522659b23b80b18c39b8933",
+        "partition_p9_apres_coupure": "44fe88ec0296074b0442dea9c0c42d9c6d8d2a3682d0d1e1159aa50ea24acb4f",
+        "partition_p9_relecture": "9f23f741cd76034cedb54079dd8028fa953e48c17b34c355ac4f53b7d9a83992",
+        "console_avant_coupure": "ea7e9221aaf4b54d75815c42f65174fc2faec8210bd2c28cf22d1d9089a312c0",
+        "console_reprise": "3bf465d83e976c64f431c539daaa9dd7ef775fc9d5affb403816cb32c07097f8"
+      }
+    }
+  ],
+  "reprise_f2_512_sur_export_identique": [
+    {
+      "depart": "utm-f2-512",
+      "controle_sha256_qcow2": "a47355913690f81f8d1cf36e9df26fb76fe3a9d4e26e5975fd1380a547cb5591",
+      "export_initial_preserve": true,
+      "secteur": 512,
+      "immediat": [
+        67,
+        68
+      ],
+      "apres": [
+        68,
+        69
+      ],
+      "nsh": true,
+      "vi": "coupure-f2",
+      "source_et_destination_verifiees": true
+    },
+    {
+      "depart": "fin/utm-f2-512",
+      "controle_sha256_qcow2": "b5033d6a4b2b5164fb9347bac49ec732185e2f8ae4e6769b5ee301fed1afcf70",
+      "export_initial_preserve": true,
+      "secteur": 512,
+      "immediat": [
+        67,
+        68
+      ],
+      "apres": [
+        68,
+        69
+      ],
+      "nsh": true,
+      "vi": "coupure-f2",
+      "source_et_destination_verifiees": true
+    }
+  ],
+  "validation_bloc_irq": {
+    "interfaces_historiques": "commandes unitaires de lecture, écriture, FLUSH, médiation RO et erreurs sur les deux architectures et les deux géométries",
+    "irq_tardive": "Le banc dma-fence masque puis délivre une vraie IRQ de l’ancien propriétaire et vérifie STRAYS accru, IRQS inchangé.",
+    "quarantaine": "Le banc dma-flight retarde la requête bloc, termine le pilote, vérifie les cadres épinglés avant de libérer read_aio et vérifie le réemploi.",
+    "modele_coupure": "Les arrêts forcés de QEMU ou de la VM UTM laissent l’hôte alimenté."
+  },
+  "qualification_preliminaire": {
+    "noyau_utm_sha256": "6e02861ae119bf5f1577a84ab432355c6060c256e364329540d9cdd8aa130810",
+    "difference": "Ébauche sans le contrôle final d’échéance juste après réveil. Les profils regression et course ont aussi été entièrement reconstruits et rejoués.",
+    "coupures": [
+      {
+        "point": "pages",
+        "secteur": 512,
+        "debut_utc": "2026-11-13T20:46:32.242943+00:00",
+        "statut": 0,
+        "resultat": {
+          "frontiere": "pages",
+          "secteur": 512,
+          "environnement": "UTM QCOW2",
+          "arret": "utmctl stop --force",
+          "acquit_avant_coupure": false,
+          "octets_inseres": 4194304,
+          "avant": [
+            65,
+            66
+          ],
+          "juste_apres_coupure": [
+            66,
+            67
+          ],
+          "apres_redemarrage": [
+            66,
+            67
+          ],
+          "destination_complete": false,
+          "source_et_destination_verifiees": true
+        }
+      },
+      {
+        "point": "pages",
+        "secteur": 4096,
+        "debut_utc": "2026-11-13T20:47:14.573250+00:00",
+        "statut": 0,
+        "resultat": {
+          "frontiere": "pages",
+          "secteur": 4096,
+          "environnement": "UTM QCOW2",
+          "arret": "utmctl stop --force",
+          "acquit_avant_coupure": false,
+          "octets_inseres": 4194304,
+          "avant": [
+            65,
+            66
+          ],
+          "juste_apres_coupure": [
+            66,
+            67
+          ],
+          "apres_redemarrage": [
+            66,
+            67
+          ],
+          "destination_complete": false,
+          "source_et_destination_verifiees": true
+        }
+      },
+      {
+        "point": "f1",
+        "secteur": 512,
+        "debut_utc": "2026-11-13T20:48:04.417549+00:00",
+        "statut": 0,
+        "resultat": {
+          "frontiere": "f1",
+          "secteur": 512,
+          "environnement": "UTM QCOW2",
+          "arret": "utmctl stop --force",
+          "acquit_avant_coupure": false,
+          "octets_inseres": 4194304,
+          "avant": [
+            65,
+            66
+          ],
+          "juste_apres_coupure": [
+            66,
+            67
+          ],
+          "apres_redemarrage": [
+            66,
+            67
+          ],
+          "destination_complete": false,
+          "source_et_destination_verifiees": true
+        }
+      },
+      {
+        "point": "f1",
+        "secteur": 4096,
+        "debut_utc": "2026-11-13T20:48:46.189590+00:00",
+        "statut": 0,
+        "resultat": {
+          "frontiere": "f1",
+          "secteur": 4096,
+          "environnement": "UTM QCOW2",
+          "arret": "utmctl stop --force",
+          "acquit_avant_coupure": false,
+          "octets_inseres": 4194304,
+          "avant": [
+            65,
+            66
+          ],
+          "juste_apres_coupure": [
+            66,
+            67
+          ],
+          "apres_redemarrage": [
+            66,
+            67
+          ],
+          "destination_complete": false,
+          "source_et_destination_verifiees": true
+        }
+      },
+      {
+        "point": "f2",
+        "secteur": 512,
+        "debut_utc": "2026-11-13T20:49:38.652778+00:00",
+        "statut": -2,
+        "resultat": null
+      },
+      {
+        "point": "f2",
+        "secteur": 4096,
+        "debut_utc": "2026-11-13T20:52:58.768384+00:00",
+        "statut": 0,
+        "resultat": {
+          "frontiere": "f2",
+          "secteur": 4096,
+          "environnement": "UTM QCOW2",
+          "arret": "utmctl stop --force",
+          "acquit_avant_coupure": false,
+          "octets_inseres": 4194304,
+          "avant": [
+            65,
+            66
+          ],
+          "juste_apres_coupure": [
+            67,
+            68
+          ],
+          "apres_redemarrage": [
+            68,
+            69
+          ],
+          "destination_complete": true,
+          "source_et_destination_verifiees": true
+        }
+      }
+    ],
+    "premiere_reprise_f2_512": {
+      "sortie_client": 26,
+      "retrait": "Ok(())",
+      "service": 11,
+      "bloc": 11,
+      "pilote": 11,
+      "ipc_aller_retour_max_ns": 12410610000,
+      "lectures_bloc": 2160,
+      "lecture_bloc_max_ns": 118286992,
+      "generations_export_immediat": [
+        67,
+        68
+      ],
+      "source_octets_verifies": 4194304,
+      "destination_octets_verifies": 8388608,
+      "sha256_qcow2_export": "a47355913690f81f8d1cf36e9df26fb76fe3a9d4e26e5975fd1380a547cb5591",
+      "sha256_partition_p9": "6206bd7ae8a03f91d8c3cd9c9f30e5327b014f98428eba90a7eda341245dd377",
+      "explication": "Code fichier 26 = erreur E/S. Le code direct du délai du client est 8. Le service traduit plusieurs erreurs en 26. Aucune durée individuelle entre deux trames de progression et aucun code précis de la requête fautive ne sont disponibles. Des commandes QEMU de régression et des compilations s’exécutaient en parallèle. Après le bilan terminal de l’invité, le lecteur hôte en attente de nsh a été interrompu. Les données ont été contrôlées indépendamment dès l’export.",
+      "serial_sha256": "d5999fd59f24496ee05a9b403f9a315b16868328ec0f58235291bfab771089e4"
+    }
+  },
+  "essais_outillage_hors_configuration": {
+    "coeur-aarch64-unknown-none-softfloat-laboratoire-sans-config": {
+      "debut_utc": "2026-11-13T20:36:29.192200+00:00",
+      "code": 0,
+      "duree_s": 1.68,
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--manifest-path",
+        "novaFS/Cargo.toml",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--all-features"
+      ],
+      "env": {
+        "RUSTC": "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      },
+      "log_sha256": "070d4151d5a63f4f01d2b41a379a6f46a765c19984e6c346a098efc9d579d5dd"
+    },
+    "coeur-aarch64-unknown-none-softfloat-normal-sans-config": {
+      "debut_utc": "2026-11-13T20:36:27.085631+00:00",
+      "code": 0,
+      "duree_s": 2.11,
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--manifest-path",
+        "novaFS/Cargo.toml",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat"
+      ],
+      "env": {
+        "RUSTC": "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      },
+      "log_sha256": "fb455d4c76ba2f5128b6f9a3cd5487985798f162361e2749e007c775099313bf"
+    },
+    "coeur-x86_64-unknown-none-laboratoire-sans-config": {
+      "debut_utc": "2026-11-13T20:36:32.918005+00:00",
+      "code": 101,
+      "duree_s": 1.77,
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--manifest-path",
+        "novaFS/Cargo.toml",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--all-features"
+      ],
+      "env": {
+        "RUSTC": "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      },
+      "log_sha256": "0c0080dd54158257f3362f7d4a0b9cbd55b915a225870b2018b0ec2ec6e0d503"
+    },
+    "coeur-x86_64-unknown-none-normal-sans-config": {
+      "debut_utc": "2026-11-13T20:36:30.870361+00:00",
+      "code": 101,
+      "duree_s": 2.05,
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--manifest-path",
+        "novaFS/Cargo.toml",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none"
+      ],
+      "env": {
+        "RUSTC": "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      },
+      "log_sha256": "b40dc0a5bde54dc4a6c75c355347a698a8378948417ab273e1459f2bc63115d6"
+    }
+  },
+  "commandes": {
+    "ancres-aarch64": {
+      "debut_utc": "2026-11-13T20:39:35.822629+00:00",
+      "code": 0,
+      "duree_s": 0.71,
+      "commande": [
+        "novaFS/lab/run",
+        "test",
+        "--offline",
+        "--lib",
+        "qualification_ancres",
+        "--",
+        "--nocapture"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "aarch64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/io-0166/v0165/novaFS/target/aarch64-apple-darwin/release/novafs"
+      },
+      "log_sha256": "327450ac03b179a9e3e86d4dafb566c212d235c13c10c5a78b6f0c14e872304e"
+    },
+    "ancres-x86_64": {
+      "debut_utc": "2026-11-13T20:41:19.570416+00:00",
+      "code": 0,
+      "duree_s": 1.06,
+      "commande": [
+        "novaFS/lab/run",
+        "test",
+        "--offline",
+        "--lib",
+        "qualification_ancres",
+        "--",
+        "--nocapture"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "x86_64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/io-0166/v0165/novaFS/target/aarch64-apple-darwin/release/novafs"
+      },
+      "log_sha256": "4bd1e834d3d784959b6349c12f00fbb46976da7cd4ab78add75a9d4775a154ac"
+    },
+    "coeur-aarch64-unknown-none-softfloat-laboratoire": {
+      "debut_utc": "2026-11-13T20:37:41.780204+00:00",
+      "code": 0,
+      "duree_s": 0.04,
+      "repertoire": "novaFS",
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--all-features"
+      ],
+      "env": {
+        "RUSTC": "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      },
+      "log_sha256": "222a02ed477d249a21359df8cae975864a62d848f4739cadc5b00b6190a963c6"
+    },
+    "coeur-aarch64-unknown-none-softfloat-normal": {
+      "debut_utc": "2026-11-13T20:37:41.719165+00:00",
+      "code": 0,
+      "duree_s": 0.05,
+      "repertoire": "novaFS",
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat"
+      ],
+      "env": {
+        "RUSTC": "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      },
+      "log_sha256": "9576f1f7e73fc2bb1ec2336aae60cb485c591eadc60a1b998573411c34057e08"
+    },
+    "coeur-x86_64-unknown-none-laboratoire": {
+      "debut_utc": "2026-11-13T20:37:41.890655+00:00",
+      "code": 0,
+      "duree_s": 0.04,
+      "repertoire": "novaFS",
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--all-features"
+      ],
+      "env": {
+        "RUSTC": "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      },
+      "log_sha256": "6bfa9e18ffdef821c711a542cfebd7db0982665615563e5a191285e489609c6f"
+    },
+    "coeur-x86_64-unknown-none-normal": {
+      "debut_utc": "2026-11-13T20:37:41.830187+00:00",
+      "code": 0,
+      "duree_s": 0.05,
+      "repertoire": "novaFS",
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none"
+      ],
+      "env": {
+        "RUSTC": "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      },
+      "log_sha256": "222a02ed477d249a21359df8cae975864a62d848f4739cadc5b00b6190a963c6"
+    },
+    "compile-coupe-aarch64": {
+      "debut_utc": "2026-11-13T20:46:17.257954+00:00",
+      "code": 0,
+      "duree_s": 2.42,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/qual-coupe/novaOS",
+        "ARCH=aarch64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "93d85a84721f9f9eb2fe024ca80bf344c40d4a8357fcfa69c62e47e396dda3ac"
+    },
+    "compile-coupe-x86_64": {
+      "debut_utc": "2026-11-13T20:46:19.679882+00:00",
+      "code": 0,
+      "duree_s": 2.31,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/qual-coupe/novaOS",
+        "ARCH=x86_64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "5ffea598858e816bf9821dac86c987be5f7444423d175310d41f90874826c4ef"
+    },
+    "compile-defauts-aarch64": {
+      "debut_utc": "2026-11-13T20:46:19.913379+00:00",
+      "code": 0,
+      "duree_s": 2.15,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/qual-defauts/novaOS",
+        "ARCH=aarch64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "8ead939f1699b59919ca0419bbee5b42d1f3a2177fb6e27935339c9f0fa244c4"
+    },
+    "compile-defauts-x86_64": {
+      "debut_utc": "2026-11-13T20:46:22.066409+00:00",
+      "code": 0,
+      "duree_s": 2.5,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/qual-defauts/novaOS",
+        "ARCH=x86_64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "647c0fe1a41750ed67fd4c9b3e8e9584fea42a1a94fb6cfc7c99fb4afa9263c8"
+    },
+    "compile-sans-aarch64": {
+      "debut_utc": "2026-11-13T20:46:19.925883+00:00",
+      "code": 0,
+      "duree_s": 2.18,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/qual-sans/novaOS",
+        "ARCH=aarch64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "ba4e1dd79b4a4a557e82205b8ed31ef8d2a80dd71094cb7b232032fa9c171d05"
+    },
+    "compile-sans-x86_64": {
+      "debut_utc": "2026-11-13T20:46:22.108511+00:00",
+      "code": 0,
+      "duree_s": 2.48,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/qual-sans/novaOS",
+        "ARCH=x86_64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "5f9f472052bc9d19ea2b57b5d275cfb2d953a06740d1c505bf6f97afcbaf4d75"
+    },
+    "compile-sonde-aarch64": {
+      "debut_utc": "2026-11-13T20:46:22.000794+00:00",
+      "code": 0,
+      "duree_s": 2.52,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/qual-sonde/novaOS",
+        "ARCH=aarch64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "51daab544496f8aa5ecb4eb2e50c60e8a3e960b761ab3e9f3ac7c0f3188f3c9a"
+    },
+    "compile-sonde-x86_64": {
+      "debut_utc": "2026-11-13T20:46:24.520711+00:00",
+      "code": 0,
+      "duree_s": 1.79,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/qual-sonde/novaOS",
+        "ARCH=x86_64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "74495a8b8944b5855e7c3d2c01102b2221e2d95f10d25f865bb0b0deba35b26a"
+    },
+    "coupe-aarch64-4096": {
+      "debut_utc": "2026-11-13T20:50:47.611522+00:00",
+      "code": 0,
+      "duree_s": 146.73,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-coupe/novaOS/tests/coupure_cow_groupee.py",
+        "aarch64",
+        "4096",
+        "novaOS/build/irq-0166/reg/coupe-aarch64-4096.json",
+        "--barrieres",
+        "--multipage",
+        "--dma-en-vol",
+        "--taille",
+        "4194304"
+      ],
+      "env": {},
+      "log_sha256": "b7ce7cc53a5285110561394187a344864fbf007d3976dd48e77facc04171cf09"
+    },
+    "coupe-aarch64-512": {
+      "debut_utc": "2026-11-13T20:46:51.050425+00:00",
+      "code": 0,
+      "duree_s": 148.65,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-coupe/novaOS/tests/coupure_cow_groupee.py",
+        "aarch64",
+        "512",
+        "novaOS/build/irq-0166/reg/coupe-aarch64-512.json",
+        "--barrieres",
+        "--multipage",
+        "--dma-en-vol",
+        "--taille",
+        "4194304"
+      ],
+      "env": {},
+      "log_sha256": "a42b8d6eea1e24f7bf37448479edcd023b1f979630e3d7a7db162758a1bea037"
+    },
+    "coupe-x86_64-4096": {
+      "debut_utc": "2026-11-13T20:48:29.816293+00:00",
+      "code": 0,
+      "duree_s": 79.5,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-coupe/novaOS/tests/coupure_cow_groupee.py",
+        "x86_64",
+        "4096",
+        "novaOS/build/irq-0166/reg/coupe-x86_64-4096.json",
+        "--barrieres",
+        "--multipage",
+        "--dma-en-vol",
+        "--taille",
+        "4194304"
+      ],
+      "env": {},
+      "log_sha256": "4c3aff62f49f41ccf9bd87dfb009045d40d812b588bfb33e0e4c6b81e7eac8a7"
+    },
+    "coupe-x86_64-512": {
+      "debut_utc": "2026-11-13T20:50:49.127577+00:00",
+      "code": 0,
+      "duree_s": 81.98,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-coupe/novaOS/tests/coupure_cow_groupee.py",
+        "x86_64",
+        "512",
+        "novaOS/build/irq-0166/reg/coupe-x86_64-512.json",
+        "--barrieres",
+        "--multipage",
+        "--dma-en-vol",
+        "--taille",
+        "4194304"
+      ],
+      "env": {},
+      "log_sha256": "c6b7e6eafa58c1e6c7940859424704db1dfa1a16a8074cc3d4ae2c70034ab09f"
+    },
+    "cow-aarch64": {
+      "debut_utc": "2026-11-13T20:39:36.529544+00:00",
+      "code": 0,
+      "duree_s": 15.26,
+      "commande": [
+        "novaFS/lab/run",
+        "run",
+        "--offline",
+        "--features",
+        "prototype-es-groupees",
+        "--example",
+        "es-groupees"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "aarch64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/io-0166/v0165/novaFS/target/aarch64-apple-darwin/release/novafs"
+      },
+      "log_sha256": "58c4a8e9ac8f286ae7380870cb8ad763eeb6ece172c58d3004a727c6c7bfd4fa"
+    },
+    "cow-x86_64": {
+      "debut_utc": "2026-11-13T20:41:20.628940+00:00",
+      "code": 0,
+      "duree_s": 18.55,
+      "commande": [
+        "novaFS/lab/run",
+        "run",
+        "--offline",
+        "--features",
+        "prototype-es-groupees",
+        "--example",
+        "es-groupees"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "x86_64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/io-0166/v0165/novaFS/target/aarch64-apple-darwin/release/novafs"
+      },
+      "log_sha256": "6f5f7cd05b874262593b1bbdb3d0201bc725b135e3aa73a582e8c86bbb3e59e2"
+    },
+    "dechirures-aarch64": {
+      "debut_utc": "2026-11-13T20:39:32.348126+00:00",
+      "code": 0,
+      "duree_s": 3.47,
+      "commande": [
+        "novaFS/lab/run",
+        "test",
+        "--offline",
+        "--lib",
+        "fs::remplacement::",
+        "--",
+        "--nocapture"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "aarch64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/io-0166/v0165/novaFS/target/aarch64-apple-darwin/release/novafs"
+      },
+      "log_sha256": "0c6c2769f0321401d4e03cca491b35304e9070d0e4dccfb0593b1f9d59d01221"
+    },
+    "dechirures-x86_64": {
+      "debut_utc": "2026-11-13T20:41:14.575394+00:00",
+      "code": 0,
+      "duree_s": 4.99,
+      "commande": [
+        "novaFS/lab/run",
+        "test",
+        "--offline",
+        "--lib",
+        "fs::remplacement::",
+        "--",
+        "--nocapture"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "x86_64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/io-0166/v0165/novaFS/target/aarch64-apple-darwin/release/novafs"
+      },
+      "log_sha256": "d0bc25bed829abe02b64ad29c667249e7c20a1869383d88da171e315ac01991f"
+    },
+    "defauts-aarch64-4096": {
+      "debut_utc": "2026-11-13T20:53:14.341762+00:00",
+      "code": 0,
+      "duree_s": 80.46,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-defauts/novaOS/tests/coupure_cow_groupee.py",
+        "aarch64",
+        "4096",
+        "novaOS/build/irq-0166/reg/defauts-aarch64-4096.json",
+        "--defauts-dma",
+        "--multipage",
+        "--taille",
+        "4194304"
+      ],
+      "env": {},
+      "log_sha256": "ff8247676df84466e44342fce7039efae2f19c255106f5162bed96175072051a"
+    },
+    "defauts-aarch64-512": {
+      "debut_utc": "2026-11-13T20:49:19.702824+00:00",
+      "code": 0,
+      "duree_s": 80.89,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-defauts/novaOS/tests/coupure_cow_groupee.py",
+        "aarch64",
+        "512",
+        "novaOS/build/irq-0166/reg/defauts-aarch64-512.json",
+        "--defauts-dma",
+        "--multipage",
+        "--taille",
+        "4194304"
+      ],
+      "env": {},
+      "log_sha256": "f9bae7502bc75bdf837af5bd01668d4602e548671fa8f89a86f07e2601f76d58"
+    },
+    "defauts-x86_64-4096": {
+      "debut_utc": "2026-11-13T20:49:49.319448+00:00",
+      "code": 0,
+      "duree_s": 46.07,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-defauts/novaOS/tests/coupure_cow_groupee.py",
+        "x86_64",
+        "4096",
+        "novaOS/build/irq-0166/reg/defauts-x86_64-4096.json",
+        "--defauts-dma",
+        "--multipage",
+        "--taille",
+        "4194304"
+      ],
+      "env": {},
+      "log_sha256": "6e3bea5c8ada987739d6aeca1b4492bd48e1f8c3dd4591d3c8d5946a2aee2b7e"
+    },
+    "defauts-x86_64-512": {
+      "debut_utc": "2026-11-13T20:47:40.795629+00:00",
+      "code": 0,
+      "duree_s": 45.5,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-defauts/novaOS/tests/coupure_cow_groupee.py",
+        "x86_64",
+        "512",
+        "novaOS/build/irq-0166/reg/defauts-x86_64-512.json",
+        "--defauts-dma",
+        "--multipage",
+        "--taille",
+        "4194304"
+      ],
+      "env": {},
+      "log_sha256": "00c4c292783c74e7be79da0a07b3b39c21fb2762f2304cc4d7b4b23b281764fb"
+    },
+    "dma-sequentiel": {
+      "debut_utc": "2026-11-13T20:37:31.788898+00:00",
+      "code": 0,
+      "duree_s": 150.09,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/cpu-0166/cpu-regression/novaOS/tests/dma_sequentiel.py",
+        "novaOS/build/audit-nsh-0163/fv-sequentiel",
+        "novaOS/build/cpu-0166/cpu-noyau-dma-sequentiel/aarch64-unknown-none-softfloat/release/novaos",
+        "novaOS/build/irq-0166/reg/sequentiel",
+        "--fv-suspendu",
+        "novaOS/build/vi-0162/firmware-transfert"
+      ],
+      "env": {},
+      "log_sha256": "98f5c21da021279171fa153957a129fb5350a3b64d5949e179ef99915300e978"
+    },
+    "file8-aarch64-4096": {
+      "debut_utc": "2026-11-13T20:48:17.405243+00:00",
+      "code": 0,
+      "duree_s": 8.17,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sonde/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "4096",
+        "debut",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/file8-aarch64-4096.json",
+        "--entrees-file",
+        "8"
+      ],
+      "env": {},
+      "log_sha256": "887a887b33fc73e52aadce776f5f62bb13a4a27a8cb1467235c31c0b154befd4"
+    },
+    "file8-aarch64-512": {
+      "debut_utc": "2026-11-13T20:47:27.048872+00:00",
+      "code": 0,
+      "duree_s": 8.04,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sonde/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "512",
+        "debut",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/file8-aarch64-512.json",
+        "--entrees-file",
+        "8"
+      ],
+      "env": {},
+      "log_sha256": "9ec1974b9d050624c059072091e02f58f644e3e1f94cd7e2c4de1b10b70e32fc"
+    },
+    "file8-x86_64-4096": {
+      "debut_utc": "2026-11-13T20:47:11.711025+00:00",
+      "code": 0,
+      "duree_s": 6.08,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sonde/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "4096",
+        "debut",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/file8-x86_64-4096.json",
+        "--entrees-file",
+        "8"
+      ],
+      "env": {},
+      "log_sha256": "4d4b9dcb9edce7d248da735f31d93c2d682355309c8945c47a87ea8f50f8fcb0"
+    },
+    "file8-x86_64-512": {
+      "debut_utc": "2026-11-13T20:46:37.199475+00:00",
+      "code": 0,
+      "duree_s": 4.45,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sonde/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "512",
+        "debut",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/file8-x86_64-512.json",
+        "--entrees-file",
+        "8"
+      ],
+      "env": {},
+      "log_sha256": "cf366bea1e48f5c68e8a685274d18fcbf28a89479925f473c3726815a6b0a718"
+    },
+    "fs-aarch64": {
+      "debut_utc": "2026-11-13T20:36:27.066964+00:00",
+      "code": 0,
+      "duree_s": 185.28,
+      "commande": [
+        "python3",
+        "-B",
+        "novaFS/lab/p51-validation-suites.py",
+        "aarch64"
+      ],
+      "env": {},
+      "log_sha256": "fcde402d0c07e6fe250cded0aff1dc69e02beeb20c818eb651e453a3602c4417"
+    },
+    "fs-x86_64": {
+      "debut_utc": "2026-11-13T20:36:27.067050+00:00",
+      "code": 0,
+      "duree_s": 287.51,
+      "commande": [
+        "python3",
+        "-B",
+        "novaFS/lab/p51-validation-suites.py",
+        "x86_64"
+      ],
+      "env": {},
+      "log_sha256": "5c363e31f21f6bae89be854cf314293ac513c24af70a9f3faf176a21112be9f4"
+    },
+    "gicv3-lab": {
+      "debut_utc": "2026-11-13T20:36:27.070711+00:00",
+      "code": 0,
+      "duree_s": 64.72,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/cpu-0166/cpu-regression/novaOS/tests/prototype_uefi.py",
+        "novaOS/build/vi-0162/firmware-gic-temoin",
+        "novaOS/build/cpu-0166/cpu-noyau-gicv3-lab/aarch64-unknown-none-softfloat/release/novaos",
+        "--fv-sans-ack",
+        "novaOS/build/vi-0162/firmware-suspendu"
+      ],
+      "env": {},
+      "log_sha256": "4e3f5167c5b7c7eed7505c06dc1f2dd01cb8813807af1eab6d3c00bda42a078a"
+    },
+    "lz4-interop": {
+      "debut_utc": "2026-11-13T20:36:58.620680+00:00",
+      "code": 0,
+      "duree_s": 0.27,
+      "commande": [
+        "python3",
+        "-B",
+        "novaFS/lab/p6-lz4-interop.py",
+        "--bibliotheque",
+        "/opt/homebrew/opt/lz4/lib/liblz4.dylib"
+      ],
+      "env": {},
+      "log_sha256": "e6f7fd357643f4df7cbceac6c386648b35ccb16908fccaedebe1f15b7f2fbc03"
+    },
+    "p0-interop": {
+      "debut_utc": "2026-11-13T20:36:27.070862+00:00",
+      "code": 0,
+      "duree_s": 4.59,
+      "commande": [
+        "python3",
+        "-B",
+        "novaFS/lab/test-interop.py"
+      ],
+      "env": {},
+      "log_sha256": "765de8714878d99c915d7da3ca04a0daf34f161faf427b5959f8be04f39e9b66"
+    },
+    "p9-interop": {
+      "debut_utc": "2026-11-13T20:36:31.659135+00:00",
+      "code": 0,
+      "duree_s": 26.96,
+      "commande": [
+        "python3",
+        "-B",
+        "novaFS/lab/p9-interop.py"
+      ],
+      "env": {},
+      "log_sha256": "017a53cd5d0c4c2b149f442c2174dc6c315c7ab9ca283596bac0a5d73a3390ac"
+    },
+    "poll-aarch64-4096": {
+      "debut_utc": "2026-11-13T20:36:37.712500+00:00",
+      "code": 0,
+      "duree_s": 9.65,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/cpu-0166/cpu-sans/novaOS/tests/es_groupees_invite.py",
+        "aarch64",
+        "4096",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {},
+      "log_sha256": "7d85af6291ca4bead400eaab0e3614391e77b8afb8da8b0f63781287d9a0229c"
+    },
+    "poll-aarch64-512": {
+      "debut_utc": "2026-11-13T20:36:27.066669+00:00",
+      "code": 0,
+      "duree_s": 10.65,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/cpu-0166/cpu-sans/novaOS/tests/es_groupees_invite.py",
+        "aarch64",
+        "512",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {},
+      "log_sha256": "1a80cd3abf80019a5973a4c020a7cdda9225e3cef7028fe647d0739b62c51a8c"
+    },
+    "poll-x86_64-4096": {
+      "debut_utc": "2026-11-13T20:36:33.264787+00:00",
+      "code": 0,
+      "duree_s": 5.51,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/cpu-0166/cpu-sans/novaOS/tests/es_groupees_invite.py",
+        "x86_64",
+        "4096",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {},
+      "log_sha256": "284accae228ba19e4b1305f8c97aadba8b84ef48b8bfea345c18dbb362102962"
+    },
+    "poll-x86_64-512": {
+      "debut_utc": "2026-11-13T20:36:27.066874+00:00",
+      "code": 0,
+      "duree_s": 6.2,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/cpu-0166/cpu-sans/novaOS/tests/es_groupees_invite.py",
+        "x86_64",
+        "512",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {},
+      "log_sha256": "db1e75d3b643dde798674da4f91a675082a56a02be32460d6cbcd749abf4fc26"
+    },
+    "sans-aarch64-4096": {
+      "debut_utc": "2026-11-13T20:47:35.086443+00:00",
+      "code": 0,
+      "duree_s": 8.99,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_invite.py",
+        "aarch64",
+        "4096",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {},
+      "log_sha256": "758290fffbc34ff7534d4d7961be6afba2c919d7e5f630e9cef40cd9d7bf5ac2"
+    },
+    "sans-aarch64-512": {
+      "debut_utc": "2026-11-13T20:46:42.768725+00:00",
+      "code": 0,
+      "duree_s": 10.56,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_invite.py",
+        "aarch64",
+        "512",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {},
+      "log_sha256": "eb5466922f164aeb1cf3af8f88a5bb8e82d6d587d6f73db8acc77a2aa2dd7f97"
+    },
+    "sans-x86_64-4096": {
+      "debut_utc": "2026-11-13T20:46:41.647991+00:00",
+      "code": 0,
+      "duree_s": 5.18,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_invite.py",
+        "x86_64",
+        "4096",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {},
+      "log_sha256": "04ce70a1a71a9d60a1d9e498dd915cef4202acd958c5cede5b38120abd7f3e68"
+    },
+    "sans-x86_64-512": {
+      "debut_utc": "2026-11-13T20:50:43.739101+00:00",
+      "code": 0,
+      "duree_s": 5.39,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_invite.py",
+        "x86_64",
+        "512",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {},
+      "log_sha256": "bf890ae490c4ae0ac2f1846213749de4beecf87b4f2eacacdb54dcb18c9a4321"
+    },
+    "volume-fragmente-aarch64-4096": {
+      "debut_utc": "2026-11-13T20:47:59.119409+00:00",
+      "code": 0,
+      "duree_s": 18.29,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "4096",
+        "fragmente",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/volume-fragmente-aarch64-4096.json",
+        "--sans-sonde"
+      ],
+      "env": {},
+      "log_sha256": "b5710367dc7c0077f42b4f5338312dec4826f2b64d078b274eb09c1114d451be"
+    },
+    "volume-fragmente-aarch64-512": {
+      "debut_utc": "2026-11-13T20:47:09.103355+00:00",
+      "code": 0,
+      "duree_s": 17.95,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "512",
+        "fragmente",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/volume-fragmente-aarch64-512.json",
+        "--sans-sonde"
+      ],
+      "env": {},
+      "log_sha256": "01c4b3f25c632f4e1b5ce0abc9a04ef54963b8e784ab4e28a441c9bbe31486d9"
+    },
+    "volume-fragmente-x86_64-4096": {
+      "debut_utc": "2026-11-13T20:46:55.588910+00:00",
+      "code": 0,
+      "duree_s": 16.12,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "4096",
+        "fragmente",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/volume-fragmente-x86_64-4096.json",
+        "--sans-sonde"
+      ],
+      "env": {},
+      "log_sha256": "ab9cb4f150d741f0f6275442b530b6b3ded035bba7220d880032b497a8756888"
+    },
+    "volume-fragmente-x86_64-512": {
+      "debut_utc": "2026-11-13T20:52:18.792431+00:00",
+      "code": 0,
+      "duree_s": 14.5,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "512",
+        "fragmente",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/volume-fragmente-x86_64-512.json",
+        "--sans-sonde"
+      ],
+      "env": {},
+      "log_sha256": "8dced2ae9c245d207287d68aa243b605ceb5dc49a55324b6753e51aac4f5d51d"
+    },
+    "volume-sature-aarch64-4096": {
+      "debut_utc": "2026-11-13T20:47:44.077258+00:00",
+      "code": 0,
+      "duree_s": 15.04,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "4096",
+        "sature",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/volume-sature-aarch64-4096.json",
+        "--sans-sonde"
+      ],
+      "env": {},
+      "log_sha256": "89ad38668ed9bbf2282766d45c3216efe4b55154a4376f7fb2ae15f1126cda1b"
+    },
+    "volume-sature-aarch64-512": {
+      "debut_utc": "2026-11-13T20:46:53.325829+00:00",
+      "code": 0,
+      "duree_s": 15.78,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "512",
+        "sature",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/volume-sature-aarch64-512.json",
+        "--sans-sonde"
+      ],
+      "env": {},
+      "log_sha256": "2977540559b621cc459202c3f895aa1f1b623b506f8b393a8e593046f9be67d9"
+    },
+    "volume-sature-x86_64-4096": {
+      "debut_utc": "2026-11-13T20:46:46.831679+00:00",
+      "code": 0,
+      "duree_s": 8.76,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "4096",
+        "sature",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/volume-sature-x86_64-4096.json",
+        "--sans-sonde"
+      ],
+      "env": {},
+      "log_sha256": "7bd9020088b4e88b784a608496e8163f5ea5b4c9605c752e8a68777153f51437"
+    },
+    "volume-sature-x86_64-512": {
+      "debut_utc": "2026-11-13T20:52:11.109603+00:00",
+      "code": 0,
+      "duree_s": 7.68,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/qual-sans/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "512",
+        "sature",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/volume-sature-x86_64-512.json",
+        "--sans-sonde"
+      ],
+      "env": {},
+      "log_sha256": "481035a843aff95ccf7b257372bc0804ffaf19a6f60f261f95fb0e3a1fa7bc08"
+    },
+    "compile-course-aarch64": {
+      "debut_utc": "2026-11-13T20:53:54.853539+00:00",
+      "code": 0,
+      "duree_s": 13.05,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-course/novaOS",
+        "ARCH=aarch64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "886dc6d24796fc5eee40583198f7e9db195179efc609e72cdff81aaecbdb254f"
+    },
+    "compile-course-x86_64": {
+      "debut_utc": "2026-11-13T20:54:07.907288+00:00",
+      "code": 0,
+      "duree_s": 11.9,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-course/novaOS",
+        "ARCH=x86_64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "a540668036090351df764bbba612832d26caaf1048b0c09690ebc3b63d68e162"
+    },
+    "compile-regression-aarch64": {
+      "debut_utc": "2026-11-13T20:53:54.852160+00:00",
+      "code": 0,
+      "duree_s": 13.11,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "031c47de6921e8858e9d72ed79b70d34f7f3efa932e30c06bc261fc9d1bc8a99"
+    },
+    "compile-regression-x86_64": {
+      "debut_utc": "2026-11-13T20:54:07.965975+00:00",
+      "code": 0,
+      "duree_s": 11.97,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "kernel"
+      ],
+      "env": {},
+      "log_sha256": "94c4c466b4a5f4775b2f1bb1c3e2ffa77223780dc9a40c6275ad3925e19b3058"
+    },
+    "construction-dma-sequentiel": {
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--release",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--features",
+        "dma-sequentiel",
+        "--target-dir",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS/novaOS/build/irq-0166/irq-microprogramme-dma-sequentiel"
+      ],
+      "repertoire": "novaOS/build/irq-0166/fin-regression/novaOS",
+      "debut_utc": "2026-11-13T20:54:42.504574+00:00",
+      "code": 0,
+      "duree_s": 11.539786,
+      "log_sha256": "28872f6e2a22fb1e798503e204bb9f7c88df0a5ec750007295edd9bbd48570af"
+    },
+    "construction-gicv3-lab": {
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--release",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--features",
+        "gicv3-lab",
+        "--target-dir",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS/novaOS/build/irq-0166/irq-microprogramme-gicv3-lab"
+      ],
+      "repertoire": "novaOS/build/irq-0166/fin-regression/novaOS",
+      "debut_utc": "2026-11-13T20:54:42.504342+00:00",
+      "code": 0,
+      "duree_s": 11.8143,
+      "log_sha256": "612890934d988a3e048023d7aa8100f55c160f7a736370676fd47377f73fe899"
+    },
+    "course-aarch64-4096": {
+      "debut_utc": "2026-11-13T20:54:39.683745+00:00",
+      "code": 0,
+      "duree_s": 7.0,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/fin-course/novaOS/tests/es_groupees_conflits.py",
+        "aarch64",
+        "4096",
+        "novaOS/build/irq-0166/reg/fin/course-aarch64-4096.json"
+      ],
+      "env": {},
+      "log_sha256": "6d84637a3b2c38a544125cd1cb565f26ae864b83562d6c5168a942f24ca9271a"
+    },
+    "course-aarch64-512": {
+      "debut_utc": "2026-11-13T20:54:31.822645+00:00",
+      "code": 0,
+      "duree_s": 7.86,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/fin-course/novaOS/tests/es_groupees_conflits.py",
+        "aarch64",
+        "512",
+        "novaOS/build/irq-0166/reg/fin/course-aarch64-512.json"
+      ],
+      "env": {},
+      "log_sha256": "6a004c8acc061345b0f14c0a973c1d26848eeb75c3d766dbc65ab5d8d8c5a311"
+    },
+    "course-x86_64-4096": {
+      "debut_utc": "2026-11-13T20:54:36.239269+00:00",
+      "code": 0,
+      "duree_s": 4.04,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/fin-course/novaOS/tests/es_groupees_conflits.py",
+        "x86_64",
+        "4096",
+        "novaOS/build/irq-0166/reg/fin/course-x86_64-4096.json"
+      ],
+      "env": {},
+      "log_sha256": "28d8f5c31c454be9fce71595ddf11dfb709687737a5b383df612c72736611a04"
+    },
+    "course-x86_64-512": {
+      "debut_utc": "2026-11-13T20:54:31.823009+00:00",
+      "code": 0,
+      "duree_s": 4.42,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/fin-course/novaOS/tests/es_groupees_conflits.py",
+        "x86_64",
+        "512",
+        "novaOS/build/irq-0166/reg/fin/course-x86_64-512.json"
+      ],
+      "env": {},
+      "log_sha256": "834af1f4e3fd14bac55f8e83be2d2b7ef15c2a4bb1b50a9e0f8ff54d11f78b6d"
+    },
+    "irq-dma-sequentiel": {
+      "debut_utc": "2026-11-13T20:54:54.044644+00:00",
+      "code": 0,
+      "duree_s": 146.94,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/fin-regression/novaOS/tests/dma_sequentiel.py",
+        "novaOS/build/audit-nsh-0163/fv-sequentiel",
+        "novaOS/build/irq-0166/irq-microprogramme-dma-sequentiel/aarch64-unknown-none-softfloat/release/novaos",
+        "novaOS/build/irq-0166/reg/fin/irq-sequentiel",
+        "--fv-suspendu",
+        "novaOS/build/vi-0162/firmware-transfert"
+      ],
+      "env": {},
+      "log_sha256": "3bd89be907a6ac1f4d74627989b59aee3862b76d53c91b4451051f145e7d4f9b"
+    },
+    "irq-gicv3-lab": {
+      "debut_utc": "2026-11-13T20:54:54.318870+00:00",
+      "code": 0,
+      "duree_s": 62.78,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/fin-regression/novaOS/tests/prototype_uefi.py",
+        "novaOS/build/vi-0162/firmware-gic-temoin",
+        "novaOS/build/irq-0166/irq-microprogramme-gicv3-lab/aarch64-unknown-none-softfloat/release/novaos",
+        "--fv-sans-ack",
+        "novaOS/build/vi-0162/firmware-suspendu"
+      ],
+      "env": {},
+      "log_sha256": "127e6af93b33cdf4fea7e3cf25b06da8d6d8abb54a16bb42ca064557ae26af6d"
+    },
+    "os-aarch64-block-perf": {
+      "debut_utc": "2026-11-13T21:21:30.307632+00:00",
+      "code": 0,
+      "duree_s": 12.77,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "block-perf"
+      ],
+      "env": {},
+      "log_sha256": "2db8e1163b8e2d8a6ff30d99d9b198ebb502af6441f2a273edc24c2a6d95dd71"
+    },
+    "os-aarch64-block-test": {
+      "debut_utc": "2026-11-13T20:59:30.370842+00:00",
+      "code": 0,
+      "duree_s": 174.71,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "block-test"
+      ],
+      "env": {},
+      "log_sha256": "f97adac7608e514ed31586623e7a1f8d88aedad99e2bb64b6b692accdb904f7f"
+    },
+    "os-aarch64-cli-p9-test": {
+      "debut_utc": "2026-11-13T21:17:11.264206+00:00",
+      "code": 0,
+      "duree_s": 54.41,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "cli-p9-test"
+      ],
+      "env": {},
+      "log_sha256": "7672b6a0398f74839f928ab9e89083390734c31f79fc23ad8efe8fd033194df4"
+    },
+    "os-aarch64-cli-test": {
+      "debut_utc": "2026-11-13T21:16:19.338700+00:00",
+      "code": 0,
+      "duree_s": 51.93,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "cli-test"
+      ],
+      "env": {},
+      "log_sha256": "e93eb53f0108a20368f4b246b4b21dca5f2c1cf6f5b84840e56ea735f81b438f"
+    },
+    "os-aarch64-elf-test": {
+      "debut_utc": "2026-11-13T20:59:03.508750+00:00",
+      "code": 0,
+      "duree_s": 6.56,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "elf-test"
+      ],
+      "env": {},
+      "log_sha256": "3ce4263cb997bf2a8c72b23e6d93049082ccc48f84a1209eb2a6cd14ada54fcf"
+    },
+    "os-aarch64-file-test": {
+      "debut_utc": "2026-11-13T21:02:25.078428+00:00",
+      "code": 0,
+      "duree_s": 523.17,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "file-test"
+      ],
+      "env": {},
+      "log_sha256": "c3bd49a167533a4410b26066047b9ca277ef39d642751b482225248331f8984a"
+    },
+    "os-aarch64-ipc-perf": {
+      "debut_utc": "2026-11-13T21:20:05.696000+00:00",
+      "code": 0,
+      "duree_s": 57.76,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "ipc-perf"
+      ],
+      "env": {},
+      "log_sha256": "6ee2784a4101f02e4a3e64630cb22b4a4fc2141546ddea5663c06d9b2228051f"
+    },
+    "os-aarch64-ipc-races": {
+      "debut_utc": "2026-11-13T20:59:16.992682+00:00",
+      "code": 0,
+      "duree_s": 13.38,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "ipc-races"
+      ],
+      "env": {},
+      "log_sha256": "d1578f66011b343691dd65bfa3e0c621a9032117607ca62fd8da8ffc8cab0e54"
+    },
+    "os-aarch64-lifecycle-test": {
+      "debut_utc": "2026-11-13T20:59:10.070850+00:00",
+      "code": 0,
+      "duree_s": 6.92,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "lifecycle-test"
+      ],
+      "env": {},
+      "log_sha256": "8c2d8274c335d6c22d23423e4a0afd235edd3eae1ce7538aa3515fc3feac269f"
+    },
+    "os-aarch64-mount-progress-test": {
+      "debut_utc": "2026-11-13T21:20:05.410301+00:00",
+      "code": 0,
+      "duree_s": 0.29,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "mount-progress-test"
+      ],
+      "env": {},
+      "log_sha256": "b263a87cad6f6385b35551f06c9cb6a7c7a87cb3d7ae2f273d703eddefd3f05a"
+    },
+    "os-aarch64-namespace-test": {
+      "debut_utc": "2026-11-13T21:11:08.254359+00:00",
+      "code": 0,
+      "duree_s": 311.08,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "namespace-test"
+      ],
+      "env": {},
+      "log_sha256": "14ff1dd1a240f6d423636ff845cd5dd2c637baf24950669a92422feaa3cfb491"
+    },
+    "os-aarch64-nsh-scripts-test": {
+      "debut_utc": "2026-11-13T21:18:35.263060+00:00",
+      "code": 0,
+      "duree_s": 27.28,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "nsh-scripts-test"
+      ],
+      "env": {},
+      "log_sha256": "afa1625e5aedb659af5c175731670aee2a258db0bdb83ab53d6e6359f07941ec"
+    },
+    "os-aarch64-nsh-terminal-test": {
+      "debut_utc": "2026-11-13T21:19:02.543539+00:00",
+      "code": 0,
+      "duree_s": 15.01,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "nsh-terminal-test"
+      ],
+      "env": {},
+      "log_sha256": "579c8deb197c20fa01dd29f8cbeb171a5518ceb0cecffcbe549dd5ad7b6d1af1"
+    },
+    "os-aarch64-nsh-test": {
+      "debut_utc": "2026-11-13T21:18:05.679519+00:00",
+      "code": 0,
+      "duree_s": 29.58,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "nsh-test"
+      ],
+      "env": {},
+      "log_sha256": "c1de850b5829d6f9d1a7c293a5e97cecfab18c89e0fd11239d9a664c24eb7db4"
+    },
+    "os-aarch64-ram-test": {
+      "debut_utc": "2026-11-13T21:21:03.461011+00:00",
+      "code": 0,
+      "duree_s": 26.85,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "ram-test"
+      ],
+      "env": {},
+      "log_sha256": "e48cfe5e0b8495792f0f11166426da7d01cc29dcee05607792d1058f169cf1ca"
+    },
+    "os-aarch64-test": {
+      "debut_utc": "2026-11-13T20:54:51.344684+00:00",
+      "code": 0,
+      "duree_s": 252.16,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "test"
+      ],
+      "env": {},
+      "log_sha256": "7aa8c3e1590f4f0c86ff56b0c5a124e58da44f6df563f775a42af598d6cf0cbd"
+    },
+    "os-aarch64-vi-ecran-test": {
+      "debut_utc": "2026-11-13T20:54:31.822907+00:00",
+      "code": 0,
+      "duree_s": 19.52,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "vi-ecran-test"
+      ],
+      "env": {},
+      "log_sha256": "15ace7beb09df3b37c4dd702e1e93f15b747f8b5a95947b1c714df67c3cd1a99"
+    },
+    "os-aarch64-vi-memoire-test": {
+      "debut_utc": "2026-11-13T21:20:04.873588+00:00",
+      "code": 0,
+      "duree_s": 0.54,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "vi-memoire-test"
+      ],
+      "env": {},
+      "log_sha256": "4104a757307d1543d50d7161c490b29497c7ae32609bc547719df3ce244c6ccd"
+    },
+    "os-aarch64-vi-test": {
+      "debut_utc": "2026-11-13T21:19:17.549840+00:00",
+      "code": 0,
+      "duree_s": 34.4,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "vi-test"
+      ],
+      "env": {},
+      "log_sha256": "93618fbb0aad88f3f1f2cfc817f192bea523bef15f6d064d30f62db22c85bda6"
+    },
+    "os-aarch64-vi-volumes-test": {
+      "debut_utc": "2026-11-13T21:19:51.954927+00:00",
+      "code": 0,
+      "duree_s": 12.92,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=aarch64",
+        "vi-volumes-test"
+      ],
+      "env": {},
+      "log_sha256": "b7678c27e26d1c40d9c00e1cb8049172f8782e0dc9ead58ca1c35fdaf297b1f9"
+    },
+    "os-x86_64-block-perf": {
+      "debut_utc": "2026-11-13T21:07:06.492537+00:00",
+      "code": 0,
+      "duree_s": 5.5,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "block-perf"
+      ],
+      "env": {},
+      "log_sha256": "2e48b7aec475c7102e6f632e40a38a1a578afbad574f51e5edde45d4175df186"
+    },
+    "os-x86_64-block-test": {
+      "debut_utc": "2026-11-13T20:57:20.908214+00:00",
+      "code": 0,
+      "duree_s": 71.47,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "block-test"
+      ],
+      "env": {},
+      "log_sha256": "872b8b85604a24884505015f0bb76d2d39c3758bb7c1ddb2d9d17d3851a84097"
+    },
+    "os-x86_64-cli-p9-test": {
+      "debut_utc": "2026-11-13T21:04:41.678987+00:00",
+      "code": 0,
+      "duree_s": 24.94,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "cli-p9-test"
+      ],
+      "env": {},
+      "log_sha256": "2aac59354f1f645d3c8a5430ae4a8f2a10be024d5156909b70a8375556befcc1"
+    },
+    "os-x86_64-cli-test": {
+      "debut_utc": "2026-11-13T21:04:18.813931+00:00",
+      "code": 0,
+      "duree_s": 22.86,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "cli-test"
+      ],
+      "env": {},
+      "log_sha256": "d87d5fd57a8e8a763af0caa71c8f0a1c15c4abc0f3fecf444c4d5ccb532d8115"
+    },
+    "os-x86_64-elf-test": {
+      "debut_utc": "2026-11-13T20:57:07.766819+00:00",
+      "code": 0,
+      "duree_s": 2.72,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "elf-test"
+      ],
+      "env": {},
+      "log_sha256": "475c273fcb9ad020fb02a060044538eba041d1f73cf4c8b230f45de735d672e0"
+    },
+    "os-x86_64-file-test": {
+      "debut_utc": "2026-11-13T20:58:32.374209+00:00",
+      "code": 0,
+      "duree_s": 214.38,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "file-test"
+      ],
+      "env": {},
+      "log_sha256": "9598fed38c6f5fe9cbe220f007de857e8681a4d25e7816e23be643347ea3d1b5"
+    },
+    "os-x86_64-ipc-perf": {
+      "debut_utc": "2026-11-13T21:06:08.856766+00:00",
+      "code": 0,
+      "duree_s": 45.82,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "ipc-perf"
+      ],
+      "env": {},
+      "log_sha256": "5b3f4918b7dc43f352f192049045dd3faeffffe3f6921282ecbb67acf959bbac"
+    },
+    "os-x86_64-ipc-races": {
+      "debut_utc": "2026-11-13T20:57:13.138965+00:00",
+      "code": 0,
+      "duree_s": 7.77,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "ipc-races"
+      ],
+      "env": {},
+      "log_sha256": "9a043ad99e835b151bd1544df17f06a8eb778e6febe8be9969b6c3c009e99313"
+    },
+    "os-x86_64-lifecycle-test": {
+      "debut_utc": "2026-11-13T20:57:10.485907+00:00",
+      "code": 0,
+      "duree_s": 2.65,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "lifecycle-test"
+      ],
+      "env": {},
+      "log_sha256": "723b56e2de0e4b483604452ec7f020b6c2539a93e878532acd057a2f495fd0be"
+    },
+    "os-x86_64-mount-progress-test": {
+      "debut_utc": "2026-11-13T21:06:08.441028+00:00",
+      "code": 0,
+      "duree_s": 0.42,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "mount-progress-test"
+      ],
+      "env": {},
+      "log_sha256": "c5c583c298ceed0fd5399a2420a92059b33120cd1ee3319f368df542d390b0e3"
+    },
+    "os-x86_64-namespace-test": {
+      "debut_utc": "2026-11-13T21:02:06.750979+00:00",
+      "code": 0,
+      "duree_s": 132.06,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "namespace-test"
+      ],
+      "env": {},
+      "log_sha256": "d87c6956256b0ebabefa25c8c2c82aa3d889bb92c72769d60f1db539698e4cc3"
+    },
+    "os-x86_64-nsh-scripts-test": {
+      "debut_utc": "2026-11-13T21:05:21.170025+00:00",
+      "code": 0,
+      "duree_s": 12.02,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "nsh-scripts-test"
+      ],
+      "env": {},
+      "log_sha256": "6a4ca33ede4b66d285990afe2fedfe5a204e51e3f417d46b885f870682c22da3"
+    },
+    "os-x86_64-nsh-terminal-test": {
+      "debut_utc": "2026-11-13T21:05:33.185479+00:00",
+      "code": 0,
+      "duree_s": 7.53,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "nsh-terminal-test"
+      ],
+      "env": {},
+      "log_sha256": "7edcbd5cc387f840ac23fc34fc125194cbddad858813d9ec4340ad49fdfd5781"
+    },
+    "os-x86_64-nsh-test": {
+      "debut_utc": "2026-11-13T21:05:06.617827+00:00",
+      "code": 0,
+      "duree_s": 14.55,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "nsh-test"
+      ],
+      "env": {},
+      "log_sha256": "f0f6100b02def727c8fb4d2a7d6f5ffef1ade7b5fcb23e093f97bcef20dd51a1"
+    },
+    "os-x86_64-ram-test": {
+      "debut_utc": "2026-11-13T21:06:54.680622+00:00",
+      "code": 0,
+      "duree_s": 11.81,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "ram-test"
+      ],
+      "env": {},
+      "log_sha256": "6a61434a10632cb7bf5e4ceedbad80373d8dec1f8cf60f60a5c4c5887a86c582"
+    },
+    "os-x86_64-test": {
+      "debut_utc": "2026-11-13T20:54:47.513411+00:00",
+      "code": 0,
+      "duree_s": 140.25,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "test"
+      ],
+      "env": {},
+      "log_sha256": "79b79e6ebf1c4b48882e1feb4ba467b08a857ea87c9b6cb3fb76d7947b5484f9"
+    },
+    "os-x86_64-vi-ecran-test": {
+      "debut_utc": "2026-11-13T20:54:31.823095+00:00",
+      "code": 0,
+      "duree_s": 15.69,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "vi-ecran-test"
+      ],
+      "env": {},
+      "log_sha256": "30a4654c9f174e4aac0add36c939464074ee3509ff48a19670c9862075a2bfd7"
+    },
+    "os-x86_64-vi-memoire-test": {
+      "debut_utc": "2026-11-13T21:06:07.738054+00:00",
+      "code": 0,
+      "duree_s": 0.7,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "vi-memoire-test"
+      ],
+      "env": {},
+      "log_sha256": "49904669ae2a67bee2c587b25347112e0534b3125b5c84360ff5629093b39615"
+    },
+    "os-x86_64-vi-test": {
+      "debut_utc": "2026-11-13T21:05:40.713914+00:00",
+      "code": 0,
+      "duree_s": 18.18,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "vi-test"
+      ],
+      "env": {},
+      "log_sha256": "915789f0e4d1a2e97f9583bea20d057c0bcc313328bcad8b16dd0520f967fcb2"
+    },
+    "os-x86_64-vi-volumes-test": {
+      "debut_utc": "2026-11-13T21:05:58.892537+00:00",
+      "code": 0,
+      "duree_s": 8.85,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/irq-0166/fin-regression/novaOS",
+        "ARCH=x86_64",
+        "vi-volumes-test"
+      ],
+      "env": {},
+      "log_sha256": "c32ff901079172e785133138d359e708380bc9c01cbd2e5190271097554b0d88"
+    },
+    "reprise-f2-512-definitif": {
+      "debut_utc": "2026-11-13T21:26:23.038020+00:00",
+      "code": 0,
+      "duree_s": 26.4,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/reg/relire.py",
+        "novaOS/build/irq-0166/reg/fin/reprise-f2-512-definitif",
+        "fin/utm-f2-512"
+      ],
+      "env": {},
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "reprise-f2-512-prequalification": {
+      "debut_utc": "2026-11-13T21:25:58.120702+00:00",
+      "code": 0,
+      "duree_s": 24.92,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/reg/relire.py",
+        "novaOS/build/irq-0166/reg/fin/reprise-f2-512-prequalification",
+        "utm-f2-512"
+      ],
+      "env": {},
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "utm-f1-4096": {
+      "debut_utc": "2026-11-13T21:23:48.448269+00:00",
+      "code": 0,
+      "duree_s": 40.19,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/reg/serie-finale.py",
+        "novaOS/build/io-0165/utm/NovaOS-nsh-systeme-6e5f7404.utm",
+        "novaOS/build/irq-0166/fin-utm-coupe/novaOS/target/aarch64-unknown-none-softfloat/release/novaos",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/fin/utm-f1-4096",
+        "4096",
+        "--cas",
+        "ajout-4m",
+        "--sans-sonde",
+        "--coupure",
+        "f1"
+      ],
+      "env": {},
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "utm-f1-512": {
+      "debut_utc": "2026-11-13T21:23:09.544851+00:00",
+      "code": 0,
+      "duree_s": 38.9,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/reg/serie-finale.py",
+        "novaOS/build/io-0165/utm/NovaOS-nsh-systeme-6e5f7404.utm",
+        "novaOS/build/irq-0166/fin-utm-coupe/novaOS/target/aarch64-unknown-none-softfloat/release/novaos",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/fin/utm-f1-512",
+        "512",
+        "--cas",
+        "ajout-4m",
+        "--sans-sonde",
+        "--coupure",
+        "f1"
+      ],
+      "env": {},
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "utm-f2-4096": {
+      "debut_utc": "2026-11-13T21:25:13.737003+00:00",
+      "code": 0,
+      "duree_s": 44.38,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/reg/serie-finale.py",
+        "novaOS/build/io-0165/utm/NovaOS-nsh-systeme-6e5f7404.utm",
+        "novaOS/build/irq-0166/fin-utm-coupe/novaOS/target/aarch64-unknown-none-softfloat/release/novaos",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/fin/utm-f2-4096",
+        "4096",
+        "--cas",
+        "ajout-4m",
+        "--sans-sonde",
+        "--coupure",
+        "f2"
+      ],
+      "env": {},
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "utm-f2-512": {
+      "debut_utc": "2026-11-13T21:24:28.635525+00:00",
+      "code": 0,
+      "duree_s": 45.1,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/reg/serie-finale.py",
+        "novaOS/build/io-0165/utm/NovaOS-nsh-systeme-6e5f7404.utm",
+        "novaOS/build/irq-0166/fin-utm-coupe/novaOS/target/aarch64-unknown-none-softfloat/release/novaos",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/fin/utm-f2-512",
+        "512",
+        "--cas",
+        "ajout-4m",
+        "--sans-sonde",
+        "--coupure",
+        "f2"
+      ],
+      "env": {},
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "utm-pages-4096": {
+      "debut_utc": "2026-11-13T21:22:29.735845+00:00",
+      "code": 0,
+      "duree_s": 39.81,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/reg/serie-finale.py",
+        "novaOS/build/io-0165/utm/NovaOS-nsh-systeme-6e5f7404.utm",
+        "novaOS/build/irq-0166/fin-utm-coupe/novaOS/target/aarch64-unknown-none-softfloat/release/novaos",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/fin/utm-pages-4096",
+        "4096",
+        "--cas",
+        "ajout-4m",
+        "--sans-sonde",
+        "--coupure",
+        "pages"
+      ],
+      "env": {},
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "utm-pages-512": {
+      "debut_utc": "2026-11-13T21:21:50.674964+00:00",
+      "code": 0,
+      "duree_s": 39.06,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/irq-0166/reg/serie-finale.py",
+        "novaOS/build/io-0165/utm/NovaOS-nsh-systeme-6e5f7404.utm",
+        "novaOS/build/irq-0166/fin-utm-coupe/novaOS/target/aarch64-unknown-none-softfloat/release/novaos",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/irq-0166/reg/fin/utm-pages-512",
+        "512",
+        "--cas",
+        "ajout-4m",
+        "--sans-sonde",
+        "--coupure",
+        "pages"
+      ],
+      "env": {},
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "compte_commandes_qualifiees": 113,
+  "reproduction": {
+    "repertoire_observe": "Les commandes ont été lancées depuis la racine du dépôt, sauf les builds Cargo du cœur nu effectués dans novaFS. Les chemins sous novaOS/build correspondent aux sept archives jetables.",
+    "archives": "Suivre la section Reproduction des deux rapports es-v0.16.6-dma.md et es-v0.16.6-cpu.md. Appliquer la fixture io-0166-irq-attente en dernier sur chaque profil ; pour le profil de compteurs, appliquer io-0166-vcpu avant cette fixture puis io-0166-irq-sonde. Les nommages qual- et fin- désignent des archives de la même base.",
+    "six_coupures_utm": "Le lanceur local serie-finale.py appelle avec ces mêmes arguments le banc versionné novaOS/tests/es_groupees_utm.py ; en attente de l’invite, il reconnaît également la sortie système définitive Err pour restituer immédiatement un échec. Une VM UTM à la fois ; aucune régression ni benchmark lancé simultanément lors de la série finale.",
+    "deux_relectures_f2_512": "Pour chaque export interrompu.utm, conserver le SHA-256 de Data/cible.qcow2 ; dupliquer le paquet, attribuer une nouvelle identité de VM via nsh_utm.nommer, contrôler le SHA avant import. Démarrer la copie, ouvrir vi coupure-f2, quitter, arrêter la session proprement, exporter et contrôler GPT, P9 et le contenu complet avec le lecteur indépendant ; recontrôler le SHA de l’export initial.",
+    "commandes": "Les 113 entrées enregistrent les vérifications et les compilations machine chronométrées auxquelles le lanceur a attribué un statut, distinctement des étapes de préparation de plages, assemblage de fixtures, hachage et qualification spécialisée du SPI.",
+    "outillage": "Les deux constructions x86 initiales du cœur nu lancées hors de novaFS omettaient sa configuration des backends crypto logiciels. Les quatre commandes sous novaFS avec Cargo.lock et la configuration du projet se sont terminées avec succès."
+  }
+}

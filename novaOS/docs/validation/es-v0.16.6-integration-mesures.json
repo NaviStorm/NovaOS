@@ -1,0 +1,3038 @@
+{
+  "base": "d6a7a67a1e5addbb1fe849ee24fa4d61fc9accdd",
+  "environnement": {
+    "hote": "Apple M4 Max, 128 Gio, macOS 27.2 (26B123), volume interne APFS FileVault",
+    "invites": "256 Mio, 1 vCPU, TCG, polling",
+    "QEMU_direct": "11.1.3, image RAW",
+    "UTM": "5.0.8, QEMU 10.0.12, QCOW2 clairsemé, politique ordinaire, repos sans charge ajoutée",
+    "compilateur": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "date_utc": "2026-11-14"
+  },
+  "protocole": "Temps hôte de la commande :w copie jusqu’au succès après F2, consentement automatisé inclus. Une VM à la fois, polling, un vCPU, 256 Mio. Les essais UTM comportent un redémarrage réel, un contrôle GPT et une relecture P9 de l’export de la VM.",
+  "essais": [
+    {
+      "id": "qemu-aarch64-4096-ajout-4m-multiple-0",
+      "plateforme": "qemu-aarch64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "sonde": false,
+      "elf_sha256": "ba0e2eea092392de7eed5fb39dbad69768bfa1fcf91d2bdfc38e2350c70a4663",
+      "sauvegarde_ms": 128.593,
+      "pic_cadres_session": 9754,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        4.0791015625,
+        6.32177734375,
+        5.69140625
+      ],
+      "loadavg_apres": [
+        3.32861328125,
+        6.04443359375,
+        5.60302734375
+      ],
+      "serie": "reference",
+      "processus_kio": {
+        "1": 12,
+        "2": 3800,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "releve_brut_sha256": "622fce34c92b8f12b3012b7d8d59c5545fba3a25fe7ab6b7b04316b5e637cd56"
+    },
+    {
+      "id": "qemu-aarch64-4096-ajout-4m-multiple-1",
+      "plateforme": "qemu-aarch64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "sonde": true,
+      "elf_sha256": "a6a8b4cd6d0967bf0a90ee2956b73619777850075d0828bce36e8e9ed91813c6",
+      "sauvegarde_ms": 132.949,
+      "pic_cadres_session": 9755,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        3.32861328125,
+        6.04443359375,
+        5.60302734375
+      ],
+      "loadavg_apres": [
+        3.11376953125,
+        5.8623046875,
+        5.54541015625
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          1,
+          1,
+          8,
+          1,
+          1,
+          1
+        ],
+        "avec_copies_locales_pret": 64,
+        "ipc_par_liaison": {
+          "moteur_bloc": 17,
+          "bloc_pilote": 17,
+          "nsh_moteur": 7,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 47,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 17,
+        "take": 17,
+        "bloc": {
+          "lecture": {
+            "nombre": 143,
+            "millisecondes": 6.346
+          },
+          "ecriture": {
+            "nombre": 45,
+            "millisecondes": 3.051
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.691
+          }
+        },
+        "total_avec_controles_locaux": 56,
+        "appels_file_locaux": {
+          "reserve": 16,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 16
+        },
+        "lots": [
+          5,
+          1038,
+          9,
+          2049,
+          2,
+          39
+        ],
+        "preparation_et_donnees_ms": 118.867,
+        "metadonnees_et_F1_ms": 2.997,
+        "ancre_et_F2_ms": 0.395,
+        "persistance_acquise_ms": 122.355,
+        "dma": {
+          "groupes_in": 142,
+          "groupes_out": 45,
+          "pages_in": 1038,
+          "pages_out": 2088,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 80,
+          "kicks": 190,
+          "irq": 190,
+          "copie_in_ms": 2.343,
+          "copie_out_ms": 3.313,
+          "soumission_ms": 0.724,
+          "kick_a_used_observe_ms": 10.254,
+          "used_a_acquittement_ms": 0.078,
+          "traitement_irq_ms": 0.19,
+          "kick_a_entree_irq_ms": 9.593
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 20.799,
+          "sha256_candidate": 41.223,
+          "validation_texte": 7.34,
+          "reservation_pages": 0.15,
+          "construction_extents": 2.506,
+          "copie_source_et_pret": 5.863,
+          "allocation_fenetres": 1.25,
+          "recherche_extents": 0.908,
+          "effacement_liberation": 0.414
+        },
+        "lots_bloc_lecture_ms": 12.476,
+        "lots_bloc_ecriture_ms": 9.016,
+        "appel_publish_ms": 126.431,
+        "commande_au_succes_ms": 132.949,
+        "oui_au_succes_ms": 119.579708,
+        "session_compteur_historique": 6357,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "processus_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "releve_brut_sha256": "f1e517f0fc738089c8aabe2b179f9d6065f713c49633ad1c958733627de04b5f"
+    },
+    {
+      "id": "qemu-aarch64-4096-inserer-milieu-0-repos",
+      "plateforme": "qemu-aarch64",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "sonde": false,
+      "elf_sha256": "ba0e2eea092392de7eed5fb39dbad69768bfa1fcf91d2bdfc38e2350c70a4663",
+      "sauvegarde_ms": 88.429,
+      "pic_cadres_session": 2989,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "loadavg_avant": [
+        2.25927734375,
+        4.48486328125,
+        5.05712890625
+      ],
+      "loadavg_apres": [
+        2.29248046875,
+        4.4189453125,
+        5.02685546875
+      ],
+      "serie": "reference",
+      "processus_kio": {
+        "1": 12,
+        "2": 3800,
+        "3": 36,
+        "4": 460,
+        "5": 6600
+      },
+      "releve_brut_sha256": "a8f0b3c4d81d39cac3c02178e6a57188cec23d1722d8f084525a7e195a913149"
+    },
+    {
+      "id": "qemu-aarch64-4096-inserer-milieu-0",
+      "plateforme": "qemu-aarch64",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "sonde": false,
+      "elf_sha256": "ba0e2eea092392de7eed5fb39dbad69768bfa1fcf91d2bdfc38e2350c70a4663",
+      "sauvegarde_ms": 95.978,
+      "pic_cadres_session": 2989,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "loadavg_avant": [
+        2.75146484375,
+        6.228515625,
+        5.6435546875
+      ],
+      "loadavg_apres": [
+        4.3779296875,
+        6.453125,
+        5.7294921875
+      ],
+      "serie": "pilote_construction_interop_darwin",
+      "processus_kio": {
+        "1": 12,
+        "2": 3800,
+        "3": 36,
+        "4": 460,
+        "5": 6600
+      },
+      "releve_brut_sha256": "5640a2f68c7308c22c6eba214bf066ae06dce1fe77887a23ed1b58c412fc54b6"
+    },
+    {
+      "id": "qemu-aarch64-512-ajout-4m-multiple-0-repos",
+      "plateforme": "qemu-aarch64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 512,
+      "sonde": false,
+      "elf_sha256": "ba0e2eea092392de7eed5fb39dbad69768bfa1fcf91d2bdfc38e2350c70a4663",
+      "sauvegarde_ms": 127.909,
+      "pic_cadres_session": 9754,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        2.29248046875,
+        4.4189453125,
+        5.02685546875
+      ],
+      "loadavg_apres": [
+        2.72509765625,
+        4.4130859375,
+        5.013671875
+      ],
+      "serie": "reference",
+      "processus_kio": {
+        "1": 12,
+        "2": 3800,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "releve_brut_sha256": "83dfe531626398938ffe40bdf574097ce3703fcf6dba903c241908f3e9a51acb"
+    },
+    {
+      "id": "qemu-aarch64-512-ajout-4m-multiple-0",
+      "plateforme": "qemu-aarch64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 512,
+      "sonde": false,
+      "elf_sha256": "ba0e2eea092392de7eed5fb39dbad69768bfa1fcf91d2bdfc38e2350c70a4663",
+      "sauvegarde_ms": 131.641,
+      "pic_cadres_session": 9754,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        4.3779296875,
+        6.453125,
+        5.7294921875
+      ],
+      "loadavg_apres": [
+        4.0791015625,
+        6.32177734375,
+        5.69140625
+      ],
+      "serie": "pilote_construction_interop_darwin",
+      "processus_kio": {
+        "1": 12,
+        "2": 3800,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "releve_brut_sha256": "5e950f01872fff0c1d2a352702608f01b9125a40349ac9b3c9f5f568dda4a0bf"
+    },
+    {
+      "id": "qemu-aarch64-512-neuf-4m-0-repos",
+      "plateforme": "qemu-aarch64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": false,
+      "elf_sha256": "ba0e2eea092392de7eed5fb39dbad69768bfa1fcf91d2bdfc38e2350c70a4663",
+      "sauvegarde_ms": 77.687,
+      "pic_cadres_session": 4032,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        2.2822265625,
+        4.52685546875,
+        5.0751953125
+      ],
+      "loadavg_apres": [
+        2.25927734375,
+        4.48486328125,
+        5.05712890625
+      ],
+      "serie": "reference",
+      "processus_kio": {
+        "1": 12,
+        "2": 1752,
+        "3": 36,
+        "4": 460,
+        "5": 12872
+      },
+      "releve_brut_sha256": "f90420efb6d3c34794ac854397b7808d13237aa3f4c686693d0d00696fdc1f5d"
+    },
+    {
+      "id": "qemu-aarch64-512-neuf-4m-0",
+      "plateforme": "qemu-aarch64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": false,
+      "elf_sha256": "ba0e2eea092392de7eed5fb39dbad69768bfa1fcf91d2bdfc38e2350c70a4663",
+      "sauvegarde_ms": 125.283,
+      "pic_cadres_session": 4032,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        2.8017578125,
+        6.3564453125,
+        5.68115234375
+      ],
+      "loadavg_apres": [
+        2.75146484375,
+        6.228515625,
+        5.6435546875
+      ],
+      "serie": "pilote_construction_interop_darwin",
+      "processus_kio": {
+        "1": 12,
+        "2": 1752,
+        "3": 36,
+        "4": 460,
+        "5": 12872
+      },
+      "releve_brut_sha256": "5d9212433126d00987c138d50e6994714399bf9880507dc1eb6581cf09b634f9"
+    },
+    {
+      "id": "qemu-x86_64-4096-ajout-4m-multiple-0",
+      "plateforme": "qemu-x86_64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "sonde": false,
+      "elf_sha256": "53994e4a74318de98ebb3a9d12ee853583e3367b5a60b3bb893638d2fb60c6d7",
+      "sauvegarde_ms": 229.637,
+      "pic_cadres_session": 9765,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        4.017578125,
+        5.91943359375,
+        5.5703125
+      ],
+      "loadavg_apres": [
+        4.24853515625,
+        5.9052734375,
+        5.5693359375
+      ],
+      "serie": "reference",
+      "processus_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "releve_brut_sha256": "81c2c9722a109a500c334a9b7872e52667c0a3f7ac092c612d8be0941844fe0f"
+    },
+    {
+      "id": "qemu-x86_64-4096-ajout-4m-multiple-1",
+      "plateforme": "qemu-x86_64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "sonde": true,
+      "elf_sha256": "416d31835c00c1fcc46c78bd772110beb8f169012fe814260eb9373be0d01c47",
+      "sauvegarde_ms": 199.353,
+      "pic_cadres_session": 9766,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        4.24853515625,
+        5.9052734375,
+        5.5693359375
+      ],
+      "loadavg_apres": [
+        4.70654296875,
+        5.95556640625,
+        5.59130859375
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          1,
+          1,
+          8,
+          1,
+          1,
+          1
+        ],
+        "avec_copies_locales_pret": 64,
+        "ipc_par_liaison": {
+          "moteur_bloc": 17,
+          "bloc_pilote": 17,
+          "nsh_moteur": 7,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 47,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 17,
+        "take": 17,
+        "bloc": {
+          "lecture": {
+            "nombre": 143,
+            "millisecondes": 5.337
+          },
+          "ecriture": {
+            "nombre": 45,
+            "millisecondes": 2.719
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.632
+          }
+        },
+        "total_avec_controles_locaux": 56,
+        "appels_file_locaux": {
+          "reserve": 16,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 16
+        },
+        "lots": [
+          5,
+          1038,
+          9,
+          2049,
+          2,
+          39
+        ],
+        "preparation_et_donnees_ms": 188.03,
+        "metadonnees_et_F1_ms": 2.98,
+        "ancre_et_F2_ms": 0.286,
+        "persistance_acquise_ms": 191.382,
+        "dma": {
+          "groupes_in": 142,
+          "groupes_out": 45,
+          "pages_in": 1038,
+          "pages_out": 2088,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 80,
+          "kicks": 190,
+          "irq": 190,
+          "copie_in_ms": 3.692,
+          "copie_out_ms": 5.537,
+          "soumission_ms": 0.84,
+          "kick_a_used_observe_ms": 8.637,
+          "used_a_acquittement_ms": 0.191,
+          "traitement_irq_ms": 0.194,
+          "kick_a_entree_irq_ms": 7.964
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 43.197,
+          "sha256_candidate": 86.732,
+          "validation_texte": 4.006,
+          "reservation_pages": 0.205,
+          "construction_extents": 3.277,
+          "copie_source_et_pret": 5.42,
+          "allocation_fenetres": 1.377,
+          "recherche_extents": 0.878,
+          "effacement_liberation": 0.468
+        },
+        "lots_bloc_lecture_ms": 14.151,
+        "lots_bloc_ecriture_ms": 11.659,
+        "appel_publish_ms": 193.146,
+        "commande_au_succes_ms": 199.353,
+        "oui_au_succes_ms": 189.982,
+        "session_compteur_historique": 6357,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "processus_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "releve_brut_sha256": "35211e5a3b978cfcab3cc156c2f4c2e13606f8efd600028970be08d7fdc08998"
+    },
+    {
+      "id": "qemu-x86_64-4096-inserer-milieu-0",
+      "plateforme": "qemu-x86_64",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "sonde": false,
+      "elf_sha256": "53994e4a74318de98ebb3a9d12ee853583e3367b5a60b3bb893638d2fb60c6d7",
+      "sauvegarde_ms": 147.553,
+      "pic_cadres_session": 3000,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "loadavg_avant": [
+        3.11376953125,
+        5.8623046875,
+        5.54541015625
+      ],
+      "loadavg_apres": [
+        3.3232421875,
+        5.81689453125,
+        5.53271484375
+      ],
+      "serie": "reference",
+      "processus_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 6600
+      },
+      "releve_brut_sha256": "6e1c54e0376e5dd7ec041f7803789159c1eb76274927b476a2e13dbf10587c3a"
+    },
+    {
+      "id": "qemu-x86_64-512-ajout-4m-multiple-0",
+      "plateforme": "qemu-x86_64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 512,
+      "sonde": false,
+      "elf_sha256": "53994e4a74318de98ebb3a9d12ee853583e3367b5a60b3bb893638d2fb60c6d7",
+      "sauvegarde_ms": 230.026,
+      "pic_cadres_session": 9765,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        3.3232421875,
+        5.81689453125,
+        5.53271484375
+      ],
+      "loadavg_apres": [
+        4.017578125,
+        5.91943359375,
+        5.5703125
+      ],
+      "serie": "reference",
+      "processus_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "releve_brut_sha256": "21da6fca49f56d9bda0f728cfc642e7a7253dab99abf480a7f27a52228be5f1a"
+    },
+    {
+      "id": "qemu-x86_64-512-neuf-4m-0",
+      "plateforme": "qemu-x86_64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": false,
+      "elf_sha256": "53994e4a74318de98ebb3a9d12ee853583e3367b5a60b3bb893638d2fb60c6d7",
+      "sauvegarde_ms": 142.53,
+      "pic_cadres_session": 4043,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        3.11376953125,
+        5.8623046875,
+        5.54541015625
+      ],
+      "loadavg_apres": [
+        3.11376953125,
+        5.8623046875,
+        5.54541015625
+      ],
+      "serie": "reference",
+      "processus_kio": {
+        "1": 12,
+        "2": 1780,
+        "3": 36,
+        "4": 476,
+        "5": 12872
+      },
+      "releve_brut_sha256": "791eeee819141e52dc136f3be833e1da3aadfd891dd856ede2d2b57d2ec67de1"
+    },
+    {
+      "id": "utm-aarch64-4096-ajout-4m-multiple-0",
+      "plateforme": "utm-aarch64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "sonde": false,
+      "elf_sha256": "27f221da5570d2b156c1220175dfc6a84baad25df2b68b53e8ea5a09074eb16b",
+      "sauvegarde_ms": 829.056,
+      "pic_cadres_session": 9735,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        68,
+        69
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        3.43994140625,
+        5.40966796875,
+        5.41845703125
+      ],
+      "loadavg_apres": [
+        2.5009765625,
+        4.796875,
+        5.1875
+      ],
+      "serie": "reference",
+      "backend_hmp": {
+        "rd_operations": 143,
+        "wr_operations": 45,
+        "flush_operations": 2,
+        "rd_bytes": 4255744,
+        "wr_bytes": 8552448,
+        "rd_total_time_ns": 11482000,
+        "wr_total_time_ns": 16227000,
+        "flush_total_time_ns": 3327000
+      },
+      "politique_demandee": "ordinaire",
+      "apres_oui_ms": 753.536,
+      "commande_monotone_ns": [
+        46834205524750,
+        46834281044583,
+        46835034580333
+      ],
+      "octets_relus": true,
+      "redemarrages": 1,
+      "image_initiale": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7602176,
+        "cluster-size": 65536
+      },
+      "allocation_importee": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7602176,
+        "cluster-size": 65536
+      },
+      "charge_hote": {
+        "profil": "repos",
+        "ouvriers": [],
+        "avant": {
+          "monotone_ns": 46834017667375,
+          "cout_ns": 6831375,
+          "cpu_ticks": [
+            7981358,
+            2233290,
+            64554136,
+            0
+          ],
+          "charge": [
+            2.77392578125,
+            4.9267578125,
+            5.2373046875
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 594360,
+            "Pages active": 2424448,
+            "Pages inactive": 4861504,
+            "Pages speculative": 118520,
+            "Pages throttled": 0,
+            "Pages wired down": 328675,
+            "Pages purgeable": 114382,
+            "\"Translation faults\"": 582346993,
+            "Pages copy-on-write": 31546574,
+            "Pages zero filled": 354966270,
+            "Pages reactivated": 611422,
+            "Pages purged": 931642,
+            "File-backed pages": 5168217,
+            "Anonymous pages": 2236255,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54699254,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21328221,
+          "disque_mio": 1842854.82
+        },
+        "apres": {
+          "monotone_ns": 46835055275375,
+          "cout_ns": 6657042,
+          "cpu_ticks": [
+            7981476,
+            2233319,
+            64555644,
+            0
+          ],
+          "charge": [
+            2.77392578125,
+            4.9267578125,
+            5.2373046875
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 593032,
+            "Pages active": 2425242,
+            "Pages inactive": 4862046,
+            "Pages speculative": 118512,
+            "Pages throttled": 0,
+            "Pages wired down": 328675,
+            "Pages purgeable": 114382,
+            "\"Translation faults\"": 582351383,
+            "Pages copy-on-write": 31547465,
+            "Pages zero filled": 354967780,
+            "Pages reactivated": 611422,
+            "Pages purged": 931642,
+            "File-backed pages": 5168751,
+            "Anonymous pages": 2237049,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54699260,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21328351,
+          "disque_mio": 1842868.39
+        }
+      },
+      "releve_brut_sha256": "b87f15f3285d3910672fbdb2048ce9677c625a504af1bb32e1c63c6d547f1b74"
+    },
+    {
+      "id": "utm-aarch64-4096-ajout-4m-multiple-1",
+      "plateforme": "utm-aarch64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "sonde": true,
+      "elf_sha256": "0de61a17539855b61a480a6060035f0ad51cb83ff3788eaad234f42e72d61df6",
+      "sauvegarde_ms": 136.839,
+      "pic_cadres_session": 9736,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        68,
+        69
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        2.5009765625,
+        4.796875,
+        5.1875
+      ],
+      "loadavg_apres": [
+        2.2822265625,
+        4.52685546875,
+        5.0751953125
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          1,
+          1,
+          8,
+          1,
+          1,
+          1
+        ],
+        "avec_copies_locales_pret": 64,
+        "ipc_par_liaison": {
+          "moteur_bloc": 17,
+          "bloc_pilote": 17,
+          "nsh_moteur": 7,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 47,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 17,
+        "take": 17,
+        "bloc": {
+          "lecture": {
+            "nombre": 143,
+            "millisecondes": 6.636
+          },
+          "ecriture": {
+            "nombre": 45,
+            "millisecondes": 4.904
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.305
+          }
+        },
+        "total_avec_controles_locaux": 56,
+        "appels_file_locaux": {
+          "reserve": 16,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 16
+        },
+        "lots": [
+          5,
+          1038,
+          9,
+          2049,
+          2,
+          39
+        ],
+        "preparation_et_donnees_ms": 118.732,
+        "metadonnees_et_F1_ms": 2.638,
+        "ancre_et_F2_ms": 0.305,
+        "persistance_acquise_ms": 121.747,
+        "dma": {
+          "groupes_in": 142,
+          "groupes_out": 45,
+          "pages_in": 1038,
+          "pages_out": 2088,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 80,
+          "kicks": 190,
+          "irq": 190,
+          "copie_in_ms": 2.191,
+          "copie_out_ms": 2.901,
+          "soumission_ms": 0.693,
+          "kick_a_used_observe_ms": 12.029,
+          "used_a_acquittement_ms": 0.086,
+          "traitement_irq_ms": 0.19,
+          "kick_a_entree_irq_ms": 11.507
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 19.354,
+          "sha256_candidate": 38.18,
+          "validation_texte": 7.336,
+          "reservation_pages": 0.133,
+          "construction_extents": 2.443,
+          "copie_source_et_pret": 5.607,
+          "allocation_fenetres": 1.288,
+          "recherche_extents": 0.991,
+          "effacement_liberation": 0.412
+        },
+        "flush_physiques_ms": [
+          1.232,
+          0.073
+        ],
+        "repos_invite_ms": 5.033,
+        "actif_ordonnanceur_invite_ms": 120.361,
+        "lots_bloc_lecture_ms": 12.37,
+        "lots_bloc_ecriture_ms": 9.895,
+        "appel_publish_ms": 125.394,
+        "commande_au_succes_ms": 136.839,
+        "oui_au_succes_ms": 123.039875,
+        "session_compteur_historique": 8554,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "backend_hmp": {
+        "rd_operations": 143,
+        "wr_operations": 45,
+        "flush_operations": 2,
+        "rd_bytes": 4255744,
+        "wr_bytes": 8552448,
+        "rd_total_time_ns": 2835000,
+        "wr_total_time_ns": 3343000,
+        "flush_total_time_ns": 1220000
+      },
+      "politique_demandee": "ordinaire",
+      "apres_oui_ms": 123.04,
+      "commande_monotone_ns": [
+        46861718293500,
+        46861732092833,
+        46861855132708
+      ],
+      "octets_relus": true,
+      "redemarrages": 1,
+      "image_initiale": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7667712,
+        "cluster-size": 65536
+      },
+      "allocation_importee": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7667712,
+        "cluster-size": 65536
+      },
+      "charge_hote": {
+        "profil": "repos",
+        "ouvriers": [],
+        "avant": {
+          "monotone_ns": 46861694656333,
+          "cout_ns": 7654042,
+          "cpu_ticks": [
+            7984748,
+            2234244,
+            64593981,
+            0
+          ],
+          "charge": [
+            2.37109375,
+            4.658203125,
+            5.130859375
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 514333,
+            "Pages active": 2426384,
+            "Pages inactive": 4948241,
+            "Pages speculative": 109886,
+            "Pages throttled": 0,
+            "Pages wired down": 328663,
+            "Pages purgeable": 114642,
+            "\"Translation faults\"": 582551187,
+            "Pages copy-on-write": 31560042,
+            "Pages zero filled": 355099033,
+            "Pages reactivated": 611625,
+            "Pages purged": 931891,
+            "File-backed pages": 5246353,
+            "Anonymous pages": 2238158,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54777178,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21336231,
+          "disque_mio": 1843513.52
+        },
+        "apres": {
+          "monotone_ns": 46861867507416,
+          "cout_ns": 6761083,
+          "cpu_ticks": [
+            7984777,
+            2234251,
+            64594218,
+            0
+          ],
+          "charge": [
+            2.42138671875,
+            4.63037109375,
+            5.1181640625
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 513502,
+            "Pages active": 2426678,
+            "Pages inactive": 4948781,
+            "Pages speculative": 109885,
+            "Pages throttled": 0,
+            "Pages wired down": 328661,
+            "Pages purgeable": 114640,
+            "\"Translation faults\"": 582554812,
+            "Pages copy-on-write": 31560932,
+            "Pages zero filled": 355099785,
+            "Pages reactivated": 611625,
+            "Pages purged": 931891,
+            "File-backed pages": 5246892,
+            "Anonymous pages": 2238452,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54777184,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21336249,
+          "disque_mio": 1843521.95
+        }
+      },
+      "releve_brut_sha256": "567cc008a690d7de9161c34719f78102c7e401334362211540b8e469a47231c7"
+    },
+    {
+      "id": "utm-aarch64-4096-inserer-milieu-0",
+      "plateforme": "utm-aarch64",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "sonde": false,
+      "elf_sha256": "27f221da5570d2b156c1220175dfc6a84baad25df2b68b53e8ea5a09074eb16b",
+      "sauvegarde_ms": 94.402,
+      "pic_cadres_session": 2970,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        68,
+        69
+      ],
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "loadavg_avant": [
+        5.109375,
+        5.998046875,
+        5.6162109375
+      ],
+      "loadavg_apres": [
+        4.20556640625,
+        5.70947265625,
+        5.52197265625
+      ],
+      "serie": "reference",
+      "backend_hmp": {
+        "rd_operations": 142,
+        "wr_operations": 25,
+        "flush_operations": 2,
+        "rd_bytes": 4251648,
+        "wr_bytes": 4292608,
+        "rd_total_time_ns": 2537000,
+        "wr_total_time_ns": 2131000,
+        "flush_total_time_ns": 1081000
+      },
+      "politique_demandee": "ordinaire",
+      "apres_oui_ms": 86.428,
+      "commande_monotone_ns": [
+        46748643916916,
+        46748651891000,
+        46748738319041
+      ],
+      "octets_relus": true,
+      "redemarrages": 1,
+      "image_initiale": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7602176,
+        "cluster-size": 65536
+      },
+      "allocation_importee": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7602176,
+        "cluster-size": 65536
+      },
+      "charge_hote": {
+        "profil": "repos",
+        "ouvriers": [],
+        "avant": {
+          "monotone_ns": 46748635346250,
+          "cout_ns": 8712375,
+          "cpu_ticks": [
+            7967197,
+            2229161,
+            64436216,
+            0
+          ],
+          "charge": [
+            4.5126953125,
+            5.81884765625,
+            5.55810546875
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 775665,
+            "Pages active": 2428919,
+            "Pages inactive": 4683125,
+            "Pages speculative": 109724,
+            "Pages throttled": 0,
+            "Pages wired down": 330077,
+            "Pages purgeable": 114320,
+            "\"Translation faults\"": 581651794,
+            "Pages copy-on-write": 31507290,
+            "Pages zero filled": 354362980,
+            "Pages reactivated": 610723,
+            "Pages purged": 926697,
+            "File-backed pages": 4984183,
+            "Anonymous pages": 2237585,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54476875,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21300232,
+          "disque_mio": 1841208.57
+        },
+        "apres": {
+          "monotone_ns": 46748753822708,
+          "cout_ns": 8235708,
+          "cpu_ticks": [
+            7967210,
+            2229164,
+            64436383,
+            0
+          ],
+          "charge": [
+            4.5126953125,
+            5.81884765625,
+            5.55810546875
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 775297,
+            "Pages active": 2429020,
+            "Pages inactive": 4683393,
+            "Pages speculative": 109723,
+            "Pages throttled": 0,
+            "Pages wired down": 330077,
+            "Pages purgeable": 114320,
+            "\"Translation faults\"": 581655244,
+            "Pages copy-on-write": 31508165,
+            "Pages zero filled": 354363554,
+            "Pages reactivated": 610723,
+            "Pages purged": 926697,
+            "File-backed pages": 4984450,
+            "Anonymous pages": 2237686,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54476881,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21300245,
+          "disque_mio": 1841212.95
+        }
+      },
+      "releve_brut_sha256": "e9a82671fded56689f854ea6f5b6576ee27556a42d3dc2f6c09b2d32d17c23d7"
+    },
+    {
+      "id": "utm-aarch64-512-ajout-4m-multiple-0",
+      "plateforme": "utm-aarch64",
+      "cas": "ajout-4m-multiple",
+      "secteur": 512,
+      "sonde": false,
+      "elf_sha256": "27f221da5570d2b156c1220175dfc6a84baad25df2b68b53e8ea5a09074eb16b",
+      "sauvegarde_ms": 129.98,
+      "pic_cadres_session": 9735,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        68,
+        69
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "loadavg_avant": [
+        4.20556640625,
+        5.70947265625,
+        5.52197265625
+      ],
+      "loadavg_apres": [
+        3.43994140625,
+        5.40966796875,
+        5.41845703125
+      ],
+      "serie": "reference",
+      "backend_hmp": {
+        "rd_operations": 143,
+        "wr_operations": 45,
+        "flush_operations": 2,
+        "rd_bytes": 4255744,
+        "wr_bytes": 8552448,
+        "rd_total_time_ns": 2544000,
+        "wr_total_time_ns": 3385000,
+        "flush_total_time_ns": 1232000
+      },
+      "politique_demandee": "ordinaire",
+      "apres_oui_ms": 115.396,
+      "commande_monotone_ns": [
+        46774792138833,
+        46774806722750,
+        46774922119208
+      ],
+      "octets_relus": true,
+      "redemarrages": 1,
+      "image_initiale": {
+        "format": "qcow2",
+        "virtual-size": 81788928,
+        "actual-size": 7536640,
+        "cluster-size": 65536
+      },
+      "allocation_importee": {
+        "format": "qcow2",
+        "virtual-size": 81788928,
+        "actual-size": 7536640,
+        "cluster-size": 65536
+      },
+      "charge_hote": {
+        "profil": "repos",
+        "ouvriers": [],
+        "avant": {
+          "monotone_ns": 46774770566125,
+          "cout_ns": 7045959,
+          "cpu_ticks": [
+            7971760,
+            2230682,
+            64471794,
+            0
+          ],
+          "charge": [
+            3.79638671875,
+            5.54345703125,
+            5.46533203125
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 719208,
+            "Pages active": 2423776,
+            "Pages inactive": 4755218,
+            "Pages speculative": 109724,
+            "Pages throttled": 0,
+            "Pages wired down": 319583,
+            "Pages purgeable": 114650,
+            "\"Translation faults\"": 582006604,
+            "Pages copy-on-write": 31524966,
+            "Pages zero filled": 354667707,
+            "Pages reactivated": 611103,
+            "Pages purged": 928971,
+            "File-backed pages": 5056235,
+            "Anonymous pages": 2232483,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54550375,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21310657,
+          "disque_mio": 1841909.38
+        },
+        "apres": {
+          "monotone_ns": 46774933861125,
+          "cout_ns": 6312375,
+          "cpu_ticks": [
+            7971779,
+            2230688,
+            64472029,
+            0
+          ],
+          "charge": [
+            3.79638671875,
+            5.54345703125,
+            5.46533203125
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 718409,
+            "Pages active": 2424043,
+            "Pages inactive": 4755751,
+            "Pages speculative": 109723,
+            "Pages throttled": 0,
+            "Pages wired down": 319583,
+            "Pages purgeable": 114650,
+            "\"Translation faults\"": 582010325,
+            "Pages copy-on-write": 31525869,
+            "Pages zero filled": 354668501,
+            "Pages reactivated": 611103,
+            "Pages purged": 928971,
+            "File-backed pages": 5056767,
+            "Anonymous pages": 2232750,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54550381,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21310676,
+          "disque_mio": 1841917.87
+        }
+      },
+      "releve_brut_sha256": "44f037a4310c4e90e6aab9a18146da923cf5de7105ab304ff9d28c20e136ab61"
+    },
+    {
+      "id": "utm-aarch64-512-neuf-4m-0",
+      "plateforme": "utm-aarch64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": false,
+      "elf_sha256": "27f221da5570d2b156c1220175dfc6a84baad25df2b68b53e8ea5a09074eb16b",
+      "sauvegarde_ms": 98.305,
+      "pic_cadres_session": 4013,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        4.70654296875,
+        5.95556640625,
+        5.59130859375
+      ],
+      "loadavg_apres": [
+        5.109375,
+        5.998046875,
+        5.6162109375
+      ],
+      "serie": "reference",
+      "backend_hmp": {
+        "rd_operations": 19,
+        "wr_operations": 22,
+        "flush_operations": 2,
+        "rd_bytes": 77824,
+        "wr_bytes": 4288512,
+        "rd_total_time_ns": 436000,
+        "wr_total_time_ns": 2284000,
+        "flush_total_time_ns": 999000
+      },
+      "politique_demandee": "ordinaire",
+      "apres_oui_ms": 74.633,
+      "commande_monotone_ns": [
+        46726264787750,
+        46726288459916,
+        46726363092625
+      ],
+      "octets_relus": true,
+      "redemarrages": 1,
+      "image_initiale": {
+        "format": "qcow2",
+        "virtual-size": 81788928,
+        "actual-size": 7536640,
+        "cluster-size": 65536
+      },
+      "allocation_importee": {
+        "format": "qcow2",
+        "virtual-size": 81788928,
+        "actual-size": 7536640,
+        "cluster-size": 65536
+      },
+      "charge_hote": {
+        "profil": "repos",
+        "ouvriers": [],
+        "avant": {
+          "monotone_ns": 46726246858375,
+          "cout_ns": 6687334,
+          "cpu_ticks": [
+            7964562,
+            2228157,
+            64404138,
+            0
+          ],
+          "charge": [
+            5.68994140625,
+            6.13525390625,
+            5.6591796875
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 749072,
+            "Pages active": 2382478,
+            "Pages inactive": 4648634,
+            "Pages speculative": 109712,
+            "Pages throttled": 0,
+            "Pages wired down": 437613,
+            "Pages purgeable": 116699,
+            "\"Translation faults\"": 581409269,
+            "Pages copy-on-write": 31494558,
+            "Pages zero filled": 354163704,
+            "Pages reactivated": 610664,
+            "Pages purged": 926141,
+            "File-backed pages": 4900990,
+            "Anonymous pages": 2239834,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54442496,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21291106,
+          "disque_mio": 1840627.3
+        },
+        "apres": {
+          "monotone_ns": 46726374113833,
+          "cout_ns": 5861000,
+          "cpu_ticks": [
+            7964589,
+            2228176,
+            64404293,
+            0
+          ],
+          "charge": [
+            5.68994140625,
+            6.13525390625,
+            5.6591796875
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 747851,
+            "Pages active": 2383461,
+            "Pages inactive": 4648902,
+            "Pages speculative": 109722,
+            "Pages throttled": 0,
+            "Pages wired down": 437573,
+            "Pages purgeable": 116699,
+            "\"Translation faults\"": 581415627,
+            "Pages copy-on-write": 31495493,
+            "Pages zero filled": 354166607,
+            "Pages reactivated": 610664,
+            "Pages purged": 926141,
+            "File-backed pages": 4901298,
+            "Anonymous pages": 2240787,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 54442543,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21291122,
+          "disque_mio": 1840631.69
+        }
+      },
+      "releve_brut_sha256": "83e652e52d8f146de29c3927d2f947a351795bab3c5f71a0ff41a2d66ffbd0b3"
+    },
+    {
+      "id": "qemu-aarch64-4096-inserer-milieu-1",
+      "plateforme": "qemu-aarch64",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "sonde": true,
+      "elf_sha256": "a6a8b4cd6d0967bf0a90ee2956b73619777850075d0828bce36e8e9ed91813c6",
+      "sauvegarde_ms": 93.99,
+      "pic_cadres_session": 2990,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "loadavg_avant": [
+        2.9970703125,
+        3.837890625,
+        4.6806640625
+      ],
+      "loadavg_apres": [
+        3.29150390625,
+        3.875,
+        4.68359375
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "avec_copies_locales_pret": 43,
+        "ipc_par_liaison": {
+          "moteur_bloc": 13,
+          "bloc_pilote": 13,
+          "nsh_moteur": 7,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 39,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 13,
+        "take": 13,
+        "bloc": {
+          "lecture": {
+            "nombre": 142,
+            "millisecondes": 6.305
+          },
+          "ecriture": {
+            "nombre": 25,
+            "millisecondes": 1.537
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.127
+          }
+        },
+        "total_avec_controles_locaux": 43,
+        "appels_file_locaux": {
+          "reserve": 12,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 12
+        },
+        "lots": [
+          5,
+          1037,
+          5,
+          1025,
+          2,
+          23
+        ],
+        "preparation_et_donnees_ms": 80.453,
+        "metadonnees_et_F1_ms": 2.356,
+        "ancre_et_F2_ms": 0.298,
+        "persistance_acquise_ms": 83.19,
+        "dma": {
+          "groupes_in": 141,
+          "groupes_out": 25,
+          "pages_in": 1037,
+          "pages_out": 1048,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 80,
+          "kicks": 169,
+          "irq": 169,
+          "copie_in_ms": 3.493,
+          "copie_out_ms": 2.613,
+          "soumission_ms": 0.575,
+          "kick_a_used_observe_ms": 8.296,
+          "used_a_acquittement_ms": 0.06,
+          "traitement_irq_ms": 0.147,
+          "kick_a_entree_irq_ms": 7.797
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 20.087,
+          "sha256_candidate": 19.877,
+          "validation_texte": 3.528,
+          "reservation_pages": 0.088,
+          "construction_extents": 1.777,
+          "copie_source_et_pret": 1.755,
+          "allocation_fenetres": 1.187,
+          "recherche_extents": 0.869,
+          "effacement_liberation": 0.463
+        },
+        "lots_bloc_lecture_ms": 13.873,
+        "lots_bloc_ecriture_ms": 5.9,
+        "appel_publish_ms": 84.393,
+        "commande_au_succes_ms": 93.99,
+        "oui_au_succes_ms": 88.240292,
+        "session_compteur_historique": 3273,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "processus_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 6600
+      },
+      "releve_brut_sha256": "fc1d7bd9074d236fb17893f4ce9d5af068200341832f1edec1f9a768a3d36e25"
+    },
+    {
+      "id": "qemu-aarch64-512-neuf-4m-1",
+      "plateforme": "qemu-aarch64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": true,
+      "elf_sha256": "a6a8b4cd6d0967bf0a90ee2956b73619777850075d0828bce36e8e9ed91813c6",
+      "sauvegarde_ms": 88.316,
+      "pic_cadres_session": 4033,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        2.05810546875,
+        3.6953125,
+        4.6416015625
+      ],
+      "loadavg_apres": [
+        2.9970703125,
+        3.837890625,
+        4.6806640625
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          1,
+          1,
+          6,
+          1,
+          1,
+          1
+        ],
+        "avec_copies_locales_pret": 42,
+        "ipc_par_liaison": {
+          "moteur_bloc": 8,
+          "bloc_pilote": 8,
+          "nsh_moteur": 5,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 27,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 8,
+        "take": 8,
+        "bloc": {
+          "lecture": {
+            "nombre": 19,
+            "millisecondes": 1.102
+          },
+          "ecriture": {
+            "nombre": 22,
+            "millisecondes": 3.017
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 0.921
+          }
+        },
+        "total_avec_controles_locaux": 36,
+        "appels_file_locaux": {
+          "reserve": 7,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 7
+        },
+        "lots": [
+          1,
+          18,
+          4,
+          1024,
+          2,
+          23
+        ],
+        "preparation_et_donnees_ms": 63.19,
+        "metadonnees_et_F1_ms": 2.721,
+        "ancre_et_F2_ms": 1.562,
+        "persistance_acquise_ms": 67.564,
+        "dma": {
+          "groupes_in": 18,
+          "groupes_out": 22,
+          "pages_in": 18,
+          "pages_out": 1047,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 65,
+          "kicks": 43,
+          "irq": 43,
+          "copie_in_ms": 0.248,
+          "copie_out_ms": 2.665,
+          "soumission_ms": 0.376,
+          "kick_a_used_observe_ms": 4.613,
+          "used_a_acquittement_ms": 0.03,
+          "traitement_irq_ms": 0.082,
+          "kick_a_entree_irq_ms": 4.298
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 0.0,
+          "sha256_candidate": 21.408,
+          "validation_texte": 3.767,
+          "reservation_pages": 0.142,
+          "construction_extents": 2.791,
+          "copie_source_et_pret": 4.597,
+          "allocation_fenetres": 0.688,
+          "recherche_extents": 0.0,
+          "effacement_liberation": 0.261
+        },
+        "lots_bloc_lecture_ms": 3.108,
+        "lots_bloc_ecriture_ms": 6.3,
+        "appel_publish_ms": 79.177,
+        "commande_au_succes_ms": 88.316,
+        "oui_au_succes_ms": 75.114083,
+        "session_compteur_historique": 2221,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "processus_kio": {
+        "1": 12,
+        "2": 1756,
+        "3": 36,
+        "4": 460,
+        "5": 12872
+      },
+      "releve_brut_sha256": "c74847a6f47c8d1e6fdc74a68786d543458616d3409746c678d65b0ff4aff3b4"
+    },
+    {
+      "id": "qemu-x86_64-4096-inserer-milieu-1",
+      "plateforme": "qemu-x86_64",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "sonde": true,
+      "elf_sha256": "416d31835c00c1fcc46c78bd772110beb8f169012fe814260eb9373be0d01c47",
+      "sauvegarde_ms": 135.99,
+      "pic_cadres_session": 3001,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "loadavg_avant": [
+        3.34814453125,
+        3.876953125,
+        4.67919921875
+      ],
+      "loadavg_apres": [
+        3.39990234375,
+        3.87890625,
+        4.6748046875
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "avec_copies_locales_pret": 43,
+        "ipc_par_liaison": {
+          "moteur_bloc": 13,
+          "bloc_pilote": 13,
+          "nsh_moteur": 7,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 39,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 13,
+        "take": 13,
+        "bloc": {
+          "lecture": {
+            "nombre": 142,
+            "millisecondes": 5.191
+          },
+          "ecriture": {
+            "nombre": 25,
+            "millisecondes": 1.467
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.189
+          }
+        },
+        "total_avec_controles_locaux": 43,
+        "appels_file_locaux": {
+          "reserve": 12,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 12
+        },
+        "lots": [
+          5,
+          1037,
+          5,
+          1025,
+          2,
+          23
+        ],
+        "preparation_et_donnees_ms": 125.931,
+        "metadonnees_et_F1_ms": 2.355,
+        "ancre_et_F2_ms": 0.312,
+        "persistance_acquise_ms": 128.671,
+        "dma": {
+          "groupes_in": 141,
+          "groupes_out": 25,
+          "pages_in": 1037,
+          "pages_out": 1048,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 80,
+          "kicks": 169,
+          "irq": 169,
+          "copie_in_ms": 3.847,
+          "copie_out_ms": 2.98,
+          "soumission_ms": 0.802,
+          "kick_a_used_observe_ms": 6.869,
+          "used_a_acquittement_ms": 0.156,
+          "traitement_irq_ms": 0.159,
+          "kick_a_entree_irq_ms": 6.285
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 42.959,
+          "sha256_candidate": 42.469,
+          "validation_texte": 2.082,
+          "reservation_pages": 0.13,
+          "construction_extents": 2.217,
+          "copie_source_et_pret": 1.224,
+          "allocation_fenetres": 1.2,
+          "recherche_extents": 0.828,
+          "effacement_liberation": 0.447
+        },
+        "lots_bloc_lecture_ms": 14.278,
+        "lots_bloc_ecriture_ms": 6.337,
+        "appel_publish_ms": 129.822,
+        "commande_au_succes_ms": 135.99,
+        "oui_au_succes_ms": 130.364292,
+        "session_compteur_historique": 3273,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "processus_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 6600
+      },
+      "releve_brut_sha256": "1043f04645b2a1d2c2e543c9d88eeb1957a2dc4cd4be826b513665ea09207988"
+    },
+    {
+      "id": "qemu-x86_64-512-neuf-4m-1",
+      "plateforme": "qemu-x86_64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": true,
+      "elf_sha256": "416d31835c00c1fcc46c78bd772110beb8f169012fe814260eb9373be0d01c47",
+      "sauvegarde_ms": 124.028,
+      "pic_cadres_session": 4044,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        3.29150390625,
+        3.875,
+        4.68359375
+      ],
+      "loadavg_apres": [
+        3.34814453125,
+        3.876953125,
+        4.67919921875
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          1,
+          1,
+          6,
+          1,
+          1,
+          1
+        ],
+        "avec_copies_locales_pret": 42,
+        "ipc_par_liaison": {
+          "moteur_bloc": 8,
+          "bloc_pilote": 8,
+          "nsh_moteur": 5,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 27,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 8,
+        "take": 8,
+        "bloc": {
+          "lecture": {
+            "nombre": 19,
+            "millisecondes": 0.835
+          },
+          "ecriture": {
+            "nombre": 22,
+            "millisecondes": 1.435
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.271
+          }
+        },
+        "total_avec_controles_locaux": 36,
+        "appels_file_locaux": {
+          "reserve": 7,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 7
+        },
+        "lots": [
+          1,
+          18,
+          4,
+          1024,
+          2,
+          23
+        ],
+        "preparation_et_donnees_ms": 110.85,
+        "metadonnees_et_F1_ms": 2.325,
+        "ancre_et_F2_ms": 0.303,
+        "persistance_acquise_ms": 113.566,
+        "dma": {
+          "groupes_in": 18,
+          "groupes_out": 22,
+          "pages_in": 18,
+          "pages_out": 1047,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 65,
+          "kicks": 43,
+          "irq": 43,
+          "copie_in_ms": 0.517,
+          "copie_out_ms": 2.895,
+          "soumission_ms": 0.503,
+          "kick_a_used_observe_ms": 2.971,
+          "used_a_acquittement_ms": 0.06,
+          "traitement_irq_ms": 0.075,
+          "kick_a_entree_irq_ms": 2.705
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 0.0,
+          "sha256_candidate": 42.779,
+          "validation_texte": 1.993,
+          "reservation_pages": 0.166,
+          "construction_extents": 2.45,
+          "copie_source_et_pret": 4.298,
+          "allocation_fenetres": 4.497,
+          "recherche_extents": 0.0,
+          "effacement_liberation": 0.223
+        },
+        "lots_bloc_lecture_ms": 3.552,
+        "lots_bloc_ecriture_ms": 16.731,
+        "appel_publish_ms": 116.526,
+        "commande_au_succes_ms": 124.028,
+        "oui_au_succes_ms": 95.343333,
+        "session_compteur_historique": 2221,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "processus_kio": {
+        "1": 12,
+        "2": 1784,
+        "3": 36,
+        "4": 476,
+        "5": 12872
+      },
+      "releve_brut_sha256": "7cb9325bc656a68c4e985152c4124fc014ab1568f1992cc1ee2fdcc16e7a4ef2"
+    },
+    {
+      "id": "utm-aarch64-4096-inserer-milieu-1",
+      "plateforme": "utm-aarch64",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "sonde": true,
+      "elf_sha256": "0de61a17539855b61a480a6060035f0ad51cb83ff3788eaad234f42e72d61df6",
+      "sauvegarde_ms": 93.665,
+      "pic_cadres_session": 2971,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        68,
+        69
+      ],
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "loadavg_avant": [
+        3.29638671875,
+        3.83447265625,
+        4.64013671875
+      ],
+      "loadavg_apres": [
+        8.0263671875,
+        4.8828125,
+        4.98388671875
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "avec_copies_locales_pret": 43,
+        "ipc_par_liaison": {
+          "moteur_bloc": 13,
+          "bloc_pilote": 13,
+          "nsh_moteur": 7,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 39,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 13,
+        "take": 13,
+        "bloc": {
+          "lecture": {
+            "nombre": 142,
+            "millisecondes": 6.424
+          },
+          "ecriture": {
+            "nombre": 25,
+            "millisecondes": 3.129
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.424
+          }
+        },
+        "total_avec_controles_locaux": 43,
+        "appels_file_locaux": {
+          "reserve": 12,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 12
+        },
+        "lots": [
+          5,
+          1037,
+          5,
+          1025,
+          2,
+          23
+        ],
+        "preparation_et_donnees_ms": 74.588,
+        "metadonnees_et_F1_ms": 2.557,
+        "ancre_et_F2_ms": 0.322,
+        "persistance_acquise_ms": 77.537,
+        "dma": {
+          "groupes_in": 141,
+          "groupes_out": 25,
+          "pages_in": 1037,
+          "pages_out": 1048,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 80,
+          "kicks": 169,
+          "irq": 169,
+          "copie_in_ms": 2.938,
+          "copie_out_ms": 2.239,
+          "soumission_ms": 0.673,
+          "kick_a_used_observe_ms": 10.186,
+          "used_a_acquittement_ms": 0.077,
+          "traitement_irq_ms": 0.153,
+          "kick_a_entree_irq_ms": 9.748
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 18.789,
+          "sha256_candidate": 18.247,
+          "validation_texte": 3.532,
+          "reservation_pages": 0.104,
+          "construction_extents": 1.597,
+          "copie_source_et_pret": 1.728,
+          "allocation_fenetres": 1.043,
+          "recherche_extents": 0.811,
+          "effacement_liberation": 0.383
+        },
+        "flush_physiques_ms": [
+          1.365,
+          0.059
+        ],
+        "repos_invite_ms": 0.0,
+        "actif_ordonnanceur_invite_ms": 78.563,
+        "lots_bloc_lecture_ms": 12.965,
+        "lots_bloc_ecriture_ms": 6.936,
+        "appel_publish_ms": 78.563,
+        "commande_au_succes_ms": 93.665,
+        "oui_au_succes_ms": 86.010333,
+        "session_compteur_historique": 5470,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "backend_hmp": {
+        "rd_operations": 142,
+        "wr_operations": 25,
+        "flush_operations": 2,
+        "rd_bytes": 4251648,
+        "wr_bytes": 4292608,
+        "rd_total_time_ns": 2337000,
+        "wr_total_time_ns": 2238000,
+        "flush_total_time_ns": 1345000
+      },
+      "politique_demandee": "ordinaire",
+      "apres_oui_ms": 86.01,
+      "commande_monotone_ns": [
+        47116589501083,
+        47116597156000,
+        47116683166333
+      ],
+      "octets_relus": true,
+      "redemarrages": 1,
+      "image_initiale": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7667712,
+        "cluster-size": 65536
+      },
+      "allocation_importee": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7667712,
+        "cluster-size": 65536
+      },
+      "charge_hote": {
+        "profil": "repos",
+        "ouvriers": [],
+        "avant": {
+          "monotone_ns": 47116584407916,
+          "cout_ns": 7155833,
+          "cpu_ticks": [
+            8025237,
+            2245180,
+            64949424,
+            0
+          ],
+          "charge": [
+            3.02294921875,
+            3.75732421875,
+            4.60302734375
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 7845,
+            "Pages active": 2427756,
+            "Pages inactive": 5505912,
+            "Pages speculative": 101552,
+            "Pages throttled": 0,
+            "Pages wired down": 284444,
+            "Pages purgeable": 113097,
+            "\"Translation faults\"": 589535472,
+            "Pages copy-on-write": 31864121,
+            "Pages zero filled": 358261058,
+            "Pages reactivated": 612937,
+            "Pages purged": 938152,
+            "File-backed pages": 5795699,
+            "Anonymous pages": 2239521,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 55427526,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21423173,
+          "disque_mio": 1848642.74
+        },
+        "apres": {
+          "monotone_ns": 47116695172625,
+          "cout_ns": 6689417,
+          "cpu_ticks": [
+            8025252,
+            2245190,
+            64949577,
+            0
+          ],
+          "charge": [
+            3.02294921875,
+            3.75732421875,
+            4.60302734375
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 7489,
+            "Pages active": 2427844,
+            "Pages inactive": 5506181,
+            "Pages speculative": 101551,
+            "Pages throttled": 0,
+            "Pages wired down": 284444,
+            "Pages purgeable": 113097,
+            "\"Translation faults\"": 589540240,
+            "Pages copy-on-write": 31865013,
+            "Pages zero filled": 358262891,
+            "Pages reactivated": 612937,
+            "Pages purged": 938152,
+            "File-backed pages": 5795967,
+            "Anonymous pages": 2239609,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 55427533,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21423186,
+          "disque_mio": 1848647.12
+        }
+      },
+      "releve_brut_sha256": "fd383b6078e39d40750f99c88de3aa1adfee2f0c834b2ef8213c5d387efe0920"
+    },
+    {
+      "id": "utm-aarch64-512-neuf-4m-1",
+      "plateforme": "utm-aarch64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": true,
+      "elf_sha256": "0de61a17539855b61a480a6060035f0ad51cb83ff3788eaad234f42e72d61df6",
+      "sauvegarde_ms": 118.925,
+      "pic_cadres_session": 4014,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        3.39990234375,
+        3.87890625,
+        4.6748046875
+      ],
+      "loadavg_apres": [
+        3.29638671875,
+        3.83447265625,
+        4.64013671875
+      ],
+      "serie": "reference",
+      "compteurs": {
+        "appels_locaux_pret": [
+          1,
+          1,
+          6,
+          1,
+          1,
+          1
+        ],
+        "avec_copies_locales_pret": 42,
+        "ipc_par_liaison": {
+          "moteur_bloc": 8,
+          "bloc_pilote": 8,
+          "nsh_moteur": 5,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 27,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 8,
+        "take": 8,
+        "bloc": {
+          "lecture": {
+            "nombre": 19,
+            "millisecondes": 1.796
+          },
+          "ecriture": {
+            "nombre": 22,
+            "millisecondes": 3.429
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.049
+          }
+        },
+        "total_avec_controles_locaux": 36,
+        "appels_file_locaux": {
+          "reserve": 7,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 7
+        },
+        "lots": [
+          1,
+          18,
+          4,
+          1024,
+          2,
+          23
+        ],
+        "preparation_et_donnees_ms": 89.853,
+        "metadonnees_et_F1_ms": 2.018,
+        "ancre_et_F2_ms": 0.345,
+        "persistance_acquise_ms": 92.289,
+        "dma": {
+          "groupes_in": 18,
+          "groupes_out": 22,
+          "pages_in": 18,
+          "pages_out": 1047,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 65,
+          "kicks": 43,
+          "irq": 43,
+          "copie_in_ms": 0.407,
+          "copie_out_ms": 2.696,
+          "soumission_ms": 0.398,
+          "kick_a_used_observe_ms": 5.795,
+          "used_a_acquittement_ms": 0.058,
+          "traitement_irq_ms": 0.089,
+          "kick_a_entree_irq_ms": 5.462
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 0.0,
+          "sha256_candidate": 21.691,
+          "validation_texte": 4.197,
+          "reservation_pages": 0.127,
+          "construction_extents": 2.185,
+          "copie_source_et_pret": 4.15,
+          "allocation_fenetres": 9.736,
+          "recherche_extents": 0.0,
+          "effacement_liberation": 0.207
+        },
+        "flush_physiques_ms": [
+          0.959,
+          0.09
+        ],
+        "repos_invite_ms": 5.089,
+        "actif_ordonnanceur_invite_ms": 96.522,
+        "lots_bloc_lecture_ms": 5.276,
+        "lots_bloc_ecriture_ms": 7.914,
+        "appel_publish_ms": 101.611,
+        "commande_au_succes_ms": 118.925,
+        "oui_au_succes_ms": 86.054458,
+        "session_compteur_historique": 4418,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "backend_hmp": {
+        "rd_operations": 19,
+        "wr_operations": 22,
+        "flush_operations": 2,
+        "rd_bytes": 77824,
+        "wr_bytes": 4288512,
+        "rd_total_time_ns": 586000,
+        "wr_total_time_ns": 2594000,
+        "flush_total_time_ns": 959000
+      },
+      "politique_demandee": "ordinaire",
+      "apres_oui_ms": 86.054,
+      "commande_monotone_ns": [
+        47094208479166,
+        47094241350125,
+        47094327404583
+      ],
+      "octets_relus": true,
+      "redemarrages": 1,
+      "image_initiale": {
+        "format": "qcow2",
+        "virtual-size": 81788928,
+        "actual-size": 7536640,
+        "cluster-size": 65536
+      },
+      "allocation_importee": {
+        "format": "qcow2",
+        "virtual-size": 81788928,
+        "actual-size": 7536640,
+        "cluster-size": 65536
+      },
+      "charge_hote": {
+        "profil": "repos",
+        "ouvriers": [],
+        "avant": {
+          "monotone_ns": 47094189780583,
+          "cout_ns": 6374292,
+          "cpu_ticks": [
+            8022674,
+            2244389,
+            64917018,
+            0
+          ],
+          "charge": [
+            3.61962890625,
+            3.91455078125,
+            4.677734375
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 58462,
+            "Pages active": 2444453,
+            "Pages inactive": 5429063,
+            "Pages speculative": 110487,
+            "Pages throttled": 0,
+            "Pages wired down": 284661,
+            "Pages purgeable": 126850,
+            "\"Translation faults\"": 589344924,
+            "Pages copy-on-write": 31851407,
+            "Pages zero filled": 358140389,
+            "Pages reactivated": 612601,
+            "Pages purged": 936869,
+            "File-backed pages": 5728121,
+            "Anonymous pages": 2255882,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 55350369,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21415635,
+          "disque_mio": 1847995.47
+        },
+        "apres": {
+          "monotone_ns": 47094338614083,
+          "cout_ns": 6029375,
+          "cpu_ticks": [
+            8022690,
+            2244394,
+            64917237,
+            0
+          ],
+          "charge": [
+            3.61962890625,
+            3.91455078125,
+            4.677734375
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 57144,
+            "Pages active": 2445509,
+            "Pages inactive": 5429331,
+            "Pages speculative": 110497,
+            "Pages throttled": 0,
+            "Pages wired down": 284645,
+            "Pages purgeable": 126850,
+            "\"Translation faults\"": 589349884,
+            "Pages copy-on-write": 31852359,
+            "Pages zero filled": 358141916,
+            "Pages reactivated": 612601,
+            "Pages purged": 936869,
+            "File-backed pages": 5728429,
+            "Anonymous pages": 2256908,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 55350416,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21415647,
+          "disque_mio": 1847999.83
+        }
+      },
+      "releve_brut_sha256": "6d8471928e1006b205044e29a00feaef68c0a2d7f05c15c05f5f46ecf3452e08"
+    },
+    {
+      "id": "verification-banc-qemu",
+      "plateforme": "qemu-aarch64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": true,
+      "elf_sha256": "a6a8b4cd6d0967bf0a90ee2956b73619777850075d0828bce36e8e9ed91813c6",
+      "sauvegarde_ms": 81.737,
+      "pic_cadres_session": 4033,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        7.70361328125,
+        4.86767578125,
+        4.97802734375
+      ],
+      "loadavg_apres": [
+        7.32666015625,
+        4.83642578125,
+        4.96630859375
+      ],
+      "serie": "verification_banc",
+      "compteurs": {
+        "appels_locaux_pret": [
+          1,
+          1,
+          6,
+          1,
+          1,
+          1
+        ],
+        "avec_copies_locales_pret": 43,
+        "ipc_par_liaison": {
+          "moteur_bloc": 8,
+          "bloc_pilote": 8,
+          "nsh_moteur": 5,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 27,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 3,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 8,
+        "take": 8,
+        "bloc": {
+          "lecture": {
+            "nombre": 19,
+            "millisecondes": 0.926
+          },
+          "ecriture": {
+            "nombre": 22,
+            "millisecondes": 1.555
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.932
+          }
+        },
+        "total_avec_controles_locaux": 37,
+        "appels_file_locaux": {
+          "reserve": 7,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 7
+        },
+        "lots": [
+          1,
+          18,
+          4,
+          1024,
+          2,
+          23
+        ],
+        "preparation_et_donnees_ms": 58.3,
+        "metadonnees_et_F1_ms": 3.242,
+        "ancre_et_F2_ms": 0.43,
+        "persistance_acquise_ms": 62.064,
+        "dma": {
+          "groupes_in": 18,
+          "groupes_out": 22,
+          "pages_in": 18,
+          "pages_out": 1047,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 65,
+          "kicks": 43,
+          "irq": 43,
+          "copie_in_ms": 0.27,
+          "copie_out_ms": 2.714,
+          "soumission_ms": 0.34,
+          "kick_a_used_observe_ms": 4.025,
+          "used_a_acquittement_ms": 0.03,
+          "traitement_irq_ms": 0.067,
+          "kick_a_entree_irq_ms": 3.782
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 0.0,
+          "sha256_candidate": 21.003,
+          "validation_texte": 3.782,
+          "reservation_pages": 0.14,
+          "construction_extents": 2.326,
+          "copie_source_et_pret": 4.361,
+          "allocation_fenetres": 0.712,
+          "recherche_extents": 0.0,
+          "effacement_liberation": 0.219
+        },
+        "lots_bloc_lecture_ms": 3.001,
+        "lots_bloc_ecriture_ms": 5.952,
+        "appel_publish_ms": 73.161,
+        "commande_au_succes_ms": 81.737,
+        "oui_au_succes_ms": 69.614542,
+        "session_compteur_historique": 2221,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "processus_kio": {
+        "1": 12,
+        "2": 1756,
+        "3": 36,
+        "4": 460,
+        "5": 12872
+      },
+      "releve_brut_sha256": "c771c0af0e0686454bec257f9e2eaad765ed60cfa59cb90d68502be2bdf2bf24"
+    },
+    {
+      "id": "verification-banc-utm",
+      "plateforme": "utm-aarch64",
+      "cas": "neuf-4m",
+      "secteur": 512,
+      "sonde": true,
+      "elf_sha256": "0de61a17539855b61a480a6060035f0ad51cb83ff3788eaad234f42e72d61df6",
+      "sauvegarde_ms": 270.031,
+      "pic_cadres_session": 4014,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "loadavg_avant": [
+        7.32666015625,
+        4.83642578125,
+        4.96630859375
+      ],
+      "loadavg_apres": [
+        6.47021484375,
+        4.89990234375,
+        4.98388671875
+      ],
+      "serie": "verification_banc",
+      "compteurs": {
+        "appels_locaux_pret": [
+          1,
+          1,
+          6,
+          1,
+          1,
+          1
+        ],
+        "avec_copies_locales_pret": 42,
+        "ipc_par_liaison": {
+          "moteur_bloc": 8,
+          "bloc_pilote": 8,
+          "nsh_moteur": 5,
+          "vi_nsh": 4
+        },
+        "dons_acquittes": 2,
+        "total": 27,
+        "controles_noyau_locaux": {
+          "create": 2,
+          "dup": 0,
+          "close": 2,
+          "revoke": 0,
+          "notify": 0,
+          "cancel": 0,
+          "bootstrap": 0
+        },
+        "put": 8,
+        "take": 8,
+        "bloc": {
+          "lecture": {
+            "nombre": 19,
+            "millisecondes": 1.822
+          },
+          "ecriture": {
+            "nombre": 22,
+            "millisecondes": 8.942
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.839
+          }
+        },
+        "total_avec_controles_locaux": 36,
+        "appels_file_locaux": {
+          "reserve": 7,
+          "copie": 0,
+          "position": 0,
+          "soumet": 2,
+          "termine": 7
+        },
+        "lots": [
+          1,
+          18,
+          4,
+          1024,
+          2,
+          23
+        ],
+        "preparation_et_donnees_ms": 208.234,
+        "metadonnees_et_F1_ms": 4.65,
+        "ancre_et_F2_ms": 1.127,
+        "persistance_acquise_ms": 214.208,
+        "dma": {
+          "groupes_in": 18,
+          "groupes_out": 22,
+          "pages_in": 18,
+          "pages_out": 1047,
+          "max_pages_par_chaine": 64,
+          "cadres_arene": 65,
+          "kicks": 43,
+          "irq": 43,
+          "copie_in_ms": 0.571,
+          "copie_out_ms": 8.061,
+          "soumission_ms": 0.94,
+          "kick_a_used_observe_ms": 11.525,
+          "used_a_acquittement_ms": 0.102,
+          "traitement_irq_ms": 0.163,
+          "kick_a_entree_irq_ms": 10.687
+        },
+        "phases_moteur_ms": {
+          "sha256_source": 0.0,
+          "sha256_candidate": 80.189,
+          "validation_texte": 15.656,
+          "reservation_pages": 0.582,
+          "construction_extents": 6.633,
+          "copie_source_et_pret": 16.183,
+          "allocation_fenetres": 16.592,
+          "recherche_extents": 0.0,
+          "effacement_liberation": 0.7
+        },
+        "flush_physiques_ms": [
+          1.676,
+          0.163
+        ],
+        "repos_invite_ms": 0.0,
+        "actif_ordonnanceur_invite_ms": 239.033,
+        "lots_bloc_lecture_ms": 6.238,
+        "lots_bloc_ecriture_ms": 22.509,
+        "appel_publish_ms": 239.033,
+        "commande_au_succes_ms": 270.03,
+        "oui_au_succes_ms": 229.837,
+        "session_compteur_historique": 4418,
+        "ipc_conforme": true,
+        "temps_conforme": true
+      },
+      "backend_hmp": {
+        "rd_operations": 19,
+        "wr_operations": 22,
+        "flush_operations": 2,
+        "rd_bytes": 77824,
+        "wr_bytes": 4288512,
+        "rd_total_time_ns": 636000,
+        "wr_total_time_ns": 6097000,
+        "flush_total_time_ns": 1645000
+      },
+      "politique_demandee": "ordinaire",
+      "apres_oui_ms": 229.837,
+      "commande_monotone_ns": [
+        47168278597083,
+        47168318790583,
+        47168548627583
+      ],
+      "octets_relus": true,
+      "redemarrages": 1,
+      "image_initiale": {
+        "format": "qcow2",
+        "virtual-size": 81788928,
+        "actual-size": 7536640,
+        "cluster-size": 65536
+      },
+      "allocation_importee": {
+        "format": "qcow2",
+        "virtual-size": 81788928,
+        "actual-size": 7536640,
+        "cluster-size": 65536
+      },
+      "charge_hote": {
+        "profil": "repos",
+        "ouvriers": [],
+        "avant": {
+          "monotone_ns": 47168267359750,
+          "cout_ns": 9214042,
+          "cpu_ticks": [
+            8048936,
+            2251217,
+            65002149,
+            0
+          ],
+          "charge": [
+            6.90478515625,
+            4.89599609375,
+            4.98388671875
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 66558,
+            "Pages active": 2439037,
+            "Pages inactive": 5475809,
+            "Pages speculative": 3003,
+            "Pages throttled": 0,
+            "Pages wired down": 343099,
+            "Pages purgeable": 115150,
+            "\"Translation faults\"": 592221097,
+            "Pages copy-on-write": 31990599,
+            "Pages zero filled": 359407937,
+            "Pages reactivated": 614316,
+            "Pages purged": 939848,
+            "File-backed pages": 5661881,
+            "Anonymous pages": 2255968,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 55571225,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21454827,
+          "disque_mio": 1850181.21
+        },
+        "apres": {
+          "monotone_ns": 47168563345916,
+          "cout_ns": 7337458,
+          "cpu_ticks": [
+            8049059,
+            2251262,
+            65002449,
+            0
+          ],
+          "charge": [
+            6.90478515625,
+            4.89599609375,
+            4.98388671875
+          ],
+          "pression": null,
+          "taille_page": 16384,
+          "pages": {
+            "Pages free": 65376,
+            "Pages active": 2446106,
+            "Pages inactive": 5476103,
+            "Pages speculative": 3004,
+            "Pages throttled": 0,
+            "Pages wired down": 336920,
+            "Pages purgeable": 115150,
+            "\"Translation faults\"": 592236650,
+            "Pages copy-on-write": 31991518,
+            "Pages zero filled": 359415289,
+            "Pages reactivated": 614316,
+            "Pages purged": 939848,
+            "File-backed pages": 5662179,
+            "Anonymous pages": 2263034,
+            "Pages stored in compressor": 7538,
+            "Pages occupied by compressor": 2710,
+            "Decompressions": 12874,
+            "Compressions": 22673,
+            "Pageins": 55571237,
+            "Pageouts": 4,
+            "Swapins": 0,
+            "Swapouts": 0
+          },
+          "disque_transferts": 21454848,
+          "disque_mio": 1850185.75
+        }
+      },
+      "releve_brut_sha256": "136457f9f96bb4f2c82908aa833cb626b13949fcd35cced9aada1ad41e3d03ec"
+    }
+  ]
+}

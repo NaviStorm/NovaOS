@@ -1,10 +1,10 @@
-# NovaOS v0.16.5
+# NovaOS v0.16.6
 
-L’installateur AArch64 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable](../distribution/images/novaos-0.16.5-utm-aarch64.tar.gz) · [Installation et qualification](docs/es-v0.16.5.md#installation-dans-utm)
+L’installateur AArch64 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable](../distribution/images/novaos-0.16.6-utm-aarch64.tar.gz) · [Installation et qualification](docs/integration-v0.16.6.md#installation-dans-utm)
 
 Depuis la racine du monorepo : `make -C novaOS ARCH=x86_64 block-test` ou `make -C novaOS ARCH=aarch64 block-test`. Pour un démarrage graphique avec une image raw existante : `make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512` (AArch64 : `ARCH=aarch64`, secteur 512 ou 4096).
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.16.5`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.16.6`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
@@ -17,6 +17,8 @@ Les six appels natifs historiques permettent de lire les identifiants du process
 Dix appels IPC permettent à des processus isolés de communiquer par endpoints unicast. Le noyau vérifie les capacités locales, livre les messages en FIFO et engage les transferts de droits à la réception. Un client peut envoyer jusqu’à 128 octets ou fusionner des notifications sur 64 bits. [Contrat IPC](docs/ipc-architecture.md) · [ABI binaire](docs/ipc-abi.md) · [Résultats et limites de la v0.8.0](docs/mesures-v0.8.0.md)
 
 ## Stockage et portabilité de NovaFS
+
+La construction ordinaire conserve le stockage classique et le polling VirtIO-blk. Les profils de test permettent d’activer les E/S groupées et de les mesurer indépendamment. [Journal v0.16.6 et activation des profils](docs/integration-v0.16.6.md)
 
 NovaFS v0.9.13 monte des volumes autonomes historiques et P9 depuis le service Ring 3 / EL0. Le client utilise les opérations de fichiers et de répertoires par IPC. Chaque session possède son répertoire courant. [Espace de noms et chemins](docs/namespace-v0.12.0.md)
 

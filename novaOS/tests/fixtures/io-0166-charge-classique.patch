@@ -1,0 +1,39 @@
+--- a/components/vi/buffer.rs
++++ b/components/vi/buffer.rs
+@@ -62,4 +62,17 @@
+         self.text.parts(r)
+     }
++    pub fn charge_labo(&mut self, texte: &str) -> Result<(), &'static str> {
++        self.change();
++        let debut = self.at;
++        // Le terminal insère par frappes. Regrouper les octets ASCII de la fixture
++        // en fragments compatibles avec le budget d'une opération de l'historique.
++        for fragment in texte.as_bytes().chunks(4096) {
++            let s = core::str::from_utf8(fragment).map_err(|_| "UTF-8 invalide")?;
++            self.replace(self.at..self.at, s, self.at + s.len())?;
++        }
++        self.at = debut;
++        self.finish();
++        Ok(())
++    }
+     pub fn compact(&mut self) -> &str {
+         self.text.compact()
+--- a/components/vi/terminal.rs
++++ b/components/vi/terminal.rs
+@@ -88,4 +88,16 @@
+             continue;
+         };
++        // Préparer le vecteur du banc avant :w avec le tampon ordinaire.
++        if key == '\x10' && e.mode == Mode::Normal {
++            let mut texte = alloc::string::String::new();
++            texte.try_reserve_exact(4 << 20).map_err(|_| rt::NO_MEMORY)?;
++            for i in 0..4 << 20 {
++                texte.push((32 + (i * 17 + i / 4096) % 95) as u8 as char);
++            }
++            e.buf.charge_labo(&texte).map_err(|_| rt::NO_MEMORY)?;
++            e.message = "préparation de charge terminée";
++            screen.draw(e, link)?;
++            continue;
++        }
+         if key == '\x0c' {
+             screen.geometry(link, true)?;

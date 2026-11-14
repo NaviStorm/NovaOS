@@ -24,9 +24,15 @@ name = "profile-read"
 path = "lab/profile-read.rs"
 required-features = ["latency-probes"]
 
+[[example]]
+name = "es-groupees"
+path = "lab/es-groupees/banc.rs"
+required-features = ["prototype-es-groupees"]
+
 [workspace]
 
 [features]
+prototype-es-groupees = []
 check-metrics = []
 bench-coordinator = []
 latency-probes = []

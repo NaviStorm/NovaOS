@@ -3,13 +3,16 @@
 use super::*;
 use crate::abi::*;
 pub(crate) mod lifecycle;
+pub(super) use bulk::features;
 mod spawn;
 pub(super) use spawn::spawn_program;
 pub(crate) mod metrics;
 mod pool;
 use pool::{Bits, Pool};
+mod bulk;
 mod probes;
 mod traffic;
+pub(super) use bulk::transfer;
 pub(crate) use probes::{quiet, run};
 
 type Res<T> = core::result::Result<T, u64>;
@@ -73,6 +76,7 @@ struct Endpoint {
     head: usize,
     len: usize,
     deposits: [Deposit; 8],
+    bulk: Option<bulk::Lane>,
     bits: u64,
     notified: u64,
     notified_at: u64,
@@ -112,8 +116,7 @@ const _: () = assert!(
         && size_of::<Domain>() <= 4096
 );
 
-// Les quatre fenêtres tiennent dans un seul intervalle de 2 Mio. Même en
-// facturant trois tables neuves, 64+4+5+2+3 pages sont sous le budget de 128.
+// Les fenêtres et les trois tables neuves restent dans le budget IPC de 128 pages.
 type Endpoints = Pool<Endpoint, 64, 0, 1>;
 type Nodes = Pool<Node, 256, 64, 64>;
 type Locals = Pool<LocalCaps, 32, 72, 7>;
@@ -122,8 +125,14 @@ const _: () = assert!(
     Endpoints::FIRST + Endpoints::MAX_PAGES <= Nodes::FIRST
         && Nodes::FIRST + Nodes::MAX_PAGES <= Locals::FIRST
         && Locals::FIRST + Locals::MAX_PAGES <= Waits::FIRST
-        && Waits::FIRST + Waits::MAX_PAGES <= 512
-        && (Endpoints::MAX_PAGES + Nodes::MAX_PAGES + Locals::MAX_PAGES + Waits::MAX_PAGES + 3)
+        && Waits::FIRST + Waits::MAX_PAGES <= bulk::Buffers::FIRST
+        && bulk::Buffers::FIRST + bulk::Buffers::MAX_PAGES <= 512
+        && (Endpoints::MAX_PAGES
+            + Nodes::MAX_PAGES
+            + Locals::MAX_PAGES
+            + Waits::MAX_PAGES
+            + bulk::Buffers::MAX_PAGES
+            + 3)
             * 4096
             <= 512 * 1024
 );
@@ -132,6 +141,7 @@ pub(crate) struct Domain {
     nodes: Nodes,
     locals: Locals,
     waits: Waits,
+    pages_bulk: bulk::Buffers,
     incarnation: u64,
     issued: u64,
     wakes: u32,
@@ -147,6 +157,7 @@ impl Domain {
             nodes: Pool::new(),
             locals: Pool::new(),
             waits: Pool::new(),
+            pages_bulk: bulk::Buffers::new(),
             incarnation: 0,
             issued: 0,
             wakes: 0,
@@ -157,13 +168,18 @@ impl Domain {
         }
     }
     pub(super) fn pages(&self) -> usize {
-        (self.ends.pages() + self.nodes.pages() + self.locals.pages() + self.waits.pages()) as usize
+        (self.ends.pages()
+            + self.nodes.pages()
+            + self.locals.pages()
+            + self.waits.pages()
+            + self.pages_bulk.pages()) as usize
     }
     pub(super) fn collect(&mut self) {
         self.ends.collect();
         self.nodes.collect();
         self.locals.collect();
         self.waits.collect();
+        self.pages_bulk.collect();
     }
     pub(in crate::sched) fn measured_peer(&self, pid: Option<Pid>) -> bool {
         pid.is_some_and(|p| self.metrics.includes(p))
@@ -274,8 +290,17 @@ impl Domain {
         if t.bootstrap == n.key {
             t.bootstrap = 0;
         }
+        let ep = n.endpoint;
         n.holder = ABSENT;
         n.key = 0;
+        if self
+            .ends
+            .get(ep.slot())
+            .bulk
+            .is_some_and(|lane| lane.nodes.contains(&id))
+        {
+            self.release_lane(ep);
+        }
     }
     fn empty_locals(&mut self) {
         for i in self.locals.ids() {
@@ -315,6 +340,7 @@ impl Domain {
                     rank: 0,
                     msg: Message::EMPTY,
                 }; 8],
+                bulk: None,
                 bits: 0,
                 notified: 0,
                 notified_at: 0,
@@ -490,6 +516,7 @@ impl Domain {
                 self.nodes.remove(i);
             }
         }
+        self.release_lane(ep);
         self.ends.remove(ep.slot());
     }
     fn close(&mut self, n: Node) {
@@ -828,6 +855,22 @@ pub(super) fn launch_block_identifie<const N: usize>(
             })
             .unwrap();
         }
+        // Le transport accéléré appartient exclusivement à la paire moteur/pilote.
+        if matches!(mode, 41 | 42) {
+            let root = s.ipc.create(device)?;
+            let peer = s
+                .ipc
+                .derive(device, root, consumer, (SEND | RECEIVE).into())?;
+            s.ipc.bind_lane(device, root, consumer, peer)?;
+            for (pid, cap) in [(device, root), (consumer, peer)] {
+                let space = s.processes.get(pid).space.as_ref().unwrap();
+                heap::with_pages(|m| {
+                    space.write_data(m, 10, cap);
+                    Ok(())
+                })
+                .unwrap();
+            }
+        }
         if let Some(guid) = volume {
             let space = s.processes.get(consumer).space.as_ref().unwrap();
             heap::with_pages(|m| {
@@ -852,6 +895,9 @@ pub(super) fn launch_block_identifie<const N: usize>(
                     INPUT | OUTPUT | ERROR | EDIT | LAUNCH | OBSERVE_SESSION | trace;
             }
             let rx = s.ipc.derive(consumer, b, control, RECEIVE.into())?;
+            if shell {
+                s.ipc.bind_lane(consumer, b, control, rx)?;
+            }
             s.ipc.locals.get_mut(control.slot).bootstrap = tx;
             configure_session(s, control, rx, mode);
             let space = s.processes.get(consumer).space.as_ref().unwrap();

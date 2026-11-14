@@ -21,6 +21,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from paquet_installation import systeme
 
 
+def pid_moteur(machine):
+    processus = subprocess.check_output(["ps", "-axww", "-o", "pid=,command="], text=True)
+    marque = "addr=" + machine.lower() + ".spice"
+    candidats = []
+    for ligne in processus.splitlines():
+        champs = ligne.split(None, 3)
+        if (len(champs) == 4 and Path(champs[1]).name == "QEMULauncher"
+                and Path(champs[2]).name == "qemu-aarch64-softmmu"
+                and any(marque in arg.lower().split(",") for arg in champs[3].split())):
+            candidats.append(int(champs[0]))
+    if len(candidats) != 1:
+        raise RuntimeError(f"Moteur non identifié pour la VM de mesure ({len(candidats)} candidats)")
+    return candidats[0]
+
+
 def digest(path):
     with path.open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
@@ -57,20 +72,32 @@ class Console:
     def __init__(self, fd, journal):
         self.fd, self.journal, self.pending = fd, journal, b""
 
-    def attendre(self, marker, timeout=900):
+    def _lecture(self, marqueurs, timeout):
         fin = time.monotonic() + timeout
-        while marker not in self.pending:
-            if time.monotonic() >= fin:
-                raise TimeoutError((marker, self.pending[-1400:]))
-            if select.select([self.fd], [], [], .2)[0]:
+        while True:
+            vus = [(i, m) for m in marqueurs if (i := self.pending.find(m)) >= 0]
+            if vus:
+                _, marque = min(vus)
+                avant, _, self.pending = self.pending.partition(marque)
+                return marque, avant + marque
+            restant = fin - time.monotonic()
+            if restant <= 0:
+                raise TimeoutError((marqueurs, self.pending[-1400:]))
+            if select.select([self.fd], [], [], min(.2, restant))[0]:
                 bloc = os.read(self.fd, 65536)
                 if not bloc:
-                    raise EOFError(marker)
+                    raise EOFError(marqueurs)
                 self.journal.write(bloc)
                 self.journal.flush()
                 self.pending += bloc
-        before, _, self.pending = self.pending.partition(marker)
-        return before + marker
+
+    def attendre(self, marker, timeout=900):
+        return self._lecture((marker,), timeout)[1]
+
+    def attendre_une(self, marqueurs, timeout):
+        """Première réponse terminale reconnue, succès ou refus du service."""
+        marque, _ = self._lecture(tuple(m.encode() for m in marqueurs), timeout)
+        return marque.decode()
 
     def ligne(self, commande, fin=b"nsh> "):
         os.write(self.fd, commande.encode()+b"\r")
@@ -101,12 +128,20 @@ def exporter(machine, fichier):
             'tell application "UTM" to export (virtual machine id (item 1 of argv)) to f'], machine, fichier)
 
 
-def transfert(console, marque, sid):
+def banniere_elf(elf):
+    """Identifier le témoin historique ou courant choisi pour cette VM."""
+    versions = set(re.findall(rb"NovaOS v[0-9]+[.][0-9]+[.][0-9]+", elf.read_bytes()))
+    if len(versions) != 1:
+        raise ValueError(f"Bannière de noyau absente ou ambiguë dans {elf}")
+    return versions.pop()
+
+
+def transfert(console, marque, sid, *, banniere=b"NovaOS v0.16.6"):
     serie = console.attendre(marque)
     assert f"ATTACH sid={sid} domaine=2 bypass=0 BME=0".encode() in serie
     bilan = re.search(rb"NOVA DXE SORTIE droits=(\d+) retraits=(\d+) actifs=0 BME=0 bypass=0", serie)
     assert bilan and int(bilan[1]) == int(bilan[2]) > 0
-    assert b"NovaOS v0.16.5" in serie and b"GICv3 groupe=1" in serie
+    assert banniere + b"\r\n" in serie and b"GICv3 groupe=1" in serie
     return serie
 
 
@@ -206,7 +241,7 @@ def qualifier(distribution, dest):
     with enregistrer(autonome, ident) as machine:
         with demarrer(machine, dest / "autonome.serial") as console:
             transfert(console, b"nsh> ", 56)
-            assert b"NovaOS 0.16.5" in console.ligne("ls --version")
+            assert b"NovaOS 0.16.6" in console.ligne("ls --version")
             assert b"/\r\nnsh> " in console.ligne("pw\t")
             assert b"NovaOS\r\nnsh> " in console.ligne("cat /syst\t")
             assert b"Nova\r\nnsh> " in console.ligne("head -c4 /systeme")
@@ -218,7 +253,7 @@ def qualifier(distribution, dest):
             for cmd in ["mkdir recettes", "cp /systeme recettes/preuve.txt", "cd recettes", "cd .."]:
                 out = console.ligne(cmd)
                 assert b"statut " not in out and b"erreur" not in out, (cmd, out)
-            assert b"NovaOS 0.16.5" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
+            assert b"NovaOS 0.16.6" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
             assert b"NovaOS\r\n" in console.ligne("cat **/*.txt")
             script = console.ligne("nsh /verification.nsh")
             assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script

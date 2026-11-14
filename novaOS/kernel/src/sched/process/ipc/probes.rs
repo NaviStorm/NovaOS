@@ -1,6 +1,7 @@
 //! Orchestration de processus réels par leurs pages DATA privées. Le banc ne
 //! fournit aucune porte privilégiée à l’image utilisateur.
 use super::*;
+mod bulk;
 mod contract;
 mod limits;
 mod perf;
@@ -264,6 +265,7 @@ pub(crate) fn run(scenario: &[u8]) {
         ("T07/T15", contract::notifications),
         ("T06/T08/T18", races::timing),
         ("T10", t10),
+        ("lots", bulk::contract),
         ("T11", contract::revoke_inflight),
         ("T12/T18", contract::deaths),
         ("T04/T11", races::stale_and_move),

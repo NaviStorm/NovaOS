@@ -121,7 +121,7 @@ impl<D: Device> ReadTree for DiskView<'_, D> {
         if let Some(cache) = &self.metadata
             && let Some(bytes) = cache.borrow_mut().get(Some(f), r)
         {
-            return self.at(r.block, Node::decode(&bytes, self.ids, r, f));
+            return self.at(r.block, Node::decode_verified(&bytes, r, f));
         }
         let bytes = self.raw(r.block)?;
         let node = self.at(r.block, Node::decode(&bytes, self.ids, r, f))?;
@@ -372,7 +372,7 @@ impl<D: Device> ReadTree for Engine<D> {
     fn read(&self, r: Ref, f: Family) -> Result<Node> {
         (|| {
             if let Some(bytes) = self.cached(Some(f), r)? {
-                return Node::decode(&bytes, self.ids, r, f);
+                return Node::decode_verified(&bytes, r, f);
             }
             #[cfg(all(feature = "latency-probes", not(target_os = "none")))]
             let _sample = enter(Phase::MetadataMiss);
@@ -505,6 +505,18 @@ impl<D: Device> Engine<D> {
     }
     pub fn receipt(&self) -> Ref {
         self.head.reference
+    }
+    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+    pub(crate) fn dev_labo(&self) -> &D {
+        &self.dev
+    }
+    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+    pub(crate) fn manque_labo(&self, f: Family, r: Ref) -> Result<bool> {
+        Ok(self.cached(Some(f), r)?.is_none())
+    }
+    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+    pub(crate) fn cache_labo(&self, f: Family, r: Ref, b: Block) -> Result<()> {
+        self.remember_checked(Some(f), r, b)
     }
     pub fn into_device(self) -> D {
         self.dev
@@ -702,6 +714,7 @@ impl<D: Device> Engine<D> {
                 Timestamp::UNKNOWN
             },
             dev: &dev,
+            clean: None,
             ids,
             m,
             space: Space::fresh(blocks),
@@ -791,6 +804,7 @@ impl<D: Device> Engine<D> {
                 Timestamp::UNKNOWN
             },
             dev: &self.dev,
+            clean: Some(self),
             ids: self.ids,
             m,
             space,
@@ -869,6 +883,7 @@ impl<D: Device> Engine<D> {
 }
 
 pub struct Tx<'a, D> {
+    clean: Option<&'a Engine<D>>,
     pub(crate) now: Timestamp,
     dev: &'a D,
     ids: Ids,
@@ -906,6 +921,13 @@ impl<D: Device> ReadTree for Tx<'_, D> {
     fn read(&self, r: Ref, f: Family) -> Result<Node> {
         if !(2..self.m.blocks).contains(&r.block) || r.birth == 0 || r.birth > self.m.previous + 1 {
             return Err(Error::Corrupt("référence transaction"));
+        }
+        // Une page préparée masque toujours la vue propre, même à la même adresse.
+        if !self.staged.contains_key(&r.block)
+            && r.birth <= self.m.previous
+            && let Some(clean) = self.clean
+        {
+            return ReadTree::read(clean, r, f);
         }
         Node::decode(&self.raw(r.block)?, self.ids, r, f)
     }
@@ -959,6 +981,18 @@ impl<D: Device> Tx<'_, D> {
         self.m.roots[f.index()] = r;
         Ok(())
     }
+    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+    pub(crate) fn reserve_stream_page(&mut self) -> Result<u64> {
+        // Le fork de Space exclut les deux générations montables. Une seule
+        // préparation détient le moteur jusqu’à l’abandon ou à F2.
+        self.space.take()
+    }
+
+    #[cfg(all(feature = "prototype-es-groupees", not(target_os = "none")))]
+    pub(crate) fn stream_device(&self) -> &D {
+        self.dev
+    }
+
     fn reserve(&mut self) -> Result<u64> {
         if self.staged.len() >= MAX_COW {
             return Err(Error::Limit("64 blocs CoW"));

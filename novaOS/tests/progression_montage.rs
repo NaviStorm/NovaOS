@@ -6,6 +6,7 @@ mod fileapi;
 mod protocol;
 
 mod runtime {
+    pub use super::bulk;
     pub use super::native::*;
     use std::cell::RefCell;
     use std::collections::VecDeque;
@@ -31,6 +32,8 @@ mod runtime {
         PIPE.with(|p| p.borrow_mut().1.pop_front().expect("réponse inattendue"))
     }
 }
+#[path = "../abi/bulk_call.rs"]
+pub mod bulk;
 #[path = "../abi/native.rs"]
 mod native;
 use protocol as w;

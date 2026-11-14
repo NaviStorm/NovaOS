@@ -17,6 +17,8 @@
 - À l’installation, seul le support en lecture seule est rattaché au domaine firmware 2 (SID 48). NovaOS rattache la cible au domaine 1 (SID 56) après révocation. Au démarrage autonome, le disque système (SID 56) passe successivement du domaine 2 au domaine 1. Exiger la fin des transferts, le retrait confirmé des traductions et le détachement avant réemploi des cadres. Une révocation incertaine impose la quarantaine. [Qualification de la transition DMA](docs/installer-v0.15.0.md)
 - L’installateur exige une cible unique explicitement sélectionnée, entièrement lue et vierge. Après confirmation exacte, il revérifie identité et contenu avant écriture. Une GPT secondaire isolée désigne une installation interrompue si le préfixe est entièrement nul et que la copie correspond au profil NovaOS vérifié. Tout état occupé, incohérent ou indéterminé entraîne un refus sans écriture, FLUSH ni réparation. Pour poursuivre, utiliser un disque neuf. [Classification et contrôles de non-destruction](docs/installer-v0.15.0.md#qualification-des-disques-interrompus)
 
+La distribution v0.16.6 garde le chemin classique et le polling. Réserver les profils groupés et l’attente par IRQ aux constructions expérimentales explicites. Distinguer leurs mesures de celles du binaire ordinaire. [Configuration et qualification v0.16.6](docs/integration-v0.16.6.md)
+
 ## Validation
 
 Depuis la racine, la régression de référence couvre par architecture 25 démarrages, 24 groupes bloc, trois contrôles ELF/processus/IPC et quatre essais CLI. Ajouter le banc spécifique de `nsh`, avec les deux géométries. [Cibles du Makefile](Makefile) · [Résultats par architecture](docs/installer-v0.15.0.md#dma-interruptions-et-régressions)

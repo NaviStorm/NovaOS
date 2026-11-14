@@ -1,0 +1,447 @@
+{
+  "revision_fusionnee": "a0e7b000c5bf4d3246361ad13978540ec5c4aaf2",
+  "arbre": "22ea6c7958db06a4917f60e1cedd09935d9a8629",
+  "parents": [
+    "3193bc9108bdc771f4627f57c84e093375cc9ea4",
+    "f7654a3bc913017418cdd0a5b833b5e6a5338631"
+  ],
+  "comptage_git_avant_fusion": {
+    "commits": 27,
+    "fichiers": 174
+  },
+  "profils": {
+    "brut": {},
+    "sans": {
+      "io-0166-prototype": "e74cdc265b65fdf9c6bcba8d465f0b3c6b63aebfe556c9656469d1dad4da6094",
+      "io-0166-plages": "da338f6d30ea5e96368df313ec10ab69181fb31a377cf4fefdefda97c63a3041",
+      "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+      "io-0166-virtio-multipage": "f72a3fc351226b0759cb2172c2b0b04d02525ce13f7afe2ce4a12bdeaf7a6f77",
+      "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+      "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d"
+    },
+    "sonde": {
+      "io-0166-prototype": "e74cdc265b65fdf9c6bcba8d465f0b3c6b63aebfe556c9656469d1dad4da6094",
+      "io-0166-plages": "da338f6d30ea5e96368df313ec10ab69181fb31a377cf4fefdefda97c63a3041",
+      "io-0166-prototype-sonde": "f14f8dcf185c0de9de05bf5630ccf854901f30c37f92eab7716298240edf8609",
+      "io-0166-plages-sonde": "f370667bf348670e1593858b0c59900fb3618c3550a5c5ba9df712a73c2eb456",
+      "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+      "io-0166-virtio-multipage": "f72a3fc351226b0759cb2172c2b0b04d02525ce13f7afe2ce4a12bdeaf7a6f77",
+      "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+      "io-0166-dma-sonde": "c0868b0b16391ed988167f07a6f0672053f206e1be0eb0f640f68f0b6bb7ffee",
+      "io-0166-vcpu": "0b7732fdcb898ebef903dcdb7887bdd8a5adf6007e8d498d7b44b412c87e74a8",
+      "io-0166-irq-latences": "bbc4cdd5e1f6fe643c3760134ac26c594dcc8183d1b8433201d08d8e4ab2487b",
+      "io-0166-negociation-sonde": "4a7ced436153466768c87d2fc18db1dd869990c54f2e2d73ecc72609d63e26c1",
+      "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d"
+    },
+    "utm": {
+      "io-0166-prototype": "e74cdc265b65fdf9c6bcba8d465f0b3c6b63aebfe556c9656469d1dad4da6094",
+      "io-0166-plages": "da338f6d30ea5e96368df313ec10ab69181fb31a377cf4fefdefda97c63a3041",
+      "io-0166-systeme-qualification": "4f4a0b965b585df2ce624cb3d43aca8323797591256e5af962323d4863478f8e",
+      "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+      "io-0166-virtio-multipage": "f72a3fc351226b0759cb2172c2b0b04d02525ce13f7afe2ce4a12bdeaf7a6f77",
+      "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+      "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d"
+    }
+  },
+  "fichiers_p9_identiques": {
+    "novaFS/src/codec.rs": "d693e68cc0ff14aed4ccbf77b91f802f87d6027d531c5e80bb2c03bbada80db5",
+    "novaFS/src/crypto.rs": "baf6c9b3fe42623a440dc3ae0219341a112e52dec5079d607d80c7b52e932823",
+    "novaFS/src/fs/record.rs": "fb670576bafeb57756059ccb0b91432180dd062457f3ef217c9fc75462af2c3a",
+    "novaFS/src/secure_commit.rs": "02ca9cff499ee66a082b6358001e2200c444e0603cac4448c795acc1994d704d",
+    "novaFS/src/engine/admission.rs": "0ca3d00779132e3d4f2741ffa03008044eaa8a2e9972c2923ce9bcb4ea85f111",
+    "novaFS/src/engine/integrity.rs": "e8bcda7dd0f888e3379fc204ec1b21ab1a407937cb9c2a545675833deb98dfe7",
+    "novaFS/src/engine/migration.rs": "51054b7cedb8d09545492bb2f907822e5509be639d0b18b6105546b0dca8954c"
+  },
+  "utm": {
+    "application": "UTM",
+    "profil": "AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+    "serie": "PTY de l’application",
+    "installation": true,
+    "support_sha256": "fe878e38bc26dade3c9279bec97782d73425ccfff03168b933fc434a777090b9",
+    "disque_installe_sha256": "9853d76a26143d608f633331c49df07995fea1d5e303caced481a65db369388d",
+    "demarrages_autonomes": 2,
+    "contenu_relu": "NovaOS\n",
+    "ouverture_vi_ms": 33.085375,
+    "reouverture_apres_redemarrage_ms": 8082.55975,
+    "octets_vi_relus": [
+      66560,
+      66562
+    ],
+    "scripts_vi_relus": [
+      "recettes/edite.nsh",
+      "recettes/autre.nsh"
+    ],
+    "script_installe": "/verification.nsh",
+    "script_execute_apres_redemarrage": "./recettes/preuve.nsh"
+  },
+  "binaires": {
+    "noyau_systeme": "3dc5217ad014f5d3b7791f753ebff1f5aa78c7bd5abd1c07db65ad86538944f6",
+    "noyau_installation": "15e65e9bf760cd0bb5812702c6a46d5f73a7284d26e70601dd9ae75ccdd0194e",
+    "archive": "e53e8b8190633dda5214b20dbda9d568aca07980fe71d24b7db234dc6c23926a",
+    "octets_archive": 3802997,
+    "support": "fe878e38bc26dade3c9279bec97782d73425ccfff03168b933fc434a777090b9",
+    "firmware": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+    "modele_variables": "8b634c1e6bd11607850b69111f6c4dbd1583dbbd1460dac72dbacbdc1a4a130a"
+  },
+  "series_utm": {
+    "autonome.serial": "5af1bfcaa945da9eedce227b7cfc84436b165d693c873283ff34832cb470b6bc",
+    "installation.serial": "0d4d77fe2eee84f32601e4f2bb37fe57780841b170f0ee18658d0ef57e5f6a2a",
+    "persistance.serial": "d3b8bad34a9c80df94c07c977f4b0cadd886fad67b888782794562e559b080bc"
+  },
+  "decouverte": {
+    "sources": {
+      "decouverte_trames.rs": "bd4e947ec0a057b59a2c30ee7f78b1f788cfafbe63d9e2e59ea002e38fd30f68",
+      "block.rs": "a9ac4883ab29c2f4a8a8cb35e1ff3d3c1fc064bca77e4606633c9bb1f390890a",
+      "files.rs": "a01cd53cd68dd4179ce4130e705902ce2c2c81263f195bc8821e210ebbafe835",
+      "native.rs": "4d8b2b4debad75395c789870bdbc0a57b0e5daa800fdd317e0d037dc92134768",
+      "vi_wire.rs": "f544c4749ea90eae62569864bf6ae1a8909fe35667a7d498eb54ffe7165aad27",
+      "io-0166-decouverte-droits.patch": "8575cd437ba1175080cdb04e431fad316008320f513268ad1dd3eeb193daca03"
+    },
+    "essais": [
+      {
+        "architecture": "aarch64",
+        "environnement": "Darwin",
+        "sha256_executable": "6c0f8c93e0fc4692cd8780f9fc17242269a3b405dafbf664bc2106bfa85f85e5",
+        "sortie": [
+          "",
+          "running 5 tests",
+          "test bloc_version_sens_et_champs_reserves ... ok",
+          "test fichier_session_version_masque_et_anciens_opcodes ... ok",
+          "test reponse_bloc_historique_et_reference_exacte ... ok",
+          "test vi_erreurs_historiques_erreurs_transport_et_revocation ... ok",
+          "test vi_masques_autorises_et_champs_invalides ... ok",
+          "",
+          "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+          ""
+        ]
+      },
+      {
+        "architecture": "x86_64",
+        "environnement": "Darwin",
+        "sha256_executable": "a1e60c318fb29b77bc47c0b11c5581540441179d2ef7eafd54a7223418c38d51",
+        "sortie": [
+          "",
+          "running 5 tests",
+          "test bloc_version_sens_et_champs_reserves ... ok",
+          "test fichier_session_version_masque_et_anciens_opcodes ... ok",
+          "test reponse_bloc_historique_et_reference_exacte ... ok",
+          "test vi_erreurs_historiques_erreurs_transport_et_revocation ... ok",
+          "test vi_masques_autorises_et_champs_invalides ... ok",
+          "",
+          "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+          ""
+        ]
+      },
+      {
+        "architecture": "aarch64",
+        "environnement": "QEMU",
+        "sha256_elf": "c3d9c673a01c759cc8dae68317dcd8c4e7c6843bddc5254c817957b25fcb1cd1",
+        "sortie": "OK — aarch64-ipc-test-256"
+      },
+      {
+        "architecture": "x86_64",
+        "environnement": "QEMU",
+        "sha256_elf": "c68428163baf26369cfd51b3f7fb43d1a21fcca227905cecd655bc6c92589278",
+        "sortie": "OK — x86_64-ipc-test-256"
+      }
+    ]
+  },
+  "modeles": [
+    {
+      "architecture": "aarch64",
+      "test": "irq_attente_modele",
+      "sortie": [
+        "",
+        "running 2 tests",
+        "test entrelacements_et_delais ... ok",
+        "test repli_borne_si_horloge_gelee ... ok",
+        "",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s",
+        ""
+      ],
+      "sha256_source": "4c7e1b9901cae3bec45b112e139d6d627ec8b12b079fcbe3b7b1b6185ae132ca",
+      "sha256_banc": "c305539d62de22956e082dfa3b6473e678c36296c5bf1c16b3f2bea8a9bdcef7",
+      "sha256_executable": "10cddea8ca319abb0f59bbf11a1123336b8dca2d1a1a10e5614c9b72fb1dd59a"
+    },
+    {
+      "architecture": "x86_64",
+      "test": "irq_attente_modele",
+      "sortie": [
+        "",
+        "running 2 tests",
+        "test entrelacements_et_delais ... ok",
+        "test repli_borne_si_horloge_gelee ... ok",
+        "",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s",
+        ""
+      ],
+      "sha256_source": "4c7e1b9901cae3bec45b112e139d6d627ec8b12b079fcbe3b7b1b6185ae132ca",
+      "sha256_banc": "c305539d62de22956e082dfa3b6473e678c36296c5bf1c16b3f2bea8a9bdcef7",
+      "sha256_executable": "e7eb87a75f2d7f968a5534d676a7ef2a44b8cc7a7e81bec10fc2edfd25db2024"
+    },
+    {
+      "architecture": "aarch64",
+      "test": "dma_allocation_modele",
+      "sortie": [
+        "",
+        "running 1 test",
+        "test allocation_partielle_et_restitution ... ok",
+        "",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        ""
+      ],
+      "sha256_source": "e28b5bdb4fdaefe28285460f7b8b4948efdbf1965f2348502a5a355291e13d4c",
+      "sha256_banc": "b30559c71f7e9afc13768d64c48e4ab6185cd986ee1e40f01706ac641f8f6084",
+      "sha256_executable": "a7baa01d6847b926635be6da749daae137ca4f1d42956c5ae5e5517cbfde6c62"
+    },
+    {
+      "architecture": "x86_64",
+      "test": "dma_allocation_modele",
+      "sortie": [
+        "",
+        "running 1 test",
+        "test allocation_partielle_et_restitution ... ok",
+        "",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        ""
+      ],
+      "sha256_source": "e28b5bdb4fdaefe28285460f7b8b4948efdbf1965f2348502a5a355291e13d4c",
+      "sha256_banc": "b30559c71f7e9afc13768d64c48e4ab6185cd986ee1e40f01706ac641f8f6084",
+      "sha256_executable": "c49a102103abe5e59ca4f115d064d093d3c3300215af9130c8b96ccca8535d7d"
+    }
+  ],
+  "captures": {
+    "methode": "Les PPM de v0.16.5 sont authentifiés par les SHA attendus. La mise à jour du dernier glyphe (5 vers 6 à échelle 4) modifie exactement 5 pixels logiques, soit 80 pixels de chaque PPM de 800 × 600. Comparaison SHA intégrale par le banc de démarrage."
+  },
+  "distribution": {
+    "archive": "distribution/images/novaos-0.16.6-utm-aarch64.tar.gz",
+    "octets": 3802997,
+    "entrees_manifeste_verifiees": 27,
+    "sha256": "e53e8b8190633dda5214b20dbda9d568aca07980fe71d24b7db234dc6c23926a"
+  },
+  "composants_git_qualifies": {
+    "components": "05af9a04d600aafde3221ec4143d4ba7b22d1852",
+    "novaFS": "3379ccd023e821e912130c7413113fe7546070cc",
+    "novaOS/abi": "a70d5f23ae91211dd7a54c429e723f5157600e58",
+    "novaOS/kernel": "73d6a70d5c3c6a3f8c83ddbbf119542f9050a5a0",
+    "novaOS/user": "a52eefeeacecb428a11f44564ac10bdf3d9db259",
+    "novaOS/scripts": "48b73c74709ed82bf3eb4db3a9f0d1a977872583",
+    "novaOS/Cargo.toml": "2a0e2bddf892717b71029246caea1bf55020329a",
+    "novaOS/Cargo.lock": "073836b9ffda894f36e51b582fec70eed86d9fd2",
+    "novaOS/Makefile": "0a548fe7dc61ef949e04a3c088c959a7a2e4069f"
+  },
+  "coupures_classiques_qemu": [
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "coupure": "après F2 du premier lot",
+      "remontage_normal": true,
+      "octets_source_relus": 135171,
+      "nom_final_absent": true
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "coupure": "après F2 du premier lot",
+      "remontage_normal": true,
+      "octets_source_relus": 135171,
+      "nom_final_absent": true
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "coupure": "après F2 du premier lot",
+      "remontage_normal": true,
+      "octets_source_relus": 135171,
+      "nom_final_absent": true
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "coupure": "après F2 du premier lot",
+      "remontage_normal": true,
+      "octets_source_relus": 135171,
+      "nom_final_absent": true
+    }
+  ],
+  "coupures_groupees_utm": {
+    "sha256_elf": "7804f34115ccbf4765037813b20096920419fbbc3e23ca6be6013da65124b906",
+    "sha256_generateur": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+    "essais": [
+      {
+        "frontiere": "pages",
+        "secteur": 512,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          66,
+          67
+        ],
+        "apres_redemarrage": [
+          66,
+          67
+        ],
+        "destination_complete": false,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "9df77559b032a41aca93d47cb99a32a24e36093edb2ac9f9ee43dde144c9b27b",
+        "series": {
+          "sauvegarde.serial": "effb59c67d98a09e6a8e27ce4f57c320213fd3efca2b4c31877ae55c070def03",
+          "reprise.serial": "7f95b9013e08d7ca1831f840c5a09ea5b6e09940dbbb7d3524823897c5c08b5f"
+        }
+      },
+      {
+        "frontiere": "f1",
+        "secteur": 512,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          66,
+          67
+        ],
+        "apres_redemarrage": [
+          66,
+          67
+        ],
+        "destination_complete": false,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "5019547b0bdccbee780025ace1d022a5aa1d565a0e90434b4121c0af5e370d63",
+        "series": {
+          "sauvegarde.serial": "a6aa31a7da91f40ba9b3a5a7308f1611c7c1c3504958d02f2c86aa30ee02092e",
+          "reprise.serial": "b814c39919ef02597747e01d4499e6156e73cdae2f65d49e8d78cd39cf745684"
+        }
+      },
+      {
+        "frontiere": "f2",
+        "secteur": 512,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          67,
+          68
+        ],
+        "apres_redemarrage": [
+          68,
+          69
+        ],
+        "destination_complete": true,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "24f880d654df6448b0ca03d246f56976e58a958da06ecc32c563251ce0667191",
+        "series": {
+          "sauvegarde.serial": "5a26d49bb1da305ad890f155bceaba334b8144d0950dcb2a61553cf3fdaeffe5",
+          "reprise.serial": "e3871344257026216e478f6a539b8b71b1f39c0c637941858e2f730730a06774"
+        }
+      },
+      {
+        "frontiere": "pages",
+        "secteur": 4096,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          66,
+          67
+        ],
+        "apres_redemarrage": [
+          66,
+          67
+        ],
+        "destination_complete": false,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "4d0b53420e7011c9ccadc412340ba3c9501ea23666587ead62b51f14b70512b4",
+        "series": {
+          "sauvegarde.serial": "616f86dff5d6a2b5c00eebde80f600a97afc5f2d6d923f3240f4a124fc10dd7f",
+          "reprise.serial": "e3ca1560e9cae9b341442f61a88d4d120c5e02f0d5d862ab324189ba4a07237e"
+        }
+      },
+      {
+        "frontiere": "f1",
+        "secteur": 4096,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          66,
+          67
+        ],
+        "apres_redemarrage": [
+          66,
+          67
+        ],
+        "destination_complete": false,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "db0c5e66ccbc4b49aa0cd47f0615eb5764ab1c492c065f2f6bfc56a15a65dcc1",
+        "series": {
+          "sauvegarde.serial": "4c996f90aada40ef6433dc3c5c7ccd1f7cdb1fddb2a960a0023be0639b948a59",
+          "reprise.serial": "06196330060d7666a5aeda0723a9050299071dc29cb57e7e917e29fee3bc59cb"
+        }
+      },
+      {
+        "frontiere": "f2",
+        "secteur": 4096,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          67,
+          68
+        ],
+        "apres_redemarrage": [
+          68,
+          69
+        ],
+        "destination_complete": true,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "dac8a293fd7c9bf6f5d9f001c948bf898903201ceb09b39506e4f4a5f010b2d2",
+        "series": {
+          "sauvegarde.serial": "2ab3e99fdcd06adc0e24926b0f7222b4e5985066dd174009113d2fa2df21b20f",
+          "reprise.serial": "c122299e6a68e4d23d39c61b5acd0bc6ac33072e537b5e691c36891569a3cacf"
+        }
+      }
+    ],
+    "incidents_hote": [
+      "Deux imports successifs ont échoué avant exécution de NovaOS dans la cellule 512/F2. Les journaux QEMU de UTM signalent Operation not permitted sur cible.qcow2, puis code.fd. Après fermeture normale de UTM avec toutes les VM arrêtées et relance, les quatre cellules restantes ont réussi sur des images jetables neuves."
+    ]
+  },
+  "temoin_banniere_utm": {
+    "version": "NovaOS v0.16.5",
+    "elf_sha256": "3c802c535422bfa664d92e02e7592692c4f9d4849c6467f5f19143e06e6942d9",
+    "resultat_sha256": "71e2ec97c2d8894de3d97c612d227a9b34c337b66c83b0a712dd484bfba0b32a",
+    "redemarrages": 1,
+    "octets_relus": true,
+    "flush": 2,
+    "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd"
+  }
+}
