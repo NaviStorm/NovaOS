@@ -93,7 +93,7 @@ class Sauvegarde(unittest.TestCase):
             (dossier/"noyau").write_bytes(b"NovaOS v0.16.6")
             profil = dossier/"modele.utm"
             (profil/"Data").mkdir(parents=True)
-            config = dict(QEMU=dict(AdditionalArguments=["virtio-blk-pci,adresse=test"]),
+            config = dict(System=dict(CPUCount=1), QEMU=dict(AdditionalArguments=["virtio-blk-pci,adresse=test"]),
                           Drive=[{"ImageName": n} for n in ("code.fd","variables.fd","cible.qcow2")],
                           Serial=[])
             (profil/"config.plist").write_bytes(plistlib.dumps(config))
