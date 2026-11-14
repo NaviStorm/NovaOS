@@ -56,6 +56,11 @@ fn blocked(waiter: Pid, target: Pid) -> bool {
 }
 
 pub(crate) fn test() {
+    heap::with_pages(|m| {
+        m.check_managed_regions();
+        Ok(())
+    })
+    .unwrap();
     let baseline = heap::audit(false);
     measure("repos");
     demo::shortage();

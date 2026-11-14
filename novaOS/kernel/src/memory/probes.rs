@@ -62,6 +62,7 @@ impl Memory {
         ));
         let (address, operation) = match scenario {
             b"mem-test" => {
+                self.check_managed_regions();
                 self.test_spaces()?;
                 self.test_executable()?;
                 self.test_exhaustion()?;
@@ -90,6 +91,30 @@ impl Memory {
         // Sûreté : scénario d’amorçage explicite. La VM doit s’arrêter sur cette faute.
         unsafe { paging::probe(address, operation) };
         Err(Error::Verification)
+    }
+
+    /// Compare le chemin avec cache au parcours de référence, à toutes les
+    /// frontières de la carte Limine. Aucun des cadres sondés n’est déréférencé.
+    pub(crate) fn check_managed_regions(&self) {
+        let frames = &self.frames;
+        let check = |address| {
+            let expected = frames.covers(address, EntryType::USABLE)
+                || (frames.reclaimed != 0 && frames.covers(address, EntryType::BOOTLOADER_RECLAIMABLE));
+            assert_eq!(frames.managed(address), expected, "plage RAM à {address:#x}");
+        };
+        for region in frames.regions() {
+            let base = region.base;
+            let end = base.saturating_add(region.length);
+            for edge in [base, end] {
+                for address in [edge, edge.saturating_sub(1), edge.saturating_sub(PAGE),
+                                edge.saturating_add(1), edge] {
+                    check(address);
+                }
+            }
+        }
+        check(0);
+        check(u64::MAX);
+        log(format_args!("TEST bornes RAM et cache verifies"));
     }
 
     fn test_spaces(&mut self) -> Result<()> {
