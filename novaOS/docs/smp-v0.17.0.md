@@ -107,3 +107,5 @@ Le verrou commun peut sérialiser les appels noyau longs. La file reste bornée 
 Les coupures concernent des processus QEMU sur un Mac resté alimenté. Le comportement sous perte électrique et les performances de ce noyau dans l’application UTM à quatre vCPU restent ouverts. Avant de proposer une diffusion, qualifier ces configurations, le confinement d’une panne de CPU et la contention avec des répétitions suffisantes. L’activation générale des E/S groupées demande une décision distincte.
 
 La [qualification de phase 2](smp-phase2-v0.17.0.md) reprend la contention, l’arrêt concerté, les états flottants et les essais dans l’application UTM. Les limites ci-dessus décrivent l’état de la phase 1.
+
+La phase 3 mesure les allers-retours IPC à charge constante et proportionnelle, les affinités et la concurrence avec NovaFS. Elle documente également la correction de la fenêtre MMIO x86. [Mesures et qualification de phase 3](ipc-smp-phase3-v0.17.0.md)

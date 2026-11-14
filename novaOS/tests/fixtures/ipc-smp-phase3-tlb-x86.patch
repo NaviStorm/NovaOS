@@ -1,0 +1,38 @@
+--- a/novaOS/kernel/src/arch/x86_64/lapic.rs
++++ b/novaOS/kernel/src/arch/x86_64/lapic.rs
+@@ -1,9 +1,10 @@
+ //! LAPIC xAPIC en UC. La fenêtre est également celle de la route disque VT-d.
+ use crate::{sched, smp};
+-use core::sync::atomic::{AtomicU32, AtomicU64, Ordering};
++use core::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering};
+
+ const BASE: usize = crate::memory::IO_BASE as usize + 321 * 4096;
+ static PERIOD: AtomicU32 = AtomicU32::new(0);
+ static TIMEOUT_CYCLES: AtomicU64 = AtomicU64::new(0);
++static SHOOTDOWN_ACTIVE: AtomicBool = AtomicBool::new(false);
+ static INVALIDATE: AtomicU64 = AtomicU64::new(0);
+ static GENERATION: AtomicU64 = AtomicU64::new(0);
+@@ -58,8 +59,8 @@
+ }
+ pub fn poll_translation() {
+-    let seq = GENERATION.load(Ordering::Acquire);
+-    if seq == 0 {
++    if !SHOOTDOWN_ACTIVE.load(Ordering::Acquire) {
+         return;
+     }
++    let seq = GENERATION.load(Ordering::Acquire);
+     let ack = &ACK[smp::index()];
+     if ack.load(Ordering::Relaxed) != seq {
+@@ -79,4 +80,5 @@
+     INVALIDATE.store(va, Ordering::Relaxed);
+     let seq = GENERATION.fetch_add(1, Ordering::Release) + 1;
++    SHOOTDOWN_ACTIVE.store(true, Ordering::Release);
+     let me = smp::index();
+     ACK[me].store(seq, Ordering::Release);
+@@ -98,5 +100,6 @@
+         }
+     }
++    SHOOTDOWN_ACTIVE.store(false, Ordering::Release);
+ }
+
+ fn wait_delivery(start: u64) {
