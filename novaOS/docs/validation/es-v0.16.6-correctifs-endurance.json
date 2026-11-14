@@ -1,0 +1,157 @@
+{
+  "sha256_fixture": "9f856956ce20e8804909081e623bdc86a33db211b80b77c9798ef2a17c185b3f",
+  "temoins_avant": [
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "sessions": 64,
+      "cadres_libres": 62549,
+      "blocs_tas": 3,
+      "octets_tas_occupes": 10272,
+      "octets_tas_engages": 12288,
+      "processus_fin": 0,
+      "pages_ipc_fin": 0,
+      "copies_relues": 64,
+      "refus_nom_occupe": 64,
+      "avant": [
+        71,
+        72
+      ],
+      "apres": [
+        136,
+        137
+      ],
+      "sha256_serie": "6b18cd3cc1932e0c4b525cb0ca07eaf8feaaa45f1f44bd4bf09bdc8b7f2f1ab5",
+      "sha256_image": "a3ea541ca1e847f7012dce2afa7dc5657c4058c50b7ef30a6ec566519909a1b4",
+      "sha256_elf": "90aa7df7458cfb981203a1262234de559cc6f523c7b9f10b6f78d8b541aea78f",
+      "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "sessions": 64,
+      "cadres_libres": 63097,
+      "blocs_tas": 3,
+      "octets_tas_occupes": 9248,
+      "octets_tas_engages": 12288,
+      "processus_fin": 0,
+      "pages_ipc_fin": 0,
+      "copies_relues": 64,
+      "refus_nom_occupe": 64,
+      "avant": [
+        71,
+        72
+      ],
+      "apres": [
+        136,
+        137
+      ],
+      "sha256_serie": "783edea1421950eb04b9bcc1ff45daa01c3195c8ab0628868a96bdb7d7dd87fb",
+      "sha256_image": "52fe04567e5a950d6aa94e0db117cafac6002f775925ff19b96b3ec939456c46",
+      "sha256_elf": "48a076ec235457c78fd858b7e22353a7cf1bd7629931d507f40f26d9e5b3dcbe",
+      "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+    }
+  ],
+  "candidat": [
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "sessions": 64,
+      "cadres_libres": 62544,
+      "blocs_tas": 3,
+      "octets_tas_occupes": 10272,
+      "octets_tas_engages": 12288,
+      "processus_fin": 0,
+      "pages_ipc_fin": 0,
+      "copies_relues": 64,
+      "refus_nom_occupe": 64,
+      "avant": [
+        71,
+        72
+      ],
+      "apres": [
+        136,
+        137
+      ],
+      "sha256_serie": "fe96996c2c6d5a997ef55b672073528775989016ba76e1e8cf3c58e597c19a9a",
+      "sha256_image": "8ba79a4839dcf4d4ac7c678c051e6c49fcca488c74aacba4c7ff94051ba5d390",
+      "sha256_elf": "974666ce7343761a5c7214f94ede34aa4fb5af85432ccc692e65396765ffbd2d",
+      "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "sessions": 64,
+      "cadres_libres": 62544,
+      "blocs_tas": 3,
+      "octets_tas_occupes": 10272,
+      "octets_tas_engages": 12288,
+      "processus_fin": 0,
+      "pages_ipc_fin": 0,
+      "copies_relues": 64,
+      "refus_nom_occupe": 64,
+      "avant": [
+        71,
+        72
+      ],
+      "apres": [
+        136,
+        137
+      ],
+      "sha256_serie": "c7aa9491e441f9325509069dab5cc780f1ed6536288642157185210eab892f34",
+      "sha256_image": "b6eb7048b32da7a64c7788157cac3ede5bfe2395350dbe3509945d0cbba17a9c",
+      "sha256_elf": "974666ce7343761a5c7214f94ede34aa4fb5af85432ccc692e65396765ffbd2d",
+      "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "sessions": 64,
+      "cadres_libres": 63095,
+      "blocs_tas": 3,
+      "octets_tas_occupes": 9248,
+      "octets_tas_engages": 12288,
+      "processus_fin": 0,
+      "pages_ipc_fin": 0,
+      "copies_relues": 64,
+      "refus_nom_occupe": 64,
+      "avant": [
+        71,
+        72
+      ],
+      "apres": [
+        136,
+        137
+      ],
+      "sha256_serie": "31ea2c30ba10acaa502b7a6988b1c7bb5849215d4b50cb98893dcde9065b75b2",
+      "sha256_image": "866a9a5b5e73f2dbf98eab84edbdef454b089d7ce9109ff87f893df3b4acf88b",
+      "sha256_elf": "fbe308cf5157605855307d8e2f96896827b2fc7fc6d7402ba0543fee0eab93a1",
+      "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "sessions": 64,
+      "cadres_libres": 63095,
+      "blocs_tas": 3,
+      "octets_tas_occupes": 9248,
+      "octets_tas_engages": 12288,
+      "processus_fin": 0,
+      "pages_ipc_fin": 0,
+      "copies_relues": 64,
+      "refus_nom_occupe": 64,
+      "avant": [
+        71,
+        72
+      ],
+      "apres": [
+        136,
+        137
+      ],
+      "sha256_serie": "c1c99101b84f9b076a2daffe2a64dcb7561b010a4ce95ffaf90082cf1c524d32",
+      "sha256_image": "585e4584be6515fd2b1a772220638f74546d8fd117848155d9531fbd99c390ce",
+      "sha256_elf": "fbe308cf5157605855307d8e2f96896827b2fc7fc6d7402ba0543fee0eab93a1",
+      "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+    }
+  ]
+}

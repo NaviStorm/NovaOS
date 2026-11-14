@@ -1,0 +1,68 @@
+[
+  {
+    "architecture": "aarch64",
+    "test": "irq_attente_modele",
+    "sortie": [
+      "",
+      "running 2 tests",
+      "test entrelacements_et_delais ... ok",
+      "test repli_borne_si_horloge_gelee ... ok",
+      "",
+      "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s",
+      ""
+    ],
+    "sha256_source": "4c7e1b9901cae3bec45b112e139d6d627ec8b12b079fcbe3b7b1b6185ae132ca",
+    "sha256_banc": "c305539d62de22956e082dfa3b6473e678c36296c5bf1c16b3f2bea8a9bdcef7",
+    "sha256_executable": "6cad811433505ba831a2c4a0ce69ed33dc63eee65fc26c2cd83eb1ad99a036ac",
+    "revision_sources": "13df1dce48677f6fd92256b99b0ab0948bde803a"
+  },
+  {
+    "architecture": "x86_64",
+    "test": "irq_attente_modele",
+    "sortie": [
+      "",
+      "running 2 tests",
+      "test entrelacements_et_delais ... ok",
+      "test repli_borne_si_horloge_gelee ... ok",
+      "",
+      "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s",
+      ""
+    ],
+    "sha256_source": "4c7e1b9901cae3bec45b112e139d6d627ec8b12b079fcbe3b7b1b6185ae132ca",
+    "sha256_banc": "c305539d62de22956e082dfa3b6473e678c36296c5bf1c16b3f2bea8a9bdcef7",
+    "sha256_executable": "604a070e6d333a33463250fc52c266cad6eb7943ab33b49fa35fe455a1ff8c30",
+    "revision_sources": "13df1dce48677f6fd92256b99b0ab0948bde803a"
+  },
+  {
+    "architecture": "aarch64",
+    "test": "dma_allocation_modele",
+    "sortie": [
+      "",
+      "running 1 test",
+      "test allocation_partielle_et_restitution ... ok",
+      "",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+      ""
+    ],
+    "sha256_source": "e28b5bdb4fdaefe28285460f7b8b4948efdbf1965f2348502a5a355291e13d4c",
+    "sha256_banc": "b30559c71f7e9afc13768d64c48e4ab6185cd986ee1e40f01706ac641f8f6084",
+    "sha256_executable": "2301625af18db68cb238163523f0de3bcf877fc1980eba21e62e4e0547ac11a6",
+    "revision_sources": "13df1dce48677f6fd92256b99b0ab0948bde803a"
+  },
+  {
+    "architecture": "x86_64",
+    "test": "dma_allocation_modele",
+    "sortie": [
+      "",
+      "running 1 test",
+      "test allocation_partielle_et_restitution ... ok",
+      "",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+      ""
+    ],
+    "sha256_source": "e28b5bdb4fdaefe28285460f7b8b4948efdbf1965f2348502a5a355291e13d4c",
+    "sha256_banc": "b30559c71f7e9afc13768d64c48e4ab6185cd986ee1e40f01706ac641f8f6084",
+    "sha256_executable": "94047dd4444a456a65c35834d8792f7cd9c2737a52f8fb1f50d88ea1279557e2",
+    "revision_sources": "13df1dce48677f6fd92256b99b0ab0948bde803a"
+  }
+]
