@@ -101,7 +101,7 @@ Temps cumulés de garde sur tous les vCPU pendant le lot avec sondes. Les acquis
 
 À quatre vCPU x86 et quatre couples, la durée moyenne par acquisition, calculée pour chaque lot puis résumée par sa médiane, passe de **4,63 à 4,01 µs**. Le temps de détention cumulé baisse de 306,2 à 263,8 ms. La sonde mesure 8 018 commutations et 7 923 reprises médianes du candidat par lot. Le nombre d’acquisitions physiques demeure voisin. Les réentrées locales évitées ne donnaient pas lieu à une nouvelle attribution du verrou.
 
-Les histogrammes instrumentés portent sur les tours individuels du premier client. À quatre vCPU x86, les médianes de leurs p50/p95/p99 passent de 57,3 / 69,6 / 90,1 µs à 53,2 / 61,4 / 90,0 µs. Sur ARM à quatre vCPU, elles passent de 94,2 / 122,9 / 180,2 µs à 94,2 / 127,0 / 180,2 µs. Dans cette dernière cellule instrumentée, le débit médian recule de 0,3 %. Les 42 lots monocouple sans sonde montrent une baisse du p99 moyen par tour de 74,7 à 67,4 µs sur ARM et de 59,0 à 50,4 µs sur x86. Les mesures individuelles dans l’invité et les durées murales entre marqueurs restent disponibles pour la comparaison.
+Dans le scénario instrumenté à un seul couple libre, chaque lot fournit un histogramme des 1 000 tours individuels du client. À quatre vCPU x86, les médianes de ces p50/p95/p99 passent de 57,3 / 69,6 / 90,1 µs à 53,2 / 61,4 / 90,0 µs. Sur ARM à quatre vCPU, elles passent de 94,2 / 122,9 / 180,2 µs à 94,2 / 127,0 / 180,2 µs. Dans cette dernière cellule instrumentée, le débit médian recule de 0,3 %. Les 42 lots monocouple sans sonde montrent une baisse du p99 moyen par tour de 74,7 à 67,4 µs sur ARM et de 59,0 à 50,4 µs sur x86. Dans le scénario distinct à quatre couples épinglés, l’histogramme du premier client du candidat donne 196,5 / 294,8 / 343,9 µs sur x86 et 294,9 / 426,0 / 491,5 µs sur ARM.
 
 ## Essais sous charge hôte
 
@@ -140,7 +140,7 @@ python3 -B novaOS/tests/ipc_phase4_performances.py rapport "$lab/mesures" "$lab/
 
 ## Traçabilité Git
 
-Les commits suivants appartiennent à `codex/smp-0170`. Le commit documentaire qui contient ce rapport et les chronométrages finaux se retrouve par `git log -1 -- novaOS/docs/ipc-smp-phase4-v0.17.0.md`.
+Les commits suivants appartiennent à `codex/smp-0170`. Le dernier commit du rapport se retrouve par `git log -1 -- novaOS/docs/ipc-smp-phase4-v0.17.0.md`.
 
 | SHA | Modification |
 |---|---|
@@ -157,3 +157,4 @@ Les commits suivants appartiennent à `codex/smp-0170`. Le commit documentaire q
 | `d7b3544d04a7a2055902904bf3f463a1d8a9c3e8` | Vérifier le dernier slot de capacités |
 | `3db72f4df94ad7c22ea2cf9575b57f44874aae4b` | Reproduire les ablations et archiver les cadres mémoire |
 | `3becdbd6aa4f2376bbee381172f581f1b7edc55e` | Qualifier les régressions multicœurs, NovaFS, DMA et UTM |
+| `ea52fd1734763d34d4905e3c47dc957f1a491cba` | Qualifier le débit et proposer la fusion |
