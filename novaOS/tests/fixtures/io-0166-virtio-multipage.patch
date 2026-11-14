@@ -131,7 +131,7 @@
 +        parts[1 + d.nombre] = Segment::new(addr(5), 1, true);
 +        self.kind = usize::from(d.ecrire);
 +        self.started = metrics::stamp();
-+        let irq = hal::interrupts::Guard::new();
++        let irq = crate::sched::Guard::new();
 +        if !bail_actif() {
 +            return Err(Error::State);
 +        }
@@ -156,7 +156,7 @@
 +        }
 +        // Vérifier de nouveau le bail et rendre la réponse sous le même masque BSP.
 +        // Les contrôles des deux extrémités IPC se font dans copier et terminer.
-+        let garde = hal::interrupts::Guard::new();
++        let garde = crate::sched::Guard::new();
 +        let copie = if !bail_actif() {
 +            Err(crate::abi::REVOKED)
 +        } else if d.ecrire {
@@ -236,8 +236,8 @@
  mod lease;
  pub(crate) mod metrics;
 @@ -59,4 +61,5 @@
- /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
  pub(crate) fn interrupt() -> bool {
+     let _gate = crate::sched::Guard::new();
 +    let entree = trace_dma::temps();
      let addr = ISR.load(Ordering::Acquire);
      if addr != 0 {
@@ -493,7 +493,7 @@
 +        })
 +    }
 +    fn bail(self, s: &Core) -> Res<(Reference, Lane, Reservation)> {
-+        let pid = s.thread(s.current).owner.ok_or(DENIED)?;
++        let pid = s.thread(s.current()).owner.ok_or(DENIED)?;
 +        let node = s.ipc.lookup(pid, self.cap, SEND | RECEIVE)?;
 +        let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(REVOKED)?;
 +        let r = lane.reservation.ok_or(REVOKED)?;

@@ -53,6 +53,12 @@ request!(MAP: MemoryMapRequest = MemoryMapRequest::new());
 request!(HHDM: HhdmRequest = HhdmRequest::new());
 request!(IMAGE: ExecutableAddressRequest = ExecutableAddressRequest::new());
 request!(MODE: PagingModeRequest = PagingModeRequest::new().with_max_mode(Mode::FOUR_LEVEL));
+request!(MP: limine::request::MpRequest = limine::request::MpRequest::new());
+pub(crate) fn processors() -> Option<&'static limine::response::MpResponse> {
+    assert!(!RETIRED.load(core::sync::atomic::Ordering::Acquire));
+    MP.get_response()
+}
+
 request!(CMDLINE: ExecutableCmdlineRequest = ExecutableCmdlineRequest::new());
 
 pub struct MemoryInfo {

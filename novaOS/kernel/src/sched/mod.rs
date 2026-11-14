@@ -1,10 +1,12 @@
-//! Ordonnanceur du BSP. Les accès à CORE sont courts, IRQ masquées ; aucun
+//! Ordonnanceur préemptif à file partagée sous exclusion interprocesseurs. Aucun
 //! emprunt de la file ou d’un TCB ne traverse un changement de pile.
+mod gate;
+pub(crate) use gate::Guard;
 mod probes;
 pub(crate) mod process;
 mod stack;
 pub(crate) mod sync;
-use crate::hal::{self, context, interrupts::Guard};
+use crate::hal::{self, context};
 use crate::memory::SpaceId;
 use alloc::vec::Vec;
 use core::{
@@ -103,13 +105,12 @@ struct Core {
     processes: process::Table,
     slots: Vec<Option<Thread>>,
     ready: Ready,
-    current: usize,
+    currents: [usize; crate::smp::MAX_CPUS],
     generation: u64,
     stats: Stats,
 }
 struct Local(UnsafeCell<Option<Core>>);
-// Sûreté : un seul CPU actif. Chaque emprunt est délimité par une fermeture sous
-// masque IRQ. Les exceptions non masquables/fatales n’utilisent jamais CORE.
+// Sûreté : chaque emprunt est délimité par une fermeture sous le verrou du scheduler. Les exceptions non masquables/fatales n’utilisent jamais CORE.
 unsafe impl Sync for Local {}
 static CORE: Local = Local(UnsafeCell::new(None));
 fn with<R>(f: impl FnOnce(&mut Core) -> R) -> R {
@@ -119,6 +120,26 @@ fn with<R>(f: impl FnOnce(&mut Core) -> R) -> R {
 }
 
 impl Core {
+    fn current(&self) -> usize {
+        self.currents[crate::smp::index()]
+    }
+    fn idle_slot(cpu: usize) -> usize {
+        if cpu == 0 { IDLE } else { MAX - cpu }
+    }
+    fn choose(&mut self, cpu: usize) -> Option<usize> {
+        let eligible = (0..self.ready.len).find(|&offset| {
+            let i = self.ready.items[(self.ready.head + offset) % MAX];
+            self.thread(i).cpu_mask & (1 << cpu) != 0
+        })?;
+        let chosen = self.ready.items[(self.ready.head + eligible) % MAX];
+        for i in (1..=eligible).rev() {
+            self.ready.items[(self.ready.head + i) % MAX] =
+                self.ready.items[(self.ready.head + i - 1) % MAX];
+        }
+        self.ready.pop();
+        Some(chosen)
+    }
+
     fn flush_ipc(&mut self) {
         let mut mask = self.ipc.take_wakes();
         while mask != 0 {
@@ -143,6 +164,18 @@ impl Core {
         self.thread_mut(i).state = State::Ready;
         self.ready.push(i);
         self.stats.wakes += 1;
+        let me = crate::smp::index();
+        let other =
+            crate::smp::ONLINE.load(Ordering::Acquire) & !(1 << me) & self.thread(i).cpu_mask;
+        if other != 0
+            && self
+                .currents
+                .iter()
+                .enumerate()
+                .any(|(cpu, &slot)| other & (1 << cpu) != 0 && slot == Self::idle_slot(cpu))
+        {
+            crate::arch::kick();
+        }
     }
     fn signal(&mut self, wait: Wait) -> Option<Id> {
         let id = self
@@ -164,7 +197,7 @@ impl Core {
             assert!(i != IDLE && !queued[i] && self.thread(i).state == State::Ready);
             queued[i] = true;
         }
-        assert_eq!(self.thread(self.current).state, State::Running);
+        assert_eq!(self.thread(self.current()).state, State::Running);
         let mut occupied = 0;
         let mut terminated = 0;
         for (i, slot) in self.slots.iter().enumerate() {
@@ -177,11 +210,20 @@ impl Core {
                     t.owner
                         .map_or(self.kernel_space, |p| self.processes.space(p))
                 );
-                assert_eq!(t.cpu_mask, 1);
-                assert_eq!(t.priority == Priority::Idle, i == IDLE);
-                assert_eq!(t.state == State::Running, i == self.current);
-                assert_eq!(queued[i], i != IDLE && t.state == State::Ready);
-                t.stack.check(if i == self.current {
+                assert_ne!(t.cpu_mask, 0);
+                assert_eq!(
+                    t.priority == Priority::Idle,
+                    (0..crate::smp::count()).any(|c| Self::idle_slot(c) == i)
+                );
+                assert_eq!(t.state == State::Running, self.currents.contains(&i));
+                assert_eq!(
+                    queued[i],
+                    t.priority != Priority::Idle && t.state == State::Ready
+                );
+                if self.currents.contains(&i) && i != self.current() {
+                    continue;
+                }
+                t.stack.check(if i == self.current() {
                     context::sp()
                 } else {
                     t.saved
@@ -193,20 +235,22 @@ impl Core {
     }
 
     fn select(&mut self, why: Reason) -> Option<(*mut usize, usize)> {
-        let old = self.current;
+        let old = self.current();
         let state = match why {
             Reason::Tick(_) => {
-                let now = ticks().saturating_add(1);
-                NOVA_TICKS.store(now, Ordering::Relaxed);
-                self.ipc.expire(now);
-                self.flush_ipc();
-                for i in 0..self.slots.len() {
-                    if matches!(self.slots[i].as_ref().map(|t| t.state),Some(State::Blocked(Wait::Until(end))) if end<=now)
-                    {
-                        self.wake(i);
+                if crate::smp::index() == 0 {
+                    let now = ticks().saturating_add(1);
+                    NOVA_TICKS.store(now, Ordering::Relaxed);
+                    self.ipc.expire(now);
+                    self.flush_ipc();
+                    for i in 0..self.slots.len() {
+                        if matches!(self.slots[i].as_ref().map(|t| t.state),Some(State::Blocked(Wait::Until(end))) if end<=now)
+                        {
+                            self.wake(i);
+                        }
                     }
                 }
-                if old == IDLE {
+                if self.thread(old).priority == Priority::Idle {
                     self.stats.idle_ticks += 1;
                 }
                 State::Ready
@@ -240,15 +284,17 @@ impl Core {
         }
         // Une IRQ peut reprendre idle juste avant reap(). La dette de collecte
         // reste observable jusqu'au retrait du TCB sur une autre pile.
-        let next = if self.stats.exits != self.stats.reaped {
-            IDLE
+        let cpu = crate::smp::index();
+        let idle_slot = Self::idle_slot(cpu);
+        let next = if cpu == 0 && self.stats.exits != self.stats.reaped {
+            idle_slot
         } else {
-            self.ready.pop().unwrap_or(IDLE)
+            self.choose(cpu).unwrap_or(idle_slot)
         };
         let previous_space = self.thread(old).space;
         let t = self.thread_mut(next);
         assert_eq!(t.state, State::Ready);
-        assert_eq!(t.cpu_mask, 1);
+        assert_ne!(t.cpu_mask & (1 << cpu), 0);
         t.state = State::Running;
         if old == next {
             return None;
@@ -263,8 +309,8 @@ impl Core {
             // jusqu’à la collecte sur une pile tierce. La moitié haute est commune.
             unsafe { t.space.activate() };
         }
-        self.current = next;
-        if matches!(why, Reason::Tick(_)) && old != IDLE && next != IDLE {
+        self.currents[crate::smp::index()] = next;
+        if matches!(why, Reason::Tick(_)) && old != idle_slot && next != idle_slot {
             self.stats.preemptions += 1;
             if self.ipc.has_pending() {
                 self.stats.ipc_preemptions += 1;
@@ -297,15 +343,16 @@ fn dispatch(why: Reason) {
 }
 fn dispatch_measured(why: Reason, masked_since: u64) {
     use process::ipc::metrics;
+    let _gate = Guard::new();
     let start = metrics::switch_stamp();
     if let Some((save, load)) = with(|s| {
-        let old = s.current;
+        let old = s.current();
         let next = s.select(why);
         if start != 0 && next.is_some() {
             metrics::switch_out(
                 start,
                 s.ipc.measured_peer(s.thread(old).owner)
-                    && s.ipc.measured_peer(s.thread(s.current).owner),
+                    && s.ipc.measured_peer(s.thread(s.current()).owner),
             );
         }
         if masked_since != 0 {
@@ -315,12 +362,15 @@ fn dispatch_measured(why: Reason, masked_since: u64) {
     }) {
         // Sûreté : TCB fixe, pile cible READY vérifiée, aucuns emprunts de CORE vivants.
         unsafe {
-            context::switch(save, load);
+            let depth = gate::outgoing();
+            context::switch(save, load, &gate::OWNER);
+            gate::resumed(depth);
         }
         metrics::switch_in();
     }
 }
 pub(crate) fn tick(user: bool) {
+    smp_probe::pulse();
     let irq = Guard::new();
     assert!(!irq.was_enabled(), "tick hors interruption");
     dispatch(Reason::Tick(user));
@@ -365,7 +415,7 @@ fn reap() {
     }
     for i in 1..MAX {
         let stack = with(|s| {
-            if i != s.current
+            if !s.currents.contains(&i)
                 && s.slots[i]
                     .as_ref()
                     .is_some_and(|t| t.state == State::Terminated)
@@ -394,7 +444,7 @@ pub enum Error {
 impl core::fmt::Debug for Error {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
-            Self::UnsupportedCpu => f.write_str("affinité hors CPU0"),
+            Self::UnsupportedCpu => f.write_str("affinité hors topologie"),
             Self::Critical => f.write_str("section critique"),
             Self::Full => f.write_str("table des threads pleine"),
             Self::Memory(e) => write!(f, "pile : {e:?}"),
@@ -434,10 +484,10 @@ pub fn spawn(entry: fn()) -> Result<Id, Error> {
     spawn_on(entry, 1)
 }
 pub fn spawn_on(entry: fn(), cpu_mask: u64) -> Result<Id, Error> {
-    if cpu_mask != 1 {
+    let guard = Guard::new();
+    if cpu_mask == 0 || cpu_mask & !crate::smp::ONLINE.load(Ordering::Acquire) != 0 {
         return Err(Error::UnsupportedCpu);
     }
-    let guard = Guard::new();
     if !guard.was_enabled() {
         return Err(Error::Critical);
     }
@@ -453,7 +503,9 @@ pub fn live(id: Id) -> bool {
     })
 }
 extern "C" fn trampoline() -> ! {
-    let entry = with(|s| s.thread(s.current).entry);
+    let cpu = crate::smp::index();
+    let entry = with(|s| s.thread(s.current()).entry);
+    crate::smp::ONLINE.fetch_or(1 << cpu, Ordering::Release);
     context::enable();
     entry();
     let _guard = Guard::new();
@@ -462,14 +514,41 @@ extern "C" fn trampoline() -> ! {
 }
 fn idle() {
     loop {
-        process::before_reap_probe();
+        if crate::smp::index() == 0 {
+            process::before_reap_probe();
+        }
         let _guard = Guard::new();
-        reap();
-        if with(|s| s.ready.len != 0) {
+        let cpu = crate::smp::index();
+        if cpu != 0 && crate::smp::stop_requested() {
+            // À cette frontière le PE ne possède que sa pile idle. La sonde
+            // a récolté les travailleurs. Le retrait du masque précède le HLT/WFI.
+            crate::heap::with_pages(|_| {
+                crate::arch::poll_translation();
+                crate::smp::ONLINE.fetch_and(!(1 << cpu), Ordering::Release);
+                Ok(())
+            })
+            .expect("retrait du CPU");
+            _guard.unlock_masked();
+            hal::cpu::halt();
+        }
+        if cpu == 0 {
+            reap();
+        }
+        if with(|s| {
+            (0..s.ready.len).any(|n| {
+                s.thread(s.ready.items[(s.ready.head + n) % MAX]).cpu_mask
+                    & (1 << crate::smp::index())
+                    != 0
+            })
+        }) {
             dispatch(Reason::Yield);
         } else {
-            process::idle_sample();
+            if crate::smp::index() == 0 {
+                process::idle_sample();
+            }
+            _guard.unlock_masked();
             context::idle_wait();
+            context::enable();
         }
     }
 }
@@ -491,7 +570,7 @@ pub fn start(main: fn(), kernel_space: SpaceId) -> ! {
                 head: 0,
                 len: 0,
             },
-            current: NONE,
+            currents: [NONE; crate::smp::MAX_CPUS],
             generation: 0,
             stats: Stats::default(),
         }));
@@ -500,16 +579,68 @@ pub fn start(main: fn(), kernel_space: SpaceId) -> ! {
     create(1, main, Priority::Normal, 1).expect("pile principale");
     let first = with(|s| {
         let i = s.ready.pop().unwrap();
-        s.current = i;
+        s.currents[0] = i;
         s.thread_mut(i).state = State::Running;
         s.thread(i).saved
     });
+    for cpu in 1..crate::smp::count() {
+        let slot = Core::idle_slot(cpu);
+        create(slot, idle, Priority::Idle, 1 << cpu).expect("pile idle secondaire");
+    }
     hal::timer::start(HZ);
     let mut abandoned = 0;
     // Sûreté : abandon définitif de la pile Limine, IRQ encore masquées.
     unsafe {
-        context::switch(&mut abandoned, first);
+        context::switch(&mut abandoned, first, core::ptr::null());
     }
     unreachable!()
 }
 pub(crate) use probes::test;
+
+pub(crate) fn secondary(cpu: usize) -> ! {
+    let first = with(|s| {
+        let i = Core::idle_slot(cpu);
+        assert!(s.currents[cpu] == NONE);
+        s.currents[cpu] = i;
+        let t = s.thread_mut(i);
+        t.state = State::Running;
+        t.saved
+    });
+    hal::timer::start_secondary();
+    let mut abandoned = 0;
+    // Sûreté : le TCB idle et sa pile privée sont réservés à ce CPU.
+    unsafe {
+        context::switch(&mut abandoned, first, core::ptr::null());
+    }
+    unreachable!()
+}
+
+mod smp_probe;
+pub(crate) use smp_probe::run as smp_test;
+
+pub(crate) fn reschedule_idle() {
+    let _guard = Guard::new();
+    if with(|s| s.current() == Core::idle_slot(crate::smp::index())) {
+        dispatch(Reason::Yield);
+    }
+}
+
+// Réservé aux threads noyau qui n'ont ni bail matériel ni affinité de pilote.
+fn set_affinity(mask: u64) -> Result<(), Error> {
+    let guard = Guard::new();
+    if !guard.was_enabled() {
+        return Err(Error::Critical);
+    }
+    if mask == 0 || mask & !crate::smp::ONLINE.load(Ordering::Acquire) != 0 {
+        return Err(Error::UnsupportedCpu);
+    }
+    with(|s| {
+        let t = s.thread_mut(s.current());
+        assert!(t.priority == Priority::Normal && t.owner.is_none());
+        t.cpu_mask = mask;
+    });
+    if mask & (1 << crate::smp::index()) == 0 {
+        dispatch(Reason::Yield);
+    }
+    Ok(())
+}

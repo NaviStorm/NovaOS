@@ -51,6 +51,7 @@ impl KernelAllocator {
                 Err(owner) if owner == cpu => fatal(Error::Reentrant),
                 Err(_) => {
                     while self.owner.load(Ordering::Relaxed) != 0 {
+                        crate::arch::poll_translation();
                         core::hint::spin_loop();
                     }
                 }

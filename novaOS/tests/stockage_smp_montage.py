@@ -23,13 +23,15 @@ def construire(revision, sortie, irq_omise, transport):
         subprocess.run(["git", "archive", sha, "novaOS", "components", "novaFS",
                         ":(exclude)novaOS/docs/**", ":(exclude)novaFS/docs/**"],
                        cwd=RACINE, stdout=flux, check=True)
-    fixture = Path(__file__).with_name("fixtures") / "stockage-0167-observation.patch"
     rustc = subprocess.check_output(["rustup", "which", "--toolchain", "stable", "rustc"], text=True).strip()
     env = {**os.environ, "RUSTC": rustc, "CARGO_NET_OFFLINE": "true"}
     env.pop("CARGO_TARGET_DIR", None)
     for profil in ("brut", "coupe"):
         dossier = sortie / profil
         fixtures = preparer_sources(archive, dossier, profil)
+        smp = (dossier / "novaOS/kernel/src/smp.rs").is_file()
+        fixture = Path(__file__).with_name("fixtures") / (
+            "stockage-0170-observation.patch" if smp else "stockage-0167-observation.patch")
         with fixture.open("rb") as flux:
             subprocess.run(["patch", "-p1", "-F0", "--batch", "--forward"], cwd=dossier,
                            check=True, stdin=flux)
@@ -63,7 +65,7 @@ def observer(args):
 
     volumes.SIZES = (4 << 20,)
     volumes.HOST = args.lecteur
-    os.environ["NOVA_QUALIF_VCPU"] = str(args.cpu)
+    os.environ["NOVA_QUALIF_VCPU"] = os.environ["NOVA_VCPUS"] = str(args.cpu)
     sortie = args.sortie
     sortie.mkdir(parents=True, exist_ok=False)
     provenance = json.loads((args.export / "observation.json").read_bytes())

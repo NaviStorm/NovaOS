@@ -88,8 +88,11 @@ pub(crate) fn died(pid: u64) {
 }
 pub(crate) fn retire() -> Result<()> {
     let mut s = SESSION.lock();
-    ACTIF.store(0, Ordering::Release);
-    OWNER.store(0, Ordering::Release);
+    {
+        let _gate = crate::sched::Guard::new();
+        ACTIF.store(0, Ordering::Release);
+        OWNER.store(0, Ordering::Release);
+    }
     s.phase = Phase::Closed;
     let retrait = match s.device.take() {
         Some(d) => d.close(),

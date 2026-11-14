@@ -12,6 +12,10 @@ pub(super) fn init() {
     for i in 0..banks {
         write(DIST, 0x180 + 4 * u64::from(i), u32::MAX);
     }
+    write(DIST, 0, 1);
+    secondary();
+}
+pub(super) fn secondary() {
     write(DIST, 0x280, 1 << PPI);
     let priority = 0x400 + u64::from(PPI / 4) * 4;
     let shift = (PPI % 4) * 8;
@@ -20,10 +24,9 @@ pub(super) fn init() {
         priority,
         (read(DIST, priority) & !(255 << shift)) | (0x80 << shift),
     );
-    write(DIST, 0x100, 1 << PPI);
+    write(DIST, 0x100, (1 << PPI) | 2);
     write(CPU, 4, 0xff);
     write(CPU, 8, 0);
-    write(DIST, 0, 1);
     write(CPU, 0, 1);
 }
 
@@ -51,4 +54,11 @@ pub(crate) fn disk_line(enable: bool) {
     }
     // Sûreté : terminer la configuration GIC avant publication ou retrait du droit.
     unsafe { asm!("dsb sy", options(nostack, preserves_flags)) }
+}
+
+pub fn kick() {
+    unsafe {
+        asm!("dsb ishst", options(nostack));
+    }
+    write(DIST, 0xf00, (1 << 24) | 1);
 }

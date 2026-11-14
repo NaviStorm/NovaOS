@@ -15,6 +15,7 @@ mod heap;
 mod input;
 mod memory;
 mod sched;
+mod smp;
 #[allow(dead_code)]
 #[path = "../../abi/terminal.rs"]
 mod terminal;
@@ -28,6 +29,7 @@ const BANNER: &str = concat!("NovaOS v", env!("CARGO_PKG_VERSION"));
 // Sûreté : seul symbole d’entrée, désigné par ENTRY dans le script de liaison.
 #[unsafe(no_mangle)]
 pub extern "C" fn nova_start() -> ! {
+    smp::discover();
     hal::init();
     let info = boot::memory().unwrap_or_else(|reason| panic!("{reason}"));
     // Sûreté : unique appel au point d’entrée Limine, sans AP ni allocateur antérieur.
@@ -52,8 +54,19 @@ pub extern "C" fn nova_start() -> ! {
 }
 
 fn main_thread() {
+    crate::smp::launch();
+    let start = sched::ticks();
+    while crate::smp::ONLINE.load(core::sync::atomic::Ordering::Acquire)
+        != (1 << crate::smp::count()) - 1
+    {
+        assert!(
+            sched::ticks().wrapping_sub(start) < 5 * u64::from(sched::HZ),
+            "secondaire sans acquittement"
+        );
+        core::hint::spin_loop();
+    }
     let (args, screen) = boot::handoff();
-    // Sûreté : CPU0 exécute déjà sa pile privée et ses propres tables, GDT/TSS
+    // Sûreté : tous les CPU exécutent leur pile privée et leurs propres tables, GDT/TSS
     // ou VBAR. Les réponses ont été copiées ; aucun lecteur Limine ne subsiste.
     match unsafe { memory::reclaim_loader(screen.as_ref().ok().map(framebuffer::Screen::span)) } {
         Ok(()) => (),
@@ -95,6 +108,9 @@ fn main_thread() {
             hal::log(format_args!("CIBLE mode de demarrage refuse"));
         }
         hal::cpu::halt()
+    }
+    if scenario == b"smp-test" {
+        sched::smp_test();
     }
     if scenario.starts_with(b"sched-") {
         sched::test(scenario);

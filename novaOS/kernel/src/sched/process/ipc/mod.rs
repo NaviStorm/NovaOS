@@ -942,6 +942,15 @@ pub(super) fn launch_block_identifie<const N: usize>(
         if matches!(mode, 6 | 25) {
             s.ipc.metrics.start_session(consumer.number, server.number)
         }
+        // Le vecteur VT-d et les registres IRR/ISR du LAPIC appartiennent au BSP.
+        // Le pilote détient seul le portail. Les autres processus restent mobiles.
+        let pilote = s
+            .slots
+            .iter_mut()
+            .flatten()
+            .find(|t| t.owner == Some(device))
+            .unwrap();
+        pilote.cpu_mask = 1;
         if !crate::hardware::block::attach(device.number, key) {
             return Err(DENIED);
         }

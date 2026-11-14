@@ -19,7 +19,7 @@
 +static KICK: AtomicU64 = AtomicU64::new(0);
 +pub(crate) fn arme_retrait(cap: u64) -> Res<u64> {
 +    with(|s| {
-+        let pid = s.thread(s.current).owner.unwrap();
++        let pid = s.thread(s.current()).owner.unwrap();
 +        let node = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
 +        let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(DENIED)?;
 +        if lane.handles[1] != cap || lane.parties[1] != pid.number {
@@ -56,7 +56,7 @@
 +        return false;
 +    }
 +    with(|s| {
-+        let pid = s.thread(s.current).owner.unwrap();
++        let pid = s.thread(s.current()).owner.unwrap();
 +        let root = s.ipc.lookup(pid, cap, MANAGE).unwrap();
 +        assert_eq!(root.endpoint.0, RETRAIT.load(SeqCst));
 +        assert_eq!(s.ipc.retrait_lot(root, true), Ok(()));

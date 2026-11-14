@@ -55,3 +55,22 @@ pub(crate) fn cpu_id() -> usize {
     unsafe { asm!("mrs {}, mpidr_el1", out(reg) mpidr, options(nomem, nostack, preserves_flags)) };
     mpidr & 0xff_00ff_ffff
 }
+
+pub(crate) fn init_secondary(cpu: usize) {
+    paging::secondary();
+    exceptions::vectors(EMERGENCY[cpu].load(core::sync::atomic::Ordering::Acquire));
+    context::prepare();
+}
+
+static EMERGENCY: [core::sync::atomic::AtomicUsize; crate::smp::MAX_CPUS] =
+    [const { core::sync::atomic::AtomicUsize::new(0) }; crate::smp::MAX_CPUS];
+pub(crate) fn prepare_secondaries() {
+    for slot in &EMERGENCY[1..crate::smp::count()] {
+        let stack = alloc::vec![0u128;1024].into_boxed_slice();
+        let top = alloc::boxed::Box::leak(stack).as_mut_ptr() as usize + 16384;
+        slot.store(top, core::sync::atomic::Ordering::Release);
+    }
+}
+pub(crate) fn poll_translation() {}
+
+pub(crate) use gic::kick;

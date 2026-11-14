@@ -52,19 +52,35 @@ pub fn root() -> Result<u64> {
     Ok(cr3 & !0xfff)
 }
 pub fn invalidate(va: u64) {
-    // Sûreté : adresse canonique, un seul processeur actif, instruction de niveau 0.
+    invalidate_local(va);
+    super::lapic::shootdown(va);
+}
+pub(super) fn invalidate_local(va: u64) {
+    // Sûreté : adresse canonique sur le processeur courant, instruction de niveau 0.
     unsafe { asm!("invlpg [{}]", in(reg) va, options(nostack, preserves_flags)) };
 }
 
+static KERNEL_ROOT: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
+
+pub fn secondary() {
+    root().expect("protection des pages du secondaire");
+    load_kernel_root(KERNEL_ROOT.load(core::sync::atomic::Ordering::Acquire));
+}
+
 pub fn activate(space: &crate::memory::AddressSpace, _: &mut crate::memory::Frames) -> Result<()> {
+    KERNEL_ROOT.store(space.root, core::sync::atomic::Ordering::Release);
+    load_kernel_root(space.root);
+    Ok(())
+}
+
+fn load_kernel_root(root: u64) {
     let cr4: u64;
     // Sûreté : la nouvelle racine couvre le code, la pile, la GDT et l’IDT.
     // La désactivation temporaire de PGE évacue aussi les traductions globales.
     unsafe {
         asm!("mov {}, cr4", out(reg) cr4, options(nostack));
-        asm!("mov cr4, {}", "mov cr3, {}", "mov cr4, {}", in(reg) cr4 & !(1<<7), in(reg) space.root, in(reg) cr4, options(nostack));
+        asm!("mov cr4, {}", "mov cr3, {}", "mov cr4, {}", in(reg) cr4 & !(1<<7), in(reg) root, in(reg) cr4, options(nostack));
     }
-    Ok(())
 }
 pub fn map_devices(_: &crate::memory::AddressSpace, _: &mut crate::memory::Frames) -> Result<()> {
     Ok(())

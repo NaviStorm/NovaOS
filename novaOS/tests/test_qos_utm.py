@@ -90,6 +90,7 @@ class Sauvegarde(unittest.TestCase):
                 return pile.enter_context(patch.object(objet, nom, **args))
             pile.enter_context(patch.dict(sys.modules, {"cpu_hote_utm": None, "vcpu_darwin": None}))
             import qos_observation as observation
+            (dossier/"noyau").write_bytes(b"NovaOS v0.16.6")
             profil = dossier/"modele.utm"
             (profil/"Data").mkdir(parents=True)
             config = dict(QEMU=dict(AdditionalArguments=["virtio-blk-pci,adresse=test"]),

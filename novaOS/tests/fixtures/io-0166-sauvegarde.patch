@@ -26,8 +26,8 @@
 +#[path = "../../tests/compteur_sauvegarde.rs"]
 +mod mesures_save;
  mod sched;
+ mod smp;
  #[allow(dead_code)]
- #[path = "../../abi/terminal.rs"]
 --- a/novaOS/kernel/src/sched/process/syscall.rs
 +++ b/novaOS/kernel/src/sched/process/syscall.rs
 @@ -13,6 +13,13 @@

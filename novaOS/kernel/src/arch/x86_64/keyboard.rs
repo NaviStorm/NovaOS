@@ -53,7 +53,7 @@ pub struct Keyboard {
 
 impl Keyboard {
     pub fn init() -> Result<Self, &'static str> {
-        let _irq = crate::hal::interrupts::Guard::new();
+        let _irq = crate::sched::Guard::new();
         send(Port::Controller, 0xad)?; // Suspendre les deux ports avant la purge.
         send(Port::Controller, 0xa7)?;
         for _ in 0..256 {
@@ -126,7 +126,7 @@ impl Keyboard {
             return ch;
         }
         loop {
-            let irq = crate::hal::interrupts::Guard::new();
+            let irq = crate::sched::Guard::new();
             let status = Port::Controller.read();
             if status & OUTPUT_FULL == 0 {
                 INPUT.wait(&irq);

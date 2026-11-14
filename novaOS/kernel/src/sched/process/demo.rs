@@ -69,7 +69,7 @@ pub(super) fn shortage() {
             Err(Error::Memory(crate::memory::Error::Exhausted))
         ));
         assert_eq!(heap::audit(false).free_pages, budget);
-        assert_eq!(with(|s| s.audit()), 2);
+        assert_eq!(with(|s| s.audit()), 1 + crate::smp::count());
         assert!(with(|s| s.processes.slots.iter().all(Option::is_none)));
     }
     heap::with_pages(|m| {
@@ -240,4 +240,19 @@ pub(crate) fn test() {
         "PROC ressources avant={} apres={} blocs={} restitution OK",
         baseline.free_pages, end.free_pages, end.blocks
     ));
+}
+
+pub(super) fn spawn_pinned(cpu: usize, seed: u64) -> Child {
+    let mut data = [0u8; 24];
+    data[8..16].copy_from_slice(&seed.to_le_bytes());
+    let child = create_image(DEMO, &data, None, None).unwrap();
+    with(|s| {
+        s.slots
+            .iter_mut()
+            .flatten()
+            .find(|t| t.owner == Some(child.0))
+            .unwrap()
+            .cpu_mask = 1 << cpu
+    });
+    child
 }

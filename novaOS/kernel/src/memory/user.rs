@@ -319,12 +319,18 @@ impl UserSpace {
     }
 
     pub fn read_data(&self, m: &Memory, index: usize) -> u64 {
-        // Sûreté : champ aligné dans DATA, espace vivant, utilisateur suspendu sur CPU0.
-        unsafe { self.word(m, index).read_volatile() }
+        // Mot de la sonde partagé avec les accès 64 bits alignés en assembleur utilisateur.
+        unsafe {
+            core::sync::atomic::AtomicU64::from_ptr(self.word(m, index))
+                .load(core::sync::atomic::Ordering::Relaxed)
+        }
     }
     pub fn write_data(&self, m: &Memory, index: usize, value: u64) {
-        // Sûreté : accès aligné à la page de données privée RW, utilisateur suspendu.
-        unsafe { self.word(m, index).write_volatile(value) };
+        // La racine est retenue pendant la publication du signal de fin à la sonde.
+        unsafe {
+            core::sync::atomic::AtomicU64::from_ptr(self.word(m, index))
+                .store(value, core::sync::atomic::Ordering::Release)
+        };
     }
 
     fn release_page(tables: &AddressSpace, m: &mut Memory, va: u64) {

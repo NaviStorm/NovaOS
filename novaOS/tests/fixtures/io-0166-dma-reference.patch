@@ -7,8 +7,8 @@
  pub(crate) use lease::commande_groupee;
  mod lease;
 @@ -55,4 +56,5 @@
- /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
  pub(crate) fn interrupt() -> bool {
+     let _gate = crate::sched::Guard::new();
 +    let entree=trace_dma::temps();
      let addr = ISR.load(Ordering::Acquire);
      if addr != 0 {

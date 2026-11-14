@@ -48,6 +48,7 @@ struct Process {
     // None pendant la vie du processus. Le statut reste disponible après collecte.
     outcome: Option<Outcome>,
     preemptions: u64,
+    preempted_on: u64,
 }
 pub(super) struct Table {
     slots: [Option<Process>; MAX],
@@ -85,18 +86,21 @@ impl Table {
         self.get(pid).space.as_ref().unwrap().id()
     }
     pub(super) fn preempted(&mut self, pid: Pid) {
-        self.get_mut(pid).preemptions += 1;
+        let p = self.get_mut(pid);
+        p.preemptions += 1;
+        p.preempted_on |= 1 << crate::smp::index();
     }
 }
 fn enter() {
     let _irq = Guard::new();
     let (top, entry, user_top) = with(|s| {
-        let t = s.thread(s.current);
+        let t = s.thread(s.current());
         let space = s.processes.get(t.owner.unwrap()).space.as_ref().unwrap();
         (t.stack.top, space.entry(), space.stack_top())
     });
     // Sûreté : thread utilisateur fraîchement publié ; code RX et pile RW/NX
     // validés, racine active, IRQ masquées jusqu’au retour matériel.
+    _irq.unlock_masked();
     unsafe { context::enter_user(top, entry as usize, user_top as usize) }
 }
 
@@ -149,7 +153,12 @@ fn create_image(
     let root = space.id();
     // Le masque IRQ reste en place de la réservation des slots à la publication
     // du couple PID/TCB. Le nouveau thread ne peut observer une racine par défaut.
-    if let Err(e) = create(slot, enter, Priority::Normal, 1) {
+    if let Err(e) = create(
+        slot,
+        enter,
+        Priority::Normal,
+        crate::smp::ONLINE.load(Ordering::Acquire),
+    ) {
         heap::with_pages(|m| {
             space.release(m);
             Ok(())
@@ -184,6 +193,7 @@ fn create_image(
             exit_counter: 0,
             outcome: None,
             preemptions: 0,
+            preempted_on: 0,
         });
         s.thread_mut(slot).owner = Some(pid);
         s.thread_mut(slot).space = root;
@@ -196,7 +206,10 @@ fn create_image(
 pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
     let entered = hal::timer::counter();
     let (pid, trace_exit) = with(|s| {
-        let pid = s.thread(s.current).owner.expect("exception hors processus");
+        let pid = s
+            .thread(s.current())
+            .owner
+            .expect("exception hors processus");
         crate::hardware::block::died(pid.number);
         s.ipc.death(pid, ticks());
         s.flush_ipc();
@@ -310,4 +323,56 @@ fn measure(phase: &str) {
         }
         heap::measure(phase, r);
     });
+}
+
+// Les démos de calcul ne font aucun yield. Le contrôleur exige un compteur
+// utilisateur en progrès sur chaque PE avant de libérer les processus.
+pub(super) fn smp_users() {
+    let n = crate::smp::count();
+    let mut children = alloc::vec::Vec::new();
+    assert!(n <= 4, "sonde dimensionnée pour 1 à 4 CPU");
+    // Deux calculs par CPU imposent une permutation, y compris sur les AP.
+    for i in 0..2 * n {
+        let _guard = Guard::new();
+        let child = demo::spawn_pinned(i % n, 27 + i as u64);
+        children.push(child);
+    }
+    let start = ticks();
+    loop {
+        let ready = with(|s| {
+            children.iter().all(|child| {
+                let p = s.processes.get(child.0);
+                p.preemptions > 0
+                    && heap::with_pages(|m| Ok(p.space.as_ref().unwrap().read_data(m, 3))).unwrap()
+                        > 0
+            })
+        });
+        if ready {
+            break;
+        }
+        assert!(
+            ticks() - start < u64::from(HZ) * 10,
+            "processus utilisateur sans progression"
+        );
+        sleep(1);
+    }
+    for (i, child) in children.into_iter().enumerate() {
+        let cpu = i % n;
+        with(|s| {
+            let p = s.processes.get(child.0);
+            assert_eq!(p.preempted_on, 1 << cpu);
+            let progress = heap::with_pages(|m| {
+                let space = p.space.as_ref().unwrap();
+                let count = space.read_data(m, 3);
+                space.write_data(m, 4, 1);
+                Ok(count)
+            })
+            .unwrap();
+            hal::log(format_args!(
+                "SMP utilisateur pid={} cpu={} preemptions={} progres={}",
+                child.0.number, cpu, p.preemptions, progress
+            ));
+        });
+        assert_eq!(child.join(), Outcome::Exit(27 + i as u64));
+    }
 }

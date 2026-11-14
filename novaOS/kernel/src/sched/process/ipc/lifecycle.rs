@@ -111,7 +111,7 @@ pub(crate) fn test() {
             assert_eq!(parent.join(), Outcome::Exit(27));
         }
         with(|s| {
-            assert_eq!(s.audit(), 2);
+            assert_eq!(s.audit(), 1 + crate::smp::count());
             assert!(s.processes.slots.iter().all(Option::is_none));
             assert_eq!(s.ipc.pages(), 0);
         });

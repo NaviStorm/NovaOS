@@ -4,18 +4,18 @@
              // jusqu’à la collecte sur une pile tierce. La moitié haute est commune.
              unsafe { t.space.activate() };
          }
-+        crate::mesures_save::passage_idle(old == IDLE, next == IDLE);
-         self.current = next;
-         if matches!(why, Reason::Tick(_)) && old != IDLE && next != IDLE {
++        crate::mesures_save::passage_idle(old == idle_slot, next == idle_slot);
+         self.currents[crate::smp::index()] = next;
+         if matches!(why, Reason::Tick(_)) && old != idle_slot && next != idle_slot {
              self.stats.preemptions += 1;
 --- a/novaOS/tests/compteur_sauvegarde.rs
 +++ b/novaOS/tests/compteur_sauvegarde.rs
-@@ -87,9 +87,28 @@
+@@ -87,9 +87,29 @@
          BULK[usize::from(!put)].fetch_add(1, Relaxed);
      }
  }
 +static FLUSH: [AtomicU64; 2] = [const { AtomicU64::new(0) }; 2];
-+static ENTREE_IDLE: AtomicU64 = AtomicU64::new(0);
++static ENTREE_IDLE: [AtomicU64; crate::smp::MAX_CPUS] = [const { AtomicU64::new(0) }; crate::smp::MAX_CPUS];
 +static IDLE: AtomicU64 = AtomicU64::new(0);
 +
 +pub fn passage_idle(ancien: bool, nouveau: bool) {
@@ -24,9 +24,10 @@
 +    }
 +    let maintenant = hal::timer::counter();
 +    if nouveau {
-+        ENTREE_IDLE.store(maintenant, Relaxed);
++        ENTREE_IDLE[crate::smp::index()].store(maintenant, Relaxed);
 +    } else {
-+        IDLE.fetch_add(maintenant - ENTREE_IDLE.load(Relaxed), Relaxed);
++        let debut = ENTREE_IDLE[crate::smp::index()].swap(0, Relaxed);
++        if debut != 0 { IDLE.fetch_add(maintenant.wrapping_sub(debut), Relaxed); }
 +    }
 +}
 +
@@ -45,7 +46,7 @@
              .chain(&HW)
              .chain(&DMA)
 +            .chain(&FLUSH)
-+            .chain([&IDLE, &ENTREE_IDLE])
++            .chain([&IDLE]).chain(&ENTREE_IDLE)
              .chain([&GIFTS, &UNKNOWN])
          {
              c.store(0, Relaxed);

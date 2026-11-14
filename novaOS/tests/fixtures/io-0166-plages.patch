@@ -1444,7 +1444,7 @@
 +    }
 +    with(|s| {
 +        collecter(s);
-+        let pid = s.thread(s.current).owner.unwrap();
++        let pid = s.thread(s.current()).owner.unwrap();
 +        let droits = match op {
 +            0x10035 => MANAGE,
 +            0x10036 | 0x10037 | 0x10039 => RECEIVE,
@@ -1639,7 +1639,7 @@
 --- a/novaOS/kernel/src/sched/process.rs
 +++ b/novaOS/kernel/src/sched/process.rs
 @@ -199,6 +199,7 @@
-         let pid = s.thread(s.current).owner.expect("exception hors processus");
+             .expect("exception hors processus");
          crate::hardware::block::died(pid.number);
          s.ipc.death(pid, ticks());
 +        ipc::collecter(s);

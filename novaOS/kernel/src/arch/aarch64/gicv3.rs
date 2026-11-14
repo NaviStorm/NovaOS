@@ -1,4 +1,4 @@
-//! GICv3 du banc virt-10.0, un PE, sans ITS. Les quatre INTx PCI sont les SPI 3 à 6.
+//! GICv3 du banc virt-10.0, sans ITS. Les quatre INTx PCI sont les SPI 3 à 6.
 use super::timer::{DIST, PPI, counter, counter_hz, read, write};
 use core::arch::asm;
 use core::sync::atomic::{AtomicU32, Ordering};
@@ -42,10 +42,6 @@ fn priority(base: u64, id: u32, value: u8) {
 
 pub(super) fn init() {
     assert_eq!(read(IDS, 0xfe8) >> 4 & 15, 3, "GICv3 attendu");
-    let affinity = super::cpu_id() as u64;
-    let packed = ((affinity >> 8) & 0xff00_0000) | (affinity & 0xff_ffff);
-    assert_eq!(u64::from(read(REDIST, 0x0c)), packed, "affinité GICR");
-    assert_eq!(read(REDIST, 0) & 1, 0, "LPIs actifs");
     let disabled = read(DIST, 0) & !7;
     write(DIST, 0, disabled);
     wait_clear(DIST, 0, 1 << 31);
@@ -55,23 +51,34 @@ pub(super) fn init() {
         write(DIST, 0x180 + bank * 4, u32::MAX);
     }
     wait_clear(DIST, 0, 1 << 31);
-    write(REDIST, 0x14, read(REDIST, 0x14) & !2);
-    wait_clear(REDIST, 0x14, 4);
-    write(SGI, 0x180, u32::MAX);
-    wait_clear(REDIST, 0, 1 << 3);
-    write(SGI, 0x280, 1 << PPI);
-    write(SGI, 0x80, read(SGI, 0x80) | (1 << PPI));
-    priority(SGI, PPI, 0x80);
-    write(SGI, 0x100, 1 << PPI);
     let routed = disabled | (1 << 4);
     write(DIST, 0, routed);
     wait_clear(DIST, 0, 1 << 31);
     // Sûreté : le cadre IROUTER est mappé Device. Le BSP utilise les registres
     // système EL1, groupe 1, EOI combiné à la désactivation.
+    configure_disk(disk_id());
+    write(DIST, 0, routed | 2);
+    wait_clear(DIST, 0, 1 << 31);
+    secondary();
+}
+pub(super) fn secondary() {
+    let affinity = super::cpu_id() as u64;
+    let packed = ((affinity >> 8) & 0xff00_0000) | (affinity & 0xff_ffff);
+    let (redist, sgi) = (0..crate::smp::count())
+        .map(redistributor)
+        .find(|(rd, _)| u64::from(read(*rd, 0x0c)) == packed)
+        .expect("redistributeur du PE absent");
+    assert_eq!(read(redist, 0) & 1, 0, "LPIs actifs");
+    write(redist, 0x14, read(redist, 0x14) & !2);
+    wait_clear(redist, 0x14, 4);
+    write(sgi, 0x180, u32::MAX);
+    wait_clear(redist, 0, 1 << 3);
+    write(sgi, 0x280, (1 << PPI) | 2);
+    write(sgi, 0x80, read(sgi, 0x80) | ((1 << PPI) | 2));
+    priority(sgi, PPI, 0x80);
+    write(sgi, 0x100, (1 << PPI) | 2);
+    priority(sgi, 1, 0x80);
     unsafe {
-        configure_disk(disk_id());
-        write(DIST, 0, routed | 2);
-        wait_clear(DIST, 0, 1 << 31);
         let sre: u64;
         asm!("mrs {sre}, ICC_SRE_EL1", "orr {sre}, {sre}, #1", "msr ICC_SRE_EL1, {sre}",
              "isb", "mrs {sre}, ICC_SRE_EL1", sre = out(reg) sre, options(nostack));
@@ -117,7 +124,7 @@ fn configure_disk(id: u32) {
     write(DIST, 0xc08, read(DIST, 0xc08) & !(2 << ((id % 16) * 2)));
     priority(DIST, id, 0x40);
     write(DIST, 0x284, bit);
-    let affinity = super::cpu_id() as u64;
+    let affinity = crate::smp::hardware(0) as u64;
     // Sûreté : IROUTER est mappé Device, la ligne sélectionnée est masquée.
     unsafe {
         let reg = (ROUTES + u64::from(id) * 8) as *mut u64;
@@ -138,4 +145,26 @@ pub(super) fn select_disk(id: u32) -> crate::hardware::block::Result<()> {
     configure_disk(id);
     DISK.store(id, Ordering::Release);
     Ok(())
+}
+
+fn redistributor(frame: usize) -> (u64, u64) {
+    if frame == 0 {
+        return (REDIST, SGI);
+    }
+    let rd = 0xffff_c900_0020_0000 + 8192 * frame as u64;
+    (rd, rd + 4096)
+}
+
+pub fn map_redistributors() {
+    for frame in 1..crate::smp::count() {
+        let (rd, sgi) = redistributor(frame);
+        let pa = 0x080a_0000 + frame as u64 * 0x20000;
+        crate::memory::map_io(pa, rd).expect("GICR RD");
+        crate::memory::map_io(pa + 0x10000, sgi).expect("GICR SGI");
+    }
+}
+pub fn kick() {
+    unsafe {
+        asm!("dsb ishst","msr ICC_SGI1R_EL1,{}","isb",in(reg) (1u64<<40)|(1<<24),options(nostack));
+    }
 }

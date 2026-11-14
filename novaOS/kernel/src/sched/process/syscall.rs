@@ -4,7 +4,7 @@ use crate::abi::*;
 use core::sync::atomic::{AtomicBool, Ordering};
 
 fn caller(s: &Core) -> Pid {
-    s.thread(s.current).owner.expect("appel hors processus")
+    s.thread(s.current()).owner.expect("appel hors processus")
 }
 
 fn debug_write(addr: u64, len: u64) -> Result<u64, u64> {
@@ -111,7 +111,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
             level,
         );
     }
-    with(|s| s.thread_mut(s.current).in_syscall = true);
+    with(|s| s.thread_mut(s.current()).in_syscall = true);
     context::enable();
     let [a, b, c] = args;
     let result = match id {
@@ -135,7 +135,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         CLOCK_UTC => Err(BAD_ARGUMENT),
         IPC_FEATURES => ipc::features(a, b, c),
         PROCESS_ID => Ok(with(|s| caller(s).number)),
-        THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
+        THREAD_ID => Ok(with(|s| s.thread(s.current()).id.generation)),
         THREAD_YIELD => {
             yield_now();
             Ok(0)
@@ -153,7 +153,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         _ => Err(UNKNOWN_CALL),
     };
     hal::interrupts::mask();
-    with(|s| s.thread_mut(s.current).in_syscall = false);
+    with(|s| s.thread_mut(s.current()).in_syscall = false);
     match result {
         Ok(value) => Reply { status: OK, value },
         Err(status) => Reply { status, value: 0 },

@@ -44,7 +44,11 @@ pub unsafe fn initial(top: usize, entry: extern "C" fn() -> !) -> usize {
 // Sûreté : EL1h, IRQ masquées, cadres alignés sur 16 octets. Un contexte IRQ
 // contient en plus tous les registres volatils, ELR et SPSR dans le stub de vecteur.
 #[unsafe(naked)]
-pub unsafe extern "C" fn switch(_: *mut usize, _: usize) {
+pub unsafe extern "C" fn switch(
+    _: *mut usize,
+    _: usize,
+    _: *const core::sync::atomic::AtomicUsize,
+) {
     naked_asm!(
         "stp x19,x20,[sp,#-96]!",
         "stp x21,x22,[sp,#16]",
@@ -52,9 +56,12 @@ pub unsafe extern "C" fn switch(_: *mut usize, _: usize) {
         "stp x25,x26,[sp,#48]",
         "stp x27,x28,[sp,#64]",
         "stp x29,x30,[sp,#80]",
-        "mov x2,sp",
-        "str x2,[x0]",
+        "mov x3,sp",
+        "str x3,[x0]",
         "mov sp,x1",
+        "cbz x2,2f",
+        "stlr xzr,[x2]",
+        "2:",
         "ldp x21,x22,[sp,#16]",
         "ldp x23,x24,[sp,#32]",
         "ldp x25,x26,[sp,#48]",

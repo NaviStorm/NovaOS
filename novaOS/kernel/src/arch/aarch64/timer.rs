@@ -58,6 +58,8 @@ pub fn start(hz: u32) {
     let period = freq / u64::from(hz);
     assert!((1..=i32::MAX as u64).contains(&period));
     PERIOD.store(period as u32, Ordering::Relaxed);
+    #[cfg(feature = "gicv3-lab")]
+    gic::map_redistributors();
     gic::init();
     arm();
     // Sûreté : active uniquement la source physique configurée, avant démasquage CPU.
@@ -83,6 +85,8 @@ pub(super) extern "C" fn irq(state: usize) {
     gic::end(ack);
     if id == PPI {
         sched::tick(state & 15 == 0)
+    } else if id == 1 {
+        crate::sched::reschedule_idle();
     }
 }
 
@@ -119,4 +123,12 @@ pub(crate) fn purge_disk() -> crate::hardware::block::Result<()> {
 }
 pub(crate) fn disk_pending() -> bool {
     read(DIST, 0x204) & (1 << (disk_id() - 32)) != 0
+}
+
+pub fn start_secondary() {
+    gic::secondary();
+    arm();
+    unsafe {
+        asm!("dsb sy", "msr cntp_ctl_el0,{}", "isb",in(reg) 1u64,options(nostack));
+    }
 }

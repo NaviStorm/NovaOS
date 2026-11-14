@@ -16,7 +16,9 @@ case "${NOVA_ARCH:-x86_64}" in
         code=edk2-aarch64-code.fd
         vars=edk2-arm-vars.fd
         emulator=qemu-system-aarch64
-        set -- -machine virt,gic-version=2 -cpu "${NOVA_ARM_CPU:-cortex-a72}" -device ramfb \
+        gic=${NOVA_GIC:-2}
+        case "$gic" in 2) machine=virt,gic-version=2 ;; 3) machine=virt,gic-version=3,its=off ;; *) exit 2 ;; esac
+        set -- -machine "$machine" -cpu "${NOVA_ARM_CPU:-cortex-a72}" -device ramfb \
             -device virtio-scsi-pci -drive "if=none,id=cd,file=$iso,format=raw,readonly=on,media=cdrom" \
             -device scsi-cd,drive=cd,bootindex=1 "$@"
         ;;
@@ -38,6 +40,8 @@ done
 # La NVRAM du paquet reste en lecture seule ; QEMU garde les écritures en mémoire.
 ram=${NOVA_RAM:-256}
 case "$ram" in 64|128|256) ;; *) echo "RAM attendue : 64, 128 ou 256 Mio" >&2; exit 2 ;; esac
-exec "$emulator" -name NovaOS -rtc base=utc,clock=host -accel tcg -smp 1 -m "${ram}M" -nic none -no-reboot \
+vcpus=${NOVA_VCPUS:-1}
+case "$vcpus" in 1|2|4) ;; *) echo "Nombre de vCPU non pris en charge" >&2; exit 2 ;; esac
+exec "$emulator" -name NovaOS -rtc base=utc,clock=host -accel tcg -smp "$vcpus" -m "${ram}M" -nic none -no-reboot \
     -drive "if=pflash,unit=0,format=raw,readonly=on,file=$OVMF_CODE" \
     -drive "if=pflash,unit=1,format=raw,snapshot=on,file=$OVMF_VARS" "$@"

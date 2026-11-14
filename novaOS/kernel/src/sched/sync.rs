@@ -1,6 +1,6 @@
-//! Mutex bloquant pour threads noyau (BSP). Les gestionnaires IRQ ne le prennent pas.
+//! Mutex bloquant pour threads noyau. Les gestionnaires IRQ ne le prennent pas.
+use super::Guard;
 use super::{Event, with};
-use crate::hal::interrupts::Guard;
 use core::{
     cell::{Cell, UnsafeCell},
     marker::PhantomData,
@@ -12,8 +12,7 @@ pub struct Mutex<T> {
     changed: Event,
     data: UnsafeCell<T>,
 }
-// Sûreté : CPU0 seul ; test, publication du dormeur et transfert à l’ordonnanceur
-// sont atomiques vis-à-vis des IRQ. Seul le propriétaire accède à data.
+// Sûreté : le verrou inter-CPU couvre le test, la publication du dormeur et le transfert. Seul le propriétaire accède à data.
 unsafe impl<T: Send> Sync for Mutex<T> {}
 pub struct Locked<'a, T> {
     mutex: &'a Mutex<T>,
@@ -33,7 +32,7 @@ impl<T> Mutex<T> {
             irq.was_enabled(),
             "mutex en interruption ou section critique"
         );
-        let id = with(|s| s.thread(s.current).id);
+        let id = with(|s| s.thread(s.current()).id);
         if let Some(owner) = self.owner.get() {
             assert_ne!(owner, id, "mutex récursif");
             // Drop réserve la propriété à cet identifiant avant la remise des IRQ.

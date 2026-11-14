@@ -63,12 +63,30 @@ extern "C" fn fatal() -> ! {
 
 #[repr(align(16))]
 struct EmergencyStack([u8; 16384]);
-static mut PAGE_STACK: EmergencyStack = EmergencyStack([0; 16384]);
-static mut DOUBLE_STACK: EmergencyStack = EmergencyStack([0; 16384]);
-static mut TSS: [u8; 104] = [0; 104];
-static mut GDT: [u64; 11] = [0; 11];
+// Les deux premiers champs sont lus sous masque IRQ par le stub SYSCALL.
+#[repr(C, align(16))]
+struct CpuTables {
+    rsp0: usize,
+    scratch: usize,
+    tss: [u8; 104],
+    gdt: [u64; 11],
+    page: EmergencyStack,
+    double: EmergencyStack,
+}
+const TABLES: CpuTables = CpuTables {
+    rsp0: 0,
+    scratch: 0,
+    tss: [0; 104],
+    gdt: [0; 11],
+    page: EmergencyStack([0; 16384]),
+    double: EmergencyStack([0; 16384]),
+};
+static mut BOOT_TABLES: CpuTables = TABLES;
+static TABLE_PTRS: [core::sync::atomic::AtomicPtr<CpuTables>; crate::smp::MAX_CPUS] =
+    [const { core::sync::atomic::AtomicPtr::new(core::ptr::null_mut()) }; crate::smp::MAX_CPUS];
 
-fn install_emergency_stacks() {
+fn install_emergency_stacks(cpu: usize, local: *mut CpuTables) {
+    TABLE_PTRS[cpu].store(local, core::sync::atomic::Ordering::Release);
     let mut old = Descriptor {
         limit: 0,
         address: 0,
@@ -78,9 +96,9 @@ fn install_emergency_stacks() {
         asm!("sgdt [{}]",in(reg) &mut old, options(nostack,preserves_flags));
     }
     assert!(old.limit >= 55, "GDT Limine trop courte");
-    let tss = (&raw mut TSS).cast::<u8>();
+    let tss = unsafe { (&raw mut (*local).tss).cast::<u8>() };
     let base = tss as u64;
-    let gdt = (&raw mut GDT).cast::<u64>();
+    let gdt = unsafe { (&raw mut (*local).gdt).cast::<u64>() };
     let descriptor = Descriptor {
         limit: 87,
         address: gdt as usize,
@@ -88,7 +106,12 @@ fn install_emergency_stacks() {
     // Sûreté : installation unique sur le BSP. On conserve les sept descripteurs
     // Limine dont CS/SS ; le TSS permanent porte deux IST distinctes pour #PF/#DF.
     unsafe {
-        (old.address as *const u8).copy_to_nonoverlapping(gdt.cast(), 56);
+        let source = if cpu == 0 {
+            old.address as *const u8
+        } else {
+            (&raw const BOOT_TABLES.gdt).cast()
+        };
+        source.copy_to_nonoverlapping(gdt.cast(), 56);
         for i in 1..7 {
             let segment = gdt.add(i).read();
             assert_eq!((segment >> 44) & 7, 1, "segment Limine non superviseur");
@@ -101,19 +124,24 @@ fn install_emergency_stacks() {
 
         tss.add(36)
             .cast::<usize>()
-            .write_unaligned((&raw const PAGE_STACK.0) as usize + 16384);
+            .write_unaligned((&raw const (*local).page.0) as usize + 16384);
         tss.add(44)
             .cast::<usize>()
-            .write_unaligned((&raw const DOUBLE_STACK.0) as usize + 16384);
+            .write_unaligned((&raw const (*local).double.0) as usize + 16384);
         tss.add(102).cast::<u16>().write_unaligned(104);
+        // Le stub échange GS seulement pendant la lecture des deux mots locaux.
+        asm!("wrmsr", in("ecx") 0xc0000102u32, in("eax") local as usize as u32,
+             in("edx") (local as usize >> 32) as u32, options(nostack));
         asm!("lgdt [{}]","ltr ax","xor eax,eax","lldt ax",in(reg) &descriptor,inout("ax") 0x38u16 => _,options(nostack));
     }
 }
 pub(super) fn set_rsp0(top: usize) {
-    // Sûreté : BSP sous masque IRQ, TSS permanent de 104 octets ; RSP0 est
+    // Sûreté : CPU courant sous masque IRQ, TSS permanent de 104 octets ; RSP0 est
     // un champ non aligné à l’offset 4, lu au prochain changement de CPL.
     unsafe {
-        (&raw mut TSS)
+        let local = TABLE_PTRS[crate::smp::index()].load(core::sync::atomic::Ordering::Acquire);
+        (*local).rsp0 = top;
+        (&raw mut (*local).tss)
             .cast::<u8>()
             .add(4)
             .cast::<usize>()
@@ -126,7 +154,7 @@ pub(super) fn install() {
     // Sûreté : seul le processeur d’amorçage exécute l’initialisation. La GDT
     // du noyau reprend le sélecteur de code chargé par Limine.
     unsafe { asm!("mov {cs:x}, cs", cs = out(reg) cs, options(nostack, preserves_flags)) };
-    install_emergency_stacks();
+    install_emergency_stacks(0, &raw mut BOOT_TABLES);
     let mut table = Idt([Gate::new(fault_entry as *const () as usize, cs); 256]);
     let master_eoi = Gate::new(spurious_slave as *const () as usize, cs);
     table.0[14] = Gate::new(page_fault_entry as *const () as usize, cs);
@@ -148,6 +176,9 @@ pub(super) fn install() {
     table.0[0x21] = Gate::new(keyboard_entry as *const () as usize, cs);
     // Vecteurs externes non attribués : aucune livraison aux processus.
     table.0[0x30..0xff].fill(Gate::new(orphan_entry as *const () as usize, cs));
+    table.0[0xe0] = Gate::new(local_tick_entry as *const () as usize, cs);
+    table.0[0xe2] = Gate::new(wake_entry as *const () as usize, cs);
+    table.0[0xe1] = Gate::new(local_ipi_entry as *const () as usize, cs);
     table.0[0x51] = Gate::new(disk_entry as *const () as usize, cs);
     table.0[0xff] = Gate::new(spurious_master as *const () as usize, cs);
     table.0[0x27] = Gate::new(spurious_master as *const () as usize, cs);
@@ -187,8 +218,8 @@ pub(super) fn allow_keyboard() {
 #[unsafe(naked)]
 extern "C" fn page_fault_entry() {
     naked_asm!("mov rdi, cr2", "mov rsi, [rsp]", "mov rdx, [rsp+8]", "mov rcx, [rsp+16]",
-        "test cl,3","jz 2f","mov rsp,[rip+{tss}+4]","2:",
-        "cld", "and rsp, -16", "call {pf}", tss=sym TSS,pf=sym page_fault);
+        "test cl,3","jz 2f","swapgs","mov rsp,gs:[0]","swapgs","2:",
+        "cld", "and rsp, -16", "call {pf}", pf=sym page_fault);
 }
 
 extern "C" fn page_fault(address: u64, error: u64, pc: u64, cs: u64) -> ! {
@@ -314,8 +345,8 @@ extern "C" fn invalid_stack(pc: u64, sp: u64) -> ! {
 }
 
 // Sûreté : la porte assembleur lit RSP0 dans le TSS avant toute utilisation
-// de la pile. Le scratch est privé au BSP et n’est vivant que sous masque IRQ.
-core::arch::global_asm!(include_str!("syscall.S"), tss=sym TSS, dispatch=sym syscall_dispatch);
+// de la pile. Le scratch est privé au processeur et n’est vivant que sous masque IRQ.
+core::arch::global_asm!(include_str!("syscall.S"), dispatch=sym syscall_dispatch);
 
 #[repr(C)]
 struct CallFrame {
@@ -383,17 +414,47 @@ pub(super) fn enable_syscall() {
 }
 
 pub(super) fn syscall_paths() -> (u64, u64) {
-    // Sûreté : deux compteurs 64 bits alignés, modifiés uniquement en
-    // assembleur sur CPU0, IRQ masquées aux points de lecture et d’écriture.
+    use core::sync::atomic::{AtomicU64, Ordering};
     unsafe extern "C" {
-        static nova_fast: u64;
-        static nova_iret: u64;
+        static nova_fast: AtomicU64;
+        static nova_iret: AtomicU64;
     }
-    let _irq = hal::interrupts::Guard::new();
+    // Les deux symboles alignés sont incrémentés avec LOCK INC par SYSCALL.
     unsafe {
         (
-            (&raw const nova_fast).read_volatile(),
-            (&raw const nova_iret).read_volatile(),
+            nova_fast.load(Ordering::Relaxed),
+            nova_iret.load(Ordering::Relaxed),
         )
     }
 }
+
+pub(super) fn prepare_secondaries() {
+    for cpu in 1..crate::smp::count() {
+        let area = alloc::boxed::Box::new(TABLES);
+        TABLE_PTRS[cpu].store(
+            alloc::boxed::Box::into_raw(area),
+            core::sync::atomic::Ordering::Release,
+        );
+    }
+}
+
+pub(super) fn secondary(cpu: usize) {
+    // Les tables dynamiques sont dans la racine NovaOS ; la GDT du chargeur
+    // doit être copiée avant le changement de racine. Les sept entrées de base
+    // ont déjà été copiées sur le BSP.
+    super::paging::secondary();
+    let local = TABLE_PTRS[cpu].load(core::sync::atomic::Ordering::Acquire);
+    install_emergency_stacks(cpu, local);
+    let idt = Descriptor {
+        limit: (size_of::<Idt>() - 1) as u16,
+        address: (&raw const IDT) as usize,
+    };
+    unsafe {
+        asm!("lidt [{}]",in(reg) &idt, options(nostack, readonly));
+    }
+}
+
+irq_entry!(local_tick_entry, super::lapic::tick);
+irq_entry!(local_ipi_entry, super::lapic::ipi);
+
+irq_entry!(wake_entry, super::lapic::wake);

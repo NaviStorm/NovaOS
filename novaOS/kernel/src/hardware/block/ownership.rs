@@ -154,6 +154,7 @@ impl Retrait {
         if self.etape == Etape::Purge {
             if self.route {
                 unit.clear_pending(self.d)?;
+                let _gate = crate::sched::Guard::new();
                 ISR.store(0, Ordering::Release);
                 USED_ADDR.store(0, Ordering::Release);
                 EXPECT.store(0, Ordering::Release);

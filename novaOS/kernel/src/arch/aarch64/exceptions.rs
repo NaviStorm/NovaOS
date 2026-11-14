@@ -33,8 +33,7 @@ nova_vectors:
 1:  mov x4, #1
     b 3f
 2:  mov x4, #0
-3:  adrp x5, exception_stack_end
-    add x5, x5, :lo12:exception_stack_end
+3:  mrs x5,tpidr_el1
     mov sp, x5
     mrs x0, esr_el1
     mrs x1, far_el1
@@ -108,13 +107,23 @@ restore_all:
 .pushsection .bss.exception_stack,"aw",%nobits
 .balign 16
 .skip 16384
+.global exception_stack_end
+.hidden exception_stack_end
 exception_stack_end:
 .popsection
 "#, handler = sym fault, user_handler = sym user_fault, irq = sym super::timer::irq);
 
 pub fn install() {
+    unsafe extern "C" {
+        static exception_stack_end: u8;
+    }
+    vectors((&raw const exception_stack_end) as usize);
+}
+
+pub fn vectors(top: usize) {
     // Sûreté : la cible virt démarre à EL1, DAIF masqué, la table est permanente.
     unsafe {
+        asm!("msr tpidr_el1,{}",in(reg) top, options(nostack));
         asm!("adrp x9, nova_vectors", "add x9, x9, :lo12:nova_vectors",
         "msr vbar_el1, x9", "isb", out("x9") _, options(nostack))
     };

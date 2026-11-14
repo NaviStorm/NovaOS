@@ -45,7 +45,7 @@ pub fn publish() {
     unsafe { asm!("dsb ishst", options(nostack, preserves_flags)) };
 }
 pub fn invalidate(_: u64) {
-    // Sûreté : au seul EL1 actif, invalide également les caches de marche des
+    // Sûreté : dans le domaine de partage interne, invalide les caches de marche des
     // tables avant de rendre les cadres. Les autres ASID ne sont pas utilisés.
     unsafe {
         asm!(
@@ -134,23 +134,17 @@ pub fn activate(space: &AddressSpace, frames: &mut Frames) -> Result<()> {
     let temporary = AddressSpace::new(frames)?;
     temporary.insert(frames, low, thunk)?;
     let empty = frames.take_table()?; // Racine TTBR0 permanente, aucune page EL0.
-    let tcr: u64;
-    // Sûreté : seul le régime TTBR0, inutilisé par Limine rév. 3, est reconfiguré.
-    // Le code, la pile et VBAR ont des VA hautes couvertes par les deux espaces.
-    unsafe { asm!("mrs {}, tcr_el1", out(reg) tcr, options(nostack)) };
-    let lower = (tcr & !0xffff & !(1 << 37)) | 16 | (1 << 8) | (1 << 10) | (3 << 12);
-    // Sûreté : la branche basse garde la même traduction pendant tout le
-    // remplacement de TTBR1. Les barrières séparent invalidation et publication.
-    unsafe {
-        asm!("dsb ishst", "msr tcr_el1, x5", "isb", "tlbi vmalle1is", "dsb ish", "isb",
-            "msr ttbr0_el1, x3", "msr tcr_el1, x4", "isb", "blr x2",
-            "msr ttbr0_el1, x1", "isb", "tlbi vmalle1is", "dsb ish", "isb",
-            in("x0") space.root, in("x1") empty, in("x2") low, in("x3") temporary.root,
-            in("x4") lower, in("x5") tcr | (1<<7), out("x30") _, options(nostack));
+    install_roots(space.root, temporary.root, empty, low);
+    EMPTY.store(empty, Ordering::Release);
+    if crate::smp::count() > 1 {
+        // Le trampoline reste RX, superviseur, dans une racine basse réservée au démarrage.
+        ROOT.store(space.root, Ordering::Relaxed);
+        BRIDGE.store(temporary.root, Ordering::Release);
+    } else {
+        temporary.remove(frames, low)?;
+        frames.release_table(temporary.root);
     }
     serial::READY.store(true, Ordering::Release);
-    temporary.remove(frames, low)?;
-    frames.release_table(temporary.root);
     Ok(())
 }
 
@@ -215,20 +209,25 @@ pub fn user_leaf(frame: u64, access: Access, cache: u64) -> u64 {
     desc
 }
 pub unsafe fn switch_thread_root(root: u64) {
-    // Sûreté : EL1 accède uniquement à TTBR1 ici. ASID zéro réutilisé,
-    // invalidation complète avant la prochaine instruction utilisateur.
+    // Un ASID distinct par PE empêche la confusion de deux racines actives.
+    // Avant de réutiliser son ASID, le PE sélectionne une racine vide (ASID 0)
+    // puis termine les invalidations. Aucune exécution EL0 pendant ce passage.
+    let asid = ((crate::smp::index() + 1) as u64) << 48;
+    let empty = EMPTY.load(Ordering::Acquire);
     unsafe {
-        asm!("dsb ishst","msr ttbr0_el1,{}","isb","tlbi vmalle1is","dsb ish","isb",
-        in(reg) root,options(nostack,preserves_flags))
+        asm!("dsb ishst", "msr ttbr0_el1,{empty}", "isb", "tlbi aside1is,{asid}",
+            "dsb ish", "isb", "msr ttbr0_el1,{tagged}", "isb",
+            empty=in(reg) empty, asid=in(reg) asid, tagged=in(reg) (root | asid),
+            options(nostack, preserves_flags))
     };
 }
 pub fn sync_user_code(alias: u64) {
     sync_code(alias, alias);
     // Sûreté : le code a été nettoyé au PoU par son alias HHDM. La VA
-    // utilisateur est encore inactive ; invalider tous les alias I sur CPU0.
+    // utilisateur est encore inactive ; invalider tous les alias I du domaine avant publication.
     unsafe {
         asm!(
-            "ic iallu",
+            "ic ialluis",
             "dsb ish",
             "isb",
             options(nostack, preserves_flags)
@@ -244,4 +243,37 @@ pub fn device_cache() -> Result<u64> {
         .find(|i| (mair >> (8 * i)) & 255 == 0)
         .map(|i| i << 2)
         .ok_or(Error::Mode)
+}
+
+use core::sync::atomic::AtomicU64;
+static ROOT: AtomicU64 = AtomicU64::new(0);
+static BRIDGE: AtomicU64 = AtomicU64::new(0);
+static EMPTY: AtomicU64 = AtomicU64::new(0);
+
+pub fn secondary() {
+    let temporary = BRIDGE.load(Ordering::Acquire);
+    assert_ne!(temporary, 0);
+    install_roots(
+        ROOT.load(Ordering::Relaxed),
+        temporary,
+        EMPTY.load(Ordering::Relaxed),
+        0x400000,
+    );
+}
+
+fn install_roots(root: u64, temporary: u64, empty: u64, low: u64) {
+    let tcr: u64;
+    // Sûreté : seul le régime TTBR0, inutilisé par Limine rév. 3, est reconfiguré.
+    // Le code, la pile et VBAR ont des VA hautes couvertes par les deux espaces.
+    unsafe { asm!("mrs {}, tcr_el1", out(reg) tcr, options(nostack)) };
+    let lower = (tcr & !0xffff & !(1 << 37) & !(1 << 22)) | 16 | (1 << 8) | (1 << 10) | (3 << 12);
+    // Sûreté : la branche basse garde la même traduction pendant tout le
+    // remplacement de TTBR1. Les barrières séparent invalidation et publication.
+    unsafe {
+        asm!("dsb ishst", "msr tcr_el1, x5", "isb", "tlbi vmalle1is", "dsb ish", "isb",
+            "msr ttbr0_el1, x3", "msr tcr_el1, x4", "isb", "blr x2",
+            "msr ttbr0_el1, x1", "isb", "tlbi vmalle1is", "dsb ish", "isb",
+            in("x0") root, in("x1") empty, in("x2") low, in("x3") temporary,
+            in("x4") lower, in("x5") tcr | (1<<7), out("x30") _, options(nostack));
+    }
 }

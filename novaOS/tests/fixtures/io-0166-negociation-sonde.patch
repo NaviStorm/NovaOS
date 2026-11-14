@@ -10,7 +10,7 @@
 +            ipc::features(a, b, c)
 +        }
          PROCESS_ID => Ok(with(|s| caller(s).number)),
-         THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
+         THREAD_ID => Ok(with(|s| s.thread(s.current()).id.generation)),
 --- a/novaOS/tests/compteur_sauvegarde.rs
 +++ b/novaOS/tests/compteur_sauvegarde.rs
 @@ -10,3 +10,3 @@

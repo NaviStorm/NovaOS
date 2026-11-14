@@ -5,9 +5,19 @@ pub(crate) use crate::arch::{context, init, keyboard, paging, timer};
 
 pub(crate) fn log(args: core::fmt::Arguments<'_>) {
     let _critical = interrupts::Guard::new();
+    static WRITING: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
+    use core::sync::atomic::Ordering;
+    while WRITING
+        .compare_exchange_weak(false, true, Ordering::Acquire, Ordering::Relaxed)
+        .is_err()
+    {
+        crate::arch::poll_translation();
+        core::hint::spin_loop();
+    }
     if let Some(write) = crate::arch::DIAGNOSTIC {
         write(args);
     }
+    WRITING.store(false, Ordering::Release);
 }
 
 pub mod interrupts {
@@ -21,8 +31,9 @@ pub mod interrupts {
         pub fn new() -> Self {
             Self(save_and_mask(), core::marker::PhantomData)
         }
+        #[allow(dead_code)] // Également utilisé par le profil IRQ de qualification.
         pub fn was_enabled(&self) -> bool {
-            crate::arch::context::irq_enabled(self.0)
+            super::context::irq_enabled(self.0)
         }
     }
     impl Drop for Guard {

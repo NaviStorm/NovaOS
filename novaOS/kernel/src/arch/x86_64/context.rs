@@ -49,7 +49,11 @@ pub unsafe fn initial(top: usize, entry: extern "C" fn() -> !) -> usize {
 // Sûreté : ABI SysV, IRQ masquées. Les registres volatils du code interrompu
 // sont déjà dans le cadre IRQ. Le slot de sortie est stable jusqu’au changement de RSP.
 #[unsafe(naked)]
-pub unsafe extern "C" fn switch(_: *mut usize, _: usize) {
+pub unsafe extern "C" fn switch(
+    _: *mut usize,
+    _: usize,
+    _: *const core::sync::atomic::AtomicUsize,
+) {
     naked_asm!(
         "push rbp",
         "push rbx",
@@ -59,6 +63,10 @@ pub unsafe extern "C" fn switch(_: *mut usize, _: usize) {
         "push r15",
         "mov [rdi],rsp",
         "mov rsp,rsi",
+        "test rdx,rdx",
+        "jz 2f",
+        "mov qword ptr [rdx],0",
+        "2:",
         "pop r15",
         "pop r14",
         "pop r13",

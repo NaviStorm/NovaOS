@@ -147,12 +147,16 @@ fn gated() {
 }
 fn limit() {
     let before = free_pages();
-    assert!(matches!(spawn_on(gated, 2), Err(Error::UnsupportedCpu)));
+    assert!(matches!(
+        spawn_on(gated, 1 << crate::smp::count()),
+        Err(Error::UnsupportedCpu)
+    ));
     let mut ids = [Id {
         slot: NONE,
         generation: 0,
     }; MAX - 2];
-    for id in &mut ids {
+    let ids = &mut ids[..MAX - 1 - crate::smp::count()];
+    for id in ids.iter_mut() {
         *id = spawn(gated).expect("slot libre");
     }
     assert!(matches!(spawn(gated), Err(Error::Full)));
@@ -179,7 +183,7 @@ fn waiter<const EXPECTED: u8>() {
 
 fn handoff() {
     let lock = ORDER.lock();
-    let mut ids = [with(|s| s.thread(s.current).id); 2];
+    let mut ids = [with(|s| s.thread(s.current()).id); 2];
     for (slot, entry) in ids.iter_mut().zip([waiter::<0> as fn(), waiter::<1>]) {
         *slot = spawn(entry).unwrap();
         let deadline = ticks() + u64::from(HZ);
@@ -219,7 +223,7 @@ fn lifecycle() {
 }
 
 fn overflow() {
-    let low = with(|s| s.thread(s.current).stack.low);
+    let low = with(|s| s.thread(s.current()).stack.low);
     hal::log(format_args!("SONDE adresse={:#x} acces=ecriture", low - 8));
     hal::interrupts::mask();
     // Sûreté : VM de test. L’écriture traverse réellement la garde avec SP en limite.
