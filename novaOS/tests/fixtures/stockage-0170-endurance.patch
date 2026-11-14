@@ -24,7 +24,7 @@
  }
 +
 +impl Domain {
-+    pub(super) fn observation_lots(&self) -> (usize, usize) {
++    pub(in crate::sched::process) fn observation_lots(&self) -> (usize, usize) {
 +        self.ends.ids().filter_map(|i| self.ends.get(i).bulk?.reservation)
 +            .fold((0, 0), |(lots, pages), r| (lots + 1, pages + r.n))
 +    }
@@ -56,14 +56,15 @@
 +}
 --- a/novaOS/kernel/src/sched/process/syscall.rs
 +++ b/novaOS/kernel/src/sched/process/syscall.rs
-@@ -32,2 +32,9 @@
+@@ -32,2 +32,10 @@
      let msg = core::str::from_utf8(bytes).expect("ASCII filtré");
 +    if msg == "LOTS0170 relais retient" {
++        let (lots, pages) = with(|s| s.ipc.observation_lots());
 +        let epinglees = heap::with_pages(|m| Ok(m.observation_dma())).unwrap();
 +        let (bail, quarantaine) = crate::hardware::block::observation_bail();
 +        let kicks = crate::hardware::block::kicks();
-+    let en_vol = crate::hardware::block::inflight();
-+        hal::log(format_args!("LOTS0170 retenu bail_session={bail} quarantaine={quarantaine} epinglees={epinglees} kicks={kicks} en_vol={en_vol}"));
++        let en_vol = crate::hardware::block::inflight();
++        hal::log(format_args!("LOTS0170 retenu lots={lots} pages_logiques={pages} bail_session={bail} quarantaine={quarantaine} epinglees={epinglees} kicks={kicks} en_vol={en_vol}"));
 +    }
      if msg == "SURETE0170 vi refus" && ipc::MODE_REPONSES.load(Ordering::Acquire) == 6 {
 --- a/novaOS/user/storage/relay.rs
@@ -84,11 +85,12 @@
                  }
 --- a/novaOS/kernel/src/sched/process/storage.rs
 +++ b/novaOS/kernel/src/sched/process/storage.rs
-@@ -349,2 +349,5 @@
+@@ -349,2 +349,6 @@
          measure("bloc_collecte");
 +        let (bail, quarantaine) = block::observation_bail();
 +        let epinglees = heap::with_pages(|m| Ok(m.observation_dma())).unwrap();
-+        hal::log(format_args!("LOTS0170 fin_session bail={bail} quarantaine={quarantaine} epinglees={epinglees}"));
++        let kicks = block::kicks();
++        hal::log(format_args!("LOTS0170 fin_session kicks={kicks} bail={bail} quarantaine={quarantaine} epinglees={epinglees}"));
          hal::log(format_args!(
 --- a/novaOS/kernel/src/main.rs
 +++ b/novaOS/kernel/src/main.rs

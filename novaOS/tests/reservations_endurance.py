@@ -66,13 +66,13 @@ def fermeture_vi(arch, secteur, dossier):
     if not froid or "fichier enregistré" not in temoin or "client=Exit(0) retrait=Ok(())" not in temoin:
         raise ValueError("Témoin positif vi à froid incomplet")
     mesure = r"bail_session=(\d+) quarantaine=(true|false) epinglees=(\d+) kicks=(\d+) en_vol=(false)"
-    avant = re.findall("LOTS0170 retenu " + mesure, serie)
+    avant = re.findall("LOTS0170 retenu lots=1 pages_logiques=256 " + mesure, serie)
     apres = re.findall("LOTS0170 refus lots=0 pages_logiques=0 " + mesure, serie)
     if len(avant) != 1 or avant != apres or avant[0][1] != "false" or int(avant[0][2]) == 0:
         raise ValueError(f"Le lot abandonné a modifié les ressources DMA ou soumis une commande : {avant} {apres}")
-    cloture = re.findall(r"LOTS0170 fin_session bail=(\d+) quarantaine=(true|false) epinglees=(\d+)", serie)
+    cloture = re.findall(r"LOTS0170 fin_session kicks=(\d+) bail=(\d+) quarantaine=(true|false) epinglees=(\d+)", serie)
     systeme = "9" if arch == "x86_64" else "0"  # Racine, domaine et file VT-d par machine.
-    if cloture != [("0", "false", systeme)] or "retrait=Ok(())" not in serie:
+    if cloture != [(avant[0][3], "0", "false", systeme)] or "retrait=Ok(())" not in serie:
         raise ValueError(f"Restitution matérielle en fin de session non confirmée : {cloture}")
     bilan = re.search(cadres, serie)
     if (not bilan or (bilan[1], bilan[3]) != (bilan[2], bilan[4]) or
@@ -81,7 +81,8 @@ def fermeture_vi(arch, secteur, dossier):
     return dict(**resultat, cadres_froids_avant=int(froid[1]), cadres_froids_apres=int(froid[2]),
                 cadres_libres_avant=int(bilan[1]),cadres_libres_apres=int(bilan[2]),
                 session_dma_avant_et_apres_refus=int(avant[0][0]), cadres_dma_machine_et_session_au_refus=int(avant[0][2]),
-                kicks_avant_et_apres_refus=int(avant[0][3]), baux_actifs_fin=0, cadres_dma_session_fin=0, cadres_dma_machine_fin=int(systeme))
+                kicks_avant_refus_et_apres_fermeture=int(avant[0][3]),
+                reservations_au_relais=1, pages_logiques_au_relais=256, reservations_au_refus=0, baux_actifs_fin=0, cadres_dma_session_fin=0, cadres_dma_machine_fin=int(systeme))
 
 
 if __name__ == "__main__":
