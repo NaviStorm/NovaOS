@@ -1,0 +1,72 @@
+--- a/novaOS/kernel/src/memory/frames.rs
++++ b/novaOS/kernel/src/memory/frames.rs
+@@ -77,4 +77,5 @@
+     }
+     pub(super) fn managed(&self, frame: u64) -> bool {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::RegionRam);
+         self.covers(frame, EntryType::USABLE)
+             || (self.reclaimed != 0 && self.covers(frame, EntryType::BOOTLOADER_RECLAIMABLE))
+--- a/novaOS/kernel/src/sched/mod.rs
++++ b/novaOS/kernel/src/sched/mod.rs
+@@ -128,4 +128,5 @@
+ impl Core {
+     fn current(&self) -> usize {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite);
+         self.currents[crate::smp::index()]
+     }
+@@ -177,5 +180,5 @@
+         self.ready.push(i);
+         self.stats.wakes += 1;
+-        let me = crate::smp::index();
++        let me = { let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite); crate::smp::index() };
+         let other =
+             crate::smp::ONLINE.load(Ordering::Acquire) & !(1 << me) & self.thread(i).cpu_mask;
+@@ -188,5 +191,8 @@
+         {
+             profile::kick(me);
+-            crate::arch::kick();
++            {
++                let _mesure = crate::profil4::mesurer(crate::profil4::Site::IpiEmission);
++                crate::arch::kick();
++            }
+         }
+     }
+@@ -249,5 +255,5 @@
+
+     fn select(&mut self, why: Reason) -> Option<(*mut usize, usize)> {
+-        let cpu = crate::smp::index();
++        let cpu = { let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite); crate::smp::index() };
+         let old = self.currents[cpu];
+         let state = match why {
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -308,4 +311,5 @@
+     }
+     fn empty_locals(&mut self) {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::TablesLocales);
+         for i in self.locals.ids() {
+             if self.locals.get(i).entries.iter().all(|e| e.key == 0) {
+--- a/novaOS/kernel/src/sched/process/ipc/probes/multicore.rs
++++ b/novaOS/kernel/src/sched/process/ipc/probes/multicore.rs
+@@ -103,6 +103,6 @@
+     let hz = timer::counter_hz();
+     let lib = (1u64 << n) - 1;
+-    let sonde = scenario == b"ipc-smp-sonde";
+-    let paires = if scenario == b"ipc-smp-paires" { n } else { 1 };
++    let sonde = matches!(scenario, b"ipc-smp-sonde" | b"ipc-smp-paires-sonde");
++    let paires = if matches!(scenario, b"ipc-smp-paires" | b"ipc-smp-paires-sonde") { n } else { 1 };
+     let charge: Option<fn()> = match scenario {
+         b"ipc-smp-calcul" => Some(calcul),
+@@ -125,5 +125,5 @@
+                     [1, 2]
+                 }
+-                b"ipc-smp-paires" => [1 << i, 1 << i],
++                b"ipc-smp-paires" | b"ipc-smp-paires-sonde" => [1 << i, 1 << i],
+                 _ => [lib, lib],
+             };
+@@ -180,4 +181,5 @@
+             }
+         }
++        crate::profil4::terminer();
+         let travail = TRAVAIL.load(Ordering::Acquire) - travail_avant;
+         FIN.store(true, Ordering::Release);

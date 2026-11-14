@@ -1,0 +1,8 @@
+--- a/novaOS/kernel/src/memory/frames.rs
++++ b/novaOS/kernel/src/memory/frames.rs
+@@ -78,4 +78,5 @@
+     pub(super) fn managed(&self, frame: u64) -> bool {
+         let _mesure = crate::profil4::mesurer(crate::profil4::Site::RegionRam);
++        crate::profil4::region(false);
+         self.covers(frame, EntryType::USABLE)
+             || (self.reclaimed != 0 && self.covers(frame, EntryType::BOOTLOADER_RECLAIMABLE))

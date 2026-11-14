@@ -1,0 +1,11 @@
+--- a/novaOS/kernel/src/memory/frames.rs
++++ b/novaOS/kernel/src/memory/frames.rs
+@@ -87,6 +87,8 @@
+         let (base, limit) = self.last_managed.get();
+         if base <= frame && end <= limit {
++            crate::profil4::region(true);
+             return true;
+         }
++        crate::profil4::region(false);
+         for region in self.regions() {
+             let admitted = region.entry_type == EntryType::USABLE

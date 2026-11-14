@@ -1,0 +1,38 @@
+--- a/novaOS/kernel/src/memory/frames.rs
++++ b/novaOS/kernel/src/memory/frames.rs
+@@ -77,4 +77,5 @@
+     }
+     pub(super) fn managed(&self, frame: u64) -> bool {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::RegionRam);
+         self.covers(frame, EntryType::USABLE)
+             || (self.reclaimed != 0 && self.covers(frame, EntryType::BOOTLOADER_RECLAIMABLE))
+--- a/novaOS/kernel/src/sched/mod.rs
++++ b/novaOS/kernel/src/sched/mod.rs
+@@ -128,4 +128,5 @@
+ impl Core {
+     fn current(&self) -> usize {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite);
+         self.currents[crate::smp::index()]
+     }
+@@ -177,5 +180,5 @@
+         self.ready.push(i);
+         self.stats.wakes += 1;
+-        let me = crate::smp::index();
++        let me = { let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite); crate::smp::index() };
+         let other =
+             crate::smp::ONLINE.load(Ordering::Acquire) & !(1 << me) & self.thread(i).cpu_mask;
+@@ -255,5 +261,5 @@
+
+     fn select(&mut self, why: Reason) -> Option<(*mut usize, usize)> {
+-        let cpu = crate::smp::index();
++        let cpu = { let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite); crate::smp::index() };
+         let old = self.currents[cpu];
+         let state = match why {
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -310,4 +313,5 @@
+     }
+     fn empty_locals(&mut self) {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::TablesLocales);
+         for i in self.locals.ids() {
+             if self.locals.get(i).entries.iter().all(|e| e.key == 0) {

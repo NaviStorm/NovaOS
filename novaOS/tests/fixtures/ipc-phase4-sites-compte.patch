@@ -1,0 +1,24 @@
+--- a/novaOS/kernel/src/profil4.rs
++++ b/novaOS/kernel/src/profil4.rs
+@@ -89,4 +89,12 @@
+ }
+
++static PARCOURS: [[AtomicU64; 2]; LOTS] =
++    [const { [const { AtomicU64::new(0) }; 2] }; LOTS];
++pub(crate) fn region(dans_cache: bool) {
++    let lot = LOT.load(Relaxed);
++    if lot < LOTS && groupe(lot) == 2 {
++        PARCOURS[lot][usize::from(dans_cache)].fetch_add(1, Relaxed);
++    }
++}
+ pub(crate) fn commencer(lot: usize) {
+     assert!(lot < LOTS);
+@@ -100,4 +108,8 @@
+ }
+ pub(crate) fn rapport(lot: usize) {
++    if groupe(lot) == 2 {
++        hal::log(format_args!("P4 ram lot={lot} hits={} recherches={}",
++            PARCOURS[lot][1].load(Relaxed), PARCOURS[lot][0].load(Relaxed)));
++    }
+     for &(site, nom, famille) in SITES {
+         if famille == 0 || famille == groupe(lot) {
