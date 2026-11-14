@@ -54,6 +54,12 @@ pub extern "C" fn nova_start() -> ! {
 }
 
 fn main_thread() {
+    // Le diagnostic capture les tables tant que le chargeur les possède, sur le BSP seul.
+    let inventory = match boot::scenario() {
+        b"materiel-inventaire" => Some(hardware::discovery::capture(false)),
+        b"materiel-inventaire-qemu" => Some(hardware::discovery::capture(true)),
+        _ => None,
+    };
     crate::smp::launch();
     let start = sched::ticks();
     while crate::smp::ONLINE.load(core::sync::atomic::Ordering::Acquire)
@@ -75,6 +81,11 @@ fn main_thread() {
         Err(e) => panic!("Restitution du chargeur : {e:?}"),
     }
     let scenario = args.as_slice();
+    if let Some(result) = inventory {
+        let ok = result.is_some_and(|data| sched::process::device_manager(&data));
+        log(format_args!("MATERIEL bilan ok={ok}"));
+        hal::cpu::halt()
+    }
     #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
     if cfg!(feature = "dma-sequentiel") {
         #[cfg(feature = "ancres-p9-lab")]

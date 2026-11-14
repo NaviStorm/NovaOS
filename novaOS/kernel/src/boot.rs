@@ -49,6 +49,24 @@ macro_rules! request {
     };
 }
 
+request!(RSDP: limine::request::RsdpRequest = limine::request::RsdpRequest::new());
+#[cfg(target_arch = "aarch64")]
+request!(DTB: limine::request::DeviceTreeBlobRequest = limine::request::DeviceTreeBlobRequest::new());
+
+pub(crate) fn rsdp_physical() -> Option<u64> {
+    assert!(!RETIRED.load(core::sync::atomic::Ordering::Acquire));
+    // Limine ne rend une adresse physique pour cette requête qu’en révision de base 3.
+    (BASE.loaded_revision() == Some(3))
+        .then(|| RSDP.get_response())?
+        .map(|r| r.address() as u64)
+}
+
+#[cfg(target_arch = "aarch64")]
+pub(crate) fn device_tree_address() -> Option<usize> {
+    assert!(!RETIRED.load(core::sync::atomic::Ordering::Acquire));
+    DTB.get_response().map(|r| r.dtb_ptr() as usize)
+}
+
 request!(MAP: MemoryMapRequest = MemoryMapRequest::new());
 request!(HHDM: HhdmRequest = HhdmRequest::new());
 request!(IMAGE: ExecutableAddressRequest = ExecutableAddressRequest::new());

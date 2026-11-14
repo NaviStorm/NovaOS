@@ -325,6 +325,19 @@ impl Child {
         }
     }
 }
+/// Le gestionnaire reçoit une copie privée en lecture seule. Aucun handle de pilote
+/// ni bail DMA ne figure dans sa table au lancement.
+pub(crate) fn device_manager(inventory: &[u8]) -> bool {
+    let image = include_bytes!(concat!(env!("OUT_DIR"), "/devices.bin"));
+    match spawn_image(image, &[], Some(inventory), None) {
+        Ok(child) => child.join() == Outcome::Exit(0),
+        Err(error) => {
+            hal::log(format_args!("MATERIEL gestionnaire indisponible {error:?}"));
+            false
+        }
+    }
+}
+
 impl Drop for Child {
     fn drop(&mut self) {
         with(|s| s.processes.release_observer(self.0));

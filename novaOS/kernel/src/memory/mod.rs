@@ -1,4 +1,5 @@
 //! Noyau commun : cadres utilisables, espaces à quatre niveaux et permissions.
+pub(crate) mod firmware;
 mod frames;
 mod probes;
 mod tables;

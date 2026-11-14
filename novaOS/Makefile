@@ -140,3 +140,10 @@ nsh-terminal-test: kernel
 .PHONY: smp-test
 smp-test: kernel
 	python3 -B tests/smp.py
+
+.PHONY: materiel-modeles-test materiel-test
+materiel-modeles-test:
+	python3 -B tests/materiel_modeles.py
+
+materiel-test: kernel
+	python3 -B tests/materiel.py

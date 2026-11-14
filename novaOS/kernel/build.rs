@@ -17,6 +17,7 @@ fn main() {
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
     for name in [
         "demo",
+        "devices",
         "fp_probe",
         "ipc",
         "storage/service",
@@ -45,7 +46,7 @@ fn main() {
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
         let compact = matches!(
             name,
-            "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
+            "devices" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
         if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_SMP_LAB").is_some() {
             rust.args(["--cfg", "ipc_smp_lab"]);
