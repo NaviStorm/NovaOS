@@ -18,6 +18,8 @@ Dix appels IPC permettent à des processus isolés de communiquer par endpoints 
 
 Les profils de diagnostic de la branche matérielle inventorient ACPI et, sur QEMU, les fonctions PCI. Le rapport précise les autorisations du gestionnaire et donne les commandes de test sur les deux architectures. [Fondations matérielles v0.18.0, phase 1](docs/materiel-v0.18.0.md)
 
+Sur la branche matérielle, un pilote utilisateur lit la carte EDU de QEMU et reçoit son interruption. La phase 2 qualifie le retrait de ses droits MMIO et IRQ sur 1, 2 et 4 vCPU. [Procédure et résultats de phase 2](docs/materiel-phase2-v0.18.0.md)
+
 ## Stockage et portabilité de NovaFS
 
 La construction ordinaire conserve le stockage classique et le polling VirtIO-blk. Les profils de test permettent d’activer les E/S groupées et de les mesurer indépendamment. [Activation des profils de stockage](docs/integration-v0.16.6.md)
