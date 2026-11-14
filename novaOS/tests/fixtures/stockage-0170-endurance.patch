@@ -117,9 +117,9 @@
 --- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
 @@ -96,2 +96,3 @@
-     pub(super) fn retirer_reservation(&mut self, id: Reference, demandeur: Option<(Pid, Id)>) {
+     fn retirer_reservation(&mut self, voie: VoieLot, demandeur: Option<(Pid, Id)>) {
 +        let debut = crate::hal::timer::counter();
-         if !self.ends.has(id.slot()) { return; }
+         if !self.voie_vivante(voie) { return; }
 @@ -104,4 +105,7 @@
          if !r.en_vol && !r.doute {
              self.pages_bulk.get_mut(lane.slot)[..8 * r.n].fill(0);
