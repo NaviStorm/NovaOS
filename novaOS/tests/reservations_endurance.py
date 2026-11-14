@@ -75,11 +75,12 @@ def fermeture_vi(arch, secteur, dossier):
     if cloture != [("0", "false", systeme)] or "retrait=Ok(())" not in serie:
         raise ValueError(f"Restitution matérielle en fin de session non confirmée : {cloture}")
     bilan = re.search(cadres, serie)
-    if not bilan or (bilan[1], bilan[3]) != (bilan[2], bilan[4]):
+    if (not bilan or (bilan[1], bilan[3]) != (bilan[2], bilan[4]) or
+            (froid[2], froid[4]) != (bilan[1], bilan[3])):
         raise ValueError("Bilan mémoire après destruction des services divergent")
     return dict(**resultat, cadres_froids_avant=int(froid[1]), cadres_froids_apres=int(froid[2]),
                 cadres_libres_avant=int(bilan[1]),cadres_libres_apres=int(bilan[2]),
-                session_dma_avant_et_apres_refus=int(avant[0][0]), epinglees_session=int(avant[0][2]),
+                session_dma_avant_et_apres_refus=int(avant[0][0]), cadres_dma_machine_et_session_au_refus=int(avant[0][2]),
                 kicks_avant_et_apres_refus=int(avant[0][3]), baux_actifs_fin=0, cadres_dma_session_fin=0, cadres_dma_machine_fin=int(systeme))
 
 

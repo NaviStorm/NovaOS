@@ -139,7 +139,7 @@ fn fin_attente(
     canal: u64,
     tag: u64,
     envoi: bool,
-    annuler: Option<(Actor, u64, Actor, u64)>,
+    annuler: Option<(Actor, u64, Actor, u64, bool)>,
 ) {
     races::clock(Some(1000));
     if envoi {
@@ -148,11 +148,21 @@ fn fin_attente(
         moteur.recv(canal, 500, false);
     }
     moteur.blocked();
-    if let Some((a, h, b, k)) = annuler {
+    if let Some((a, h, b, k, revoquer)) = annuler {
         a.start(IPC_CANCEL, h, 0, 0);
-        b.start(IPC_CANCEL, k, 0, 0);
-        assert_eq!(a.result().unwrap() + b.result().unwrap(), 1);
-        assert_eq!(moteur.result(), Err(CANCELLED));
+        b.start(if revoquer { IPC_REVOKE } else { IPC_CANCEL }, k, 0, 0);
+        let (premier, second) = (a.result().unwrap(), b.result().unwrap());
+        if revoquer {
+            assert_eq!(second, 1); // Le descendant du pilote est bien révoqué.
+            assert!(premier <= 1);
+            assert_eq!(
+                moteur.result(),
+                Err(if premier == 1 { CANCELLED } else { REVOKED })
+            );
+        } else {
+            assert_eq!(premier + second, 1);
+            assert_eq!(moteur.result(), Err(CANCELLED));
+        }
     } else {
         races::clock(Some(1500));
         assert_eq!(moteur.result(), Err(TIMED_OUT));
@@ -222,7 +232,7 @@ pub(super) fn run() {
         moteur.put(base + 4096, &[0; TAILLE as usize * 8]);
         let requetes = relais.call(IPC_CREATE, 0, 0, 0).unwrap();
         let reponses = relais.call(IPC_CREATE, 0, 0, 0).unwrap();
-        let (tx, rx, annule) = with(|s| {
+        let (tx, mut rx, annule) = with(|s| {
             let tx = s
                 .ipc
                 .derive(relais.0, requetes, moteur.0, SEND.into())
@@ -253,7 +263,10 @@ pub(super) fn run() {
             assert_eq!(with(|s| s.ipc.observation_lots()), (1, TAILLE as usize));
             let kicks = block::kicks();
 
-            if i % 3 == 0 {
+            if i % 6 == 0 {
+                // Expiration avant tout envoi du lot au relais.
+                fin_attente(moteur, rx, tag, false, None);
+            } else if i % 3 == 0 {
                 // Saturer l'endpoint de publication de huit messages ordinaires.
                 for j in 0..8 {
                     moteur.send(tx, j + 1, 0, 0);
@@ -269,8 +282,16 @@ pub(super) fn run() {
                 assert_eq!(moteur.result(), Ok(128));
                 relais.recv(requetes, 0, false);
                 assert_eq!(relais.result(), Ok(1));
-                let annulation = (i % 3 == 2).then_some((relais, reponses, pilote, annule));
+                let revoquer = i == TOURS - 3;
+                let annulation =
+                    (i % 3 == 2).then_some((relais, reponses, pilote, annule, revoquer));
                 fin_attente(moteur, rx, tag, false, annulation);
+                if revoquer {
+                    let ancien = rx;
+                    rx =
+                        with(|s| s.ipc.derive(pilote.0, annule, moteur.0, RECEIVE.into())).unwrap();
+                    assert_ne!(ancien, rx);
+                }
             }
             assert_eq!(with(|s| s.ipc.observation_lots()), (0, 0));
             let debut = hal::timer::counter();
