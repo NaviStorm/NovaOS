@@ -9,7 +9,7 @@ case "${NOVA_ARCH:-x86_64}" in
         code=edk2-x86_64-code.fd
         vars=edk2-i386-vars.fd
         emulator=qemu-system-x86_64
-        set -- -machine q35,i8042=on,pic=on -cpu max -vga "${NOVA_VGA:-std}" \
+        set -- -machine q35,i8042=on,pic=on -cpu "${NOVA_X86_CPU:-max}" -vga "${NOVA_VGA:-std}" \
             -boot order=d -cdrom "$iso" "$@"
         ;;
     aarch64)

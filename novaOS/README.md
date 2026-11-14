@@ -8,7 +8,7 @@ Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode di
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
-Le noyau ordonnance ses threads en tourniquet sur CPU0 avec un timer matériel à 250 Hz. Le thread de saisie x86_64 se bloque en attente du clavier. Sur les deux cibles, le thread idle prend la main quand la file des prêts est vide. [Ordonnancement, synchronisation et validation](docs/ordonnancement.md)
+La distribution v0.16.6 ordonnance ses threads en tourniquet sur CPU0 avec un timer matériel à 250 Hz. Sur la branche de développement SMP, chaque CPU dispose d’un courant, d’une pile idle et d’un timer. `make -C novaOS ARCH=aarch64 smp-test` et son équivalent `ARCH=x86_64` vérifient l’exécution sur 1, 2 et 4 vCPU. [Ordonnancement de la distribution](docs/ordonnancement.md) · [Architecture et qualification SMP](docs/smp-v0.17.0.md)
 
 Deux instances indépendantes du programme de démonstration démarrent en Ring 3 sur x86_64 ou en EL0 sur AArch64. Elles calculent sous préemption matérielle puis terminent avec les codes 41 et 82. Le terminal QEMU reçoit les PID et les résultats sur le port série. [Architecture des processus et validation de la v0.6.0](docs/processus.md)
 

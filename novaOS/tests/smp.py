@@ -29,7 +29,9 @@ def run(arch, cpus):
             time.sleep(0.05)
         raise RuntimeError(text[-2400:])
     gic = "-gic3" if arch == "aarch64" and os.environ.get("NOVA_GIC") == "3" else ""
-    scenario_vm(arch, "smp-test", check, f"-{cpus}cpu{gic}", NOVA_VCPUS=str(cpus))
+    model = os.environ.get("NOVA_X86_CPU" if arch == "x86_64" else "NOVA_ARM_CPU")
+    suffix = "-" + re.sub(r"[^a-zA-Z0-9_.-]", "_", model) if model else ""
+    scenario_vm(arch, "smp-test", check, f"-{cpus}cpu{gic}{suffix}", NOVA_VCPUS=str(cpus))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,2820 @@
+{
+  "integration_main": "3e14a50bb5bc7960d16c1fbcfc7f49a681d6e7c6",
+  "revisions": {
+    "montages_conflits_coupures_4096_endurance_ipc": "d60e4254511063805eca2dd482acf5892aefdd77",
+    "matrice_chronometrique": "94f68986faefc611c8db28f26d159343d6784fa3",
+    "qualification_coupures_512_dma_et_rejeux": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5"
+  },
+  "qemu": "11.1.3 TCG",
+  "ram_mio": 256,
+  "architectures": {
+    "aarch64": {
+      "demarrages_historiques": 25,
+      "groupes_bloc_4vcpu": 24,
+      "courses_ipc": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 301
+      },
+      "traces_courses": 30,
+      "endurance_ipc": {
+        "architecture": "aarch64",
+        "mode": "endurance",
+        "ram_mio": 256,
+        "elf_sha256": "16ddf8c1da9c2b6d794727e4a20638605c4bd03b1614ef76f6658965ab0fa6af",
+        "secondes": 300.305,
+        "cycles": 17268,
+        "periodes": 218,
+        "libres": 62503
+      },
+      "endurance_allocateur": {
+        "architecture": "aarch64",
+        "secondes_demandees": 60,
+        "secondes_reelles": 66.036,
+        "avant": {
+          "blocs": 6,
+          "occupes": 108608,
+          "engages": 131072,
+          "libres": 62479
+        },
+        "bilan": {
+          "periode": 9,
+          "ticks": 13070,
+          "preemptions": 13035,
+          "collectes": 14085,
+          "attentes": 11095,
+          "mutex": 11108,
+          "A": 2651,
+          "B": 2599,
+          "allocations": 132172,
+          "audits": 36,
+          "penuries": 1,
+          "minimum": 62367,
+          "blocs": 6,
+          "occupes": 108608,
+          "engages": 131072,
+          "libres": 62479
+        }
+      },
+      "commandes_et_vi": [
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "commandes": 113,
+          "coupure": "alpha retiré, beta et témoin intègres"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "commandes": 113,
+          "coupure": "alpha retiré, beta et témoin intègres"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "commandes": 31,
+          "bash": [
+            "A:été blanc $nom $nom",
+            "oui",
+            "tour0",
+            "tour1",
+            "a0",
+            "b0",
+            "break=0",
+            "continue=0",
+            "secours",
+            "statut=1",
+            "vide"
+          ],
+          "pic_pages_privees_observe": 115,
+          "reprise": true
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "commandes": 31,
+          "bash": [
+            "A:été blanc $nom $nom",
+            "oui",
+            "tour0",
+            "tour1",
+            "a0",
+            "b0",
+            "break=0",
+            "continue=0",
+            "secours",
+            "statut=1",
+            "vide"
+          ],
+          "pic_pages_privees_observe": 115,
+          "reprise": true
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "elf_collectes": 17,
+          "fichiers_relus": 16,
+          "pic_pages_privees_observe": 95,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_source_creuse_binaire_octets": 536870912,
+          "script_apres_redemarrage": true,
+          "octets_apres_redemarrage": true
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "elf_collectes": 17,
+          "fichiers_relus": 16,
+          "pic_pages_privees_observe": 95,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_source_creuse_binaire_octets": 536870912,
+          "script_apres_redemarrage": true,
+          "octets_apres_redemarrage": true
+        }
+      ],
+      "montage": {
+        "essai": 0,
+        "vcpu_qmp": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_pid": [
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "invite": true,
+        "sha256_avant": "c3361fb15dfee27ff748f8adbaad161f950ffff39db872ac2d06347a4ca8e10a",
+        "sha256_apres": "c3361fb15dfee27ff748f8adbaad161f950ffff39db872ac2d06347a4ca8e10a",
+        "serial_sha256": "e68471f122cd8cc80bca36e299f016bde2ac0e00cb48512f380dbffe8f84a53d",
+        "bilan": "BLOC bilan mode=42 service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=79375",
+        "ressources": "RAM phase=bloc_collecte image=574 tables=153 kpile=80 upile=0 heap=32 buddy=2 ipc=0 utilisateur=0 processus=0 meta_octets=8472 meta_actifs=0 tcb_octets=4096 heap_va=65536 libres=62498 cache=0 chargeur=0 restitue=7272 extra_elf=0 video=469 ram_video=469 resident=841 retenu=1310 dma=0",
+        "diagnostic": [
+          "DEBUG pid=2 DIAG lecture n=1 lba=0 flags=1 secteur=512 page=true",
+          "DEBUG pid=2 DIAG lecture n=2030 lba=7416 flags=1 secteur=512 page=true",
+          "STOCKAGE trafic tours=2203 ns=7482042992"
+        ],
+        "bloc": [
+          "BLOC mesure type=read n=2198",
+          "BLOC mesure type=flush n=1",
+          "BLOC mesure type=validation n=1"
+        ]
+      },
+      "conflits": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "ecriture_concurrente": true,
+        "suppression_ouverte_refusee": true,
+        "remplacement_du_nom_detecte": true,
+        "modifications_locales_conservees": true,
+        "bords_utf8_publies": true
+      },
+      "propriete_dma": [
+        {
+          "arch": "aarch64",
+          "secteur": 512,
+          "injections": 120,
+          "baseline_machine": 0,
+          "sessions": 64,
+          "cadres_session": 16,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        },
+        {
+          "arch": "aarch64",
+          "secteur": 4096,
+          "injections": 120,
+          "baseline_machine": 0,
+          "sessions": 64,
+          "cadres_session": 16,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        }
+      ],
+      "coupures": {
+        "512": [
+          {
+            "frontiere": "pages",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f1",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f2",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": 4,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-ecriture",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "4096": [
+          {
+            "frontiere": "pages",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f1",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f2",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": 4,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-ecriture",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          }
+        ]
+      },
+      "ancres": {
+        "ancien": 1288,
+        "nouveau": 656,
+        "refus": 360
+      },
+      "novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "sondes": {
+          "reussis": 199,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=26.737",
+        "saturation": [
+          "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+          "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+        ],
+        "migration": [
+          "MIGRATION secteur=512 frontières=96",
+          "MIGRATION secteur=4096 frontières=96"
+        ],
+        "restitution": [
+          "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=195376 après=195376",
+          "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=195376 après=195376",
+          "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=195376 après=195376",
+          "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=195376 après=195376"
+        ]
+      }
+    },
+    "x86_64": {
+      "demarrages_historiques": 25,
+      "groupes_bloc_4vcpu": 24,
+      "courses_ipc": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 274
+      },
+      "traces_courses": 30,
+      "endurance_ipc": {
+        "architecture": "x86_64",
+        "mode": "endurance",
+        "ram_mio": 256,
+        "elf_sha256": "ff9bea4ad9dae4af6db0d0747ac694de53c18cc48063a577c2ee3c9c3684fb5b",
+        "secondes": 300.504,
+        "cycles": 16323,
+        "periodes": 233,
+        "libres": 62996
+      },
+      "endurance_allocateur": {
+        "architecture": "x86_64",
+        "secondes_demandees": 60,
+        "secondes_reelles": 62.867,
+        "avant": {
+          "blocs": 6,
+          "occupes": 205888,
+          "engages": 262144,
+          "libres": 62991
+        },
+        "bilan": {
+          "periode": 9,
+          "ticks": 15540,
+          "preemptions": 15489,
+          "collectes": 12585,
+          "attentes": 10507,
+          "mutex": 10598,
+          "A": 2918,
+          "B": 2822,
+          "allocations": 126114,
+          "audits": 36,
+          "penuries": 1,
+          "minimum": 62887,
+          "blocs": 6,
+          "occupes": 205888,
+          "engages": 262144,
+          "libres": 62991
+        }
+      },
+      "commandes_et_vi": [
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "commandes": 113,
+          "coupure": "alpha retiré, beta et témoin intègres"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "commandes": 113,
+          "coupure": "alpha retiré, beta et témoin intègres"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "commandes": 31,
+          "bash": [
+            "A:été blanc $nom $nom",
+            "oui",
+            "tour0",
+            "tour1",
+            "a0",
+            "b0",
+            "break=0",
+            "continue=0",
+            "secours",
+            "statut=1",
+            "vide"
+          ],
+          "pic_pages_privees_observe": 118,
+          "reprise": true
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "commandes": 31,
+          "bash": [
+            "A:été blanc $nom $nom",
+            "oui",
+            "tour0",
+            "tour1",
+            "a0",
+            "b0",
+            "break=0",
+            "continue=0",
+            "secours",
+            "statut=1",
+            "vide"
+          ],
+          "pic_pages_privees_observe": 118,
+          "reprise": true
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "elf_collectes": 17,
+          "fichiers_relus": 16,
+          "pic_pages_privees_observe": 96,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_source_creuse_binaire_octets": 536870912,
+          "script_apres_redemarrage": true,
+          "octets_apres_redemarrage": true
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "elf_collectes": 17,
+          "fichiers_relus": 16,
+          "pic_pages_privees_observe": 96,
+          "refus_concurrent": true,
+          "revocation": true,
+          "refus_source_creuse_binaire_octets": 536870912,
+          "script_apres_redemarrage": true,
+          "octets_apres_redemarrage": true
+        }
+      ],
+      "montage": {
+        "essai": 0,
+        "vcpu_qmp": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_pid": [
+          [
+            0,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "invite": true,
+        "sha256_avant": "ef003160918f38b5261d1c3730fc1854b2d55b4b6689e99d15f52d3f66f5d6d1",
+        "sha256_apres": "ef003160918f38b5261d1c3730fc1854b2d55b4b6689e99d15f52d3f66f5d6d1",
+        "serial_sha256": "2a35bccd6d80e9dc7b10290fbc4801c0b46be2af3e81e1343539b99622daeda2",
+        "bilan": "BLOC bilan mode=42 service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=1263000",
+        "ressources": "RAM phase=bloc_collecte image=615 tables=147 kpile=80 upile=0 heap=64 buddy=4 ipc=0 utilisateur=0 processus=0 meta_octets=8472 meta_actifs=0 tcb_octets=4096 heap_va=65536 libres=62995 cache=0 chargeur=0 restitue=10535 extra_elf=0 video=469 ram_video=0 resident=919 retenu=919 dma=9",
+        "diagnostic": [
+          "DEBUG pid=2 DIAG lecture n=1 lba=0 flags=1 secteur=512 page=true",
+          "DEBUG pid=2 DIAG lecture n=2030 lba=7416 flags=1 secteur=512 page=true",
+          "STOCKAGE trafic tours=2203 ns=1741948801"
+        ],
+        "bloc": [
+          "BLOC mesure type=read n=2198",
+          "BLOC mesure type=flush n=1",
+          "BLOC mesure type=validation n=1"
+        ]
+      },
+      "conflits": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "ecriture_concurrente": true,
+        "suppression_ouverte_refusee": true,
+        "remplacement_du_nom_detecte": true,
+        "modifications_locales_conservees": true,
+        "bords_utf8_publies": true
+      },
+      "propriete_dma": [
+        {
+          "arch": "x86_64",
+          "secteur": 512,
+          "injections": 112,
+          "baseline_machine": 9,
+          "sessions": 64,
+          "cadres_session": 7,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        },
+        {
+          "arch": "x86_64",
+          "secteur": 4096,
+          "injections": 112,
+          "baseline_machine": 9,
+          "sessions": 64,
+          "cadres_session": 7,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        }
+      ],
+      "coupures": {
+        "512": [
+          {
+            "frontiere": "pages",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f1",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f2",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": 4,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-ecriture",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 4194304,
+            "multipage": true,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          }
+        ],
+        "4096": [
+          {
+            "frontiere": "pages",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f1",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "avant-f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-f2",
+            "evenement_suspendu": "flush_to_disk",
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": true,
+            "flush_termines_au_point": 4,
+            "acquit_avant_coupure": false
+          },
+          {
+            "frontiere": "vol-ecriture",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false
+          }
+        ]
+      },
+      "ancres": {
+        "ancien": 1288,
+        "nouveau": 656,
+        "refus": 360
+      },
+      "novafs": {
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "sondes": {
+          "reussis": 199,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=26.894",
+        "saturation": [
+          "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+          "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+        ],
+        "migration": [
+          "MIGRATION secteur=512 frontières=96",
+          "MIGRATION secteur=4096 frontières=96"
+        ],
+        "restitution": [
+          "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=180288 après=180288",
+          "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=180288 après=180288",
+          "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=180288 après=180288",
+          "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=180288 après=180288"
+        ]
+      }
+    }
+  },
+  "demarrages": [
+    {
+      "architecture": "aarch64",
+      "vcpu": 1,
+      "variante": "cortex-a76",
+      "sha256_serie": "b5ba0e423ff5b98dd9d55a9742f774b0f144ab1e6e414eb506ffcb6e5d924567",
+      "preuves": [
+        "SMP memoire cpu=1 libres=62562 tas=10272",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=225570",
+        "SMP utilisateur pid=2 cpu=0 preemptions=2 progres=248758",
+        "SMP cpu=0 materiel=0 ticks=11",
+        "SMP stationnes=0 en_ligne=1",
+        "SMP rendezvous=0x1 actifs=1 OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 1,
+      "variante": "gic3",
+      "sha256_serie": "13b9518b10adb568069a0979c0df589d75ba9922583e8cad3b184ee9fa0ff5e4",
+      "preuves": [
+        "SMP memoire cpu=1 libres=62582 tas=10272",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=219983",
+        "SMP utilisateur pid=2 cpu=0 preemptions=2 progres=250533",
+        "SMP cpu=0 materiel=0 ticks=11",
+        "SMP stationnes=0 en_ligne=1",
+        "SMP rendezvous=0x1 actifs=1 OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 1,
+      "variante": "defaut",
+      "sha256_serie": "759c08dbb40eaefc67ea44bfbf4b164cca5954f7a219b154ded0744f20853dfb",
+      "preuves": [
+        "SMP memoire cpu=1 libres=62562 tas=10272",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=233586",
+        "SMP utilisateur pid=2 cpu=0 preemptions=2 progres=262300",
+        "SMP cpu=0 materiel=0 ticks=11",
+        "SMP stationnes=0 en_ligne=1",
+        "SMP rendezvous=0x1 actifs=1 OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 2,
+      "variante": "cortex-a76",
+      "sha256_serie": "3c99b8f9bb565ae0297d13cae8b2a2b4e623081bdb072a1da2a66e68bf697525",
+      "preuves": [
+        "SMP memoire cpu=2 libres=62528 tas=43040",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=343912",
+        "SMP utilisateur pid=2 cpu=1 preemptions=3 progres=642155",
+        "SMP utilisateur pid=3 cpu=0 preemptions=4 progres=551366",
+        "SMP utilisateur pid=4 cpu=1 preemptions=3 progres=622570",
+        "SMP traductions distantes masque=0x2 OK",
+        "SMP cpu=0 materiel=0 ticks=17",
+        "SMP cpu=1 materiel=1 ticks=18",
+        "SMP migration=0->1",
+        "SMP stationnes=1 en_ligne=1",
+        "SMP rendezvous=0x3 actifs=2 OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 2,
+      "variante": "gic3",
+      "sha256_serie": "6648218eb458075e0d0c570ba6c9ebda00aa5002713d3cb6d97c62bc541d6e03",
+      "preuves": [
+        "SMP memoire cpu=2 libres=62545 tas=43040",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=377936",
+        "SMP utilisateur pid=2 cpu=1 preemptions=3 progres=647380",
+        "SMP utilisateur pid=3 cpu=0 preemptions=4 progres=562797",
+        "SMP utilisateur pid=4 cpu=1 preemptions=3 progres=647623",
+        "SMP traductions distantes masque=0x2 OK",
+        "SMP cpu=0 materiel=0 ticks=18",
+        "SMP cpu=1 materiel=1 ticks=19",
+        "SMP migration=0->1",
+        "SMP stationnes=1 en_ligne=1",
+        "SMP rendezvous=0x3 actifs=2 OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 2,
+      "variante": "defaut",
+      "sha256_serie": "dfee916de93724758f80f5fcfbb3edcf49731505fac9e26d1d707f7429485f64",
+      "preuves": [
+        "SMP memoire cpu=2 libres=62528 tas=43040",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=325743",
+        "SMP utilisateur pid=2 cpu=1 preemptions=3 progres=625634",
+        "SMP utilisateur pid=3 cpu=0 preemptions=4 progres=538497",
+        "SMP utilisateur pid=4 cpu=1 preemptions=3 progres=667919",
+        "SMP traductions distantes masque=0x2 OK",
+        "SMP cpu=0 materiel=0 ticks=18",
+        "SMP cpu=1 materiel=1 ticks=19",
+        "SMP migration=0->1",
+        "SMP stationnes=1 en_ligne=1",
+        "SMP rendezvous=0x3 actifs=2 OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 4,
+      "variante": "cortex-a76",
+      "sha256_serie": "7a83860a164e60e8234ba807795eee62fba856f8b9b1c7afa36181fc6e3763f0",
+      "preuves": [
+        "SMP memoire cpu=4 libres=62479 tas=108576",
+        "SMP utilisateur pid=1 cpu=0 preemptions=5 progres=812930",
+        "SMP utilisateur pid=2 cpu=1 preemptions=4 progres=1251043",
+        "SMP utilisateur pid=3 cpu=2 preemptions=3 progres=1262170",
+        "SMP utilisateur pid=4 cpu=3 preemptions=3 progres=1107389",
+        "SMP utilisateur pid=5 cpu=0 preemptions=6 progres=751080",
+        "SMP utilisateur pid=6 cpu=1 preemptions=4 progres=990740",
+        "SMP utilisateur pid=7 cpu=2 preemptions=3 progres=846294",
+        "SMP utilisateur pid=8 cpu=3 preemptions=3 progres=875866",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=29",
+        "SMP cpu=1 materiel=1 ticks=31",
+        "SMP cpu=2 materiel=2 ticks=31",
+        "SMP cpu=3 materiel=3 ticks=31",
+        "SMP migration=0->1",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 4,
+      "variante": "gic3",
+      "sha256_serie": "72ea7c8949300564409ccf5f9e8c11f70cd995c3d0d03b925578faace199160e",
+      "preuves": [
+        "SMP memoire cpu=4 libres=62496 tas=108576",
+        "SMP utilisateur pid=1 cpu=0 preemptions=5 progres=860866",
+        "SMP utilisateur pid=2 cpu=1 preemptions=4 progres=1201993",
+        "SMP utilisateur pid=3 cpu=2 preemptions=3 progres=1277946",
+        "SMP utilisateur pid=4 cpu=3 preemptions=3 progres=1144501",
+        "SMP utilisateur pid=5 cpu=0 preemptions=6 progres=796694",
+        "SMP utilisateur pid=6 cpu=1 preemptions=4 progres=1078924",
+        "SMP utilisateur pid=7 cpu=2 preemptions=3 progres=868500",
+        "SMP utilisateur pid=8 cpu=3 preemptions=3 progres=891863",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=28",
+        "SMP cpu=1 materiel=1 ticks=30",
+        "SMP cpu=2 materiel=2 ticks=30",
+        "SMP cpu=3 materiel=3 ticks=30",
+        "SMP migration=0->1",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 4,
+      "variante": "defaut",
+      "sha256_serie": "6d9cffe5c83f596cbfc5e6158cd59a085dcce074dcb6c2c59b6a004fcdfd3796",
+      "preuves": [
+        "SMP memoire cpu=4 libres=62479 tas=108576",
+        "SMP utilisateur pid=1 cpu=0 preemptions=5 progres=838920",
+        "SMP utilisateur pid=2 cpu=1 preemptions=4 progres=1246743",
+        "SMP utilisateur pid=3 cpu=2 preemptions=3 progres=1359134",
+        "SMP utilisateur pid=4 cpu=3 preemptions=3 progres=1163124",
+        "SMP utilisateur pid=5 cpu=0 preemptions=6 progres=813373",
+        "SMP utilisateur pid=6 cpu=1 preemptions=4 progres=1098992",
+        "SMP utilisateur pid=7 cpu=2 preemptions=3 progres=903130",
+        "SMP utilisateur pid=8 cpu=3 preemptions=3 progres=996469",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=28",
+        "SMP cpu=1 materiel=1 ticks=29",
+        "SMP cpu=2 materiel=2 ticks=29",
+        "SMP cpu=3 materiel=3 ticks=29",
+        "SMP migration=0->1",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 1,
+      "variante": "EPYC",
+      "sha256_serie": "5f549931ff8a72e29b2f0ab7de368ba25121af20bea15d20f457c2e5dd4ab225",
+      "preuves": [
+        "SMP memoire cpu=1 libres=63131 tas=9248",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=297004",
+        "SMP utilisateur pid=2 cpu=0 preemptions=2 progres=280645",
+        "SMP cpu=0 materiel=0 ticks=13",
+        "SMP stationnes=0 en_ligne=1",
+        "SMP rendezvous=0x1 actifs=1 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 1,
+      "variante": "Haswell-noTSX",
+      "sha256_serie": "39ffbcc31b50f427852af9e5cee2b8a06a24e05096e6bafef58b0b4df73fe061",
+      "preuves": [
+        "SMP memoire cpu=1 libres=63131 tas=9248",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=86833",
+        "SMP utilisateur pid=2 cpu=0 preemptions=2 progres=269367",
+        "SMP cpu=0 materiel=0 ticks=13",
+        "SMP stationnes=0 en_ligne=1",
+        "SMP rendezvous=0x1 actifs=1 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 1,
+      "variante": "defaut",
+      "sha256_serie": "e4d5086aa90c40f5f3f893b0656e0b0b0fa3879d2a058694c081a5bf15bfc63f",
+      "preuves": [
+        "SMP memoire cpu=1 libres=63131 tas=9248",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=85636",
+        "SMP utilisateur pid=2 cpu=0 preemptions=2 progres=400244",
+        "SMP cpu=0 materiel=0 ticks=13",
+        "SMP stationnes=0 en_ligne=1",
+        "SMP rendezvous=0x1 actifs=1 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 2,
+      "variante": "EPYC",
+      "sha256_serie": "6c4bc8c652c9913e4432b38b02ed706197ebc756248c74a483eaa017efb78298",
+      "preuves": [
+        "SMP memoire cpu=2 libres=63073 tas=74784",
+        "SMP utilisateur pid=1 cpu=0 preemptions=3 progres=154395",
+        "SMP utilisateur pid=2 cpu=1 preemptions=2 progres=592772",
+        "SMP utilisateur pid=3 cpu=0 preemptions=3 progres=554697",
+        "SMP utilisateur pid=4 cpu=1 preemptions=2 progres=745449",
+        "SMP traductions distantes masque=0x2 OK",
+        "SMP cpu=0 materiel=0 ticks=26",
+        "SMP cpu=1 materiel=1 ticks=15",
+        "SMP migration=0->1",
+        "SMP stationnes=1 en_ligne=1",
+        "SMP rendezvous=0x3 actifs=2 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 2,
+      "variante": "Haswell-noTSX",
+      "sha256_serie": "c0edd81b51946c2a13c0ba9e2631c37499aed2733b29853a1df76aac62e63e5b",
+      "preuves": [
+        "SMP memoire cpu=2 libres=63073 tas=74784",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=131561",
+        "SMP utilisateur pid=2 cpu=1 preemptions=2 progres=648664",
+        "SMP utilisateur pid=3 cpu=0 preemptions=4 progres=770956",
+        "SMP utilisateur pid=4 cpu=1 preemptions=2 progres=966058",
+        "SMP traductions distantes masque=0x2 OK",
+        "SMP cpu=0 materiel=0 ticks=27",
+        "SMP cpu=1 materiel=1 ticks=16",
+        "SMP migration=0->1",
+        "SMP stationnes=1 en_ligne=1",
+        "SMP rendezvous=0x3 actifs=2 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 2,
+      "variante": "defaut",
+      "sha256_serie": "5f72c18419eb5c14664fd3a81134028276d81c4793ed6967ed9eee3e89d3e815",
+      "preuves": [
+        "SMP memoire cpu=2 libres=63073 tas=74784",
+        "SMP utilisateur pid=1 cpu=0 preemptions=3 progres=201480",
+        "SMP utilisateur pid=2 cpu=1 preemptions=2 progres=720990",
+        "SMP utilisateur pid=3 cpu=0 preemptions=4 progres=838459",
+        "SMP utilisateur pid=4 cpu=1 preemptions=2 progres=1107446",
+        "SMP traductions distantes masque=0x2 OK",
+        "SMP cpu=0 materiel=0 ticks=27",
+        "SMP cpu=1 materiel=1 ticks=16",
+        "SMP migration=0->1",
+        "SMP stationnes=1 en_ligne=1",
+        "SMP rendezvous=0x3 actifs=2 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 4,
+      "variante": "EPYC",
+      "sha256_serie": "fa830edf8271a23694264fbff2e759a2cfb26de49f4be28fb31660ceeaf74f17",
+      "preuves": [
+        "SMP memoire cpu=4 libres=62991 tas=205856",
+        "SMP utilisateur pid=1 cpu=0 preemptions=6 progres=692932",
+        "SMP utilisateur pid=2 cpu=1 preemptions=5 progres=1629103",
+        "SMP utilisateur pid=3 cpu=2 preemptions=4 progres=1458922",
+        "SMP utilisateur pid=4 cpu=3 preemptions=3 progres=1777731",
+        "SMP utilisateur pid=5 cpu=0 preemptions=8 progres=1624229",
+        "SMP utilisateur pid=6 cpu=1 preemptions=4 progres=1719933",
+        "SMP utilisateur pid=7 cpu=2 preemptions=3 progres=1519988",
+        "SMP utilisateur pid=8 cpu=3 preemptions=3 progres=1286644",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=41",
+        "SMP cpu=1 materiel=1 ticks=33",
+        "SMP cpu=2 materiel=2 ticks=33",
+        "SMP cpu=3 materiel=3 ticks=33",
+        "SMP migration=0->1",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 4,
+      "variante": "Haswell-noTSX",
+      "sha256_serie": "3e044600c2e1c4ccf7aadd32f93f611f4f7f489898137539f998d22740c0b1a0",
+      "preuves": [
+        "SMP memoire cpu=4 libres=62991 tas=205856",
+        "SMP utilisateur pid=1 cpu=0 preemptions=6 progres=935220",
+        "SMP utilisateur pid=2 cpu=1 preemptions=5 progres=1340069",
+        "SMP utilisateur pid=3 cpu=2 preemptions=4 progres=2188684",
+        "SMP utilisateur pid=4 cpu=3 preemptions=3 progres=2225933",
+        "SMP utilisateur pid=5 cpu=0 preemptions=9 progres=1658753",
+        "SMP utilisateur pid=6 cpu=1 preemptions=4 progres=2198719",
+        "SMP utilisateur pid=7 cpu=2 preemptions=3 progres=1830178",
+        "SMP utilisateur pid=8 cpu=3 preemptions=3 progres=1802015",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=41",
+        "SMP cpu=1 materiel=1 ticks=33",
+        "SMP cpu=2 materiel=2 ticks=35",
+        "SMP cpu=3 materiel=3 ticks=34",
+        "SMP migration=0->1",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 4,
+      "variante": "defaut",
+      "sha256_serie": "842a6dc8c2ffdac22835b29eff1191ab62d3b490df82dc2c2f5cbfc01446cb9b",
+      "preuves": [
+        "SMP memoire cpu=4 libres=62991 tas=205856",
+        "SMP utilisateur pid=1 cpu=0 preemptions=5 progres=799759",
+        "SMP utilisateur pid=2 cpu=1 preemptions=5 progres=1260850",
+        "SMP utilisateur pid=3 cpu=2 preemptions=4 progres=1476917",
+        "SMP utilisateur pid=4 cpu=3 preemptions=3 progres=1911313",
+        "SMP utilisateur pid=5 cpu=0 preemptions=8 progres=1783057",
+        "SMP utilisateur pid=6 cpu=1 preemptions=4 progres=2200656",
+        "SMP utilisateur pid=7 cpu=2 preemptions=3 progres=1789582",
+        "SMP utilisateur pid=8 cpu=3 preemptions=3 progres=1575343",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=37",
+        "SMP cpu=1 materiel=1 ticks=27",
+        "SMP cpu=2 materiel=2 ticks=27",
+        "SMP cpu=3 materiel=3 ticks=27",
+        "SMP migration=0->1",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    }
+  ],
+  "performances": [
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "51feedd95ff24ee0ef4532e4857e5a79c4d6813235e6ffcc5799a702405b735e",
+      "serial_sha256": "1febd9d0c84f7ca9eda12e9f6b1032da56601b12dcddf7ca73d3d9924bb90760",
+      "debut_utc_ns": 1794655235395905000,
+      "fin_utc_ns": 1794655279498083000,
+      "charge_avant": [
+        15.61865234375,
+        24.921875,
+        20.81201171875
+      ],
+      "charge_apres": [
+        14.83203125,
+        23.30908203125,
+        20.42236328125
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "compteurs",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 267.114,
+      "apres_oui_ms": 210.814,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9751,
+      "compteur": {
+        "total": 47,
+        "total_avec_controles_locaux": 56,
+        "avec_copies_locales_pret": 64,
+        "bloc": {
+          "lecture": {
+            "nombre": 143,
+            "millisecondes": 18.441
+          },
+          "ecriture": {
+            "nombre": 45,
+            "millisecondes": 9.076
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 2.103
+          }
+        },
+        "flush_physiques_ms": [
+          2.004,
+          0.099
+        ],
+        "repos_invite_ms": 688.383,
+        "actif_ordonnanceur_invite_ms": 249.129
+      }
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "bba2ef01edf9b2c754d989264f349f99e240945be137dd7578072768f2571885",
+      "serial_sha256": "61230d4966aaba821a04381676876b690e26ae0c976c56f877b9d1ec9777384c",
+      "debut_utc_ns": 1794655279623808000,
+      "fin_utc_ns": 1794655314078938000,
+      "charge_avant": [
+        14.83203125,
+        23.30908203125,
+        20.42236328125
+      ],
+      "charge_apres": [
+        13.71240234375,
+        22.08837890625,
+        20.09228515625
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 252.085,
+      "apres_oui_ms": 205.264,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9751
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "51feedd95ff24ee0ef4532e4857e5a79c4d6813235e6ffcc5799a702405b735e",
+      "serial_sha256": "ac545726f2430ed1d95c6d3ae5442621040819ebaa473d0fb3dd1b56ca744ed1",
+      "debut_utc_ns": 1794655201391380000,
+      "fin_utc_ns": 1794655217873400000,
+      "charge_avant": [
+        18.93701171875,
+        26.4609375,
+        21.18896484375
+      ],
+      "charge_apres": [
+        16.83935546875,
+        25.62255859375,
+        20.98095703125
+      ],
+      "secteur": 4096,
+      "cas": "inserer-milieu",
+      "releve": "compteurs",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 6600
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 158.237,
+      "apres_oui_ms": 143.565,
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "pic_cadres_session": 2986,
+      "compteur": {
+        "total": 39,
+        "total_avec_controles_locaux": 43,
+        "avec_copies_locales_pret": 43,
+        "bloc": {
+          "lecture": {
+            "nombre": 142,
+            "millisecondes": 10.208
+          },
+          "ecriture": {
+            "nombre": 25,
+            "millisecondes": 2.972
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 2.981
+          }
+        },
+        "flush_physiques_ms": [
+          1.59,
+          1.391
+        ],
+        "repos_invite_ms": 340.074,
+        "actif_ordonnanceur_invite_ms": 126.498
+      }
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "bba2ef01edf9b2c754d989264f349f99e240945be137dd7578072768f2571885",
+      "serial_sha256": "bd4bd2f572741ae15ae288428a49f3531d806a5799f472a76d7860a9300418ae",
+      "debut_utc_ns": 1794655217990930000,
+      "fin_utc_ns": 1794655235276656000,
+      "charge_avant": [
+        16.83935546875,
+        25.62255859375,
+        20.98095703125
+      ],
+      "charge_apres": [
+        15.61865234375,
+        24.921875,
+        20.81201171875
+      ],
+      "secteur": 4096,
+      "cas": "inserer-milieu",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 6600
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 194.436,
+      "apres_oui_ms": 172.006,
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "pic_cadres_session": 2986
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "51feedd95ff24ee0ef4532e4857e5a79c4d6813235e6ffcc5799a702405b735e",
+      "serial_sha256": "4c9cbc37f449a68946ad3b9b7bd410af4a3a2502485b2ebcb189934f708b1abc",
+      "debut_utc_ns": 1794655180126453000,
+      "fin_utc_ns": 1794655190407627000,
+      "charge_avant": [
+        24.27783203125,
+        28.0498046875,
+        21.576171875
+      ],
+      "charge_apres": [
+        21.47998046875,
+        27.32373046875,
+        21.39404296875
+      ],
+      "secteur": 4096,
+      "cas": "neuf-4m",
+      "releve": "compteurs",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 1756,
+        "3": 36,
+        "4": 460,
+        "5": 12872
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sauvegarde_ms": 193.8,
+      "apres_oui_ms": 155.456,
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "pic_cadres_session": 4029,
+      "compteur": {
+        "total": 27,
+        "total_avec_controles_locaux": 36,
+        "avec_copies_locales_pret": 42,
+        "bloc": {
+          "lecture": {
+            "nombre": 19,
+            "millisecondes": 1.024
+          },
+          "ecriture": {
+            "nombre": 22,
+            "millisecondes": 4.13
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.71
+          }
+        },
+        "flush_physiques_ms": [
+          1.298,
+          0.412
+        ],
+        "repos_invite_ms": 484.901,
+        "actif_ordonnanceur_invite_ms": 172.423
+      }
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "bba2ef01edf9b2c754d989264f349f99e240945be137dd7578072768f2571885",
+      "serial_sha256": "191e605eb6d430df3534ac5d5235617bf6be12bc6e16995de1fb84be4b0d93fe",
+      "debut_utc_ns": 1794655190527763000,
+      "fin_utc_ns": 1794655201271749000,
+      "charge_avant": [
+        20.16015625,
+        26.95263671875,
+        21.2978515625
+      ],
+      "charge_apres": [
+        18.93701171875,
+        26.4609375,
+        21.18896484375
+      ],
+      "secteur": 4096,
+      "cas": "neuf-4m",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 1756,
+        "3": 36,
+        "4": 460,
+        "5": 12872
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sauvegarde_ms": 184.7,
+      "apres_oui_ms": 148.912,
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "pic_cadres_session": 4029
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "ffa6576fd8ad4b05842714bd50e8603c331e608b930e634874b104dd7323fb8a",
+      "serial_sha256": "835ac5d209275cfdfb0a513d21ad9735d8edce3f5c9e0092e7446e5b008ec98d",
+      "debut_utc_ns": 1794655338948320000,
+      "fin_utc_ns": 1794655353322526000,
+      "charge_avant": [
+        12.31201171875,
+        21.09716796875,
+        19.7919921875
+      ],
+      "charge_apres": [
+        11.38671875,
+        20.45654296875,
+        19.58544921875
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "compteurs",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 254.555,
+      "apres_oui_ms": 219.638,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9754,
+      "compteur": {
+        "total": 47,
+        "total_avec_controles_locaux": 56,
+        "avec_copies_locales_pret": 64,
+        "bloc": {
+          "lecture": {
+            "nombre": 143,
+            "millisecondes": 5.337
+          },
+          "ecriture": {
+            "nombre": 45,
+            "millisecondes": 2.652
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.471
+          }
+        },
+        "flush_physiques_ms": [
+          1.426,
+          0.045
+        ],
+        "repos_invite_ms": 707.577,
+        "actif_ordonnanceur_invite_ms": 243.935
+      }
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "33a26f5724669587267d004ef96bb54d82c9055eef9a94c9a6c745f9574f4906",
+      "serial_sha256": "8d58d190fad6f1f3c349f1e1936a026e5b9f7ea81131d2daf58bbed714ccdfa8",
+      "debut_utc_ns": 1794655353449650000,
+      "fin_utc_ns": 1794655367587333000,
+      "charge_avant": [
+        11.38671875,
+        20.45654296875,
+        19.58544921875
+      ],
+      "charge_apres": [
+        10.60546875,
+        19.83154296875,
+        19.37646484375
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 277.426,
+      "apres_oui_ms": 248.977,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9753
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "ffa6576fd8ad4b05842714bd50e8603c331e608b930e634874b104dd7323fb8a",
+      "serial_sha256": "3a87b693a85362e3676567c53867bd4d1a69d846941ad47b98429606438c388d",
+      "debut_utc_ns": 1794655324825573000,
+      "fin_utc_ns": 1794655331846770000,
+      "charge_avant": [
+        13.85546875,
+        21.8388671875,
+        20.0263671875
+      ],
+      "charge_apres": [
+        12.42626953125,
+        21.26806640625,
+        19.84423828125
+      ],
+      "secteur": 4096,
+      "cas": "inserer-milieu",
+      "releve": "compteurs",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 6600
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 179.499,
+      "apres_oui_ms": 169.628,
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "pic_cadres_session": 2989,
+      "compteur": {
+        "total": 39,
+        "total_avec_controles_locaux": 43,
+        "avec_copies_locales_pret": 43,
+        "bloc": {
+          "lecture": {
+            "nombre": 142,
+            "millisecondes": 4.972
+          },
+          "ecriture": {
+            "nombre": 25,
+            "millisecondes": 1.363
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.37
+          }
+        },
+        "flush_physiques_ms": [
+          1.273,
+          0.097
+        ],
+        "repos_invite_ms": 390.501,
+        "actif_ordonnanceur_invite_ms": 139.09
+      }
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "33a26f5724669587267d004ef96bb54d82c9055eef9a94c9a6c745f9574f4906",
+      "serial_sha256": "300a728509bfa2a00884b4545358abdaf26f0ad2530849f69e177bf4b03d3a67",
+      "debut_utc_ns": 1794655331956610000,
+      "fin_utc_ns": 1794655338837308000,
+      "charge_avant": [
+        12.42626953125,
+        21.26806640625,
+        19.84423828125
+      ],
+      "charge_apres": [
+        12.31201171875,
+        21.09716796875,
+        19.7919921875
+      ],
+      "secteur": 4096,
+      "cas": "inserer-milieu",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 6600
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 172.42,
+      "apres_oui_ms": 161.777,
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "pic_cadres_session": 2988
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "ffa6576fd8ad4b05842714bd50e8603c331e608b930e634874b104dd7323fb8a",
+      "serial_sha256": "56e084f25f740ea794f4be0de117ad032506d4d58b90aff12056106f14a74936",
+      "debut_utc_ns": 1794655314199567000,
+      "fin_utc_ns": 1794655319449810000,
+      "charge_avant": [
+        13.71240234375,
+        22.08837890625,
+        20.09228515625
+      ],
+      "charge_apres": [
+        13.4951171875,
+        21.90380859375,
+        20.03857421875
+      ],
+      "secteur": 4096,
+      "cas": "neuf-4m",
+      "releve": "compteurs",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 1784,
+        "3": 36,
+        "4": 476,
+        "5": 12872
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sauvegarde_ms": 255.286,
+      "apres_oui_ms": 185.798,
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "pic_cadres_session": 4032,
+      "compteur": {
+        "total": 27,
+        "total_avec_controles_locaux": 36,
+        "avec_copies_locales_pret": 42,
+        "bloc": {
+          "lecture": {
+            "nombre": 19,
+            "millisecondes": 1.171
+          },
+          "ecriture": {
+            "nombre": 22,
+            "millisecondes": 1.355
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 1.465
+          }
+        },
+        "flush_physiques_ms": [
+          1.035,
+          0.43
+        ],
+        "repos_invite_ms": 724.455,
+        "actif_ordonnanceur_invite_ms": 244.616
+      }
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "94f68986faefc611c8db28f26d159343d6784fa3",
+      "noyau_sha256": "33a26f5724669587267d004ef96bb54d82c9055eef9a94c9a6c745f9574f4906",
+      "serial_sha256": "49e1c7d3eb1b9b17a6e9de019bf1343ded569e4924aaf9399111b4d39988592d",
+      "debut_utc_ns": 1794655319564939000,
+      "fin_utc_ns": 1794655324715146000,
+      "charge_avant": [
+        13.4951171875,
+        21.90380859375,
+        20.03857421875
+      ],
+      "charge_apres": [
+        13.85546875,
+        21.8388671875,
+        20.0263671875
+      ],
+      "secteur": 4096,
+      "cas": "neuf-4m",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 1780,
+        "3": 36,
+        "4": 476,
+        "5": 12872
+      },
+      "campagne": "chrono",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        66,
+        67
+      ],
+      "sauvegarde_ms": 223.757,
+      "apres_oui_ms": 155.496,
+      "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+      "pic_cadres_session": 4031
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "e4e313c790ea6ceeff252b593b7426d4484b446ad67e6e2e2a1683c0bc243e4d",
+      "serial_sha256": "08a5c28bf30d826c6b45fb839baeec8a7793654afebdc431500198fd123002f1",
+      "debut_utc_ns": 1794655758744662000,
+      "fin_utc_ns": 1794655801596199000,
+      "charge_avant": [
+        32.74658203125,
+        20.3447265625,
+        18.66064453125
+      ],
+      "charge_apres": [
+        23.4111328125,
+        19.5859375,
+        18.46484375
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "compteurs",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "campagne": "rejeu",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 327.03,
+      "apres_oui_ms": 245.442,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9751,
+      "compteur": {
+        "total": 47,
+        "total_avec_controles_locaux": 56,
+        "avec_copies_locales_pret": 64,
+        "bloc": {
+          "lecture": {
+            "nombre": 143,
+            "millisecondes": 21.478
+          },
+          "ecriture": {
+            "nombre": 45,
+            "millisecondes": 8.903
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 2.073
+          }
+        },
+        "flush_physiques_ms": [
+          1.638,
+          0.435
+        ],
+        "repos_invite_ms": 824.808,
+        "actif_ordonnanceur_invite_ms": 304.776
+      }
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "06f1c644c4f676a89a25d59c08604d04e13cfa84bffa3b0aff54188895500740",
+      "serial_sha256": "98d1113d9061f0d0179581b5edc4d5bfe4d19b7b80388e824d24f97b5e7e8f98",
+      "debut_utc_ns": 1794655801728387000,
+      "fin_utc_ns": 1794655844777854000,
+      "charge_avant": [
+        23.4111328125,
+        19.5859375,
+        18.46484375
+      ],
+      "charge_apres": [
+        21.6923828125,
+        19.609375,
+        18.52197265625
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "campagne": "rejeu",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 207.094,
+      "apres_oui_ms": 169.318,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9751
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "78c7977321ac4421bf66c515911227e88e6ba5cdd4a0448736b5756dc349d9f8",
+      "serial_sha256": "738744d1883d814b0d510229c2d81f712cba6cb485cb1934f3b3e1dc764f8653",
+      "debut_utc_ns": 1794655844904294000,
+      "fin_utc_ns": 1794655861312142000,
+      "charge_avant": [
+        21.6923828125,
+        19.609375,
+        18.52197265625
+      ],
+      "charge_apres": [
+        19.08837890625,
+        19.13525390625,
+        18.3759765625
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "compteurs",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "campagne": "rejeu",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 385.242,
+      "apres_oui_ms": 326.931,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9754,
+      "compteur": {
+        "total": 47,
+        "total_avec_controles_locaux": 56,
+        "avec_copies_locales_pret": 64,
+        "bloc": {
+          "lecture": {
+            "nombre": 143,
+            "millisecondes": 8.361
+          },
+          "ecriture": {
+            "nombre": 45,
+            "millisecondes": 49.17
+          },
+          "flush": {
+            "nombre": 2,
+            "millisecondes": 2.109
+          }
+        },
+        "flush_physiques_ms": [
+          1.693,
+          0.415
+        ],
+        "repos_invite_ms": 1085.86,
+        "actif_ordonnanceur_invite_ms": 372.745
+      }
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "f08886b5aa5e29e0a1f69fabcf0fc068de366432108a1c34a163c26df4f1238b",
+      "serial_sha256": "52976e88dedb1816412f0a57f7e903b0fbd20a30ea223a8205cdc4e25a8e8a6a",
+      "debut_utc_ns": 1794655861443067000,
+      "fin_utc_ns": 1794655876247246000,
+      "charge_avant": [
+        19.08837890625,
+        19.13525390625,
+        18.3759765625
+      ],
+      "charge_apres": [
+        17.12255859375,
+        18.7021484375,
+        18.23486328125
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "campagne": "rejeu",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 250.999,
+      "apres_oui_ms": 220.105,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9753
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "06f1c644c4f676a89a25d59c08604d04e13cfa84bffa3b0aff54188895500740",
+      "serial_sha256": "d2814c5ce65734bdc02f8c39f87d5a31c040bfbc3258c34ea8136be150b93bf4",
+      "debut_utc_ns": 1794656089118546000,
+      "fin_utc_ns": 1794656103528810000,
+      "charge_avant": [
+        6.23291015625,
+        12.01025390625,
+        15.435546875
+      ],
+      "charge_apres": [
+        7.28955078125,
+        11.94677734375,
+        15.35205078125
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "campagne": "paire",
+      "vcpu": 1,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 141.211,
+      "apres_oui_ms": 122.712,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9755
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "06f1c644c4f676a89a25d59c08604d04e13cfa84bffa3b0aff54188895500740",
+      "serial_sha256": "d1b74e7f74c5b29587b12acad47f6496f38eb2678acd11046a04e1bac132192a",
+      "debut_utc_ns": 1794656162273985000,
+      "fin_utc_ns": 1794656176956415000,
+      "charge_avant": [
+        7.263671875,
+        11.09033203125,
+        14.7978515625
+      ],
+      "charge_apres": [
+        6.9208984375,
+        10.82421875,
+        14.6376953125
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "campagne": "paire",
+      "vcpu": 1,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 139.851,
+      "apres_oui_ms": 122.248,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9755
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "06f1c644c4f676a89a25d59c08604d04e13cfa84bffa3b0aff54188895500740",
+      "serial_sha256": "d271f9388d22ee5e3e0d34f8d92db57da40759c427af3fff39c356ff6de4d697",
+      "debut_utc_ns": 1794656103660936000,
+      "fin_utc_ns": 1794656132743063000,
+      "charge_avant": [
+        7.28955078125,
+        11.94677734375,
+        15.35205078125
+      ],
+      "charge_apres": [
+        6.5576171875,
+        11.328125,
+        15.00927734375
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "campagne": "paire",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 199.522,
+      "apres_oui_ms": 161.644,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9751
+    },
+    {
+      "plateforme": "qemu-aarch64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "06f1c644c4f676a89a25d59c08604d04e13cfa84bffa3b0aff54188895500740",
+      "serial_sha256": "dddf9205e81d2f245ea88c1bb4117a58ae7c724555910eb01716942a64fa5a88",
+      "debut_utc_ns": 1794656132884104000,
+      "fin_utc_ns": 1794656162136412000,
+      "charge_avant": [
+        6.5576171875,
+        11.328125,
+        15.00927734375
+      ],
+      "charge_apres": [
+        7.263671875,
+        11.09033203125,
+        14.7978515625
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "campagne": "paire",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 200.085,
+      "apres_oui_ms": 160.659,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9751
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "f08886b5aa5e29e0a1f69fabcf0fc068de366432108a1c34a163c26df4f1238b",
+      "serial_sha256": "8ff3ba78fa2f0166951130949d58d524c04661fe3361e20014352be5b31afa09",
+      "debut_utc_ns": 1794656177093206000,
+      "fin_utc_ns": 1794656186649462000,
+      "charge_avant": [
+        6.9208984375,
+        10.82421875,
+        14.6376953125
+      ],
+      "charge_apres": [
+        6.685546875,
+        10.6474609375,
+        14.5302734375
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "campagne": "paire",
+      "vcpu": 1,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 198.239,
+      "apres_oui_ms": 187.742,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9765
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "f08886b5aa5e29e0a1f69fabcf0fc068de366432108a1c34a163c26df4f1238b",
+      "serial_sha256": "b6e30552a5249a727c37f1a4f04b6140c18c8092ddc9c3c52446eb809fd595a8",
+      "debut_utc_ns": 1794656214979663000,
+      "fin_utc_ns": 1794656224547091000,
+      "charge_avant": [
+        7.03857421875,
+        10.41650390625,
+        14.33447265625
+      ],
+      "charge_apres": [
+        7.09912109375,
+        10.3193359375,
+        14.25390625
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "campagne": "paire",
+      "vcpu": 1,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 206.335,
+      "apres_oui_ms": 194.253,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9765
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "f08886b5aa5e29e0a1f69fabcf0fc068de366432108a1c34a163c26df4f1238b",
+      "serial_sha256": "861a70abf4af4d0d23c705201d002cbdca13d8c8f3a27a405a6be5cb0b5bb4f5",
+      "debut_utc_ns": 1794656186763240000,
+      "fin_utc_ns": 1794656200983752000,
+      "charge_avant": [
+        6.685546875,
+        10.6474609375,
+        14.5302734375
+      ],
+      "charge_apres": [
+        6.97998046875,
+        10.57666015625,
+        14.45947265625
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "campagne": "paire",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 254.939,
+      "apres_oui_ms": 223.83,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9753
+    },
+    {
+      "plateforme": "qemu-x86_64",
+      "revision": "bb65c3e0793ea29024c3a0bf6a3af304a46a92f5",
+      "noyau_sha256": "f08886b5aa5e29e0a1f69fabcf0fc068de366432108a1c34a163c26df4f1238b",
+      "serial_sha256": "05cb5a4dd87848e60175b7084a8c39bb9801bc70061b5f63fab32cf647978499",
+      "debut_utc_ns": 1794656201102320000,
+      "fin_utc_ns": 1794656214843371000,
+      "charge_avant": [
+        6.97998046875,
+        10.57666015625,
+        14.45947265625
+      ],
+      "charge_apres": [
+        7.03857421875,
+        10.41650390625,
+        14.33447265625
+      ],
+      "secteur": 4096,
+      "cas": "ajout-4m-multiple",
+      "releve": "ordinaire",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "campagne": "paire",
+      "vcpu": 4,
+      "avant": [
+        65,
+        66
+      ],
+      "apres": [
+        67,
+        68
+      ],
+      "sauvegarde_ms": 261.912,
+      "apres_oui_ms": 226.352,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "pic_cadres_session": 9753
+    }
+  ],
+  "negociation": {
+    "sources": {
+      "decouverte_trames.rs": "bd4e947ec0a057b59a2c30ee7f78b1f788cfafbe63d9e2e59ea002e38fd30f68",
+      "block.rs": "a9ac4883ab29c2f4a8a8cb35e1ff3d3c1fc064bca77e4606633c9bb1f390890a",
+      "files.rs": "a01cd53cd68dd4179ce4130e705902ce2c2c81263f195bc8821e210ebbafe835",
+      "native.rs": "4d8b2b4debad75395c789870bdbc0a57b0e5daa800fdd317e0d037dc92134768",
+      "vi_wire.rs": "f544c4749ea90eae62569864bf6ae1a8909fe35667a7d498eb54ffe7165aad27",
+      "io-0166-decouverte-droits.patch": "8575cd437ba1175080cdb04e431fad316008320f513268ad1dd3eeb193daca03"
+    },
+    "essais": [
+      {
+        "architecture": "aarch64",
+        "environnement": "Darwin",
+        "sha256_executable": "874675f855933caac4c4195c1d249664d821e5105deacd8849ad422cf6239f22",
+        "sortie": [
+          "",
+          "running 5 tests",
+          "test bloc_version_sens_et_champs_reserves ... ok",
+          "test fichier_session_version_masque_et_anciens_opcodes ... ok",
+          "test reponse_bloc_historique_et_reference_exacte ... ok",
+          "test vi_erreurs_historiques_erreurs_transport_et_revocation ... ok",
+          "test vi_masques_autorises_et_champs_invalides ... ok",
+          "",
+          "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+          ""
+        ]
+      },
+      {
+        "architecture": "x86_64",
+        "environnement": "Darwin",
+        "sha256_executable": "b508de577bafb7a72577828e035ffb4988ff917e2b019d8b02ecb3b2c4d63ae0",
+        "sortie": [
+          "",
+          "running 5 tests",
+          "test bloc_version_sens_et_champs_reserves ... ok",
+          "test fichier_session_version_masque_et_anciens_opcodes ... ok",
+          "test reponse_bloc_historique_et_reference_exacte ... ok",
+          "test vi_erreurs_historiques_erreurs_transport_et_revocation ... ok",
+          "test vi_masques_autorises_et_champs_invalides ... ok",
+          "",
+          "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+          ""
+        ]
+      },
+      {
+        "architecture": "aarch64",
+        "environnement": "QEMU",
+        "sha256_elf": "f2fdb3c8c444482c7184f117be591e779e15563cb82463654382e0ee2ead1fef",
+        "sortie": "OK — aarch64-ipc-test-256"
+      },
+      {
+        "architecture": "x86_64",
+        "environnement": "QEMU",
+        "sha256_elf": "3e44f2d23990c302db3d0a5a8fc98404faa74cb64dbb53c0c180651770656378",
+        "sortie": "OK — x86_64-ipc-test-256"
+      }
+    ]
+  },
+  "refus_injecte": {
+    "essai": 0,
+    "vcpu_qmp": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "cpu_pid": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "invite": false,
+    "sha256_avant": "3e9136cac780e79ccc544fe83bd135338e7268bd4c818cd9ce6c1db2544ad802",
+    "sha256_apres": "3e9136cac780e79ccc544fe83bd135338e7268bd4c818cd9ce6c1db2544ad802",
+    "serial_sha256": "5335016a2ebe908c09ef22cc34bfe2450b1e7ec53a68526ef0e36a83a5dc7463",
+    "bilan": "BLOC bilan mode=42 service=Exit(11) bloc=Exit(11) pilote=Exit(11) client=Exit(26) retrait=Ok(()) cycles_retrait=56750",
+    "ressources": "RAM phase=bloc_collecte image=635 tables=153 kpile=80 upile=0 heap=32 buddy=2 ipc=0 utilisateur=0 processus=0 meta_octets=9240 meta_actifs=0 tcb_octets=4096 heap_va=65536 libres=62437 cache=0 chargeur=0 restitue=7342 extra_elf=0 video=469 ram_video=469 resident=902 retenu=1371 dma=0",
+    "diagnostic": [
+      "DEBUG pid=2 DIAG lecture n=1 lba=0 flags=3 secteur=512 page=true",
+      "DEBUG pid=2 DIAG lecture n=2030 lba=7416 flags=3 secteur=512 page=true",
+      "BLOC erreur peripherique op=0 statut=1 longueur=4097",
+      "DIAG portail page lba=7416 erreur=Device",
+      "DIAG appel pid=3 id=65606 statut=12",
+      "DEBUG pid=2 DIAG echange n=2030 lba=7416 erreur=12",
+      "DIAG appel pid=2 id=65573 statut=11",
+      "DIAG appel pid=3 id=65573 statut=11",
+      "DIAG appel pid=1 id=65573 statut=11",
+      "STOCKAGE trafic tours=2032 ns=2460942000"
+    ],
+    "bloc": [
+      "BLOC mesure type=read n=2029"
+    ]
+  },
+  "regressions_moteur_utm": {
+    "uefi_gic": {
+      "moteur": "QEMU emulator version 10.0.12",
+      "utm": "5.0.8",
+      "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+      "noyau_sha256": "01166cab14d8c2f531dd677e8826f969e1fe519f5c9c7864c4a75d75b8919d50",
+      "vcpu": 1,
+      "scenarios": [
+        "froid",
+        "el2",
+        "protection",
+        "reemploi",
+        "cd",
+        "redemarrage",
+        "coupure",
+        "reprise",
+        "autre-slot",
+        "mapkey",
+        "retrait-suspendu"
+      ],
+      "sha256_rapport": "ae9298d992b270fa74ff6dc8d93f2184c905026bac32069791d2ea61905783d1"
+    },
+    "dma_sequentiel": {
+      "moteur": "QEMU emulator version 10.0.12",
+      "utm": "5.0.8",
+      "pflash_sha256": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+      "noyau_sha256": "f6a68a6c315b0945957aa3d499970ca7cb9bd05e0b330de20afc7f4b98c5f665",
+      "vcpu": 1,
+      "scenarios": [
+        "support",
+        "vierge",
+        "refus",
+        "confirmation-erronee",
+        "tis",
+        "deplaces",
+        "reemploi",
+        "redemarrage",
+        "fin",
+        "mbr",
+        "gpt",
+        "fat",
+        "novafs",
+        "trop-petit",
+        "erreur-lecture",
+        "mauvais-support",
+        "doublon",
+        "roles-inverses",
+        "support-inscriptible",
+        "tpm-absent",
+        "mauvaise-serie",
+        "quarantaine",
+        "coupure"
+      ],
+      "sha256_rapport": "fa70ff0f1042deb17700c3bdc3cbb1056a7d50dd33c0be159502ec13161f4fdb"
+    }
+  }
+}
