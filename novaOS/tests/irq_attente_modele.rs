@@ -112,6 +112,7 @@ fn interruption(publier_used: bool) {
 
 mod sched {
     use super::*;
+    pub(crate) use hal::interrupts::Guard;
     pub(crate) struct Event;
     impl Event {
         pub const fn new() -> Self {

@@ -6,6 +6,7 @@ mod abi;
 mod gate;
 use abi::*;
 use core::arch::global_asm;
+use core::sync::atomic::{AtomicU64, Ordering};
 use gate::call;
 
 // Sûreté : entrée autonome CPL3/EL0t, SP initial de la pile privée aligné.
@@ -29,11 +30,11 @@ global_asm!(
 const DATA: usize = 0x401000;
 fn read(i: usize) -> u64 {
     // Sûreté : mots de commande alignés dans la première page DATA du lanceur.
-    unsafe { (DATA as *const u64).add(i).read_volatile() }
+    unsafe { AtomicU64::from_ptr((DATA as *mut u64).add(i)).load(Ordering::Acquire) }
 }
 fn write(i: usize, v: u64) {
     // Sûreté : la page DATA privée reste RW pendant toute la vie du travailleur.
-    unsafe { (DATA as *mut u64).add(i).write_volatile(v) }
+    unsafe { AtomicU64::from_ptr((DATA as *mut u64).add(i)).store(v, Ordering::Release) }
 }
 
 const SEND_BUF: u64 = DATA as u64 + 256;

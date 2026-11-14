@@ -123,14 +123,17 @@ def bilan(journal, mesure):
                     "construction_extents", "copie_source_et_pret", "allocation_fenetres",
                     "recherche_extents", "effacement_liberation")
         phases["phases_moteur_ms"] = dict(zip(noms, map(ms, ticks), strict=True))
-    vcpu = re.findall(r"SAVE repos=(\d+) flush_physiques=(\[[^\]]+\])", text)
+    vcpu = re.findall(r"SAVE repos=(\d+) flush_physiques=(\[[^\]]+\])(?: cpu=(\d+))?", text)
     if vcpu:
-        ((repos, flushs),) = vcpu
+        ((repos, flushs, nb_cpu),) = vcpu
+        cpus = int(nb_cpu or 1)
+        assert 1 <= cpus <= 16
         f1_phys, f2_phys = json.loads(flushs)
         assert f1_phys > 0 and f2_phys > 0 and f1_phys + f2_phys == hardware[5]
-        assert 0 <= int(repos) <= int(fields["duree"])
-        phases.update(flush_physiques_ms=[ms(f1_phys), ms(f2_phys)], repos_invite_ms=ms(repos),
-                      actif_ordonnanceur_invite_ms=ms(int(fields["duree"])-int(repos)))
+        budget = cpus * int(fields["duree"])
+        assert 0 <= int(repos) <= budget
+        phases.update(vcpu=cpus, flush_physiques_ms=[ms(f1_phys), ms(f2_phys)], repos_invite_ms=ms(repos),
+                      actif_ordonnanceur_invite_ms=ms(budget-int(repos)))
     durees = re.findall(r"SAVE durees_lots=(\[[^\]]+\])", text)
     if durees:
         lecture, ecriture = map(ms, json.loads(durees[0]))

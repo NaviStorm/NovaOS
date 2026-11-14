@@ -10,23 +10,26 @@
              self.stats.preemptions += 1;
 --- a/novaOS/tests/compteur_sauvegarde.rs
 +++ b/novaOS/tests/compteur_sauvegarde.rs
-@@ -87,9 +87,29 @@
+@@ -87,9 +87,32 @@
          BULK[usize::from(!put)].fetch_add(1, Relaxed);
      }
  }
 +static FLUSH: [AtomicU64; 2] = [const { AtomicU64::new(0) }; 2];
 +static ENTREE_IDLE: [AtomicU64; crate::smp::MAX_CPUS] = [const { AtomicU64::new(0) }; crate::smp::MAX_CPUS];
++static MASQUE_IDLE: AtomicU64 = AtomicU64::new(0);
 +static IDLE: AtomicU64 = AtomicU64::new(0);
 +
 +pub fn passage_idle(ancien: bool, nouveau: bool) {
++    let cpu = crate::smp::index();
++    if nouveau { MASQUE_IDLE.fetch_or(1 << cpu, Relaxed); } else { MASQUE_IDLE.fetch_and(!(1 << cpu), Relaxed); }
 +    if ancien == nouveau || !ACTIVE.load(Relaxed) {
 +        return;
 +    }
 +    let maintenant = hal::timer::counter();
 +    if nouveau {
-+        ENTREE_IDLE[crate::smp::index()].store(maintenant, Relaxed);
++        ENTREE_IDLE[cpu].store(maintenant, Relaxed);
 +    } else {
-+        let debut = ENTREE_IDLE[crate::smp::index()].swap(0, Relaxed);
++        let debut = ENTREE_IDLE[cpu].swap(0, Relaxed);
 +        if debut != 0 { IDLE.fetch_add(maintenant.wrapping_sub(debut), Relaxed); }
 +    }
 +}
@@ -50,13 +53,25 @@
              .chain([&GIFTS, &UNKNOWN])
          {
              c.store(0, Relaxed);
-@@ -182,6 +203,11 @@
+@@ -118,2 +140,7 @@
+         EDITOR.store(pid, Relaxed);
++        for cpu in 0..crate::smp::count() {
++            if MASQUE_IDLE.load(Relaxed) & (1 << cpu) != 0 {
++                ENTREE_IDLE[cpu].store(now, Relaxed);
++            }
++        }
+         START.store(now, Relaxed);
+@@ -182,6 +203,15 @@
      }
      ACTIVE.store(false, Relaxed);
++    for entree in &ENTREE_IDLE[..crate::smp::count()] {
++        let debut = entree.swap(0, Relaxed);
++        if debut != 0 { IDLE.fetch_add(now.wrapping_sub(debut), Relaxed); }
++    }
      hal::log(format_args!(
-+        "SAVE repos={} flush_physiques={:?}",
++        "SAVE repos={} flush_physiques={:?} cpu={}",
 +        IDLE.load(Relaxed),
-+        FLUSH.each_ref().map(|c| c.load(Relaxed))
++        FLUSH.each_ref().map(|c| c.load(Relaxed)), crate::smp::count()
 +    ));
 +    hal::log(format_args!(
          "SAVE dma={:?}",

@@ -122,7 +122,8 @@ fn critical() {
         core::hint::spin_loop();
     }
     let inside = crate::heap::with_pages(|_| {
-        let nested = Guard::new();
+        // Vérifie le masque local sans inverser l’ordre scheduler → allocateur.
+        let nested = hal::interrupts::Guard::new();
         assert!(!nested.was_enabled());
         let now = ticks();
         while !hal::timer::pending() {

@@ -322,7 +322,7 @@ impl UserSpace {
         // Mot de la sonde partagé avec les accès 64 bits alignés en assembleur utilisateur.
         unsafe {
             core::sync::atomic::AtomicU64::from_ptr(self.word(m, index))
-                .load(core::sync::atomic::Ordering::Relaxed)
+                .load(core::sync::atomic::Ordering::Acquire)
         }
     }
     pub fn write_data(&self, m: &Memory, index: usize, value: u64) {

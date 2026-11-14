@@ -15,16 +15,16 @@ fn sample() -> Option<[u8; 8]> {
 }
 
 pub(crate) fn seconds() -> Option<u64> {
-    // Le BSP est l'unique lecteur CMOS. Masquer les IRQ empêche la préemption
-    // entre la sélection du registre et la lecture de sa valeur.
+    // Les ports index/donnée sont communs aux CPU. Les deux échantillons
+    // doivent observer une séquence indivisible par rapport aux autres lecteurs.
     // Une mise à jour CMOS couvre plusieurs lectures de ports consécutives.
     // Le PIT (250 Hz) borne l'attente à deux ticks et les IRQ restent actives
     // entre les tentatives. Ces ticks ne servent jamais à dater un fichier.
     let start = crate::sched::ticks();
     let [mode, century, year, month, day, hour, minute, second] = loop {
-        let flags = super::save_and_mask_interrupts();
+        let guard = crate::sched::Guard::new();
         let pair = sample().and_then(|a| (sample() == Some(a)).then_some(a));
-        super::restore_interrupts(flags);
+        drop(guard);
         if let Some(stable) = pair {
             break stable;
         }

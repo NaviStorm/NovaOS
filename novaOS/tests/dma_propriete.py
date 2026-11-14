@@ -88,9 +88,9 @@ pub(crate) fn spi_ownership_actif() -> bool { read(DIST, 0x104) & (1 << (disk_id
     changer(syscall, "    let livraison = ipc::termine(cap, tag, op, resultat, |s| {",
             """    ipc::incident_livraison();
     let livraison = ipc::termine(cap, tag, op, resultat, |s| {""")
-    changer(bloc/"arena.rs", "        let garde = hal::interrupts::Guard::new();",
+    changer(bloc/"arena.rs", "        let garde = crate::sched::Guard::new();",
             """        crate::sched::process::ipc::incident_livraison();
-        let garde = hal::interrupts::Guard::new();""")
+        let garde = crate::sched::Guard::new();""")
     ipc = syscall.parent/"ipc"
     (ipc/"probes/livraison.rs").write_bytes(Path(__file__).with_name("dma_livraison_invite.rs").read_bytes())
     with (ipc/"probes.rs").open("a") as f:
@@ -109,7 +109,7 @@ pub(crate) fn incident_livraison() {
     let faute = FAUTE_LIVRAISON.swap(0, Ordering::SeqCst);
     if faute == 0 { return; }
     with(|s| {
-        let pid = s.thread(s.current).owner.unwrap();
+        let pid = s.thread(s.current()).owner.unwrap();
         let cap = CAP_LIVRAISON.load(Ordering::SeqCst);
         let node = s.ipc.lookup(pid, cap, SEND | RECEIVE).unwrap();
         let r = s.ipc.ends.get(node.endpoint.slot()).bulk.unwrap().reservation.unwrap();
