@@ -54,10 +54,16 @@ def verifier_serie(serie, mode):
             raise RuntimeError("Aucun envoi effectif de la réponse")
         if mode in (1, 2) and attendus[0][1] != 8:
             raise RuntimeError("Le receveur ayant abandonné doit laisser expirer l'envoi")
-        if mode in (4, 5) and ((etape, statut) != ("reception", 11) or
-                                attendus[0][1] != (37 if mode == 4 else 38) or
-                                ("bloc=Exit(37)" if mode == 4 else "pilote=Exit(38)") not in serie):
-            raise RuntimeError("Mort du processus non confirmée par le superviseur")
+        if mode in (4, 5):
+            # Le relais possède l'endpoint de réponse à NovaFS. Sa mort retire
+            # le handle dérivé avant lookup (DENIED), ou réveille un RECEIVE
+            # déjà bloqué (CLOSED). Le pilote possède un endpoint distinct.
+            code_sortie = 37 if mode == 4 else 38
+            processus = "bloc" if mode == 4 else "pilote"
+            etats = (5, 11) if mode == 4 else (11,)
+            if (etape != "reception" or statut not in etats or attendus[0][1] != code_sortie
+                    or f"{processus}=Exit({code_sortie})" not in serie or "retrait=Ok(())" not in serie):
+                raise RuntimeError("Mort du processus, fermeture du canal ou retrait non confirmés")
         if mode in (1, 6) and (etape, statut) != ("reception", 8):
             raise RuntimeError("Expiration attendue")
         if mode == 2 and (etape, statut) != ("reception", 9):
