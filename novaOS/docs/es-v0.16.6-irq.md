@@ -121,3 +121,5 @@ Pour cette cellule, les p50 des deux barrières F1 puis F2 sont de 3,1 puis 0,3 
 ## Arbitrage
 
 **Garder le pilote en polling et laisser le candidat IRQ désactivé dans les archives expérimentales.** Les tests démontrent un parcage borné, une gestion des notifications parasites et la préservation de l'intégrité dans le modèle exercé. Les temps de service RAW directs sont courts et les économies de CPU y varient selon la cellule. Sur UTM, 11 des 20 grandes éditions C1 dépassent le seuil avec IRQ, contre 5 avec polling. Les interruptions ne suffisent pas pour qualifier une sauvegarde durable systématique sous une seconde. Le polling conserve lui aussi des dépassements à traiter. L'ancien essai de veille hybride et ses limites de répétition figurent dans le [rapport multipage](es-v0.16.6-dma.md). La branche livrée conserve les interfaces et P9 de la référence.
+
+La qualification suivante mesure la QoS effective, les séjours du vCPU sur P et E et les intervalles de préemption du polling. [Qualification des performances hôte](es-v0.16.6-qos.md)

@@ -1,8 +1,6 @@
 """Temps CPU cumulé du moteur d'une VM jetable, sur l'hôte Darwin."""
 import ctypes as c
 import os
-from pathlib import Path
-import subprocess
 
 
 class Usage(c.Structure):
@@ -29,18 +27,8 @@ class BaseTemps(c.Structure):
 class CpuMoteur:
     @classmethod
     def pour_utm(cls, machine):
-        processus = subprocess.check_output(["ps", "-axww", "-o", "pid=,command="], text=True)
-        marque = "addr=" + machine.lower() + ".spice"
-        candidats = []
-        for ligne in processus.splitlines():
-            champs = ligne.split(None, 3)
-            if (len(champs) == 4 and Path(champs[1]).name == "QEMULauncher"
-                    and Path(champs[2]).name == "qemu-aarch64-softmmu"
-                    and any(marque in arg.lower().split(",") for arg in champs[3].split())):
-                candidats.append(int(champs[0]))
-        if len(candidats) != 1:
-            raise RuntimeError(f"Moteur non identifié pour la VM de mesure ({len(candidats)} candidats)")
-        return cls(candidats[0])
+        from nsh_utm import pid_moteur
+        return cls(pid_moteur(machine))
 
     def __init__(self, pid):
         self.pid = pid

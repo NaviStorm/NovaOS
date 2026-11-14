@@ -21,6 +21,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from paquet_installation import systeme
 
 
+def pid_moteur(machine):
+    processus = subprocess.check_output(["ps", "-axww", "-o", "pid=,command="], text=True)
+    marque = "addr=" + machine.lower() + ".spice"
+    candidats = []
+    for ligne in processus.splitlines():
+        champs = ligne.split(None, 3)
+        if (len(champs) == 4 and Path(champs[1]).name == "QEMULauncher"
+                and Path(champs[2]).name == "qemu-aarch64-softmmu"
+                and any(marque in arg.lower().split(",") for arg in champs[3].split())):
+            candidats.append(int(champs[0]))
+    if len(candidats) != 1:
+        raise RuntimeError(f"Moteur non identifié pour la VM de mesure ({len(candidats)} candidats)")
+    return candidats[0]
+
+
 def digest(path):
     with path.open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()

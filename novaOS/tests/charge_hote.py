@@ -14,7 +14,7 @@ import time
 MIO = 1 << 20
 
 
-def instantane():
+def instantane(pression=True):
     debut = time.monotonic_ns()
     disque = subprocess.check_output(["iostat", "-Id", "-c", "1", "disk0"], text=True)
     io = disque.splitlines()[-1].split()
@@ -23,7 +23,7 @@ def instantane():
     vm = subprocess.check_output(["vm_stat"], text=True)
     taille = int(re.search(r"page size of (\d+) bytes", vm)[1])
     pages = {k: int(v) for k, v in re.findall(r"^([^:\n]+):\s*(\d+)\.", vm, re.M)}
-    pression = int(subprocess.check_output(["sysctl", "-n", "kern.memorystatus_vm_pressure_level"]))
+    niveau = int(subprocess.check_output(["sysctl", "-n", "kern.memorystatus_vm_pressure_level"])) if pression else None
     lib = ctypes.CDLL("/usr/lib/libSystem.B.dylib")
     ticks = (ctypes.c_uint32 * 4)()
     quantite = ctypes.c_uint32(4)
@@ -31,7 +31,7 @@ def instantane():
         raise RuntimeError("Compteurs CPU hôte indisponibles")
     fin = time.monotonic_ns()
     return dict(monotone_ns=fin, cout_ns=fin-debut,
-                cpu_ticks=list(ticks), charge=os.getloadavg(), pression=pression,
+                cpu_ticks=list(ticks), charge=os.getloadavg(), pression=niveau,
                 taille_page=taille, pages=pages, disque_transferts=int(io[1]), disque_mio=float(io[2]))
 
 
@@ -79,7 +79,7 @@ def travailler(profil, dossier, canal, fin):
 
 
 @contextmanager
-def charger(profil, dossier):
+def charger(profil, dossier, *, pression=True):
     ctx = multiprocessing.get_context("spawn")
     fin = ctx.Event()
     ouvriers = []
@@ -94,9 +94,9 @@ def charger(profil, dossier):
         for _, canal in ouvriers:
             if not canal.poll(30) or canal.recv() != "prêt":
                 raise RuntimeError("Démarrage de charge incomplet")
-        etat["avant"] = instantane()
+        etat["avant"] = instantane(pression)
         yield etat
-        etat["apres"] = instantane()
+        etat["apres"] = instantane(pression)
     finally:
         fin.set()
         for p, canal in ouvriers:

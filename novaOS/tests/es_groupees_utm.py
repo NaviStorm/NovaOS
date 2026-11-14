@@ -23,7 +23,6 @@ from publication_utm_app import script
 from esp_installation import construire
 from verifier_gpt import verifier_gpt
 from vi_ipc_sauvegarde import bilan
-from cpu_hote_utm import CpuMoteur
 
 MIO = 1 << 20
 LV = bytes([0x62])*16
@@ -85,17 +84,17 @@ def relire_export(paquet, cible, s, ids, blocs, attendu, destination):
                           s, ids, blocs, attendu, destination)
 
 
-def publier(c, nom, destination, coupure, observer=None, mesurer_cpu=None):
+def publier(c, nom, destination, coupure, observer=None, mesurer_cpu=None, horodater=time.monotonic_ns):
     os.write(c.fd, b":")
     c.attendre(f"vi [COMMANDE] {nom} [modifié]".encode())
     if observer:
         observer()
     if mesurer_cpu:
         mesurer_cpu()
-    debut = time.monotonic_ns()
+    debut = horodater()
     os.write(c.fd, f"w {destination}\r".encode())
     c.attendre("Saisir OUI puis Entrée : ".encode())
-    oui = time.monotonic_ns()
+    oui = horodater()
     os.write(c.fd, b"OUI\r")
     succes = "fichier enregistré"
     repere = "COUPURE groupe " + coupure if coupure else succes
@@ -104,7 +103,7 @@ def publier(c, nom, destination, coupure, observer=None, mesurer_cpu=None):
     marque = c.attendre_une(reponses + ((repere,) if coupure else ()), 180)
     if marque != repere:
         raise RuntimeError(f"Sauvegarde UTM de {nom} vers {destination} : {marque}")
-    fin = time.monotonic_ns()
+    fin = horodater()
     if mesurer_cpu:
         mesurer_cpu()
     if observer:
@@ -124,6 +123,15 @@ def ouvrir_moniteur(machine, out, pile):
     os.write(fd, b"\r")
     moniteur.attendre(b"(qemu) ", 10)
     return moniteur
+
+
+def thread_moniteur(moniteur):
+    os.write(moniteur.fd, b"info cpus\r")
+    reponse = moniteur.attendre(b"thread_id=", 10) + moniteur.attendre(b"(qemu) ", 10)
+    cpus = re.findall(rb"CPU #(\d+): thread_id=(\d+)", reponse)
+    if len(cpus) != 1 or cpus[0][0] != b"0":
+        raise RuntimeError(f"CPU du moniteur non identifié {reponse!r}")
+    return int(cpus[0][1])
 
 
 def observer_disque(moniteur, mesures):
@@ -179,10 +187,15 @@ def allocation_importee(paquet, machine, cible):
 
 def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True,
           format_image="qcow2", coupure=None, preallocation=False, repetition=1, moniteur_hote=False,
-          sortie_arriere_plan=False, profil_charge=None, arriere_plan=False):
+          sortie_arriere_plan=False, profil_charge=None, arriere_plan=False, qos=None):
     if arriere_plan and sortie_arriere_plan:
         raise ValueError("Politiques d’arrière-plan incompatibles")
     politique = "-b" if arriere_plan else "-B" if sortie_arriere_plan else "ordinaire"
+    if qos is not None:
+        if moniteur_hote or profil_charge or coupure or repetition != 1 or politique != "ordinaire":
+            raise ValueError("Le protocole QoS public exige une sauvegarde isolée")
+        politique = qos.politique
+    observer_hote = moniteur_hote or qos is not None
     out.mkdir()
     volume, raw = out/"volume.raw", out/"neuf.raw"
     etat = json.loads(subprocess.check_output([generateur, "--image", volume, str(s), "utm"]))
@@ -200,7 +213,7 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
     for name in ("code.fd", "variables.fd"):
         shutil.copyfile(template/"Data"/name, data/name)
     args = config["QEMU"]["AdditionalArguments"]
-    if profil_charge:
+    if profil_charge or qos is not None:
         args.extend(["-name", "NovaOS,debug-threads=on"])
     compteurs_hote = []
     temps_cpu = []
@@ -223,14 +236,14 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
         convertir(raw, "raw", data/cible, format_image)
     etat_image = json.loads(subprocess.check_output(["qemu-img", "info", "--output=json", data/cible]))
     paquet, ident = nommer(paquet, "cow")
-    if moniteur_hote:
+    if observer_hote:
         fiche = paquet / "config.plist"
         config = plistlib.loads(fiche.read_bytes())
         config["Serial"].append(dict(Mode="Ptty", Target="Monitor"))
         fiche.write_bytes(plistlib.dumps(config))
     journal = out/"sauvegarde.serial"
     with enregistrer(paquet, ident) as machine:
-        if profil_charge:
+        if profil_charge or qos is not None:
             # UTM 5.0.8 expose l'UUID par AppleScript. Les journaux du moteur
             # rattachent le paquet importé à ce répertoire du conteneur Darwin.
             documents = Path.home() / "Library/Containers/com.utmapp.UTM/Data/Documents"
@@ -248,20 +261,18 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
                                       lecture_conteneur=refus.split(":", 1)[0])
         with demarrer(machine, journal) as c, ExitStack() as pile:
             transfert(c, b"nsh> ", 56)
-            moniteur = ouvrir_moniteur(machine, out, pile) if moniteur_hote else None
+            moniteur = ouvrir_moniteur(machine, out, pile) if observer_hote else None
+            if qos is not None:
+                qos.attacher(machine, thread_moniteur(moniteur))
+            if moniteur_hote or (qos is None and politique != "ordinaire"):
+                from cpu_hote_utm import CpuMoteur
             moteur = CpuMoteur.pour_utm(machine) if moniteur_hote else None
             if profil_charge:
                 from charge_hote import charger
                 from vcpu_darwin import SondeVcpu
-                os.write(moniteur.fd, b"info cpus\r")
-                reponse = moniteur.attendre(b"thread_id=", 10) + moniteur.attendre(b"\n", 10)
-                moniteur.attendre(b"(qemu) ", 10)
-                tids = re.findall(rb"CPU #\d+: thread_id=(\d+)", reponse)
-                if len(tids) != 1:
-                    raise RuntimeError(f"CPU du moniteur non identifié {reponse!r}")
-                vcpu = SondeVcpu(moteur.pid, int(tids[0]))
+                vcpu = SondeVcpu(moteur.pid, thread_moniteur(moniteur))
                 mesures_vcpu = {}
-            if politique != "ordinaire":
+            if qos is None and politique != "ordinaire":
                 # Le PID appartient au lanceur du seul UUID jetable ouvert par ce banc.
                 cible_moteur = CpuMoteur.pour_utm(machine)
                 if moteur is not None and cible_moteur.pid != moteur.pid:
@@ -289,8 +300,11 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
                         else:
                             vcpu.demarrer()
                             temps_cpu.append(moteur.relever())
-                with charger(profil_charge, out) if profil_charge else nullcontext() as charge:
-                    depart, accord, acquit = publier(c, nom, nom_copie, coupure, observer, observer_cpu)
+                if qos is not None:
+                    depart, accord, acquit = qos.mesurer(c, nom, nom_copie, observer, out)
+                else:
+                    with charger(profil_charge, out) if profil_charge else nullcontext() as charge:
+                        depart, accord, acquit = publier(c, nom, nom_copie, coupure, observer, observer_cpu)
                 if profil_charge and any(not ouvrier["arrete_par_banc"] or
                                          not ouvrier["debut_ns"] <= depart <= acquit <= ouvrier["fin_ns"]
                                          for ouvrier in charge["ouvriers"]):
@@ -340,10 +354,14 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
         compteur = None
     pic = int(re.search(r"BLOC memoire [^\n]*pic_cadres=(\d+)", trace)[1])
     hote = {}
-    if moniteur_hote:
+    if observer_hote:
         avant_disque, apres_disque = compteurs_hote
         hote["backend_hmp"] = {k: v - avant_disque[k] for k, v in apres_disque.items()}
-        hote["cpu_hote_qemu"] = moteur.difference(*temps_cpu)
+        if qos is not None:
+            hote.update(qos=qos.resultat, commande_monotone_ns=[debut, oui, fin],
+                        image_importee=image_importee, sha256_destination=hashlib.sha256(attendu).hexdigest())
+        else:
+            hote["cpu_hote_qemu"] = moteur.difference(*temps_cpu)
         if profil_charge:
             avant_cpu, apres_cpu = temps_cpu
             # Compteur Mach agrégé sur tous les threads du processus QEMU.
