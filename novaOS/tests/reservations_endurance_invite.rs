@@ -161,7 +161,35 @@ fn fin_attente(
 }
 
 pub(super) fn run() {
+    // Distinguer les ressources permanentes de premier usage du coût des acteurs.
+    let froid = photo("froid");
+    let tables_froides = heap::with_pages(|m| Ok(m.observation_tables())).unwrap();
+    {
+        let (enfants, [pilote, moteur, relais]) = group([ALL, ALL, ALL]);
+        let epoch = block::begin_session(1).unwrap();
+        assert!(block::attach(pilote.0.number, epoch));
+        let base = moteur.memory(|s, m| {
+            let p = s.resize_heap(m, 0, 0).unwrap();
+            s.resize_heap(m, p, p + TAILLE * 4096).unwrap();
+            p
+        });
+        let tx = moteur.call(IPC_CREATE, 0, 0, 0).unwrap();
+        let rx = moteur.call(IPC_CREATE, 0, 0, 0).unwrap();
+        moteur.put(base + 4096, &[0; TAILLE as usize * 8]);
+        succes(pilote, moteur, tx, rx, base, epoch, 1);
+        stop(enfants, [pilote, moteur, relais]);
+        block::retire().unwrap();
+    }
     let initial = photo("avant");
+    let tables = heap::with_pages(|m| Ok(m.observation_tables())).unwrap();
+    assert_eq!(
+        froid[0] - initial[0],
+        tables - tables_froides + initial[6] - froid[6]
+    );
+    assert_eq!(initial[6], if cfg!(target_arch = "x86_64") { 9 } else { 0 });
+    hal::log(format_args!(
+        "LOTS0170 amorcage tables_avant={tables_froides} tables_apres={tables}"
+    ));
     let mut delai_max = 0;
     let mut preemptions = 0;
     let mut dernier_pid = 0;
@@ -225,7 +253,7 @@ pub(super) fn run() {
                 }
             } else {
                 envoyer_lot(moteur, tx, tag, 0);
-                assert_eq!(moteur.result(), Ok(0));
+                assert_eq!(moteur.result(), Ok(128));
                 relais.recv(requetes, 0, false);
                 assert_eq!(relais.result(), Ok(1));
                 let annulation = (i % 3 == 2).then_some((relais, reponses, pilote, annule));

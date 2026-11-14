@@ -20,8 +20,8 @@ def endurance(arch, secteur, dossier):
     lignes = re.findall(r"LOTS0170 etape=(\w+) libres=(\d+) objets=(\d+) handles=(\d+) lots=(\d+) "
                         r"pages_logiques=(\d+) attente=(\d+) epinglees=(\d+) bail=(\d+) "
                         r"quarantaine=(false|true) generation=(\d+)", s)
-    initial, *epochs = lignes
-    if initial[0] != "avant" or len(epochs) != 24:
+    froid, initial, *epochs = lignes
+    if (froid[0], initial[0]) != ("froid", "avant") or len(epochs) != 24:
         raise ValueError("Mesures de ressources incomplètes")
     generations = []
     for i in range(0, len(epochs), 3):
@@ -31,7 +31,7 @@ def endurance(arch, secteur, dossier):
                 int(avant[-1]) >= int(fin[-1]) or int(avant[8]) <= i // 3):
             raise ValueError(f"Ressources divergentes : {avant}, {apres}, {fin}")
         generations.append(int(avant[8]))
-    if initial[2:10] != ("0", "0", "0", "0", "0", "0", "0", "false"):
+    if initial[2:10] != ("0", "0", "0", "0", "0", "9" if arch == "x86_64" else "0", "0", "false"):
         raise ValueError(f"Le contrôle initial n’est pas au repos : {initial}")
     nombre = [int(n) for n in re.findall(r"LOTS0170 serie=\d+ abandons=(\d+) succes=17", s)]
     if nombre != [125] * 8:
@@ -69,7 +69,8 @@ def fermeture_vi(arch, secteur, dossier):
     if len(avant) != 1 or avant != apres or avant[0][1] != "false" or int(avant[0][2]) == 0:
         raise ValueError(f"Le lot abandonné a modifié les ressources DMA ou soumis une commande : {avant} {apres}")
     cloture = re.findall(r"LOTS0170 fin_session bail=(\d+) quarantaine=(true|false) epinglees=(\d+)", serie)
-    if cloture != [("0", "false", "0")] or "retrait=Ok(())" not in serie:
+    systeme = "9" if arch == "x86_64" else "0"  # Racine, domaine et file VT-d par machine.
+    if cloture != [("0", "false", systeme)] or "retrait=Ok(())" not in serie:
         raise ValueError(f"Restitution matérielle en fin de session non confirmée : {cloture}")
     bilan = re.search(cadres, serie)
     if not bilan or (bilan[1], bilan[3]) != (bilan[2], bilan[4]):
@@ -77,7 +78,7 @@ def fermeture_vi(arch, secteur, dossier):
     return dict(**resultat, cadres_froids_avant=int(froid[1]), cadres_froids_apres=int(froid[2]),
                 cadres_libres_avant=int(bilan[1]),cadres_libres_apres=int(bilan[2]),
                 session_dma_avant_et_apres_refus=int(avant[0][0]), epinglees_session=int(avant[0][2]),
-                kicks_avant_et_apres_refus=int(avant[0][3]), baux_et_pages_dma_fin=0)
+                kicks_avant_et_apres_refus=int(avant[0][3]), baux_actifs_fin=0, cadres_dma_session_fin=0, cadres_dma_machine_fin=int(systeme))
 
 
 if __name__ == "__main__":

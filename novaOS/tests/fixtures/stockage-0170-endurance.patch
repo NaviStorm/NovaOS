@@ -31,11 +31,12 @@
 +}
 --- a/novaOS/kernel/src/memory/mod.rs
 +++ b/novaOS/kernel/src/memory/mod.rs
-@@ -507 +507,5 @@
+@@ -507 +507,6 @@
  }
 +
 +impl Memory {
 +    pub(crate) fn observation_dma(&self) -> u64 { self.dma_frames }
++    pub(crate) fn observation_tables(&self) -> u64 { self.frames.tables }
 +}
 --- a/novaOS/kernel/src/hardware/block/mod.rs
 +++ b/novaOS/kernel/src/hardware/block/mod.rs
