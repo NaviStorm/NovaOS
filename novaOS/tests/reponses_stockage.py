@@ -91,10 +91,10 @@ def verifier_serie(serie, mode):
                 cloture_admission_observee=admission_fermee)
 
 
-def essai(dossier, arch, secteur, scenario):
+def essai(dossier, arch, secteur, scenario, *, attendre_retrait=False):
     mode = MODES[scenario]
     if mode:
-        os.environ["NOVA_ESSAI_REPONSE"] = str(mode)
+        os.environ["NOVA_ESSAI_REPONSE"] = str(7 if attendre_retrait else mode)
     else:
         os.environ.pop("NOVA_ESSAI_REPONSE", None)
     volumes.SIZES, volumes.BLOCKS = (TAILLE,), 4096
@@ -105,6 +105,21 @@ def essai(dossier, arch, secteur, scenario):
     journal = dossier / "sauvegarde.serial"
     with Terminal(arch, secteur, image, "reponse-" + scenario, test=True,
                   journal=journal, diagnostic=True) as vm:
+        if attendre_retrait:
+            # Témoigner du coût à froid des tables persistantes du noyau sur le même support.
+            vm.until(b"nsh> ", 120)
+            vm.vm.stdin.write(b"vi f4194304\n")
+            vm.until(b"\x1b[6n")
+            vm.vm.stdin.write(b"\x1b[24;80R")
+            vm.until("f4194304 [enregistré]".encode())
+            vm.vm.stdin.write(b"\x10:w echauffement\r")
+            vm.until("Saisir OUI puis Entrée : ".encode())
+            vm.vm.stdin.write(b"OUI\r")
+            vm.until("fichier enregistré".encode(), 30, refus="erreur d’E/S".encode())
+            vm.vm.stdin.write(b":q!\r")
+            vm.until(b"nsh> ", 30)
+            vm.vm.stdin.write(b"exit\n")
+            vm.until(b"LOTS0170 temoin termine", 45)
         vm.until(b"nsh> ", 120)
         vm.vm.stdin.write(b"vi f4194304\n")
         vm.until(b"\x1b[6n")
@@ -125,11 +140,11 @@ def essai(dossier, arch, secteur, scenario):
                 vm.until(sonde, 15)
         vm.vm.stdin.write(b":q!\r")
         vm.until(b"nsh> ", 30)
-        if mode != 6:
+        if mode != 6 or attendre_retrait:
             vm.vm.stdin.write(b"exit\n")
             vm.until(b"BLOC session terminee", 45)
     serie = journal.read_text(errors="replace")
-    diagnostic = verifier_serie(serie, mode)
+    diagnostic = verifier_serie(serie.split("LOTS0170 temoin termine")[-1], mode)
     # Lire les octets avant et après un remontage sur une copie du disque arrêté.
     apres = copie_reprise(image)
     arrets = verifier(image, secteur, ids, destination)
