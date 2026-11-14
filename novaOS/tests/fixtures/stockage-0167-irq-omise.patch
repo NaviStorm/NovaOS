@@ -1,0 +1,22 @@
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -50,2 +50,4 @@
+ static USED_ADDR: AtomicU64 = AtomicU64::new(0);
++static QUALIF_IRQ_OMISE: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
++static QUALIF_LECTURES: AtomicU64 = AtomicU64::new(0);
+ static EXPECT: AtomicU64 = AtomicU64::new(0);
+@@ -74,2 +76,8 @@
+                 EXPECT.store(0, Ordering::Release);
++                // Laboratoire : supprimer un seul avis de fin, sans toucher au
++                // vring, à l’IOMMU ni aux contrôles du retrait qui va suivre.
++                if QUALIF_IRQ_OMISE.swap(false, Ordering::AcqRel) {
++                    hal::log(format_args!("DIAG injection irq omise"));
++                    return true;
++                }
+                 IRQS.fetch_add(1, Ordering::Release);
+@@ -174,2 +182,5 @@
++        if opcode == 0 && bytes == PAGE && QUALIF_LECTURES.fetch_add(1, Ordering::Relaxed) == 2029 {
++            QUALIF_IRQ_OMISE.store(true, Ordering::Release);
++        }
+         let n = IRQS.load(Ordering::Acquire);
+         EXPECT.store(

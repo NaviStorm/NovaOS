@@ -49,12 +49,13 @@ def nom(c):
 
 
 class Observation:
-    def __init__(self, politique, charge, instruments):
+    def __init__(self, politique, charge, instruments, *, cpu_moteur=False):
         if politique not in POLITIQUES:
             raise ValueError("Politique processus inconnue")
         self.politique = politique
         self.charge = charge
         self.instruments = instruments
+        self.cpu_moteur = cpu_moteur
         self.resultat = {}
 
     def attacher(self, machine, tid):
@@ -104,16 +105,25 @@ class Observation:
 
         if pid_moteur(self.machine) != self.pid:
             raise RuntimeError("Identité du moteur modifiée avant publication")
+        cpu = []
+        prelever = None
+        if self.cpu_moteur:
+            from cpu_hote_utm import CpuMoteur
+            moteur = CpuMoteur(self.pid)
+            def prelever():
+                cpu.append(moteur.relever())
         capture = self.enregistrer_trace(tracer(self.pid, dossier)) if self.instruments else nullcontext()
         with capture as trace:
             with charger(self.charge, dossier, pression=False) as charge:
                 self.resultat["avant_commande"] = relever(self.utm, self.pid, self.tid)
                 bornes = publier(console, source, destination, None, observer=observateur_disque,
-                                 horodater=horodater)
+                                 mesurer_cpu=prelever, horodater=horodater)
                 self.resultat["apres_commande"] = relever(self.utm, self.pid, self.tid)
         if any(not t["arrete_par_banc"] or not t["debut_ns"] <= bornes[0] <= bornes[2] <= t["fin_ns"]
                for t in charge["ouvriers"]):
             raise RuntimeError("Charge prescrite incomplète")
+        if self.cpu_moteur:
+            self.resultat["cpu_hote_qemu"] = moteur.difference(*cpu)
         self.resultat.update(horloges=horodatages, charge=charge)
         if trace is not None and "erreur_instruments" not in self.resultat:
             try:

@@ -135,6 +135,9 @@ def bilan(profils, temoins, modele, sortie, rapport):
         obs.update(id=ident, mesure_sha256=sha)
         for cle in ("avant", "apres", "pic_cadres_session", "sha256_destination", "sauvegarde_ms", "apres_oui_ms"):
             obs[cle] = m[cle]
+        cpu = m.get("cpu_hote_qemu") or m.get("qos", {}).get("cpu_hote_qemu")
+        if cpu:
+            obs["cpu_hote_qemu"] = cpu
         if releve == "compteurs":
             obs["compteur"] = m["compteur"]
         if plateforme == "utm-aarch64":

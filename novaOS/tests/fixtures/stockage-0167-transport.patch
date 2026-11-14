@@ -1,0 +1,19 @@
+--- a/novaOS/kernel/src/hardware/block/lease.rs
++++ b/novaOS/kernel/src/hardware/block/lease.rs
+@@ -273,5 +273,6 @@
+             .map(|()| d.p.0[20].mem.read_page(page))
+     };
+-    if result.is_err() {
++    if let Err(e) = result {
++        crate::hal::log(format_args!("DIAG portail page lba={lba} erreur={e:?}"));
+         s.phase = Phase::Closed;
+         return Err(abi::REFUSED);
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -105,2 +105,6 @@
+                 crate::runtime::send(port, tag, &f).map_err(|status| {
++                    let msg = alloc::format!("DIAG progression pages={n} erreur={status}");
++                    crate::runtime::call(
++                        crate::runtime::DEBUG_WRITE, msg.as_ptr() as u64, msg.len() as u64, 0,
++                    );
+                     Error::Io(novafs::io::Error(novafs::io::ErrorKind::Status(status)))
