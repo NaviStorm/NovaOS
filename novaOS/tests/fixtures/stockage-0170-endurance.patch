@@ -115,11 +115,11 @@
      fi
 --- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
-@@ -1,2 +1,3 @@
-     fn abandon_sur_attente(&mut self, pid: Pid, thread: Id, canal: u64) {
+@@ -78,2 +78,3 @@
+     pub(super) fn abandon_sur_attente(&mut self, pid: Pid, thread: Id, canal: u64) {
 +        let debut = crate::hal::timer::counter();
          let Some(l) = self.caps(pid).and_then(|c| c.lot) else { return };
-@@ -1,4 +1,5 @@
+@@ -89,4 +90,5 @@
              if !r.en_vol && !r.doute {
                  self.pages_bulk.get_mut(lane.slot)[..8 * r.n].fill(0);
                  lane.reservation = None;

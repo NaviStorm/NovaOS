@@ -1,6 +1,7 @@
 //! Banc de durée de vie sur trois acteurs réels. Un disque fictif est réservé au profil.
 use super::*;
 use crate::hardware::block;
+use core::sync::atomic::AtomicU64;
 
 const TAILLE: u64 = 256;
 const TOURS: usize = 125;
