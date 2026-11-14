@@ -1,0 +1,325 @@
+{
+  "commande": "python3 -B novaOS/tests/saturation_lot.py 13df1dce48677f6fd92256b99b0ab0948bde803a novaOS/build/rejouer-saturation-0166",
+  "environnement": "QEMU direct 11.1.3, un vCPU TCG, 256 Mio, polling, disque RAW jetable, image entière comparée.",
+  "protocole": "Deux processus et la réservation native unique. QMP wait_break atteste la suspension read_aio après le kick et avant la collecte. Le moteur présente un tag neuf et une seconde paire de pages. Le code DENIED et les témoins inchangés sont contrôlés pendant cette suspension. Dans le premier cycle FINIR libère le lot après la collecte. Dans le second IPC_CLOSE renvoie WOULD_BLOCK, la livraison est refusée, puis une fermeture réussie invalide le handle. Les mêmes processus obtiennent un nouveau bail et une délégation valide. Le même descripteur initialement refusé soumet deux pages, ensuite comparées octet par octet. Le registre des lectures QMP est relatif à chaque point de départ et inclut sur x86 les lectures éventuelles du firmware avant le test.",
+  "fifo_ipc": {
+    "description": "Régressions du candidat, cas T05/T06. La file de huit messages admet les huit premiers. Le neuvième non bloquant reçoit WOULD_BLOCK. Un autre émetteur bloquant reprend après retrait. Les tags 0 à 9 sont vérifiés dans l’ordre et avec les longueurs attendues.",
+    "cellules": [
+      {
+        "arch": "aarch64",
+        "ram_mio": 128,
+        "trace": "IPC cas=T05/T06 ns=11771008 OK",
+        "sha256_serie": "775122a720e1f2f3e37f4dfbedb4170aceb0a09722b819dba7e23973595bc068"
+      },
+      {
+        "arch": "aarch64",
+        "ram_mio": 256,
+        "trace": "IPC cas=T05/T06 ns=11604992 OK",
+        "sha256_serie": "c83763cbbb462594cb035cb104ec1ba6ebad6ec99553aa3443e32e58d8ee970c"
+      },
+      {
+        "arch": "x86_64",
+        "ram_mio": 128,
+        "trace": "IPC cas=T05/T06 ns=19698982 OK",
+        "sha256_serie": "123bc1edc176219e95d029bd920879236ed109db50015dbb4480024e11993759"
+      },
+      {
+        "arch": "x86_64",
+        "ram_mio": 256,
+        "trace": "IPC cas=T05/T06 ns=7388731 OK",
+        "sha256_serie": "03ccc4f1e04aff82cb6acd0e8167ef94d38494da47c17a023c68b6c1c816758d"
+      }
+    ]
+  },
+  "saturation_sg": {
+    "revision": "13df1dce48677f6fd92256b99b0ab0948bde803a",
+    "profil": "sans + sonde de saturation",
+    "fixtures": {
+      "io-0166-prototype": "e74cdc265b65fdf9c6bcba8d465f0b3c6b63aebfe556c9656469d1dad4da6094",
+      "io-0166-plages": "da338f6d30ea5e96368df313ec10ab69181fb31a377cf4fefdefda97c63a3041",
+      "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+      "io-0166-virtio-multipage": "f72a3fc351226b0759cb2172c2b0b04d02525ce13f7afe2ce4a12bdeaf7a6f77",
+      "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+      "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d"
+    },
+    "sha256_sonde": "32216c1fff8625ce90dda48040103b74bf7ad081a10c58edf11e1c1f55e14fe0",
+    "sha256_banc": "d5c25b6087b1b130e6a3cf88c3e3ace33c2dd7d70710392d0f95e64399071411",
+    "elfs": {
+      "aarch64": "cfe6f084c97e702f48c1754e24766d6b5db43904af321d494794fe491ad3a4cf",
+      "x86_64": "883627700edb9f6ea4fa8116943fb428132701095497b4ddd64c51c85e778bfa"
+    },
+    "cellules": [
+      {
+        "arch": "aarch64",
+        "secteur": 512,
+        "essais": [
+          {
+            "retrait": false,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              0,
+              0,
+              2
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=false kicks=2 secteur=512"
+          },
+          {
+            "retrait": true,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              2,
+              2,
+              4
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=true kicks=2 secteur=512"
+          }
+        ],
+        "sha256_image_avant": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_image_apres": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_serie": "f1928d2e3fd7f97dd2b85d8e82ac0fa694fb0f99327467405e69136617700276"
+      },
+      {
+        "arch": "aarch64",
+        "secteur": 4096,
+        "essais": [
+          {
+            "retrait": false,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              0,
+              0,
+              2
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=false kicks=2 secteur=4096"
+          },
+          {
+            "retrait": true,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              2,
+              2,
+              4
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=true kicks=2 secteur=4096"
+          }
+        ],
+        "sha256_image_avant": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_image_apres": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_serie": "33d6f844d4644beaf9f170928bbc13bbfefb6dfcc9501ec90628a875772a530a"
+      },
+      {
+        "arch": "x86_64",
+        "secteur": 512,
+        "essais": [
+          {
+            "retrait": false,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              12,
+              12,
+              14
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=false kicks=2 secteur=512"
+          },
+          {
+            "retrait": true,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              14,
+              14,
+              16
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=true kicks=2 secteur=512"
+          }
+        ],
+        "sha256_image_avant": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_image_apres": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_serie": "3d1a7ff91ef9c891acb93066f8358144f0ec6159ad57149bf70c0663abcc6f89"
+      },
+      {
+        "arch": "x86_64",
+        "secteur": 4096,
+        "essais": [
+          {
+            "retrait": false,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              8,
+              8,
+              10
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=false kicks=2 secteur=4096"
+          },
+          {
+            "retrait": true,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              10,
+              10,
+              12
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=true kicks=2 secteur=4096"
+          }
+        ],
+        "sha256_image_avant": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_image_apres": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_serie": "3faec364e6786a838eaf1db7ad8cc55cb0618dfa01ca82f5e7bb4192c014a3a5"
+      }
+    ],
+    "erreurs": []
+  },
+  "campagne_preparatoire": {
+    "profil": "Première ouverture matérielle à froid après création des espaces privés. Le banc final ouvre le transport avant de lancer les deux acteurs, comme storage::volume.",
+    "elfs": {
+      "aarch64": "99d17e0a751f34a51748daaa12d63e2dc5dbde06912c71bca3b89cfdcf62b601",
+      "x86_64": "ed309d67169c6324c648a743a2f7a1f55ff604825c34ebbc75c688125170c3ca"
+    },
+    "sha256_sonde": "78aeeca5ecfaa0f5b85efae485302c06ee8059dfd53308e2b0479d2e105f0bd3",
+    "sha256_banc": "e5270391bf9212271a11016d820fdb5a77e28a1ec6498c62e957759b351e0961",
+    "succes_arm": [
+      {
+        "arch": "aarch64",
+        "secteur": 512,
+        "essais": [
+          {
+            "retrait": false,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              0,
+              0,
+              2
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=false kicks=2 secteur=512"
+          },
+          {
+            "retrait": true,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              2,
+              2,
+              4
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=true kicks=2 secteur=512"
+          }
+        ],
+        "sha256_image_avant": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_image_apres": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_serie": "f1928d2e3fd7f97dd2b85d8e82ac0fa694fb0f99327467405e69136617700276"
+      },
+      {
+        "arch": "aarch64",
+        "secteur": 4096,
+        "essais": [
+          {
+            "retrait": false,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              0,
+              0,
+              2
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=false kicks=2 secteur=4096"
+          },
+          {
+            "retrait": true,
+            "evenement_suspendu": "read_aio",
+            "lectures_terminees": [
+              2,
+              2,
+              4
+            ],
+            "ecritures": 0,
+            "flush": 0,
+            "kicks": 2,
+            "preuve": "SATURATION reprise exacte retrait=true kicks=2 secteur=4096"
+          }
+        ],
+        "sha256_image_avant": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_image_apres": "4a2a702021ff4105025eefc8b401db1abb0a37b6768788e8ff46169089a76e46",
+        "sha256_serie": "33d6f844d4644beaf9f170928bbc13bbfefb6dfcc9501ec90628a875772a530a"
+      }
+    ],
+    "exceptions_x86": [
+      {
+        "secteur": 512,
+        "trace": "#PF adresse=0xffffc90000140034 pc=0xffffffff8007f730 code=0x0 cs=0x28 acces=lecture cause=absente utilisateur=false",
+        "sha256_serie": "734ccd5be06f9be097ff43072240d6ca8e7496eeb69823b148887da732e589e4"
+      },
+      {
+        "secteur": 4096,
+        "trace": "#PF adresse=0xffffc90000140034 pc=0xffffffff8007f730 code=0x0 cs=0x28 acces=lecture cause=absente utilisateur=false",
+        "sha256_serie": "d54a736558fa0fbf38a531df470b958abd4f06affb93be446f384a33d836eb01"
+      }
+    ],
+    "diagnostic": "Avant le premier kick, le PC 0xffffffff8007f730 du premier ELF x86 lit le registre FSTS au décalage 0x34 de la fenêtre VT-d 0xffffc90000140000. AddressSpace::user recopie les entrées PML4 superviseur déjà présentes à la naissance du processus. map_io installe la branche MMIO dans la racine maître. Une première ouverture après la naissance du pilote laisse son espace privé initial dépourvu de cette branche.",
+    "portee": "Dans le candidat x86, les deux appels noyau begin_session précèdent launch_block (storage.rs). Les portails appelables par les processus utilisent un bail déjà attaché. Un futur lanceur qui déléguerait le tout premier transport à un processus préexistant devrait garantir le partage de la nouvelle branche superviseur. Le banc final vérifie en plus la remise en service des mêmes acteurs après fermeture à chaud.",
+    "controles_reprise_publiee": {
+      "dma-flight-512": {
+        "sha256_serie": "249ec15d248d9028a5ad51dbdfc32a414e4cc071f32d6f3d7da7799957799e55",
+        "phases": [
+          "DMA pilote mort transfert_en_vol=true",
+          "DMA utilisateurs mode=2 generation=1 resultats=(Exit(11), Exit(11), Fault(Fault { trap: \"#UD\", access: \"instruction\", cause: \"invalide\", address: 0, syndrome: 0 }))",
+          "DMA utilisateurs mode=1 generation=2 resultats=(Exit(0), Exit(0), Exit(0))"
+        ]
+      },
+      "files-restart-512": {
+        "sha256_serie": "612b8a48b891fa108a567bf42aca1bf2d97cb9568aead43ce508c478c8adaea1",
+        "phases": [
+          "BLOC bilan mode=28 service=Exit(9) bloc=Exit(11) pilote=Exit(11) client=Exit(22) retrait=Ok(()) cycles_retrait=2546000",
+          "BLOC bilan mode=13 service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=496000",
+          "BLOC session terminee ok=true"
+        ]
+      },
+      "dma-flight-4096": {
+        "sha256_serie": "18ba556f5a59405145f6cc9ed93c54420c3411e3de09be4639b5a9fd1ed3c4d1",
+        "phases": [
+          "DMA pilote mort transfert_en_vol=true",
+          "DMA utilisateurs mode=2 generation=1 resultats=(Exit(11), Exit(11), Fault(Fault { trap: \"#UD\", access: \"instruction\", cause: \"invalide\", address: 0, syndrome: 0 }))",
+          "DMA utilisateurs mode=1 generation=2 resultats=(Exit(0), Exit(0), Exit(0))"
+        ]
+      },
+      "files-restart-4096": {
+        "sha256_serie": "aa82e3c47b1a0038b76c9695d37c439077e0ff75a069b3c547df5c91b88d044d",
+        "phases": [
+          "BLOC bilan mode=28 service=Exit(9) bloc=Exit(11) pilote=Exit(11) client=Exit(22) retrait=Ok(()) cycles_retrait=1109000",
+          "BLOC bilan mode=13 service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=313000",
+          "BLOC session terminee ok=true"
+        ]
+      }
+    }
+  },
+  "limites": "Les essais supplémentaires qualifient la saturation de la réservation bloc à une place sur le profil polling. Le nombre maximal de chaînes matérielles parallèles, le profil IRQ et les performances sous UTM relèvent de qualifications distinctes."
+}
