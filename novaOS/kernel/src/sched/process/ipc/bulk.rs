@@ -42,6 +42,24 @@ impl Domain {
     }
 }
 
+/// Interroge le contrat de cette extrémité exacte, sans modifier la boîte ni ses droits.
+pub(in crate::sched::process) fn features(key: u64, direction: u64, version: u64) -> Res<u64> {
+    let right = u32::try_from(direction).map_err(|_| BAD_ARGUMENT)?;
+    if !matches!(right, SEND | RECEIVE) || version != 1 {
+        return Err(BAD_ARGUMENT);
+    }
+    with(|s| {
+        let pid = s.thread(s.current).owner.unwrap();
+        let node = s.ipc.lookup(pid, key, right)?;
+        let Some(lane) = s.ipc.ends.get(node.endpoint.slot()).bulk.as_ref() else {
+            return Ok(0);
+        };
+        let found = lane.handles.iter().zip(lane.parties.iter()).zip(lane.nodes.iter())
+            .any(|((&handle, &owner), id)| handle == key && owner == pid.number && *id == node.id);
+        Ok(if found { IPC_FEATURE_PAGE } else { 0 })
+    })
+}
+
 pub(in crate::sched::process) fn transfer(
     op: u64,
     key: u64,
@@ -111,23 +129,5 @@ pub(in crate::sched::process) fn transfer(
             Ok(Ok(len))
         })
         .unwrap()
-    })
-}
-
-/// Interroge le contrat de cette extrémité exacte, sans modifier la boîte ni ses droits.
-pub(in crate::sched::process) fn features(key: u64, direction: u64, version: u64) -> Res<u64> {
-    let right = u32::try_from(direction).map_err(|_| BAD_ARGUMENT)?;
-    if !matches!(right, SEND | RECEIVE) || version != 1 {
-        return Err(BAD_ARGUMENT);
-    }
-    with(|s| {
-        let pid = s.thread(s.current).owner.unwrap();
-        let node = s.ipc.lookup(pid, key, right)?;
-        let Some(lane) = s.ipc.ends.get(node.endpoint.slot()).bulk.as_ref() else {
-            return Ok(0);
-        };
-        let found = lane.handles.iter().zip(lane.parties.iter()).zip(lane.nodes.iter())
-            .any(|((&handle, &owner), id)| handle == key && owner == pid.number && *id == node.id);
-        Ok(if found { IPC_FEATURE_PAGE } else { 0 })
     })
 }
