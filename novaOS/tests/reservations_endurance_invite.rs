@@ -177,6 +177,19 @@ pub(super) fn run() {
         let rx = moteur.call(IPC_CREATE, 0, 0, 0).unwrap();
         moteur.put(base + 4096, &[0; TAILLE as usize * 8]);
         succes(pilote, moteur, tx, rx, base, epoch, 1);
+        let (root, cap) = ouvrir(pilote, moteur, tx, rx);
+        assert_eq!(reserver(moteur, cap, base, 2, TAILLE), Ok(0));
+        let independant = moteur.call(IPC_CREATE, 0, 0, 0).unwrap();
+        let kicks = block::kicks();
+        fin_attente(moteur, independant, 2, false, None);
+        assert_eq!(with(|s| s.ipc.observation_lots()), (1, TAILLE as usize));
+        assert_eq!(moteur.call(IPC_CLOSE, cap, 0, 0), Ok(0));
+        assert_eq!(with(|s| s.ipc.observation_lots()), (0, 0));
+        assert_eq!(block::kicks(), kicks);
+        assert_eq!(pilote.call(IPC_CLOSE, root, 0, 0), Ok(0));
+        hal::log(format_args!(
+            "LOTS0170 endpoint_independant expiration=8 lot_conserve=256 ferme=0 OK"
+        ));
         stop(enfants, [pilote, moteur, relais]);
         block::retire().unwrap();
     }

@@ -23,6 +23,8 @@ def endurance(arch, secteur, dossier):
     froid, initial, *epochs = lignes
     if (froid[0], initial[0]) != ("froid", "avant") or len(epochs) != 24:
         raise ValueError("Mesures de ressources incomplètes")
+    if s.count("LOTS0170 endpoint_independant expiration=8 lot_conserve=256 ferme=0 OK") != 1:
+        raise ValueError("Isolation de l’attente indépendante non vérifiée")
     generations = []
     for i in range(0, len(epochs), 3):
         avant, apres, fin = epochs[i:i+3]
@@ -45,7 +47,7 @@ def endurance(arch, secteur, dossier):
         raise ValueError("La campagne exige quatre vCPU et une préemption observée")
     if empreinte(banc.image) != empreinte(temoin):
         raise ValueError("Le support de lectures a changé")
-    return dict(abandons=sum(nombre), lectures_confirmees=136, acteurs_recrees=24,
+    return dict(endpoint_independant_verifie=True, abandons=sum(nombre), lectures_confirmees=136, acteurs_recrees=24,
                 snapshots=[dict(zip(("etape","cadres_libres","endpoints","handles","reservations",
                                      "pages_logiques","attentes","cadres_dma","bail","quarantaine",
                                      "generation_IPC"), ligne)) for ligne in lignes],
