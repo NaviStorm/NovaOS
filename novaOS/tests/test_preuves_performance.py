@@ -6,10 +6,30 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+import cli
 from integration_main_performances import empreinte, mesurer
 
 
 class PreuvesPerformance(unittest.TestCase):
+    def test_journal_prive_sans_trace_lourde(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            racine = Path(tmp)
+            (racine / "build").mkdir()
+            journal = racine / "sauvegarde.serial"
+
+            def machine(arch, secteur, image, test, *, iso):
+                iso.write_bytes(b"media synthetique")
+                return ["sh", "-c", "echo fin-du-passage"], {"NOVA_ISO": str(iso)}
+
+            with patch.object(cli, "ROOT", racine), patch.object(cli, "machine", side_effect=machine):
+                with cli.Terminal("aarch64", 512, racine / "volume.raw", "test", journal=journal) as vm:
+                    self.assertEqual(vm.vm.wait(timeout=5), 0)
+            self.assertEqual(journal.read_text().strip(), "fin-du-passage")
+            config = json.loads(journal.with_suffix(".vm.json").read_bytes())
+            self.assertEqual(config["iso_sha256"], empreinte(journal.with_suffix(".iso")))
+            self.assertNotIn("-trace", config["commande"])
+            self.assertEqual(config["octets_secteur"], 512)
+
     def test_erreur_et_volume_conserves(self):
         with tempfile.TemporaryDirectory() as tmp:
             racine = Path(tmp)
