@@ -11,6 +11,12 @@ import sys
 PLATEFORMES = ("qemu-aarch64", "qemu-x86_64", "utm-aarch64")
 CAS = ("neuf-4m", "inserer-milieu", "ajout-4m-multiple")
 BANC = Path(__file__).with_name("integration_mesure.py")
+# Destinations complètes des vecteurs de l'audit fac0342, identiques dans les deux géométries.
+DESTINATIONS = {
+    "neuf-4m": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed",
+    "inserer-milieu": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+    "ajout-4m-multiple": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+}
 
 
 def programme(repetitions):
@@ -39,8 +45,8 @@ def examiner(mesure, plateforme, secteur, cas, sonde, sha):
     m = mesure["mesure"]
     if (m["cas"], m["secteur"], m["sonde"]) != (cas, secteur, sonde):
         raise ValueError("Cellule de mesure incorrecte")
-    if not m["sha256_destination"] or m["apres"][-1] <= m["avant"][-1]:
-        raise ValueError("Relecture ou avancée de génération absente")
+    if m["sha256_destination"] != DESTINATIONS[cas] or m["apres"][-1] <= m["avant"][-1]:
+        raise ValueError("Destination relue différente du témoin ou génération sans avancée")
     if sonde:
         c = m["compteur"]
         if not c.get("lots") or c["bloc"]["flush"]["nombre"] != 2:
@@ -57,6 +63,7 @@ def examiner(mesure, plateforme, secteur, cas, sonde, sha):
 def lancer(a):
     a.sortie.mkdir(parents=True, exist_ok=True)
     sha = {}
+    refus = []
     for version, plateforme, secteur, cas, rep, mode in programme(a.repetitions):
         moteur, arch = plateforme.split("-")
         sonde = mode in ("sonde", "trace-sonde")
@@ -77,9 +84,12 @@ def lancer(a):
         fini = dossier / "fin.json"
         if fini.exists():
             fin = json.loads(fini.read_bytes())
-            if fin["code"] or empreinte(mesure) != fin["sha256_mesure"]:
-                raise ValueError(f"Essai déjà enregistré en erreur ou modifié : {dossier}")
-            examiner(json.loads(mesure.read_bytes()), plateforme, secteur, cas, sonde, sha[elf])
+            if (empreinte(mesure) if mesure.exists() else None) != fin["sha256_mesure"]:
+                raise ValueError(f"Résultat archivé modifié : {dossier}")
+            if fin["code"] or fin.get("refus"):
+                refus.append(nom)
+            else:
+                examiner(json.loads(mesure.read_bytes()), plateforme, secteur, cas, sonde, sha[elf])
             continue
         dossier.mkdir()
         commande = [sys.executable, "-B", BANC, moteur, arch, str(secteur), cas,
@@ -98,10 +108,16 @@ def lancer(a):
                    code=code, version=version, plateforme=plateforme, secteur=secteur,
                    cas=cas, repetition=rep, mode=mode, elf_sha256=sha[elf],
                    sha256_mesure=empreinte(mesure) if mesure.exists() else None)
+        if not code:
+            try:
+                examiner(json.loads(mesure.read_bytes()), plateforme, secteur, cas, sonde, sha[elf])
+            except (OSError, KeyError, ValueError) as e:
+                fin["refus"] = str(e)
         fini.write_text(json.dumps(fin, ensure_ascii=False, indent=2) + "\n")
-        if code:
-            raise RuntimeError(f"Essai en erreur, journaux conservés dans {dossier}")
-        examiner(json.loads(mesure.read_bytes()), plateforme, secteur, cas, sonde, sha[elf])
+        if code or fin.get("refus"):
+            refus.append(nom)
+    if refus:
+        raise RuntimeError(f"{len(refus)} essais en erreur, journaux conservés : {', '.join(refus)}")
 
 
 if __name__ == "__main__":
