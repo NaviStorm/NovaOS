@@ -1,0 +1,369 @@
+{
+  "date": "2026-11-14",
+  "revision_candidat": "13df1dce48677f6fd92256b99b0ab0948bde803a",
+  "qemu": "QEMU emulator version 11.1.3",
+  "image_octets": 1048576,
+  "sha256_image_avant_et_apres": "c18aca0fe394cd6e2bf2065770c6f859ce39657487191d00c54aa246d06f4cb0",
+  "cellules": [
+    {
+      "profil": "polling",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "sha256_elf_instrumente": "93f6a5dcb5e9b72060349af83d5af5be4b8a00238a6fffb43376f265f7174704",
+      "injections": 120,
+      "cycles_retrait": 64,
+      "cadres_machine_apres_retrait": 0,
+      "cadres_session": 16,
+      "relecture_image_identique": true,
+      "journaux": {
+        "ownership": {
+          "sha256": "e258822dc7f4b7d94fca57cd6b3da4fc7699944c4eaf4f4bf6f06d209c5c590d",
+          "observations": [
+            "DMA OWNERSHIP injections=120 cycles=64 final=0 session=16 allocations=16 pertes=0",
+            "DMA lecture historique et PAGE integrales",
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1",
+            "DMA bilan Ok(())"
+          ]
+        },
+        "ownership-storage-read": {
+          "sha256": "e16102f3109391a91e7687a49a900a7fd605eabab1bee85a4f5e5a01e96ab5dc",
+          "observations": [
+            "DEBUG pid=3 DMA secteur revoque trame inchangee",
+            "BLOC bilan mode=5 service=Exit(10) bloc=Exit(11) pilote=Exit(11) client=Exit(10) retrait=Ok(()) cycles_retrait=53000",
+            "BLOC session terminee ok=false"
+          ]
+        },
+        "ownership-storage-page-read": {
+          "sha256": "a1f0c260442ad7436fde8d5aa3f0f6ac215e31fc4a79628d4faf1bfd51cff85a",
+          "observations": [
+            "DEBUG pid=3 DMA page revoquee 4096 octets inchanges",
+            "BLOC bilan mode=10 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(5) retrait=Ok(()) cycles_retrait=44125",
+            "BLOC session terminee ok=false"
+          ]
+        }
+      }
+    },
+    {
+      "profil": "polling",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "sha256_elf_instrumente": "93f6a5dcb5e9b72060349af83d5af5be4b8a00238a6fffb43376f265f7174704",
+      "injections": 120,
+      "cycles_retrait": 64,
+      "cadres_machine_apres_retrait": 0,
+      "cadres_session": 16,
+      "relecture_image_identique": true,
+      "journaux": {
+        "ownership": {
+          "sha256": "e258822dc7f4b7d94fca57cd6b3da4fc7699944c4eaf4f4bf6f06d209c5c590d",
+          "observations": [
+            "DMA OWNERSHIP injections=120 cycles=64 final=0 session=16 allocations=16 pertes=0",
+            "DMA lecture historique et PAGE integrales",
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1",
+            "DMA bilan Ok(())"
+          ]
+        },
+        "ownership-storage-read": {
+          "sha256": "040c115ccf4ce7fceb9becaddde937c90acf4106b67d1eb6a7b28f5004be7d01",
+          "observations": [
+            "DEBUG pid=3 DMA secteur revoque trame inchangee",
+            "BLOC bilan mode=5 service=Exit(10) bloc=Exit(11) pilote=Exit(11) client=Exit(10) retrait=Ok(()) cycles_retrait=47625",
+            "BLOC session terminee ok=false"
+          ]
+        },
+        "ownership-storage-page-read": {
+          "sha256": "b8d6ce488963e4fd2726bd32462b406e3ef3fc27630592afd6228c496211a878",
+          "observations": [
+            "DEBUG pid=3 DMA page revoquee 4096 octets inchanges",
+            "BLOC bilan mode=10 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(5) retrait=Ok(()) cycles_retrait=46063",
+            "BLOC session terminee ok=false"
+          ]
+        }
+      }
+    },
+    {
+      "profil": "polling",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "sha256_elf_instrumente": "165bea6a468080453630cae5c24a090317b15d227921fd054c981dcbb898d774",
+      "injections": 112,
+      "cycles_retrait": 64,
+      "cadres_machine_apres_retrait": 9,
+      "cadres_session": 7,
+      "relecture_image_identique": true,
+      "journaux": {
+        "ownership": {
+          "sha256": "e7b89d47c38159f7a3c12a1e7a1b5b0f64e1bac43c1df0c18997b3c42f5ba3f7",
+          "observations": [
+            "DMA OWNERSHIP injections=112 cycles=64 final=9 session=7 allocations=16 pertes=0",
+            "DMA lecture historique et PAGE integrales",
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1",
+            "DMA bilan Ok(())"
+          ]
+        },
+        "ownership-storage-read": {
+          "sha256": "9ed882a6d2511f1ad002270dc5977ba19947826e269f9c7620a3762017e47242",
+          "observations": [
+            "DEBUG pid=3 DMA secteur revoque trame inchangee",
+            "BLOC bilan mode=5 service=Exit(10) bloc=Exit(11) pilote=Exit(11) client=Exit(10) retrait=Ok(()) cycles_retrait=853000",
+            "BLOC session terminee ok=false"
+          ]
+        },
+        "ownership-storage-page-read": {
+          "sha256": "ed276ca006c64ce1417210dffe9b74cc74ddb5aaebf8d4325f1f0ebc11ef24f5",
+          "observations": [
+            "DEBUG pid=3 DMA page revoquee 4096 octets inchanges",
+            "BLOC bilan mode=10 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(5) retrait=Ok(()) cycles_retrait=1071000",
+            "BLOC session terminee ok=false"
+          ]
+        }
+      }
+    },
+    {
+      "profil": "polling",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "sha256_elf_instrumente": "165bea6a468080453630cae5c24a090317b15d227921fd054c981dcbb898d774",
+      "injections": 112,
+      "cycles_retrait": 64,
+      "cadres_machine_apres_retrait": 9,
+      "cadres_session": 7,
+      "relecture_image_identique": true,
+      "journaux": {
+        "ownership": {
+          "sha256": "3a4412ed1aeaa532b98c7e1f2efb2fb4c3991e587ad1832d5145cd5147aebb9c",
+          "observations": [
+            "DMA OWNERSHIP injections=112 cycles=64 final=9 session=7 allocations=16 pertes=0",
+            "DMA lecture historique et PAGE integrales",
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1",
+            "DMA bilan Ok(())"
+          ]
+        },
+        "ownership-storage-read": {
+          "sha256": "cbb1da08e69bf396f6074b89d73e5fa93ab9be5e6584f912810ee1b2de327956",
+          "observations": [
+            "DEBUG pid=3 DMA secteur revoque trame inchangee",
+            "BLOC bilan mode=5 service=Exit(10) bloc=Exit(11) pilote=Exit(11) client=Exit(10) retrait=Ok(()) cycles_retrait=896000",
+            "BLOC session terminee ok=false"
+          ]
+        },
+        "ownership-storage-page-read": {
+          "sha256": "da664f491d0cd3d56b0320bdaca944e94886389a1c691a34ce0ca293b8943466",
+          "observations": [
+            "DEBUG pid=3 DMA page revoquee 4096 octets inchanges",
+            "BLOC bilan mode=10 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(5) retrait=Ok(()) cycles_retrait=820000",
+            "BLOC session terminee ok=false"
+          ]
+        }
+      }
+    },
+    {
+      "profil": "IRQ",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "sha256_elf_instrumente": "8d0fa23fb7d5d5228eea1eb4c608c1fee22362181277f8b4f437ffe03e086c8a",
+      "injections": 120,
+      "cycles_retrait": 64,
+      "cadres_machine_apres_retrait": 0,
+      "cadres_session": 16,
+      "relecture_image_identique": true,
+      "journaux": {
+        "ownership": {
+          "sha256": "af2311455ab2134a121111c11c02c662769492aed1a1935e63e1174719f0a5f3",
+          "observations": [
+            "DMA OWNERSHIP injections=120 cycles=64 final=0 session=16 allocations=16 pertes=0",
+            "DMA lecture historique et PAGE integrales",
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1",
+            "DMA bilan Ok(())"
+          ]
+        },
+        "ownership-storage-read": {
+          "sha256": "6063af533d5bf9f30f647f1bc3cd0e80dad994022230f7c3ac99f8f7ca9334dc",
+          "observations": [
+            "DEBUG pid=3 DMA secteur revoque trame inchangee",
+            "BLOC bilan mode=5 service=Exit(10) bloc=Exit(11) pilote=Exit(11) client=Exit(10) retrait=Ok(()) cycles_retrait=51937",
+            "BLOC session terminee ok=false"
+          ]
+        },
+        "ownership-storage-page-read": {
+          "sha256": "f2389381cdd0a34ca9e51968e124fce150fc4551fbc825ca9672788ee6bd7edc",
+          "observations": [
+            "DEBUG pid=3 DMA page revoquee 4096 octets inchanges",
+            "BLOC bilan mode=10 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(5) retrait=Ok(()) cycles_retrait=49688",
+            "BLOC session terminee ok=false"
+          ]
+        }
+      }
+    },
+    {
+      "profil": "IRQ",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "sha256_elf_instrumente": "8d0fa23fb7d5d5228eea1eb4c608c1fee22362181277f8b4f437ffe03e086c8a",
+      "injections": 120,
+      "cycles_retrait": 64,
+      "cadres_machine_apres_retrait": 0,
+      "cadres_session": 16,
+      "relecture_image_identique": true,
+      "journaux": {
+        "ownership": {
+          "sha256": "572f58122dd3631fe9b8314e3acd65c6793bbfa03c1de0fc85e324f7a8e1bcd6",
+          "observations": [
+            "DMA OWNERSHIP injections=120 cycles=64 final=0 session=16 allocations=16 pertes=0",
+            "DMA lecture historique et PAGE integrales",
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1",
+            "DMA bilan Ok(())"
+          ]
+        },
+        "ownership-storage-read": {
+          "sha256": "705d3ae7877ac40c52c75f10be15a2e3beb8b1f06355ed0f3d1ec42724e8abae",
+          "observations": [
+            "DEBUG pid=3 DMA secteur revoque trame inchangee",
+            "BLOC bilan mode=5 service=Exit(10) bloc=Exit(11) pilote=Exit(11) client=Exit(10) retrait=Ok(()) cycles_retrait=49875",
+            "BLOC session terminee ok=false"
+          ]
+        },
+        "ownership-storage-page-read": {
+          "sha256": "acfb1f013dc04123b9242b7fe5527241597ca22bf8f6130bc9172962f79dda11",
+          "observations": [
+            "DEBUG pid=3 DMA page revoquee 4096 octets inchanges",
+            "BLOC bilan mode=10 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(5) retrait=Ok(()) cycles_retrait=48187",
+            "BLOC session terminee ok=false"
+          ]
+        }
+      }
+    },
+    {
+      "profil": "IRQ",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "sha256_elf_instrumente": "7cc5c05e90cd13ae7e46ed1b4738fd3d85269c2d1043caaacbf19c1cc6ddf452",
+      "injections": 112,
+      "cycles_retrait": 64,
+      "cadres_machine_apres_retrait": 9,
+      "cadres_session": 7,
+      "relecture_image_identique": true,
+      "journaux": {
+        "ownership": {
+          "sha256": "a9478552bbb2594ed0f6bf5f1e11770ed4c7eff3be48d87581af942d914c425a",
+          "observations": [
+            "DMA OWNERSHIP injections=112 cycles=64 final=9 session=7 allocations=16 pertes=0",
+            "DMA lecture historique et PAGE integrales",
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1",
+            "DMA bilan Ok(())"
+          ]
+        },
+        "ownership-storage-read": {
+          "sha256": "2f61fa1c3236bab5155a3f3a50b55b015245a33e23180c2a96cff916454cc4e3",
+          "observations": [
+            "DEBUG pid=3 DMA secteur revoque trame inchangee",
+            "BLOC bilan mode=5 service=Exit(10) bloc=Exit(11) pilote=Exit(11) client=Exit(10) retrait=Ok(()) cycles_retrait=731000",
+            "BLOC session terminee ok=false"
+          ]
+        },
+        "ownership-storage-page-read": {
+          "sha256": "46c2dafa51fb648cb4015968c668797dacd7f37e755d4ebed389d9eed7a10460",
+          "observations": [
+            "DEBUG pid=3 DMA page revoquee 4096 octets inchanges",
+            "BLOC bilan mode=10 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(5) retrait=Ok(()) cycles_retrait=770000",
+            "BLOC session terminee ok=false"
+          ]
+        }
+      }
+    },
+    {
+      "profil": "IRQ",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "sha256_elf_instrumente": "7cc5c05e90cd13ae7e46ed1b4738fd3d85269c2d1043caaacbf19c1cc6ddf452",
+      "injections": 112,
+      "cycles_retrait": 64,
+      "cadres_machine_apres_retrait": 9,
+      "cadres_session": 7,
+      "relecture_image_identique": true,
+      "journaux": {
+        "ownership": {
+          "sha256": "e9f5ecd18a607f385c1dceb1d72fb92850bc63a4a434eb804fe0d42ff5e23798",
+          "observations": [
+            "DMA OWNERSHIP injections=112 cycles=64 final=9 session=7 allocations=16 pertes=0",
+            "DMA lecture historique et PAGE integrales",
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1",
+            "DMA bilan Ok(())"
+          ]
+        },
+        "ownership-storage-read": {
+          "sha256": "89cb2bbbba2e40d4fb15037c87ef8a5ba03c80098499582a5029db43b7f6f6e0",
+          "observations": [
+            "DEBUG pid=3 DMA secteur revoque trame inchangee",
+            "BLOC bilan mode=5 service=Exit(10) bloc=Exit(11) pilote=Exit(11) client=Exit(10) retrait=Ok(()) cycles_retrait=726000",
+            "BLOC session terminee ok=false"
+          ]
+        },
+        "ownership-storage-page-read": {
+          "sha256": "03ded9f4c76c8bd3c49d0219a6d691fc404a65c4fa73afe6845343d4b29db2dc",
+          "observations": [
+            "DEBUG pid=3 DMA page revoquee 4096 octets inchanges",
+            "BLOC bilan mode=10 service=Exit(5) bloc=Exit(11) pilote=Exit(11) client=Exit(5) retrait=Ok(()) cycles_retrait=825000",
+            "BLOC session terminee ok=false"
+          ]
+        }
+      }
+    }
+  ]
+}
