@@ -1204,7 +1204,7 @@
  mod traffic;
  pub(super) use bulk::{admis, lot, termine, transfer};
 @@ -141,6 +144,8 @@
-     locals: Locals,
+     locals_to_check: u32,
      waits: Waits,
      pages_bulk: bulk::Buffers,
 +    pret: Option<scelle::Pret>,
@@ -1213,7 +1213,7 @@
      issued: u64,
      wakes: u32,
 @@ -157,6 +162,8 @@
-             locals: Pool::new(),
+             locals_to_check: 0,
              waits: Pool::new(),
              pages_bulk: bulk::Buffers::new(),
 +            pret: None,
