@@ -3,7 +3,7 @@
 ## NovaOS v0.17.0 — Candidat SMP en qualification
 
 - Le candidat démarre les processeurs secondaires sur AArch64 et x86_64. Les résultats couvrent 1, 2 et 4 vCPU. L’archive UTM du candidat utilise un vCPU, le stockage classique, le polling VirtIO-blk et NovaFS v0.9.13 P9. [Qualification SMP et archive](novaOS/docs/fusion-smp-v0.17.0.md)
-- L’intégration est suspendue à la clôture d’une réservation du chemin groupé après abandon de la requête. [Qualification du stockage et preuves](novaOS/docs/qualification-stockage-v0.17.0.md)
+- La branche de finalisation corrige la réservation qui survivait à l’abandon d’un lot expérimental. La fusion SMP reste soumise à une nouvelle décision MOA/MOE. [Cycle de vie et requalification](novaOS/docs/reservations-dma-v0.17.0.md) · [Diagnostic initial](novaOS/docs/qualification-stockage-v0.17.0.md)
 
 ## NovaOS v0.16.6
 

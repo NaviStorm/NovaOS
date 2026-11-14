@@ -1,6 +1,8 @@
 # NovaOS v0.17.0 — Qualification du candidat SMP avant fusion
 
-**Fusion suspendue.** Après un refus de sauvegarde par vi, les quatre profils de qualification ont conservé une réservation bloc ouverte de 256 pages. La MOA conditionne la fusion au retrait sûr des ressources. L’origine de l’incident AArch64/512 initial demeure inconnue. [Qualification finale du stockage](qualification-stockage-v0.17.0.md) · [Diagnostic historique et témoins](#diagnostic-du-refus-avant-f2)
+**Fusion suspendue dans l’attente d’une nouvelle décision MOA/MOE.** Le diagnostic ci-dessous porte sur le candidat avant correction. Les essais du correctif sont consignés dans la [requalification des réservations](reservations-dma-v0.17.0.md).
+
+Après un refus de sauvegarde par vi, les quatre profils de qualification ont conservé une réservation bloc ouverte de 256 pages. La MOA conditionne la fusion au retrait sûr des ressources. L’origine de l’incident AArch64/512 initial demeure inconnue. [Qualification finale du stockage](qualification-stockage-v0.17.0.md) · [Diagnostic historique et témoins](#diagnostic-du-refus-avant-f2)
 
 Le candidat SMP `835b9d9dd817a2feef54b6c17f000b0aec8a3879` descend du précédent `main`, `3e14a50bb5bc7960d16c1fbcfc7f49a681d6e7c6`. Le noyau, le service NovaOS de stockage et les commandes de la construction `b76c863c9302bf6ead53fac3b80b26df0513fe0d` portent la version 0.17.0. Les sources du moteur NovaFS et de l’ABI ont les mêmes objets Git qu’au départ, respectivement `3379ccd023e821e912130c7413113fe7546070cc` et `a70d5f23ae91211dd7a54c429e723f5157600e58`. [Historique SMP](smp-v0.17.0.md) · [Phase 2](smp-phase2-v0.17.0.md) · [Résultats IPC de phase 4](ipc-smp-phase4-v0.17.0.md)
 
@@ -85,7 +87,7 @@ Le même scénario a été exercé sur 56 images avec observation des échanges 
 
 Le banc conserve maintenant, à côté du rapport, le disque et la série de chaque passage en échec. La série de la reprise est également conservée si celle-ci a démarré. Le banc a été vérifié en provoquant une interruption du test avant `OUI`, puis en conduisant une véritable coupure en vol F2 jusqu’au remontage. Les copies de série gardent les emplacements historiques utilisés par les autres scripts. [Banc de coupures](../tests/coupure_cow_groupee.py) · [Terminal du banc](../tests/cli.py)
 
-**Arbitrage au commit `e08b979`.** La MOA avait alors demandé de retrouver la première erreur de l’essai d’origine. Son mandat suivant autorise l’acceptation de la cause inconnue sous neuf conditions de sûreté. Le test du cycle de vie des réservations échoue et suspend la fusion. [Décision et résultats de la dernière campagne](qualification-stockage-v0.17.0.md)
+**Arbitrage au commit `e08b979`.** La MOA avait alors demandé de retrouver la première erreur de l’essai d’origine. Son mandat suivant autorise l’acceptation de la cause inconnue sous neuf conditions de sûreté. Le test du cycle de vie des réservations a échoué sur ce candidat et a suspendu la fusion. [Décision et résultats de la dernière campagne](qualification-stockage-v0.17.0.md)
 
 ### Reproduire la collecte sur une nouvelle image
 

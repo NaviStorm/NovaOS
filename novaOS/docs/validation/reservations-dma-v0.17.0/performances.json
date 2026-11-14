@@ -1,0 +1,1209 @@
+{
+  "scenario": "ajout-4m-multiple",
+  "source_mio": 4,
+  "ajouts_mio": 4,
+  "destination_mio": 8,
+  "secteur": 4096,
+  "vcpu": 4,
+  "ram_mio": 256,
+  "dossier_ignore": "performance-cd5e45f-ioll3cyx",
+  "hote": "macOS 27.2 (26B123)",
+  "qemu_direct": "11.1.3 TCG / raw",
+  "utm": "5.0.8 (128) / QEMU 10.0.12 TCG / QCOW2",
+  "condition": "commandes enregistrées dans les bilans privés ; empreinte de chaque support et fichier revérifiée",
+  "mesures": [
+    {
+      "cellule": "apres-pendant-regressions/qemu-aarch64",
+      "plateforme": "qemu-aarch64",
+      "releve": "compteurs",
+      "revision": "f0e5020db3a1a3b95207480624174ae90414269f",
+      "debut_utc": "2026-11-14T18:34:24.271132+00:00",
+      "noyau_sha256": "58c1c45dca3b7515766f7bdb43751f03dcad522abb131ad44fdc02e2f3752210",
+      "provenance_sha256": "81017e11fc0113e8a5c93f908b73a3a887fccc6e6a0316a6e66160343a4bae81",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        85.775390625,
+        36.31298828125,
+        22.1796875
+      ],
+      "charge_hote_apres": [
+        67.6181640625,
+        39.17529296875,
+        24.1025390625
+      ],
+      "commande_au_succes_ms": 337.184,
+      "confirmation_au_succes_ms": 282.066,
+      "f1_f2_physiques_ms": [
+        2.113,
+        0.172
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9751,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "9c89f6965ece1c9a9eb260fef47109cde62b682e57ea2340bcb7e123a666c69c",
+      "serie_sha256": "f8a6c434705207c87f3bb7e7c39d35fa3dcf68b8be372e8937cb597ebf168748",
+      "inventaire_externe_sha256": "9c93ffff78dfcfafb8d46b1dad9bea1e1b0c9372e689406687189ee0fdf2875a",
+      "inventaire_interne_sha256": "9535073d5bb5f9f3f77e8c97dfd5057888f107647850362e58c8800b6e0b4e4a"
+    },
+    {
+      "cellule": "apres-pendant-regressions/qemu-x86_64",
+      "plateforme": "qemu-x86_64",
+      "releve": "compteurs",
+      "revision": "f0e5020db3a1a3b95207480624174ae90414269f",
+      "debut_utc": "2026-11-14T18:35:16.438857+00:00",
+      "noyau_sha256": "c428f04c8ddcd96942c6ad44c7b30fc5d94296d93d04fb75f539dc3f4fcb2bbd",
+      "provenance_sha256": "81017e11fc0113e8a5c93f908b73a3a887fccc6e6a0316a6e66160343a4bae81",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        67.6181640625,
+        39.17529296875,
+        24.1025390625
+      ],
+      "charge_hote_apres": [
+        55.57958984375,
+        39.0185546875,
+        24.56884765625
+      ],
+      "commande_au_succes_ms": 593.147,
+      "confirmation_au_succes_ms": 493.137,
+      "f1_f2_physiques_ms": [
+        1.75,
+        0.135
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "pic_cadres_session": 9754,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "09741a1adde508398515dd977f7efc282d4b5753b123fb24893264d5a9d6800e",
+      "serie_sha256": "f08a88f9ab3e1c22797c8b7b242f6a5261de729fca33e2575413e9d499316731",
+      "inventaire_externe_sha256": "ccaf672ec1f4a24e85b3abac5feef08bca8d9d8c4629f506b4f0863d1ece3107",
+      "inventaire_interne_sha256": "23d1851e3bfea05689194becab85573e5232c30b62f65cd1b7474d4ec601cbc2"
+    },
+    {
+      "cellule": "apres-pendant-regressions/utm-aarch64",
+      "plateforme": "utm-aarch64",
+      "releve": "compteurs",
+      "revision": "f0e5020db3a1a3b95207480624174ae90414269f",
+      "debut_utc": "2026-11-14T18:33:59.284849+00:00",
+      "noyau_sha256": "d87f2029d7038fc2785cf476b3574a41e65f7d2e1791da83e2ee29de31f44bce",
+      "provenance_sha256": "4d5e3fef95068b8953842d96ff8f1251242e1571442e3bd0aacfc5a62310c005",
+      "modele_utm": {
+        "config.plist": "99262639b7f69177170445170e3d5ff0732c92529f2a70c51f87aa5d0b25e174",
+        "Data/code.fd": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "Data/variables.fd": "f6c6b00e12c88818f71e0a3fcba47dfc7d0424ae212d7684c5f98f1bec32592b"
+      },
+      "charge_hote_avant": [
+        72.05859375,
+        29.14306640625,
+        19.2802734375
+      ],
+      "charge_hote_apres": [
+        70.783203125,
+        37.73974609375,
+        23.25048828125
+      ],
+      "commande_au_succes_ms": 398.116,
+      "confirmation_au_succes_ms": 303.953,
+      "f1_f2_physiques_ms": [
+        3.569,
+        0.193
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9732,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        68,
+        69
+      ],
+      "valeurs_image": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7733248,
+        "cluster-size": 65536
+      },
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "08de59f24903efe380bd2b735a5d58797656df88bb17e67a92814bf7ee53609a",
+      "serie_sha256": "611bdbd22860a766cca77656c636a8002b207832ed40205789279eee4eff1d52",
+      "inventaire_externe_sha256": "8598f95f5e4d0d3ee76dc633dcf38e5f7a24cee3136a5055c925d2bf78313429",
+      "inventaire_interne_sha256": "e8e76039f8d296062c7a970760d5b1186d7bc233d97979bbae35b3702e8b4bc4"
+    },
+    {
+      "cellule": "controle-banc/qemu-aarch64",
+      "plateforme": "qemu-aarch64",
+      "releve": "compteurs",
+      "revision": "cd5e45f86540db09a218ac262609c4d68c00c275",
+      "debut_utc": "2026-11-14T18:14:01.862158+00:00",
+      "noyau_sha256": "f9caa779f355c37f140fc84ff81689e5cce0dcdd36ddfca43c3bfca7629b7ddd",
+      "provenance_sha256": "bae9bf7ece9c66070221fb760ef9449e53cce1b6a469906fa00eb07b4810cc6b",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        27.67236328125,
+        29.990234375,
+        18.2578125
+      ],
+      "charge_hote_apres": [
+        23.708984375,
+        28.93701171875,
+        18.15185546875
+      ],
+      "commande_au_succes_ms": 220.283,
+      "confirmation_au_succes_ms": 164.351,
+      "f1_f2_physiques_ms": [
+        1.316,
+        0.089
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9751,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "ab970c7c8f9091514af888555318ea043abb24467dec5f7bc66fa86f5014382f",
+      "serie_sha256": "c47e861b714888a8d55fd59d8deba92f17e5f39ada62a8d286129210bdf3e72c",
+      "inventaire_externe_sha256": "316453da1c91b43aa696275b3685cfa003519762e8f6e1a49df69e75c9b4a2e0",
+      "inventaire_interne_sha256": "f4531a1a6b0d298807e955ad36f39ac853e4e65c6e79d7d77fc2d9bc060928b9"
+    },
+    {
+      "cellule": "controle-banc/qemu-x86_64",
+      "plateforme": "qemu-x86_64",
+      "releve": "compteurs",
+      "revision": "cd5e45f86540db09a218ac262609c4d68c00c275",
+      "debut_utc": "2026-11-14T18:14:21.222152+00:00",
+      "noyau_sha256": "f503b253f7ed3f3dd8f9a9e25bea653f061623a03f0635126db73ace705d3518",
+      "provenance_sha256": "bae9bf7ece9c66070221fb760ef9449e53cce1b6a469906fa00eb07b4810cc6b",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        23.708984375,
+        28.93701171875,
+        18.15185546875
+      ],
+      "charge_hote_apres": [
+        22.3212890625,
+        28.46240234375,
+        18.10888671875
+      ],
+      "commande_au_succes_ms": 290.233,
+      "confirmation_au_succes_ms": 243.475,
+      "f1_f2_physiques_ms": [
+        1.291,
+        0.329
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "pic_cadres_session": 9754,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "7af23dca380a7009135328b2f9b007fd89b907e457a82690516356b120a90766",
+      "serie_sha256": "1416b117557a2e9d7e40663058c9c49d32512867ace68eab5b0f4ce5ef0a5f9b",
+      "inventaire_externe_sha256": "be5db58cbdcbde10a0223bdbb7b51a88d188f31d9f39c86acab1611a427ca295",
+      "inventaire_interne_sha256": "f3c85c61702bbf4c36bd2f63571a4837bb953af3b08623cf24a0c258a67d1c51"
+    },
+    {
+      "cellule": "controle-banc/utm-aarch64",
+      "plateforme": "utm-aarch64",
+      "releve": "compteurs",
+      "revision": "cd5e45f86540db09a218ac262609c4d68c00c275",
+      "debut_utc": "2026-11-14T18:11:30.462332+00:00",
+      "noyau_sha256": "b99c6da34589d2dc2004a01a1990c13ea95b1096edfd513b5951d01ca51422c1",
+      "provenance_sha256": "ac7d3374225b8c0af2c3d24423e7adcf617c559c1d5cae5aa947061dbabc9964",
+      "modele_utm": {
+        "config.plist": "99262639b7f69177170445170e3d5ff0732c92529f2a70c51f87aa5d0b25e174",
+        "Data/code.fd": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "Data/variables.fd": "f6c6b00e12c88818f71e0a3fcba47dfc7d0424ae212d7684c5f98f1bec32592b"
+      },
+      "charge_hote_avant": [
+        53.99462890625,
+        27.1923828125,
+        14.90576171875
+      ],
+      "charge_hote_apres": [
+        22.61083984375,
+        28.62255859375,
+        18.10400390625
+      ],
+      "commande_au_succes_ms": 1385.665,
+      "confirmation_au_succes_ms": 1092.279,
+      "f1_f2_physiques_ms": [
+        2.869,
+        0.25
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9732,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        68,
+        69
+      ],
+      "valeurs_image": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7733248,
+        "cluster-size": 65536
+      },
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "1f3dcfcb78560b57afa22190ce49d4637d6d563d1287f29cbb378d640934560c",
+      "serie_sha256": "965fecf718281ced2d54966d1433ccec19bb9c83d5baa859fefd253cd1ce2346",
+      "inventaire_externe_sha256": "2e43b819545002679d72057c0328c05c6adda68a3a4242927df6cdd297c4a7f8",
+      "inventaire_interne_sha256": null
+    },
+    {
+      "cellule": "final-pendant-regressions/qemu-aarch64",
+      "plateforme": "qemu-aarch64",
+      "releve": "compteurs",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:41:40.392344+00:00",
+      "noyau_sha256": "41a0d8b877e5697c02475ad90828b3c3faa8de759c3e3e166cfabfbe21a4fca9",
+      "provenance_sha256": "6ecf36c9090640b864b5a3a90dca38fc4a61fa0ea7299714104526680c155bcf",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        65.685546875,
+        42.396484375,
+        30.37451171875
+      ],
+      "charge_hote_apres": [
+        56.087890625,
+        42.7236328125,
+        30.986328125
+      ],
+      "commande_au_succes_ms": 386.899,
+      "confirmation_au_succes_ms": 335.143,
+      "f1_f2_physiques_ms": [
+        1.527,
+        0.454
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9751,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "c09896acf2326ff4c4e4e46770c9aef5036a53d5d520942ae14cc10e3c0e6f69",
+      "serie_sha256": "4c2e5f38ebcedabb15a628e151d90df42d11b8c6e0c77065457445113c7b2c8a",
+      "inventaire_externe_sha256": "53fd78cfec20eedd3323d74da3cd013c5e8382ee0a9f95752bc34a1132623dc7",
+      "inventaire_interne_sha256": "45c895932e41167b93f1a103be99cbdc9671595e520f39132ac4a5a97bd35453"
+    },
+    {
+      "cellule": "final-pendant-regressions/qemu-x86_64",
+      "plateforme": "qemu-x86_64",
+      "releve": "compteurs",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:42:16.436636+00:00",
+      "noyau_sha256": "762b62c19765b7e19e81f4ab614f5f5bbdd56165456741ed2d566359c4019ab4",
+      "provenance_sha256": "6ecf36c9090640b864b5a3a90dca38fc4a61fa0ea7299714104526680c155bcf",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        56.087890625,
+        42.7236328125,
+        30.986328125
+      ],
+      "charge_hote_apres": [
+        49.484375,
+        42.15673828125,
+        31.11572265625
+      ],
+      "commande_au_succes_ms": 616.004,
+      "confirmation_au_succes_ms": 445.176,
+      "f1_f2_physiques_ms": [
+        1.49,
+        0.222
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "pic_cadres_session": 9754,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "cfd17f4923e60497df0c2bdf7000d56a4cb129214889fa7f24df73de3cc9465e",
+      "serie_sha256": "c0744e99ae0dfad797684f7913a15342d5d69e63fad8a8560422ab9bcc71ff39",
+      "inventaire_externe_sha256": "9fa13076ed3bced690b8689dc5411b5b410319d831c4109aa349e55c689599ee",
+      "inventaire_interne_sha256": "26917bbd98714c577f9c4dd520627dd1f9a65dd8e9b2e0be7a11e38cb256df9e"
+    },
+    {
+      "cellule": "final-pendant-regressions/utm-aarch64",
+      "plateforme": "utm-aarch64",
+      "releve": "compteurs",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:41:35.773554+00:00",
+      "noyau_sha256": "5c34ef0b6dd109c60f0e15cc7035abab5100978d4c062371b46b70e1aedbe939",
+      "provenance_sha256": "71567660881f3e759bc08b5d8b8adc9b0308195d8df4585946bbbf85372569e2",
+      "modele_utm": {
+        "config.plist": "99262639b7f69177170445170e3d5ff0732c92529f2a70c51f87aa5d0b25e174",
+        "Data/code.fd": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "Data/variables.fd": "f6c6b00e12c88818f71e0a3fcba47dfc7d0424ae212d7684c5f98f1bec32592b"
+      },
+      "charge_hote_avant": [
+        58.86865234375,
+        40.681640625,
+        29.705078125
+      ],
+      "charge_hote_apres": [
+        25.5283203125,
+        36.4853515625,
+        31.197265625
+      ],
+      "commande_au_succes_ms": 569.801,
+      "confirmation_au_succes_ms": 507.644,
+      "f1_f2_physiques_ms": [
+        6.281,
+        7.078
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9732,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        68,
+        69
+      ],
+      "valeurs_image": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7733248,
+        "cluster-size": 65536
+      },
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "a9488ba875a0effffa6cba057c0435bdbd0fce89ed8c863ce2011500e88fbcea",
+      "serie_sha256": "281b517edfcec7f20ded0f6b620c1e0d3dfebf27d1c1d9e550ce7f235d1b5f58",
+      "inventaire_externe_sha256": "20054e2131e93dc0b97c50fa4d7bdf72a7449bd1819def4984d9ec8606bc14a1",
+      "inventaire_interne_sha256": "d5ea87017cde11f3887fe24ce9307fa0ab300b2d75c69a1ce294b8549d3533d8"
+    },
+    {
+      "cellule": "final-sequentiel/qemu-aarch64",
+      "plateforme": "qemu-aarch64",
+      "releve": "compteurs",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:50:06.148770+00:00",
+      "noyau_sha256": "41a0d8b877e5697c02475ad90828b3c3faa8de759c3e3e166cfabfbe21a4fca9",
+      "provenance_sha256": "6ecf36c9090640b864b5a3a90dca38fc4a61fa0ea7299714104526680c155bcf",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        4.9814453125,
+        22.13671875,
+        26.5
+      ],
+      "charge_hote_apres": [
+        5.60546875,
+        21.4287109375,
+        26.17041015625
+      ],
+      "commande_au_succes_ms": 165.876,
+      "confirmation_au_succes_ms": 137.226,
+      "f1_f2_physiques_ms": [
+        1.422,
+        0.42
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9751,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "9cca05cedfaf4d98153e7e6ccce0521a2df23acc588e659fa4576190ab8ede4b",
+      "serie_sha256": "f0408fa63606f01e8ddc48bc2299effabfc8e20f4873cd2dacd7c02c538eb1eb",
+      "inventaire_externe_sha256": "5d10983d4ec45d37a7fdb6ce2549ed0e210e527fcd08e26364559fa361e0eb0d",
+      "inventaire_interne_sha256": "ac842f83e174b4657e6e7b909870c9d3c806d341d454f4c5a359f5c91088bcb1"
+    },
+    {
+      "cellule": "final-sequentiel/qemu-x86_64",
+      "plateforme": "qemu-x86_64",
+      "releve": "compteurs",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:50:22.562157+00:00",
+      "noyau_sha256": "762b62c19765b7e19e81f4ab614f5f5bbdd56165456741ed2d566359c4019ab4",
+      "provenance_sha256": "6ecf36c9090640b864b5a3a90dca38fc4a61fa0ea7299714104526680c155bcf",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        5.60546875,
+        21.4287109375,
+        26.17041015625
+      ],
+      "charge_hote_apres": [
+        5.83203125,
+        20.95361328125,
+        25.94580078125
+      ],
+      "commande_au_succes_ms": 231.672,
+      "confirmation_au_succes_ms": 202.711,
+      "f1_f2_physiques_ms": [
+        1.283,
+        0.399
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "pic_cadres_session": 9754,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "af22dacf42eeded092aded202c7b3da4784aaee3c200a88ad0e112bd755d7914",
+      "serie_sha256": "fd870447b225884d1aa40188f128641ae7cdbf9fb8ae62dc62455edc24feef4e",
+      "inventaire_externe_sha256": "d742bb7f643fde75462cde8bf9c7be4e595b7f5ef57444be5821b08178953fe5",
+      "inventaire_interne_sha256": "6365c0370f52ead33a5de9d1a9eb4fd10021fc9b6548d7c7526703ea1a3c666d"
+    },
+    {
+      "cellule": "final-sequentiel/utm-aarch64",
+      "plateforme": "utm-aarch64",
+      "releve": "compteurs",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:51:06.270295+00:00",
+      "noyau_sha256": "5c34ef0b6dd109c60f0e15cc7035abab5100978d4c062371b46b70e1aedbe939",
+      "provenance_sha256": "71567660881f3e759bc08b5d8b8adc9b0308195d8df4585946bbbf85372569e2",
+      "modele_utm": {
+        "config.plist": "99262639b7f69177170445170e3d5ff0732c92529f2a70c51f87aa5d0b25e174",
+        "Data/code.fd": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "Data/variables.fd": "f6c6b00e12c88818f71e0a3fcba47dfc7d0424ae212d7684c5f98f1bec32592b"
+      },
+      "charge_hote_avant": [
+        5.5,
+        19.18994140625,
+        25.1005859375
+      ],
+      "charge_hote_apres": [
+        4.65185546875,
+        15.34716796875,
+        23.0224609375
+      ],
+      "commande_au_succes_ms": 810.102,
+      "confirmation_au_succes_ms": 722.057,
+      "f1_f2_physiques_ms": [
+        4.891,
+        0.339
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9732,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        68,
+        69
+      ],
+      "valeurs_image": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7733248,
+        "cluster-size": 65536
+      },
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "9767a640538ac03cbf3f1272c718e3ce610661cc73ee59e91107a492893b86ca",
+      "serie_sha256": "6b078e37068a809b3a8494631a574e4e36c5256b4683f9875d33611b64fc8dfa",
+      "inventaire_externe_sha256": "5b61e8f3c765fa7a3540a143a670188e819fd1505de9643911d288c20b272ee7",
+      "inventaire_interne_sha256": "fd2b114dc0078c4ecb33ffd71ef43775d9671c9ff1f1343748ba94c6b9e74b45"
+    },
+    {
+      "cellule": "ordinaire-apres/qemu-aarch64",
+      "plateforme": "qemu-aarch64",
+      "releve": "ordinaire",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:47:59.612258+00:00",
+      "noyau_sha256": "2692ce62c562fccb1dca2643950e02cf88d46b793802ac133563d5308fea82f7",
+      "provenance_sha256": "a866779b8be6649cd76451750786794b0a7ef61c91a1d57c35fa88ca931510dc",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        19.64404296875,
+        32.0458984375,
+        30.1904296875
+      ],
+      "charge_hote_apres": [
+        17.75927734375,
+        30.82470703125,
+        29.79541015625
+      ],
+      "commande_au_succes_ms": 172.539,
+      "confirmation_au_succes_ms": 142.062,
+      "f1_f2_physiques_ms": null,
+      "barrieres": null,
+      "ipc": null,
+      "ipc_controles_compris": null,
+      "ipc_liaisons": null,
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9751,
+      "cadres_dma_arene": null,
+      "kicks": null,
+      "interruptions": null,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "46265b5c63b39de0963a0e843ea395b6ef524d5bd6948da0cbc41b12ac5944ac",
+      "serie_sha256": "cbaaa382078fe128d4cf7b8fe3fc4248f8274802e7647846be755ea63b91df2b",
+      "inventaire_externe_sha256": "c78cc491b91dbc0905dee3b3145bcaaba0df8cef5c0da0c542796eef8c499743",
+      "inventaire_interne_sha256": "45ea00d507fc93e9e36f622c41fcfd7e197dbb544439ec8b32407e69a87154cd"
+    },
+    {
+      "cellule": "ordinaire-apres/qemu-x86_64",
+      "plateforme": "qemu-x86_64",
+      "releve": "ordinaire",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:48:16.349136+00:00",
+      "noyau_sha256": "bc99aa62e4aa88e7a02f9c202ef05deea234bd5c2315fc987d894b0b719732d7",
+      "provenance_sha256": "a866779b8be6649cd76451750786794b0a7ef61c91a1d57c35fa88ca931510dc",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        17.75927734375,
+        30.82470703125,
+        29.79541015625
+      ],
+      "charge_hote_apres": [
+        15.9638671875,
+        30.00732421875,
+        29.51708984375
+      ],
+      "commande_au_succes_ms": 229.368,
+      "confirmation_au_succes_ms": 202.208,
+      "f1_f2_physiques_ms": null,
+      "barrieres": null,
+      "ipc": null,
+      "ipc_controles_compris": null,
+      "ipc_liaisons": null,
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "pic_cadres_session": 9753,
+      "cadres_dma_arene": null,
+      "kicks": null,
+      "interruptions": null,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "bc33148433d7230ad16a69585c65d09fb3f1058e342310e836f8e5d72364a655",
+      "serie_sha256": "fdc0267c68d50fb294bc626be63b2672c47fe3e404558a7324f7ee9e87967899",
+      "inventaire_externe_sha256": "8752bd23e31fadd30c2c0f5e1725ff3afadd1085d5c1a48068c659062bdd7cba",
+      "inventaire_interne_sha256": "97395e51f680d085f22af2bcb4a207f00b0b9190680d8ea49b74831d520898c8"
+    },
+    {
+      "cellule": "ordinaire-apres/utm-aarch64",
+      "plateforme": "utm-aarch64",
+      "releve": "ordinaire",
+      "revision": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+      "debut_utc": "2026-11-14T18:49:31.714431+00:00",
+      "noyau_sha256": "2851fc76bed5d6779e4373167ade099a35a75387559af054ffd098ac8a50e06a",
+      "provenance_sha256": "7d92b194f7a97a499b72c2ee50466dbcc62ef4696c3e05edc4ec3376cc82d511",
+      "modele_utm": {
+        "config.plist": "99262639b7f69177170445170e3d5ff0732c92529f2a70c51f87aa5d0b25e174",
+        "Data/code.fd": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "Data/variables.fd": "f6c6b00e12c88818f71e0a3fcba47dfc7d0424ae212d7684c5f98f1bec32592b"
+      },
+      "charge_hote_avant": [
+        6.8271484375,
+        24.56982421875,
+        27.5068359375
+      ],
+      "charge_hote_apres": [
+        5.5,
+        19.18994140625,
+        25.1005859375
+      ],
+      "commande_au_succes_ms": 875.461,
+      "confirmation_au_succes_ms": 755.747,
+      "f1_f2_physiques_ms": null,
+      "barrieres": null,
+      "ipc": null,
+      "ipc_controles_compris": null,
+      "ipc_liaisons": null,
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9732,
+      "cadres_dma_arene": null,
+      "kicks": null,
+      "interruptions": null,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        68,
+        69
+      ],
+      "valeurs_image": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7733248,
+        "cluster-size": 65536
+      },
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "d51065be40b2f17d519beeaf23ef98fe8947fdf1af5d97c343b83fa088c6d965",
+      "serie_sha256": "dbd4da813a1fdb548c3aeee6fbcb286f93181bc540e0d16ab2ae48e6a321eb7b",
+      "inventaire_externe_sha256": "48130b4dec79e34614ad8a5842463f1fe1ed37ed554ac7c74b7fdfe0256859aa",
+      "inventaire_interne_sha256": "875076870662e856d7d6b7c01d61c558318e8e832e37a43898183bde401b02d6"
+    },
+    {
+      "cellule": "ordinaire-avant/qemu-aarch64",
+      "plateforme": "qemu-aarch64",
+      "releve": "ordinaire",
+      "revision": "cd5e45f86540db09a218ac262609c4d68c00c275",
+      "debut_utc": "2026-11-14T18:47:31.785107+00:00",
+      "noyau_sha256": "d8e65dcbf8ec02b9ba711aeea96095d4f266125b672793807e29f024bc031647",
+      "provenance_sha256": "044d194dab51e90941262783f5df06e094a9a9c6a9bc161f13c7b2b7c6dc9356",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        27.8369140625,
+        34.5126953125,
+        30.978515625
+      ],
+      "charge_hote_apres": [
+        22.57421875,
+        33.01806640625,
+        30.5068359375
+      ],
+      "commande_au_succes_ms": 171.311,
+      "confirmation_au_succes_ms": 136.47,
+      "f1_f2_physiques_ms": null,
+      "barrieres": null,
+      "ipc": null,
+      "ipc_controles_compris": null,
+      "ipc_liaisons": null,
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9751,
+      "cadres_dma_arene": null,
+      "kicks": null,
+      "interruptions": null,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "6437d2271c2704c1ada19831c8e4d265bb7e767eb9b4e3a1214f38114d0c29ff",
+      "serie_sha256": "827cba5854bc01dd476612162a2c8d27a9aac632841153f1957b33de9979eaaf",
+      "inventaire_externe_sha256": "cc3e3eb3725765ea98ee1a590700051e16f84bc6a99d7c2a148d4d22b8b1640d",
+      "inventaire_interne_sha256": "3afaa4d2944bfc2f3f1909a5bc99e6f3983bdce70684fcb6767f71d722b19ca4"
+    },
+    {
+      "cellule": "ordinaire-avant/qemu-x86_64",
+      "plateforme": "qemu-x86_64",
+      "releve": "ordinaire",
+      "revision": "cd5e45f86540db09a218ac262609c4d68c00c275",
+      "debut_utc": "2026-11-14T18:47:48.626549+00:00",
+      "noyau_sha256": "1e7c3568119e103ad17f5d2eed38fc1d501ca1be9ace2529a393679da5635281",
+      "provenance_sha256": "044d194dab51e90941262783f5df06e094a9a9c6a9bc161f13c7b2b7c6dc9356",
+      "modele_utm": null,
+      "charge_hote_avant": [
+        22.57421875,
+        33.01806640625,
+        30.5068359375
+      ],
+      "charge_hote_apres": [
+        19.64404296875,
+        32.0458984375,
+        30.1904296875
+      ],
+      "commande_au_succes_ms": 231.321,
+      "confirmation_au_succes_ms": 202.409,
+      "f1_f2_physiques_ms": null,
+      "barrieres": null,
+      "ipc": null,
+      "ipc_controles_compris": null,
+      "ipc_liaisons": null,
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3828,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "pic_cadres_session": 9753,
+      "cadres_dma_arene": null,
+      "kicks": null,
+      "interruptions": null,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        67,
+        68
+      ],
+      "valeurs_image": null,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "6de46b824080c4b8b24508740504382d4f9423cf1f86fac73867533b541ed12c",
+      "serie_sha256": "f87b6e0e25af08d9adf082c7f75e988b95fc3462167689943ecbf6e5bbb742a7",
+      "inventaire_externe_sha256": "f0575398544a41eb5531e1271784214323880d67ec859d81418295e0c577d06d",
+      "inventaire_interne_sha256": "d8c7b4e936bf75c9706c76803218fea13af5fd75ccf3ffb5654b6fb76c3e2a6c"
+    },
+    {
+      "cellule": "ordinaire-avant/utm-aarch64",
+      "plateforme": "utm-aarch64",
+      "releve": "ordinaire",
+      "revision": "cd5e45f86540db09a218ac262609c4d68c00c275",
+      "debut_utc": "2026-11-14T18:47:16.619359+00:00",
+      "noyau_sha256": "5c7e55ee073a319078e906795dedf065e5c95c478269e6fa3dd6b1d9cc054db2",
+      "provenance_sha256": "1943b395f365ccf80ce5181fe9a4423417279f66406a3eb9dcaa354759789974",
+      "modele_utm": {
+        "config.plist": "99262639b7f69177170445170e3d5ff0732c92529f2a70c51f87aa5d0b25e174",
+        "Data/code.fd": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "Data/variables.fd": "f6c6b00e12c88818f71e0a3fcba47dfc7d0424ae212d7684c5f98f1bec32592b"
+      },
+      "charge_hote_avant": [
+        34.16845703125,
+        35.99951171875,
+        31.4296875
+      ],
+      "charge_hote_apres": [
+        12.07958984375,
+        28.208984375,
+        28.88232421875
+      ],
+      "commande_au_succes_ms": 755.383,
+      "confirmation_au_succes_ms": 654.423,
+      "f1_f2_physiques_ms": null,
+      "barrieres": null,
+      "ipc": null,
+      "ipc_controles_compris": null,
+      "ipc_liaisons": null,
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9732,
+      "cadres_dma_arene": null,
+      "kicks": null,
+      "interruptions": null,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        68,
+        69
+      ],
+      "valeurs_image": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7733248,
+        "cluster-size": 65536
+      },
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "89c796036182c5420f186279111a4763b8b9942497e03f1e6b5aa937e512a172",
+      "serie_sha256": "7659ccebc134624352d26c9e6c99e3d0b13c2c5d4ac83f53dccf1d7b5477dc75",
+      "inventaire_externe_sha256": "ae713af73b836c0373f1ffa5edd7dbeb699ff6f826c033a4296b75c4ab33acbe",
+      "inventaire_interne_sha256": "c7f41b35f06fdb70490430342222b00f0f7e3d257874f3f8dda0862fd67d3ed9"
+    },
+    {
+      "cellule": "temoin-sequentiel/utm-aarch64",
+      "plateforme": "utm-aarch64",
+      "releve": "compteurs",
+      "revision": "cd5e45f86540db09a218ac262609c4d68c00c275",
+      "debut_utc": "2026-11-14T18:19:08.300832+00:00",
+      "noyau_sha256": "b99c6da34589d2dc2004a01a1990c13ea95b1096edfd513b5951d01ca51422c1",
+      "provenance_sha256": "ac7d3374225b8c0af2c3d24423e7adcf617c559c1d5cae5aa947061dbabc9964",
+      "modele_utm": {
+        "config.plist": "99262639b7f69177170445170e3d5ff0732c92529f2a70c51f87aa5d0b25e174",
+        "Data/code.fd": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "Data/variables.fd": "f6c6b00e12c88818f71e0a3fcba47dfc7d0424ae212d7684c5f98f1bec32592b"
+      },
+      "charge_hote_avant": [
+        6.83544921875,
+        15.8720703125,
+        15.2236328125
+      ],
+      "charge_hote_apres": [
+        8.5751953125,
+        15.2763671875,
+        15.02978515625
+      ],
+      "commande_au_succes_ms": 212.497,
+      "confirmation_au_succes_ms": 168.21,
+      "f1_f2_physiques_ms": [
+        1.399,
+        0.067
+      ],
+      "barrieres": 2,
+      "ipc": 47,
+      "ipc_controles_compris": 56,
+      "ipc_liaisons": {
+        "moteur_bloc": 17,
+        "bloc_pilote": 17,
+        "nsh_moteur": 7,
+        "vi_nsh": 4
+      },
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "pic_cadres_session": 9732,
+      "cadres_dma_arene": 80,
+      "kicks": 190,
+      "interruptions": 190,
+      "generations_avant": [
+        65,
+        66
+      ],
+      "generations_apres": [
+        68,
+        69
+      ],
+      "valeurs_image": {
+        "format": "qcow2",
+        "virtual-size": 295698432,
+        "actual-size": 7733248,
+        "cluster-size": 65536
+      },
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "lecteur_hote_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "mesure_sha256": "30e5caf3482b2267ae1e70e4ed429e58f258016fe89bdcdfbf6e38c61c6f19c5",
+      "serie_sha256": "7ec6061759f081c1a0c6c441270369deea5b08ff1956edea23fafc0ba0226b80",
+      "inventaire_externe_sha256": "a7bf406fa55835025eac0f30db839cea826b4e135f73393502537fe5f250657a",
+      "inventaire_interne_sha256": "226901ad9e5b7fe51413e750748bea58e14b6a2fef1a112d07e36d7a74d62aa3"
+    }
+  ]
+}

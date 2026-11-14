@@ -2,6 +2,8 @@
 
 **Fusion suspendue le 14 novembre 2026.** Sur AArch64 et x86_64, en secteurs de 512 et de 4 096 octets, le chemin expérimental groupé conserve une réservation de 256 pages après avoir rendu l’erreur 26 à `vi`. Le relais était retenu avant tout envoi au pilote. La source a été retrouvée intacte sur les quatre disques. Les critères 6 et 8 du mandat échouent. Le candidat examiné est `e08b9796e59523b917b9d020520d5df97c9a4380`, descendant du SMP `835b9d9dd817a2feef54b6c17f000b0aec8a3879`. [Résultats individuels](validation/fusion-smp-v0.17.0/reponses-stockage.json)
 
+Le présent rapport conserve les résultats du candidat en échec. La branche de finalisation documente séparément le correctif, le bilan des cadres et les essais de retrait. [Requalification des réservations](reservations-dma-v0.17.0.md)
+
 ## A. Incident historique et cause du blocage actuel
 
 **Incident historique non expliqué, mais scénarios d’échec représentatifs reproduits et qualifiés.** Lors du premier essai AArch64/512, l’éditeur avait reçu le choix de destination, puis l’erreur 26 avant l’armement de la coupure F2. L’image originale a été libérée par l’ancien banc. Une écriture suspendue, un FLUSH F1 suspendu et une réception IPC expirée ont depuis produit le même message. Aucun des 56 rejeux instrumentés antérieurs n’a identifié la cause d’origine. La réserve documentaire est recevable selon le mandat. La suspension actuelle repose sur une observation indépendante. [Série historique et contrôles antérieurs](fusion-smp-v0.17.0.md#diagnostic-du-refus-avant-f2)
