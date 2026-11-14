@@ -2,11 +2,12 @@
 import argparse
 import json
 import socket
-from contextlib import ExitStack
+from contextlib import ExitStack, contextmanager
 from types import SimpleNamespace
 from bloc import qmp
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import tempfile
 import time
@@ -16,6 +17,19 @@ import vi_volumes as volumes
 from es_groupees_elargies import grande_insertion
 
 TAILLE = 512 * 1024 + 128
+
+@contextmanager
+def dossier_essai(rapport, arch, secteur, point):
+    """Conserver le disque et les séries du passage en échec à côté du rapport."""
+    dossier = Path(tempfile.mkdtemp(dir=rapport.resolve().parent,
+                                    prefix=f"nova-cow-{arch}-{secteur}-{point}-"))
+    try:
+        yield dossier
+    except BaseException as erreur:
+        erreur.add_note(f"Disque de l’essai conservé dans {dossier}")
+        raise
+    else:
+        shutil.rmtree(dossier)
 
 def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur_eio=None):
     volumes.SIZES = (taille,)
@@ -41,7 +55,7 @@ def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur
             mon = SimpleNamespace(stdin=flux, stdout=flux)
             fd = distant.fileno()
         t = pile.enter_context(Terminal(arch, secteur, image, "cow-groupe-" + point, test=True,
-                                        qmp_bloc=fd, defaut_bloc=config))
+                                        qmp_bloc=fd, defaut_bloc=config, journal=dossier / "sauvegarde.serial"))
         if vol:
             distant.close()
             qmp(mon, "qmp_capabilities")
@@ -59,7 +73,8 @@ def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur
             "erreur-sg": b"BLOC erreur peripherique op=1 statut=1" if config else b"fichier enregistr",
             "controles": b"fichier enregistr",
         }.get(point, b"COUPURE groupe " + (b"armer" if vol else point.encode()))
-        avant = t.until(marque, 45)
+        # Sur une coupure en vol, un refus est déjà un résultat terminal avant armement.
+        avant = t.until(marque, 45, refus="erreur d’E/S".encode() if vol and point != "retrait-vol" else None)
         succes = point == "controles" or (point == "erreur-sg" and config is None)
         if point == "controles":
             assert b"DMA qualif bornes directions et LBA refuses kicks=0" in avant
@@ -116,7 +131,7 @@ def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur
         return dest.returncode == 0
 
     publie = verifier()
-    with Terminal(arch, secteur, image, "cow-reprise-" + point, test=True) as t:
+    with Terminal(arch, secteur, image, "cow-reprise-" + point, test=True, journal=dossier / "reprise.serial") as t:
         t.until(b"nsh> ", 180)
         t.exit()
     assert verifier() == publie
@@ -144,11 +159,11 @@ if __name__ == "__main__":
     if args.defauts_dma:
         points = ("retrait-vol", "controles", "longueur", "erreur-sg")
     for point in points:
-        with tempfile.TemporaryDirectory(prefix="nova-cow-groupe-") as dossier:
-            essais.append(essai(args.architecture, args.secteur, point, Path(dossier), args.taille, args.multipage))
+        with dossier_essai(args.rapport, args.architecture, args.secteur, point) as dossier:
+            essais.append(essai(args.architecture, args.secteur, point, dossier, args.taille, args.multipage))
         if point == "erreur-sg":
             # Une image indépendante et identique fournit le LBA effectivement choisi par CoW.
-            with tempfile.TemporaryDirectory(prefix="nova-erreur-sg-") as dossier:
-                essais.append(essai(args.architecture, args.secteur, point, Path(dossier), args.taille,
+            with dossier_essai(args.rapport, args.architecture, args.secteur, point) as dossier:
+                essais.append(essai(args.architecture, args.secteur, point, dossier, args.taille,
                                     args.multipage, secteur_eio=essais[-1]["secteur_sonde"]))
     args.rapport.write_text(json.dumps(essais, indent=2, ensure_ascii=False) + "\n")

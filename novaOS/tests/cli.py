@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import re
 import select
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -17,7 +18,8 @@ from session_cli import HOST, LONG, fixture, machine
 
 
 class Terminal:
-    def __init__(self, arch, sector, image, label, test=False, *, qmp_bloc=None, defaut_bloc=None, entries=None):
+    def __init__(self, arch, sector, image, label, test=False, *, qmp_bloc=None, defaut_bloc=None, entries=None,
+                 journal=None):
         cmd, env = machine(arch, sector, image, test)
         if entries is not None:
             assert entries in (8, 16, 32, 64, 128, 256)
@@ -32,7 +34,8 @@ class Terminal:
         if qmp_bloc is not None:
             # Ce descripteur privé évite tout serveur QMP sur le réseau.
             cmd += ["-chardev", f"socket,id=banc,fd={qmp_bloc}", "-mon", "chardev=banc,mode=control"]
-        self.archive = ROOT / "build" / f"cli-{arch}-{sector}-{label}.serial"
+        self.archive_commune = ROOT / "build" / f"cli-{arch}-{sector}-{label}.serial"
+        self.archive = self.archive_commune if journal is None else journal
         self.log = self.archive.open("wb")
         self.start = time.monotonic()
         self.vm = subprocess.Popen(
@@ -49,6 +52,10 @@ class Terminal:
             self.vm.kill()
         self.vm.wait()
         self.log.close()
+        if self.archive != self.archive_commune:
+            # Les lecteurs historiques consultent le dernier passage. Chaque essai
+            # concurrent garde sa série originale dans son propre répertoire.
+            shutil.copyfile(self.archive, self.archive_commune)
 
     def until(self, marker, timeout=60, *, refus=None):
         deadline = time.monotonic() + timeout
