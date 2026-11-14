@@ -159,7 +159,7 @@ pub(super) fn run(scenario: &[u8]) -> ! {
             for c in &couples {
                 let [a, b] = c.acteurs;
                 b.start(u64::MAX - 1, TOURS, 2, 1);
-                a.start(u64::MAX - 3, TOURS, 0, 0);
+                a.start(u64::MAX - 4, TOURS, 0, 0);
             }
         }
         let mut fins = Vec::new();

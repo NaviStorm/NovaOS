@@ -161,16 +161,16 @@ extern "C" fn worker() -> ! {
             unsafe { (0xffffffff80000000u64 as *const u64).read_volatile() };
         }
         let r = match op {
+            x if x == u64::MAX - 1 => exchange(read(1), read(2), read(3) != 0),
+            x if x == u64::MAX - 2 => background(read(1)),
             // Le client de mesure termine sur la dernière réponse. Le serveur
             // attend que le contrôleur ait observé les sorties de tous les clients.
             #[cfg(ipc_smp_lab)]
-            x if x == u64::MAX - 3 => {
+            x if x == u64::MAX - 4 => {
                 let r = exchange(read(1), 2, false);
                 call(PROCESS_EXIT, if r.status == OK && r.value == read(1) { 0 } else { 255 }, 0, 0);
                 unreachable!()
             }
-            x if x == u64::MAX - 1 => exchange(read(1), read(2), read(3) != 0),
-            x if x == u64::MAX - 2 => background(read(1)),
             _ => call(op, read(1), read(2), read(3)),
         };
         write(4, r.status);
