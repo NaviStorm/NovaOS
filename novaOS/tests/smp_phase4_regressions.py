@@ -80,7 +80,8 @@ def main():
 
     command("iso", ["sh", "scripts/iso.sh"])
     smp("smp")
-    for scenario in ["smp-arret", "smp-panique"] + (["smp-ap-absent", "smp-cpu-muet"] if n > 1 else []):
+    stops = ["smp-arret", "smp-panique"] + (["smp-ap-absent", "smp-cpu-muet"] if n > 1 else [])
+    for scenario in stops:
         stop(scenario, scenario)
     if arch == "aarch64":
         stop("fp-neon-gic2", "smp-fp", NOVA_KERNEL_ELF=str(fp))
@@ -89,6 +90,9 @@ def main():
             settings = dict(NOVA_KERNEL_ELF=str(gic), NOVA_GIC="3")
             smp("smp-gic3", **settings)
             stop("fp-neon-gic3", "smp-fp", **settings)
+            fp_control("processus-neon-gic3", **settings)
+            for scenario in stops:
+                stop(scenario + "-gic3", scenario, **settings)
     else:
         for label, cpu in (("avx", "max,vendor=GenuineIntel"),
                            ("sans-avx", "qemu64,vendor=GenuineIntel,-avx,-xsave")):
