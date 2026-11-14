@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import re
+import resource
 import subprocess
 import tempfile
 import time
@@ -12,7 +13,8 @@ import time
 from bloc import Bench, ROOT, command
 from fichiers import fixture
 
-CAS = ("libre", "paires", "local", "distant", "calcul", "memoire", "vfs", "sonde", "paires-sonde")
+PAIRES = ("paires", "paires-sonde", "paires-cpu0", "paires-libres")
+CAS = ("libre", "local", "distant", "calcul", "memoire", "vfs", "sonde", *PAIRES)
 CIBLES = {"aarch64": "aarch64-unknown-none-softfloat", "x86_64": "x86_64-unknown-none"}
 
 
@@ -37,6 +39,7 @@ def mesurer(arch, cpu, cas, elf, rep, sortie):
             argv = command(arch, 4096, disque.image, readonly=True)
         env["NOVA_ISO"] = str(iso)
         resultats, debut, point = [], None, None
+        cpu_avant = resource.getrusage(resource.RUSAGE_CHILDREN)
         with serie.open("xb") as trace, (sortie/(nom+".qemu")).open("wb") as erreurs:
             with subprocess.Popen([*argv, "-display", "none", "-monitor", "none", "-serial", "stdio"],
                                   stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=erreurs,
@@ -89,9 +92,10 @@ def mesurer(arch, cpu, cas, elf, rep, sortie):
                     if vm.poll() is None:
                         vm.kill()
                     vm.wait()
+                cpu_apres = resource.getrusage(resource.RUSAGE_CHILDREN)
         if cas == "vfs":
             assert hashlib.sha256(disque.image.read_bytes()).digest() == origine
-    attendu = cpu if cas in ("paires", "paires-sonde") else 1
+    attendu = cpu if cas in PAIRES else 1
     assert (config["cpu"], config["couples"], config["tours"]) == (cpu, attendu, 1000)
     assert [p["serie"] for p in resultats] == list(range(8))
     assert all(len(p["couples"]) == config["couples"] and max(p["couples"]) == p["ns"] for p in resultats)
@@ -100,6 +104,8 @@ def mesurer(arch, cpu, cas, elf, rep, sortie):
     if cas == "vfs" and "requetes_bloc" in resultats[0]:
         assert all(p["requetes_bloc"] > 0 for p in resultats), "lot sans soumission bloc concurrente"
     return dict(arch=arch, vcpu=cpu, cas=cas, repetition=rep, config=config, releves=resultats,
+                cpu_hote_user_s=cpu_apres.ru_utime-cpu_avant.ru_utime,
+                cpu_hote_sys_s=cpu_apres.ru_stime-cpu_avant.ru_stime,
                 charge_fin=os.getloadavg(), elf=hashlib.sha256(elf.read_bytes()).hexdigest())
 
 
