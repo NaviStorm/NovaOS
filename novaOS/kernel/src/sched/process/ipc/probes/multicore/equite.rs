@@ -144,6 +144,7 @@ pub(super) fn run() -> ! {
             f.cumul = progres(f);
         }
         let mut pre = 0;
+        let mut deltas = [[0u64; PAIRES * 2 + 2]; PERIODES];
         for periode in 0..PERIODES {
             if cpu > 1 && periode < 2 {
                 // Déplacer deux acteurs vivants en excluant leur PE précédent.
@@ -156,7 +157,7 @@ pub(super) fn run() -> ! {
                 });
             }
             sleep(QUANTA);
-            for f in &mut fils {
+            for (i, f) in fils.iter_mut().enumerate() {
                 let total = progres(f);
                 let delta = total.checked_sub(f.cumul).unwrap();
                 assert!(
@@ -166,6 +167,7 @@ pub(super) fn run() -> ! {
                 );
                 f.cumul = total;
                 f.minimum = f.minimum.min(delta);
+                deltas[periode][i] = delta;
             }
             pre = with(|s| s.stats.preemptions) - preemptions;
             hal::log(format_args!(
@@ -174,6 +176,14 @@ pub(super) fn run() -> ! {
             ));
         }
         with(|s| s.equite.active = false);
+        for (periode, fenetre) in deltas.iter().enumerate() {
+            for (f, delta) in fils.iter().zip(fenetre) {
+                hal::log(format_args!(
+                    "EQUITE intervalle={periode} generation={} delta={delta}",
+                    f.id.generation
+                ));
+            }
+        }
         for f in &fils {
             let mesures = with(|s| s.equite.lire(f.id));
             assert!(mesures.departs > 0);

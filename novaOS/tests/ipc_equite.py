@@ -37,12 +37,20 @@ def verifier(trace, cpu):
             assert f["reveils"] >= 1 and f["bloque_ns"] > 0
     if cpu > 1:
         assert all((f["cpus"] & 3) == 3 for f in fils[:2])
+    intervalles = [champs(l) for l in lignes if l.startswith("EQUITE intervalle=")]
+    soutenus = [f for f in fils if f["role"] in ("client", "serveur", "calcul", "file_pleine")]
+    assert len(intervalles) == len(periodes) * len(soutenus)
+    for f in soutenus:
+        rangs = [d for d in intervalles if d["generation"] == f["generation"]]
+        assert [d["intervalle"] for d in rangs] == list(range(len(periodes)))
+        assert min(d["delta"] for d in rangs) == f["minimum"]
+        assert sum(d["delta"] for d in rangs) <= f["progres"]
     couples = [champs(l) for l in lignes if l.startswith("EQUITE couple=")]
     assert [c["couple"] for c in couples] == list(range(debut["couples"]))
     assert all(c["tours"] > 0 for c in couples)
     fin, = [champs(l) for l in lignes if l.startswith("EQUITE validation OK ")]
     assert fin["pages_ipc"] == 0 and fin["cadres"] > 0
-    return dict(debut=debut, periodes=periodes, fils=fils, couples=couples, bilan=fin)
+    return dict(debut=debut, periodes=periodes, intervalles=intervalles, fils=fils, couples=couples, bilan=fin)
 
 
 def executer(arch, cpu, elf, dest, delai):
