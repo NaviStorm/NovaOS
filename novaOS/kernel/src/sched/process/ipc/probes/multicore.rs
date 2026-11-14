@@ -102,8 +102,9 @@ pub(super) fn run(scenario: &[u8]) -> ! {
     let n = smp::count();
     let hz = timer::counter_hz();
     let lib = (1u64 << n) - 1;
-    let sonde = scenario == b"ipc-smp-sonde";
-    let paires = if scenario == b"ipc-smp-paires" { n } else { 1 };
+    let proportionnel = matches!(scenario, b"ipc-smp-paires" | b"ipc-smp-paires-sonde");
+    let sonde = matches!(scenario, b"ipc-smp-sonde" | b"ipc-smp-paires-sonde");
+    let paires = if proportionnel { n } else { 1 };
     let charge: Option<fn()> = match scenario {
         b"ipc-smp-calcul" => Some(calcul),
         b"ipc-smp-memoire" => Some(memoire),
@@ -124,7 +125,7 @@ pub(super) fn run(scenario: &[u8]) -> ! {
                     assert!(n >= 2);
                     [1, 2]
                 }
-                b"ipc-smp-paires" => [1 << i, 1 << i],
+                _ if proportionnel => [1 << i, 1 << i],
                 _ => [lib, lib],
             };
             couples.push(Couple::preparer(masks));

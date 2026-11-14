@@ -12,7 +12,7 @@ import time
 from bloc import Bench, ROOT, command
 from fichiers import fixture
 
-CAS = ("libre", "paires", "local", "distant", "calcul", "memoire", "vfs", "sonde")
+CAS = ("libre", "paires", "local", "distant", "calcul", "memoire", "vfs", "sonde", "paires-sonde")
 CIBLES = {"aarch64": "aarch64-unknown-none-softfloat", "x86_64": "x86_64-unknown-none"}
 
 
@@ -91,9 +91,11 @@ def mesurer(arch, cpu, cas, elf, rep, sortie):
                     vm.wait()
         if cas == "vfs":
             assert hashlib.sha256(disque.image.read_bytes()).digest() == origine
+    attendu = cpu if cas in ("paires", "paires-sonde") else 1
+    assert (config["cpu"], config["couples"], config["tours"]) == (cpu, attendu, 1000)
     assert [p["serie"] for p in resultats] == list(range(8))
     assert all(len(p["couples"]) == config["couples"] and max(p["couples"]) == p["ns"] for p in resultats)
-    if cas == "sonde":
+    if cas in ("sonde", "paires-sonde"):
         assert all(p["hist"]["aller_retour"]["n"] == config["tours"] and len(p["cpu"]) == cpu for p in resultats)
     if cas == "vfs" and "requetes_bloc" in resultats[0]:
         assert all(p["requetes_bloc"] > 0 for p in resultats), "lot sans soumission bloc concurrente"
