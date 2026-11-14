@@ -13,7 +13,9 @@ mod bulk;
 mod probes;
 mod traffic;
 pub(super) use bulk::transfer;
-pub(crate) use probes::{quiet, run, smp_roundtrip};
+pub(crate) use probes::{quiet, run};
+
+pub(crate) use probes::smp_roundtrip;
 
 type Res<T> = core::result::Result<T, u64>;
 const ALL: u32 = SEND | RECEIVE | GRANT | MANAGE;

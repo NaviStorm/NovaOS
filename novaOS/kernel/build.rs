@@ -28,9 +28,6 @@ fn main() {
         "storage/control",
         "storage/fileclient",
     ] {
-        if name == "fp_probe" && env::var_os("CARGO_FEATURE_USER_FPU").is_none() {
-            continue;
-        }
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
         let file_client = name == "storage/fileclient";
         let linker = format!(
@@ -42,6 +39,9 @@ fn main() {
             })
             .display()
         );
+        if name == "fp_probe" && env::var_os("CARGO_FEATURE_USER_FPU").is_none() {
+            continue;
+        }
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
         let compact = matches!(
             name,
