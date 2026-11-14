@@ -73,7 +73,7 @@ pub(crate) fn prepare_secondaries() {
 }
 pub(crate) fn poll_translation() {}
 
-pub(crate) use gic::{kick, kick as stop_ipi};
+pub(crate) use gic::{kick, kick as stop_ipi, kick_one};
 pub(crate) fn stop_budget() -> u64 {
     timer::counter_hz()
 }

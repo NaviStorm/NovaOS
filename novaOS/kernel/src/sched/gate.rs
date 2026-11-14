@@ -10,7 +10,9 @@ static DEPTH: AtomicUsize = AtomicUsize::new(0);
 fn acquire(depth: usize) {
     let me = smp::index() + 1;
     if OWNER.load(Ordering::Relaxed) == me {
-        DEPTH.fetch_add(depth, Ordering::Relaxed);
+        // Seul OWNER peut consulter ou modifier DEPTH, IRQ masquées. La
+        // barrière de transfert de propriété porte sur OWNER.
+        DEPTH.store(DEPTH.load(Ordering::Relaxed) + depth, Ordering::Relaxed);
         return;
     }
     let start = super::profile::stamp();
@@ -47,7 +49,9 @@ impl Guard {
     }
 }
 fn unlock() {
-    if DEPTH.fetch_sub(1, Ordering::Relaxed) == 1 {
+    let remaining = DEPTH.load(Ordering::Relaxed) - 1;
+    DEPTH.store(remaining, Ordering::Relaxed);
+    if remaining == 0 {
         if super::profile::ACTIVE.load(Ordering::Relaxed) {
             super::profile::released(smp::index());
         }
@@ -68,7 +72,9 @@ pub(super) fn outgoing() -> usize {
     if super::profile::ACTIVE.load(Ordering::Relaxed) {
         super::profile::released(smp::index());
     }
-    DEPTH.swap(0, Ordering::Relaxed)
+    let depth = DEPTH.load(Ordering::Relaxed);
+    DEPTH.store(0, Ordering::Relaxed);
+    depth
 }
 pub(super) fn resumed(depth: usize) {
     acquire(depth);

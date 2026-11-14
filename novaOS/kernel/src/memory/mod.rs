@@ -111,11 +111,32 @@ pub struct Memory {
     image: Image,
 }
 
+/// Cadre privé du superviseur, accessible uniquement par le mappage direct
+/// permanent. Le propriétaire ne peut ni le dupliquer ni le mapper en EL0.
+pub(crate) struct KernelFrame {
+    physical: u64,
+    alias: usize,
+}
+impl KernelFrame {
+    pub(crate) fn alias(&self) -> usize {
+        self.alias
+    }
+}
 pub(crate) struct FrameSample {
     pub allocations: u64,
     pub minimum_free: u64,
 }
 impl Memory {
+    pub(crate) fn take_kernel_frame(&mut self) -> Result<KernelFrame> {
+        let physical = self.frames.take()?;
+        Ok(KernelFrame {
+            physical,
+            alias: self.frames.direct(physical) as usize,
+        })
+    }
+    pub(crate) fn release_kernel_frame(&mut self, frame: KernelFrame) {
+        self.frames.release(frame.physical);
+    }
     pub(crate) fn begin_frame_sample(&mut self) {
         assert!(self.frames.sample.is_none());
         self.frames.sample = Some(FrameSample {

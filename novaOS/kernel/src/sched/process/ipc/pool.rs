@@ -33,31 +33,50 @@ impl Bits {
     }
 }
 
-pub(super) struct Pool<T: Copy, const N: usize, const BASE: usize, const PER: usize> {
+pub(super) struct Pool<
+    T: Copy,
+    const N: usize,
+    const BASE: usize,
+    const PER: usize,
+    const DIRECT: usize = 0,
+> {
     used: Bits,
     mapped: u64,
     dirty: u64,
+    private: [Option<memory::KernelFrame>; DIRECT],
     marker: PhantomData<T>,
 }
-impl<T: Copy, const N: usize, const BASE: usize, const PER: usize> Pool<T, N, BASE, PER> {
+impl<T: Copy, const N: usize, const BASE: usize, const PER: usize, const DIRECT: usize>
+    Pool<T, N, BASE, PER, DIRECT>
+{
     pub const MAX_PAGES: usize = N.div_ceil(PER);
     pub const FIRST: usize = BASE;
     pub const fn new() -> Self {
         assert!(N <= 256 && PER > 0 && PER * size_of::<T>() <= 4096 && N.div_ceil(PER) <= 64);
+        assert!(DIRECT == 0 || DIRECT == Self::MAX_PAGES);
         Self {
             used: Bits([0; 4]),
             mapped: 0,
             dirty: 0,
+            private: [const { None }; DIRECT],
             marker: PhantomData,
         }
     }
     fn address(page: usize) -> usize {
         0xffff_f030_0000_0000 + (BASE + page) * 4096
     }
-    fn pointer(i: usize) -> *mut T {
-        (Self::address(i / PER) + (i % PER) * size_of::<T>()) as *mut T
+    fn pointer(&self, i: usize) -> *mut T {
+        let page = if DIRECT == 0 {
+            Self::address(i / PER)
+        } else {
+            self.private[i / PER]
+                .as_ref()
+                .expect("cadre IPC absent")
+                .alias()
+        };
+        (page + (i % PER) * size_of::<T>()) as *mut T
     }
-    pub fn ids(&self) -> impl Iterator<Item = usize> + use<T, N, BASE, PER> {
+    pub fn ids(&self) -> impl Iterator<Item = usize> + use<T, N, BASE, PER, DIRECT> {
         self.used.indices()
     }
     pub fn vacant(&self) -> Result<usize, u64> {
@@ -70,19 +89,24 @@ impl<T: Copy, const N: usize, const BASE: usize, const PER: usize> Pool<T, N, BA
         assert!(self.has(i));
         // Sûreté : le bitmap implique un slot initialisé et sa page mappée.
         // Core est exclusivement protégé sur CPU0, la référence est liée au pool.
-        unsafe { &*Self::pointer(i) }
+        unsafe { &*self.pointer(i) }
     }
     pub fn get_mut(&mut self, i: usize) -> &mut T {
         assert!(self.has(i));
         // Sûreté : même invariant, emprunt exclusif du pool.
-        unsafe { &mut *Self::pointer(i) }
+        unsafe { &mut *self.pointer(i) }
     }
     pub fn insert(&mut self, i: usize, value: T) -> Result<(), u64> {
         assert!(i < N && !self.has(i));
         let page = i / PER;
         if self.mapped & (1 << page) == 0 {
             match heap::with_pages(|m| {
-                m.allocate_page(VirtualAddress(Self::address(page)), Access::ReadWrite)
+                if DIRECT == 0 {
+                    m.allocate_page(VirtualAddress(Self::address(page)), Access::ReadWrite)
+                } else {
+                    self.private[page] = Some(m.take_kernel_frame()?);
+                    Ok(())
+                }
             }) {
                 Ok(()) => (),
                 Err(memory::Error::Exhausted) => return Err(NO_MEMORY),
@@ -95,7 +119,7 @@ impl<T: Copy, const N: usize, const BASE: usize, const PER: usize> Pool<T, N, BA
             self.mapped |= 1 << page;
         }
         // Sûreté : slot libre dans une page RW privée, aligné pour T, publication après écriture.
-        unsafe { Self::pointer(i).write(value) };
+        unsafe { self.pointer(i).write(value) };
         self.used.set(i);
         Ok(())
     }
@@ -105,7 +129,7 @@ impl<T: Copy, const N: usize, const BASE: usize, const PER: usize> Pool<T, N, BA
         self.dirty |= 1 << (i / PER);
         // Sûreté : plus aucun emprunt ou lecteur du slot retiré ; effacement
         // brut de T:Copy avant toute réattribution, aucune lecture typée à vide.
-        unsafe { Self::pointer(i).write_bytes(0, 1) };
+        unsafe { self.pointer(i).write_bytes(0, 1) };
     }
     pub fn pages(&self) -> u32 {
         self.mapped.count_ones()
@@ -119,8 +143,15 @@ impl<T: Copy, const N: usize, const BASE: usize, const PER: usize> Pool<T, N, BA
                 continue;
             }
             // Sûreté : page du pool vide, sans référence survivant à la transaction.
-            heap::with_pages(|m| unsafe { m.release_page(VirtualAddress(Self::address(p))) })
-                .expect("collecte IPC");
+            heap::with_pages(|m| {
+                if DIRECT == 0 {
+                    unsafe { m.release_page(VirtualAddress(Self::address(p))) }
+                } else {
+                    m.release_kernel_frame(self.private[p].take().expect("cadre IPC retiré"));
+                    Ok(())
+                }
+            })
+            .expect("collecte IPC");
             #[cfg(feature = "ipc-smp-lab")]
             if BASE == super::Waits::FIRST {
                 super::multicore::page_attente(false);

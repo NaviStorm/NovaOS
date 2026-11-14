@@ -124,7 +124,8 @@ const _: () = assert!(
 type Endpoints = Pool<Endpoint, 64, 0, 1>;
 type Nodes = Pool<Node, 256, 64, 64>;
 type Locals = Pool<LocalCaps, 32, 72, 7>;
-type Waits = Pool<Pending, 32, 80, 16>;
+// Deux cadres au maximum. Aucun alias transitoire à invalider à chaque rendez-vous.
+type Waits = Pool<Pending, 32, 80, 16, 2>;
 const _: () = assert!(
     Endpoints::FIRST + Endpoints::MAX_PAGES <= Nodes::FIRST
         && Nodes::FIRST + Nodes::MAX_PAGES <= Locals::FIRST

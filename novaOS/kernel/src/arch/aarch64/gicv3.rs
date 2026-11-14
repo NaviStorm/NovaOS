@@ -168,3 +168,21 @@ pub fn kick() {
         asm!("dsb ishst","msr ICC_SGI1R_EL1,{}","isb",in(reg) (1u64<<40)|(1<<24),options(nostack));
     }
 }
+
+pub fn kick_one(cpu: usize) {
+    let affinity = crate::smp::hardware(cpu) as u64;
+    let aff0 = affinity & 255;
+    if aff0 >= 16 {
+        // Sans prise en charge qualifiée du Range Selector, le broadcast
+        // historique conserve la progression et la vérification des affinités.
+        return kick();
+    }
+    let target = ((affinity & 0xff_0000_0000) << 16)
+        | ((affinity & 0xff0000) << 16)
+        | ((affinity & 0xff00) << 8)
+        | (1 << 24)
+        | (1u64 << aff0);
+    unsafe {
+        asm!("dsb ishst","msr ICC_SGI1R_EL1,{}","isb",in(reg)target,options(nostack));
+    }
+}

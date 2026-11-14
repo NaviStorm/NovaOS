@@ -15,7 +15,15 @@ pub(super) fn init() {
     write(DIST, 0, 1);
     secondary();
 }
+static TARGETS: [core::sync::atomic::AtomicU8; crate::smp::MAX_CPUS] =
+    [const { core::sync::atomic::AtomicU8::new(0) }; crate::smp::MAX_CPUS];
+
 pub(super) fn secondary() {
+    let bit = read(DIST, 0x800) as u8;
+    if crate::smp::count() > 1 {
+        assert!(bit.is_power_of_two(), "cible GICv2 absente");
+    }
+    TARGETS[crate::smp::index()].store(bit, core::sync::atomic::Ordering::Release);
     write(DIST, 0x280, 1 << PPI);
     let priority = 0x400 + u64::from(PPI / 4) * 4;
     let shift = (PPI % 4) * 8;
@@ -61,4 +69,10 @@ pub fn kick() {
         asm!("dsb ishst", options(nostack));
     }
     write(DIST, 0xf00, (1 << 24) | 1);
+}
+
+pub fn kick_one(cpu: usize) {
+    let target = TARGETS[cpu].load(core::sync::atomic::Ordering::Acquire);
+    unsafe { asm!("dsb ishst", options(nostack)) };
+    write(DIST, 0xf00, (u32::from(target) << 16) | 1);
 }

@@ -179,15 +179,21 @@ impl Core {
         let me = crate::smp::index();
         let other =
             crate::smp::ONLINE.load(Ordering::Acquire) & !(1 << me) & self.thread(i).cpu_mask;
-        if other != 0
-            && self
-                .currents
-                .iter()
-                .enumerate()
-                .any(|(cpu, &slot)| other & (1 << cpu) != 0 && slot == Self::idle_slot(cpu))
-        {
-            profile::kick(me);
-            crate::arch::kick();
+        if other != 0 {
+            let idle =
+                |cpu: usize| other & (1 << cpu) != 0 && self.currents[cpu] == Self::idle_slot(cpu);
+            let last = self.thread(i).last_cpu;
+            // Réveiller un seul PE éligible. La FIFO et le masque restent
+            // revérifiés sous la garde lors de la sélection effective.
+            let target = if last < crate::smp::count() && idle(last) {
+                Some(last)
+            } else {
+                (0..crate::smp::count()).find(|&cpu| idle(cpu))
+            };
+            if let Some(cpu) = target {
+                profile::kick(me);
+                crate::arch::kick_one(cpu);
+            }
         }
     }
     fn signal(&mut self, wait: Wait) -> Option<Id> {
@@ -342,7 +348,9 @@ impl Core {
             return None;
         }
         #[cfg(feature = "ipc-smp-lab")]
-        if profile::ACTIVE.load(Ordering::Relaxed) { process::ipc::multicore::elu(next); }
+        if profile::ACTIVE.load(Ordering::Relaxed) {
+            process::ipc::multicore::elu(next);
+        }
         profile::switched(cpu, t.last_cpu != NONE && t.last_cpu != cpu);
         t.last_cpu = cpu;
         t.stack.check(t.saved);

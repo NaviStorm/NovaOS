@@ -213,11 +213,12 @@ pub unsafe fn switch_thread_root(root: u64) {
     // Un ASID distinct par PE empêche la confusion de deux racines actives.
     // Avant de réutiliser son ASID, le PE sélectionne une racine vide (ASID 0)
     // puis termine les invalidations. Aucune exécution EL0 pendant ce passage.
-    crate::sched::profile::tlb();
+    // Seul ce PE utilise son ASID. Les modifications de PTE continuent
+    // d’invalider tout le domaine dans invalidate(), avant réemploi d’un cadre.
     let asid = ((crate::smp::index() + 1) as u64) << 48;
     let empty = EMPTY.load(Ordering::Acquire);
     unsafe {
-        asm!("dsb ishst", "msr ttbr0_el1,{empty}", "isb", "tlbi aside1is,{asid}",
+        asm!("dsb ishst", "msr ttbr0_el1,{empty}", "isb", "tlbi aside1,{asid}",
             "dsb ish", "isb", "msr ttbr0_el1,{tagged}", "isb",
             empty=in(reg) empty, asid=in(reg) asid, tagged=in(reg) (root | asid),
             options(nostack, preserves_flags))

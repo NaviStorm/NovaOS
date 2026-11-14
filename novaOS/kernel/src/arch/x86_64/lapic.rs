@@ -113,6 +113,11 @@ pub fn kick() {
     wait_delivery(super::timer::counter());
     write(0x300, 0xc0000 | 0xe2);
 }
+pub fn kick_one(cpu: usize) {
+    wait_delivery(super::timer::counter());
+    write(0x310, (smp::hardware(cpu) as u32) << 24);
+    write(0x300, 0xe2);
+}
 pub extern "C" fn wake() {
     write(0xb0, 0);
     sched::reschedule_idle();
