@@ -1,0 +1,3801 @@
+{
+  "revision_correctif": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+  "revision_classique_et_NovaFS": {
+    "initiale": "cd5e45f86540db09a218ac262609c4d68c00c275",
+    "seconde_compilation_rejouee": "f0e5020db3a1a3b95207480624174ae90414269f",
+    "reconstruction_correctif_et_oracle": "b3e86275bb2e7150ea6b0ac7309ffbbfdbd31c09"
+  },
+  "plateforme": "QEMU direct 11.1.3 TCG local, brut ou prototype groupé polling selon la cellule. Ces arrêts QEMU ne simulent pas une panne de courant physique du Mac.",
+  "archive_locale": "regressions-6534f23",
+  "provenances": {
+    "brut": {
+      "fichier": "../regressions-cd5e45f-7313m0jg/temoin/exports/brut/provenance.json",
+      "sha256": "6e056334e37e6f1042add9fe4c5cf71f25a65ff72d2e199ba16188c8cc5fb713",
+      "revision_git": "cd5e45f86540db09a218ac262609c4d68c00c275",
+      "profil": "brut",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "52c3961894e6a5b619e639fbad898db8e1c3e4755417c536ccd6d79c971f29f5",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "c826a2943b51b0b453c2002312884e632e1193b1a924948d59aacbdb84d1ab70",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 572,
+        "sha256_chemins_et_contenus": "f1f7c5ff133c23e1961aaf203ae1c2f55aee99914746695b2e5ab389d5a96a97"
+      }
+    },
+    "brut_correctif": {
+      "fichier": "controle-brut/provenance.json",
+      "sha256": "c4a2e51855a774359445d6678be556a00387271b4de57a4f6605a037da0f6351",
+      "revision_git": "b3e86275bb2e7150ea6b0ac7309ffbbfdbd31c09",
+      "profil": "brut",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "52c3961894e6a5b619e639fbad898db8e1c3e4755417c536ccd6d79c971f29f5",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "c826a2943b51b0b453c2002312884e632e1193b1a924948d59aacbdb84d1ab70",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 577,
+        "sha256_chemins_et_contenus": "a2918a7244ed87744f85c683c23e8f38409da5f75c47f26b648c004b5e19dd18"
+      }
+    },
+    "phases": {
+      "fichier": "phases/export/diagnostic-stockage/provenance.json",
+      "sha256": "78602442858a175202603e5b361385375fbc78ee0e3bf5344a7e6957fb5d894d",
+      "revision_git": "b3e86275bb2e7150ea6b0ac7309ffbbfdbd31c09",
+      "profil": "diagnostic-stockage",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "e21197faa3cd5f266ae3f32da92c12b56e5d381c14e27456cd218d3af6ab3573",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "885d3aab6ff4b11c5ff296cbf25f1909bfc38aad59c9dbbe31d3f7cd986470f2",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "7ecd00f536d1cc6260af8c4ec95f710bcd5ef33f3d285d0e556c0d214a724b2e"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 607,
+        "sha256_chemins_et_contenus": "adb7ae5cd7d693c1adf1ea9dd24eefdc1b66ddd702b4d0c8ef2ccadfd1b1ce2f"
+      }
+    },
+    "reponses": {
+      "fichier": "reponses/export/diagnostic-stockage/provenance.json",
+      "sha256": "8e45e177a9e03bf0bf7062ee56ba0178080b110b8ee457ffe0b1f17202919fa2",
+      "revision_git": "b3e86275bb2e7150ea6b0ac7309ffbbfdbd31c09",
+      "profil": "diagnostic-stockage",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "3d43909768193f2707ca6a79c43a26ccf9868795855ac1fd0f093292ad50636e",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "62fdeab1714276e3132e60a1b8a6b41eb8a2971238d0f8ae4650c7d285b215c9",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "7ecd00f536d1cc6260af8c4ec95f710bcd5ef33f3d285d0e556c0d214a724b2e"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 607,
+        "sha256_chemins_et_contenus": "a366b3a888967542da679e0d7b3afa3faddc6d9a04ba3d6b2511491544151c33"
+      }
+    },
+    "coupe": {
+      "fichier": "coupe/export/coupe/provenance.json",
+      "sha256": "65bbab1b235c158a20472e9e30621d06aff1944cf0b86d632a233d0925dda3fb",
+      "revision_git": "b3e86275bb2e7150ea6b0ac7309ffbbfdbd31c09",
+      "profil": "coupe",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "bd8e134364e966cfabefbd76f0fbb3018509b3502ddde66d32ee58752d1f807b",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "1be6eb4834ffe218960acc8dff7fe250f2c1df69e9bc29a5ad22b7bcc829efe3",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 607,
+        "sha256_chemins_et_contenus": "7c5189461625be9799555afed370fa1d23a754901170f3865a94dec97155af88"
+      }
+    },
+    "dma": {
+      "fichier": "dma/export/regression/provenance.json",
+      "sha256": "1678419627b7f3c62108722b1e9e3e724f34178cf603cae19c9d1fdb9be61d5c",
+      "revision_git": "b3e86275bb2e7150ea6b0ac7309ffbbfdbd31c09",
+      "profil": "regression + injections dma_propriete",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "21c74760ec2dba401fbdc6b1677e7fdc09790e501014a07a09d72616d24437e5",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "c945b22c4ac9197873c11b49b8e55898d03934aebc938ab608b2e97d8c399e1c"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 609,
+        "sha256_chemins_et_contenus": "f980b01411cc16d091dcb88675a637fa971cd1be89dc250c3e1f4e17497e26c3"
+      },
+      "fichiers_instrumentation_sha256": {
+        "dma_propriete.py": "9953b0e8c1bf2c0a4dd5c69a01723cd23c7417c699d967c2682c3e5f5dbf1335",
+        "dma_livraison_invite.rs": "0d34df31da98fc974dbffaf97dd2ee78b508935f2d9948644127075908568cec",
+        "dma_propriete_invite.rs": "86a72108fc66d92f1038a686ba8c56769ad3921bf4b5c5ea571f6d7071b6c997",
+        "dma_retrait_session_invite.rs": "50a433327b1d2d0967d0c716fd8375cfc550cd3c99e1141691cde8a5e0f038d0"
+      }
+    }
+  },
+  "reproduction": {
+    "classique": "novaOS/tests/erreurs_stockage_classique.py ARCH SECTEUR rapport.json --noyau ELF --lecteur NOVAFS --generateur GENERATEUR (volume_erreurs_p9.rs) ; novaOS/tests/fichiers.py --sector SECTEUR --only cuts et --only errors",
+    "systeme": "novaOS/tests/smp_phase4_regressions.py EXPORT SORTIE ARCH VCPU --fp ELF_FPU [--gic3 ELF_ARM_GIC3] --cas <groupes de la cellule>",
+    "NovaFS": "python3 novaFS/lab/p51-validation-suites.py ARCH ; NOVAFS_TARGET=ARCH-apple-darwin novaFS/lab/run test --offline --lib qualification_ancres -- --nocapture, puis fs::remplacement::",
+    "phases_reponses": "novaOS/tests/reconstruire_es_0166.py SHA SORTIE diagnostic-stockage --sonde stockage-0170-{phases,reponses}.patch ; dans l’export, utiliser novaOS/tests/stockage_phases.py ARCH SECTEUR rapport.json --cas POINT ou novaOS/tests/reponses_stockage.py ARCH SECTEUR POINT rapport.json",
+    "coupures": "novaOS/tests/reconstruire_es_0166.py SHA SORTIE coupe ; dans cet export, novaOS/tests/coupure_cow_groupee.py ARCH SECTEUR rapport.json --point POINT --barrieres --dma-en-vol --multipage --taille 4194304",
+    "dma": "Préparer les sources du profil regression, appliquer novaOS/tests/dma_propriete.py EXPORT instrumenter-retrait, compiler en release par cible, puis NOVA_VCPUS=N novaOS/tests/dma_propriete.py CELLULE ARCH. Les deux géométries sont lues dans cet ordre, 512 puis 4096. Exécuter le lanceur de la révision_harnais_dma, opération instrumenter-retrait ; lancer les douze cellules avec --verifier-drainage --preuves DOSSIER (neuf)."
+  },
+  "comparaison_brut": {
+    "arbre": "Le chemin brut applique zéro fixture. Les sources du noyau, du code utilisateur et de NovaFS sont identiques entre cd5e45f, f0e5020 et 6534f23. Les ELF bruts du candidat reconstruits au même chemin et leurs SHA-256 correspondent exactement aux ELF de cd5e45f ayant exécuté les 24 + 56 scénarios classiques et les contrôles système ordinaires. Les trois ELF spécialisés FPU/GIC reconstruits diffèrent du témoin et leurs 30 groupes ont donc été rejoués sur la reconstruction du candidat.",
+    "sha256": {
+      "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": {
+        "initial": "52c3961894e6a5b619e639fbad898db8e1c3e4755417c536ccd6d79c971f29f5",
+        "final": "52c3961894e6a5b619e639fbad898db8e1c3e4755417c536ccd6d79c971f29f5",
+        "egal": true
+      },
+      "novaOS/target/x86_64-unknown-none/release/novaos": {
+        "initial": "c826a2943b51b0b453c2002312884e632e1193b1a924948d59aacbdb84d1ab70",
+        "final": "c826a2943b51b0b453c2002312884e632e1193b1a924948d59aacbdb84d1ab70",
+        "egal": true
+      },
+      "novaFS/target/aarch64-apple-darwin/release/novafs": {
+        "initial": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+        "final": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+        "egal": true
+      },
+      "gic3": {
+        "initial": "1094d24c5bdc56ba6d83e78405d6fe66c2b0fe82aa2d59ff7d1a920909f71b90",
+        "final": "48d9d2f81c501c6e8686d32c4a9e07033d4cead870235ee9aedde99332164683",
+        "egal": false
+      },
+      "fp-arm": {
+        "initial": "1285a26f3eabb9b4304fd32e01118177015ce69f3191bb6f5b3fdb0187e39c41",
+        "final": "a39674f73810a69111c16cd24b8714aceba2e03f390b9bf4c3405eed13bdc99a",
+        "egal": false
+      },
+      "fp-x86": {
+        "initial": "8f96b6f3a91cc94b4e2cd0fdb94f7a089e2450983b7ccb201983957543bf4f4c",
+        "final": "00f48a36a1986ed7e312c7b7816abc902cc459a73feceb61f462263ed7ea0db8",
+        "egal": false
+      }
+    },
+    "reconstruction": {
+      "fichier": "controle-brut/meme-chemin.json",
+      "sha256": "ff3961855c32f5c33dcdae4828bd31be8121ca5e98ba025aa925aa3ae09d13df"
+    },
+    "campagne_reference": "regressions-cd5e45f-7313m0jg"
+  },
+  "limites": [
+    "Les arrêts QEMU ne vérifient pas une coupure électrique physique.",
+    "Les quatre abandons et l’endurance de la réparation disposent d’un banc indépendant."
+  ],
+  "classique": [
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-aarch64-4096/observations.json",
+      "sha256": "c344e6fc026522944d050b9558a2276cf3310cf1d6000d59771ce9b45914ecfb",
+      "cellules": [
+        {
+          "point": "lecture",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "ecriture",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "f1",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "ancre",
+          "statut_application": 22,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "f2",
+          "statut_application": 22,
+          "source_octets": 10,
+          "destination": "nouveau",
+          "destination_octets": 4231
+        },
+        {
+          "point": "succes",
+          "statut_application": 0,
+          "source_octets": 10,
+          "destination": "nouveau",
+          "destination_octets": 4231
+        }
+      ],
+      "suites": {
+        "p9": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-aarch64-4096/p9.log",
+          "sha256": "63586b1e5302db7b11839f70001f6e50da72c168dd06ca8808e0a6801191119e",
+          "secondes": 91.06
+        },
+        "cuts": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-aarch64-4096/cuts.log",
+          "sha256": "0ca4e457e7c6a7068d776b05d116fee49554e8f6e35a2e7b6ffd1ed2202108dc",
+          "secondes": 141.72,
+          "observations": [
+            "files-data, generation 5, oracle ancien, remontage RO",
+            "files-meta, generation 5, oracle ancien, remontage RO",
+            "files-f1-before, generation 5, oracle ancien, remontage RO",
+            "files-f1-inflight, generation 5, oracle ancien, remontage RO",
+            "files-f1-after, generation 5, oracle ancien, remontage RO",
+            "files-f2-before, generation 6, oracle nouveau, remontage RO",
+            "files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+            "files-f2-after, generation 6, oracle nouveau, remontage RO",
+            "files-close, generation 6, oracle nouveau, remontage RO",
+            "files-remount, generation 5, oracle ancien, remontage RO"
+          ]
+        },
+        "errors": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-aarch64-4096/errors.log",
+          "sha256": "a69bed3123f65ff7369cb46d718c3e1bf687721468b68bd3899fba2b9faa93db",
+          "secondes": 52.56,
+          "observations": [
+            "eio-lecture, generation 5, oracle ancien, remontage RO",
+            "eio-ecriture, generation 5, oracle ancien, remontage RO",
+            "eio-f1, generation 5, oracle ancien, remontage RO",
+            "eio-f2, generation 6, oracle nouveau, remontage RO"
+          ]
+        }
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-aarch64-512/observations.json",
+      "sha256": "47cbbf6515b72fd3738d17cc36ef1ce5a5ff80099f41b54cccc8d6fb238dd9c1",
+      "cellules": [
+        {
+          "point": "lecture",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "ecriture",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "f1",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "ancre",
+          "statut_application": 22,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "f2",
+          "statut_application": 22,
+          "source_octets": 10,
+          "destination": "nouveau",
+          "destination_octets": 4231
+        },
+        {
+          "point": "succes",
+          "statut_application": 0,
+          "source_octets": 10,
+          "destination": "nouveau",
+          "destination_octets": 4231
+        }
+      ],
+      "suites": {
+        "p9": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-aarch64-512/p9.log",
+          "sha256": "63586b1e5302db7b11839f70001f6e50da72c168dd06ca8808e0a6801191119e",
+          "secondes": 92.26
+        },
+        "cuts": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-aarch64-512/cuts.log",
+          "sha256": "e88bb3cd77631c0a7212143e1eb315c76cf481b202dcf176a405488c612044ef",
+          "secondes": 144.65,
+          "observations": [
+            "files-data, generation 5, oracle ancien, remontage RO",
+            "files-meta, generation 5, oracle ancien, remontage RO",
+            "files-f1-before, generation 5, oracle ancien, remontage RO",
+            "files-f1-inflight, generation 5, oracle ancien, remontage RO",
+            "files-f1-after, generation 5, oracle ancien, remontage RO",
+            "files-f2-before, generation 6, oracle nouveau, remontage RO",
+            "files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+            "files-f2-after, generation 6, oracle nouveau, remontage RO",
+            "files-close, generation 6, oracle nouveau, remontage RO",
+            "files-remount, generation 5, oracle ancien, remontage RO"
+          ]
+        },
+        "errors": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-aarch64-512/errors.log",
+          "sha256": "7e9e6c066a4f7b32df7f718b97050da6459929fc582ecc26ebdc3ab27c519376",
+          "secondes": 53.3,
+          "observations": [
+            "eio-lecture, generation 5, oracle ancien, remontage RO",
+            "eio-ecriture, generation 5, oracle ancien, remontage RO",
+            "eio-f1, generation 5, oracle ancien, remontage RO",
+            "eio-f2, generation 6, oracle nouveau, remontage RO"
+          ]
+        }
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-x86_64-4096/observations.json",
+      "sha256": "b3fcb6076d6578749e2df2c93a4bf869664c2458428bc24b4722c360e79d1008",
+      "cellules": [
+        {
+          "point": "lecture",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "ecriture",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "f1",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "ancre",
+          "statut_application": 22,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "f2",
+          "statut_application": 22,
+          "source_octets": 10,
+          "destination": "nouveau",
+          "destination_octets": 4231
+        },
+        {
+          "point": "succes",
+          "statut_application": 0,
+          "source_octets": 10,
+          "destination": "nouveau",
+          "destination_octets": 4231
+        }
+      ],
+      "suites": {
+        "p9": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-x86_64-4096/p9.log",
+          "sha256": "63586b1e5302db7b11839f70001f6e50da72c168dd06ca8808e0a6801191119e",
+          "secondes": 43.08
+        },
+        "cuts": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-x86_64-4096/cuts.log",
+          "sha256": "0d22d1be41b075af7439be36828c65b9019c274aa2f40080c2cf735ad687af8f",
+          "secondes": 98.4,
+          "observations": [
+            "files-data, generation 5, oracle ancien, remontage RO",
+            "files-meta, generation 5, oracle ancien, remontage RO",
+            "files-f1-before, generation 5, oracle ancien, remontage RO",
+            "files-f1-inflight, generation 5, oracle ancien, remontage RO",
+            "files-f1-after, generation 5, oracle ancien, remontage RO",
+            "files-f2-before, generation 6, oracle nouveau, remontage RO",
+            "files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+            "files-f2-after, generation 6, oracle nouveau, remontage RO",
+            "files-close, generation 6, oracle nouveau, remontage RO",
+            "files-remount, generation 5, oracle ancien, remontage RO"
+          ]
+        },
+        "errors": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-x86_64-4096/errors.log",
+          "sha256": "47ee4fa834cafde7e806d531afcd0a33898f967ad95fe8d159ea3a440dc64ae6",
+          "secondes": 23.63,
+          "observations": [
+            "eio-lecture, generation 5, oracle ancien, remontage RO",
+            "eio-ecriture, generation 5, oracle ancien, remontage RO",
+            "eio-f1, generation 5, oracle ancien, remontage RO",
+            "eio-f2, generation 6, oracle nouveau, remontage RO"
+          ]
+        }
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-x86_64-512/observations.json",
+      "sha256": "2be936615705a469c0815812cbbb0a4c0a95f20a769b6bdd1642e5b3fe82b74d",
+      "cellules": [
+        {
+          "point": "lecture",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "ecriture",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "f1",
+          "statut_application": 26,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "ancre",
+          "statut_application": 22,
+          "source_octets": 10,
+          "destination": "ancien",
+          "destination_octets": 6
+        },
+        {
+          "point": "f2",
+          "statut_application": 22,
+          "source_octets": 10,
+          "destination": "nouveau",
+          "destination_octets": 4231
+        },
+        {
+          "point": "succes",
+          "statut_application": 0,
+          "source_octets": 10,
+          "destination": "nouveau",
+          "destination_octets": 4231
+        }
+      ],
+      "suites": {
+        "p9": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-x86_64-512/p9.log",
+          "sha256": "63586b1e5302db7b11839f70001f6e50da72c168dd06ca8808e0a6801191119e",
+          "secondes": 47.07
+        },
+        "cuts": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-x86_64-512/cuts.log",
+          "sha256": "edbf21e3b3bf133e3784c779ab3c05743d350b1df52b4f6b7bb506d477394f27",
+          "secondes": 97.97,
+          "observations": [
+            "files-data, generation 5, oracle ancien, remontage RO",
+            "files-meta, generation 5, oracle ancien, remontage RO",
+            "files-f1-before, generation 5, oracle ancien, remontage RO",
+            "files-f1-inflight, generation 5, oracle ancien, remontage RO",
+            "files-f1-after, generation 5, oracle ancien, remontage RO",
+            "files-f2-before, generation 6, oracle nouveau, remontage RO",
+            "files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+            "files-f2-after, generation 6, oracle nouveau, remontage RO",
+            "files-close, generation 6, oracle nouveau, remontage RO",
+            "files-remount, generation 5, oracle ancien, remontage RO"
+          ]
+        },
+        "errors": {
+          "fichier": "../regressions-cd5e45f-7313m0jg/temoin/classique-x86_64-512/errors.log",
+          "sha256": "58bccd30a60b6d73380123cd4e2538da4415b412a48ab206c30f173c38baa1d7",
+          "secondes": 24.74,
+          "observations": [
+            "eio-lecture, generation 5, oracle ancien, remontage RO",
+            "eio-ecriture, generation 5, oracle ancien, remontage RO",
+            "eio-f1, generation 5, oracle ancien, remontage RO",
+            "eio-f2, generation 6, oracle nouveau, remontage RO"
+          ]
+        }
+      }
+    }
+  ],
+  "systeme": [
+    {
+      "architecture": "aarch64",
+      "vcpu": 1,
+      "reservations_groupees": "profil brut",
+      "tous_reussis": true,
+      "groupes": 17,
+      "scenarios": [
+        "courses",
+        "cycle-processus",
+        "fp-neon-gic2",
+        "fp-neon-gic3",
+        "ipc",
+        "nsh",
+        "nsh_scripts",
+        "nsh_terminal",
+        "processus-neon",
+        "smp",
+        "smp-arret",
+        "smp-arret-gic3",
+        "smp-gic3",
+        "smp-panique",
+        "smp-panique-gic3",
+        "vi",
+        "vi_ecran"
+      ],
+      "retours_non_nuls": [],
+      "elf_sha256": [
+        "48d9d2f81c501c6e8686d32c4a9e07033d4cead870235ee9aedde99332164683",
+        "52c3961894e6a5b619e639fbad898db8e1c3e4755417c536ccd6d79c971f29f5",
+        "a39674f73810a69111c16cd24b8714aceba2e03f390b9bf4c3405eed13bdc99a"
+      ],
+      "courses_ipc": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 695
+      },
+      "sortie": "../regressions-cd5e45f-7313m0jg/temoin/systeme-aarch64-1",
+      "rejeu_FPU_GIC": "systeme-fpu-aarch64-1"
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 2,
+      "reservations_groupees": "profil brut",
+      "tous_reussis": true,
+      "groupes": 19,
+      "scenarios": [
+        "courses",
+        "cycle-processus",
+        "fp-neon-gic2",
+        "fp-neon-gic3",
+        "ipc",
+        "nsh",
+        "nsh_scripts",
+        "nsh_terminal",
+        "processus-neon",
+        "smp",
+        "smp-ap-absent",
+        "smp-arret",
+        "smp-arret-gic3",
+        "smp-cpu-muet",
+        "smp-gic3",
+        "smp-panique",
+        "smp-panique-gic3",
+        "vi",
+        "vi_ecran"
+      ],
+      "retours_non_nuls": [],
+      "elf_sha256": [
+        "48d9d2f81c501c6e8686d32c4a9e07033d4cead870235ee9aedde99332164683",
+        "52c3961894e6a5b619e639fbad898db8e1c3e4755417c536ccd6d79c971f29f5",
+        "a39674f73810a69111c16cd24b8714aceba2e03f390b9bf4c3405eed13bdc99a"
+      ],
+      "courses_ipc": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 669
+      },
+      "sortie": "../regressions-cd5e45f-7313m0jg/temoin/systeme-aarch64-2",
+      "rejeu_FPU_GIC": "systeme-fpu-aarch64-2"
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 4,
+      "reservations_groupees": "profil brut",
+      "tous_reussis": true,
+      "groupes": 21,
+      "scenarios": [
+        "courses",
+        "cycle-processus",
+        "endurance-ipc",
+        "endurance-ordonnanceur",
+        "fp-neon-gic2",
+        "fp-neon-gic3",
+        "ipc",
+        "nsh",
+        "nsh_scripts",
+        "nsh_terminal",
+        "processus-neon",
+        "smp",
+        "smp-ap-absent",
+        "smp-arret",
+        "smp-arret-gic3",
+        "smp-cpu-muet",
+        "smp-gic3",
+        "smp-panique",
+        "smp-panique-gic3",
+        "vi",
+        "vi_ecran"
+      ],
+      "retours_non_nuls": [],
+      "elf_sha256": [
+        "48d9d2f81c501c6e8686d32c4a9e07033d4cead870235ee9aedde99332164683",
+        "52c3961894e6a5b619e639fbad898db8e1c3e4755417c536ccd6d79c971f29f5",
+        "a39674f73810a69111c16cd24b8714aceba2e03f390b9bf4c3405eed13bdc99a"
+      ],
+      "courses_ipc": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 316
+      },
+      "sortie": "../regressions-cd5e45f-7313m0jg/temoin/systeme-aarch64-4",
+      "rejeu_FPU_GIC": "systeme-fpu-aarch64-4",
+      "endurance_ipc": {
+        "cycles": 29812,
+        "periodes": 239,
+        "libres": 62478,
+        "secondes": 300.406
+      },
+      "endurance_ordonnanceur": {
+        "secondes_reelles": 64.65,
+        "avant": {
+          "blocs": 6,
+          "occupes": 108608,
+          "engages": 131072,
+          "libres": 62478
+        },
+        "bilan": {
+          "periode": 9,
+          "ticks": 12890,
+          "preemptions": 12858,
+          "collectes": 15573,
+          "attentes": 11285,
+          "mutex": 11295,
+          "A": 2788,
+          "B": 2740,
+          "allocations": 134390,
+          "audits": 36,
+          "penuries": 1,
+          "minimum": 62366,
+          "blocs": 6,
+          "occupes": 108608,
+          "engages": 131072,
+          "libres": 62478
+        }
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 1,
+      "reservations_groupees": "profil brut",
+      "tous_reussis": true,
+      "groupes": 15,
+      "scenarios": [
+        "courses",
+        "cycle-processus",
+        "fp-avx",
+        "fp-sans-avx",
+        "ipc",
+        "nsh",
+        "nsh_scripts",
+        "nsh_terminal",
+        "processus-avx",
+        "processus-sans-avx",
+        "smp",
+        "smp-arret",
+        "smp-panique",
+        "vi",
+        "vi_ecran"
+      ],
+      "retours_non_nuls": [],
+      "elf_sha256": [
+        "00f48a36a1986ed7e312c7b7816abc902cc459a73feceb61f462263ed7ea0db8",
+        "c826a2943b51b0b453c2002312884e632e1193b1a924948d59aacbdb84d1ab70"
+      ],
+      "courses_ipc": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 519
+      },
+      "sortie": "../regressions-cd5e45f-7313m0jg/temoin/systeme-x86_64-1",
+      "rejeu_FPU_GIC": "systeme-fpu-x86_64-1"
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 2,
+      "reservations_groupees": "profil brut",
+      "tous_reussis": true,
+      "groupes": 17,
+      "scenarios": [
+        "courses",
+        "cycle-processus",
+        "fp-avx",
+        "fp-sans-avx",
+        "ipc",
+        "nsh",
+        "nsh_scripts",
+        "nsh_terminal",
+        "processus-avx",
+        "processus-sans-avx",
+        "smp",
+        "smp-ap-absent",
+        "smp-arret",
+        "smp-cpu-muet",
+        "smp-panique",
+        "vi",
+        "vi_ecran"
+      ],
+      "retours_non_nuls": [],
+      "elf_sha256": [
+        "00f48a36a1986ed7e312c7b7816abc902cc459a73feceb61f462263ed7ea0db8",
+        "c826a2943b51b0b453c2002312884e632e1193b1a924948d59aacbdb84d1ab70"
+      ],
+      "courses_ipc": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 568
+      },
+      "sortie": "../regressions-cd5e45f-7313m0jg/temoin/systeme-x86_64-2",
+      "rejeu_FPU_GIC": "systeme-fpu-x86_64-2"
+    },
+    {
+      "architecture": "x86_64",
+      "vcpu": 4,
+      "reservations_groupees": "profil brut",
+      "tous_reussis": true,
+      "groupes": 19,
+      "scenarios": [
+        "courses",
+        "cycle-processus",
+        "endurance-ipc",
+        "endurance-ordonnanceur",
+        "fp-avx",
+        "fp-sans-avx",
+        "ipc",
+        "nsh",
+        "nsh_scripts",
+        "nsh_terminal",
+        "processus-avx",
+        "processus-sans-avx",
+        "smp",
+        "smp-ap-absent",
+        "smp-arret",
+        "smp-cpu-muet",
+        "smp-panique",
+        "vi",
+        "vi_ecran"
+      ],
+      "retours_non_nuls": [],
+      "elf_sha256": [
+        "00f48a36a1986ed7e312c7b7816abc902cc459a73feceb61f462263ed7ea0db8",
+        "c826a2943b51b0b453c2002312884e632e1193b1a924948d59aacbdb84d1ab70"
+      ],
+      "courses_ipc": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 403
+      },
+      "sortie": "../regressions-cd5e45f-7313m0jg/temoin/systeme-x86_64-4",
+      "rejeu_FPU_GIC": "systeme-fpu-x86_64-4",
+      "endurance_ipc": {
+        "cycles": 33973,
+        "periodes": 299,
+        "libres": 62992,
+        "secondes": 300.259
+      },
+      "endurance_ordonnanceur": {
+        "secondes_reelles": 61.636,
+        "avant": {
+          "blocs": 6,
+          "occupes": 205888,
+          "engages": 262144,
+          "libres": 62992
+        },
+        "bilan": {
+          "periode": 9,
+          "ticks": 15336,
+          "preemptions": 15288,
+          "collectes": 13341,
+          "attentes": 10717,
+          "mutex": 10772,
+          "A": 2963,
+          "B": 2867,
+          "allocations": 128182,
+          "audits": 36,
+          "penuries": 1,
+          "minimum": 62888,
+          "blocs": 6,
+          "occupes": 205888,
+          "engages": 262144,
+          "libres": 62992
+        }
+      }
+    }
+  ],
+  "NovaFS": [
+    {
+      "architecture": "aarch64",
+      "execution": "Darwin ARM64 natif",
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 199,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=13.950",
+      "migration": [
+        "MIGRATION secteur=512 frontières=96",
+        "MIGRATION secteur=4096 frontières=96"
+      ],
+      "saturation": [
+        "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+        "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+      ],
+      "restitution": [
+        "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=195344 après=195344",
+        "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=195344 après=195344",
+        "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=195344 après=195344",
+        "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=195344 après=195344"
+      ],
+      "injections_ancres": 2304,
+      "rapport": {
+        "fichier": "../regressions-cd5e45f-7313m0jg/temoin/novafs-aarch64.json",
+        "sha256": "60331840fc7dc7681fd39d3ee7cbc5222fbc9d0eb6e9fe6f006f0041936355d8"
+      },
+      "journal_ancres": {
+        "fichier": "../regressions-cd5e45f-7313m0jg/temoin/remplacement-aarch64.log",
+        "sha256": "1861c883adab5d0b99de7ca328c90469e0d27cce512f21c101fe121ff02b9e35"
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "execution": "Mach-O x86_64 sous Rosetta",
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 199,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=22.971",
+      "migration": [
+        "MIGRATION secteur=512 frontières=96",
+        "MIGRATION secteur=4096 frontières=96"
+      ],
+      "saturation": [
+        "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+        "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+      ],
+      "restitution": [
+        "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=180272 après=180272",
+        "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=180272 après=180272",
+        "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=180272 après=180272",
+        "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=180272 après=180272"
+      ],
+      "injections_ancres": 2304,
+      "rapport": {
+        "fichier": "../regressions-cd5e45f-7313m0jg/temoin/novafs-x86_64.json",
+        "sha256": "e370591d7226a06f69cf56c4a56c6a00d5c0991673ea2a6f86cefb75ec672363"
+      },
+      "journal_ancres": {
+        "fichier": "../regressions-cd5e45f-7313m0jg/temoin/remplacement-x86_64.log",
+        "sha256": "ed2d89721b65deaeda8281a45b67dc4d3430ad27b7e2e7e574fe5a84e7bf1806"
+      }
+    }
+  ],
+  "groupes": {
+    "phases": {
+      "reussis": 32,
+      "echecs": 0,
+      "lignes": [
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "apres-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-4096/apres-ecriture.log",
+            "sha256": "6d9c5c978e06bd06bc87f315c977938bce8c76a6dee15378259b0f3c55b3d695"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-4096/apres-ecriture.json",
+            "sha256": "d64c0f0eacb71328d390c55ad165f307e50ab44c28c3698ceaba426234bed93d"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "avant-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-4096/avant-ecriture.log",
+            "sha256": "214995607095f55035a8e84d52789d00b0d5eebccbcfb697c32296ecb2b74f4e"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-4096/avant-ecriture.json",
+            "sha256": "417b44bac6a891b4531b8316b168916fafb047070d486e0e282dae492e6c93a2"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "avant-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-4096/avant-f2.log",
+            "sha256": "7c04491f4b02b708b09e32d65a5b605a139f63fb573657344abecd0e628db51c"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-4096/avant-f2.json",
+            "sha256": "3f04ebdb07a18484d13b22ca294d2e4b0dcd7bb6f8066b168f0612db28ae1939"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "durable",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-4096/durable.log",
+            "sha256": "06b038a41f7eb091f22bf046d50a456eb0b2fe8f589ee6b73fe112bc0932213a"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-4096/durable.json",
+            "sha256": "73b7ebbe0ba3a169887556a03f30c54213d86aa3a5b62f64e9acdf2b31479bb1"
+          },
+          "statut": 0,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1,
+            2
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-4096/ecriture.log",
+            "sha256": "b4a7a5482e79d7370c865068502c7d7b3a913837ab612fceb4b945c21434168d"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-4096/ecriture.json",
+            "sha256": "b68fe8f0da995f239e69f2062a88add602ae2967dba4674dbed40cc2536b8f69"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "expiration-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-4096/expiration-f1.log",
+            "sha256": "46c58c1968b391c2af22a5aee48a54e36c8b69712e443e8f4d24a478ebd0e8cc"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-4096/expiration-f1.json",
+            "sha256": "b1cead532553cd0e702a06d0ffe1bba0d73edb824a9ba01eccabde1511d8945c"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "expiration-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-4096/expiration-f2.log",
+            "sha256": "78e74b63917b406a46f70d76fd9ef7565bad1273315e6a1b2290e159321d099c"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-4096/expiration-f2.json",
+            "sha256": "fc0160fb5c87fe7cfcb35326fb71eec463d51a17fd448c73c3078e0dcaa186b6"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "publication",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-4096/publication.log",
+            "sha256": "83e7ede034abdc8cdc01f378c72df17bc49ad6f3a165e28ebfcacccd4d87b03a"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-4096/publication.json",
+            "sha256": "b79d6611443f70aa570c1f2b133e518882f7cfd44dfb77409638403c0a2e7903"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "apres-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-512/apres-ecriture.log",
+            "sha256": "0bf37e39580b81204bc180af979752a61370d8da09ec29ec4c2b58f1991af59d"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-512/apres-ecriture.json",
+            "sha256": "221db444eb71b5ef78deba312620c4c751d745e1378dad4acb97fd62906c9aa0"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "avant-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-512/avant-ecriture.log",
+            "sha256": "bddcd3ba307d3400b78b07cc3b42353508a3e86b461baf7d192ce966fa134f94"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-512/avant-ecriture.json",
+            "sha256": "2180c9393d7d622d5d79185c066ff0886faf2b4ee46d6c729a9212e6169887db"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "avant-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-512/avant-f2.log",
+            "sha256": "8259fe637b9eadae647ca5abc1602c6b538cf247386838eea7c5e5927e1c77a5"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-512/avant-f2.json",
+            "sha256": "c3df4b5d9497a516cdf343967d1e77d57454f7997cd8682b046612e818c782ec"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "durable",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-512/durable.log",
+            "sha256": "d23d03592cd5a995c5b7b3737c2ce4a33c682ec8dab0c9831c942a1dd322c138"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-512/durable.json",
+            "sha256": "9e8d153afd63789bdea0f33d9f11eb06c703619bfbc16718926af3642aae7fc4"
+          },
+          "statut": 0,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1,
+            2
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-512/ecriture.log",
+            "sha256": "5ef3d79673cec3610c220e4c96715ff65d13460b75802c48f763f627417392ca"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-512/ecriture.json",
+            "sha256": "2d6a5250b953b566bbeb94525f97eb3ba77fd500b33e31a9d4363d521930db9b"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "expiration-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-512/expiration-f1.log",
+            "sha256": "ae627615b3b94829a06ec8dbc9f1977bdcfd7354dca0ba6cf72de93f18ca735c"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-512/expiration-f1.json",
+            "sha256": "338d0c851767fa6a4d9f78bd2681a9e177305c3606fbc15d083d8ad0ecd060b3"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "expiration-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-512/expiration-f2.log",
+            "sha256": "00108e8ee1c264d5a9b89b17f0df4f6041920fcaf27f010bd501d1bf69ff9726"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-512/expiration-f2.json",
+            "sha256": "3c978d6f5c66f2ec273c2314c7cc9fe8a7e45326cd37a927468f5b6495d94bc0"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "publication",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/aarch64-512/publication.log",
+            "sha256": "cc1172ecb8dd70e6e1ad305ea5f9c9cbb2d5a7d61847b69b6a859e20b1f5a8d1"
+          },
+          "observations": {
+            "fichier": "phases/aarch64-512/publication.json",
+            "sha256": "0ec1a8adbf2540481163f5f668728940deaaddd39b1d0c2e43dae21a01c58022"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "apres-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-4096/apres-ecriture.log",
+            "sha256": "fc7370016093426abe1cb93bbe95379d4f7ec5335bea1edf6729662fd187086b"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-4096/apres-ecriture.json",
+            "sha256": "6e636f234b663166b1095e57cfc65fb6fdd8dd6dcbb83409588632a98a426de2"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "avant-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-4096/avant-ecriture.log",
+            "sha256": "3cc9f8dd16c80e896049adc53f521def2f9244671c3d921e88e5ec7a54bd6fbc"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-4096/avant-ecriture.json",
+            "sha256": "79f422158158bc9d9c39c0d13394a8650d7245f4f5b8586c715f74ae12727759"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "avant-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-4096/avant-f2.log",
+            "sha256": "d048d4817be920a44898181b6161d83671718de3025faa147f4c57257e92949b"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-4096/avant-f2.json",
+            "sha256": "bc39421a63bd17d3f86fc990b8596d9c8612a132b06a4a4181350f8e7dc3e809"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "durable",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-4096/durable.log",
+            "sha256": "bd8a166bc209f00da03d4ff2c847353404a20740e677aa5e25b50130fb194329"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-4096/durable.json",
+            "sha256": "f6d5ccbc6bd46dbc16d758a6a579b540384b7ac9a2d32d19784fa966e9f196c9"
+          },
+          "statut": 0,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1,
+            2
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-4096/ecriture.log",
+            "sha256": "3e074e2bb368c3589493a2c5e734406fb26457767e135cb6d751177dce7e21a1"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-4096/ecriture.json",
+            "sha256": "bce8dfd14c2bec5907137eff928748f8a5c71831c209c1ef843c645270ba6800"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "expiration-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-4096/expiration-f1.log",
+            "sha256": "e1c6a065db447438ed3d239d6ec0da6f6cf2f2a28b579d250199ee5eea63c777"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-4096/expiration-f1.json",
+            "sha256": "2b88fdbaec43bce5f5b1ac3b85296862b5e723aaccfb9d0e3d9dc5adee96b29e"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "expiration-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-4096/expiration-f2.log",
+            "sha256": "3a72e82f3bf5196302cc1fe4a97056175d0c622223c5efa80c276699e9603842"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-4096/expiration-f2.json",
+            "sha256": "d7cd9a274dbd0995af2ff222e1bd0280e115db789b100750d65d8975b6933ff8"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "publication",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-4096/publication.log",
+            "sha256": "88b0c2f54893628520c1ff2d44a0d0a064abb1ad6d152cf2f88b943ef972bec4"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-4096/publication.json",
+            "sha256": "83194d5aab1976e1be7a6ad43cb759505cca59023cdb88aff59664556e0ab40f"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "apres-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-512/apres-ecriture.log",
+            "sha256": "aa28575bbd23c60b51b53343e3b64fc7448736abbcb67958dccf958a693330f4"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-512/apres-ecriture.json",
+            "sha256": "05327c43a72ddeced188683c1b442abcf66352f3976cbcfa20fa82756530dc3b"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "avant-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-512/avant-ecriture.log",
+            "sha256": "f0615a9f9b397c6b57fe8207905f1bedc323b2ec0c1803310795680b34a756bd"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-512/avant-ecriture.json",
+            "sha256": "9f582cd2c5cb14a7ef6997778194ce46fe410d3d58ebf0e17c8f04ef93b0b773"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "avant-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-512/avant-f2.log",
+            "sha256": "bfa61854b96fb78444ba72137112e27f83c5fdd83ad6bcf3a8fd19e4ecd8b953"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-512/avant-f2.json",
+            "sha256": "76523fc7753a25ad3423e5c220598735e1b114944c1cad53a57f91ec740acceb"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "durable",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-512/durable.log",
+            "sha256": "4e0279a5cbd9e6d162fde47ec29d9948628428da5209ae9f1a8a9edce09af45d"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-512/durable.json",
+            "sha256": "38723d75e8e85ec98b8d8a2db0b0fa02ea0e9c50422d4e8532bf79179bf89f62"
+          },
+          "statut": 0,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1,
+            2
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-512/ecriture.log",
+            "sha256": "bf13b16926a67a75320583d377f1584402e244748a5dd6d06d640d09d6dad5f6"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-512/ecriture.json",
+            "sha256": "4fda2cfe9665a742406fbb88457664fbcdc89bac33a596c0c6abb7dcda36da78"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "expiration-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-512/expiration-f1.log",
+            "sha256": "1d86d61756c347c9f3c5cc5213bf30662289c2d0eaa2ced9b164b87673859ec8"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-512/expiration-f1.json",
+            "sha256": "986260f52cd79117686ed9b2123eef1a5f191e666477d53ecaae5fb91f60bfd9"
+          },
+          "statut": 26,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "expiration-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-512/expiration-f2.log",
+            "sha256": "19467e609cc2ed74c6d1e6429f0d6ae652c1a710f9f8606eb33c98b27d1354fa"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-512/expiration-f2.json",
+            "sha256": "59237de939c29571c800c99b73c8646b3ff6cfd5a8ab6eda7ce83cee60a301f4"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 68,
+          "destination_sha256": "b53a3f5075f2eb90e207ef39be3695ac6fc23bb3d2c52a4c99ccf18fc967ed83"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "publication",
+          "retour": 0,
+          "journal": {
+            "fichier": "phases/x86_64-512/publication.log",
+            "sha256": "43e7fb230199ed2bb477a5bc0020a288929e95afa4ae922a6534664d4650eeda"
+          },
+          "observations": {
+            "fichier": "phases/x86_64-512/publication.json",
+            "sha256": "673e748d46905b9f55b2a1808d37903b4913f53d5fb0fdc5565037fce559c79e"
+          },
+          "statut": 22,
+          "generation_initiale": 66,
+          "generation_avant_oui": 67,
+          "barrieres_confirmees": [
+            1
+          ],
+          "redemarrage_verifie": true,
+          "generation_finale": 67,
+          "destination_sha256": null
+        }
+      ]
+    },
+    "reponses": {
+      "reussis": 24,
+      "echecs": 0,
+      "lignes": [
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "ancien-tag",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-4096/ancien-tag.log",
+            "sha256": "e67e500e12e6c1cb1466642862e97277e81616989cb3d72035941e94b7d684b5"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-4096/ancien-tag.json",
+            "sha256": "9fe7c7d40d643366f51f40346fd642e0bf74874362ad74f9415fe5fa9c0a932e"
+          },
+          "statut_public": 26,
+          "statut_transport": 3,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "annulation",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-4096/annulation.log",
+            "sha256": "ab5539bd2ef7bef7ecc9f82a0c3593a4db02ef378aeced65b43954e92f3ad37b"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-4096/annulation.json",
+            "sha256": "da372f975343b419df0ab473381ae06bc821ccdec9fc67d35850d12f56136351"
+          },
+          "statut_public": 26,
+          "statut_transport": 9,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "mort-pilote",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-4096/mort-pilote.log",
+            "sha256": "1388b6a8c48d1f4aeb5ed15ec72a77cfb7362c38e614f8722a5dc458ba52e152"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-4096/mort-pilote.json",
+            "sha256": "b79e18da783b181db3e20da85a60046b937d96184ee7c3b82deb18e425c03d3b"
+          },
+          "statut_public": 26,
+          "statut_transport": 11,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "mort-relais",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-4096/mort-relais.log",
+            "sha256": "677e6735621feb7a3c229d6c09f6d62f7da0cd4515a895ff53383ffa07b65915"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-4096/mort-relais.json",
+            "sha256": "eab81144b034d181fb8cfa54ed9410fd1ade96005ead1821f69ed9a4d7c3af2a"
+          },
+          "statut_public": 26,
+          "statut_transport": 11,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "revocation",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-4096/revocation.log",
+            "sha256": "a42ba4fbbf71660eb61ed7da80607773a71e5600fc3be67338d9a13395fdbbbe"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-4096/revocation.json",
+            "sha256": "ba9f8cf6a719c7b3336d93573d2906d64e8d204ebdb11124d175d846d15e26b4"
+          },
+          "statut_public": 26,
+          "statut_transport": 12,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "tardive",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-4096/tardive.log",
+            "sha256": "82e448c48f3f62800670e4e2e625ddbad5cd48ca31e1bc0a6a1038700966d72d"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-4096/tardive.json",
+            "sha256": "04c730e11486f15439d5633947a25a785e1610fc06d0a678ee2518dc0fcbaf80"
+          },
+          "statut_public": 26,
+          "statut_transport": 8,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "ancien-tag",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-512/ancien-tag.log",
+            "sha256": "f9ae00b16e1a0272c31f6fc17aafb4d520c4b53c79ce53f996fd9e15f53f2adf"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-512/ancien-tag.json",
+            "sha256": "0865b04442184a948daefca6eee4b185dae4d76fd5081d6ca7fd907d4662a3e5"
+          },
+          "statut_public": 26,
+          "statut_transport": 3,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "annulation",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-512/annulation.log",
+            "sha256": "8d7727a608c39e7484a19c84fc65c0646bdc91d11e9fc61181d511a4b06986b7"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-512/annulation.json",
+            "sha256": "99ccbcacd14626db96eafa5d0ee328a31942ad1366586cfa93062d9a58f931f9"
+          },
+          "statut_public": 26,
+          "statut_transport": 9,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "mort-pilote",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-512/mort-pilote.log",
+            "sha256": "fe541dcc64b784d52baa83d5d4763d1dbf910f95cf1dca119302b73f1062c0a3"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-512/mort-pilote.json",
+            "sha256": "6f6ea2dec6418cc5777cb04ce3b74909731a302783e1cf4d750da78669769655"
+          },
+          "statut_public": 26,
+          "statut_transport": 11,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "mort-relais",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-512/mort-relais.log",
+            "sha256": "4404546468d170c2b90b85338b68cf420c73fc022906fcbe8b2b2210e823d6ef"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-512/mort-relais.json",
+            "sha256": "ba26a84f4d11f0f4d29d484514f2c9d2589d73558d8623ae8d34e9ac55e3905f"
+          },
+          "statut_public": 26,
+          "statut_transport": 11,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "revocation",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-512/revocation.log",
+            "sha256": "934287227124a607ccac5bddcfdfe2f0ca20ff2b5ddd9b940be4c301643b137a"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-512/revocation.json",
+            "sha256": "4898865b8fac7fab95d080f356b5fcfae2652454c189e8c19897d46bad791bfb"
+          },
+          "statut_public": 26,
+          "statut_transport": 12,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "tardive",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/aarch64-512/tardive.log",
+            "sha256": "69e7abf417348651283635fe17ae0e767b596973086ad47ce867862f2e4a59a7"
+          },
+          "observations": {
+            "fichier": "reponses/aarch64-512/tardive.json",
+            "sha256": "301095d77992b7d72762711056f9defb875d6907b4f368fc94c2664cfe7c5168"
+          },
+          "statut_public": 26,
+          "statut_transport": 8,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "ancien-tag",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-4096/ancien-tag.log",
+            "sha256": "9269652de936136e2537170cc8608a9aa03028a71f56791a56ae038b85537ef1"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-4096/ancien-tag.json",
+            "sha256": "cfe2a1907cd1b0f4177ca8f2b2b391798fdbc2bdfca1d0529fbdd54363e9acfb"
+          },
+          "statut_public": 26,
+          "statut_transport": 3,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "annulation",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-4096/annulation.log",
+            "sha256": "c2974d8d3828ebf757660045206cbc92792c85e46fe5beb717f1557376ba7f21"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-4096/annulation.json",
+            "sha256": "253d7ca6c60a8a73680605572d9a8cc5e4c9a82556705cd69ae07fd69f5cedf4"
+          },
+          "statut_public": 26,
+          "statut_transport": 9,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "mort-pilote",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-4096/mort-pilote.log",
+            "sha256": "2e35118a261c9ef59ff8ff7e9f40bfe094476749b63ae4bbab7a477b5af14edf"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-4096/mort-pilote.json",
+            "sha256": "b80b3e480b9d7ddb96fce4d6b4d77267fee8402dcc9b776bd23dfd31e246b5a6"
+          },
+          "statut_public": 26,
+          "statut_transport": 11,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "mort-relais",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-4096/mort-relais.log",
+            "sha256": "c43f0c28c92385a7768751cbd0359d7165d45cb4d96ae9b6c3376edadfb2c801"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-4096/mort-relais.json",
+            "sha256": "60f77d202043269386f0da1f18876a85492b87a928d807be8ef1624e83c28c5c"
+          },
+          "statut_public": 26,
+          "statut_transport": 11,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "revocation",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-4096/revocation.log",
+            "sha256": "5ddf5901304dea95055a9d16bd66fb0af4fafec85738f760da7500431cbe5818"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-4096/revocation.json",
+            "sha256": "d51a281c350c279ede5d5a8c90a017338a2a2ced226d095af3a4cc8fb4fea23d"
+          },
+          "statut_public": 26,
+          "statut_transport": 12,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "tardive",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-4096/tardive.log",
+            "sha256": "00a0a5fd0794abecd9f2b341e81d5d38c87fa01029e7baf4feb4d48061b0f1b4"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-4096/tardive.json",
+            "sha256": "55b609983dba5446ad1dee39449fc2ee67c31226608739ded12a2d1ac8eb3165"
+          },
+          "statut_public": 26,
+          "statut_transport": 8,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "ancien-tag",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-512/ancien-tag.log",
+            "sha256": "f82b8965426a3e14e5c9ba78dfeac47a75cb3581931420b9752431e225561ad6"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-512/ancien-tag.json",
+            "sha256": "382f31fabe2690728c4e615305d63c4543a475c2e0d908ea6f1899e66348823e"
+          },
+          "statut_public": 26,
+          "statut_transport": 3,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "annulation",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-512/annulation.log",
+            "sha256": "2f0bd49837c64a4f9310f4f9798851a92557f6173a080cadad7a73ee06070881"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-512/annulation.json",
+            "sha256": "5554315129222572b83ba9b54b486a254e825cca2fcd4004f637a780b9317b13"
+          },
+          "statut_public": 26,
+          "statut_transport": 9,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "mort-pilote",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-512/mort-pilote.log",
+            "sha256": "32c0c51cecedae7e91a5992a28711a93f70da486e003560958b481a77fb12fe2"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-512/mort-pilote.json",
+            "sha256": "78b76db4b1aed99383dab7029d905f097f7ef3de1ac24c21f01c672ec2ecff19"
+          },
+          "statut_public": 26,
+          "statut_transport": 11,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "mort-relais",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-512/mort-relais.log",
+            "sha256": "fa10fb415626771acc47a4eaf784f95cd95b8af40ecc1dcf27a4702592217422"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-512/mort-relais.json",
+            "sha256": "90022df4bd2f65688f0971aaa55f9477a685dde20a3271dcf1921604d67976e4"
+          },
+          "statut_public": 26,
+          "statut_transport": 5,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "revocation",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-512/revocation.log",
+            "sha256": "5a11b49942246c3693c7cf8652f06149196364ba56178f4fcd1eb700538e9084"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-512/revocation.json",
+            "sha256": "f316e37ecbb2c011f8dd7c7ce73fa53bf11c2ef06f3475eba8ae4e715c5cc0fc"
+          },
+          "statut_public": 26,
+          "statut_transport": 12,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "tardive",
+          "retour": 0,
+          "journal": {
+            "fichier": "reponses/x86_64-512/tardive.log",
+            "sha256": "b70239b4d54eb2732aebda4f4f14cba78b6c9a3e2d1fa5d9039255294ba1e3ba"
+          },
+          "observations": {
+            "fichier": "reponses/x86_64-512/tardive.json",
+            "sha256": "4654c4551e0a4f4dbdd7e1483366c408a0c1813e122f1159dd7c52a7b1c307ab"
+          },
+          "statut_public": 26,
+          "statut_transport": 8,
+          "source_exacte": true,
+          "destination_absente": true,
+          "reponse_declaree_durable": false,
+          "ancres": {
+            "0": 66,
+            "1": 67
+          },
+          "ancres_avant_consentement": {
+            "0": 66,
+            "1": 67
+          }
+        }
+      ]
+    },
+    "coupe": {
+      "reussis": 36,
+      "echecs": 0,
+      "lignes": [
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "avant-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/avant-f1.log",
+            "sha256": "ba9bdb7a926cfa0fcb775fda5b3e06e6ab8d2d5ffb70a2cf263541e1d0288b0b"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/avant-f1.json",
+            "sha256": "4576fd144e16c340cb7ab0c07add03142270740f4b783e22b3888f976808c953"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "avant-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/avant-f2.log",
+            "sha256": "4dbd71907e57aedcd3c853db3c25bb30a11abf09283cc396182f69c008a071cc"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/avant-f2.json",
+            "sha256": "b064c06ffc9319344aa352e28b1a4660eb44aa640e0a13c6fc1afa5401324246"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/f1.log",
+            "sha256": "fa799c5f45f914291015a6f509b8b06b51b23d251f9f3818e531cd6aff170dcb"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/f1.json",
+            "sha256": "e52e89ac12b80700c610a0e6d919fedd5ace9261dcc68152740d043e4dd0dfaa"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/f2.log",
+            "sha256": "e8068780ed456da15171df71577ec6fe2b7f6b8b1ade475a2d8ba3743571b328"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/f2.json",
+            "sha256": "e01917371e0782e40f23dc918c49c4101a30c2c93b557c37cfaefe29ac9aece3"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": true,
+          "generations": {
+            "0": 68,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "pages",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/pages.log",
+            "sha256": "4c8bdb1a29b7c6aa916cb5e2394c19f3319029d3dc3f79f969c5b4bfa4471d3c"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/pages.json",
+            "sha256": "3e90cfac9622a25baccb5a8270d9c7788905c032583240b771407decc31f3f29"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "retrait",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/retrait.log",
+            "sha256": "8e13f117c7227bc07c57bae9a9d0f647f1a9e58ceba1ee2f99c176cb2ee2562e"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/retrait.json",
+            "sha256": "d65ad7d6217e4ce8d1b45030cc78c1fee7b9e230bd9293c9837913ff2f367c99"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "vol-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/vol-ecriture.log",
+            "sha256": "d67fa273d82f8d94f981d6828d90280460469e7965aadedf2cc7320a0f74404d"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/vol-ecriture.json",
+            "sha256": "f629140e610cde5ee2c8c0e28027f584386fa75833fa599c3ba5d851e0be2e76"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "write_aio"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "vol-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/vol-f1.log",
+            "sha256": "cf8427a505c307fbdbb6353f50a09efe23b570b62c6f3aaa438164cc04e829bd"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/vol-f1.json",
+            "sha256": "9eba5d0a5a833877942efb6be0a356325da5a03e475adbe03213dd18a2f4c73e"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "flush_to_disk"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "vol-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-4096/vol-f2.log",
+            "sha256": "7eaa956f39ef5e173eb1073542860cb49bb9ffaa0203f6bf9560fd83d3eec1f5"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-4096/vol-f2.json",
+            "sha256": "8ca16df0f9041ebeed373b1bf9e9005ebb83d71f325aeb551b6f76f2d58bc192"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": true,
+          "generations": {
+            "0": 68,
+            "1": 67
+          },
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "flush_to_disk"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "avant-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/avant-f1.log",
+            "sha256": "de061ed7a5b8d6646d35d85dc0e4802b2faa4a1ba7fc32089b32cd93229fd07a"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/avant-f1.json",
+            "sha256": "a79b2bafbaa10b0196ac24c43d98b6c5225502fa9ff7150ebb17e8490951e59f"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "avant-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/avant-f2.log",
+            "sha256": "e890047d4107a3a1a4ccf2283c2783a87e91c112e439d2a07e0727b638bdf1c0"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/avant-f2.json",
+            "sha256": "253ee999b09c220a4a73b8614ec7c7441470a5e0d9e34db1120095724d39e65f"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/f1.log",
+            "sha256": "5b72fd907419245087ddb603e4d6a384fece035375c6e7a63d01508a3a4b6612"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/f1.json",
+            "sha256": "f03ccedbb16ba266767191cd9277a6c351cba2892eff36b9de8acb6522b4865d"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/f2.log",
+            "sha256": "9d64c5aa01ff9d1481c49546848b20e2c35c94f8ae79e1f656410d45edbaa5f9"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/f2.json",
+            "sha256": "7a69ab22cff1f610e4b323b34bacc2d12fbcd59ce58b54c1e9078aed6b34f3e7"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": true,
+          "generations": {
+            "0": 68,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "pages",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/pages.log",
+            "sha256": "e4a51bcfa65f36f01f75438da110d86c2042906fbbfd9ad7432eb8c80498e031"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/pages.json",
+            "sha256": "aec1b485e494d1c38442f5b4b59f205d42d4c7ac241092bdbd948804359cf65d"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "retrait",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/retrait.log",
+            "sha256": "261405a62f7784ecd5b9a48247b2700674a815ec31c17d041e7585d5dc387324"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/retrait.json",
+            "sha256": "91d741eeb9d7b2c51c6806b2def9ff86778aeb83d03156645dafe2cd4968b67f"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "vol-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/vol-ecriture.log",
+            "sha256": "29ce411d0ce77de9185808fb68decd04304940552b7e33aac2c700269200f124"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/vol-ecriture.json",
+            "sha256": "4042ba8332fcf3cc83ded4cdeb9bd8093fc7f3561e90b247ee0f7ec4c0279c50"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "write_aio"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "vol-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/vol-f1.log",
+            "sha256": "a6db6d6a1f12528b161dbbaed86836fe36a3b534ca657a67b703066b81e99eaa"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/vol-f1.json",
+            "sha256": "6ffc066c472e98614e62dc1db0a349c9311e1b517e2623f400ef40a0c9ea6d43"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "flush_to_disk"
+        },
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "vol-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/aarch64-512/vol-f2.log",
+            "sha256": "3b83224432d901e34d91b0e897e5252e3dbc4e5cc7e70bffed68ada56192ffef"
+          },
+          "observations": {
+            "fichier": "coupe/aarch64-512/vol-f2.json",
+            "sha256": "09020b058d80929cb4aff7a5b0c8a594cc40e82354de2bc45b85bec247af1f87"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": true,
+          "generations": {
+            "0": 68,
+            "1": 67
+          },
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "flush_to_disk"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "avant-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/avant-f1.log",
+            "sha256": "652f4bef2aacce31a2630d93e8c6465df015a815148d0c8306aee41cc193f35f"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/avant-f1.json",
+            "sha256": "6d55e53e2d69c7a5c91940ee27c3acd2e5d57fd2a72c8e5edac376333de45bf5"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "avant-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/avant-f2.log",
+            "sha256": "cf4b2f9df554df613fb9c91c170a48f97ddd86098b7dc0247fee6e885458d71d"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/avant-f2.json",
+            "sha256": "5996037003a761addd69e22462e9b6e053dcc4da24dc44df47a593b3578b5809"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/f1.log",
+            "sha256": "42252de5ca61efee14298f03a762e4bc7b12708609d7444450f55ce9cc400a98"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/f1.json",
+            "sha256": "bd9ce66bf74a6d2e9558cb2cf3a20f9f7e155032127d02e3a919a77cfa1a96bc"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/f2.log",
+            "sha256": "9be2b39438bc13bffa39391ca98ae115ac717cc790a271b93be951e788442db1"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/f2.json",
+            "sha256": "a12b0f34275127747258c8386cb5ee47b64e364ce3b7b52b03c6ce3dced5d049"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": true,
+          "generations": {
+            "0": 68,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "pages",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/pages.log",
+            "sha256": "707046998cc8d5a4e507a3694237d2cfda9f8e99c266a8db7870df773d4d4f53"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/pages.json",
+            "sha256": "ee0580b9e52e2a4e2642bba84de13a087677384819ec0ee7a36c104553bde598"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "retrait",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/retrait.log",
+            "sha256": "897397293a80448c6696198ce54d310672b0d7a64c79f5775e6156d24f45bd68"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/retrait.json",
+            "sha256": "05a2548cd9f6bb8b58e2891aa298a3e29e19182b93fb029745f4d476630b6569"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "vol-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/vol-ecriture.log",
+            "sha256": "cc13c6f40e444a92f2d4ebe6eeab768c530d30be7b59d7af357acaf30bfd0d94"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/vol-ecriture.json",
+            "sha256": "5fb9f2822b35179e9de3bf4fdcd1d40f2ed8be4762f81aa7ff309159a5e92c9a"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "write_aio"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "vol-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/vol-f1.log",
+            "sha256": "9d69229683013164a01b2879a9f491634ec4f0a2e5564f2183b8281fa4ce80b2"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/vol-f1.json",
+            "sha256": "a3c5545cbb5c9ec54317227a0a957f8594bdcfdc9f79f99c3b8fa18e50ee1caa"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "flush_to_disk"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "vcpu": 4,
+          "point": "vol-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-4096/vol-f2.log",
+            "sha256": "4c973267110bfd2ec8db50097913968ea887803a378e397073573e1e907276ce"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-4096/vol-f2.json",
+            "sha256": "42bddeb4aec1fbb4f898a7853e811171a13c822e50da80991c5a7aef6a8cf15f"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": true,
+          "generations": {
+            "0": 68,
+            "1": 67
+          },
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "flush_to_disk"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "avant-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/avant-f1.log",
+            "sha256": "54351eb7fa10f955e6dbe4a773d1407c49339ed5e05d40ec6548017e7afe45da"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/avant-f1.json",
+            "sha256": "b80f285edc71ddf8f54eb60c3117cdedf45557fd9c0568b88061cce49418622e"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "avant-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/avant-f2.log",
+            "sha256": "3071ef6bbb0610d050aba94b6984814fac83974af9344022b595fd58028d69dc"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/avant-f2.json",
+            "sha256": "6270274c69ce50c4fc30d1283037e70278efab41ba6b8185cb9bf3ab57e4a884"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/f1.log",
+            "sha256": "7bc22c46ecd72ed59a9870e5bad38645fd06bcb2c0846f94ff735e7afd96141e"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/f1.json",
+            "sha256": "a5680d31e3b84191682ee84df5ec2678dc73b5712c6c11d6f1e7a5e880e0d763"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/f2.log",
+            "sha256": "b2c0d503ce3d68951cbfda6afe9cb5f4c9dea1230c898173024799698dc160bf"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/f2.json",
+            "sha256": "b3486e19773c340ab2e91fd69c7c62395ce4242f2dcbccfed14bf207d06366db"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": true,
+          "generations": {
+            "0": 68,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "pages",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/pages.log",
+            "sha256": "6e5c3485d67bc63d87fef09349a2437b6978b4453961290bd6c7f70f04ae3712"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/pages.json",
+            "sha256": "425263acba7c726b168e50e31db25f1cf3d51b150d01f88ca353587db4f23127"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "retrait",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/retrait.log",
+            "sha256": "8d79ec1ee4774e3365095e2764a0092cc0d35a52b35346e43abe7862d5e2fdc7"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/retrait.json",
+            "sha256": "7e5eb8c9970f07435681e233f94adc8e33f10ea5b5066970e6450a207708503d"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": null
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "vol-ecriture",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/vol-ecriture.log",
+            "sha256": "3347442ddfbfe96ecdae82fde7bca229cbee64a6e96cbf66712a96f643128d0f"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/vol-ecriture.json",
+            "sha256": "fc430d890bafafe172588b77f4bf7b59c56813dc96f0ac4249952e4ac25e72d8"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "write_aio"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "vol-f1",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/vol-f1.log",
+            "sha256": "bfff1a48e4f922135ed685849c6ca8250ce5dc6c1e22f017a41c9a392b3838b2"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/vol-f1.json",
+            "sha256": "88d86ad54d2b63997af0e4a81b230f06e8630e9be285026baa4195231e80fbbd"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": false,
+          "generations": {
+            "0": 66,
+            "1": 67
+          },
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "flush_to_disk"
+        },
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "vcpu": 4,
+          "point": "vol-f2",
+          "retour": 0,
+          "journal": {
+            "fichier": "coupe/x86_64-512/vol-f2.log",
+            "sha256": "a7985e0b23f7b9f81aa296c85d884c7dd5f0afba10487c55692a24e55bf5cf07"
+          },
+          "observations": {
+            "fichier": "coupe/x86_64-512/vol-f2.json",
+            "sha256": "91471bff2a580e28c5cea7f9afc493af892bebbd0813cfce995d7ecb1dc71cce"
+          },
+          "relecture_exacte": true,
+          "montage_normal": true,
+          "destination_complete": true,
+          "generations": {
+            "0": 68,
+            "1": 67
+          },
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false,
+          "evenement_suspendu": "flush_to_disk"
+        }
+      ]
+    },
+    "dma": {
+      "reussis": 6,
+      "echecs": 0,
+      "lignes": [
+        {
+          "architecture": "aarch64",
+          "vcpu": 1,
+          "point": "dma",
+          "retour": 0,
+          "journal": {
+            "fichier": "dma/aarch64-1/dma.log",
+            "sha256": "ca07899d55b31501af39944a8cce0da4c101a059c095685640a47b436a42136b"
+          },
+          "geometries": [
+            {
+              "arch": "aarch64",
+              "secteur": 512,
+              "injections": 120,
+              "baseline_machine": 0,
+              "sessions": 64,
+              "cadres_session": 16,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "0",
+                  "16",
+                  "0"
+                ],
+                [
+                  "sg",
+                  "0",
+                  "18",
+                  "0"
+                ],
+                [
+                  "flush",
+                  "0",
+                  "16",
+                  "0"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            },
+            {
+              "arch": "aarch64",
+              "secteur": 4096,
+              "injections": 120,
+              "baseline_machine": 0,
+              "sessions": 64,
+              "cadres_session": 16,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "0",
+                  "16",
+                  "0"
+                ],
+                [
+                  "sg",
+                  "0",
+                  "18",
+                  "0"
+                ],
+                [
+                  "flush",
+                  "0",
+                  "16",
+                  "0"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            }
+          ]
+        },
+        {
+          "architecture": "aarch64",
+          "vcpu": 2,
+          "point": "dma",
+          "retour": 0,
+          "journal": {
+            "fichier": "dma/aarch64-2/dma.log",
+            "sha256": "ca07899d55b31501af39944a8cce0da4c101a059c095685640a47b436a42136b"
+          },
+          "geometries": [
+            {
+              "arch": "aarch64",
+              "secteur": 512,
+              "injections": 120,
+              "baseline_machine": 0,
+              "sessions": 64,
+              "cadres_session": 16,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "0",
+                  "16",
+                  "0"
+                ],
+                [
+                  "sg",
+                  "0",
+                  "18",
+                  "0"
+                ],
+                [
+                  "flush",
+                  "0",
+                  "16",
+                  "0"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            },
+            {
+              "arch": "aarch64",
+              "secteur": 4096,
+              "injections": 120,
+              "baseline_machine": 0,
+              "sessions": 64,
+              "cadres_session": 16,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "0",
+                  "16",
+                  "0"
+                ],
+                [
+                  "sg",
+                  "0",
+                  "18",
+                  "0"
+                ],
+                [
+                  "flush",
+                  "0",
+                  "16",
+                  "0"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            }
+          ]
+        },
+        {
+          "architecture": "aarch64",
+          "vcpu": 4,
+          "point": "dma",
+          "retour": 0,
+          "journal": {
+            "fichier": "dma/aarch64-4/dma.log",
+            "sha256": "ca07899d55b31501af39944a8cce0da4c101a059c095685640a47b436a42136b"
+          },
+          "geometries": [
+            {
+              "arch": "aarch64",
+              "secteur": 512,
+              "injections": 120,
+              "baseline_machine": 0,
+              "sessions": 64,
+              "cadres_session": 16,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "0",
+                  "16",
+                  "0"
+                ],
+                [
+                  "sg",
+                  "0",
+                  "18",
+                  "0"
+                ],
+                [
+                  "flush",
+                  "0",
+                  "16",
+                  "0"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            },
+            {
+              "arch": "aarch64",
+              "secteur": 4096,
+              "injections": 120,
+              "baseline_machine": 0,
+              "sessions": 64,
+              "cadres_session": 16,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "0",
+                  "16",
+                  "0"
+                ],
+                [
+                  "sg",
+                  "0",
+                  "18",
+                  "0"
+                ],
+                [
+                  "flush",
+                  "0",
+                  "16",
+                  "0"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            }
+          ]
+        },
+        {
+          "architecture": "x86_64",
+          "vcpu": 1,
+          "point": "dma",
+          "retour": 0,
+          "journal": {
+            "fichier": "dma/x86_64-1/dma.log",
+            "sha256": "cd559e9a39677860bf4015c2b6c1d64ff0719757aad9deb023d71ec631b4ca86"
+          },
+          "geometries": [
+            {
+              "arch": "x86_64",
+              "secteur": 512,
+              "injections": 112,
+              "baseline_machine": 9,
+              "sessions": 64,
+              "cadres_session": 7,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "9",
+                  "16",
+                  "9"
+                ],
+                [
+                  "sg",
+                  "9",
+                  "18",
+                  "9"
+                ],
+                [
+                  "flush",
+                  "9",
+                  "16",
+                  "9"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            },
+            {
+              "arch": "x86_64",
+              "secteur": 4096,
+              "injections": 112,
+              "baseline_machine": 9,
+              "sessions": 64,
+              "cadres_session": 7,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "9",
+                  "16",
+                  "9"
+                ],
+                [
+                  "sg",
+                  "9",
+                  "18",
+                  "9"
+                ],
+                [
+                  "flush",
+                  "9",
+                  "16",
+                  "9"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            }
+          ]
+        },
+        {
+          "architecture": "x86_64",
+          "vcpu": 2,
+          "point": "dma",
+          "retour": 0,
+          "journal": {
+            "fichier": "dma/x86_64-2/dma.log",
+            "sha256": "cd559e9a39677860bf4015c2b6c1d64ff0719757aad9deb023d71ec631b4ca86"
+          },
+          "geometries": [
+            {
+              "arch": "x86_64",
+              "secteur": 512,
+              "injections": 112,
+              "baseline_machine": 9,
+              "sessions": 64,
+              "cadres_session": 7,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "9",
+                  "16",
+                  "9"
+                ],
+                [
+                  "sg",
+                  "9",
+                  "18",
+                  "9"
+                ],
+                [
+                  "flush",
+                  "9",
+                  "16",
+                  "9"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            },
+            {
+              "arch": "x86_64",
+              "secteur": 4096,
+              "injections": 112,
+              "baseline_machine": 9,
+              "sessions": 64,
+              "cadres_session": 7,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "9",
+                  "16",
+                  "9"
+                ],
+                [
+                  "sg",
+                  "9",
+                  "18",
+                  "9"
+                ],
+                [
+                  "flush",
+                  "9",
+                  "16",
+                  "9"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            }
+          ]
+        },
+        {
+          "architecture": "x86_64",
+          "vcpu": 4,
+          "point": "dma",
+          "retour": 0,
+          "journal": {
+            "fichier": "dma/x86_64-4/dma.log",
+            "sha256": "cd559e9a39677860bf4015c2b6c1d64ff0719757aad9deb023d71ec631b4ca86"
+          },
+          "geometries": [
+            {
+              "arch": "x86_64",
+              "secteur": 512,
+              "injections": 112,
+              "baseline_machine": 9,
+              "sessions": 64,
+              "cadres_session": 7,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "9",
+                  "16",
+                  "9"
+                ],
+                [
+                  "sg",
+                  "9",
+                  "18",
+                  "9"
+                ],
+                [
+                  "flush",
+                  "9",
+                  "16",
+                  "9"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            },
+            {
+              "arch": "x86_64",
+              "secteur": 4096,
+              "injections": 112,
+              "baseline_machine": 9,
+              "sessions": 64,
+              "cadres_session": 7,
+              "image_identique": true,
+              "retraits_apres_perte_acquit": [
+                [
+                  "mono",
+                  "9",
+                  "16",
+                  "9"
+                ],
+                [
+                  "sg",
+                  "9",
+                  "18",
+                  "9"
+                ],
+                [
+                  "flush",
+                  "9",
+                  "16",
+                  "9"
+                ]
+              ],
+              "portails_refuses": [
+                "storage-read",
+                "storage-page-read"
+              ],
+              "livraisons_mono_sg_verifiees": 8
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "p9_classique_proprietes": "Remontage lecture seule ; octets source, ancienne/nouvelle destination, les deux ancres/manifeste et empreintes de l’image arrêtée et de sa copie vérifiées par erreurs_stockage_classique.py.",
+  "dma_proprietes": "Chaque topologie exécute deux géométries. Chaque cellule vérifie 64 ouvertures/retraits, 120 injections ARM ou 112 x86, huit livraisons mono et SG, les deux portails historiques, puis la perte de l’acquit matériel et du premier acquit du drainage automatique pour mono, SG et FLUSH. Les deux acteurs vivent encore à la reprise ; leurs voies sont restituées. Les 9 cadres VT-d machine constituent le socle x86.",
+  "dossiers_preuves": {
+    "racine": "novaOS/build/qualification-reservations-0170",
+    "final": "regressions-6534f23",
+    "intermediaire": "regressions-f0e5020",
+    "temoin": "regressions-cd5e45f-7313m0jg"
+  },
+  "rejeu_sur_f0e5020": {
+    "phases": {
+      "essais": 32,
+      "reussis": 32,
+      "echecs": []
+    },
+    "reponses": {
+      "essais": 24,
+      "reussis": 22,
+      "echecs": [
+        [
+          "x86_64",
+          4096,
+          "mort-relais"
+        ],
+        [
+          "aarch64",
+          512,
+          "mort-relais"
+        ]
+      ]
+    },
+    "coupe": {
+      "essais": 36,
+      "reussis": 36,
+      "echecs": []
+    },
+    "dma-retrait": {
+      "essais": 6,
+      "reussis": 6,
+      "echecs": []
+    },
+    "smp_classique": {
+      "groupes_terminaux": 108,
+      "echecs": [],
+      "groupes_bloc_classique": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "historiques_fichiers": 56
+    }
+  },
+  "incident_mort_relais": {
+    "constat": "Intermédiaire f0e5020, ARM64/512 et x86_64/4096. L’oracle exigeait CLOSED (11) après Exit(37). IPC_RECEIVE fait lookup et renvoie DENIED (5) lorsque death a déjà détruit le canal et retiré le handle. Une réception déjà en attente sur cet endpoint reçoit CLOSED dans sweep. Les deux ordres refusent la sauvegarde avec le code public 26. Le tag, le code de sortie du relais et le retrait réussi sont exigés.",
+    "relectures_independantes": [
+      {
+        "fichier": "../regressions-f0e5020/reponses/aarch64-512/audit-independant-denied/relecture.json",
+        "sha256": "832b4c203529be2398adda921928760867b748c747c07de07721ab3fdfe6c38b"
+      },
+      {
+        "fichier": "../regressions-f0e5020/reponses/x86_64-4096/audit-independant-denied/relecture.json",
+        "sha256": "f050d177cefe81ab96373f1dcfca569f1190d60898d3005c78b3b77d38eed3e6"
+      }
+    ]
+  },
+  "rejeu_sur_1547bc6": {
+    "phases": {
+      "total": 32,
+      "reussis": 32
+    },
+    "reponses": {
+      "total": 24,
+      "reussis": 24
+    },
+    "coupe": {
+      "total": 36,
+      "reussis": 36
+    },
+    "dma": {
+      "total": 6,
+      "reussis": 6
+    }
+  },
+  "bilans": {
+    "systeme": 108,
+    "classique_P9": 24,
+    "historiques_fichiers": 56,
+    "phases": 32,
+    "reponses": 24,
+    "coupures": 36,
+    "cellules_surete_DMA": 12
+  },
+  "revision_harnais_dma": "eb3767ff5ae05ff60a44a42cd8f4c18bab74c69c",
+  "revision_oracle_reponses": "b3e86275bb2e7150ea6b0ac7309ffbbfdbd31c09",
+  "incidents_construction": [
+    "Un premier montage des sondes sur l’ébauche a nécessité la chaîne stable rustup explicitement sélectionnée. Avant 1547bc6 la sonde des anciens lots utilisait la signature dépourvue du booléen doute. Les profils concernés ont été reconstruits.",
+    "Une première construction de la sonde de test f0e5020 attendait des Reference au lieu de VoieLot. Erreurs Rust E0369/E0277 dans le code de sonde. Aucune VM issue de cet essai. Le correctif de sonde a relu le champ endpoint et la reprise a qualifié les douze cellules, sans changement du système.",
+    "Le premier rejeu de compilation au même chemin que le témoin brut a rencontré le journal brut.compilation.log protégé par création exclusive. Ce journal a été archivé et la construction relancée dans le même chemin sans écraser les résultats."
+  ]
+}

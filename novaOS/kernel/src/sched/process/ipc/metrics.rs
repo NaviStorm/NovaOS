@@ -4,8 +4,9 @@ use super::*;
 use core::sync::atomic::AtomicBool;
 static ACTIVE: AtomicBool = AtomicBool::new(false);
 static SWITCHES: AtomicBool = AtomicBool::new(false);
-// CPU0, IRQ masquées. Le marqueur est transmis entre les deux piles noyau.
-static HANDOFF: AtomicU64 = AtomicU64::new(0);
+// Un marqueur par CPU, IRQ masquées. Le marqueur est transmis entre les deux piles noyau.
+static HANDOFF: [AtomicU64; crate::smp::MAX_CPUS] =
+    [const { AtomicU64::new(0) }; crate::smp::MAX_CPUS];
 pub(crate) fn switch_stamp() -> u64 {
     if SWITCHES.load(Ordering::Relaxed) {
         hal::timer::counter()
@@ -14,12 +15,12 @@ pub(crate) fn switch_stamp() -> u64 {
     }
 }
 pub(crate) fn switch_out(start: u64, pair: bool) {
-    HANDOFF.store(if pair { start } else { 0 }, Ordering::Relaxed);
+    HANDOFF[crate::smp::index()].store(if pair { start } else { 0 }, Ordering::Relaxed);
 }
 pub(crate) fn switch_in() {
     let end = switch_stamp();
     if end != 0 {
-        let start = HANDOFF.swap(0, Ordering::Relaxed);
+        let start = HANDOFF[crate::smp::index()].swap(0, Ordering::Relaxed);
         if start != 0 {
             with(|s| s.ipc.metrics.sample(7, start, end));
         }
@@ -97,7 +98,9 @@ impl Metrics {
     pub fn start_session(&mut self, client: u64, service: u64) {
         self.start_series(client, service, 8);
         self.window = None;
-        HANDOFF.store(0, Ordering::Relaxed);
+        for value in &HANDOFF {
+            value.store(0, Ordering::Relaxed);
+        }
         SWITCHES.store(true, Ordering::Relaxed);
     }
     pub fn includes(&self, pid: Pid) -> bool {

@@ -1,0 +1,220 @@
+--- a/novaOS/kernel/src/arch/aarch64/paging.rs
++++ b/novaOS/kernel/src/arch/aarch64/paging.rs
+@@ -46,4 +46,5 @@
+ }
+ pub fn invalidate(_: u64) {
++    let _mesure = crate::profil4::mesurer(crate::profil4::Site::Tlb);
+     crate::sched::profile::tlb();
+     // Sûreté : couvre tous les ASID du domaine de partage interne et attend
+--- a/novaOS/kernel/src/arch/aarch64/timer.rs
++++ b/novaOS/kernel/src/arch/aarch64/timer.rs
+@@ -69,4 +69,5 @@
+ }
+ pub(super) extern "C" fn irq(state: usize) {
++    let _irq = crate::profil4::mesurer(crate::profil4::Site::IrqService);
+     let (id, ack) = gic::acknowledge();
+     if (1020..=1023).contains(&id) {
+@@ -84,4 +85,5 @@
+     }
+     gic::end(ack);
++    drop(_irq);
+     if id == PPI {
+         sched::tick(state & 15 == 0)
+--- a/novaOS/kernel/src/arch/x86_64/lapic.rs
++++ b/novaOS/kernel/src/arch/x86_64/lapic.rs
+@@ -50,8 +50,11 @@
+ }
+ pub extern "C" fn tick(cs: usize) {
++    let _irq = crate::profil4::mesurer(crate::profil4::Site::IrqService);
+     write(0xb0, 0);
++    drop(_irq);
+     sched::tick(cs & 3 == 3);
+ }
+ pub extern "C" fn ipi() {
++    let _mesure = crate::profil4::mesurer(crate::profil4::Site::IrqService);
+     poll_translation();
+     write(0xb0, 0);
+@@ -120,5 +123,7 @@
+ }
+ pub extern "C" fn wake() {
++    let _irq = crate::profil4::mesurer(crate::profil4::Site::IrqService);
+     write(0xb0, 0);
++    drop(_irq);
+     sched::reschedule_idle();
+ }
+--- a/novaOS/kernel/src/arch/x86_64/paging.rs
++++ b/novaOS/kernel/src/arch/x86_64/paging.rs
+@@ -53,4 +53,5 @@
+ }
+ pub fn invalidate(va: u64) {
++    let _mesure = crate::profil4::mesurer(crate::profil4::Site::Tlb);
+     invalidate_local(va);
+     super::lapic::shootdown(va);
+--- a/novaOS/kernel/src/arch/x86_64/timer.rs
++++ b/novaOS/kernel/src/arch/x86_64/timer.rs
+@@ -11,5 +11,7 @@
+ }
+ pub(super) extern "C" fn tick(cs: usize) {
++    let _irq = crate::profil4::mesurer(crate::profil4::Site::IrqService);
+     Port::PicCommand.write(0x20);
++    drop(_irq);
+     sched::tick(cs & 3 == 3);
+ }
+--- a/novaOS/kernel/src/main.rs
++++ b/novaOS/kernel/src/main.rs
+@@ -15,4 +15,5 @@
+ mod input;
+ mod memory;
++mod profil4;
+ mod sched;
+ mod smp;
+--- a/novaOS/kernel/src/memory/user.rs
++++ b/novaOS/kernel/src/memory/user.rs
+@@ -252,4 +252,5 @@
+         write: bool,
+     ) -> Option<[(*mut u8, usize); 2]> {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Translation);
+         if len == 0 || len > PAGE as usize || va.checked_add(len as u64)? > (1 << 47) {
+             return None;
+@@ -280,4 +281,5 @@
+             return false;
+         };
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::CopieDepuis);
+         let mut offset = 0;
+         for (ptr, n) in parts.into_iter().filter(|p| p.1 != 0) {
+@@ -294,4 +296,5 @@
+             return false;
+         };
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::CopieVers);
+         let mut offset = 0;
+         for (ptr, n) in parts.into_iter().filter(|p| p.1 != 0) {
+--- a/novaOS/kernel/src/sched/mod.rs
++++ b/novaOS/kernel/src/sched/mod.rs
+@@ -134,4 +135,5 @@
+     }
+     fn choose(&mut self, cpu: usize) -> Option<usize> {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Choix);
+         let eligible = (0..self.ready.len).find(|&offset| {
+             let i = self.ready.items[(self.ready.head + offset) % MAX];
+@@ -167,4 +169,5 @@
+     }
+     fn wake(&mut self, i: usize) {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Reveil);
+         assert!(matches!(self.thread(i).state, State::Blocked(_)));
+         if self.thread(i).blocked_since != 0 {
+@@ -362,4 +368,5 @@
+             // Sûreté : IRQ masquées ; les deux racines et piles restent vivantes
+             // jusqu’à la collecte sur une pile tierce. La moitié haute est commune.
++            let _mesure = crate::profil4::mesurer(crate::profil4::Site::Espace);
+             unsafe { t.space.activate() };
+         }
+@@ -418,5 +425,7 @@
+         unsafe {
+             let depth = gate::outgoing();
++            crate::profil4::sortant();
+             context::switch(save, load, &gate::OWNER);
++            crate::profil4::entrant();
+             gate::resumed(depth);
+         }
+@@ -563,4 +572,5 @@
+ }
+ extern "C" fn trampoline() -> ! {
++    crate::profil4::entrant();
+     let cpu = crate::smp::index();
+     let entry = with(|s| s.thread(s.current()).entry);
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -182,4 +182,5 @@
+     }
+     pub(super) fn collect(&mut self) {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Collecte);
+         self.ends.collect();
+         self.nodes.collect();
+@@ -233,4 +234,5 @@
+     }
+     fn lookup(&self, p: Pid, key: u64, need: u32) -> Res<Node> {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Capacite);
+         if key == 0 {
+             return Err(DENIED);
+@@ -240,4 +242,5 @@
+             .and_then(|t| t.entries.iter().find(|e| e.key == key))
+             .ok_or(DENIED)?;
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Droits);
+         let n = self
+             .node(entry.node)
+--- a/novaOS/kernel/src/sched/process/ipc/probes/multicore.rs
++++ b/novaOS/kernel/src/sched/process/ipc/probes/multicore.rs
+@@ -166,4 +166,5 @@
+                 crate::sched::profile::ACTIVE.store(true, Ordering::Release);
+             }
++            if sonde { crate::profil4::commencer(serie); }
+             start = timer::counter();
+             for c in &couples {
+@@ -201,4 +203,5 @@
+         }
+         if sonde {
++            crate::profil4::rapport(serie);
+             crate::sched::profile::report();
+             hal::log(format_args!(
+--- a/novaOS/kernel/src/sched/process/ipc/traffic.rs
++++ b/novaOS/kernel/src/sched/process/ipc/traffic.rs
+@@ -59,4 +59,5 @@
+     fn head(&self, ep: Reference) -> Option<Head> {
+         let e = self.ends.get(ep.slot());
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Offre);
+         let mut first = (e.len != 0).then(|| (e.deposits[e.head].rank, Head::Deposit));
+         if e.bits != 0 && first.is_none_or(|(r, _)| e.notified < r) {
+@@ -76,4 +77,5 @@
+     }
+     fn first_receiver(&self, ep: Reference) -> Option<usize> {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Receveur);
+         self.waits
+             .ids()
+@@ -85,4 +87,5 @@
+     }
+     pub(super) fn signal_heads(&mut self) {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Signaux);
+         for i in self.waits.ids() {
+             let w = self.waits.get(i);
+@@ -138,4 +141,5 @@
+         op: Operation,
+     ) -> Res<Option<u64>> {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Attente);
+         self.check_wait(
+             pid,
+@@ -256,8 +260,12 @@
+                 out[40..48].copy_from_slice(&key.to_le_bytes());
+                 out[48..56].copy_from_slice(&aux.to_le_bytes());
+-                out[56..].copy_from_slice(&msg.bytes);
++                {
++                    let _mesure = crate::profil4::mesurer(crate::profil4::Site::ChargeUtile);
++                    out[56..].copy_from_slice(&msg.bytes);
++                }
+                 if !space.copy_to_user(m, address, &out) {
+                     return Err(BAD_ADDRESS);
+                 }
++                let _mesure = crate::profil4::mesurer(crate::profil4::Site::Publication);
+                 if let Some((slot, key, id, moved)) = install {
+                     if moved {
+@@ -360,5 +368,8 @@
+                     ..Message::EMPTY
+                 };
+-                msg.bytes[..len as usize].copy_from_slice(&buf[32..32 + len as usize]);
++                {
++                    let _mesure = crate::profil4::mesurer(crate::profil4::Site::ChargeUtile);
++                    msg.bytes[..len as usize].copy_from_slice(&buf[32..32 + len as usize]);
++                }
+                 if flags == 1 {
+                     return self.suspend(t, p, n, timeout, now, Operation::Send(msg));
+@@ -367,4 +378,5 @@
+                     return Err(WOULD_BLOCK);
+                 }
++                let _mesure = crate::profil4::mesurer(crate::profil4::Site::Publication);
+                 let rank = self.next_rank(ep)?;
+                 let e = self.ends.get_mut(ep.slot());
+@@ -460,4 +472,5 @@
+         now: u64,
+     ) -> Res<Option<u64>> {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Traitement);
+         let now = self.probe_clock.unwrap_or(now);
+         self.expire(now);

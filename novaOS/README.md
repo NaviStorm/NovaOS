@@ -1,14 +1,14 @@
-# NovaOS v0.16.6
+# NovaOS v0.17.0
 
-L’installateur AArch64 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable](../distribution/images/novaos-0.16.6-utm-aarch64.tar.gz) · [Installation et qualification](docs/integration-v0.16.6.md#installation-dans-utm)
+L’installateur AArch64 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable](../distribution/images/novaos-0.17.0-utm-aarch64.tar.gz) · [Installation et qualification](docs/fusion-smp-v0.17.0.md#installation-dans-utm)
 
 Depuis la racine du monorepo : `make -C novaOS ARCH=x86_64 block-test` ou `make -C novaOS ARCH=aarch64 block-test`. Pour un démarrage graphique avec une image raw existante : `make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512` (AArch64 : `ARCH=aarch64`, secteur 512 ou 4096).
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.16.6`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.17.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
-Le noyau ordonnance ses threads en tourniquet sur CPU0 avec un timer matériel à 250 Hz. Le thread de saisie x86_64 se bloque en attente du clavier. Sur les deux cibles, le thread idle prend la main quand la file des prêts est vide. [Ordonnancement, synchronisation et validation](docs/ordonnancement.md)
+Chaque CPU en ligne dispose de son thread courant, de sa pile de repos et de son timer de préemption. Le profil UTM distribué démarre avec un vCPU. `make -C novaOS ARCH=aarch64 smp-test` et son équivalent `ARCH=x86_64` vérifient l’exécution sur 1, 2 et 4 vCPU. [Ordonnanceur historique](docs/ordonnancement.md) · [Architecture et qualification SMP](docs/smp-v0.17.0.md)
 
 Deux instances indépendantes du programme de démonstration démarrent en Ring 3 sur x86_64 ou en EL0 sur AArch64. Elles calculent sous préemption matérielle puis terminent avec les codes 41 et 82. Le terminal QEMU reçoit les PID et les résultats sur le port série. [Architecture des processus et validation de la v0.6.0](docs/processus.md)
 
@@ -18,7 +18,7 @@ Dix appels IPC permettent à des processus isolés de communiquer par endpoints 
 
 ## Stockage et portabilité de NovaFS
 
-La construction ordinaire conserve le stockage classique et le polling VirtIO-blk. Les profils de test permettent d’activer les E/S groupées et de les mesurer indépendamment. [Journal v0.16.6 et activation des profils](docs/integration-v0.16.6.md)
+La construction ordinaire conserve le stockage classique et le polling VirtIO-blk. Les profils de test permettent d’activer les E/S groupées et de les mesurer indépendamment. [Activation des profils de stockage](docs/integration-v0.16.6.md)
 
 NovaFS v0.9.13 monte des volumes autonomes historiques et P9 depuis le service Ring 3 / EL0. Le client utilise les opérations de fichiers et de répertoires par IPC. Chaque session possède son répertoire courant. [Espace de noms et chemins](docs/namespace-v0.12.0.md)
 

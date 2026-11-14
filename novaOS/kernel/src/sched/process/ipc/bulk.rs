@@ -49,12 +49,16 @@ pub(in crate::sched::process) fn features(key: u64, direction: u64, version: u64
         return Err(BAD_ARGUMENT);
     }
     with(|s| {
-        let pid = s.thread(s.current).owner.unwrap();
+        let pid = s.thread(s.current()).owner.unwrap();
         let node = s.ipc.lookup(pid, key, right)?;
         let Some(lane) = s.ipc.ends.get(node.endpoint.slot()).bulk.as_ref() else {
             return Ok(0);
         };
-        let found = lane.handles.iter().zip(lane.parties.iter()).zip(lane.nodes.iter())
+        let found = lane
+            .handles
+            .iter()
+            .zip(lane.parties.iter())
+            .zip(lane.nodes.iter())
             .any(|((&handle, &owner), id)| handle == key && owner == pid.number && *id == node.id);
         Ok(if found { IPC_FEATURE_PAGE } else { 0 })
     })
@@ -70,7 +74,7 @@ pub(in crate::sched::process) fn transfer(
         return Err(BAD_ARGUMENT);
     }
     with(|s| {
-        let pid = s.thread(s.current).owner.unwrap();
+        let pid = s.thread(s.current()).owner.unwrap();
         let ipc = &mut s.ipc;
         let put = op == IPC_PUT;
         let node = ipc.lookup(pid, key, if put { SEND } else { RECEIVE })?;

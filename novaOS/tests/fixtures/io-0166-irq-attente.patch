@@ -62,7 +62,7 @@
 +    pub(super) fn collecter_irq(&self, avant: u64) -> Result<u32> {
 +        let debut = hal::timer::counter();
 +        let hz = HZ.load(Ordering::Relaxed);
-+        let garde = hal::interrupts::Guard::new();
++        let garde = crate::sched::Guard::new();
 +        if self.irq_complete(avant) {
 +            noter(0);
 +            return self.q.lire_utilise();

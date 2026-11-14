@@ -1,0 +1,20 @@
+--- a/novaOS/kernel/src/sched/mod.rs
++++ b/novaOS/kernel/src/sched/mod.rs
+@@ -193,5 +196,8 @@
+             if let Some(cpu) = target {
+                 profile::kick(me);
+-                crate::arch::kick_one(cpu);
++                {
++                    let _mesure = crate::profil4::mesurer(crate::profil4::Site::IpiEmission);
++                    crate::arch::kick_one(cpu);
++                }
+             }
+         }
+--- a/novaOS/kernel/src/sched/process/ipc/probes/multicore.rs
++++ b/novaOS/kernel/src/sched/process/ipc/probes/multicore.rs
+@@ -190,4 +191,5 @@
+             }
+         }
++        crate::profil4::terminer();
+         let travail = TRAVAIL.load(Ordering::Acquire) - travail_avant;
+         let requetes_bloc = crate::hardware::block::kicks() - bloc_avant;

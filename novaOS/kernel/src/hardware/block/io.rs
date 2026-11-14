@@ -6,7 +6,7 @@ use core::{
 };
 
 pub(super) const PAGE: usize = 4096;
-pub(super) const WINDOW: u64 = 0xffff_c900_0000_0000;
+pub(super) const WINDOW: u64 = memory::IO_BASE;
 
 /// Région bornée, toujours superviseur. Les constructeurs fixent l'origine et la durée de vie.
 #[derive(Clone, Copy)]

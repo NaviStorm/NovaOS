@@ -2,15 +2,15 @@
 import argparse
 import json
 import socket
-from contextlib import ExitStack
+from contextlib import ExitStack, contextmanager
 from types import SimpleNamespace
 from bloc import qmp
 from pathlib import Path
 import re
 import subprocess
-import tempfile
 import time
 
+from preuves_stockage import copie_reprise, dossier_essai, empreinte, enregistrer, figer_initiale, horodatage
 from cli import Terminal
 import vi_volumes as volumes
 from es_groupees_elargies import grande_insertion
@@ -20,7 +20,10 @@ TAILLE = 512 * 1024 + 128
 def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur_eio=None):
     volumes.SIZES = (taille,)
     volumes.BLOCKS = 4096 if taille == 4 << 20 else 1024
+    enregistrer(dossier, "injection.json", dict(point=point, taille=taille, multipage=multipage,
+                                               secteur_eio=secteur_eio))
     image, ids = volumes.prepare(dossier, secteur)
+    initiale = figer_initiale(image)
     source = f"f{taille}"
     destination = f"coupure-{point}"
     vol = point.startswith("vol-") or point == "retrait-vol"
@@ -41,10 +44,33 @@ def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur
             mon = SimpleNamespace(stdin=flux, stdout=flux)
             fd = distant.fileno()
         t = pile.enter_context(Terminal(arch, secteur, image, "cow-groupe-" + point, test=True,
-                                        qmp_bloc=fd, defaut_bloc=config))
+                                        qmp_bloc=fd, defaut_bloc=config, journal=dossier / "sauvegarde.serial", diagnostic=True))
         if vol:
             distant.close()
-            qmp(mon, "qmp_capabilities")
+            qmp_log = pile.enter_context((dossier / "qmp.jsonl").open("x"))
+
+            def interroger(op, **args):
+                def trace(**entree):
+                    print(json.dumps(dict(utc=horodatage(), **entree)), file=qmp_log, flush=True)
+                trace(envoi=op, arguments=args)
+                reponse = qmp(mon, op, **args)
+                trace(operation=op, retour=reponse)
+                return reponse
+
+            interroger("qmp_capabilities")
+
+            @contextmanager
+            def capturer_en_cas_de_refus():
+                try:
+                    yield
+                except BaseException as exc:
+                    try:
+                        interroger("query-blockstats")
+                    except Exception as lecture:
+                        exc.add_note(f"Compteurs QMP indisponibles : {lecture!r}")
+                    raise
+
+            pile.enter_context(capturer_en_cas_de_refus())
         t.until(b"nsh> ", 180)
         t.vm.stdin.write(f"vi {source}\n".encode())
         t.until(b"\x1b[6n")
@@ -59,7 +85,8 @@ def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur
             "erreur-sg": b"BLOC erreur peripherique op=1 statut=1" if config else b"fichier enregistr",
             "controles": b"fichier enregistr",
         }.get(point, b"COUPURE groupe " + (b"armer" if vol else point.encode()))
-        avant = t.until(marque, 45)
+        # Sur une coupure en vol, un refus est déjà un résultat terminal avant armement.
+        avant = t.until(marque, 45, refus="erreur d’E/S".encode() if vol and point != "retrait-vol" else None)
         succes = point == "controles" or (point == "erreur-sg" and config is None)
         if point == "controles":
             assert b"DMA qualif bornes directions et LBA refuses kicks=0" in avant
@@ -76,7 +103,7 @@ def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur
             assert secteur_eio is None or secteur_sonde == secteur_eio
         if vol:
             def controle(commande):
-                assert qmp(mon, "human-monitor-command", **{"command-line": f'qemu-io d "{commande}"'}) == ""
+                assert interroger("human-monitor-command", **{"command-line": f'qemu-io d "{commande}"'}) == ""
             evenement = "write_aio" if point in ("vol-ecriture", "retrait-vol") else "flush_to_disk"
             controle(f"break {evenement} barriere")
             t.until(b"COUPURE groupe soumission", 30)
@@ -87,23 +114,27 @@ def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur
             else:
                 time.sleep(.5)
             controle("wait_break barriere")
-            stats = next(d["stats"]["flush_operations"] for d in qmp(mon, "query-blockstats") if d["device"] == "d")
+            stats = next(d["stats"]["flush_operations"] for d in interroger("query-blockstats") if d["device"] == "d")
             if point == "retrait-vol":
                 controle("resume barriere")
                 avant += t.until(b"COUPURE groupe retrait", 20)
-        if not succes:
-            assert "fichier enregistré".encode() not in avant
-
-    def h(op, *args, check=True):
-        with image.open("rb") as f:
-            return subprocess.run([volumes.HOST, op, str(volumes.BLOCKS), str(secteur), *args],
-                                  stdin=f, capture_output=True, check=check)
+    # Un affichage de succès peut partager un même paquet UART avec le marqueur.
+    # Relire également la fin du pipe, drainée après l'arrêt du processus QEMU.
+    affichage = (dossier / "sauvegarde.serial").read_bytes().split("Saisir OUI puis Entrée : ".encode())[-1]
+    assert ("fichier enregistré".encode() in affichage) == succes, point
 
     insertion = grande_insertion() if multipage else b"X"
 
-    def verifier():
+    def verifier(disque, nom):
+        def h(op, *args, check=True):
+            with disque.open("rb") as f:
+                return subprocess.run([volumes.HOST, op, str(volumes.BLOCKS), str(secteur), *args],
+                                      stdin=f, capture_output=True, check=check)
+
         h("verify", *ids)
         slots = re.findall(r"slot=(\d+) génération=(\d+)".encode(), h("inspect").stdout)
+        assert len(slots) == 2 and {slot for slot, _ in slots} == {b"0", b"1"}, slots
+        assert abs(int(slots[0][1]) - int(slots[1][1])) == 1, slots
         actif = max(slots, key=lambda pair: int(pair[1]))[0]
         original = volumes.contents(taille)
         assert h("salvage", *ids, actif, "/" + source).stdout == original
@@ -113,16 +144,23 @@ def essai(arch, secteur, point, dossier, taille=TAILLE, multipage=False, secteur
         else:
             assert dest.returncode != 0 and b"NotFound" in dest.stderr
 
-        return dest.returncode == 0
+        enregistre = dest.returncode == 0
+        generations = {slot.decode(): int(gen) for slot, gen in slots}
+        enregistrer(dossier, nom + ".json", dict(ancres=generations, slot=int(actif),
+                    source_exacte=True, destination_complete=enregistre))
+        return enregistre, generations
 
-    publie = verifier()
-    with Terminal(arch, secteur, image, "cow-reprise-" + point, test=True) as t:
+    publie, generations = verifier(image, "apres-coupure")
+    reprise = copie_reprise(image)
+    with Terminal(arch, secteur, reprise, "cow-reprise-" + point, test=True,
+                  journal=dossier / "reprise.serial", diagnostic=True) as t:
         t.until(b"nsh> ", 180)
         t.exit()
-    assert verifier() == publie
+    assert verifier(reprise, "apres-redemarrage") == (publie, generations)
     return dict(frontiere=point, evenement_suspendu=evenement, secteur_sonde=secteur_sonde,
                 octets_source=taille, multipage=multipage, montage_normal=True, relecture_exacte=True,
-                destination_complete=publie, flush_termines_au_point=stats, acquit_avant_coupure=succes)
+                sha256_initiale=empreinte(initiale), sha256_apres_coupure=empreinte(image),
+                sha256_reprise=empreinte(reprise), generations=generations, destination_complete=publie, flush_termines_au_point=stats, acquit_avant_coupure=succes)
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
@@ -134,7 +172,12 @@ if __name__ == "__main__":
     p.add_argument("--defauts-dma", action="store_true", help="sondes spécifiques avec io-0166-dma-defauts.patch")
     p.add_argument("--taille", type=int, choices=(TAILLE, 4 << 20), default=TAILLE)
     p.add_argument("--multipage", action="store_true", help="inclut la fixture de charge de 4 Mio")
+    p.add_argument("--point", help="exécuter cette seule frontière du profil choisi")
+    p.add_argument("--conserver", action="store_true", help="conserver aussi les passages réussis")
     args = p.parse_args()
+    args.rapport.parent.mkdir(parents=True, exist_ok=True)
+    if args.rapport.exists():
+        p.error("choisir un rapport neuf pour conserver les résultats précédents")
     essais = []
     points = ("pages", "f1", "f2", "retrait")
     if args.barrieres:
@@ -143,12 +186,16 @@ if __name__ == "__main__":
         points += ("vol-ecriture",)
     if args.defauts_dma:
         points = ("retrait-vol", "controles", "longueur", "erreur-sg")
+    if args.point is not None:
+        if args.point not in points:
+            p.error("Frontière absente du profil choisi")
+        points = (args.point,)
     for point in points:
-        with tempfile.TemporaryDirectory(prefix="nova-cow-groupe-") as dossier:
-            essais.append(essai(args.architecture, args.secteur, point, Path(dossier), args.taille, args.multipage))
+        with dossier_essai(args.rapport, args.architecture, args.secteur, point, conserver=args.conserver) as dossier:
+            essais.append(essai(args.architecture, args.secteur, point, dossier, args.taille, args.multipage))
         if point == "erreur-sg":
             # Une image indépendante et identique fournit le LBA effectivement choisi par CoW.
-            with tempfile.TemporaryDirectory(prefix="nova-erreur-sg-") as dossier:
-                essais.append(essai(args.architecture, args.secteur, point, Path(dossier), args.taille,
+            with dossier_essai(args.rapport, args.architecture, args.secteur, point, conserver=args.conserver) as dossier:
+                essais.append(essai(args.architecture, args.secteur, point, dossier, args.taille,
                                     args.multipage, secteur_eio=essais[-1]["secteur_sonde"]))
-    args.rapport.write_text(json.dumps(essais, indent=2, ensure_ascii=False) + "\n")
+    enregistrer(args.rapport.parent, args.rapport.name, essais)

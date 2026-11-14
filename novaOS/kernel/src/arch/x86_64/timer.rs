@@ -22,7 +22,7 @@ pub fn pending() -> bool {
 
 pub fn counter() -> u64 {
     let (lo, hi): (u32, u32);
-    // Sûreté : LFENCE/RDTSC en anneau zéro, compteur local du seul BSP.
+    // Sûreté : LFENCE/RDTSC en anneau zéro, compteur local du processeur.
     unsafe {
         core::arch::asm!("lfence","rdtsc","lfence",out("eax")lo,out("edx")hi,options(nostack))
     };
@@ -39,4 +39,8 @@ pub fn counter_hz() -> u64 {
         core::hint::spin_loop();
     }
     (counter() - a) * u64::from(crate::sched::HZ) / (crate::sched::ticks() - first)
+}
+
+pub fn start_secondary() {
+    super::lapic::start();
 }

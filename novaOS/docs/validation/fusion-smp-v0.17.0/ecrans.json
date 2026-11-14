@@ -1,0 +1,92 @@
+{
+  "aarch64/1/demarrage-aarch64": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "094bfcc52daa1a735887c79e0e40d0c2260a3c44a3b168ef80136525349bbacc",
+    "png_sha256": "f6cfaf64ad6a3f4ded1b336442c4096e6316294c40c44f7521590826bc5c290a"
+  },
+  "aarch64/2/demarrage-aarch64": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "094bfcc52daa1a735887c79e0e40d0c2260a3c44a3b168ef80136525349bbacc",
+    "png_sha256": "f6cfaf64ad6a3f4ded1b336442c4096e6316294c40c44f7521590826bc5c290a"
+  },
+  "aarch64/4/demarrage-aarch64": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "094bfcc52daa1a735887c79e0e40d0c2260a3c44a3b168ef80136525349bbacc",
+    "png_sha256": "f6cfaf64ad6a3f4ded1b336442c4096e6316294c40c44f7521590826bc5c290a"
+  },
+  "x86_64/1/demarrage": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "085912138b60b113b0778e26711184d208a7b8092727b47b594c23d6a6e70de5",
+    "png_sha256": "b13cfbde034d51eab8e6775fa23316ba806860e6f05ae1f0dc4a3ff8eae797f8"
+  },
+  "x86_64/1/composition": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "62bff0b5dc4d13173676f5cef71ba0762213651fdda4750e6281f48b260ba30f",
+    "png_sha256": "87b807eefd0438521ec43cc572de06f2e598b8b78f6804a432926a70cb464197"
+  },
+  "x86_64/1/frappe": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "e8ccc896eed05c7ba0eeb71f59e3eb8a20e05d97e204a6ad79b830e6c6f7d73f",
+    "png_sha256": "9cdc2b5a8b4e0dc181c5e7ddfda6b8d8122a5533dacc23101e4d81805e3d1548"
+  },
+  "x86_64/1/saisie": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "147ffdeecc8d37c17b337692477ae0413401e798c3e61ae894d81a8213b0cf0c",
+    "png_sha256": "737920fa13fe0046ae5916042a17902ad4eec2349ddc06d7838263c22d531f9c"
+  },
+  "x86_64/2/demarrage": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "085912138b60b113b0778e26711184d208a7b8092727b47b594c23d6a6e70de5",
+    "png_sha256": "b13cfbde034d51eab8e6775fa23316ba806860e6f05ae1f0dc4a3ff8eae797f8"
+  },
+  "x86_64/2/composition": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "62bff0b5dc4d13173676f5cef71ba0762213651fdda4750e6281f48b260ba30f",
+    "png_sha256": "87b807eefd0438521ec43cc572de06f2e598b8b78f6804a432926a70cb464197"
+  },
+  "x86_64/2/frappe": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "e8ccc896eed05c7ba0eeb71f59e3eb8a20e05d97e204a6ad79b830e6c6f7d73f",
+    "png_sha256": "9cdc2b5a8b4e0dc181c5e7ddfda6b8d8122a5533dacc23101e4d81805e3d1548"
+  },
+  "x86_64/2/saisie": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "147ffdeecc8d37c17b337692477ae0413401e798c3e61ae894d81a8213b0cf0c",
+    "png_sha256": "737920fa13fe0046ae5916042a17902ad4eec2349ddc06d7838263c22d531f9c"
+  },
+  "x86_64/4/demarrage": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "085912138b60b113b0778e26711184d208a7b8092727b47b594c23d6a6e70de5",
+    "png_sha256": "b13cfbde034d51eab8e6775fa23316ba806860e6f05ae1f0dc4a3ff8eae797f8"
+  },
+  "x86_64/4/composition": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "62bff0b5dc4d13173676f5cef71ba0762213651fdda4750e6281f48b260ba30f",
+    "png_sha256": "87b807eefd0438521ec43cc572de06f2e598b8b78f6804a432926a70cb464197"
+  },
+  "x86_64/4/frappe": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "e8ccc896eed05c7ba0eeb71f59e3eb8a20e05d97e204a6ad79b830e6c6f7d73f",
+    "png_sha256": "9cdc2b5a8b4e0dc181c5e7ddfda6b8d8122a5533dacc23101e4d81805e3d1548"
+  },
+  "x86_64/4/saisie": {
+    "largeur": 800,
+    "hauteur": 600,
+    "ppm_sha256": "147ffdeecc8d37c17b337692477ae0413401e798c3e61ae894d81a8213b0cf0c",
+    "png_sha256": "737920fa13fe0046ae5916042a17902ad4eec2349ddc06d7838263c22d531f9c"
+  }
+}

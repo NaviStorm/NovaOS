@@ -56,6 +56,22 @@ impl AddressSpace {
         })
     }
 
+    // Les CR3 utilisateur empruntent cette entrée dès leur création. La table
+    // reste au noyau pour toute sa vie. Aucune feuille MMIO n'est créée ici.
+    #[cfg(target_arch = "x86_64")]
+    pub(crate) fn reserve_io_branch(&self, frames: &mut Frames) -> Result<()> {
+        let slot = indices(super::IO_BASE)[0];
+        let entry = frames.entry(self.root, slot);
+        if entry == 0 {
+            let table = frames.take_table()?;
+            paging::publish();
+            frames.put(self.root, slot, paging::table(table));
+        } else if !paging::matches(entry, paging::table(entry & PHYS_MASK)) {
+            return Err(Error::Verification);
+        }
+        Ok(())
+    }
+
     pub(super) fn user(frames: &mut Frames, kernel: &AddressSpace) -> Result<Self> {
         let mut space = Self::new(frames)?;
         space.user = true;

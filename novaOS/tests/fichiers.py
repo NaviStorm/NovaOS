@@ -1,5 +1,6 @@
 """Transactions du moteur de NovaFS, sur un LV autonome produit par la CLI macOS."""
 import argparse
+from contextlib import contextmanager
 import hashlib
 import os
 from pathlib import Path
@@ -8,6 +9,7 @@ import secrets
 import subprocess
 import tempfile
 from bloc import Bench, ROOT
+from preuves_stockage import copie_reprise, dossier_essai, figer_initiale
 
 BLOCKS = 256
 HOST = ROOT.parent / "novaFS/target/aarch64-apple-darwin/release/novafs"
@@ -67,27 +69,40 @@ CUTS = [
 ]
 
 
-def recover(bench, generation, allowed, label):
+def recover(bench, generation, allowed, label, *, diagnostic=False):
     got = oracle(bench, None)
     assert got in (generation, generation + 1)
     new = got == generation + 1
     state = "nouveau" if new else "ancien"
     assert allowed in (state, "indetermine"), (allowed, state)
     oracle(bench, PATTERN if new else b"ancien")
-    result = bench.run("files-recover", label + "-reprise", readonly=True)
+    if diagnostic:
+        bench.image = copie_reprise(bench.image)
+    result = bench.run("files-recover", label + "-reprise", readonly=True, diagnostic=diagnostic)
     assert f"FICHIERS oracle {state}" in result and "BLOC session terminee ok=true" in result
     bench.check(f"{label}, generation {got}, oracle {state}, remontage RO")
+
+
+@contextmanager
+def essai_isole(bench, reference, point):
+    with dossier_essai(bench.report / "rapport.json", bench.arch, bench.sector, point,
+                      parametres={"banc": "fichiers", "point": point}) as dossier:
+        essai = Bench(dossier, bench.arch, bench.sector)
+        essai.image.write_bytes(reference)
+        figer_initiale(essai.image)
+        yield essai
 
 
 def cuts(bench):
     initial = fixture(bench, True)
     base = bench.image.read_bytes()
     for case, marker, wanted in CUTS:
-        bench.image.write_bytes(base)
-        report = bench.run(case, cut=marker, debug="" if "inflight" in case else None)
-        if "FICHIERS transaction confirmee" in report:
-            assert wanted == "nouveau"
-        recover(bench, initial, wanted, case)
+        with essai_isole(bench, base, case) as essai:
+            report = essai.run(case, cut=marker, debug="" if "inflight" in case else None,
+                               diagnostic=True)
+            if "FICHIERS transaction confirmee" in report:
+                assert wanted == "nouveau"
+            recover(essai, initial, wanted, case, diagnostic=True)
 
 
 def errors(bench):
@@ -98,18 +113,18 @@ def errors(bench):
             ("ecriture", "write_aio", 1, "ancien", 26),
             ("f1", "flush_to_disk", 2, "ancien", 26),
             ("f2", "flush_to_disk", 3, "indetermine", 22)]:
-        bench.image.write_bytes(base)
-        cfg = bench.tmp / "eio.conf"
         seq = ('[set-state]\nevent = "write_aio"\nstate = "1"\nnew_state = "2"\n'
              if state >= 2 else "")
         if state == 3:
             seq += '[set-state]\nevent = "flush_to_disk"\nstate = "2"\nnew_state = "3"\n'
-        cfg.write_text(seq + f'[inject-error]\nevent = "{event}"\nstate = "{state}"\nerrno = "5"\n')
-        s = bench.run("files-inject", "fichier-eio-" + label, debug=cfg)
-        assert f"client=Exit({code})" in s and "BLOC session terminee ok=false" in s and "FICHIERS transaction confirmee" not in s, s[ - 1400:]
-        hardware_op = {"lecture": 0, "ecriture": 1, "f1": 2, "f2": 2}[label]
-        assert f"BLOC erreur peripherique op={hardware_op} statut=1" in s and "retrait=Ok(())" in s
-        recover(bench, initial, want, "eio-" + label)
+        with essai_isole(bench, base, "eio-" + label) as essai:
+            cfg = essai.tmp / "eio.conf"
+            cfg.write_text(seq + f'[inject-error]\nevent = "{event}"\nstate = "{state}"\nerrno = "5"\n')
+            s = essai.run("files-inject", "fichier-eio-" + label, debug=cfg, diagnostic=True)
+            assert f"client=Exit({code})" in s and "BLOC session terminee ok=false" in s and "FICHIERS transaction confirmee" not in s, s[ - 1400:]
+            hardware_op = {"lecture": 0, "ecriture": 1, "f1": 2, "f2": 2}[label]
+            assert f"BLOC erreur peripherique op={hardware_op} statut=1" in s and "retrait=Ok(())" in s
+            recover(essai, initial, want, "eio-" + label, diagnostic=True)
 
 
 def admission(bench):

@@ -61,7 +61,7 @@ impl Config {
     fn port(self, off: usize, bytes: usize, v: Option<u32>) -> u32 {
         use core::arch::asm;
         assert!(off < 256 && matches!(bytes, 1 | 2 | 4) && off % bytes == 0);
-        let _guard = crate::hal::interrupts::Guard::new();
+        let _guard = crate::sched::Guard::new();
         let address = 0x8000_0000 | ((self.bdf as u32) << 8) | (off as u32 & !3);
         let port = 0xcfcu16 + (off as u16 & 3);
         // Sûreté : CPL0 uniquement. L'adresse et la donnée du mécanisme PCI #1

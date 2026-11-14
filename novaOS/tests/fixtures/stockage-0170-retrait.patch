@@ -1,0 +1,466 @@
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -4,6 +4,7 @@
+ use crate::abi::*;
+ pub(crate) mod lifecycle;
+ pub(super) use bulk::features;
++pub(crate) use bulk::fermer_lots_session;
+ mod spawn;
+ pub(super) use spawn::spawn_program;
+ pub(crate) mod metrics;
+@@ -45,6 +46,7 @@
+     owner: u64,
+     entries: [Entry; 32],
+     bootstrap: u64,
++    lot: Option<bulk::AttentesLot>,
+ }
+ #[derive(Clone, Copy)]
+ struct Node {
+@@ -158,6 +160,7 @@
+     pages_bulk: bulk::Buffers,
+     pret: Option<scelle::Pret>,
+     moteur_pret: Option<Pid>,
++    session_lots: Option<bulk::SessionLots>,
+     incarnation: u64,
+     issued: u64,
+     wakes: u32,
+@@ -177,6 +180,7 @@
+             pages_bulk: bulk::Buffers::new(),
+             pret: None,
+             moteur_pret: None,
++            session_lots: None,
+             incarnation: 0,
+             issued: 0,
+             wakes: 0,
+@@ -279,6 +283,7 @@
+                     owner: p.number,
+                     entries: [Entry::default(); 32],
+                     bootstrap: 0,
++                    lot: None,
+                 },
+             )?;
+             self.locals_to_check |= 1 << p.slot;
+@@ -300,6 +305,12 @@
+         if n.holder == ABSENT {
+             return;
+         }
++        let titulaire = n.holder as usize;
++        let cle = n.key;
++        // La destruction/révocation d'un canal de contrôle peut précéder la
++        // réception de la réponse. Fermer immédiatement le lot qui en dépend.
++        self.fermer_controle_lot(titulaire, cle);
++        let n = self.nodes.get_mut(id.slot());
+         self.locals_to_check |= 1 << n.holder;
+         let t = self.locals.get_mut(n.holder as usize);
+         let slot = t
+@@ -471,6 +482,9 @@
+         if w.done.is_some() {
+             return;
+         }
++        if result.is_err() {
++            self.abandon_sur_attente(w.pid, w.thread, w.channel.key);
++        }
+         self.waits.get_mut(i).done = Some(result);
+         if let Operation::Give { child, .. } = w.op {
+             if let Some(n) = self.node(child).filter(|n| n.reserved) {
+@@ -886,6 +900,8 @@
+                 .ipc
+                 .derive(device, root, consumer, (SEND | RECEIVE).into())?;
+             s.ipc.bind_lane(device, root, consumer, peer)?;
++            let envoi = s.ipc.caps(consumer).ok_or(DENIED)?.bootstrap;
++            s.ipc.lier_attentes_lot(device, root, consumer, envoi, read_reply)?;
+             for (pid, cap) in [(device, root), (consumer, peer)] {
+                 let space = s.processes.get(pid).space.as_ref().unwrap();
+                 heap::with_pages(|m| {
+@@ -900,6 +916,7 @@
+             let root = s.ipc.create(consumer)?;
+             let peer = s.ipc.derive(consumer, root, device, RECEIVE.into())?;
+             s.ipc.bind_lane(consumer, root, device, peer)?;
++            s.ipc.lier_session_lots(key, consumer, root)?;
+             for (p, h) in [(consumer, root), (device, peer)] {
+                 let space = s.processes.get(p).space.as_ref().unwrap();
+                 heap::with_pages(|m| {
+--- a/novaOS/kernel/src/sched/process/ipc/traffic.rs
++++ b/novaOS/kernel/src/sched/process/ipc/traffic.rs
+@@ -506,6 +506,10 @@
+         } else {
+             self.start_call(p, t, space, id, args, now)
+         };
++        // Un appel refusé avant sa mise en attente doit aussi fermer le lot.
++        if result.is_err() && matches!(id, IPC_SEND | IPC_RECEIVE) {
++            self.abandon_sur_attente(p, t, args[0]);
++        }
+         if result != Ok(None) && self.waits.has(t.slot) {
+             self.waits.remove(t.slot);
+         }
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -2,6 +2,46 @@
+ use super::*;
+ pub(crate) mod multipage;
+ pub(super) type Buffers = Pool<[u8; BULK_MAX], 8, 84, 1>;
++
++/// Canaux privés du moteur : handles non réutilisés et incarnation du lot.
++#[derive(Clone, Copy)]
++pub(super) struct AttentesLot {
++    envoi: u64,
++    reponse: u64,
++    donnees: VoieLot,
++}
++
++#[derive(Clone, Copy)]
++struct VoieLot {
++    endpoint: Reference,
++    pair: Reference,
++}
++
++#[derive(Clone, Copy)]
++pub(super) struct SessionLots {
++    epoque: u64,
++    donnees: VoieLot,
++    offsets: VoieLot,
++}
++
++/// Arrêt logique avant drainage. Seul l'acquit du Bail physique autorise la
++/// restitution des deux voies encore vivantes, y compris en reprise de quarantaine.
++pub(crate) fn fermer_lots_session(epoque: u64, confirme: bool) {
++    with(|s| {
++        let ipc = &mut s.ipc;
++        let Some(session) = ipc.session_lots.filter(|v| v.epoque == epoque) else { return };
++        ipc.retirer_reservation(session.donnees, None);
++        if confirme {
++            for voie in [session.donnees, session.offsets] {
++                if ipc.voie_vivante(voie) {
++                    ipc.release_lane(voie.endpoint);
++                }
++            }
++            ipc.session_lots = None;
++            ipc.pages_bulk.collect();
++        }
++    });
++}
+-
++
+ #[derive(Clone, Copy)]
+ pub(super) struct Lane {
+@@ -45,6 +85,76 @@
+             dernier_lot: 0,
+         });
+         Ok(())
++    }
++
++    pub(super) fn lier_attentes_lot(
++        &mut self, pilote: Pid, lot: u64, moteur: Pid, envoi: u64, reponse: u64,
++    ) -> Res<()> {
++        let donnees = self.lookup(pilote, lot, MANAGE)?.endpoint;
++        let lane = self.ends.get(donnees.slot()).bulk.as_ref().ok_or(DENIED)?;
++        if lane.parties != [pilote.number, moteur.number] || lane.handles[0] != lot {
++            return Err(DENIED);
++        }
++        let tx = self.lookup(moteur, envoi, SEND)?.endpoint;
++        let rx = self.lookup(moteur, reponse, RECEIVE)?.endpoint;
++        if tx == rx || tx == donnees || rx == donnees {
++            return Err(DENIED);
++        }
++        let donnees = VoieLot { endpoint: donnees, pair: lane.nodes[1] };
++        self.locals.get_mut(moteur.slot).lot = Some(AttentesLot { envoi, reponse, donnees });
++        Ok(())
++    }
++
++    pub(super) fn lier_session_lots(&mut self, epoque: u64, moteur: Pid, table: u64) -> Res<()> {
++        let attentes = self.caps(moteur).and_then(|c| c.lot).ok_or(DENIED)?;
++        let offsets = self.lookup(moteur, table, MANAGE)?.endpoint;
++        if epoque == 0 || self.session_lots.is_some() || offsets == attentes.donnees.endpoint {
++            return Err(REFUSED);
++        }
++        let lane = self.ends.get(offsets.slot()).bulk.as_ref().ok_or(DENIED)?;
++        let offsets = VoieLot { endpoint: offsets, pair: lane.nodes[1] };
++        self.session_lots = Some(SessionLots { epoque, donnees: attentes.donnees, offsets });
++        Ok(())
++    }
++
++    /// La garde IPC ordonne la dernière vérification avant kick et l'abandon.
++    /// Un seul échange à la fois par thread ; son PID, sa génération, son canal
++    /// et l'incarnation de la lane sont vérifiés avant de toucher la réservation.
++    pub(super) fn abandon_sur_attente(&mut self, pid: Pid, thread: Id, canal: u64) {
++        let Some(l) = self.caps(pid).and_then(|c| c.lot) else { return };
++        if canal == l.envoi || canal == l.reponse {
++            self.retirer_reservation(l.donnees, Some((pid, thread)));
++        }
++    }
++
++    pub(super) fn fermer_controle_lot(&mut self, titulaire: usize, cle: u64) {
++        if let Some(l) = self.locals.get(titulaire).lot
++            && (cle == l.envoi || cle == l.reponse)
++        {
++            self.retirer_reservation(l.donnees, None);
++        }
++    }
++
++    fn voie_vivante(&self, voie: VoieLot) -> bool {
++        if !self.ends.has(voie.endpoint.slot()) { return false; }
++        let ep = self.ends.get(voie.endpoint.slot());
++        ep.id == voie.endpoint && ep.bulk.as_ref().is_some_and(|l| l.nodes[1] == voie.pair)
++    }
++
++    fn retirer_reservation(&mut self, voie: VoieLot, demandeur: Option<(Pid, Id)>) {
++        if !self.voie_vivante(voie) { return; }
++        let lane = self.ends.get_mut(voie.endpoint.slot()).bulk.as_mut().unwrap();
++        if demandeur.is_none() {
++            // Contrôle révoqué ou session en retrait : aucun futur tag possible.
++            lane.dernier_lot = u64::MAX;
++        }
++        let Some(r) = lane.reservation.as_mut() else { return };
++        if demandeur.is_some_and(|d| d != (r.moteur, r.demandeur)) { return; }
++        r.retrait = true;
++        if !r.en_vol && !r.doute {
++            self.pages_bulk.get_mut(lane.slot)[..8 * r.n].fill(0);
++            lane.reservation = None;
++        }
+     }
+-
++
+     pub(super) fn release_lane(&mut self, ep: Reference) {
+@@ -153,6 +263,7 @@
+ #[derive(Clone, Copy)]
+ struct Reservation {
+     moteur: Pid,
++    demandeur: Id,
+     tag: u64,
+     lire: bool,
+     base: u64,
+@@ -172,6 +283,7 @@
+     }
+     with(|s| {
+         let pid = s.thread(s.current()).owner.unwrap();
++        let demandeur = s.thread(s.current()).id;
+         let n = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
+         let pair = s
+             .ipc
+@@ -228,6 +340,7 @@
+             pair.dernier_lot = tag;
+             pair.reservation = Some(Reservation {
+                 moteur: pid,
++                demandeur,
+                 tag,
+                 lire,
+                 base: addr,
+@@ -352,9 +465,10 @@
+     tag: u64,
+     op: u8,
+     resultat: Res<()>,
++    epoque_incertaine: Option<u64>,
+     livrer: impl FnOnce(&Core) -> Res<()>,
+ ) -> Res<()> {
+-    with(|s| {
++    let livraison = with(|s| {
+         let pid = s.thread(s.current()).owner.ok_or(REVOKED)?;
+         let node = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
+         let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(REVOKED)?;
+@@ -385,23 +499,16 @@
+             }
+             livrer(s)
+         });
+-        let r = s
+-            .ipc
+-            .ends
+-            .get_mut(node.endpoint.slot())
+-            .bulk
+-            .as_mut()
+-            .unwrap()
+-            .reservation
+-            .as_mut()
+-            .unwrap();
++        let lane = s.ipc.ends.get_mut(node.endpoint.slot()).bulk.as_mut().unwrap();
++        let r = lane.reservation.as_mut().unwrap();
+         r.en_vol = false;
++        if epoque_incertaine.is_none() && (r.retrait || livraison.is_err()) {
++            s.ipc.pages_bulk.get_mut(lane.slot)[..8 * r.n].fill(0);
++            lane.reservation = None;
++            return Err(livraison.err().unwrap_or(REVOKED));
++        }
+         if let Err(e) = livraison {
+-            if resultat.is_err() {
+-                r.doute = true;
+-            } else {
+-                r.retrait = true;
+-            }
++            r.doute = true;
+             return Err(e);
+         }
+         if op == 4 {
+@@ -410,7 +517,11 @@
+             r.effectues += 1;
+         }
+         Ok(())
+-    })
++    });
++    if let Some(epoque) = epoque_incertaine {
++        crate::hardware::block::retirer_si_epoque(epoque);
++    }
++    livraison
+ }
+-
++
+ impl Domain {
+--- a/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
+@@ -138,27 +138,18 @@
+             if !r.en_vol {
+                 return Err(REFUSED);
+             }
+-            let r = s
+-                .ipc
+-                .ends
+-                .get_mut(ep.slot())
+-                .bulk
+-                .as_mut()
+-                .unwrap()
+-                .reservation
+-                .as_mut()
+-                .unwrap();
++            let lane = s.ipc.ends.get_mut(ep.slot()).bulk.as_mut().unwrap();
++            let r = lane.reservation.as_mut().unwrap();
+             r.en_vol = false;
+             if !complet {
+                 r.doute = true;
+                 return Err(REFUSED);
+             }
+-            if r.retrait {
+-                return Err(REVOKED);
+-            }
+-            if !livre {
+-                r.retrait = true; // DMA terminé, livraison refusée et nouvel envoi interdit.
+-                return Err(BAD_ADDRESS);
++            if r.retrait || !livre {
++                let erreur = if r.retrait { REVOKED } else { BAD_ADDRESS };
++                s.ipc.pages_bulk.get_mut(lane.slot)[..8 * r.n].fill(0);
++                lane.reservation = None;
++                return Err(erreur);
+             }
+             r.index += self.nombre;
+             r.effectues += self.nombre;
+--- a/novaOS/user/storage/medium.rs
++++ b/novaOS/user/storage/medium.rs
+@@ -95,6 +95,18 @@
+         self.exchange_page(w::WRITE, lba)
+     }
+     pub(crate) fn lot(&mut self, op: u8, cap: u64, lbas: &[u64], page: u64) -> Result<()> {
++        let resultat = self.executer_lot(op, cap, lbas, page);
++        if resultat.is_err() {
++            // Le volume est mis en échec. Fermer ses deux capacités avant de
++            // rendre le tampon, même si seule la table de LBA a été déposée.
++            // WOULD_BLOCK ou REFUSED ferme l'admission et laisse le DMA privé
++            // au superviseur jusqu'à son drainage ou sa mise en quarantaine.
++            let _ = call(IPC_CLOSE, cap, 0, 0);
++            let _ = call(IPC_CLOSE, config(11), 0, 0);
++        }
++        resultat
++    }
++    fn executer_lot(&mut self, op: u8, cap: u64, lbas: &[u64], page: u64) -> Result<()> {
+         let n = lbas.len();
+         if self.features & w::FEATURE_BATCH == 0 {
+             return Err(DENIED);
+--- a/novaOS/kernel/src/hardware/block/arena.rs
++++ b/novaOS/kernel/src/hardware/block/arena.rs
+@@ -141,3 +141,4 @@
+         if let Err(erreur) = self.q.submit(&parts[..d.nombre + 2]) {
+-            let _ = d.terminer(false, false);
++            // submit n'a pas publié avail.idx. Aucun DMA de cette chaîne ne reste en vol.
++            let _ = d.terminer(true, false);
+             return Err(erreur);
+--- a/novaOS/kernel/src/hardware/block/lease.rs
++++ b/novaOS/kernel/src/hardware/block/lease.rs
+@@ -92,3 +92,15 @@
+ pub(crate) fn retire() -> Result<()> {
++    retirer(&mut SESSION.lock())
++}
++
++pub(crate) fn retirer_si_epoque(epoque: u64) {
+     let mut s = SESSION.lock();
++    if EPOCH.load(Ordering::Acquire) == epoque && s.device.is_some() {
++        // Un échec conserve l'objet Retrait et tous ses cadres en quarantaine.
++        let _ = retirer(&mut s);
++    }
++}
++
++fn retirer(s: &mut Session) -> Result<()> {
++    let epoque = EPOCH.load(Ordering::Acquire);
+     {
+@@ -97,2 +109,3 @@
+         OWNER.store(0, Ordering::Release);
++        crate::sched::process::ipc::fermer_lots_session(epoque, false);
+     }
+@@ -107,2 +120,3 @@
+     }
++    crate::sched::process::ipc::fermer_lots_session(epoque, true);
+     s.quarantine = false;
+@@ -253,3 +267,3 @@
+     }
+-    commande_groupee(pid, key, w, page, || true)
++    commande_groupee(pid, key, w, page, || true, &mut false)
+ }
+@@ -261,2 +275,3 @@
+     controle: impl FnOnce() -> bool,
++    doute: &mut bool,
+ ) -> core::result::Result<(), u64> {
+@@ -266,3 +281,7 @@
+     }
+-    let autorise = || admit(pid, key) && controle();
++    let mut admis = false;
++    let autorise = || {
++        admis = admit(pid, key) && controle();
++        admis
++    };
+     if w[1] == wire::FLUSH {
+@@ -282,2 +301,3 @@
+         if d.sortie_autorisee(0, true, d.size, autorise).is_err() {
++            *doute = admis && d.pending.is_some();
+             s.phase = Phase::Closed;
+@@ -314,2 +334,3 @@
+     if result.is_err() {
++        *doute = admis && d.pending.is_some();
+         s.phase = Phase::Closed;
+@@ -398,5 +419,21 @@
+     key: u64,
++    demande: crate::sched::process::ipc::DemandeDma,
++) -> core::result::Result<u64, u64> {
++    let mut s = SESSION.lock();
++    let en_vol = |s: &Session| s.device.as_ref().is_some_and(|d| d.pending.is_some());
++    let deja_en_vol = en_vol(&s);
++    let resultat = executer_multipage(&mut s, pid, key, demande);
++    // Sous ce mutex, seule cette demande a pu publier une nouvelle chaîne.
++    if resultat.is_err() && !deja_en_vol && en_vol(&s) {
++        let _ = retirer(&mut s);
++    }
++    resultat
++}
++
++fn executer_multipage(
++    s: &mut Session,
++    pid: u64,
++    key: u64,
+     mut demande: crate::sched::process::ipc::DemandeDma,
+ ) -> core::result::Result<u64, u64> {
+-    let mut s = SESSION.lock();
+     if !admit(pid, key) || s.quarantine {
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -499,4 +499,5 @@
+     let autorise = || ipc::admis(cap, tag, i, n, op, block::wire::lba(&w), true);
+-    let resultat = block::commande_groupee(pid.number, key, &w, &mut page, autorise);
+-    let livraison = ipc::termine(cap, tag, op, resultat, |s| {
++    let mut doute = false;
++    let resultat = block::commande_groupee(pid.number, key, &w, &mut page, autorise, &mut doute);
++    let livraison = ipc::termine(cap, tag, op, resultat, doute.then_some(key), |s| {
+         livrer_disque(s, pid, key, adresse, if op == 2 { &page } else { &[] })
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -8,6 +8,7 @@
+ mod lease;
+ pub(crate) mod metrics;
+ mod ownership;
++pub(crate) use lease::retirer_si_epoque;
+ mod pci;
+ #[cfg(all(target_arch = "aarch64", feature = "dma-sequentiel"))]
+ pub(crate) mod qualification;

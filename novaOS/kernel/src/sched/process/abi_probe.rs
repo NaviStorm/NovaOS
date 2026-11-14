@@ -21,7 +21,8 @@ fn client(mode: u64, target: Pid, cap: Option<Child>, kind: u64, code: u64) -> C
     ] {
         data[i * 8..i * 8 + 8].copy_from_slice(&v.to_le_bytes());
     }
-    spawn_image(DEMO, &data, None, cap).unwrap()
+    // Les modes qui mesurent une préemption doivent se disputer le CPU de la cible.
+    prepare_and_publish(DEMO, &data, None, cap, Some(1)).unwrap()
 }
 
 fn until(mut condition: impl FnMut() -> bool) {
@@ -56,13 +57,18 @@ fn blocked(waiter: Pid, target: Pid) -> bool {
 }
 
 pub(crate) fn test() {
+    heap::with_pages(|m| {
+        m.check_managed_regions();
+        Ok(())
+    })
+    .unwrap();
     let baseline = heap::audit(false);
     measure("repos");
     demo::shortage();
     let recovered = demo::spawn_demo(demo::Action::Exit, 31, 0).unwrap();
     assert_eq!(recovered.join(), Outcome::Exit(31));
     measure("reprise");
-    let target = demo::spawn_demo(demo::Action::Owner, 73, 0).unwrap();
+    let target = demo::spawn_demo_on(demo::Action::Owner, 73, 0, Some(1)).unwrap();
     let pid = target.0;
     let waiter = client(11, pid, Some(target), 0, 73);
     let thief = client(12, pid, None, 0, 73);

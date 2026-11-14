@@ -1,0 +1,130 @@
+--- a/novaOS/kernel/src/sched/process/ipc/probes.rs
++++ b/novaOS/kernel/src/sched/process/ipc/probes.rs
+@@ -6,2 +6,4 @@
+ pub(crate) mod multicore;
++#[path = "../../../../../tests/reservations_endurance_invite.rs"]
++pub(super) mod reservations;
+ mod contract;
+@@ -232,2 +234,3 @@
+ pub(crate) fn run(scenario: &[u8]) {
++    if scenario == b"ipc-lots-duree" { reservations::run(); return; }
+     #[cfg(feature = "ipc-smp-lab")]
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -468,2 +468,8 @@
+ pub(in crate::sched::process) fn observer_abandon() {
++    let (lots, pages) = with(|s| s.ipc.observation_lots());
++    let (bail, quarantaine) = crate::hardware::block::observation_bail();
++    let epinglees = heap::with_pages(|m| Ok(m.observation_dma())).unwrap();
++    let kicks = crate::hardware::block::kicks();
++    let en_vol = crate::hardware::block::inflight();
++    crate::hal::log(format_args!("LOTS0170 refus lots={lots} pages_logiques={pages} bail_session={bail} quarantaine={quarantaine} epinglees={epinglees} kicks={kicks} en_vol={en_vol}"));
+     let mut trouve = 0;
+@@ -540 +546,8 @@
+ }
++
++impl Domain {
++    pub(in crate::sched::process) fn observation_lots(&self) -> (usize, usize) {
++        self.ends.ids().filter_map(|i| self.ends.get(i).bulk?.reservation)
++            .fold((0, 0), |(lots, pages), r| (lots + 1, pages + r.n))
++    }
++}
+--- a/novaOS/kernel/src/memory/mod.rs
++++ b/novaOS/kernel/src/memory/mod.rs
+@@ -507 +507,6 @@
+ }
++
++impl Memory {
++    pub(crate) fn observation_dma(&self) -> u64 { self.dma_frames }
++    pub(crate) fn observation_tables(&self) -> u64 { self.frames.tables }
++}
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -14,3 +14,3 @@
+ mod queue;
+-pub(crate) use lease::publication_unique;
++pub(crate) use lease::{observation_bail, publication_unique};
+ pub(crate) use lease::wire;
+--- a/novaOS/kernel/src/hardware/block/lease.rs
++++ b/novaOS/kernel/src/hardware/block/lease.rs
+@@ -435 +435,6 @@
+ }
++
++pub(crate) fn observation_bail() -> (u64, bool) {
++    let session = SESSION.lock();
++    (ACTIF.load(Ordering::Acquire), session.quarantine)
++}
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -32,2 +32,10 @@
+     let msg = core::str::from_utf8(bytes).expect("ASCII filtré");
++    if msg == "LOTS0170 relais retient" {
++        let (lots, pages) = with(|s| s.ipc.observation_lots());
++        let epinglees = heap::with_pages(|m| Ok(m.observation_dma())).unwrap();
++        let (bail, quarantaine) = crate::hardware::block::observation_bail();
++        let kicks = crate::hardware::block::kicks();
++        let en_vol = crate::hardware::block::inflight();
++        hal::log(format_args!("LOTS0170 retenu lots={lots} pages_logiques={pages} bail_session={bail} quarantaine={quarantaine} epinglees={epinglees} kicks={kicks} en_vol={en_vol}"));
++    }
+     if msg == "SURETE0170 vi refus" && ipc::MODE_REPONSES.load(Ordering::Acquire) == 6 {
+--- a/novaOS/user/storage/relay.rs
++++ b/novaOS/user/storage/relay.rs
+@@ -39,6 +39,11 @@
+             relation(m.tag, 206, 0);
++            let marque = b"LOTS0170 relais retient";
++            call(DEBUG_WRITE, marque.as_ptr() as u64, marque.len() as u64, 0);
++            // La requête retenue ne part jamais au pilote. Accepter seulement
++            // la destruction/l'arrêt ultérieur légitime de cette session.
+             loop {
+-                match receive_for(lower.1, 5000) {
++                match receive_for(input, 5000) {
+                     Err(TIMED_OUT) => (),
+-                    _ => return Err(REFUSED),
++                    Err(e) => return Err(e),
++                    Ok(_) => return Err(REFUSED),
+                 }
+--- a/novaOS/kernel/src/sched/process/storage.rs
++++ b/novaOS/kernel/src/sched/process/storage.rs
+@@ -349,2 +349,6 @@
+         measure("bloc_collecte");
++        let (bail, quarantaine) = block::observation_bail();
++        let epinglees = heap::with_pages(|m| Ok(m.observation_dma())).unwrap();
++        let kicks = block::kicks();
++        hal::log(format_args!("LOTS0170 fin_session kicks={kicks} bail={bail} quarantaine={quarantaine} epinglees={epinglees}"));
+         hal::log(format_args!(
+--- a/novaOS/kernel/src/main.rs
++++ b/novaOS/kernel/src/main.rs
+@@ -77,2 +77,10 @@
+     // Une seule VM jetable par scénario. Aucune sélection dans l'image distribuée.
++    if args.as_slice() == b"qualification-reponses-7" {
++        assert!(sched::process::storage::volume(42));
++        hal::log(format_args!("LOTS0170 temoin termine"));
++        sched::process::ipc::MODE_REPONSES.store(6, core::sync::atomic::Ordering::Release);
++        let ok = sched::process::storage::volume(42);
++        hal::log(format_args!("BLOC session terminee ok={ok}"));
++        hal::cpu::halt()
++    }
+     let scenario = if let Some(&[mode]) = args.strip_prefix(b"qualification-reponses-") {
+--- a/novaOS/scripts/iso.sh
++++ b/novaOS/scripts/iso.sh
+@@ -18,2 +18,3 @@
+         ipc-smp-equite|ipc-smp-libre|ipc-smp-local|ipc-smp-distant|ipc-smp-paires|ipc-smp-paires-sonde|ipc-smp-paires-cpu0|ipc-smp-paires-libres|ipc-smp-calcul|ipc-smp-memoire|ipc-smp-vfs|ipc-smp-sonde|smp-test|smp-arret|smp-panique|smp-ap-absent|smp-cpu-muet|smp-fp|cli|cli-test|namespace-f1-inflight|namespace-f2-inflight|namespace-disconnect|namespace-depth|namespace-inspect|namespace-write|namespace-read|namespace-rename|namespace-f1-before|namespace-f1-after|namespace-f2-before|namespace-f2-after|files-recover|files-f1-before|files-f1-inflight|files-f1-after|files-f2-before|files-f2-inflight|files-f2-after|files-data|files-meta|files-close|files-remount|files-inject|files-info|files-abandon|files-restart|files-perf|files-write|files-read|elf-test|storage-page-write|storage-page-read|storage-live|storage-write|storage-read|storage-perf|storage-eio|dma-flight|dma-fence|dma-user|dma-qual|storage-test|ipc-test|ipc-endurance|ipc-perf|ipc-races|abi-test|proc-lifecycle|proc-test|proc-boot-fault|mem-test|mem-ro|mem-alias|mem-page-ro|mem-nx|mem-absent|heap-test|heap-oom|heap-corrupt|heap-reentrant|heap-metadata|heap-guard|heap-infallible|sched-test|sched-stress|sched-endurance|sched-guard|sched-fpu) ;;
++        ipc-lots-duree) ;;
+         *) exit 2 ;;
+@@ -22,3 +23,3 @@
+     if [ "$profil" = cli-test ] && [ -n "${NOVA_ESSAI_REPONSE:-}" ]; then
+-        case "$NOVA_ESSAI_REPONSE" in 1|2|3|4|5|6) profil=qualification-reponses-$NOVA_ESSAI_REPONSE ;; *) exit 2 ;; esac
++        case "$NOVA_ESSAI_REPONSE" in 1|2|3|4|5|6|7) profil=qualification-reponses-$NOVA_ESSAI_REPONSE ;; *) exit 2 ;; esac
+     fi
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -96,2 +96,3 @@
+     fn retirer_reservation(&mut self, voie: VoieLot, demandeur: Option<(Pid, Id)>) {
++        let debut = crate::hal::timer::counter();
+         if !self.voie_vivante(voie) { return; }
+@@ -104,4 +105,5 @@
+         if !r.en_vol && !r.doute {
+             self.pages_bulk.get_mut(lane.slot)[..8 * r.n].fill(0);
+             lane.reservation = None;
++            super::probes::reservations::restitution(crate::hal::timer::counter() - debut);
+         }

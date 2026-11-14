@@ -1,0 +1,29 @@
+{
+  "application": "UTM",
+  "profil": "AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+  "serie": "PTY de l’application",
+  "installation": true,
+  "support_sha256": "72cc18abcb27a794c54ede117f59293f43003b2bdeef79412d5f2cd365364efd",
+  "disque_installe_sha256": "470b75a7adfbadb904b5c26db6c8922941fa2449e34637f0bc0135be973b7a47",
+  "demarrages_autonomes": 2,
+  "contenu_relu": "NovaOS\n",
+  "ouverture_vi_ms": 24.504708,
+  "reouverture_apres_redemarrage_ms": 206.003833,
+  "octets_vi_relus": [
+    66560,
+    66562
+  ],
+  "scripts_vi_relus": [
+    "recettes/edite.nsh",
+    "recettes/autre.nsh"
+  ],
+  "script_installe": "/verification.nsh",
+  "script_execute_apres_redemarrage": "./recettes/preuve.nsh",
+  "binaires_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+  "portee": "Application UTM 5.0.8, série PTY, installateur livré et deux démarrages autonomes, un vCPU.",
+  "journaux_sha256": {
+    "autonome.serial": "1b25fe6f03f1c120ac8e37c252e9e003229caaeb1180a65a7187903ea631d51e",
+    "installation.serial": "1182d6dd08774cb8077765090e58cdf3f9ad0546ded64c7ade7763eeac3ad215",
+    "persistance.serial": "e60fe6a6a84d27cd2f4f1ef4f8a9638298bcc55f339af1c9229df19af9f86c35"
+  }
+}

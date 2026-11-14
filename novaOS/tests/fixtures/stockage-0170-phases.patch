@@ -1,0 +1,57 @@
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -162,6 +162,12 @@
+         if self.groupe.get() && !self.attente.borrow().0.is_empty() {
+             let mut pending = self.attente.borrow_mut();
+             let rang = self.rang_bar.get() + 1;
++            if self.coupe.get() == 11 && rang == 2 {
++                // Le lot normal soumet les pages, puis FLUSH. Exercer sa frontière
++                // interne : les mêmes pages sont acquittées, le FLUSH est refusé.
++                self.lot(&pending.0, 1, pending.1.as_ptr() as u64)?;
++                return self.refus_injecte("ancre_ecrite_avant_F2");
++            }
+             match (self.coupe.get(), rang) {
+                 (4, 1) => crate::qualification::stop(b"COUPURE groupe avant-f1"),
+                 (5, 2) => crate::qualification::stop(b"COUPURE groupe avant-f2"),
+@@ -181,6 +187,9 @@
+             self.lot(&pending.0, 2, pending.1.as_ptr() as u64)?;
+             let f = self.rang_bar.get() + 1;
+             self.rang_bar.set(f);
++            if self.coupe.get() != 0 {
++                crate::qualification::note(format_args!("barriere_confirmee F{}", f));
++            }
+             match (self.coupe.get(), f) {
+                 (2, 1) => crate::qualification::stop(b"COUPURE groupe f1"),
+                 (3, 2) => crate::qualification::stop(b"COUPURE groupe f2"),
+@@ -216,7 +225,13 @@
+             let go=b"COUPURE groupe soumission";
+             rt::call(rt::DEBUG_WRITE,go.as_ptr() as u64,go.len() as u64,0);
+         }
++        if self.coupe.get() == 9 {
++            return self.refus_injecte("avant_premiere_ecriture");
++        }
+         self.lot(b, 1, p.as_ptr() as u64)?;
++        if self.coupe.get() == 10 {
++            return self.refus_injecte("apres_lot_avant_F1");
++        }
+         if self.coupe.get() == 1 {
+             crate::qualification::stop(b"COUPURE groupe pages");
+         }
+@@ -224,9 +239,17 @@
+     }
+ }
+ impl IpcDevice<'_> {
++    fn refus_injecte(&self, position: &str) -> Result<()> {
++        crate::qualification::note(format_args!("INJECT refus position={}", position));
++        self.exchange(|_| Err(REFUSED))
++    }
+     pub(crate) fn point_coupure(&self, n: &str) {
+         self.rang_bar.set(0);
+         self.coupe.set(match n {
++            "q-avant" => 9,
++            "q-apres" => 10,
++            "q-avant-f2" => 11,
++            "q-publication" | "q-temoin" | "q-ecriture" => 12,
+             "coupure-vol-ecriture" => 8,
+             "coupure-avant-f1" => 4,
+             "coupure-avant-f2" => 5,

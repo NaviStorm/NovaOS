@@ -1,0 +1,13 @@
+{
+  "references": {
+    "regressions": 219,
+    "performances": 75,
+    "supports_performances": 253,
+    "rapports_endurance": 8,
+    "manifestes_endurance": 8,
+    "supports_endurance": 132
+  },
+  "fichiers_distincts": 639,
+  "octets": 7275797426,
+  "erreurs": []
+}

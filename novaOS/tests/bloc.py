@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import select
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -36,17 +37,27 @@ class Bench:
         self.env={**os.environ,'NOVA_ARCH':arch}
         self.report=ROOT/'build'/f'bloc-{arch}-{sector}'
         self.report.mkdir(parents=True,exist_ok=True)
-    def run(self,case,label=None,*,debug=None,flight=False,kill=False,readonly=False,cut=None,timeout=None):
+    def run(self,case,label=None,*,debug=None,flight=False,kill=False,readonly=False,cut=None,timeout=None,
+            diagnostic=False):
         iso=ROOT/'build'/f'bloc-{self.arch}-{case}.iso'
-        if not iso.exists() or iso.stat().st_mtime<(ROOT/'target'/({'x86_64':'x86_64-unknown-none','aarch64':'aarch64-unknown-none-softfloat'}[self.arch])/'release/novaos').stat().st_mtime:
+        if diagnostic:
+            # L'ISO privée embarque l'ELF choisi pour ce seul démarrage.
+            iso=self.tmp/((label or case)+'.iso')
+        if diagnostic or not iso.exists() or iso.stat().st_mtime<(ROOT/'target'/({'x86_64':'x86_64-unknown-none','aarch64':'aarch64-unknown-none-softfloat'}[self.arch])/'release/novaos').stat().st_mtime:
             subprocess.run(['sh',ROOT/'scripts/iso.sh',case,iso],env=self.env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,check=True)
-        log=self.report/((label or case)+'.serial');log.write_bytes(b'')
+        sortie=self.tmp if diagnostic else self.report
+        log=sortie/((label or case)+'.serial');log.write_bytes(b'')
         controls=['-display','none','-monitor','none','-serial','file:'+str(log)]
         monitor = flight or cut is not None
         if monitor:controls+=['-qmp','stdio']
         argv=command(self.arch,self.sector,self.image,debug=debug,readonly=readonly,controls=controls)
-        with (self.report/((label or case)+'.qemu')).open('w') as err,subprocess.Popen(
-                argv,env={**self.env,'NOVA_ISO':str(iso)},stdin=subprocess.PIPE if monitor else subprocess.DEVNULL,
+        env={**self.env,'NOVA_ISO':str(iso)}
+        if diagnostic:
+            from preuves_stockage import configuration_vm
+            configuration_vm(log, argv, env, self.arch, self.sector)
+            argv.insert(1,'-x')  # Journalise aussi l'exec QEMU effectif.
+        with (sortie/((label or case)+'.qemu')).open('w') as err,subprocess.Popen(
+                argv,env=env,stdin=subprocess.PIPE if monitor else subprocess.DEVNULL,
                 stdout=subprocess.PIPE if monitor else err,stderr=err,bufsize=0) as vm:
             try:
                 if monitor:qmp(vm,'qmp_capabilities')
@@ -84,6 +95,11 @@ class Bench:
             finally:
                 if vm.poll() is None:vm.kill()
                 vm.wait()
+        if diagnostic:
+            # Les rapports historiques désignent le dernier passage. L'original
+            # d'un échec reste isolé même si un autre essai a le même libellé.
+            for trace in (log, log.with_suffix(".qemu")):
+                shutil.copyfile(trace, self.report / trace.name)
         return log.read_text(errors='replace')
     def check(self,name):
         print(f'OK — {self.arch}/{self.sector} : {name}',flush=True)

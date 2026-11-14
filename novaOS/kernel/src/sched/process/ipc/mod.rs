@@ -15,6 +15,11 @@ mod traffic;
 pub(super) use bulk::transfer;
 pub(crate) use probes::{quiet, run};
 
+pub(crate) use probes::smp_roundtrip;
+#[cfg(feature = "ipc-smp-lab")]
+pub(crate) use probes::multicore;
+
+
 type Res<T> = core::result::Result<T, u64>;
 const ALL: u32 = SEND | RECEIVE | GRANT | MANAGE;
 const ABSENT: u8 = u8::MAX;
@@ -119,8 +124,10 @@ const _: () = assert!(
 // Les fenêtres et les trois tables neuves restent dans le budget IPC de 128 pages.
 type Endpoints = Pool<Endpoint, 64, 0, 1>;
 type Nodes = Pool<Node, 256, 64, 64>;
-type Locals = Pool<LocalCaps, 32, 72, 7>;
-type Waits = Pool<Pending, 32, 80, 16>;
+type Locals = Pool<LocalCaps, MAX, 72, 7>;
+const _: () = assert!(MAX <= u32::BITS as usize); // Un bit de locals_to_check par slot de PID.
+// Deux cadres au maximum. Aucun alias transitoire à invalider à chaque rendez-vous.
+type Waits = Pool<Pending, 32, 80, 16, 2>;
 const _: () = assert!(
     Endpoints::FIRST + Endpoints::MAX_PAGES <= Nodes::FIRST
         && Nodes::FIRST + Nodes::MAX_PAGES <= Locals::FIRST
@@ -140,6 +147,9 @@ pub(crate) struct Domain {
     ends: Endpoints,
     nodes: Nodes,
     locals: Locals,
+    // Une table peut devenir vide après sa création ou le retrait d'un handle.
+    // Le contrôle a lieu après la transaction, y compris après un échec.
+    locals_to_check: u32,
     waits: Waits,
     pages_bulk: bulk::Buffers,
     incarnation: u64,
@@ -156,6 +166,7 @@ impl Domain {
             ends: Pool::new(),
             nodes: Pool::new(),
             locals: Pool::new(),
+            locals_to_check: 0,
             waits: Pool::new(),
             pages_bulk: bulk::Buffers::new(),
             incarnation: 0,
@@ -262,6 +273,7 @@ impl Domain {
                     bootstrap: 0,
                 },
             )?;
+            self.locals_to_check |= 1 << p.slot;
         }
         Ok(())
     }
@@ -280,6 +292,7 @@ impl Domain {
         if n.holder == ABSENT {
             return;
         }
+        self.locals_to_check |= 1 << n.holder;
         let t = self.locals.get_mut(n.holder as usize);
         let slot = t
             .entries
@@ -303,8 +316,11 @@ impl Domain {
         }
     }
     fn empty_locals(&mut self) {
-        for i in self.locals.ids() {
-            if self.locals.get(i).entries.iter().all(|e| e.key == 0) {
+        let mut dirty = core::mem::take(&mut self.locals_to_check);
+        while dirty != 0 {
+            let i = dirty.trailing_zeros() as usize;
+            dirty &= dirty - 1;
+            if self.locals.has(i) && self.locals.get(i).entries.iter().all(|e| e.key == 0) {
                 self.locals.remove(i);
             }
         }
@@ -942,6 +958,15 @@ pub(super) fn launch_block_identifie<const N: usize>(
         if matches!(mode, 6 | 25) {
             s.ipc.metrics.start_session(consumer.number, server.number)
         }
+        // Le vecteur VT-d et les registres IRR/ISR du LAPIC appartiennent au BSP.
+        // Le pilote détient seul le portail. Les autres processus restent mobiles.
+        let pilote = s
+            .slots
+            .iter_mut()
+            .flatten()
+            .find(|t| t.owner == Some(device))
+            .unwrap();
+        pilote.cpu_mask = 1;
         if !crate::hardware::block::attach(device.number, key) {
             return Err(DENIED);
         }

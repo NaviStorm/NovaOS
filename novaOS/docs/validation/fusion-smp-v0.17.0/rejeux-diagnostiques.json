@@ -1,0 +1,2366 @@
+{
+  "revision_sources": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+  "profil": "QEMU 11.1.3 TCG, AArch64, 4 vCPU, secteurs de 512 octets, source 4 Mio + insertion 4 Mio. Images privées conservées. F2 armée après consentement synchronisé.",
+  "lots": {
+    "groupe-1": [
+      {
+        "numero": 0,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 185.375,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          10.3046875,
+          13.6884765625,
+          21.35009765625
+        ],
+        "charge_finale": [
+          10.2509765625,
+          13.56640625,
+          21.216796875
+        ],
+        "serie_sha256": "ffdf70a570102e8b6e09a05215aca1282015fc4dc2f6523e98cbae5773dbb583",
+        "trace_qemu_sha256": "5063ce73a95562013a4f6f07d23cf511ee3a1cce5fdf1df19a9a7b053a1658d1",
+        "disque_final_sha256": "00768421648d8969751148e0a0827a410402898ba220b43be90aa3f1cef1d17d",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 1,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 180.82,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          10.3046875,
+          13.6884765625,
+          21.35009765625
+        ],
+        "charge_finale": [
+          10.2509765625,
+          13.56640625,
+          21.216796875
+        ],
+        "serie_sha256": "3e9c69235b2397f979db5cb21d69727c7ff0112be60d40d564e5913e91c881bb",
+        "trace_qemu_sha256": "b4ed41a8afc2e9ee0fb03114665f81a77ee483bf64cc1a7f79956bb5df233150",
+        "disque_final_sha256": "139dda57850891830ffcad264ad3ff8fa290f0128c36d5eb28992dc78e7ff149",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 2,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 182.505,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          10.3046875,
+          13.6884765625,
+          21.35009765625
+        ],
+        "charge_finale": [
+          10.2509765625,
+          13.56640625,
+          21.216796875
+        ],
+        "serie_sha256": "a19d54cb600bcf4e56764855dd7e734c972e6465e2e5ce35253946e82462bbfe",
+        "trace_qemu_sha256": "ac7085a4a53e6afb5a9f282b3c65d0809dc8cf5f676420b6674e209c4c35f70c",
+        "disque_final_sha256": "e44922eb3a9440756b7180df32775eddb4f900ab2d5885a5f10ed4361e3489b0",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 3,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 176.117,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          10.3046875,
+          13.6884765625,
+          21.35009765625
+        ],
+        "charge_finale": [
+          10.2509765625,
+          13.56640625,
+          21.216796875
+        ],
+        "serie_sha256": "39096bb70ca368186f1143fa997aa8ac267f91bb9ce1a6606cccf68f964b1df9",
+        "trace_qemu_sha256": "4269885441da5b31b717895a00c47d18ad26f42a46dbe898c6d7bcda3e2ca6d4",
+        "disque_final_sha256": "afc9a02d4c6d53f4e7b9e6e9a3b62bfe5a871aef0f9ef71541e8e15e769438d9",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      }
+    ],
+    "groupe-12": [
+      {
+        "numero": 0,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 603.555,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          9.54296875,
+          13.24462890625,
+          20.9677734375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "f6b14d0e3b35c482377b345bfa483a991dd760f7a66a8c86ea13da6256b1aa28",
+        "trace_qemu_sha256": "682954110de1dcde3885450dda83991399350dbe4a885871c49ddc025fef8f3c",
+        "disque_final_sha256": "7b76ff75e621f0405c834d27c48508898a5312a55a2c5f906cb89dfee8380500",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 1,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 524.201,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          13.3427734375,
+          13.970703125,
+          21.1787109375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "09c5356b241abe78b3e95b80d464a1d496519d6e19092af9e1bb8e28cccda1dd",
+        "trace_qemu_sha256": "ec3e96796e21eaa903286c5ee49125ca2cdb078176b2b68815b52b741e7160bb",
+        "disque_final_sha256": "dc58055ab54150dc6cb7ef9c2bfc7c13ac8cfc56fae52f4e933116cba0cc7b80",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 2,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 579.045,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          9.54296875,
+          13.24462890625,
+          20.9677734375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "906cf603d1d68a749295a8ee224d2f77f95247b9f9786991c244a8a6ec489961",
+        "trace_qemu_sha256": "03b46e5e0558cae9af3831fc8891d57721fa2138b48f30e128ee043b00ab7980",
+        "disque_final_sha256": "9e0af8413c86420c5ec1cb389b7738121f0f67d95a293eea3d176d31821e7425",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 3,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 586.89,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          13.3427734375,
+          13.970703125,
+          21.1787109375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "78297a148464dc5990c0694b2434b47fa1b34ff9b7d06b42f9f1aa793d6b8584",
+        "trace_qemu_sha256": "80c51e2484d7016a771a34832fea662f357daa72901f0393403dd3082116ab8e",
+        "disque_final_sha256": "929b88de8b2988609b1a06a852dbbaaf9c4cd2261a658a4a3d3a455d0451baa3",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 4,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 556.76,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          9.54296875,
+          13.24462890625,
+          20.9677734375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "6b4c1f38628bb5672c654babe8c7eedabfb46d0fb001dad3102931d6266f662f",
+        "trace_qemu_sha256": "a7dac9719c3b28406a0ae1064692178527793279511f659d1b137d2261453562",
+        "disque_final_sha256": "87fbea1781a9cbac83dc43192e50594b1253e708a6f1c459e05477dd2b0b7de8",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 5,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 591.615,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          13.3427734375,
+          13.970703125,
+          21.1787109375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "046e253ded6aeb6a4a8262194c0fc3a9c33ab85e373e65378e9192545386db0f",
+        "trace_qemu_sha256": "d48a0599a9017c6b2956c91b76978a53fa02f9a1b4dc784234b9b59a9e82d964",
+        "disque_final_sha256": "f0bbcc60155a31575e5f86b24f5080c20e6559519256a58dc2390f7b9a83dfb7",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 6,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 648.865,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          13.3427734375,
+          13.970703125,
+          21.1787109375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "52aa3fc8f20ab778b1a84c9b248973ee7a92237009b8ef031e323ec8dd810438",
+        "trace_qemu_sha256": "1e1e7abe41734180e34ffb181165fdfb48f45a0b7f40e9b0b9b70478c690b0c6",
+        "disque_final_sha256": "e90fe472b96cbbb9ba703019e74e82f1874b7bdccde1c40b8ed2e9da52813db6",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 7,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 525.032,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          9.54296875,
+          13.24462890625,
+          20.9677734375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "fe6ba7fac6e9163d2ff248cf88a5e7dc098dd382b35d2537bcac08bb71fefce6",
+        "trace_qemu_sha256": "cedfab81ca040c9edc969d32461ebaedfec9d9a3e71f1b7440c2154989d70253",
+        "disque_final_sha256": "8f2c11536859fd7503e08c0944290c02ec80759a54bb8062b4e81ad613e46b57",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 8,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 505.151,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          9.54296875,
+          13.24462890625,
+          20.9677734375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "e1474cd65e44894d19b35f4ef5b0abb042f23ced3ace45b231c75adaa5f7397d",
+        "trace_qemu_sha256": "77ba87deaeb7a5470302e3eeb6b8ba259afe059882fc0283052fe1b9e69a8f23",
+        "disque_final_sha256": "ca09876f07bd63024699e5533c2d64be31da4b82c58705d49f2069ed23912ef6",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 9,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 583.865,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          9.54296875,
+          13.24462890625,
+          20.9677734375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "ed56ff03252eb33f58016a28e0cc6cd8591daf09683915b805dd1b625c8f6af8",
+        "trace_qemu_sha256": "8ec2e0c3b4004b58b10b9367bb1b1fd33360804c7ea40661037530f43ec766c5",
+        "disque_final_sha256": "914c9c5327da817547f0c82896ca421fe69fcdf8a8c450d9e51f56eadb89f08b",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 10,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 656.387,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          13.3427734375,
+          13.970703125,
+          21.1787109375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "30d651ca51e4025658d89079738078874bdb8bf5fdeec2afd79b77474a9c5b6d",
+        "trace_qemu_sha256": "7c8b3696df6827f4558e324e7e32e534fea67a7bca7deef17a86addf7e2d032b",
+        "disque_final_sha256": "948f6d454dc720649653d2066fa350db94db56f4f241759803fcab3b6b096af8",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 11,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 600.355,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          9.54296875,
+          13.24462890625,
+          20.9677734375
+        ],
+        "charge_finale": [
+          23.970703125,
+          16.21142578125,
+          21.8466796875
+        ],
+        "serie_sha256": "b7e0f5a2cf03374fb256683ed69238435fdd40803425665de9ab32fc9a63db28",
+        "trace_qemu_sha256": "08ffa9782b815a3d5d3561b3a5980cb38b801229dc86bd0d4ff70988c9415f68",
+        "disque_final_sha256": "7a9f99e0de5f99df2e9125d1ad1f876e2c49139df5ae8dfa4f45bbb5847d6c1c",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      }
+    ],
+    "groupe-20": [
+      {
+        "numero": 0,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1366.97,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "d6b1495ea858bd404a72ca9bb1a94fc3c89f6b31b343f38b66825310be286969",
+        "trace_qemu_sha256": "f1f60bdc4f5dcac7a3ad5aa50cacc121a91d49e2fc625d61146e40d5fa59ad86",
+        "disque_final_sha256": "506ef768bf7dce3da797708d888f26f017cfbfeaa90e70d495a8a8f2c812d169",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 1,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1296.731,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "24c1f5e7996aa5468a35a79e1ebaddebe418c24ad10060f35e2515c0d7aae51c",
+        "trace_qemu_sha256": "65a316a6854a0744b31c5593a71e12f97edbb042598653e4557852a4adca6e07",
+        "disque_final_sha256": "f97d31f2c351eb71ace5f845c5c1edcf38895a56cc3f050f722525fcd484d648",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 2,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1115.217,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "277d776b91e771f35e7dcca8a6f42415adbb804d8434b53e45e391b2084231cd",
+        "trace_qemu_sha256": "5a4efceaee575f065448c63eb47f6c93fff5c07a6a6fb42e2860003f466bb22e",
+        "disque_final_sha256": "8d509f9ad31985351ca609bbf76a7a721fd59630c25e8e28b52799ff17b76a2b",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 3,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1229.032,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "c747f51728bb97b3b407e002c22e2ce5029d7ec5b8bdff9d6d66afa385ca83f3",
+        "trace_qemu_sha256": "fbb434c0861bbf1675c2c17e3ce2589c9b9ce3aadd4d5b1e64364f5442f1c3ad",
+        "disque_final_sha256": "127e6f9579d38d80ef37cd9c2096f9e31d23f4ca55a9fffe1bc2bd88c619c6ed",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 4,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1059.963,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "5700a2aabb8b61f243ea75132d057f28a097abbd63d8d36a4b1e4519bb54618a",
+        "trace_qemu_sha256": "2febe1b559be338de71836fb24f2ec2866f237d87e503838247b864af6d781b2",
+        "disque_final_sha256": "587a9efcab8c2ca3080bbe039c1fce4f04d19b365fedd1a73181aedbebc47b67",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 5,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1230.488,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "9b35c701dbd75ed04c818ae6e7dec569c6755a7acc7361398c5d003ae3c0b2e9",
+        "trace_qemu_sha256": "7ba739b1ddb29fb27b37ef2ecd627a84863d6ca8acea174a8af739d088230a2c",
+        "disque_final_sha256": "17ff84247ab942818b5801e4ffdaa3f3df59ac63188df1aa13558a6ea723e6c5",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 6,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 959.091,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "21b99352cea05098c9cef0c98028345d8729ba880eed3bd09b207474a2bb4745",
+        "trace_qemu_sha256": "098fd797659c29bef8d1e11177997591d5ccb77094c223144dfeb3278f485a99",
+        "disque_final_sha256": "b46e2a01755c80783257b54f0ef5dbdf6cf0f7934d02451d8442ec0eef4be330",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 7,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1405.179,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "8219e85daad6b34533e6805ad855d842623500c58aee3db5ce08fece783c4675",
+        "trace_qemu_sha256": "7e23d4ab86fba5e4ddda86c61622a92b9382ee5b22472db23fabef8517a1b933",
+        "disque_final_sha256": "7cb2bbcb4f2ed7c74895567a8f83bb7d335bc5036ad3f85ccc1b953dc548571e",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 8,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1040.84,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "9869f8959765092af65c553925dbb88ffafa0682d3cc93ebae24101739fb910f",
+        "trace_qemu_sha256": "5eca00abb93d2f25cb8407ce8ae6caa79df6150c00e6a9b630209accf46817f5",
+        "disque_final_sha256": "80c3112d5f8bd5506120d7a6ed443a59fa6feec2595aa30210df5436adeb01f3",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 9,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1388.948,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "61888ad65dfd906b26c5616b39a880c88eb79b00daeb1c8d5a1fe8ba5ec04cf3",
+        "trace_qemu_sha256": "932b41d6c1fb9f71b103982eab67211fc33bc32f382358cffbfd6cc1647a36f1",
+        "disque_final_sha256": "3d8c2c587780fb152e0e552d35f4386550ed23aa573cae68714a0ac9ec0ef920",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 10,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1120.08,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "691b5e6e7d47c088a623b5b028dee2407a9cb5a1d346e2cd462751be7383959b",
+        "trace_qemu_sha256": "0df409c0b989f7260d0bfcbb7c3bf4495b79d2b8babbc52f74fc96fb99cffa60",
+        "disque_final_sha256": "ea3221e875a28241f8517b5a68968d026d084ee8715adb28d3272e7bcffc5a1d",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 11,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1368.078,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "8c79675e5f6ed34c85062d385810bbaaadfeb068c8266b560c171fd7612831d4",
+        "trace_qemu_sha256": "fb844022759926d4752c9055e1f8a61149e07e7e505ab4fb2f49875796a02cfc",
+        "disque_final_sha256": "26fca2d7cda5b7218f8610cedc8ffc88f966edad86123fc39962f538e26b2d66",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 12,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1240.526,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "ec9e64fe3e4cedac5799d6fc9e2f6eeee689932fe3e07a814d9a9d7c11fe74a8",
+        "trace_qemu_sha256": "640b919fa72fbbca2f2ffd91ffc3a781e2eb7e1cc84a06542e17795d29ba1bb0",
+        "disque_final_sha256": "2765fbcb1088035697ef6403c0f9054deba9ac5544ac5b0b4820a90482b91b7c",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 13,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 892.871,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "70178575437e7d0b6dd97efc27aeb38fef237c7405308cb24467da31822b0972",
+        "trace_qemu_sha256": "8c20f6c3faa9b20537fbe1e4a947d4be8d7b8e36141085f002740867db8831c8",
+        "disque_final_sha256": "8d2bc022b5ed2783201354452488bcb1531f827117f3e7adf0230a026290a303",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 14,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1314.416,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "f531c3563394a89a7eef89228f2e002882883e897df962f00e1c2573f5d6521a",
+        "trace_qemu_sha256": "d9d1d17878b0014e6d45400bb2fbd9a1560ca40a76cd067afcd3a8523722551e",
+        "disque_final_sha256": "66e8bdc13e027b4cd5506bf87ba90576d1bbf599c31a0254f7ff7539531b6ac9",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 15,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1201.765,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "36fac7aee50353fd3e8ce5f966efbf76ce122087cd9c7ddfe23d508f0c550ac2",
+        "trace_qemu_sha256": "da683ffa4e356541ef61ffcc94cdcd27789076b9e51a9a9a887a76ccdfd5a08b",
+        "disque_final_sha256": "e422e8186b2c96a05252287597af9d6de0b011ef2d9141283562fd6356bf9257",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 16,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1249.164,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "03722738050242c4681ad1a4550c70cd6e0b450220465b7b845f5d568e0e1ecb",
+        "trace_qemu_sha256": "cf844d479a797e545c8eecf4750f78ce86e04705828fa85a1a11ef40401b253c",
+        "disque_final_sha256": "0d198fc14933e1d5cb7d591e7cbf571c433d51b6cdc4aab345140f949cbbfdbb",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 17,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1378.726,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "27914512c2bf24e4a78de0717de1ebe97a595697f1329460c30f2b8fe26eae15",
+        "trace_qemu_sha256": "fe7c253992b43fd56b706906be804d195435872ec92957bb8c6831e38b64e5f2",
+        "disque_final_sha256": "55550a0df7791582afa500c67d4085ad66af2f9b008ef37ca483c5156546750a",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 18,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1418.87,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "d380825a6d3106ef1dcf95ff5fde47ac5d5f189df95665147680d4215ba1be6c",
+        "trace_qemu_sha256": "67870e99245ea0ba29ff616c5aa25be2eedc86ed51ef5db45b172fae4ea77a18",
+        "disque_final_sha256": "4f5816b0ab941e54634aa814b490b9ca357f429d6592078ae0442294089fbba4",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 19,
+        "elf": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 1438.619,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          21.41357421875,
+          16.31005859375,
+          21.61181640625
+        ],
+        "charge_finale": [
+          53.36181640625,
+          24.501953125,
+          24.392578125
+        ],
+        "serie_sha256": "215468cb98f7b57ed7e5d413e6d8baeeaba1edcdf82a8c30a464e20dcde2660d",
+        "trace_qemu_sha256": "f23b49c344641b234835fa101800966f5779cf2da6136503330985a22d18bf17",
+        "disque_final_sha256": "ed08968974f8f5be202cad99fc22961c1ae4f8ebe3d7198de364fe612edcccca",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      }
+    ],
+    "groupe-bloc-20": [
+      {
+        "numero": 0,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 845.078,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "69e8a450472e53136dab1f11636e57451fb1fc338e190cba0e8b2a2f6ee658be",
+        "trace_qemu_sha256": "eea775195bb749b2f06081f09e0800ba1c7092618532dc469ae0445f722d1765",
+        "disque_final_sha256": "be2b95371dca9868e900bb091cc677dfb917162c952007b7b176a5d08ccd3166",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 1,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 904.532,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "173bf661ac27ec6df637aec8aa0746056d929d84c512cc24ad0846de21681faf",
+        "trace_qemu_sha256": "fb8b777106b38d1f95b191c7b7d319d15ed4789b2becc3ab3c60f8746093d648",
+        "disque_final_sha256": "b22b0e21f1b429d3ca9cd94ea7347fa0d10738c3b1a73097814ec8c99116b953",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 2,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 934.984,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "778a133fe90c1676adaaf02983c5e8d50595cc14b97b46d407800f5e7feb3954",
+        "trace_qemu_sha256": "09891dee041dafa25d439cec41c73ca0e723b6b5adc9d86a87bd91546b2ecb7e",
+        "disque_final_sha256": "9c155642276e55fcae6bfaa89ed3cd482aeda4a4988dfefb8e6d94950b1e97b2",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 3,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 901.639,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "2cb16954c77ff154d2478f6733a99133e3c9be3d649c1f0eb22866be32bb9dd6",
+        "trace_qemu_sha256": "ff616d413873f3dd25ee64986f025705615208d5e826c68b1bbf1f0c4d9fe86f",
+        "disque_final_sha256": "26eb14d26493300ef1fbc8ad961b52a35873fe4c9672c91c299f21c06284a24b",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 4,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 763.204,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "79a45019ad8cb215de5d011dbd5cff4929ed07bd922f298e918ff9469f65cdcf",
+        "trace_qemu_sha256": "fe4effae9e7694d269b02839ec26bc7e97a83c854a40022feee3f6de7960a25b",
+        "disque_final_sha256": "2db50a74269cb6a8ddb38d59c57580daa84e254d24a22efa836fbeabe97de9b6",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 5,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 949.974,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "d18948482ca01c9775b88fce27c7fac1e1670dfe3a8f3ee6a440814f47b0dd23",
+        "trace_qemu_sha256": "aade15b27769971c89078a328c2fb09bbc56dcc7609e5b9a64e64d915a306cc4",
+        "disque_final_sha256": "46d24b8cea0316ea94746283cbc8fa1e74a2d827f6a6fb285d1fa8cd0f890939",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 6,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 794.082,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "d6e0045cb10125efa7d19f72cf897d7eff4abeeb9e76d45fa3fe604e547969d1",
+        "trace_qemu_sha256": "430ff0e5e40a3e51718133e90279a39b12e22887202442724434c7bc7b5ab338",
+        "disque_final_sha256": "f9e2279aab70b960367babcede59bbda5373a72c7e96444799cd603fc5174620",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 7,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 962.907,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "b42e7cc02aefeb17370412875e27e098eb688f12e7e9947369824d337f1456e4",
+        "trace_qemu_sha256": "cefc37a746f5999f1de4a32260ab4bbfe95fdcc714378d74d1607a19cd832c9d",
+        "disque_final_sha256": "2b077a76a4fa4d64b3b9cbe6e977156281fbb5cf4cfeb06035d32ce23cf34c6e",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 8,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 893.716,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "2316023ac40a1ec743394d0732362ae184612952e4b4e713271b0de4746d71bc",
+        "trace_qemu_sha256": "5441201e0ed8448bddd09d471db68e400003aecf23dc2a469c1a52c1d9235014",
+        "disque_final_sha256": "fa1187a59b8d847c02c75a9cb0d774621acf4a24b784f62cb47b58379fe918e0",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 9,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 943.66,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "ba962679a323d6db59656fa136c8fc4c94c791582bec48fcabeec343aa4b0753",
+        "trace_qemu_sha256": "cc3507735d6c0228baf74102173b2100d00833793751f0169f74b64387d64e56",
+        "disque_final_sha256": "c79f8479cefe92d4a73c5c1d47f1a4bb323477fb20c4a5ff9809f4682d5abbee",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 10,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 931.847,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "a8aff6e380c11230723cb86a4d6495e7bed892ee4cd44f6d5c533ef2ba4f05e1",
+        "trace_qemu_sha256": "55b6e6d6851a834c9aaf16633e11e09d1c0af92a3b59090be7c47f2bb4d843e9",
+        "disque_final_sha256": "303e61ce33d01d0b1cf72c6bca16a8497a87bf5a545876028ae60200e8f02620",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 11,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 902.907,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "48736acd6f46c7c072cdb88446d555fa07e0e423a6eac21842183618c079685b",
+        "trace_qemu_sha256": "0e3777ed53af78e4d1a00edf45931577d520d686bb86edcc48bf6d2b090c17e7",
+        "disque_final_sha256": "5b0b5c0096999beafe577d75d920c275f1d6a51a25e6c97e0badb7be6d7bba77",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 12,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 868.226,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "61170148bb98e5ddeb6ffdf30c50c003d8af07215f328734758d93f22195eeea",
+        "trace_qemu_sha256": "e3a9aba84216f40834680cf75f94fd4e5c320edbce4b92a8b6bde1743c566f04",
+        "disque_final_sha256": "fdfc9e9826d3d925fb87de83d40b56cbb35ffa73b28e0b8f45722d73188e5dda",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 13,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 934.621,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "5da09b0378835c74e13b3ac94a1599d3d9619f707e0e70dba563d1c886ffddcb",
+        "trace_qemu_sha256": "8ef05edd2273a7449479e2420c7fa97eb7aa00d6ff0a7a97eb170816689db0f4",
+        "disque_final_sha256": "7e35542caa294b8cfb75c8ccc5c3afa13a66671f3c5547b550a66a386fcaa83f",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 14,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 896.547,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "04e5c8dcc88f87e8bdde8e1cde962190bc74ccb28fd836bf071884e90a9cbd71",
+        "trace_qemu_sha256": "731162a81f064e34d468d9f9c4eca8352eeb5d409f21ddf1be6d852c869c3bc4",
+        "disque_final_sha256": "b15a2378363460d1ece1c91b60fcf449b179341ee75685712c2cc4677c368570",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 15,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 902.488,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "3990ed0d68f633614097ae688645d3ab76533086b539029a053452762fed2d50",
+        "trace_qemu_sha256": "a05a2420e5234f75ae55fbceeb266aaefadd015649d48427b1729d8530fb8e35",
+        "disque_final_sha256": "0a315c89b2030ebde47969959bf0b86bf3b3e7acef1a99a0d4032eb853018d9c",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 16,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 929.397,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "e5bd436c5c60493e899f82b9ddad7dc0a9ea83198ec4c3482d44b5579d2edaef",
+        "trace_qemu_sha256": "766a51a0c1c5eac0d9bec918e1ebf641bc56aa5587b09ae6f9fa53b9675dde8e",
+        "disque_final_sha256": "2a16895f3c8c4b426a31fe58fdee9d1c327b75386eb60c153aea777e0270f441",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 17,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 822.898,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "675741e93dd9eed0683c6c437c765d76cb9ba1cb75ced66a9d937e034a02de85",
+        "trace_qemu_sha256": "f692d807844dd1130463027f5b5e3daca1f1a9452d85e5a3f90d1da475b76570",
+        "disque_final_sha256": "3a8ae698d96f06fe2fe25eb85515e4867fc980684ba559e6c38eceb00a5421fd",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 18,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 762.885,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "d7678cf7b2c226d73e8d849dda845bf54d05c93ea12200358c1f39a074bd5024",
+        "trace_qemu_sha256": "d25e5efbd6f96d494228819e753d1a609eaa97ccbb8346e003d82a0891ac1836",
+        "disque_final_sha256": "53dce46efc9c5ca3b5c077502ae2e31e8844c3d2d2d9047d10924b741065c8b9",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      },
+      {
+        "numero": 19,
+        "elf": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "issue": "vol_f2",
+        "consentement_armement_ms": 862.322,
+        "generations": [
+          68,
+          67
+        ],
+        "destination": "complete",
+        "source_exacte": true,
+        "secteur": 512,
+        "charge_initiale": [
+          8.9541015625,
+          14.59375,
+          19.748046875
+        ],
+        "charge_finale": [
+          50.3203125,
+          23.87744140625,
+          22.92138671875
+        ],
+        "serie_sha256": "4e759af1ed2a915e96b23bffd11cb7f763963d023fc107f1f545fd5de606d705",
+        "trace_qemu_sha256": "f2b6511dfd33f928c62ae80e25b7a1e7336b2219a02daa07a11f12360b8240b8",
+        "disque_final_sha256": "6a00826714c4bb2853f333ccf2106925ed55d29a51c22fc4e64fb24dd0021926",
+        "backend_avant": {
+          "rd_operations": 2204,
+          "wr_operations": 4,
+          "flush_operations": 3,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        },
+        "backend_apres": {
+          "rd_operations": 2349,
+          "wr_operations": 47,
+          "flush_operations": 4,
+          "failed_rd_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_flush_operations": 0
+        }
+      }
+    ]
+  }
+}

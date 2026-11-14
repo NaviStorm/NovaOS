@@ -5,6 +5,7 @@ import json
 import os
 import re
 import time
+from pathlib import Path
 
 from demarrage import BUILD, ROOT, scenario_vm
 
@@ -15,7 +16,7 @@ def fields(line):
 
 def campaign(arch, mode="test", seconds=0, ram=256):
     target = {"aarch64": "aarch64-unknown-none-softfloat", "x86_64": "x86_64-unknown-none"}[arch]
-    kernel = ROOT / "target" / target / "release" / "novaos"
+    kernel = Path(os.environ.get("NOVA_KERNEL_ELF", ROOT / "target" / target / "release" / "novaos"))
     result = dict(architecture=arch, mode=mode, ram_mio=ram,
                   elf_sha256=hashlib.sha256(kernel.read_bytes()).hexdigest())
     suffix = f"-{seconds}s" if seconds else f"-{ram}"

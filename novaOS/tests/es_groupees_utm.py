@@ -29,7 +29,7 @@ LV = bytes([0x62])*16
 IDS = (LV[:-1].hex()+"63", LV.hex())
 
 
-def image(raw, volume, elf, s):
+def image(raw, volume, elf, s, *, scenario="systeme-gpt"):
     esp = MIO//s
     p9 = esp * (61 if s == 512 else 265)
     fin = p9 + volume.stat().st_size//s
@@ -59,7 +59,7 @@ def image(raw, volume, elf, s):
             struct.pack_into("<I", entete, 16, zlib.crc32(entete))
             ecrire(lba, entete)
             ecrire(array, table)
-        fat = construire(elf, s)
+        fat = construire(elf, s, scenario=scenario)
         for pos in range(0, len(fat), s+4):
             ecrire(esp+struct.unpack_from("<I", fat, pos)[0], fat[pos+4:pos+4+s])
         disk.seek(p9*s)
@@ -112,8 +112,13 @@ def publier(c, nom, destination, coupure, observer=None, mesurer_cpu=None, horod
 
 
 def ouvrir_moniteur(machine, out, pile):
-    port = script(['tell application "UTM" to return address of second serial port of '
-                   '(virtual machine id (item 1 of argv))'], machine)
+    deadline = time.monotonic() + 10
+    while True:
+        port = script(['tell application "UTM" to return address of second serial port of '
+                       '(virtual machine id (item 1 of argv))'], machine)
+        if port or time.monotonic() >= deadline:
+            break
+        time.sleep(.05)
     if not port.startswith(("/dev/tty", "/dev/pty")):
         raise ValueError(f"Port moniteur inattendu {port!r}")
     fd = os.open(port, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
@@ -210,6 +215,7 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
     data = paquet/"Data"
     data.mkdir(parents=True)
     config = plistlib.loads((template/"config.plist").read_bytes())
+    cpus = config["System"]["CPUCount"]
     assert [d["ImageName"] for d in config["Drive"]] == ["code.fd", "variables.fd", "cible.qcow2"]
     for name in ("code.fd", "variables.fd"):
         shutil.copyfile(template/"Data"/name, data/name)
@@ -262,6 +268,8 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
                                       lecture_conteneur=refus.split(":", 1)[0])
         with demarrer(machine, journal) as c, ExitStack() as pile:
             transfert(c, b"nsh> ", 56, banniere=banniere)
+            if cpus > 1:
+                assert f"SMP systeme cpus={cpus} en_ligne={(1 << cpus) - 1:#x}" in journal.read_text()
             moniteur = ouvrir_moniteur(machine, out, pile) if observer_hote else None
             if qos is not None:
                 qos.attacher(machine, thread_moniteur(moniteur))
@@ -335,6 +343,8 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
             os.write(c.fd, b":q\r")
             c.attendre(b"nsh> ")
             c.ligne("exit", b"SYSTEME bilan Ok(())")
+            if cpus > 1:
+                c.attendre(f"ack={(1 << cpus) - 1:#x} absents=0x0 muets=0x0".encode())
         exporter(machine, out/"relu.utm")
     apres = relire_export(out/"relu.utm", cible, s, ids, etat["blocs"], attendu, destination)
     for nom_copie in destinations[1:]:
@@ -357,7 +367,7 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
     if cadres is None and (not classique or sonde):
         raise ValueError("Pic de cadres absent du profil de qualification")
     pic = int(cadres[1]) if cadres else None
-    hote = {}
+    hote = dict(sha256_destination=hashlib.sha256(attendu).hexdigest())
     if observer_hote:
         avant_disque, apres_disque = compteurs_hote
         hote["backend_hmp"] = {k: v - avant_disque[k] for k, v in apres_disque.items()}

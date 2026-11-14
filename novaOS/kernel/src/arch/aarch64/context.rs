@@ -14,6 +14,8 @@ pub fn prepare() {
         "bic x9,x9,#(3<<20)","msr cpacr_el1,x9","msr cntkctl_el1,xzr","mrs x9,sctlr_el1",
         "bic x9,x9,#(1<<9)","bic x9,x9,#(1<<26)","msr sctlr_el1,x9","isb",out("x9") _);
     }
+    #[cfg(feature = "user-fpu")]
+    super::fpu::prepare();
     if pan_supported() {
         // Sûreté : FEAT_PAN vérifiée, SPAN=0 force PAN à toute entrée à EL1.
         unsafe {
@@ -44,7 +46,11 @@ pub unsafe fn initial(top: usize, entry: extern "C" fn() -> !) -> usize {
 // Sûreté : EL1h, IRQ masquées, cadres alignés sur 16 octets. Un contexte IRQ
 // contient en plus tous les registres volatils, ELR et SPSR dans le stub de vecteur.
 #[unsafe(naked)]
-pub unsafe extern "C" fn switch(_: *mut usize, _: usize) {
+pub unsafe extern "C" fn switch(
+    _: *mut usize,
+    _: usize,
+    _: *const core::sync::atomic::AtomicUsize,
+) {
     naked_asm!(
         "stp x19,x20,[sp,#-96]!",
         "stp x21,x22,[sp,#16]",
@@ -52,9 +58,12 @@ pub unsafe extern "C" fn switch(_: *mut usize, _: usize) {
         "stp x25,x26,[sp,#48]",
         "stp x27,x28,[sp,#64]",
         "stp x29,x30,[sp,#80]",
-        "mov x2,sp",
-        "str x2,[x0]",
+        "mov x3,sp",
+        "str x3,[x0]",
         "mov sp,x1",
+        "cbz x2,2f",
+        "stlr xzr,[x2]",
+        "2:",
         "ldp x21,x22,[sp,#16]",
         "ldp x23,x24,[sp,#32]",
         "ldp x25,x26,[sp,#48]",

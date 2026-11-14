@@ -18,7 +18,7 @@
 @@ -174,7 +174,7 @@
      };
      hal::interrupts::mask();
-     with(|s| s.thread_mut(s.current).in_syscall = false);
+     with(|s| s.thread_mut(s.current()).in_syscall = false);
 -    if result.is_ok() {
 +    if result.is_ok() || (0x10034..=0x10039).contains(&id) {
          crate::mesures_save::appel_file(id);

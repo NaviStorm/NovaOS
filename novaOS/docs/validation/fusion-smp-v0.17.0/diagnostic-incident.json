@@ -1,0 +1,187 @@
+{
+  "profil_coupure_origine": {
+    "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "6f97959c07755e6ce6d7ca8ee7a318bdfb41261e211eb54ad0343e6dcb80fdcf",
+    "novaOS/target/x86_64-unknown-none/release/novaos": "8517dca85e528b24837279f1bc2cd1e0789e1043d71240b2bcad264466e289b2",
+    "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+  },
+  "original": {
+    "trace_serie": "ec0c1ae5fbd386a09555d3f05109b3eb5d11f38aa70c065ecdd6beba54c87a16",
+    "fichier_octets": 12254,
+    "debug_NVFS_avant": 1,
+    "debug_NVFS_apres": 0,
+    "armement": false,
+    "bilan_peripherique": false,
+    "erreur_IO": true,
+    "publication_confirmee": false,
+    "captation_image": false,
+    "nouvelle_tentative_QMP": false,
+    "limite": "Le lanceur détruit son fichier image temporaire après la sortie. Sa sérialisation de la seule erreur w::IO a perdu le code inférieur et le stade."
+  },
+  "chemin": {
+    "apres_consentement": "Déléguer le prêt si scellé, requête PLAN 30, contrôle source, sauvegarde_plages, construction, F1, ancre puis F2. Le courtier libère la délégation à la sortie.",
+    "chemins_erreur": [
+      "components/shell/vi.rs:59",
+      "novaOS/user/novafs/files/plan.rs (fixture du prototype)",
+      "novaOS/user/novafs/files.rs:27",
+      "novaFS/lab/es-groupees/preparation.rs:230",
+      "novaFS/src/engine.rs:766",
+      "components/libraries/console.rs:49"
+    ],
+    "borne": "Aucun point QMP armé. L’acceptation de la destination, l’opération 30 et le stade CoW ne sont pas journalisés individuellement dans la trace originale ; leur exécution est démontrée seulement dans les témoins."
+  },
+  "profils": {
+    "diagnostic-f2": {
+      "revision_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "profil": "coupe + observation diagnostic phase et erreur",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "3e124952ced0a452c041c208dc781889591f2268cd2d3d9fb22e1ceb47a45bdb",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "sondes_service_pat_sha256": "c3eddcf5d9e1cb2aeae8122991f86847cc7c11f57c0bf02d26e0798fe0dd6b83",
+      "sources_modifiees": {
+        "novaOS/user/novafs/qualification.rs": "2806b3e5026f5f12c496802a920b07f0da0a62ec7321afb2e5af4c49719b905c",
+        "novaOS/user/storage/medium.rs": "93ed2907313498829f70b64e5f62e44bf00960fbe7f14006a3cfb310986d77b2",
+        "novaFS/src/lib.rs": "71835b94e77d4f4cf99d13ce5d6ae27a194d25291f6192df599b35a60bfbd493",
+        "novaFS/src/engine.rs": "e46f23ac58c44108f5661e0f7b78c4ebb43a51001478f382f90153a804c97485",
+        "novaFS/lab/es-groupees/preparation.rs": "e64417a380a6049a44063ddd701177d5d9e6ed88e22e453ac860495217f5c12a",
+        "novaOS/user/novafs/device.rs": "f4130c9dd4d9cf27a28e3034eeefc5f1f8db3ccb3e2904639c6c5c79c4e16361",
+        "novaOS/user/novafs/files/plan.rs": "af20892c756c051d9603a33d15d3210c206c7d4f8c45363877ff3747cfea87e5",
+        "novaOS/user/novafs/files/delegated.rs": "1f18ed69b1287d2105673450f4309afab234ca06ae56c81fa722bf701d3ff53c"
+      },
+      "sha256_provenance": "414b67ebe5625bcdf832a2093f8666a0aae2949b4e542473030745fc4975f2cd"
+    },
+    "diagnostic-f2-bloc-final": {
+      "revision_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "profil": "coupe + diagnostic bloc/FS",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "7d27f8226ddcc10a251f761912e794c4ba4cc3fefd505cbe31b380cb81fffd21",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "sondes_service_pat_sha256": "c3eddcf5d9e1cb2aeae8122991f86847cc7c11f57c0bf02d26e0798fe0dd6b83",
+      "sources_modifiees": {
+        "novaOS/user/novafs/qualification.rs": "2806b3e5026f5f12c496802a920b07f0da0a62ec7321afb2e5af4c49719b905c",
+        "novaOS/user/storage/medium.rs": "93ed2907313498829f70b64e5f62e44bf00960fbe7f14006a3cfb310986d77b2",
+        "novaFS/src/lib.rs": "71835b94e77d4f4cf99d13ce5d6ae27a194d25291f6192df599b35a60bfbd493",
+        "novaFS/src/engine.rs": "e46f23ac58c44108f5661e0f7b78c4ebb43a51001478f382f90153a804c97485",
+        "novaFS/lab/es-groupees/preparation.rs": "e64417a380a6049a44063ddd701177d5d9e6ed88e22e453ac860495217f5c12a",
+        "novaOS/user/novafs/device.rs": "f4130c9dd4d9cf27a28e3034eeefc5f1f8db3ccb3e2904639c6c5c79c4e16361",
+        "novaOS/user/novafs/files/plan.rs": "af20892c756c051d9603a33d15d3210c206c7d4f8c45363877ff3747cfea87e5",
+        "novaOS/user/novafs/files/delegated.rs": "1f18ed69b1287d2105673450f4309afab234ca06ae56c81fa722bf701d3ff53c",
+        "novaOS/kernel/src/hardware/block/queue.rs": "c5360185134bc97215bfb628daf57ffe8e1913771de916d7caea98364c0040a0",
+        "novaOS/kernel/src/hardware/block/mod.rs": "30f4583f101d10865c427211a486468a34dbed034d010abb9ead75a77ec7ccdd",
+        "novaOS/kernel/src/hardware/block/lease.rs": "92ce0141e5ff562e7b06d699ba35e145665012d4e7bbd341079dcd5454071f97",
+        "novaOS/kernel/src/hardware/block/arena.rs": "f442235086c094efd0a4c66a1b24b25313541952f06b5440b76599b6def509d5",
+        "novaOS/user/storage/relay.rs": "a72df54ad008048dbe58651504ad17225668d5c3ad900eaad163ff43ae71cf68",
+        "novaOS/user/storage/disk.rs": "01b804157daefc99d156c2ea5b29fc318412553b839404075f41a3241f17d28d",
+        "novaOS/user/storage/runtime.rs": "613181fb7058ddcece54e7a61019bdb7f5081194c595b306090cfe111086789f"
+      },
+      "sondes_bloc_sha256": "94c9d807692406cf05c7dc35b2c99b359d7666ff06d1a2d0c0d1bea456dc8a92",
+      "sha256_provenance": "c7474ae70f0e548320152a3849730e363556868995dd9bd73bf4048e1c4119d2"
+    },
+    "diagnostic-f2-relais": {
+      "revision_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "profil": "Diagnostic, expiration du relais avant premier lot WRITE de 256 pages, jamais envoyé",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "c53a856c51279078cc87fbe228c72c075199a9e96331add421315e9221b3a78c",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "sondes_service_pat_sha256": "c3eddcf5d9e1cb2aeae8122991f86847cc7c11f57c0bf02d26e0798fe0dd6b83",
+      "sources_modifiees": {
+        "novaOS/user/novafs/qualification.rs": "2806b3e5026f5f12c496802a920b07f0da0a62ec7321afb2e5af4c49719b905c",
+        "novaOS/user/storage/medium.rs": "93ed2907313498829f70b64e5f62e44bf00960fbe7f14006a3cfb310986d77b2",
+        "novaFS/src/lib.rs": "71835b94e77d4f4cf99d13ce5d6ae27a194d25291f6192df599b35a60bfbd493",
+        "novaFS/src/engine.rs": "e46f23ac58c44108f5661e0f7b78c4ebb43a51001478f382f90153a804c97485",
+        "novaFS/lab/es-groupees/preparation.rs": "e64417a380a6049a44063ddd701177d5d9e6ed88e22e453ac860495217f5c12a",
+        "novaOS/user/novafs/device.rs": "f4130c9dd4d9cf27a28e3034eeefc5f1f8db3ccb3e2904639c6c5c79c4e16361",
+        "novaOS/user/novafs/files/plan.rs": "af20892c756c051d9603a33d15d3210c206c7d4f8c45363877ff3747cfea87e5",
+        "novaOS/user/novafs/files/delegated.rs": "1f18ed69b1287d2105673450f4309afab234ca06ae56c81fa722bf701d3ff53c",
+        "novaOS/kernel/src/hardware/block/queue.rs": "c5360185134bc97215bfb628daf57ffe8e1913771de916d7caea98364c0040a0",
+        "novaOS/kernel/src/hardware/block/mod.rs": "30f4583f101d10865c427211a486468a34dbed034d010abb9ead75a77ec7ccdd",
+        "novaOS/kernel/src/hardware/block/lease.rs": "92ce0141e5ff562e7b06d699ba35e145665012d4e7bbd341079dcd5454071f97",
+        "novaOS/kernel/src/hardware/block/arena.rs": "f442235086c094efd0a4c66a1b24b25313541952f06b5440b76599b6def509d5",
+        "novaOS/user/storage/relay.rs": "dde151472d62022e949016f8fa4fd3f3a257d3793ac76581df0fc2763463a800",
+        "novaOS/user/storage/disk.rs": "01b804157daefc99d156c2ea5b29fc318412553b839404075f41a3241f17d28d",
+        "novaOS/user/storage/runtime.rs": "613181fb7058ddcece54e7a61019bdb7f5081194c595b306090cfe111086789f"
+      },
+      "sondes_bloc_sha256": "94c9d807692406cf05c7dc35b2c99b359d7666ff06d1a2d0c0d1bea456dc8a92",
+      "injection_sha256": "a7dbec5e614776bf8a2f8364654402db42d6d6c31ee258bc2b7a893385830a03",
+      "sha256_provenance": "7eccdaaf7fc14a7e564bfff55e6e92371f99d85865afe741298cdcf371d3bf0a"
+    }
+  },
+  "temoins": {
+    "WRITE_avant_F1": {
+      "essai": "Retard artificiel du premier WRITE après OUI, sans toucher au firmware ni au support réel",
+      "lignes": [
+        "BLOC0170 finish used op=1 attendu=1 idx=2261 used=2260 expect=67797 irq_avant=2260 irq=2260 stray=0 erreur=Timeout",
+        "BLOC0170 chaine lba=8192 pages=2 ecriture=true cause=Timeout",
+        "FS0170 transport reponse op=3 phase=4 n=256 tag=2216 delai=506 statut=12",
+        "FS0170 device premiere_erreur phase=construire_transaction ligne=259 statut=12 barriere=0",
+        "FS0170 device lot phase=construire_transaction op=1 debut=8192 pages=256 erreur=Io(Error(Status(12)))",
+        "FS0170 plan sauvegarde phase=construire_transaction erreur=Io(Error(Status(12))) interruption=None",
+        "FS0170 plan resultat statut=26",
+        "FS0170 delegation reponse op=30 statut=26 etat=None"
+      ],
+      "delai_s": 0.5072469160077162,
+      "source_exacte": true,
+      "destination_complete": false,
+      "volume_verifie": true,
+      "gen": 67,
+      "sha256_image": "acaba689aba7dc4f29e02ab2374f9ad761ac827c2c7b5289709cc044ebb96574",
+      "trace_serie": "ae19ff84206d6fbb929e3f4566f5a9c54c2849d1f74e1ba49c7321eb9c619cf7",
+      "rapport_sha256": "9873f4a1721ab49891d6722972b46b6f34d13ca37546e3d45c67ed0f17b73aa8"
+    },
+    "FLUSH_F1": {
+      "essai": "Retard artificiel du premier FLUSH F1 après OUI, sans toucher au firmware ni au support réel",
+      "lignes": [
+        "BLOC0170 finish used op=2 attendu=1 idx=2399 used=2398 expect=67935 irq_avant=2398 irq=2398 stray=0 erreur=Timeout",
+        "BLOC0170 tag=00000000000008b3 op=00000000000000e7 rc=000000000000000c",
+        "FS0170 transport reponse op=6 phase=4 n=38 tag=2227 delai=288 statut=12",
+        "FS0170 device premiere_erreur phase=flush_F1 ligne=259 statut=12 barriere=0",
+        "FS0170 device lot phase=flush_F1 op=2 debut=10464 pages=38 erreur=Io(Error(Status(12)))",
+        "FS0170 plan sauvegarde phase=flush_F1 erreur=Io(Error(Status(12))) interruption=None",
+        "FS0170 plan resultat statut=26",
+        "FS0170 delegation reponse op=30 statut=26 etat=None"
+      ],
+      "delai_s": 0.5011844580003526,
+      "source_exacte": true,
+      "destination_complete": false,
+      "volume_verifie": true,
+      "gen": 67,
+      "sha256_image": "4ad7100adef34e6c058aed3449b31fba1ef6743d71fd301559d3cd3107f11dba",
+      "trace_serie": "c5b398857f214566a0253726524e26e2ce3a7c13bbdd9d6194baed3bff33c1bf",
+      "rapport_sha256": "b09dc8a584af17c3cfc80973ace841bba37b24358bf36253b58d9193087b5b18"
+    },
+    "non_soumis_au_pilote": {
+      "essai": "Aucune soumission au pilote : retard pré-départ artificiel dans le relais, inférieur inacquis et réponse absente",
+      "lignes": [
+        "TEST0170 relais attente volontaire avant envoi pilote",
+        "FS0170 transport reception op=3 phase=4 n=256 tag=2216 delai=506 statut=8",
+        "FS0170 device premiere_erreur phase=construire_transaction ligne=259 statut=8 barriere=0",
+        "FS0170 device lot phase=construire_transaction op=1 debut=8192 pages=256 erreur=Io(Error(Status(8)))",
+        "FS0170 plan sauvegarde phase=construire_transaction erreur=Io(Error(Status(8))) interruption=None",
+        "FS0170 plan resultat statut=26",
+        "FS0170 delegation reponse op=30 statut=26 etat=None",
+        "TEST0170 relais expiration volontaire aucun envoi pilote"
+      ],
+      "delai_s": 2.6883594169921707,
+      "source_exacte": true,
+      "destination_complete": false,
+      "volume_verifie": true,
+      "gen": 67,
+      "sha256_image": "54d616fda7a67642cea1bd039052d5aae9c8f2a3968046e24c2ff8627b0b2adf",
+      "trace_serie": "f4faf21028b0a671e065e5f6fdf16da627efdd6ffb1a2fd5296d18246a297805",
+      "rapport_sha256": "2a901a5a421b3b5185b0246320b14c9cf6bf867de1ce94ed464b12e0af277847"
+    }
+  },
+  "limites": [
+    "Chaque témoin introduit explicitement une faute ou un retard. Ces résultats ne prouvent pas une cause historique.",
+    "Durée depuis OUI et première erreur interne non enregistrées dans le journal initial.",
+    "Le diagnostic de phase écrit en mémoire lors du parcours et sur la console uniquement en erreur. Le binaire et son timing diffèrent de la version qualifiée."
+  ],
+  "incidents_de_banc": [
+    {
+      "nom": "premier_témoin_WRITE",
+      "limite": "Le moniteur QMP n’a pas répondu à wait_break. Image conservée, hors résultats. La réexécution attend la lecture de OUI côté invité avant wait_break, comme le rendez-vous du banc historique."
+    }
+  ]
+}

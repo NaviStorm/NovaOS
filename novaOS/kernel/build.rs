@@ -17,6 +17,7 @@ fn main() {
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
     for name in [
         "demo",
+        "fp_probe",
         "ipc",
         "storage/service",
         "storage/client",
@@ -38,11 +39,20 @@ fn main() {
             })
             .display()
         );
+        if name == "fp_probe" && env::var_os("CARGO_FEATURE_USER_FPU").is_none() {
+            continue;
+        }
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
         let compact = matches!(
             name,
             "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
+        if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_SMP_LAB").is_some() {
+            rust.args(["--cfg", "ipc_smp_lab"]);
+        }
+        if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_EQUITE_LAB").is_some() {
+            rust.args(["--cfg", "ipc_equite_lab"]);
+        }
         if compact {
             rust.args([
                 "-C",

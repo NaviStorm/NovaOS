@@ -1,0 +1,1931 @@
+{
+  "candidat_publie_SMP": "835b9d9dd817a2feef54b6c17f000b0aec8a3879",
+  "candidat_versionne": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+  "main_initial": "3e14a50bb5bc7960d16c1fbcfc7f49a681d6e7c6",
+  "arbres_git": {
+    "3e14a50bb5bc7960d16c1fbcfc7f49a681d6e7c6": {
+      "novaFS": "3379ccd023e821e912130c7413113fe7546070cc",
+      "novaOS/abi": "a70d5f23ae91211dd7a54c429e723f5157600e58"
+    },
+    "835b9d9dd817a2feef54b6c17f000b0aec8a3879": {
+      "novaFS": "3379ccd023e821e912130c7413113fe7546070cc",
+      "novaOS/abi": "a70d5f23ae91211dd7a54c429e723f5157600e58"
+    },
+    "b76c863c9302bf6ead53fac3b80b26df0513fe0d": {
+      "novaFS": "3379ccd023e821e912130c7413113fe7546070cc",
+      "novaOS/abi": "a70d5f23ae91211dd7a54c429e723f5157600e58"
+    }
+  },
+  "hote_Darwin": {
+    "aarch64": {
+      "architecture": "aarch64",
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 199,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "modele": {
+        "reussis": 1,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "options": {
+        "reussis": 2,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=17.375",
+      "pannes_p5": {
+        "512": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ],
+        "4096": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ]
+      },
+      "controles_p51_standard": [
+        "curseur_du_montage_cow",
+        "rang_des_aretes_creuses_et_racines_divergentes",
+        "donnees_propres_apres_f2_uniquement"
+      ],
+      "controles_p51_sondes": [
+        "curseur_du_montage_cow",
+        "rang_des_aretes_creuses_et_racines_divergentes",
+        "donnees_propres_apres_f2_uniquement"
+      ],
+      "migration": [
+        "MIGRATION secteur=512 frontières=96",
+        "MIGRATION secteur=4096 frontières=96"
+      ],
+      "permutations": [
+        "PERMUTATIONS secteur=512 ordres=24",
+        "PERMUTATIONS secteur=4096 ordres=24"
+      ],
+      "saturation": [
+        "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+        "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+      ],
+      "aleatoire": [
+        "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+        "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+        "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+        "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+      ],
+      "restitution": [
+        "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=195408 après=195408",
+        "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=195408 après=195408",
+        "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=195408 après=195408",
+        "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=195408 après=195408"
+      ],
+      "injections_ancres": 2304,
+      "etats_ancien_nouveau_refus": [
+        1288,
+        656,
+        360
+      ],
+      "attestations_pool_512_4096": [
+        6,
+        6
+      ],
+      "commandes": [
+        {
+          "nom": "novafs-aarch64",
+          "code": 0,
+          "secondes": 346.207
+        },
+        {
+          "nom": "ancres-aarch64",
+          "code": 0,
+          "secondes": 0.757
+        },
+        {
+          "nom": "remplacement-aarch64",
+          "code": 0,
+          "secondes": 3.663
+        }
+      ]
+    },
+    "x86_64": {
+      "architecture": "x86_64",
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 199,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "modele": {
+        "reussis": 1,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "options": {
+        "reussis": 2,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=29.880",
+      "pannes_p5": {
+        "512": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ],
+        "4096": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ]
+      },
+      "controles_p51_standard": [
+        "curseur_du_montage_cow",
+        "rang_des_aretes_creuses_et_racines_divergentes",
+        "donnees_propres_apres_f2_uniquement"
+      ],
+      "controles_p51_sondes": [
+        "curseur_du_montage_cow",
+        "rang_des_aretes_creuses_et_racines_divergentes",
+        "donnees_propres_apres_f2_uniquement"
+      ],
+      "migration": [
+        "MIGRATION secteur=512 frontières=96",
+        "MIGRATION secteur=4096 frontières=96"
+      ],
+      "permutations": [
+        "PERMUTATIONS secteur=512 ordres=24",
+        "PERMUTATIONS secteur=4096 ordres=24"
+      ],
+      "saturation": [
+        "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+        "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+      ],
+      "aleatoire": [
+        "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+        "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+        "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+        "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+      ],
+      "restitution": [
+        "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=180320 après=180320",
+        "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=180320 après=180320",
+        "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=180320 après=180320",
+        "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=180320 après=180320"
+      ],
+      "injections_ancres": 2304,
+      "etats_ancien_nouveau_refus": [
+        1288,
+        656,
+        360
+      ],
+      "attestations_pool_512_4096": [
+        6,
+        6
+      ],
+      "commandes": [
+        {
+          "nom": "novafs-x86_64",
+          "code": 0,
+          "secondes": 529.13
+        },
+        {
+          "nom": "ancres-x86_64",
+          "code": 0,
+          "secondes": 1.142
+        },
+        {
+          "nom": "remplacement-x86_64",
+          "code": 0,
+          "secondes": 5.502
+        }
+      ]
+    }
+  },
+  "coupures_QEMU": {
+    "aarch64/512": {
+      "points": [
+        {
+          "frontiere": "pages",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "retrait",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f1",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-ecriture",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        }
+      ],
+      "execution": {
+        "nom": "coupure-aarch64-512",
+        "code": 0,
+        "secondes": 157.03
+      }
+    },
+    "aarch64/4096": {
+      "points": [
+        {
+          "frontiere": "pages",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "retrait",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f1",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-ecriture",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        }
+      ],
+      "execution": {
+        "nom": "coupure-aarch64-4096",
+        "code": 0,
+        "secondes": 144.744
+      }
+    },
+    "x86_64/512": {
+      "points": [
+        {
+          "frontiere": "pages",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "retrait",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f1",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-ecriture",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        }
+      ],
+      "execution": {
+        "nom": "coupure-x86_64-512",
+        "code": 0,
+        "secondes": 125.945
+      }
+    },
+    "x86_64/4096": {
+      "points": [
+        {
+          "frontiere": "pages",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "retrait",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f1",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-ecriture",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 524416,
+          "multipage": false,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        }
+      ],
+      "execution": {
+        "nom": "coupure-x86_64-4096",
+        "code": 0,
+        "secondes": 91.612
+      }
+    }
+  },
+  "propriete_DMA": {
+    "aarch64/1": {
+      "lignes": [
+        {
+          "arch": "aarch64",
+          "secteur": 512,
+          "injections": 120,
+          "baseline_machine": 0,
+          "sessions": 64,
+          "cadres_session": 16,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        },
+        {
+          "arch": "aarch64",
+          "secteur": 4096,
+          "injections": 120,
+          "baseline_machine": 0,
+          "sessions": 64,
+          "cadres_session": 16,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        }
+      ],
+      "execution": {
+        "nom": "dma-aarch64-1",
+        "code": 0,
+        "secondes": 39.598
+      }
+    },
+    "aarch64/2": {
+      "lignes": [
+        {
+          "arch": "aarch64",
+          "secteur": 512,
+          "injections": 120,
+          "baseline_machine": 0,
+          "sessions": 64,
+          "cadres_session": 16,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        },
+        {
+          "arch": "aarch64",
+          "secteur": 4096,
+          "injections": 120,
+          "baseline_machine": 0,
+          "sessions": 64,
+          "cadres_session": 16,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        }
+      ],
+      "execution": {
+        "nom": "dma-aarch64-2",
+        "code": 0,
+        "secondes": 37.508
+      }
+    },
+    "aarch64/4": {
+      "lignes": [
+        {
+          "arch": "aarch64",
+          "secteur": 512,
+          "injections": 120,
+          "baseline_machine": 0,
+          "sessions": 64,
+          "cadres_session": 16,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        },
+        {
+          "arch": "aarch64",
+          "secteur": 4096,
+          "injections": 120,
+          "baseline_machine": 0,
+          "sessions": 64,
+          "cadres_session": 16,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        }
+      ],
+      "execution": {
+        "nom": "dma-aarch64-4",
+        "code": 0,
+        "secondes": 35.945
+      }
+    },
+    "x86_64/1": {
+      "lignes": [
+        {
+          "arch": "x86_64",
+          "secteur": 512,
+          "injections": 112,
+          "baseline_machine": 9,
+          "sessions": 64,
+          "cadres_session": 7,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        },
+        {
+          "arch": "x86_64",
+          "secteur": 4096,
+          "injections": 112,
+          "baseline_machine": 9,
+          "sessions": 64,
+          "cadres_session": 7,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        }
+      ],
+      "execution": {
+        "nom": "dma-x86_64-1",
+        "code": 0,
+        "secondes": 15.674
+      }
+    },
+    "x86_64/2": {
+      "lignes": [
+        {
+          "arch": "x86_64",
+          "secteur": 512,
+          "injections": 112,
+          "baseline_machine": 9,
+          "sessions": 64,
+          "cadres_session": 7,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        },
+        {
+          "arch": "x86_64",
+          "secteur": 4096,
+          "injections": 112,
+          "baseline_machine": 9,
+          "sessions": 64,
+          "cadres_session": 7,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        }
+      ],
+      "execution": {
+        "nom": "dma-x86_64-2",
+        "code": 0,
+        "secondes": 18.668
+      }
+    },
+    "x86_64/4": {
+      "lignes": [
+        {
+          "arch": "x86_64",
+          "secteur": 512,
+          "injections": 112,
+          "baseline_machine": 9,
+          "sessions": 64,
+          "cadres_session": 7,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        },
+        {
+          "arch": "x86_64",
+          "secteur": 4096,
+          "injections": 112,
+          "baseline_machine": 9,
+          "sessions": 64,
+          "cadres_session": 7,
+          "image_identique": true,
+          "cas_lot": [
+            "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+            "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+            "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+            "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+            "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+            "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+          ],
+          "portails_refuses": [
+            "storage-read",
+            "storage-page-read"
+          ]
+        }
+      ],
+      "execution": {
+        "nom": "dma-x86_64-4",
+        "code": 0,
+        "secondes": 24.066
+      }
+    }
+  },
+  "sauvegardes_groupees": {
+    "qemu-x86_64": {
+      "revision": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "noyau_sha256": "1915da759a0c27acd85e53970e1c08e3df1bebeeaffcedc21be494b32bd135fa",
+      "lecteur_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "charge_avant": [
+        72.47412109375,
+        59.6103515625,
+        35.43212890625
+      ],
+      "charge_apres": [
+        67.0810546875,
+        59.40625,
+        36.06005859375
+      ],
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "serial_sha256": "3dded38d6f0a97e9216da1d8ffef23b36b1039c05ea6fed56368676a2ddc02ff",
+      "modele_utm": null,
+      "commande_au_succes_ms": 757.581,
+      "total_IPC": 47,
+      "total_controles_compris": 57,
+      "tous_controles_copies": 65,
+      "flush": [
+        1.573,
+        0.542
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "generations": [
+        [
+          65,
+          66
+        ],
+        [
+          67,
+          68
+        ]
+      ],
+      "remontage_independant": true,
+      "controles_noyau": {
+        "create": 2,
+        "dup": 0,
+        "close": 3,
+        "revoke": 0,
+        "notify": 0,
+        "cancel": 0,
+        "bootstrap": 0,
+        "ipc_features": 0
+      },
+      "copies_locales": 8,
+      "allocations_memoire_kio": {
+        "1": 12,
+        "2": 3832,
+        "3": 36,
+        "4": 476,
+        "5": 33608
+      },
+      "operations": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 163.4
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 23.229
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 2.116
+        }
+      },
+      "sha256_trace_reprise": null,
+      "pic_cadres": 9754,
+      "execution": {
+        "nom": "sauvegarde-qemu-x86_64",
+        "code": 0,
+        "secondes": 27.052
+      }
+    },
+    "qemu-aarch64": {
+      "revision": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "noyau_sha256": "872dc00d1043f7e210762c53ce922e98bded359119e277195331f80e4bc47ec2",
+      "lecteur_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "charge_avant": [
+        97.822265625,
+        62.3701171875,
+        35.50341796875
+      ],
+      "charge_apres": [
+        72.47412109375,
+        59.6103515625,
+        35.43212890625
+      ],
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "serial_sha256": "4196e1ac79cd60080fdfc5bc8e9e76fad30fc46ddcb03aa29ac9a678796eb180",
+      "modele_utm": null,
+      "commande_au_succes_ms": 307.957,
+      "total_IPC": 47,
+      "total_controles_compris": 56,
+      "tous_controles_copies": 64,
+      "flush": [
+        1.411,
+        0.456
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "generations": [
+        [
+          65,
+          66
+        ],
+        [
+          67,
+          68
+        ]
+      ],
+      "remontage_independant": true,
+      "controles_noyau": {
+        "create": 2,
+        "dup": 0,
+        "close": 2,
+        "revoke": 0,
+        "notify": 0,
+        "cancel": 0,
+        "bootstrap": 0,
+        "ipc_features": 0
+      },
+      "copies_locales": 8,
+      "allocations_memoire_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "operations": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 42.153
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 17.982
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.867
+        }
+      },
+      "sha256_trace_reprise": null,
+      "pic_cadres": 9751,
+      "execution": {
+        "nom": "sauvegarde-qemu-aarch64",
+        "code": 0,
+        "secondes": 29.053
+      }
+    },
+    "utm-aarch64": {
+      "revision": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "noyau_sha256": "94f20bdbfc3dfac914611794466e70391746845afae84b8fa32fbfa8c3ca8c04",
+      "lecteur_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "charge_avant": [
+        97.822265625,
+        62.3701171875,
+        35.50341796875
+      ],
+      "charge_apres": [
+        69.29931640625,
+        59.58447265625,
+        35.84765625
+      ],
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "serial_sha256": "2bab678de348247d88d9ba5141a06a231a4790ea55369f9e862f65391e2a534e",
+      "modele_utm": {
+        "config.plist": "99262639b7f69177170445170e3d5ff0732c92529f2a70c51f87aa5d0b25e174",
+        "Data/code.fd": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "Data/variables.fd": "f6c6b00e12c88818f71e0a3fcba47dfc7d0424ae212d7684c5f98f1bec32592b"
+      },
+      "commande_au_succes_ms": 317.807,
+      "total_IPC": 47,
+      "total_controles_compris": 56,
+      "tous_controles_copies": 64,
+      "flush": [
+        1.735,
+        0.198
+      ],
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "generations": [
+        [
+          65,
+          66
+        ],
+        [
+          68,
+          69
+        ]
+      ],
+      "remontage_independant": true,
+      "controles_noyau": {
+        "create": 2,
+        "dup": 0,
+        "close": 2,
+        "revoke": 0,
+        "notify": 0,
+        "cancel": 0,
+        "bootstrap": 0,
+        "ipc_features": 0
+      },
+      "copies_locales": 8,
+      "allocations_memoire_kio": {
+        "1": 12,
+        "2": 3804,
+        "3": 36,
+        "4": 460,
+        "5": 33608
+      },
+      "operations": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 14.757
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 12.637
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.933
+        }
+      },
+      "sha256_trace_reprise": "b7bc3f75c28770389d11699d3904cc5b15a1bec2df3605549d6d9f15262c0535",
+      "pic_cadres": 9732,
+      "execution": {
+        "nom": "sauvegarde-utm-aarch64",
+        "code": 0,
+        "secondes": 44.693
+      }
+    }
+  },
+  "DÉFAUT": {
+    "chemin": "E/S classiques",
+    "attente_VirtIO": "polling borné",
+    "lecture_code": [
+      "novaOS/kernel/src/sched/process/ipc/bulk.rs:46",
+      "novaOS/kernel/src/hardware/block/io.rs:173",
+      "novaOS/kernel/src/hardware/block/ownership.rs:135",
+      "novaFS/src/engine.rs:851"
+    ],
+    "profil_groupé": "Chargé seulement dans les exports à fixtures explicites. La distribution standard ne négocie que IPC_FEATURE_PAGE."
+  },
+  "lecteur_traces_DXE": {
+    "commit": "0f0371dc6b5fb6f698b5c1a376288425d7a99296",
+    "empreinte": "8b2fa5797b8fa2609f71cc66f40897e16e6db2c35a50b003ff6ec1f291412605",
+    "ancien_lecteur_sortie": 1,
+    "cause": "Le premier démarrage a atteint DMA bilan Ok et retiré 523/523 jetons. Le lecteur de trace ne reconnaissait pas la bannière v0.17.0. Seul son motif de version a changé."
+  },
+  "firmware": {
+    "dxe": {
+      "empreinte": "b0db72b4f57dcdfd977cff18322882765a0277ca3bb6c4bcf209e2d87138ed39",
+      "utm": "5.0.8",
+      "moteur": "QEMU emulator version 10.0.12",
+      "pflash": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+      "noyau": "0b5ce865607727cf6276e61b3c2a667cd15d3fbcb495c215972168d709bec42c",
+      "essais": [
+        "froid",
+        "el2",
+        "protection",
+        "reemploi",
+        "cd",
+        "redemarrage",
+        "coupure",
+        "reprise",
+        "autre-slot",
+        "mapkey",
+        "retrait-suspendu"
+      ],
+      "execution": {
+        "nom": "firmware-dxe-corrige",
+        "code": 0,
+        "secondes": 68.692
+      }
+    },
+    "sequentiel": {
+      "empreinte": "9330e568338954d0b6c9b01deb1bb2c9defd009bc4bb08e0f665c7734f82fad3",
+      "utm": "5.0.8",
+      "moteur": "QEMU emulator version 10.0.12",
+      "pflash": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+      "noyau": "d8f796e00aa1308fe4d018e827b2c27a77b1ce393eb2636914f0abfccf5d3e70",
+      "essais": [
+        "support",
+        "vierge",
+        "refus",
+        "confirmation-erronee",
+        "tis",
+        "deplaces",
+        "reemploi",
+        "redemarrage",
+        "fin",
+        "mbr",
+        "gpt",
+        "fat",
+        "novafs",
+        "trop-petit",
+        "erreur-lecture",
+        "mauvais-support",
+        "doublon",
+        "roles-inverses",
+        "support-inscriptible",
+        "tpm-absent",
+        "mauvaise-serie",
+        "quarantaine",
+        "coupure"
+      ],
+      "execution": {
+        "nom": "firmware-sequentiel",
+        "code": 0,
+        "secondes": 188.174
+      }
+    }
+  },
+  "profils": {
+    "utm-sonde": {
+      "revision_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "profil": "utm-sonde",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "94f20bdbfc3dfac914611794466e70391746845afae84b8fa32fbfa8c3ca8c04",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "fixtures": {
+        "io-0166-prototype": "e2946fb22926ef3efddb0ab10e97bc2c516c526c419ae398dff97e93321a160a",
+        "io-0166-plages": "86a6c50166c12b78a74c6bb65b7da8963e9be9033130fe9b02033f2325d4a9f1",
+        "io-0166-prototype-sonde": "b766db0a527f7d91429ede3c94fd7d9357db1d59b47c2398ec26bc59f73f68f1",
+        "io-0166-plages-sonde": "38d60310449d0aa46bbf0cd623757aed9b27f2689c9860e7a12325c53a76cd71",
+        "io-0166-systeme-qualification": "4f4a0b965b585df2ce624cb3d43aca8323797591256e5af962323d4863478f8e",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "3cba7e3c4360157d66b63df6eb86179f0a0ce253d53c0cc1f00ca419cf84d864",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-sonde": "c0868b0b16391ed988167f07a6f0672053f206e1be0eb0f640f68f0b6bb7ffee",
+        "io-0166-vcpu": "51a48c415aaa229ed01d36941e6b388f13d731282efce061f049013aac599a1b",
+        "io-0166-irq-latences": "4c18d6b9ebb3ec48342ac21911c18beaaa5e085467bf52ae81026039128af35e",
+        "io-0166-negociation-sonde": "f77433e817d4df70e9378eb74c85a89e6254edb3435562ac2a078f3e10b97007",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 598,
+        "sha256_chemins_et_contenus": "e4315c52f1eefe9489506c9f8b9c9781d0c5324ca35e4fe3a08cc77cd260e725"
+      }
+    },
+    "coupe": {
+      "revision_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "profil": "coupe",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "6f97959c07755e6ce6d7ca8ee7a318bdfb41261e211eb54ad0343e6dcb80fdcf",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "8517dca85e528b24837279f1bc2cd1e0789e1043d71240b2bcad264466e289b2",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "fixtures": {
+        "io-0166-prototype": "e2946fb22926ef3efddb0ab10e97bc2c516c526c419ae398dff97e93321a160a",
+        "io-0166-plages": "86a6c50166c12b78a74c6bb65b7da8963e9be9033130fe9b02033f2325d4a9f1",
+        "io-0166-plages-coupure": "20dee62e3b324fc783229520f463568e9e4c6b1116e4aa5f97d0fde92fda022d",
+        "io-0166-barrieres": "6a90ac38806aa861f912685f22c8e06e1679e9b7ab5ef4c9724e4b1cebcc7398",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "3cba7e3c4360157d66b63df6eb86179f0a0ce253d53c0cc1f00ca419cf84d864",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-coupure": "f60b21ac5f2af5e145ba82be69f6dcd283c6fe864ae471a9877b36b468ffc229",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 593,
+        "sha256_chemins_et_contenus": "c19c748286d78bb118164bf302b9a02104e3c1574e72c482b02f34d685c9accc"
+      }
+    },
+    "sonde": {
+      "revision_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "profil": "sonde",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "872dc00d1043f7e210762c53ce922e98bded359119e277195331f80e4bc47ec2",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "1915da759a0c27acd85e53970e1c08e3df1bebeeaffcedc21be494b32bd135fa",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "fixtures": {
+        "io-0166-prototype": "e2946fb22926ef3efddb0ab10e97bc2c516c526c419ae398dff97e93321a160a",
+        "io-0166-plages": "86a6c50166c12b78a74c6bb65b7da8963e9be9033130fe9b02033f2325d4a9f1",
+        "io-0166-prototype-sonde": "b766db0a527f7d91429ede3c94fd7d9357db1d59b47c2398ec26bc59f73f68f1",
+        "io-0166-plages-sonde": "38d60310449d0aa46bbf0cd623757aed9b27f2689c9860e7a12325c53a76cd71",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "3cba7e3c4360157d66b63df6eb86179f0a0ce253d53c0cc1f00ca419cf84d864",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-sonde": "c0868b0b16391ed988167f07a6f0672053f206e1be0eb0f640f68f0b6bb7ffee",
+        "io-0166-vcpu": "51a48c415aaa229ed01d36941e6b388f13d731282efce061f049013aac599a1b",
+        "io-0166-irq-latences": "4c18d6b9ebb3ec48342ac21911c18beaaa5e085467bf52ae81026039128af35e",
+        "io-0166-negociation-sonde": "f77433e817d4df70e9378eb74c85a89e6254edb3435562ac2a078f3e10b97007",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 597,
+        "sha256_chemins_et_contenus": "aea3291d1142352841d87288071866a3d0bbada84fa07e3551ccf2aaad2e41e5"
+      }
+    },
+    "regression": {
+      "revision_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "profil": "regression",
+      "binaires": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "1320c814ff9987a861482310a35c61941750808bc10994e5e97a11548ba14943",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "c4827341b8b7338d648856e0fc4e892cfcf849ab67c5a408492e14de339aa017",
+        "novaOS/target-gicv3-lab/aarch64-unknown-none-softfloat/release/novaos": "0b5ce865607727cf6276e61b3c2a667cd15d3fbcb495c215972168d709bec42c",
+        "novaOS/target-dma-sequentiel/aarch64-unknown-none-softfloat/release/novaos": "d8f796e00aa1308fe4d018e827b2c27a77b1ce393eb2636914f0abfccf5d3e70",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "fixtures": {
+        "io-0166-prototype": "e2946fb22926ef3efddb0ab10e97bc2c516c526c419ae398dff97e93321a160a",
+        "io-0166-plages": "86a6c50166c12b78a74c6bb65b7da8963e9be9033130fe9b02033f2325d4a9f1",
+        "io-0166-virtio-multipage": "3cba7e3c4360157d66b63df6eb86179f0a0ce253d53c0cc1f00ca419cf84d864",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d"
+      },
+      "sources_apres_fixtures": {
+        "fichiers": 593,
+        "sha256_chemins_et_contenus": "adb3879671ab9442bcc479c498becc3b9e32fe862a002aa6976956a9e5a3ceb0"
+      }
+    }
+  },
+  "antecedents": {
+    "firmware_835b9d9": "Deux essais du moteur UTM exécutés dans le bac à sable se sont arrêtés avant TPM. Le socket UNIX local de swtpm était interdit. Rejeux des deux suites sur les noyaux versionnés avec accès au socket.",
+    "coupure_ARM_512_premier_passage": {
+      "retour": 1,
+      "point": "vol-f2",
+      "serie_sha256": "ec0c1ae5fbd386a09555d3f05109b3eb5d11f38aa70c065ecdd6beba54c87a16",
+      "lecteur_attendait_marque_avant_QMP": true,
+      "sept_premiers_points_parcourus": true,
+      "etat_du_disque_incident": "Image temporaire supprimée par le banc. Aucune preuve sur ses octets après la tentative.",
+      "statut_affiche": "w::IO regroupe Error::Unavailable et Error::Io(_). files.rs:30 mappe les erreurs de publication et issues inconnues sur w::UNCERTAIN, affiché distinctement par console.rs:48.",
+      "symptome": "Erreur E/S remontée dans vi après OUI, avant le marqueur d’armement et sans confirmation de succès. Le banc n’avait encore installé aucun point de coupure sur QEMU. L’image temporaire du banc ne peut pas être réexaminée. Cause précise indéterminée. La cellule de neuf scénarios a été rejouée intégralement avec le même ELF."
+    },
+    "rejeux_835b9d9": {
+      "coupures_F1_F2_36": {
+        "coupure-aarch64-512.retour": {
+          "nom": "coupure-aarch64-512",
+          "code": 0,
+          "secondes": 226.902
+        },
+        "coupure-x86_64-512.retour": {
+          "nom": "coupure-x86_64-512",
+          "code": 0,
+          "secondes": 159.838
+        },
+        "coupure-aarch64-4096.retour": {
+          "nom": "coupure-aarch64-4096",
+          "code": 0,
+          "secondes": 159.394
+        },
+        "coupure-x86_64-4096.retour": {
+          "nom": "coupure-x86_64-4096",
+          "code": 0,
+          "secondes": 76.774
+        }
+      },
+      "dma_6_topologies": {
+        "dma-aarch64-2.retour": {
+          "nom": "dma-aarch64-2",
+          "code": 0,
+          "secondes": 46.425
+        },
+        "dma-x86_64-2.retour": {
+          "nom": "dma-x86_64-2",
+          "code": 0,
+          "secondes": 18.64
+        },
+        "dma-aarch64-4.retour": {
+          "nom": "dma-aarch64-4",
+          "code": 0,
+          "secondes": 34.979
+        },
+        "dma-x86_64-1.retour": {
+          "nom": "dma-x86_64-1",
+          "code": 0,
+          "secondes": 48.864
+        },
+        "dma-x86_64-4.retour": {
+          "nom": "dma-x86_64-4",
+          "code": 0,
+          "secondes": 13.304
+        },
+        "dma-aarch64-1.retour": {
+          "nom": "dma-aarch64-1",
+          "code": 0,
+          "secondes": 49.848
+        }
+      },
+      "perf_phase4": "novaOS/docs/validation/smp-phase4-regressions-v0.17.0.json"
+    }
+  },
+  "limites": [
+    "Coupure de la VM avec stockage hôte alimenté.",
+    "Un essai de sauvegarde par environnement, QEMU TCG et UTM AArch64 sur Mac.",
+    "Défaut matériel et fonctionnement sur bare metal non démontrés.",
+    "Six tests ignorés dans chaque suite standard et instrumentée Darwin. Les familles des tests optionnels relancés sont détaillées séparément."
+  ],
+  "reproductibilite_vol_F2_512": {
+    "rapports_volF2": {
+      "2-835b9d9": {
+        "noyau_git": "835b9d9dd817a2feef54b6c17f000b0aec8a3879",
+        "profil": "AArch64 4 vCPU, secteur 512, source 4 Mio, insertion 4 Mio",
+        "load_avant": [
+          12.89990234375,
+          25.1142578125,
+          28.41357421875
+        ],
+        "noyau_sha256": "e346a2b4577b8c9a68afb9d24be21b6660d32a790c94ef8a315766d82c352240",
+        "essai": {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        "serie_sha256": "60985e4232da2d54ed62c682a56ecd2e37ca4f9c315189c7fb6579ad01dbe9e3",
+        "image_sha256": "a42a3a56ce8e2738b866db8daf99ea5145e2f47a299d7aa1efd4a1cc3afdb4dd",
+        "volume_P9_verifie": true,
+        "source_exacte": true,
+        "destination_complete": true,
+        "generations": [
+          68,
+          67
+        ],
+        "apres_s": 19.55201087500609,
+        "load_apres": [
+          14.283203125,
+          24.64990234375,
+          28.17041015625
+        ]
+      },
+      "3-835b9d9": {
+        "noyau_git": "835b9d9dd817a2feef54b6c17f000b0aec8a3879",
+        "profil": "AArch64 4 vCPU, secteur 512, source 4 Mio, insertion 4 Mio",
+        "load_avant": [
+          14.283203125,
+          24.64990234375,
+          28.17041015625
+        ],
+        "noyau_sha256": "e346a2b4577b8c9a68afb9d24be21b6660d32a790c94ef8a315766d82c352240",
+        "essai": {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        "serie_sha256": "9071bb257284e157c7d90c3a638a743db089c8996e8f7142e0cf1e7a124cafcb",
+        "image_sha256": "8b0413890ad6477fdfe84ec2f00b8c10630d2aac4abf14ec74f153d1fc838aba",
+        "volume_P9_verifie": true,
+        "source_exacte": true,
+        "destination_complete": true,
+        "generations": [
+          68,
+          67
+        ],
+        "apres_s": 20.001741665997542,
+        "load_apres": [
+          13.244140625,
+          23.7333984375,
+          27.7587890625
+        ]
+      },
+      "1-835b9d9": {
+        "noyau_git": "835b9d9dd817a2feef54b6c17f000b0aec8a3879",
+        "profil": "AArch64 4 vCPU, secteur 512, source 4 Mio, insertion 4 Mio",
+        "load_avant": [
+          11.72119140625,
+          27.66455078125,
+          29.494140625
+        ],
+        "noyau_sha256": "e346a2b4577b8c9a68afb9d24be21b6660d32a790c94ef8a315766d82c352240",
+        "essai": {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        "serie_sha256": "e0d052a59f9977c9bc593436d707d37e247317a062d21c319e772b7c5530e881",
+        "image_sha256": "78a2f471bc40eb3b486b0c7413419ef76205f89b797bd4304271fa1a8be17c80",
+        "volume_P9_verifie": true,
+        "source_exacte": true,
+        "destination_complete": true,
+        "generations": [
+          68,
+          67
+        ],
+        "apres_s": 19.748188707992085,
+        "load_apres": [
+          11.6572265625,
+          26.61669921875,
+          29.0751953125
+        ]
+      },
+      "3-b76c863": {
+        "noyau_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+        "profil": "AArch64 4 vCPU, secteur 512, source 4 Mio, insertion 4 Mio",
+        "load_avant": [
+          13.244140625,
+          23.7333984375,
+          27.7587890625
+        ],
+        "noyau_sha256": "6f97959c07755e6ce6d7ca8ee7a318bdfb41261e211eb54ad0343e6dcb80fdcf",
+        "essai": {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        "serie_sha256": "d618bc10212a28e3833dc850e95506dd5b747dcb6af94808dc90be672df55d49",
+        "image_sha256": "8f6cbbe29d1ed7958dd2b1485049a895ea3e0ce6b6feb259b39d6f77eb7e717b",
+        "volume_P9_verifie": true,
+        "source_exacte": true,
+        "destination_complete": true,
+        "generations": [
+          68,
+          67
+        ],
+        "apres_s": 19.837251666001976,
+        "load_apres": [
+          12.580078125,
+          22.89404296875,
+          27.36279296875
+        ]
+      },
+      "2-b76c863": {
+        "noyau_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+        "profil": "AArch64 4 vCPU, secteur 512, source 4 Mio, insertion 4 Mio",
+        "load_avant": [
+          13.12451171875,
+          25.9912109375,
+          28.79345703125
+        ],
+        "noyau_sha256": "6f97959c07755e6ce6d7ca8ee7a318bdfb41261e211eb54ad0343e6dcb80fdcf",
+        "essai": {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        "serie_sha256": "5f8b331f18b6db612025006c9305c7556ff6010f07c1988f1a43f8c4b164a1dd",
+        "image_sha256": "e20cba9f945a8b5b4696f78cde82bf5352caa30cceacf582e5da12f179e04eca",
+        "volume_P9_verifie": true,
+        "source_exacte": true,
+        "destination_complete": true,
+        "generations": [
+          68,
+          67
+        ],
+        "apres_s": 20.091768832993694,
+        "load_apres": [
+          12.89990234375,
+          25.1142578125,
+          28.41357421875
+        ]
+      },
+      "1-b76c863": {
+        "noyau_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+        "profil": "AArch64 4 vCPU, secteur 512, source 4 Mio, insertion 4 Mio",
+        "load_avant": [
+          11.6572265625,
+          26.61669921875,
+          29.0751953125
+        ],
+        "noyau_sha256": "6f97959c07755e6ce6d7ca8ee7a318bdfb41261e211eb54ad0343e6dcb80fdcf",
+        "essai": {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        "serie_sha256": "8410ddfbddc852c70e69dc591fad4f8a5a9393c29b6746a2eb627678076b47d0",
+        "image_sha256": "0ffe09027151dcd4adaa340be14fc16ed6d7a6a3ca0203cd26660e1db2fb9146",
+        "volume_P9_verifie": true,
+        "source_exacte": true,
+        "destination_complete": true,
+        "generations": [
+          68,
+          67
+        ],
+        "apres_s": 19.95970487500017,
+        "load_apres": [
+          13.12451171875,
+          25.9912109375,
+          28.79345703125
+        ]
+      }
+    },
+    "temoin_sans_arret": {
+      "noyau_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+      "profil": "AArch64 4 vCPU, secteur 512, source 4 Mio, insertion 4 Mio",
+      "load_avant": [
+        13.0654296875,
+        25.3525390625,
+        28.5166015625
+      ],
+      "noyau_sha256": "6f97959c07755e6ce6d7ca8ee7a318bdfb41261e211eb54ad0343e6dcb80fdcf",
+      "essai": {
+        "acquit_ms": 249.455041,
+        "injection": false
+      },
+      "serie_sha256": "d34912121b711b39fbc967fb1dc05c4abb5b6fbb68a77c391fbe0811bf49b7fc",
+      "image_sha256": "58cc47a8965a31df476c451d5ebfb9dc58a3c1bff3d4254c8dc5f7a78920ec2c",
+      "volume_P9_verifie": true,
+      "source_exacte": true,
+      "destination_complete": true,
+      "generations": [
+        68,
+        67
+      ],
+      "apres_s": 9.280138083006022,
+      "load_apres": [
+        13.54833984375,
+        25.0458984375,
+        28.3701171875
+      ]
+    },
+    "remarque": "Un contrôle par image conservée (16 Mio), sur les deux versions. Le témoin utilise le même bloc QEMU blkdebug sans poser de point d’arrêt."
+  }
+}

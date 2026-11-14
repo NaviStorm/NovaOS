@@ -179,13 +179,24 @@ pub(super) fn exercice() {
                     "retour {multi} {faute:?}"
                 );
             }
-            let (index, effectues, vol, retrait) =
-                super::super::bulk::constat_livraison(pilote.0, cap);
             let succes = faute == Faute::Aucune;
-            assert_eq!(index, if multi && succes { n as usize } else { 0 });
-            assert_eq!(effectues, if succes { n as usize } else { 0 });
-            assert!(!vol);
-            assert_eq!(retrait, !succes);
+            let cloture = super::super::bulk::RETRAIT_IMMEDIAT && !succes;
+            let bilan = super::super::bulk::constat_livraison(pilote.0, cap, n as usize);
+            assert_eq!(bilan.is_none(), cloture);
+            let effectues = if let Some((index, effectues, vol, retrait)) = bilan {
+                assert_eq!(index, if multi && succes { n as usize } else { 0 });
+                assert_eq!(effectues, if succes { n as usize } else { 0 });
+                assert!(!vol);
+                assert_eq!(retrait, !succes);
+                effectues
+            } else {
+                // marquer_cloture a observé zéro crédit avant restitution ;
+                // constat_livraison a vérifié la table effacée après celle-ci.
+                hal::log(format_args!(
+                    "DMA livraison fermee multi={multi} faute={faute:?}"
+                ));
+                0
+            };
             if !succes {
                 assert!(pilote.call(port, DESC, len, 0).is_err());
                 assert_eq!(

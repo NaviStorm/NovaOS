@@ -14,14 +14,14 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
-BANNER = b"NovaOS v0.16.6\r\n"
+BANNER = b"NovaOS v0.17.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "da9236f6e290df7d5c8490f287ea3dcdeaff315f6faefbf2fc13194abf98c07c",
-    "demarrage": "00cf5bca5ac58ece39cbf7ca769c382f09a4e9f64846431e41a28c3a0761c44d",
-    "composition": "3197cd45cb3bb48e293a554883c9b980f5eda1519f851a243acfbc2f786bd2f2",
-    "frappe": "18439ac0c4865439500c3b8211cf2a8eb3aa5a49102d947eaf5d4b7d196ca2c4",
-    "saisie": "32be526a6641750a756609d08eed50e85d61bb928c9654b493243bbb405c6212",
+    "demarrage-aarch64": "094bfcc52daa1a735887c79e0e40d0c2260a3c44a3b168ef80136525349bbacc",
+    "demarrage": "085912138b60b113b0778e26711184d208a7b8092727b47b594c23d6a6e70de5",
+    "composition": "62bff0b5dc4d13173676f5cef71ba0762213651fdda4750e6281f48b260ba30f",
+    "frappe": "e8ccc896eed05c7ba0eeb71f59e3eb8a20e05d97e204a6ad79b830e6c6f7d73f",
+    "saisie": "147ffdeecc8d37c17b337692477ae0413401e798c3e61ae894d81a8213b0cf0c",
 }
 
 
@@ -422,7 +422,7 @@ def endurance(arch, seconds):
     print(path, result, flush=True)
 
 
-def process_test(arch):
+def process_test(arch, *, user_fp=False):
     def verify(vm, directory, log):
         deadline = time.monotonic() + 45
         report = ""
@@ -454,6 +454,8 @@ def process_test(arch):
             ((1 << 47), "retour", "pile", 0) if arch == "x86_64" else ((1 << 47), "ecriture", "absente", 6),
             (0, "instruction", "privilege", 0), (0, "instruction", "fpu", 0),
         ]
+        if user_fp:
+            expected.remove((0, "instruction", "fpu", 0))
         assert len(faults) == len(expected)
         for (_, pc, detail), (addr, access, cause, code) in zip(faults, expected):
             assert f"adresse={addr:#x} acces={access} cause={cause} " in detail, detail
@@ -469,15 +471,18 @@ def process_test(arch):
             assert (int(pc,16) == addr if access == "execution" else 0x400000 <= int(pc,16) < 0x401000)
         # Les deux survivants sortent volontairement après la dernière faute.
         exits = [(int(pid), detail) for pid, _, detail in events if "sortie=" in detail]
+        if user_fp:
+            assert exits.pop(0) == (13, "sortie=255")
         assert exits[0][1] == "sortie=23"
         assert sorted(exits[1:3]) == [(1,"sortie=41"), (2,"sortie=82")]
         assert all(detail == "sortie=17" for _, detail in exits[3:])
-        assert report.index("cause=fpu") < report.index("sortie=41")
+        assert report.index("sortie=255" if user_fp else "cause=fpu") < report.index("sortie=41")
         if arch == "x86_64":
             wait_for_halt(vm, True)
         else:
             wait_for_wfi(vm)
-    scenario_vm(arch, "proc-test", verify)
+    suffix = "-fp-" + os.environ.get("NOVA_GIC", "2") if user_fp else ""
+    scenario_vm(arch, "proc-test", verify, suffix)
 
 
 def boot_fault(arch):

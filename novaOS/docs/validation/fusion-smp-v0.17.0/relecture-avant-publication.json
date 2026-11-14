@@ -1,0 +1,35 @@
+[
+  {
+    "plateforme": "qemu-aarch64",
+    "generations": [
+      67,
+      68
+    ],
+    "octets_source": 4194304,
+    "octets_destination": 8388609,
+    "sha256": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+    "oracle_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+  },
+  {
+    "plateforme": "qemu-x86_64",
+    "generations": [
+      67,
+      68
+    ],
+    "octets_source": 4194304,
+    "octets_destination": 8388609,
+    "sha256": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+    "oracle_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+  },
+  {
+    "plateforme": "utm-aarch64",
+    "generations": [
+      68,
+      69
+    ],
+    "octets_source": 4194304,
+    "octets_destination": 8388609,
+    "sha256": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+    "oracle_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+  }
+]

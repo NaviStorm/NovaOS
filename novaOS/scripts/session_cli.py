@@ -56,9 +56,10 @@ def fixture_p9(path, sector):
         ], check=True)
 
 
-def machine(arch, sector, image, test=False, manual=False):
+def machine(arch, sector, image, test=False, manual=False, *, iso=None):
     profile = "cli-test" if test else "cli"
-    iso = ROOT / "build" / f"{profile}-{arch}.iso"
+    if iso is None:
+        iso = ROOT / "build" / f"{profile}-{arch}.iso"
     env = {**os.environ, "NOVA_ARCH": arch, "NOVA_ISO": str(iso)}
     subprocess.run(
         ["sh", ROOT / "scripts/iso.sh", profile, iso], env=env, check=True,

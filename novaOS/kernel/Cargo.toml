@@ -1,6 +1,6 @@
 [package]
 name = "novaos"
-version = "0.16.6"
+version = "0.17.0"
 edition = "2024"
 publish = false
 
@@ -11,6 +11,9 @@ test = false
 bench = false
 
 [features]
+user-fpu = []
+ipc-smp-lab = []
+ipc-equite-lab = ["ipc-smp-lab"]
 gicv3-lab = []
 dma-sequentiel = ["gicv3-lab"]
 ancres-p9-lab = ["dma-sequentiel"]

@@ -6,7 +6,7 @@ const IMAGES: &[(&[u8], bool)] = include!(concat!(env!("OUT_DIR"), "/cli_catalog
 
 pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64) -> Res<u64> {
     let _guard = Guard::new();
-    let parent = with(|s| s.thread(s.current).owner.unwrap());
+    let parent = with(|s| s.thread(s.current()).owner.unwrap());
     let authority = with(|s| s.processes.get(parent).terminal);
     if authority & tty::LAUNCH == 0 {
         return Err(DENIED);

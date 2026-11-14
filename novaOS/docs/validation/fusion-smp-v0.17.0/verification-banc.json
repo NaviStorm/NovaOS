@@ -1,0 +1,116 @@
+{
+  "revision_banc": "8aafb94c1671204d4451558707b8cc71d5e6f7fc",
+  "collecteur": "Sur interruption expérimentale avant OUI, source intacte, volume vérifié, destination absente, journal privé identique à la copie historique ; sur succès le dossier temporaire est libéré.",
+  "commande": "NOVA_VCPUS=4 NOVA_QUALIF_VCPU=4 python3 -B tests/coupure_cow_groupee.py aarch64 512 rapport.json --barrieres --dma-en-vol --multipage --taille 4194304",
+  "elf_sondes_sha256": "40f22d41db455771f6d70efa60f089315941334a193ebe1cccd573d9a2d3df75",
+  "frontieres": [
+    {
+      "frontiere": "pages",
+      "evenement_suspendu": null,
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": false,
+      "flush_termines_au_point": null,
+      "acquit_avant_coupure": false
+    },
+    {
+      "frontiere": "f1",
+      "evenement_suspendu": null,
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": false,
+      "flush_termines_au_point": null,
+      "acquit_avant_coupure": false
+    },
+    {
+      "frontiere": "f2",
+      "evenement_suspendu": null,
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": true,
+      "flush_termines_au_point": null,
+      "acquit_avant_coupure": false
+    },
+    {
+      "frontiere": "retrait",
+      "evenement_suspendu": null,
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": false,
+      "flush_termines_au_point": null,
+      "acquit_avant_coupure": false
+    },
+    {
+      "frontiere": "avant-f1",
+      "evenement_suspendu": null,
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": false,
+      "flush_termines_au_point": null,
+      "acquit_avant_coupure": false
+    },
+    {
+      "frontiere": "vol-f1",
+      "evenement_suspendu": "flush_to_disk",
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": false,
+      "flush_termines_au_point": 3,
+      "acquit_avant_coupure": false
+    },
+    {
+      "frontiere": "avant-f2",
+      "evenement_suspendu": null,
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": false,
+      "flush_termines_au_point": null,
+      "acquit_avant_coupure": false
+    },
+    {
+      "frontiere": "vol-f2",
+      "evenement_suspendu": "flush_to_disk",
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": true,
+      "flush_termines_au_point": 4,
+      "acquit_avant_coupure": false
+    },
+    {
+      "frontiere": "vol-ecriture",
+      "evenement_suspendu": "write_aio",
+      "secteur_sonde": null,
+      "octets_source": 4194304,
+      "multipage": true,
+      "montage_normal": true,
+      "relecture_exacte": true,
+      "destination_complete": false,
+      "flush_termines_au_point": 3,
+      "acquit_avant_coupure": false
+    }
+  ]
+}

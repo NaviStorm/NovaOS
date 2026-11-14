@@ -1,6 +1,5 @@
 .pushsection .bss.syscall,"aw",@nobits
 .balign 8
-user_rsp: .skip 8
 .global nova_fast,nova_iret
 nova_fast: .skip 8
 nova_iret: .skip 8
@@ -9,10 +8,12 @@ nova_iret: .skip 8
 .global nova_syscall
 .hidden nova_syscall
 nova_syscall:
-    mov [rip+user_rsp],rsp
-    mov rsp,[rip+{tss}+4]
+    swapgs
+    mov gs:[8],rsp
+    mov rsp,gs:[0]
     push 0x4b
-    push qword ptr [rip+user_rsp]
+    push qword ptr gs:[8]
+    swapgs
     push r11
     push 0x53
     push rcx
@@ -36,9 +37,9 @@ nova_syscall:
     // Le cadre a été validé. Le chemin complet respecte notamment TF et DF.
     test qword ptr [rsp+16],0x500
     jnz 1f
-    inc qword ptr [rip+nova_fast]
+    lock inc qword ptr [rip+nova_fast]
     mov rsp,[rsp+24]
     sysretq
-1:  inc qword ptr [rip+nova_iret]
+1:  lock inc qword ptr [rip+nova_iret]
     iretq
 .popsection

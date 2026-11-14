@@ -337,7 +337,7 @@
 +        return Err(BAD_ARGUMENT);
 +    }
 +    with(|s| {
-+        let pid = s.thread(s.current).owner.unwrap();
++        let pid = s.thread(s.current()).owner.unwrap();
 +        let n = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
 +        let pair = s
 +            .ipc
@@ -471,7 +471,7 @@
 +    soumission: bool,
 +) -> bool {
 +    with(|s| {
-+        let pid = s.thread(s.current).owner.unwrap();
++        let pid = s.thread(s.current()).owner.unwrap();
 +        let Ok(node) = s.ipc.lookup(pid, cap, SEND | RECEIVE) else {
 +            return false;
 +        };
@@ -520,7 +520,7 @@
 +    livrer: impl FnOnce(&Core) -> Res<()>,
 +) -> Res<()> {
 +    with(|s| {
-+        let pid = s.thread(s.current).owner.ok_or(REVOKED)?;
++        let pid = s.thread(s.current()).owner.ok_or(REVOKED)?;
 +        let node = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
 +        let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(REVOKED)?;
 +        let r = lane.reservation.ok_or(REVOKED)?;

@@ -54,7 +54,7 @@ fn progress() -> [u64; WORKERS] {
 
 pub(super) fn run() -> ! {
     let baseline = heap::audit(true);
-    assert_eq!(with(|s| s.audit()), 2);
+    assert_eq!(with(|s| s.audit()), 1 + crate::smp::count());
     hal::log(format_args!(
         "ENDURANCE debut blocs={} occupes={} engages={} libres={}",
         baseline.blocks, baseline.occupied, baseline.committed, baseline.free_pages
@@ -73,11 +73,11 @@ pub(super) fn run() -> ! {
             heap::shortage();
             DRAINS.fetch_add(1, SeqCst);
         }
-        let workers = [
-            spawn(fragment::<0>).unwrap(),
-            spawn(fragment::<1>).unwrap(),
-            spawn(fragment::<2>).unwrap(),
-        ];
+        let entries = [fragment::<0> as fn(), fragment::<1>, fragment::<2>];
+        let workers: [Id; WORKERS] = core::array::from_fn(|i| {
+            let cpu = (i + 1) % crate::smp::count();
+            spawn_on(entries[i], 1 << cpu).unwrap()
+        });
         let start = ticks();
         let mut last_check = start;
         let mut last_progress = start_workers;
@@ -89,7 +89,10 @@ pub(super) fn run() -> ! {
             assert_eq!(CYCLES.load(SeqCst), children);
             let now = ticks();
             if now - last_check >= u64::from(HZ) {
-                assert_eq!(with(|s| s.audit()), 2 + cpu.len() + workers.len());
+                assert_eq!(
+                    with(|s| s.audit()),
+                    1 + crate::smp::count() + cpu.len() + workers.len()
+                );
                 let usage = heap::audit(false);
                 assert!(usage.blocks > baseline.blocks && usage.free_pages < baseline.free_pages);
                 low = low.min(usage.free_pages);
@@ -110,7 +113,7 @@ pub(super) fn run() -> ! {
         wait_done(&workers);
         wait_done(&cpu);
         let stats = with(|s| {
-            assert_eq!(s.audit(), 2);
+            assert_eq!(s.audit(), 1 + crate::smp::count());
             s.stats
         });
         assert_eq!(stats.exits, stats.reaped);

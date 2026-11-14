@@ -49,5 +49,5 @@
          }
 +        NB_LATENCES.store(0, Relaxed);
          EDITOR.store(pid, Relaxed);
-         START.store(now, Relaxed);
-         ACTIVE.store(true, Relaxed);
+         for cpu in 0..crate::smp::count() {
+             if MASQUE_IDLE.load(Relaxed) & (1 << cpu) != 0 {

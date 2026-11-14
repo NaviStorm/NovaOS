@@ -1,0 +1,38 @@
+--- a/novaOS/kernel/src/memory/frames.rs
++++ b/novaOS/kernel/src/memory/frames.rs
+@@ -81,4 +81,5 @@
+     }
+     pub(super) fn managed(&self, frame: u64) -> bool {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::RegionRam);
+         let Some(end) = frame.checked_add(PAGE) else {
+             return false;
+--- a/novaOS/kernel/src/sched/mod.rs
++++ b/novaOS/kernel/src/sched/mod.rs
+@@ -132,4 +132,5 @@
+ impl Core {
+     fn current(&self) -> usize {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite);
+         self.currents[gate::owner_index()]
+     }
+@@ -181,5 +184,5 @@
+         self.ready.push(i);
+         self.stats.wakes += 1;
+-        let me = gate::owner_index();
++        let me = { let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite); gate::owner_index() };
+         let other =
+             crate::smp::ONLINE.load(Ordering::Acquire) & !(1 << me) & self.thread(i).cpu_mask;
+@@ -259,5 +265,5 @@
+
+     fn select(&mut self, why: Reason) -> Option<(*mut usize, usize)> {
+-        let cpu = gate::owner_index();
++        let cpu = { let _mesure = crate::profil4::mesurer(crate::profil4::Site::Identite); gate::owner_index() };
+         let old = self.currents[cpu];
+         let state = match why {
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -316,4 +319,5 @@
+     }
+     fn empty_locals(&mut self) {
++        let _mesure = crate::profil4::mesurer(crate::profil4::Site::TablesLocales);
+         let mut dirty = core::mem::take(&mut self.locals_to_check);
+         while dirty != 0 {

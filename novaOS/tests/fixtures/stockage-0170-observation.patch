@@ -1,0 +1,52 @@
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -111,4 +111,14 @@
+             level,
+         );
++    }
++    // Sonde de laboratoire : une ligne par couple CPU/processus observé.
++    use core::sync::atomic::AtomicU64;
++    static VUS: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
++    let cpu = crate::smp::index();
++    let pid = with(|s| caller(s).number);
++    if let (Some(vus), Some(bit)) = (VUS.get(cpu), 1u64.checked_shl(pid as u32)) {
++        if vus.fetch_or(bit, Ordering::Relaxed) & bit == 0 {
++            hal::log(format_args!("TOPO cpu={cpu} pid={pid}"));
++        }
+     }
+     with(|s| s.thread_mut(s.current()).in_syscall = true);
+@@ -155,4 +165,9 @@
+     hal::interrupts::mask();
+     with(|s| s.thread_mut(s.current()).in_syscall = false);
++    if let Err(status) = result {
++        if matches!(id, IPC_SEND | IPC_RECEIVE | IPC_TAKE | crate::hardware::block::wire::PAGE_PORTAL) {
++            hal::log(format_args!("DIAG appel pid={pid} id={id} statut={status}"));
++        }
++    }
+     match result {
+         Ok(value) => Reply { status: OK, value },
+--- a/novaOS/user/storage/medium.rs
++++ b/novaOS/user/storage/medium.rs
+@@ -78,9 +78,20 @@
+     }
+     pub(crate) fn read_page(&mut self, lba: u64, cap: u64, out: &mut [u8; 4096]) -> Result<()> {
++        use core::sync::atomic::{AtomicUsize, Ordering};
++        static LECTURES: AtomicUsize = AtomicUsize::new(0);
++        let rang = LECTURES.fetch_add(1, Ordering::Relaxed) + 1;
++        if rang == 1 || rang == 2030 {
++            log(alloc::format!("DIAG lecture n={rang} lba={lba} flags={} secteur={} page={}",
++                self.features, self.sector_size, cap != 0).as_bytes());
++        }
+         if self.features & w::FEATURE_PAGE == 0 {
+             return self.compat_page(lba, out, false);
+         }
+-        self.exchange_page(w::READ, lba)?;
+-        bulk::take(cap, self.tag, out)
++        self.exchange_page(w::READ, lba).inspect_err(|e| {
++            log(alloc::format!("DIAG echange n={rang} lba={lba} erreur={e}").as_bytes());
++        })?;
++        bulk::take(cap, self.tag, out).inspect_err(|e| {
++            log(alloc::format!("DIAG collecte n={rang} lba={lba} erreur={e}").as_bytes());
++        })
+     }
+     pub(crate) fn write_page(&mut self, lba: u64, cap: u64, data: &[u8; 4096]) -> Result<()> {

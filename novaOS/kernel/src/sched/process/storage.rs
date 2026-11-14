@@ -503,7 +503,7 @@ pub(super) fn time_marker(msg: &str) -> bool {
                 measure("transaction");
                 let (data, stack) = with(|s| {
                     s.processes
-                        .get(s.thread(s.current).owner.unwrap())
+                        .get(s.thread(s.current()).owner.unwrap())
                         .space
                         .as_ref()
                         .unwrap()

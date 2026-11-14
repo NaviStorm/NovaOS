@@ -234,6 +234,10 @@ impl Domain {
         Ok(())
     }
     pub fn clear_pending(&self, d: Device) -> Result<()> {
+        // IRR et ISR appartiennent au LAPIC qui reçoit la route MSI.
+        if crate::smp::index() != 0 {
+            return Err(Error::Quarantine);
+        }
         let (_, _, pba) = d.msix.ok_or(Error::Route)?;
         if pba.r32(0) & 3 != 0 {
             return Err(Error::Quarantine);

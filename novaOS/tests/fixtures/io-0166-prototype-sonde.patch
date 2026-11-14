@@ -31,7 +31,7 @@
 +#[path = "../../tests/compteur_sauvegarde.rs"]
 +mod mesures_save;
  mod sched;
- #[allow(dead_code)]
+ mod smp;
 --- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
 @@ -116,4 +116,5 @@
@@ -87,7 +87,7 @@
          let p = s.processes.get_mut(caller(s));
 @@ -156,4 +174,7 @@
      hal::interrupts::mask();
-     with(|s| s.thread_mut(s.current).in_syscall = false);
+     with(|s| s.thread_mut(s.current()).in_syscall = false);
 +    if result.is_ok() {
 +        crate::mesures_save::appel_file(id);
 +    }

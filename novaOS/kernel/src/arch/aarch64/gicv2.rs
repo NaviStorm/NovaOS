@@ -12,6 +12,18 @@ pub(super) fn init() {
     for i in 0..banks {
         write(DIST, 0x180 + 4 * u64::from(i), u32::MAX);
     }
+    write(DIST, 0, 1);
+    secondary();
+}
+static TARGETS: [core::sync::atomic::AtomicU8; crate::smp::MAX_CPUS] =
+    [const { core::sync::atomic::AtomicU8::new(0) }; crate::smp::MAX_CPUS];
+
+pub(super) fn secondary() {
+    let bit = read(DIST, 0x800) as u8;
+    if crate::smp::count() > 1 {
+        assert!(bit.is_power_of_two(), "cible GICv2 absente");
+    }
+    TARGETS[crate::smp::index()].store(bit, core::sync::atomic::Ordering::Release);
     write(DIST, 0x280, 1 << PPI);
     let priority = 0x400 + u64::from(PPI / 4) * 4;
     let shift = (PPI % 4) * 8;
@@ -20,10 +32,9 @@ pub(super) fn init() {
         priority,
         (read(DIST, priority) & !(255 << shift)) | (0x80 << shift),
     );
-    write(DIST, 0x100, 1 << PPI);
+    write(DIST, 0x100, (1 << PPI) | 2);
     write(CPU, 4, 0xff);
     write(CPU, 8, 0);
-    write(DIST, 0, 1);
     write(CPU, 0, 1);
 }
 
@@ -51,4 +62,17 @@ pub(crate) fn disk_line(enable: bool) {
     }
     // Sûreté : terminer la configuration GIC avant publication ou retrait du droit.
     unsafe { asm!("dsb sy", options(nostack, preserves_flags)) }
+}
+
+pub fn kick() {
+    unsafe {
+        asm!("dsb ishst", options(nostack));
+    }
+    write(DIST, 0xf00, (1 << 24) | 1);
+}
+
+pub fn kick_one(cpu: usize) {
+    let target = TARGETS[cpu].load(core::sync::atomic::Ordering::Acquire);
+    unsafe { asm!("dsb ishst", options(nostack)) };
+    write(DIST, 0xf00, (u32::from(target) << 16) | 1);
 }

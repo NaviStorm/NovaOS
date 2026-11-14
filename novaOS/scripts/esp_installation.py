@@ -32,7 +32,9 @@ def nom_long(nom, court):
     return entree
 
 
-def construire(elf, secteur):
+def construire(elf, secteur, *, scenario="systeme-gpt"):
+    if scenario not in ("systeme-gpt", "smp-test", "smp-fp", "smp-arret"):
+        raise ValueError("Scénario EFI inconnu")
     taille = (60 if secteur == 512 else 264) * 2**20 // secteur
     reserve = 32
     fat = math.ceil((taille - reserve + 2) * 4 / (secteur + 8))
@@ -41,7 +43,7 @@ def construire(elf, secteur):
     assert clusters >= 65525 and fat * secteur >= 4 * (clusters + 2)
     kernel = elf.read_bytes()
     loader = (ROOT / "third_party/limine/BOOTAA64.EFI").read_bytes()
-    config = (ROOT / "boot/limine.conf").read_bytes() + b"    cmdline: systeme-gpt\n"
+    config = (ROOT / "boot/limine.conf").read_bytes() + f"    cmdline: {scenario}\n".encode("ascii")
     if kernel[:6] != b"\x7fELF\x02\x01" or kernel[18:20] != b"\xb7\0" or loader[:2] != b"MZ":
         raise ValueError("composant AArch64 invalide")
     secteurs = {}

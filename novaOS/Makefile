@@ -136,3 +136,7 @@ vi-ecran-test: kernel
 nsh-terminal-test: kernel
 	NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
 	python3 tests/nsh_terminal.py
+
+.PHONY: smp-test
+smp-test: kernel
+	python3 -B tests/smp.py

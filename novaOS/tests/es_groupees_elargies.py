@@ -124,13 +124,16 @@ def verifier(image, secteur, blocs, attendu, ids=("61"*16, "62"*16), tiers=None,
     return sorted(int(g) for _, g in generations)
 
 
-def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None, session_classique=False, cpu_moteur=False):
+def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None, session_classique=False, cpu_moteur=False, journal=None):
     if session_classique and sonde:
         raise ValueError("La session ordinaire 41 ne publie pas les compteurs du profil 42")
     image = dossier/"volume.raw"
     profil = cas if cas in ("fragmente", "sature") else "dense"
     etat = json.loads(subprocess.check_output([generateur, "--image", image, str(secteur), profil]))
     tiers = etat.get("octets_tiers")
+    if journal is not None:
+        from preuves_stockage import figer_initiale
+        figer_initiale(image)
     avant = verifier(image, secteur, etat["blocs"], None, tiers=tiers)
     temoin = None
     if cas == "sature":
@@ -147,7 +150,10 @@ def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None, sessio
             ctl.until(b"nsh> ")
             ctl.exit()
         temoin = verifier(clone, secteur, etat["blocs"], None, tiers=tiers)
-    with Terminal(a, secteur, image, "elargi-"+cas, test=not session_classique, entries=entries) as t:
+    # Les anciens exports du terminal s'emploient aussi comme témoins.
+    archive_privee = {"journal": journal} if journal is not None else {}
+    with Terminal(a, secteur, image, "elargi-"+cas, test=not session_classique,
+                  entries=entries, **archive_privee) as t:
         def send(s):
             t.vm.stdin.write(s.encode())
         def wait(s):

@@ -1,0 +1,14 @@
+{
+  "elf_sha256": {
+    "systeme": "2c004077afaa16c756c59c123d325fd9ba2cacf5336ad42d6987a8f6bae8ffbe",
+    "install": "aeefeec59f84ab9a8fe093e7798633225185b3249a21521fa0cfcfcfebcce5e9"
+  },
+  "archive_sha256": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+  "octets": 3881952,
+  "manifest": 27,
+  "support_sha256": "72cc18abcb27a794c54ede117f59293f43003b2bdeef79412d5f2cd365364efd",
+  "firmware": {
+    "prototype.fd": "4a2188c7d4be38f2520be7542128b735a2902f7344e85735ef12ad384af4dff9",
+    "modele-vars.fd": "8b634c1e6bd11607850b69111f6c4dbd1583dbbd1460dac72dbacbdc1a4a130a"
+  }
+}

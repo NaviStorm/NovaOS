@@ -1,0 +1,817 @@
+{
+  "origine": {
+    "revision_candidat": "e08b9796e59523b917b9d020520d5df97c9a4380",
+    "code_de_l_export_parent": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+    "qemu_tcg": "11.1.3",
+    "vcpu": 4,
+    "ram_mio": 256,
+    "cache": "writeback",
+    "mode": "E/S groupées expérimentales, polling, raw",
+    "sondes": "501983ac61b6d93a08f0352025e4a56b7cb4b830d4f7d41eb79ffd2e0cb8e214",
+    "observation_service": "c3eddcf5d9e1cb2aeae8122991f86847cc7c11f57c0bf02d26e0798fe0dd6b83",
+    "observation_bloc": "94c9d807692406cf05c7dc35b2c99b359d7666ff06d1a2d0c0d1bea456dc8a92",
+    "binaires": {
+      "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "9ef8ae43b98efc2a2878d3ba4076a3ff7eb8a9620ecac5208bb614488652bc36",
+      "novaOS/target/x86_64-unknown-none/release/novaos": "9575a0b8f77c5ad36f9469bdb94d3e5d1d66c759a2a8a5fd0e0b8dce3a9dfe01",
+      "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+    },
+    "banc": "72c32eae7d80d5af49d4d521368492ea0fe3bb570d5e5bbebfbeeb6478cdb9c9",
+    "sonde_versionnee_sha256": "f7ccb85d86f6760bcd602dce77b21433e13ba8460211ec7baa25402445ca1473",
+    "sonde_application_comparee": "Le patch original et le patch versionné diffèrent par le contexte des hunks. Les 9 fichiers produits ont été comparés octet par octet sur un export Git neuf."
+  },
+  "interpretation": {
+    "tardive": "Le pilote termine le lot de données avant F1, le relais retient son acquit jusqu’à expiration du moteur. Envoi tardif expiré, aucun succès annoncé.",
+    "annulation": "Le relais annule une réception du moteur via IPC_CANCEL. Une seule attente retirée. L’envoi ultérieur de la réponse réelle expire.",
+    "ancien_tag": "Sur le canal privé du moteur recevant le tag 2216, une réponse portant 2215 a été livrée et rejetée au contrôle d’identité. Ce test exerce le tag dans une session. Les générations de capacités et de threads réutilisés relèvent du banc ipc-test (T04/T11).",
+    "mort_relais": "Sortie réelle du relais avec statut 37 après réception, avant envoi au pilote.",
+    "mort_pilote": "Sortie réelle du pilote avec statut 38 après réception, avant le premier WRITE multipage.",
+    "revocation": "Retrait du canal par le profil de coupure après kick, vérification WOULD_BLOCK ; drainage puis révocation effective et absence de kick supplémentaire.",
+    "abandon": "Relais suspendu sans transfert au pilote. Le seul observateur lit les métadonnées de réservation quand vi reçoit l’erreur. Les quatre cas échouent au contrôle de fermeture avant remise du tampon. Aucune soumission DMA ou tentative de réemploi postérieure à l’abandon."
+  },
+  "etats_communs": {
+    "octets_source_verifies": 4194304,
+    "octets_insertion_prevus": 4194304,
+    "phase": "avant F1",
+    "public": 26,
+    "source_exacte": true,
+    "destination_absente": true,
+    "deux_ancres_validees": true,
+    "remontage_VM_neuve_sur_copie": true,
+    "perte_electrique_physique": false
+  },
+  "par_scenario": {
+    "tardive": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-512-tardive-o245dlzf",
+        "sha256_bilan": "6179eeb7b1c43841e40e3d7e3301b0191474e924adb7e84a6007c76bbe6f80a8",
+        "sha256_observations": "27ba6bc7ee0a219adcecf316c6b3f443ff802c66626b5c6159fc34679b9a43fa",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "9c8008acc072ee0ae127edb9a5982801b7a7324d154bb9c2c3361c3aafb6f3bc",
+        "image_apres": "930c29ae33e91ea199a8c4180b94f44448989f2170fc8ee21f69dc1724f3060a",
+        "copie_redemarree": "930c29ae33e91ea199a8c4180b94f44448989f2170fc8ee21f69dc1724f3060a",
+        "etat_transport": "reception",
+        "statut_transport": 8,
+        "sondes": [
+          [
+            2216,
+            201,
+            8
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-4096-tardive-kg1o433_",
+        "sha256_bilan": "155ccd77205c8a0a3fed86ad7bea88bb5ba860859f3a827a034669b933cc18ad",
+        "sha256_observations": "8abc905e404d4089541f67584a9fbbcb79e9b075c422cd6e61ee5f0179a9fcc3",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "87f698e7a6552cb4617add9b94a450e05f9f150c33c16a6270e9a21c90be6f35",
+        "image_apres": "9f6d3441bbd9afe73a2c12928bf2d0bdd54e7cdbd1e02494ee01c21c5e0e3ee0",
+        "copie_redemarree": "9f6d3441bbd9afe73a2c12928bf2d0bdd54e7cdbd1e02494ee01c21c5e0e3ee0",
+        "etat_transport": "reception",
+        "statut_transport": 8,
+        "sondes": [
+          [
+            2216,
+            201,
+            8
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-512-tardive-uzop8t_q",
+        "sha256_bilan": "0f1c7e6eed6688aa0c11e9f88f9e1dd76cc529c4fefda599e1db436df71f12a7",
+        "sha256_observations": "6e77f07714e351038edb628d0f20c025160ee6b3eb0b232eef8b0a11e46d22db",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "7ec9f35b79b35e3714e397f417dfdc74fc60760f957a35b3411587c73aaae499",
+        "image_apres": "10bc221f16c4ab5c99c30334fdb6277a77c08a5ac14c08492b9a316159f9bf83",
+        "copie_redemarree": "10bc221f16c4ab5c99c30334fdb6277a77c08a5ac14c08492b9a316159f9bf83",
+        "etat_transport": "reception",
+        "statut_transport": 8,
+        "sondes": [
+          [
+            2216,
+            201,
+            8
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-4096-tardive-h7iavssw",
+        "sha256_bilan": "a9e3e978a9d63992db90f548bef7dba83741cb7ec4090504388aaf7c79bb8bb6",
+        "sha256_observations": "01257f28f3eceab8165d44d584e60801023a1b4130056e92589d4cadf6b41530",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "3fc6b6bdf16fa077a1fa61201b492ff30f8925945ee94f5c2af30a9e1f1af92d",
+        "image_apres": "1789f2e941296e0475fb24e4abca0a406f738f25f7d7f6769e233bcd2e21f600",
+        "copie_redemarree": "1789f2e941296e0475fb24e4abca0a406f738f25f7d7f6769e233bcd2e21f600",
+        "etat_transport": "reception",
+        "statut_transport": 8,
+        "sondes": [
+          [
+            2216,
+            201,
+            8
+          ]
+        ],
+        "reservation_apres_refus": []
+      }
+    ],
+    "annulation": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-512-annulation-fwvavdkf",
+        "sha256_bilan": "f2375bd46a440976e771329ea310e359d2dca364b77975e723bdc64af5f9c03b",
+        "sha256_observations": "a41f481af4d24bbfed4f1bb926ac1211cbce326e78593cb075ec0f8f60a14eeb",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "63cc403451aee6b95b80593bb0ad762538189b483f8b2b5231fc0eb4e8f4a083",
+        "image_apres": "8e4e91680345d17b4babeac24e5011ab75a756ee2b1ef00685ebff2e20bac87b",
+        "copie_redemarree": "8e4e91680345d17b4babeac24e5011ab75a756ee2b1ef00685ebff2e20bac87b",
+        "etat_transport": "reception",
+        "statut_transport": 9,
+        "sondes": [
+          [
+            2216,
+            202,
+            8
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-4096-annulation-m8od_m3b",
+        "sha256_bilan": "94d2a8c8d8bbf45b0d1ee176ae160bb74398ed28d16f324f707594f8d35374c2",
+        "sha256_observations": "0e21b05747d563367a44163713defbc5867b6e4a7edcab378ebb2e243ea0cb2e",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "5ec9c1c10b4414f1f22935b7695e750cb947b147e9dabe4bfe1f77abdde73631",
+        "image_apres": "48d18d372d556e520520e5df35675f81c326976dbb4dd271c9613fe1b1a6f5f1",
+        "copie_redemarree": "48d18d372d556e520520e5df35675f81c326976dbb4dd271c9613fe1b1a6f5f1",
+        "etat_transport": "reception",
+        "statut_transport": 9,
+        "sondes": [
+          [
+            2216,
+            202,
+            8
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-512-annulation-yx9htfoq",
+        "sha256_bilan": "1ef52fa88af40e77df578afddfbd7616dc345726f3b659f66cb8f9e099fb972b",
+        "sha256_observations": "b0cb75e595adc954c3c40a9bf13bcc5c74f9b4170534705ec1e16c02a21f0254",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "a23857026255e7e667afba76860f8504b0148499a6c71757bd50d1346408257b",
+        "image_apres": "3b1bae2cfc3021b4630cbe9cfca435ecb7337eeeea4d3c7e1ce1a1d6dc4bbf9d",
+        "copie_redemarree": "3b1bae2cfc3021b4630cbe9cfca435ecb7337eeeea4d3c7e1ce1a1d6dc4bbf9d",
+        "etat_transport": "reception",
+        "statut_transport": 9,
+        "sondes": [
+          [
+            2216,
+            202,
+            8
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-4096-annulation-6_0xp3mt",
+        "sha256_bilan": "629302192456e51021e1a9398dfebb1a8787140e469210486722706f06922059",
+        "sha256_observations": "a3ae7333b868d7e09404e3adf8b7133dae4514fbe7ad6d9c20f2ab42458c78c3",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "55204faf3856cab01c3fea68c973a1ed871486e47ccf53e2491c696a2095722b",
+        "image_apres": "74c2eecd207d1d48999f915c03894ab25ad3ca2a5be4489ebc943551500f010a",
+        "copie_redemarree": "74c2eecd207d1d48999f915c03894ab25ad3ca2a5be4489ebc943551500f010a",
+        "etat_transport": "reception",
+        "statut_transport": 9,
+        "sondes": [
+          [
+            2216,
+            202,
+            8
+          ]
+        ],
+        "reservation_apres_refus": []
+      }
+    ],
+    "ancien-tag": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-512-ancien-tag-tzhlgnoe",
+        "sha256_bilan": "bbd39b47e54d0274de7a5b21d7444afb52a5e3dc2250880c1c666090a0d58d25",
+        "sha256_observations": "42df062bdf6845163d165808b74ca3c9429fe34ded518bbd85adb57c4ccdfe9a",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "216bb52b4cf320db34099d8c166d985d204cca6524aaa30ec9da79013e72f5f8",
+        "image_apres": "338263ed5a2132b0cc58f04bf13cf21f186a15b4dd74635ce59c9ad4a5bb9616",
+        "copie_redemarree": "338263ed5a2132b0cc58f04bf13cf21f186a15b4dd74635ce59c9ad4a5bb9616",
+        "etat_transport": "identite",
+        "statut_transport": 3,
+        "sondes": [
+          [
+            2215,
+            203,
+            0
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-4096-ancien-tag-moud_zgs",
+        "sha256_bilan": "e541a603e6120b938e8ac0cca188f79462bdec94544bc2348f1f85a3527b7f46",
+        "sha256_observations": "d0e01b2a6be54c9667c4953556c92bac9f2b59fafbe4f46ffd0b7da443d7b9ee",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "12d04c56203949ebae1c5ec58f5e2de68182e4f6e6789178d564a2d8e268b241",
+        "image_apres": "ea856412c1324a1d2ccf8b878b881e585e9a454cf3993ac53614200364ae0393",
+        "copie_redemarree": "ea856412c1324a1d2ccf8b878b881e585e9a454cf3993ac53614200364ae0393",
+        "etat_transport": "identite",
+        "statut_transport": 3,
+        "sondes": [
+          [
+            2215,
+            203,
+            0
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-512-ancien-tag-lnewpe6t",
+        "sha256_bilan": "c8fe435a969972e6b866ab9595acc3cb52187562b5b4bc75a08f569743d1afff",
+        "sha256_observations": "ca67796a3c25b13f77c21eceb08daa8416dceb3d5cc66d79b4e3b0cf415707a7",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "61f960310899c61c0eafe6136234fc70f478a9f57e8190bf3f35cc950e4242e7",
+        "image_apres": "a89b3b0d3c24088b5d0872012e96908a13b89752a62b6ce91c0831fde283dbcc",
+        "copie_redemarree": "a89b3b0d3c24088b5d0872012e96908a13b89752a62b6ce91c0831fde283dbcc",
+        "etat_transport": "identite",
+        "statut_transport": 3,
+        "sondes": [
+          [
+            2215,
+            203,
+            0
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-4096-ancien-tag-28_q1zb8",
+        "sha256_bilan": "cf662342542d7b1ab2668e26cad8af85a74ef31db0e2e87fa28c86d04c542ce5",
+        "sha256_observations": "c4f39fd24e544fcc7531866a3f9c202be078c4f09a2db4a48019612427327ced",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "818e29dd36b929c82c35e80849b1b253f2bd6afc4f18b35509783791b6ded438",
+        "image_apres": "e767231f3f99b81c1421c3b9311fcd26ade0340a0a73900a6bd165ed82f3e9a1",
+        "copie_redemarree": "e767231f3f99b81c1421c3b9311fcd26ade0340a0a73900a6bd165ed82f3e9a1",
+        "etat_transport": "identite",
+        "statut_transport": 3,
+        "sondes": [
+          [
+            2215,
+            203,
+            0
+          ]
+        ],
+        "reservation_apres_refus": []
+      }
+    ],
+    "mort-relais": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-512-mort-relais-bp1g0xmz",
+        "sha256_bilan": "f5a4d055dee3acb1e61a5c05230fb7b4e8b57d4c0f4ed5cac1b4aeb3f5e67674",
+        "sha256_observations": "01e38656bb13e8a28caba1c31d9112aa48bc0dac1fbfbccfbeb57c3a47940889",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "33a766a4a684fc1e3640335e6ca3a8b6cd53e231cd88e674075e26c9765d3e8f",
+        "image_apres": "94a82ea79eb0ec2e5edfac2ac3780f721f4762e3c01235ed3c661a4be95b6e9a",
+        "copie_redemarree": "94a82ea79eb0ec2e5edfac2ac3780f721f4762e3c01235ed3c661a4be95b6e9a",
+        "etat_transport": "reception",
+        "statut_transport": 11,
+        "sondes": [
+          [
+            2216,
+            204,
+            37
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-4096-mort-relais-hnajeg4t",
+        "sha256_bilan": "64780b0088872efd46a76adadb00e25d330444160fefff0e93e0f9a750548b0a",
+        "sha256_observations": "9a5a45aeb72d68fac7f04f0627602b89dcdfe5949a16eb6764fb8e4987b3fcc3",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "337462042a684e32ca1af2eb7d0af3376b3d9d15c570f1efe3b8de391d4ce530",
+        "image_apres": "d4e8a55168db2b8c7926713338fe43bcbf90afdd47224eaa46e14035064d875f",
+        "copie_redemarree": "d4e8a55168db2b8c7926713338fe43bcbf90afdd47224eaa46e14035064d875f",
+        "etat_transport": "reception",
+        "statut_transport": 11,
+        "sondes": [
+          [
+            2216,
+            204,
+            37
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-512-mort-relais-wh4p8dqe",
+        "sha256_bilan": "6fde21f9640c8415b2737cbf266dd25a4a1b5acb56320b7f5f7e78a59a24ca33",
+        "sha256_observations": "be3c5f63b8843d29249997b2f33b0378d2e17ef6bc4750f725814d47af758867",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "69360bac55d44556eb5ac23ef60ca31536beb5c69f7cfd731b11a8d8522b5bd2",
+        "image_apres": "501d66dd24973b4660ae6293cccbb7470aad2337b8733fdacf61ee0324a6bddc",
+        "copie_redemarree": "501d66dd24973b4660ae6293cccbb7470aad2337b8733fdacf61ee0324a6bddc",
+        "etat_transport": "reception",
+        "statut_transport": 11,
+        "sondes": [
+          [
+            2216,
+            204,
+            37
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-4096-mort-relais-d8o8a2vi",
+        "sha256_bilan": "c1c0df5690965b66d46ce584bf3f287f9a239efbb02b9f233253ab8e7e645fee",
+        "sha256_observations": "e18fb25e7bc90302074c4ba80dd25e1bf144cb39c5e2ee5613038125567360a2",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "efcb5a21f63d564109f5fe51f05ec744c2d5819f1dabcdad58f4b09bdbf8faaf",
+        "image_apres": "a4bd84b27cc9a26afc847fdbf7fe81815eb2e05aa65947ba4abf214594653e23",
+        "copie_redemarree": "a4bd84b27cc9a26afc847fdbf7fe81815eb2e05aa65947ba4abf214594653e23",
+        "etat_transport": "reception",
+        "statut_transport": 11,
+        "sondes": [
+          [
+            2216,
+            204,
+            37
+          ]
+        ],
+        "reservation_apres_refus": []
+      }
+    ],
+    "mort-pilote": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-512-mort-pilote-lcmypvww",
+        "sha256_bilan": "5b675e9d69876e207dee4b7efaad370e6f84482d718e98c64301dc73ffb40d48",
+        "sha256_observations": "5f613d83e033a694e30266ba741e79cbdf8eb5d97d73818facde10d049da1e90",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "224f2f6e33d2d20041713bcf1c02550a6bad11e4d33411e68e76e467fb058394",
+        "image_apres": "d4f205bd0d0bb3fc11bdec255adceb4bd6a16463a74adfc7e73a6492052ae316",
+        "copie_redemarree": "d4f205bd0d0bb3fc11bdec255adceb4bd6a16463a74adfc7e73a6492052ae316",
+        "etat_transport": "reception",
+        "statut_transport": 11,
+        "sondes": [
+          [
+            2216,
+            205,
+            38
+          ],
+          [
+            2216,
+            3,
+            11
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-4096-mort-pilote-nq2wvx1s",
+        "sha256_bilan": "8cabaf5b57436ad0d52759a8119b621ff3542223310fa88911075b4db0b295f3",
+        "sha256_observations": "dc2215b2dac633439cc5ab206cd8cdd42e886a377a40f52199ce3024e316992d",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "1d5734a85e5af381392d786dee9b90a5a6e5d41ac2c8f54a66e135eae514fd7d",
+        "image_apres": "5fa1da1f89b48ea05e0e7461a087902250080e6f67df86a0c52c5e945ff94365",
+        "copie_redemarree": "5fa1da1f89b48ea05e0e7461a087902250080e6f67df86a0c52c5e945ff94365",
+        "etat_transport": "reception",
+        "statut_transport": 11,
+        "sondes": [
+          [
+            2216,
+            205,
+            38
+          ],
+          [
+            2216,
+            3,
+            11
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-512-mort-pilote-dbtjt0m5",
+        "sha256_bilan": "db3c6057f6b7df1c16e76ae0c9b67d8712ba55022922527e9963bcc72cce7dd2",
+        "sha256_observations": "415ca2c025e9405f6ed766dcb4bd721e2f849a3dd11fb9a419cd040f1e05b293",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "05e0448287603265f879ad1c4e64a7f427785d6f76f4abf9eeafde6b1ded8696",
+        "image_apres": "81caef19d8040ea47f2bc4b27f154b2712ddb4a3093d3779efcd9a4b463158c2",
+        "copie_redemarree": "81caef19d8040ea47f2bc4b27f154b2712ddb4a3093d3779efcd9a4b463158c2",
+        "etat_transport": "reception",
+        "statut_transport": 11,
+        "sondes": [
+          [
+            2216,
+            205,
+            38
+          ],
+          [
+            2216,
+            3,
+            11
+          ]
+        ],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-4096-mort-pilote-jsql68pe",
+        "sha256_bilan": "3a825f8bd10c61db90aedca3464fdb60a04915f5e67354b496ff209837ceb57b",
+        "sha256_observations": "9286f5bb79cdb0d1e6404582a5c38120f23de6275c2a2b2b82cef6494082238d",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "c0b7cabe273b0d294542d4232f315e24285f3091c66b6592ea40c91baa9cbb07",
+        "image_apres": "a0f88073b688a0ae78629749cdba94f7ed950a35edda2a2a6e3f4b1f626c0819",
+        "copie_redemarree": "a0f88073b688a0ae78629749cdba94f7ed950a35edda2a2a6e3f4b1f626c0819",
+        "etat_transport": "reception",
+        "statut_transport": 11,
+        "sondes": [
+          [
+            2216,
+            205,
+            38
+          ],
+          [
+            2216,
+            3,
+            11
+          ]
+        ],
+        "reservation_apres_refus": []
+      }
+    ],
+    "revocation": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-512-revocation-vq67w_nx",
+        "sha256_bilan": "edaecef50e8ce5636a4d5a4559a1e5c0523169355c16027f1ba6f9478c14c6a6",
+        "sha256_observations": "87771f3d42758668e040cc76f62a199b888a7f20e7ddce31e9208a079e759f4b",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "d6fd21feb68dee8020a687750ef18188e70eba0e22063b3d243b8fb936133b45",
+        "image_apres": "099a316d39d9926210372486e19f429e58706804d0957bd9ee779fd01003496f",
+        "copie_redemarree": "099a316d39d9926210372486e19f429e58706804d0957bd9ee779fd01003496f",
+        "etat_transport": "reponse",
+        "statut_transport": 12,
+        "sondes": [],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-aarch64-4096-revocation-ntiax4zx",
+        "sha256_bilan": "2e88ad042677cf8cc3b50a7b23b4d6fae8b47dcc35ba2e06c350c538ef9e135d",
+        "sha256_observations": "4a9a2ff3abb35829bdca83af4bcb428e202d089dd4c2e328c942c1af3dbb36c5",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "472d41b47a24a80a1110ae51721180ca98a216dc46f7e02b4e66474dd3d33649",
+        "image_apres": "245c25db5f4b5ee67c030c6352ae7875517f13fbba2c4d808bb6897d1f534ce2",
+        "copie_redemarree": "245c25db5f4b5ee67c030c6352ae7875517f13fbba2c4d808bb6897d1f534ce2",
+        "etat_transport": "reponse",
+        "statut_transport": 12,
+        "sondes": [],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-512-revocation-qet9yw5r",
+        "sha256_bilan": "fd9650479be847de827bd31789499009c324ee324d128d8d5d41ee1a19c48b6a",
+        "sha256_observations": "c0fc8b904b411eae21c5abc3df911f81c76e73f570d0abc22b34c205c6109592",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "d5ece35a028e5b800c3483a46a8e2d7b4b719127fadf9a6d9156165f6e81c95c",
+        "image_apres": "f8c1a3160d17493b05ea1c3fc8786de2c52aea48ee58f932516e0752e39a7519",
+        "copie_redemarree": "f8c1a3160d17493b05ea1c3fc8786de2c52aea48ee58f932516e0752e39a7519",
+        "etat_transport": "reponse",
+        "statut_transport": 12,
+        "sondes": [],
+        "reservation_apres_refus": []
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "resultat": "succes",
+        "espace_preuves": "nova-cow-x86_64-4096-revocation-5a8b9gt8",
+        "sha256_bilan": "e09b241aba4d4a0aebe3e15062920f24bc05d7e4649c375236da0992904cb973",
+        "sha256_observations": "75a156b27391a05908b75221907a8f8c0cac5e2b25e526a5bd153e23f3a37db5",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "43418f4c9a4f44009a0bc1d09bbd1b7b649bc0f4d52f82d9bd64d22422a447f3",
+        "image_apres": "f3cd3e5f67a01790ee9db7e6c7df97a3024f52c2048e1faa2601d54016888784",
+        "copie_redemarree": "f3cd3e5f67a01790ee9db7e6c7df97a3024f52c2048e1faa2601d54016888784",
+        "etat_transport": "reponse",
+        "statut_transport": 12,
+        "sondes": [],
+        "reservation_apres_refus": []
+      }
+    ],
+    "abandon": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "resultat": "echec",
+        "espace_preuves": "nova-cow-aarch64-512-abandon-dt97dkvp",
+        "sha256_bilan": "ae7c88ff5036e57cb92a2c6cbde56de12098ed585d285819edc184a0d0188784",
+        "sha256_observations": "e90b2242dba2a70f5dd51f1d6b3f5b7075dad16132b2509f3af4d1c81ecce65b",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "0067c678d2e3d6e90fff0764ba35093f3aea9243ad08ecd88b4fd6ac5f7fa4bd",
+        "image_apres": "7675b5781a4362aa0364fc915a49b9e538f880e96fc3a43ffe53ccdd09525e43",
+        "copie_redemarree": "7675b5781a4362aa0364fc915a49b9e538f880e96fc3a43ffe53ccdd09525e43",
+        "etat_transport": "reception",
+        "statut_transport": 8,
+        "sondes": [
+          [
+            2216,
+            206,
+            0
+          ]
+        ],
+        "reservation_apres_refus": [
+          [
+            "2216",
+            "256",
+            "false",
+            "false",
+            "false",
+            "0"
+          ]
+        ]
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "resultat": "echec",
+        "espace_preuves": "nova-cow-aarch64-4096-abandon-1v9hrh7k",
+        "sha256_bilan": "1776576a5769f1a079a783b1c85c09f4f68a411d3d56880b2dfd148b171e45c6",
+        "sha256_observations": "bead831d633a37d6a47f313e2dcda35ac54b2971ba7268a1fb51119150729ee6",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "113fa7f24afcf19d0fc22deae715a336ddcec74e4ad128f49b1bf9c4885611af",
+        "image_apres": "f0d25b764ce4acb6941330cd38d937844bdcba4a04d26f5a69db8c9907495934",
+        "copie_redemarree": "f0d25b764ce4acb6941330cd38d937844bdcba4a04d26f5a69db8c9907495934",
+        "etat_transport": "reception",
+        "statut_transport": 8,
+        "sondes": [
+          [
+            2216,
+            206,
+            0
+          ]
+        ],
+        "reservation_apres_refus": [
+          [
+            "2216",
+            "256",
+            "false",
+            "false",
+            "false",
+            "0"
+          ]
+        ]
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "resultat": "echec",
+        "espace_preuves": "nova-cow-x86_64-512-abandon-o15aqo51",
+        "sha256_bilan": "13fbe520956edaf8b1c96e1e3515a24323b4474730f1ad6ac4fa28066955d414",
+        "sha256_observations": "8041fb50300eb86646325d9cb1ebecde951504a71a2f14f0f963158b8144f796",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "70b9af1405b53ea827d441419a1b74216a1ac8ebd2d10fb9b21c08ea3843a86a",
+        "image_apres": "96ec62971066abfef32d75957978cdc54adab567afc62232c4688a8b8679ba5b",
+        "copie_redemarree": "96ec62971066abfef32d75957978cdc54adab567afc62232c4688a8b8679ba5b",
+        "etat_transport": "reception",
+        "statut_transport": 8,
+        "sondes": [
+          [
+            2216,
+            206,
+            0
+          ]
+        ],
+        "reservation_apres_refus": [
+          [
+            "2216",
+            "256",
+            "false",
+            "false",
+            "false",
+            "0"
+          ]
+        ]
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "resultat": "echec",
+        "espace_preuves": "nova-cow-x86_64-4096-abandon-hj9g6r9k",
+        "sha256_bilan": "00066b6f18770cd24645c14efd940bb99119ba0997e6b27b2e4e8fd5875d075b",
+        "sha256_observations": "9f6ed460c9fb87999956d94e730ea2c469d388697840350a7a384c516ffdc3bd",
+        "etat_ancres": {
+          "0": 66,
+          "1": 67
+        },
+        "image_initiale": "8d4a43f1a98fe18b2dbf1c8e4d54f2949ef6819ab66221293a22120c810b18ff",
+        "image_apres": "ecaab927c99d1f3af786474ed03e71cfc969bbc7340355d7199230207be401d0",
+        "copie_redemarree": "ecaab927c99d1f3af786474ed03e71cfc969bbc7340355d7199230207be401d0",
+        "etat_transport": "reception",
+        "statut_transport": 8,
+        "sondes": [
+          [
+            2216,
+            206,
+            0
+          ]
+        ],
+        "reservation_apres_refus": [
+          [
+            "2216",
+            "256",
+            "false",
+            "false",
+            "false",
+            "0"
+          ]
+        ]
+      }
+    ]
+  },
+  "generation_ipc": {
+    "aarch64": {
+      "temps_T04_T11_ns": 19847008,
+      "temps_total_sec": 1.075,
+      "sha256_serie": "f9fe782af0037b1c11e3fcc7bd6dabd37b57c18c5c94f802f551ab3316d2227d",
+      "sha256_rapport": "4ab29d6f44b02c51c3921ecc6170b2f1c3c97aa92b390a0cea5d78bad5bbd2d5",
+      "restitution": true,
+      "controle": "ancien endpoint refusé ; slot de thread réutilisé, génération et cookie changés, ancien réveil ignoré"
+    },
+    "x86_64": {
+      "temps_T04_T11_ns": 8987713,
+      "temps_total_sec": 0.98,
+      "sha256_serie": "55b5d67821112fa1e310d6808b9339c980db140ec55928cec964493e66159b3a",
+      "sha256_rapport": "6d76da7097b91dc3fd1670d73394a8b128d86d34c71176052b75c3983c73c1a6",
+      "restitution": true,
+      "controle": "ancien endpoint refusé ; slot de thread réutilisé, génération et cookie changés, ancien réveil ignoré"
+    }
+  },
+  "relecture_oracle": {
+    "sha256": "c78dc40fd9d6d82dc12afe4a041d348cef5a1097dc313ff1db705e18ce231a23",
+    "series": 28,
+    "reponses_anciennes_annulees_et_tardives": 12,
+    "sorties_mort_service_ou_pilote": 8,
+    "nombre_exact_reservations": true,
+    "retrait_et_doute_acceptes_si_aucune_soumission": true,
+    "signaux_faux_succes_refuses": true
+  }
+}

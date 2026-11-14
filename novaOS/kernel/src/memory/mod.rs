@@ -111,11 +111,32 @@ pub struct Memory {
     image: Image,
 }
 
+/// Cadre privé du superviseur, accessible uniquement par le mappage direct
+/// permanent. Le propriétaire ne peut ni le dupliquer ni le mapper en EL0.
+pub(crate) struct KernelFrame {
+    physical: u64,
+    alias: usize,
+}
+impl KernelFrame {
+    pub(crate) fn alias(&self) -> usize {
+        self.alias
+    }
+}
 pub(crate) struct FrameSample {
     pub allocations: u64,
     pub minimum_free: u64,
 }
 impl Memory {
+    pub(crate) fn take_kernel_frame(&mut self) -> Result<KernelFrame> {
+        let physical = self.frames.take()?;
+        Ok(KernelFrame {
+            physical,
+            alias: self.frames.direct(physical) as usize,
+        })
+    }
+    pub(crate) fn release_kernel_frame(&mut self, frame: KernelFrame) {
+        self.frames.release(frame.physical);
+    }
     pub(crate) fn begin_frame_sample(&mut self) {
         assert!(self.frames.sample.is_none());
         self.frames.sample = Some(FrameSample {
@@ -363,7 +384,7 @@ impl Memory {
 }
 
 /// # Safety
-/// CPU unique, pile et tables Limine abandonnées. Aucune référence aux réponses
+/// Tous les CPU ont abandonné leurs piles et tables Limine. Aucune référence aux réponses
 /// (hors carte remplacée ici) ni rappel de firmware ne peut encore être utilisé.
 pub(crate) unsafe fn reclaim_loader(video: Option<(usize, usize)>) -> Result<()> {
     let (early, offset) =
@@ -455,11 +476,13 @@ pub(crate) unsafe fn release_dma(pa: u64) {
     .expect("restitution du cadre DMA");
 }
 
+pub(crate) const IO_BASE: u64 = 0xffff_c900_0000_0000;
+
 /// Fenêtre superviseur Device/UC dans l'arène dédiée du transport QEMU.
 pub(crate) fn map_io(pa: u64, va: u64) -> Result<()> {
     if (pa | va) % PAGE != 0
         || pa > frames::PHYS_MASK
-        || !(0xffff_c900_0000_0000..0xffff_c900_0100_0000).contains(&va)
+        || !(IO_BASE..IO_BASE + 0x100_0000).contains(&va)
     {
         return Err(Error::Geometry);
     }

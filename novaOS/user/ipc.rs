@@ -3,9 +3,13 @@
 #[allow(dead_code)]
 #[path = "../abi/native.rs"]
 mod abi;
+#[cfg(ipc_equite_lab)]
+#[path = "ipc_equite.rs"]
+mod equite;
 mod gate;
 use abi::*;
 use core::arch::global_asm;
+use core::sync::atomic::{AtomicU64, Ordering};
 use gate::call;
 
 // Sûreté : entrée autonome CPL3/EL0t, SP initial de la pile privée aligné.
@@ -29,11 +33,11 @@ global_asm!(
 const DATA: usize = 0x401000;
 fn read(i: usize) -> u64 {
     // Sûreté : mots de commande alignés dans la première page DATA du lanceur.
-    unsafe { (DATA as *const u64).add(i).read_volatile() }
+    unsafe { AtomicU64::from_ptr((DATA as *mut u64).add(i)).load(Ordering::Acquire) }
 }
 fn write(i: usize, v: u64) {
     // Sûreté : la page DATA privée reste RW pendant toute la vie du travailleur.
-    unsafe { (DATA as *mut u64).add(i).write_volatile(v) }
+    unsafe { AtomicU64::from_ptr((DATA as *mut u64).add(i)).store(v, Ordering::Release) }
 }
 
 const SEND_BUF: u64 = DATA as u64 + 256;
@@ -162,6 +166,16 @@ extern "C" fn worker() -> ! {
         let r = match op {
             x if x == u64::MAX - 1 => exchange(read(1), read(2), read(3) != 0),
             x if x == u64::MAX - 2 => background(read(1)),
+            #[cfg(ipc_equite_lab)]
+            x if x == u64::MAX - 5 => equite::travail(read(1)),
+            // Le client de mesure termine sur la dernière réponse. Le serveur
+            // attend que le contrôleur ait observé les sorties de tous les clients.
+            #[cfg(ipc_smp_lab)]
+            x if x == u64::MAX - 4 => {
+                let r = exchange(read(1), 2, false);
+                call(PROCESS_EXIT, if r.status == OK && r.value == read(1) { 0 } else { 255 }, 0, 0);
+                unreachable!()
+            }
             _ => call(op, read(1), read(2), read(3)),
         };
         write(4, r.status);

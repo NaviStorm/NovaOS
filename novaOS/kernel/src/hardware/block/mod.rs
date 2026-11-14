@@ -57,6 +57,7 @@ static ISR: AtomicU64 = AtomicU64::new(0);
 static ISR_SANS_FILE: AtomicU64 = AtomicU64::new(0);
 /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
 pub(crate) fn interrupt() -> bool {
+    let _gate = crate::sched::Guard::new();
     let addr = ISR.load(Ordering::Acquire);
     if addr != 0 {
         // Sûreté : la porte est installée sous masque. La page ISR reste
@@ -167,7 +168,7 @@ impl Transport {
         self.p.0[21].mem.w8(0, 0xff);
         self.started = metrics::stamp();
         self.kind = 0;
-        let irq = crate::hal::interrupts::Guard::new();
+        let irq = crate::sched::Guard::new();
         if !controle() {
             return Err(Error::State);
         }
@@ -215,7 +216,10 @@ impl Transport {
         self.p.0[20].mem.bytes(0, out);
         Ok(())
     }
-    #[cfg(all(target_arch = "aarch64", any(feature = "systeme-gpt", feature = "ancres-p9-lab")))]
+    #[cfg(all(
+        target_arch = "aarch64",
+        any(feature = "systeme-gpt", feature = "ancres-p9-lab")
+    ))]
     fn output(&mut self, lba: u64, flush: bool) -> Result<()> {
         self.sortie_autorisee(lba, flush, self.size, || true)
     }
@@ -258,7 +262,7 @@ impl Transport {
         let status = Segment::new(addr(5), 1, true);
         self.started = metrics::stamp();
         self.kind = if flush { 2 } else { 1 };
-        let irq = crate::hal::interrupts::Guard::new();
+        let irq = crate::sched::Guard::new();
         if !controle() {
             return Err(Error::State);
         }

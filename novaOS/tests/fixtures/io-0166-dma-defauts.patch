@@ -58,7 +58,7 @@
 +pub(crate) fn mode_defaut() -> u64 { DEFAUT.swap(0,SeqCst) }
 +pub(crate) fn arme_defaut(cap:u64, mode:u64) -> Res<u64> {
 +    with(|s| {
-+        let pid=s.thread(s.current).owner.unwrap();
++        let pid=s.thread(s.current()).owner.unwrap();
 +        let node=s.ipc.lookup(pid,cap,SEND|RECEIVE)?;
 +        let lane=s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(DENIED)?;
 +        if lane.handles[1]!=cap || lane.parties[1]!=pid.number {return Err(DENIED);}
