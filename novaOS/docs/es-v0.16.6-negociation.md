@@ -53,6 +53,24 @@ Chaque invité lance tous ses programmes depuis le même catalogue immuable. Le 
 
 Sur la géométrie inverse, le banc a aussi vérifié cinq frontières de montage en profil 42 dans chaque invité (AArch64/4 096 et x86_64/512). Les dix sauvegardes, leurs dix remontages et les comparaisons indépendantes ont réussi avec l’ancien relais seul, l’ancien pilote seul, les deux anciens composants bloc, l’ancien service NovaFS et les cinq nouveaux programmes exécutés sur l’ancien noyau. Le total du candidat combiné atteint 68 sauvegardes et 68 redémarrages. [Résultats des secteurs inversés](validation/es-v0.16.6-negociation.json)
 
+## Complément sur les transferts de plusieurs pages
+
+Vingt autres essais en profil 42 ont couvert deux sources de 12 288 et 24 576 octets. Dans les deux fichiers, la deuxième ligne commence à l’offset 4 096. Le vi de chaque composition y insère 80 octets UTF-8 avant de publier vers un nom libre après confirmation. Les lignes numérotées du suffixe et les derniers octets sans LF permettent de détecter un décalage ou une perte. À 12 Kio le courtier lit initialement la source entière. À 24 Kio, au-delà du seuil de 16 Kio, il conserve un handle et lit par fenêtres de 4 Kio. [Observations, empreintes et provenance des binaires](validation/es-v0.16.6-negociation-pages.json)
+
+| Composition | AArch64, secteur 512, 12 Kio | AArch64, secteur 512, 24 Kio | x86_64, secteur 4 096, 12 Kio | x86_64, secteur 4 096, 24 Kio |
+|---|---|---|---|---|
+| Témoin entièrement candidat | Conforme | Conforme | Conforme | Conforme |
+| vi publié sur la pile candidate | Conforme | Conforme | Conforme | Conforme |
+| NovaFS publié avec le noyau et les autres programmes candidats | Conforme | Conforme | Conforme | Conforme |
+| vi candidat sur la pile publiée | Conforme | Conforme | Conforme | Conforme |
+| Les cinq programmes candidats sur le noyau publié | Conforme | Conforme | Conforme | Conforme |
+
+Chaque cellule comprend la sauvegarde, un second démarrage de la même image RAW, la sortie intégrale de `cat` et la vérification indépendante du disque. Le lecteur Darwin a retrouvé les sources inchangées, les destinations de 12 368 et 24 656 octets exacts et deux générations successives dans les vingt cas. Le SHA-256 du noyau et ceux des cinq programmes de chaque essai correspondent aux mêmes compositions de la matrice courte. Les programmes historiques proviennent de l’audit de `3193bc9108bdc771f4627f57c84e093375cc9ea4`, les composants candidats de `13df1dce48677f6fd92256b99b0ab0948bde803a`.
+
+Sur AArch64 avec vi candidat et pile publiée, la première comparaison de la sortie série à 24 Kio a été interrompue par les mesures bloc du noyau intercalées entre deux écritures de `cat`. Le banc reconnaît le format entier de ces seules lignes et tient compte de la conversion LF en CRLF par la console. Le cas a été rejoué en entier avec le même noyau. La comparaison a ensuite été appliquée aux vingt traces archivées. L’oracle hôte compare directement les octets de NovaFS.
+
+Le jeu couvre le transport de plusieurs pages, le passage au-delà du seuil de lecture différée et l’édition à une frontière. Les 80 octets insérés excèdent aussi le maximum de 64 octets d’un plan en ligne quand le plan est négocié. Le banc conserve les binaires ordinaires sans sonde de comptage des IPC. Les performances des fichiers de plusieurs Mio et les coupures relèvent de leurs campagnes spécifiques.
+
 ## Reproduction
 
 Préparer trois exports distincts. `PUBLIE` contient la révision publiée. `BRUT` contient la correction IPC sans fixture. `PROTOTYPE` utilise la même correction et reçoit successivement `io-0166-prototype`, `io-0166-plages`, `io-0166-virtio-multipage`, `io-0166-invite` et `io-0166-negociation`. Appliquer chaque fichier avec `patch -p1 -F0`. Installer le lecteur Darwin indépendant dans chaque export sous `novaFS/target/aarch64-apple-darwin/release/novafs` et créer les répertoires `novaOS/build` avant le lancement. Pour reproduire les empreintes historiques à l’identique, utiliser les artefacts de l’audit initial dans l’export publié après compilation. Les SHA individuels identifient ces fichiers, même si une nouvelle édition de liens de NovaFS produit une disposition différente du code.
@@ -67,5 +85,6 @@ for arch in aarch64 x86_64; do
     secteur=512
     if [ "$arch" = aarch64 ]; then secteur=4096; fi
     python3 -B novaOS/tests/integration_interfaces.py "$PUBLIE" "$PROTOTYPE" "$SORTIE-inverse" "$arch" --frontieres --secteur "$secteur" --remontage
+    python3 -B novaOS/tests/integration_interfaces.py "$PUBLIE" "$PROTOTYPE" "$SORTIE-pages" "$arch" --pages
 done
 ```

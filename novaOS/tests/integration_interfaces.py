@@ -27,6 +27,45 @@ COMPLEMENTS = (
     ("pilote-prototype", "publie", ("pilote",)),
     ("chaine-prototype", "publie", tuple(COMPOSANTS)),
 )
+TAILLES_PAGES = (12 * 1024, 24 * 1024)
+FRONTIERE = 4096
+AJOUT = ("édition-" + "0123456789" * 6 + "-terminée-").encode()
+
+
+def source_pages(taille):
+    # La deuxième ligne commence à 4096. Numéroter les lignes distingue les pages
+    # à la relecture, y compris en cas de décalage du suffixe resté sur disque.
+    premiere = b"premier" + b"a" * (FRONTIERE - 1 - len(b"premier")) + b"\n"
+    milieu = b"frontiere-4096\n" + b"".join(
+        (f"ligne-{n:05d}-" + "texte" * 6 + "\n").encode() for n in range(taille // 32)
+    )
+    fin = b"derniers-octets"
+    source = premiere + milieu[:taille - FRONTIERE - len(fin)] + fin
+    assert len(source) == taille and source.index(b"frontiere-4096") == FRONTIERE
+    return source
+
+
+def fixture_pages(folder, secteur, taille, lecteur):
+    source = source_pages(taille)
+    commandes = "create /source\nwrite /source 0 " + source.hex() + "\n"
+    base, image = folder / "base.raw", folder / "volume.raw"
+    with base.open("xb") as raw:
+        r = subprocess.run([lecteur, "script", "1024", str(secteur)], input=commandes.encode(),
+                           stdout=raw, stderr=subprocess.PIPE, check=True)
+    fs, lv = re.search(rb"FS=(\w+) LV=(\w+)", r.stderr).groups()
+    with base.open("rb") as raw, image.open("xb") as out:
+        subprocess.run([lecteur, "migrate-content-p9", "1024", str(secteur), fs, lv],
+                       stdin=raw, stdout=out, check=True)
+    return image, fs, lv, source
+
+
+def verifier_cat_pages(serie, attendu):
+    # Le noyau peut écrire ses mesures bloc sur le même UART entre deux appels
+    # console de cat. Le texte contrôlé de la fixture ne contient pas ce motif.
+    trace = rb"BLOC parcours i=\d+ octets=\d+ ns=\d+\r\n"
+    assert b"BLOC parcours" not in attendu
+    sortie = re.sub(trace, b"", serie)
+    assert sortie.count(attendu.replace(b"\n", b"\r\n")) == 1
 
 
 def sha(donnees):
@@ -66,14 +105,22 @@ def attendre(t, messages, secondes=45):
             t.pending += morceau
 
 
-def observer(archive, arch, secteur, qualification, dossier, id_essai, remontage=False):
+def observer(archive, arch, secteur, qualification, dossier, id_essai, remontage=False, taille=None):
     # L'appel s'effectue dans un processus frais, pour lier cli.Terminal au bon export.
     sys.path.insert(0, str(archive / "novaOS/tests"))
     from cli import HOST, Terminal
     from vi import SOURCE, fixture
 
     with tempfile.TemporaryDirectory(dir=dossier) as tmp:
-        image, fs, lv = fixture(Path(tmp), secteur)
+        if taille is None:
+            image, fs, lv = fixture(Path(tmp), secteur)
+            source = SOURCE
+            attendu = b"Z" + source
+            temoins = ["Zpremier", "été", "fin"]
+        else:
+            image, fs, lv, source = fixture_pages(Path(tmp), secteur, taille, HOST)
+            attendu = source[:FRONTIERE] + AJOUT + source[FRONTIERE:]
+            temoins = [b"premier", AJOUT + b"frontiere-4096", b"derniers-octets"]
         invite = b"nsh> "
         ferme = b"BLOC session terminee ok="
         consentement = False
@@ -90,7 +137,18 @@ def observer(archive, arch, secteur, qualification, dossier, id_essai, remontage
                 if marque == b"\x1b[6n":
                     envoyer(b"\x1b[24;80R")
                     t.until("source [enregistré] 1:1".encode())
-                    envoyer(b"iZ\x1b:w copieaudit\r")
+                    if taille is None:
+                        envoyer(b"iZ\x1b:w copieaudit\r")
+                    else:
+                        envoyer(b"j0")
+                        t.until("source [enregistré] 2:1".encode())
+                        envoyer(b"i")
+                        texte = AJOUT.decode()
+                        for i in range(0, len(texte), 12):
+                            morceau = texte[i:i + 12]
+                            envoyer(morceau.encode())
+                            t.until(f"source [modifié] 2:{i + len(morceau) + 1}".encode())
+                        envoyer(b"\x1b:w copieaudit\r")
                     erreurs = [s.encode() for s in ("échec de l’opération", "destination non autorisée",
                                                        "argument invalide", "capacité révoquée",
                                                        "issue de sauvegarde incertaine", "modifications non sauvegardées")]
@@ -117,9 +175,11 @@ def observer(archive, arch, secteur, qualification, dossier, id_essai, remontage
         if remontage and etat == "sauvegarde_validee":
             with Terminal(arch, secteur, image, id_essai + "-remontage", test=qualification) as t:
                 t.until(invite)
-                t.line("cat copieaudit", has=["Zpremier", "été", "fin"])
+                t.line("cat copieaudit", has=temoins)
                 t.exit()
             serie = t.archive.read_bytes()
+            if taille is not None:
+                verifier_cat_pages(serie, attendu)
             (dossier / (id_essai + "-remontage.serial")).write_bytes(serie)
             reprise = sha(serie)
         def lecteur(op, *args, check=True):
@@ -130,14 +190,14 @@ def observer(archive, arch, secteur, qualification, dossier, id_essai, remontage
         slots = re.findall(rb"slot=(\d+) g\xc3\xa9n\xc3\xa9ration=(\d+)", lecteur("inspect").stdout)
         assert len(slots) == 2
         slot, _ = max(slots, key=lambda x: int(x[1]))
-        assert lecteur("salvage", fs, lv, slot, "/source").stdout == SOURCE
+        assert lecteur("salvage", fs, lv, slot, "/source").stdout == source
         dst = lecteur("salvage", fs, lv, slot, "/copieaudit", check=False)
         if etat == "sauvegarde_validee":
-            assert dst.returncode == 0 and dst.stdout == b"Z" + SOURCE
+            assert dst.returncode == 0 and dst.stdout == attendu
         else:
             assert dst.returncode != 0 and b"NotFound" in dst.stderr
         return dict(resultat=etat, confirmation_affichee=consentement,
-                    sha256_source=sha(SOURCE), destination="octets égaux" if dst.returncode==0 else "absente",
+                    sha256_source=sha(source), destination="octets égaux" if dst.returncode==0 else "absente",
                     sha256_destination=sha(dst.stdout) if dst.returncode == 0 else None,
                     sha256_serie=sha(trace), sha256_remontage=reprise,
                     generations=sorted(int(n) for _,n in slots))
@@ -154,9 +214,14 @@ def main():
     p.add_argument("--remontage", action="store_true", help="redémarrer avec le même volume et relire la copie")
     p.add_argument("--secteur", type=int, choices=(512, 4096), help="remplacer la géométrie de référence")
     p.add_argument("--frontieres", action="store_true", help="cinq croisements des frontières de montage en profil 42")
+    p.add_argument("--pages", action="store_true",
+                   help="tester les croisements sur 12 et 24 Kio avec édition à l’octet 4096 et remontage")
+    p.add_argument("--taille-session", type=int, choices=TAILLES_PAGES, help=argparse.SUPPRESS)
     p.add_argument("--branche-brute", type=Path,
                    help="tester uniquement le profil 42 d'un troisième export compilé sans fixture")
     args = p.parse_args()
+    if args.pages and (args.frontieres or args.etendue or args.branche_brute):
+        p.error("--pages utilise sa propre sélection de compositions")
     a = args.architecture
     secteur = args.secteur or (512 if a == "aarch64" else 4096)
     exports = {v:getattr(args, v).resolve() for v in ("publie", "prototype")}
@@ -188,7 +253,7 @@ def main():
         return
     if args.session:
         base, rid, mode = args.session
-        r = observer(exports[base], a, secteur, mode=="42", dossier, rid, args.remontage)
+        r = observer(exports[base], a, secteur, mode=="42", dossier, rid, args.remontage, args.taille_session)
         print(json.dumps(r, ensure_ascii=False))
         return
     if any((d/".git").exists() for d in exports.values()) or len(set(exports.values())) != 2:
@@ -196,7 +261,10 @@ def main():
     originaux = {nom:{c:(out/f).read_bytes() for c,f in COMPOSANTS.items()}
                  for nom,d in exports.items() for out,_ in [outils(d,a)]}
     resultats = []
-    configurations = CONFIGURATIONS + (COMPLEMENTS if args.etendue or args.frontieres else ())
+    configurations = CONFIGURATIONS + (COMPLEMENTS if args.etendue or args.frontieres or args.pages else ())
+    if args.pages:
+        inclus = {"prototype", "vi-publie", "vi-prototype", "novafs-publie", "chaine-prototype"}
+        configurations = tuple(c for c in configurations if c[0] in inclus)
     if args.frontieres:
         inclus = {"relais-publie", "pilote-publie", "bloc-publie", "novafs-publie", "chaine-prototype"}
         configurations = tuple(c for c in configurations if c[0] in inclus)
@@ -211,11 +279,18 @@ def main():
                 reconstruire(archive,a,dossier/(cas+"-"+a+"-build.log"))
             identites = {c:sha((out/f).read_bytes()) for c,f in COMPOSANTS.items()}
             assert all(identites[c]==sha(originaux[autre if c in autres else base][c]) for c in COMPOSANTS)
-            for mode in (("42",) if args.frontieres else ("41","42")):
+            essais = [("42", t) for t in TAILLES_PAGES] if args.pages else [
+                (mode, None) for mode in (("42",) if args.frontieres else ("41", "42"))
+            ]
+            for mode, taille in essais:
                 rid = f"{a}-{cas}-{mode}"
+                if taille:
+                    rid += f"-{taille}"
                 cmd = [sys.executable,"-B",__file__, str(exports["publie"]), str(exports["prototype"]),
                        str(dossier),a,"--session",base,rid,mode,"--secteur",str(secteur)]
-                if args.remontage:
+                if taille:
+                    cmd.extend(["--taille-session", str(taille)])
+                if args.remontage or taille:
                     cmd.append("--remontage")
                 enfant = subprocess.run(cmd, capture_output=True,text=True)
                 (dossier/(rid+".log")).write_text(enfant.stderr)
@@ -223,6 +298,8 @@ def main():
                                                                                  erreur=enfant.stderr[-900:])
                 r.update(architecture=a,secteur=secteur,composition=cas,base=base,
                          mode=int(mode),sha256_elf=sha(elf.read_bytes()),sha256_composants=identites)
+                if taille:
+                    r.update(octets_source=taille, offset=FRONTIERE, octets_ajoutes=len(AJOUT))
                 resultats.append(r)
                 print(rid, r["resultat"], flush=True)
                 (dossier/(a+".json")).write_text(json.dumps(resultats, ensure_ascii=False,indent=2)+"\n")
@@ -233,6 +310,9 @@ def main():
                 reconstruire(archive,a,dossier/(cas+"-"+a+"-restauration.log"))
     if any(r["resultat"] == "banc_incomplet" for r in resultats):
         raise SystemExit("Au moins une observation incomplète. Voir les journaux de la campagne.")
+    if args.pages and not all(r["resultat"] == "sauvegarde_validee" and r["confirmation_affichee"]
+                              and r["sha256_remontage"] for r in resultats):
+        raise SystemExit("Au moins une sauvegarde ou un remontage multipage a échoué.")
 
 
 if __name__ == "__main__":
