@@ -12,12 +12,13 @@ use pool::{Bits, Pool};
 mod bulk;
 mod probes;
 mod traffic;
-#[cfg(feature = "ipc-smp-lab")]
-pub(crate) use probes::multicore;
 pub(super) use bulk::transfer;
 pub(crate) use probes::{quiet, run};
 
 pub(crate) use probes::smp_roundtrip;
+#[cfg(feature = "ipc-smp-lab")]
+pub(crate) use probes::multicore;
+
 
 type Res<T> = core::result::Result<T, u64>;
 const ALL: u32 = SEND | RECEIVE | GRANT | MANAGE;
