@@ -6,6 +6,12 @@ use core::sync::atomic::{AtomicUsize, Ordering};
 pub(super) static OWNER: AtomicUsize = AtomicUsize::new(0);
 static DEPTH: AtomicUsize = AtomicUsize::new(0);
 
+// Appelé uniquement dans les méthodes de Core, emprunté sous Guard. Les IRQ
+// restent masquées ; après une commutation, resumed reprend la garde sur le PE actif.
+pub(super) fn owner_index() -> usize {
+    OWNER.load(Ordering::Relaxed) - 1
+}
+
 #[track_caller]
 fn acquire(depth: usize) {
     let me = smp::index() + 1;

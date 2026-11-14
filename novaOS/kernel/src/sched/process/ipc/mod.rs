@@ -146,6 +146,9 @@ pub(crate) struct Domain {
     ends: Endpoints,
     nodes: Nodes,
     locals: Locals,
+    // Une table peut devenir vide après sa création ou le retrait d'un handle.
+    // Le contrôle a lieu après la transaction, y compris après un échec.
+    locals_to_check: u32,
     waits: Waits,
     pages_bulk: bulk::Buffers,
     incarnation: u64,
@@ -162,6 +165,7 @@ impl Domain {
             ends: Pool::new(),
             nodes: Pool::new(),
             locals: Pool::new(),
+            locals_to_check: 0,
             waits: Pool::new(),
             pages_bulk: bulk::Buffers::new(),
             incarnation: 0,
@@ -268,6 +272,7 @@ impl Domain {
                     bootstrap: 0,
                 },
             )?;
+            self.locals_to_check |= 1 << p.slot;
         }
         Ok(())
     }
@@ -286,6 +291,7 @@ impl Domain {
         if n.holder == ABSENT {
             return;
         }
+        self.locals_to_check |= 1 << n.holder;
         let t = self.locals.get_mut(n.holder as usize);
         let slot = t
             .entries
@@ -309,8 +315,11 @@ impl Domain {
         }
     }
     fn empty_locals(&mut self) {
-        for i in self.locals.ids() {
-            if self.locals.get(i).entries.iter().all(|e| e.key == 0) {
+        let mut dirty = core::mem::take(&mut self.locals_to_check);
+        while dirty != 0 {
+            let i = dirty.trailing_zeros() as usize;
+            dirty &= dirty - 1;
+            if self.locals.has(i) && self.locals.get(i).entries.iter().all(|e| e.key == 0) {
                 self.locals.remove(i);
             }
         }

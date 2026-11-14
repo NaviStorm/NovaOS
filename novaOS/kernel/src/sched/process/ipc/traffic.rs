@@ -495,7 +495,7 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
     loop {
         let irq = Guard::new();
         let begin = metrics::stamp();
-        let (outcome, cookie, pid) = with(|s| {
+        let (outcome, cookie, pid) = crate::sched::with_guard(&irq, |s| {
             let t = s.thread(s.current());
             let p = t.owner.unwrap();
             let tid = t.id;

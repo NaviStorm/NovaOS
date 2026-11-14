@@ -17,6 +17,9 @@ pub fn mapped(kind: EntryType) -> bool {
 
 pub struct Frames {
     pub info: MemoryInfo,
+    // Sous le verrou de Memory. Les plages RAM sont immuables, et leur admission
+    // ne peut que croître à la restitution du chargeur. Une PTE reste vérifiée à chaque accès.
+    last_managed: core::cell::Cell<(u64, u64)>,
     region: usize,
     next: u64,
     end: u64,
@@ -59,6 +62,7 @@ impl Frames {
         }
         Ok(Self {
             info,
+            last_managed: core::cell::Cell::new((0, 0)),
             region: 0,
             next: 0,
             end: 0,
@@ -76,8 +80,22 @@ impl Frames {
         self.info.entries.iter().copied().chain(self.map.iter())
     }
     pub(super) fn managed(&self, frame: u64) -> bool {
-        self.covers(frame, EntryType::USABLE)
-            || (self.reclaimed != 0 && self.covers(frame, EntryType::BOOTLOADER_RECLAIMABLE))
+        let Some(end) = frame.checked_add(PAGE) else {
+            return false;
+        };
+        let (base, limit) = self.last_managed.get();
+        if base <= frame && end <= limit {
+            return true;
+        }
+        for region in self.regions() {
+            let admitted = region.entry_type == EntryType::USABLE
+                || (self.reclaimed != 0 && region.entry_type == EntryType::BOOTLOADER_RECLAIMABLE);
+            if admitted && region.base <= frame && end <= region.base + region.length {
+                self.last_managed.set((region.base, region.base + region.length));
+                return true;
+            }
+        }
+        false
     }
 
     pub fn covers(&self, frame: u64, kind: EntryType) -> bool {

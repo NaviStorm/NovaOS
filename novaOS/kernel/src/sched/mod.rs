@@ -120,14 +120,18 @@ unsafe impl Sync for Local {}
 static CORE: Local = Local(UnsafeCell::new(None));
 #[track_caller]
 fn with<R>(f: impl FnOnce(&mut Core) -> R) -> R {
-    let _mask = Guard::new();
+    let guard = Guard::new();
+    with_guard(&guard, f)
+}
+// La référence à Guard atteste la propriété du verrou pendant tout l’emprunt.
+fn with_guard<R>(_: &Guard, f: impl FnOnce(&mut Core) -> R) -> R {
     // Sûreté : aucune fermeture appelée ici ne commute, ne réentre ni ne garde de référence.
     f(unsafe { (&mut *CORE.0.get()).as_mut().expect("ordonnanceur inactif") })
 }
 
 impl Core {
     fn current(&self) -> usize {
-        self.currents[crate::smp::index()]
+        self.currents[gate::owner_index()]
     }
     fn idle_slot(cpu: usize) -> usize {
         if cpu == 0 { IDLE } else { MAX - cpu }
@@ -170,13 +174,13 @@ impl Core {
         if self.thread(i).blocked_since != 0 {
             #[cfg(feature = "ipc-smp-lab")]
             process::ipc::multicore::pret(i);
-            profile::ipc_woke(crate::smp::index(), self.thread(i).blocked_since);
+            profile::ipc_woke(gate::owner_index(), self.thread(i).blocked_since);
         }
         self.thread_mut(i).blocked_since = 0;
         self.thread_mut(i).state = State::Ready;
         self.ready.push(i);
         self.stats.wakes += 1;
-        let me = crate::smp::index();
+        let me = gate::owner_index();
         let other =
             crate::smp::ONLINE.load(Ordering::Acquire) & !(1 << me) & self.thread(i).cpu_mask;
         if other != 0 {
@@ -254,12 +258,12 @@ impl Core {
     }
 
     fn select(&mut self, why: Reason) -> Option<(*mut usize, usize)> {
-        let cpu = crate::smp::index();
+        let cpu = gate::owner_index();
         let old = self.currents[cpu];
         let state = match why {
             Reason::Tick(user) => {
                 profile::tick(cpu, user, old == Self::idle_slot(cpu));
-                if crate::smp::index() == 0 {
+                if cpu == 0 {
                     let now = ticks().saturating_add(1);
                     NOVA_TICKS.store(now, Ordering::Relaxed);
                     self.ipc.expire(now);
@@ -397,9 +401,9 @@ fn dispatch(why: Reason) {
 }
 fn dispatch_measured(why: Reason, masked_since: u64) {
     use process::ipc::metrics;
-    let _gate = Guard::new();
+    let gate = Guard::new();
     let start = metrics::switch_stamp();
-    if let Some((save, load)) = with(|s| {
+    if let Some((save, load)) = with_guard(&gate, |s| {
         let old = s.current();
         let next = s.select(why);
         if start != 0 && next.is_some() {
