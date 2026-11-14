@@ -1,0 +1,6603 @@
+{
+  "base": "8a42b7283fa5ea793bce06cd02c17ac14172da9e",
+  "candidat": "da411f14a2bce3864548a69c71c6f91eb06fdddb",
+  "initial": {
+    "x86_64": {
+      "serial_sha256": "6e921cc98aec931a85a9f1aa114c24406c76c373f2908f4c2380f9d7f828a700",
+      "releves": [
+        "SMP memoire cpu=4 libres=62991 tas=205856",
+        "SMP frequence=1002843750",
+        "SMP utilisateur pid=1 cpu=0 preemptions=6 progres=1238145",
+        "SMP utilisateur pid=2 cpu=1 preemptions=6 progres=2411773",
+        "SMP utilisateur pid=3 cpu=2 preemptions=5 progres=2669932",
+        "SMP utilisateur pid=4 cpu=3 preemptions=4 progres=2895380",
+        "SMP utilisateur pid=5 cpu=0 preemptions=10 progres=2180691",
+        "SMP utilisateur pid=6 cpu=1 preemptions=5 progres=2508351",
+        "SMP utilisateur pid=7 cpu=2 preemptions=4 progres=2168341",
+        "SMP utilisateur pid=8 cpu=3 preemptions=4 progres=2005851",
+        "SMP calcul iterations=16000000 us=15320",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=110",
+        "SMP cpu=1 materiel=1 ticks=101",
+        "SMP cpu=2 materiel=2 ticks=101",
+        "SMP cpu=3 materiel=3 ticks=101",
+        "SMP migration=0->1",
+        "SMP profil cpu=0 acquisitions=5104 conflits=72 attente=620000 detention=75085000 max=17875000 site=kernel/src/sched/process.rs switch=73 migrations=0 ipi=0 tlb=1220 ticks_usr=16 ticks_sys=16 ticks_idle=5 attente_ipc=0",
+        "SMP section cpu=0 site=kernel/src/sched/process.rs:336:22",
+        "SMP profil cpu=1 acquisitions=156 conflits=100 attente=48906000 detention=1048000 max=384000 site=kernel/src/sched/mod.rs switch=32 migrations=1 ipi=0 tlb=0 ticks_usr=19 ticks_sys=10 ticks_idle=9 attente_ipc=0",
+        "SMP section cpu=1 site=kernel/src/sched/mod.rs:385:15",
+        "SMP profil cpu=2 acquisitions=163 conflits=106 attente=52414000 detention=317000 max=24000 site=kernel/src/sched/mod.rs switch=30 migrations=0 ipi=0 tlb=0 ticks_usr=19 ticks_sys=9 ticks_idle=10 attente_ipc=0",
+        "SMP section cpu=2 site=kernel/src/sched/mod.rs:385:15",
+        "SMP profil cpu=3 acquisitions=150 conflits=96 attente=53895000 detention=299000 max=21000 site=kernel/src/sched/mod.rs switch=23 migrations=0 ipi=0 tlb=0 ticks_usr=20 ticks_sys=9 ticks_idle=9 attente_ipc=0",
+        "SMP section cpu=3 site=kernel/src/sched/mod.rs:385:15",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    },
+    "aarch64": {
+      "serial_sha256": "615ee00ce7934077ed57d499c8636a45c2060edefb7b58c594df2166cd5f4fb7",
+      "releves": [
+        "SMP memoire cpu=4 libres=62477 tas=108576",
+        "SMP frequence=62500000",
+        "SMP utilisateur pid=1 cpu=0 preemptions=4 progres=544149",
+        "SMP utilisateur pid=2 cpu=1 preemptions=3 progres=1111725",
+        "SMP utilisateur pid=3 cpu=2 preemptions=4 progres=947834",
+        "SMP utilisateur pid=4 cpu=3 preemptions=3 progres=1244204",
+        "SMP utilisateur pid=5 cpu=0 preemptions=7 progres=1182809",
+        "SMP utilisateur pid=6 cpu=1 preemptions=3 progres=1452894",
+        "SMP utilisateur pid=7 cpu=2 preemptions=4 progres=1471697",
+        "SMP utilisateur pid=8 cpu=3 preemptions=3 progres=1335311",
+        "SMP calcul iterations=16000000 us=11942",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=29",
+        "SMP cpu=1 materiel=1 ticks=30",
+        "SMP cpu=2 materiel=2 ticks=30",
+        "SMP cpu=3 materiel=3 ticks=30",
+        "SMP migration=0->1",
+        "SMP profil cpu=0 acquisitions=11616 conflits=77 attente=120253 detention=3795613 max=445563 site=kernel/src/sched/process.rs switch=66 migrations=0 ipi=0 tlb=1220 ticks_usr=11 ticks_sys=13 ticks_idle=5 attente_ipc=0",
+        "SMP section cpu=0 site=kernel/src/sched/process.rs:336:22",
+        "SMP profil cpu=1 acquisitions=78 conflits=57 attente=671374 detention=58129 max=14625 site=kernel/src/sched/mod.rs switch=21 migrations=1 ipi=0 tlb=0 ticks_usr=15 ticks_sys=6 ticks_idle=9 attente_ipc=0",
+        "SMP section cpu=1 site=kernel/src/sched/mod.rs:385:15",
+        "SMP profil cpu=2 acquisitions=78 conflits=47 attente=661687 detention=42814 max=3500 site=kernel/src/sched/mod.rs switch=21 migrations=0 ipi=0 tlb=0 ticks_usr=13 ticks_sys=7 ticks_idle=10 attente_ipc=0",
+        "SMP section cpu=2 site=kernel/src/sched/mod.rs:385:15",
+        "SMP profil cpu=3 acquisitions=75 conflits=59 attente=654440 detention=41439 max=5062 site=kernel/src/sched/mod.rs switch=19 migrations=0 ipi=0 tlb=0 ticks_usr=14 ticks_sys=7 ticks_idle=9 attente_ipc=0",
+        "SMP section cpu=3 site=kernel/src/sched/mod.rs:533:22",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    }
+  },
+  "mesures": [
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 1,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 101710,
+      "ipc_ns": 158502,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 44,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26387,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 9684221,
+          "max": 1079000,
+          "switch": 4113,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4738,
+          "ticks_usr": 5,
+          "ticks_sys": 45,
+          "ticks_idle": 3,
+          "attente_ipc": 8373542
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        29.4111328125,
+        15.27685546875,
+        9.91796875
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 1,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 19774,
+      "ipc_ns": 191725,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 46,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 20870,
+          "conflits": 8783,
+          "attente": 4721210,
+          "detention": 7566537,
+          "max": 298875,
+          "switch": 1865,
+          "migrations": 139,
+          "ipi": 817,
+          "tlb": 4536,
+          "ticks_usr": 9,
+          "ticks_sys": 48,
+          "ticks_idle": 4,
+          "attente_ipc": 1909624
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 13317,
+          "conflits": 8684,
+          "attente": 4953253,
+          "detention": 5146763,
+          "max": 46438,
+          "switch": 1859,
+          "migrations": 141,
+          "ipi": 0,
+          "tlb": 2970,
+          "ticks_usr": 15,
+          "ticks_sys": 27,
+          "ticks_idle": 21,
+          "attente_ipc": 3468195
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        28.2568359375,
+        15.27197265625,
+        9.947265625
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 1,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 31872,
+      "ipc_ns": 647828,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 80,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 28136,
+          "conflits": 9068,
+          "attente": 28523067,
+          "detention": 13825844,
+          "max": 497063,
+          "switch": 753,
+          "migrations": 198,
+          "ipi": 309,
+          "tlb": 2354,
+          "ticks_usr": 15,
+          "ticks_sys": 135,
+          "ticks_idle": 6,
+          "attente_ipc": 2227505
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 7687,
+          "conflits": 6417,
+          "attente": 22263740,
+          "detention": 8058387,
+          "max": 277688,
+          "switch": 875,
+          "migrations": 290,
+          "ipi": 431,
+          "tlb": 1782,
+          "ticks_usr": 27,
+          "ticks_sys": 55,
+          "ticks_idle": 75,
+          "attente_ipc": 3040999
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8463,
+          "conflits": 6620,
+          "attente": 20884883,
+          "detention": 9176019,
+          "max": 426875,
+          "switch": 930,
+          "migrations": 302,
+          "ipi": 490,
+          "tlb": 1813,
+          "ticks_usr": 29,
+          "ticks_sys": 45,
+          "ticks_idle": 86,
+          "attente_ipc": 4130863
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8960,
+          "conflits": 6307,
+          "attente": 20722433,
+          "detention": 9630227,
+          "max": 599437,
+          "switch": 971,
+          "migrations": 284,
+          "ipi": 556,
+          "tlb": 1811,
+          "ticks_usr": 24,
+          "ticks_sys": 60,
+          "ticks_idle": 76,
+          "attente_ipc": 5659682
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/mod.rs:670:18",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        28.3994140625,
+        15.71142578125,
+        10.1640625
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 1,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 56922,
+      "ipc_ns": 122021,
+      "frequence": 1003859375,
+      "tas": 9248,
+      "preemptions": 44,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26370,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 139283000,
+          "max": 8751000,
+          "switch": 4108,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 5,
+          "ticks_sys": 44,
+          "ticks_idle": 3,
+          "attente_ipc": 98805000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        28.3994140625,
+        15.71142578125,
+        10.1640625
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 1,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 24405,
+      "ipc_ns": 96890,
+      "frequence": 1001546875,
+      "tas": 74784,
+      "preemptions": 46,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 28816,
+          "conflits": 10485,
+          "attente": 43078000,
+          "detention": 79450000,
+          "max": 6160000,
+          "switch": 2107,
+          "migrations": 41,
+          "ipi": 838,
+          "tlb": 2243,
+          "ticks_usr": 11,
+          "ticks_sys": 37,
+          "ticks_idle": 3,
+          "attente_ipc": 16757000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12864,
+          "conflits": 9430,
+          "attente": 57230000,
+          "detention": 43383000,
+          "max": 1089000,
+          "switch": 1821,
+          "migrations": 42,
+          "ipi": 0,
+          "tlb": 442,
+          "ticks_usr": 7,
+          "ticks_sys": 30,
+          "ticks_idle": 13,
+          "attente_ipc": 35525000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        27.326171875,
+        15.69921875,
+        10.1923828125
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 1,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 15063,
+      "ipc_ns": 144822,
+      "frequence": 1000164062,
+      "tas": 205856,
+      "preemptions": 63,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 24697,
+          "conflits": 9732,
+          "attente": 120012000,
+          "detention": 99170000,
+          "max": 12601000,
+          "switch": 289,
+          "migrations": 103,
+          "ipi": 106,
+          "tlb": 1483,
+          "ticks_usr": 16,
+          "ticks_sys": 64,
+          "ticks_idle": 5,
+          "attente_ipc": 2712000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 10403,
+          "conflits": 6825,
+          "attente": 130175000,
+          "detention": 44651000,
+          "max": 410000,
+          "switch": 1085,
+          "migrations": 350,
+          "ipi": 600,
+          "tlb": 851,
+          "ticks_usr": 21,
+          "ticks_sys": 29,
+          "ticks_idle": 39,
+          "attente_ipc": 17457000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 15049,
+          "conflits": 6805,
+          "attente": 125059000,
+          "detention": 42057000,
+          "max": 930000,
+          "switch": 957,
+          "migrations": 340,
+          "ipi": 497,
+          "tlb": 746,
+          "ticks_usr": 24,
+          "ticks_sys": 27,
+          "ticks_idle": 37,
+          "attente_ipc": 16017000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 16962,
+          "conflits": 5728,
+          "attente": 127657000,
+          "detention": 34577000,
+          "max": 860000,
+          "switch": 684,
+          "migrations": 288,
+          "ipi": 378,
+          "tlb": 515,
+          "ticks_usr": 24,
+          "ticks_sys": 26,
+          "ticks_idle": 37,
+          "attente_ipc": 11626000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:455:18",
+        "kernel/src/sched/mod.rs:417:15",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        25.8583984375,
+        15.587890625,
+        10.18505859375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 2,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 25189,
+      "ipc_ns": 193741,
+      "frequence": 1002687500,
+      "tas": 205856,
+      "preemptions": 72,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26371,
+          "conflits": 6888,
+          "attente": 161493000,
+          "detention": 132113000,
+          "max": 10423000,
+          "switch": 262,
+          "migrations": 87,
+          "ipi": 86,
+          "tlb": 1451,
+          "ticks_usr": 16,
+          "ticks_sys": 75,
+          "ticks_idle": 6,
+          "attente_ipc": 3403000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 10584,
+          "conflits": 5191,
+          "attente": 171790000,
+          "detention": 60682000,
+          "max": 689000,
+          "switch": 961,
+          "migrations": 349,
+          "ipi": 626,
+          "tlb": 581,
+          "ticks_usr": 27,
+          "ticks_sys": 34,
+          "ticks_idle": 39,
+          "attente_ipc": 26344000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8873,
+          "conflits": 4697,
+          "attente": 170921000,
+          "detention": 52607000,
+          "max": 956000,
+          "switch": 770,
+          "migrations": 293,
+          "ipi": 503,
+          "tlb": 493,
+          "ticks_usr": 26,
+          "ticks_sys": 31,
+          "ticks_idle": 44,
+          "attente_ipc": 21409000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8762,
+          "conflits": 4671,
+          "attente": 178757000,
+          "detention": 41455000,
+          "max": 1510000,
+          "switch": 606,
+          "migrations": 241,
+          "ipi": 437,
+          "tlb": 320,
+          "ticks_usr": 26,
+          "ticks_sys": 26,
+          "ticks_idle": 48,
+          "attente_ipc": 19548000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        25.8583984375,
+        15.587890625,
+        10.18505859375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 2,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 23169,
+      "ipc_ns": 104999,
+      "frequence": 1003617187,
+      "tas": 74784,
+      "preemptions": 46,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26932,
+          "conflits": 10075,
+          "attente": 46363000,
+          "detention": 88557000,
+          "max": 6643000,
+          "switch": 2112,
+          "migrations": 53,
+          "ipi": 760,
+          "tlb": 2468,
+          "ticks_usr": 9,
+          "ticks_sys": 42,
+          "ticks_idle": 3,
+          "attente_ipc": 15144000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12410,
+          "conflits": 8928,
+          "attente": 65476000,
+          "detention": 46504000,
+          "max": 938000,
+          "switch": 1649,
+          "migrations": 54,
+          "ipi": 0,
+          "tlb": 442,
+          "ticks_usr": 10,
+          "ticks_sys": 35,
+          "ticks_idle": 8,
+          "attente_ipc": 38015000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        24.82861328125,
+        15.544921875,
+        10.201171875
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 2,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 44148,
+      "ipc_ns": 60638,
+      "frequence": 994363281,
+      "tas": 9248,
+      "preemptions": 33,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26359,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 76621000,
+          "max": 6499000,
+          "switch": 4101,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 5,
+          "ticks_sys": 33,
+          "ticks_idle": 3,
+          "attente_ipc": 48752000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17"
+      ],
+      "charge_hote": [
+        24.82861328125,
+        15.544921875,
+        10.201171875
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 2,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 12748,
+      "ipc_ns": 353010,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 58,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 23294,
+          "conflits": 11159,
+          "attente": 17375877,
+          "detention": 8362060,
+          "max": 563812,
+          "switch": 601,
+          "migrations": 217,
+          "ipi": 255,
+          "tlb": 2299,
+          "ticks_usr": 17,
+          "ticks_sys": 89,
+          "ticks_idle": 6,
+          "attente_ipc": 771438
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 9656,
+          "conflits": 8440,
+          "attente": 10820875,
+          "detention": 6068752,
+          "max": 278438,
+          "switch": 1200,
+          "migrations": 323,
+          "ipi": 570,
+          "tlb": 2593,
+          "ticks_usr": 22,
+          "ticks_sys": 42,
+          "ticks_idle": 50,
+          "attente_ipc": 1770752
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 9355,
+          "conflits": 8112,
+          "attente": 11126554,
+          "detention": 6161723,
+          "max": 761563,
+          "switch": 1126,
+          "migrations": 330,
+          "ipi": 561,
+          "tlb": 2372,
+          "ticks_usr": 22,
+          "ticks_sys": 32,
+          "ticks_idle": 58,
+          "attente_ipc": 1812938
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8233,
+          "conflits": 7292,
+          "attente": 10079288,
+          "detention": 4784880,
+          "max": 199188,
+          "switch": 926,
+          "migrations": 287,
+          "ipi": 460,
+          "tlb": 1865,
+          "ticks_usr": 16,
+          "ticks_sys": 34,
+          "ticks_idle": 64,
+          "attente_ipc": 1536246
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:397:9",
+        "kernel/src/sched/mod.rs:388:17",
+        "kernel/src/sched/process.rs:245:29",
+        "kernel/src/sched/mod.rs:417:15"
+      ],
+      "charge_hote": [
+        22.7021484375,
+        15.39501953125,
+        10.2099609375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 2,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 21064,
+      "ipc_ns": 180014,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 52,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26592,
+          "conflits": 9261,
+          "attente": 4504139,
+          "detention": 7276637,
+          "max": 271687,
+          "switch": 1886,
+          "migrations": 143,
+          "ipi": 823,
+          "tlb": 4629,
+          "ticks_usr": 7,
+          "ticks_sys": 50,
+          "ticks_idle": 4,
+          "attente_ipc": 1734372
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 13285,
+          "conflits": 8985,
+          "attente": 4819035,
+          "detention": 4898055,
+          "max": 50125,
+          "switch": 1888,
+          "migrations": 145,
+          "ipi": 0,
+          "tlb": 3060,
+          "ticks_usr": 11,
+          "ticks_sys": 31,
+          "ticks_idle": 20,
+          "attente_ipc": 3198197
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        21.5244140625,
+        15.27197265625,
+        10.19677734375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 2,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 37390,
+      "ipc_ns": 97924,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 32,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26353,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6270847,
+          "max": 201000,
+          "switch": 4096,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4727,
+          "ticks_usr": 7,
+          "ticks_sys": 31,
+          "ticks_idle": 3,
+          "attente_ipc": 5245551
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17"
+      ],
+      "charge_hote": [
+        21.48193359375,
+        15.36669921875,
+        10.259765625
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 3,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 20166,
+      "ipc_ns": 224980,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 55,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 25502,
+          "conflits": 9047,
+          "attente": 5591808,
+          "detention": 8678604,
+          "max": 302812,
+          "switch": 1909,
+          "migrations": 129,
+          "ipi": 835,
+          "tlb": 4653,
+          "ticks_usr": 9,
+          "ticks_sys": 55,
+          "ticks_idle": 4,
+          "attente_ipc": 2090005
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 13338,
+          "conflits": 8801,
+          "attente": 5791761,
+          "detention": 5999188,
+          "max": 52312,
+          "switch": 1873,
+          "migrations": 131,
+          "ipi": 0,
+          "tlb": 3077,
+          "ticks_usr": 18,
+          "ticks_sys": 31,
+          "ticks_idle": 21,
+          "attente_ipc": 4040183
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        20.35009765625,
+        15.322265625,
+        10.302734375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 3,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 15719,
+      "ipc_ns": 506401,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 69,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 19560,
+          "conflits": 10131,
+          "attente": 23145792,
+          "detention": 9992263,
+          "max": 437063,
+          "switch": 616,
+          "migrations": 226,
+          "ipi": 263,
+          "tlb": 2289,
+          "ticks_usr": 19,
+          "ticks_sys": 112,
+          "ticks_idle": 5,
+          "attente_ipc": 1138064
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 9202,
+          "conflits": 7631,
+          "attente": 15057583,
+          "detention": 7352156,
+          "max": 32375,
+          "switch": 1044,
+          "migrations": 339,
+          "ipi": 508,
+          "tlb": 2084,
+          "ticks_usr": 27,
+          "ticks_sys": 48,
+          "ticks_idle": 63,
+          "attente_ipc": 2594374
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8974,
+          "conflits": 7483,
+          "attente": 15176486,
+          "detention": 7211366,
+          "max": 54625,
+          "switch": 1020,
+          "migrations": 342,
+          "ipi": 505,
+          "tlb": 2035,
+          "ticks_usr": 23,
+          "ticks_sys": 45,
+          "ticks_idle": 70,
+          "attente_ipc": 2747379
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8793,
+          "conflits": 7323,
+          "attente": 14891616,
+          "detention": 6954269,
+          "max": 53500,
+          "switch": 989,
+          "migrations": 315,
+          "ipi": 519,
+          "tlb": 1943,
+          "ticks_usr": 26,
+          "ticks_sys": 41,
+          "ticks_idle": 71,
+          "attente_ipc": 2886306
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        20.56201171875,
+        15.44970703125,
+        10.376953125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 3,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 35962,
+      "ipc_ns": 104672,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 32,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26362,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6729790,
+          "max": 207687,
+          "switch": 4100,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4731,
+          "ticks_usr": 5,
+          "ticks_sys": 32,
+          "ticks_idle": 3,
+          "attente_ipc": 5533495
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17"
+      ],
+      "charge_hote": [
+        19.7958984375,
+        15.37548828125,
+        10.38037109375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 3,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 25168,
+      "ipc_ns": 110402,
+      "frequence": 1002789062,
+      "tas": 74784,
+      "preemptions": 47,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 27788,
+          "conflits": 10173,
+          "attente": 45259000,
+          "detention": 96778000,
+          "max": 6483000,
+          "switch": 2136,
+          "migrations": 59,
+          "ipi": 744,
+          "tlb": 2549,
+          "ticks_usr": 6,
+          "ticks_sys": 46,
+          "ticks_idle": 3,
+          "attente_ipc": 15788000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12457,
+          "conflits": 8925,
+          "attente": 73238000,
+          "detention": 44673000,
+          "max": 798000,
+          "switch": 1580,
+          "migrations": 60,
+          "ipi": 0,
+          "tlb": 442,
+          "ticks_usr": 8,
+          "ticks_sys": 31,
+          "ticks_idle": 16,
+          "attente_ipc": 38224000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        19.81201171875,
+        15.4521484375,
+        10.4365234375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 3,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 30262,
+      "ipc_ns": 220654,
+      "frequence": 999394531,
+      "tas": 205856,
+      "preemptions": 76,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26584,
+          "conflits": 6510,
+          "attente": 183192000,
+          "detention": 146761000,
+          "max": 11064000,
+          "switch": 266,
+          "migrations": 76,
+          "ipi": 75,
+          "tlb": 1433,
+          "ticks_usr": 17,
+          "ticks_sys": 83,
+          "ticks_idle": 6,
+          "attente_ipc": 3965000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 9139,
+          "conflits": 4402,
+          "attente": 200221000,
+          "detention": 65861000,
+          "max": 1047000,
+          "switch": 813,
+          "migrations": 312,
+          "ipi": 535,
+          "tlb": 520,
+          "ticks_usr": 22,
+          "ticks_sys": 38,
+          "ticks_idle": 49,
+          "attente_ipc": 24696000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 9704,
+          "conflits": 4519,
+          "attente": 202985000,
+          "detention": 61141000,
+          "max": 244000,
+          "switch": 871,
+          "migrations": 303,
+          "ipi": 588,
+          "tlb": 517,
+          "ticks_usr": 23,
+          "ticks_sys": 33,
+          "ticks_idle": 53,
+          "attente_ipc": 26602000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8742,
+          "conflits": 4196,
+          "attente": 206008000,
+          "detention": 48825000,
+          "max": 1406000,
+          "switch": 622,
+          "migrations": 248,
+          "ipi": 447,
+          "tlb": 333,
+          "ticks_usr": 25,
+          "ticks_sys": 32,
+          "ticks_idle": 52,
+          "attente_ipc": 23285000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        19.81201171875,
+        15.4521484375,
+        10.4365234375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 3,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 44129,
+      "ipc_ns": 61211,
+      "frequence": 1000562500,
+      "tas": 9248,
+      "preemptions": 37,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26441,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 83681000,
+          "max": 6748000,
+          "switch": 4127,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 6,
+          "ticks_sys": 39,
+          "ticks_idle": 4,
+          "attente_ipc": 50661000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17"
+      ],
+      "charge_hote": [
+        19.66650390625,
+        15.494140625,
+        10.48046875
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 4,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 43794,
+      "ipc_ns": 66403,
+      "frequence": 1001054687,
+      "tas": 9248,
+      "preemptions": 36,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26395,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 81730000,
+          "max": 6671000,
+          "switch": 4116,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 6,
+          "ticks_sys": 35,
+          "ticks_idle": 3,
+          "attente_ipc": 54583000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17"
+      ],
+      "charge_hote": [
+        19.53271484375,
+        15.53564453125,
+        10.5244140625
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 4,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 22092,
+      "ipc_ns": 154376,
+      "frequence": 1002714843,
+      "tas": 205856,
+      "preemptions": 69,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 22071,
+          "conflits": 9316,
+          "attente": 132183000,
+          "detention": 94054000,
+          "max": 10310000,
+          "switch": 237,
+          "migrations": 76,
+          "ipi": 78,
+          "tlb": 1419,
+          "ticks_usr": 17,
+          "ticks_sys": 62,
+          "ticks_idle": 5,
+          "attente_ipc": 2152000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 10972,
+          "conflits": 6695,
+          "attente": 130245000,
+          "detention": 55470000,
+          "max": 1062000,
+          "switch": 1183,
+          "migrations": 374,
+          "ipi": 664,
+          "tlb": 855,
+          "ticks_usr": 20,
+          "ticks_sys": 35,
+          "ticks_idle": 29,
+          "attente_ipc": 21129000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 10448,
+          "conflits": 6557,
+          "attente": 130850000,
+          "detention": 49447000,
+          "max": 910000,
+          "switch": 1033,
+          "migrations": 359,
+          "ipi": 535,
+          "tlb": 868,
+          "ticks_usr": 26,
+          "ticks_sys": 25,
+          "ticks_idle": 32,
+          "attente_ipc": 18280000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 7450,
+          "conflits": 5220,
+          "attente": 132533000,
+          "detention": 24166000,
+          "max": 684000,
+          "switch": 516,
+          "migrations": 239,
+          "ipi": 276,
+          "tlb": 369,
+          "ticks_usr": 26,
+          "ticks_sys": 18,
+          "ticks_idle": 39,
+          "attente_ipc": 9180000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process.rs:245:29",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        19.53271484375,
+        15.53564453125,
+        10.5244140625
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 4,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 24504,
+      "ipc_ns": 120866,
+      "frequence": 1002105468,
+      "tas": 74784,
+      "preemptions": 64,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 34093,
+          "conflits": 9359,
+          "attente": 46311000,
+          "detention": 120826000,
+          "max": 8086000,
+          "switch": 2235,
+          "migrations": 145,
+          "ipi": 720,
+          "tlb": 2677,
+          "ticks_usr": 12,
+          "ticks_sys": 51,
+          "ticks_idle": 3,
+          "attente_ipc": 17967000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12383,
+          "conflits": 8072,
+          "attente": 82503000,
+          "detention": 46380000,
+          "max": 834000,
+          "switch": 1512,
+          "migrations": 147,
+          "ipi": 0,
+          "tlb": 410,
+          "ticks_usr": 12,
+          "ticks_sys": 35,
+          "ticks_idle": 15,
+          "attente_ipc": 36844000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:449:17",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        19.81005859375,
+        15.6591796875,
+        10.59716796875
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 4,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 37484,
+      "ipc_ns": 97094,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 31,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26345,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6227050,
+          "max": 209500,
+          "switch": 4095,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4722,
+          "ticks_usr": 4,
+          "ticks_sys": 32,
+          "ticks_idle": 3,
+          "attente_ipc": 5176004
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17"
+      ],
+      "charge_hote": [
+        20.7861328125,
+        15.93017578125,
+        10.72216796875
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 4,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 14876,
+      "ipc_ns": 528086,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 64,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 20503,
+          "conflits": 10095,
+          "attente": 23876303,
+          "detention": 10129389,
+          "max": 421688,
+          "switch": 630,
+          "migrations": 239,
+          "ipi": 268,
+          "tlb": 2305,
+          "ticks_usr": 15,
+          "ticks_sys": 120,
+          "ticks_idle": 5,
+          "attente_ipc": 1292624
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 9024,
+          "conflits": 7489,
+          "attente": 15885575,
+          "detention": 7605202,
+          "max": 37313,
+          "switch": 1018,
+          "migrations": 348,
+          "ipi": 508,
+          "tlb": 1976,
+          "ticks_usr": 27,
+          "ticks_sys": 41,
+          "ticks_idle": 75,
+          "attente_ipc": 2971505
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8943,
+          "conflits": 7178,
+          "attente": 15834005,
+          "detention": 7364303,
+          "max": 50250,
+          "switch": 981,
+          "migrations": 328,
+          "ipi": 498,
+          "tlb": 1920,
+          "ticks_usr": 24,
+          "ticks_sys": 45,
+          "ticks_idle": 74,
+          "attente_ipc": 2959817
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8894,
+          "conflits": 7219,
+          "attente": 15201198,
+          "detention": 7342904,
+          "max": 50063,
+          "switch": 975,
+          "migrations": 329,
+          "ipi": 506,
+          "tlb": 1872,
+          "ticks_usr": 25,
+          "ticks_sys": 55,
+          "ticks_idle": 62,
+          "attente_ipc": 3082622
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        20.43115234375,
+        16.01416015625,
+        10.8125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 4,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 22048,
+      "ipc_ns": 324754,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 67,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 31266,
+          "conflits": 5990,
+          "attente": 6800497,
+          "detention": 12298412,
+          "max": 293687,
+          "switch": 1830,
+          "migrations": 319,
+          "ipi": 678,
+          "tlb": 4032,
+          "ticks_usr": 11,
+          "ticks_sys": 77,
+          "ticks_idle": 4,
+          "attente_ipc": 3290554
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12281,
+          "conflits": 5851,
+          "attente": 8240843,
+          "detention": 7415780,
+          "max": 118875,
+          "switch": 1388,
+          "migrations": 322,
+          "ipi": 0,
+          "tlb": 1965,
+          "ticks_usr": 16,
+          "ticks_sys": 51,
+          "ticks_idle": 26,
+          "attente_ipc": 7458571
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        20.236328125,
+        16.046875,
+        10.8544921875
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 5,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 15792,
+      "ipc_ns": 580230,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 70,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 17297,
+          "conflits": 9720,
+          "attente": 26186799,
+          "detention": 10719901,
+          "max": 424500,
+          "switch": 622,
+          "migrations": 232,
+          "ipi": 263,
+          "tlb": 2289,
+          "ticks_usr": 16,
+          "ticks_sys": 132,
+          "ticks_idle": 4,
+          "attente_ipc": 1425318
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 9004,
+          "conflits": 7201,
+          "attente": 16769843,
+          "detention": 8367793,
+          "max": 53625,
+          "switch": 977,
+          "migrations": 360,
+          "ipi": 504,
+          "tlb": 1911,
+          "ticks_usr": 26,
+          "ticks_sys": 53,
+          "ticks_idle": 75,
+          "attente_ipc": 3540672
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8511,
+          "conflits": 6905,
+          "attente": 17210335,
+          "detention": 7809387,
+          "max": 42250,
+          "switch": 938,
+          "migrations": 341,
+          "ipi": 484,
+          "tlb": 1831,
+          "ticks_usr": 23,
+          "ticks_sys": 45,
+          "ticks_idle": 86,
+          "attente_ipc": 3035756
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8913,
+          "conflits": 7034,
+          "attente": 16505649,
+          "detention": 8408775,
+          "max": 58875,
+          "switch": 984,
+          "migrations": 336,
+          "ipi": 496,
+          "tlb": 1913,
+          "ticks_usr": 20,
+          "ticks_sys": 53,
+          "ticks_idle": 81,
+          "attente_ipc": 3424888
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/mod.rs:670:18",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        20.05712890625,
+        16.0791015625,
+        10.89599609375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 5,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 32825,
+      "ipc_ns": 96166,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 30,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26319,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6227268,
+          "max": 206187,
+          "switch": 4084,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4719,
+          "ticks_usr": 5,
+          "ticks_sys": 30,
+          "ticks_idle": 3,
+          "attente_ipc": 5161863
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17"
+      ],
+      "charge_hote": [
+        20.255859375,
+        16.25634765625,
+        11.01953125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 5,
+      "elf": "7ffdf2f40c67f1d1cafe902d1f2de6345840f2fa99b91304d1e0cc1b0ac8c1ec",
+      "calcul_us": 19674,
+      "ipc_ns": 270979,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 61,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 28314,
+          "conflits": 8235,
+          "attente": 6232744,
+          "detention": 10489617,
+          "max": 278500,
+          "switch": 1896,
+          "migrations": 188,
+          "ipi": 771,
+          "tlb": 4548,
+          "ticks_usr": 10,
+          "ticks_sys": 64,
+          "ticks_idle": 4,
+          "attente_ipc": 2555292
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12846,
+          "conflits": 7908,
+          "attente": 7417591,
+          "detention": 6609516,
+          "max": 44938,
+          "switch": 1704,
+          "migrations": 191,
+          "ipi": 0,
+          "tlb": 2718,
+          "ticks_usr": 16,
+          "ticks_sys": 42,
+          "ticks_idle": 22,
+          "attente_ipc": 5079803
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        19.8349609375,
+        16.2353515625,
+        11.04248046875
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 5,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 25453,
+      "ipc_ns": 214372,
+      "frequence": 994664062,
+      "tas": 205856,
+      "preemptions": 74,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 28359,
+          "conflits": 6235,
+          "attente": 176226000,
+          "detention": 149050000,
+          "max": 11404000,
+          "switch": 274,
+          "migrations": 86,
+          "ipi": 83,
+          "tlb": 1440,
+          "ticks_usr": 15,
+          "ticks_sys": 85,
+          "ticks_idle": 5,
+          "attente_ipc": 3819000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 9647,
+          "conflits": 4393,
+          "attente": 190276000,
+          "detention": 62290000,
+          "max": 1247000,
+          "switch": 875,
+          "migrations": 313,
+          "ipi": 560,
+          "tlb": 510,
+          "ticks_usr": 26,
+          "ticks_sys": 37,
+          "ticks_idle": 44,
+          "attente_ipc": 24928000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 10467,
+          "conflits": 4443,
+          "attente": 194824000,
+          "detention": 61410000,
+          "max": 1250000,
+          "switch": 817,
+          "migrations": 308,
+          "ipi": 601,
+          "tlb": 424,
+          "ticks_usr": 22,
+          "ticks_sys": 37,
+          "ticks_idle": 48,
+          "attente_ipc": 27667000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 7962,
+          "conflits": 3916,
+          "attente": 200848000,
+          "detention": 46243000,
+          "max": 845000,
+          "switch": 606,
+          "migrations": 249,
+          "ipi": 432,
+          "tlb": 297,
+          "ticks_usr": 26,
+          "ticks_sys": 30,
+          "ticks_idle": 54,
+          "attente_ipc": 20387000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process.rs:245:29",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        20.16845703125,
+        16.36376953125,
+        11.1181640625
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 5,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 43795,
+      "ipc_ns": 61003,
+      "frequence": 1000523437,
+      "tas": 9248,
+      "preemptions": 33,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26358,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 77384000,
+          "max": 6501000,
+          "switch": 4104,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 5,
+          "ticks_sys": 33,
+          "ticks_idle": 3,
+          "attente_ipc": 50509000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17"
+      ],
+      "charge_hote": [
+        20.16845703125,
+        16.36376953125,
+        11.1181640625
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 5,
+      "elf": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+      "calcul_us": 22910,
+      "ipc_ns": 101423,
+      "frequence": 997964843,
+      "tas": 74784,
+      "preemptions": 44,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26599,
+          "conflits": 10304,
+          "attente": 45179000,
+          "detention": 82188000,
+          "max": 6192000,
+          "switch": 2091,
+          "migrations": 34,
+          "ipi": 739,
+          "tlb": 2839,
+          "ticks_usr": 8,
+          "ticks_sys": 41,
+          "ticks_idle": 2,
+          "attente_ipc": 12235000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12376,
+          "conflits": 9031,
+          "attente": 62827000,
+          "detention": 44942000,
+          "max": 767000,
+          "switch": 1633,
+          "migrations": 35,
+          "ipi": 0,
+          "tlb": 605,
+          "ticks_usr": 12,
+          "ticks_sys": 29,
+          "ticks_idle": 9,
+          "attente_ipc": 35237000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:534:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        19.91455078125,
+        16.3740234375,
+        11.15234375
+      ]
+    }
+  ],
+  "regroupement_ipi_ecarte": [
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 1,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 37438,
+      "ipc_ns": 98041,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 32,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26391,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6301370,
+          "max": 214063,
+          "switch": 4108,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4738,
+          "ticks_usr": 4,
+          "ticks_sys": 33,
+          "ticks_idle": 3,
+          "attente_ipc": 5242759
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        18.80859375,
+        17.8359375,
+        12.68798828125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 1,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 19814,
+      "ipc_ns": 267167,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 60,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 27614,
+          "conflits": 8702,
+          "attente": 6512016,
+          "detention": 9943619,
+          "max": 275500,
+          "switch": 1895,
+          "migrations": 185,
+          "ipi": 808,
+          "tlb": 4452,
+          "ticks_usr": 9,
+          "ticks_sys": 64,
+          "ticks_idle": 4,
+          "attente_ipc": 2470564
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 13340,
+          "conflits": 8430,
+          "attente": 7263196,
+          "detention": 6625250,
+          "max": 49750,
+          "switch": 1857,
+          "migrations": 188,
+          "ipi": 0,
+          "tlb": 2974,
+          "ticks_usr": 15,
+          "ticks_sys": 39,
+          "ticks_idle": 24,
+          "attente_ipc": 5091618
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        18.58349609375,
+        17.80517578125,
+        12.70703125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 1,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 20653,
+      "ipc_ns": 543706,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 58,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26761,
+          "conflits": 10597,
+          "attente": 25128888,
+          "detention": 9899824,
+          "max": 413250,
+          "switch": 578,
+          "migrations": 214,
+          "ipi": 244,
+          "tlb": 2196,
+          "ticks_usr": 13,
+          "ticks_sys": 123,
+          "ticks_idle": 7,
+          "attente_ipc": 1176380
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 9294,
+          "conflits": 7536,
+          "attente": 16348396,
+          "detention": 7873983,
+          "max": 66188,
+          "switch": 1061,
+          "migrations": 369,
+          "ipi": 532,
+          "tlb": 2038,
+          "ticks_usr": 24,
+          "ticks_sys": 45,
+          "ticks_idle": 77,
+          "attente_ipc": 3249500
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8847,
+          "conflits": 7198,
+          "attente": 16355926,
+          "detention": 7442596,
+          "max": 12188,
+          "switch": 983,
+          "migrations": 348,
+          "ipi": 501,
+          "tlb": 1913,
+          "ticks_usr": 20,
+          "ticks_sys": 45,
+          "ticks_idle": 82,
+          "attente_ipc": 3138306
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 9150,
+          "conflits": 7506,
+          "attente": 16022496,
+          "detention": 7795493,
+          "max": 33625,
+          "switch": 1008,
+          "migrations": 333,
+          "ipi": 534,
+          "tlb": 1927,
+          "ticks_usr": 21,
+          "ticks_sys": 49,
+          "ticks_idle": 77,
+          "attente_ipc": 3417501
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process.rs:245:29",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        18.34619140625,
+        17.7783203125,
+        12.7568359375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 1,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 46272,
+      "ipc_ns": 62025,
+      "frequence": 1003238281,
+      "tas": 9248,
+      "preemptions": 37,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26404,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 92085000,
+          "max": 9530000,
+          "switch": 4118,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 6,
+          "ticks_sys": 40,
+          "ticks_idle": 3,
+          "attente_ipc": 51725000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:397:9"
+      ],
+      "charge_hote": [
+        18.34619140625,
+        17.7783203125,
+        12.7568359375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 1,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 23133,
+      "ipc_ns": 102918,
+      "frequence": 1005589843,
+      "tas": 74784,
+      "preemptions": 50,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 27359,
+          "conflits": 10060,
+          "attente": 43740000,
+          "detention": 88468000,
+          "max": 6421000,
+          "switch": 2118,
+          "migrations": 57,
+          "ipi": 732,
+          "tlb": 2567,
+          "ticks_usr": 9,
+          "ticks_sys": 41,
+          "ticks_idle": 2,
+          "attente_ipc": 14108000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12393,
+          "conflits": 8773,
+          "attente": 68641000,
+          "detention": 43491000,
+          "max": 1056000,
+          "switch": 1615,
+          "migrations": 58,
+          "ipi": 0,
+          "tlb": 448,
+          "ticks_usr": 8,
+          "ticks_sys": 29,
+          "ticks_idle": 14,
+          "attente_ipc": 35934000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        18.55859375,
+        17.83154296875,
+        12.8046875
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 1,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 20212,
+      "ipc_ns": 183701,
+      "frequence": 997820312,
+      "tas": 205856,
+      "preemptions": 64,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 27119,
+          "conflits": 8186,
+          "attente": 153039000,
+          "detention": 111059000,
+          "max": 10470000,
+          "switch": 271,
+          "migrations": 90,
+          "ipi": 78,
+          "tlb": 1454,
+          "ticks_usr": 18,
+          "ticks_sys": 69,
+          "ticks_idle": 6,
+          "attente_ipc": 2521000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 10388,
+          "conflits": 5825,
+          "attente": 147308000,
+          "detention": 57943000,
+          "max": 1183000,
+          "switch": 975,
+          "migrations": 367,
+          "ipi": 588,
+          "tlb": 699,
+          "ticks_usr": 25,
+          "ticks_sys": 34,
+          "ticks_idle": 35,
+          "attente_ipc": 24701000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 10170,
+          "conflits": 5692,
+          "attente": 148017000,
+          "detention": 54846000,
+          "max": 941000,
+          "switch": 928,
+          "migrations": 341,
+          "ipi": 531,
+          "tlb": 648,
+          "ticks_usr": 25,
+          "ticks_sys": 28,
+          "ticks_idle": 40,
+          "attente_ipc": 21129000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8098,
+          "conflits": 4783,
+          "attente": 152658000,
+          "detention": 34031000,
+          "max": 983000,
+          "switch": 549,
+          "migrations": 237,
+          "ipi": 350,
+          "tlb": 332,
+          "ticks_usr": 26,
+          "ticks_sys": 23,
+          "ticks_idle": 44,
+          "attente_ipc": 14760000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        18.55859375,
+        17.83154296875,
+        12.8046875
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 2,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 21364,
+      "ipc_ns": 188463,
+      "frequence": 1003296875,
+      "tas": 205856,
+      "preemptions": 71,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 27960,
+          "conflits": 7024,
+          "attente": 157485000,
+          "detention": 126914000,
+          "max": 10655000,
+          "switch": 254,
+          "migrations": 79,
+          "ipi": 63,
+          "tlb": 1440,
+          "ticks_usr": 17,
+          "ticks_sys": 74,
+          "ticks_idle": 6,
+          "attente_ipc": 2402000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 10193,
+          "conflits": 5245,
+          "attente": 164439000,
+          "detention": 62593000,
+          "max": 1280000,
+          "switch": 959,
+          "migrations": 359,
+          "ipi": 585,
+          "tlb": 657,
+          "ticks_usr": 24,
+          "ticks_sys": 37,
+          "ticks_idle": 36,
+          "attente_ipc": 26788000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 10080,
+          "conflits": 5048,
+          "attente": 171304000,
+          "detention": 52307000,
+          "max": 909000,
+          "switch": 838,
+          "migrations": 317,
+          "ipi": 523,
+          "tlb": 520,
+          "ticks_usr": 26,
+          "ticks_sys": 36,
+          "ticks_idle": 35,
+          "attente_ipc": 20964000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 7691,
+          "conflits": 4298,
+          "attente": 169356000,
+          "detention": 35933000,
+          "max": 1051000,
+          "switch": 568,
+          "migrations": 231,
+          "ipi": 363,
+          "tlb": 327,
+          "ticks_usr": 24,
+          "ticks_sys": 26,
+          "ticks_idle": 47,
+          "attente_ipc": 15234000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        18.353515625,
+        17.80078125,
+        12.8232421875
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 2,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 26059,
+      "ipc_ns": 130090,
+      "frequence": 996660156,
+      "tas": 74784,
+      "preemptions": 52,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 27121,
+          "conflits": 9188,
+          "attente": 46681000,
+          "detention": 120299000,
+          "max": 6792000,
+          "switch": 2164,
+          "migrations": 94,
+          "ipi": 575,
+          "tlb": 2966,
+          "ticks_usr": 12,
+          "ticks_sys": 45,
+          "ticks_idle": 4,
+          "attente_ipc": 15095000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 11289,
+          "conflits": 8007,
+          "attente": 97397000,
+          "detention": 45665000,
+          "max": 831000,
+          "switch": 1198,
+          "migrations": 95,
+          "ipi": 0,
+          "tlb": 397,
+          "ticks_usr": 10,
+          "ticks_sys": 37,
+          "ticks_idle": 15,
+          "attente_ipc": 38283000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        18.5654296875,
+        17.853515625,
+        12.87109375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 2,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 46484,
+      "ipc_ns": 61868,
+      "frequence": 1000296875,
+      "tas": 9248,
+      "preemptions": 34,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26365,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 78430000,
+          "max": 6788000,
+          "switch": 4105,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 6,
+          "ticks_sys": 33,
+          "ticks_idle": 3,
+          "attente_ipc": 50280000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        18.5654296875,
+        17.853515625,
+        12.87109375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 2,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 20892,
+      "ipc_ns": 655728,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 69,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 20207,
+          "conflits": 9515,
+          "attente": 30003448,
+          "detention": 11820123,
+          "max": 429563,
+          "switch": 554,
+          "migrations": 208,
+          "ipi": 238,
+          "tlb": 2157,
+          "ticks_usr": 14,
+          "ticks_sys": 146,
+          "ticks_idle": 6,
+          "attente_ipc": 1529692
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 8521,
+          "conflits": 6554,
+          "attente": 19332759,
+          "detention": 8690724,
+          "max": 23187,
+          "switch": 883,
+          "migrations": 351,
+          "ipi": 463,
+          "tlb": 1651,
+          "ticks_usr": 25,
+          "ticks_sys": 57,
+          "ticks_idle": 88,
+          "attente_ipc": 3909126
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8816,
+          "conflits": 6663,
+          "attente": 19457291,
+          "detention": 9005451,
+          "max": 69687,
+          "switch": 920,
+          "migrations": 349,
+          "ipi": 489,
+          "tlb": 1715,
+          "ticks_usr": 22,
+          "ticks_sys": 60,
+          "ticks_idle": 88,
+          "attente_ipc": 4250806
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 9032,
+          "conflits": 6841,
+          "attente": 19021081,
+          "detention": 9607856,
+          "max": 90312,
+          "switch": 956,
+          "migrations": 333,
+          "ipi": 521,
+          "tlb": 1771,
+          "ticks_usr": 24,
+          "ticks_sys": 59,
+          "ticks_idle": 87,
+          "attente_ipc": 4609365
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/mod.rs:420:15",
+        "kernel/src/sched/process.rs:245:29",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        18.70556640625,
+        17.90673828125,
+        12.9482421875
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 2,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 20846,
+      "ipc_ns": 230324,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 49,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 22606,
+          "conflits": 9333,
+          "attente": 5944505,
+          "detention": 8463557,
+          "max": 278937,
+          "switch": 1924,
+          "migrations": 137,
+          "ipi": 882,
+          "tlb": 4468,
+          "ticks_usr": 8,
+          "ticks_sys": 57,
+          "ticks_idle": 4,
+          "attente_ipc": 2219622
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 13492,
+          "conflits": 8933,
+          "attente": 6059130,
+          "detention": 6021386,
+          "max": 49500,
+          "switch": 1959,
+          "migrations": 139,
+          "ipi": 0,
+          "tlb": 3173,
+          "ticks_usr": 20,
+          "ticks_sys": 38,
+          "ticks_idle": 14,
+          "attente_ipc": 4332501
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        18.32861328125,
+        17.841796875,
+        12.9541015625
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 2,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 33004,
+      "ipc_ns": 99075,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 30,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26365,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6356040,
+          "max": 213188,
+          "switch": 4100,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4729,
+          "ticks_usr": 5,
+          "ticks_sys": 30,
+          "ticks_idle": 3,
+          "attente_ipc": 5304644
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        17.74169921875,
+        17.72802734375,
+        12.9423828125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 3,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 20168,
+      "ipc_ns": 271797,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 61,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 28831,
+          "conflits": 8572,
+          "attente": 6823142,
+          "detention": 10772652,
+          "max": 508188,
+          "switch": 1841,
+          "migrations": 217,
+          "ipi": 787,
+          "tlb": 4333,
+          "ticks_usr": 14,
+          "ticks_sys": 63,
+          "ticks_idle": 4,
+          "attente_ipc": 2526068
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 13391,
+          "conflits": 8129,
+          "attente": 7383988,
+          "detention": 6826384,
+          "max": 51563,
+          "switch": 1812,
+          "migrations": 220,
+          "ipi": 0,
+          "tlb": 2866,
+          "ticks_usr": 17,
+          "ticks_sys": 42,
+          "ticks_idle": 22,
+          "attente_ipc": 5398644
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:397:9",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        16.72412109375,
+        17.5068359375,
+        12.91943359375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 3,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 21480,
+      "ipc_ns": 695159,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 86,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 20950,
+          "conflits": 9099,
+          "attente": 32199695,
+          "detention": 11879694,
+          "max": 453375,
+          "switch": 516,
+          "migrations": 187,
+          "ipi": 182,
+          "tlb": 2056,
+          "ticks_usr": 17,
+          "ticks_sys": 154,
+          "ticks_idle": 6,
+          "attente_ipc": 1357820
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 8858,
+          "conflits": 6574,
+          "attente": 20148975,
+          "detention": 9229633,
+          "max": 26438,
+          "switch": 910,
+          "migrations": 347,
+          "ipi": 480,
+          "tlb": 1687,
+          "ticks_usr": 31,
+          "ticks_sys": 47,
+          "ticks_idle": 103,
+          "attente_ipc": 4290443
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8993,
+          "conflits": 6523,
+          "attente": 20626010,
+          "detention": 10080677,
+          "max": 48813,
+          "switch": 936,
+          "migrations": 344,
+          "ipi": 509,
+          "tlb": 1795,
+          "ticks_usr": 32,
+          "ticks_sys": 58,
+          "ticks_idle": 90,
+          "attente_ipc": 4758447
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 9056,
+          "conflits": 6642,
+          "attente": 20446896,
+          "detention": 9970917,
+          "max": 27125,
+          "switch": 957,
+          "migrations": 361,
+          "ipi": 541,
+          "tlb": 1757,
+          "ticks_usr": 32,
+          "ticks_sys": 63,
+          "ticks_idle": 85,
+          "attente_ipc": 5317122
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process.rs:245:29",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        16.265625,
+        17.3984375,
+        12.90771484375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 3,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 37147,
+      "ipc_ns": 97251,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 31,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26336,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6267362,
+          "max": 206625,
+          "switch": 4090,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4723,
+          "ticks_usr": 3,
+          "ticks_sys": 34,
+          "ticks_idle": 3,
+          "attente_ipc": 5214569
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        15.84375,
+        17.2919921875,
+        12.896484375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 3,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 26936,
+      "ipc_ns": 124411,
+      "frequence": 1000406250,
+      "tas": 74784,
+      "preemptions": 51,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 24528,
+          "conflits": 9588,
+          "attente": 49033000,
+          "detention": 105339000,
+          "max": 6660000,
+          "switch": 2150,
+          "migrations": 95,
+          "ipi": 696,
+          "tlb": 2701,
+          "ticks_usr": 9,
+          "ticks_sys": 46,
+          "ticks_idle": 3,
+          "attente_ipc": 16561000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 11817,
+          "conflits": 8496,
+          "attente": 84547000,
+          "detention": 48091000,
+          "max": 905000,
+          "switch": 1442,
+          "migrations": 96,
+          "ipi": 0,
+          "tlb": 449,
+          "ticks_usr": 12,
+          "ticks_sys": 34,
+          "ticks_idle": 15,
+          "attente_ipc": 39976000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        15.77587890625,
+        17.25390625,
+        12.90869140625
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 3,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 25175,
+      "ipc_ns": 212908,
+      "frequence": 998957031,
+      "tas": 205856,
+      "preemptions": 75,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 30629,
+          "conflits": 6708,
+          "attente": 174369000,
+          "detention": 144089000,
+          "max": 10689000,
+          "switch": 282,
+          "migrations": 95,
+          "ipi": 76,
+          "tlb": 1472,
+          "ticks_usr": 18,
+          "ticks_sys": 81,
+          "ticks_idle": 5,
+          "attente_ipc": 3272000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 10495,
+          "conflits": 5065,
+          "attente": 184415000,
+          "detention": 70003000,
+          "max": 952000,
+          "switch": 900,
+          "migrations": 335,
+          "ipi": 544,
+          "tlb": 607,
+          "ticks_usr": 27,
+          "ticks_sys": 42,
+          "ticks_idle": 36,
+          "attente_ipc": 28314000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 10005,
+          "conflits": 4785,
+          "attente": 186536000,
+          "detention": 59386000,
+          "max": 953000,
+          "switch": 873,
+          "migrations": 320,
+          "ipi": 592,
+          "tlb": 496,
+          "ticks_usr": 25,
+          "ticks_sys": 38,
+          "ticks_idle": 42,
+          "attente_ipc": 26162000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 7314,
+          "conflits": 4028,
+          "attente": 193342000,
+          "detention": 38534000,
+          "max": 392000,
+          "switch": 547,
+          "migrations": 236,
+          "ipi": 317,
+          "tlb": 324,
+          "ticks_usr": 27,
+          "ticks_sys": 25,
+          "ticks_idle": 53,
+          "attente_ipc": 14887000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        16.11376953125,
+        17.29931640625,
+        12.9501953125
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 3,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 48331,
+      "ipc_ns": 64244,
+      "frequence": 1000390625,
+      "tas": 9248,
+      "preemptions": 36,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26365,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 80775000,
+          "max": 7023000,
+          "switch": 4106,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 5,
+          "ticks_sys": 36,
+          "ticks_idle": 3,
+          "attente_ipc": 53285000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        16.11376953125,
+        17.29931640625,
+        12.9501953125
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 4,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 43267,
+      "ipc_ns": 64316,
+      "frequence": 1003578125,
+      "tas": 9248,
+      "preemptions": 37,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26386,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 80673000,
+          "max": 6652000,
+          "switch": 4112,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 6,
+          "ticks_sys": 36,
+          "ticks_idle": 3,
+          "attente_ipc": 53287000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        16.1044921875,
+        17.27734375,
+        12.9677734375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 4,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 24626,
+      "ipc_ns": 242744,
+      "frequence": 1002343750,
+      "tas": 205856,
+      "preemptions": 82,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 28731,
+          "conflits": 6098,
+          "attente": 198818000,
+          "detention": 155205000,
+          "max": 12015000,
+          "switch": 331,
+          "migrations": 107,
+          "ipi": 94,
+          "tlb": 1462,
+          "ticks_usr": 17,
+          "ticks_sys": 90,
+          "ticks_idle": 4,
+          "attente_ipc": 5343000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 9056,
+          "conflits": 4295,
+          "attente": 213834000,
+          "detention": 70811000,
+          "max": 903000,
+          "switch": 817,
+          "migrations": 326,
+          "ipi": 520,
+          "tlb": 531,
+          "ticks_usr": 27,
+          "ticks_sys": 41,
+          "ticks_idle": 44,
+          "attente_ipc": 29886000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 9698,
+          "conflits": 4623,
+          "attente": 214366000,
+          "detention": 66478000,
+          "max": 996000,
+          "switch": 803,
+          "migrations": 307,
+          "ipi": 472,
+          "tlb": 482,
+          "ticks_usr": 26,
+          "ticks_sys": 32,
+          "ticks_idle": 55,
+          "attente_ipc": 28580000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 8757,
+          "conflits": 4224,
+          "attente": 213927000,
+          "detention": 52144000,
+          "max": 1250000,
+          "switch": 679,
+          "migrations": 267,
+          "ipi": 391,
+          "tlb": 391,
+          "ticks_usr": 25,
+          "ticks_sys": 31,
+          "ticks_idle": 56,
+          "attente_ipc": 21449000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        16.1044921875,
+        17.27734375,
+        12.9677734375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 4,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 26249,
+      "ipc_ns": 123716,
+      "frequence": 999925781,
+      "tas": 74784,
+      "preemptions": 56,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 31515,
+          "conflits": 9386,
+          "attente": 46401000,
+          "detention": 110585000,
+          "max": 6472000,
+          "switch": 2188,
+          "migrations": 104,
+          "ipi": 627,
+          "tlb": 2892,
+          "ticks_usr": 10,
+          "ticks_sys": 46,
+          "ticks_idle": 3,
+          "attente_ipc": 15394000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 11365,
+          "conflits": 8142,
+          "attente": 86441000,
+          "detention": 45151000,
+          "max": 982000,
+          "switch": 1270,
+          "migrations": 104,
+          "ipi": 0,
+          "tlb": 435,
+          "ticks_usr": 7,
+          "ticks_sys": 36,
+          "ticks_idle": 15,
+          "attente_ipc": 38168000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        17.13671875,
+        17.4716796875,
+        13.0615234375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 4,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 36952,
+      "ipc_ns": 96436,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 31,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26358,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6260604,
+          "max": 223000,
+          "switch": 4099,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4726,
+          "ticks_usr": 3,
+          "ticks_sys": 34,
+          "ticks_idle": 3,
+          "attente_ipc": 5154426
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        16.72509765625,
+        17.38037109375,
+        13.05517578125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 4,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 19390,
+      "ipc_ns": 654831,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 75,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 18972,
+          "conflits": 10143,
+          "attente": 30541333,
+          "detention": 11803675,
+          "max": 458938,
+          "switch": 544,
+          "migrations": 199,
+          "ipi": 222,
+          "tlb": 2183,
+          "ticks_usr": 16,
+          "ticks_sys": 145,
+          "ticks_idle": 5,
+          "attente_ipc": 1307632
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 8901,
+          "conflits": 7085,
+          "attente": 19971147,
+          "detention": 9267394,
+          "max": 16437,
+          "switch": 976,
+          "migrations": 339,
+          "ipi": 489,
+          "tlb": 1903,
+          "ticks_usr": 35,
+          "ticks_sys": 49,
+          "ticks_idle": 87,
+          "attente_ipc": 3748694
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8762,
+          "conflits": 6865,
+          "attente": 20434812,
+          "detention": 8877973,
+          "max": 51625,
+          "switch": 907,
+          "migrations": 346,
+          "ipi": 497,
+          "tlb": 1761,
+          "ticks_usr": 30,
+          "ticks_sys": 53,
+          "ticks_idle": 88,
+          "attente_ipc": 4077819
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 9017,
+          "conflits": 7101,
+          "attente": 20287584,
+          "detention": 9714942,
+          "max": 49500,
+          "switch": 979,
+          "migrations": 340,
+          "ipi": 508,
+          "tlb": 1944,
+          "ticks_usr": 28,
+          "ticks_sys": 65,
+          "ticks_idle": 78,
+          "attente_ipc": 3927512
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/mod.rs:420:15",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        16.533203125,
+        17.31787109375,
+        13.08349609375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 4,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 27040,
+      "ipc_ns": 313013,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 71,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 32430,
+          "conflits": 6634,
+          "attente": 7043207,
+          "detention": 12063636,
+          "max": 330375,
+          "switch": 1818,
+          "migrations": 315,
+          "ipi": 662,
+          "tlb": 4094,
+          "ticks_usr": 15,
+          "ticks_sys": 73,
+          "ticks_idle": 3,
+          "attente_ipc": 3196189
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 12603,
+          "conflits": 6493,
+          "attente": 8127949,
+          "detention": 7227306,
+          "max": 53375,
+          "switch": 1496,
+          "migrations": 318,
+          "ipi": 0,
+          "tlb": 2167,
+          "ticks_usr": 18,
+          "ticks_sys": 46,
+          "ticks_idle": 27,
+          "attente_ipc": 6920384
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        16.890625,
+        17.37890625,
+        13.12939453125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 4,
+      "repetition": 5,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 18878,
+      "ipc_ns": 630078,
+      "frequence": 62500000,
+      "tas": 108576,
+      "preemptions": 85,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 22102,
+          "conflits": 10012,
+          "attente": 29009629,
+          "detention": 12095951,
+          "max": 435437,
+          "switch": 592,
+          "migrations": 208,
+          "ipi": 236,
+          "tlb": 2232,
+          "ticks_usr": 18,
+          "ticks_sys": 145,
+          "ticks_idle": 6,
+          "attente_ipc": 1408752
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 8846,
+          "conflits": 7037,
+          "attente": 19903782,
+          "detention": 8724053,
+          "max": 52250,
+          "switch": 933,
+          "migrations": 333,
+          "ipi": 472,
+          "tlb": 1810,
+          "ticks_usr": 32,
+          "ticks_sys": 55,
+          "ticks_idle": 85,
+          "attente_ipc": 3624000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 8662,
+          "conflits": 6839,
+          "attente": 19118907,
+          "detention": 8689229,
+          "max": 36563,
+          "switch": 972,
+          "migrations": 339,
+          "ipi": 467,
+          "tlb": 1835,
+          "ticks_usr": 33,
+          "ticks_sys": 46,
+          "ticks_idle": 92,
+          "attente_ipc": 3626438
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 9007,
+          "conflits": 7069,
+          "attente": 18867421,
+          "detention": 9208280,
+          "max": 64063,
+          "switch": 961,
+          "migrations": 322,
+          "ipi": 526,
+          "tlb": 1805,
+          "ticks_usr": 25,
+          "ticks_sys": 63,
+          "ticks_idle": 84,
+          "attente_ipc": 4148374
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        17.3681640625,
+        17.46484375,
+        13.208984375
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 1,
+      "repetition": 5,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 33438,
+      "ipc_ns": 97860,
+      "frequence": 62500000,
+      "tas": 10272,
+      "preemptions": 31,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26345,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 6331842,
+          "max": 223875,
+          "switch": 4092,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 4733,
+          "ticks_usr": 6,
+          "ticks_sys": 31,
+          "ticks_idle": 3,
+          "attente_ipc": 5231054
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        18.61962890625,
+        17.72265625,
+        13.32470703125
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "cpus": 2,
+      "repetition": 5,
+      "elf": "ed3d9a30a781fe74b72ebfd1ea2bf609da6ecd812360d1568bcee73b70771851",
+      "calcul_us": 24032,
+      "ipc_ns": 466288,
+      "frequence": 62500000,
+      "tas": 43040,
+      "preemptions": 71,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 60422,
+          "conflits": 3381,
+          "attente": 9916275,
+          "detention": 16737628,
+          "max": 456312,
+          "switch": 1357,
+          "migrations": 247,
+          "ipi": 295,
+          "tlb": 3030,
+          "ticks_usr": 17,
+          "ticks_sys": 94,
+          "ticks_idle": 3,
+          "attente_ipc": 4734878
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 14559,
+          "conflits": 3313,
+          "attente": 13273902,
+          "detention": 9742961,
+          "max": 400875,
+          "switch": 1490,
+          "migrations": 250,
+          "ipi": 0,
+          "tlb": 1750,
+          "ticks_usr": 18,
+          "ticks_sys": 73,
+          "ticks_idle": 22,
+          "attente_ipc": 14389522
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/gate.rs:74:5",
+        "kernel/src/sched/process/syscall.rs:94:25"
+      ],
+      "charge_hote": [
+        18.32958984375,
+        17.67724609375,
+        13.33447265625
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 4,
+      "repetition": 5,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 19316,
+      "ipc_ns": 184481,
+      "frequence": 1001207031,
+      "tas": 205856,
+      "preemptions": 71,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 31967,
+          "conflits": 7368,
+          "attente": 153807000,
+          "detention": 114534000,
+          "max": 10249000,
+          "switch": 271,
+          "migrations": 90,
+          "ipi": 76,
+          "tlb": 1436,
+          "ticks_usr": 15,
+          "ticks_sys": 72,
+          "ticks_idle": 4,
+          "attente_ipc": 2795000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 10436,
+          "conflits": 5579,
+          "attente": 153294000,
+          "detention": 61067000,
+          "max": 982000,
+          "switch": 928,
+          "migrations": 346,
+          "ipi": 584,
+          "tlb": 657,
+          "ticks_usr": 26,
+          "ticks_sys": 32,
+          "ticks_idle": 35,
+          "attente_ipc": 26063000
+        },
+        {
+          "cpu": 2,
+          "acquisitions": 10464,
+          "conflits": 5335,
+          "attente": 160018000,
+          "detention": 50890000,
+          "max": 236000,
+          "switch": 878,
+          "migrations": 336,
+          "ipi": 539,
+          "tlb": 567,
+          "ticks_usr": 21,
+          "ticks_sys": 29,
+          "ticks_idle": 42,
+          "attente_ipc": 21470000
+        },
+        {
+          "cpu": 3,
+          "acquisitions": 7456,
+          "conflits": 4240,
+          "attente": 157032000,
+          "detention": 34499000,
+          "max": 1072000,
+          "switch": 547,
+          "migrations": 231,
+          "ipi": 338,
+          "tlb": 314,
+          "ticks_usr": 24,
+          "ticks_sys": 19,
+          "ticks_idle": 50,
+          "attente_ipc": 14307000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/process.rs:149:17",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "kernel/src/sched/process/ipc/traffic.rs:496:19"
+      ],
+      "charge_hote": [
+        18.86328125,
+        17.79833984375,
+        13.40234375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 1,
+      "repetition": 5,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 42772,
+      "ipc_ns": 61591,
+      "frequence": 1003652343,
+      "tas": 9248,
+      "preemptions": 33,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26358,
+          "conflits": 0,
+          "attente": 0,
+          "detention": 77986000,
+          "max": 6714000,
+          "switch": 4102,
+          "migrations": 0,
+          "ipi": 0,
+          "tlb": 0,
+          "ticks_usr": 5,
+          "ticks_sys": 33,
+          "ticks_idle": 3,
+          "attente_ipc": 50953000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17"
+      ],
+      "charge_hote": [
+        18.86328125,
+        17.79833984375,
+        13.40234375
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "cpus": 2,
+      "repetition": 5,
+      "elf": "644eea534dfa2b4eaefd69f456dbfd654b29961a212f88523d20f9031c723676",
+      "calcul_us": 25107,
+      "ipc_ns": 115874,
+      "frequence": 999527343,
+      "tas": 74784,
+      "preemptions": 52,
+      "profil": [
+        {
+          "cpu": 0,
+          "acquisitions": 26707,
+          "conflits": 9472,
+          "attente": 44163000,
+          "detention": 103197000,
+          "max": 6390000,
+          "switch": 2162,
+          "migrations": 92,
+          "ipi": 649,
+          "tlb": 2990,
+          "ticks_usr": 9,
+          "ticks_sys": 47,
+          "ticks_idle": 2,
+          "attente_ipc": 14008000
+        },
+        {
+          "cpu": 1,
+          "acquisitions": 11657,
+          "conflits": 8255,
+          "attente": 83112000,
+          "detention": 43582000,
+          "max": 794000,
+          "switch": 1333,
+          "migrations": 94,
+          "ipi": 0,
+          "tlb": 499,
+          "ticks_usr": 9,
+          "ticks_sys": 35,
+          "ticks_idle": 13,
+          "attente_ipc": 34827000
+        }
+      ],
+      "max_sites": [
+        "kernel/src/sched/mod.rs:537:17",
+        "kernel/src/sched/process.rs:245:29"
+      ],
+      "charge_hote": [
+        19.2744140625,
+        17.90087890625,
+        13.46435546875
+      ]
+    }
+  ],
+  "stockage": [
+    {
+      "essai": "io-aarch64-1-1",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        19.7958984375,
+        15.37548828125,
+        10.38037109375
+      ],
+      "cpu": 1,
+      "ms": 171.893,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 24.702
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 9.168
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.978
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.356,
+        "copie_out_ms": 3.593,
+        "soumission_ms": 0.954,
+        "kick_a_used_observe_ms": 34.744,
+        "used_a_acquittement_ms": 0.106,
+        "traitement_irq_ms": 0.211,
+        "kick_a_entree_irq_ms": 33.697
+      },
+      "attente_barrieres_ms": [
+        1.793,
+        0.185
+      ],
+      "resident_pic_cadres": 9755,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "635de4dd480676dfb43ef6ed76907ab397a2c3d30dbd856eb9252d9555885fde"
+    },
+    {
+      "essai": "io-aarch64-1-2",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        18.49462890625,
+        17.7314453125,
+        12.5908203125
+      ],
+      "cpu": 1,
+      "ms": 161.738,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 16.157
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 6.595
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.369
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.514,
+        "copie_out_ms": 3.752,
+        "soumission_ms": 1.033,
+        "kick_a_used_observe_ms": 22.939,
+        "used_a_acquittement_ms": 0.102,
+        "traitement_irq_ms": 0.226,
+        "kick_a_entree_irq_ms": 21.673
+      },
+      "attente_barrieres_ms": [
+        1.294,
+        0.075
+      ],
+      "resident_pic_cadres": 9755,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "5600880e2d991a6139c13546aa0aae452b0ef400cb25d49906d4cd5d788b0099"
+    },
+    {
+      "essai": "io-aarch64-1-3",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        17.13916015625,
+        17.42236328125,
+        13.16943359375
+      ],
+      "cpu": 1,
+      "ms": 177.942,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 28.057
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 10.931
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 2.371
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.512,
+        "copie_out_ms": 3.643,
+        "soumission_ms": 1.184,
+        "kick_a_used_observe_ms": 40.014,
+        "used_a_acquittement_ms": 0.117,
+        "traitement_irq_ms": 0.31,
+        "kick_a_entree_irq_ms": 38.838
+      },
+      "attente_barrieres_ms": [
+        2.117,
+        0.254
+      ],
+      "resident_pic_cadres": 9755,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "c396780b3da7e7f9dc001193ad30010372988898dcab2229882e5d80c8d2b41a"
+    },
+    {
+      "essai": "io-aarch64-2-1",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        20.7861328125,
+        15.93017578125,
+        10.72216796875
+      ],
+      "cpu": 2,
+      "ms": 202.609,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 16.816
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 6.104
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.404
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.445,
+        "copie_out_ms": 3.972,
+        "soumission_ms": 1.151,
+        "kick_a_used_observe_ms": 22.998,
+        "used_a_acquittement_ms": 0.127,
+        "traitement_irq_ms": 0.312,
+        "kick_a_entree_irq_ms": 22.112
+      },
+      "attente_barrieres_ms": [
+        1.263,
+        0.141
+      ],
+      "resident_pic_cadres": 9751,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "12fe26a81c9bcf87c651514e320f8d2e23acd9542c4e579d603ebb9211d6d25f"
+    },
+    {
+      "essai": "io-aarch64-2-2",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        21.39990234375,
+        18.09130859375,
+        12.4970703125
+      ],
+      "cpu": 2,
+      "ms": 189.665,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 14.619
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 5.044
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.327
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.398,
+        "copie_out_ms": 3.83,
+        "soumission_ms": 1.12,
+        "kick_a_used_observe_ms": 19.698,
+        "used_a_acquittement_ms": 0.113,
+        "traitement_irq_ms": 0.298,
+        "kick_a_entree_irq_ms": 18.935
+      },
+      "attente_barrieres_ms": [
+        1.257,
+        0.07
+      ],
+      "resident_pic_cadres": 9751,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "6bc5a3c894dfe8a0fdff6df57816e8c4f0e85cb99ffa2ba880a362b60509b532"
+    },
+    {
+      "essai": "io-aarch64-2-3",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        18.34619140625,
+        17.7783203125,
+        12.7568359375
+      ],
+      "cpu": 2,
+      "ms": 206.429,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 18.881
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 6.333
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 2.223
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.431,
+        "copie_out_ms": 3.76,
+        "soumission_ms": 1.193,
+        "kick_a_used_observe_ms": 26.088,
+        "used_a_acquittement_ms": 0.108,
+        "traitement_irq_ms": 0.281,
+        "kick_a_entree_irq_ms": 25.276
+      },
+      "attente_barrieres_ms": [
+        1.848,
+        0.375
+      ],
+      "resident_pic_cadres": 9751,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "f1fa6a127fddec73475a9b5b03e637e4ce8ded34867747ab9f4a0c1911a91071"
+    },
+    {
+      "essai": "io-aarch64-4-1",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        20.16845703125,
+        16.36376953125,
+        11.1181640625
+      ],
+      "cpu": 4,
+      "ms": 303.132,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 23.506
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 8.029
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.859
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.356,
+        "copie_out_ms": 3.889,
+        "soumission_ms": 1.267,
+        "kick_a_used_observe_ms": 31.932,
+        "used_a_acquittement_ms": 0.145,
+        "traitement_irq_ms": 0.456,
+        "kick_a_entree_irq_ms": 30.593
+      },
+      "attente_barrieres_ms": [
+        1.487,
+        0.372
+      ],
+      "resident_pic_cadres": 9751,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "c1e36ae90a0000d4ec0dbddec4bd2387041ee029dc0971432f54fedfc4b5635a"
+    },
+    {
+      "essai": "io-aarch64-4-2",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        21.2861328125,
+        17.4580078125,
+        11.88818359375
+      ],
+      "cpu": 4,
+      "ms": 303.354,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 23.465
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 7.447
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 2.049
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.428,
+        "copie_out_ms": 3.992,
+        "soumission_ms": 1.362,
+        "kick_a_used_observe_ms": 31.435,
+        "used_a_acquittement_ms": 0.109,
+        "traitement_irq_ms": 0.426,
+        "kick_a_entree_irq_ms": 30.201
+      },
+      "attente_barrieres_ms": [
+        1.784,
+        0.265
+      ],
+      "resident_pic_cadres": 9751,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "19c98c93f7db325115d22a2bdf7c0a65edb82c7fdb4ab626566352469530460d"
+    },
+    {
+      "essai": "io-aarch64-4-3",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "b0e9fb14234e21904b1372a9d9522b562561d5f64a77bc0bbbfbb6f3873a2411",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        16.96142578125,
+        17.56640625,
+        12.9130859375
+      ],
+      "cpu": 4,
+      "ms": 301.408,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 25.115
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 8.015
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 2.191
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.371,
+        "copie_out_ms": 3.874,
+        "soumission_ms": 1.313,
+        "kick_a_used_observe_ms": 33.81,
+        "used_a_acquittement_ms": 0.145,
+        "traitement_irq_ms": 0.498,
+        "kick_a_entree_irq_ms": 32.475
+      },
+      "attente_barrieres_ms": [
+        1.939,
+        0.252
+      ],
+      "resident_pic_cadres": 9751,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "03c7a9ae7770694517512463687b30f2ded08c7f964e384e36afea05a08f33c3"
+    },
+    {
+      "essai": "io-x86_64-1-1",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        19.53271484375,
+        15.53564453125,
+        10.5244140625
+      ],
+      "cpu": 1,
+      "ms": 212.597,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 5.786
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 3.564
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.231
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.548,
+        "copie_out_ms": 5.602,
+        "soumission_ms": 0.982,
+        "kick_a_used_observe_ms": 9.343,
+        "used_a_acquittement_ms": 0.223,
+        "traitement_irq_ms": 0.212,
+        "kick_a_entree_irq_ms": 7.987
+      },
+      "attente_barrieres_ms": [
+        1.179,
+        0.052
+      ],
+      "resident_pic_cadres": 9766,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "5a9f3d72f7203eadca28ba47ef9f0d4ec7dc58aab2dd00fb93b3c52f029521d3"
+    },
+    {
+      "essai": "io-x86_64-1-2",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        18.58349609375,
+        17.80517578125,
+        12.70703125
+      ],
+      "cpu": 1,
+      "ms": 221.275,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 8.621
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 3.818
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.486
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.651,
+        "copie_out_ms": 5.841,
+        "soumission_ms": 1.442,
+        "kick_a_used_observe_ms": 12.117,
+        "used_a_acquittement_ms": 0.321,
+        "traitement_irq_ms": 0.265,
+        "kick_a_entree_irq_ms": 10.96
+      },
+      "attente_barrieres_ms": [
+        1.419,
+        0.068
+      ],
+      "resident_pic_cadres": 9766,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "6908dbb0f2d73306b39cdac426ba30a1c425cd859fc426cfeb52ff92975e2e94"
+    },
+    {
+      "essai": "io-x86_64-1-3",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        18.86328125,
+        17.79833984375,
+        13.40234375
+      ],
+      "cpu": 1,
+      "ms": 221.215,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 7.143
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 3.531
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 2.021
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.513,
+        "copie_out_ms": 5.762,
+        "soumission_ms": 1.346,
+        "kick_a_used_observe_ms": 11.005,
+        "used_a_acquittement_ms": 0.295,
+        "traitement_irq_ms": 0.239,
+        "kick_a_entree_irq_ms": 9.827
+      },
+      "attente_barrieres_ms": [
+        1.751,
+        0.271
+      ],
+      "resident_pic_cadres": 9766,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "b00f2b87dde91987e460d538f395097463d2d9df8ce7e15faa2eb190698ba6d9"
+    },
+    {
+      "essai": "io-x86_64-2-1",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        20.45263671875,
+        16.22705078125,
+        10.978515625
+      ],
+      "cpu": 2,
+      "ms": 278.347,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 11.203
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 4.644
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.46
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.921,
+        "copie_out_ms": 6.304,
+        "soumission_ms": 1.575,
+        "kick_a_used_observe_ms": 15.384,
+        "used_a_acquittement_ms": 0.303,
+        "traitement_irq_ms": 0.294,
+        "kick_a_entree_irq_ms": 14.727
+      },
+      "attente_barrieres_ms": [
+        1.36,
+        0.1
+      ],
+      "resident_pic_cadres": 9754,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "63bdb1a7165ce6dd470009ad48fa50f7326c08b7711e7c91eaf847b94e8252e1"
+    },
+    {
+      "essai": "io-x86_64-2-2",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        19.85400390625,
+        17.94091796875,
+        12.57177734375
+      ],
+      "cpu": 2,
+      "ms": 254.776,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 8.945
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 4.279
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.369
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.783,
+        "copie_out_ms": 5.977,
+        "soumission_ms": 1.103,
+        "kick_a_used_observe_ms": 13.2,
+        "used_a_acquittement_ms": 0.248,
+        "traitement_irq_ms": 0.211,
+        "kick_a_entree_irq_ms": 12.646
+      },
+      "attente_barrieres_ms": [
+        1.268,
+        0.101
+      ],
+      "resident_pic_cadres": 9754,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "e06e96dced305aa3c96d08cc6a126bda023dc8999a6291eea32a67979819f1b6"
+    },
+    {
+      "essai": "io-x86_64-2-3",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        18.70556640625,
+        17.90673828125,
+        12.9482421875
+      ],
+      "cpu": 2,
+      "ms": 236.82,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 7.195
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 3.467
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.977
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.66,
+        "copie_out_ms": 6.328,
+        "soumission_ms": 1.361,
+        "kick_a_used_observe_ms": 10.985,
+        "used_a_acquittement_ms": 0.251,
+        "traitement_irq_ms": 0.234,
+        "kick_a_entree_irq_ms": 10.436
+      },
+      "attente_barrieres_ms": [
+        1.759,
+        0.218
+      ],
+      "resident_pic_cadres": 9754,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "3d40873109dfcdff1a3467ede4708af3f96a46898a612f65be4fb7b60cc2b9fb"
+    },
+    {
+      "essai": "io-x86_64-4-1",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        21.87939453125,
+        17.2998046875,
+        11.7021484375
+      ],
+      "cpu": 4,
+      "ms": 278.499,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 5.91
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 2.878
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.881
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.697,
+        "copie_out_ms": 5.78,
+        "soumission_ms": 0.974,
+        "kick_a_used_observe_ms": 9.447,
+        "used_a_acquittement_ms": 0.21,
+        "traitement_irq_ms": 0.195,
+        "kick_a_entree_irq_ms": 8.975
+      },
+      "attente_barrieres_ms": [
+        1.684,
+        0.197
+      ],
+      "resident_pic_cadres": 9754,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "75f71f9f03199fde16de815c67250f0e60872a6311121105c6113a12647b9a79"
+    },
+    {
+      "essai": "io-x86_64-4-2",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        20.22802734375,
+        17.66455078125,
+        12.21826171875
+      ],
+      "cpu": 4,
+      "ms": 324.871,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 8.3
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 3.502
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.365
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.684,
+        "copie_out_ms": 5.972,
+        "soumission_ms": 1.491,
+        "kick_a_used_observe_ms": 11.337,
+        "used_a_acquittement_ms": 0.296,
+        "traitement_irq_ms": 0.254,
+        "kick_a_entree_irq_ms": 10.703
+      },
+      "attente_barrieres_ms": [
+        1.261,
+        0.104
+      ],
+      "resident_pic_cadres": 9754,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "07b84bbe005b8ca62ffd0fc8fd0da6000b904924d29031dd2aa4ebcc6795c24b"
+    },
+    {
+      "essai": "io-x86_64-4-3",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "0e785fff7416aa29f6f5ee51294a55b4fa3c39a6ff201714497aa6d896e36953",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        16.72509765625,
+        17.38037109375,
+        13.05517578125
+      ],
+      "cpu": 4,
+      "ms": 331.966,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 8.473
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 3.439
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 8.337
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.74,
+        "copie_out_ms": 6.11,
+        "soumission_ms": 1.504,
+        "kick_a_used_observe_ms": 18.438,
+        "used_a_acquittement_ms": 0.264,
+        "traitement_irq_ms": 0.254,
+        "kick_a_entree_irq_ms": 17.865
+      },
+      "attente_barrieres_ms": [
+        8.131,
+        0.206
+      ],
+      "resident_pic_cadres": 9754,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "600d14418f8b4e9f001733a5e13bf0cf43e403dee39fd9c4e2be7652cbceebcc"
+    },
+    {
+      "essai": "utm-classique-smp",
+      "revision": "835aed6492106fda71c436233e94cebe461f7a2d",
+      "elf": "9731c3b5397b0654973647123224b8614c2e5921155a8730b702d61d338d9c5f",
+      "moteur": "utm-aarch64",
+      "chemin": "classique",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "charge": [
+        11.94921875,
+        10.7099609375,
+        8.1318359375
+      ],
+      "cpu": null,
+      "ms": 221644.603,
+      "ipc": 84336,
+      "avec_copies_locales": 84336,
+      "bloc": {
+        "lecture": {
+          "nombre": 196,
+          "millisecondes": 579.705
+        },
+        "ecriture": {
+          "nombre": 1443,
+          "millisecondes": 4336.756
+        },
+        "flush": {
+          "nombre": 134,
+          "millisecondes": 630.882
+        }
+      },
+      "dma": null,
+      "attente_barrieres_ms": null,
+      "resident_pic_cadres": 5846,
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "serial_sha256": "7b97019de775f00353f9924409f85131f2363fc0934d643cea57b670ab4cf93a"
+    },
+    {
+      "essai": "utm-groupe",
+      "revision": "33c9e5d9458348c6367014248f3643cb6df0c4b8",
+      "elf": "9301c839f1f41c51d4e38a14248d29c069343f2fa758604410c4399fc7c529f4",
+      "moteur": "utm-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        22.7021484375,
+        15.39501953125,
+        10.2099609375
+      ],
+      "cpu": 4,
+      "ms": 243.025,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 9.158
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 6.067
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.466
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.104,
+        "copie_out_ms": 3.411,
+        "soumission_ms": 1.052,
+        "kick_a_used_observe_ms": 15.493,
+        "used_a_acquittement_ms": 0.102,
+        "traitement_irq_ms": 0.254,
+        "kick_a_entree_irq_ms": 14.856
+      },
+      "attente_barrieres_ms": [
+        1.375,
+        0.091
+      ],
+      "resident_pic_cadres": 9732,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "4cd09198b3276df0ba93a7cc96da9edcea4dffd4073d4547f653ec7380e735d9"
+    },
+    {
+      "essai": "confirmation-aarch64",
+      "revision": "da411f14a2bce3864548a69c71c6f91eb06fdddb",
+      "elf": "3f0a09f3ed1de5236e5bbd5f72d8c542a9d7d103a3a0bf939952b0f9baf00fb9",
+      "moteur": "qemu-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        27.25244140625,
+        20.32275390625,
+        15.5078125
+      ],
+      "cpu": 4,
+      "ms": 289.702,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 17.929
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 6.951
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.49
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.433,
+        "copie_out_ms": 3.873,
+        "soumission_ms": 1.191,
+        "kick_a_used_observe_ms": 25.005,
+        "used_a_acquittement_ms": 0.114,
+        "traitement_irq_ms": 0.369,
+        "kick_a_entree_irq_ms": 23.797
+      },
+      "attente_barrieres_ms": [
+        1.358,
+        0.132
+      ],
+      "resident_pic_cadres": 9751,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "6ba234fec42a1baeff4ebf22c988b0d28ae71e65e2d293ee01a29c56a9757fe1"
+    },
+    {
+      "essai": "confirmation-classique",
+      "revision": "da411f14a2bce3864548a69c71c6f91eb06fdddb",
+      "elf": "f88718c958115de78cb05b753a1a85e0c6b34de19fdf53a6ddb8f6d20997933e",
+      "moteur": "utm-aarch64",
+      "chemin": "classique",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "charge": [
+        27.25244140625,
+        20.32275390625,
+        15.5078125
+      ],
+      "cpu": null,
+      "ms": 33277.822,
+      "ipc": 84336,
+      "avec_copies_locales": 84336,
+      "bloc": {
+        "lecture": {
+          "nombre": 196,
+          "millisecondes": 45.585
+        },
+        "ecriture": {
+          "nombre": 1443,
+          "millisecondes": 240.076
+        },
+        "flush": {
+          "nombre": 134,
+          "millisecondes": 64.645
+        }
+      },
+      "dma": null,
+      "attente_barrieres_ms": null,
+      "resident_pic_cadres": 5846,
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "serial_sha256": "6e7f5cf32d2e97fe20b821800376e061b3ba60d268a6449336a7b4836da84798"
+    },
+    {
+      "essai": "confirmation-utm-ajout-4m-multiple",
+      "revision": "da411f14a2bce3864548a69c71c6f91eb06fdddb",
+      "elf": "84350abc54e886fb8a7c60b69b9e923346778fc551027f98b13e9d82049169d1",
+      "moteur": "utm-aarch64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        22.27685546875,
+        19.703125,
+        15.42236328125
+      ],
+      "cpu": 4,
+      "ms": 232.042,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 7.98
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 4.999
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.486
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 2.195,
+        "copie_out_ms": 3.397,
+        "soumission_ms": 0.973,
+        "kick_a_used_observe_ms": 13.366,
+        "used_a_acquittement_ms": 0.084,
+        "traitement_irq_ms": 0.236,
+        "kick_a_entree_irq_ms": 12.773
+      },
+      "attente_barrieres_ms": [
+        1.385,
+        0.101
+      ],
+      "resident_pic_cadres": 9732,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "444146dabf4bbc8b5250b1b7f76c5f33e4b208c44cd443c266e17a58de65b3f2"
+    },
+    {
+      "essai": "confirmation-utm-inserer-milieu",
+      "revision": "da411f14a2bce3864548a69c71c6f91eb06fdddb",
+      "elf": "84350abc54e886fb8a7c60b69b9e923346778fc551027f98b13e9d82049169d1",
+      "moteur": "utm-aarch64",
+      "chemin": "groupe",
+      "cas": "inserer-milieu",
+      "secteur": 4096,
+      "charge": [
+        39.97314453125,
+        21.63232421875,
+        15.77978515625
+      ],
+      "cpu": 4,
+      "ms": 178.952,
+      "ipc": 43,
+      "avec_copies_locales": 43,
+      "bloc": {
+        "lecture": {
+          "nombre": 142,
+          "millisecondes": 9.113
+        },
+        "ecriture": {
+          "nombre": 25,
+          "millisecondes": 3.186
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.29
+        }
+      },
+      "dma": {
+        "groupes_in": 141,
+        "groupes_out": 25,
+        "pages_in": 1037,
+        "pages_out": 1048,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 169,
+        "irq": 169,
+        "copie_in_ms": 3.01,
+        "copie_out_ms": 2.622,
+        "soumission_ms": 0.971,
+        "kick_a_used_observe_ms": 12.496,
+        "used_a_acquittement_ms": 0.08,
+        "traitement_irq_ms": 0.253,
+        "kick_a_entree_irq_ms": 11.854
+      },
+      "attente_barrieres_ms": [
+        1.193,
+        0.097
+      ],
+      "resident_pic_cadres": 2967,
+      "sha256_destination": "300577820cf3e65679f15fa4d4272486910bd52d4cdd7016a6b9de539dbb3fcd",
+      "serial_sha256": "6b50afb18c3b10349e0b4757f8cee0cc532cec7cfa7a7e6915eb378ac2ae492c"
+    },
+    {
+      "essai": "confirmation-x86_64",
+      "revision": "da411f14a2bce3864548a69c71c6f91eb06fdddb",
+      "elf": "4c2033b9b3f06180e5695324dd78d696c564daeee0cecf953cf6919a64806a0b",
+      "moteur": "qemu-x86_64",
+      "chemin": "groupe",
+      "cas": "ajout-4m-multiple",
+      "secteur": 4096,
+      "charge": [
+        20.7158203125,
+        19.4501953125,
+        15.3818359375
+      ],
+      "cpu": 4,
+      "ms": 330.594,
+      "ipc": 56,
+      "avec_copies_locales": 64,
+      "bloc": {
+        "lecture": {
+          "nombre": 143,
+          "millisecondes": 8.033
+        },
+        "ecriture": {
+          "nombre": 45,
+          "millisecondes": 3.49
+        },
+        "flush": {
+          "nombre": 2,
+          "millisecondes": 1.333
+        }
+      },
+      "dma": {
+        "groupes_in": 142,
+        "groupes_out": 45,
+        "pages_in": 1038,
+        "pages_out": 2088,
+        "max_pages_par_chaine": 64,
+        "cadres_arene": 80,
+        "kicks": 190,
+        "irq": 190,
+        "copie_in_ms": 3.818,
+        "copie_out_ms": 6.164,
+        "soumission_ms": 1.564,
+        "kick_a_used_observe_ms": 11.025,
+        "used_a_acquittement_ms": 0.234,
+        "traitement_irq_ms": 0.251,
+        "kick_a_entree_irq_ms": 10.451
+      },
+      "attente_barrieres_ms": [
+        1.263,
+        0.07
+      ],
+      "resident_pic_cadres": 9754,
+      "sha256_destination": "c82aa6dfd3dcce1bb85d1fe60dec9073ea80ae37a0465c152d7c7d41fd5d6a25",
+      "serial_sha256": "ed210ab971506f1656651c12f087513d56fb4a709115200d9db31f3418a94c31"
+    }
+  ],
+  "coupures": {
+    "coupures-aarch64-4096": [
+      {
+        "frontiere": "pages",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "f1",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "f2",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": true,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "retrait",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "avant-f1",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-f1",
+        "evenement_suspendu": "flush_to_disk",
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": 3,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "avant-f2",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-f2",
+        "evenement_suspendu": "flush_to_disk",
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": true,
+        "flush_termines_au_point": 4,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-ecriture",
+        "evenement_suspendu": "write_aio",
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": 3,
+        "acquit_avant_coupure": false
+      }
+    ],
+    "coupures-aarch64-512": [
+      {
+        "frontiere": "pages",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "f1",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "f2",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": true,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "retrait",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "avant-f1",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-f1",
+        "evenement_suspendu": "flush_to_disk",
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": 3,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "avant-f2",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-f2",
+        "evenement_suspendu": "flush_to_disk",
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": true,
+        "flush_termines_au_point": 4,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-ecriture",
+        "evenement_suspendu": "write_aio",
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": 3,
+        "acquit_avant_coupure": false
+      }
+    ],
+    "coupures-x86_64-4096": [
+      {
+        "frontiere": "pages",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "f1",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "f2",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": true,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "retrait",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "avant-f1",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-f1",
+        "evenement_suspendu": "flush_to_disk",
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": 3,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "avant-f2",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-f2",
+        "evenement_suspendu": "flush_to_disk",
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": true,
+        "flush_termines_au_point": 4,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-ecriture",
+        "evenement_suspendu": "write_aio",
+        "secteur_sonde": null,
+        "octets_source": 524416,
+        "multipage": false,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": 3,
+        "acquit_avant_coupure": false
+      }
+    ],
+    "coupures-x86_64-512": [
+      {
+        "frontiere": "pages",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "f1",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "f2",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": true,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "retrait",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "avant-f1",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-f1",
+        "evenement_suspendu": "flush_to_disk",
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": 3,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "avant-f2",
+        "evenement_suspendu": null,
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": null,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-f2",
+        "evenement_suspendu": "flush_to_disk",
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": true,
+        "flush_termines_au_point": 4,
+        "acquit_avant_coupure": false
+      },
+      {
+        "frontiere": "vol-ecriture",
+        "evenement_suspendu": "write_aio",
+        "secteur_sonde": null,
+        "octets_source": 4194304,
+        "multipage": true,
+        "montage_normal": true,
+        "relecture_exacte": true,
+        "destination_complete": false,
+        "flush_termines_au_point": 3,
+        "acquit_avant_coupure": false
+      }
+    ]
+  },
+  "utm": {
+    "utm-topologie-smp-arret": {
+      "elf": "7156e83c5bf2002ac34d80a18c42f8be0b35d89c25fa3dc640803e6923d7f114",
+      "scenario": "smp-arret",
+      "vcpu": [
+        [
+          0,
+          71049
+        ],
+        [
+          1,
+          71049
+        ],
+        [
+          2,
+          71049
+        ],
+        [
+          3,
+          71049
+        ]
+      ],
+      "pid_moteur": 71049,
+      "valeurs_hmp_distinctes": 1,
+      "threads_tcg_avant": [],
+      "threads_tcg_apres": [],
+      "piles_tcg": {
+        "5326688": "mttcg_cpu_thread_fn",
+        "5326689": "mttcg_cpu_thread_fn",
+        "5326690": "mttcg_cpu_thread_fn",
+        "5326691": "mttcg_cpu_thread_fn"
+      },
+      "echantillonnage": true,
+      "modele": {
+        "Architecture": "aarch64",
+        "CPU": "cortex-a72",
+        "CPUCount": 4,
+        "CPUFlagsAdd": [],
+        "CPUFlagsRemove": [],
+        "ForceMulticore": true,
+        "JITCacheSize": 0,
+        "MemorySize": 256,
+        "Target": "virt-10.0"
+      },
+      "marque": "ack=0xf absents=0x0 muets=0x0",
+      "serial_sha256": "ee1481aa12778514cd40929589b25818f76560b3d89b73e79bda40c8aff03b2f",
+      "releves": [
+        "SMP diagnostic cpu=0 sp=0xfffff02000022c10",
+        "SMP diagnostic cpu=1 sp=0xfffff0200023ed90",
+        "SMP diagnostic cpu=2 sp=0xfffff0200022cd90",
+        "SMP diagnostic cpu=3 sp=0xfffff0200021ad90",
+        "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+      ]
+    },
+    "utm-topologie-smp-fp": {
+      "elf": "7156e83c5bf2002ac34d80a18c42f8be0b35d89c25fa3dc640803e6923d7f114",
+      "scenario": "smp-fp",
+      "vcpu": [
+        [
+          0,
+          70893
+        ],
+        [
+          1,
+          70893
+        ],
+        [
+          2,
+          70893
+        ],
+        [
+          3,
+          70893
+        ]
+      ],
+      "pid_moteur": 70893,
+      "valeurs_hmp_distinctes": 1,
+      "threads_tcg_avant": [],
+      "threads_tcg_apres": [],
+      "piles_tcg": {
+        "5326015": "mttcg_cpu_thread_fn",
+        "5326016": "mttcg_cpu_thread_fn",
+        "5326017": "mttcg_cpu_thread_fn",
+        "5326018": "mttcg_cpu_thread_fn"
+      },
+      "echantillonnage": true,
+      "modele": {
+        "Architecture": "aarch64",
+        "CPU": "cortex-a72",
+        "CPUCount": 4,
+        "CPUFlagsAdd": [],
+        "CPUFlagsRemove": [],
+        "ForceMulticore": true,
+        "JITCacheSize": 0,
+        "MemorySize": 256,
+        "Target": "virt-10.0"
+      },
+      "marque": "cycle=1 clients=8 migrations=8 OK",
+      "serial_sha256": "994d21cef22d4e89ee8749694263b4ff36b5deb9f91e964b14cb8d0ea4964bc6",
+      "releves": [
+        "SMP FPU cycle=0 clients=8 migrations=8 OK",
+        "SMP FPU cycle=1 clients=8 migrations=8 OK"
+      ]
+    },
+    "utm-topologie-smp-test": {
+      "elf": "7156e83c5bf2002ac34d80a18c42f8be0b35d89c25fa3dc640803e6923d7f114",
+      "scenario": "smp-test",
+      "vcpu": [
+        [
+          0,
+          70742
+        ],
+        [
+          1,
+          70742
+        ],
+        [
+          2,
+          70742
+        ],
+        [
+          3,
+          70742
+        ]
+      ],
+      "pid_moteur": 70742,
+      "valeurs_hmp_distinctes": 1,
+      "threads_tcg_avant": [],
+      "threads_tcg_apres": [],
+      "piles_tcg": {
+        "5325412": "mttcg_cpu_thread_fn",
+        "5325413": "mttcg_cpu_thread_fn",
+        "5325414": "mttcg_cpu_thread_fn",
+        "5325415": "mttcg_cpu_thread_fn"
+      },
+      "echantillonnage": true,
+      "modele": {
+        "Architecture": "aarch64",
+        "CPU": "cortex-a72",
+        "CPUCount": 4,
+        "CPUFlagsAdd": [],
+        "CPUFlagsRemove": [],
+        "ForceMulticore": true,
+        "JITCacheSize": 0,
+        "MemorySize": 256,
+        "Target": "virt-10.0"
+      },
+      "marque": "rendezvous=0xf actifs=4 OK",
+      "serial_sha256": "95c63a838cb318b3f0b08db3dc6a80d47f314b7a8e618e49e04b947ae256553e",
+      "releves": [
+        "SMP memoire cpu=4 libres=62625 tas=108576",
+        "SMP frequence=62500000",
+        "SMP utilisateur pid=1 cpu=0 preemptions=2 progres=198639",
+        "SMP utilisateur pid=2 cpu=1 preemptions=2 progres=324862",
+        "SMP utilisateur pid=3 cpu=2 preemptions=3 progres=487962",
+        "SMP utilisateur pid=4 cpu=3 preemptions=4 progres=669235",
+        "SMP utilisateur pid=5 cpu=0 preemptions=8 progres=1121323",
+        "SMP utilisateur pid=6 cpu=1 preemptions=2 progres=1180229",
+        "SMP utilisateur pid=7 cpu=2 preemptions=3 progres=1188340",
+        "SMP utilisateur pid=8 cpu=3 preemptions=4 progres=1165050",
+        "SMP calcul iterations=16000000 us=12620",
+        "SMP IPC tours=1000 ns_par_tour=356558",
+        "SMP preemptions=39",
+        "SMP traductions distantes masque=0xe OK",
+        "SMP cpu=0 materiel=0 ticks=97",
+        "SMP cpu=1 materiel=1 ticks=97",
+        "SMP cpu=2 materiel=2 ticks=97",
+        "SMP cpu=3 materiel=3 ticks=97",
+        "SMP migration=0->1",
+        "SMP profil cpu=0 acquisitions=17351 conflits=12258 attente=17574725 detention=5425340 max=86938 site=kernel/src/sched/mod.rs switch=531 migrations=203 ipi=219 tlb=2105 ticks_usr=10 ticks_sys=80 ticks_idle=6 attente_ipc=705306",
+        "SMP section cpu=0 site=kernel/src/sched/mod.rs:567:22",
+        "SMP profil cpu=1 acquisitions=10323 conflits=9216 attente=11092108 detention=6569638 max=9437 site=kernel/src/sched/process/ipc/traffic.rs switch=1329 migrations=280 ipi=646 tlb=2701 ticks_usr=15 ticks_sys=37 ticks_idle=46 attente_ipc=2439687",
+        "SMP section cpu=1 site=kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "SMP profil cpu=2 acquisitions=9186 conflits=8207 attente=10631484 detention=5609505 max=9625 site=kernel/src/sched/process/ipc/traffic.rs switch=1106 migrations=292 ipi=546 tlb=2220 ticks_usr=15 ticks_sys=35 ticks_idle=48 attente_ipc=2027820",
+        "SMP section cpu=2 site=kernel/src/sched/process/ipc/traffic.rs:496:19",
+        "SMP profil cpu=3 acquisitions=8153 conflits=7261 attente=9974397 detention=4569891 max=44125 site=kernel/src/sched/process.rs switch=852 migrations=264 ipi=434 tlb=1660 ticks_usr=15 ticks_sys=23 ticks_idle=60 attente_ipc=1727076",
+        "SMP section cpu=3 site=kernel/src/sched/process.rs:245:29",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ]
+    }
+  },
+  "topologie_qemu": {
+    "topologie-aarch64": {
+      "arch": "aarch64",
+      "noyau_sha256": "ea46beec91e960f4ad24ac8e5942ba9c25ef868d49112f16200458e8576c2195",
+      "pid": 69860,
+      "hmp": [
+        [
+          0,
+          69860
+        ],
+        [
+          1,
+          69860
+        ],
+        [
+          2,
+          69860
+        ],
+        [
+          3,
+          69860
+        ]
+      ],
+      "threads_tcg_avant": [
+        {
+          "tid": 5320230,
+          "nom": "CPU 0/TCG",
+          "cpu_ns": 903000
+        },
+        {
+          "tid": 5320231,
+          "nom": "CPU 1/TCG",
+          "cpu_ns": 104000
+        },
+        {
+          "tid": 5320232,
+          "nom": "CPU 2/TCG",
+          "cpu_ns": 106000
+        },
+        {
+          "tid": 5320233,
+          "nom": "CPU 3/TCG",
+          "cpu_ns": 146000
+        }
+      ],
+      "threads_tcg_apres": [
+        {
+          "tid": 5320230,
+          "nom": "CPU 0/TCG",
+          "cpu_ns": 1151976000
+        },
+        {
+          "tid": 5320231,
+          "nom": "CPU 1/TCG",
+          "cpu_ns": 496022000
+        },
+        {
+          "tid": 5320232,
+          "nom": "CPU 2/TCG",
+          "cpu_ns": 485808000
+        },
+        {
+          "tid": 5320233,
+          "nom": "CPU 3/TCG",
+          "cpu_ns": 469651000
+        }
+      ],
+      "intervalle_ns": 6267026750,
+      "rendezvous": "0xf"
+    },
+    "topologie-x86_64": {
+      "arch": "x86_64",
+      "noyau_sha256": "291036fb2ba3575a40e4f1e002777dabb46ad1aabeb900e2ec4fbdcc88a5d831",
+      "pid": 70020,
+      "hmp": [
+        [
+          0,
+          70020
+        ],
+        [
+          1,
+          70020
+        ],
+        [
+          2,
+          70020
+        ],
+        [
+          3,
+          70020
+        ]
+      ],
+      "threads_tcg_avant": [
+        {
+          "tid": 5320808,
+          "nom": "CPU 0/TCG",
+          "cpu_ns": 728000
+        },
+        {
+          "tid": 5320809,
+          "nom": "CPU 1/TCG",
+          "cpu_ns": 270000
+        },
+        {
+          "tid": 5320810,
+          "nom": "CPU 2/TCG",
+          "cpu_ns": 267000
+        },
+        {
+          "tid": 5320811,
+          "nom": "CPU 3/TCG",
+          "cpu_ns": 264000
+        }
+      ],
+      "threads_tcg_apres": [
+        {
+          "tid": 5320808,
+          "nom": "CPU 0/TCG",
+          "cpu_ns": 2058448000
+        },
+        {
+          "tid": 5320809,
+          "nom": "CPU 1/TCG",
+          "cpu_ns": 372953000
+        },
+        {
+          "tid": 5320810,
+          "nom": "CPU 2/TCG",
+          "cpu_ns": 366022000
+        },
+        {
+          "tid": 5320811,
+          "nom": "CPU 3/TCG",
+          "cpu_ns": 359657000
+        }
+      ],
+      "intervalle_ns": 2282422417,
+      "rendezvous": "0xf"
+    }
+  },
+  "sondes": {
+    "arret-distribution-aarch64.log": [
+      "OK — aarch64-smp-arret-1cpu-gic2",
+      "OK — aarch64-smp-panique-1cpu-gic2",
+      "OK — aarch64-smp-arret-2cpu-gic2",
+      "OK — aarch64-smp-panique-2cpu-gic2",
+      "OK — aarch64-smp-ap-absent-2cpu-gic2",
+      "OK — aarch64-smp-cpu-muet-2cpu-gic2",
+      "OK — aarch64-smp-arret-4cpu-gic2",
+      "OK — aarch64-smp-panique-4cpu-gic2",
+      "OK — aarch64-smp-ap-absent-4cpu-gic2",
+      "OK — aarch64-smp-cpu-muet-4cpu-gic2"
+    ],
+    "arret-distribution-x86_64.log": [
+      "OK — x86_64-smp-arret-1cpu-",
+      "OK — x86_64-smp-panique-1cpu-",
+      "OK — x86_64-smp-arret-2cpu-",
+      "OK — x86_64-smp-panique-2cpu-",
+      "OK — x86_64-smp-ap-absent-2cpu-",
+      "OK — x86_64-smp-cpu-muet-2cpu-",
+      "OK — x86_64-smp-arret-4cpu-",
+      "OK — x86_64-smp-panique-4cpu-",
+      "OK — x86_64-smp-ap-absent-4cpu-",
+      "OK — x86_64-smp-cpu-muet-4cpu-"
+    ],
+    "valide-aarch64-unknown-none-softfloat-2.log": [
+      "OK — aarch64-smp-fp-1cpu-gic2",
+      "OK — aarch64-smp-fp-2cpu-gic2",
+      "OK — aarch64-smp-fp-4cpu-gic2",
+      "OK — aarch64-proc-test-fp-2",
+      "OK — aarch64-smp-arret-1cpu-gic2",
+      "OK — aarch64-smp-panique-1cpu-gic2",
+      "OK — aarch64-smp-arret-2cpu-gic2",
+      "OK — aarch64-smp-panique-2cpu-gic2",
+      "OK — aarch64-smp-ap-absent-2cpu-gic2",
+      "OK — aarch64-smp-cpu-muet-2cpu-gic2",
+      "OK — aarch64-smp-arret-4cpu-gic2",
+      "OK — aarch64-smp-panique-4cpu-gic2",
+      "OK — aarch64-smp-ap-absent-4cpu-gic2",
+      "OK — aarch64-smp-cpu-muet-4cpu-gic2",
+      "OK — aarch64-smp-test-1cpu",
+      "OK — aarch64-smp-test-2cpu",
+      "OK — aarch64-smp-test-4cpu"
+    ],
+    "valide-aarch64-unknown-none-softfloat-3.log": [
+      "OK — aarch64-smp-fp-1cpu-gic3",
+      "OK — aarch64-smp-fp-2cpu-gic3",
+      "OK — aarch64-smp-fp-4cpu-gic3",
+      "OK — aarch64-proc-test-fp-3",
+      "OK — aarch64-smp-arret-1cpu-gic3",
+      "OK — aarch64-smp-panique-1cpu-gic3",
+      "OK — aarch64-smp-arret-2cpu-gic3",
+      "OK — aarch64-smp-panique-2cpu-gic3",
+      "OK — aarch64-smp-ap-absent-2cpu-gic3",
+      "OK — aarch64-smp-cpu-muet-2cpu-gic3",
+      "OK — aarch64-smp-arret-4cpu-gic3",
+      "OK — aarch64-smp-panique-4cpu-gic3",
+      "OK — aarch64-smp-ap-absent-4cpu-gic3",
+      "OK — aarch64-smp-cpu-muet-4cpu-gic3",
+      "OK — aarch64-smp-test-1cpu-gic3",
+      "OK — aarch64-smp-test-2cpu-gic3",
+      "OK — aarch64-smp-test-4cpu-gic3"
+    ],
+    "valide-x86_64-unknown-none-2.log": [
+      "OK — x86_64-smp-fp-1cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-fp-2cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-fp-4cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-proc-test-fp-2",
+      "OK — x86_64-smp-fp-1cpu-qemu64_vendor_GenuineIntel_-avx_-xsave",
+      "OK — x86_64-smp-fp-2cpu-qemu64_vendor_GenuineIntel_-avx_-xsave",
+      "OK — x86_64-smp-fp-4cpu-qemu64_vendor_GenuineIntel_-avx_-xsave",
+      "OK — x86_64-proc-test-fp-2",
+      "OK — x86_64-smp-arret-1cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-panique-1cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-arret-2cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-panique-2cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-ap-absent-2cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-cpu-muet-2cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-arret-4cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-panique-4cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-ap-absent-4cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-cpu-muet-4cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-test-1cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-test-2cpu-max_vendor_GenuineIntel",
+      "OK — x86_64-smp-test-4cpu-max_vendor_GenuineIntel"
+    ]
+  },
+  "regressions": {
+    "aarch64": {
+      "codes_sortie": {
+        "test": 0,
+        "elf-test": 0,
+        "ipc-test": 0,
+        "ipc-races": 0,
+        "lifecycle-test": 0,
+        "block-test": 0,
+        "file-test": 0,
+        "namespace-test": 0,
+        "cli-test": 0,
+        "cli-p9-test": 0,
+        "nsh-test": 0,
+        "nsh-scripts-test": 0,
+        "nsh-terminal-test": 0,
+        "vi-test": 0,
+        "endurance": 0,
+        "ipc-endurance": 0
+      },
+      "bilan_novafs": {
+        "architecture": "aarch64",
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "sondes": {
+          "reussis": 199,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=13.631",
+        "pannes_p5": {
+          "512": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ],
+          "4096": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ]
+        },
+        "controles_p51_standard": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "controles_p51_sondes": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "migration": [
+          "MIGRATION secteur=512 frontières=96",
+          "MIGRATION secteur=4096 frontières=96"
+        ],
+        "permutations": [
+          "PERMUTATIONS secteur=512 ordres=24",
+          "PERMUTATIONS secteur=4096 ordres=24"
+        ],
+        "saturation": [
+          "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+          "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+        ],
+        "aleatoire": [
+          "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+        ],
+        "restitution": [
+          "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=195376 après=195376",
+          "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=195376 après=195376",
+          "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=195376 après=195376",
+          "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=195376 après=195376"
+        ]
+      },
+      "ancres": [
+        "ANCRES secteur=512 copie=false slot=1 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=512 copie=false slot=0 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=512 copie=true slot=1 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=512 copie=true slot=0 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=4096 copie=false slot=1 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=4096 copie=false slot=0 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=4096 copie=true slot=1 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=4096 copie=true slot=0 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien"
+      ],
+      "endurance": {
+        "architecture": "aarch64",
+        "secondes_demandees": 60,
+        "secondes_reelles": 60.7,
+        "avant": {
+          "blocs": 6,
+          "occupes": 108608,
+          "engages": 131072,
+          "libres": 62479
+        },
+        "bilan": {
+          "periode": 8,
+          "ticks": 11819,
+          "preemptions": 11788,
+          "collectes": 12856,
+          "attentes": 9861,
+          "mutex": 9871,
+          "A": 2442,
+          "B": 2431,
+          "allocations": 117455,
+          "audits": 32,
+          "penuries": 1,
+          "minimum": 62367,
+          "blocs": 6,
+          "occupes": 108608,
+          "engages": 131072,
+          "libres": 62479
+        }
+      },
+      "ipc-endurance": {
+        "architecture": "aarch64",
+        "mode": "endurance",
+        "ram_mio": 256,
+        "elf_sha256": "ea46beec91e960f4ad24ac8e5942ba9c25ef868d49112f16200458e8576c2195",
+        "secondes": 300.954,
+        "cycles": 29151,
+        "periodes": 240,
+        "libres": 62479
+      }
+    },
+    "x86_64": {
+      "codes_sortie": {
+        "test": 0,
+        "elf-test": 0,
+        "ipc-test": 0,
+        "ipc-races": 0,
+        "lifecycle-test": 0,
+        "block-test": 0,
+        "file-test": 2,
+        "namespace-test": 0,
+        "cli-test": 0,
+        "cli-p9-test": 0,
+        "nsh-test": 0,
+        "nsh-scripts-test": 0,
+        "nsh-terminal-test": 0,
+        "vi-test": 0,
+        "endurance": 0,
+        "ipc-endurance": 0
+      },
+      "bilan_novafs": {
+        "architecture": "x86_64",
+        "standard": {
+          "reussis": 196,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "sondes": {
+          "reussis": 199,
+          "echecs": 0,
+          "ignores": 6
+        },
+        "modele": {
+          "reussis": 1,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "options": {
+          "reussis": 2,
+          "echecs": 0,
+          "ignores": 0
+        },
+        "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=23.108",
+        "pannes_p5": {
+          "512": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ],
+          "4096": [
+            {
+              "operation": "Snapshot",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Clone",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Ecrire",
+              "frontieres": 39,
+              "coupures": 117,
+              "erreurs_io": 26,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Retirer",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            },
+            {
+              "operation": "Collecter",
+              "frontieres": 15,
+              "coupures": 45,
+              "erreurs_io": 10,
+              "dechirees": 1
+            }
+          ]
+        },
+        "controles_p51_standard": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "controles_p51_sondes": [
+          "curseur_du_montage_cow",
+          "rang_des_aretes_creuses_et_racines_divergentes",
+          "donnees_propres_apres_f2_uniquement"
+        ],
+        "migration": [
+          "MIGRATION secteur=512 frontières=96",
+          "MIGRATION secteur=4096 frontières=96"
+        ],
+        "permutations": [
+          "PERMUTATIONS secteur=512 ordres=24",
+          "PERMUTATIONS secteur=4096 ordres=24"
+        ],
+        "saturation": [
+          "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+          "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+        ],
+        "aleatoire": [
+          "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+          "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+        ],
+        "restitution": [
+          "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=180288 après=180288",
+          "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=180288 après=180288",
+          "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=180288 après=180288",
+          "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=180288 après=180288"
+        ]
+      },
+      "ancres": [
+        "ANCRES secteur=512 copie=false slot=1 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=512 copie=false slot=0 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=512 copie=true slot=1 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=512 copie=true slot=0 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=4096 copie=false slot=1 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=4096 copie=false slot=0 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=4096 copie=true slot=1 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien",
+        "ANCRES secteur=4096 copie=true slot=0 plages=32 phases=9 ancien=161 nouveau=82 refus=45 deux_blocs_F1=ancien"
+      ],
+      "endurance": {
+        "architecture": "x86_64",
+        "secondes_demandees": 60,
+        "secondes_reelles": 60.589,
+        "avant": {
+          "blocs": 6,
+          "occupes": 205888,
+          "engages": 262144,
+          "libres": 62989
+        },
+        "bilan": {
+          "periode": 8,
+          "ticks": 15087,
+          "preemptions": 15045,
+          "collectes": 9304,
+          "attentes": 8670,
+          "mutex": 8745,
+          "A": 2554,
+          "B": 2622,
+          "allocations": 104063,
+          "audits": 32,
+          "penuries": 1,
+          "minimum": 62885,
+          "blocs": 6,
+          "occupes": 205888,
+          "engages": 262144,
+          "libres": 62989
+        }
+      },
+      "ipc-endurance": {
+        "architecture": "x86_64",
+        "mode": "endurance",
+        "ram_mio": 256,
+        "elf_sha256": "955e5c2adea816ebf8970977502cb23fff48a59869ef85fbbdccfdca0978f25d",
+        "secondes": 300.373,
+        "cycles": 25623,
+        "periodes": 297,
+        "libres": 62989
+      },
+      "file-test_rejeu": [
+        "OK — x86_64/512 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+        "OK — x86_64/512 : files-data, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : files-meta, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : files-f1-before, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : files-f1-after, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/512 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/512 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/512 : files-close, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/512 : files-remount, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : eio-lecture, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : eio-f1, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : eio-f2, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/512 : abandon-client, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/512 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+        "OK — x86_64/512 : pool p5 intact après refus RW",
+        "OK — x86_64/512 : pool p6 intact après refus RW",
+        "OK — x86_64/512 : pool p7 intact après refus RW",
+        "OK — x86_64/512 : mesures fichiers et restitution sur deux sessions",
+        "OK — x86_64/4096 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+        "OK — x86_64/4096 : files-data, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : files-meta, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : files-f1-before, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : files-f1-inflight, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : files-f1-after, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : files-f2-before, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/4096 : files-f2-inflight, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/4096 : files-f2-after, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/4096 : files-close, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/4096 : files-remount, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : eio-lecture, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : eio-ecriture, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : eio-f1, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : eio-f2, generation 6, oracle nouveau, remontage RO",
+        "OK — x86_64/4096 : abandon-client, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : reserve-preservee, generation 5, oracle ancien, remontage RO",
+        "OK — x86_64/4096 : refus du format, de l’ancre altérée et du support RO, pénurie et relance du service",
+        "OK — x86_64/4096 : pool p5 intact après refus RW",
+        "OK — x86_64/4096 : pool p6 intact après refus RW",
+        "OK — x86_64/4096 : pool p7 intact après refus RW",
+        "OK — x86_64/4096 : mesures fichiers et restitution sur deux sessions"
+      ]
+    }
+  },
+  "firmware": {
+    "dxe": {
+      "banc": "moteur UTM en ligne de commande",
+      "vcpu": 1,
+      "utm": "5.0.8",
+      "moteur": "QEMU emulator version 10.0.12",
+      "noyau_sha256": "7156e83c5bf2002ac34d80a18c42f8be0b35d89c25fa3dc640803e6923d7f114",
+      "pflash_sha256": "0e4fc20b8585e8c6e446d9a411e174e36be0b5bb99e5c0a4146953d3edb46a77",
+      "essais": [
+        "froid",
+        "el2",
+        "protection",
+        "reemploi",
+        "cd",
+        "redemarrage",
+        "coupure",
+        "reprise",
+        "autre-slot",
+        "mapkey",
+        "retrait-suspendu"
+      ],
+      "resultats_sha256": "be88c14d2225cce7e6fd330d21c3a1905f54b9296e54c781a7e1684d4ca5cd36"
+    },
+    "dma_sequentielle": {
+      "banc": "moteur UTM en ligne de commande",
+      "vcpu": 1,
+      "utm": "5.0.8",
+      "moteur": "QEMU emulator version 10.0.12",
+      "noyau_sha256": "06dfac9c284bc919f80f68ba541c9dd91df17c903a8fa5b352a0a78b0164662a",
+      "pflash_sha256": "3660b1cad23b75102a923475c1ee457ffc0fd1ce085ae25813257f09d918263d",
+      "essais": [
+        "support",
+        "vierge",
+        "refus",
+        "confirmation-erronee",
+        "tis",
+        "deplaces",
+        "reemploi",
+        "redemarrage",
+        "fin",
+        "mbr",
+        "gpt",
+        "fat",
+        "novafs",
+        "trop-petit",
+        "erreur-lecture",
+        "mauvais-support",
+        "doublon",
+        "roles-inverses",
+        "support-inscriptible",
+        "tpm-absent",
+        "mauvaise-serie",
+        "quarantaine",
+        "coupure"
+      ],
+      "resultats_sha256": "915c200399f488276796ddef69429a13a266200e83bd2c87ef2e37815d52f3a9"
+    }
+  },
+  "propriete_dma": {
+    "aarch64/1": [
+      {
+        "arch": "aarch64",
+        "secteur": 512,
+        "injections": 120,
+        "baseline_machine": 0,
+        "sessions": 64,
+        "cadres_session": 16,
+        "image_identique": true,
+        "cas_lot": [
+          "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+          "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+          "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+          "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+        ],
+        "portails_refuses": [
+          "storage-read",
+          "storage-page-read"
+        ]
+      },
+      {
+        "arch": "aarch64",
+        "secteur": 4096,
+        "injections": 120,
+        "baseline_machine": 0,
+        "sessions": 64,
+        "cadres_session": 16,
+        "image_identique": true,
+        "cas_lot": [
+          "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+          "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+          "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+          "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+        ],
+        "portails_refuses": [
+          "storage-read",
+          "storage-page-read"
+        ]
+      }
+    ],
+    "x86_64/1": [
+      {
+        "arch": "x86_64",
+        "secteur": 512,
+        "injections": 112,
+        "baseline_machine": 9,
+        "sessions": 64,
+        "cadres_session": 7,
+        "image_identique": true,
+        "cas_lot": [
+          "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+          "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+          "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+          "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+        ],
+        "portails_refuses": [
+          "storage-read",
+          "storage-page-read"
+        ]
+      },
+      {
+        "arch": "x86_64",
+        "secteur": 4096,
+        "injections": 112,
+        "baseline_machine": 9,
+        "sessions": 64,
+        "cadres_session": 7,
+        "image_identique": true,
+        "cas_lot": [
+          "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+          "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+          "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+          "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+        ],
+        "portails_refuses": [
+          "storage-read",
+          "storage-page-read"
+        ]
+      }
+    ],
+    "aarch64/4": [
+      {
+        "arch": "aarch64",
+        "secteur": 512,
+        "injections": 120,
+        "baseline_machine": 0,
+        "sessions": 64,
+        "cadres_session": 16,
+        "image_identique": true,
+        "cas_lot": [
+          "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+          "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+          "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+          "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+        ],
+        "portails_refuses": [
+          "storage-read",
+          "storage-page-read"
+        ]
+      },
+      {
+        "arch": "aarch64",
+        "secteur": 4096,
+        "injections": 120,
+        "baseline_machine": 0,
+        "sessions": 64,
+        "cadres_session": 16,
+        "image_identique": true,
+        "cas_lot": [
+          "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+          "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+          "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+          "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+        ],
+        "portails_refuses": [
+          "storage-read",
+          "storage-page-read"
+        ]
+      }
+    ],
+    "x86_64/4": [
+      {
+        "arch": "x86_64",
+        "secteur": 512,
+        "injections": 112,
+        "baseline_machine": 9,
+        "sessions": 64,
+        "cadres_session": 7,
+        "image_identique": true,
+        "cas_lot": [
+          "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+          "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+          "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+          "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+        ],
+        "portails_refuses": [
+          "storage-read",
+          "storage-page-read"
+        ]
+      },
+      {
+        "arch": "x86_64",
+        "secteur": 4096,
+        "injections": 112,
+        "baseline_machine": 9,
+        "sessions": 64,
+        "cadres_session": 7,
+        "image_identique": true,
+        "cas_lot": [
+          "DMA livraison multi=false faute=Aucune avance=1 kicks=1",
+          "DMA livraison multi=false faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=false faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=false faute=Adresse avance=0 kicks=1",
+          "DMA livraison multi=true faute=Aucune avance=2 kicks=1",
+          "DMA livraison multi=true faute=Bail avance=0 kicks=1",
+          "DMA livraison multi=true faute=Reservation avance=0 kicks=1",
+          "DMA livraison multi=true faute=Adresse avance=0 kicks=1"
+        ],
+        "portails_refuses": [
+          "storage-read",
+          "storage-page-read"
+        ]
+      }
+    ]
+  }
+}
