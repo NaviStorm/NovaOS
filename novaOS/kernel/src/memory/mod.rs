@@ -363,7 +363,7 @@ impl Memory {
 }
 
 /// # Safety
-/// CPU unique, pile et tables Limine abandonnées. Aucune référence aux réponses
+/// Tous les CPU ont abandonné leurs piles et tables Limine. Aucune référence aux réponses
 /// (hors carte remplacée ici) ni rappel de firmware ne peut encore être utilisé.
 pub(crate) unsafe fn reclaim_loader(video: Option<(usize, usize)>) -> Result<()> {
     let (early, offset) =

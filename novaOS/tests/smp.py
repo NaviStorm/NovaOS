@@ -22,6 +22,7 @@ def run(arch, cpus):
                 assert f"SMP stationnes={cpus-1} en_ligne=1" in text
                 if cpus > 1:
                     assert "SMP migration=0->1" in text
+                    assert f"SMP traductions distantes masque={((1 << cpus) - 2):#x} OK" in text
                 return "OK"
             if any(s in text for s in ("PANIC", "Panique", "Exception noyau", "#PF adresse", "ABORT adresse")):
                 break

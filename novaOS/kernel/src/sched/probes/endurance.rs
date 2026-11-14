@@ -73,11 +73,11 @@ pub(super) fn run() -> ! {
             heap::shortage();
             DRAINS.fetch_add(1, SeqCst);
         }
-        let workers = [
-            spawn(fragment::<0>).unwrap(),
-            spawn(fragment::<1>).unwrap(),
-            spawn(fragment::<2>).unwrap(),
-        ];
+        let entries = [fragment::<0> as fn(), fragment::<1>, fragment::<2>];
+        let workers: [Id; WORKERS] = core::array::from_fn(|i| {
+            let cpu = (i + 1) % crate::smp::count();
+            spawn_on(entries[i], 1 << cpu).unwrap()
+        });
         let start = ticks();
         let mut last_check = start;
         let mut last_progress = start_workers;

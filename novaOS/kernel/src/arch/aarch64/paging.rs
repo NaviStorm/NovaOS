@@ -45,8 +45,8 @@ pub fn publish() {
     unsafe { asm!("dsb ishst", options(nostack, preserves_flags)) };
 }
 pub fn invalidate(_: u64) {
-    // Sûreté : dans le domaine de partage interne, invalide les caches de marche des
-    // tables avant de rendre les cadres. Les autres ASID ne sont pas utilisés.
+    // Sûreté : couvre tous les ASID du domaine de partage interne et attend
+    // la fin de l'invalidation avant la restitution des cadres.
     unsafe {
         asm!(
             "dsb ishst",

@@ -78,6 +78,9 @@ pub(crate) fn admit(pid: u64, key: u64) -> bool {
         && ACTIF.load(Ordering::Acquire) == key
 }
 pub(crate) fn died(pid: u64) {
+    // La fermeture par le superviseur et la dernière validation avant le kick
+    // doivent s'ordonner même si le superviseur s'exécute sur un autre CPU.
+    let _gate = crate::sched::Guard::new();
     if pid != 0
         && OWNER
             .compare_exchange(pid, 0, Ordering::AcqRel, Ordering::Acquire)

@@ -20,7 +20,7 @@
 +        }
 +        let debut = crate::sched::ticks();
 +        for _ in 0..1024 {
-+            let garde = crate::sched::Guard::new();
++            let garde = hal::interrupts::Guard::new();
 +            if self.q.pages[2].mem.r16(2) == self.q.index
 +                && IRQS.load(Ordering::Acquire) != precedent
 +            {
