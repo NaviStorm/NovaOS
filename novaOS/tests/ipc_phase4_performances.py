@@ -111,7 +111,7 @@ def rapport(dossier):
     for version in ("historique", "phase3"):
         if version not in groupes or "phase4" not in groupes:
             continue
-        for cle in groupes[version].keys() & groupes["phase4"].keys():
+        for cle in sorted(groupes[version].keys() & groupes["phase4"].keys()):
             versions = [groupes[v][cle] for v in (version, "phase4")]
             par_rep = [{b["rep"]: b for b in boots} for boots in versions]
             lignes = []

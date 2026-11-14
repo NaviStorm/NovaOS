@@ -109,3 +109,5 @@ Les coupures concernent des processus QEMU sur un Mac resté alimenté. Le compo
 La [qualification de phase 2](smp-phase2-v0.17.0.md) reprend la contention, l’arrêt concerté, les états flottants et les essais dans l’application UTM. Les limites ci-dessus décrivent l’état de la phase 1.
 
 La phase 3 mesure les allers-retours IPC à charge constante et proportionnelle, les affinités et la concurrence avec NovaFS. Elle documente également la correction de la fenêtre MMIO x86. [Mesures et qualification de phase 3](ipc-smp-phase3-v0.17.0.md)
+
+La phase 4 compare trois noyaux pour expliquer le débit x86 à quatre couples et suit chaque acteur sous contention. [Débit, équité et décision de qualification](ipc-smp-phase4-v0.17.0.md)
