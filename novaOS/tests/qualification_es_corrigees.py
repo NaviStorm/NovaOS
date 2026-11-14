@@ -45,6 +45,8 @@ def examiner(mesure, plateforme, secteur, cas, sonde, sha):
         c = m["compteur"]
         if not c.get("lots") or c["bloc"]["flush"]["nombre"] != 2:
             raise ValueError("Chemin groupé avec deux barrières absent")
+        if "ipc_features" not in c["controles_noyau_locaux"]:
+            raise ValueError("Sonde de découverte IPC absente du comptage du candidat")
         if c["total_avec_controles_locaux"] > 64:
             raise ValueError("Plafond IPC dépassé")
     if plateforme == "utm-aarch64":
