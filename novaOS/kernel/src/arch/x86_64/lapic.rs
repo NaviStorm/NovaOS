@@ -2,7 +2,7 @@
 use crate::{sched, smp};
 use core::sync::atomic::{AtomicU32, AtomicU64, Ordering};
 
-const BASE: usize = 0xffff_c900_0000_0000 + 321 * 4096;
+const BASE: usize = crate::memory::IO_BASE as usize + 321 * 4096;
 static PERIOD: AtomicU32 = AtomicU32::new(0);
 static TIMEOUT_CYCLES: AtomicU64 = AtomicU64::new(0);
 static INVALIDATE: AtomicU64 = AtomicU64::new(0);

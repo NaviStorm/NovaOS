@@ -476,11 +476,13 @@ pub(crate) unsafe fn release_dma(pa: u64) {
     .expect("restitution du cadre DMA");
 }
 
+pub(crate) const IO_BASE: u64 = 0xffff_c900_0000_0000;
+
 /// Fenêtre superviseur Device/UC dans l'arène dédiée du transport QEMU.
 pub(crate) fn map_io(pa: u64, va: u64) -> Result<()> {
     if (pa | va) % PAGE != 0
         || pa > frames::PHYS_MASK
-        || !(0xffff_c900_0000_0000..0xffff_c900_0100_0000).contains(&va)
+        || !(IO_BASE..IO_BASE + 0x100_0000).contains(&va)
     {
         return Err(Error::Geometry);
     }

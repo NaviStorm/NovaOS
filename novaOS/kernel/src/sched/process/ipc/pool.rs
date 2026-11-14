@@ -1,4 +1,4 @@
-//! Slabs privés dans la même branche superviseur que les piles et le Buddy.
+//! Slabs superviseur dans l'arène noyau ou sur les cadres privés du pool.
 //! Les bitmaps résident dans Core. Une suppression logique ne démape jamais en IRQ.
 use crate::abi::{LIMIT, NO_MEMORY};
 use crate::{
@@ -88,7 +88,8 @@ impl<T: Copy, const N: usize, const BASE: usize, const PER: usize, const DIRECT:
     pub fn get(&self, i: usize) -> &T {
         assert!(self.has(i));
         // Sûreté : le bitmap implique un slot initialisé et sa page mappée.
-        // Core est exclusivement protégé sur CPU0, la référence est liée au pool.
+        // La garde de l'ordonnanceur protège Core sur chaque CPU. La référence
+        // est liée au pool et ne survit pas à la transaction.
         unsafe { &*self.pointer(i) }
     }
     pub fn get_mut(&mut self, i: usize) -> &mut T {

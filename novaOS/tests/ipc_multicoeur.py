@@ -61,7 +61,7 @@ def mesurer(arch, cpu, cas, elf, rep, sortie):
                         for ligne in lignes:
                             hote = time.monotonic_ns()
                             s = ligne.decode(errors="replace").strip()
-                            if "Panique du noyau" in s or "motif=panique" in s:
+                            if "Panique du noyau" in s or "SMP arret motif=" in s:
                                 raise RuntimeError(s)
                             if s.startswith("P3 debut "):
                                 debut = hote

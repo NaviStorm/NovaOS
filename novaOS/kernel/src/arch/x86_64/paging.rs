@@ -82,8 +82,11 @@ fn load_kernel_root(root: u64) {
         asm!("mov cr4, {}", "mov cr3, {}", "mov cr4, {}", in(reg) cr4 & !(1<<7), in(reg) root, in(reg) cr4, options(nostack));
     }
 }
-pub fn map_devices(_: &crate::memory::AddressSpace, _: &mut crate::memory::Frames) -> Result<()> {
-    Ok(())
+pub fn map_devices(
+    space: &crate::memory::AddressSpace,
+    frames: &mut crate::memory::Frames,
+) -> Result<()> {
+    space.reserve_io_branch(frames)
 }
 
 pub fn matches(actual: u64, wanted: u64) -> bool {

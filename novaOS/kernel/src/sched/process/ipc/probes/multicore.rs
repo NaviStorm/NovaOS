@@ -139,6 +139,7 @@ pub(super) fn run(scenario: &[u8]) -> ! {
             }
         }
         let travail_avant = TRAVAIL.load(Ordering::Acquire);
+        let bloc_avant = crate::hardware::block::kicks();
         hal::log(format_args!("P3 debut serie={serie}"));
         let start;
         {
@@ -180,10 +181,11 @@ pub(super) fn run(scenario: &[u8]) -> ! {
             }
         }
         let travail = TRAVAIL.load(Ordering::Acquire) - travail_avant;
+        let requetes_bloc = crate::hardware::block::kicks() - bloc_avant;
         FIN.store(true, Ordering::Release);
         let duree = fins.iter().max().unwrap();
         hal::log(format_args!(
-            "P3 fin serie={serie} ns={duree} activite={travail}"
+            "P3 fin serie={serie} ns={duree} activite={travail} requetes_bloc={requetes_bloc}"
         ));
         for (id, fin) in fins.iter().enumerate() {
             hal::log(format_args!("P3 couple id={id} ns={fin}"));
