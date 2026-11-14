@@ -210,6 +210,7 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
     data = paquet/"Data"
     data.mkdir(parents=True)
     config = plistlib.loads((template/"config.plist").read_bytes())
+    cpus = config["System"]["CPUCount"]
     assert [d["ImageName"] for d in config["Drive"]] == ["code.fd", "variables.fd", "cible.qcow2"]
     for name in ("code.fd", "variables.fd"):
         shutil.copyfile(template/"Data"/name, data/name)
@@ -262,6 +263,8 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
                                       lecture_conteneur=refus.split(":", 1)[0])
         with demarrer(machine, journal) as c, ExitStack() as pile:
             transfert(c, b"nsh> ", 56, banniere=banniere)
+            if cpus > 1:
+                assert f"SMP systeme cpus={cpus} en_ligne={(1 << cpus) - 1:#x}" in journal.read_text()
             moniteur = ouvrir_moniteur(machine, out, pile) if observer_hote else None
             if qos is not None:
                 qos.attacher(machine, thread_moniteur(moniteur))
@@ -335,6 +338,8 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
             os.write(c.fd, b":q\r")
             c.attendre(b"nsh> ")
             c.ligne("exit", b"SYSTEME bilan Ok(())")
+            if cpus > 1:
+                c.attendre(f"ack={(1 << cpus) - 1:#x} absents=0x0 muets=0x0".encode())
         exporter(machine, out/"relu.utm")
     apres = relire_export(out/"relu.utm", cible, s, ids, etat["blocs"], attendu, destination)
     for nom_copie in destinations[1:]:

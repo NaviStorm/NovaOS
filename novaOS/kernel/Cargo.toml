@@ -11,6 +11,7 @@ test = false
 bench = false
 
 [features]
+user-fpu = []
 gicv3-lab = []
 dma-sequentiel = ["gicv3-lab"]
 ancres-p9-lab = ["dma-sequentiel"]

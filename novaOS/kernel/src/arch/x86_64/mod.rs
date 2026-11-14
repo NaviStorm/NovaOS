@@ -80,4 +80,7 @@ pub(crate) fn prepare_secondaries() {
     interrupts::prepare_secondaries();
     lapic::prepare();
 }
-pub(crate) use lapic::{kick, poll_translation};
+pub(crate) use lapic::{kick, poll_translation, stop_budget, stop_ipi};
+
+#[cfg(feature = "user-fpu")]
+pub(crate) mod fpu;

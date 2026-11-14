@@ -36,7 +36,14 @@ pub(crate) fn run() -> ! {
         "SMP memoire cpu={n} libres={} tas={}",
         memory.free_pages, memory.occupied
     ));
+    let freq = hal::timer::counter_hz();
+    profile::ACTIVE.store(true, Ordering::Release);
+    hal::log(format_args!("SMP frequence={freq}"));
     process::smp_users();
+    compute(n, freq);
+    process::ipc::smp_roundtrip(freq);
+    let preemptions = with(|s| s.stats.preemptions);
+    hal::log(format_args!("SMP preemptions={preemptions}"));
     if n > 1 {
         remote_translations();
     }
@@ -74,6 +81,7 @@ pub(crate) fn run() -> ! {
             yield_now();
         }
     }
+    profile::report();
     smp::request_park();
     while smp::ONLINE.load(Ordering::Acquire) != 1 {
         assert!(
@@ -167,4 +175,62 @@ fn remote_translations() {
     hal::log(format_args!(
         "SMP traductions distantes masque={mask:#x} OK"
     ));
+}
+
+// Charge entière fixe distribuée sur huit threads, indépendante de la vitesse du timer.
+static COMPUTE_GO: AtomicBool = AtomicBool::new(false);
+static COMPLETED: AtomicUsize = AtomicUsize::new(0);
+fn calculate() {
+    while !COMPUTE_GO.load(Ordering::Acquire) {
+        yield_now();
+    }
+    let mut x = 123u64;
+    for _ in 0..2_000_000 {
+        x = core::hint::black_box(x.wrapping_mul(6364136223846793005).wrapping_add(1));
+    }
+    assert_eq!(x, 0x4b49cfed50c817fb);
+    COMPLETED.fetch_add(1, Ordering::Release);
+}
+fn compute(n: usize, freq: u64) {
+    for i in 0..8 {
+        spawn_on(calculate, 1 << (i % n)).unwrap();
+    }
+    let start = hal::timer::counter();
+    COMPUTE_GO.store(true, Ordering::Release);
+    while COMPLETED.load(Ordering::Acquire) != 8 {
+        sleep(1);
+    }
+    let elapsed = hal::timer::counter() - start;
+    hal::log(format_args!(
+        "SMP calcul iterations=16000000 us={}",
+        elapsed.saturating_mul(1_000_000) / freq
+    ));
+}
+
+pub(crate) fn shutdown_test(scenario: &[u8]) -> ! {
+    static MASKED: AtomicBool = AtomicBool::new(false);
+    fn unresponsive() {
+        hal::interrupts::mask();
+        MASKED.store(true, Ordering::Release);
+        loop {
+            core::hint::spin_loop();
+        }
+    }
+    if scenario == b"smp-panique" {
+        if smp::count() == 1 {
+            panic!("sonde de panique");
+        }
+        spawn_on(|| panic!("sonde de panique"), 2).unwrap();
+        loop {
+            yield_now();
+        }
+    }
+    if scenario == b"smp-cpu-muet" {
+        assert!(smp::count() > 1);
+        spawn_on(unresponsive, 2).unwrap();
+        while !MASKED.load(Ordering::Acquire) {
+            yield_now();
+        }
+    }
+    hal::cpu::halt()
 }

@@ -59,10 +59,9 @@ fn main_thread() {
     while crate::smp::ONLINE.load(core::sync::atomic::Ordering::Acquire)
         != (1 << crate::smp::count()) - 1
     {
-        assert!(
-            sched::ticks().wrapping_sub(start) < 5 * u64::from(sched::HZ),
-            "secondaire sans acquittement"
-        );
+        if sched::ticks().wrapping_sub(start) >= 5 * u64::from(sched::HZ) {
+            smp::shutdown("amorcage", format_args!("secondaire sans acquittement"));
+        }
         core::hint::spin_loop();
     }
     let (args, screen) = boot::handoff();
@@ -92,6 +91,11 @@ fn main_thread() {
         }
         #[cfg(feature = "systeme-gpt")]
         if scenario == b"systeme-gpt" {
+            log(format_args!(
+                "SMP systeme cpus={} en_ligne={:#x}",
+                smp::count(),
+                smp::ONLINE.load(core::sync::atomic::Ordering::Acquire)
+            ));
             let r = hardware::block::qualification::systeme();
             log(format_args!("SYSTEME bilan {r:?}"));
             hal::cpu::halt()
@@ -108,6 +112,13 @@ fn main_thread() {
             hal::log(format_args!("CIBLE mode de demarrage refuse"));
         }
         hal::cpu::halt()
+    }
+    if matches!(scenario, b"smp-arret" | b"smp-panique" | b"smp-cpu-muet") {
+        sched::shutdown_test(scenario);
+    }
+    #[cfg(feature = "user-fpu")]
+    if scenario == b"smp-fp" {
+        sched::process::fp_test();
     }
     if scenario == b"smp-test" {
         sched::smp_test();
@@ -250,6 +261,5 @@ fn interactive(
 #[panic_handler]
 fn panic(info: &PanicInfo<'_>) -> ! {
     hal::interrupts::mask();
-    log(format_args!("Panique du noyau : {info}"));
-    hal::cpu::halt()
+    smp::shutdown("panique", format_args!("Panique du noyau : {info}"))
 }

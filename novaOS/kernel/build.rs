@@ -17,6 +17,7 @@ fn main() {
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
     for name in [
         "demo",
+        "fp_probe",
         "ipc",
         "storage/service",
         "storage/client",
@@ -27,6 +28,9 @@ fn main() {
         "storage/control",
         "storage/fileclient",
     ] {
+        if name == "fp_probe" && env::var_os("CARGO_FEATURE_USER_FPU").is_none() {
+            continue;
+        }
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
         let file_client = name == "storage/fileclient";
         let linker = format!(

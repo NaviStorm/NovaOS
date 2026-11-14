@@ -126,30 +126,67 @@ fn spawn_image(
     private_ro: Option<&[u8]>,
     wait_on: Option<Child>,
 ) -> Result<Child, Error> {
-    let guard = Guard::new();
-    if !guard.was_enabled() {
-        return Err(Error::Critical);
-    }
-    create_image(image, data, private_ro, wait_on)
+    prepare_and_publish(image, data, private_ro, wait_on, None)
 }
 
-// L’appelant maintient le masque IRQ jusqu’à publication du groupe.
+// Le préparateur ne possède encore aucun slot ni droit publié. Le verrou des
+// pages est relâché avant l'acquisition de celui de l'ordonnanceur.
+fn prepare_and_publish(
+    image: &'static [u8],
+    data: &[u8],
+    private_ro: Option<&[u8]>,
+    wait_on: Option<Child>,
+    mask: Option<u64>,
+) -> Result<Child, Error> {
+    let irq = hal::interrupts::Guard::new();
+    if !irq.was_enabled() {
+        return Err(Error::Critical);
+    }
+    drop(irq);
+    reap();
+    let space =
+        heap::with_pages(|m| UserSpace::new(m, image, data, private_ro)).map_err(Error::Memory)?;
+    let _gate = Guard::new();
+    let child = publish_image(space, wait_on)?;
+    if let Some(mask) = mask {
+        with(|s| {
+            s.slots
+                .iter_mut()
+                .flatten()
+                .find(|t| t.owner == Some(child.0))
+                .unwrap()
+                .cpu_mask = mask
+        });
+    }
+    Ok(child)
+}
+
+// Publication d'un groupe IPC : le créateur détient déjà la garde de l'ensemble.
 fn create_image(
     image: &'static [u8],
     data: &[u8],
     private_ro: Option<&[u8]>,
     wait_on: Option<Child>,
 ) -> Result<Child, Error> {
+    let space =
+        heap::with_pages(|m| UserSpace::new(m, image, data, private_ro)).map_err(Error::Memory)?;
+    publish_image(space, wait_on)
+}
+fn publish_image(space: UserSpace, wait_on: Option<Child>) -> Result<Child, Error> {
     reap();
-    let (slot, proc_slot) = with(|s| {
+    let Some((slot, proc_slot)) = with(|s| {
         Some((
             s.slots.iter().position(Option::is_none)?,
             s.processes.slots.iter().position(Option::is_none)?,
         ))
-    })
-    .ok_or(Error::Full)?;
-    let space =
-        heap::with_pages(|m| UserSpace::new(m, image, data, private_ro)).map_err(Error::Memory)?;
+    }) else {
+        heap::with_pages(|m| {
+            space.release(m);
+            Ok(())
+        })
+        .unwrap();
+        return Err(Error::Full);
+    };
     let root = space.id();
     // Le masque IRQ reste en place de la réservation des slots à la publication
     // du couple PID/TCB. Le nouveau thread ne peut observer une racine par défaut.
@@ -333,7 +370,6 @@ pub(super) fn smp_users() {
     assert!(n <= 4, "sonde dimensionnée pour 1 à 4 CPU");
     // Deux calculs par CPU imposent une permutation, y compris sur les AP.
     for i in 0..2 * n {
-        let _guard = Guard::new();
         let child = demo::spawn_pinned(i % n, 27 + i as u64);
         children.push(child);
     }
@@ -375,4 +411,72 @@ pub(super) fn smp_users() {
         });
         assert_eq!(child.join(), Outcome::Exit(27 + i as u64));
     }
+}
+
+#[cfg(feature = "user-fpu")]
+pub(crate) fn fp_test() -> ! {
+    let n = crate::smp::count();
+    let image = include_bytes!(concat!(env!("OUT_DIR"), "/fp_probe.bin"));
+    for round in 0..2 {
+        let mut children = Vec::new();
+        for i in 0..2 * n {
+            let seed = 17 + (round * 2 * n + i) as u64;
+            let mut config = [0u8; 16];
+            config[8..].copy_from_slice(&seed.to_le_bytes());
+            children
+                .push(prepare_and_publish(image, &config, None, None, Some(1 << (i % n))).unwrap());
+        }
+        for phase in 0..2 {
+            let deadline = ticks() + u64::from(HZ) * 5;
+            for (i, c) in children.iter().enumerate() {
+                let cpu = (i + phase) % n;
+                let mut first = None;
+                while with(|s| {
+                    let p = s.processes.get(c.0);
+                    assert!(
+                        p.outcome.is_none(),
+                        "programme FP terminé tôt {:?}",
+                        p.outcome
+                    );
+                    let base = *first.get_or_insert(p.preemptions);
+                    let progress =
+                        heap::with_pages(|m| Ok(p.space.as_ref().unwrap().read_data(m, 3)))
+                            .unwrap();
+                    p.preemptions < base + 2 || p.preempted_on & (1 << cpu) == 0 || progress == 0
+                }) {
+                    assert!(ticks() < deadline, "préemption FP absente");
+                    sleep(1);
+                }
+            }
+            if phase == 0 && n > 1 {
+                with(|s| {
+                    for (i, c) in children.iter().enumerate() {
+                        s.slots
+                            .iter_mut()
+                            .flatten()
+                            .find(|t| t.owner == Some(c.0))
+                            .unwrap()
+                            .cpu_mask = 1 << ((i + 1) % n);
+                    }
+                });
+            }
+        }
+        for (i, c) in children.into_iter().enumerate() {
+            with(|s| {
+                let p = s.processes.get(c.0);
+                heap::with_pages(|m| {
+                    p.space.as_ref().unwrap().write_data(m, 4, 1);
+                    Ok(())
+                })
+                .unwrap();
+            });
+            assert_eq!(c.join(), Outcome::Exit(17 + (round * 2 * n + i) as u64));
+        }
+        hal::log(format_args!(
+            "SMP FPU cycle={round} clients={} migrations={} OK",
+            2 * n,
+            if n > 1 { 2 * n } else { 0 }
+        ));
+    }
+    hal::cpu::halt()
 }

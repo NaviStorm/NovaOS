@@ -1,4 +1,3 @@
-use crate::hal;
 use core::arch::{asm, global_asm};
 
 // Sûreté : VBAR pointe vers 16 entrées de 128 octets, alignées sur 2 Kio.
@@ -132,8 +131,7 @@ pub fn vectors(top: usize) {
 extern "C" fn fault(esr: u64, address: u64, pc: u64, state: u64, sync: u64) -> ! {
     let ec = (esr >> 26) & 63;
     if sync != 0 && ec == 7 {
-        hal::log(format_args!("FPU/SIMD interdit : EC=7"));
-        hal::cpu::halt();
+        crate::smp::shutdown("exception", format_args!("FPU/SIMD interdit : EC=7"));
     }
     let access = match ec {
         0x20 | 0x21 => "execution",
@@ -146,10 +144,12 @@ extern "C" fn fault(esr: u64, address: u64, pc: u64, state: u64, sync: u64) -> !
         12..=15 => "protection",
         _ => "autre",
     };
-    hal::log(format_args!(
-        "ABORT adresse={address:#x} pc={pc:#x} esr={esr:#x} ec={ec:#x} spsr={state:#x} acces={access} cause={cause} synchrone={sync}"
-    ));
-    hal::cpu::halt()
+    crate::smp::shutdown(
+        "exception",
+        format_args!(
+            "ABORT adresse={address:#x} pc={pc:#x} esr={esr:#x} ec={ec:#x} spsr={state:#x} acces={access} cause={cause} synchrone={sync}"
+        ),
+    )
 }
 
 #[repr(C)]

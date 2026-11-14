@@ -29,6 +29,8 @@ pub fn prepare() {
         } // UMIP
         asm!("mov cr4,{}",in(reg) flags);
     }
+    #[cfg(feature = "user-fpu")]
+    super::fpu::prepare();
     super::interrupts::enable_syscall();
 }
 pub fn sp() -> usize {

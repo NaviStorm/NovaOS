@@ -76,7 +76,13 @@ pub fn launch() {
         return;
     }
     arch::prepare_secondaries();
+    IPI_READY.store(true, Ordering::Release);
     for cpu in boot::processors().unwrap().cpus() {
+        if boot::scenario() == b"smp-ap-absent"
+            && cpu.extra.load(Ordering::Relaxed) as usize == count() - 1
+        {
+            continue;
+        }
         if identity(cpu) != hardware(0) {
             cpu.goto_address.write(secondary);
         }
@@ -87,6 +93,7 @@ unsafe extern "C" fn secondary(info: &limine::mp::Cpu) -> ! {
     hal::interrupts::mask();
     let cpu = info.extra.load(Ordering::Acquire) as usize;
     assert!(cpu > 0 && cpu < count() && hardware(cpu) == arch::cpu_id());
+    check_stop();
     arch::init_secondary(cpu);
     crate::sched::secondary(cpu)
 }
@@ -101,4 +108,64 @@ pub fn request_park() {
     if count() > 1 {
         arch::kick();
     }
+}
+
+// Arrêt terminal de la machine. Les piles, tables, baux et TCB restent possédés.
+// Le coordinateur n'emprunte aucun verrou qui pourrait appartenir à un CPU arrêté.
+static COORDINATOR: AtomicUsize = AtomicUsize::new(usize::MAX);
+static ACK: AtomicU64 = AtomicU64::new(0);
+static STOP_SP: [AtomicUsize; MAX_CPUS] = [const { AtomicUsize::new(0) }; MAX_CPUS];
+static IPI_READY: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
+
+pub(crate) fn check_stop() {
+    let owner = COORDINATOR.load(Ordering::Acquire);
+    if owner != usize::MAX && owner != index() {
+        hal::interrupts::mask();
+        let cpu = index();
+        STOP_SP[cpu].store(hal::context::sp(), Ordering::Relaxed);
+        ACK.fetch_or(1 << cpu, Ordering::Release);
+        hal::cpu::park_local();
+    }
+}
+
+pub(crate) fn shutdown(reason: &str, details: core::fmt::Arguments<'_>) -> ! {
+    hal::interrupts::mask();
+    let cpu = index();
+    if COORDINATOR
+        .compare_exchange(usize::MAX, cpu, Ordering::AcqRel, Ordering::Acquire)
+        .is_err()
+    {
+        check_stop();
+        // Double faute du coordinateur lui-même.
+        hal::cpu::park_local();
+    }
+    let expected = (1u64 << count()) - 1;
+    let online = ONLINE.load(Ordering::Acquire);
+    STOP_SP[cpu].store(hal::context::sp(), Ordering::Release);
+    ACK.fetch_or(1 << cpu, Ordering::Release);
+    if online & !(1 << cpu) != 0 && IPI_READY.load(Ordering::Acquire) {
+        arch::stop_ipi();
+    }
+    if let Some(write) = arch::DIAGNOSTIC {
+        if details.as_str() != Some("") {
+            write(details);
+        }
+    }
+    let start = hal::timer::counter();
+    let budget = arch::stop_budget();
+    while ACK.load(Ordering::Acquire) & online != online {
+        if hal::timer::counter().wrapping_sub(start) >= budget {
+            break;
+        }
+        core::hint::spin_loop();
+    }
+    let ack = ACK.load(Ordering::Acquire);
+    if let Some(write) = arch::DIAGNOSTIC {
+        write(format_args!(
+            "SMP arret motif={reason} coordinateur={cpu} attendus={expected:#x} en_ligne={online:#x} ack={ack:#x} absents={:#x} muets={:#x}",
+            expected & !online,
+            online & !ack
+        ));
+    }
+    hal::cpu::park_local();
 }

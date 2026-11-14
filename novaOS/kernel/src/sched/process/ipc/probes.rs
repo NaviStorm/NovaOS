@@ -5,6 +5,7 @@ mod bulk;
 mod contract;
 mod limits;
 mod perf;
+pub(crate) use perf::smp_roundtrip;
 mod races;
 pub(super) static PAUSED: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
 static EXIT_ON_RESUME: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);

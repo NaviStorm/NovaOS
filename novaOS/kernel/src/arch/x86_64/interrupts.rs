@@ -1,4 +1,4 @@
-use super::{ports::Port, serial};
+use super::ports::Port;
 use crate::hal;
 use core::{
     arch::{asm, naked_asm},
@@ -55,10 +55,10 @@ extern "C" fn fault_entry() {
 }
 
 extern "C" fn fatal() -> ! {
-    serial::line(format_args!(
-        "Erreur : interruption inattendue, arrêt du noyau."
-    ));
-    hal::cpu::halt()
+    crate::smp::shutdown(
+        "exception",
+        format_args!("Erreur : interruption inattendue, arrêt du noyau."),
+    )
 }
 
 #[repr(align(16))]
@@ -250,11 +250,13 @@ extern "C" fn page_fault(address: u64, error: u64, pc: u64, cs: u64) -> ! {
             "Ring3",
         );
     }
-    serial::line(format_args!(
-        "#PF adresse={address:#x} pc={pc:#x} code={error:#x} cs={cs:#x} acces={access} cause={cause} utilisateur={}",
-        error & 4 != 0
-    ));
-    hal::cpu::halt()
+    crate::smp::shutdown(
+        "exception",
+        format_args!(
+            "#PF adresse={address:#x} pc={pc:#x} code={error:#x} cs={cs:#x} acces={access} cause={cause} utilisateur={}",
+            error & 4 != 0
+        ),
+    )
 }
 
 // Sûreté : portes d’interruption DPL0, sans code d’erreur. Préserve tous les
@@ -321,13 +323,13 @@ extern "C" fn exception(vector: u64, code: u64, pc: u64, cs: u64) -> ! {
         );
     }
     if vector == 7 {
-        hal::log(format_args!("FPU/SIMD interdit : #NM"));
+        crate::smp::shutdown("exception", format_args!("FPU/SIMD interdit : #NM"));
     } else {
-        hal::log(format_args!(
-            "Exception noyau vecteur={vector} pc={pc:#x} code={code:#x}"
-        ));
+        crate::smp::shutdown(
+            "exception",
+            format_args!("Exception noyau vecteur={vector} pc={pc:#x} code={code:#x}"),
+        );
     }
-    hal::cpu::halt()
 }
 
 extern "C" fn invalid_stack(pc: u64, sp: u64) -> ! {

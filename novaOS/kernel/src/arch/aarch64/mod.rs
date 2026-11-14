@@ -73,4 +73,10 @@ pub(crate) fn prepare_secondaries() {
 }
 pub(crate) fn poll_translation() {}
 
-pub(crate) use gic::kick;
+pub(crate) use gic::{kick, kick as stop_ipi};
+pub(crate) fn stop_budget() -> u64 {
+    timer::counter_hz()
+}
+
+#[cfg(feature = "user-fpu")]
+pub(crate) mod fpu;

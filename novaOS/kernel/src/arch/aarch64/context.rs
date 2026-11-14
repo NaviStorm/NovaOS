@@ -14,6 +14,8 @@ pub fn prepare() {
         "bic x9,x9,#(3<<20)","msr cpacr_el1,x9","msr cntkctl_el1,xzr","mrs x9,sctlr_el1",
         "bic x9,x9,#(1<<9)","bic x9,x9,#(1<<26)","msr sctlr_el1,x9","isb",out("x9") _);
     }
+    #[cfg(feature = "user-fpu")]
+    super::fpu::prepare();
     if pan_supported() {
         // Sûreté : FEAT_PAN vérifiée, SPAN=0 force PAN à toute entrée à EL1.
         unsafe {

@@ -45,6 +45,7 @@ pub fn publish() {
     unsafe { asm!("dsb ishst", options(nostack, preserves_flags)) };
 }
 pub fn invalidate(_: u64) {
+    crate::sched::profile::tlb();
     // Sûreté : couvre tous les ASID du domaine de partage interne et attend
     // la fin de l'invalidation avant la restitution des cadres.
     unsafe {
@@ -212,6 +213,7 @@ pub unsafe fn switch_thread_root(root: u64) {
     // Un ASID distinct par PE empêche la confusion de deux racines actives.
     // Avant de réutiliser son ASID, le PE sélectionne une racine vide (ASID 0)
     // puis termine les invalidations. Aucune exécution EL0 pendant ce passage.
+    crate::sched::profile::tlb();
     let asid = ((crate::smp::index() + 1) as u64) << 48;
     let empty = EMPTY.load(Ordering::Acquire);
     unsafe {

@@ -95,3 +95,33 @@ pub(super) fn run() {
     ));
     stop(g, [a, b, producer, cpu]);
 }
+
+// Charge identique pour 1, 2 et 4 CPU. Les deux acteurs utilisent leurs vraies
+// portes IPC, un message de 128 octets et une réponse à chaque tour.
+pub(crate) fn smp_roundtrip(hz: u64) {
+    let (group, [a, b]) = group([ALL, ALL]);
+    let root = a.boot();
+    let reply = a.call(IPC_CREATE, 0, 0, 0).unwrap();
+    let peer = b.boot();
+    let b_reply = super::contract::transfer(a, b, root, peer, reply, SEND | GRANT, 1);
+    word(a, 6, root);
+    word(a, 7, reply);
+    word(b, 6, b_reply);
+    word(b, 7, peer);
+    for actor in [a, b] {
+        actor.put(OUTPUT, &receive_wire(15000, true));
+        actor.put(DESC, &send_wire(19, 128, 0));
+    }
+    let count = 1000;
+    let start = hal::timer::counter();
+    b.start(u64::MAX - 1, count, 2, 1);
+    a.start(u64::MAX - 1, count, 2, 0);
+    assert_eq!(a.result(), Ok(count));
+    assert_eq!(b.result(), Ok(count));
+    let elapsed = hal::timer::counter() - start;
+    hal::log(format_args!(
+        "SMP IPC tours={count} ns_par_tour={}",
+        u128::from(elapsed) * 1_000_000_000 / u128::from(hz) / u128::from(count)
+    ));
+    stop(group, [a, b]);
+}

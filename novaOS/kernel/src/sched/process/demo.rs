@@ -177,6 +177,12 @@ pub(crate) fn test() {
         (Fpu, 0, "instruction", "fpu"),
     ] {
         let victim = spawn_demo(mode, 99, addr).unwrap();
+        #[cfg(feature = "user-fpu")]
+        if matches!(mode, Fpu) {
+            // L’ancienne sonde exécute une instruction FP puis sort avec 255.
+            assert_eq!(victim.join(), Outcome::Exit(255));
+            continue;
+        }
         let Outcome::Fault(f) = victim.join() else {
             panic!("violation ignorée");
         };
@@ -245,14 +251,5 @@ pub(crate) fn test() {
 pub(super) fn spawn_pinned(cpu: usize, seed: u64) -> Child {
     let mut data = [0u8; 24];
     data[8..16].copy_from_slice(&seed.to_le_bytes());
-    let child = create_image(DEMO, &data, None, None).unwrap();
-    with(|s| {
-        s.slots
-            .iter_mut()
-            .flatten()
-            .find(|t| t.owner == Some(child.0))
-            .unwrap()
-            .cpu_mask = 1 << cpu
-    });
-    child
+    prepare_and_publish(DEMO, &data, None, None, Some(1 << cpu)).unwrap()
 }

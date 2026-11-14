@@ -4,6 +4,7 @@ mod gate;
 pub(crate) use gate::Guard;
 mod probes;
 pub(crate) mod process;
+pub(crate) mod profile;
 mod stack;
 pub(crate) mod sync;
 use crate::hal::{self, context};
@@ -61,6 +62,10 @@ struct Thread {
     stack: Stack,
     saved: usize,
     wait_order: u64,
+    #[cfg(feature = "user-fpu")]
+    fp_initialized: bool,
+    blocked_since: u64,
+    last_cpu: usize,
     in_syscall: bool,
     entry: fn(),
     priority: Priority,
@@ -113,6 +118,7 @@ struct Local(UnsafeCell<Option<Core>>);
 // Sûreté : chaque emprunt est délimité par une fermeture sous le verrou du scheduler. Les exceptions non masquables/fatales n’utilisent jamais CORE.
 unsafe impl Sync for Local {}
 static CORE: Local = Local(UnsafeCell::new(None));
+#[track_caller]
 fn with<R>(f: impl FnOnce(&mut Core) -> R) -> R {
     let _mask = Guard::new();
     // Sûreté : aucune fermeture appelée ici ne commute, ne réentre ni ne garde de référence.
@@ -161,6 +167,10 @@ impl Core {
     }
     fn wake(&mut self, i: usize) {
         assert!(matches!(self.thread(i).state, State::Blocked(_)));
+        if self.thread(i).blocked_since != 0 {
+            profile::ipc_woke(crate::smp::index(), self.thread(i).blocked_since);
+        }
+        self.thread_mut(i).blocked_since = 0;
         self.thread_mut(i).state = State::Ready;
         self.ready.push(i);
         self.stats.wakes += 1;
@@ -174,6 +184,7 @@ impl Core {
                 .enumerate()
                 .any(|(cpu, &slot)| other & (1 << cpu) != 0 && slot == Self::idle_slot(cpu))
         {
+            profile::kick(me);
             crate::arch::kick();
         }
     }
@@ -235,9 +246,11 @@ impl Core {
     }
 
     fn select(&mut self, why: Reason) -> Option<(*mut usize, usize)> {
-        let old = self.current();
+        let cpu = crate::smp::index();
+        let old = self.currents[cpu];
         let state = match why {
-            Reason::Tick(_) => {
+            Reason::Tick(user) => {
+                profile::tick(cpu, user, old == Self::idle_slot(cpu));
                 if crate::smp::index() == 0 {
                     let now = ticks().saturating_add(1);
                     NOVA_TICKS.store(now, Ordering::Relaxed);
@@ -268,6 +281,9 @@ impl Core {
                         .expect("attentes épuisées");
                     self.thread_mut(old).wait_order = self.stats.event_waits;
                 }
+                if matches!(wait, Wait::Ipc(_)) {
+                    self.thread_mut(old).blocked_since = profile::stamp();
+                }
                 State::Blocked(wait)
             }
             Reason::Exit => {
@@ -284,13 +300,37 @@ impl Core {
         }
         // Une IRQ peut reprendre idle juste avant reap(). La dette de collecte
         // reste observable jusqu'au retrait du TCB sur une autre pile.
-        let cpu = crate::smp::index();
         let idle_slot = Self::idle_slot(cpu);
         let next = if cpu == 0 && self.stats.exits != self.stats.reaped {
             idle_slot
         } else {
             self.choose(cpu).unwrap_or(idle_slot)
         };
+        #[cfg(feature = "user-fpu")]
+        if old != next {
+            let previous = self.thread(old).owner.is_some();
+            let following = self.thread(next).owner.is_some();
+            if previous || following {
+                // Chaque slot a un seul propriétaire sous la garde scheduler.
+                // Le premier dispatch du nouveau TCB efface la génération précédente.
+                let target = if following {
+                    let buffer = unsafe { &mut *FP_STATE[next].0.get() };
+                    if !self.thread(next).fp_initialized {
+                        crate::arch::fpu::initial(buffer);
+                        self.thread_mut(next).fp_initialized = true;
+                    }
+                    Some(buffer.as_ptr())
+                } else {
+                    None
+                };
+                unsafe {
+                    crate::arch::fpu::exchange(
+                        previous.then(|| FP_STATE[old].0.get().cast()),
+                        target,
+                    );
+                }
+            }
+        }
         let previous_space = self.thread(old).space;
         let t = self.thread_mut(next);
         assert_eq!(t.state, State::Ready);
@@ -299,6 +339,8 @@ impl Core {
         if old == next {
             return None;
         }
+        profile::switched(cpu, t.last_cpu != NONE && t.last_cpu != cpu);
+        t.last_cpu = cpu;
         t.stack.check(t.saved);
         let load = t.saved;
         if t.owner.is_some() {
@@ -309,7 +351,7 @@ impl Core {
             // jusqu’à la collecte sur une pile tierce. La moitié haute est commune.
             unsafe { t.space.activate() };
         }
-        self.currents[crate::smp::index()] = next;
+        self.currents[cpu] = next;
         if matches!(why, Reason::Tick(_)) && old != idle_slot && next != idle_slot {
             self.stats.preemptions += 1;
             if self.ipc.has_pending() {
@@ -370,6 +412,7 @@ fn dispatch_measured(why: Reason, masked_since: u64) {
     }
 }
 pub(crate) fn tick(user: bool) {
+    crate::smp::check_stop();
     smp_probe::pulse();
     let irq = Guard::new();
     assert!(!irq.was_enabled(), "tick hors interruption");
@@ -469,6 +512,10 @@ fn create(slot: usize, entry: fn(), priority: Priority, cpu_mask: u64) -> Result
             stack,
             saved,
             wait_order: 0,
+            #[cfg(feature = "user-fpu")]
+            fp_initialized: false,
+            blocked_since: 0,
+            last_cpu: NONE,
             in_syscall: false,
             entry,
             priority,
@@ -529,7 +576,7 @@ fn idle() {
             })
             .expect("retrait du CPU");
             _guard.unlock_masked();
-            hal::cpu::halt();
+            hal::cpu::park_local();
         }
         if cpu == 0 {
             reap();
@@ -616,9 +663,10 @@ pub(crate) fn secondary(cpu: usize) -> ! {
 }
 
 mod smp_probe;
-pub(crate) use smp_probe::run as smp_test;
+pub(crate) use smp_probe::{run as smp_test, shutdown_test};
 
 pub(crate) fn reschedule_idle() {
+    crate::smp::check_stop();
     let _guard = Guard::new();
     if with(|s| s.current() == Core::idle_slot(crate::smp::index())) {
         dispatch(Reason::Yield);
@@ -644,3 +692,13 @@ fn set_affinity(mask: u64) -> Result<(), Error> {
     }
     Ok(())
 }
+
+#[cfg(feature = "user-fpu")]
+#[repr(align(64))]
+struct FpState(UnsafeCell<[u8; crate::arch::fpu::SIZE]>);
+#[cfg(feature = "user-fpu")]
+// Les accès ont lieu sous la garde globale, avant le transfert de pile.
+unsafe impl Sync for FpState {}
+#[cfg(feature = "user-fpu")]
+static FP_STATE: [FpState; MAX] =
+    [const { FpState(UnsafeCell::new([0; crate::arch::fpu::SIZE])) }; MAX];

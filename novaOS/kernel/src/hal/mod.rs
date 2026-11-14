@@ -53,6 +53,9 @@ pub mod cpu {
 
     /// Arrête le processeur courant. Un réveil parasite le remet en veille.
     pub fn halt() -> ! {
+        crate::smp::shutdown("normal", format_args!(""))
+    }
+    pub(crate) fn park_local() -> ! {
         loop {
             super::interrupts::mask();
             crate::arch::wait();

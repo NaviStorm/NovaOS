@@ -51,6 +51,7 @@ impl KernelAllocator {
                 Err(owner) if owner == cpu => fatal(Error::Reentrant),
                 Err(_) => {
                     while self.owner.load(Ordering::Relaxed) != 0 {
+                        crate::smp::check_stop();
                         crate::arch::poll_translation();
                         core::hint::spin_loop();
                     }
@@ -99,8 +100,7 @@ pub(crate) fn install(pages: Memory) {
 pub(super) fn fatal(e: Error) -> ! {
     // Le diagnostic utilise core::fmt sur le port série et ne demande aucune allocation.
     hal::interrupts::mask();
-    hal::log(format_args!("Erreur fatale du tas : {e:?}"));
-    hal::cpu::halt()
+    crate::smp::shutdown("tas", format_args!("Erreur fatale du tas : {e:?}"))
 }
 
 fn pointer(result: Result<*mut u8>) -> *mut u8 {

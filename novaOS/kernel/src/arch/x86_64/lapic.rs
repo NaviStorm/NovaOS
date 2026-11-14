@@ -75,6 +75,7 @@ pub fn shootdown(va: u64) {
     if mask == 1 {
         return;
     }
+    crate::sched::profile::tlb();
     INVALIDATE.store(va, Ordering::Relaxed);
     let seq = GENERATION.fetch_add(1, Ordering::Release) + 1;
     let me = smp::index();
@@ -115,4 +116,14 @@ pub fn kick() {
 pub extern "C" fn wake() {
     write(0xb0, 0);
     sched::reschedule_idle();
+}
+
+// Pas d'attente ICR dans le chemin fatal. Le timer local relaie aussi la demande.
+pub fn stop_ipi() {
+    if read(0x300) & (1 << 12) == 0 {
+        write(0x300, 0xc0000 | 0xe2);
+    }
+}
+pub fn stop_budget() -> u64 {
+    (TIMEOUT_CYCLES.load(Ordering::Acquire) / 5).max(1)
 }
