@@ -258,7 +258,7 @@ pub(crate) fn executer() -> Result<()> {
 
 // Le lanceur du noyau transfère le transport déjà contrôlé, sans nouvelle découverte PCI.
 #[cfg(feature = "systeme-gpt")]
-fn publier(mut t: Bail, table: super::gpt::Table, mode: u64) -> Result<()> {
+fn publier(mut t: super::Bail, table: super::gpt::Table, mode: u64) -> Result<()> {
     t.first = table.volume;
     t.count = table.end - table.volume;
     let rights = if mode == 44 { 1 | 8 } else { 15 };
