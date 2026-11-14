@@ -138,6 +138,14 @@ pub(super) fn run(scenario: &[u8]) -> ! {
                 sleep(1);
             }
         }
+        // Un cycle inclut le lancement des services. Commencer le chronométrage
+        // pendant les lectures du montage suivant, après deux soumissions réelles.
+        if scenario == b"ipc-smp-vfs" {
+            let precedent = crate::hardware::block::kicks();
+            while crate::hardware::block::kicks() - precedent < 2 {
+                sleep(1);
+            }
+        }
         let travail_avant = TRAVAIL.load(Ordering::Acquire);
         let bloc_avant = crate::hardware::block::kicks();
         hal::log(format_args!("P3 debut serie={serie}"));

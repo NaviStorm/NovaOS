@@ -83,6 +83,7 @@ def mesurer(arch, cpu, cas, elf, rep, sortie):
                                 config = nombres(s)
                             if s == "P3 validation OK":
                                 termine = True
+                                break
                     sel.close()
                 finally:
                     if vm.poll() is None:
@@ -94,6 +95,8 @@ def mesurer(arch, cpu, cas, elf, rep, sortie):
     assert all(len(p["couples"]) == config["couples"] and max(p["couples"]) == p["ns"] for p in resultats)
     if cas == "sonde":
         assert all(p["hist"]["aller_retour"]["n"] == config["tours"] and len(p["cpu"]) == cpu for p in resultats)
+    if cas == "vfs" and "requetes_bloc" in resultats[0]:
+        assert all(p["requetes_bloc"] > 0 for p in resultats), "lot sans soumission bloc concurrente"
     return dict(arch=arch, vcpu=cpu, cas=cas, repetition=rep, config=config, releves=resultats,
                 charge_fin=os.getloadavg(), elf=hashlib.sha256(elf.read_bytes()).hexdigest())
 
@@ -102,6 +105,7 @@ if __name__ == "__main__":
     arg = argparse.ArgumentParser(description=__doc__)
     arg.add_argument("build", type=Path, help="target-dir des deux noyaux ipc-smp-lab")
     arg.add_argument("sortie", type=Path)
+    arg.add_argument("--temoin", type=Path, help="second target-dir à comparer par lancements alternés")
     arg.add_argument("--repetitions", type=int, default=3)
     arg.add_argument("--cas", nargs="+", choices=CAS, default=CAS)
     arg.add_argument("--cpus", nargs="+", type=int, choices=[1,2,4], default=[1,2,4])
@@ -111,15 +115,22 @@ if __name__ == "__main__":
     for rep in range(args.repetitions):
         cpus = args.cpus[rep % len(args.cpus):] + args.cpus[:rep % len(args.cpus)]
         for cpu in cpus:
-            for cas in args.cas:
+            for index, cas in enumerate(args.cas):
                 if cpu == 1 and cas == "distant":
                     continue
                 for arch in (args.arch if rep % 2 == 0 else reversed(args.arch)):
-                    elf = args.build.resolve()/CIBLES[arch]/"release/novaos"
-                    dest = args.sortie/f"{arch}-{cpu}-{cas}-{rep}.json"
-                    if dest.exists():
-                        assert json.loads(dest.read_text())["elf"] == hashlib.sha256(elf.read_bytes()).hexdigest()
-                        continue
-                    resultat = mesurer(arch, cpu, cas, elf, rep, args.sortie)
-                    dest.write_text(json.dumps(resultat, indent=2)+"\n")
-                    print(dest.stem, flush=True)
+                    profils = [(args.build, args.sortie)]
+                    if args.temoin:
+                        profils = [(args.temoin, args.sortie/"avant"), (args.build, args.sortie/"apres")]
+                        if (rep + cpus.index(cpu) + index) % 2:
+                            profils.reverse()
+                    for build, sortie in profils:
+                        sortie.mkdir(parents=True, exist_ok=True)
+                        elf = build.resolve()/CIBLES[arch]/"release/novaos"
+                        dest = sortie/f"{arch}-{cpu}-{cas}-{rep}.json"
+                        if dest.exists():
+                            assert json.loads(dest.read_text())["elf"] == hashlib.sha256(elf.read_bytes()).hexdigest()
+                            continue
+                        resultat = mesurer(arch, cpu, cas, elf, rep, sortie)
+                        dest.write_text(json.dumps(resultat, indent=2)+"\n")
+                        print(dest, flush=True)
