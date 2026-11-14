@@ -1,0 +1,168 @@
+{
+  "sha256_elf": "6b4209a9330fb3fcd0d7f5729854942bc905bd81c7348c61339ca5d6a12f314e",
+  "sha256_generateur": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+  "essais": [
+    {
+      "frontiere": "pages",
+      "secteur": 512,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        66,
+        67
+      ],
+      "apres_redemarrage": [
+        66,
+        67
+      ],
+      "destination_complete": false,
+      "source_et_destination_verifiees": true,
+      "sha256_resultat": "9df77559b032a41aca93d47cb99a32a24e36093edb2ac9f9ee43dde144c9b27b",
+      "journaux": {
+        "reprise.serial": "2807d898bd81544f474b416510316d093648c123173dd73cbc0879796a3d9fbb",
+        "sauvegarde.serial": "4bdfd6f19ca4cd4ec06f3ab473bd64e026e72c87a5bcbda80a3103060f07b6ea"
+      }
+    },
+    {
+      "frontiere": "f1",
+      "secteur": 512,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        66,
+        67
+      ],
+      "apres_redemarrage": [
+        66,
+        67
+      ],
+      "destination_complete": false,
+      "source_et_destination_verifiees": true,
+      "sha256_resultat": "5019547b0bdccbee780025ace1d022a5aa1d565a0e90434b4121c0af5e370d63",
+      "journaux": {
+        "reprise.serial": "bab90594f9dddc5e808c9c3979e1dd5f46a86bfae5ddf67535cabf6ad06a2564",
+        "sauvegarde.serial": "38966e04e54e275292dd6f23679af6b0cea0cbe8f5d49ad645c95b0f20ddb647"
+      }
+    },
+    {
+      "frontiere": "f2",
+      "secteur": 512,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        67,
+        68
+      ],
+      "apres_redemarrage": [
+        68,
+        69
+      ],
+      "destination_complete": true,
+      "source_et_destination_verifiees": true,
+      "sha256_resultat": "24f880d654df6448b0ca03d246f56976e58a958da06ecc32c563251ce0667191",
+      "journaux": {
+        "reprise.serial": "f2f651e9c3a47ea897507dd2b3b90b5e9672feaccd529ed019f041f0fff97f10",
+        "sauvegarde.serial": "fb51b902ee4c4cd77c19380eaa83b7c119c5796eafd4e5a78ee1df498969ad3a"
+      }
+    },
+    {
+      "frontiere": "pages",
+      "secteur": 4096,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        66,
+        67
+      ],
+      "apres_redemarrage": [
+        66,
+        67
+      ],
+      "destination_complete": false,
+      "source_et_destination_verifiees": true,
+      "sha256_resultat": "4d0b53420e7011c9ccadc412340ba3c9501ea23666587ead62b51f14b70512b4",
+      "journaux": {
+        "reprise.serial": "fe81dc88c1a8ab4cc25f148fd44eb52de87060a4b9e644202c0071ca27689274",
+        "sauvegarde.serial": "33103ce4895abbb9171cd858463a347432b8ffabbc07f68a2a3e0cab9a1f4d69"
+      }
+    },
+    {
+      "frontiere": "f1",
+      "secteur": 4096,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        66,
+        67
+      ],
+      "apres_redemarrage": [
+        66,
+        67
+      ],
+      "destination_complete": false,
+      "source_et_destination_verifiees": true,
+      "sha256_resultat": "db0c5e66ccbc4b49aa0cd47f0615eb5764ab1c492c065f2f6bfc56a15a65dcc1",
+      "journaux": {
+        "reprise.serial": "16d97fffa6cd3c61e65da10755ff9d4757284cad7d30ec097b5eac95e99dca40",
+        "sauvegarde.serial": "3cfc8e5f675ff8c0fc932811241d4a97d43a5a6d2d63e422017df384da0e3d4d"
+      }
+    },
+    {
+      "frontiere": "f2",
+      "secteur": 4096,
+      "environnement": "UTM QCOW2",
+      "arret": "utmctl stop --force",
+      "acquit_avant_coupure": false,
+      "octets_inseres": 4194304,
+      "avant": [
+        65,
+        66
+      ],
+      "juste_apres_coupure": [
+        67,
+        68
+      ],
+      "apres_redemarrage": [
+        68,
+        69
+      ],
+      "destination_complete": true,
+      "source_et_destination_verifiees": true,
+      "sha256_resultat": "dac8a293fd7c9bf6f5d9f001c948bf898903201ceb09b39506e4f4a5f010b2d2",
+      "journaux": {
+        "reprise.serial": "187356c98f275d847696e8e5cc3f410f6067a4d18ca91f7c5076c32f7f203317",
+        "sauvegarde.serial": "ce09a2a56a0b9c840c174ae44468d18b30f411bcd4b1d46894ec1d4348d4d017"
+      }
+    }
+  ]
+}
