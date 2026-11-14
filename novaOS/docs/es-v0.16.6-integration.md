@@ -2,6 +2,8 @@
 
 **Avis du 14 novembre 2026 : différer la fusion.** Les piles homogènes ont préservé les données des scénarios exercés. Une mise à jour partielle peut rendre une ancienne commande inutilisable, voire empêcher le montage. Lors d’une erreur DMA, le pilote peut aussi perdre la liste de cadres à restituer ou à conserver en quarantaine. Les performances mesurées justifient de poursuivre le prototype.
 
+Le nouvel audit qualifie les correctifs de négociation et de propriété DMA sur le candidat `13df1dc`. Il présente la matrice avant/après, les coupures et les mesures individuelles. [Qualification après correction](es-v0.16.6-correctifs.md)
+
 ## Révisions et contenu à intégrer
 
 Comparaison de `main` publié, `3193bc9108bdc771f4627f57c84e093375cc9ea4`, avec `codex/es-groupees-0166` à `d6a7a67a1e5addbb1fe849ee24fa4d61fc9accdd`. Le premier commit est l’ancêtre commun. Le diff avant cet audit couvre huit commits et 129 fichiers, dont 25 patches de qualification. La livraison publiée est NovaOS v0.16.5 avec NovaFS v0.9.13 P9.
