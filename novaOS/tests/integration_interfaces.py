@@ -152,10 +152,13 @@ def main():
     p.add_argument("--session", nargs=3, metavar=("BASE", "ID", "MODE"))
     p.add_argument("--etendue", action="store_true", help="croiser aussi le relais et le pilote séparément")
     p.add_argument("--remontage", action="store_true", help="redémarrer avec le même volume et relire la copie")
+    p.add_argument("--secteur", type=int, choices=(512, 4096), help="remplacer la géométrie de référence")
+    p.add_argument("--frontieres", action="store_true", help="cinq croisements des frontières de montage en profil 42")
     p.add_argument("--branche-brute", type=Path,
                    help="tester uniquement le profil 42 d'un troisième export compilé sans fixture")
     args = p.parse_args()
     a = args.architecture
+    secteur = args.secteur or (512 if a == "aarch64" else 4096)
     exports = {v:getattr(args, v).resolve() for v in ("publie", "prototype")}
     dossier = args.sortie.resolve()
     dossier.mkdir(exist_ok=True, parents=True)
@@ -164,7 +167,6 @@ def main():
         if (archive / ".git").exists() or archive in exports.values() or args.session:
             p.error("Le témoin brut utilise un troisième export jetable distinct.")
         rid = f"{a}-branche-brute-42"
-        secteur = 512 if a == "aarch64" else 4096
         out, elf = outils(archive, a)
         r = observer(archive, a, secteur, True, dossier, rid, args.remontage)
         trace = (dossier / (rid + ".serial")).read_bytes()
@@ -186,7 +188,7 @@ def main():
         return
     if args.session:
         base, rid, mode = args.session
-        r = observer(exports[base], a, 512 if a=="aarch64" else 4096, mode=="42", dossier, rid, args.remontage)
+        r = observer(exports[base], a, secteur, mode=="42", dossier, rid, args.remontage)
         print(json.dumps(r, ensure_ascii=False))
         return
     if any((d/".git").exists() for d in exports.values()) or len(set(exports.values())) != 2:
@@ -194,7 +196,11 @@ def main():
     originaux = {nom:{c:(out/f).read_bytes() for c,f in COMPOSANTS.items()}
                  for nom,d in exports.items() for out,_ in [outils(d,a)]}
     resultats = []
-    for cas, base, autres in CONFIGURATIONS + (COMPLEMENTS if args.etendue else ()):
+    configurations = CONFIGURATIONS + (COMPLEMENTS if args.etendue or args.frontieres else ())
+    if args.frontieres:
+        inclus = {"relais-publie", "pilote-publie", "bloc-publie", "novafs-publie", "chaine-prototype"}
+        configurations = tuple(c for c in configurations if c[0] in inclus)
+    for cas, base, autres in configurations:
         autre = "prototype" if base=="publie" else "publie"
         archive = exports[base]
         out, elf = outils(archive,a)
@@ -205,17 +211,17 @@ def main():
                 reconstruire(archive,a,dossier/(cas+"-"+a+"-build.log"))
             identites = {c:sha((out/f).read_bytes()) for c,f in COMPOSANTS.items()}
             assert all(identites[c]==sha(originaux[autre if c in autres else base][c]) for c in COMPOSANTS)
-            for mode in ("41","42"):
+            for mode in (("42",) if args.frontieres else ("41","42")):
                 rid = f"{a}-{cas}-{mode}"
                 cmd = [sys.executable,"-B",__file__, str(exports["publie"]), str(exports["prototype"]),
-                       str(dossier),a,"--session",base,rid,mode]
+                       str(dossier),a,"--session",base,rid,mode,"--secteur",str(secteur)]
                 if args.remontage:
                     cmd.append("--remontage")
                 enfant = subprocess.run(cmd, capture_output=True,text=True)
                 (dossier/(rid+".log")).write_text(enfant.stderr)
                 r = json.loads(enfant.stdout) if enfant.returncode==0 else dict(resultat="banc_incomplet",
                                                                                  erreur=enfant.stderr[-900:])
-                r.update(architecture=a,secteur=512 if a=="aarch64" else 4096,composition=cas,base=base,
+                r.update(architecture=a,secteur=secteur,composition=cas,base=base,
                          mode=int(mode),sha256_elf=sha(elf.read_bytes()),sha256_composants=identites)
                 resultats.append(r)
                 print(rid, r["resultat"], flush=True)
