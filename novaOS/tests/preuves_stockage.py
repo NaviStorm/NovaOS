@@ -85,8 +85,8 @@ def configuration_vm(journal, cmd, env, arch, secteur):
 
 
 CATEGORIES = {
-    "ipc": re.compile("FS0170 transport|BLOC0170 tag=|DIAG appel|IPC|SURETE0170|TAG0170|RELAIS0170|PHASE.*(?:ipc|transport)"),
-    "stockage": re.compile("FS0170|BLOC0170|BLOC (?:erreur|bilan)|FICHIERS|PHASE|COUPURE groupe|NVFS|VFS|DMA qualif|SURETE0170|P9|INJECT"),
+    "ipc": re.compile("FS0170 transport|BLOC0170 tag=|DIAG appel|IPC|SURETE0170|TAG0170|RELAIS0170|LOTS0170|PHASE.*(?:ipc|transport)"),
+    "stockage": re.compile("FS0170|BLOC0170|BLOC (?:erreur|bilan)|FICHIERS|PHASE|COUPURE groupe|NVFS|VFS|DMA (?:qualif|quarantaine)|SURETE0170|LOTS0170|P9|INJECT"),
 }
 
 PUBLIC = {"erreur d’E/S": 26, "publication incertaine": 22, "fichier enregistré": 0}

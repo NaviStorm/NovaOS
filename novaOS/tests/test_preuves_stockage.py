@@ -49,13 +49,14 @@ class Conservation(unittest.TestCase):
             with dossier_essai(Path(tmp) / "r.json", "x86_64", 512, "f1", conserver=True) as d:
                 (d / "sauvegarde.serial").write_text(
                     "FS0170 transport tag=17 statut=12\nPHASE F1\nSURETE0170 tag=17\n"
-                    "erreur d’E/S\nBLOC bilan mode=42 client=Exit(0) retrait=Ok(())\n")
+                    "erreur d’E/S\nBLOC bilan mode=42 client=Exit(0) retrait=Ok(())\n"
+                    "LOTS0170 refus lots=0 pages_logiques=0\nDMA quarantaine etape=Drainage\n")
                 (d / "classique.serial").write_bytes(
                     b"BLOC bilan mode=24 service=Exit(0) client=Exit(26) retrait=Ok(())")
             traces = lire(d / "bilan.json")["series"]
             for nom in ("classique", "sauvegarde"):
                 self.assertEqual([r["code"] for r in traces[nom+".serial"]["messages_publics_observes"]], [26])
-            self.assertEqual(traces["sauvegarde.serial"]["traces_lignes"], {"ipc": 2, "stockage": 4})
+            self.assertEqual(traces["sauvegarde.serial"]["traces_lignes"], {"ipc": 3, "stockage": 6})
 
     def test_ne_pas_ecraser_le_premier_passage(self):
         with tempfile.TemporaryDirectory() as tmp:
