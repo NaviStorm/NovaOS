@@ -1,0 +1,1558 @@
+{
+  "base": "d6a7a67a1e5addbb1fe849ee24fa4d61fc9accdd",
+  "main_publie": "3193bc9108bdc771f4627f57c84e093375cc9ea4",
+  "environnement": "QEMU direct 11.1.3 TCG, RAW, 256 Mio, un vCPU. Tests vi_memoire sur Darwin ARM64 et Darwin x86_64 sous Rosetta.",
+  "fixtures_fonctionnelles": {
+    "io-0166-prototype": "b542b7b331cd6a9ab1f79a724a422cb441c3b95efdb2b466a54dd48d5df75222",
+    "io-0166-plages": "da338f6d30ea5e96368df313ec10ab69181fb31a377cf4fefdefda97c63a3041",
+    "io-0166-virtio-multipage": "7f23642ea28fd23c289cc07b9abf3a1414baa0897c2abe51dd8084257a756e58",
+    "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b"
+  },
+  "empilements_fixtures": {
+    "polling": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite"
+    ],
+    "diagnostic": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "io-0166-prototype-sonde",
+      "io-0166-plages-sonde",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite",
+      "io-0166-dma-sonde",
+      "io-0166-vcpu",
+      "io-0166-irq-latences"
+    ],
+    "concurrence": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "vi-conflit-source",
+      "io-0166-course-nom",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite"
+    ],
+    "coupures": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "io-0166-plages-coupure",
+      "io-0166-barrieres",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite",
+      "io-0166-dma-coupure"
+    ],
+    "defauts": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "io-0166-plages-coupure",
+      "io-0166-barrieres",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite",
+      "io-0166-dma-coupure",
+      "io-0166-dma-defauts"
+    ],
+    "utm": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "io-0166-systeme-qualification",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite"
+    ],
+    "utm-sonde": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "io-0166-prototype-sonde",
+      "io-0166-plages-sonde",
+      "io-0166-systeme-qualification",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite",
+      "io-0166-dma-sonde",
+      "io-0166-vcpu",
+      "io-0166-irq-latences"
+    ],
+    "utm-coupures": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "io-0166-plages-coupure",
+      "io-0166-barrieres",
+      "io-0166-systeme-qualification",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite",
+      "io-0166-dma-coupure"
+    ],
+    "temoin-irq": [
+      "io-0166-prototype",
+      "io-0166-plages",
+      "io-0166-prototype-sonde",
+      "io-0166-plages-sonde",
+      "io-0166-charge-4m",
+      "io-0166-virtio-multipage",
+      "io-0166-invite",
+      "io-0166-dma-sonde",
+      "io-0166-vcpu",
+      "io-0166-irq-latences",
+      "io-0166-irq-attente",
+      "io-0166-irq-sonde"
+    ]
+  },
+  "empreintes_fixtures": {
+    "io-0166-prototype": "b542b7b331cd6a9ab1f79a724a422cb441c3b95efdb2b466a54dd48d5df75222",
+    "io-0166-plages": "da338f6d30ea5e96368df313ec10ab69181fb31a377cf4fefdefda97c63a3041",
+    "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+    "io-0166-virtio-multipage": "7f23642ea28fd23c289cc07b9abf3a1414baa0897c2abe51dd8084257a756e58",
+    "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+    "io-0166-prototype-sonde": "f14f8dcf185c0de9de05bf5630ccf854901f30c37f92eab7716298240edf8609",
+    "io-0166-plages-sonde": "f370667bf348670e1593858b0c59900fb3618c3550a5c5ba9df712a73c2eb456",
+    "io-0166-dma-sonde": "c0868b0b16391ed988167f07a6f0672053f206e1be0eb0f640f68f0b6bb7ffee",
+    "io-0166-vcpu": "0b7732fdcb898ebef903dcdb7887bdd8a5adf6007e8d498d7b44b412c87e74a8",
+    "io-0166-irq-latences": "bbc4cdd5e1f6fe643c3760134ac26c594dcc8183d1b8433201d08d8e4ab2487b",
+    "vi-conflit-source": "0d73d349d9cb808523050dff13229fdf9fbac2493cc1b3ac62c17a972ba1e4c4",
+    "io-0166-course-nom": "5c3c1efa8832b67df7638c2c1b305b5f15001c9e23ab46a07e0875cf14a7c0a3",
+    "io-0166-plages-coupure": "955303285194126a537c3e5ec0c5acdd04bb6116dfc48ddc873cf1ef5fa58d5c",
+    "io-0166-barrieres": "6a90ac38806aa861f912685f22c8e06e1679e9b7ab5ef4c9724e4b1cebcc7398",
+    "io-0166-dma-coupure": "65ca7bed5446bb9593026d77178b1206de5cd359a125e074b217c8bad1356ad5",
+    "io-0166-dma-defauts": "4abc75e85a90c04078dcf0cb7c1439a256964e46137d719bb4e286ab10e765d7",
+    "io-0166-systeme-qualification": "4f4a0b965b585df2ce624cb3d43aca8323797591256e5af962323d4863478f8e",
+    "io-0166-irq-attente": "3b7ed8f1fce2336bc65dc1062716dadd7322650173b0ee76eab2e89d20a198be",
+    "io-0166-irq-sonde": "6aa560914b993ed5d7b2d58519434d7d37f20664b8228b6d1df8bbf45e2757eb"
+  },
+  "application": {
+    "extractions_neuves": 9,
+    "applications_ordre_documente": 77,
+    "fuzz": 0,
+    "offset": 0,
+    "rejets": 0
+  },
+  "abi_constantes_litterales": {
+    "publie": 152,
+    "prototype": 159,
+    "historiques_supprimees_ou_modifiees": [],
+    "nouvelles": {
+      "block.rs.PAGE_PHASE": 3,
+      "block.rs.PAGE_PORTAL": 65606,
+      "files.rs.PAGE_FEATURE": 1,
+      "files.rs.READ_PAGE": 28,
+      "native.rs.BULK_MAX": 4096,
+      "native.rs.IPC_PUT": 65580,
+      "native.rs.IPC_TAKE": 65581
+    }
+  },
+  "ipc": {
+    "aarch64": {
+      "elf_sha256": "646f06732ed7435b8371d4b4392049a6b51219d57d920e970dfe820821454a92",
+      "cas_ns": {
+        "T01": 10327008,
+        "T02": 9294000,
+        "T03": 9885008,
+        "T04": 4914000,
+        "T05/T06": 10026000,
+        "T07/T15": 4776992,
+        "T06/T08/T18": 14986992,
+        "T10": 5148000,
+        "lots": 4753008,
+        "file-revocable": 4938000,
+        "pret-multipage": 15525008,
+        "T11": 4892992,
+        "T12/T18": 4473008,
+        "T04/T11": 9970992,
+        "T12": 35094992,
+        "T13": 450700992,
+        "T16": 9974992,
+        "T18": 24865008,
+        "T14": 4942000
+      },
+      "phases": {
+        "init": {
+          "image": 606,
+          "tables": 139,
+          "kpile": 0,
+          "upile": 0,
+          "heap": 0,
+          "buddy": 0,
+          "ipc": 0,
+          "utilisateur": 0,
+          "processus": 0,
+          "meta_octets": 8984,
+          "meta_actifs": 0,
+          "tcb_octets": 0,
+          "heap_va": 65536,
+          "libres": 55342,
+          "cache": 0,
+          "chargeur": 7252,
+          "restitue": 0,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 745,
+          "retenu": 8466,
+          "dma": 0
+        },
+        "ipc_repos": {
+          "image": 606,
+          "tables": 145,
+          "kpile": 32,
+          "upile": 0,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 0,
+          "utilisateur": 0,
+          "processus": 0,
+          "meta_octets": 8984,
+          "meta_actifs": 0,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 62552,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 7252,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 787,
+          "retenu": 1256,
+          "dma": 0
+        },
+        "ipc_reprise": {
+          "image": 606,
+          "tables": 145,
+          "kpile": 32,
+          "upile": 0,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 0,
+          "utilisateur": 0,
+          "processus": 0,
+          "meta_octets": 8984,
+          "meta_actifs": 0,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 62552,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 7252,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 787,
+          "retenu": 1256,
+          "dma": 0
+        },
+        "ipc_actifs": {
+          "image": 606,
+          "tables": 232,
+          "kpile": 304,
+          "upile": 17,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 3,
+          "utilisateur": 34,
+          "processus": 17,
+          "meta_octets": 8984,
+          "meta_actifs": 4760,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 62139,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 7252,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 1200,
+          "retenu": 1669,
+          "dma": 0
+        },
+        "ipc_saturation": {
+          "image": 606,
+          "tables": 232,
+          "kpile": 304,
+          "upile": 17,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 71,
+          "utilisateur": 34,
+          "processus": 17,
+          "meta_octets": 8984,
+          "meta_actifs": 4760,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 62071,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 7252,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 1268,
+          "retenu": 1737,
+          "dma": 0
+        },
+        "ipc_detruits": {
+          "image": 606,
+          "tables": 145,
+          "kpile": 32,
+          "upile": 0,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 0,
+          "utilisateur": 0,
+          "processus": 0,
+          "meta_octets": 8984,
+          "meta_actifs": 0,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 62552,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 7252,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 787,
+          "retenu": 1256,
+          "dma": 0
+        }
+      }
+    },
+    "x86_64": {
+      "elf_sha256": "475f9edf21cf825cb855c87f92418e0afac862c0101e1369fec4eb9afdb1389c",
+      "cas_ns": {
+        "T01": 16209755,
+        "T02": 7100247,
+        "T03": 7424482,
+        "T04": 3665352,
+        "T05/T06": 7454412,
+        "T07/T15": 4904428,
+        "T06/T08/T18": 11153684,
+        "T10": 8902994,
+        "lots": 3452853,
+        "file-revocable": 3672335,
+        "pret-multipage": 16145905,
+        "T11": 3578556,
+        "T12/T18": 3676326,
+        "T04/T11": 8674533,
+        "T12": 27130987,
+        "T13": 463164221,
+        "T16": 6548549,
+        "T18": 21136131,
+        "T14": 3651385
+      },
+      "phases": {
+        "init": {
+          "image": 650,
+          "tables": 137,
+          "kpile": 0,
+          "upile": 0,
+          "heap": 0,
+          "buddy": 0,
+          "ipc": 0,
+          "utilisateur": 0,
+          "processus": 0,
+          "meta_octets": 8984,
+          "meta_actifs": 0,
+          "tcb_octets": 0,
+          "heap_va": 65536,
+          "libres": 52706,
+          "cache": 0,
+          "chargeur": 10445,
+          "restitue": 0,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 787,
+          "retenu": 11232,
+          "dma": 0
+        },
+        "ipc_repos": {
+          "image": 650,
+          "tables": 143,
+          "kpile": 32,
+          "upile": 0,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 0,
+          "utilisateur": 0,
+          "processus": 0,
+          "meta_octets": 8984,
+          "meta_actifs": 0,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 63109,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 10445,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 829,
+          "retenu": 829,
+          "dma": 0
+        },
+        "ipc_reprise": {
+          "image": 650,
+          "tables": 143,
+          "kpile": 32,
+          "upile": 0,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 0,
+          "utilisateur": 0,
+          "processus": 0,
+          "meta_octets": 8984,
+          "meta_actifs": 0,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 63109,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 10445,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 829,
+          "retenu": 829,
+          "dma": 0
+        },
+        "ipc_actifs": {
+          "image": 650,
+          "tables": 230,
+          "kpile": 304,
+          "upile": 17,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 3,
+          "utilisateur": 34,
+          "processus": 17,
+          "meta_octets": 8984,
+          "meta_actifs": 4760,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 62696,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 10445,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 1242,
+          "retenu": 1242,
+          "dma": 0
+        },
+        "ipc_saturation": {
+          "image": 650,
+          "tables": 230,
+          "kpile": 304,
+          "upile": 17,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 71,
+          "utilisateur": 34,
+          "processus": 17,
+          "meta_octets": 8984,
+          "meta_actifs": 4760,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 62628,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 10445,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 1310,
+          "retenu": 1310,
+          "dma": 0
+        },
+        "ipc_detruits": {
+          "image": 650,
+          "tables": 143,
+          "kpile": 32,
+          "upile": 0,
+          "heap": 3,
+          "buddy": 1,
+          "ipc": 0,
+          "utilisateur": 0,
+          "processus": 0,
+          "meta_octets": 8984,
+          "meta_actifs": 0,
+          "tcb_octets": 4096,
+          "heap_va": 65536,
+          "libres": 63109,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 10445,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 829,
+          "retenu": 829,
+          "dma": 0
+        }
+      }
+    }
+  },
+  "memoire_vi": {
+    "aarch64": {
+      "succes": 8,
+      "tests": [
+        "allocation_et_branche_de_retablissement",
+        "annulation_apres_lecture_de_pages",
+        "curseur_apres_retablissement",
+        "evictions_par_groupes_entiers",
+        "journal_differentiel_utf8",
+        "mesure_tampon",
+        "plages_sur_editions_et_annulations",
+        "sauvegarde_annulation_sans_memoire"
+      ]
+    },
+    "x86_64": {
+      "succes": 8,
+      "tests": [
+        "allocation_et_branche_de_retablissement",
+        "annulation_apres_lecture_de_pages",
+        "curseur_apres_retablissement",
+        "evictions_par_groupes_entiers",
+        "journal_differentiel_utf8",
+        "mesure_tampon",
+        "plages_sur_editions_et_annulations",
+        "sauvegarde_annulation_sans_memoire"
+      ]
+    }
+  },
+  "croisements": [
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "70e7d9b852b7fafe547f7e47e36af82a7de1b1ff3826ab7aba30c124df92d82c",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "publie",
+      "base": "publie",
+      "mode": 41,
+      "sha256_elf": "f3dcbdc5346e1d897b24004f701600098e5d7d720ca20ede546d2cd6d68e306b",
+      "sha256_composants": {
+        "vi": "681eaacba21afa57c5c5b9702be1cacb9253971994cd48111fdf16582086faf3",
+        "nsh": "81ed9c601874d9fb9a884368ec1a6973235b5dc16c0ebaba03d1470f491e03e2",
+        "novafs": "b5df67de4cf6d3064c59a267e29218c020277f0d597f1dad70fccc7911551748",
+        "relais": "b6636004bef1efa347b9405b71d37768b48d8a9fdacea16a6927f83d6fb289cc",
+        "pilote": "bc6cd88c3d3613bcc128716a284838153774c80c40d39e6cc670c55cd15b3177"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "49cc9f0d56ff9beccb0edbb8a2c2def89565a669110f420c1136485591b07c90",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "publie",
+      "base": "publie",
+      "mode": 42,
+      "sha256_elf": "f3dcbdc5346e1d897b24004f701600098e5d7d720ca20ede546d2cd6d68e306b",
+      "sha256_composants": {
+        "vi": "681eaacba21afa57c5c5b9702be1cacb9253971994cd48111fdf16582086faf3",
+        "nsh": "81ed9c601874d9fb9a884368ec1a6973235b5dc16c0ebaba03d1470f491e03e2",
+        "novafs": "b5df67de4cf6d3064c59a267e29218c020277f0d597f1dad70fccc7911551748",
+        "relais": "b6636004bef1efa347b9405b71d37768b48d8a9fdacea16a6927f83d6fb289cc",
+        "pilote": "bc6cd88c3d3613bcc128716a284838153774c80c40d39e6cc670c55cd15b3177"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "3ed8423cebcfb99a969ce300286437d8d6373fbea2d45c825356991fc7c1355e",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "prototype",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "646f06732ed7435b8371d4b4392049a6b51219d57d920e970dfe820821454a92",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "97db98d840057a8845677d42f4fdc008673240fc4908b289f22eeb2f9b7f04ec",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "bedb4a1e414bedb4491accd5d097722e3b1dc7d29ea979f34fb4cf932acbc868",
+      "generations": [
+        73,
+        74
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "prototype",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "646f06732ed7435b8371d4b4392049a6b51219d57d920e970dfe820821454a92",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "97db98d840057a8845677d42f4fdc008673240fc4908b289f22eeb2f9b7f04ec",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "92488ac1f29d0d30a829d9dc4762af3f2a4cda6784c025860a0c7798600caedc",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "vi-publie",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "e2b88c464b4d1b3f8b71e331d181deca67731dc33ed11b09dd7ecfc6f35fee46",
+      "sha256_composants": {
+        "vi": "681eaacba21afa57c5c5b9702be1cacb9253971994cd48111fdf16582086faf3",
+        "nsh": "97db98d840057a8845677d42f4fdc008673240fc4908b289f22eeb2f9b7f04ec",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "ouverture_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "ca3a21a55fb32482981decc410945330a3626f01e31ddc75cdd909b5c7b50b72",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "vi-publie",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "e2b88c464b4d1b3f8b71e331d181deca67731dc33ed11b09dd7ecfc6f35fee46",
+      "sha256_composants": {
+        "vi": "681eaacba21afa57c5c5b9702be1cacb9253971994cd48111fdf16582086faf3",
+        "nsh": "97db98d840057a8845677d42f4fdc008673240fc4908b289f22eeb2f9b7f04ec",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "adc20cfa63f234e76768b450a76109402689ed29897bbd1e7e7b80c92df450a7",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "nsh-publie",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "71f7a1e8a10e2ac556257dbad9c6d58ca3658f5a310a7b5166520dec3fc330b6",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "81ed9c601874d9fb9a884368ec1a6973235b5dc16c0ebaba03d1470f491e03e2",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "93dac65f2eb4486938d66ec935e32a5da20ade40396fa9950ad2da1f90eb16e2",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "nsh-publie",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "71f7a1e8a10e2ac556257dbad9c6d58ca3658f5a310a7b5166520dec3fc330b6",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "81ed9c601874d9fb9a884368ec1a6973235b5dc16c0ebaba03d1470f491e03e2",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "09659406d597760a5c6765975f96e5994c51ba7f0233efb5742921bb5cb9152e",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "clients-publies",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "1a9c11dfb0cdd19db349701b2bf99db66f154a74a1f52a4d9ea394431e3cf1fb",
+      "sha256_composants": {
+        "vi": "681eaacba21afa57c5c5b9702be1cacb9253971994cd48111fdf16582086faf3",
+        "nsh": "81ed9c601874d9fb9a884368ec1a6973235b5dc16c0ebaba03d1470f491e03e2",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "66a8365e23781668d0df285e869a5af5b9e5e2a868b177dec96509344f1ed4d2",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "clients-publies",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "1a9c11dfb0cdd19db349701b2bf99db66f154a74a1f52a4d9ea394431e3cf1fb",
+      "sha256_composants": {
+        "vi": "681eaacba21afa57c5c5b9702be1cacb9253971994cd48111fdf16582086faf3",
+        "nsh": "81ed9c601874d9fb9a884368ec1a6973235b5dc16c0ebaba03d1470f491e03e2",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "32c40630afe0c6fd63efe9cd004e79d119dd1a5c174941c1fb0711f7794f4582",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "novafs-publie",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "fce344fa911f88622da2d05b781832d22c7e176896f7db6643763405c9988632",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "97db98d840057a8845677d42f4fdc008673240fc4908b289f22eeb2f9b7f04ec",
+        "novafs": "b5df67de4cf6d3064c59a267e29218c020277f0d597f1dad70fccc7911551748",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_refusee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "8a40b27b42db60a47057e81935c6945be66c8c9ec4b5ed1f7ebe115ef1595d3b",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "novafs-publie",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "fce344fa911f88622da2d05b781832d22c7e176896f7db6643763405c9988632",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "97db98d840057a8845677d42f4fdc008673240fc4908b289f22eeb2f9b7f04ec",
+        "novafs": "b5df67de4cf6d3064c59a267e29218c020277f0d597f1dad70fccc7911551748",
+        "relais": "05a60895542166ca9a100f61c71d8b0f835840e4f15a3108fd7e64206f570baa",
+        "pilote": "7ab06ca199308fef23f165e7e69ba31e60993bfeeaa000e98932c531d61ba2a6"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "session_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "f9a1c7f1a814240249134ca248544d9bed0c4b17770d07206106d582acb002cd",
+      "generations": [
+        71,
+        72
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "bloc-publie",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "1cab92228a3799b8680ce5f4809fe272a859ba19774a8942a67b1ff9ef4b7819",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "97db98d840057a8845677d42f4fdc008673240fc4908b289f22eeb2f9b7f04ec",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "b6636004bef1efa347b9405b71d37768b48d8a9fdacea16a6927f83d6fb289cc",
+        "pilote": "bc6cd88c3d3613bcc128716a284838153774c80c40d39e6cc670c55cd15b3177"
+      },
+      "statuts_sortie": {
+        "novafs": 11,
+        "relais": 11,
+        "pilote": 11,
+        "nsh": 26
+      }
+    },
+    {
+      "resultat": "session_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "07e3bc738e9250233275f030c420f2996bcf9c8dffd815768347c38d7f474516",
+      "generations": [
+        71,
+        72
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "bloc-publie",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "1cab92228a3799b8680ce5f4809fe272a859ba19774a8942a67b1ff9ef4b7819",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "97db98d840057a8845677d42f4fdc008673240fc4908b289f22eeb2f9b7f04ec",
+        "novafs": "ff8e0fee8dea0698c89c474dc273beb7c39daf23e6c0aea8013902bf3521a28c",
+        "relais": "b6636004bef1efa347b9405b71d37768b48d8a9fdacea16a6927f83d6fb289cc",
+        "pilote": "bc6cd88c3d3613bcc128716a284838153774c80c40d39e6cc670c55cd15b3177"
+      },
+      "statuts_sortie": {
+        "novafs": 11,
+        "relais": 11,
+        "pilote": 11,
+        "nsh": 26
+      }
+    },
+    {
+      "resultat": "sauvegarde_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "909794de046d89c340bde4a60b61aef6bb5d6aa578d95e7bdaa79359e24d8067",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "vi-prototype",
+      "base": "publie",
+      "mode": 41,
+      "sha256_elf": "91c8b39df598678c11581ff48c0c32af50cb88997d0131a6c079c438d30976f2",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "81ed9c601874d9fb9a884368ec1a6973235b5dc16c0ebaba03d1470f491e03e2",
+        "novafs": "b5df67de4cf6d3064c59a267e29218c020277f0d597f1dad70fccc7911551748",
+        "relais": "b6636004bef1efa347b9405b71d37768b48d8a9fdacea16a6927f83d6fb289cc",
+        "pilote": "bc6cd88c3d3613bcc128716a284838153774c80c40d39e6cc670c55cd15b3177"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "d5cc6f38ec7c0852986988b297c56e318cbdbff8fec30afd72ea2c85b293eb99",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "aarch64",
+      "secteur": 512,
+      "composition": "vi-prototype",
+      "base": "publie",
+      "mode": 42,
+      "sha256_elf": "91c8b39df598678c11581ff48c0c32af50cb88997d0131a6c079c438d30976f2",
+      "sha256_composants": {
+        "vi": "f2015fcc73bb97e9495d70b085d437a7325d344d3883608c6822dd9d168130ef",
+        "nsh": "81ed9c601874d9fb9a884368ec1a6973235b5dc16c0ebaba03d1470f491e03e2",
+        "novafs": "b5df67de4cf6d3064c59a267e29218c020277f0d597f1dad70fccc7911551748",
+        "relais": "b6636004bef1efa347b9405b71d37768b48d8a9fdacea16a6927f83d6fb289cc",
+        "pilote": "bc6cd88c3d3613bcc128716a284838153774c80c40d39e6cc670c55cd15b3177"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "57c002aed84813afc056c6a5238f7b1dd576bda27031f2a8138525c98e7933b4",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "publie",
+      "base": "publie",
+      "mode": 41,
+      "sha256_elf": "7e0dbc67b9601e10820d0a3c2c9124ed3ad7832755c580ea8082b0fdf4864122",
+      "sha256_composants": {
+        "vi": "6a3f08c14f1594e5892aa3403ed5ad3fc4850bcb4f0af56bf87fd0e3b289e674",
+        "nsh": "42a4823f391a4e51d453e12a102410ab0125f0098482458a3cff51282862ee2c",
+        "novafs": "0c9580df04646170ef4deda27ef05f14d6182b152a033f49665aa33a170ad7bc",
+        "relais": "b51dc92bc5de62306e806e92c65a66fdd86539ea78de8024bd89f00237112729",
+        "pilote": "e13e2fc1dbfe3cb2b856f1d689bf1a9d7716dade216a70aacc3496ba95e750e9"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "c31ccb50b8296653d267bf072145e671ab67adc90847bab2021881f113d89b55",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "publie",
+      "base": "publie",
+      "mode": 42,
+      "sha256_elf": "7e0dbc67b9601e10820d0a3c2c9124ed3ad7832755c580ea8082b0fdf4864122",
+      "sha256_composants": {
+        "vi": "6a3f08c14f1594e5892aa3403ed5ad3fc4850bcb4f0af56bf87fd0e3b289e674",
+        "nsh": "42a4823f391a4e51d453e12a102410ab0125f0098482458a3cff51282862ee2c",
+        "novafs": "0c9580df04646170ef4deda27ef05f14d6182b152a033f49665aa33a170ad7bc",
+        "relais": "b51dc92bc5de62306e806e92c65a66fdd86539ea78de8024bd89f00237112729",
+        "pilote": "e13e2fc1dbfe3cb2b856f1d689bf1a9d7716dade216a70aacc3496ba95e750e9"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "8f3df12a89534b8ec98de3efb31c4b0859c73d87679fe98d9c92dcc06130f493",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "prototype",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "475f9edf21cf825cb855c87f92418e0afac862c0101e1369fec4eb9afdb1389c",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "bf9a2023d0a8c29ebc2c36831602b9b9e634a5bc351a11e4a34f201e11685aa8",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "0acec26c01e71396903bd33a09acd0a270ad68b1e3e322b98f67f9a369e33db1",
+      "generations": [
+        73,
+        74
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "prototype",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "475f9edf21cf825cb855c87f92418e0afac862c0101e1369fec4eb9afdb1389c",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "bf9a2023d0a8c29ebc2c36831602b9b9e634a5bc351a11e4a34f201e11685aa8",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "0a6fb94379b450355f08136a3db0514f14e074569811088d869f4fe4503d32e0",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "vi-publie",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "fc5b5e276d9c6aa2bf15766266d7d182c03dc6ed6760d94561fd44d688317c24",
+      "sha256_composants": {
+        "vi": "6a3f08c14f1594e5892aa3403ed5ad3fc4850bcb4f0af56bf87fd0e3b289e674",
+        "nsh": "bf9a2023d0a8c29ebc2c36831602b9b9e634a5bc351a11e4a34f201e11685aa8",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "ouverture_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "30fe11c5699aff9b1d4c871e21a9d6057e9f152606d60f3a0ce3109ec84e3547",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "vi-publie",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "fc5b5e276d9c6aa2bf15766266d7d182c03dc6ed6760d94561fd44d688317c24",
+      "sha256_composants": {
+        "vi": "6a3f08c14f1594e5892aa3403ed5ad3fc4850bcb4f0af56bf87fd0e3b289e674",
+        "nsh": "bf9a2023d0a8c29ebc2c36831602b9b9e634a5bc351a11e4a34f201e11685aa8",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "48e8c44e7eff37b2b88bd36141a41539c87e2b7986a9e8630d9cbb04d765a66e",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "nsh-publie",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "de115952017a5b414a3249e3ae04a822619bb5c8ad296af8416f1b4dea23a71b",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "42a4823f391a4e51d453e12a102410ab0125f0098482458a3cff51282862ee2c",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "023b6ae3e2250710a7b165f5bc50a4c70d33b2bd2d71a5b08bae24eb33c58aba",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "nsh-publie",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "de115952017a5b414a3249e3ae04a822619bb5c8ad296af8416f1b4dea23a71b",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "42a4823f391a4e51d453e12a102410ab0125f0098482458a3cff51282862ee2c",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "9d52f300228f0545246f623995e56d32d39cada0891c3fe5edcd55f5bcc3f863",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "clients-publies",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "831e069214d040816a2c096947c4c48bfd17a7c7c2938f769e98bf680ce764cb",
+      "sha256_composants": {
+        "vi": "6a3f08c14f1594e5892aa3403ed5ad3fc4850bcb4f0af56bf87fd0e3b289e674",
+        "nsh": "42a4823f391a4e51d453e12a102410ab0125f0098482458a3cff51282862ee2c",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "ee216a79925033876c44526d78133ef1ad09a7ba5f2b38470158a01c6afa4939",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "clients-publies",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "831e069214d040816a2c096947c4c48bfd17a7c7c2938f769e98bf680ce764cb",
+      "sha256_composants": {
+        "vi": "6a3f08c14f1594e5892aa3403ed5ad3fc4850bcb4f0af56bf87fd0e3b289e674",
+        "nsh": "42a4823f391a4e51d453e12a102410ab0125f0098482458a3cff51282862ee2c",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_validee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "octets égaux",
+      "sha256_serie": "6674eae246e2c68b80a06a3e8b53e28773b6b69e61001cee93f0e54927b5059d",
+      "generations": [
+        75,
+        76
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "novafs-publie",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "943b89bd1995524d6e68e61e42f5b3713e0d7bb0f6f2c1589d5cda68f5454134",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "bf9a2023d0a8c29ebc2c36831602b9b9e634a5bc351a11e4a34f201e11685aa8",
+        "novafs": "0c9580df04646170ef4deda27ef05f14d6182b152a033f49665aa33a170ad7bc",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_refusee",
+      "confirmation_affichee": true,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "101111d4f23fb1b4921950b7cf998ea3f78125185d0789d3d7098a4ac226acc2",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "novafs-publie",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "943b89bd1995524d6e68e61e42f5b3713e0d7bb0f6f2c1589d5cda68f5454134",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "bf9a2023d0a8c29ebc2c36831602b9b9e634a5bc351a11e4a34f201e11685aa8",
+        "novafs": "0c9580df04646170ef4deda27ef05f14d6182b152a033f49665aa33a170ad7bc",
+        "relais": "9fb12d363f96d844793a0db8c8e274ad2ef36a816da4c82dd73b80403f520dcf",
+        "pilote": "1ba6ff4ff989d7e386d946fe94f36d11bdfbe8e9a711c6458b1071065ed0640a"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "session_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "691023b0b43ce70b9e702acf0895b8dbbe30ad5b590800f065998d097f6412af",
+      "generations": [
+        71,
+        72
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "bloc-publie",
+      "base": "prototype",
+      "mode": 41,
+      "sha256_elf": "824fa72857df387294b90f64e3003ccfaf0f313acbe85d1c934f542d2d6fad68",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "bf9a2023d0a8c29ebc2c36831602b9b9e634a5bc351a11e4a34f201e11685aa8",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "b51dc92bc5de62306e806e92c65a66fdd86539ea78de8024bd89f00237112729",
+        "pilote": "e13e2fc1dbfe3cb2b856f1d689bf1a9d7716dade216a70aacc3496ba95e750e9"
+      },
+      "statuts_sortie": {
+        "novafs": 11,
+        "relais": 11,
+        "pilote": 11,
+        "nsh": 26
+      }
+    },
+    {
+      "resultat": "session_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "1e291a03a924ae15a6cd748e2423bbcce4eba1c28e3ea55633d2e431fabd1b2f",
+      "generations": [
+        71,
+        72
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "bloc-publie",
+      "base": "prototype",
+      "mode": 42,
+      "sha256_elf": "824fa72857df387294b90f64e3003ccfaf0f313acbe85d1c934f542d2d6fad68",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "bf9a2023d0a8c29ebc2c36831602b9b9e634a5bc351a11e4a34f201e11685aa8",
+        "novafs": "4524dc06e6f316b796ff340e92a721ea51e6bcbcb32a2afc379956330fbb06ff",
+        "relais": "b51dc92bc5de62306e806e92c65a66fdd86539ea78de8024bd89f00237112729",
+        "pilote": "e13e2fc1dbfe3cb2b856f1d689bf1a9d7716dade216a70aacc3496ba95e750e9"
+      },
+      "statuts_sortie": {
+        "novafs": 5,
+        "relais": 11,
+        "pilote": 11,
+        "nsh": 26
+      }
+    },
+    {
+      "resultat": "sauvegarde_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "d96549dd4c5f704e8f6a31b2e392e2b7224eb9f87619c6f116a47aeb8c3b5d4f",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "vi-prototype",
+      "base": "publie",
+      "mode": 41,
+      "sha256_elf": "415b615efbbdb2af599e23745651004f85b97ad800ba3be2f89d442548eb341f",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "42a4823f391a4e51d453e12a102410ab0125f0098482458a3cff51282862ee2c",
+        "novafs": "0c9580df04646170ef4deda27ef05f14d6182b152a033f49665aa33a170ad7bc",
+        "relais": "b51dc92bc5de62306e806e92c65a66fdd86539ea78de8024bd89f00237112729",
+        "pilote": "e13e2fc1dbfe3cb2b856f1d689bf1a9d7716dade216a70aacc3496ba95e750e9"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    },
+    {
+      "resultat": "sauvegarde_refusee",
+      "confirmation_affichee": false,
+      "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+      "destination": "absente",
+      "sha256_serie": "e88da530c539493286360450e3a0c0d6ccd98a6de0d8b3e8ff081b0010cae824",
+      "generations": [
+        72,
+        73
+      ],
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "composition": "vi-prototype",
+      "base": "publie",
+      "mode": 42,
+      "sha256_elf": "415b615efbbdb2af599e23745651004f85b97ad800ba3be2f89d442548eb341f",
+      "sha256_composants": {
+        "vi": "21855899bb2702d25e15e9752aba0f70096d667a4b542cc895c559c10012fde1",
+        "nsh": "42a4823f391a4e51d453e12a102410ab0125f0098482458a3cff51282862ee2c",
+        "novafs": "0c9580df04646170ef4deda27ef05f14d6182b152a033f49665aa33a170ad7bc",
+        "relais": "b51dc92bc5de62306e806e92c65a66fdd86539ea78de8024bd89f00237112729",
+        "pilote": "e13e2fc1dbfe3cb2b856f1d689bf1a9d7716dade216a70aacc3496ba95e750e9"
+      },
+      "statuts_sortie": {
+        "novafs": 0,
+        "relais": 0,
+        "pilote": 0,
+        "nsh": 0
+      }
+    }
+  ],
+  "temoins_branche_brute": {
+    "commit": "d6a7a67a1e5addbb1fe849ee24fa4d61fc9accdd",
+    "sha256_archive": "166d5c3b6051941133ea60cb01948bfe7d705054d3f56c7c01656af0441332cc",
+    "fichiers_reguliers_verifies": 843,
+    "sha256_lecteur_independant": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+    "fixtures": [],
+    "mode": 42,
+    "observations": [
+      {
+        "resultat": "sauvegarde_validee",
+        "confirmation_affichee": true,
+        "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+        "destination": "octets égaux",
+        "sha256_destination": "71903a8d71fb8c977381a94dc28093e74a4ac8c3dae5de5a3092fbd38ba53651",
+        "sha256_serie": "ef74f989172016026f53fc044b8cb6858c06c3d638075e3e3781913bd2d3224c",
+        "generations": [
+          75,
+          76
+        ],
+        "architecture": "aarch64",
+        "secteur": 512,
+        "mode": 42,
+        "sha256_elf": "4597b179a78e9324f1d0f168c956056fa1bfd31d74beed785809345ebacd6892",
+        "sha256_composants": {
+          "vi": "681eaacba21afa57c5c5b9702be1cacb9253971994cd48111fdf16582086faf3",
+          "nsh": "a3b8510c62a94692298f8dc48d4879b1846b0dbe806fada5b0ae0c8dc16329cf",
+          "novafs": "d39d392b682d5d95526de28d3e6e1eb39e1d88629f493e63d78e75eaee0b7197",
+          "relais": "07e65dc9338bc952f3975fa2a48a6cf7b5ebce597e8438d5bf8bb9193aa0df62",
+          "pilote": "9a4fe69afbfc9cdba8f83371feedf0a671d0e34f1352ca2fc21cdb332d403bbe"
+        },
+        "chaine_demarre": true,
+        "invite_nsh": true,
+        "bilan": "service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=44438",
+        "session_fermee": true
+      },
+      {
+        "resultat": "sauvegarde_validee",
+        "confirmation_affichee": true,
+        "sha256_source": "b18a4934f93d5d174256429e4af544d0b14f698dd5ca1f670e5230f4d556707b",
+        "destination": "octets égaux",
+        "sha256_destination": "71903a8d71fb8c977381a94dc28093e74a4ac8c3dae5de5a3092fbd38ba53651",
+        "sha256_serie": "f0a14447e6753b9e60293da3e9146be101f572b715499081cc92abf64d6b2eaa",
+        "generations": [
+          75,
+          76
+        ],
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "mode": 42,
+        "sha256_elf": "960e96a0b20a173fbde95e1e82ab255057f7111c6a09706372372fcc7ed7a7b3",
+        "sha256_composants": {
+          "vi": "6a3f08c14f1594e5892aa3403ed5ad3fc4850bcb4f0af56bf87fd0e3b289e674",
+          "nsh": "db830af3178825aad2bdd28e0edf38616fb44a5b5602a7042359ccffe1caeef0",
+          "novafs": "19fbe8da53054e6a31121f2b1523b470e424749222b20e7470f8c88d68f77c82",
+          "relais": "cfa64a26e217d8ac90a583e65225fcc61288cf22a3453bf8d60ecbc094ba8fcb",
+          "pilote": "ad5604cddef814c6d61cc17abe0a7d5e5667c7d72f91b07d0c416fc3c53c62a0"
+        },
+        "chaine_demarre": true,
+        "invite_nsh": true,
+        "bilan": "service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=919000",
+        "session_fermee": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "publie": "3193bc9108bdc771f4627f57c84e093375cc9ea4",
+  "prototype": "d6a7a67a1e5addbb1fe849ee24fa4d61fc9accdd",
+  "banc_sha256": "a35ccf840728f60125e0c3ff35e74e369b939f549bbee7641033ca80f72cf523",
+  "binaires": {
+    "3193bc9108bdc771f4627f57c84e093375cc9ea4": {
+      "aarch64-apple-darwin": "af742455dc63176a9a0c553fad04c9e86e7a460107a0dc2a572c659f4bbceb09",
+      "x86_64-apple-darwin": "d44ef795ab159fa7c825e3389e91ff3528a35009f694110c81ef3b43446edd64"
+    },
+    "d6a7a67a1e5addbb1fe849ee24fa4d61fc9accdd": {
+      "aarch64-apple-darwin": "a36729c1b0ccc05ce59fee6e6e87146721006ffa102ea818df467c35f856f607",
+      "x86_64-apple-darwin": "184f14bb26b7834a60c93e0ed16215b8c85b56a577aaf292b65a58fe1f7560a7"
+    }
+  },
+  "essais": [
+    {
+      "cible_publiee": "aarch64-apple-darwin",
+      "cible_prototype": "x86_64-apple-darwin",
+      "secteur": 512,
+      "etapes": [
+        {
+          "action": "creer",
+          "generation": 66,
+          "image_sha256": "0e8be96e2a412256ad331642eeab9724d57d5ae028131af4473761fbc836cd74"
+        },
+        {
+          "action": "grouper",
+          "generation": 67,
+          "image_sha256": "d4c7163879fae8c07d5b485f291768426c0abac8d63183f91593890bd2330314"
+        },
+        {
+          "action": "retour",
+          "generation": 69,
+          "image_sha256": "17784557b6f3b6f4654aa7650c61871b518dc89c7015fc3042744ba571284674"
+        },
+        {
+          "action": "lire",
+          "generation": 69,
+          "image_sha256": "17784557b6f3b6f4654aa7650c61871b518dc89c7015fc3042744ba571284674"
+        },
+        {
+          "action": "lire",
+          "generation": 69,
+          "image_sha256": "17784557b6f3b6f4654aa7650c61871b518dc89c7015fc3042744ba571284674"
+        }
+      ]
+    },
+    {
+      "cible_publiee": "aarch64-apple-darwin",
+      "cible_prototype": "x86_64-apple-darwin",
+      "secteur": 4096,
+      "etapes": [
+        {
+          "action": "creer",
+          "generation": 66,
+          "image_sha256": "9066717dfc911b6effccc8e789f4024b8716a34ef77319066064619a29335fdc"
+        },
+        {
+          "action": "grouper",
+          "generation": 67,
+          "image_sha256": "7df522b0d7a31f7f6775255e1bf17fd997f6e2668c492fd75559b45daf199339"
+        },
+        {
+          "action": "retour",
+          "generation": 69,
+          "image_sha256": "5c0d10e6670faff23d156a5fcb35e676d7dc9c73026f543bac7b24e568afad0b"
+        },
+        {
+          "action": "lire",
+          "generation": 69,
+          "image_sha256": "5c0d10e6670faff23d156a5fcb35e676d7dc9c73026f543bac7b24e568afad0b"
+        },
+        {
+          "action": "lire",
+          "generation": 69,
+          "image_sha256": "5c0d10e6670faff23d156a5fcb35e676d7dc9c73026f543bac7b24e568afad0b"
+        }
+      ]
+    },
+    {
+      "cible_publiee": "x86_64-apple-darwin",
+      "cible_prototype": "aarch64-apple-darwin",
+      "secteur": 512,
+      "etapes": [
+        {
+          "action": "creer",
+          "generation": 66,
+          "image_sha256": "98f9e029cd9cbc9a4de6d7e15c099a6084d15268b5a84183cd2242d2222f22ed"
+        },
+        {
+          "action": "grouper",
+          "generation": 67,
+          "image_sha256": "cee19a85dc0c2c961136e489dd5584e6c48912ea1b66c80678a860c9247c3726"
+        },
+        {
+          "action": "retour",
+          "generation": 69,
+          "image_sha256": "0d98a5ee359dd9cbfa13838876971892d475389be27448d0d1e9fdbe8d973f29"
+        },
+        {
+          "action": "lire",
+          "generation": 69,
+          "image_sha256": "0d98a5ee359dd9cbfa13838876971892d475389be27448d0d1e9fdbe8d973f29"
+        },
+        {
+          "action": "lire",
+          "generation": 69,
+          "image_sha256": "0d98a5ee359dd9cbfa13838876971892d475389be27448d0d1e9fdbe8d973f29"
+        }
+      ]
+    },
+    {
+      "cible_publiee": "x86_64-apple-darwin",
+      "cible_prototype": "aarch64-apple-darwin",
+      "secteur": 4096,
+      "etapes": [
+        {
+          "action": "creer",
+          "generation": 66,
+          "image_sha256": "267cfae64e0adcb057a42f7c8e0f1851b0003403dcb7077301b0a1519c02d452"
+        },
+        {
+          "action": "grouper",
+          "generation": 67,
+          "image_sha256": "001ced6af3026adbe04a589df4ad4039e24416d40205f265889732eb15a8b003"
+        },
+        {
+          "action": "retour",
+          "generation": 69,
+          "image_sha256": "06ca7e32ee8a41ca8545523abaf3f914545f518aafa25e1c29cd93dca0668314"
+        },
+        {
+          "action": "lire",
+          "generation": 69,
+          "image_sha256": "06ca7e32ee8a41ca8545523abaf3f914545f518aafa25e1c29cd93dca0668314"
+        },
+        {
+          "action": "lire",
+          "generation": 69,
+          "image_sha256": "06ca7e32ee8a41ca8545523abaf3f914545f518aafa25e1c29cd93dca0668314"
+        }
+      ]
+    }
+  ]
+}
