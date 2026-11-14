@@ -6,7 +6,7 @@
 +mod qual_irq;
  pub(crate) mod attente_irq;
  #[cfg(all(target_arch = "aarch64", feature = "systeme-gpt"))]
-@@ -438,29 +439,5 @@
+@@ -438,30 +439,5 @@
  pub(crate) fn probe() {
      hal::log(format_args!("DMA qualification native debut"));
 -    let res = (|| {
@@ -17,7 +17,8 @@
 -        ));
 -        let mut data = [0u8; PAGE];
 -        let lba = 8192 / t.size;
--        t.read(lba as u64, &mut data[..t.size])?;
+-        let size = t.size;
+-        t.read(lba as u64, &mut data[..size])?;
 -        if !data[..t.size]
 -            .iter()
 -            .enumerate()

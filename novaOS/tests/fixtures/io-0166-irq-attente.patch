@@ -111,14 +111,7 @@
 +pub(crate) mod attente_irq;
  #[cfg(all(target_arch = "aarch64", feature = "systeme-gpt"))]
  mod gpt;
-@@ -55,4 +56,6 @@
- static KICKS: AtomicU64 = AtomicU64::new(0);
- static ISR: AtomicU64 = AtomicU64::new(0);
-+#[cfg(target_arch = "aarch64")]
-+static ISR_SANS_FILE: AtomicU64 = AtomicU64::new(0);
- /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
- pub(crate) fn interrupt() -> bool {
-@@ -75,8 +78,23 @@
+@@ -79,5 +80,7 @@
                  IRQS.fetch_add(1, Ordering::Release);
                  trace_dma::irq(entree);
 +                attente_irq::reveil_irq();
@@ -126,36 +119,19 @@
 +                attente_irq::noter(7);
                  STRAYS.fetch_add(1, Ordering::Relaxed);
              }
-+            #[cfg(target_arch = "aarch64")]
-+            ISR_SANS_FILE.store(0, Ordering::Relaxed);
-             return true;
-+        }
-+        // Un SPI INTx parasite peut précéder la vraie notification. Garder la
-+        // route active après une assertion isolée, sans consommer le ticket.
-+        // Une source qui maintient le niveau sans travail est masquée après
-+        // huit assertions consécutives ; la requête expire alors en échec.
-+        #[cfg(target_arch = "aarch64")]
-+        {
-+            STRAYS.fetch_add(1, Ordering::Relaxed);
+@@ -89,4 +92,5 @@
+         {
+             STRAYS.fetch_add(1, Ordering::Relaxed);
 +            attente_irq::noter(7);
-+            return USED_ADDR.load(Ordering::Acquire) != 0
-+                && ISR_SANS_FILE.fetch_add(1, Ordering::Relaxed) < 7;
-         }
+             return USED_ADDR.load(Ordering::Acquire) != 0
+                 && ISR_SANS_FILE.fetch_add(1, Ordering::Relaxed) < 7;
+@@ -135,4 +139,5 @@
      }
-@@ -167,4 +185,5 @@
-     }
-     fn open_disk(sid: u8, output_mapped: bool) -> Result<Self> {
+     fn open_disk(sid: u8, output_mapped: bool) -> Result<Bail> {
 +        attente_irq::preparer()?;
-         let mut state = Lifecycle(State::Initial);
-         let d = Device::discover(sid, 0x1042, 288)?;
-@@ -191,4 +210,6 @@
-         let segments = d.segments(limites)?;
-         let (sectors, size) = d.geometry()?;
-+        #[cfg(target_arch = "aarch64")]
-+        ISR_SANS_FILE.store(0, Ordering::Relaxed);
-         ISR.store(d.isr.base() as u64, Ordering::Release);
-         unit.route(&p, d, true)?;
-@@ -293,7 +314,6 @@
+         ownership::Retrait::ouvrir(sid, output_mapped)
+     }
+@@ -200,7 +205,6 @@
      fn finish(&mut self, expected: u32) -> Result<()> {
          let n = self.pending.ok_or(Error::State)?;
 -        let used = self.q.completed()?;

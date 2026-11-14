@@ -225,6 +225,7 @@ fn selection() -> Result<(Roles, u8)> {
 }
 
 fn autoriser_sortie(t: &mut Transport) -> Result<()> {
+    t.traductions = 7; // enregistrer le cadre avant la publication, même en cas de timeout
     if t.unit.map(&t.p, 6, t.p.0[22].pa, 1).is_err() {
         t.d.cfg.master(false);
         return Err(Error::Quarantine);
@@ -257,7 +258,7 @@ pub(crate) fn executer() -> Result<()> {
 
 // Le lanceur du noyau transfère le transport déjà contrôlé, sans nouvelle découverte PCI.
 #[cfg(feature = "systeme-gpt")]
-fn publier(mut t: Transport, table: super::gpt::Table, mode: u64) -> Result<()> {
+fn publier(mut t: Bail, table: super::gpt::Table, mode: u64) -> Result<()> {
     t.first = table.volume;
     t.count = table.end - table.volume;
     let rights = if mode == 44 { 1 | 8 } else { 15 };

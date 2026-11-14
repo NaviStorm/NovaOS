@@ -8,6 +8,7 @@ use crate::{abi, sched::sync::Mutex};
 pub(crate) use wire::PORTAL;
 static OWNER: AtomicU64 = AtomicU64::new(0);
 static EPOCH: AtomicU64 = AtomicU64::new(0);
+static ACTIF: AtomicU64 = AtomicU64::new(0);
 static SESSION: Mutex<Session> = Mutex::new(Session {
     device: None,
     quarantine: false,
@@ -23,7 +24,7 @@ enum Phase {
     Closed,
 }
 struct Session {
-    device: Option<Transport>,
+    device: Option<Bail>,
     quarantine: bool,
     rights: u8,
     phase: Phase,
@@ -31,7 +32,7 @@ struct Session {
 pub(crate) fn begin_session(rights: u8) -> Result<u64> {
     begin_with(rights, Transport::open)
 }
-pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Transport>) -> Result<u64> {
+pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Bail>) -> Result<u64> {
     let mut s = SESSION.lock();
     if s.quarantine || s.device.is_some() || OWNER.load(Ordering::Acquire) != 0 {
         return Err(Error::Quarantine);
@@ -50,6 +51,7 @@ pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Transport>) -
                 } else {
                     255
                 });
+            ACTIF.store(epoch, Ordering::Release);
             Ok(epoch)
         }
         Err(e) => {
@@ -62,8 +64,9 @@ pub(super) fn begin_with(rights: u8, open: impl FnOnce() -> Result<Transport>) -
 }
 /// Le lanceur a construit le processus, dont le PID ne sera jamais réutilisé.
 pub(crate) fn attach(pid: u64, epoch: u64) -> bool {
-    epoch != 0
-        && EPOCH.load(Ordering::Acquire) == epoch
+    pid != 0
+        && epoch != 0
+        && ACTIF.load(Ordering::Acquire) == epoch
         && OWNER
             .compare_exchange(0, pid, Ordering::AcqRel, Ordering::Acquire)
             .is_ok()
@@ -72,26 +75,27 @@ pub(crate) fn admit(pid: u64, key: u64) -> bool {
     pid != 0
         && OWNER.load(Ordering::Acquire) == pid
         && key != 0
-        && EPOCH.load(Ordering::Acquire) == key
+        && ACTIF.load(Ordering::Acquire) == key
 }
 pub(crate) fn died(pid: u64) {
-    let _ = OWNER.compare_exchange(pid, 0, Ordering::AcqRel, Ordering::Acquire);
+    if pid != 0
+        && OWNER
+            .compare_exchange(pid, 0, Ordering::AcqRel, Ordering::Acquire)
+            .is_ok()
+    {
+        ACTIF.store(0, Ordering::Release);
+    }
 }
 pub(crate) fn retire() -> Result<()> {
-    OWNER.store(0, Ordering::Release);
     let mut s = SESSION.lock();
-    // Sur QEMU un reset d'un backend encore suspendu peut bloquer le vCPU
-    // dans l'accès MMIO lui-même. Attendre le retour de la seule chaîne avant
-    // ce registre. Le délai expire côté invité, jamais dans un reset bloquant.
-    let d = s.device.as_ref().ok_or(Error::State)?;
-    if d.pending.is_some() && d.q.completed().is_err() {
-        s.phase = Phase::Closed;
-        s.quarantine = true;
-        return Err(Error::Quarantine);
-    }
-    let device = s.device.take().ok_or(Error::State)?;
+    ACTIF.store(0, Ordering::Release);
+    OWNER.store(0, Ordering::Release);
     s.phase = Phase::Closed;
-    if let Err(err) = device.close() {
+    let retrait = match s.device.take() {
+        Some(d) => d.close(),
+        None => ownership::reprendre(),
+    };
+    if let Err(err) = retrait {
         s.quarantine = true;
         return Err(err);
     }
@@ -134,7 +138,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
     if phase == Phase::Closed {
         return Err(abi::CLOSED);
     }
-    let d = s.device.as_mut().ok_or(abi::CLOSED)?;
+    let d = s.device.as_deref_mut().ok_or(abi::CLOSED)?;
     let op = w[1];
     let l = lba(w);
     if hw {
@@ -246,7 +250,7 @@ pub(crate) fn page_command(
     if s.phase != Phase::Empty {
         return Err(abi::REFUSED);
     }
-    let d = s.device.as_mut().ok_or(abi::CLOSED)?;
+    let d = s.device.as_deref_mut().ok_or(abi::CLOSED)?;
     let lba = wire::lba(w);
     let sectors = (4096 / d.size) as u64;
     if lba.checked_add(sectors).is_none_or(|end| end > d.count) {

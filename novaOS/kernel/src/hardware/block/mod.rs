@@ -4,6 +4,7 @@ mod gpt;
 mod io;
 mod lease;
 pub(crate) mod metrics;
+mod ownership;
 mod pci;
 #[cfg(all(target_arch = "aarch64", feature = "dma-sequentiel"))]
 pub(crate) mod qualification;
@@ -24,6 +25,7 @@ mod domain;
 use crate::hal;
 use core::sync::atomic::{AtomicU64, Ordering};
 use io::{Frame, PAGE, Pages, barrier, wait};
+use ownership::Bail;
 use pci::Device;
 use queue::{Queue, Segment};
 
@@ -51,6 +53,8 @@ static STRAYS: AtomicU64 = AtomicU64::new(0);
 static IRQS: AtomicU64 = AtomicU64::new(0);
 static KICKS: AtomicU64 = AtomicU64::new(0);
 static ISR: AtomicU64 = AtomicU64::new(0);
+#[cfg(target_arch = "aarch64")]
+static ISR_SANS_FILE: AtomicU64 = AtomicU64::new(0);
 /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
 pub(crate) fn interrupt() -> bool {
     let addr = ISR.load(Ordering::Acquire);
@@ -72,13 +76,18 @@ pub(crate) fn interrupt() -> bool {
             } else {
                 STRAYS.fetch_add(1, Ordering::Relaxed);
             }
+            #[cfg(target_arch = "aarch64")]
+            ISR_SANS_FILE.store(0, Ordering::Relaxed);
             return true;
+        }
+        #[cfg(target_arch = "aarch64")]
+        {
+            STRAYS.fetch_add(1, Ordering::Relaxed);
+            return USED_ADDR.load(Ordering::Acquire) != 0
+                && ISR_SANS_FILE.fetch_add(1, Ordering::Relaxed) < 7;
         }
     }
     false
-}
-fn frame(p: &Pages, i: usize) -> Frame {
-    p.0[i]
 }
 fn addr(n: usize) -> u64 {
     IOVA + (n * PAGE) as u64
@@ -95,53 +104,11 @@ pub(crate) fn eoi() {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Copy, Clone)]
-enum State {
-    Initial,
-    Granted,
-    Domain,
-    Route,
-    Queues,
-    Active,
-    Running,
-    Closed,
-    Quiet,
-    IrqRevoked,
-    Unmapped,
-    Released,
-}
-struct Lifecycle(State);
-impl Lifecycle {
-    fn next(&mut self, from: State, to: State) -> Result<()> {
-        use State::*;
-        if self.0 != from
-            || !matches!(
-                (from, to),
-                (Initial, Granted)
-                    | (Granted, Domain)
-                    | (Domain, Route)
-                    | (Route, Queues)
-                    | (Queues, Active)
-                    | (Active, Running)
-                    | (Running, Closed)
-                    | (Closed, Quiet)
-                    | (Quiet, IrqRevoked)
-                    | (IrqRevoked, Unmapped)
-                    | (Unmapped, Released)
-            )
-        {
-            return Err(Error::State);
-        }
-        self.0 = to;
-        Ok(())
-    }
-}
 struct Transport {
     p: Pages,
     d: Device,
     unit: domain::Domain,
     q: Queue,
-    state: Lifecycle,
     sectors: u64,
     // Vue publiée aux services. Le transport interne conserve la géométrie physique.
     first: u64,
@@ -151,76 +118,22 @@ struct Transport {
     ro: bool,
     // La page de données OUT n'est traduite qu'après l'admission en écriture.
     output_mapped: bool,
+    traductions: usize,
     started: u64,
     kind: usize,
 }
 impl Transport {
-    fn open() -> Result<Self> {
+    fn open() -> Result<Bail> {
         Self::open_disk(SID as u8, true)
     }
-    fn open_disk(sid: u8, output_mapped: bool) -> Result<Self> {
-        let mut state = Lifecycle(State::Initial);
-        let d = Device::discover(sid, 0x1042, 288)?;
-        let p = Pages::new()?;
-        state.next(State::Initial, State::Granted)?;
-        let mut unit = domain::Domain::start(&p, sid).map_err(|e| {
-            if e == Error::Absent {
-                Error::Feature
-            } else {
-                e
-            }
-        })?;
-        state.next(State::Granted, State::Domain)?;
-        // QEMU lit used.idx à l’activation. La seule page mixte est celle de
-        // l’anneau utilisé ; aucune donnée client n’y réside.
-        let rights = [1, 1, 3, 1, 2, 2, 1];
-        let mapped = if output_mapped { 7 } else { 6 };
-        for (n, &r) in rights[..mapped].iter().enumerate() {
-            unit.map(&p, n, frame(&p, 16 + n).pa, r)?
-        }
-        let ro = d.read_only();
-        d.start(VIRTIO | if ro { 1 << 5 } else { 0 })?;
-        let (sectors, size) = d.geometry()?;
-        ISR.store(d.isr.base() as u64, Ordering::Release);
-        unit.route(&p, d, true)?;
-        state.next(State::Domain, State::Route)?;
-        let q = Queue::new(
-            d,
-            0,
-            [p.0[16], p.0[17], p.0[18]],
-            [addr(0), addr(1), addr(2)],
-        )?;
-        state.next(State::Route, State::Queues)?;
-        USED_ADDR.store((p.0[18].mem.base() + 2) as u64, Ordering::Release);
-        d.ready()?;
-        state.next(State::Queues, State::Active)?;
-        unit.faults(&p)?;
-        state.next(State::Active, State::Running)?;
-        Ok(Self {
-            p,
-            d,
-            unit,
-            q,
-            state,
-            sectors,
-            first: 0,
-            count: sectors,
-            size,
-            pending: None,
-            ro,
-            output_mapped,
-            started: 0,
-            kind: 0,
-        })
+    fn open_disk(sid: u8, output_mapped: bool) -> Result<Bail> {
+        ownership::Retrait::ouvrir(sid, output_mapped)
     }
     fn begin_read(&mut self, lba: u64) -> Result<()> {
         self.begin_input(lba, 0, self.size)
     }
     // Seules les opérations IN (0) et GET_ID (8) ont une chaîne de réception.
     fn begin_input(&mut self, lba: u64, opcode: u32, bytes: usize) -> Result<()> {
-        if self.state.0 != State::Running {
-            return Err(Error::State);
-        }
         if self.pending.is_some() {
             return Err(Error::State);
         }
@@ -305,7 +218,7 @@ impl Transport {
         if self.ro && !flush {
             return Err(Error::Device);
         }
-        if self.state.0 != State::Running || self.pending.is_some() {
+        if self.pending.is_some() {
             return Err(Error::State);
         }
         if lba >= self.sectors {
@@ -339,32 +252,6 @@ impl Transport {
         self.pending = Some(seen);
         self.finish(1)
     }
-    fn close(mut self) -> Result<()> {
-        self.state.next(State::Running, State::Closed)?;
-        self.d.reset()?;
-        self.d.cfg.master(false);
-        if self.d.cfg.get(4, 2) & 4 != 0 {
-            return Err(Error::Quarantine);
-        }
-        self.state.next(State::Closed, State::Quiet)?;
-        self.unit.route(&self.p, self.d, false)?;
-        self.unit.clear_pending(self.d)?;
-        ISR.store(0, Ordering::Release);
-        USED_ADDR.store(0, Ordering::Release);
-        EXPECT.store(0, Ordering::Release);
-        self.state.next(State::Quiet, State::IrqRevoked)?;
-        let mapped = if self.output_mapped { 7 } else { 6 };
-        for n in 0..mapped {
-            self.unit.map(&self.p, n, 0, 0)?
-        }
-        self.unit.stop(&self.p)?;
-        self.state.next(State::IrqRevoked, State::Unmapped)?;
-        barrier();
-        // Sûreté : queue réinitialisée, interruptions purgées, fonction arrêtée,
-        // tables retirées et confirmation matérielle reçue avant restitution.
-        unsafe { self.p.release() };
-        self.state.next(State::Unmapped, State::Released)
-    }
 }
 pub(crate) fn probe() {
     hal::log(format_args!("DMA qualification native debut"));
@@ -376,7 +263,8 @@ pub(crate) fn probe() {
         ));
         let mut data = [0u8; PAGE];
         let lba = 8192 / t.size;
-        t.read(lba as u64, &mut data[..t.size])?;
+        let size = t.size;
+        t.read(lba as u64, &mut data[..size])?;
         if !data[..t.size]
             .iter()
             .enumerate()
@@ -400,13 +288,10 @@ pub(crate) fn probe() {
 /// Sonde défensive sur l'unique tampon privé du banc. Aucun accès en dehors
 /// de l'image jetable, aucune commande d'écriture disque ni émission MSI forgée.
 pub(crate) fn probe_protection() -> Result<()> {
-    let mut illegal = Lifecycle(State::Released);
-    if illegal.next(State::Released, State::Running) != Err(Error::State) {
-        return Err(Error::State);
-    }
     let before = KICKS.load(Ordering::Acquire);
     for rights in [1, 0] {
-        let mut t = Transport::open()?;
+        let mut bail = Transport::open()?;
+        let t = &mut *bail;
         let count = t.size;
         let bounce = t.p.0[20];
         let before_bytes = [0x5au8; PAGE];
@@ -430,15 +315,18 @@ pub(crate) fn probe_protection() -> Result<()> {
         // Le retrait de la page déjà absente n'est pas une nouvelle opération UNMAP.
         // Restaurer sa traduction privée après reset uniquement pour employer le
         // même chemin de destruction que la production.
+        t.q.completed()?;
         t.d.reset()?;
+        t.pending = None;
         t.d.cfg.master(false);
         if rights != 0 {
             t.unit.map(&t.p, 4, 0, 0)?
         }
         t.unit.map(&t.p, 4, bounce.pa, 2)?;
-        t.close()?;
+        bail.close()?;
     }
-    let mut t = Transport::open()?;
+    let mut bail = Transport::open()?;
+    let t = &mut *bail;
     let seen = IRQS.load(Ordering::Acquire);
     t.unit.hold(t.d)?;
     t.begin_read((8192 / t.size) as u64)?;
@@ -447,8 +335,9 @@ pub(crate) fn probe_protection() -> Result<()> {
     if used != t.size as u32 + 1 || IRQS.load(Ordering::Acquire) != seen {
         return Err(Error::Route);
     }
-    t.close()?;
-    let mut fresh = Transport::open()?;
+    bail.close()?;
+    let mut bail = Transport::open()?;
+    let fresh = &mut *bail;
     if fresh.unit.pending_on_mask(fresh.d) || IRQS.load(Ordering::Acquire) != seen {
         return Err(Error::Route);
     }
@@ -463,13 +352,14 @@ pub(crate) fn probe_protection() -> Result<()> {
     {
         return Err(Error::Route);
     }
-    fresh.close()?;
+    bail.close()?;
     hal::log(format_args!(
         "DMA interruption masquee en attente retiree et nouveau proprietaire confirme"
     ));
     // Une vraie interruption de l'ancienne demande est déjà pendante. Fermer
     // son destinataire, puis livrer la route initiale : aucun nouveau réveil.
-    let mut stale = Transport::open()?;
+    let mut bail = Transport::open()?;
+    let stale = &mut *bail;
     let strays = STRAYS.load(Ordering::Acquire);
     let accepted = IRQS.load(Ordering::Acquire);
     stale.unit.hold(stale.d)?;
@@ -482,7 +372,7 @@ pub(crate) fn probe_protection() -> Result<()> {
     if IRQS.load(Ordering::Acquire) != accepted {
         return Err(Error::Route);
     }
-    stale.close()?;
+    bail.close()?;
     hal::log(format_args!("DMA IRQ tardive acquittee sans livraison"));
     if KICKS.load(Ordering::Acquire) - before != 5 {
         return Err(Error::Queue);
@@ -504,9 +394,11 @@ impl Witness {
         let mut held = [io::EMPTY; 32];
         let mut found = None;
         for item in &mut held {
-            let f = Frame::allocate()?;
+            let Ok(f) = Frame::allocate() else {
+                break;
+            };
             if f.pa == pa {
-                found = Some(f);
+                found = Some(Self(f));
                 break;
             }
             *item = f;
@@ -515,21 +407,26 @@ impl Witness {
             // Sûreté : cadre temporaire du banc, jamais publié à un périphérique.
             unsafe { crate::memory::release_dma(f.pa) }
         }
-        let f = found.ok_or(Error::Memory)?;
+        let temoin = found.ok_or(Error::Memory)?;
+        let f = temoin.0;
         if !(0..PAGE).all(|i| f.mem.r8(i) == 0) {
             return Err(Error::Fault);
         }
         for i in 0..PAGE {
             f.mem.w8(i, 0xbd)
         }
-        Ok(Self(f))
+        Ok(temoin)
     }
     pub(crate) fn verify(self) -> Result<()> {
         if !(0..PAGE).all(|i| self.0.mem.r8(i) == 0xbd) {
             return Err(Error::Fault);
         }
-        // Sûreté : le banc possède ce cadre, jamais accordé au nouveau domaine.
-        unsafe { crate::memory::release_dma(self.0.pa) };
         Ok(())
+    }
+}
+impl Drop for Witness {
+    fn drop(&mut self) {
+        // Sûreté : ce cadre du banc n’a jamais été publié à un périphérique.
+        unsafe { crate::memory::release_dma(self.0.pa) };
     }
 }

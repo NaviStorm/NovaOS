@@ -77,7 +77,7 @@
 --- a/novaOS/kernel/src/hardware/block/arena.rs
 +++ b/novaOS/kernel/src/hardware/block/arena.rs
 @@ -23,5 +23,7 @@
-     cadres: [Vec<Frame>; 2],
+     retraits: [usize; 2],
  }
 +static TEMOIN:AtomicU64=AtomicU64::new(0);
  impl Arena {
@@ -127,7 +127,7 @@
              let _ = d.terminer(false, false); // doute : le retrait ne déclare jamais le DMA terminé.
 --- a/novaOS/kernel/src/hardware/block/lease.rs
 +++ b/novaOS/kernel/src/hardware/block/lease.rs
-@@ -96,4 +96,26 @@
+@@ -96,4 +96,23 @@
          return Err(err);
      }
 +    let cadre=arena::Arena::temoin_reemploi();
@@ -137,18 +137,15 @@
 +        autres.try_reserve_exact(4096).map_err(|_| Error::Memory)?;
 +        let mut retrouve=false;
 +        for _ in 0..4096 {
-+            let f=Frame::allocate()?;
-+            autres.push(f);
++            let Ok(f)=Frame::allocate() else {break;};
++            autres.push(super::Witness(f));
 +            if f.pa==cadre {
 +                retrouve=true;
-+                if !(0..PAGE).all(|i| f.mem.r8(i)==0) { return Err(Error::Fault); }
++                if !(0..PAGE).all(|i| f.mem.r8(i)==0) {return Err(Error::Fault);}
 +                break;
 +            }
 +        }
-+        for f in autres {
-+            // Sûreté : cadres de la sonde, jamais accordés à un périphérique.
-+            unsafe {crate::memory::release_dma(f.pa);}
-+        }
++        drop(autres);
 +        if !retrouve {return Err(Error::Memory);}
 +        crate::hal::log(format_args!("DMA qualif cadre arene realloue remis a zero"));
 +    }

@@ -242,7 +242,7 @@
 +        {
 +            return Err(abi::DENIED);
 +        }
-+        let d = s.device.as_mut().ok_or(abi::CLOSED)?;
++        let d = s.device.as_deref_mut().ok_or(abi::CLOSED)?;
 +        if !descriptors(d.size, w) {
 +            return Err(abi::BAD_ARGUMENT);
 +        }
@@ -288,7 +288,7 @@
 +        bytes: usize,
 +        controle: impl FnOnce() -> bool,
 +    ) -> Result<()> {
-         if self.state.0 != State::Running {
+         if self.pending.is_some() {
              return Err(Error::State);
 @@ -246,4 +256,8 @@
          self.started = metrics::stamp();

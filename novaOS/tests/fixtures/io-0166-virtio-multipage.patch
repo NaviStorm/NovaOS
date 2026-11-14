@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/novaOS/kernel/src/hardware/block/arena.rs
-@@ -0,0 +1,165 @@
+@@ -0,0 +1,167 @@
 +//! Arène superviseur du prototype. Une seule chaîne en vol sur le BSP.
 +use super::*;
 +use crate::sched::process::ipc::DemandeDma;
@@ -24,12 +24,14 @@
 +pub(super) struct Arena {
 +    pub limite: usize,
 +    cadres: [Vec<Frame>; 2],
++    retraits: [usize; 2],
 +}
 +impl Arena {
 +    pub fn new(limite: usize) -> Self {
 +        Self {
 +            limite,
 +            cadres: [Vec::new(), Vec::new()],
++            retraits: [0; 2],
 +        }
 +    }
 +    fn assurer(
@@ -61,8 +63,9 @@
 +    }
 +    pub fn retirer(&mut self, unite: &mut domain::Domain, p: &Pages) -> Result<()> {
 +        for (sens, cadres) in self.cadres.iter().enumerate() {
-+            for i in 0..cadres.len() {
-+                unite.map(p, slot(sens == 1, i), 0, 0)?;
++            while self.retraits[sens] < cadres.len() {
++                unite.retirer_slot(p, slot(sens == 1, self.retraits[sens]))?;
++                self.retraits[sens] += 1;
 +            }
 +        }
 +        Ok(())
@@ -94,8 +97,7 @@
 +        bail_actif: impl FnOnce() -> bool,
 +    ) -> Result<()> {
 +        let bytes = d.nombre.checked_mul(PAGE).ok_or(Error::Geometry)?;
-+        if self.state.0 != State::Running
-+            || self.pending.is_some()
++        if self.pending.is_some()
 +            || bytes == 0
 +            || d.nombre > self.arena.limite
 +            || d.nombre > MAX
@@ -188,7 +190,7 @@
 +    if s.phase != Phase::Empty {
 +        return Err(abi::REFUSED);
 +    }
-+    let d = s.device.as_mut().ok_or(abi::CLOSED)?;
++    let d = s.device.as_deref_mut().ok_or(abi::CLOSED)?;
 +    let pas = (PAGE / d.size) as u64;
 +    demande.nombre = demande.nombre.min(d.arena.limite);
 +    demande.verifier(pas, false)?;
@@ -227,94 +229,49 @@
 +pub(crate) use lease::{commande_groupee, multipage};
  mod lease;
  pub(crate) mod metrics;
-@@ -55,4 +57,5 @@
+@@ -59,4 +61,5 @@
  /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
  pub(crate) fn interrupt() -> bool {
 +    let entree = trace_dma::temps();
      let addr = ISR.load(Ordering::Acquire);
      if addr != 0 {
-@@ -71,4 +74,5 @@
+@@ -75,4 +78,5 @@
                  EXPECT.store(0, Ordering::Release);
                  IRQS.fetch_add(1, Ordering::Release);
 +                trace_dma::irq(entree);
              } else {
                  STRAYS.fetch_add(1, Ordering::Relaxed);
-@@ -153,4 +157,6 @@
-     // La page de données OUT n'est traduite qu'après l'admission en écriture.
+@@ -121,4 +125,6 @@
      output_mapped: bool,
+     traductions: usize,
 +    arena: arena::Arena,
 +    dernier_kick: u64,
      started: u64,
      kind: usize,
-@@ -181,14 +187,17 @@
-         }
-         let ro = d.read_only();
--        d.start(VIRTIO | if ro { 1 << 5 } else { 0 })?;
-+        let limites = d.limits_features();
-+        d.start(VIRTIO | limites | if ro { 1 << 5 } else { 0 })?;
-+        let segments = d.segments(limites)?;
-         let (sectors, size) = d.geometry()?;
-         ISR.store(d.isr.base() as u64, Ordering::Release);
-         unit.route(&p, d, true)?;
-         state.next(State::Domain, State::Route)?;
--        let q = Queue::new(
-+        let q = Queue::sized(
-             d,
-             0,
-             [p.0[16], p.0[17], p.0[18]],
-             [addr(0), addr(1), addr(2)],
-+            if segments > 1 { 128 } else { queue::ENTRIES },
-         )?;
-         state.next(State::Route, State::Queues)?;
-@@ -198,5 +207,8 @@
-         unit.faults(&p)?;
-         state.next(State::Active, State::Running)?;
-+        let capacite = segments.min(usize::from(q.entries) - 2);
-         Ok(Self {
-+            arena: arena::Arena::new(capacite),
-+            dernier_kick: 0,
-             p,
-             d,
-@@ -270,4 +282,5 @@
+@@ -183,4 +189,5 @@
              Segment::new(addr(5), 1, true),
          ])?;
 +        self.dernier_kick = trace_dma::soumis(self.started);
          KICKS.fetch_add(1, Ordering::Release);
          self.pending = Some(n);
-@@ -281,4 +294,5 @@
+@@ -194,4 +201,5 @@
          let n = self.pending.ok_or(Error::State)?;
          let used = self.q.completed()?;
 +        let collecte = trace_dma::temps();
          wait(|| IRQS.load(Ordering::Acquire) != n)?;
          self.unit.faults(&self.p)?;
-@@ -291,4 +305,5 @@
+@@ -204,4 +212,5 @@
              return Err(Error::Device);
          }
 +        trace_dma::acquitte(self.dernier_kick, collecte);
          metrics::record(self.kind, self.started);
          self.pending = None;
-@@ -364,4 +379,5 @@
+@@ -277,4 +286,5 @@
                  .submit(&[head, Segment::new(addr(6), bytes as u32, false), status])?
          }
 +        self.dernier_kick = trace_dma::soumis(self.started);
          KICKS.fetch_add(1, Ordering::Release);
          self.pending = Some(seen);
-@@ -387,4 +403,5 @@
-             self.unit.map(&self.p, n, 0, 0)?
-         }
-+        self.arena.retirer(&mut self.unit, &self.p)?;
-         self.unit.stop(&self.p)?;
-         self.state.next(State::IrqRevoked, State::Unmapped)?;
-@@ -392,5 +409,8 @@
-         // Sûreté : queue réinitialisée, interruptions purgées, fonction arrêtée,
-         // tables retirées et confirmation matérielle reçue avant restitution.
--        unsafe { self.p.release() };
-+        unsafe {
-+            self.arena.liberer();
-+            self.p.release()
-+        };
-         self.state.next(State::Unmapped, State::Released)
-     }
 --- a/novaOS/kernel/src/hardware/block/pci.rs
 +++ b/novaOS/kernel/src/hardware/block/pci.rs
 @@ -251,4 +251,30 @@
@@ -437,16 +394,13 @@
 +pub(super) fn copie(_: u64, _: bool) {}
 --- a/novaOS/kernel/src/hardware/block/viommu.rs
 +++ b/novaOS/kernel/src/hardware/block/viommu.rs
-@@ -67,7 +67,8 @@
+@@ -98,5 +98,5 @@
      }
      pub fn map(&mut self, p: &Pages, n: usize, pa: u64, rights: u32) -> Result<()> {
 -        if n >= 7 || pa % 4096 != 0 || rights > 3 {
-+        if !super::arena::traduction(n, pa, rights) {
++        if !super::arena::traduction(n, pa, rights) || super::addr(n) + 4095 > self.unit.specific.r64(16) {
              return Err(Error::Geometry);
          }
-+        if super::addr(n) + 4095 > self.unit.specific.r64(16) { return Err(Error::Geometry); }
-         let req = p.0[6].mem;
-         req.w32(0, if rights == 0 { 4 } else { 3 });
 --- a/novaOS/kernel/src/hardware/block/vtd.rs
 +++ b/novaOS/kernel/src/hardware/block/vtd.rs
 @@ -147,5 +147,5 @@
@@ -770,3 +724,70 @@
 +                    i += effectue;
                  }
                  if r.0[1] == 6 {
+--- a/novaOS/kernel/src/hardware/block/ownership.rs
++++ b/novaOS/kernel/src/hardware/block/ownership.rs
+@@ -28,4 +28,5 @@
+     route: bool,
+     traductions: usize,
++    arena: arena::Arena,
+     etape: Etape,
+ }
+@@ -46,4 +47,5 @@
+                 route: false,
+                 traductions: 0,
++                arena: arena::Arena::new(0),
+                 etape: Etape::Drainage,
+             })
+@@ -73,5 +75,7 @@
+             let d = r.d;
+             let ro = d.read_only();
+-            d.start(VIRTIO | if ro { 1 << 5 } else { 0 })?;
++            let limites = d.limits_features();
++            d.start(VIRTIO | limites | if ro { 1 << 5 } else { 0 })?;
++            let segments = d.segments(limites)?;
+             let (sectors, size) = d.geometry()?;
+             r.route = true;
+@@ -80,11 +84,13 @@
+             ISR.store(d.isr.base() as u64, Ordering::Release);
+             unit.route(&r.p, d, true)?;
+-            let q = Queue::new(
++            let q = Queue::sized(
+                 d,
+                 0,
+                 [r.p.0[16], r.p.0[17], r.p.0[18]],
+                 [addr(0), addr(1), addr(2)],
++                if segments > 1 { 128 } else { queue::ENTRIES },
+             )?;
+             USED_ADDR.store((r.p.0[18].mem.base() + 2) as u64, Ordering::Release);
++            r.arena.limite = segments.min(usize::from(q.entries) - 2);
+             d.ready()?;
+             unit.faults(&r.p)?;
+@@ -111,4 +117,6 @@
+             output_mapped: sortie,
+             traductions: r.traductions,
++            arena: r.arena,
++            dernier_kick: 0,
+             started: 0,
+             kind: 0,
+@@ -124,4 +132,5 @@
+             route: true,
+             traductions: t.traductions,
++            arena: t.arena,
+             etape: Etape::Drainage,
+         }
+@@ -167,4 +176,5 @@
+                 self.traductions = n;
+             }
++            self.arena.retirer(unit, &self.p)?;
+             self.etape = Etape::Domaine;
+         }
+@@ -194,5 +204,8 @@
+         barrier();
+         // Sûreté : lot jamais publié ou retrait acquitté et porte IRQ purgée.
+-        unsafe { self.p.release() };
++        unsafe {
++            self.arena.liberer();
++            self.p.release();
++        }
+         OCCUPE.store(false, Ordering::Release);
+         Ok(())

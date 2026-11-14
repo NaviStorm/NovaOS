@@ -133,6 +133,9 @@ impl Frame {
 }
 pub(super) struct Pages(pub [Frame; 24]);
 impl Pages {
+    pub fn len(&self) -> usize {
+        self.0.iter().filter(|f| f.pa != 0).count()
+    }
     pub fn new() -> Result<Self> {
         let mut pages = Self([EMPTY; 24]);
         for i in 0..pages.0.len() {
