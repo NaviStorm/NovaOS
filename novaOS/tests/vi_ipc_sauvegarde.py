@@ -31,8 +31,11 @@ def bilan(journal, mesure):
     assert int(fields["autres"]) == 0
     (phase, block), = re.findall(r"SAVE phases=(\[[^\]]+\]) bloc=(\[[^\]]+\])", text)
     local, = re.findall(r"SAVE controles_locaux=(\[[^\]]+\])", text)
-    controls = dict(zip(("create", "dup", "close", "revoke", "notify", "cancel", "bootstrap"),
-                        json.loads(local), strict=True))
+    valeurs = json.loads(local)
+    controles = ("create", "dup", "close", "revoke", "notify", "cancel", "bootstrap")
+    if len(valeurs) == 8:
+        controles += ("ipc_features",)
+    controls = dict(zip(controles, valeurs, strict=True))
     hz = int(re.search(r"BLOC memoire [^\n]* hz=(\d+)", text)[1])
     def ms(cycles):
         return round(1000 * int(cycles) / hz, 3)
