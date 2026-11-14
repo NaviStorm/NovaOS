@@ -1,0 +1,744 @@
+{
+  "incidents_de_mise_au_point_et_temoins_anterieurs": [
+    {
+      "dossier": "nova-cow-aarch64-512-endurance-0s687yrz",
+      "cause": "Témoin antérieur au correctif, une réservation de 256 pages subsiste dès le retour de l’expiration IPC.",
+      "manifeste_sha256": "5fed62bd60e2c1436ba70d98ed67c8caac9fee2b3175a72d3fc1963e51d03ebe",
+      "elf": "9e3a515e10f328e24863c8a242440550fcc5a8ded2315260c9ecda23c6b1a1ff"
+    },
+    {
+      "dossier": "nova-cow-aarch64-512-endurance-kqu68gqo",
+      "cause": "Mise au point du banc : IPC_SEND a correctement retourné 128 octets après publication au lieu des 0 attendus par la première assertion.",
+      "manifeste_sha256": "ab3785458fe03c70232039ea15ec88aa9f0f87953bad14f0e70b4125b63e01dd",
+      "elf": "7acf0fcedac9eb6c69cbf7962dcb764cacd107ea2d423d2486634bcdddd235b2"
+    },
+    {
+      "dossier": "nova-cow-aarch64-512-endurance-pjuzpu0j",
+      "cause": "Mise au point du banc : le tampon commun de réception IPC avait modifié la table LBA d’une nouvelle lecture. La table a été isolée dans la mémoire du moteur.",
+      "manifeste_sha256": "279d9f72f77ce4a342f967edd7cfa470c2f38bf7966e11c82bca6189e4a833ba",
+      "elf": "68f98908130b0a85754c7fdd5344f25d4aa44eaeac8e4f61a3a27061d8499a77"
+    },
+    {
+      "dossier": "nova-cow-aarch64-512-endurance-s22ovpju",
+      "cause": "Mesure à froid : trois cadres de tables de pagination du noyau ont été créés lors du premier usage. Le témoin et huit sessions chaudes rendent leur coût visible.",
+      "manifeste_sha256": "9a4db087969136e092d6578b5264c1f04776f4381c894ab05269c9606109c71b",
+      "elf": "0b68ad5e518fb2da4e0ba2d1a53c796acf5ef8dd46ab71354275fb92fd881e94"
+    },
+    {
+      "dossier": "nova-cow-aarch64-512-vi-t6by43k3",
+      "cause": "Témoin vi antérieur au correctif, 256 pages subsistent au refus public 26, sans commande en vol.",
+      "manifeste_sha256": "5bc5a95861bd172ba904c5999a112f7952538015579bbec077682e080861d7d4",
+      "elf": "9e3a515e10f328e24863c8a242440550fcc5a8ded2315260c9ecda23c6b1a1ff"
+    },
+    {
+      "dossier": "nova-cow-x86_64-512-vi-qgzb4dr9",
+      "cause": "Mesure à froid : les neuf cadres machine permanents de VT-d ont survécu au retrait de la session. Le témoin et les huit sessions chaudes vérifient la différence.",
+      "manifeste_sha256": "0a4801adfb7742d1b81a54d2b909827070ce138d692b3476188f2bb118ed27f7",
+      "elf": "9ac90117d3bec8a533f8e673fd4f2a3d1d8a4b96d342f237da0637552ba2a322"
+    }
+  ],
+  "revision_banc": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+  "revision_correctif": "6534f232c558cf6a1f15e1a340e25d56416b7310",
+  "profil": "diagnostic-stockage",
+  "reconstruction_sha256": "2f82727395fe18493fd8009812805e6d2b409cdce9921fb853b60548705cc1dd",
+  "binaires": {
+    "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "b0390b79520c77e02952e5a87be993f7f26e361ac2b8c242ec3762f9dbb71c12",
+    "novaOS/target/x86_64-unknown-none/release/novaos": "77f2e6c88f355a72019e087e23c3f4c2597181ae69a475c02c54c02366375520",
+    "novaFS/target/aarch64-apple-darwin/release/novafs": "7ecd00f536d1cc6260af8c4ec95f710bcd5ef33f3d285d0e556c0d214a724b2e"
+  },
+  "preuves_locales": "novaOS/build/qualification-reservations-0170/endurance-ilNCGJ81",
+  "qualifications": [
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "endurance": {
+        "endpoint_independant_verifie": true,
+        "abandons": 1000,
+        "lectures_confirmees": 136,
+        "acteurs_recrees": 24,
+        "epoques_du_pilote": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "preemptions_moteur": 180,
+        "restitution_cycles_max": 381313,
+        "restitution_us_max": 6101.008,
+        "retour_ipc_close_cycles_max": 11532375,
+        "frequence_hz": 62500000,
+        "vcpu": 4,
+        "retour_ipc_close_us_max": 184518.0,
+        "disque_sha256": "1734cc0b3f6310c4dfc754fc8eee33be590a832c41b915117eff2b65fae023f7",
+        "architecture": "aarch64",
+        "secteur": 512,
+        "dossier": "nova-cow-aarch64-512-endurance-x9ug1mm9",
+        "compteurs": {
+          "premier_demarrage": {
+            "etape": "froid",
+            "cadres_libres": "62419",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "0",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "0"
+          },
+          "repos_apres_amorcage": {
+            "etape": "avant",
+            "cadres_libres": "62416",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "0",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "16"
+          },
+          "service_premiere_serie_avant": {
+            "etape": "service_chaud",
+            "cadres_libres": "62061",
+            "endpoints": "3",
+            "handles": "8",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "17",
+            "bail": "2",
+            "quarantaine": "false",
+            "generation_IPC": "30"
+          },
+          "service_premiere_serie_apres": {
+            "etape": "service_apres",
+            "cadres_libres": "62061",
+            "endpoints": "3",
+            "handles": "8",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "17",
+            "bail": "2",
+            "quarantaine": "false",
+            "generation_IPC": "454"
+          },
+          "repos_apres_huit_series": {
+            "etape": "fin_serie",
+            "cadres_libres": "62416",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "0",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "3544"
+          }
+        },
+        "tables_froides_et_chaudes": [
+          150,
+          153
+        ],
+        "expirations_avant_publication": 168,
+        "expirations_pendant_publication": 168,
+        "expirations_apres_publication": 336,
+        "annulations_concurrentes": 320,
+        "competition_annulation_revocation": 8,
+        "restitutions_mesurees": 1000,
+        "fermetures_suppl_appelant_mort": 4,
+        "fermetures_suppl_pilote_mort": 4,
+        "transferts_refuses_pour_lot_occupe": 1000,
+        "rapport": "drainage-endurance-aarch64-512.json",
+        "rapport_sha256": "42a9ff32473e85ccf285c01c5d40929ba5b322f920fc16be5cd2ca4969c8152c",
+        "manifeste_sha256": "b4f3c34776d81a7a2283849c2c49f90a52bd919b4101e54c7f3aa2aab8298a78",
+        "statut": "succes"
+      },
+      "vi": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "scenario": "abandon",
+        "injection": 6,
+        "statut_public": 26,
+        "reponse_declaree_durable": false,
+        "source_exacte": true,
+        "destination_absente": true,
+        "ancres_creation": {
+          "0": 66,
+          "1": 65
+        },
+        "ancres_avant_consentement": {
+          "0": 68,
+          "1": 67
+        },
+        "ancres": {
+          "0": 68,
+          "1": 67
+        },
+        "image_initiale": "4eeb91d50a72033c1cab42348e05f69726da48d0b11c551d44cac1c295011cc1",
+        "image_apres": "d00e3bcc6b749637bb6d5429d70ba690c3f400499d77b7964b38f01740865fa8",
+        "copie_redemarree": "d00e3bcc6b749637bb6d5429d70ba690c3f400499d77b7964b38f01740865fa8",
+        "series": "1e19abc3a25d7f40c52200c5ae98bf1963285e3e65a7db09f1f3b1785b110f81",
+        "transport": "reception",
+        "tag": 4370,
+        "pages": 256,
+        "delai_ticks": 506,
+        "statut_transport": 8,
+        "sondes_ipc": [
+          [
+            4370,
+            206,
+            0
+          ]
+        ],
+        "reservations_apres_refus": [],
+        "cloture_admission_observee": true,
+        "cadres_froids_avant": 62419,
+        "cadres_froids_apres": 62416,
+        "cadres_libres_avant": 62416,
+        "cadres_libres_apres": 62416,
+        "session_dma_avant_et_apres_refus": 2,
+        "cadres_dma_machine_et_session_au_refus": 32,
+        "kicks_avant_refus_et_apres_fermeture": 6822,
+        "reservations_au_relais": 1,
+        "pages_logiques_au_relais": 256,
+        "reservations_au_refus": 0,
+        "baux_actifs_fin": 0,
+        "cadres_dma_session_fin": 0,
+        "cadres_dma_machine_fin": 0,
+        "dossier": "nova-cow-aarch64-512-vi-f5z36ro8",
+        "rapport": "drainage-vi-aarch64-512.json",
+        "rapport_sha256": "ab8ca850c734144394446f668801e72038081c01be4d7af08b6377c2ae90f405",
+        "manifeste_sha256": "6cb4526176ff040282f8ee73b486d9a42312c33063566a5983dbe320b0d83420",
+        "statut": "succes"
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "endurance": {
+        "endpoint_independant_verifie": true,
+        "abandons": 1000,
+        "lectures_confirmees": 136,
+        "acteurs_recrees": 24,
+        "epoques_du_pilote": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "preemptions_moteur": 78,
+        "restitution_cycles_max": 89312,
+        "restitution_us_max": 1428.992,
+        "retour_ipc_close_cycles_max": 7136563,
+        "frequence_hz": 62500000,
+        "vcpu": 4,
+        "retour_ipc_close_us_max": 114185.008,
+        "disque_sha256": "1734cc0b3f6310c4dfc754fc8eee33be590a832c41b915117eff2b65fae023f7",
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "dossier": "nova-cow-aarch64-4096-endurance-i4us7130",
+        "compteurs": {
+          "premier_demarrage": {
+            "etape": "froid",
+            "cadres_libres": "62419",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "0",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "0"
+          },
+          "repos_apres_amorcage": {
+            "etape": "avant",
+            "cadres_libres": "62416",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "0",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "16"
+          },
+          "service_premiere_serie_avant": {
+            "etape": "service_chaud",
+            "cadres_libres": "62061",
+            "endpoints": "3",
+            "handles": "8",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "17",
+            "bail": "2",
+            "quarantaine": "false",
+            "generation_IPC": "30"
+          },
+          "service_premiere_serie_apres": {
+            "etape": "service_apres",
+            "cadres_libres": "62061",
+            "endpoints": "3",
+            "handles": "8",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "17",
+            "bail": "2",
+            "quarantaine": "false",
+            "generation_IPC": "454"
+          },
+          "repos_apres_huit_series": {
+            "etape": "fin_serie",
+            "cadres_libres": "62416",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "0",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "3544"
+          }
+        },
+        "tables_froides_et_chaudes": [
+          150,
+          153
+        ],
+        "expirations_avant_publication": 168,
+        "expirations_pendant_publication": 168,
+        "expirations_apres_publication": 336,
+        "annulations_concurrentes": 320,
+        "competition_annulation_revocation": 8,
+        "restitutions_mesurees": 1000,
+        "fermetures_suppl_appelant_mort": 4,
+        "fermetures_suppl_pilote_mort": 4,
+        "transferts_refuses_pour_lot_occupe": 1000,
+        "rapport": "drainage-endurance-aarch64-4096.json",
+        "rapport_sha256": "fad4eed80dddec83d947c0e76dbc1e9c4087d98f4aff4d4a1cfc11776c25a7ba",
+        "manifeste_sha256": "99bb8f6a21a86b0e43096fb5f75fd6b17de42ffd8059e9630e8ac5af49f29353",
+        "statut": "succes"
+      },
+      "vi": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "scenario": "abandon",
+        "injection": 6,
+        "statut_public": 26,
+        "reponse_declaree_durable": false,
+        "source_exacte": true,
+        "destination_absente": true,
+        "ancres_creation": {
+          "0": 66,
+          "1": 65
+        },
+        "ancres_avant_consentement": {
+          "0": 68,
+          "1": 67
+        },
+        "ancres": {
+          "0": 68,
+          "1": 67
+        },
+        "image_initiale": "349e53e057e269960dc098fa2d1053a1c39ac8b6135baa67943c1c68d99c9300",
+        "image_apres": "62f2a9685a1ae94906f065294ee643f2b6e8fbd1c1ea1f5407b0651aa278609c",
+        "copie_redemarree": "62f2a9685a1ae94906f065294ee643f2b6e8fbd1c1ea1f5407b0651aa278609c",
+        "series": "9a7cc0d9712b2be11f9b375e4a7b33ba674dfb54c81c00848eeb2f71b9cf9744",
+        "transport": "reception",
+        "tag": 4370,
+        "pages": 256,
+        "delai_ticks": 506,
+        "statut_transport": 8,
+        "sondes_ipc": [
+          [
+            4370,
+            206,
+            0
+          ]
+        ],
+        "reservations_apres_refus": [],
+        "cloture_admission_observee": true,
+        "cadres_froids_avant": 62419,
+        "cadres_froids_apres": 62416,
+        "cadres_libres_avant": 62416,
+        "cadres_libres_apres": 62416,
+        "session_dma_avant_et_apres_refus": 2,
+        "cadres_dma_machine_et_session_au_refus": 32,
+        "kicks_avant_refus_et_apres_fermeture": 6822,
+        "reservations_au_relais": 1,
+        "pages_logiques_au_relais": 256,
+        "reservations_au_refus": 0,
+        "baux_actifs_fin": 0,
+        "cadres_dma_session_fin": 0,
+        "cadres_dma_machine_fin": 0,
+        "dossier": "nova-cow-aarch64-4096-vi-r9a17kz6",
+        "rapport": "drainage-vi-aarch64-4096.json",
+        "rapport_sha256": "d15c36cb8bf931bf7e20b7f68960a524900deb16047f96c4a24c46e993cb7f98",
+        "manifeste_sha256": "5bee4b91034dbc0df277239169111de06d0802508f7c7e1d52d2ae9c21590ef0",
+        "statut": "succes"
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "endurance": {
+        "endpoint_independant_verifie": true,
+        "abandons": 1000,
+        "lectures_confirmees": 136,
+        "acteurs_recrees": 24,
+        "epoques_du_pilote": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "preemptions_moteur": 112,
+        "restitution_cycles_max": 97000,
+        "restitution_us_max": 96.6827596947516,
+        "retour_ipc_close_cycles_max": 203694000,
+        "frequence_hz": 1003281250,
+        "vcpu": 4,
+        "retour_ipc_close_us_max": 203027.81498209003,
+        "disque_sha256": "1734cc0b3f6310c4dfc754fc8eee33be590a832c41b915117eff2b65fae023f7",
+        "architecture": "x86_64",
+        "secteur": 512,
+        "dossier": "nova-cow-x86_64-512-endurance-p0c2zzj2",
+        "compteurs": {
+          "premier_demarrage": {
+            "etape": "froid",
+            "cadres_libres": "62925",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "0",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "0"
+          },
+          "repos_apres_amorcage": {
+            "etape": "avant",
+            "cadres_libres": "62916",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "9",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "16"
+          },
+          "service_premiere_serie_avant": {
+            "etape": "service_chaud",
+            "cadres_libres": "62570",
+            "endpoints": "3",
+            "handles": "8",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "17",
+            "bail": "2",
+            "quarantaine": "false",
+            "generation_IPC": "30"
+          },
+          "service_premiere_serie_apres": {
+            "etape": "service_apres",
+            "cadres_libres": "62570",
+            "endpoints": "3",
+            "handles": "8",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "17",
+            "bail": "2",
+            "quarantaine": "false",
+            "generation_IPC": "454"
+          },
+          "repos_apres_huit_series": {
+            "etape": "fin_serie",
+            "cadres_libres": "62916",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "9",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "3544"
+          }
+        },
+        "tables_froides_et_chaudes": [
+          147,
+          147
+        ],
+        "expirations_avant_publication": 168,
+        "expirations_pendant_publication": 168,
+        "expirations_apres_publication": 336,
+        "annulations_concurrentes": 320,
+        "competition_annulation_revocation": 8,
+        "restitutions_mesurees": 1000,
+        "fermetures_suppl_appelant_mort": 4,
+        "fermetures_suppl_pilote_mort": 4,
+        "transferts_refuses_pour_lot_occupe": 1000,
+        "rapport": "drainage-endurance-x86_64-512.json",
+        "rapport_sha256": "91995abc5bb8fc82e0840507e2572d14a1bf4ab6698d721f527f1684f602c866",
+        "manifeste_sha256": "e7548c91ee535e02816e31a128e69c3e31e31ce0d9b492c93b5b1428ee4409ed",
+        "statut": "succes"
+      },
+      "vi": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "scenario": "abandon",
+        "injection": 6,
+        "statut_public": 26,
+        "reponse_declaree_durable": false,
+        "source_exacte": true,
+        "destination_absente": true,
+        "ancres_creation": {
+          "0": 66,
+          "1": 65
+        },
+        "ancres_avant_consentement": {
+          "0": 68,
+          "1": 67
+        },
+        "ancres": {
+          "0": 68,
+          "1": 67
+        },
+        "image_initiale": "1de9ce45513de1e9f87173b1c859feedf3a5123e1a9f4f81b35d5bec1509b17e",
+        "image_apres": "f31ca95eebdd2acdfe36830f4743db3b1b4e156127ce26aeedf09d6fd94b61cd",
+        "copie_redemarree": "f31ca95eebdd2acdfe36830f4743db3b1b4e156127ce26aeedf09d6fd94b61cd",
+        "series": "532abb6d1503f79ca92538a1103fa1ab26c371462ab7cedff78e721a0f041d98",
+        "transport": "reception",
+        "tag": 4370,
+        "pages": 256,
+        "delai_ticks": 506,
+        "statut_transport": 8,
+        "sondes_ipc": [
+          [
+            4370,
+            206,
+            0
+          ]
+        ],
+        "reservations_apres_refus": [],
+        "cloture_admission_observee": true,
+        "cadres_froids_avant": 62925,
+        "cadres_froids_apres": 62916,
+        "cadres_libres_avant": 62916,
+        "cadres_libres_apres": 62916,
+        "session_dma_avant_et_apres_refus": 2,
+        "cadres_dma_machine_et_session_au_refus": 32,
+        "kicks_avant_refus_et_apres_fermeture": 6822,
+        "reservations_au_relais": 1,
+        "pages_logiques_au_relais": 256,
+        "reservations_au_refus": 0,
+        "baux_actifs_fin": 0,
+        "cadres_dma_session_fin": 0,
+        "cadres_dma_machine_fin": 9,
+        "dossier": "nova-cow-x86_64-512-vi-i1xpbxaf",
+        "rapport": "drainage-vi-x86_64-512.json",
+        "rapport_sha256": "1e65b925c9d88b1ca3f5c9a989f31a5982094a461c405d7e3da1f55fa75d12d5",
+        "manifeste_sha256": "cbfa869bb4c6274b7670c524823adb6c677bd9f61df508fd268c1ce75d1a2f49",
+        "statut": "succes"
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "endurance": {
+        "endpoint_independant_verifie": true,
+        "abandons": 1000,
+        "lectures_confirmees": 136,
+        "acteurs_recrees": 24,
+        "epoques_du_pilote": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "preemptions_moteur": 71,
+        "restitution_cycles_max": 1012000,
+        "restitution_us_max": 911.2435197169218,
+        "retour_ipc_close_cycles_max": 173804000,
+        "frequence_hz": 1110570312,
+        "vcpu": 4,
+        "retour_ipc_close_us_max": 156499.7714435572,
+        "disque_sha256": "1734cc0b3f6310c4dfc754fc8eee33be590a832c41b915117eff2b65fae023f7",
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "dossier": "nova-cow-x86_64-4096-endurance-ou3p3_cg",
+        "compteurs": {
+          "premier_demarrage": {
+            "etape": "froid",
+            "cadres_libres": "62925",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "0",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "0"
+          },
+          "repos_apres_amorcage": {
+            "etape": "avant",
+            "cadres_libres": "62916",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "9",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "16"
+          },
+          "service_premiere_serie_avant": {
+            "etape": "service_chaud",
+            "cadres_libres": "62570",
+            "endpoints": "3",
+            "handles": "8",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "17",
+            "bail": "2",
+            "quarantaine": "false",
+            "generation_IPC": "30"
+          },
+          "service_premiere_serie_apres": {
+            "etape": "service_apres",
+            "cadres_libres": "62570",
+            "endpoints": "3",
+            "handles": "8",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "17",
+            "bail": "2",
+            "quarantaine": "false",
+            "generation_IPC": "454"
+          },
+          "repos_apres_huit_series": {
+            "etape": "fin_serie",
+            "cadres_libres": "62916",
+            "endpoints": "0",
+            "handles": "0",
+            "reservations": "0",
+            "pages_logiques": "0",
+            "attentes": "0",
+            "cadres_dma": "9",
+            "bail": "0",
+            "quarantaine": "false",
+            "generation_IPC": "3544"
+          }
+        },
+        "tables_froides_et_chaudes": [
+          147,
+          147
+        ],
+        "expirations_avant_publication": 168,
+        "expirations_pendant_publication": 168,
+        "expirations_apres_publication": 336,
+        "annulations_concurrentes": 320,
+        "competition_annulation_revocation": 8,
+        "restitutions_mesurees": 1000,
+        "fermetures_suppl_appelant_mort": 4,
+        "fermetures_suppl_pilote_mort": 4,
+        "transferts_refuses_pour_lot_occupe": 1000,
+        "rapport": "drainage-endurance-x86_64-4096.json",
+        "rapport_sha256": "68342b7c62af08a1543fb4e28d7883775cd963e709772b7610c207fa3ab92af9",
+        "manifeste_sha256": "9f655b26dc864649b8bdb0c766558e91ad7a1a355977d3a03eb88b735cc43e82",
+        "statut": "succes"
+      },
+      "vi": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "scenario": "abandon",
+        "injection": 6,
+        "statut_public": 26,
+        "reponse_declaree_durable": false,
+        "source_exacte": true,
+        "destination_absente": true,
+        "ancres_creation": {
+          "0": 66,
+          "1": 65
+        },
+        "ancres_avant_consentement": {
+          "0": 68,
+          "1": 67
+        },
+        "ancres": {
+          "0": 68,
+          "1": 67
+        },
+        "image_initiale": "770d8b5b1deef1dffce57a08670b47a45501845f5535d4d8846e7adb8598d725",
+        "image_apres": "e91491e225b2deb9a279990c7dfa616931d15650c15a9063b88d0924bac49dce",
+        "copie_redemarree": "e91491e225b2deb9a279990c7dfa616931d15650c15a9063b88d0924bac49dce",
+        "series": "135dd30ecd0228c104fab0dbf32ba0d26c0a970904cfdcda41b47661515d2ab8",
+        "transport": "reception",
+        "tag": 4370,
+        "pages": 256,
+        "delai_ticks": 506,
+        "statut_transport": 8,
+        "sondes_ipc": [
+          [
+            4370,
+            206,
+            0
+          ]
+        ],
+        "reservations_apres_refus": [],
+        "cloture_admission_observee": true,
+        "cadres_froids_avant": 62925,
+        "cadres_froids_apres": 62916,
+        "cadres_libres_avant": 62916,
+        "cadres_libres_apres": 62916,
+        "session_dma_avant_et_apres_refus": 2,
+        "cadres_dma_machine_et_session_au_refus": 32,
+        "kicks_avant_refus_et_apres_fermeture": 6822,
+        "reservations_au_relais": 1,
+        "pages_logiques_au_relais": 256,
+        "reservations_au_refus": 0,
+        "baux_actifs_fin": 0,
+        "cadres_dma_session_fin": 0,
+        "cadres_dma_machine_fin": 9,
+        "dossier": "nova-cow-x86_64-4096-vi-fros75od",
+        "rapport": "drainage-vi-x86_64-4096.json",
+        "rapport_sha256": "aaaed9f110564feb3b9998a0f508140294c83b6a6982056e6f227c14b262b468",
+        "manifeste_sha256": "0e491a0d82714e0ad1fb730e9aa427f8c4bc87609ac14011aaf309fac80e927a",
+        "statut": "succes"
+      }
+    }
+  ]
+}
