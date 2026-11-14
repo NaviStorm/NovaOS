@@ -16,6 +16,8 @@ Les six appels natifs historiques permettent de lire les identifiants du process
 
 Dix appels IPC permettent à des processus isolés de communiquer par endpoints unicast. Le noyau vérifie les capacités locales, livre les messages en FIFO et engage les transferts de droits à la réception. Un client peut envoyer jusqu’à 128 octets ou fusionner des notifications sur 64 bits. [Contrat IPC](docs/ipc-architecture.md) · [ABI binaire](docs/ipc-abi.md) · [Résultats et limites de la v0.8.0](docs/mesures-v0.8.0.md)
 
+Les profils de diagnostic de la branche matérielle inventorient ACPI et, sur QEMU, les fonctions PCI. Le rapport précise les autorisations du gestionnaire et donne les commandes de test sur les deux architectures. [Fondations matérielles v0.18.0, phase 1](docs/materiel-v0.18.0.md)
+
 ## Stockage et portabilité de NovaFS
 
 La construction ordinaire conserve le stockage classique et le polling VirtIO-blk. Les profils de test permettent d’activer les E/S groupées et de les mesurer indépendamment. [Activation des profils de stockage](docs/integration-v0.16.6.md)
