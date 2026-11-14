@@ -32,6 +32,7 @@ impl<'a> IpcDevice<'a> {
             return Err(Error::Invalid("fin de support non alignée"));
         }
         let count = sectors / ratio;
+        session.sector_size = size as usize;
         Ok(Self {
             session: RefCell::new(session),
             geometry: Geometry::new(count, size)?,

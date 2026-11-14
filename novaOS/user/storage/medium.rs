@@ -9,6 +9,8 @@ pub(crate) struct Block {
     tx: u64,
     rx: u64,
     tag: u64,
+    pub(crate) features: u32,
+    pub(crate) sector_size: usize,
 }
 impl Block {
     #[inline(never)]
@@ -21,12 +23,41 @@ impl Block {
         }
         if r.len == 1 {
             let status = u64::from(r.payload[0]);
+            if buf[1] == w::DISCOVER && status == BAD_ARGUMENT {
+                // Les anciens relais et pilotes rejettent une opération inconnue par cet octet.
+                return Err(UNKNOWN_CALL);
+            }
             return Err(if status == OK { BAD_ARGUMENT } else { status });
         }
         if r.len != 128 || buf[..3] != r.payload[..3] {
             return Err(BAD_ARGUMENT);
         }
         *buf = r.payload;
+        Ok(())
+    }
+    fn negotiate(&mut self) -> Result<()> {
+        let lane = config(10);
+        if lane == 0 || bulk::features(lane, SEND)? & IPC_FEATURE_PAGE == 0
+            || bulk::features(lane, RECEIVE)? & IPC_FEATURE_PAGE == 0
+        {
+            return Ok(());
+        }
+        let wanted = w::IMPLEMENTED;
+        let mut frame = w::discovery(wanted, false);
+        match self.exchange(&mut frame) {
+            Ok(()) => self.features = w::offered(&frame, wanted).ok_or(REFUSED)?,
+            Err(UNKNOWN_CALL) => (),
+            Err(e) => return Err(e),
+        }
+        Ok(())
+    }
+    fn compat_page(&mut self, first: u64, data: &mut [u8; 4096], write: bool) -> Result<()> {
+        if !matches!(self.sector_size, 512 | 4096) {
+            return Err(BAD_ARGUMENT);
+        }
+        for (i, sector) in data.chunks_exact_mut(self.sector_size).enumerate() {
+            self.transfer(sector, first.checked_add(i as u64).ok_or(BAD_ARGUMENT)?, write)?;
+        }
         Ok(())
     }
     fn page_frame(op: u8, lba: u64) -> w::Wire {
@@ -46,10 +77,16 @@ impl Block {
         Ok(())
     }
     pub(crate) fn read_page(&mut self, lba: u64, cap: u64, out: &mut [u8; 4096]) -> Result<()> {
+        if self.features & w::FEATURE_PAGE == 0 {
+            return self.compat_page(lba, out, false);
+        }
         self.exchange_page(w::READ, lba)?;
         bulk::take(cap, self.tag, out)
     }
     pub(crate) fn write_page(&mut self, lba: u64, cap: u64, data: &[u8; 4096]) -> Result<()> {
+        if self.features & w::FEATURE_PAGE == 0 {
+            return self.compat_page(lba, &mut *zeroize::Zeroizing::new(*data), true);
+        }
         let tag = self.tag.checked_add(1).ok_or(LIMIT)?;
         bulk::put(cap, tag, data)?;
         self.exchange_page(w::WRITE, lba)
@@ -219,7 +256,10 @@ fn exercise(d: &mut Block, mode: u64) -> Result<()> {
 }
 pub fn serve() -> Result<()> {
     let (tx, rx) = channels()?;
-    let mut d = Block { tx, rx, tag: 0 };
+    let mut d = Block { tx, rx, tag: 0, features: 0, sector_size: 0 };
+    if matches!(config(1), 41 | 42) {
+        d.negotiate()?;
+    }
     if (11..=42).contains(&config(1)) {
         let info = d.command(w::INFO)?;
         let writable = w::number(&info, 16) & 6 == 6;

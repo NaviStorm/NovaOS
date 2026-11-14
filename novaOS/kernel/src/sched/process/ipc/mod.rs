@@ -3,6 +3,7 @@
 use super::*;
 use crate::abi::*;
 pub(crate) mod lifecycle;
+pub(super) use bulk::features;
 mod spawn;
 pub(super) use spawn::spawn_program;
 pub(crate) mod metrics;

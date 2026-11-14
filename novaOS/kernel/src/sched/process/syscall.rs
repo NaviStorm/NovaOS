@@ -133,6 +133,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         HEAP_RESIZE => Err(BAD_ARGUMENT),
         CLOCK_UTC if args == [0; 3] => crate::arch::rtc::seconds().ok_or(REFUSED),
         CLOCK_UTC => Err(BAD_ARGUMENT),
+        IPC_FEATURES => ipc::features(a, b, c),
         PROCESS_ID => Ok(with(|s| caller(s).number)),
         THREAD_ID => Ok(with(|s| s.thread(s.current).id.generation)),
         THREAD_YIELD => {

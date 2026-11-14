@@ -120,7 +120,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
         return Err(abi::BAD_ARGUMENT);
     }
     let right = match w[1] {
-        INFO | READ => 1,
+        INFO | READ | DISCOVER => 1,
         WRITE => 2,
         FLUSH => 4,
         CLOSE => 8,
@@ -145,6 +145,9 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
         w[32..].fill(0);
     }
     match (op, w[2], phase) {
+        (DISCOVER, BEGIN, Phase::Empty) => {
+            *w = discovery(number(w, 40) & IMPLEMENTED, true);
+        }
         (INFO, BEGIN, Phase::Empty) => {
             put(w, 4, d.size as u32);
             put(w, 16, u32::from(rights));

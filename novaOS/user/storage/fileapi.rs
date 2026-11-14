@@ -116,7 +116,8 @@ impl Client {
         q[2] = w::MOUNT_PROGRESS;
         let answer = self.request(q)?;
         self.session = w::word(&answer, 8);
-        self.bulk_reads = self.session != 0 && w::word(&answer, 16) == w::PAGE_FEATURE;
+        self.bulk_reads = self.session != 0 && w::word(&answer, 16) == w::PAGE_FEATURE
+            && rt::bulk::features(self.rx, rt::RECEIVE)? & rt::IPC_FEATURE_PAGE != 0;
         if self.session == 0 {
             Err(rt::BAD_ARGUMENT)
         } else {

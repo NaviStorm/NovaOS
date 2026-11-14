@@ -33,6 +33,10 @@ pub fn put(w: &mut Wire, n: usize, v: u32) {
     w[n..n + 4].copy_from_slice(&v.to_le_bytes())
 }
 pub fn syntax(w: &Wire) -> bool {
+    if w[1] == DISCOVER {
+        return w[0] == 1 && w[2..32].iter().all(|&v| v == 0)
+            && &w[32..40] == b"NVBQ\x01\0\0\0" && w[44..].iter().all(|&v| v == 0);
+    }
     if w[0] != 1 || w[3] != 0 || w[20..32].iter().any(|&b| b != 0) {
         return false;
     }
@@ -51,4 +55,22 @@ pub fn syntax(w: &Wire) -> bool {
     };
     let occupied = if w[1] == WRITE && w[2] == PIECE { n } else { 0 };
     shape && !w[32 + occupied..].iter().any(|&b| b != 0)
+}
+
+/// Contrat de transport v1. Un masque annoncé ne délègue aucun droit sur le support.
+pub const DISCOVER: u8 = 7;
+pub const FEATURE_PAGE: u32 = 1;
+pub const FEATURE_BATCH: u32 = 2;
+pub const IMPLEMENTED: u32 = FEATURE_PAGE;
+
+pub fn discovery(bits: u32, reply: bool) -> Wire {
+    let mut f = blank(DISCOVER);
+    f[32..36].copy_from_slice(if reply { b"NVBA" } else { b"NVBQ" });
+    put(&mut f, 36, 1);
+    put(&mut f, 40, bits);
+    f
+}
+pub fn offered(f: &Wire, allowed: u32) -> Option<u32> {
+    let bits = number(f, 40);
+    (bits & !allowed == 0 && *f == discovery(bits, true)).then_some(bits)
 }

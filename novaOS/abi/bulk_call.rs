@@ -15,6 +15,14 @@ fn exchange(op: u64, cap: u64, tag: u64, address: u64, len: usize) -> rt::Result
         Err(rt::BAD_ARGUMENT)
     }
 }
+/// Une porte absente identifie un noyau antérieur. Une révocation reste une erreur.
+pub fn features(cap: u64, direction: u32) -> rt::Result<u64> {
+    match rt::value(rt::call(rt::IPC_FEATURES, cap, direction.into(), 1)) {
+        Err(rt::UNKNOWN_CALL) => Ok(0),
+        r => r,
+    }
+}
+
 pub fn put(cap: u64, tag: u64, src: &[u8]) -> rt::Result<()> {
     exchange(rt::IPC_PUT, cap, tag, src.as_ptr() as u64, src.len())
 }

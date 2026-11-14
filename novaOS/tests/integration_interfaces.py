@@ -21,6 +21,12 @@ CONFIGURATIONS = (
     ("clients-publies", "prototype", ("nsh", "vi")), ("novafs-publie", "prototype", ("novafs",)),
     ("bloc-publie", "prototype", ("relais", "pilote")), ("vi-prototype", "publie", ("vi",)),
 )
+COMPLEMENTS = (
+    ("relais-publie", "prototype", ("relais",)), ("pilote-publie", "prototype", ("pilote",)),
+    ("novafs-prototype", "publie", ("novafs",)), ("relais-prototype", "publie", ("relais",)),
+    ("pilote-prototype", "publie", ("pilote",)),
+    ("chaine-prototype", "publie", tuple(COMPOSANTS)),
+)
 
 
 def sha(donnees):
@@ -60,7 +66,7 @@ def attendre(t, messages, secondes=45):
             t.pending += morceau
 
 
-def observer(archive, arch, secteur, qualification, dossier, id_essai):
+def observer(archive, arch, secteur, qualification, dossier, id_essai, remontage=False):
     # L'appel s'effectue dans un processus frais, pour lier cli.Terminal au bon export.
     sys.path.insert(0, str(archive / "novaOS/tests"))
     from cli import HOST, Terminal
@@ -107,6 +113,15 @@ def observer(archive, arch, secteur, qualification, dossier, id_essai):
                     t.exit()
         trace = t.archive.read_bytes()
         (dossier/(id_essai+".serial")).write_bytes(trace)
+        reprise = None
+        if remontage and etat == "sauvegarde_validee":
+            with Terminal(arch, secteur, image, id_essai + "-remontage", test=qualification) as t:
+                t.until(invite)
+                t.line("cat copieaudit", has=["Zpremier", "été", "fin"])
+                t.exit()
+            serie = t.archive.read_bytes()
+            (dossier / (id_essai + "-remontage.serial")).write_bytes(serie)
+            reprise = sha(serie)
         def lecteur(op, *args, check=True):
             with image.open("rb") as flux:
                 return subprocess.run([HOST, op, "1024", str(secteur), *args], stdin=flux,
@@ -124,7 +139,8 @@ def observer(archive, arch, secteur, qualification, dossier, id_essai):
         return dict(resultat=etat, confirmation_affichee=consentement,
                     sha256_source=sha(SOURCE), destination="octets égaux" if dst.returncode==0 else "absente",
                     sha256_destination=sha(dst.stdout) if dst.returncode == 0 else None,
-                    sha256_serie=sha(trace), generations=sorted(int(n) for _,n in slots))
+                    sha256_serie=sha(trace), sha256_remontage=reprise,
+                    generations=sorted(int(n) for _,n in slots))
 
 
 def main():
@@ -134,6 +150,8 @@ def main():
     p.add_argument("sortie", type=Path)
     p.add_argument("architecture", choices=ARCHS)
     p.add_argument("--session", nargs=3, metavar=("BASE", "ID", "MODE"))
+    p.add_argument("--etendue", action="store_true", help="croiser aussi le relais et le pilote séparément")
+    p.add_argument("--remontage", action="store_true", help="redémarrer avec le même volume et relire la copie")
     p.add_argument("--branche-brute", type=Path,
                    help="tester uniquement le profil 42 d'un troisième export compilé sans fixture")
     args = p.parse_args()
@@ -148,7 +166,7 @@ def main():
         rid = f"{a}-branche-brute-42"
         secteur = 512 if a == "aarch64" else 4096
         out, elf = outils(archive, a)
-        r = observer(archive, a, secteur, True, dossier, rid)
+        r = observer(archive, a, secteur, True, dossier, rid, args.remontage)
         trace = (dossier / (rid + ".serial")).read_bytes()
         bilan = re.search(rb"BLOC bilan mode=42 ([^\r\n]+)", trace)
         r.update(architecture=a, secteur=secteur, mode=42,
@@ -168,7 +186,7 @@ def main():
         return
     if args.session:
         base, rid, mode = args.session
-        r = observer(exports[base], a, 512 if a=="aarch64" else 4096, mode=="42", dossier, rid)
+        r = observer(exports[base], a, 512 if a=="aarch64" else 4096, mode=="42", dossier, rid, args.remontage)
         print(json.dumps(r, ensure_ascii=False))
         return
     if any((d/".git").exists() for d in exports.values()) or len(set(exports.values())) != 2:
@@ -176,7 +194,7 @@ def main():
     originaux = {nom:{c:(out/f).read_bytes() for c,f in COMPOSANTS.items()}
                  for nom,d in exports.items() for out,_ in [outils(d,a)]}
     resultats = []
-    for cas, base, autres in CONFIGURATIONS:
+    for cas, base, autres in CONFIGURATIONS + (COMPLEMENTS if args.etendue else ()):
         autre = "prototype" if base=="publie" else "publie"
         archive = exports[base]
         out, elf = outils(archive,a)
@@ -191,6 +209,8 @@ def main():
                 rid = f"{a}-{cas}-{mode}"
                 cmd = [sys.executable,"-B",__file__, str(exports["publie"]), str(exports["prototype"]),
                        str(dossier),a,"--session",base,rid,mode]
+                if args.remontage:
+                    cmd.append("--remontage")
                 enfant = subprocess.run(cmd, capture_output=True,text=True)
                 (dossier/(rid+".log")).write_text(enfant.stderr)
                 r = json.loads(enfant.stdout) if enfant.returncode==0 else dict(resultat="banc_incomplet",

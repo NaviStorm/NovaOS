@@ -692,10 +692,10 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             }
         };
         if cli
-            && rt::config(10) != 0
             && r.is_ok()
             && m.payload[1] == w::MOUNT
             && m.payload[2] == w::MOUNT_PROGRESS
+            && rt::bulk::features(ports[i].1, rt::SEND)? & rt::IPC_FEATURE_PAGE != 0
         {
             w::set(&mut a, 16, w::PAGE_FEATURE);
         }

@@ -147,3 +147,7 @@ const _: () = assert!(
         && core::mem::offset_of!(GiveV1, mode) == 36
         && core::mem::offset_of!(GiveV1, reserved) == 40
 );
+
+/// Découverte sans transfert sur un endpoint local vivant. (cap, SEND ou RECEIVE, version 1).
+pub const IPC_FEATURES: u64 = 0x1003b;
+pub const IPC_FEATURE_PAGE: u64 = 1;

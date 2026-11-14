@@ -95,6 +95,14 @@ fn driver() -> Result<()> {
             }
             continue;
         }
+        if r.0[1] == wire::DISCOVER {
+            // Intersection locale avant la réponse du véritable portail autorisé.
+            let mut bits = wire::number(&r.0, 40) & wire::IMPLEMENTED;
+            if page.is_none() {
+                bits = 0;
+            }
+            wire::put(&mut r.0, 40, bits);
+        }
         if matches!(
             (r.0[1], r.0[2]),
             (wire::READ, wire::BEGIN) | (wire::WRITE, wire::END) | (wire::FLUSH, wire::BEGIN)
