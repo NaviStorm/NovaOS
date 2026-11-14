@@ -1,0 +1,188 @@
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -1,4 +1,5 @@
+ //! Transport du disque de données dédié. Toutes les adresses matérielles sont privées.
+ mod arena;
++mod qual_irq;
+ pub(crate) mod attente_irq;
+ #[cfg(all(target_arch = "aarch64", feature = "systeme-gpt"))]
+@@ -438,29 +439,5 @@
+ pub(crate) fn probe() {
+     hal::log(format_args!("DMA qualification native debut"));
+-    let res = (|| {
+-        let mut t = Transport::open()?;
+-        hal::log(format_args!(
+-            "DMA domaine actif taille={} blocs={}",
+-            t.size, t.sectors
+-        ));
+-        let mut data = [0u8; PAGE];
+-        let lba = 8192 / t.size;
+-        t.read(lba as u64, &mut data[..t.size])?;
+-        if !data[..t.size]
+-            .iter()
+-            .enumerate()
+-            .all(|(i, &v)| v == 0x71 + (i % 83) as u8)
+-        {
+-            return Err(Error::Device);
+-        }
+-        hal::log(format_args!(
+-            "DMA motif correct IRQ={} octets={}",
+-            IRQS.load(Ordering::Acquire),
+-            t.size
+-        ));
+-        t.close()?;
+-        hal::log(format_args!("DMA retrait acquitte"));
+-        Ok::<_, Error>(())
+-    })();
++    let res = qual_irq::essai();
+     hal::log(format_args!("DMA bilan {res:?}"));
+     hal::cpu::halt()
+--- a/novaOS/kernel/src/hardware/block/attente_irq.rs
++++ b/novaOS/kernel/src/hardware/block/attente_irq.rs
+@@ -28,5 +28,6 @@
+ // Remplacé uniquement dans l'archive instrumentée.
+ #[inline(always)]
+-pub(super) fn noter(_: usize) {}
++pub(super) fn noter(i: usize) { super::qual_irq::COMPTE[i].fetch_add(1, Ordering::Relaxed); }
++pub(super) fn arme() -> bool { ARME.load(Ordering::Relaxed) }
+
+ fn reveiller(compteur: usize) {
+--- a/novaOS/kernel/src/arch/aarch64/timer.rs
++++ b/novaOS/kernel/src/arch/aarch64/timer.rs
+@@ -121,2 +121,11 @@
+     read(DIST, 0x204) & (1 << (disk_id() - 32)) != 0
+ }
++
++// Injection du laboratoire sur la seule ligne du disque jetable.
++pub(crate) fn injecter_spi_disque() {
++    write(DIST, 0x204, 1 << (disk_id() - 32));
++    unsafe { asm!("dsb sy", "isb", options(nostack, preserves_flags)); }
++}
++pub(crate) fn ligne_disque_active() -> bool {
++    read(DIST, 0x104) & (1 << (disk_id() - 32)) != 0
++}
+--- /dev/null
++++ b/novaOS/kernel/src/hardware/block/qual_irq.rs
+@@ -0,0 +1,122 @@
++//! Qualification sur disque jetable. Aucune écriture du disque.
++use super::*;
++#[cfg(target_arch = "aarch64")]
++use crate::sched;
++pub(super) static COMPTE: [AtomicU64; 8] = [const { AtomicU64::new(0) }; 8];
++
++#[cfg(target_arch = "aarch64")]
++static NBR: AtomicU64 = AtomicU64::new(0);
++#[cfg(target_arch = "aarch64")]
++fn injecter() {
++    // Le backend de cette lecture est retenu par blkdebug. Le thread
++    // propriétaire a publié Block(Event) avant de céder le BSP.
++    wait(attente_irq::arme).expect("proprietaire non parque");
++    let nombre = NBR.load(Ordering::Acquire);
++    let ticket = EXPECT.load(Ordering::Acquire);
++    let n = IRQS.load(Ordering::Acquire);
++    assert_ne!(ticket, 0);
++    let strays = STRAYS.load(Ordering::Acquire);
++    for i in 1..=nombre {
++        assert!(hal::timer::ligne_disque_active());
++        hal::timer::injecter_spi_disque();
++        wait(|| STRAYS.load(Ordering::Acquire) == strays + i).expect("SPI non acquitte");
++        assert_eq!(EXPECT.load(Ordering::Acquire), ticket);
++        assert_eq!(IRQS.load(Ordering::Acquire), n);
++        assert!(attente_irq::arme());
++        assert_eq!(ISR_SANS_FILE.load(Ordering::Relaxed), i);
++        assert_eq!(hal::timer::ligne_disque_active(), i != 8);
++    }
++    hal::log(format_args!(
++        "IRQ-LAB SPI nombre={nombre} billet={ticket} irq={n} arme=true ligne={}",
++        hal::timer::ligne_disque_active()
++    ));
++}
++
++pub(super) fn essai() -> Result<()> {
++    let mut t = Transport::open()?;
++    let lba = 8192 / t.size;
++    let mut data = [0; PAGE];
++    let hz = hal::timer::counter_hz();
++    if hz == 0 {
++        return Err(Error::State);
++    }
++    #[cfg(target_arch = "aarch64")]
++    {
++        for nombre in [1, 8] {
++            NBR.store(nombre, Ordering::Release);
++            hal::log(format_args!("IRQ-LAB armer nombre={nombre}"));
++            sched::sleep(u64::from(sched::HZ) / 2);
++            t.begin_read(lba as u64)?;
++            let avant = IRQS.load(Ordering::Acquire);
++            sched::spawn(injecter).map_err(|_| Error::State)?;
++            let debut = hal::timer::counter();
++            let r = t.finish_read();
++            let duree = hal::timer::counter() - debut;
++            let compte = COMPTE.each_ref().map(|v| v.swap(0, Ordering::Relaxed));
++            hal::log(format_args!(
++                "IRQ-LAB fin nombre={nombre} resultat={r:?} ticks={duree} hz={hz} mesures={compte:?}"
++            ));
++            if nombre == 1 {
++                r?;
++                assert_eq!(IRQS.load(Ordering::Acquire), avant + 1);
++                assert_eq!(ISR_SANS_FILE.load(Ordering::Acquire), 0);
++                assert_eq!(compte, [0, 1, 1, 0, 0, 0, 0, 1]);
++                t.p.0[20].mem.bytes(0, &mut data[..t.size]);
++                assert!((0..t.size).all(|i| data[i] == 0x71 + (i % 83) as u8));
++            } else {
++                assert_eq!(r, Err(Error::Timeout));
++                assert_eq!(IRQS.load(Ordering::Acquire), avant);
++                assert_ne!(EXPECT.load(Ordering::Acquire), 0);
++                assert!(t.pending.is_some());
++                assert_eq!(compte, [0, 1, 0, 1, 1, 0, 1, 8]);
++                assert!(duree >= hz);
++                // Le contrôleur libère le backend après le message précédent.
++                // Qu'on puisse enfin observer used n'acquitte pas la demande.
++                for _ in 0..(2 * sched::HZ) {
++                    if t.q.pages[2].mem.r16(2) == t.q.index {
++                        break;
++                    }
++                    sched::sleep(1);
++                }
++                assert_eq!(t.q.pages[2].mem.r16(2), t.q.index);
++                assert_eq!(IRQS.load(Ordering::Acquire), avant);
++                assert!(t.pending.is_some() && !hal::timer::ligne_disque_active());
++                // Retrait par reset, désactivation bus mastering, purge,
++                // démontage et détachement. La demande en échec n'est pas rejouée.
++                t.close()?;
++                break;
++            }
++        }
++    }
++    #[cfg(target_arch = "x86_64")]
++    {
++        t.unit.hold(t.d)?;
++        let avant = IRQS.load(Ordering::Acquire);
++        t.begin_read(lba as u64)?;
++        let debut = hal::timer::counter();
++        let r = t.finish_read();
++        let duree = hal::timer::counter() - debut;
++        let compte = COMPTE.each_ref().map(|v| v.swap(0, Ordering::Relaxed));
++        hal::log(format_args!(
++            "IRQ-LAB MSI-X resultat={r:?} ticks={duree} hz={hz} mesures={compte:?}"
++        ));
++        assert_eq!(r, Err(Error::Timeout));
++        assert!(duree >= hz);
++        assert_eq!(compte, [0, 1, 0, 1, 1, 0, 1, 0]);
++        assert_eq!(t.q.pages[2].mem.r16(2), t.q.index);
++        assert!(t.unit.pending_on_mask(t.d) && t.pending.is_some());
++        assert_ne!(EXPECT.load(Ordering::Acquire), 0);
++        assert_eq!(IRQS.load(Ordering::Acquire), avant);
++        t.close()?;
++    }
++    let mut neuf = Transport::open()?;
++    assert!(!neuf.unit.pending_on_mask(neuf.d) && !attente_irq::arme());
++    let n = neuf.size;
++    neuf.read(lba as u64, &mut data[..n])?;
++    assert!((0..n).all(|i| data[i] == 0x71 + (i % 83) as u8));
++    neuf.close()?;
++    hal::log(format_args!(
++        "IRQ-LAB nouveau proprietaire lecture exacte et retrait"
++    ));
++    Ok(())
++}

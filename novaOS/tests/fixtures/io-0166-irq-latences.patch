@@ -1,0 +1,53 @@
+--- a/novaOS/kernel/src/hardware/block/metrics.rs
++++ b/novaOS/kernel/src/hardware/block/metrics.rs
+@@ -87,6 +87,7 @@
+     }
+ }
+ pub(crate) fn report() {
++    crate::mesures_save::publier_latences_bloc();
+     ACTIVE.store(false, Ordering::Release);
+     let mut s = STATS.lock();
+     for (name, r) in [
+--- a/novaOS/tests/compteur_sauvegarde.rs
++++ b/novaOS/tests/compteur_sauvegarde.rs
+@@ -103,8 +103,32 @@
+     }
+ }
+
++// Une seule sauvegarde sélectionnée. La sérialisation de la trace intervient
++// au bilan de session, après le message de succès et hors du chronométrage.
++static NB_LATENCES: AtomicU64 = AtomicU64::new(0);
++static LATENCES: [AtomicU64; 256] = [const { AtomicU64::new(0) }; 256];
++
++pub fn publier_latences_bloc() {
++    let n = NB_LATENCES.load(Relaxed);
++    hal::log(format_args!("SAVE latences_bloc n={n}"));
++    for (groupe, ligne) in LATENCES[..(n as usize).min(LATENCES.len())].chunks(8).enumerate() {
++        let mut valeurs = [0u64; 8];
++        for (dst, src) in valeurs.iter_mut().zip(ligne) {
++            *dst = src.load(Relaxed);
++        }
++        hal::log(format_args!(
++            "SAVE latences_bloc debut={} valeurs={:?}", groupe * 8, &valeurs[..ligne.len()]
++        ));
++    }
++}
++
+ pub fn bloc(op: usize, d: u64) {
+     if op < 3 && ACTIVE.load(Relaxed) {
++        let indice = NB_LATENCES.fetch_add(1, Relaxed);
++        if let Some(case) = LATENCES.get(indice as usize) {
++            // Deux bits de type. Un dépassement de durée rend la trace invalide.
++            case.store(d.checked_mul(4).unwrap_or(0) | op as u64, Relaxed);
++        }
+         let numero = HW[2 * op].fetch_add(1, Relaxed);
+         if op == 2 && numero < 2 {
+             FLUSH[numero as usize].store(d, Relaxed);
+@@ -134,6 +158,7 @@
+         {
+             c.store(0, Relaxed);
+         }
++        NB_LATENCES.store(0, Relaxed);
+         EDITOR.store(pid, Relaxed);
+         START.store(now, Relaxed);
+         ACTIVE.store(true, Relaxed);

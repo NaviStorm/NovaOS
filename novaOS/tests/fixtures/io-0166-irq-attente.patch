@@ -1,0 +1,188 @@
+--- /dev/null
++++ b/novaOS/kernel/src/hardware/block/attente_irq.rs
+@@ -0,0 +1,102 @@
++//! Attente du seul transport bloc, sur le BSP. Le propriétaire conserve le
++//! mutex de session et les pages DMA pendant tout changement de pile.
++use super::*;
++use crate::sched::Event;
++use core::sync::atomic::AtomicBool;
++
++static EVENEMENT: Event = Event::new();
++static ARME: AtomicBool = AtomicBool::new(false);
++static DEBUT: AtomicU64 = AtomicU64::new(0);
++static HZ: AtomicU64 = AtomicU64::new(0);
++
++// Le contrôle de l'IRQ locale précède toute calibration du TSC x86 via le PIT.
++pub(super) fn preparer() -> Result<()> {
++    if HZ.load(Ordering::Relaxed) != 0 {
++        return Ok(());
++    }
++    if !hal::interrupts::Guard::new().was_enabled() {
++        return Err(Error::State);
++    }
++    let hz = hal::timer::counter_hz();
++    if hz == 0 || hz > u64::MAX / 2 {
++        return Err(Error::State);
++    }
++    HZ.store(hz, Ordering::Relaxed);
++    Ok(())
++}
++
++// Remplacé uniquement dans l'archive instrumentée.
++#[inline(always)]
++pub(super) fn noter(_: usize) {}
++
++fn reveiller(compteur: usize) {
++    // Appelé sous masque depuis le gestionnaire du disque ou du timer.
++    if ARME.swap(false, Ordering::Relaxed) {
++        assert!(EVENEMENT.notify_one().is_some());
++        noter(compteur);
++    }
++}
++
++pub(super) fn reveil_irq() {
++    reveiller(2);
++}
++
++pub(crate) fn tick() {
++    if ARME.load(Ordering::Relaxed)
++        && hal::timer::counter().wrapping_sub(DEBUT.load(Ordering::Relaxed)) >= HZ.load(Ordering::Relaxed)
++    {
++        reveiller(3);
++    }
++}
++
++impl Transport {
++    fn irq_complete(&self, avant: u64) -> bool {
++        IRQS.load(Ordering::Acquire) == avant.wrapping_add(1)
++            && EXPECT.load(Ordering::Acquire) == 0
++            && self.q.pages[2].mem.r16(2) == self.q.index
++    }
++
++    pub(super) fn collecter_irq(&self, avant: u64) -> Result<u32> {
++        let debut = hal::timer::counter();
++        let hz = HZ.load(Ordering::Relaxed);
++        let garde = hal::interrupts::Guard::new();
++        if self.irq_complete(avant) {
++            noter(0);
++            return self.q.lire_utilise();
++        }
++        if !garde.was_enabled() || hz == 0 {
++            return Err(Error::State);
++        }
++        // Le gestionnaire IRQ ne peut pas passer entre la revérification et
++        // Block(Event) sur le BSP. Seule l'IRQ qui valide le ticket, ou le
++        // timer périodique après une seconde, rend le thread à la file prête.
++        DEBUT.store(debut, Ordering::Relaxed);
++        assert!(!ARME.swap(true, Ordering::Relaxed));
++        noter(1);
++        EVENEMENT.wait(&garde);
++        assert!(!ARME.load(Ordering::Relaxed));
++        drop(garde);
++        if hal::timer::counter().wrapping_sub(debut) >= 2 * hz {
++            noter(6);
++            return Err(Error::Timeout);
++        }
++        if self.irq_complete(avant) {
++            return self.q.lire_utilise();
++        }
++        // Repli unique et borné après réveil sans complétion. Aucune nouvelle
++        // soumission. Le budget total est de deux secondes d'horloge invitée.
++        noter(4);
++        for _ in 0..4_000_000 {
++            if hal::timer::counter().wrapping_sub(debut) >= 2 * hz {
++                break;
++            }
++            if self.irq_complete(avant) {
++                noter(5);
++                return self.q.lire_utilise();
++            }
++            core::hint::spin_loop();
++        }
++        noter(6);
++        Err(Error::Timeout)
++    }
++}
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -1,4 +1,5 @@
+ //! Transport du disque de données dédié. Toutes les adresses matérielles sont privées.
+ mod arena;
++pub(crate) mod attente_irq;
+ #[cfg(all(target_arch = "aarch64", feature = "systeme-gpt"))]
+ mod gpt;
+@@ -55,4 +56,6 @@
+ static KICKS: AtomicU64 = AtomicU64::new(0);
+ static ISR: AtomicU64 = AtomicU64::new(0);
++#[cfg(target_arch = "aarch64")]
++static ISR_SANS_FILE: AtomicU64 = AtomicU64::new(0);
+ /// Exécuté sur le BSP. L'IRQ ne prend jamais le verrou du composant DMA.
+ pub(crate) fn interrupt() -> bool {
+@@ -75,8 +78,23 @@
+                 IRQS.fetch_add(1, Ordering::Release);
+                 trace_dma::irq(entree);
++                attente_irq::reveil_irq();
+             } else {
++                attente_irq::noter(7);
+                 STRAYS.fetch_add(1, Ordering::Relaxed);
+             }
++            #[cfg(target_arch = "aarch64")]
++            ISR_SANS_FILE.store(0, Ordering::Relaxed);
+             return true;
++        }
++        // Un SPI INTx parasite peut précéder la vraie notification. Garder la
++        // route active après une assertion isolée, sans consommer le ticket.
++        // Une source qui maintient le niveau sans travail est masquée après
++        // huit assertions consécutives ; la requête expire alors en échec.
++        #[cfg(target_arch = "aarch64")]
++        {
++            STRAYS.fetch_add(1, Ordering::Relaxed);
++            attente_irq::noter(7);
++            return USED_ADDR.load(Ordering::Acquire) != 0
++                && ISR_SANS_FILE.fetch_add(1, Ordering::Relaxed) < 7;
+         }
+     }
+@@ -167,4 +185,5 @@
+     }
+     fn open_disk(sid: u8, output_mapped: bool) -> Result<Self> {
++        attente_irq::preparer()?;
+         let mut state = Lifecycle(State::Initial);
+         let d = Device::discover(sid, 0x1042, 288)?;
+@@ -191,4 +210,6 @@
+         let segments = d.segments(limites)?;
+         let (sectors, size) = d.geometry()?;
++        #[cfg(target_arch = "aarch64")]
++        ISR_SANS_FILE.store(0, Ordering::Relaxed);
+         ISR.store(d.isr.base() as u64, Ordering::Release);
+         unit.route(&p, d, true)?;
+@@ -293,7 +314,6 @@
+     fn finish(&mut self, expected: u32) -> Result<()> {
+         let n = self.pending.ok_or(Error::State)?;
+-        let used = self.q.completed()?;
++        let used = self.collecter_irq(n)?;
+         let collecte = trace_dma::temps();
+-        wait(|| IRQS.load(Ordering::Acquire) != n)?;
+         self.unit.faults(&self.p)?;
+         let status = self.p.0[21].mem.r8(0);
+--- a/novaOS/kernel/src/hardware/block/queue.rs
++++ b/novaOS/kernel/src/hardware/block/queue.rs
+@@ -105,4 +105,11 @@
+     pub fn completed(&self) -> Result<u32> {
+         wait(|| self.pages[2].mem.r16(2) == self.index)?;
++        self.lire_utilise()
++    }
++    pub(super) fn lire_utilise(&self) -> Result<u32> {
++        if self.pages[2].mem.r16(2) != self.index {
++            return Err(Error::Queue);
++        }
++        barrier();
+         let pos = 4 + 8 * usize::from(self.index.wrapping_sub(1) % self.entries);
+         if self.pages[2].mem.r32(pos) != 0 {
+--- a/novaOS/kernel/src/sched/mod.rs
++++ b/novaOS/kernel/src/sched/mod.rs
+@@ -324,4 +324,5 @@
+     let irq = Guard::new();
+     assert!(!irq.was_enabled(), "tick hors interruption");
++    crate::hardware::block::attente_irq::tick();
+     dispatch(Reason::Tick(user));
+ }

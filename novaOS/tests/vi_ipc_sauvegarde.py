@@ -87,6 +87,18 @@ def bilan(journal, mesure):
                                  soumission_ms=ms(soumission), kick_a_used_observe_ms=ms(used),
                                  used_a_acquittement_ms=ms(acquit), traitement_irq_ms=ms(traitement_irq),
                                  kick_a_entree_irq_ms=ms(delai_irq))
+        attentes = re.findall(r"SAVE attente_irq=(\[[^\]]+\])", text)
+        if attentes:
+            (vecteur_irq,) = attentes
+            noms = ("immediates", "parcages", "reveils_irq", "reveils_delai", "replis",
+                    "succes_repli", "timeouts", "parasites")
+            valeurs = json.loads(vecteur_irq)
+            assert len(valeurs) == len(noms) and all(type(n) is int and n >= 0 for n in valeurs)
+            immediates, parcages, reveils_irq, reveils_delai, replis, succes_repli, timeouts, _ = valeurs
+            assert dma and parcages == reveils_irq + reveils_delai
+            assert immediates + parcages == submits and timeouts == 0
+            assert succes_repli == replis <= reveils_delai
+            phases["attente_irq"] = dict(zip(noms, valeurs, strict=True))
         temoin = re.findall(r"SAVE dma_4k=(\[[^\]]+\])", text)
         if temoin:
             (trace,) = temoin
