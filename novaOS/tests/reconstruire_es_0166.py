@@ -1,6 +1,7 @@
 """Reconstruit dans des exports Git distincts les invités de qualification des E/S groupées."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+import gzip
 import hashlib
 import json
 import os
@@ -10,7 +11,7 @@ import tarfile
 
 RACINE = Path(__file__).resolve().parents[2]
 PROFILS = ("brut", "regression", "sans", "sonde", "coupe", "defauts", "course",
-           "utm", "utm-sonde", "utm-coupe")
+           "utm", "utm-sonde", "utm-coupe", "diagnostic-stockage")
 CIBLES = ("aarch64-unknown-none-softfloat", "x86_64-unknown-none")
 
 
@@ -24,7 +25,7 @@ def fixtures(profil):
         return []
     resultat = ["io-0166-prototype", "io-0166-plages"]
     sonde = profil in ("sonde", "utm-sonde")
-    coupe = profil in ("coupe", "defauts", "utm-coupe")
+    coupe = profil in ("coupe", "defauts", "utm-coupe", "diagnostic-stockage")
     if sonde:
         resultat += ["io-0166-prototype-sonde", "io-0166-plages-sonde"]
     if coupe:
@@ -70,10 +71,28 @@ def empreinte_sources(dossier):
     return dict(fichiers=len(chemins), sha256_chemins_et_contenus=cumul.hexdigest())
 
 
-def construire(archive, revision, racine, profil, env):
+def sonder_stockage(dossier, revision, supplement):
+    """Les sondes et l'injection facultative proviennent du même commit que le noyau."""
+    patches = {}
+    for nom in ("sondes-service", "sondes-bloc"):
+        fichier = f"novaOS/docs/validation/fusion-smp-v0.17.0/{nom}.patch.gz"
+        patches[fichier] = gzip.decompress(subprocess.check_output(
+            ["git", "show", f"{revision}:{fichier}"], cwd=RACINE))
+    if supplement:
+        fichier = "novaOS/tests/fixtures/" + supplement
+        patches[fichier] = (dossier / fichier).read_bytes()
+    for contenu in patches.values():
+        subprocess.run(["patch", "-p1", "-F0", "--batch", "--forward", "-s"],
+                       cwd=dossier, input=contenu, check=True)
+    return {nom: hashlib.sha256(data).hexdigest() for nom, data in patches.items()}
+
+
+def construire(archive, revision, racine, profil, env, sonde=None):
     dossier = racine/profil
     fiche = dict(revision_git=revision, profil=profil,
                  fixtures=preparer_sources(archive, dossier, profil), commandes=[], binaires={})
+    if profil == "diagnostic-stockage":
+        fiche["sondes_sha256_decompresse"] = sonder_stockage(dossier, revision, sonde)
     fiche["sources_apres_fixtures"] = empreinte_sources(dossier)
     cibles = CIBLES[:1] if profil.startswith("utm") else CIBLES
     with (racine/(profil+".compilation.log")).open("x") as log:
@@ -116,7 +135,11 @@ def main():
     parser.add_argument("sortie", type=Path, help="chaque profil doit y être absent")
     parser.add_argument("profils", choices=PROFILS, nargs="+")
     parser.add_argument("--jobs", type=int, choices=range(1, 9), default=2)
+    parser.add_argument("--sonde", help="nom d'une fixture .patch du commit, après les sondes de diagnostic")
     args = parser.parse_args()
+    if args.sonde and (args.profils != ["diagnostic-stockage"]
+                       or Path(args.sonde).name != args.sonde or not args.sonde.endswith(".patch")):
+        parser.error("--sonde exige le seul profil diagnostic-stockage et un nom local de patch")
     out = args.sortie.resolve()
     out.mkdir(parents=True, exist_ok=True)
     if len(set(args.profils)) != len(args.profils) or any((out/p).exists() for p in args.profils):
@@ -133,7 +156,7 @@ def main():
     env = dict(os.environ,RUSTC=rustc,CARGO_NET_OFFLINE="true",NOVAFS_TARGET="aarch64-apple-darwin")
     env.pop("CARGO_TARGET_DIR",None)
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
-        futurs = [pool.submit(construire,archive,revision,out,p,env) for p in args.profils]
+        futurs = [pool.submit(construire,archive,revision,out,p,env,args.sonde) for p in args.profils]
         for f in futurs:
             f.result()
 

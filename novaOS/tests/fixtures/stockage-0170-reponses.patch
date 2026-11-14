@@ -1,0 +1,185 @@
+--- a/novaOS/kernel/src/main.rs
++++ b/novaOS/kernel/src/main.rs
+@@ -74,7 +74,14 @@
+         )),
+         Err(e) => panic!("Restitution du chargeur : {e:?}"),
+     }
+-    let scenario = args.as_slice();
++    // Une seule VM jetable par scénario. Aucune sélection dans l'image distribuée.
++    let scenario = if let Some(&[mode]) = args.strip_prefix(b"qualification-reponses-") {
++        assert!((b'1'..=b'6').contains(&mode));
++        sched::process::ipc::MODE_REPONSES.store(mode - b'0', core::sync::atomic::Ordering::Release);
++        b"cli-test".as_slice()
++    } else {
++        args.as_slice()
++    };
+     #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
+     if cfg!(feature = "dma-sequentiel") {
+         #[cfg(feature = "ancres-p9-lab")]
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -828,6 +828,9 @@
+     with(|s| s.ipc.metrics.report(hz));
+ }
+-
++
++pub(crate) static MODE_REPONSES: core::sync::atomic::AtomicU8 = core::sync::atomic::AtomicU8::new(0);
++pub(super) use bulk::observer_abandon;
++
+ /// Deux sessions privées : NovaFS ↔ service bloc ↔ pilote. Une image n'obtient
+ /// que les deux sens IPC de son voisin. Le droit matériel est lié au seul pilote.
+ pub(super) fn launch_block<const N: usize>(
+@@ -876,6 +879,7 @@
+                 for (i, v) in words.into_iter().enumerate() {
+                     space.write_data(m, i, v)
+                 }
++                space.write_data(m, 12, u64::from(MODE_REPONSES.load(core::sync::atomic::Ordering::Acquire)));
+                 Ok(())
+             })
+             .unwrap();
+--- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
++++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
+@@ -464,6 +464,23 @@
+     }
+ }
+-
++
++/// Observer seulement les métadonnées superviseur. Aucun pointeur client n'est déréférencé.
++pub(in crate::sched::process) fn observer_abandon() {
++    let mut trouve = 0;
++    with(|s| {
++        for i in s.ipc.ends.ids() {
++            if let Some(r) = s.ipc.ends.get(i).bulk.and_then(|l| l.reservation) {
++                crate::hal::log(format_args!(
++                    "SURETE0170 reservation tag={} pages={} transfert={} retrait={} doute={} progression={}",
++                    r.tag, r.n, r.en_vol, r.retrait, r.doute, r.effectues
++                ));
++                trouve += 1;
++            }
++        }
++    });
++    crate::hal::log(format_args!("SURETE0170 apres_refus reservations={trouve}"));
++}
++
+ // Banc uniquement. Intercaler le retrait après le kick OUT de la première page,
+ // avant de consommer le descripteur used ou d'acquitter la demande au pilote.
+ use core::sync::atomic::{AtomicU64, Ordering::SeqCst};
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -30,6 +30,9 @@
+         Ok(p.pid.number)
+     })?;
+     let msg = core::str::from_utf8(bytes).expect("ASCII filtré");
++    if msg == "SURETE0170 vi refus" && ipc::MODE_REPONSES.load(Ordering::Acquire) == 6 {
++        ipc::observer_abandon();
++    }
+     if !storage::time_marker(msg) {
+         hal::log(format_args!("DEBUG pid={pid} {msg}"));
+     }
+--- a/components/vi/editor.rs
++++ b/components/vi/editor.rs
+@@ -140,6 +140,8 @@
+                 true
+             }
+             Err(e) => {
++                let texte = b"SURETE0170 vi refus";
++                rt::call(rt::DEBUG_WRITE, texte.as_ptr() as u64, texte.len() as u64, 0);
+                 self.message = match e {
+                     nova_cli::vi_wire::CONFLICT => "conflit : la source a changé",
+                     w::EXISTS => "fichier existant : remplacement refusé",
+--- a/novaOS/user/storage/runtime.rs
++++ b/novaOS/user/storage/runtime.rs
+@@ -56,5 +56,5 @@
+ pub fn config(word: usize) -> u64 {
+-    assert!(word <= 11);
++    assert!(word <= 12);
+     // Sûreté : le lanceur initialise les mots alignés de la page DATA privée
+     // avant publication. Ce sont des valeurs locales, jamais des pointeurs.
+     unsafe { (0x401000 as *const u64).add(word).read_volatile() }
+--- a/novaOS/user/storage/relay.rs
++++ b/novaOS/user/storage/relay.rs
+@@ -24,6 +24,26 @@
+             wire::put(&mut m.payload, 40, bits);
+         }
+         last = m.tag;
++        let mode = if m.payload[1] == wire::WRITE && m.payload[2] == 4 {
++            config(12)
++        } else {
++            0
++        };
++        if mode == 4 {
++            relation(m.tag, 204, 37);
++            exit(37);
++        }
++        if mode == 6 {
++            // Retenir la commande au relais jusqu'à la destruction de la VM.
++            // Ne jamais la transmettre au pilote après le retour d'erreur à vi.
++            relation(m.tag, 206, 0);
++            loop {
++                match receive_for(lower.1, 5000) {
++                    Err(TIMED_OUT) => (),
++                    _ => return Err(REFUSED),
++                }
++            }
++        }
+         send(lower.0, m.tag, &m.payload)?;
+         let answer=receive_for(lower.1,wire::attente_lot(&m.payload,TIMEOUT)).inspect_err(|e|relation(m.tag,m.payload[1],*e))?;
+         if answer.kind != 1 || answer.tag != m.tag || !matches!(answer.len, 1 | 128) {
+@@ -33,6 +53,29 @@
+             && wire::offered(&answer.payload, wire::number(&m.payload, 40)).is_none()
+         {
+             return Err(REFUSED);
++        }
++        if matches!(mode, 1 | 2 | 3) {
++            // Le pilote a réellement achevé ce lot de données privées ; F1 est à venir.
++            if answer.len != 128 || answer.payload != m.payload {
++                return Err(REFUSED);
++            }
++            if mode == 1 {
++                // Aucune autre commande en vol sur le canal inférieur.
++                let ticks = 2 * wire::attente_lot(&m.payload, TIMEOUT);
++                if !matches!(receive_for(lower.1, ticks), Err(TIMED_OUT)) {
++                    return Err(REFUSED);
++                }
++            } else if mode == 2 {
++                // Le relais possède l'endpoint de réponse ; attendre et annuler
++                // exactement la réception du moteur, avant d'expédier l'acquit.
++                if value(call(IPC_CANCEL, output, 0, 0))? != 1 {
++                    return Err(REFUSED);
++                }
++            }
++            let tag = if mode == 3 { m.tag.checked_sub(1).ok_or(REFUSED)? } else { m.tag };
++            let res = send(output, tag, &answer.payload);
++            relation(tag, 200 + mode as u8, res.err().unwrap_or(OK));
++            continue;
+         }
+         send(output, m.tag, &answer.payload[..answer.len as usize])?;
+         if m.payload[1] == wire::CLOSE && answer.len == 128 {
+--- a/novaOS/user/storage/disk.rs
++++ b/novaOS/user/storage/disk.rs
+@@ -72,6 +72,10 @@
+         last = m.tag;
+         let mut r = Request(m.payload);
+         if r.0[2] == 4 {
++            if r.0[1] == wire::WRITE && config(12) == 5 {
++                relation(m.tag, 205, 38);
++                exit(38);
++            }
+             let result = (|| -> Result<()> {
+                 let p = page.as_deref_mut().ok_or(DENIED)?;
+                 let n = wire::number(&r.0, 4) as usize;
+--- a/novaOS/scripts/iso.sh
++++ b/novaOS/scripts/iso.sh
+@@ -18,7 +18,11 @@
+         ipc-smp-equite|ipc-smp-libre|ipc-smp-local|ipc-smp-distant|ipc-smp-paires|ipc-smp-paires-sonde|ipc-smp-paires-cpu0|ipc-smp-paires-libres|ipc-smp-calcul|ipc-smp-memoire|ipc-smp-vfs|ipc-smp-sonde|smp-test|smp-arret|smp-panique|smp-ap-absent|smp-cpu-muet|smp-fp|cli|cli-test|namespace-f1-inflight|namespace-f2-inflight|namespace-disconnect|namespace-depth|namespace-inspect|namespace-write|namespace-read|namespace-rename|namespace-f1-before|namespace-f1-after|namespace-f2-before|namespace-f2-after|files-recover|files-f1-before|files-f1-inflight|files-f1-after|files-f2-before|files-f2-inflight|files-f2-after|files-data|files-meta|files-close|files-remount|files-inject|files-info|files-abandon|files-restart|files-perf|files-write|files-read|elf-test|storage-page-write|storage-page-read|storage-live|storage-write|storage-read|storage-perf|storage-eio|dma-flight|dma-fence|dma-user|dma-qual|storage-test|ipc-test|ipc-endurance|ipc-perf|ipc-races|abi-test|proc-lifecycle|proc-test|proc-boot-fault|mem-test|mem-ro|mem-alias|mem-page-ro|mem-nx|mem-absent|heap-test|heap-oom|heap-corrupt|heap-reentrant|heap-metadata|heap-guard|heap-infallible|sched-test|sched-stress|sched-endurance|sched-guard|sched-fpu) ;;
+         *) exit 2 ;;
+     esac
+-    printf '    cmdline: %s\n' "$1" >> "$stage/root/limine.conf"
++    profil=$1
++    if [ "$profil" = cli-test ] && [ -n "${NOVA_ESSAI_REPONSE:-}" ]; then
++        case "$NOVA_ESSAI_REPONSE" in 1|2|3|4|5|6) profil=qualification-reponses-$NOVA_ESSAI_REPONSE ;; *) exit 2 ;; esac
++    fi
++    printf '    cmdline: %s\n' "$profil" >> "$stage/root/limine.conf"
+     iso=$2
+ fi
+ cp -R "$root/licenses" "$stage/root/"

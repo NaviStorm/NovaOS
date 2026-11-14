@@ -19,8 +19,14 @@ from session_cli import HOST, LONG, fixture, machine
 
 class Terminal:
     def __init__(self, arch, sector, image, label, test=False, *, qmp_bloc=None, defaut_bloc=None, entries=None,
-                 journal=None):
-        cmd, env = machine(arch, sector, image, test)
+                 journal=None, diagnostic=False):
+        if diagnostic and journal is None:
+            raise ValueError("Le diagnostic requiert un journal privé.")
+        if diagnostic:
+            # Chaque passage conserve le média ayant effectivement démarré la VM.
+            cmd, env = machine(arch, sector, image, test, iso=journal.with_suffix(".iso").resolve())
+        else:
+            cmd, env = machine(arch, sector, image, test)
         if entries is not None:
             assert entries in (8, 16, 32, 64, 128, 256)
             index, = [i for i, arg in enumerate(cmd) if str(arg).startswith("virtio-blk-pci,id=b,")]
@@ -36,12 +42,31 @@ class Terminal:
             cmd += ["-chardev", f"socket,id=banc,fd={qmp_bloc}", "-mon", "chardev=banc,mode=control"]
         self.archive_commune = ROOT / "build" / f"cli-{arch}-{sector}-{label}.serial"
         self.archive = self.archive_commune if journal is None else journal
-        self.log = self.archive.open("wb")
+        self.diagnostic = diagnostic
+        if diagnostic:
+            from preuves_stockage import configuration_vm
+            trace = journal.with_suffix(".virtio.log")
+            cmd += ["-trace", f"enable=virtio_blk_*,file={trace}"]
+            configuration_vm(journal, cmd, env, arch, sector)
+            # qemu.sh trace son exec, avec le CPU, les pflash et les options effectives.
+            cmd.insert(1, "-x")
+        self.log = self.archive.open("xb" if diagnostic else "wb")
         self.start = time.monotonic()
-        self.vm = subprocess.Popen(
-            cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT, bufsize=0, pass_fds=() if qmp_bloc is None else (qmp_bloc,),
-        )
+        erreurs = None
+        try:
+            if diagnostic:
+                erreurs = journal.with_suffix(".qemu.log").open("xb")
+            self.vm = subprocess.Popen(
+                cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                stderr=erreurs if diagnostic else subprocess.STDOUT, bufsize=0,
+                pass_fds=() if qmp_bloc is None else (qmp_bloc,),
+            )
+        except BaseException:
+            self.log.close()
+            raise
+        finally:
+            if erreurs is not None:
+                erreurs.close()
         self.pending = b""
 
     def __enter__(self):
@@ -51,7 +76,16 @@ class Terminal:
         if self.vm.poll() is None:
             self.vm.kill()
         self.vm.wait()
+        if self.diagnostic:
+            # Après la mort de QEMU, récupérer les derniers octets déjà en pipe.
+            while select.select([self.vm.stdout], [], [], 0)[0]:
+                morceau = os.read(self.vm.stdout.fileno(), 65536)
+                if not morceau:
+                    break
+                self.log.write(morceau)
         self.log.close()
+        self.vm.stdout.close()
+        self.vm.stdin.close()
         if self.archive != self.archive_commune:
             # Les lecteurs historiques consultent le dernier passage. Chaque essai
             # concurrent garde sa série originale dans son propre répertoire.
