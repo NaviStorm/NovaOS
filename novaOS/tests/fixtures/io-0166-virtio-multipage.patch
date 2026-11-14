@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/novaOS/kernel/src/hardware/block/arena.rs
-@@ -0,0 +1,167 @@
+@@ -0,0 +1,173 @@
 +//! Arène superviseur du prototype. Une seule chaîne en vol sur le BSP.
 +use super::*;
 +use crate::sched::process::ipc::DemandeDma;
@@ -94,7 +94,7 @@
 +        d: DemandeDma,
 +        depart: u64,
 +        pas: u64,
-+        bail_actif: impl FnOnce() -> bool,
++        bail_actif: impl Fn() -> bool,
 +    ) -> Result<()> {
 +        let bytes = d.nombre.checked_mul(PAGE).ok_or(Error::Geometry)?;
 +        if self.pending.is_some()
@@ -154,12 +154,18 @@
 +            let _ = d.terminer(false, false); // doute : le retrait ne déclare jamais le DMA terminé.
 +            return complet;
 +        }
-+        let copie = if d.ecrire {
++        // Vérifier de nouveau le bail et rendre la réponse sous le même masque BSP.
++        // Les contrôles des deux extrémités IPC se font dans copier et terminer.
++        let garde = hal::interrupts::Guard::new();
++        let copie = if !bail_actif() {
++            Err(crate::abi::REVOKED)
++        } else if d.ecrire {
 +            Ok(())
 +        } else {
 +            self.arena.copier(d)
 +        };
 +        let fin = d.terminer(true, copie.is_ok());
++        drop(garde);
 +        trace_dma::groupe(
 +            d.ecrire,
 +            d.nombre,

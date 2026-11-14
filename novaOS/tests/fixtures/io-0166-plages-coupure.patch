@@ -85,7 +85,7 @@
 +        0x10033 if b == 0 && c == 0 => ipc::arme_retrait(a),
          0x10034..=0x10039 => ipc::pret(id, a, b, c),
          IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
-@@ -483,7 +484,14 @@
+@@ -483,8 +484,15 @@
          return Err(BAD_ADDRESS);
      }
 +    if op == 3 && ipc::retrait_arme() {
@@ -94,12 +94,13 @@
 +    }
      let autorise = || ipc::admis(cap, tag, i, n, op, block::wire::lba(&w), true);
      let resultat = block::commande_groupee(pid.number, key, &w, &mut page, autorise);
-     ipc::termine(cap, tag, op, resultat.is_ok());
+     let _garde = crate::hal::interrupts::Guard::new();
+     let livre = ipc::termine(cap, tag, op, resultat.is_ok());
 +    if ipc::confirme_retrait(cap) {
 +        return Err(REVOKED);
 +    }
      resultat?;
-     if op == 2
+     if !livre { return Err(REVOKED); }
 --- a/novaOS/user/novafs/device.rs
 +++ b/novaOS/user/novafs/device.rs
 @@ -19,4 +19,6 @@

@@ -218,7 +218,7 @@
      println!("cargo::rerun-if-changed=../../novaFS/Cargo.toml");
 --- a/novaOS/kernel/src/hardware/block/lease.rs
 +++ b/novaOS/kernel/src/hardware/block/lease.rs
-@@ -230,7 +230,39 @@
+@@ -230,7 +230,40 @@
      page: &mut [u8; 4096],
  ) -> core::result::Result<(), u64> {
 +    if w[1] != wire::WRITE && w[1] != wire::READ {
@@ -237,6 +237,7 @@
      if !admit(pid, key) || s.quarantine {
          return Err(abi::REVOKED);
 +    }
++    let autorise = || admit(pid, key) && controle();
 +    if w[1] == wire::FLUSH {
 +        if s.phase != Phase::Empty || s.rights & 4 == 0 || w[2] != wire::BEGIN || wire::lba(w) != 0
 +        {
@@ -251,21 +252,21 @@
 +        if !wire::syntax(&forme) {
 +            return Err(abi::BAD_ARGUMENT);
 +        }
-+        if d.sortie_autorisee(0, true, d.size, controle).is_err() {
++        if d.sortie_autorisee(0, true, d.size, autorise).is_err() {
 +            s.phase = Phase::Closed;
 +            return Err(abi::REFUSED);
 +        }
 +        return Ok(());
      }
      if !wire::syntax(w) || w[2] != wire::PAGE_PHASE {
-@@ -254,7 +286,7 @@
+@@ -254,7 +287,7 @@
      let result = if write {
          d.p.0[22].mem.write_page(page);
--        d.output_bytes(start, false, 4096)
-+        d.sortie_autorisee(start, false, 4096, controle)
+-        d.sortie_autorisee(start, false, 4096, || admit(pid, key))
++        d.sortie_autorisee(start, false, 4096, autorise)
      } else {
--        d.begin_input(start, 0, 4096)
-+        d.entree_autorisee(start, 0, 4096, controle)
+-        d.entree_autorisee(start, 0, 4096, || admit(pid, key))
++        d.entree_autorisee(start, 0, 4096, autorise)
              .and_then(|()| d.finish(4097))
              .map(|()| d.p.0[20].mem.read_page(page))
 --- a/novaOS/kernel/src/hardware/block/mod.rs
@@ -276,64 +277,6 @@
 +pub(crate) use lease::commande_groupee;
  mod lease;
  pub(crate) mod metrics;
-@@ -219,4 +220,13 @@
-     // Seules les opérations IN (0) et GET_ID (8) ont une chaîne de réception.
-     fn begin_input(&mut self, lba: u64, opcode: u32, bytes: usize) -> Result<()> {
-+        self.entree_autorisee(lba, opcode, bytes, || true)
-+    }
-+    fn entree_autorisee(
-+        &mut self,
-+        lba: u64,
-+        opcode: u32,
-+        bytes: usize,
-+        controle: impl FnOnce() -> bool,
-+    ) -> Result<()> {
-         if self.pending.is_some() {
-             return Err(Error::State);
-@@ -246,4 +256,8 @@
-         self.started = metrics::stamp();
-         self.kind = 0;
-+        let irq = crate::hal::interrupts::Guard::new();
-+        if !controle() {
-+            return Err(Error::State);
-+        }
-         let n = IRQS.load(Ordering::Acquire);
-         EXPECT.store(
-@@ -258,4 +272,5 @@
-         KICKS.fetch_add(1, Ordering::Release);
-         self.pending = Some(n);
-+        drop(irq);
-         Ok(())
-     }
-@@ -293,4 +308,13 @@
-     }
-     fn output_bytes(&mut self, lba: u64, flush: bool, bytes: usize) -> Result<()> {
-+        self.sortie_autorisee(lba, flush, bytes, || true)
-+    }
-+    fn sortie_autorisee(
-+        &mut self,
-+        lba: u64,
-+        flush: bool,
-+        bytes: usize,
-+        controle: impl FnOnce() -> bool,
-+    ) -> Result<()> {
-         if bytes == 0
-             || bytes > PAGE
-@@ -325,4 +349,8 @@
-         self.started = metrics::stamp();
-         self.kind = if flush { 2 } else { 1 };
-+        let irq = crate::hal::interrupts::Guard::new();
-+        if !controle() {
-+            return Err(Error::State);
-+        }
-         let seen = IRQS.load(Ordering::Acquire);
-         EXPECT.store(
-@@ -338,4 +366,5 @@
-         KICKS.fetch_add(1, Ordering::Release);
-         self.pending = Some(seen);
-+        drop(irq);
-         self.finish(1)
-     }
 --- a/novaOS/kernel/src/sched/process/ipc/bulk.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/bulk.rs
 @@ -12,4 +12,6 @@
@@ -367,7 +310,7 @@
 +        if lane.handles[side] != key || lane.reservation.is_some() {
              return Err(DENIED);
          }
-@@ -114,2 +121,279 @@
+@@ -114,2 +121,281 @@
      })
  }
 +
@@ -569,31 +512,33 @@
 +    })
 +}
 +
-+pub(in crate::sched::process) fn termine(cap: u64, tag: u64, op: u8, success: bool) {
++pub(in crate::sched::process) fn termine(cap: u64, tag: u64, op: u8, success: bool) -> bool {
 +    with(|s| {
 +        let pid = s.thread(s.current).owner.unwrap();
 +        let Ok(node) = s.ipc.lookup(pid, cap, SEND | RECEIVE) else {
-+            return;
++            return false;
 +        };
 +        let Some(lane) = s.ipc.ends.get_mut(node.endpoint.slot()).bulk.as_mut() else {
-+            return;
++            return false;
 +        };
 +        let Some(r) = lane.reservation.as_mut() else {
-+            return;
++            return false;
 +        };
 +        if lane.parties[0] != pid.number || lane.handles[0] != cap || r.tag != tag || !r.en_vol {
-+            return;
++            return false;
 +        }
 +        r.en_vol = false;
-+        if success {
-+            if op == 4 {
-+                r.flush = true;
-+            } else {
-+                r.effectues += 1;
-+            }
-+        } else {
++        if !success {
 +            r.doute = true;
++            return false;
 +        }
++        if r.retrait || r.doute { return false; }
++        if op == 4 {
++            r.flush = true;
++        } else {
++            r.effectues += 1;
++        }
++        true
 +    })
 +}
 +
@@ -805,7 +750,7 @@
 +        0x10031 if b == 56 && c == 0 => commande_lot(a),
          IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
          IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
-@@ -441,2 +443,63 @@
+@@ -441,2 +443,51 @@
      Ok(len)
  }
 +
@@ -850,23 +795,11 @@
 +    }
 +    let autorise = || ipc::admis(cap, tag, i, n, op, block::wire::lba(&w), true);
 +    let resultat = block::commande_groupee(pid.number, key, &w, &mut page, autorise);
-+    ipc::termine(cap, tag, op, resultat.is_ok());
++    let _garde = crate::hal::interrupts::Guard::new();
++    let livre = ipc::termine(cap, tag, op, resultat.is_ok());
 +    resultat?;
-+    if op == 2
-+        && !with(|s| {
-+            heap::with_pages(|m| {
-+                Ok(s.processes
-+                    .get(pid)
-+                    .space
-+                    .as_ref()
-+                    .unwrap()
-+                    .copy_to_user(m, adresse, &page))
-+            })
-+            .unwrap()
-+        })
-+    {
-+        return Err(BAD_ADDRESS);
-+    }
++    if !livre { return Err(REVOKED); }
++    copier_reponse_disque(pid, key, adresse, if op == 2 { &page } else { &[] })?;
 +    Ok(0)
 +}
 --- a/novaOS/tests/ipc.py

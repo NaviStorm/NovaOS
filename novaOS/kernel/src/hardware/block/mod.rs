@@ -134,6 +134,15 @@ impl Transport {
     }
     // Seules les opérations IN (0) et GET_ID (8) ont une chaîne de réception.
     fn begin_input(&mut self, lba: u64, opcode: u32, bytes: usize) -> Result<()> {
+        self.entree_autorisee(lba, opcode, bytes, || true)
+    }
+    fn entree_autorisee(
+        &mut self,
+        lba: u64,
+        opcode: u32,
+        bytes: usize,
+        controle: impl FnOnce() -> bool,
+    ) -> Result<()> {
         if self.pending.is_some() {
             return Err(Error::State);
         }
@@ -158,6 +167,10 @@ impl Transport {
         self.p.0[21].mem.w8(0, 0xff);
         self.started = metrics::stamp();
         self.kind = 0;
+        let irq = crate::hal::interrupts::Guard::new();
+        if !controle() {
+            return Err(Error::State);
+        }
         let n = IRQS.load(Ordering::Acquire);
         EXPECT.store(
             0x10000 | u64::from(self.q.index.wrapping_add(1)),
@@ -170,6 +183,7 @@ impl Transport {
         ])?;
         KICKS.fetch_add(1, Ordering::Release);
         self.pending = Some(n);
+        drop(irq);
         Ok(())
     }
     fn finish_read(&mut self) -> Result<()> {
@@ -201,10 +215,17 @@ impl Transport {
         self.p.0[20].mem.bytes(0, out);
         Ok(())
     }
+    #[cfg(all(target_arch = "aarch64", any(feature = "systeme-gpt", feature = "ancres-p9-lab")))]
     fn output(&mut self, lba: u64, flush: bool) -> Result<()> {
-        self.output_bytes(lba, flush, self.size)
+        self.sortie_autorisee(lba, flush, self.size, || true)
     }
-    fn output_bytes(&mut self, lba: u64, flush: bool, bytes: usize) -> Result<()> {
+    fn sortie_autorisee(
+        &mut self,
+        lba: u64,
+        flush: bool,
+        bytes: usize,
+        controle: impl FnOnce() -> bool,
+    ) -> Result<()> {
         if bytes == 0
             || bytes > PAGE
             || bytes % self.size != 0
@@ -237,6 +258,10 @@ impl Transport {
         let status = Segment::new(addr(5), 1, true);
         self.started = metrics::stamp();
         self.kind = if flush { 2 } else { 1 };
+        let irq = crate::hal::interrupts::Guard::new();
+        if !controle() {
+            return Err(Error::State);
+        }
         let seen = IRQS.load(Ordering::Acquire);
         EXPECT.store(
             0x10000 | u64::from(self.q.index.wrapping_add(1)),
@@ -250,6 +275,7 @@ impl Transport {
         }
         KICKS.fetch_add(1, Ordering::Release);
         self.pending = Some(seen);
+        drop(irq);
         self.finish(1)
     }
 }

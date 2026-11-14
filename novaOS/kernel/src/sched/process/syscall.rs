@@ -189,14 +189,16 @@ fn device_page(key: u64, desc: u64, addr: u64) -> Result<u64, u64> {
         return Err(BAD_ADDRESS);
     }
     block::page_command(pid.number, key, &w, &mut page)?;
-    if w[1] == block::wire::READ
-        && !with(|s| {
-            let space = s.processes.get(pid).space.as_ref().unwrap();
-            heap::with_pages(|m| Ok(space.copy_to_user(m, addr, &page))).unwrap()
-        })
-    {
-        return Err(BAD_ADDRESS);
-    }
+    copier_reponse_disque(
+        pid,
+        key,
+        addr,
+        if w[1] == block::wire::READ {
+            &page
+        } else {
+            &[]
+        },
+    )?;
     Ok(4096)
 }
 
@@ -221,20 +223,26 @@ fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
         return Err(BAD_ADDRESS);
     }
     block::command(pid.number, key, &mut wire)?;
-    if !with(|s| {
-        heap::with_pages(|m| {
-            Ok(s.processes
-                .get(pid)
-                .space
-                .as_ref()
-                .unwrap()
-                .copy_to_user(m, addr, &wire))
-        })
-        .unwrap()
-    }) {
-        return Err(BAD_ADDRESS);
-    }
+    copier_reponse_disque(pid, key, addr, &wire)?;
     Ok(128)
+}
+
+// Sur le BSP, aucun décès ou retrait ne peut séparer cette admission de la copie.
+fn copier_reponse_disque(pid: Pid, key: u64, addr: u64, octets: &[u8]) -> Result<(), u64> {
+    with(|s| {
+        if !crate::hardware::block::admit(pid.number, key) {
+            return Err(REVOKED);
+        }
+        if octets.is_empty() {
+            return Ok(());
+        }
+        let espace = s.processes.get(pid).space.as_ref().ok_or(REVOKED)?;
+        if heap::with_pages(|m| Ok(espace.copy_to_user(m, addr, octets))).unwrap() {
+            Ok(())
+        } else {
+            Err(BAD_ADDRESS)
+        }
+    })
 }
 
 // Un seul terminal série. Les deux écrans possèdent chacun leur position.

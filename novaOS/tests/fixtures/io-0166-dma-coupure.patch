@@ -12,8 +12,8 @@
          };
          let fin = d.terminer(true, copie.is_ok());
 +        if d.confirmer_retrait() { return Err(Error::State); }
+         drop(garde);
          trace_dma::groupe(
-             d.ecrire,
 --- a/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
 @@ -133,4 +133,5 @@

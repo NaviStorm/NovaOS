@@ -162,7 +162,9 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
                 return Err(abi::BAD_ARGUMENT);
             }
             metrics::begin();
-            if d.begin_read(d.first + l).is_err() {
+            if d.entree_autorisee(d.first + l, 0, d.size, || admit(pid, key))
+                .is_err()
+            {
                 s.phase = Phase::Closed;
                 return Err(abi::REFUSED);
             }
@@ -210,7 +212,9 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
             s.phase = Phase::Writing(l, at + n);
         }
         (WRITE, END, Phase::Writing(old, at)) if l == old && at == d.size => {
-            if d.output(d.first + l, false).is_err() {
+            if d.sortie_autorisee(d.first + l, false, d.size, || admit(pid, key))
+                .is_err()
+            {
                 s.phase = Phase::Closed;
                 return Err(abi::REFUSED);
             }
@@ -218,7 +222,9 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
             s.phase = Phase::Empty;
         }
         (FLUSH, BEGIN, Phase::Empty) => {
-            if d.output(0, true).is_err() {
+            if d.sortie_autorisee(0, true, d.size, || admit(pid, key))
+                .is_err()
+            {
                 s.phase = Phase::Closed;
                 return Err(abi::REFUSED);
             }
@@ -260,9 +266,9 @@ pub(crate) fn page_command(
     metrics::begin();
     let result = if write {
         d.p.0[22].mem.write_page(page);
-        d.output_bytes(start, false, 4096)
+        d.sortie_autorisee(start, false, 4096, || admit(pid, key))
     } else {
-        d.begin_input(start, 0, 4096)
+        d.entree_autorisee(start, 0, 4096, || admit(pid, key))
             .and_then(|()| d.finish(4097))
             .map(|()| d.p.0[20].mem.read_page(page))
     };
