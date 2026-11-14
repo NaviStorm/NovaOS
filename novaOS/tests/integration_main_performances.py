@@ -1,6 +1,7 @@
 """Rejouer une cellule de la comparaison classique/groupée sur un export identifié."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import nullcontext
 import json
 import os
 import plistlib
@@ -102,7 +103,6 @@ def cellule(a):
     moteur, arch = a.plateforme.split("-")
     cible = CIBLES[0] if arch == "aarch64" else CIBLES[1]
     dossier = a.sortie.resolve()
-    dossier.mkdir(parents=True)
     generateur = a.generateur.resolve()
     elf = racine / ("target-utm" if moteur == "utm" and classique else "target") / cible / "release/novaos"
     provenance = json.loads((archive / "provenance.json").read_bytes())
@@ -126,17 +126,25 @@ def cellule(a):
     # classique est matériellement dépourvu de PLAN/BATCH, quel que soit le mode.
     avant = time.time_ns()
     charge = os.getloadavg()
+    if a.conserver_images:
+        supports = dossier / "supports"
+        supports.mkdir(mode=0o700)
+        espace = nullcontext(supports)
+    else:
+        espace = tempfile.TemporaryDirectory(prefix=moteur + "-", dir=dossier)
     if moteur == "qemu":
         (racine/"build").mkdir(exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix="qemu-", dir=dossier) as temp:
+        serie = dossier / "sauvegarde.serial"
+        with espace as temp:
             mesure = elargies.essai(arch, a.secteur, a.cas, generateur, Path(temp), sonde,
-                                    session_classique=classique and not sonde, cpu_moteur=sys.platform == "darwin")
-        serie = racine/"build"/f"cli-{arch}-{a.secteur}-elargi-{a.cas}.serial"
-        (dossier/"sauvegarde.serial").write_bytes(serie.read_bytes())
+                                    session_classique=classique and not sonde, cpu_moteur=sys.platform == "darwin",
+                                    journal=serie if a.conserver_images else None)
+        if not a.conserver_images:
+            serie.write_bytes((racine/"build"/f"cli-{arch}-{a.secteur}-elargi-{a.cas}.serial").read_bytes())
     else:
         if not a.profil_utm:
             raise ValueError("Paquet modèle UTM requis")
-        with tempfile.TemporaryDirectory(prefix="utm-", dir=dossier) as temp:
+        with espace as temp:
             machine = Path(temp)/"machine"
             try:
                 cpus = plistlib.loads((a.profil_utm / "config.plist").read_bytes())["System"]["CPUCount"]
@@ -184,6 +192,37 @@ def cellule(a):
     print(a.plateforme, a.chemin, a.cas, a.secteur, mesure["sauvegarde_ms"], flush=True)
 
 
+def mesurer(a):
+    dossier = a.sortie.resolve()
+    dossier.mkdir(parents=True, mode=0o700)
+    if not a.conserver_images:
+        cellule(a)
+        return
+    # Le hachage des médias s'effectue une fois le chronomètre arrêté et la VM fermée.
+    debut = time.time_ns()
+    erreur = None
+    try:
+        cellule(a)
+    except BaseException as e:
+        erreur = repr(e)
+        raise
+    finally:
+        try:
+            provenance = a.archive / "provenance.json"
+            preuve = dict(plateforme=a.plateforme, secteur=a.secteur, chemin=a.chemin,
+                          releve=a.releve, cas=a.cas, debut_utc_ns=debut, fin_utc_ns=time.time_ns(),
+                          erreur=erreur, construction=json.loads(provenance.read_bytes()),
+                          fichiers={str(p.relative_to(dossier)): dict(octets=p.stat().st_size, sha256=empreinte(p))
+                                    for p in sorted(dossier.rglob("*")) if p.is_file() and not p.is_symlink()})
+            with (dossier / "inventaire.json").open("x") as f:
+                json.dump(preuve, f, indent=2, ensure_ascii=False)
+                f.write("\n")
+        except Exception as collecte:
+            if erreur is None:
+                raise
+            print(f"Inventaire incomplet dans {dossier} : {collecte}", file=sys.stderr)
+
+
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     sous = p.add_subparsers(dest="action", required=True)
@@ -198,6 +237,8 @@ if __name__ == "__main__":
     test.add_argument("cas", choices=("neuf-4m", "inserer-milieu", "ajout-4m-multiple"))
     for champ in ("archive", "generateur", "oracle", "sortie"):
         test.add_argument(champ, type=Path)
+    test.add_argument("--conserver-images", action="store_true",
+                      help="garder les disques fictifs et la série du passage dans le dossier neuf")
     test.add_argument("--profil-utm", type=Path)
     test.add_argument("--elf-livraison", type=Path)
     test.add_argument("--bilan-livraison", type=Path)
@@ -205,4 +246,4 @@ if __name__ == "__main__":
     if args.action == "preparer":
         preparer(args.revision, args.racine.resolve())
     else:
-        cellule(args)
+        mesurer(args)
