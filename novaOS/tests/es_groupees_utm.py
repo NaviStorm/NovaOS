@@ -362,7 +362,7 @@ def essai(template, elf, generateur, s, out, sonde, index, cas, traces_bloc=True
     if cadres is None and (not classique or sonde):
         raise ValueError("Pic de cadres absent du profil de qualification")
     pic = int(cadres[1]) if cadres else None
-    hote = {}
+    hote = dict(sha256_destination=hashlib.sha256(attendu).hexdigest())
     if observer_hote:
         avant_disque, apres_disque = compteurs_hote
         hote["backend_hmp"] = {k: v - avant_disque[k] for k, v in apres_disque.items()}

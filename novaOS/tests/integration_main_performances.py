@@ -3,6 +3,7 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 import json
 import os
+import plistlib
 from pathlib import Path
 import re
 import subprocess
@@ -138,8 +139,10 @@ def cellule(a):
         with tempfile.TemporaryDirectory(prefix="utm-", dir=dossier) as temp:
             machine = Path(temp)/"machine"
             try:
+                cpus = plistlib.loads((a.profil_utm / "config.plist").read_bytes())["System"]["CPUCount"]
+                observation = Observation("ordinaire", "repos", False, cpu_moteur=True) if cpus == 1 else None
                 mesure = utm.essai(a.profil_utm.resolve(), elf, generateur, a.secteur, machine, sonde,
-                                   False, a.cas, qos=Observation("ordinaire", "repos", False, cpu_moteur=True), classique=classique)
+                                   False, a.cas, qos=observation, classique=classique)
             finally:
                 for nom in ("sauvegarde.serial", "reprise.serial", "moniteur.log"):
                     serie = machine/nom

@@ -5,7 +5,7 @@
              unsafe { t.space.activate() };
          }
 +        crate::mesures_save::passage_idle(old == idle_slot, next == idle_slot);
-         self.currents[crate::smp::index()] = next;
+         self.currents[cpu] = next;
          if matches!(why, Reason::Tick(_)) && old != idle_slot && next != idle_slot {
              self.stats.preemptions += 1;
 --- a/novaOS/tests/compteur_sauvegarde.rs
