@@ -44,7 +44,7 @@ def fixtures(profil):
         resultat.append("io-0166-dma-coupure")
     if profil == "defauts":
         resultat.append("io-0166-dma-defauts")
-    return resultat + ["io-0166-negociation"]
+    return resultat + ["io-0166-negociation", "stockage-0170-retrait"]
 
 
 def preparer_sources(archive, dossier, profil):
@@ -71,14 +71,14 @@ def empreinte_sources(dossier):
     return dict(fichiers=len(chemins), sha256_chemins_et_contenus=cumul.hexdigest())
 
 
-def sonder_stockage(dossier, revision, supplement):
+def sonder_stockage(dossier, revision, supplements):
     """Les sondes et l'injection facultative proviennent du même commit que le noyau."""
     patches = {}
     for nom in ("sondes-service", "sondes-bloc"):
         fichier = f"novaOS/docs/validation/fusion-smp-v0.17.0/{nom}.patch.gz"
         patches[fichier] = gzip.decompress(subprocess.check_output(
             ["git", "show", f"{revision}:{fichier}"], cwd=RACINE))
-    if supplement:
+    for supplement in supplements or ():
         fichier = "novaOS/tests/fixtures/" + supplement
         patches[fichier] = (dossier / fichier).read_bytes()
     for contenu in patches.values():
@@ -135,10 +135,11 @@ def main():
     parser.add_argument("sortie", type=Path, help="chaque profil doit y être absent")
     parser.add_argument("profils", choices=PROFILS, nargs="+")
     parser.add_argument("--jobs", type=int, choices=range(1, 9), default=2)
-    parser.add_argument("--sonde", help="nom d'une fixture .patch du commit, après les sondes de diagnostic")
+    parser.add_argument("--sonde", action="append", help="nom d'une fixture .patch du commit, après les sondes de diagnostic")
     args = parser.parse_args()
     if args.sonde and (args.profils != ["diagnostic-stockage"]
-                       or Path(args.sonde).name != args.sonde or not args.sonde.endswith(".patch")):
+                       or len(set(args.sonde)) != len(args.sonde)
+                       or any(Path(s).name != s or not s.endswith(".patch") for s in args.sonde)):
         parser.error("--sonde exige le seul profil diagnostic-stockage et un nom local de patch")
     out = args.sortie.resolve()
     out.mkdir(parents=True, exist_ok=True)
