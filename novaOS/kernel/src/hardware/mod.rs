@@ -1,7 +1,11 @@
 mod acpi;
+#[cfg(feature = "materiel-lab")]
+pub(crate) mod lab_irq;
 pub(crate) mod discovery;
 #[allow(dead_code)]
 mod driver_resources;
+#[allow(dead_code)]
+pub(crate) mod physical_dma;
 mod pci_inventory;
 pub(crate) mod block;
 pub mod framebuffer;

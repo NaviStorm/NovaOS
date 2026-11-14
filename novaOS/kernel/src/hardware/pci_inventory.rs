@@ -3,6 +3,9 @@
 //! PCI-SIG, PCI Express Base Specification, chapitre 7 (espaces de configuration).
 //! UEFI PI 1.9, volume V, chapitre 10 (plages de bus des ponts hôtes).
 
+#[path = "pci_inventory/resources.rs"]
+pub mod resources;
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Address {
     pub segment: u16,
@@ -55,6 +58,10 @@ pub struct Function {
     pub irq_pin: u8,
     pub irq_line: u8,
     pub bus_master: bool,
+    pub command: u16,
+    pub msi_armed: bool,
+    pub rom_enabled: bool,
+    pub bridge_windows: Option<resources::BridgeWindows>,
     pub secondary: Option<u8>,
 }
 
@@ -168,6 +175,7 @@ fn capabilities<C: ConfigRead>(
                 words =
                     3 + u16::from(control & (1 << 7) != 0) + 2 * u16::from(control & (1 << 8) != 0);
                 function.msi = true;
+                function.msi_armed = control & 1 != 0;
             }
             0x10 => {
                 if function.pcie || control & 15 == 0 {
@@ -290,6 +298,14 @@ fn inspect<C: ConfigRead>(
         irq_pin,
         irq_line: irq as u8,
         bus_master: command_status & 4 != 0,
+        command: command_status as u16,
+        msi_armed: false,
+        rom_enabled: reader.get(addr, if header == 1 { 0x38 } else { 0x30 })? & 1 != 0,
+        bridge_windows: if header == 1 {
+            Some(resources::bridge_windows(reader, addr)?)
+        } else {
+            None
+        },
         secondary: None,
     };
     if command_status & (1 << 20) != 0 {

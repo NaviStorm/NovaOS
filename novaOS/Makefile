@@ -147,3 +147,9 @@ materiel-modeles-test:
 
 materiel-test: kernel
 	python3 -B tests/materiel.py
+
+.PHONY: materiel-pilote-test
+materiel-pilote-test:
+	. scripts/target.sh && export CARGO_TARGET_DIR="$(CURDIR)/build/materiel-phase2" && \
+	  RUSTC="$$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$$rust_target" --features materiel-lab && \
+	  NOVA_KERNEL_ELF="$$CARGO_TARGET_DIR/$$rust_target/release/novaos" python3 -B tests/materiel_pilote.py

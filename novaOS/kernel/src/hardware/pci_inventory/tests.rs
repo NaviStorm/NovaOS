@@ -353,3 +353,200 @@ fn pont_refuse_interdit_toute_lecture_aval() {
     assert_eq!(enumerate(&mut f, ROOT, |_, _| {}), Err(Error::Changed));
     assert!(f.reads.iter().all(|(a, _)| a.bus == ROOT.first));
 }
+
+#[test]
+fn pont_fenetres_32_64_et_io_32() {
+    let mut fabric = Fabric::default();
+    let b = a(5, 0, 0);
+    fabric.bridge(b, 6, 6);
+    let row = fabric.registers.get_mut(&(5, 0, 0)).unwrap();
+    row[0x1c / 4] = 0x3121;
+    row[0x20 / 4] = 0x8ff0_8000;
+    row[0x24 / 4] = 0x0031_0011;
+    row[0x28 / 4] = 2;
+    row[0x2c / 4] = 2;
+    row[0x30 / 4] = 0x1234_1234;
+    let before = fabric.registers.clone();
+    let function = fabric.run()[0].1.unwrap();
+    let windows = function.bridge_windows.unwrap();
+    use resources::Span;
+    assert_eq!(
+        windows.io,
+        Some(Span {
+            base: 0x1234_2000,
+            last: 0x1234_3fff
+        })
+    );
+    assert_eq!(
+        windows.memory,
+        Some(Span {
+            base: 0x8000_0000,
+            last: 0x8fff_ffff
+        })
+    );
+    assert_eq!(
+        windows.prefetch,
+        Some(Span {
+            base: 0x2_0010_0000,
+            last: 0x2_003f_ffff
+        })
+    );
+    assert_eq!(fabric.registers, before);
+}
+
+#[test]
+fn pont_ferme_et_formats_incoherents() {
+    let mut f = Fabric::default();
+    f.bridge(a(5, 1, 0), 6, 6);
+    let row = f.registers.get_mut(&(5, 1, 0)).unwrap();
+    row[7] = 0xf0;
+    row[8] = 0x0000_fff0;
+    row[9] = 0x0000_fff0;
+    let windows = f.run()[0].1.unwrap().bridge_windows.unwrap();
+    assert_eq!(
+        (windows.io, windows.memory, windows.prefetch),
+        (None, None, None)
+    );
+    for (index, bad) in [(7, 0x0011), (8, 0x00010000), (9, 0x0010_0011)] {
+        let row = f.registers.get_mut(&(5, 1, 0)).unwrap();
+        row[index] = bad;
+        assert_eq!(enumerate(&mut f, ROOT, |_, _| {}), Err(Error::Bridge));
+        f.registers.get_mut(&(5, 1, 0)).unwrap()[index] = 0;
+    }
+}
+
+#[test]
+fn tailles_bar_excluent_les_depassements_et_les_frontieres() {
+    use resources::Span;
+    use resources::lab::extent;
+    let bar = |kind, base| Bar {
+        kind,
+        base,
+        prefetchable: false,
+    };
+    assert_eq!(
+        extent(bar(BarKind::Memory64, u64::MAX - 4095), 4096),
+        Ok(Span {
+            base: u64::MAX - 4095,
+            last: u64::MAX
+        })
+    );
+    for (kind, base, size) in [
+        (BarKind::Io, 0x1000, 2),
+        (BarKind::Io, 1 << 32, 4),
+        (BarKind::Memory32, 1 << 32, 16),
+        (BarKind::Memory64, 0, 16),
+        (BarKind::MemoryBelow1M, 1 << 20, 16),
+        (BarKind::Memory32, 0x4000, 0),
+        (BarKind::Memory64, 0x1000, 48),
+        (BarKind::Memory64, 0x1000, 8192),
+    ] {
+        assert_eq!(extent(bar(kind, base), size), Err(Error::Bar));
+    }
+}
+
+fn virt_lab() -> (Fabric, Vec<(Address, Function)>) {
+    let mut fabric = Fabric::default();
+    for (slot, id, class, pin) in [
+        (0, 0x0008_1b36, 0x06000000, 0),
+        (1, 0x1004_1af4, 0x01000000, 1),
+        (6, 0x11e8_1234, 0x00ff0000, 1),
+    ] {
+        let row = fabric.endpoint(a(5, slot, 0));
+        row[0] = id;
+        row[2] = class;
+        row[15] = pin << 8;
+        if slot == 6 {
+            row[4] = 0x1000_0000;
+            row[1] = (1 << 20) | 4; // firmware propriétaire ; aucune écriture de BAR
+            row[13] = 0x40;
+            row[16] = 5;
+        }
+        if slot == 1 {
+            row[5] = 0x1010_0000;
+            row[8] = 0x0000_000c;
+            row[9] = 0x80;
+        }
+    }
+    let entries = fabric
+        .run()
+        .into_iter()
+        .map(|(a, f)| {
+            (
+                Address {
+                    segment: 0,
+                    bus: 0,
+                    ..a
+                },
+                f.unwrap(),
+            )
+        })
+        .collect();
+    (fabric, entries)
+}
+
+#[test]
+fn profil_lecture_seule_taille_connue_et_bus_master_herite() {
+    use resources::lab::{LabPlatform, qualify_edu};
+    let (mut fabric, functions) = virt_lab();
+    let before = fabric.registers.clone();
+    let result = qualify_edu(LabPlatform::Virt, &functions).unwrap();
+    assert_eq!(result.size, 1 << 20);
+    assert_eq!(result.base, 0x1000_0000);
+    assert_eq!(functions[2].1.command & 4, 4);
+    assert_eq!(fabric.registers, before);
+    let r = fabric.run();
+    assert_eq!(r[1].1.unwrap().bars[0], None);
+    // Aucun masque écrit durant le diagnostic d'une fonction déjà utilisée.
+    assert_eq!(fabric.registers, before);
+}
+
+#[test]
+fn profil_relu_refuse_recouvrements_rom_msi_et_objet_etranger() {
+    use resources::lab::{LabPlatform, qualify_edu};
+    let (_, mut functions) = virt_lab();
+    let (_, f) = functions[1];
+    let neighbor = f.bars[1].unwrap();
+    functions[1].1.bars[1] = Some(Bar {
+        base: 0x100f_f000,
+        ..neighbor
+    });
+    assert_eq!(qualify_edu(LabPlatform::Virt, &functions), Err(Error::Bar));
+    functions[1].1 = f;
+    functions[2].1.msi_armed = true;
+    assert_eq!(qualify_edu(LabPlatform::Virt, &functions), Err(Error::Bar));
+    functions[2].1.msi_armed = false;
+    functions[1].1.rom_enabled = true;
+    assert_eq!(
+        qualify_edu(LabPlatform::Virt, &functions),
+        Err(Error::Identity)
+    );
+    functions[1].1.rom_enabled = false;
+    functions[2].0.function = 1;
+    assert_eq!(
+        qualify_edu(LabPlatform::Virt, &functions),
+        Err(Error::Identity)
+    );
+    functions[2].0.function = 0;
+    functions.push(functions[2]);
+    assert_eq!(
+        qualify_edu(LabPlatform::Virt, &functions),
+        Err(Error::Identity)
+    );
+}
+
+#[test]
+fn profil_refuse_taille_inconnue_et_bar_hors_aperture() {
+    use resources::lab::{LabPlatform, qualify_edu};
+    let (_, mut functions) = virt_lab();
+    let mut bar = functions[2].1.bars[0].unwrap();
+    functions[1].1.bars[2] = Some(bar);
+    assert_eq!(qualify_edu(LabPlatform::Virt, &functions), Err(Error::Bar));
+    functions[1].1.bars[2] = None;
+    bar.base = 0x3000_0000;
+    functions[2].1.bars[0] = Some(bar);
+    assert_eq!(
+        qualify_edu(LabPlatform::Virt, &functions),
+        Err(Error::Range)
+    );
+}

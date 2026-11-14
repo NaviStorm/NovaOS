@@ -18,6 +18,7 @@ fn main() {
     for name in [
         "demo",
         "devices",
+        "edu",
         "fp_probe",
         "ipc",
         "storage/service",
@@ -30,6 +31,9 @@ fn main() {
         "storage/fileclient",
     ] {
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
+        if name == "edu" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_none() {
+            continue;
+        }
         let file_client = name == "storage/fileclient";
         let linker = format!(
             "link-arg=-T{}",
@@ -46,8 +50,11 @@ fn main() {
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
         let compact = matches!(
             name,
-            "devices" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
+            "devices" | "edu" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
+        if name == "devices" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_some() {
+            rust.arg("--cfg").arg("materiel_lab");
+        }
         if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_SMP_LAB").is_some() {
             rust.args(["--cfg", "ipc_smp_lab"]);
         }

@@ -8,6 +8,10 @@ use crate::{
 
 mod abi_probe;
 mod demo;
+#[cfg(feature = "materiel-lab")]
+mod edu;
+#[cfg(feature = "materiel-lab")]
+pub(crate) use edu::{lab_irq_notice, run as edu_lab, stop_if_requested};
 pub(crate) mod ipc;
 pub(crate) mod storage;
 pub(super) use abi_probe::idle_sample;
@@ -55,6 +59,8 @@ pub(super) struct Table {
     serial: u64,
     pub(super) syscall_switches: u64,
     blocked_waits: u64,
+    #[cfg(feature = "materiel-lab")]
+    edu: Option<edu::Lease>,
 }
 impl Table {
     pub(super) const fn new() -> Self {
@@ -63,6 +69,8 @@ impl Table {
             serial: 0,
             syscall_switches: 0,
             blocked_waits: 0,
+            #[cfg(feature = "materiel-lab")]
+            edu: None,
         }
     }
     fn get(&self, pid: Pid) -> &Process {
@@ -248,6 +256,8 @@ pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
             .owner
             .expect("exception hors processus");
         crate::hardware::block::died(pid.number);
+        #[cfg(feature = "materiel-lab")]
+        edu::died(s, pid);
         s.ipc.death(pid, ticks());
         s.flush_ipc();
         s.ipc.collect();

@@ -6,6 +6,9 @@ use alloc::vec::Vec;
 #[path = "../../../user/device_inventory.rs"]
 mod wire;
 
+#[cfg(feature = "materiel-lab")]
+pub(crate) use pci::resources::lab::EduBar;
+
 struct Config;
 impl pci::ConfigRead for Config {
     fn read32(&mut self, a: pci::Address, off: u16) -> Option<u32> {
@@ -25,6 +28,13 @@ impl pci::ConfigRead for Config {
 }
 
 pub(crate) fn capture(qemu_profile: bool) -> Option<Vec<u8>> {
+    capture_with(qemu_profile, |_, _| {})
+}
+
+fn capture_with(
+    qemu_profile: bool,
+    mut visit: impl FnMut(pci::Address, pci::Function),
+) -> Option<Vec<u8>> {
     let inventory = match boot::rsdp_physical() {
         Some(pa) => match acpi::discover(pa, firmware::copy_acpi) {
             Ok(info) => Some(info),
@@ -117,13 +127,35 @@ pub(crate) fn capture(qemu_profile: bool) -> Option<Vec<u8>> {
                     complete = false;
                     return;
                 }
+                visit(a, f);
+                if let Some(windows) = f.bridge_windows {
+                    for (name, window) in [
+                        ("io", windows.io),
+                        ("memoire", windows.memory),
+                        ("prefetch", windows.prefetch),
+                    ] {
+                        if let Some(span) = window {
+                            log(format_args!(
+                                "PCI-PONT {:04x}:{:02x}:{:02x}.{} {}={:#x}..={:#x}",
+                                a.segment, a.bus, a.device, a.function, name, span.base, span.last
+                            ));
+                        }
+                    }
+                }
                 let mut bars = 0u8;
                 for (i, bar) in f.bars.iter().enumerate() {
                     if let Some(b) = bar {
                         bars |= 1 << i;
                         log(format_args!(
-                            "BAR {:04x}:{:02x}:{:02x}.{} n={} type={:?} base={:#x} taille=inconnue",
-                            a.segment, a.bus, a.device, a.function, i, b.kind, b.base
+                            "BAR {:04x}:{:02x}:{:02x}.{} n={} type={:?} base={:#x} taille=inconnue prefetch={}",
+                            a.segment,
+                            a.bus,
+                            a.device,
+                            a.function,
+                            i,
+                            b.kind,
+                            b.base,
+                            b.prefetchable
                         ));
                     }
                 }
@@ -188,4 +220,59 @@ fn firmware_tree() -> Option<super::virt_dtb::Window> {
     blob.resize(size, 0);
     firmware::copy_loader_blob(address, &mut blob).ok()?;
     super::virt_dtb::ecam(&blob).ok()
+}
+
+/// Le seul scénario habilité à adopter l'EDU après le firmware, avant AP et clients.
+/// Le recensement générique reste intégralement en lecture seule.
+#[cfg(feature = "materiel-lab")]
+pub(crate) fn lab_edu() -> Option<EduBar> {
+    use pci::resources::lab::{EDU, LabPlatform};
+    if boot::scenario() != b"materiel-pilote-qemu" {
+        return None;
+    }
+    #[cfg(target_arch = "x86_64")]
+    let platform = LabPlatform::Q35;
+    #[cfg(target_arch = "aarch64")]
+    let platform = LabPlatform::Virt;
+    let mut functions = Vec::new();
+    functions.try_reserve_exact(wire::MAX_DEVICES).ok()?;
+    capture_with(true, |a, f| functions.push((a, f)))?;
+    let resource = match pci::resources::lab::qualify_edu(platform, &functions) {
+        Ok(resource) => resource,
+        Err(error) => {
+            log(format_args!("EDU profil refuse {error:?}"));
+            return None;
+        }
+    };
+    // L'intégralité de la BAR doit être libre de toute réservation Limine.
+    if !firmware::unlisted_extent(resource.base, resource.size) {
+        log(format_args!("EDU BAR refusee carte physique"));
+        return None;
+    }
+    let (_, function) = functions.iter().find(|(a, _)| *a == EDU)?;
+    for &(a, f) in &functions {
+        for (index, bar) in f.bars.iter().enumerate() {
+            let Some(bar) = bar else { continue };
+            let (_, size) = pci::resources::lab::profile_extent(a, &f, index, *bar).ok()?;
+            log(format_args!(
+                "LAB-BAR {:04x}:{:02x}:{:02x}.{} n={} base={:#x} taille={} type={:?} prefetch={}",
+                a.segment,
+                a.bus,
+                a.device,
+                a.function,
+                index,
+                bar.base,
+                size,
+                bar.kind,
+                bar.prefetchable
+            ));
+        }
+    }
+    let old = function.command;
+    let new = super::lab_irq::adopt(resource.base, old)?;
+    log(format_args!(
+        "EDU PCI 0000:00:06.0 BAR0 base={:#x} taille={} pin={} ligne={} commande={:#06x}->{:#06x} master=false",
+        resource.base, resource.size, resource.irq_pin, resource.irq_line, old, new
+    ));
+    Some(resource)
 }

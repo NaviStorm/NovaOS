@@ -105,6 +105,8 @@ impl SpaceId {
 }
 
 pub struct Memory {
+    #[cfg(feature = "materiel-lab")]
+    lab_mapping: user::LabMapping,
     dma_frames: u64,
     frames: Frames,
     space: AddressSpace,
@@ -198,6 +200,8 @@ impl Memory {
         paging::map_devices(&space, &mut frames)?;
         paging::activate(&space, &mut frames)?;
         let mem = Self {
+            #[cfg(feature = "materiel-lab")]
+            lab_mapping: user::LabMapping::default(),
             dma_frames: 0,
             frames,
             space,
@@ -503,6 +507,26 @@ pub(crate) fn map_io(pa: u64, va: u64) -> Result<()> {
         }
         m.space.insert(&mut m.frames, va, desc)?;
         paging::invalidate(va);
+        Ok(())
+    })
+}
+
+/// Retire uniquement une feuille superviseur du banc EDU. Le cadre de MMIO
+/// appartient au périphérique ; il ne rentre jamais dans l'allocateur de RAM.
+#[cfg(feature = "materiel-lab")]
+pub(crate) fn unmap_lab_io(pa: u64, va: u64) -> Result<()> {
+    if !(323..=326).any(|i| va == IO_BASE + i * PAGE) || pa & (PAGE - 1) != 0 {
+        return Err(Error::Geometry);
+    }
+    crate::heap::with_pages(|m| {
+        let old = m.space.descriptor(&m.frames, va)?;
+        let expected = paging::leaf(pa, Access::ReadWrite, paging::device_cache()?);
+        if !paging::matches(old, expected) {
+            return Err(Error::Verification);
+        }
+        if m.space.remove(&mut m.frames, va)? != pa {
+            return Err(Error::Verification);
+        }
         Ok(())
     })
 }

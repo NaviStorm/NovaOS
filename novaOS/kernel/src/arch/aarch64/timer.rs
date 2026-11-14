@@ -72,6 +72,11 @@ pub(super) extern "C" fn irq(state: usize) {
     if (1020..=1023).contains(&id) {
         return;
     }
+    #[cfg(feature = "materiel-lab")]
+    if id == 37 && crate::hardware::lab_irq::interrupt() {
+        gic::end(ack);
+        return;
+    }
     if id == PPI {
         arm();
     } else if id == disk_id() {

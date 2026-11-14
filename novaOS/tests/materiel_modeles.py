@@ -12,10 +12,12 @@ BUILD = ROOT / "build"
 RUSTC = ["rustup", "run", "stable", "rustc"]
 SUITES = (
     "kernel/src/memory/firmware_pages.rs",
+    "kernel/src/memory/user/mmio_lab.rs",
     "kernel/src/hardware/acpi.rs",
     "kernel/src/hardware/virt_dtb.rs",
     "kernel/src/hardware/pci_inventory.rs",
     "kernel/src/hardware/driver_resources.rs",
+    "kernel/src/hardware/physical_dma.rs",
     "user/device_inventory.rs",
     "user/device_lifecycle.rs",
 )

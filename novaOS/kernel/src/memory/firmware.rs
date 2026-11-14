@@ -121,3 +121,28 @@ pub(crate) fn copy_loader_blob(address: usize, out: &mut [u8]) -> Result<()> {
         Ok(())
     })
 }
+
+/// Le laboratoire exige une aperture MMIO hors de toutes les régions de mémoire
+/// déclarées par Limine, y compris les entrées RESERVED et les réservations UEFI.
+#[cfg(feature = "materiel-lab")]
+pub(crate) fn unlisted_extent(base: u64, bytes: u64) -> bool {
+    let Some(end) = base.checked_add(bytes) else {
+        return false;
+    };
+    if bytes == 0 || end > PHYS_MASK + PAGE {
+        return false;
+    }
+    crate::heap::with_pages(|m| {
+        for region in m.frames.regions() {
+            let limit = region
+                .base
+                .checked_add(region.length)
+                .ok_or(Error::Geometry)?;
+            if region.length != 0 && base < limit && region.base < end {
+                return Err(Error::Reserved);
+            }
+        }
+        Ok(())
+    })
+    .is_ok()
+}

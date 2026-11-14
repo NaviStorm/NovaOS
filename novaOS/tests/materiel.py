@@ -19,6 +19,26 @@ PCI = re.compile(
 )
 
 
+def qmp_windows(roots):
+    """Fenêtres inclusives configurées des ponts du banc."""
+    names = {"io_range": "io", "memory_range": "memoire", "prefetchable_range": "prefetch"}
+    expected = {}
+    def visit(devices):
+        for device in devices:
+            bridge = device.get("pci_bridge")
+            if not bridge:
+                continue
+            key = f"0000:{device['bus']:02x}:{device['slot']:02x}.{device['function']}"
+            for source, name in names.items():
+                span = bridge["bus"][source]
+                if span["base"] <= span["limit"]:
+                    expected[(key, name)] = (span["base"], span["limit"])
+            visit(bridge.get("devices", []))
+    for root in roots:
+        visit(root["devices"])
+    return expected
+
+
 def qmp_inventory(roots):
     """query-pci rend la classe et la sous-classe, indépendamment de l'interface."""
     found = {}
@@ -69,6 +89,15 @@ def verify(text, roots, arch, acpi_off, granted):
         if found or "PCI acces non attribue" not in text:
             raise RuntimeError("Le profil générique doit refuser l’accès PCI et livrer zéro fonction.")
         return 0
+    windows = {}
+    for key, name, base, limit in re.findall(
+        r"PCI-PONT (\S+) (io|memoire|prefetch)=(0x[0-9a-f]+)\.\.=(0x[0-9a-f]+)", text,
+    ):
+        if (key, name) in windows:
+            raise RuntimeError(f"Fenêtre répétée {key} {name}")
+        windows[(key, name)] = (int(base, 16), int(limit, 16))
+    if windows != qmp_windows(roots):
+        raise RuntimeError(f"Fenêtres PCI divergentes. QMP {qmp_windows(roots)}, invité {windows}")
     if expected != found:
         raise RuntimeError(f"PCI incomplet ou divergent. QMP {expected}, invité {found}")
     return len(found)

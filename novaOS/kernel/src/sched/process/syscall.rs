@@ -155,6 +155,8 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     };
     hal::interrupts::mask();
     with(|s| s.thread_mut(s.current()).in_syscall = false);
+    #[cfg(feature = "materiel-lab")]
+    super::stop_if_requested();
     match result {
         Ok(value) => Reply { status: OK, value },
         Err(status) => Reply { status, value: 0 },

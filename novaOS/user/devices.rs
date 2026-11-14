@@ -10,6 +10,8 @@ mod device_inventory;
 #[allow(dead_code)]
 mod device_lifecycle;
 mod gate;
+#[cfg(materiel_lab)]
+mod edu_manager;
 use device_inventory as wire;
 
 #[cfg(target_arch = "x86_64")]
@@ -88,6 +90,10 @@ fn inspect(page: &[u8]) -> bool {
 extern "C" fn run() -> ! {
     // Sûreté : le lanceur fournit une page PRIVÉE entière, initialisée, RO/NX.
     let page = unsafe { core::slice::from_raw_parts(0x600000 as *const u8, wire::PRIVATE_PAGE) };
+    #[cfg(materiel_lab)]
+    if edu_manager::offer(page) {
+        exit(if edu_manager::supervise(page) { 0 } else { 1 });
+    }
     let code = if inspect(page) { 0 } else { 1 };
     exit(code)
 }

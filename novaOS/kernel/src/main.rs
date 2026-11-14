@@ -60,6 +60,8 @@ fn main_thread() {
         b"materiel-inventaire-qemu" => Some(hardware::discovery::capture(true)),
         _ => None,
     };
+    #[cfg(feature = "materiel-lab")]
+    let lab = (boot::scenario() == b"materiel-pilote-qemu").then(hardware::discovery::lab_edu);
     crate::smp::launch();
     let start = sched::ticks();
     while crate::smp::ONLINE.load(core::sync::atomic::Ordering::Acquire)
@@ -81,6 +83,19 @@ fn main_thread() {
         Err(e) => panic!("Restitution du chargeur : {e:?}"),
     }
     let scenario = args.as_slice();
+    #[cfg(feature = "materiel-lab")]
+    if let Some(bar) = lab {
+        let ok = match bar {
+            Some(resource) => sched::process::edu_lab(resource),
+            None => {
+                let closed = hardware::lab_irq::shutdown();
+                log(format_args!("PILOTE adoption refusee fermeture={closed}"));
+                false
+            }
+        };
+        log(format_args!("PILOTE bilan ok={ok}"));
+        hal::cpu::halt()
+    }
     if let Some(result) = inventory {
         let ok = result.is_some_and(|data| sched::process::device_manager(&data));
         log(format_args!("MATERIEL bilan ok={ok}"));
