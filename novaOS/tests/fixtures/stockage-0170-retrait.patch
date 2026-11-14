@@ -135,7 +135,7 @@
 +                }
 +            }
 +            ipc.session_lots = None;
-+            ipc.collect();
++            ipc.pages_bulk.collect();
 +        }
 +    });
 +}
@@ -245,14 +245,18 @@
                  tag,
                  lire,
                  base: addr,
-@@ -352,6 +465,7 @@
+@@ -352,9 +465,10 @@
      tag: u64,
      op: u8,
      resultat: Res<()>,
-+    doute: bool,
++    epoque_incertaine: Option<u64>,
      livrer: impl FnOnce(&Core) -> Res<()>,
  ) -> Res<()> {
-     with(|s| {
+-    with(|s| {
++    let livraison = with(|s| {
+         let pid = s.thread(s.current()).owner.ok_or(REVOKED)?;
+         let node = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
+         let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(REVOKED)?;
 @@ -385,23 +499,16 @@
              }
              livrer(s)
@@ -270,7 +274,7 @@
 +        let lane = s.ipc.ends.get_mut(node.endpoint.slot()).bulk.as_mut().unwrap();
 +        let r = lane.reservation.as_mut().unwrap();
          r.en_vol = false;
-+        if !doute && (r.retrait || livraison.is_err()) {
++        if epoque_incertaine.is_none() && (r.retrait || livraison.is_err()) {
 +            s.ipc.pages_bulk.get_mut(lane.slot)[..8 * r.n].fill(0);
 +            lane.reservation = None;
 +            return Err(livraison.err().unwrap_or(REVOKED));
@@ -285,6 +289,20 @@
              return Err(e);
          }
          if op == 4 {
+@@ -410,7 +517,11 @@
+             r.effectues += 1;
+         }
+         Ok(())
+-    })
++    });
++    if let Some(epoque) = epoque_incertaine {
++        crate::hardware::block::retirer_si_epoque(epoque);
++    }
++    livraison
+ }
+-
++
+ impl Domain {
 --- a/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/bulk/multipage.rs
 @@ -138,27 +138,18 @@
@@ -345,47 +363,87 @@
              return Err(DENIED);
 --- a/novaOS/kernel/src/hardware/block/arena.rs
 +++ b/novaOS/kernel/src/hardware/block/arena.rs
-@@ -139,7 +139,8 @@
-             Ordering::Release,
-         );
+@@ -141,3 +141,4 @@
          if let Err(erreur) = self.q.submit(&parts[..d.nombre + 2]) {
 -            let _ = d.terminer(false, false);
 +            // submit n'a pas publié avail.idx. Aucun DMA de cette chaîne ne reste en vol.
 +            let _ = d.terminer(true, false);
              return Err(erreur);
-         }
-         self.dernier_kick = trace_dma::soumis(self.started);
 --- a/novaOS/kernel/src/hardware/block/lease.rs
 +++ b/novaOS/kernel/src/hardware/block/lease.rs
-@@ -93,2 +93,3 @@
+@@ -92,3 +92,15 @@
+ pub(crate) fn retire() -> Result<()> {
++    retirer(&mut SESSION.lock())
++}
++
++pub(crate) fn retirer_si_epoque(epoque: u64) {
      let mut s = SESSION.lock();
++    if EPOCH.load(Ordering::Acquire) == epoque && s.device.is_some() {
++        // Un échec conserve l'objet Retrait et tous ses cadres en quarantaine.
++        let _ = retirer(&mut s);
++    }
++}
++
++fn retirer(s: &mut Session) -> Result<()> {
 +    let epoque = EPOCH.load(Ordering::Acquire);
      {
-@@ -97,2 +98,3 @@
+@@ -97,2 +109,3 @@
          OWNER.store(0, Ordering::Release);
 +        crate::sched::process::ipc::fermer_lots_session(epoque, false);
      }
-@@ -107,2 +109,3 @@
+@@ -107,2 +120,3 @@
      }
 +    crate::sched::process::ipc::fermer_lots_session(epoque, true);
      s.quarantine = false;
-@@ -253,3 +256,3 @@
+@@ -253,3 +267,3 @@
      }
 -    commande_groupee(pid, key, w, page, || true)
 +    commande_groupee(pid, key, w, page, || true, &mut false)
  }
-@@ -261,2 +264,3 @@
+@@ -261,2 +275,3 @@
      controle: impl FnOnce() -> bool,
 +    doute: &mut bool,
  ) -> core::result::Result<(), u64> {
-@@ -282,2 +286,3 @@
+@@ -266,3 +281,7 @@
+     }
+-    let autorise = || admit(pid, key) && controle();
++    let mut admis = false;
++    let autorise = || {
++        admis = admit(pid, key) && controle();
++        admis
++    };
+     if w[1] == wire::FLUSH {
+@@ -282,2 +301,3 @@
          if d.sortie_autorisee(0, true, d.size, autorise).is_err() {
-+            *doute = d.pending.is_some();
++            *doute = admis && d.pending.is_some();
              s.phase = Phase::Closed;
-@@ -314,2 +319,3 @@
+@@ -314,2 +334,3 @@
      if result.is_err() {
-+        *doute = d.pending.is_some();
++        *doute = admis && d.pending.is_some();
          s.phase = Phase::Closed;
+@@ -398,5 +419,21 @@
+     key: u64,
++    demande: crate::sched::process::ipc::DemandeDma,
++) -> core::result::Result<u64, u64> {
++    let mut s = SESSION.lock();
++    let en_vol = |s: &Session| s.device.as_ref().is_some_and(|d| d.pending.is_some());
++    let deja_en_vol = en_vol(&s);
++    let resultat = executer_multipage(&mut s, pid, key, demande);
++    // Sous ce mutex, seule cette demande a pu publier une nouvelle chaîne.
++    if resultat.is_err() && !deja_en_vol && en_vol(&s) {
++        let _ = retirer(&mut s);
++    }
++    resultat
++}
++
++fn executer_multipage(
++    s: &mut Session,
++    pid: u64,
++    key: u64,
+     mut demande: crate::sched::process::ipc::DemandeDma,
+ ) -> core::result::Result<u64, u64> {
+-    let mut s = SESSION.lock();
+     if !admit(pid, key) || s.quarantine {
 --- a/novaOS/kernel/src/sched/process/syscall.rs
 +++ b/novaOS/kernel/src/sched/process/syscall.rs
 @@ -499,4 +499,5 @@
@@ -394,5 +452,15 @@
 -    let livraison = ipc::termine(cap, tag, op, resultat, |s| {
 +    let mut doute = false;
 +    let resultat = block::commande_groupee(pid.number, key, &w, &mut page, autorise, &mut doute);
-+    let livraison = ipc::termine(cap, tag, op, resultat, doute, |s| {
++    let livraison = ipc::termine(cap, tag, op, resultat, doute.then_some(key), |s| {
          livrer_disque(s, pid, key, adresse, if op == 2 { &page } else { &[] })
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -8,6 +8,7 @@
+ mod lease;
+ pub(crate) mod metrics;
+ mod ownership;
++pub(crate) use lease::retirer_si_epoque;
+ mod pci;
+ #[cfg(all(target_arch = "aarch64", feature = "dma-sequentiel"))]
+ pub(crate) mod qualification;
