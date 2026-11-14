@@ -1,16 +1,20 @@
 //! Banc de durée de vie sur trois acteurs réels. Un disque fictif est réservé au profil.
 use super::*;
 use crate::hardware::block;
-use core::sync::atomic::AtomicU64;
+use core::sync::atomic::{AtomicBool, AtomicU64};
 
 const TAILLE: u64 = 256;
 const TOURS: usize = 125;
 const SERIES: usize = 8;
 const LOT: u64 = 0x1002e;
+static MESURE: AtomicBool = AtomicBool::new(false);
 static RESTITUTIONS: AtomicU64 = AtomicU64::new(0);
 static MAX_CYCLES: AtomicU64 = AtomicU64::new(0);
 
 pub(in crate::sched::process::ipc) fn restitution(cycles: u64) {
+    if !MESURE.load(Ordering::Acquire) {
+        return;
+    }
     MAX_CYCLES.fetch_max(cycles, Ordering::Relaxed);
     RESTITUTIONS.fetch_add(1, Ordering::Relaxed);
 }
@@ -263,6 +267,7 @@ pub(super) fn run() {
             assert_eq!(with(|s| s.ipc.observation_lots()), (1, TAILLE as usize));
             let kicks = block::kicks();
 
+            MESURE.store(true, Ordering::Release);
             if i % 6 == 0 {
                 // Expiration avant tout envoi du lot au relais.
                 fin_attente(moteur, rx, tag, false, None);
@@ -294,6 +299,7 @@ pub(super) fn run() {
                 }
             }
             assert_eq!(with(|s| s.ipc.observation_lots()), (0, 0));
+            MESURE.store(false, Ordering::Release);
             let debut = hal::timer::counter();
             // Borne haute du retour IPC_CLOSE, y compris l’ordonnancement des acteurs.
             assert_eq!(moteur.call(IPC_CLOSE, cap, 0, 0), Ok(0));

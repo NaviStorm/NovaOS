@@ -120,11 +120,9 @@
      fn retirer_reservation(&mut self, voie: VoieLot, demandeur: Option<(Pid, Id)>) {
 +        let debut = crate::hal::timer::counter();
          if !self.voie_vivante(voie) { return; }
-@@ -104,4 +105,7 @@
+@@ -104,4 +105,5 @@
          if !r.en_vol && !r.doute {
              self.pages_bulk.get_mut(lane.slot)[..8 * r.n].fill(0);
              lane.reservation = None;
-+            if demandeur.is_some() {
-+                super::probes::reservations::restitution(crate::hal::timer::counter() - debut);
-+            }
++            super::probes::reservations::restitution(crate::hal::timer::counter() - debut);
          }
