@@ -1,5 +1,6 @@
 """Comparer des noyaux ipc-smp-lab, un seul invité à la fois, avec le même banc."""
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import json
 import math
@@ -66,9 +67,12 @@ def relever(donnees):
             lot.update(compteurs=compteurs, reveils_observes=courant["detail"]["reprises"],
                        aller_retour_ns=courant["hist"]["aller_retour"])
         lots.append(lot)
-    return dict(rep=donnees["repetition"], elf=donnees["elf"], hz=donnees["config"]["hz"], lots=lots,
+    boot = dict(rep=donnees["repetition"], elf=donnees["elf"], hz=donnees["config"]["hz"], lots=lots,
                 charge_fin=donnees["charge_fin"], cpu_hote_user_s=donnees["cpu_hote_user_s"],
                 cpu_hote_sys_s=donnees["cpu_hote_sys_s"])
+    if "debut_utc" in donnees:
+        boot.update(debut_utc=donnees["debut_utc"], fin_utc=donnees["fin_utc"])
+    return boot
 
 
 def statistiques(boots):
@@ -139,7 +143,9 @@ def mesurer_version(dossier, build, arch, cpu, cas, rep):
         essai += 1
         traces = dossier / "reprises" / str(essai)
         traces.mkdir(parents=True, exist_ok=True)
+    debut = datetime.now(timezone.utc)
     donnees = mesurer(arch, cpu, cas, elf, rep, traces)
+    donnees.update(debut_utc=debut.isoformat(), fin_utc=datetime.now(timezone.utc).isoformat())
     temporaire = destination.with_suffix(".part")
     temporaire.write_text(json.dumps(donnees, separators=(",", ":")) + "\n")
     temporaire.replace(destination)
