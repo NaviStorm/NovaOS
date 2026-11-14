@@ -1,0 +1,82 @@
+{
+  "portee": "Régressions de la phase 4. Chemins de preuves locaux relatifs à novaOS/.",
+  "modeles": {
+    "commande_dans_le_journal": "python3 -B tests/materiel_modeles.py",
+    "compilateur": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "journal": {
+      "fichier_local": "build/vtd-phase4/modeles.log",
+      "sha256": "5e01a7c0ba80c899a8d1f0732b85fa71be0d12b0c663b704264ebdde9fc26064"
+    },
+    "resultats": {
+      "Darwin ARM64 natif": {
+        "tests_reussis": 65,
+        "suites": 10,
+        "dont_format_vtd": 4
+      },
+      "Darwin x86_64 Rosetta": {
+        "tests_reussis": 65,
+        "suites": 10,
+        "dont_format_vtd": 4
+      }
+    }
+  },
+  "smp_qemu": {
+    "architecture": "x86_64",
+    "vcpus": 4,
+    "oracles": [
+      {
+        "appel": "smp.run('x86_64', 4)",
+        "marqueur": "OK — x86_64-smp-test-4cpu"
+      },
+      {
+        "appel": "smp_phase2.run('x86_64', 'smp-fp', 4)",
+        "marqueur": "OK — x86_64-smp-fp-4cpu-"
+      }
+    ],
+    "journal": {
+      "fichier_local": "build/vtd-phase4/smp.log",
+      "sha256": "5f1b852980e26b71ebbbd3b33b0e6202567253bb983ed376f719cc4e3cf7a1b7"
+    }
+  },
+  "pilote_edu_qemu": {
+    "oracle": "tests/materiel_pilote.py",
+    "profils": [
+      {
+        "architecture": "x86_64",
+        "qemu": "11.1.3",
+        "vcpus": 2,
+        "scenarios_reussis": 11,
+        "cpu_pilote": 1,
+        "cpu_retrait": 0,
+        "journal": {
+          "fichier_local": "build/vtd-phase4/pilote.log",
+          "sha256": "5a8571d7bc9b326c511a2b6f15df41fe61a693b4d04a134f13cac3a1be6b8b65"
+        },
+        "bilan": {
+          "fichier_local": "build/pilote-edu-x86_64-2cpu-ym641aht/bilan.json",
+          "sha256": "0aa2576835201a2047c4ba89f8c6b50d2d58c113de64104b11aa2ccbad17ba04"
+        },
+        "sha256_serie": "f83aa506911ad18526c4bdba3dbe433ba6bcd62ce14edcab058716b77d5f7f43",
+        "sha256_qmp": "0e0c98eb048208a7b53773f1a54ff5c0c61c4b3a8dc4bae26e44b45a7fb4eeba"
+      },
+      {
+        "architecture": "aarch64",
+        "qemu": "11.1.3",
+        "vcpus": 2,
+        "scenarios_reussis": 11,
+        "cpu_pilote": 1,
+        "cpu_retrait": 0,
+        "journal": {
+          "fichier_local": "build/vtd-phase3/pci4-arm.log",
+          "sha256": "43d6bb7ffdf36e9b1f8e1318a701abb16eeb3be8a71864826574d49c76d250a9"
+        },
+        "bilan": {
+          "fichier_local": "build/pilote-edu-aarch64-2cpu-5sakytae/bilan.json",
+          "sha256": "da03c5efb033a94c4d1dd9fca52e0802439935c2e094c51fb2f340cabc36abbd"
+        },
+        "sha256_serie": "ece8916a065847bcd94eea0750a2409f855174b5ffc34e7769e2646961d80554",
+        "sha256_qmp": "075fceefc1205afeba214f0b0346ff7fc783272e9ed0ba8b98a867fb03be9278"
+      }
+    ]
+  }
+}

@@ -18,7 +18,7 @@ Dix appels IPC permettent à des processus isolés de communiquer par endpoints 
 
 Les profils de diagnostic de la branche matérielle inventorient ACPI et, sur QEMU, les fonctions PCI. Le rapport précise les autorisations du gestionnaire et donne les commandes de test sur les deux architectures. [Fondations matérielles v0.18.0, phase 1](docs/materiel-v0.18.0.md)
 
-Sur la branche matérielle, un pilote utilisateur lit la carte EDU de QEMU et reçoit son interruption. La phase 2 qualifie le retrait de ses droits MMIO et IRQ sur 1, 2 et 4 vCPU. [Procédure et résultats de phase 2](docs/materiel-phase2-v0.18.0.md) La phase 3 qualifie ensuite le DMA de cette carte sous Intel VT-d sur Q35 x86_64, avec retrait confirmé et conservation des cadres en cas d’erreur de file. [Qualification VT-d et limites du modèle](docs/materiel-phase3-v0.18.0.md)
+Sur la branche matérielle, un pilote utilisateur lit la carte EDU de QEMU et reçoit son interruption. La phase 2 qualifie le retrait de ses droits MMIO et IRQ sur 1, 2 et 4 vCPU. [Procédure et résultats de phase 2](docs/materiel-phase2-v0.18.0.md) La phase 3 qualifie ensuite le DMA de cette carte sous Intel VT-d sur Q35 x86_64, avec retrait confirmé et conservation des cadres en cas d’erreur de file. [Qualification VT-d et limites du modèle](docs/materiel-phase3-v0.18.0.md) La phase 4 explique le silence des fautes à chaud et vérifie la reprise PCIe, le drainage et le réemploi des cadres. [Rapport et preuves de phase 4](docs/materiel-phase4-v0.18.0.md)
 
 ## Stockage et portabilité de NovaFS
 

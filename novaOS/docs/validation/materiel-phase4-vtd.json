@@ -1,0 +1,1685 @@
+[
+  {
+    "profil": "normal",
+    "vcpus": 1,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "cas": [
+        "Normal",
+        "WarmWrite",
+        "WrongWrite",
+        "WrongRead",
+        "Unmapped",
+        "Other",
+        "Revoke",
+        "Death",
+        "Late",
+        "Restart"
+      ],
+      "pid": [
+        2,
+        1,
+        3,
+        4,
+        5,
+        6,
+        8,
+        7,
+        9,
+        10,
+        11,
+        12
+      ],
+      "fautes": [
+        [
+          "48",
+          "None",
+          "0x2011000",
+          "false",
+          "2",
+          "1"
+        ],
+        [
+          "48",
+          "None",
+          "0x2011000",
+          "false",
+          "2",
+          "2"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2030000",
+          "false",
+          "5",
+          "3"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2041000",
+          "true",
+          "6",
+          "4"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2052000",
+          "false",
+          "5",
+          "5"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x155000",
+          "false",
+          "5",
+          "6"
+        ]
+      ],
+      "diagnostic": [
+        {
+          "cas": "Normal",
+          "epoque": 2,
+          "wait": 3,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 2,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Normal",
+          "epoque": 2,
+          "wait": 3,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 2,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "WarmWrite",
+          "epoque": 3,
+          "wait": 4,
+          "hits_iotlb": 1024,
+          "frcd_valide": false,
+          "msi_intervalle_wait": 0,
+          "cpu_collecte": null,
+          "acquittement_verifie": false
+        },
+        {
+          "cas": "WrongWrite",
+          "epoque": 4,
+          "wait": 7,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "WrongRead",
+          "epoque": 5,
+          "wait": 9,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Unmapped",
+          "epoque": 6,
+          "wait": 11,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Other",
+          "epoque": 7,
+          "wait": 13,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        }
+      ],
+      "callbacks_faute_qemu_par_page": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "irq_qemu": 6,
+      "triplets_invalidation_acquittes": 22,
+      "retours_traduction_qemu": 1040
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 3288334336,
+        "root": 1134592,
+        "fsts": 0,
+        "fectl": 0,
+        "fedata": 83,
+        "feaddr": 4276092928,
+        "iqh": 1056,
+        "iqt": 1056,
+        "iqa": 1159168
+      },
+      "file_invalidation": {
+        "sha256": "4d1ef7598a308f5cf1c82971ebf30e8c36e182a0096f8cbdee77e43af59e5f88",
+        "triplets_soumis": 22,
+        "triplets_consommes": 22,
+        "adresse_recu": 1163264,
+        "dernier_recu": 22
+      },
+      "racine": {
+        "sha256": "10444312672b1aab229d3a3b4913abe8fa1fec7f4b8d3b207059637e94de8e5a",
+        "bus0": 1138689,
+        "autres_octets_nuls": true
+      },
+      "contextes": {
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "octets_nuls": 4096
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "50dda44222eaf4c95ea08fcdff86c68c3815e8b7339fbdb23930965c4218b52f",
+    "sha256_serie": "035d3c613997c2cd028e06a4a037a38c788105670b634da1a885b30b8c02c305",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52698 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0686 ECAP=0xf42 GSTS=0x0\r\nVTD actif mode=legacy niveaux=4 DID=1 SID=48 service=8 GSTS=0xc4000000 FRCD=0x220\r\nVTD debut Normal\r\nVTD preparation annulee aucun cadre publie\r\nDEBUG pid=2 EDU DMA Ring3 domaine concurrent refuse\r\nPROC pid=2 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD concurrent pid=2 titulaire=1 refus=true\r\nVTD migration pilote pid=1 depart=0 arrivee=0\r\nDEBUG pid=1 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD diagnostic epoque=2 etape=avant-sonde fsts=0x0 fr_hi=0x0 fr_lo=0x0 fectl=0x0 irq=0 cpu_irq=-1 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=fin-sonde fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=avant-ack fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=apres-ack fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD faute sid=48 did=None iova=0x2011000 lecture=false raison=2 statut=0x2 irq=1\r\nVTD diagnostic epoque=2 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=fin-sonde fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=avant-ack fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=apres-ack fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD faute sid=48 did=None iova=0x2011000 lecture=false raison=2 statut=0x2 irq=2\r\nVTD anciens cadres realloues=2 octets_intacts=8192\r\nVTD cas=Normal pid=1 epoque=2 ok=true\r\nVTD debut WarmWrite\r\nVTD diagnostic epoque=3 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0xc0 iqt=0xc0 wait=4\r\nVTD diagnostic epoque=3 etape=fin-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0xc0 iqt=0xc0 wait=4\r\nVTD observation cas=WarmWrite sentinelles=true faute_enregistree=false\r\nDEBUG pid=3 EDU DMA Ring3 sonde terminee\r\nPROC pid=3 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WarmWrite pid=3 epoque=3 ok=true\r\nVTD debut WrongWrite\r\nVTD diagnostic epoque=4 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD diagnostic epoque=4 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2030000 fectl=0x80000000 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD observation cas=WrongWrite sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=4 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2030000 fectl=0x80000000 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD diagnostic epoque=4 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x2030000 fectl=0x0 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD faute sid=48 did=Some(1) iova=0x2030000 lecture=false raison=5 statut=0x2 irq=3\r\nDEBUG pid=4 EDU DMA Ring3 sonde terminee\r\nPROC pid=4 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WrongWrite pid=4 epoque=4 ok=true\r\nVTD debut WrongRead\r\nVTD diagnostic epoque=5 etape=avant-sonde fsts=0x0 fr_hi=0x500000030 fr_lo=0x2030000 fectl=0x0 irq=3 cpu_irq=0 cpu=0 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD diagnostic epoque=5 etape=fin-sonde fsts=0x2 fr_hi=0xc000000600000030 fr_lo=0x2041000 fectl=0x80000000 irq=4 cpu_irq=0 cpu=0 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD observation cas=WrongRead sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=5 etape=avant-ack fsts=0x2 fr_hi=0xc000000600000030 fr_lo=0x2041000 fectl=0x80000000 irq=4 cpu_irq=0 cpu=0 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD diagnostic epoque=5 etape=apres-ack fsts=0x0 fr_hi=0x4000000600000030 fr_lo=0x2041000 fectl=0x0 irq=4 cpu_irq=0 cpu=0 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD faute sid=48 did=Some(1) iova=0x2041000 lecture=true raison=6 statut=0x2 irq=4\r\nDEBUG pid=5 EDU DMA Ring3 sonde terminee\r\nPROC pid=5 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WrongRead pid=5 epoque=5 ok=true\r\nVTD debut Unmapped\r\nVTD diagnostic epoque=6 etape=avant-sonde fsts=0x0 fr_hi=0x4000000600000030 fr_lo=0x2041000 fectl=0x0 irq=4 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD diagnostic epoque=6 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2052000 fectl=0x80000000 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD observation cas=Unmapped sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=6 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2052000 fectl=0x80000000 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD diagnostic epoque=6 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x2052000 fectl=0x0 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD faute sid=48 did=Some(1) iova=0x2052000 lecture=false raison=5 statut=0x2 irq=5\r\nDEBUG pid=6 EDU DMA Ring3 sonde terminee\r\nPROC pid=6 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Unmapped pid=6 epoque=6 ok=true\r\nVTD debut Other\r\nVTD diagnostic epoque=7 etape=avant-sonde fsts=0x0 fr_hi=0x500000030 fr_lo=0x2052000 fectl=0x0 irq=5 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD diagnostic epoque=7 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x155000 fectl=0x80000000 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD observation cas=Other sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=7 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x155000 fectl=0x80000000 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD diagnostic epoque=7 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x155000 fectl=0x0 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD faute sid=48 did=Some(1) iova=0x155000 lecture=false raison=5 statut=0x2 irq=6\r\nDEBUG pid=8 EDU DMA Ring3 page temoin privee 4096 octets intacts\r\nPROC pid=8 niveau=Ring3 pc=0x400152 sortie=0\r\nDEBUG pid=7 EDU DMA Ring3 sonde terminee\r\nPROC pid=7 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Other pid=7 epoque=7 ok=true\r\nVTD debut Revoke\r\nVTD retrait en_vol=true mort=false depart_cpu=0 invalidation_cpu=0\r\nDEBUG pid=9 EDU DMA Ring3 ancienne capacite refusee\r\nPROC pid=9 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Revoke pid=9 epoque=8 ok=true\r\nVTD debut Death\r\nDEBUG pid=10 EDU DMA Ring3 sortie volontaire apres soumission\r\nPROC pid=10 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD retrait en_vol=true mort=true depart_cpu=0 invalidation_cpu=0\r\nVTD cas=Death pid=10 epoque=9 ok=true\r\nVTD debut Late\r\nPROC pid=11 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD demande tardive refusee avant doorbell\r\nVTD cas=Late pid=11 epoque=10 ok=true\r\nVTD debut Restart\r\nDEBUG pid=12 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=12 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Restart pid=12 epoque=11 ok=true\r\nVTD ressources epingles_service=8 epingles_clients=0 ipc=0 tas_restitue=true reemploi=true\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP arret motif=normal coordinateur=0 attendus",
+    "sha256_qemu": "315eaead4e64ec0cf29598a816e56ddfa134694d5178fe5cadb35b2bd3c2731b",
+    "journal_qemu_gzip_base64": "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LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt67129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67f9Q7/drTdXj7evzlf9cHP6aDcf1vl36/H055/+0vGSVz5+SMDru39cvVnv1p2df/T59/a57y9/TtMe7Hw7hZe9gvROHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHlotHtr/ts9p/9s+p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb07rN6f1m9P6zWn95rR+c1q/Oa3fnNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb07rN6f1m9P6zWn95rR+c1q/Oa3fnNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9e6zev9ZvX+s1r/ea1fvNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9e6zev9ZvX+s1r/ea1fvNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvQeu3oPVb0PotaP0WtH4LWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvQeu3oPVb0PotaP0WtH4LWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb1Hrt6j1W9T6LWr9FrV+i1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb1Hrt6j1W9T6LWr9FrV+i1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9J67ek9VvS+i1p/Za0fktavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9J67ek9VvS+i1p/Za0fktavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t3/YP/Xa33lw93r46X/XDzemj3XxY59+tx9Off/pLT/dev/t4Ndf9uBrj6s3Nbbeb07h997B+eTid77Kb62nnl3u65+bX5w+5vn246V8e9Xjjt495/ohPdv1wdf/pdPnv9797/2APH+4/X9vnC378v9s7Tuf77XwrPj3R4yuej/rh/ePj/sf//o//+d+/HvjzD/v5mc6Xd5rr43739F7+7frN3y5PefjTze2nxycvx+FOb9a78zv8018f//L9S7y3N+v5i1x+8uUVvn5G17cf7fGz8Ze3+3R/8/7h8ta6UC/PPm/f2vXlBN99yA939u7+5vIk5+OdjuPnI//5+M0TXU703r4803F6a/d/P9/ae/94xr+d38jvDni5+Uc8XUSfrqJPN8inc+jdOfTuHHp3Dr07j96dR+/Oo3fn0bsL6N0F9O4CencBvbuI3l1E7y6idxfRu0vo3SX07hJ6dwm9u4zeXUbvLqN3l9G7K+jdFfTuCnp3Bb27it5dRe+uondX0btr6N019O4aencNvTtD787QuzP07gy9u47eXUfvrqN319G7G+jdDfTuBnp3A727id7dRO9uonc30btb6N0t9O4WencLvbuN3t1G726jd7fJu3MHeXcO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7O4f2dw7t7xza3zm0v3Nof+fQ/s6h/Z1D+zuH9ncO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7O4f2dw7t7xza3zm0v3Nof+fQ/s6h/Z1D+zuH9ncO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7u/PTok9H3p1H+zuP9nce7e88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",
+    "reset_systeme": {
+      "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52698 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD EDU etat herite RUN=0 vierge=false\r\nVTD reprise moteur EDU refusee avant ecriture PCI commande=0x0007\r\nVTD reprise refusee avant restitution firmware\r\nVTD bilan ok=false\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0\r\n",
+      "sha256_serie": "bed207193058e9b2426497e5941628aab526209bc1cc10c4670fe2619bad1232",
+      "trace": "",
+      "sha256_trace": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "commande_pci": 7,
+      "longueur": 4096,
+      "commande_dma": 2,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 0,
+        "root": 0,
+        "fsts": 0,
+        "fectl": 2147483648,
+        "fedata": 0,
+        "feaddr": 0,
+        "iqh": 0,
+        "iqt": 0,
+        "iqa": 0
+      }
+    }
+  },
+  {
+    "profil": "normal",
+    "vcpus": 2,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "cas": [
+        "Normal",
+        "WarmWrite",
+        "WrongWrite",
+        "WrongRead",
+        "Unmapped",
+        "Other",
+        "Revoke",
+        "Death",
+        "Late",
+        "Restart"
+      ],
+      "pid": [
+        2,
+        1,
+        3,
+        4,
+        5,
+        6,
+        8,
+        7,
+        9,
+        10,
+        11,
+        12
+      ],
+      "fautes": [
+        [
+          "48",
+          "None",
+          "0x2011000",
+          "false",
+          "2",
+          "1"
+        ],
+        [
+          "48",
+          "None",
+          "0x2011000",
+          "false",
+          "2",
+          "2"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2030000",
+          "false",
+          "5",
+          "3"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2041000",
+          "true",
+          "6",
+          "4"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2052000",
+          "false",
+          "5",
+          "5"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x186000",
+          "false",
+          "5",
+          "6"
+        ]
+      ],
+      "diagnostic": [
+        {
+          "cas": "Normal",
+          "epoque": 2,
+          "wait": 3,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 2,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Normal",
+          "epoque": 2,
+          "wait": 3,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 2,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "WarmWrite",
+          "epoque": 3,
+          "wait": 4,
+          "hits_iotlb": 1024,
+          "frcd_valide": false,
+          "msi_intervalle_wait": 0,
+          "cpu_collecte": null,
+          "acquittement_verifie": false
+        },
+        {
+          "cas": "WrongWrite",
+          "epoque": 4,
+          "wait": 7,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "WrongRead",
+          "epoque": 5,
+          "wait": 9,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 1,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Unmapped",
+          "epoque": 6,
+          "wait": 11,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Other",
+          "epoque": 7,
+          "wait": 13,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        }
+      ],
+      "callbacks_faute_qemu_par_page": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "irq_qemu": 6,
+      "triplets_invalidation_acquittes": 22,
+      "retours_traduction_qemu": 1040
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0,
+        1
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 3288334336,
+        "root": 1335296,
+        "fsts": 0,
+        "fectl": 0,
+        "fedata": 83,
+        "feaddr": 4276092928,
+        "iqh": 1056,
+        "iqt": 1056,
+        "iqa": 1359872
+      },
+      "file_invalidation": {
+        "sha256": "3ffd7fe28e96536f1ba66a813dc5365e82ceccc365d257a8aeeef6aabc3381eb",
+        "triplets_soumis": 22,
+        "triplets_consommes": 22,
+        "adresse_recu": 1363968,
+        "dernier_recu": 22
+      },
+      "racine": {
+        "sha256": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+        "bus0": 1339393,
+        "autres_octets_nuls": true
+      },
+      "contextes": {
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "octets_nuls": 4096
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "50dda44222eaf4c95ea08fcdff86c68c3815e8b7339fbdb23930965c4218b52f",
+    "sha256_serie": "7d6388690d6477c615302de2c87504a193cafe8e7558096292ccd445f2332cd9",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52652 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0686 ECAP=0xf42 GSTS=0x0\r\nVTD actif mode=legacy niveaux=4 DID=1 SID=48 service=8 GSTS=0xc4000000 FRCD=0x220\r\nVTD debut Normal\r\nVTD preparation annulee aucun cadre publie\r\nDEBUG pid=2 EDU DMA Ring3 domaine concurrent refuse\r\nPROC pid=2 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD concurrent pid=2 titulaire=1 refus=true\r\nVTD migration pilote pid=1 depart=1 arrivee=0\r\nDEBUG pid=1 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD diagnostic epoque=2 etape=avant-sonde fsts=0x0 fr_hi=0x0 fr_lo=0x0 fectl=0x0 irq=0 cpu_irq=-1 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=fin-sonde fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=avant-ack fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=apres-ack fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD faute sid=48 did=None iova=0x2011000 lecture=false raison=2 statut=0x2 irq=1\r\nVTD diagnostic epoque=2 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=fin-sonde fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=avant-ack fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=apres-ack fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD faute sid=48 did=None iova=0x2011000 lecture=false raison=2 statut=0x2 irq=2\r\nVTD anciens cadres realloues=2 octets_intacts=8192\r\nVTD cas=Normal pid=1 epoque=2 ok=true\r\nVTD debut WarmWrite\r\nVTD diagnostic epoque=3 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0xc0 iqt=0xc0 wait=4\r\nVTD diagnostic epoque=3 etape=fin-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0xc0 iqt=0xc0 wait=4\r\nVTD observation cas=WarmWrite sentinelles=true faute_enregistree=false\r\nDEBUG pid=3 EDU DMA Ring3 sonde terminee\r\nPROC pid=3 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WarmWrite pid=3 epoque=3 ok=true\r\nVTD debut WrongWrite\r\nVTD diagnostic epoque=4 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD diagnostic epoque=4 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2030000 fectl=0x80000000 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD observation cas=WrongWrite sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=4 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2030000 fectl=0x80000000 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD diagnostic epoque=4 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x2030000 fectl=0x0 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD faute sid=48 did=Some(1) iova=0x2030000 lecture=false raison=5 statut=0x2 irq=3\r\nDEBUG pid=4 EDU DMA Ring3 sonde terminee\r\nPROC pid=4 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WrongWrite pid=4 epoque=4 ok=true\r\nVTD debut WrongRead\r\nVTD diagnostic epoque=5 etape=avant-sonde fsts=0x0 fr_hi=0x500000030 fr_lo=0x2030000 fectl=0x0 irq=3 cpu_irq=0 cpu=0 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD diagnostic epoque=5 etape=fin-sonde fsts=0x2 fr_hi=0xc000000600000030 fr_lo=0x2041000 fectl=0x80000000 irq=4 cpu_irq=0 cpu=1 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD observation cas=WrongRead sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=5 etape=avant-ack fsts=0x2 fr_hi=0xc000000600000030 fr_lo=0x2041000 fectl=0x80000000 irq=4 cpu_irq=0 cpu=1 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD diagnostic epoque=5 etape=apres-ack fsts=0x0 fr_hi=0x4000000600000030 fr_lo=0x2041000 fectl=0x0 irq=4 cpu_irq=0 cpu=1 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD faute sid=48 did=Some(1) iova=0x2041000 lecture=true raison=6 statut=0x2 irq=4\r\nDEBUG pid=5 EDU DMA Ring3 sonde terminee\r\nPROC pid=5 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WrongRead pid=5 epoque=5 ok=true\r\nVTD debut Unmapped\r\nVTD diagnostic epoque=6 etape=avant-sonde fsts=0x0 fr_hi=0x4000000600000030 fr_lo=0x2041000 fectl=0x0 irq=4 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD diagnostic epoque=6 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2052000 fectl=0x80000000 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD observation cas=Unmapped sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=6 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2052000 fectl=0x80000000 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD diagnostic epoque=6 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x2052000 fectl=0x0 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD faute sid=48 did=Some(1) iova=0x2052000 lecture=false raison=5 statut=0x2 irq=5\r\nDEBUG pid=6 EDU DMA Ring3 sonde terminee\r\nPROC pid=6 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Unmapped pid=6 epoque=6 ok=true\r\nVTD debut Other\r\nVTD diagnostic epoque=7 etape=avant-sonde fsts=0x0 fr_hi=0x500000030 fr_lo=0x2052000 fectl=0x0 irq=5 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD diagnostic epoque=7 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x186000 fectl=0x80000000 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD observation cas=Other sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=7 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x186000 fectl=0x80000000 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD diagnostic epoque=7 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x186000 fectl=0x0 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD faute sid=48 did=Some(1) iova=0x186000 lecture=false raison=5 statut=0x2 irq=6\r\nDEBUG pid=8 EDU DMA Ring3 page temoin privee 4096 octets intacts\r\nPROC pid=8 niveau=Ring3 pc=0x400152 sortie=0\r\nDEBUG pid=7 EDU DMA Ring3 sonde terminee\r\nPROC pid=7 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Other pid=7 epoque=7 ok=true\r\nVTD debut Revoke\r\nVTD retrait en_vol=true mort=false depart_cpu=0 invalidation_cpu=1\r\nDEBUG pid=9 EDU DMA Ring3 ancienne capacite refusee\r\nPROC pid=9 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Revoke pid=9 epoque=8 ok=true\r\nVTD debut Death\r\nDEBUG pid=10 EDU DMA Ring3 sortie volontaire apres soumission\r\nPROC pid=10 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD retrait en_vol=true mort=true depart_cpu=0 invalidation_cpu=1\r\nVTD cas=Death pid=10 epoque=9 ok=true\r\nVTD debut Late\r\nPROC pid=11 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD demande tardive refusee avant doorbell\r\nVTD cas=Late pid=11 epoque=10 ok=true\r\nVTD debut Restart\r\nDEBUG pid=12 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=12 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Restart pid=12 epoque=11 ok=true\r\nVTD ressources epingles_service=8 epingles_clients=0 ipc=0 tas_restitue=true reemploi=true\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP diagnostic cpu=1 sp=0xfffff0200023ee70\r\nSMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "03c081562e3244704a42c3173ab7a7f5608f7a82d669e2ddcc9aac8c0d42839c",
+    "journal_qemu_gzip_base64": "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t6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd/2D/12t95cPd6+Ol/1w83po918WOffrcfTn3/6S8dLXvn4IQGv7/5x9Wa9W3d2/tHn39vnvr/8OU17sPPtFF72CtI7eWi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGj/a5/T/tc+p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb07rN6f1m9P6zWn95rR+c1q/Oa3fnNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb07rN6f1m9P6zWn95rR+c1q/Oa3fnNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9e6zev9ZvX+s1r/ea1fvNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9e6zev9ZvX+s1r/ea1fvNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvQeu3oPVb0PotaP0WtH4LWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvQeu3oPVb0PotaP0WtH4LWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb1Hrt6j1W9T6LWr9FrV+i1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb1Hrt6j1W9T6LWr9FrV+i1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9J67ek9VvS+i1p/Za0fktavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9J67ek9VvS+i1p/Za0fktavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t3/YP/Xa33lw93r46X/XDzemj3XxY59+tx9Off/pLT/dev/t4Ndf9uBrj6s3Nbbeb07h997B+eTid77Kb62nnl3u65+bX5w+5vn246V8e9Xjjt495/ohPdv1wdf/pdPnv9797/2APH+4/X9vnC3Zxni/hdL7fzrfi0xM9vuL5qB/ePz7uf/zv//if//3rgT//sJ+f6Xx5p7k+7ndP7+Xfrt/87fKUhz/d3H56fPLze+ROb9a78zv8018f//L9S7y3N+v5i1x+8uUVvn5G17cf7fGz8Ze3+3R/8/7h8ta63C7PPm/f2vXlBN99yA939u7+5vIk5+OdjuPnI//5+M0TXU703r4803F6a/d/P9/ae/94xr+d38jvDni5+Uc8XUSfrqJPN8inc+jdOfTuHHp3Dr07j96dR+/Oo3fn0bsL6N0F9O4CencBvbuI3l1E7y6idxfRu0vo3SX07hJ6dwm9u4zeXUbvLqN3l9G7K+jdFfTuCnp3Bb27it5dRe+uondX0btr6N019O4aencNvTtD787QuzP07gy9u47eXUfvrqN319G7G+jdDfTuBnp3A727id7dRO9uonc30btb6N0t9O4WencLvbuN3t1G726jd7fJu3MHeXcO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7O4f2dw7t7xza3zm0v3Nof+fQ/s6h/Z1D+zuH9ncO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7O4f2dw7t7xza3zm0v3Nof+fQ/s6h/Z1D+zuH9ncO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7u/PTok9H3p1H+zuP9nce7e88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"
+  },
+  {
+    "profil": "normal",
+    "vcpus": 4,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "cas": [
+        "Normal",
+        "WarmWrite",
+        "WrongWrite",
+        "WrongRead",
+        "Unmapped",
+        "Other",
+        "Revoke",
+        "Death",
+        "Late",
+        "Restart"
+      ],
+      "pid": [
+        2,
+        1,
+        3,
+        4,
+        5,
+        6,
+        8,
+        7,
+        9,
+        10,
+        11,
+        12
+      ],
+      "fautes": [
+        [
+          "48",
+          "None",
+          "0x2011000",
+          "false",
+          "2",
+          "1"
+        ],
+        [
+          "48",
+          "None",
+          "0x2011000",
+          "false",
+          "2",
+          "2"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2030000",
+          "false",
+          "5",
+          "3"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2041000",
+          "true",
+          "6",
+          "4"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2052000",
+          "false",
+          "5",
+          "5"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x1c8000",
+          "false",
+          "5",
+          "6"
+        ]
+      ],
+      "diagnostic": [
+        {
+          "cas": "Normal",
+          "epoque": 2,
+          "wait": 3,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 2,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Normal",
+          "epoque": 2,
+          "wait": 3,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 2,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "WarmWrite",
+          "epoque": 3,
+          "wait": 4,
+          "hits_iotlb": 1024,
+          "frcd_valide": false,
+          "msi_intervalle_wait": 0,
+          "cpu_collecte": null,
+          "acquittement_verifie": false
+        },
+        {
+          "cas": "WrongWrite",
+          "epoque": 4,
+          "wait": 7,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "WrongRead",
+          "epoque": 5,
+          "wait": 9,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 3,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Unmapped",
+          "epoque": 6,
+          "wait": 11,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Other",
+          "epoque": 7,
+          "wait": 13,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        }
+      ],
+      "callbacks_faute_qemu_par_page": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "irq_qemu": 6,
+      "triplets_invalidation_acquittes": 22,
+      "retours_traduction_qemu": 1040
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 3288334336,
+        "root": 1605632,
+        "fsts": 0,
+        "fectl": 0,
+        "fedata": 83,
+        "feaddr": 4276092928,
+        "iqh": 1056,
+        "iqt": 1056,
+        "iqa": 1630208
+      },
+      "file_invalidation": {
+        "sha256": "2314ddd82112da8b39936c74b24c3580b55a484c26ad07a871435eb1357f5e61",
+        "triplets_soumis": 22,
+        "triplets_consommes": 22,
+        "adresse_recu": 1634304,
+        "dernier_recu": 22
+      },
+      "racine": {
+        "sha256": "1672c47c6a561bbf2cb69e6e67d448b9bc20dd6c3d7fffb5a445e24895774e44",
+        "bus0": 1609729,
+        "autres_octets_nuls": true
+      },
+      "contextes": {
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "octets_nuls": 4096
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "50dda44222eaf4c95ea08fcdff86c68c3815e8b7339fbdb23930965c4218b52f",
+    "sha256_serie": "7ccd74205a3310add162d92fa639af2210433f24e34f1fb92bfaeb06d53274d6",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52573 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0686 ECAP=0xf42 GSTS=0x0\r\nVTD actif mode=legacy niveaux=4 DID=1 SID=48 service=8 GSTS=0xc4000000 FRCD=0x220\r\nVTD debut Normal\r\nVTD preparation annulee aucun cadre publie\r\nDEBUG pid=2 EDU DMA Ring3 domaine concurrent refuse\r\nPROC pid=2 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD concurrent pid=2 titulaire=1 refus=true\r\nVTD migration pilote pid=1 depart=3 arrivee=0\r\nDEBUG pid=1 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD diagnostic epoque=2 etape=avant-sonde fsts=0x0 fr_hi=0x0 fr_lo=0x0 fectl=0x0 irq=0 cpu_irq=-1 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=fin-sonde fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=avant-ack fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=apres-ack fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD faute sid=48 did=None iova=0x2011000 lecture=false raison=2 statut=0x2 irq=1\r\nVTD diagnostic epoque=2 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=fin-sonde fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=avant-ack fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=apres-ack fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD faute sid=48 did=None iova=0x2011000 lecture=false raison=2 statut=0x2 irq=2\r\nVTD anciens cadres realloues=2 octets_intacts=8192\r\nVTD cas=Normal pid=1 epoque=2 ok=true\r\nVTD debut WarmWrite\r\nVTD diagnostic epoque=3 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0xc0 iqt=0xc0 wait=4\r\nVTD diagnostic epoque=3 etape=fin-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0xc0 iqt=0xc0 wait=4\r\nVTD observation cas=WarmWrite sentinelles=true faute_enregistree=false\r\nDEBUG pid=3 EDU DMA Ring3 sonde terminee\r\nPROC pid=3 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WarmWrite pid=3 epoque=3 ok=true\r\nVTD debut WrongWrite\r\nVTD diagnostic epoque=4 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD diagnostic epoque=4 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2030000 fectl=0x80000000 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD observation cas=WrongWrite sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=4 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2030000 fectl=0x80000000 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD diagnostic epoque=4 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x2030000 fectl=0x0 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD faute sid=48 did=Some(1) iova=0x2030000 lecture=false raison=5 statut=0x2 irq=3\r\nDEBUG pid=4 EDU DMA Ring3 sonde terminee\r\nPROC pid=4 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WrongWrite pid=4 epoque=4 ok=true\r\nVTD debut WrongRead\r\nVTD diagnostic epoque=5 etape=avant-sonde fsts=0x0 fr_hi=0x500000030 fr_lo=0x2030000 fectl=0x0 irq=3 cpu_irq=0 cpu=0 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD diagnostic epoque=5 etape=fin-sonde fsts=0x2 fr_hi=0xc000000600000030 fr_lo=0x2041000 fectl=0x80000000 irq=4 cpu_irq=0 cpu=3 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD observation cas=WrongRead sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=5 etape=avant-ack fsts=0x2 fr_hi=0xc000000600000030 fr_lo=0x2041000 fectl=0x80000000 irq=4 cpu_irq=0 cpu=3 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD diagnostic epoque=5 etape=apres-ack fsts=0x0 fr_hi=0x4000000600000030 fr_lo=0x2041000 fectl=0x0 irq=4 cpu_irq=0 cpu=3 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD faute sid=48 did=Some(1) iova=0x2041000 lecture=true raison=6 statut=0x2 irq=4\r\nDEBUG pid=5 EDU DMA Ring3 sonde terminee\r\nPROC pid=5 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WrongRead pid=5 epoque=5 ok=true\r\nVTD debut Unmapped\r\nVTD diagnostic epoque=6 etape=avant-sonde fsts=0x0 fr_hi=0x4000000600000030 fr_lo=0x2041000 fectl=0x0 irq=4 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD diagnostic epoque=6 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2052000 fectl=0x80000000 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD observation cas=Unmapped sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=6 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2052000 fectl=0x80000000 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD diagnostic epoque=6 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x2052000 fectl=0x0 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD faute sid=48 did=Some(1) iova=0x2052000 lecture=false raison=5 statut=0x2 irq=5\r\nDEBUG pid=6 EDU DMA Ring3 sonde terminee\r\nPROC pid=6 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Unmapped pid=6 epoque=6 ok=true\r\nVTD debut Other\r\nVTD diagnostic epoque=7 etape=avant-sonde fsts=0x0 fr_hi=0x500000030 fr_lo=0x2052000 fectl=0x0 irq=5 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD diagnostic epoque=7 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x1c8000 fectl=0x80000000 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD observation cas=Other sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=7 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x1c8000 fectl=0x80000000 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD diagnostic epoque=7 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x1c8000 fectl=0x0 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD faute sid=48 did=Some(1) iova=0x1c8000 lecture=false raison=5 statut=0x2 irq=6\r\nDEBUG pid=8 EDU DMA Ring3 page temoin privee 4096 octets intacts\r\nPROC pid=8 niveau=Ring3 pc=0x400152 sortie=0\r\nDEBUG pid=7 EDU DMA Ring3 sonde terminee\r\nPROC pid=7 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Other pid=7 epoque=7 ok=true\r\nVTD debut Revoke\r\nVTD retrait en_vol=true mort=false depart_cpu=0 invalidation_cpu=3\r\nDEBUG pid=9 EDU DMA Ring3 ancienne capacite refusee\r\nPROC pid=9 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Revoke pid=9 epoque=8 ok=true\r\nVTD debut Death\r\nDEBUG pid=10 EDU DMA Ring3 sortie volontaire apres soumission\r\nPROC pid=10 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD retrait en_vol=true mort=true depart_cpu=0 invalidation_cpu=3\r\nVTD cas=Death pid=10 epoque=9 ok=true\r\nVTD debut Late\r\nPROC pid=11 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD demande tardive refusee avant doorbell\r\nVTD cas=Late pid=11 epoque=10 ok=true\r\nVTD debut Restart\r\nDEBUG pid=12 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=12 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Restart pid=12 epoque=11 ok=true\r\nVTD ressources epingles_service=8 epingles_clients=0 ipc=0 tas_restitue=true reemploi=true\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP diagnostic cpu=1 sp=0xfffff0200023ee70\r\nSMP diagnostic cpu=2 sp=0xfffff0200022ce70\r\nSMP diagnostic cpu=3 sp=0xfffff0200021ae70\r\nSMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "af7e8f580d6e9f128129131ada86dbb99ede218679051e28dbbfb124239359ec",
+    "journal_qemu_gzip_base64": "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t6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd/2D/12t95cPd6+Ol/1w83po918WOffrcfTn3/6S8dLXvn4IQGv7/5x9Wa9W3d2/tHn39vnvr/8OU17sPPtFF72CtI7eWi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGj/2z6n/W/7nNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb07rN6f1m9P6zWn95rR+c1q/Oa3fnNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb07rN6f1m9P6zWn95rR+c1q/Oa3fnNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9e6zev9ZvX+s1r/ea1fvNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9e6zev9ZvX+s1r/ea1fvNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvQeu3oPVb0PotaP0WtH4LWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvQeu3oPVb0PotaP0WtH4LWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb1Hrt6j1W9T6LWr9FrV+i1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb1Hrt6j1W9T6LWr9FrV+i1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9J67ek9VvS+i1p/Za0fktavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9J67ek9VvS+i1p/Za0fktavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fts/9NvdenP1ePvqfNUPN6ePdvNhnX+3Hk9//ukvPd17/e7j1Vz342qMqzc3t91uTuP23cP65eF0vsturqedX+7pnptfnz/k+vbhpn951OON3z7m+SM+2fXD1f2n0+W/3//u/YM9fLj/fG2fL/jy/9LhHJ7n++18Kz490eMrno/64f3j4/7H//6P//nfvx748w/7+ZnOl3ea6+N+9/Re/u36zd8uT3n4083tp8cnt+Nwpzfr3fkd/umvj3/5/iXe25v1/EUuP/nyCl8/o+vbj/b42fjL2326v3n/cHlrL//Xp87PPm/f2vXlBN99yA939u7+5vIk5+OdjuPnI//5+M0TXU703r4803F6a/d/P9/ae/94xr+d38jvDni5+Uc8XUSfrqJPN8inc+jdOfTuHHp3Dr07j96dR+/Oo3fn0bsL6N0F9O4CencBvbuI3l1E7y6idxfRu0vo3SX07hJ6dwm9u4zeXUbvLqN3l9G7K+jdFfTuCnp3Bb27it5dRe+uondX0btr6N019O4aencNvTtD787QuzP07gy9u47eXUfvrqN319G7G+jdDfTuBnp3A727id7dRO9uonc30btb6N0t9O4WencLvbuN3t1G726jd7fJu3MHeXcO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7O4f2dw7t7xza3zm0v3Nof+fQ/s6h/Z1D+zuH9ncO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7O4f2dw7t7xza3zm0v3Nof+fQ/s6h/Z1D+zuH9ncO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7u/PTok9H3p1H+zuP9nce7e882t95tL/zaH/n0f7Oo/2dR/s7j/Z3Hu3vPNrfebS/82h/59H+zqP9nUf7O4/2dx7t7zza33m0v/Nof+fR/s6j/Z1H+zuP9nce7e882t95tL/zaH/n0f7Oo/2dR/s7j/Z3Hu3vPNrfebS/82h/59H+zqP9nUf7O4/2dx7t7zza33m0v/Nof+fR/s6j/Z1H+zuP9nce7e882t95tL/zaH/n0f7Oo/2dR/s7j/Z3Hu3vPNrfebS/82h/Fw7y7gLa3wW0vwtofxfQ/i6g/V1A+7uA9ncB7e8C2t8FtL8LaH8X0P4uoP1dQPu7gPZ3Ae3vAtrfBbS/C2h/F9D+LqD9XUD7u4D2dwHt7wLa3wW0vwtofxfQ/i6g/V1A+7uA9ncB7e8C2t8FtL8LaH8X0P4uoP1dQPu7gPZ3Ae3vAtrfBbS/C2h/F9D+LqD9XUD7u4D2dwHt7wLa3wW0vwtofxfQ/i6g/V1A+7uA9ncB7e8C2t8FtL8LaH8X0P4uoP1dQPu7gPZ38SDvLqL9XUT7u4j2dxHt7yLa30W0v4tofxfR/i6i/V1E+7uI9ncR7e8i2t9FtL+LaH8X0f4uov1dRPu7iPZ3Ee3vItrfRbS/i2h/F9H+LqL9XUT7u4j2dxHt7yLa30W0v4tofxfR/i6i/V1E+7uI9ncR7e8i2t9FtL+LaH8X0f4uov1dRPu7iPZ3Ee3vItrfRbS/i2h/F9H+LqL9XUT7u4j2dxHt7yLa30W0v4tofxfR/i6i/V1E+7uI9ncR7e8i2t9FtL+LaH+XDvLuEtrfJbS/S2h/l9D+LqH9XUL7u4T2dwnt7xLa3yW0v0tof5fQ/i6h/V1C+7uE9ncJ7e8S2t8ltL9LaH+X0P4uof1dQvu7hPZ3Ce3vEtrfJbS/S2h/l9D+LqH9XUL7u4T2dwnt7xLa3yW0v0tof5fQ/i6h/V1C+7uE9ncJ7e8S2t8ltL9LaH+X0P4uof1dQvu7hPZ3Ce3vEtrfJbS/S2h/l9D+LqH9XUL7u4T2dwnt7xLa3yW0v0tof5fQ/i6h/V1C+7uE9nf5IO8uo/1dRvu7jPZ3Ge3vMtrfZbS/y2h/l9H+LqP9XUb7u4z2dxnt7zLa32W0v8tof5fR/i6j/V1G+7uM9ncZ7e8y2t9ltL/LaH+X0f4uo/1dRvu7jPZ3Ge3vMtrfZbS/y2h/l9H+LqP9XUb7u4z2dxnt7zLa32W0v8tof5fR/i6j/V1G+7uM9ncZ7e8y2t9ltL/LaH+X0f4uo/1dRvu7jPZ3Ge3vMtrfZbS/y2h/l9H+LqP9XUb7u4z2dxnt7zLa32W0v8tof1cO8u4K2t8VtL8raH9X0P6uoP1dQfu7gvZ3Be3vCtrfFbS/K2h/V9D+rqD9XUH7u4L2dwXt7wra3xW0vytof1fQ/q6g/V1B+7uC9ncF7e8K2t8VtL8raH9X0P6uoP1dQfu7gvZ3Be3vCtrfFbS/K2h/V9D+rqD9XUH7u4L2dwXt7wra3xW0vytof1fQ/q6g/V1B+7uC9ncF7e8K2t8VtL8raH9X0P6uoP1dQfu7gvZ3Be3vCtrfFbS/K2h/V9D+rqD9XUH7u4L2d/Ug766i/V1F+7uK9ncV7e8q2t9VtL+raH9X0f6uov1dRfu7ivZ3Fe3vKtrfVbS/q2h/V9H+rqL9XUX7u4r2dxXt7yra31W0v6tof1fR/q6i/V1F+7uK9ncV7e8q2t9VtL+raH9X0f6uov1dRfu7ivZ3Fe3vKtrfVbS/q2h/V9H+rqL9XUX7u4r2dxXt7yra31W0v6tof1fR/q6i/V1F+7uK9ncV7e8q2t9VtL+raH9X0f6uov1dRfu7ivZ3Fe3vKtrfVbS/q2h/1w7y7hra3zW0v2tof9fQ/q6h/V1D+7uG9ncN7e8a2t81tL9raH/X0P6uof1dQ/u7hvZ3De3vGtrfNbS/a2h/19D+rqH9XUP7u4b2dw3t7xra3zW0v2tof9fQ/q6h/V1D+7uG9ncN7e8a2t81tL9raH/X0P6uof1dQ/u7hvZ3De3vGtrfNbS/a2h/19D+rqH9XUP7u4b2dw3t7xra3zW0v2tof9fQ/q6h/V1D+7uG9ncN7e8a2t81tL9raH/X0P6uof1dQ/u7hvZ3dpB3Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/Z2h/d34W9OnIu+tof9fR/q6j/V1H+7uO9ncd7e862t91tL/raH/X0f6uo/1dR/u7jvZ3He3vOtrfdbS/62h/19H+rqP9XUf7u472dx3t7zra33W0v+tof9fR/q6j/V1H+7uO9ncd7e862t91tL/raH/X0f6uo/1dR/u7jvZ3He3vOtrfdbS/62h/19H+rqP9XUf7u472dx3t7zra33W0v+tof9fR/q6j/V1H+7uO9ncd7e862t91tL/raH/X0f6uo/1dR/u7jvZ3He3vxkHe3UD7u4H2dwPt7wba3w20vxtofzfQ/m6g/d1A+7uB9ncD7e8G2t8NtL8baH830P5uoP3dQPu7gfZ3A+3vBtrfDbS/G2h/N9D+bqD93UD7u4H2dwPt7wba3w20vxtofzfQ/m6g/d1A+7uB9ncD7e8G2t8NtL8baH830P5uoP3dQPu7gfZ3A+3vBtrfDbS/G2h/N9D+bqD93UD7u4H2dwPt7wba3w20vxtofzfQ/m6g/d1A+7uB9ncD7e8G2t8NtL8baH830P5uHuTdTbS/m2h/N9H+bqL93UT7u4n2dxPt7yba3020v5tofzfR/m6i/d1E+7uJ9ncT7e8m2t9NtL+baH830f5uov3dRPu7ifZ3E+3vJtrfTbS/m2h/N9H+bqL93UT7u4n2dxPt7yba3020v5tofzfR/m6i/d1E+7uJ9ncT7e8m2t9NtL+baH830f5uov3dRPu7ifZ3E+3vJtrfTbS/m2h/N9H+bqL93UT7u4n2dxPt7yba3020v5tofzfR/m6i/d1E+7uJ9ncT7e/WQd7dQvu7hfZ3C+3vFtrfLbS/W2h/t9D+bqH93UL7u4X2dwvt7xba3y20v1tof7fQ/m6h/d1C+7uF9ncL7e8W2t8ttL9baH+30P5uof3dQvu7hfZ3C+3vFtrfLbS/W2h/t9D+bqH93UL7u4X2dwvt7xba3y20v1tof7fQ/m6h/d1C+7uF9ncL7e8W2t8ttL9baH+30P5uof3dQvu7hfZ3C+3vFtrfLbS/W2h/t9D+bqH93UL7u4X2dwvt7xba3y20v1tof7fQ/m4f5N1ttL/baH+30f5uo/3dRvu7jfZ3G+3vNtrfbbS/22h/t9H+bqP93Ub7u432dxvt7zba3220v9tof7fR/m6j/d1G+7uN9ncb7e822t9ttL/baH+30f5uo/3dRvu7jfZ3G+3vNtrfbbS/22h/t9H+bqP93Ub7u432dxvt7zba3220v9tof7fR/m6j/d1G+7uN9ncb7e822t9ttL/baH+30f5uo/3dRvu7jfZ3G+3vNtrfbbS/22h/t9H+bqP93Ub7u432d/v/p7979/FqrvtxNcbVm5vbbjencfvuYf3ycDrfZTfX8/ICT/fc/Pr8IU9X9vlRjzd++5jnj/hk1w9X959Ol/9+/7v3D/bw4f706e76fMPmvLuct+7Lec/3X06f/lCnzd998uejfnj/+Linj/7LgT//sJ+f6fjluHyG+93TFP52/eZvl6c8/Onm9tPjk9tlBG/Wu1N8/EDPf8k/juvZizzu6/NPfjux8LiMbxNb6sTCjxNbf+CJlVf70PKXD6382z/W2w8/3f96/7De/vRLzVc5/nx6etmPdvVwe3V/f/5Qfj4/8cMaD2ueHm+f3q+7t9f399e3707r7u727vTvl9//y9eP4E+nm/Vx3Zx/4P709JC/fPlc//R0yX85/+W9nadwvuP4b98+4W0fbr77V+jpZvryBn35hJ/etadhXN/94+p8LevOvr2Re10++O++reH5e/ntH74vb+TlJy98F8vLTh2fn/r3PErlHGVgjuIOzlE4W3GcrTjOVjxnK56zFc/ZiudsJXC2EjhbCZytBM5WImcrkbOVyNlK5GwlcbaSOFtJnK0kzlYyZyuZs5XM2UrmbKVwtlI4WymcrRTOVipnK5WzlcrZSuVspXG20jhbaZytNM5WjLMV42zFOFsxzlY6Zyuds5XO2UrnbGVwtjI4WxmcrQzOViZnK5OzlcnZyuRsZXG2sjhbWZytLM5WNmcrm7OVzdnKxmzF/Uhdfs+jYLbiOH7FcfyK4/gVx/ErjuNXHMevOI5fcRy/4jh+xXH8igucrXD8iuP4FcfxK47jVxzHrziOX3Ecv+I4fsVx/Irj+BXH8SuO41ccx684jl9xHL/iOH7FcfyK4/gVx/ErjuNXHMevOI5fcRy/4jh+xXH8iuP4FcfxK47jVxzHrziOX3Ecv+I4fsVx/Irj+BXH8SuO41ccx684jl9xHL/iOH7FcfyK4/gVx/ErjuNXHMevOI5fcRy/4jh+xXH8iuP4FcfxK57jVzzHr3iOX/Ecv+I5fsVz/Irn+BXP8Sue41c8x694jl/xHL/iA2crHL/iOX7Fc/yK5/gVz/ErnuNXPMeveI5f8Ry/4jl+xXP8iuf4Fc/xK57jVzzHr3iOX/Ecv+I5fsVz/Irn+BXP8Sue41c8x694jl/xHL/iOX7Fc/yK5/gVz/ErnuNXPMeveI5f8Ry/4jl+xXP8iuf4Fc/xK57jVzzHr3iOX/Ecv+I5fsVz/Irn+BXP8Sue41c8x694jl/xHL/iOX7Fc/xK4PiVwPErgeNXAsevBI5fCRy/Ejh+JXD8SuD4lcDxK4HjVwLHr4TA2QrHrwSOXwkcvxI4fiVw/Erg+JXA8SuB41cCx68Ejl8JHL8SOH4lcPxK4PiVwPErgeNXAsevBI5fCRy/Ejh+JXD8SuD4lcDxK4HjVwLHrwSOXwkcvxI4fiVw/Erg+JXA8SuB41cCx68Ejl8JHL8SOH4lcPxK4PiVwPErgeNXAsevBI5fCRy/Ejh+JXD8SuD4lcDxK4HjVwLHrwSOXwkcvxI5fiVy/Erk+JXI8SuR41cix69Ejl+JHL8SOX4lcvxK5PiVyPErMXC2wvErkeNXIsevRI5fiRy/Ejl+JXL8SuT4lcjxK5HjVyLHr0SOX4kcvxI5fiVy/Erk+JXI8SuR41cix69Ejl+JHL8SOX4lcvxK5PiVyPErkeNXIsevRI5fiRy/Ejl+JXL8SuT4lcjxK5HjVyLHr0SOX4kcvxI5fiVy/Erk+JXI8SuR41cix69Ejl+JHL8SOX4lcvxK5PiVyPErkeNXIsevJI5fSRy/kjh+JXH8SuL4lcTxK4njVxLHrySOX0kcv5I4fiVx/EoKnK1w/Eri+JXE8SuJ41cSx68kjl9JHL+SOH4lcfxK4viVxPErieNXEsevJI5fSRy/kjh+JXH8SuL4lcTxK4njVxLHrySOX0kcv5I4fiVx/Eri+JXE8SuJ41cSx68kjl9JHL+SOH4lcfxK4viVxPErieNXEsevJI5fSRy/kjh+JXH8SuL4lcTxK4njVxLHrySOX0kcv5I4fiVx/Eri+JXE8SuZ41cyx69kjl/JHL+SOX4lc/xK5viVzPErmeNXMsevZI5fyRy/kgNnKxy/kjl+JXP8Sub4lczxK5njVzLHr2SOX8kcv5I5fiVz/Erm+JXM8SuZ41cyx69kjl/JHL+SOX4lc/xK5viVzPErmeNXMsevZI5fyRy/kjl+JXP8Sub4lczxK5njVzLHr2SOX8kcv5I5fiVz/Erm+JXM8SuZ41cyx69kjl/JHL+SOX4lc/xK5viVzPErmeNXMsevZI5fyRy/kjl+JXP8SuH4lcLxK4XjVwrHrxSOXykcv1I4fqVw/Erh+JXC8SuF41cKx6+UwNkKx68Ujl8pHL9SOH6lcPxK4fiVwvErheNXCsevFI5fKRy/Ujh+pXD8SuH4lcLxK4XjVwrHrxSOXykcv1I4fqVw/Erh+JXC8SuF41cKx68Ujl8pHL9SOH6lcPxK4fiVwvErheNXCsevFI5fKRy/Ujh+pXD8SuH4lcLxK4XjVwrHrxSOXykcv1I4fqVw/Erh+JXC8SuF41cKx68Ujl8pHL9SOX6lcvxK5fiVyvErleNXKsevVI5fqRy/Ujl+pXL8SuX4lcrxKzVwtsLxK5XjVyrHr1SOX6kcv1I5fqVy/Erl+JXK8SuV41cqx69Ujl+pHL9SOX6lcvxK5fiVyvErleNXKsevVI5fqRy/Ujl+pXL8SuX4lcrxK5XjVyrHr1SOX6kcv1I5fqVy/Erl+JXK8SuV41cqx69Ujl+pHL9SOX6lcvxK5fiVyvErleNXKsevVI5fqRy/Ujl+pXL8SuX4lcrxK5XjVyrHrzSOX2kcv9I4fqVx/Erj+JXG8SuN41cax680jl9pHL/SOH6lcfxKC5ytcPxK4/iVxvErjeNXGsevNI5faRy/0jh+pXH8SuP4lcbxK43jVxrHrzSOX2kcv9I4fqVx/Erj+JXG8SuN41cax680jl9pHL/SOH6lcfxK4/iVxvErjeNXGsevNI5faRy/0jh+pXH8SuP4lcbxK43jVxrHrzSOX2kcv9I4fqVx/Erj+JXG8SuN41cax680jl9pHL/SOH6lcfxK4/iVxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErFjhb4fgV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/gV4/iVzvErneNXOsevdI5f6Ry/0jl+pXP8Suf4lc7xK53jVzrHr3SOX+mBsxWOX+kcv9I5fqVz/Ern+JXO8Sud41c6x690jl/pHL/SOX6lc/xK5/iVzvErneNXOsevdI5f6Ry/0jl+pXP8Suf4lc7xK53jVzrHr3SOX+kcv9I5fqVz/Ern+JXO8Sud41c6x690jl/pHL/SOX6lc/xK5/iVzvErneNXOsevdI5f6Ry/0jl+pXP8Suf4lc7xK53jVzrHr3SOX+kcv9I5fmVw/Mrg+JXB8SuD41cGx68Mjl8ZHL8yOH5lcPzK4PiVwfErg+NXRuBsheNXBsevDI5fGRy/Mjh+ZXD8yuD4lcHxK4PjVwbHrwyOXxkcvzI4fmVw/Mrg+JXB8SuD41cGx68Mjl8ZHL8yOH5lcPzK4PiVwfErg+NXBsevDI5fGRy/Mjh+ZXD8yuD4lcHxK4PjVwbHrwyOXxkcvzI4fmVw/Mrg+JXB8SuD41cGx68Mjl8ZHL8yOH5lcPzK4PiVwfErg+NXBsevDI5fmRy/Mjl+ZXL8yuT4lcnxK5PjVybHr0yOX5kcvzI5fmVy/Mrk+JUZOFvh+JXJ8SuT41cmx69Mjl+ZHL8yOX5lcvzK5PiVyfErk+NXJsevTI5fmRy/Mjl+ZXL8yuT4lcnxK5PjVybHr0yOX5kcvzI5fmVy/Mrk+JXJ8SuT41cmx69Mjl+ZHL8yOX5lcvzK5PiVyfErk+NXJsevTI5fmRy/Mjl+ZXL8yuT4lcnxK5PjVybHr0yOX5kcvzI5fmVy/Mrk+JXJ8SuT41cWx68sjl9ZHL+yOH5lcfzK4viVxfEri+NXFsevLI5fWRy/sjh+ZQXOVjh+ZXH8yuL4lcXxK4vjVxbHryyOX1kcv7I4fmVx/Mri+JXF8SuL41cWx68sjl9ZHL+yOH5lcfzK4viVxfEri+NXFsevLI5fWRy/sjh+ZXH8yuL4lcXxK4vjVxbHryyOX1kcv7I4fmVx/Mri+JXF8SuL41cWx68sjl9ZHL+yOH5lcfzK4viVxfEri+NXFsevLI5fWRy/sjh+ZXH8yuL4lc3xK5vjVzbHr2yOX9kcv7I5fmVz/Mrm+JXN8Sub41c2x69sjl/ZgbMVjl/ZHL+yOX5lc/zK5viVzfErm+NXNsevbI5f2Ry/sjl+ZXP8yub4lc3xK5vjVzbHr2yOX9kcv7I5fmVz/Mrm+JXN8Sub41c2x69sjl/ZHL+yOX5lc/zK5viVzfErm+NXNsevbI5f2Ry/sjl+ZXP8yub4lc3xK5vjVzbHr2yOX9kcv7I5fmVz/Mrm+JXN8Sub41c2x69sjl/ZHL+yf/Ard+vN1ePtq/OKHm5OH+3mwzr/bj2e/vzTX3q69/rdx6u57sflgt7c3Ha7+Xo157vs5nra+eWe7rn59flDnt6Jz496vPHbxzx/xCe7fri6/3S6/Pf7371/sIfz+/Z0bZ8v2NV9voTT+X67XNIf6rTt+VI+vH983POxfP7hS/dy+umvj3/5/iXe25v1/EUuP/nyCl8XdX370R6XFC/jON3fvH+4DMFZvzz7vH1r15cTuG+TfLizd/c3lyc5H+90HD8f+c/Hb57ocqL39uWZjtNbu//7+dbe+xW+MO3/8oXJ374w0R1fldXntd/94+r8JOvOvn1ye63HL8uXzy6F3//U8fmpf8+jVM5RBuYo7uAchbMVx9mK42zFc7biOVvxnK14zlYCZyuBs5XA2UrgbCVythI5W4mcrUTOVhJnK4mzlcTZSuJsJXO2kjlbyZytZM5WCmcrhbOVwtlK4WylcrZSOVupnK1UzlYaZyuNs5XG2UrjbMU4WzHOVoyzFeNspXO20jlb6ZytdM5WBmcrg7OVwdnK4GxlcrYyOVuZnK1MzlYWZyuLs5XF2cribGVztrI5W9mcrWzMVtyP1OX3PApmK47jVxzHrziOX3Ecv+I4fsVx/Irj+BXH8SuO41ccx6+4wNkKx684jl9xHL/iOH7FcfyK4/gVx/ErjuNXHMevOI5fcRy/4jh+xXH8iuP4FcfxK47jVxzHrziOX3Ecv+I4fsVx/Irj+BXH8SuO41ccx684jl9xHL/iOH7FcfyK4/gVx/ErjuNXHMevOI5fcRy/4jh+xXH8iuP4FcfxK47jVxzHrziOX3Ecv+I4fsVx/Irj+BXH8SuO41ccx684jl9xHL/iOX7Fc/yK5/gVz/ErnuNXPMeveI5f8Ry/4jl+xXP8iuf4Fc/xKz5wtsLxK57jVzzHr3iOX/Ecv+I5fsVz/Irn+BXP8Sue41c8x694jl/xHL/iOX7Fc/yK5/gVz/ErnuNXPMeveI5f8Ry/4jl+xXP8iuf4Fc/xK57jVzzHr3iOX/Ecv+I5fsVz/Irn+BXP8Sue41c8x694jl/xHL/iOX7Fc/yK5/gVz/ErnuNXPMeveI5f8Ry/4jl+xXP8iuf4Fc/xK57jVzzHrwSOXwkcvxI4fiVw/Erg+JXA8SuB41cCx68Ejl8JHL8SOH4lcPxKCJytcPxK4PiVwPErgeNXAsevBI5fCRy/Ejh+JXD8SuD4lcDxK4HjVwLHrwSOXwkcvxI4fiVw/Erg+JXA8SuB41cCx68Ejl8JHL8SOH4lcPxK4PiVwPErgeNXAsevBI5fCRy/Ejh+JXD8SuD4lcDxK4HjVwLHrwSOXwkcvxI4fiVw/Erg+JXA8SuB41cCx68Ejl8JHL8SOH4lcPxK4PiVwPErkeNXIsevRI5fiRy/Ejl+JXL8SuT4lcjxK5HjVyLHr0SOX4kcvxIDZyscvxI5fiVy/Erk+JXI8SuR41cix69Ejl+JHL8SOX4lcvxK5PiVyPErkeNXIsevRI5fiRy/Ejl+JXL8SuT4lcjxK5HjVyLHr0SOX4kcvxI5fiVy/Erk+JXI8SuR41cix69Ejl+JHL8SOX4lcvxK5PiVyPErkeNXIsevRI5fiRy/Ejl+JXL8SuT4lcjxK5HjVyLHr0SOX4kcvxI5fiVy/Eri+JXE8SuJ41cSx68kjl9JHL+SOH4lcfxK4viVxPErieNXEsevpMDZCsevJI5fSRy/kjh+JXH8SuL4lcTxK4njVxLHrySOX0kcv5I4fiVx/Eri+JXE8SuJ41cSx68kjl9JHL+SOH4lcfxK4viVxPErieNXEsevJI5fSRy/kjh+JXH8SuL4lcTxK4njVxLHrySOX0kcv5I4fiVx/Eri+JXE8SuJ41cSx68kjl9JHL+SOH4lcfxK4viVxPErieNXEsevJI5fSRy/kjl+JXP8Sub4lczxK5njVzLHr2SOX8kcv5I5fiVz/Erm+JXM8Ss5cLbC8SuZ41cyx69kjl/JHL+SOX4lc/xK5viVzPErmeNXMsevZI5fyRy/kjl+JXP8Sub4lczxK5njVzLHr2SOX8kcv5I5fiVz/Erm+JXM8SuZ41cyx69kjl/JHL+SOX4lc/xK5viVzPErmeNXMsevZI5fyRy/kjl+JXP8Sub4lczxK5njVzLHr2SOX8kcv5I5fiVz/Erm+JXM8SuZ41cyx68Ujl8pHL9SOH6lcPxK4fiVwvErheNXCsevFI5fKRy/Ujh+pXD8SgmcrXD8SuH4lcLxK4XjVwrHrxSOXykcv1I4fqVw/Erh+JXC8SuF41cKx68Ujl8pHL9SOH6lcPxK4fiVwvErheNXCsevFI5fKRy/Ujh+pXD8SuH4lcLxK4XjVwrHrxSOXykcv1I4fqVw/Erh+JXC8SuF41cKx68Ujl8pHL9SOH6lcPxK4fiVwvErheNXCsevFI5fKRy/Ujh+pXD8SuH4lcLxK5XjVyrHr1SOX6kcv1I5fqVy/Erl+JXK8SuV41cqx69Ujl+pHL9SA2crHL9SOX6lcvxK5fiVyvErleNXKsevVI5fqRy/Ujl+pXL8SuX4lcrxK5XjVyrHr1SOX6kcv1I5fqVy/Erl+JXK8SuV41cqx69Ujl+pHL9SOX6lcvxK5fiVyvErleNXKsevVI5fqRy/Ujl+pXL8SuX4lcrxK5XjVyrHr1SOX6kcv1I5fqVy/Erl+JXK8SuV41cqx69Ujl+pHL9SOX6lcvxK4/iVxvErjeNXGsevNI5faRy/0jh+pXH8SuP4lcbxK43jVxrHr7TA2QrHrzSOX2kcv9I4fqVx/Erj+JXG8SuN41cax680jl9pHL/SOH6lcfxK4/iVxvErjeNXGsevNI5faRy/0jh+pXH8SuP4lcbxK43jVxrHrzSOX2kcv9I4fqVx/Erj+JXG8SuN41cax680jl9pHL/SOH6lcfxK4/iVxvErjeNXGsevNI5faRy/0jh+pXH8SuP4lcbxK43jVxrHrzSOX2kcv2Icv2Icv2Icv2Icv2Icv2Icv2Icv2Icv2Icv2Icv2Icv2Icv2KBsxWOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOXzGOX+kcv9I5fqVz/Ern+JXO8Sud41c6x690jl/pHL/SOX6lc/xK5/iVHjhb4fiVzvErneNXOsevdI5f6Ry/0jl+pXP8Suf4lc7xK53jVzrHr3SOX+kcv9I5fqVz/Ern+JXO8Sud41c6x690jl/pHL/SOX6lc/xK5/iVzvErneNXOsevdI5f6Ry/0jl+pXP8Suf4lc7xK53jVzrHr3SOX+kcv9I5fqVz/Ern+JXO8Sud41c6x690jl/pHL/SOX6lc/xK5/iVzvErneNXBsevDI5fGRy/Mjh+ZXD8yuD4lcHxK4PjVwbHrwyOXxkcvzI4fmUEzlY4fmVw/Mrg+JXB8SuD41cGx68Mjl8ZHL8yOH5lcPzK4PiVwfErg+NXBsevDI5fGRy/Mjh+ZXD8yuD4lcHxK4PjVwbHrwyOXxkcvzI4fmVw/Mrg+JXB8SuD41cGx68Mjl8ZHL8yOH5lcPzK4PiVwfErg+NXBsevDI5fGRy/Mjh+ZXD8yuD4lcHxK4PjVwbHrwyOXxkcvzI4fmVw/Mrg+JXJ8SuT41cmx69Mjl+ZHL8yOX5lcvzK5PiVyfErk+NXJsevTI5fmYGzFY5fmRy/Mjl+ZXL8yuT4lcnxK5PjVybHr0yOX5kcvzI5fmVy/Mrk+JXJ8SuT41cmx69Mjl+ZHL8yOX5lcvzK5PiVyfErk+NXJsevTI5fmRy/Mjl+ZXL8yuT4lcnxK5PjVybHr0yOX5kcvzI5fmVy/Mrk+JXJ8SuT41cmx69Mjl+ZHL8yOX5lcvzK5PiVyfErk+NXJsevTI5fmRy/Mjl+ZXH8yuL4lcXxK4vjVxbHryyOX1kcv7I4fmVx/Mri+JXF8SuL41dW4GyF41cWx68sjl9ZHL+yOH5lcfzK4viVxfEri+NXFsevLI5fWRy/sjh+ZXH8yuL4lcXxK4vjVxbHryyOX1kcv7I4fmVx/Mri+JXF8SuL41cWx68sjl9ZHL+yOH5lcfzK4viVxfEri+NXFsevLI5fWRy/sjh+ZXH8yuL4lcXxK4vjVxbHryyOX1kcv7I4fmVx/Mri+JXF8SuL41cWx68sjl/ZHL+yOX5lc/zK5viVzfErm+NXNsevbI5f2Ry/sjl+ZXP8yub4lR04W+H4lc3xK5vjVzbHr2yOX9kcv7I5fmVz/Mrm+JXN8Sub41c2x69sjl/ZHL+yOX5lc/zK5viVzfErm+NXNsevbI5f2Ry/sjl+ZXP8yub4lc3xK5vjVzbHr2yOX9kcv7I5fmVz/Mrm+JXN8Sub41c2x69sjl/ZHL+yOX5lc/zK5viVzfErm+NXNsevbI5f2Ry/sjl+ZXP8yub4lc3xK/sHv3K33lw93r46r+jh5vTRbj6c7/ulHk9//ukvfb6adx+v5roflwt6c3Pb7ebr1ZzvspvraeeXe7rn5tfnD3l6Jz4/6vHGbx/z/BGf7Prh6v7T6fLf73/3/sEezu/b07V9vmBX9/kSTuf77XzL/lCn7c+X8uH94+Oej+XzD1+6l9NPf338i3PfvcZ7e7Oev8rlJ19e4uukrm8/2uOU0mUdp/ub95cp/eJsXZ5+3r6168sR3LdNPtzZu/uby5Ocz3c6jp+P/OfjN090OdJ7+/JMx+mt3f/9fGvv/QrfGOf+L1+Z9O0rk/zx1Vl9fr/u/nF1fpZ1Z98+u73W49fly6eXAuDY8fmxf9ezVNBZBucs7gCdBbQXB9qLA+3Fg/biQXvxoL140F4CaC8BtJcA2ksA7SWC9hJBe4mgvUTQXhJoLwm0lwTaSwLtJYP2kkF7yaC9ZNBeCmgvBbSXAtpLAe2lgvZSQXupoL1U0F4aaC8NtJcG2ksD7cVAezHQXgy0FwPtpYP20kF76aC9dNBeBmgvA7SXAdrLAO1lgvYyQXuZoL1M0F4WaC8LtJcF2ssC7WWD9rJBe9mgvWzOXtyPVOZ3PQtnLw7kXxzIvziQf3Eg/+JA/sWB/IsD+RcH8i8O5F8cyL+4ANoLyL84kH9xIP/iQP7FgfyLA/kXB/IvDuRfHMi/OJB/cSD/4kD+xYH8iwP5FwfyLw7kXxzIvziQf3Eg/+JA/sWB/IsD+RcH8i8O5F8cyL84kH9xIP/iQP7FgfyLA/kXB/IvDuRfHMi/OJB/cSD/4kD+xYH8iwP5FwfyLw7kXxzIvziQf3Eg/+JA/sWB/IsD+RcH8i8O5F8cyL84kH9xIP/iQf7Fg/yLB/kXD/IvHuRfPMi/eJB/8SD/4kH+xYP8iwf5Fw/yLz6A9gLyLx7kXzzIv3iQf/Eg/+JB/sWD/IsH+RcP8i8e5F88yL94kH/xIP/iQf7Fg/yLB/kXD/IvHuRfPMi/eJB/8SD/4kH+xYP8iwf5Fw/yLx7kXzzIv3iQf/Eg/+JB/sWD/IsH+RcP8i8e5F88yL94kH/xIP/iQf7Fg/yLB/kXD/IvHuRfPMi/eJB/8SD/4kH+xYP8iwf5Fw/yLx7kXzzIvwSQfwkg/xJA/iWA/EsA+ZcA8i8B5F8CyL8EkH8JIP8SQP4lgPxLCKC9gPxLAPmXAPIvAeRfAsi/BJB/CSD/EkD+JYD8SwD5lwDyLwHkXwLIvwSQfwkg/xJA/iWA/EsA+ZcA8i8B5F8CyL8EkH8JIP8SQP4lgPxLAPmXAPIvAeRfAsi/BJB/CSD/EkD+JYD8SwD5lwDyLwHkXwLIvwSQfwkg/xJA/iWA/EsA+ZcA8i8B5F8CyL8EkH8JIP8SQP4lgPxLAPmXAPIvEeRfIsi/RJB/iSD/EkH+JYL8SwT5lwjyLxHkXyLIv0SQf4kg/xIDaC8g/xJB/iWC/EsE+ZcI8i8R5F8iyL9EkH+JIP8SQf4lgvxLBPmXCPIvEeRfIsi/RJB/iSD/EkH+JYL8SwT5lwjyLxHkXyLIv0SQf4kg/xJB/iWC/EsE+ZcI8i8R5F8iyL9EkH+JIP8SQf4lgvxLBPmXCPIvEeRfIsi/RJB/iSD/EkH+JYL8SwT5lwjyLxHkXyLIv0SQf4kg/xJB/iWC/EsC+ZcE8i8J5F8SyL8kkH9JIP+SQP4lgfxLAvmXBPIvCeRfEsi/pADaC8i/JJB/SSD/kkD+JYH8SwL5lwTyLwnkXxLIvySQf0kg/5JA/iWB/EsC+ZcE8i8J5F8SyL8kkH9JIP+SQP4lgfxLAvmXBPIvCeRfEsi/JJB/SSD/kkD+JYH8SwL5lwTyLwnkXxLIvySQf0kg/5JA/iWB/EsC+ZcE8i8J5F8SyL8kkH9JIP+SQP4lgfxLAvmXBPIvCeRfEsi/JJB/SSD/kkH+JYP8Swb5lwzyLxnkXzLIv2SQf8kg/5JB/iWD/EsG+ZcM8i85gPYC8i8Z5F8yyL9kkH/JIP+SQf4lg/xLBvmXDPIvGeRfMsi/ZJB/ySD/kkH+JYP8Swb5lwzyLxnkXzLIv2SQf8kg/5JB/iWD/EsG+ZcM8i8Z5F8yyL9kkH/JIP+SQf4lg/xLBvmXDPIvGeRfMsi/ZJB/ySD/kkH+JYP8Swb5lwzyLxnkXzLIv2SQf8kg/5JB/iWD/EsG+ZcM8i8Z5F8yyL8UkH8pIP9SQP6lgPxLAfmXAvIvBeRfCsi/FJB/KSD/UkD+pYD8SwmgvYD8SwH5lwLyLwXkXwrIvxSQfykg/1JA/qWA/EsB+ZcC8i8F5F8KyL8UkH8pIP9SQP6lgPxLAfmXAvIvBeRfCsi/FJB/KSD/UkD+pYD8SwH5lwLyLwXkXwrIvxSQfykg/1JA/qWA/EsB+ZcC8i8F5F8KyL8UkH8pIP9SQP6lgPxLAfmXAvIvBeRfCsi/FJB/KSD/UkD+pYD8SwH5lwLyLxXkXyrIv1SQf6kg/1JB/qWC/EsF+ZcK8i8V5F8qyL9UkH+pIP9SA2gvIP9SQf6lgvxLBfmXCvIvFeRfKsi/VJB/qSD/UkH+pYL8SwX5lwryLxXkXyrIv1SQf6kg/1JB/qWC/EsF+ZcK8i8V5F8qyL9UkH+pIP9SQf6lgvxLBfmXCvIvFeRfKsi/VJB/qSD/UkH+pYL8SwX5lwryLxXkXyrIv1SQf6kg/1JB/qWC/EsF+ZcK8i8V5F8qyL9UkH+pIP9SQf6lgvxLA/mXBvIvDeRfGsi/NJB/aSD/0kD+pYH8SwP5lwbyLw3kXxrIv7QA2gvIvzSQf2kg/9JA/qWB/EsD+ZcG8i8N5F8ayL80kH9pIP/SQP6lgfxLA/mXBvIvDeRfGsi/NJB/aSD/0kD+pYH8SwP5lwbyLw3kXxrIvzSQf2kg/9JA/qWB/EsD+ZcG8i8N5F8ayL80kH9pIP/SQP6lgfxLA/mXBvIvDeRfGsi/NJB/aSD/0kD+pYH8SwP5lwbyLw3kXxrIvzSQf2kg/2Ig/2Ig/2Ig/2Ig/2Ig/2Ig/2Ig/2Ig/2Ig/2Ig/2Ig/2Ig/2IBtBeQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQfzGQf+kg/9JB/qWD/EsH+ZcO8i8d5F86yL90kH/pIP/SQf6lg/xLB/mXHkB7AfmXDvIvHeRfOsi/dJB/6SD/0kH+pYP8Swf5lw7yLx3kXzrIv3SQf+kg/9JB/qWD/EsH+ZcO8i8d5F86yL90kH/pIP/SQf6lg/xLB/mXDvIvHeRfOsi/dJB/6SD/0kH+pYP8Swf5lw7yLx3kXzrIv3SQf+kg/9JB/qWD/EsH+ZcO8i8d5F86yL90kH/pIP/SQf6lg/xLB/mXDvIvHeRfBsi/DJB/GSD/MkD+ZYD8ywD5lwHyLwPkXwbIvwyQfxkg/zJA/mUE0F5A/mWA/MsA+ZcB8i8D5F8GyL8MkH8ZIP8yQP5lgPzLAPmXAfIvA+RfBsi/DJB/GSD/MkD+ZYD8ywD5lwHyLwPkXwbIvwyQfxkg/zJA/mWA/MsA+ZcB8i8D5F8GyL8MkH8ZIP8yQP5lgPzLAPmXAfIvA+RfBsi/DJB/GSD/MkD+ZYD8ywD5lwHyLwPkXwbIvwyQfxkg/zJA/mWA/MsA+ZcJ8i8T5F8myL9MkH+ZIP8yQf5lgvzLBPmXCfIvE+RfJsi/TJB/mQG0F5B/mSD/MkH+ZYL8ywT5lwnyLxPkXybIv0yQf5kg/zJB/mWC/MsE+ZcJ8i8T5F8myL9MkH+ZIP8yQf5lgvzLBPmXCfIvE+RfJsi/TJB/mSD/MkH+ZYL8ywT5lwnyLxPkXybIv0yQf5kg/zJB/mWC/MsE+ZcJ8i8T5F8myL9MkH+ZIP8yQf5lgvzLBPmXCfIvE+RfJsi/TJB/mSD/MkH+ZYH8ywL5lwXyLwvkXxbIvyyQf1kg/7JA/mWB/MsC+ZcF8i8L5F9WAO0F5F8WyL8skH9ZIP+yQP5lgfzLAvmXBfIvC+RfFsi/LJB/WSD/skD+ZYH8ywL5lwXyLwvkXxbIvyyQf1kg/7JA/mWB/MsC+ZcF8i8L5F8WyL8skH9ZIP+yQP5lgfzLAvmXBfIvC+RfFsi/LJB/WSD/skD+ZYH8ywL5lwXyLwvkXxbIvyyQf1kg/7JA/mWB/MsC+ZcF8i8L5F8WyL8skH/ZIP+yQf5lg/zLBvmXDfIvG+RfNsi/bJB/2SD/skH+ZYP8ywb5lx1AewH5lw3yLxvkXzbIv2yQf9kg/7JB/mWD/MsG+ZcN8i8b5F82yL9skH/ZIP+yQf5lg/zLBvmXDfIvG+RfNsi/bJB/2SD/skH+ZYP8ywb5lw3yLxvkXzbIv2yQf9kg/7JB/mWD/MsG+ZcN8i8b5F82yL9skH/ZIP+yQf5lg/zLBvmXDfIvG+RfNsi/bJB/2SD/skH+ZYP8ywb5lw3yL/sH/3K33lw93r46L+nh5vTRbj6s8+/W4+nPP/2lp3uv3328mut+XK7ozc1tt5uvl3O+y26up51f7umem1+fP+Tprfj8qMcbv33M80d8suuHq/tPp8t/v//d+wd7OL9xT9f2+YJd3edLOJ3vt/Ot8Yc67Xw+lQ/vHx/3fC2ff/jiwZx++uvT38J3L/Le3qznL3P5yZfX+Lqp69uP9rilfJnH6f7m/cNlCs765fnn7Vu7vpzhu1E+3Nm7+5vLk5wPeDqOn4/85+M3T3Q50nv78kzH6a3d//18a+/9Gt+Z8P/6nXHj8k14/vW9+8fV+UnWnX377PZaj1+XL59eCr//qV/1H8CXHeVV//172VFe9X9cvugor6u5XnYUzlZe13K97Cicrbyu5HrZUThbeV3H9bKjcLYSOFt5XcT1sqNwtvK6hOtFR3ldwfWyo3C28rp+62VH4WzldfXWy47C2crr2q2XHYWzldeVWy87Cmcrr+u2XnYUzlZeV2297Cicrbyu2XrZUThbeV2x9bKjcLbyul7rZUfhbOV1tdbLjsLZyutarZcdhbOV15VaLzsKZyuv67RedhTOVl5Xab3sKJytvK7RetlROFt5XaH1sqNwtvK6PutlR+Fs5XV11suOwtnK69qslx2Fs5XXlVkvOwpnK6/rsl52FM5WXldlvewonK28rsl62VEwW3Gv+3+R6GVHwWzFcfyK4/gVx/ErjuNXHMevOI5fcRy/4jh+xXH8iuP4FRc4W+H4FcfxK47jVxzHrziOX3Ecv+I4fsVx/Irj+BXH8SuO41ccx684jl9xHL/iOH7FcfyK4/gVx/ErjuNXHMevOI5fcRy/4jh+xXH8iuP4FcfxK47jVxzHrziOX3Ecv+I4fsVx/Irj+BXH8SuO41ccx684jl9xHL/iOH7FcfyK4/gVx/ErjuNXHMevOI5fcRy/4jh+xXH8iuP4FcfxK47jVzzHr3iOX/Ecv+I5fsVz/Irn+BXP8Sue41c8x694jl/xHL/iOX7FB85WOH7Fc/yK5/gVz/ErnuNXPMeveI5f8Ry/4jl+xXP8iuf4Fc/xK57jVzzHr3iOX/Ecv+I5fsVz/Irn+BXP8Sue41c8x694jl/xHL/iOX7Fc/yK5/gVz/ErnuNXPMeveI5f8Ry/4jl+xXP8iuf4Fc/xK57jVzzHr3iOX/Ecv+I5fsVz/Irn+BXP8Sue41c8x694jl/xHL/iOX7Fc/yK5/iVwPErgeNXAsevBI5fCRy/Ejh+JXD8SuD4lcDxK4HjVwLHrwSOXwmBsxWOXwkcvxI4fiVw/Erg+JXA8SuB41cCx68Ejl8JHL8SOH4lcPxK4PiVwPErgeNXAsevBI5fCRy/Ejh+JXD8SuD4lcDxK4HjVwLHrwSOXwkcvxI4fiVw/Erg+JXA8SuB41cCx68Ejl8JHL8SOH4lcPxK4PiVwPErgeNXAsevBI5fCRy/Ejh+JXD8SuD4lcDxK4HjVwLHrwSOXwkcvxI4fiVy/Erk+JXI8SuR41cix69Ejl+JHL8SOX4lcvxK5PiVyPErkeNXYuBsheNXIsevRI5fiRy/Ejl+JXL8SuT4lcjxK5HjVyLHr0SOX4kcvxI5fiVy/Erk+JXI8SuR41cix69Ejl+JHL8SOX4lcvxK5PiVyPErkeNXIsevRI5fiRy/Ejl+JXL8SuT4lcjxK5HjVyLHr0SOX4kcvxI5fiVy/Erk+JXI8SuR41cix69Ejl+JHL8SOX4lcvxK5PiVyPErkeNXIsevRI5fSRy/kjh+JXH8SuL4lcTxK4njVxLHrySOX0kcv5I4fiVx/Eri+JUUOFvh+JXE8SuJ41cSx68kjl9JHL+SOH4lcfxK4viVxPErieNXEsevJI5fSRy/kjh+JXH8SuL4lcTxK4njVxLHrySOX0kcv5I4fiVx/Eri+JXE8SuJ41cSx68kjl9JHL+SOH4lcfxK4viVxPErieNXEsevJI5fSRy/kjh+JXH8SuL4lcTxK4njVxLHrySOX0kcv5I4fiVx/Eri+JXE8SuJ41cyx69kjl/JHL+SOX4lc/xK5viVzPErmeNXMsevZI5fyRy/kjl+JQfOVjh+JXP8Sub4lczxK5njVzLHr2SOX8kcv5I5fiVz/Erm+JXM8SuZ41cyx69kjl/JHL+SOX4lc/xK5viVzPErmeNXMsevZI5fyRy/kjl+JXP8Sub4lczxK5njVzLHr2SOX8kcv5I5fiVz/Erm+JXM8SuZ41cyx69kjl/JHL+SOX4lc/xK5viVzPErmeNXMsevZI5fyRy/kjl+JXP8Sub4lcLxK4XjVwrHrxSOXykcv1I4fqVw/Erh+JXC8SuF41cKx68Ujl8pgbMVjl8pHL9SOH6lcPxK4fiVwvErheNXCsevFI5fKRy/Ujh+pXD8SuH4lcLxK4XjVwrHrxSOXykcv1I4fqVw/Erh+JXC8SuF41cKx68Ujl8pHL9SOH6lcPxK4fiVwvErheNXCsevFI5fKRy/Ujh+pXD8SuH4lcLxK4XjVwrHrxSOXykcv1I4fqVw/Erh+JXC8SuF41cKx68Ujl8pHL9SOH6lcvxK5fiVyvErleNXKsevVI5fqRy/Ujl+pXL8SuX4lcrxK5XjV2rgbIXjVyrHr1SOX6kcv1I5fqVy/Erl+JXK8SuV41cqx69Ujl+pHL9SOX6lcvxK5fiVyvErleNXKsevVI5fqRy/Ujl+pXL8SuX4lcrxK5XjVyrHr1SOX6kcv1I5fqVy/Erl+JXK8SuV41cqx69Ujl+pHL9SOX6lcvxK5fiVyvErleNXKsevVI5fqRy/Ujl+pXL8SuX4lcrxK5XjVyrHr1SOX2kcv9I4fqVx/Erj+JXG8SuN41cax680jl9pHL/SOH6lcfxK4/iVFjhb4fiVxvErjeNXGsevNI5faRy/0jh+pXH8SuP4lcbxK43jVxrHrzSOX2kcv9I4fqVx/Erj+JXG8SuN41cax680jl9pHL/SOH6lcfxK4/iVxvErjeNXGsevNI5faRy/0jh+pXH8SuP4lcbxK43jVxrHrzSOX2kcv9I4fqVx/Erj+JXG8SuN41cax680jl9pHL/SOH6lcfxK4/iVxvErjeNXjONXjONXjONXjONXjONXjONXjONXjONXjONXjONXjONXjONXLHC2wvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErxvErneNXOsevdI5f6Ry/0jl+pXP8Suf4lc7xK53jVzrHr3SOX+kcv9IDZyscv9I5fqVz/Ern+JXO8Sud41c6x690jl/pHL/SOX6lc/xK5/iVzvErneNXOsevdI5f6Ry/0jl+pXP8Suf4lc7xK53jVzrHr3SOX+kcv9I5fqVz/Ern+JXO8Sud41c6x690jl/pHL/SOX6lc/xK5/iVzvErneNXOsevdI5f6Ry/0jl+pXP8Suf4lc7xK53jVzrHr3SOX+kcv9I5fqVz/Mrg+JXB8SuD41cGx68Mjl8ZHL8yOH5lcPzK4PiVwfErg+NXBsevjMDZCsevDI5fGRy/Mjh+ZXD8yuD4lcHxK4PjVwbHrwyOXxkcvzI4fmVw/Mrg+JXB8SuD41cGx68Mjl8ZHL8yOH5lcPzK4PiVwfErg+NXBsevDI5fGRy/Mjh+ZXD8yuD4lcHxK4PjVwbHrwyOXxkcvzI4fmVw/Mrg+JXB8SuD41cGx68Mjl8ZHL8yOH5lcPzK4PiVwfErg+NXBsevDI5fGRy/Mjl+ZXL8yuT4lcnxK5PjVybHr0yOX5kcvzI5fmVy/Mrk+JXJ8SszcLbC8SuT41cmx69Mjl+ZHL8yOX5lcvzK5PiVyfErk+NXJsevTI5fmRy/Mjl+ZXL8yuT4lcnxK5PjVybHr0yOX5kcvzI5fmVy/Mrk+JXJ8SuT41cmx69Mjl+ZHL8yOX5lcvzK5PiVyfErk+NXJsevTI5fmRy/Mjl+ZXL8yuT4lcnxK5PjVybHr0yOX5kcvzI5fmVy/Mrk+JXJ8SuT41cmx68sjl9ZHL+yOH5lcfzK4viVxfEri+NXFsevLI5fWRy/sjh+ZXH8ygqcrXD8yuL4lcXxK4vjVxbHryyOX1kcv7I4fmVx/Mri+JXF8SuL41cWx68sjl9ZHL+yOH5lcfzK4viVxfEri+NXFsevLI5fWRy/sjh+ZXH8yuL4lcXxK4vjVxbHryyOX1kcv7I4fmVx/Mri+JXF8SuL41cWx68sjl9ZHL+yOH5lcfzK4viVxfEri+NXFsevLI5fWRy/sjh+ZXH8yuL4lcXxK5vjVzbHr2yOX9kcv7I5fmVz/Mrm+JXN8Sub41c2x69sjl/ZHL+yA2crHL+yOX5lc/zK5viVzfErm+NXNsevbI5f2Ry/sjl+ZXP8yub4lc3xK5vjVzbHr2yOX9kcv7I5fmVz/Mrm+JXN8Sub41c2x69sjl/ZHL+yOX5lc/zK5viVzfErm+NXNsevbI5f2Ry/sjl+ZXP8yub4lc3xK5vjVzbHr2yOX9kcv7I5fmVz/Mrm+JXN8Sub41c2x69sjl/ZHL+yOX5l/+BX7tabq8fbV+cVPdycPtrNh3X+1Xo8/fmnv/R07/W7j1dz3Y/LBb25ue128/VqznfZzfW088s93XPz6/OHPL0Tnx/1eOO3j3n+iE92/XB1/+l0+e/3v3v/YA/n9+3p2r5c78XInN9He7DzrfWHOu1+vpQP7x8f93wsn3/44r2cfvrr09/Sdy/y3t6s5y9z+cmX1/g6qevbj5fj+aNc5nG6v3n/sJ6mdXn+efvWri9ncN82+XBn7+5vLk9yPuDpOH4+8p+P3zzR5Ujv7cszHae3dv/3y9uw949n/PaleTzg5ebvfro/yKjcH+sb69zrfQnS1y9B+Re+BPW/amb1Nb4E/59P90dZlf9jHTe83pegfP0StH/hS9Cez8xMnVn7YWaXZ/rjziz+sY6bXm9m7cvMvPsXZmY/zEz+18x+nNl/xb+1v8fp/qsK4l/7WNzzC5/H+SWkC3c/XPj8I3/787/9H40EUK+tBQ0A"
+  },
+  {
+    "profil": "jamais-soumise",
+    "vcpus": 2,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "cadres_clients": 0,
+      "retours_traduction": 0,
+      "retraits_acquittes": 1
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0,
+        1
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 3288334336,
+        "root": 1335296,
+        "fsts": 0,
+        "fectl": 0,
+        "fedata": 83,
+        "feaddr": 4276092928,
+        "iqh": 144,
+        "iqt": 144,
+        "iqa": 1359872
+      },
+      "file_invalidation": {
+        "sha256": "ab5ffd7b0f51465cdabbc01f1642328afb555623d38d94c968bcff8ca4270b59",
+        "triplets_soumis": 3,
+        "triplets_consommes": 3,
+        "adresse_recu": 1363968,
+        "dernier_recu": 3
+      },
+      "racine": {
+        "sha256": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+        "bus0": 1339393,
+        "autres_octets_nuls": true
+      },
+      "contextes": {
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "octets_nuls": 4096
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "979685b126cd23a3c94b91d08cdec4e3fb6961e886ac9dcaa2ab50eb467dce2e",
+    "sha256_serie": "80c3717924e1b5892e9e4c9456d5c833520c5bc9e88375e2f0f0121fcbd5e006",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52652 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0686 ECAP=0xf42 GSTS=0x0\r\nVTD actif mode=legacy niveaux=4 DID=1 SID=48 service=8 GSTS=0xc4000000 FRCD=0x220\r\nVTD preparation annulee aucun cadre publie\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD jamais soumise doorbells=0 cadres_clients=0\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP diagnostic cpu=1 sp=0xfffff0200023ee70\r\nSMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "c4f1dfce75789d4c8a606a7ace2eb613009fa5ae8a1119dd8125557a8e53e93d",
+    "journal_qemu_gzip_base64": "H4sIAAAAAAAA/9WP0QnDMAxE/zOFRnDS7iMUSw0GEYOt2On2dVwKCV2g/RLH3TtJxRjDWpAle/QeF40zKfi4muwGzSINTCbwdvQ5lDMSoun8obr4Zq5EpWCYKxzznM1GtmWoKTRBzAncPt7ZOQfNp0P1oiQL9hA+xJtCK9ikue665sd/mf7q2tvwAs0UdIooAgAA"
+  },
+  {
+    "profil": "fin-incertaine",
+    "vcpus": 2,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "cadres_clients": 2,
+      "retours_traduction": 1,
+      "retraits_acquittes": 0
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0,
+        1
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 2,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": 2147483648,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 3288334336,
+        "root": 1335296,
+        "fsts": 0,
+        "fectl": 0,
+        "fedata": 83,
+        "feaddr": 4276092928,
+        "iqh": 96,
+        "iqt": 96,
+        "iqa": 1359872
+      },
+      "cadres_conserves": [
+        {
+          "iova": 33619968,
+          "permission": 1,
+          "motif": 115,
+          "sha256": "c5ad6c3f813a3c9e52fd87130f0dbfe0825d8d9810971d72120cb7e8d6d5879a"
+        },
+        {
+          "iova": 33624064,
+          "permission": 2,
+          "motif": 140,
+          "sha256": "084dc50589f45e02cd1076edc21d0dde91b513a2390dfffec075e39b7d3f9628"
+        }
+      ],
+      "edu_dma_final": [
+        33619968,
+        262144,
+        0,
+        0
+      ],
+      "file_invalidation": {
+        "sha256": "f594e055688c4a9e916f188b4404a523d8615d20502ae88c0cbfbfc0b64ae299",
+        "triplets_soumis": 2,
+        "triplets_consommes": 2,
+        "adresse_recu": 1363968,
+        "dernier_recu": 2
+      },
+      "racine": {
+        "sha256": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+        "bus0": 1339393,
+        "autres_octets_nuls": true
+      },
+      "contextes": {
+        "sha256": "a6c2ba81dca410027a5aa66b22ffabe0e194dd0a5be2dd4a5292025c1463cf20",
+        "octets_nuls": 4091
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "2ddcfb2cd5ed0a321d0e3afebf055728ddd5fc91ac503a734e439822243b5a4a",
+    "sha256_serie": "af930abc15e55f369febceea31e5ee5cc94f56be7bb8ba68822be0f52799d4ab",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52652 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0686 ECAP=0xf42 GSTS=0x0\r\nVTD actif mode=legacy niveaux=4 DID=1 SID=48 service=8 GSTS=0xc4000000 FRCD=0x220\r\nVTD preparation annulee aucun cadre publie\r\nDEBUG pid=1 EDU DMA Ring3 sortie volontaire apres soumission\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD reservation conservee pid=1 epoque=2 source=0x2010000 destination=0x2011000 motif_source=0x73 motif_destination=0x8c\r\nVTD fin EDU non confirmee BME=0 cadres_clients=2 cadres_service=8 admissions=0\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP diagnostic cpu=1 sp=0xfffff0200023ee70\r\nSMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "bcad44ae88561fed7fb620869196becc08bf6783fe6d831ef474160e9c438239",
+    "journal_qemu_gzip_base64": "H4sIAAAAAAAA/82RQU7EMAxF93MKXwDkDmiEWLBghzQSG/aRW6ediLSpGrcdbo+T0lGruQCrxLH/+z/JJGxcNxm2sTJVZRofSvJQhU7sVUBb5B2TWFg6/ucwbSUuiC9XVS7uNXvFTE5MnCGt29koJGOEeXBaEPMAeC2eGRFB+5SqDBpsY/KQqW0lHhQwWu3i3uaf3+W4gLKjRh37rPv4/Dq/3wL/HZZK0usB26nudPeEcHHNJSHxCD7MGf6CWEBjdQAe3vJma9FTY/cm6WR1iI4XrgtTDocFpqzR95KetjhxonNoyXW3j+CWBiMDddEniMYDxFc8PeIdKCXqaSUhtBS/tarr+vALxg8QWIECAAA="
+  },
+  {
+    "profil": "quarantaine",
+    "vcpus": 2,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "cas": [
+        "Receipt",
+        "Restart"
+      ],
+      "pid": [
+        1,
+        2
+      ],
+      "fautes": [],
+      "diagnostic": [],
+      "callbacks_faute_qemu_par_page": [],
+      "irq_qemu": 0,
+      "triplets_invalidation_acquittes": 5,
+      "retours_traduction_qemu": 5
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0,
+        1
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 3288334336,
+        "root": 1335296,
+        "fsts": 0,
+        "fectl": 0,
+        "fedata": 83,
+        "feaddr": 4276092928,
+        "iqh": 240,
+        "iqt": 240,
+        "iqa": 1359872
+      },
+      "file_invalidation": {
+        "sha256": "ce71a00875e68692e19bd5ac69bb24db61c2e760e5c734f51ab6fda7457d35b9",
+        "triplets_soumis": 5,
+        "triplets_consommes": 5,
+        "adresse_recu": 1363968,
+        "dernier_recu": 5
+      },
+      "racine": {
+        "sha256": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+        "bus0": 1339393,
+        "autres_octets_nuls": true
+      },
+      "contextes": {
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "octets_nuls": 4096
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "73c5f0149a7549738f51342d4cffe346acea10a958b86707b48a3d48e7a246cf",
+    "sha256_serie": "cc6f539b814071426622396b6ca850b5339850a5e2892abc6047cd4743352246",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52652 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0686 ECAP=0xf42 GSTS=0x0\r\nVTD actif mode=legacy niveaux=4 DID=1 SID=48 service=8 GSTS=0xc4000000 FRCD=0x220\r\nVTD debut Receipt\r\nVTD preparation annulee aucun cadre publie\r\nVTD quarantaine WAIT masque cadres_epingles=2 nouvelles_admissions=0\r\nVTD retrait en_vol=true mort=false depart_cpu=0 invalidation_cpu=1\r\nDEBUG pid=1 EDU DMA Ring3 ancienne capacite refusee\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Receipt pid=1 epoque=2 ok=true\r\nVTD debut Restart\r\nDEBUG pid=2 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=2 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Restart pid=2 epoque=3 ok=true\r\nVTD ressources epingles_service=8 epingles_clients=0 ipc=0 tas_restitue=true reemploi=true\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP diagnostic cpu=1 sp=0xfffff0200023ee70\r\nSMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "95a7976ba292a9c104935c161a6b457d78d2bffef3f272ef693a330b748b79ac",
+    "journal_qemu_gzip_base64": "H4sIAAAAAAAA/9VTPU/DMBDd+yvuD4AuaagoAwMbEhILu3WJndTCTaLYScq/5+yQkrQTlKp0su/rvXc+X+ek0GUnpLKZyDJRmColA1lVOrVzwCEyWpJTMETMx6KblujKmXSsCsZxzbyiJ+2E7cGf01zryLUW+kazQVI2gLsokYgIHCdvBaBGFSIkiVxlzgADtIqjOKf5573EA1BgZKltHeqeX99envaCv5wpI3F7IFWXl3xbImx0sfGQGIOp+gB+jxhBoTgBbh7DZUpRU6HmJN4zMlgtB1xddUEcRui1WlM7/7TRSnp0WW1Jl/tByC01wjVUWuNBWB4gPuDqFo+AvKKaRiSELdl3tvI8P9S44YecCPTmxdVdyZdaXpXa5GwLEI8LkJywAPFffbH4HAtwCXU8pG9t44S854fjOWkq0bzvNTLDr/qODvpeX/Hi3y0+AQsajPLGBwAA"
+  },
+  {
+    "profil": "erreur-qi",
+    "vcpus": 2,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "triplets_invalidation_acquittes": 2,
+      "irq_qemu": 1,
+      "qi_en_erreur": true,
+      "cadres_clients_conserves": 2,
+      "pid": [
+        1
+      ]
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0,
+        1
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 3288334336,
+        "root": 1335296,
+        "fsts": 16,
+        "fectl": 2147483648,
+        "fedata": 83,
+        "feaddr": 4276092928,
+        "iqh": 96,
+        "iqt": 144,
+        "iqa": 1359872
+      },
+      "file_invalidation": {
+        "sha256": "d6fd45e07173b98936f0218b1b967171829f74c7512c5f49fab0d5d04416486e",
+        "triplets_soumis": 3,
+        "triplets_consommes": 2,
+        "adresse_recu": 1363968,
+        "dernier_recu": 0
+      },
+      "racine": {
+        "sha256": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+        "bus0": 1339393,
+        "autres_octets_nuls": true
+      },
+      "contextes": {
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "octets_nuls": 4096
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "b5745f8bfa4a719fb33b1b0d66db4dc403cc7395e0177f763663f3b047781760",
+    "sha256_serie": "4288967cb3a65c37a142d8bb8c1f0c7f2b4aae6a4d4faef0ec24ec4c68983a7b",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52652 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0686 ECAP=0xf42 GSTS=0x0\r\nVTD actif mode=legacy niveaux=4 DID=1 SID=48 service=8 GSTS=0xc4000000 FRCD=0x220\r\nVTD preparation annulee aucun cadre publie\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD IQE depart_cpu=0 invalidation_cpu=1\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD erreur QI confirmee cadres_clients=2 cadres_service=8 admissions=0\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP diagnostic cpu=1 sp=0xfffff0200023ee70\r\nSMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "5d0d9ad2124921285a1a752ddff850b5b376e9e19f8fa3bea417c97de227163f",
+    "journal_qemu_gzip_base64": "H4sIAAAAAAAA/82SPW/DIBCG9/yKG1upqc5JakWR0qFbpUpduiMCZxsVGwewnfz7Ao5TR5E61wv3+dzx4t5LppqeSXKCCcFKbQ5cgzCNp5OHkOJaSe4Jxow+L/p5izJeH6au5Nz33HYMXHnmBojnvNZ57jsHg1XB4VJawFO2kYgIIc+jl0CWSpaKWEHCawiAjkIWb8f887usRlCaGFbt2tT3/vn18XZd+BI8BFK4HkjqiyZYa4RKlVVE4gq0GRJ8i5hBSaEAlq/JmI9oeUm3Q2JkmuCUHLnK9Gk5zDDu6nTro7RZLiNdmpqr5voQsuaWecsbpyMkrAeIO8yf8Q4UN2r5REKoufsOXlEUiyPV3dKdnad6edrmLN/sINJbawQ5xy5iMMFFRUn13aQ0CBFNGIOV2uNTkGOfwcNU4M8tPY4y2CMLopDlvy9SECHO3uRl/ecPtsXxW/wAPfP4fDQDAAA="
+  },
+  {
+    "profil": "sans-iommu",
+    "vcpus": 1,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "pid": [
+        1
+      ],
+      "refus": true
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "50dda44222eaf4c95ea08fcdff86c68c3815e8b7339fbdb23930965c4218b52f",
+    "sha256_serie": "abe1ca2a1cec92e59a7a1cf478e4c446eff5bf8bd0349983bd75d979504545cb",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52698 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR presente=false unite_admise=false\r\nDEBUG pid=1 EDU DMA Ring3 sans capacite refuse\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD temoin sans domaine ring3_refuse=true pci_ferme=true\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "journal_qemu_gzip_base64": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+  },
+  {
+    "profil": "aw39",
+    "vcpus": 1,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=39,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "pid": [
+        1
+      ],
+      "refus": true
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832351366,
+        "ecap": 3906,
+        "gsts": 0,
+        "root": 0,
+        "fsts": 0,
+        "fectl": 2147483648,
+        "fedata": 0,
+        "feaddr": 0,
+        "iqh": 0,
+        "iqt": 0,
+        "iqa": 0
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "50dda44222eaf4c95ea08fcdff86c68c3815e8b7339fbdb23930965c4218b52f",
+    "sha256_serie": "18efc7f3b55aa4643e6ebe313074e01ff52dffec2a686519aa8e1d41bd6298fc",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52698 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR presente=true unite_admise=false\r\nDEBUG pid=1 EDU DMA Ring3 sans capacite refuse\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD temoin sans domaine ring3_refuse=true pci_ferme=true\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "journal_qemu_gzip_base64": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+  },
+  {
+    "profil": "sans-cm",
+    "vcpus": 1,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=off,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "pid": [
+        1
+      ],
+      "refus": true
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942086,
+        "ecap": 3906,
+        "gsts": 0,
+        "root": 0,
+        "fsts": 0,
+        "fectl": 2147483648,
+        "fedata": 0,
+        "feaddr": 0,
+        "iqh": 0,
+        "iqt": 0,
+        "iqa": 0
+      }
+    },
+    "sha256_elf": "3c473987ea872da33cefdef80cb956284f6950c8fe5ca79b1deeb5b135db880e",
+    "sha256_iso": "50dda44222eaf4c95ea08fcdff86c68c3815e8b7339fbdb23930965c4218b52f",
+    "sha256_serie": "187c06c04f7af5a093a9fdc83546c61b27bbef5e54eed6e27e51e8ad15d76945",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52698 pages libres.\r\nNovaOS v0.17.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0606 ECAP=0xf42 GSTS=0x0\r\nVTD initialisation refusee Feature\r\nDEBUG pid=1 EDU DMA Ring3 sans capacite refuse\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD temoin sans domaine ring3_refuse=true pci_ferme=true\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "journal_qemu_gzip_base64": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+  }
+]
