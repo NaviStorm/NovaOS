@@ -337,3 +337,96 @@ fn iort_plages_reservees_descriptives_bornees() {
     put32(&mut t, 72, u32::MAX);
     assert_eq!(probe(&image(false, t)).unwrap_err(), Error::Length);
 }
+
+fn dmar_q35(include_all: bool) -> Vec<u8> {
+    let size = if include_all { 24 } else { 64 };
+    let mut d = table(b"DMAR", 48 + size);
+    d[36] = 47;
+    d[50..52].copy_from_slice(&(size as u16).to_le_bytes());
+    d[52] = u8::from(include_all);
+    put64(&mut d, 56, 0xfed9_0000);
+    d[64..72].copy_from_slice(&[3, 8, 0, 0, 0, 255, 0, 0]);
+    if !include_all {
+        for (s, (dev, fun)) in
+            d[72..]
+                .chunks_exact_mut(8)
+                .zip([(0, 0), (6, 0), (31, 0), (31, 2), (31, 3)])
+        {
+            s.copy_from_slice(&[1, 8, 0, 0, 0, 0, dev, fun]);
+        }
+    }
+    d
+}
+
+#[test]
+fn drhd_q35_une_unite_portee_non_ambigue() {
+    for include_all in [false, true] {
+        let drhd = probe(&image(false, dmar_q35(include_all)))
+            .unwrap()
+            .q35_dmar
+            .unwrap();
+        assert_eq!(
+            (drhd.base, drhd.host_bits, drhd.explicit),
+            (0xfed9_0000, 48, !include_all)
+        );
+    }
+    assert!(
+        probe(&image(false, mcfg(&[(0xe0000000, 0, 0, 255)])))
+            .unwrap()
+            .q35_dmar
+            .is_none()
+    );
+}
+
+#[test]
+fn drhd_hors_profil_ne_delivre_pas_de_registres() {
+    for (offset, value) in [
+        (8, 2),
+        (36, 38),
+        (37, 128),
+        (38, 1),
+        (52, 1),
+        (53, 1),
+        (54, 1),
+        (59, 0xfd),
+        (64, 4),
+        (69, 0),
+        (80, 2),
+        (86, 0),
+        (86, 5),
+        (93, 1),
+        (111, 4),
+    ] {
+        let mut d = dmar_q35(false);
+        assert_ne!(d[offset], value);
+        d[offset] = value;
+        assert!(
+            probe(&image(false, d)).map_or(true, |inv| inv.q35_dmar.is_none()),
+            "offset {offset}"
+        );
+    }
+}
+
+#[test]
+fn drhd_refuse_rmrr_unites_multiples_et_portee_manquante() {
+    for n in [0u16, 1, 2, 0xfffe] {
+        let mut d = dmar_q35(false);
+        let mut record = vec![0u8; if n == 1 { 24 } else { 16 }];
+        record[..2].copy_from_slice(&n.to_le_bytes());
+        let l = record.len() as u16;
+        record[2..4].copy_from_slice(&l.to_le_bytes());
+        if n == 0 {
+            put64(&mut record, 8, 0xfed9_1000);
+        }
+        d.extend_from_slice(&record);
+        let len = d.len() as u32;
+        put32(&mut d, 4, len);
+        assert!(probe(&image(false, d)).map_or(true, |inv| inv.q35_dmar.is_none()));
+    }
+    let mut d = dmar_q35(false);
+    d.drain(80..88);
+    d[50] = 56;
+    let n = d.len() as u32;
+    put32(&mut d, 4, n);
+    assert!(probe(&image(false, d)).unwrap().q35_dmar.is_none());
+}

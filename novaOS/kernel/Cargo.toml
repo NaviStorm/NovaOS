@@ -12,6 +12,7 @@ bench = false
 
 [features]
 materiel-lab = []
+vtd-lab = ["materiel-lab"]
 user-fpu = []
 ipc-smp-lab = []
 ipc-equite-lab = ["ipc-smp-lab"]

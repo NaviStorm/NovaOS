@@ -1,4 +1,8 @@
 mod acpi;
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(crate) mod vtd_lab;
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(crate) mod edu_dma;
 #[cfg(feature = "materiel-lab")]
 pub(crate) mod lab_irq;
 pub(crate) mod discovery;

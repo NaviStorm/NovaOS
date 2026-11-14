@@ -8,6 +8,8 @@ use crate::{
 
 mod abi_probe;
 mod demo;
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(crate) mod vtd;
 #[cfg(feature = "materiel-lab")]
 mod edu;
 #[cfg(feature = "materiel-lab")]
@@ -256,6 +258,8 @@ pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
             .owner
             .expect("exception hors processus");
         crate::hardware::block::died(pid.number);
+        #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+        vtd::died(pid);
         #[cfg(feature = "materiel-lab")]
         edu::died(s, pid);
         s.ipc.death(pid, ticks());

@@ -107,6 +107,8 @@ impl SpaceId {
 pub struct Memory {
     #[cfg(feature = "materiel-lab")]
     lab_mapping: user::LabMapping,
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    witness_pin: Option<user::WitnessPin>,
     dma_frames: u64,
     frames: Frames,
     space: AddressSpace,
@@ -202,6 +204,8 @@ impl Memory {
         let mem = Self {
             #[cfg(feature = "materiel-lab")]
             lab_mapping: user::LabMapping::default(),
+            #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+            witness_pin: None,
             dma_frames: 0,
             frames,
             space,
@@ -460,6 +464,11 @@ pub(crate) fn pin_dma() -> Result<(u64, usize)> {
     })
 }
 
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(crate) fn pinned_dma_frames() -> u64 {
+    crate::heap::with_pages(|m| Ok(m.dma_frames)).expect("compteur de cadres DMA")
+}
+
 /// # Safety
 /// Le cadre provient de pin_dma et n'a plus aucun utilisateur, y compris le périphérique.
 pub(crate) unsafe fn release_dma(pa: u64) {
@@ -515,7 +524,10 @@ pub(crate) fn map_io(pa: u64, va: u64) -> Result<()> {
 /// appartient au périphérique ; il ne rentre jamais dans l'allocateur de RAM.
 #[cfg(feature = "materiel-lab")]
 pub(crate) fn unmap_lab_io(pa: u64, va: u64) -> Result<()> {
-    if !(323..=326).any(|i| va == IO_BASE + i * PAGE) || pa & (PAGE - 1) != 0 {
+    let lab_page = (323..=326).any(|i| va == IO_BASE + i * PAGE)
+        || (cfg!(all(target_arch = "x86_64", feature = "vtd-lab"))
+            && [328, 329].iter().any(|i| va == IO_BASE + i * PAGE));
+    if !lab_page || pa & (PAGE - 1) != 0 {
         return Err(Error::Geometry);
     }
     crate::heap::with_pages(|m| {

@@ -4,6 +4,12 @@ extern crate alloc;
 use alloc::vec::Vec;
 use core::ops::Range;
 
+#[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
+#[path = "acpi/q35_dmar.rs"]
+mod q35_dmar;
+#[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
+pub(crate) use q35_dmar::Q35Dmar;
+
 #[path = "acpi/iort.rs"]
 mod iort;
 #[path = "acpi/tables.rs"]
@@ -56,6 +62,8 @@ pub struct Inventory {
     pub xsdt: bool,
     pub tables: Vec<[u8; 4]>,
     pub ecam: Vec<Ecam>,
+    #[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
+    pub(crate) q35_dmar: Option<Q35Dmar>,
 }
 
 type Result<T> = core::result::Result<T, Error>;
@@ -205,6 +213,8 @@ pub fn discover(rsdp_phys: u64, mut read: impl FnMut(u64, &mut [u8]) -> bool) ->
         xsdt,
         tables: Vec::new(),
         ecam: Vec::new(),
+        #[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
+        q35_dmar: None,
     };
     inventory
         .tables
@@ -231,6 +241,10 @@ pub fn discover(rsdp_phys: u64, mut read: impl FnMut(u64, &mut [u8]) -> bool) ->
             return Err(Error::Format);
         }
         tables::inspect(&sig, &table, &mut inventory.ecam)?;
+        #[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
+        if &sig == b"DMAR" {
+            inventory.q35_dmar = q35_dmar::recognize(&table);
+        }
         inventory.tables.push(sig);
     }
     if !inventory.tables.contains(b"FACP") {

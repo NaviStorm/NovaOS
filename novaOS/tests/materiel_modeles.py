@@ -18,6 +18,7 @@ SUITES = (
     "kernel/src/hardware/pci_inventory.rs",
     "kernel/src/hardware/driver_resources.rs",
     "kernel/src/hardware/physical_dma.rs",
+    "kernel/src/hardware/vtd_lab/format.rs",
     "user/device_inventory.rs",
     "user/device_lifecycle.rs",
 )

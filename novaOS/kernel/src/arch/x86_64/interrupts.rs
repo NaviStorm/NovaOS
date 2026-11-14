@@ -183,6 +183,10 @@ pub(super) fn install() {
     {
         table.0[0x52] = Gate::new(edu_entry as *const () as usize, cs);
     }
+    #[cfg(feature = "vtd-lab")]
+    {
+        table.0[0x53] = Gate::new(vtd_fault_entry as *const () as usize, cs);
+    }
     table.0[0x51] = Gate::new(disk_entry as *const () as usize, cs);
     table.0[0xff] = Gate::new(spurious_master as *const () as usize, cs);
     table.0[0x27] = Gate::new(spurious_master as *const () as usize, cs);
@@ -302,6 +306,8 @@ extern "C" fn orphan_irq() {
 }
 irq_entry!(orphan_entry, orphan_irq);
 irq_entry!(disk_entry, disk_irq);
+#[cfg(feature = "vtd-lab")]
+irq_entry!(vtd_fault_entry, crate::hardware::vtd_lab::fault_irq);
 irq_entry!(timer_entry, super::timer::tick);
 irq_entry!(keyboard_entry, super::keyboard::irq);
 irq_entry!(spurious_master, ignore_spurious);

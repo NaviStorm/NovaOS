@@ -12,6 +12,8 @@ mod platform;
 
 mod pci;
 pub(super) use pci::adopt;
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(super) use pci::{dma_fenced, dma_master};
 
 const REGISTERS: u64 = memory::IO_BASE + 323 * memory::PAGE;
 const CAUSE: u32 = 1;

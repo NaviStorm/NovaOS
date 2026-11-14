@@ -153,3 +153,12 @@ materiel-pilote-test:
 	. scripts/target.sh && export CARGO_TARGET_DIR="$(CURDIR)/build/materiel-phase2" && \
 	  RUSTC="$$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$$rust_target" --features materiel-lab && \
 	  NOVA_KERNEL_ELF="$$CARGO_TARGET_DIR/$$rust_target/release/novaos" python3 -B tests/materiel_pilote.py
+
+.PHONY: vtd-edu-test
+vtd-edu-test:
+	@test "$(ARCH)" = x86_64
+	. scripts/target.sh && export CARGO_TARGET_DIR="$(CURDIR)/build/vtd-phase3/cargo" && \
+	  RUSTC="$$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$$rust_target" --features vtd-lab && \
+	  export NOVA_KERNEL_ELF="$$CARGO_TARGET_DIR/$$rust_target/release/novaos" && \
+	  python3 -B tests/vtd_edu.py --elf "$$NOVA_KERNEL_ELF" && \
+	  python3 -B tests/vtd_dmar.py --elf "$$NOVA_KERNEL_ELF" --preuves "$$(mktemp -d build/vtd-phase3/admission.XXXXXX)/resultats"

@@ -19,6 +19,7 @@ fn main() {
         "demo",
         "devices",
         "edu",
+        "edu_dma",
         "fp_probe",
         "ipc",
         "storage/service",
@@ -31,6 +32,9 @@ fn main() {
         "storage/fileclient",
     ] {
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
+        if name == "edu_dma" && (env::var_os("CARGO_FEATURE_VTD_LAB").is_none() || target != "x86_64-unknown-none") {
+            continue;
+        }
         if name == "edu" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_none() {
             continue;
         }
@@ -50,7 +54,7 @@ fn main() {
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
         let compact = matches!(
             name,
-            "devices" | "edu" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
+            "devices" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
         if name == "devices" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_some() {
             rust.arg("--cfg").arg("materiel_lab");

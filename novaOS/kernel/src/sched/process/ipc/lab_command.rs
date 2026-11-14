@@ -10,6 +10,13 @@ impl Domain {
         Ok(key)
     }
 
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    pub(in crate::sched::process) fn lab_can_submit(&self, pid: Pid, key: u64) -> bool {
+        self.lookup(pid, key, SEND).is_ok_and(|n| {
+            let endpoint = self.ends.get(n.endpoint.slot());
+            n.rights == SEND && endpoint.root == n.id && endpoint.owner == pid.number
+        })
+    }
     pub(in crate::sched::process) fn lab_close_sender(&mut self, pid: Pid, key: u64) {
         if let Ok(n) = self.lookup(pid, key, SEND)
             && n.rights == SEND

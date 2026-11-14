@@ -40,7 +40,55 @@ pub(crate) struct UserSpace {
     heap_pages: usize,
 }
 
+/// Témoin privé du banc. Seule la page RO identifiée d'un processus maintenu
+/// en vie peut alimenter la sonde interprocessus. Aucune conversion depuis un
+/// entier, aucune adresse transmise à l'espace utilisateur.
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(crate) struct PrivateWitness(u64);
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(super) struct WitnessPin {
+    frame: u64,
+    detached: bool,
+}
+
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+impl PrivateWitness {
+    pub(crate) fn iova(&self) -> u64 {
+        self.0
+    }
+    pub(crate) fn release(self) -> bool {
+        crate::heap::with_pages(|m| {
+            let pin = m
+                .witness_pin
+                .as_ref()
+                .filter(|p| p.frame == self.0)
+                .ok_or(Error::Reserved)?;
+            if pin.detached {
+                m.frames.release(self.0);
+            }
+            m.witness_pin = None;
+            Ok(())
+        })
+        .is_ok()
+    }
+}
+
 impl UserSpace {
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    pub(crate) fn vtd_witness(&self, m: &mut Memory) -> Option<PrivateWitness> {
+        let frame = self.frame_for(m, PRIVATE, false)?;
+        let descriptor = self.tables.descriptor(&m.frames, PRIVATE).ok()?;
+        let ro = paging::user_leaf(frame, Access::ReadOnly, paging::cache(descriptor, 3));
+        if self.elf.is_some() || !paging::matches(descriptor, ro) || m.witness_pin.is_some() {
+            return None;
+        }
+        m.witness_pin = Some(WitnessPin {
+            frame,
+            detached: false,
+        });
+        Some(PrivateWitness(frame))
+    }
+
     /// Le lanceur a authentifié le pilote et obtenu son bail PCI. La MMU refuse
     /// indépendamment une autre racine, une BAR inconnue ou un epoch périmé.
     #[cfg(feature = "materiel-lab")]
@@ -428,6 +476,11 @@ impl UserSpace {
             .direct_alias(&m.frames, frame)
             .expect("alias du cadre");
         alias.protect(&mut m.frames, Access::ReadWrite);
+        #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+        if let Some(pin) = m.witness_pin.as_mut().filter(|p| p.frame == frame) {
+            pin.detached = true;
+            return;
+        }
         m.frames.release(frame);
     }
 

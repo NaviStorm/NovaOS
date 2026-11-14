@@ -226,7 +226,7 @@ fn firmware_tree() -> Option<super::virt_dtb::Window> {
 /// Le recensement générique reste intégralement en lecture seule.
 #[cfg(feature = "materiel-lab")]
 pub(crate) fn lab_edu() -> Option<EduBar> {
-    use pci::resources::lab::{EDU, LabPlatform};
+    use pci::resources::lab::LabPlatform;
     if boot::scenario() != b"materiel-pilote-qemu" {
         return None;
     }
@@ -237,7 +237,16 @@ pub(crate) fn lab_edu() -> Option<EduBar> {
     let mut functions = Vec::new();
     functions.try_reserve_exact(wire::MAX_DEVICES).ok()?;
     capture_with(true, |a, f| functions.push((a, f)))?;
-    let resource = match pci::resources::lab::qualify_edu(platform, &functions) {
+    adopt_edu(platform, &functions)
+}
+
+#[cfg(feature = "materiel-lab")]
+fn adopt_edu(
+    platform: pci::resources::lab::LabPlatform,
+    functions: &[(pci::Address, pci::Function)],
+) -> Option<EduBar> {
+    use pci::resources::lab::EDU;
+    let resource = match pci::resources::lab::qualify_edu(platform, functions) {
         Ok(resource) => resource,
         Err(error) => {
             log(format_args!("EDU profil refuse {error:?}"));
@@ -250,7 +259,7 @@ pub(crate) fn lab_edu() -> Option<EduBar> {
         return None;
     }
     let (_, function) = functions.iter().find(|(a, _)| *a == EDU)?;
-    for &(a, f) in &functions {
+    for &(a, f) in functions {
         for (index, bar) in f.bars.iter().enumerate() {
             let Some(bar) = bar else { continue };
             let (_, size) = pci::resources::lab::profile_extent(a, &f, index, *bar).ok()?;
@@ -276,3 +285,9 @@ pub(crate) fn lab_edu() -> Option<EduBar> {
     ));
     Some(resource)
 }
+
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+#[path = "discovery/vtd.rs"]
+mod vtd;
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(crate) use vtd::{Drhd, VtdProfile, vtd_edu};

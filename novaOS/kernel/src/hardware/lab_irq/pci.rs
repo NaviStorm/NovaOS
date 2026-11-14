@@ -24,6 +24,8 @@ struct Ticket {
     bar: u32,
     initial: u16,
     phase: Phase,
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    vtd_lab: bool,
 }
 impl Ticket {
     fn adopted(self) -> u16 {
@@ -99,6 +101,8 @@ pub(in crate::hardware) fn adopt(base: u64, initial: u16) -> Option<u16> {
         bar: u32::try_from(base).ok()?,
         initial,
         phase: Phase::Adoption,
+        #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+        vtd_lab: crate::hardware::discovery::VtdProfile::selected().is_some(),
     };
     let ok = with_config(&guard, || {
         if !identity(t.bar) || read_config(4) as u16 != initial {
@@ -122,6 +126,60 @@ pub(in crate::hardware) fn adopt(base: u64, initial: u16) -> Option<u16> {
     }
     owner(&guard, |slot| slot.as_mut().unwrap().phase = Phase::Open);
     Some(t.adopted())
+}
+
+/// Seul le médiateur EDU appelle cette entrée, après établissement du domaine
+/// ou de la fin d'opération. L'adresse de BAR et les bits étrangers sont relus
+/// avant et après chaque transition. Une erreur interdit toute nouvelle ouverture.
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(in crate::hardware) fn dma_master(base: u64, enabled: bool) -> bool {
+    let guard = Guard::new();
+    owner(&guard, |slot| {
+        let Some(t) = slot else { return false };
+        if !t.vtd_lab
+            || u64::from(t.bar) != base
+            || t.phase == Phase::Adoption
+            || enabled && t.phase != Phase::Open
+        {
+            return false;
+        }
+        let ok = with_config(&guard, || {
+            let idle = t.adopted();
+            let active = idle | 4;
+            if !identity(t.bar) {
+                return false;
+            }
+            let prior = read_config(4) as u16;
+            if prior != idle && prior != active {
+                return false;
+            }
+            let desired = if enabled { active } else { idle };
+            if prior != desired {
+                command(desired);
+            }
+            identity(t.bar) && read_config(4) as u16 == desired
+        });
+        if !ok {
+            t.phase = Phase::Closing;
+        }
+        ok
+    })
+}
+
+/// Preuve instantanée d'interdiction PCI du seul émetteur ; le moteur doit
+/// séparément avoir été drainé, et l'IOMMU doit confirmer ses invalidations.
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(in crate::hardware) fn dma_fenced(base: u64) -> bool {
+    let guard = Guard::new();
+    owner(&guard, |slot| {
+        slot.is_some_and(|t| {
+            u64::from(t.bar) == base
+                && t.phase != Phase::Adoption
+                && with_config(&guard, || {
+                    identity(t.bar) && read_config(4) as u16 == t.adopted()
+                })
+        })
+    })
 }
 
 pub(super) fn ready(guard: &Guard, base: u64) -> bool {

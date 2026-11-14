@@ -1,7 +1,7 @@
 //! Transport du disque de données dédié. Toutes les adresses matérielles sont privées.
 #[cfg(all(target_arch = "aarch64", feature = "systeme-gpt"))]
 mod gpt;
-mod io;
+pub(super) mod io;
 mod lease;
 pub(crate) mod metrics;
 mod ownership;
