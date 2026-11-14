@@ -23,6 +23,8 @@ pub(crate) enum VtdProfile {
     Standard,
     DelayedReceipt,
     QueueError,
+    NeverSubmitted,
+    LostCompletion,
 }
 impl VtdProfile {
     pub(crate) fn selected() -> Option<Self> {
@@ -30,6 +32,8 @@ impl VtdProfile {
             b"vtd-edu-test" => Some(Self::Standard),
             b"vtd-edu-quarantaine" => Some(Self::DelayedReceipt),
             b"vtd-edu-erreur-qi" => Some(Self::QueueError),
+            b"vtd-edu-jamais-soumise" => Some(Self::NeverSubmitted),
+            b"vtd-edu-fin-incertaine" => Some(Self::LostCompletion),
             _ => None,
         }
     }
@@ -58,13 +62,43 @@ pub(crate) fn vtd_edu(_: VtdProfile) -> Option<(EduBar, Option<Drhd>)> {
         log(format_args!("VTD topologie PCI refusee"));
         return None;
     }
-    let edu = adopt_edu(LabPlatform::Q35, &functions)?;
+    let (edu, command) = inspect_edu(LabPlatform::Q35, &functions)?;
+    // Même une fonction 0 seule actuellement visible ne prouve pas que son
+    // groupe est isolable si le slot se déclare multifonction.
+    let pci = super::super::pci_ports::port;
+    if pci(0x30, 0x0e, 1, None) != 0 {
+        log(format_args!("VTD groupe EDU multifonction refuse"));
+        return None;
+    }
+    // Inspection du groupe intégralement en lecture seule. Sans MSE, le
+    // registre RUN n'est pas observable. Ne pas ouvrir le décodage pour sonder.
+    if command & 2 == 0 || !edu_idle(edu.base) {
+        log(format_args!(
+            "VTD reprise moteur EDU refusee avant ecriture PCI commande={command:#06x}"
+        ));
+        return None;
+    }
+    let ahci = functions
+        .iter()
+        .find(|(a, _)| (a.device, a.function) == (31, 2))?
+        .1;
+    let abar = ahci.bars[5]?.base;
+    if ahci.command & 2 == 0 || pci(0xfa, 0x24, 4, None) as u64 != abar || !ahci_ports(abar, false)
+    {
+        log(format_args!("VTD reprise AHCI refusee avant ecriture PCI"));
+        return None;
+    }
+    log(format_args!(
+        "VTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true"
+    ));
+    let edu = adopt_edu(edu, command)?;
     // Les pages de Limine et du firmware sont encore réservées ici. Un moteur
     // non maîtrisé doit empêcher leur remise à l'allocateur, même sans DMAR.
     if !edu_idle(edu.base) {
         log(format_args!("VTD reprise moteur EDU refusee"));
         return None;
     }
+    log(format_args!("VTD EDU reprise moteur_vierge=true BME=0"));
     if !quiesce_peers(&functions) {
         log(format_args!("VTD reprise DMA pairs refusee"));
         return None;
@@ -126,7 +160,9 @@ fn quiesce_peers(functions: &[(pci::Address, pci::Function)]) -> bool {
         }
         if sid == 0xfa {
             let Some(abar) = f.bars[5] else { return false };
-            if f.command & 2 == 0 || cfg(0x24, 4, None) as u64 != abar.base || !ahci_idle(abar.base)
+            if f.command & 2 == 0
+                || cfg(0x24, 4, None) as u64 != abar.base
+                || !ahci_ports(abar.base, true)
             {
                 return false;
             }
@@ -158,19 +194,22 @@ fn edu_idle(bar: u64) -> bool {
     // Sûreté : page UC du BAR EDU relu, pas d'écriture à l'appareil.
     let r32 = |off: u64| unsafe { ((SCRATCH + off) as *const u32).read_volatile() };
     let r64 = |off: u64| unsafe { ((SCRATCH + off) as *const u64).read_volatile() };
+    let command = r64(0x98);
     let idle = r32(0) == 0x0100_00ed
         && r32(0x20) == 0
         && r32(0x24) == 0
-        && [0x80, 0x88, 0x90, 0x98]
-            .into_iter()
-            .all(|off| r64(off) == 0);
+        && command == 0
+        && [0x80, 0x88, 0x90].into_iter().all(|off| r64(off) == 0);
     let retired = memory::unmap_lab_io(bar, SCRATCH).is_ok();
-    if idle && retired {
-        log(format_args!("VTD EDU reprise moteur_vierge=true BME=0"));
+    if !idle {
+        log(format_args!(
+            "VTD EDU etat herite RUN={} vierge=false",
+            command & 1
+        ));
     }
     idle && retired
 }
-fn ahci_idle(bar: u64) -> bool {
+fn ahci_ports(bar: u64, stop: bool) -> bool {
     // ABAR5 appartient au seul ICH9 2922 du profil, 4 Kio, dans le trou PCI Q35.
     if !(0x8000_0000..0xb000_0000).contains(&bar)
         || !firmware::unlisted_extent(bar, memory::PAGE)
@@ -178,11 +217,11 @@ fn ahci_idle(bar: u64) -> bool {
     {
         return false;
     }
-    let good = stop_ahci_ports();
+    let good = inspect_ahci_ports(stop);
     memory::unmap_lab_io(bar, SCRATCH).is_ok() && good
 }
 
-fn stop_ahci_ports() -> bool {
+fn inspect_ahci_ports(stop: bool) -> bool {
     let read = |off: usize| unsafe { ((SCRATCH as usize + off) as *const u32).read_volatile() };
     let write =
         |off: usize, value| unsafe { ((SCRATCH as usize + off) as *mut u32).write_volatile(value) };
@@ -193,10 +232,13 @@ fn stop_ahci_ports() -> bool {
     for n in 0..6 {
         let port = 0x100 + 0x80 * n;
         let idle = || read(port + 0x38) == 0 && read(port + 0x34) == 0;
-        if !idle() {
+        let cmd = port + 0x18;
+        if !idle() || read(cmd) & (1 << 3) != 0 {
             return false;
         }
-        let cmd = port + 0x18;
+        if !stop {
+            continue;
+        }
         for (enable, running) in [(1, 1 << 15), (1 << 4, 1 << 14)] {
             let old = read(cmd);
             if old & enable != 0 {
@@ -223,8 +265,10 @@ fn stop_ahci_ports() -> bool {
             return false;
         }
     }
-    log(format_args!(
-        "VTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0"
-    ));
+    if stop {
+        log(format_args!(
+            "VTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0"
+        ));
+    }
     true
 }

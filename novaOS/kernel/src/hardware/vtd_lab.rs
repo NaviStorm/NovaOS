@@ -10,7 +10,7 @@ use crate::{hal, memory};
 use core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 
 mod format;
-use format::{DID, LAST_EPOCH, PAGE, SID, STRIDE};
+use format::{DID, PAGE, SID, STRIDE};
 pub(crate) const IOVA: u64 = format::BASE;
 const TE: u32 = 1 << 31;
 const SRTP: u32 = 1 << 30;
@@ -28,6 +28,7 @@ static CLAIMED: AtomicBool = AtomicBool::new(false);
 static IRQ_READY: AtomicBool = AtomicBool::new(false);
 static QUARANTINE: crate::sched::sync::Mutex<Option<Engine>> = crate::sched::sync::Mutex::new(None);
 static FAULT_IRQS: AtomicU64 = AtomicU64::new(0);
+static FAULT_CPU: AtomicU64 = AtomicU64::new(u64::MAX);
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum Error {
@@ -103,6 +104,33 @@ impl Mapping {
             self.frame.mem.w64(offset, value);
         }
         barrier();
+    }
+}
+
+/// Nouvelle possession, par le superviseur, des deux cadres rendus à
+/// l'allocateur. Aucun pointeur conservé de l'ancienne allocation n'est lu.
+pub(crate) struct RetiredPages {
+    frames: [Frame; 2],
+    old: Lease,
+}
+impl RetiredPages {
+    fn intact(&self) -> bool {
+        self.frames.iter().zip([0xa1, 0xb2]).all(|(f, byte)| {
+            let expected = u64::from_ne_bytes([byte; 8]);
+            f.pa != EMPTY.pa
+                && (0..PAGE as usize)
+                    .step_by(8)
+                    .all(|off| f.mem.r64(off) == expected)
+        })
+    }
+    pub(crate) fn release(&mut self, device: &Drained<'_>) -> bool {
+        if device.lease() != self.old || !device.confirmed() || !self.intact() {
+            return false;
+        }
+        for frame in core::mem::replace(&mut self.frames, [EMPTY; 2]) {
+            free(frame);
+        }
+        true
     }
 }
 
@@ -393,10 +421,7 @@ impl Engine {
         if owner == 0 || !self.parked() {
             return Err(Error::Denied);
         }
-        let epoch = self.lease.map_or(1, |l| l.epoch + 1);
-        if epoch > LAST_EPOCH {
-            return Err(Error::Denied);
-        }
+        let epoch = format::next_epoch(self.lease.map_or(0, |l| l.epoch)).ok_or(Error::Denied)?;
         let lease = Lease { owner, epoch };
         self.lease = Some(lease);
         self.state = State::Preparing;
@@ -491,6 +516,69 @@ impl Engine {
         }
         self.state = State::Published;
         Ok(())
+    }
+    /// Marche de table confinée aux quatre pages de service connues. Une entrée
+    /// inattendue donne un diagnostic indéterminé. Aucune adresse lue dans les
+    /// descripteurs n'est utilisée comme pointeur CPU.
+    pub(crate) fn mapped_iova(&self, lease: Lease, iova: u64) -> Option<bool> {
+        if !self.active(lease) || iova >= (1 << 28) || !iova.is_multiple_of(PAGE) {
+            return None;
+        }
+        for (index, shift) in [39, 30, 21].into_iter().enumerate() {
+            let offset = ((iova >> shift) & 511) as usize * 8;
+            let entry = self.service[2 + index].mem.r64(offset);
+            if entry == 0 {
+                return Some(false);
+            }
+            if entry != self.service[3 + index].pa | 3 {
+                return None;
+            }
+        }
+        let entry = self.service[5].mem.r64(((iova >> 12) & 511) as usize * 8);
+        if entry == 0 {
+            return Some(false);
+        }
+        for (slot, mapping) in self.pages.iter().enumerate() {
+            if lease.iova(slot as u8) == iova {
+                let page = mapping.as_ref()?;
+                let rights = match page.direction {
+                    Direction::ReadByDevice => 1,
+                    Direction::WrittenByDevice => 2,
+                };
+                return (entry == page.frame.pa | rights).then_some(true);
+            }
+        }
+        None
+    }
+    pub(crate) fn guard_reused(&self, old: Lease, stamps: [FrameStamp; 2]) -> Result<RetiredPages> {
+        if !self.denies_edu(old) || stamps[0] == stamps[1] {
+            return Err(Error::Denied);
+        }
+        let first = Frame::allocate().map_err(|_| Error::Memory)?;
+        let second = Frame::allocate().map_err(|_| {
+            free(first);
+            Error::Memory
+        })?;
+        // Si l'allocateur contredit l'exclusivité, garder le cadre épinglé.
+        if first.pa == second.pa {
+            return Err(Error::Quarantine);
+        }
+        let frames = [first, second];
+        if !frames.iter().all(|f| {
+            stamps.contains(&FrameStamp(f.pa))
+                && (0..PAGE as usize).step_by(8).all(|off| f.mem.r64(off) == 0)
+        }) {
+            frames.into_iter().for_each(free);
+            return Err(Error::Denied);
+        }
+        for (f, byte) in frames.iter().zip([0xa1, 0xb2]) {
+            let value = u64::from_ne_bytes([byte; 8]);
+            for offset in (0..PAGE as usize).step_by(8) {
+                f.mem.w64(offset, value);
+            }
+        }
+        barrier();
+        Ok(RetiredPages { frames, old })
     }
     pub(crate) fn permits(&self, lease: Lease, slot: u8, dir: Direction) -> bool {
         self.active(lease)
@@ -656,6 +744,26 @@ impl Engine {
             && self.regs.r64(0x88) == u64::from(self.tail)
             && self.service[7].mem.r32(0) == 0
     }
+    /// Instantané en lecture seule pour la console du superviseur. Les bits du
+    /// FRCD n'ont de sens que si F est positionné. Un IRQ peut arriver entre
+    /// deux lectures avant la collecte. Le masque et les acquittements restent
+    /// exclusivement gérés par fault_irq() et take_fault().
+    pub(crate) fn trace_fault(&self, lease: Lease, stage: &str) {
+        let status = self.regs.r32(0x34);
+        let high = self.regs.r64(self.record + 8);
+        let low = self.regs.r64(self.record);
+        let control = self.regs.r32(0x38);
+        let count = FAULT_IRQS.load(Ordering::Acquire);
+        let irq_cpu = FAULT_CPU.load(Ordering::Relaxed) as i64; // -1 avant la première IRQ
+        let cpu = crate::smp::index();
+        let head = self.regs.r64(0x80);
+        let tail = self.regs.r64(0x88);
+        let cookie = self.service[7].mem.r32(0);
+        hal::log(format_args!(
+            "VTD diagnostic epoque={} etape={stage} fsts={status:#x} fr_hi={high:#x} fr_lo={low:#x} fectl={control:#x} irq={count} cpu_irq={irq_cpu} cpu={cpu} iqh={head:#x} iqt={tail:#x} wait={cookie}",
+            lease.epoch()
+        ));
+    }
     pub(crate) fn fault_pending(&self) -> bool {
         self.regs.r32(0x34) != 0 || self.regs.r64(self.record + 8) >> 63 != 0
     }
@@ -684,6 +792,7 @@ impl Engine {
         if irqs != self.consumed_irqs + 1 || self.regs.r32(0x38) & FAULT_MASK == 0 {
             return Err(Error::Fault);
         }
+        self.trace_fault(lease, "avant-ack");
         self.consumed_irqs = irqs;
         self.records += 1;
         let fault = Fault {
@@ -704,6 +813,7 @@ impl Engine {
         if self.regs.r32(0x38) != 0 {
             return Err(Error::Quarantine);
         }
+        self.trace_fault(lease, "apres-ack");
         Ok(Some(fault))
     }
 }
@@ -724,6 +834,7 @@ pub(crate) extern "C" fn fault_irq() {
         {
             control.write_volatile(FAULT_MASK);
             let _ = control.read_volatile();
+            FAULT_CPU.store(crate::smp::index() as u64, Ordering::Relaxed);
             FAULT_IRQS.fetch_add(1, Ordering::Release);
         }
         ((lapic + 0xb0) as *mut u32).write_volatile(0);

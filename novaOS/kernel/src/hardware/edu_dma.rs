@@ -45,6 +45,41 @@ pub(crate) enum Transfer {
     WriteUnmapped,
 }
 
+#[derive(Clone, Copy)]
+struct Command {
+    transfer: Transfer,
+    iova: u64,
+}
+
+impl Command {
+    fn registers(self) -> (u64, u64, u64) {
+        match self.transfer {
+            Transfer::ReadSource | Transfer::ReadDestination => (self.iova, BUFFER, 0),
+            Transfer::WriteDestination | Transfer::WriteSource | Transfer::WriteUnmapped => {
+                (BUFFER, self.iova, TO_RAM)
+            }
+        }
+    }
+
+    /// Dans le modèle EDU, les registres d'adresse et de longueur persistent
+    /// après le DMA et le contrôleur efface uniquement RUN à sa terminaison.
+    fn finished(self) -> bool {
+        let (source, destination, direction) = self.registers();
+        idle()
+            && read64(0x80) == source
+            && read64(0x88) == destination
+            && read64(0x90) == LENGTH
+            && read64(0x98) == direction
+    }
+}
+
+#[derive(Clone, Copy)]
+enum Flight {
+    Idle,
+    Started(Command),
+    Unconfirmed(Command),
+}
+
 /// Une preuve emprunte le périphérique : il ne peut pas être rouvert tant
 /// qu'elle est utilisée pour l'invalidation et la restitution des pages.
 pub(crate) struct Drained<'a> {
@@ -65,10 +100,10 @@ pub(crate) struct Device {
     owner: Option<Lease>,
     quiet: Option<Lease>,
     closing: bool,
-    flight: Option<Transfer>,
+    flight: Flight,
     source_read: bool,
     buffered: bool,
-    post_tested: bool,
+    post_probes: u8,
     mapped: bool,
 }
 
@@ -100,16 +135,19 @@ impl Device {
             owner: None,
             quiet: None,
             closing: false,
-            flight: None,
+            flight: Flight::Idle,
             source_read: false,
             buffered: false,
-            post_tested: false,
+            post_probes: 0,
             mapped: true,
         })
     }
 
     fn fenced(&self) -> bool {
-        self.mapped && self.flight.is_none() && idle() && lab_irq::dma_fenced(self.bar)
+        self.mapped
+            && matches!(self.flight, Flight::Idle)
+            && idle()
+            && lab_irq::dma_fenced(self.bar)
     }
 
     pub(crate) fn open(&mut self, engine: &Engine, lease: Lease) -> bool {
@@ -128,10 +166,10 @@ impl Device {
         // Enregistrer l'instance avant le changement PCI, même si sa relecture échoue.
         self.owner = Some(lease);
         self.quiet = None;
-        self.flight = None;
+        self.flight = Flight::Idle;
         self.source_read = false;
         self.buffered = false;
-        self.post_tested = false;
+        self.post_probes = 0;
         self.closing = !lab_irq::dma_master(self.bar, true);
         !self.closing
     }
@@ -139,15 +177,12 @@ impl Device {
     /// À l'intérieur du noyau, la géométrie d'une transaction est univoque :
     /// exactement une page et tout le tampon interne EDU. Le pilote ne choisit
     /// ni le compteur, ni les pointeurs, ni les bits du mot de commande.
-    fn program(&self, iova: u64, to_ram: bool) -> bool {
-        if iova % LENGTH != 0 || iova > MASK - (LENGTH - 1) || !idle() {
+    fn program(&self, command: Command) -> bool {
+        if command.iova % LENGTH != 0 || command.iova > MASK - (LENGTH - 1) || !idle() {
             return false;
         }
-        let (src, dst, cmd) = if to_ram {
-            (BUFFER, iova, RUN | TO_RAM)
-        } else {
-            (iova, BUFFER, RUN)
-        };
+        let (src, dst, direction) = command.registers();
+        let cmd = RUN | direction;
         write64(0x80, src);
         write64(0x88, dst);
         write64(0x90, LENGTH);
@@ -165,13 +200,15 @@ impl Device {
     fn ready(&self, engine: &Engine, lease: Lease) -> bool {
         self.owner == Some(lease)
             && !self.closing
-            && self.flight.is_none()
+            && matches!(self.flight, Flight::Idle)
             && engine.active(lease)
             && !engine.fault_pending()
             && idle()
     }
 
-    fn start(&mut self, transfer: Transfer, iova: u64, to_ram: bool) -> bool {
+    fn start(&mut self, transfer: Transfer, iova: u64) -> bool {
+        let command = Command { transfer, iova };
+        let to_ram = command.registers().2 == TO_RAM;
         if to_ram && !self.buffered {
             return false;
         }
@@ -179,11 +216,12 @@ impl Device {
             self.source_read = false;
             self.buffered = false;
         }
-        self.flight = Some(transfer);
-        if !self.program(iova, to_ram) {
+        self.flight = Flight::Unconfirmed(command);
+        if !self.program(command) {
             self.closing = true;
             return false;
         }
+        self.flight = Flight::Started(command);
         true
     }
 
@@ -208,7 +246,7 @@ impl Device {
         if engine.permits(lease, slot, dir) != permitted {
             return false;
         }
-        self.start(transfer, lease.iova(slot), to_ram)
+        self.start(transfer, lease.iova(slot))
     }
 
     /// Le seul témoin hors domaine est une page RO d'un autre processus de
@@ -223,21 +261,27 @@ impl Device {
         if !self.ready(engine, lease) || (0..4).any(|slot| lease.iova(slot) == iova) {
             return false;
         }
-        self.start(Transfer::WriteUnmapped, iova, true)
+        self.start(Transfer::WriteUnmapped, iova)
     }
 
     pub(crate) fn running(&self, lease: Lease) -> bool {
-        self.owner == Some(lease) && self.flight.is_some() && read64(0x98) & RUN != 0
+        self.owner == Some(lease) && !matches!(self.flight, Flight::Idle) && read64(0x98) & RUN != 0
     }
     pub(crate) fn completed(&mut self, lease: Lease) -> bool {
         if self.owner != Some(lease) || self.closing || !idle() {
             return false;
         }
-        let Some(transfer) = self.flight.take() else {
+        let Flight::Started(command) = self.flight else {
             return false;
         };
+        if !command.finished() {
+            self.flight = Flight::Unconfirmed(command);
+            self.closing = true;
+            return false;
+        }
         fence(Ordering::SeqCst);
-        self.source_read = transfer == Transfer::ReadSource;
+        self.flight = Flight::Idle;
+        self.source_read = command.transfer == Transfer::ReadSource;
         true
     }
     /// N'exporter aucun octet du tampon hérité avant une lecture intégrale dans
@@ -259,9 +303,54 @@ impl Device {
         self.owner == Some(lease)
             && self.buffered
             && !self.closing
-            && self.flight.is_none()
+            && matches!(self.flight, Flight::Idle)
             && self.mapped
             && idle()
+    }
+
+    /// Témoin avant le premier doorbell de la VM qualifiée.
+    pub(crate) fn never_programmed(&self, lease: Lease) -> bool {
+        self.owner == Some(lease)
+            && matches!(self.flight, Flight::Idle)
+            && idle()
+            && [0x80, 0x88, 0x90, 0x98]
+                .into_iter()
+                .all(|off| read64(off) == 0)
+    }
+
+    /// Précondition contrôlée avant de pouvoir réexporter un octet du tampon.
+    /// Cette lecture logicielle reste indépendante des fautes et du droit d'admission.
+    pub(crate) fn has_buffered_output(&self, lease: Lease) -> bool {
+        self.owner == Some(lease) && self.buffered && matches!(self.flight, Flight::Idle)
+    }
+
+    /// Injection du seul banc terminal : après une vraie lecture DMA achevée,
+    /// effacer le registre longueur sans écrire le registre de démarrage. La
+    /// réservation et l'état privé du courtier restent intacts. drain() doit
+    /// détecter lui-même la divergence entre le transfert et sa preuve MMIO.
+    pub(crate) fn erase_completed_length(&self, lease: Lease) -> bool {
+        let Flight::Started(command) = self.flight else {
+            return false;
+        };
+        if self.owner != Some(lease)
+            || command.transfer != Transfer::ReadSource
+            || command.iova != lease.iova(0)
+            || !command.finished()
+        {
+            return false;
+        }
+        write64(0x90, 0);
+        read64(0x90) == 0 && idle()
+    }
+
+    pub(crate) fn held_without_completion(&self, lease: Lease) -> bool {
+        self.owner == Some(lease)
+            && self.closing
+            && self.quiet.is_none()
+            && matches!(self.flight, Flight::Unconfirmed(c) if c.transfer == Transfer::ReadSource
+                && c.iova == lease.iova(0))
+            && idle()
+            && lab_irq::dma_fenced(self.bar)
     }
 
     pub(crate) fn drain(&mut self, lease: Lease) -> Option<Drained<'_>> {
@@ -270,11 +359,25 @@ impl Device {
             if !idle() {
                 return None;
             }
-            fence(Ordering::SeqCst);
-            self.flight = None;
-            if !lab_irq::dma_master(self.bar, false) || !self.fenced() {
+            // L'arrêt du moteur permet de fermer le bus. Le seul BME fermé
+            // n'identifie pas la commande terminée et ne rend aucune page.
+            if !lab_irq::dma_master(self.bar, false) || !lab_irq::dma_fenced(self.bar) {
                 return None;
             }
+            match self.flight {
+                Flight::Unconfirmed(_) => return None,
+                Flight::Started(command) if !command.finished() => {
+                    self.flight = Flight::Unconfirmed(command);
+                    return None;
+                }
+                _ => {}
+            }
+            fence(Ordering::SeqCst);
+            // Conserver la commande mémorisée si cette relecture échoue.
+            if !idle() || !lab_irq::dma_fenced(self.bar) {
+                return None;
+            }
+            self.flight = Flight::Idle;
             self.owner = None;
             self.quiet = Some(lease);
             self.source_read = false;
@@ -291,24 +394,28 @@ impl Device {
     }
 
     /// Sous contrôle du superviseur après l'invalidation confirmée : seule
-    /// l'ancienne IOVA de destination peut être sondée. Garder les pages témoins
-    /// et leur contenu stables jusqu'à la lecture par le banc du FRCD et des octets.
+    /// l'ancienne IOVA de destination peut être sondée. Le contexte a disparu,
+    /// le FRCD atteste son absence. Les anciens cadres sont déjà restitués.
     pub(crate) fn post_revoke(&mut self, engine: &Engine, old: Lease) -> bool {
         if self.owner.is_some()
             || self.quiet != Some(old)
-            || self.post_tested
+            || self.post_probes >= 2
             || !self.fenced()
             || !engine.denies_edu(old)
             || engine.fault_pending()
         {
             return false;
         }
-        self.post_tested = true;
+        self.post_probes += 1;
         if !lab_irq::dma_master(self.bar, true) {
             let _ = lab_irq::dma_master(self.bar, false);
             return false;
         }
-        let started = self.program(old.iova(1), true);
+        let probe = Command {
+            transfer: Transfer::WriteDestination,
+            iova: old.iova(1),
+        };
+        let started = self.program(probe);
         let begin = crate::sched::ticks();
         while read64(0x98) & RUN != 0
             && crate::sched::ticks().wrapping_sub(begin) < u64::from(crate::sched::HZ)
@@ -316,7 +423,7 @@ impl Device {
             crate::sched::sleep(1);
         }
         // BME coupé même en cas de timeout. Le succès inclut le drainage matériel.
-        let stopped = idle();
+        let stopped = probe.finished();
         let disabled = lab_irq::dma_master(self.bar, false);
         started && stopped && disabled && self.fenced()
     }

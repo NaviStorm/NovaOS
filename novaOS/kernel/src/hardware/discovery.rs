@@ -237,14 +237,15 @@ pub(crate) fn lab_edu() -> Option<EduBar> {
     let mut functions = Vec::new();
     functions.try_reserve_exact(wire::MAX_DEVICES).ok()?;
     capture_with(true, |a, f| functions.push((a, f)))?;
-    adopt_edu(platform, &functions)
+    let (resource, command) = inspect_edu(platform, &functions)?;
+    adopt_edu(resource, command)
 }
 
 #[cfg(feature = "materiel-lab")]
-fn adopt_edu(
+fn inspect_edu(
     platform: pci::resources::lab::LabPlatform,
     functions: &[(pci::Address, pci::Function)],
-) -> Option<EduBar> {
+) -> Option<(EduBar, u16)> {
     use pci::resources::lab::EDU;
     let resource = match pci::resources::lab::qualify_edu(platform, functions) {
         Ok(resource) => resource,
@@ -277,7 +278,11 @@ fn adopt_edu(
             ));
         }
     }
-    let old = function.command;
+    Some((resource, function.command))
+}
+
+#[cfg(feature = "materiel-lab")]
+fn adopt_edu(resource: EduBar, old: u16) -> Option<EduBar> {
     let new = super::lab_irq::adopt(resource.base, old)?;
     log(format_args!(
         "EDU PCI 0000:00:06.0 BAR0 base={:#x} taille={} pin={} ligne={} commande={:#06x}->{:#06x} master=false",

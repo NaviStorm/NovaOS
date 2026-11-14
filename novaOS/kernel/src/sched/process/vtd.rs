@@ -5,8 +5,9 @@ use crate::hardware::{
     discovery::{Drhd, VtdProfile},
     edu_dma::{self, Device, Transfer},
     physical_dma::Direction::*,
-    vtd_lab::{Engine, FrameStamp, Lease},
+    vtd_lab::{Engine, FrameStamp, Lease, RetiredPages},
 };
+mod drain;
 #[path = "../../../../user/edu_dma_protocol.rs"]
 mod wire;
 use wire::*;
@@ -129,6 +130,39 @@ impl Client {
             "reponse IPC",
         )
     }
+    /// Déplace le pilote bloqué sur sa réponse IPC avant de le réveiller.
+    /// La deuxième commande de Ring 3 permettra de vérifier le CPU effectif.
+    fn move_waiter(&self, from: usize, to: usize) -> Check<()> {
+        check(
+            until(|| {
+                with(|s| {
+                    let Some(t) = s
+                        .slots
+                        .iter_mut()
+                        .flatten()
+                        .find(|t| t.owner == Some(self.child.0))
+                    else {
+                        return false;
+                    };
+                    if t.last_cpu != from || !matches!(t.state, State::Blocked(Wait::Ipc(_))) {
+                        return false;
+                    }
+                    t.cpu_mask = 1 << to;
+                    true
+                })
+            }),
+            "pilote absent de son attente IPC",
+        )
+    }
+    fn last_cpu(&self) -> Option<usize> {
+        with(|s| {
+            s.slots
+                .iter()
+                .flatten()
+                .find(|t| t.owner == Some(self.child.0))
+                .map(|t| t.last_cpu)
+        })
+    }
     fn block(&self) {
         with(|s| {
             s.ipc.lab_close_sender(self.child.0, self.send);
@@ -192,6 +226,7 @@ struct Bench {
     previous: Option<(Lease, [FrameStamp; 2])>,
     current: Option<Lease>,
     witness: Option<user::PrivateWitness>,
+    guards: Option<RetiredPages>,
 }
 impl Bench {
     fn run_io(&mut self, c: &Client, lease: Lease, op: Transfer) -> Check<()> {
@@ -266,7 +301,8 @@ impl Bench {
                 .frame_stamp(lease, 1)
                 .ok_or("cadre destination")?,
         ];
-        if let Some((old, prev)) = self.previous {
+        let predecessor = self.previous;
+        if let Some((old, prev)) = predecessor {
             check(
                 old.epoch() < lease.epoch()
                     && old.iova(0) != lease.iova(0)
@@ -290,8 +326,55 @@ impl Bench {
             self.engine.cancel_preparation(lease).is_err(),
             "annulation apres publication",
         )?;
+        if let Some((old, _)) = predecessor {
+            check(
+                (0..2).all(|slot| self.engine.mapped_iova(lease, old.iova(slot)) == Some(false)),
+                "ancienne IOVA reutilisee",
+            )?;
+        }
+        for slot in 0..2 {
+            check(
+                self.engine.mapped_iova(lease, lease.iova(slot)) == Some(true),
+                "feuille publiee incorrecte",
+            )?;
+        }
         check(self.hw.open(&self.engine, lease), "activation BME")?;
+        if let Some((old, _)) = predecessor {
+            check(
+                !self.hw.submit(&self.engine, old, Transfer::ReadSource),
+                "ancienne capacite acceptee sur le nouveau domaine",
+            )?;
+        }
         Ok(lease)
+    }
+    fn guard_retired(&mut self, lease: Lease) -> Check<()> {
+        let (old, stamps) = self.previous.ok_or("cadres precedents")?;
+        check(
+            old == lease && self.guards.is_none(),
+            "garde ancienne generation",
+        )?;
+        self.guards = Some(
+            self.engine
+                .guard_reused(lease, stamps)
+                .map_err(|_| "reprise des deux cadres apres retrait")?,
+        );
+        Ok(())
+    }
+    fn check_retired(&mut self, lease: Lease) -> Check<()> {
+        let fence = self.hw.drain(lease).ok_or("drain apres sonde")?;
+        let guards = self
+            .guards
+            .as_mut()
+            .ok_or("sentinelles des cadres reutilises")?;
+        check(
+            self.engine.denies_edu(lease) && guards.release(&fence),
+            "retrait incertain ou cadres realloues modifies",
+        )?;
+        self.guards = None;
+        hal::log(format_args!(
+            "VTD anciens cadres realloues=2 octets_intacts=8192"
+        ));
+        Ok(())
     }
     fn competitor(&mut self, lease: Lease) -> Check<()> {
         let c = Client::new(CONTENDER)?;
@@ -394,8 +477,19 @@ impl Bench {
                 let mut counts = [0; 3];
                 // Le client choisit la commande. L'identité de l'endpoint et le
                 // bail, détenu par le courtier, bornent toutes les opérations.
-                for _ in 0..5 {
+                let remote = crate::smp::count() - 1;
+                for index in 0..5 {
                     let (tag, generation, reserved) = c.next()?;
+                    if case == Case::Normal {
+                        if index == 0 {
+                            c.move_waiter(remote, 0)?;
+                        } else if index == 1 {
+                            check(c.last_cpu() == Some(0), "migration effective du pilote")?;
+                            hal::log(format_args!(
+                                "VTD migration pilote pid={id} depart={remote} arrivee=0"
+                            ));
+                        }
+                    }
                     let authenticated = generation == id
                         && lease.owner() == id
                         && self.engine.active(lease)
@@ -427,11 +521,17 @@ impl Bench {
                 c.finish()?;
                 self.retire(lease, false)?;
                 if case == Case::Normal {
-                    check(
-                        self.hw.post_revoke(&self.engine, lease),
-                        "sonde contexte retire",
-                    )?;
-                    self.fault(lease, lease.iova(1), false, false)?;
+                    self.guard_retired(lease)?;
+                    for _ in 0..2 {
+                        self.engine.trace_fault(lease, "avant-sonde");
+                        check(
+                            self.hw.post_revoke(&self.engine, lease),
+                            "sonde contexte retire",
+                        )?;
+                        self.engine.trace_fault(lease, "fin-sonde");
+                        self.fault(lease, lease.iova(1), false, false)?;
+                    }
+                    self.check_retired(lease)?;
                 }
             }
             Case::Late => {
@@ -530,6 +630,11 @@ impl Bench {
                     check(pattern != SENTINEL[0], "motifs distincts temoin")?;
                     self.witness = Some(w.witness()?);
                 }
+                self.engine.trace_fault(lease, "avant-sonde");
+                if case == Case::WrongRead {
+                    set_affinity(1 << (crate::smp::count() - 1))
+                        .map_err(|_| "migration collecte faute")?;
+                }
                 let (submitted, address, read) = c
                     .while_authorized(|| match case {
                         Case::WrongRead => (
@@ -559,6 +664,17 @@ impl Bench {
                     submitted && until(|| self.hw.completed(lease)),
                     "fin sonde de permissions",
                 )?;
+                self.engine.trace_fault(lease, "fin-sonde");
+                if case == Case::WrongRead {
+                    check(
+                        !self.hw.has_buffered_output(lease)
+                            && !self.hw.confirm_source(&self.engine, lease)
+                            && !self
+                                .hw
+                                .submit(&self.engine, lease, Transfer::WriteDestination),
+                        "reexportation apres lecture refusee",
+                    )?;
+                }
                 let intact = self.engine.matches(lease, 0, expected_source)
                     && self.engine.matches(lease, 1, !pattern);
                 hal::log(format_args!(
@@ -574,6 +690,13 @@ impl Bench {
                         && self.engine.matches(lease, 1, !pattern),
                     "sentinelles apres faute",
                 )?;
+                if case == Case::WrongRead {
+                    check(
+                        crate::smp::index() == crate::smp::count() - 1,
+                        "collecte sur CPU distant",
+                    )?;
+                    set_affinity(1).map_err(|_| "retour apres faute")?;
+                }
                 self.retire(lease, false)?;
                 if let Some(w) = witness {
                     w.say(ACCEPTED)?;
@@ -691,6 +814,7 @@ pub(crate) fn run(base: u64, drhd: Option<Drhd>, profile: VtdProfile) -> bool {
             previous: None,
             reused: false,
             witness: None,
+            guards: None,
         },
         failure => {
             let safe = match failure {
@@ -710,6 +834,8 @@ pub(crate) fn run(base: u64, drhd: Option<Drhd>, profile: VtdProfile) -> bool {
         }
     };
     let result = match profile {
+        VtdProfile::NeverSubmitted => bench.never_submitted(),
+        VtdProfile::LostCompletion => bench.lost_completion(),
         VtdProfile::QueueError => bench.queue_error(),
         p => bench.campaign(p == VtdProfile::DelayedReceipt),
     };
@@ -725,7 +851,8 @@ pub(crate) fn run(base: u64, drhd: Option<Drhd>, profile: VtdProfile) -> bool {
         *STATION.lock() = Some(bench);
         return false;
     }
-    let closed = profile == VtdProfile::QueueError || (bench.engine.parked() && bench.hw.close());
+    let closed = matches!(profile, VtdProfile::QueueError | VtdProfile::LostCompletion)
+        || (bench.engine.parked() && bench.hw.close());
     *STATION.lock() = Some(bench);
     closed
 }

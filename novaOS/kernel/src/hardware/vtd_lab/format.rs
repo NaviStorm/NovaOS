@@ -4,7 +4,11 @@ pub(super) const SID: u16 = 6 << 3;
 pub(super) const DID: u16 = 1;
 pub(super) const BASE: u64 = 0x0200_0000;
 pub(super) const STRIDE: u64 = 0x10000;
-pub(super) const LAST_EPOCH: u64 = ((1 << 28) - BASE) / STRIDE;
+const LAST_EPOCH: u64 = ((1 << 28) - BASE) / STRIDE;
+
+pub(super) fn next_epoch(previous: u64) -> Option<u64> {
+    previous.checked_add(1).filter(|epoch| *epoch <= LAST_EPOCH)
+}
 
 pub(super) fn capabilities(version: u32, cap: u64, ecap: u64, host: u8) -> Option<usize> {
     let width = ((cap >> 16) & 63) + 1;
@@ -93,6 +97,14 @@ mod tests {
         assert!(record(2, BASE, hi & !(1 << 63)).is_none());
         assert!(record(2, BASE, hi | 1 << 31).is_none()); // PASID présent
         assert!(record(2, BASE + 1, hi).is_none());
+    }
+
+    #[test]
+    fn epuisement_des_epoques_sans_recyclage() {
+        assert_eq!(next_epoch(0), Some(1));
+        assert_eq!(next_epoch(LAST_EPOCH - 1), Some(LAST_EPOCH));
+        assert_eq!(next_epoch(LAST_EPOCH), None);
+        assert_eq!(next_epoch(u64::MAX), None);
     }
 
     #[test]
