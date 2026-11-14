@@ -124,7 +124,7 @@ def verifier(image, secteur, blocs, attendu, ids=("61"*16, "62"*16), tiers=None,
     return sorted(int(g) for _, g in generations)
 
 
-def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None, session_classique=False):
+def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None, session_classique=False, cpu_moteur=False):
     if session_classique and sonde:
         raise ValueError("La session ordinaire 41 ne publie pas les compteurs du profil 42")
     image = dossier/"volume.raw"
@@ -163,6 +163,10 @@ def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None, sessio
         # Les dernières frappes précèdent la fenêtre chronométrée.
         send(":")
         wait(f"vi [COMMANDE] {nom} [modifié]")
+        if cpu_moteur:
+            from cpu_hote_utm import CpuMoteur
+            moteur = CpuMoteur(t.vm.pid)
+            cpu_avant = moteur.relever()
         depart = time.monotonic_ns()
         send("w copie\r")
         wait("Saisir OUI puis Entrée : ")
@@ -174,6 +178,7 @@ def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None, sessio
         else:
             wait("fichier enregistré")
         fin = time.monotonic_ns()
+        cpu = {"cpu_hote_qemu": moteur.difference(cpu_avant, moteur.relever())} if cpu_moteur else {}
         send(":q!\r")
         wait("nsh> ")
         t.exit()
@@ -199,7 +204,7 @@ def essai(a, secteur, cas, generateur, dossier, sonde=True, entries=None, sessio
     mem = {}
     for pid, pages, pile in re.findall(r"CLI mem pid=(\d+) privees=(\d+) pile=(\d+)", text):
         mem[pid] = max(mem.get(pid, 0), 4*(int(pages)+int(pile)))
-    return dict(architecture=a, secteur=secteur, cas=cas, entrees_file=entries, **etat, avant=avant, apres=apres, temoin_lecture=temoin,
+    return dict(architecture=a, secteur=secteur, cas=cas, entrees_file=entries, **cpu, **etat, avant=avant, apres=apres, temoin_lecture=temoin,
                 pic_cadres_session=pic_cadres, sonde=sonde, memoire_observee_kio=mem, chemin=(
                     "refuse" if attendu is None else "non_instrumente" if not sonde else
                     "groupe" if "lots" in compte else "historique"),

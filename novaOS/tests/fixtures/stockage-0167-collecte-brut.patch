@@ -1,0 +1,15 @@
+--- a/novaOS/kernel/src/hardware/block/mod.rs
++++ b/novaOS/kernel/src/hardware/block/mod.rs
+@@ -192,6 +192,10 @@
+     fn finish(&mut self, expected: u32) -> Result<()> {
+         let n = self.pending.ok_or(Error::State)?;
+-        let used = self.q.completed()?;
+-        wait(|| IRQS.load(Ordering::Acquire) != n)?;
++        let used = self.q.completed().inspect_err(|e| {
++            hal::log(format_args!("DIAG virtio used={e:?} index={}", self.q.index));
++        })?;
++        wait(|| IRQS.load(Ordering::Acquire) != n).inspect_err(|e| {
++            hal::log(format_args!("DIAG virtio irq={e:?} index={} used={used}", self.q.index));
++        })?;
+         self.unit.faults(&self.p)?;
+         let status = self.p.0[21].mem.r8(0);

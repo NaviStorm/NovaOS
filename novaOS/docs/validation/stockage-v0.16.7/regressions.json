@@ -1,0 +1,3464 @@
+{
+  "revision": "64603c4f9e5dcf73db26212a697f2624b2df36be",
+  "commandes": [
+    {
+      "essai": "ancres-aarch64",
+      "log_sha256": "327450ac03b179a9e3e86d4dafb566c212d235c13c10c5a78b6f0c14e872304e",
+      "debut_utc": "2026-11-14T09:33:56.736347+00:00",
+      "code": 0,
+      "duree_s": 0.72,
+      "commande": [
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/run",
+        "test",
+        "--offline",
+        "--lib",
+        "qualification_ancres",
+        "--",
+        "--nocapture"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "aarch64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/stockage-smp-0167/portable-git/publie/novaFS/target/aarch64-apple-darwin/release/novafs"
+      }
+    },
+    {
+      "essai": "ancres-x86_64",
+      "log_sha256": "4f5dfcc847429dd0f9246045a1bd9bb9361aaa956dd18614eaad36af09b1f675",
+      "debut_utc": "2026-11-14T09:35:56.096890+00:00",
+      "code": 0,
+      "duree_s": 1.38,
+      "commande": [
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/run",
+        "test",
+        "--offline",
+        "--lib",
+        "qualification_ancres",
+        "--",
+        "--nocapture"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "x86_64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/stockage-smp-0167/portable-git/publie/novaFS/target/aarch64-apple-darwin/release/novafs"
+      }
+    },
+    {
+      "essai": "classique-aarch64-block-perf",
+      "log_sha256": "2db8e1163b8e2d8a6ff30d99d9b198ebb502af6441f2a273edc24c2a6d95dd71",
+      "debut_utc": "2026-11-14T09:46:53.993443+00:00",
+      "code": 0,
+      "duree_s": 12.78,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "block-perf"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-block-test",
+      "log_sha256": "f97adac7608e514ed31586623e7a1f8d88aedad99e2bb64b6b692accdb904f7f",
+      "debut_utc": "2026-11-14T09:42:36.143877+00:00",
+      "code": 0,
+      "duree_s": 173.29,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "block-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-cli-p9-test",
+      "log_sha256": "4618d068c770d6995b259221c39ea27219dc9143fbffb7eda07dd5c533a82d1a",
+      "debut_utc": "2026-11-14T09:38:44.588500+00:00",
+      "code": 0,
+      "duree_s": 61.55,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "cli-p9-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-cli-test",
+      "log_sha256": "c7899e30f2a2efae3c54a2313f9c926eac6d7083a15b6f30431106ed7c8f46b3",
+      "debut_utc": "2026-11-14T09:37:46.606558+00:00",
+      "code": 0,
+      "duree_s": 57.98,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "cli-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-elf-test",
+      "log_sha256": "1d9618502bf1990b9bcd725023b17f33bc6de3dc6deb35e57afb4ec0224f0da5",
+      "debut_utc": "2026-11-14T09:42:09.322487+00:00",
+      "code": 0,
+      "duree_s": 6.55,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "elf-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-file-test",
+      "log_sha256": "39486c083d9c7275407e8f98288f887cec09c50094f96e774a278a7995b9ff16",
+      "debut_utc": "2026-11-14T09:37:33.441735+00:00",
+      "code": 0,
+      "duree_s": 549.52,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "file-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-ipc-perf",
+      "log_sha256": "40377614c411cf724d5be238a433bded2b5d7dec72971d8bf12f5f168971c384",
+      "debut_utc": "2026-11-14T09:45:29.433712+00:00",
+      "code": 0,
+      "duree_s": 57.77,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "ipc-perf"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-ipc-races",
+      "log_sha256": "46b931ac2688d490f9704827aea1c6d51d0ca7ad7336d06dc6276ed092cff924",
+      "debut_utc": "2026-11-14T09:42:22.708295+00:00",
+      "code": 0,
+      "duree_s": 13.44,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "ipc-races"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-lifecycle-test",
+      "log_sha256": "b7406a616b0fcdc843b604c2c4fdbaae94a7d72da1255cbb004a987c4124866f",
+      "debut_utc": "2026-11-14T09:42:15.873600+00:00",
+      "code": 0,
+      "duree_s": 6.83,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "lifecycle-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-mount-progress-test",
+      "log_sha256": "4b103315c1d3a2e5074b8c9dcaad3192033f37afbd600d896a757bdfbdd8d5c6",
+      "debut_utc": "2026-11-14T09:42:02.864297+00:00",
+      "code": 0,
+      "duree_s": 0.31,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "mount-progress-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-namespace-test",
+      "log_sha256": "69345609d52a60d5bbaefed4548d57c34fcc26a89f15d038ac994918278ef736",
+      "debut_utc": "2026-11-14T09:37:33.441823+00:00",
+      "code": 0,
+      "duree_s": 342.4,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "namespace-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-nsh-scripts-test",
+      "log_sha256": "3f3f7eeb508d420ba7c2f6f5725038444ea443cd3b574b594d3f0c770a5cae16",
+      "debut_utc": "2026-11-14T09:40:20.840134+00:00",
+      "code": 0,
+      "duree_s": 30.16,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "nsh-scripts-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-nsh-terminal-test",
+      "log_sha256": "f5523f95e772f426b998c0c55a59ebb22e284d231eee43f236d3facd7a3e0beb",
+      "debut_utc": "2026-11-14T09:40:51.002922+00:00",
+      "code": 0,
+      "duree_s": 15.8,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "nsh-terminal-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-nsh-test",
+      "log_sha256": "935449cc425d8915cd2981da7e771014cbe52764015bf1120e7d1faeec2da0ee",
+      "debut_utc": "2026-11-14T09:39:46.137738+00:00",
+      "code": 0,
+      "duree_s": 34.7,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "nsh-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-ram-test",
+      "log_sha256": "e48cfe5e0b8495792f0f11166426da7d01cc29dcee05607792d1058f169cf1ca",
+      "debut_utc": "2026-11-14T09:46:27.201464+00:00",
+      "code": 0,
+      "duree_s": 26.79,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "ram-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-test",
+      "log_sha256": "8f922a49851b140cef1f11dd47d2bd399f3e23201311daab0271d15b13743348",
+      "debut_utc": "2026-11-14T09:37:33.441554+00:00",
+      "code": 0,
+      "duree_s": 275.88,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-vi-ecran-test",
+      "log_sha256": "e571e4e89436e40e356f97f0537c7ae9aa4e9bc799c27bb40ad43df19d997289",
+      "debut_utc": "2026-11-14T09:37:33.441873+00:00",
+      "code": 0,
+      "duree_s": 13.16,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "vi-ecran-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-vi-memoire-test",
+      "log_sha256": "1d6c67ff3b33284ee6db6c23efa8dd935ab986c6a65088868c978565489c00a5",
+      "debut_utc": "2026-11-14T09:42:02.325448+00:00",
+      "code": 0,
+      "duree_s": 0.54,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "vi-memoire-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-vi-test",
+      "log_sha256": "c4890e9fab7cca09453a81cd524511c9b1af3619916fe92cda6d00ea90aaafc4",
+      "debut_utc": "2026-11-14T09:41:06.801668+00:00",
+      "code": 0,
+      "duree_s": 36.96,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "vi-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-aarch64-vi-volumes-test",
+      "log_sha256": "fc608987133334e4be626914415a8e77c75495d88e98bc231be6985967af0f06",
+      "debut_utc": "2026-11-14T09:41:43.764515+00:00",
+      "code": 0,
+      "duree_s": 18.56,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=aarch64",
+        "vi-volumes-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-block-perf",
+      "log_sha256": "81085c35f2a62a48d9cc86a97323fcefe95c77508f0c360fef425978b2ffc7c3",
+      "debut_utc": "2026-11-14T09:42:54.076208+00:00",
+      "code": 0,
+      "duree_s": 5.19,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "block-perf"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-block-test",
+      "log_sha256": "3ef5dff68d6d670248ad9317a6405c5d9c2d67279c2ab016a155687a6ed98238",
+      "debut_utc": "2026-11-14T09:40:39.690700+00:00",
+      "code": 0,
+      "duree_s": 77.09,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "block-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-cli-p9-test",
+      "log_sha256": "94d3a6f9c3b44626d08b22b8518a456baafc6a4941dcc3c493a8660e50fc3c9c",
+      "debut_utc": "2026-11-14T09:38:15.645064+00:00",
+      "code": 0,
+      "duree_s": 32.34,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "cli-p9-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-cli-test",
+      "log_sha256": "36716eeb27d881523f9ff6b978b65a16afb33b6198fe71ecbe1ded2c3694152e",
+      "debut_utc": "2026-11-14T09:37:42.580175+00:00",
+      "code": 0,
+      "duree_s": 33.06,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "cli-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-elf-test",
+      "log_sha256": "e64d507cf266681e53f7e9d824259bf743bd1613e773f9d8f944b6518615d053",
+      "debut_utc": "2026-11-14T09:40:21.465866+00:00",
+      "code": 0,
+      "duree_s": 3.49,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "elf-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-file-test",
+      "log_sha256": "3e9678403741a9b37ee99b2bba282e2ebd28fe43692e35dfc4bdfefd407d3e6c",
+      "debut_utc": "2026-11-14T09:37:33.444735+00:00",
+      "code": 0,
+      "duree_s": 267.66,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "file-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-ipc-perf",
+      "log_sha256": "1746cc58102bcfa235aa889bcb6de41ed208d60cd548cf0f8074ae22a0224d73",
+      "debut_utc": "2026-11-14T09:41:56.785835+00:00",
+      "code": 0,
+      "duree_s": 44.95,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "ipc-perf"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-ipc-races",
+      "log_sha256": "2edba63457297a07b770728409d2efe9eef4780fa067902115bd0501c4146c30",
+      "debut_utc": "2026-11-14T09:40:28.610363+00:00",
+      "code": 0,
+      "duree_s": 11.08,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "ipc-races"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-lifecycle-test",
+      "log_sha256": "bfa2f35aa5971eedd95c7ba1e654bf9f832b79258bd034c9be35a06160394574",
+      "debut_utc": "2026-11-14T09:40:24.952324+00:00",
+      "code": 0,
+      "duree_s": 3.65,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "lifecycle-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-mount-progress-test",
+      "log_sha256": "3fff1777114150ef3576d770fc1b5033ce3c138acd4922cbd73b542f3e089514",
+      "debut_utc": "2026-11-14T09:40:13.835333+00:00",
+      "code": 0,
+      "duree_s": 0.55,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "mount-progress-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-namespace-test",
+      "log_sha256": "f01e93d9a45c431f448fae1cba7d5ef5e0f89cedabc765f9f193b28c59ccf18b",
+      "debut_utc": "2026-11-14T09:37:33.444794+00:00",
+      "code": 0,
+      "duree_s": 177.5,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "namespace-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-nsh-scripts-test",
+      "log_sha256": "d2bf1d9e00e9c9cebbba43cc519214aad1d307ca93ffacaa5b52b6c3bf84e3ae",
+      "debut_utc": "2026-11-14T09:39:08.092125+00:00",
+      "code": 0,
+      "duree_s": 15.66,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "nsh-scripts-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-nsh-terminal-test",
+      "log_sha256": "74ebf79c2ebe9622539cc37dcfd1057b5b5504ba49dc35ff1fda29a09197299c",
+      "debut_utc": "2026-11-14T09:39:23.754130+00:00",
+      "code": 0,
+      "duree_s": 12.75,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "nsh-terminal-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-nsh-test",
+      "log_sha256": "d3f38794c33081c6febb531f7ccbc9ffc0f8b475f09234a7355d35c58fd74faa",
+      "debut_utc": "2026-11-14T09:38:47.988802+00:00",
+      "code": 0,
+      "duree_s": 20.1,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "nsh-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-ram-test",
+      "log_sha256": "a527400e6e2b088d36f432d2468edfc0eb22ed16a894aeff8b5ee2a0a07fe489",
+      "debut_utc": "2026-11-14T09:42:41.739424+00:00",
+      "code": 0,
+      "duree_s": 12.34,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "ram-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-test",
+      "log_sha256": "226426d8949f34fb9be9ea492626c2837d16c905ee7c5bc28392fdf448b7cd13",
+      "debut_utc": "2026-11-14T09:37:33.443216+00:00",
+      "code": 0,
+      "duree_s": 168.02,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-vi-ecran-test",
+      "log_sha256": "43da5273307787a540183a59befaacf4f46c56a9326a5f940721ecec4f54eb2b",
+      "debut_utc": "2026-11-14T09:37:33.445553+00:00",
+      "code": 0,
+      "duree_s": 9.13,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "vi-ecran-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-vi-memoire-test",
+      "log_sha256": "14100d5ebf239edd387aee7ad453c8d8cfc5be299b619aa7fb063a3f2a4246f9",
+      "debut_utc": "2026-11-14T09:40:12.954895+00:00",
+      "code": 0,
+      "duree_s": 0.88,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "vi-memoire-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-vi-test",
+      "log_sha256": "1614f36db6b140f5cda1d24d212924113dd2f74ee0c059ea7cb3557283184a55",
+      "debut_utc": "2026-11-14T09:39:36.508017+00:00",
+      "code": 0,
+      "duree_s": 22.91,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "vi-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "classique-x86_64-vi-volumes-test",
+      "log_sha256": "db5aea5d0336c09c843292447fe0c1361337022bd6de38aa7cdf0034220f64cb",
+      "debut_utc": "2026-11-14T09:39:59.419367+00:00",
+      "code": 0,
+      "duree_s": 13.54,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/brut/novaOS",
+        "ARCH=x86_64",
+        "vi-volumes-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "coeur-aarch64-unknown-none-softfloat-laboratoire",
+      "log_sha256": "7a145f4b31dcbc38fb4cdb86c6e1c0a80befc03ee190a5dde18a76c4518755c9",
+      "debut_utc": "2026-11-14T09:37:46.064010+00:00",
+      "code": 0,
+      "duree_s": 3.514,
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--target-dir",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/construits-coeur/aarch64-unknown-none-softfloat/laboratoire",
+        "--all-features"
+      ],
+      "repertoire": "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS",
+      "env": {
+        "RUSTC": "~/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      }
+    },
+    {
+      "essai": "coeur-aarch64-unknown-none-softfloat-normal",
+      "log_sha256": "106b22d7dde264dc65a566601f6dbee392714b07a94e293f52ffbf8b4bd0ed4b",
+      "debut_utc": "2026-11-14T09:37:41.631740+00:00",
+      "code": 0,
+      "duree_s": 4.424,
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--target-dir",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/construits-coeur/aarch64-unknown-none-softfloat/normal"
+      ],
+      "repertoire": "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS",
+      "env": {
+        "RUSTC": "~/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      }
+    },
+    {
+      "essai": "coeur-x86_64-unknown-none-laboratoire",
+      "log_sha256": "43fa862875746c82187e3e4568bd19682f3802698b32c745712949d91ccc4b54",
+      "debut_utc": "2026-11-14T09:37:53.512164+00:00",
+      "code": 0,
+      "duree_s": 4.342,
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--target-dir",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/construits-coeur/x86_64-unknown-none/laboratoire",
+        "--all-features"
+      ],
+      "repertoire": "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS",
+      "env": {
+        "RUSTC": "~/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      }
+    },
+    {
+      "essai": "coeur-x86_64-unknown-none-normal",
+      "log_sha256": "413060fe8dbb58e4036ffcda03728db965fb1f33ae1567f8596e96b02ca38261",
+      "debut_utc": "2026-11-14T09:37:49.578681+00:00",
+      "code": 0,
+      "duree_s": 3.929,
+      "commande": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--lib",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--target-dir",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/construits-coeur/x86_64-unknown-none/normal"
+      ],
+      "repertoire": "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS",
+      "env": {
+        "RUSTC": "~/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc"
+      }
+    },
+    {
+      "essai": "coupe-aarch64-4096",
+      "log_sha256": "69af8742e62211dd943c8ed31badd328b26e37347fb7ad51c6c4371b50346a44",
+      "debut_utc": "2026-11-14T09:40:06.242488+00:00",
+      "code": 0,
+      "duree_s": 161.21,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/coupe/novaOS/tests/coupure_cow_groupee.py",
+        "aarch64",
+        "4096",
+        "novaOS/build/stockage-smp-0167/reg/coupe-aarch64-4096.json",
+        "--barrieres",
+        "--multipage",
+        "--dma-en-vol",
+        "--taille",
+        "4194304"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "coupe-aarch64-512",
+      "log_sha256": "026538a575e8ab0ab7886158a30bda0006edc34126da85f87717d2c50ad1fa4c",
+      "debut_utc": "2026-11-14T09:34:22.399966+00:00",
+      "code": 0,
+      "duree_s": 166.8,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/coupe/novaOS/tests/coupure_cow_groupee.py",
+        "aarch64",
+        "512",
+        "novaOS/build/stockage-smp-0167/reg/coupe-aarch64-512.json",
+        "--barrieres",
+        "--multipage",
+        "--dma-en-vol",
+        "--taille",
+        "4194304"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "coupe-x86_64-4096",
+      "log_sha256": "e93a86769103fd3aaf4e43a4a97eded48b8db5397fe6a2e28aff99e85a6433a3",
+      "debut_utc": "2026-11-14T09:37:18.421765+00:00",
+      "code": 0,
+      "duree_s": 108.58,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/coupe/novaOS/tests/coupure_cow_groupee.py",
+        "x86_64",
+        "4096",
+        "novaOS/build/stockage-smp-0167/reg/coupe-x86_64-4096.json",
+        "--barrieres",
+        "--multipage",
+        "--dma-en-vol",
+        "--taille",
+        "4194304"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "coupe-x86_64-512",
+      "log_sha256": "77d6805da1e46fa32121b22cd87a9387e21384e40f6d8b0cff091c1c68bd8b93",
+      "debut_utc": "2026-11-14T09:34:18.575120+00:00",
+      "code": 0,
+      "duree_s": 86.66,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/coupe/novaOS/tests/coupure_cow_groupee.py",
+        "x86_64",
+        "512",
+        "novaOS/build/stockage-smp-0167/reg/coupe-x86_64-512.json",
+        "--barrieres",
+        "--multipage",
+        "--dma-en-vol",
+        "--taille",
+        "4194304"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "course-aarch64-4096",
+      "log_sha256": "58c7b1d0eaf431f369734df48de4d20914a4f6042648d18f15fdaa10d229d795",
+      "debut_utc": "2026-11-14T09:39:58.415769+00:00",
+      "code": 0,
+      "duree_s": 7.83,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/course/novaOS/tests/es_groupees_conflits.py",
+        "aarch64",
+        "4096",
+        "novaOS/build/stockage-smp-0167/reg/course-aarch64-4096.json"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "course-aarch64-512",
+      "log_sha256": "b86f72a8021c13debc56c37bdaa85991e262256e1ad1e3e95ef78a9835ee1e18",
+      "debut_utc": "2026-11-14T09:34:14.470135+00:00",
+      "code": 0,
+      "duree_s": 7.93,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/course/novaOS/tests/es_groupees_conflits.py",
+        "aarch64",
+        "512",
+        "novaOS/build/stockage-smp-0167/reg/course-aarch64-512.json"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "course-x86_64-4096",
+      "log_sha256": "437d2a84b52b475d23b22fcf1ec3f6d0beedf1db3870eccc796c7a7ffdf5fb68",
+      "debut_utc": "2026-11-14T09:37:14.135457+00:00",
+      "code": 0,
+      "duree_s": 4.29,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/course/novaOS/tests/es_groupees_conflits.py",
+        "x86_64",
+        "4096",
+        "novaOS/build/stockage-smp-0167/reg/course-x86_64-4096.json"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "course-x86_64-512",
+      "log_sha256": "361645b5de9b4c67f5c3fb0c5c1269da2c7a3e7b4dbb96c8a7cfdbd303340989",
+      "debut_utc": "2026-11-14T09:34:14.470296+00:00",
+      "code": 0,
+      "duree_s": 4.1,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/course/novaOS/tests/es_groupees_conflits.py",
+        "x86_64",
+        "512",
+        "novaOS/build/stockage-smp-0167/reg/course-x86_64-512.json"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "cow-aarch64",
+      "log_sha256": "8f623868063c69785997ac61f77bfe04dc453bf16e8d768fe22b5481d91ec9e8",
+      "debut_utc": "2026-11-14T09:33:57.452946+00:00",
+      "code": 0,
+      "duree_s": 24.07,
+      "commande": [
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/run",
+        "run",
+        "--offline",
+        "--features",
+        "prototype-es-groupees",
+        "--example",
+        "es-groupees"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "aarch64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/stockage-smp-0167/portable-git/publie/novaFS/target/aarch64-apple-darwin/release/novafs"
+      }
+    },
+    {
+      "essai": "cow-x86_64",
+      "log_sha256": "90817b3744571d41d5278a6d0c378a25e443f0f6babde9675bd2aca4a255f864",
+      "debut_utc": "2026-11-14T09:35:57.474547+00:00",
+      "code": 0,
+      "duree_s": 26.92,
+      "commande": [
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/run",
+        "run",
+        "--offline",
+        "--features",
+        "prototype-es-groupees",
+        "--example",
+        "es-groupees"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "x86_64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/stockage-smp-0167/portable-git/publie/novaFS/target/aarch64-apple-darwin/release/novafs"
+      }
+    },
+    {
+      "essai": "dechirures-aarch64",
+      "log_sha256": "86149d6f37e27cc81647a71003ef23d520d5930b871d714b27b9ff44f4de6026",
+      "debut_utc": "2026-11-14T09:33:53.170751+00:00",
+      "code": 0,
+      "duree_s": 3.57,
+      "commande": [
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/run",
+        "test",
+        "--offline",
+        "--lib",
+        "fs::remplacement::",
+        "--",
+        "--nocapture"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "aarch64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/stockage-smp-0167/portable-git/publie/novaFS/target/aarch64-apple-darwin/release/novafs"
+      }
+    },
+    {
+      "essai": "dechirures-x86_64",
+      "log_sha256": "b8e92c194b66c43a91ce432c4e607afb085fe6592e952b6a3de8e1c8ebccab4f",
+      "debut_utc": "2026-11-14T09:35:50.482697+00:00",
+      "code": 0,
+      "duree_s": 5.61,
+      "commande": [
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/run",
+        "test",
+        "--offline",
+        "--lib",
+        "fs::remplacement::",
+        "--",
+        "--nocapture"
+      ],
+      "env": {
+        "NOVAFS_TARGET": "x86_64-apple-darwin",
+        "NOVAFS_LECTEUR": "novaOS/build/stockage-smp-0167/portable-git/publie/novaFS/target/aarch64-apple-darwin/release/novafs"
+      }
+    },
+    {
+      "essai": "defauts-aarch64-4096",
+      "log_sha256": "af9661b60a565aad6313f89c9c29c88f255ce7a036991e6ea73f671e04c64096",
+      "debut_utc": "2026-11-14T09:42:47.457678+00:00",
+      "code": 0,
+      "duree_s": 78.14,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/defauts/novaOS/tests/coupure_cow_groupee.py",
+        "aarch64",
+        "4096",
+        "novaOS/build/stockage-smp-0167/reg/defauts-aarch64-4096.json",
+        "--defauts-dma",
+        "--multipage",
+        "--taille",
+        "4194304"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "defauts-aarch64-512",
+      "log_sha256": "93435683e2ee84549828fdebf0f787b87db857d6c88b65c81d1e52f11979e25b",
+      "debut_utc": "2026-11-14T09:37:09.199796+00:00",
+      "code": 0,
+      "duree_s": 103.08,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/defauts/novaOS/tests/coupure_cow_groupee.py",
+        "aarch64",
+        "512",
+        "novaOS/build/stockage-smp-0167/reg/defauts-aarch64-512.json",
+        "--defauts-dma",
+        "--multipage",
+        "--taille",
+        "4194304"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "defauts-x86_64-4096",
+      "log_sha256": "a9e051269fb64d91c673dc7bb515163b8a83c25e88d068bcfb9def195724cd9e",
+      "debut_utc": "2026-11-14T09:39:06.999395+00:00",
+      "code": 0,
+      "duree_s": 60.1,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/defauts/novaOS/tests/coupure_cow_groupee.py",
+        "x86_64",
+        "4096",
+        "novaOS/build/stockage-smp-0167/reg/defauts-x86_64-4096.json",
+        "--defauts-dma",
+        "--multipage",
+        "--taille",
+        "4194304"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "defauts-x86_64-512",
+      "log_sha256": "40b88b22f3a0769a95a7caf7137cd25d33e777613467f4d8c1764bb4b6cf36fe",
+      "debut_utc": "2026-11-14T09:35:45.234022+00:00",
+      "code": 0,
+      "duree_s": 54.1,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/defauts/novaOS/tests/coupure_cow_groupee.py",
+        "x86_64",
+        "512",
+        "novaOS/build/stockage-smp-0167/reg/defauts-x86_64-512.json",
+        "--defauts-dma",
+        "--multipage",
+        "--taille",
+        "4194304"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "file8-aarch64-4096",
+      "log_sha256": "037b3fb410545e88eb18c95c388d63c6c6cba4b009074076f28b31017b48dbbd",
+      "debut_utc": "2026-11-14T09:44:45.778618+00:00",
+      "code": 0,
+      "duree_s": 7.88,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sonde/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "4096",
+        "debut",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/file8-aarch64-4096.json",
+        "--entrees-file",
+        "8"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "file8-aarch64-512",
+      "log_sha256": "20bc56b757a67b758b4446c6633c3c8729c65d4f26339d763bce331ebe59ce93",
+      "debut_utc": "2026-11-14T09:39:47.572933+00:00",
+      "code": 0,
+      "duree_s": 10.84,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sonde/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "512",
+        "debut",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/file8-aarch64-512.json",
+        "--entrees-file",
+        "8"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "file8-x86_64-4096",
+      "log_sha256": "01463e91c2c5b9bccef47ba05974d7eb2912c7aa79ff497e5e7338d4659a6684",
+      "debut_utc": "2026-11-14T09:40:39.831733+00:00",
+      "code": 0,
+      "duree_s": 6.44,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sonde/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "4096",
+        "debut",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/file8-x86_64-4096.json",
+        "--entrees-file",
+        "8"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "file8-x86_64-512",
+      "log_sha256": "99e162c6b7a89c5d918d9f3f9928cb9dbe4154474e4913386f124eacea1098a6",
+      "debut_utc": "2026-11-14T09:37:07.966593+00:00",
+      "code": 0,
+      "duree_s": 6.17,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sonde/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "512",
+        "debut",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/file8-x86_64-512.json",
+        "--entrees-file",
+        "8"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "firmware-dma-sequentiel",
+      "log_sha256": "ac42f0ac6b2854f4cc82adc67c86c0d784e4421c180f610470f5396589555840",
+      "code": 0,
+      "debut_utc": "2026-11-14T09:38:57.442808+00:00",
+      "fin_utc": "2026-11-14T09:42:21.604925+00:00",
+      "duree_s": 204.161,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS/tests/dma_sequentiel.py",
+        "novaOS/build/audit-nsh-0163/fv-sequentiel",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS/target-dma-sequentiel/aarch64-unknown-none-softfloat/release/novaos",
+        "novaOS/build/stockage-smp-0167/reg/sequentiel",
+        "--fv-suspendu",
+        "novaOS/build/vi-0162/firmware-transfert"
+      ],
+      "noyau_sha256": "ac5127761f63a4fd6af483fe43b66ab02124aaa88d5e305029e8728204a5aa84"
+    },
+    {
+      "essai": "firmware-gicv3-lab",
+      "log_sha256": "ac580a6742589ac3f35ca37780c81bf49abf22eaab9bbc3ea3b02835f651b13d",
+      "code": 0,
+      "debut_utc": "2026-11-14T09:37:44.904223+00:00",
+      "fin_utc": "2026-11-14T09:38:57.438481+00:00",
+      "duree_s": 72.534,
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS/tests/prototype_uefi.py",
+        "novaOS/build/vi-0162/firmware-gic-temoin",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS/target-gicv3-lab/aarch64-unknown-none-softfloat/release/novaos",
+        "--fv-sans-ack",
+        "novaOS/build/vi-0162/firmware-suspendu"
+      ],
+      "noyau_sha256": "dbd73960a97a77b300578a77133ce1d2602915786432970d4d775d5196b6c80a"
+    },
+    {
+      "essai": "fs-aarch64",
+      "log_sha256": "3757084ef2aacf035e3561c0f1893d9061bcd3df6d83a7eefbfb2e538f080c87",
+      "debut_utc": "2026-11-14T09:27:12.455777+00:00",
+      "code": 0,
+      "duree_s": 400.71,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/p51-validation-suites.py",
+        "aarch64"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "fs-x86_64",
+      "log_sha256": "bf868b7db3d1a3c9ce2b000d05ce8db726013c6cf13e25a8e791ea3e741ec50b",
+      "debut_utc": "2026-11-14T09:27:12.455966+00:00",
+      "code": 0,
+      "duree_s": 518.02,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/p51-validation-suites.py",
+        "x86_64"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "gic3-el1",
+      "log_sha256": "6dd3acf3c5d2182a975a35b6ab1b41bb66df9bdefb190dcb259754cf75a0cde0",
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/reg/gic-qemu.py"
+      ],
+      "debut_utc": "2026-11-14T09:37:41.196657+00:00",
+      "code": 0,
+      "duree_s": 0.37,
+      "env": {}
+    },
+    {
+      "essai": "lz4-interop",
+      "log_sha256": "ca5f0a1399d111886acd417ac0fbb016b124265350ec41ba061f70bfdf8a309d",
+      "debut_utc": "2026-11-14T09:29:59.881764+00:00",
+      "code": 0,
+      "duree_s": 0.55,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/p6-lz4-interop.py",
+        "--bibliotheque",
+        "/opt/homebrew/opt/lz4/lib/liblz4.dylib"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-block-perf",
+      "log_sha256": "2db8e1163b8e2d8a6ff30d99d9b198ebb502af6441f2a273edc24c2a6d95dd71",
+      "debut_utc": "2026-11-14T09:45:09.571199+00:00",
+      "code": 0,
+      "duree_s": 12.8,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "block-perf"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-block-test",
+      "log_sha256": "f97adac7608e514ed31586623e7a1f8d88aedad99e2bb64b6b692accdb904f7f",
+      "debut_utc": "2026-11-14T09:40:47.469244+00:00",
+      "code": 0,
+      "duree_s": 176.66,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "block-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-cli-p9-test",
+      "log_sha256": "64614902a17ffa71c18279e01c27f6f10b69bb72413b942ca3eb544b01dbec09",
+      "debut_utc": "2026-11-14T09:36:46.256457+00:00",
+      "code": 0,
+      "duree_s": 63.05,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "cli-p9-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-cli-test",
+      "log_sha256": "9f813c4186656e38715c8e9c9c4608666ff05858c0fcdac5ff2490738d41091a",
+      "debut_utc": "2026-11-14T09:35:50.427619+00:00",
+      "code": 0,
+      "duree_s": 55.83,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "cli-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-elf-test",
+      "log_sha256": "a2aae68807c3ea2a71684942dafbd134d427485045baa35ba677057ca3f630ab",
+      "debut_utc": "2026-11-14T09:40:16.213702+00:00",
+      "code": 0,
+      "duree_s": 6.9,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "elf-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-file-test",
+      "log_sha256": "f669198b1e5c300afa331addcd496282b96319d51cebc93aba9ae504500f2c69",
+      "debut_utc": "2026-11-14T09:35:37.799740+00:00",
+      "code": 0,
+      "duree_s": 561.11,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "file-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-ipc-perf",
+      "log_sha256": "40377614c411cf724d5be238a433bded2b5d7dec72971d8bf12f5f168971c384",
+      "debut_utc": "2026-11-14T09:43:44.130214+00:00",
+      "code": 0,
+      "duree_s": 58.44,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "ipc-perf"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-ipc-races",
+      "log_sha256": "fb484afbc3a3b2acb2c02bc175850a35ed9c3b3ae75de1a6e1eabdbc953e6f52",
+      "debut_utc": "2026-11-14T09:40:31.387030+00:00",
+      "code": 0,
+      "duree_s": 16.08,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "ipc-races"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-lifecycle-test",
+      "log_sha256": "b7406a616b0fcdc843b604c2c4fdbaae94a7d72da1255cbb004a987c4124866f",
+      "debut_utc": "2026-11-14T09:40:23.109536+00:00",
+      "code": 0,
+      "duree_s": 8.26,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "lifecycle-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-mount-progress-test",
+      "log_sha256": "a202ec669ce81721c2d713ab6b528cd00be6f67929218b598a2780d745b73f57",
+      "debut_utc": "2026-11-14T09:40:15.129977+00:00",
+      "code": 0,
+      "duree_s": 0.37,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "mount-progress-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-namespace-test",
+      "log_sha256": "8e8d0e0f6b7572d9e4a422345230b75700b078ed626b8c0996a24a8ea8724920",
+      "debut_utc": "2026-11-14T09:35:37.799841+00:00",
+      "code": 0,
+      "duree_s": 349.81,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "namespace-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-nsh-scripts-test",
+      "log_sha256": "55176c0987241512f4243ee4aa1ded0996901b3f8d4bda10a7d45c7d5e7b99b0",
+      "debut_utc": "2026-11-14T09:38:25.738601+00:00",
+      "code": 0,
+      "duree_s": 29.58,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "nsh-scripts-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-nsh-terminal-test",
+      "log_sha256": "ee8ee8a25ad836c7b6b27629f07241801544e77a5b62de8f968ec4e19b9f8aa5",
+      "debut_utc": "2026-11-14T09:38:55.314262+00:00",
+      "code": 0,
+      "duree_s": 17.09,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "nsh-terminal-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-nsh-test",
+      "log_sha256": "acf79866fa250e308d1b1c0040f81030e944fc9be6a23f3755adcf82544a6b25",
+      "debut_utc": "2026-11-14T09:37:49.308770+00:00",
+      "code": 0,
+      "duree_s": 36.43,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "nsh-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-ram-test",
+      "log_sha256": "00c73136624a1a7a78ab2e3f5f4202e77caf71580c341bd356400a46c1def452",
+      "debut_utc": "2026-11-14T09:44:42.574868+00:00",
+      "code": 0,
+      "duree_s": 27.0,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "ram-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-test",
+      "log_sha256": "b9f79f2dd7bb2a4ad520e9ea42c1a13df2a3c5e00ccd558fe4dc5a7936a6d141",
+      "debut_utc": "2026-11-14T09:35:37.799603+00:00",
+      "code": 0,
+      "duree_s": 278.41,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-vi-ecran-test",
+      "log_sha256": "813134a8b64a398df5ee8cdd848b1149e7d262b9a76a3a9c238ed57e4cf6eecd",
+      "debut_utc": "2026-11-14T09:35:37.801454+00:00",
+      "code": 0,
+      "duree_s": 12.63,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "vi-ecran-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-vi-memoire-test",
+      "log_sha256": "c640ccdf36534f46e61db54172469284c3a95d906450293b5d523b2810e45a14",
+      "debut_utc": "2026-11-14T09:40:14.497657+00:00",
+      "code": 0,
+      "duree_s": 0.63,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "vi-memoire-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-vi-test",
+      "log_sha256": "ae32e3b647eaff3d867a54af0bedd34e6c3a6030271bca2d5fdb7c785863391b",
+      "debut_utc": "2026-11-14T09:39:12.406842+00:00",
+      "code": 0,
+      "duree_s": 44.03,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "vi-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-aarch64-vi-volumes-test",
+      "log_sha256": "e125f212d3ce361fb53db17c5fc41acf5474c658dcec46703fcd4ee6f804755a",
+      "debut_utc": "2026-11-14T09:39:56.437955+00:00",
+      "code": 0,
+      "duree_s": 18.06,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=aarch64",
+        "vi-volumes-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-block-perf",
+      "log_sha256": "81085c35f2a62a48d9cc86a97323fcefe95c77508f0c360fef425978b2ffc7c3",
+      "debut_utc": "2026-11-14T09:41:18.176953+00:00",
+      "code": 0,
+      "duree_s": 5.72,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "block-perf"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-block-test",
+      "log_sha256": "3ef5dff68d6d670248ad9317a6405c5d9c2d67279c2ab016a155687a6ed98238",
+      "debut_utc": "2026-11-14T09:38:40.869569+00:00",
+      "code": 0,
+      "duree_s": 86.28,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "block-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-cli-p9-test",
+      "log_sha256": "45ec8463602841ae7b54e3720961063233c915cf98a5770b9c79604ad7bd912b",
+      "debut_utc": "2026-11-14T09:36:13.576404+00:00",
+      "code": 0,
+      "duree_s": 29.41,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "cli-p9-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-cli-test",
+      "log_sha256": "a2aff356abd542f988362c6d19d6459882af1b4c8cde3dc1fa1ce40668008e1e",
+      "debut_utc": "2026-11-14T09:35:46.591817+00:00",
+      "code": 0,
+      "duree_s": 26.98,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "cli-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-elf-test",
+      "log_sha256": "eff9bbd93515d255c9446755750d9d5f34a53563e8e24960bf2b5b608a702039",
+      "debut_utc": "2026-11-14T09:38:24.775343+00:00",
+      "code": 0,
+      "duree_s": 3.4,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "elf-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-file-test",
+      "log_sha256": "9424509b2c96dadd131d4b6b224fe085be60af4c05ade37e0b996309245e84b5",
+      "debut_utc": "2026-11-14T09:35:37.804474+00:00",
+      "code": 0,
+      "duree_s": 270.28,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "file-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-ipc-perf",
+      "log_sha256": "bf5f5f2412223b1a3f05d9bf20e84c7146695ae13622be475aa0163ce59921f4",
+      "debut_utc": "2026-11-14T09:40:07.146371+00:00",
+      "code": 0,
+      "duree_s": 56.27,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "ipc-perf"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-ipc-races",
+      "log_sha256": "2edba63457297a07b770728409d2efe9eef4780fa067902115bd0501c4146c30",
+      "debut_utc": "2026-11-14T09:38:31.277118+00:00",
+      "code": 0,
+      "duree_s": 9.59,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "ipc-races"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-lifecycle-test",
+      "log_sha256": "bfa2f35aa5971eedd95c7ba1e654bf9f832b79258bd034c9be35a06160394574",
+      "debut_utc": "2026-11-14T09:38:28.178784+00:00",
+      "code": 0,
+      "duree_s": 3.1,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "lifecycle-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-mount-progress-test",
+      "log_sha256": "1165dfb87ca4bdb60a6bd01252fb5b98303a0b310ff37db95c684e1940033bbb",
+      "debut_utc": "2026-11-14T09:38:02.658388+00:00",
+      "code": 0,
+      "duree_s": 0.52,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "mount-progress-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-namespace-test",
+      "log_sha256": "3ab01ed06eaa396c49da0b8582d72be3a8547b74749ebbc3eefa7d6627373822",
+      "debut_utc": "2026-11-14T09:35:37.805879+00:00",
+      "code": 0,
+      "duree_s": 169.3,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "namespace-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-nsh-scripts-test",
+      "log_sha256": "59f9e87eb4d108dabf0e687f8154916a67e31c83daa2134e6b942435492ac85d",
+      "debut_utc": "2026-11-14T09:36:58.851694+00:00",
+      "code": 0,
+      "duree_s": 14.4,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "nsh-scripts-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-nsh-terminal-test",
+      "log_sha256": "e56153713c7f6a7d252a9d907f3bcefcfa908771e580a0cca23e8c0b1fdea2a8",
+      "debut_utc": "2026-11-14T09:37:13.254900+00:00",
+      "code": 0,
+      "duree_s": 8.46,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "nsh-terminal-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-nsh-test",
+      "log_sha256": "9b424a51bef473e214a374985b7b2714a2144ea02341291fd294c4b9d9872088",
+      "debut_utc": "2026-11-14T09:36:42.985036+00:00",
+      "code": 0,
+      "duree_s": 15.87,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "nsh-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-ram-test",
+      "log_sha256": "a527400e6e2b088d36f432d2468edfc0eb22ed16a894aeff8b5ee2a0a07fe489",
+      "debut_utc": "2026-11-14T09:41:03.423072+00:00",
+      "code": 0,
+      "duree_s": 14.75,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "ram-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-test",
+      "log_sha256": "969bdd6c28e7b402e6a9101ac8d5ced426cf20bf6f44ed42e70825d40d1192d7",
+      "debut_utc": "2026-11-14T09:35:37.803155+00:00",
+      "code": 0,
+      "duree_s": 166.97,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-vi-ecran-test",
+      "log_sha256": "1f7085843fcc7a98c39665dbc795b98088c3df9a35790c71b416a8350e36b914",
+      "debut_utc": "2026-11-14T09:35:37.806944+00:00",
+      "code": 0,
+      "duree_s": 8.78,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "vi-ecran-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-vi-memoire-test",
+      "log_sha256": "9a34e175d285f9cdb1ff1c883b070b64e318ca486d195e36cc1b1e2298ae8f91",
+      "debut_utc": "2026-11-14T09:38:01.708984+00:00",
+      "code": 0,
+      "duree_s": 0.95,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "vi-memoire-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-vi-test",
+      "log_sha256": "5628964839129b4ca77a68d8615d53bd780b12e51d49a0dfa0fb3657e0ea8c1c",
+      "debut_utc": "2026-11-14T09:37:21.717936+00:00",
+      "code": 0,
+      "duree_s": 23.28,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "vi-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "os-x86_64-vi-volumes-test",
+      "log_sha256": "c8d89e7578633b7b07cc725bbb9b22eb320a83c481c3e9b0ebdfd4764740d9cf",
+      "debut_utc": "2026-11-14T09:37:45.000998+00:00",
+      "code": 0,
+      "duree_s": 16.71,
+      "commande": [
+        "make",
+        "-C",
+        "novaOS/build/stockage-smp-0167/profils/regression/novaOS",
+        "ARCH=x86_64",
+        "vi-volumes-test"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "p0-interop",
+      "log_sha256": "be19581011115ead38b6912767632c7fc006ebc5062b4bd08e7a6c424506d5b5",
+      "debut_utc": "2026-11-14T09:27:12.457203+00:00",
+      "code": 0,
+      "duree_s": 126.43,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/test-interop.py"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "p9-interop",
+      "log_sha256": "f4a72958fdf6ef31d7e3800059a53e0b78041b6dd0074ddcbb1d018da6c6d6bf",
+      "debut_utc": "2026-11-14T09:29:18.883699+00:00",
+      "code": 0,
+      "duree_s": 41.0,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/portable-git/candidat/novaFS/lab/p9-interop.py"
+      ],
+      "env": {
+        "GIT_WORK_TREE": "novaOS/build/stockage-smp-0167/portable-git/candidat",
+        "GIT_DIR": ".git"
+      }
+    },
+    {
+      "essai": "sans-aarch64-4096",
+      "log_sha256": "4f5f05c386f3c8f93d205164995eec321084c3acb8bcc2453ed948ba77f469fe",
+      "debut_utc": "2026-11-14T09:44:05.603067+00:00",
+      "code": 0,
+      "duree_s": 8.83,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_invite.py",
+        "aarch64",
+        "4096",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "sans-aarch64-512",
+      "log_sha256": "6ae6755427c003773de749b78f3189a97c3d8f3e3ec5103a820ebbf49f0a7d71",
+      "debut_utc": "2026-11-14T09:38:52.282832+00:00",
+      "code": 0,
+      "duree_s": 11.6,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_invite.py",
+        "aarch64",
+        "512",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "sans-x86_64-4096",
+      "log_sha256": "c6e7918f78656e72e55cd18166b4985751b4fe9c21d7208e24f8f42184c13262",
+      "debut_utc": "2026-11-14T09:40:07.098630+00:00",
+      "code": 0,
+      "duree_s": 6.47,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_invite.py",
+        "x86_64",
+        "4096",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "sans-x86_64-512",
+      "log_sha256": "13ae0aa3d813eee051c795023bc64e781be521a58a515f834ad17ebb93985dfd",
+      "debut_utc": "2026-11-14T09:36:39.331968+00:00",
+      "code": 0,
+      "duree_s": 5.23,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_invite.py",
+        "x86_64",
+        "512",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "volume-fragmente-aarch64-4096",
+      "log_sha256": "28a60ee38aca709656aa61d288d84c95259e8c369e8c603ebb5c6a0cedff6361",
+      "debut_utc": "2026-11-14T09:44:29.243481+00:00",
+      "code": 0,
+      "duree_s": 16.53,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "4096",
+        "fragmente",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/volume-fragmente-aarch64-4096.json",
+        "--sans-sonde"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "volume-fragmente-aarch64-512",
+      "log_sha256": "4d940150a8fe0dabc2a37e8e78fe51d42be1f9490539e8523b32469757578e91",
+      "debut_utc": "2026-11-14T09:39:22.301768+00:00",
+      "code": 0,
+      "duree_s": 25.27,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "512",
+        "fragmente",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/volume-fragmente-aarch64-512.json",
+        "--sans-sonde"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "volume-fragmente-x86_64-4096",
+      "log_sha256": "8eb5150c0e701db32e861cac05d5c8385930410de05ff3d4707acf2e1a4c2738",
+      "debut_utc": "2026-11-14T09:40:22.031926+00:00",
+      "code": 0,
+      "duree_s": 17.8,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "4096",
+        "fragmente",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/volume-fragmente-x86_64-4096.json",
+        "--sans-sonde"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "volume-fragmente-x86_64-512",
+      "log_sha256": "f49a81a1d4ced278795fb246112a2ea5272795887b742624f912f153316e8081",
+      "debut_utc": "2026-11-14T09:36:53.057864+00:00",
+      "code": 0,
+      "duree_s": 14.91,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "512",
+        "fragmente",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/volume-fragmente-x86_64-512.json",
+        "--sans-sonde"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "volume-sature-aarch64-4096",
+      "log_sha256": "3c699dfa53eca11687228c35907e00347d3c3333ce4bdcf061a6a22a696a9385",
+      "debut_utc": "2026-11-14T09:44:14.435254+00:00",
+      "code": 0,
+      "duree_s": 14.81,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "4096",
+        "sature",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/volume-sature-aarch64-4096.json",
+        "--sans-sonde"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "volume-sature-aarch64-512",
+      "log_sha256": "ee57559f06b4927efbbb83ff757527125584861f61e52b31c5f987a57096731d",
+      "debut_utc": "2026-11-14T09:39:03.884629+00:00",
+      "code": 0,
+      "duree_s": 18.42,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_elargies.py",
+        "aarch64",
+        "512",
+        "sature",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/volume-sature-aarch64-512.json",
+        "--sans-sonde"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "volume-sature-x86_64-4096",
+      "log_sha256": "3764c87cecd68fb8f8b38f3576d309cbf2cfa579376c76bbd87b706bbaf4e3d2",
+      "debut_utc": "2026-11-14T09:40:13.566890+00:00",
+      "code": 0,
+      "duree_s": 8.46,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "4096",
+        "sature",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/volume-sature-x86_64-4096.json",
+        "--sans-sonde"
+      ],
+      "env": {}
+    },
+    {
+      "essai": "volume-sature-x86_64-512",
+      "log_sha256": "e5d30b750f7f14aced84c53301e0a2b7d1edc80c9624a6bee225c114ceb37965",
+      "debut_utc": "2026-11-14T09:36:44.566677+00:00",
+      "code": 0,
+      "duree_s": 8.49,
+      "commande": [
+        "python3",
+        "-B",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaOS/tests/es_groupees_elargies.py",
+        "x86_64",
+        "512",
+        "sature",
+        "novaOS/build/stockage-smp-0167/profils/sans/novaFS/target/aarch64-apple-darwin/release/examples/es-groupees",
+        "novaOS/build/stockage-smp-0167/reg/volume-sature-x86_64-512.json",
+        "--sans-sonde"
+      ],
+      "env": {}
+    }
+  ],
+  "regression_interversions": "interop-p9.json",
+  "moteur_portable": {
+    "aarch64": {
+      "architecture": "aarch64",
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 199,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "modele": {
+        "reussis": 1,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "options": {
+        "reussis": 2,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=14.479",
+      "pannes_p5": {
+        "512": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ],
+        "4096": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ]
+      },
+      "controles_p51_standard": [
+        "curseur_du_montage_cow",
+        "rang_des_aretes_creuses_et_racines_divergentes",
+        "donnees_propres_apres_f2_uniquement"
+      ],
+      "controles_p51_sondes": [
+        "curseur_du_montage_cow",
+        "rang_des_aretes_creuses_et_racines_divergentes",
+        "donnees_propres_apres_f2_uniquement"
+      ],
+      "migration": [
+        "MIGRATION secteur=512 frontières=96",
+        "MIGRATION secteur=4096 frontières=96"
+      ],
+      "permutations": [
+        "PERMUTATIONS secteur=512 ordres=24",
+        "PERMUTATIONS secteur=4096 ordres=24"
+      ],
+      "saturation": [
+        "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+        "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+      ],
+      "aleatoire": [
+        "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+        "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+        "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+        "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+      ],
+      "restitution": [
+        "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=195408 après=195408",
+        "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=195408 après=195408",
+        "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=195408 après=195408",
+        "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=195408 après=195408"
+      ],
+      "cow": [
+        {
+          "acquit_persistant": true,
+          "ancien": 105,
+          "conflits": 4,
+          "frontieres": 39,
+          "injections": 117,
+          "nouveau": 9,
+          "plages": false,
+          "refus": 3,
+          "secteur": 512
+        },
+        {
+          "acquit_persistant": true,
+          "ancien": 114,
+          "conflits": 4,
+          "frontieres": 42,
+          "injections": 126,
+          "nouveau": 9,
+          "plages": true,
+          "refus": 3,
+          "secteur": 512
+        },
+        {
+          "acquit_persistant": true,
+          "ancien": 105,
+          "conflits": 4,
+          "frontieres": 39,
+          "injections": 117,
+          "nouveau": 9,
+          "plages": false,
+          "refus": 3,
+          "secteur": 4096
+        },
+        {
+          "acquit_persistant": true,
+          "ancien": 114,
+          "conflits": 4,
+          "frontieres": 42,
+          "injections": 126,
+          "nouveau": 9,
+          "plages": true,
+          "refus": 3,
+          "secteur": 4096
+        }
+      ],
+      "injections_ancres": 2304
+    },
+    "x86_64": {
+      "architecture": "x86_64",
+      "standard": {
+        "reussis": 196,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "sondes": {
+        "reussis": 199,
+        "echecs": 0,
+        "ignores": 6
+      },
+      "modele": {
+        "reussis": 1,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "options": {
+        "reussis": 2,
+        "echecs": 0,
+        "ignores": 0
+      },
+      "differentiel": "DIFFERENTIEL graines=100 opérations=1000000 commits_observés=345183 pénuries_injectées=54643 remontages_et_audits=1000 secondes=27.635",
+      "pannes_p5": {
+        "512": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ],
+        "4096": [
+          {
+            "operation": "Snapshot",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Clone",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Ecrire",
+            "frontieres": 39,
+            "coupures": 117,
+            "erreurs_io": 26,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Retirer",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          },
+          {
+            "operation": "Collecter",
+            "frontieres": 15,
+            "coupures": 45,
+            "erreurs_io": 10,
+            "dechirees": 1
+          }
+        ]
+      },
+      "controles_p51_standard": [
+        "curseur_du_montage_cow",
+        "rang_des_aretes_creuses_et_racines_divergentes",
+        "donnees_propres_apres_f2_uniquement"
+      ],
+      "controles_p51_sondes": [
+        "curseur_du_montage_cow",
+        "rang_des_aretes_creuses_et_racines_divergentes",
+        "donnees_propres_apres_f2_uniquement"
+      ],
+      "migration": [
+        "MIGRATION secteur=512 frontières=96",
+        "MIGRATION secteur=4096 frontières=96"
+      ],
+      "permutations": [
+        "PERMUTATIONS secteur=512 ordres=24",
+        "PERMUTATIONS secteur=4096 ordres=24"
+      ],
+      "saturation": [
+        "SATURATION secteur=512 capacité=706 crédits_libres=0 divergence_réussie",
+        "SATURATION secteur=4096 capacité=706 crédits_libres=0 divergence_réussie"
+      ],
+      "aleatoire": [
+        "ALEATOIRE secteur=512 graine=519c04287dab33a1 opérations=120 coupures=30",
+        "ALEATOIRE secteur=512 graine=f3a014176825914d opérations=120 coupures=30",
+        "ALEATOIRE secteur=4096 graine=519c04287dab33a1 opérations=120 coupures=30",
+        "ALEATOIRE secteur=4096 graine=f3a014176825914d opérations=120 coupures=30"
+      ],
+      "restitution": [
+        "RESTITUTION secteur=512 F2_erreur=false cycles=32 avant=180336 après=180336",
+        "RESTITUTION secteur=512 F2_erreur=true cycles=32 avant=180336 après=180336",
+        "RESTITUTION secteur=4096 F2_erreur=false cycles=32 avant=180336 après=180336",
+        "RESTITUTION secteur=4096 F2_erreur=true cycles=32 avant=180336 après=180336"
+      ],
+      "cow": [
+        {
+          "acquit_persistant": true,
+          "ancien": 105,
+          "conflits": 4,
+          "frontieres": 39,
+          "injections": 117,
+          "nouveau": 9,
+          "plages": false,
+          "refus": 3,
+          "secteur": 512
+        },
+        {
+          "acquit_persistant": true,
+          "ancien": 114,
+          "conflits": 4,
+          "frontieres": 42,
+          "injections": 126,
+          "nouveau": 9,
+          "plages": true,
+          "refus": 3,
+          "secteur": 512
+        },
+        {
+          "acquit_persistant": true,
+          "ancien": 105,
+          "conflits": 4,
+          "frontieres": 39,
+          "injections": 117,
+          "nouveau": 9,
+          "plages": false,
+          "refus": 3,
+          "secteur": 4096
+        },
+        {
+          "acquit_persistant": true,
+          "ancien": 114,
+          "conflits": 4,
+          "frontieres": 42,
+          "injections": 126,
+          "nouveau": 9,
+          "plages": true,
+          "refus": 3,
+          "secteur": 4096
+        }
+      ],
+      "injections_ancres": 2304
+    }
+  },
+  "coupures_qemu": [
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "profil": "coupe",
+      "cas": [
+        {
+          "frontiere": "pages",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "retrait",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f1",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-ecriture",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        }
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 512,
+      "profil": "defauts",
+      "cas": [
+        {
+          "frontiere": "retrait-vol",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "controles",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": true
+        },
+        {
+          "frontiere": "longueur",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "erreur-sg",
+          "evenement_suspendu": null,
+          "secteur_sonde": 8192,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": true
+        },
+        {
+          "frontiere": "erreur-sg",
+          "evenement_suspendu": null,
+          "secteur_sonde": 8192,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        }
+      ]
+    },
+    {
+      "profil": "classique",
+      "cas": [
+        {
+          "architecture": "aarch64",
+          "secteur": 512,
+          "coupure": "après F2 du premier lot",
+          "remontage_normal": true,
+          "octets_source_relus": 135171,
+          "nom_final_absent": true
+        }
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "profil": "coupe",
+      "cas": [
+        {
+          "frontiere": "pages",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "retrait",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f1",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-ecriture",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        }
+      ]
+    },
+    {
+      "arch": "aarch64",
+      "secteur": 4096,
+      "profil": "defauts",
+      "cas": [
+        {
+          "frontiere": "retrait-vol",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "controles",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": true
+        },
+        {
+          "frontiere": "longueur",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "erreur-sg",
+          "evenement_suspendu": null,
+          "secteur_sonde": 8192,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": true
+        },
+        {
+          "frontiere": "erreur-sg",
+          "evenement_suspendu": null,
+          "secteur_sonde": 8192,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        }
+      ]
+    },
+    {
+      "profil": "classique",
+      "cas": [
+        {
+          "architecture": "aarch64",
+          "secteur": 4096,
+          "coupure": "après F2 du premier lot",
+          "remontage_normal": true,
+          "octets_source_relus": 135171,
+          "nom_final_absent": true
+        }
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "profil": "coupe",
+      "cas": [
+        {
+          "frontiere": "pages",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "retrait",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f1",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-ecriture",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        }
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 512,
+      "profil": "defauts",
+      "cas": [
+        {
+          "frontiere": "retrait-vol",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "controles",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": true
+        },
+        {
+          "frontiere": "longueur",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "erreur-sg",
+          "evenement_suspendu": null,
+          "secteur_sonde": 8192,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": true
+        },
+        {
+          "frontiere": "erreur-sg",
+          "evenement_suspendu": null,
+          "secteur_sonde": 8192,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        }
+      ]
+    },
+    {
+      "profil": "classique",
+      "cas": [
+        {
+          "architecture": "x86_64",
+          "secteur": 512,
+          "coupure": "après F2 du premier lot",
+          "remontage_normal": true,
+          "octets_source_relus": 135171,
+          "nom_final_absent": true
+        }
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "profil": "coupe",
+      "cas": [
+        {
+          "frontiere": "pages",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "retrait",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f1",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f1",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "avant-f2",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-f2",
+          "evenement_suspendu": "flush_to_disk",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": 4,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "vol-ecriture",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        }
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "secteur": 4096,
+      "profil": "defauts",
+      "cas": [
+        {
+          "frontiere": "retrait-vol",
+          "evenement_suspendu": "write_aio",
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": 3,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "controles",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": true
+        },
+        {
+          "frontiere": "longueur",
+          "evenement_suspendu": null,
+          "secteur_sonde": null,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        },
+        {
+          "frontiere": "erreur-sg",
+          "evenement_suspendu": null,
+          "secteur_sonde": 8192,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": true,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": true
+        },
+        {
+          "frontiere": "erreur-sg",
+          "evenement_suspendu": null,
+          "secteur_sonde": 8192,
+          "octets_source": 4194304,
+          "multipage": true,
+          "montage_normal": true,
+          "relecture_exacte": true,
+          "destination_complete": false,
+          "flush_termines_au_point": null,
+          "acquit_avant_coupure": false
+        }
+      ]
+    },
+    {
+      "profil": "classique",
+      "cas": [
+        {
+          "architecture": "x86_64",
+          "secteur": 4096,
+          "coupure": "après F2 du premier lot",
+          "remontage_normal": true,
+          "octets_source_relus": 135171,
+          "nom_final_absent": true
+        }
+      ]
+    }
+  ],
+  "concurrence": [
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "ecriture_concurrente": true,
+      "suppression_ouverte_refusee": true,
+      "remplacement_du_nom_detecte": true,
+      "modifications_locales_conservees": true,
+      "bords_utf8_publies": true
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "ecriture_concurrente": true,
+      "suppression_ouverte_refusee": true,
+      "remplacement_du_nom_detecte": true,
+      "modifications_locales_conservees": true,
+      "bords_utf8_publies": true
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "ecriture_concurrente": true,
+      "suppression_ouverte_refusee": true,
+      "remplacement_du_nom_detecte": true,
+      "modifications_locales_conservees": true,
+      "bords_utf8_publies": true
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "ecriture_concurrente": true,
+      "suppression_ouverte_refusee": true,
+      "remplacement_du_nom_detecte": true,
+      "modifications_locales_conservees": true,
+      "bords_utf8_publies": true
+    }
+  ],
+  "coupures_utm": {
+    "sha256_elf": "e30412c51107f65f3bfadbdb1284320eb4fd42a8721ce277a1c888b1906f444f",
+    "sha256_generateur": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+    "essais": [
+      {
+        "frontiere": "pages",
+        "secteur": 512,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          66,
+          67
+        ],
+        "apres_redemarrage": [
+          66,
+          67
+        ],
+        "destination_complete": false,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "9df77559b032a41aca93d47cb99a32a24e36093edb2ac9f9ee43dde144c9b27b",
+        "series": {
+          "sauvegarde.serial": "6ee00634af51a6a9543d03f17cf55ed1f64bd00f12a555c67c236bdfee1b87fd",
+          "reprise.serial": "5ea1468859c9ad2bc2fefef7178f070e1f6a151ac5e5a5cfc606f80974515995"
+        }
+      },
+      {
+        "frontiere": "f1",
+        "secteur": 512,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          66,
+          67
+        ],
+        "apres_redemarrage": [
+          66,
+          67
+        ],
+        "destination_complete": false,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "5019547b0bdccbee780025ace1d022a5aa1d565a0e90434b4121c0af5e370d63",
+        "series": {
+          "sauvegarde.serial": "ddb25a60067560815a6ffcf70d49f26b4b70c6d6d903d84e8cffb1532257b6f4",
+          "reprise.serial": "5a38131abbf9ff73ee04697215dfbbf9820355210cf1a0e9282547c3ae4d6861"
+        }
+      },
+      {
+        "frontiere": "f2",
+        "secteur": 512,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          67,
+          68
+        ],
+        "apres_redemarrage": [
+          68,
+          69
+        ],
+        "destination_complete": true,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "24f880d654df6448b0ca03d246f56976e58a958da06ecc32c563251ce0667191",
+        "series": {
+          "sauvegarde.serial": "e5b42a37b01e3c6fdb80de1e2bdafd68eea928b8b044cc7b70d0c9490765bc34",
+          "reprise.serial": "5f4e72ef6a1d046d18afb740ef93598be792627e99cd16d72baf2898d8013d3f"
+        }
+      },
+      {
+        "frontiere": "pages",
+        "secteur": 4096,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          66,
+          67
+        ],
+        "apres_redemarrage": [
+          66,
+          67
+        ],
+        "destination_complete": false,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "4d0b53420e7011c9ccadc412340ba3c9501ea23666587ead62b51f14b70512b4",
+        "series": {
+          "sauvegarde.serial": "a2d231527b090816d62433d42ea3d84cda1a73984065fb5fbf4a207bb7cf946e",
+          "reprise.serial": "a13935b08ec5e4d75ce58b2a93f9d4f6489df0c92022a76e8e0b9b64aac5f684"
+        }
+      },
+      {
+        "frontiere": "f1",
+        "secteur": 4096,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          66,
+          67
+        ],
+        "apres_redemarrage": [
+          66,
+          67
+        ],
+        "destination_complete": false,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "db0c5e66ccbc4b49aa0cd47f0615eb5764ab1c492c065f2f6bfc56a15a65dcc1",
+        "series": {
+          "sauvegarde.serial": "de24c9de742daf14fce1aa74d1f3f719451d9d471fbe0d22e74437b10412e0a7",
+          "reprise.serial": "6c34b3338e01a3f76846199610dee3189fc829fd637e235a49f7f2b30a0a21ab"
+        }
+      },
+      {
+        "frontiere": "f2",
+        "secteur": 4096,
+        "environnement": "UTM QCOW2",
+        "arret": "utmctl stop --force",
+        "acquit_avant_coupure": false,
+        "octets_inseres": 4194304,
+        "avant": [
+          65,
+          66
+        ],
+        "juste_apres_coupure": [
+          67,
+          68
+        ],
+        "apres_redemarrage": [
+          68,
+          69
+        ],
+        "destination_complete": true,
+        "source_et_destination_verifiees": true,
+        "sha256_resultat": "dac8a293fd7c9bf6f5d9f001c948bf898903201ceb09b39506e4f4a5f010b2d2",
+        "series": {
+          "sauvegarde.serial": "993e9189e3b5a14b702f0cbf925086d78879e9c570e99b70007d32d8324b27e2",
+          "reprise.serial": "2ad47ed4ea6e8397db260a051a45e1b7f049405e57c01c6b6f2511df9a95bd98"
+        }
+      }
+    ]
+  },
+  "gic_el1": {
+    "timer": 30,
+    "intx_configuration": 37,
+    "acces_bloc": 0,
+    "dma_disque": 0
+  }
+}

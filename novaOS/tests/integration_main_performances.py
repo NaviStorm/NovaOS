@@ -97,7 +97,7 @@ def cellule(a):
     elargies = module("es_groupees_elargies")
     utm = module("es_groupees_utm")
     from qualification_es_corrigees import DESTINATIONS
-    from qos_utm import Observation
+    Observation = module("qos_utm").Observation
     moteur, arch = a.plateforme.split("-")
     cible = CIBLES[0] if arch == "aarch64" else CIBLES[1]
     dossier = a.sortie.resolve()
@@ -129,7 +129,7 @@ def cellule(a):
         (racine/"build").mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(prefix="qemu-", dir=dossier) as temp:
             mesure = elargies.essai(arch, a.secteur, a.cas, generateur, Path(temp), sonde,
-                                    session_classique=classique and not sonde)
+                                    session_classique=classique and not sonde, cpu_moteur=sys.platform == "darwin")
         serie = racine/"build"/f"cli-{arch}-{a.secteur}-elargi-{a.cas}.serial"
         (dossier/"sauvegarde.serial").write_bytes(serie.read_bytes())
     else:
@@ -139,7 +139,7 @@ def cellule(a):
             machine = Path(temp)/"machine"
             try:
                 mesure = utm.essai(a.profil_utm.resolve(), elf, generateur, a.secteur, machine, sonde,
-                                   False, a.cas, qos=Observation("ordinaire", "repos", False), classique=classique)
+                                   False, a.cas, qos=Observation("ordinaire", "repos", False, cpu_moteur=True), classique=classique)
             finally:
                 for nom in ("sauvegarde.serial", "reprise.serial", "moniteur.log"):
                     serie = machine/nom
