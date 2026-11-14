@@ -111,3 +111,24 @@ python3 -B novaOS/tests/reconstruire_es_0166.py HEAD "$sortie/exports" coupe
 ```
 
 Un échec avant `COUPURE groupe armer` conserve les séries et le disque à côté du rapport. Relier le premier statut du transport à l’opération, au tag IPC, au compteur de la virtqueue, au rang de la barrière et au bilan P9 après arrêt. Pour reproduire le profil ordinaire du banc, utiliser l’export `coupe` sans lui appliquer les deux jeux de sondes.
+
+Cette procédure a été exécutée depuis l’export du commit `8aafb94c1671204d4451558707b8cc71d5e6f7fc`. Les neuf frontières, dont les interruptions pendant F1 et F2, ont atteint leurs marqueurs et passé le contrôle de relecture après remontage en AArch64/512. [Validation du banc corrigé](validation/fusion-smp-v0.17.0/verification-banc.json)
+
+## Régressions du candidat versionné
+
+Avec rustc 1.99.1 et QEMU 11.1.3 TCG sur macOS 27.2, les **163 groupes de la campagne système** ont réussi au premier passage sur les ELF de `b76c863`. Les échecs initiaux décrits plus haut appartiennent aux campagnes distinctes de stockage et de vérification des bancs. [Détail de chaque groupe, profils et empreintes](validation/fusion-smp-v0.17.0/systeme.json) · [Lanceur système](../tests/smp_phase4_regressions.py)
+
+| Mesure | AArch64 | x86_64 |
+|---|---:|---:|
+| Groupes réussis à 1 / 2 / 4 vCPU | 26 / 30 / 32 | 23 / 25 / 27 |
+| Scénarios de démarrage, bloc, fichiers par topologie | 25 / 24 / 44 | 25 / 24 / 44 |
+| Injections concurrentes IPC, trois topologies | 150 000 | 150 000 |
+| Endurance IPC à quatre vCPU | 30 067 cycles en 301,109 s | 29 583 cycles en 300,151 s |
+| Cadres libres stables pendant l’endurance IPC | 62 478 | 62 992 |
+| Endurance de l’ordonnanceur avec restitution finale | 64,093 s | 60,825 s |
+
+Les suites ont exercé ELF, le cycle des processus, la mémoire, les capacités, les espaces de noms, les commandes, les scripts, le terminal et vi. Les six essais d’équité ont suivi 78 acteurs sur 180 intervalles, sans alerte d’attente supérieure à une seconde. Deux autres essais ont révoqué le dernier droit du slot 31, réattribué le slot et vérifié le refus de l’ancien droit. Ces résultats portent sur les durées, les charges et les topologies indiquées.
+
+### Débit IPC du nouvel ELF x86_64
+
+Dans 12 démarrages alternés à quatre vCPU et 256 Mio, le banc a enregistré 84 lots après chauffe. Deux échantillons consécutifs avant chaque démarrage ont mesuré au moins 75 % de CPU hôte inactif. Sur quatre couples épinglés, le débit médian du témoin de phase 4 est de 19 267 tours/s, contre 18 778 pour le candidat, soit −2,54 %. Les trois médianes par redémarrage du candidat sont inférieures aux trois témoins appariés. Pour un couple libre, la latence médiane passe de 44,24 à 46,21 µs, soit +4,47 %. Les douze démarrages n’isolent ni un effet de placement de code ni une cause d’ordonnancement. Le débit à quatre couples demeure supérieur au repère historique de 17 187 tours/s. [Mesures individuelles, horloges invité et hôte](validation/fusion-smp-v0.17.0/ipc-apparie.json)

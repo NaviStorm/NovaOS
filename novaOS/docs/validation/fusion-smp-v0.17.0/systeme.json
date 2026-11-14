@@ -1,0 +1,2844 @@
+{
+  "candidat": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+  "provenance": {
+    "revision_git": "b76c863c9302bf6ead53fac3b80b26df0513fe0d",
+    "profil": "brut",
+    "fixtures": {},
+    "commandes": [
+      {
+        "repertoire": "novaOS",
+        "commande": [
+          "rustup",
+          "run",
+          "stable",
+          "cargo",
+          "build",
+          "--offline",
+          "--locked",
+          "--release",
+          "--target",
+          "aarch64-unknown-none-softfloat"
+        ]
+      },
+      {
+        "repertoire": "novaOS",
+        "commande": [
+          "rustup",
+          "run",
+          "stable",
+          "cargo",
+          "build",
+          "--offline",
+          "--locked",
+          "--release",
+          "--target",
+          "x86_64-unknown-none"
+        ]
+      },
+      {
+        "repertoire": "novaFS",
+        "commande": [
+          "./lab/run",
+          "build",
+          "--offline",
+          "--bin",
+          "novafs"
+        ]
+      }
+    ],
+    "binaires": {
+      "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "9ff584997fbf568baad3b27a8d79d49ab5e8ef31b41cd9564b401a49e940693f",
+      "novaOS/target/x86_64-unknown-none/release/novaos": "cc613c5a3332fa3def2a72dbebb197a7de3deec17a00f4f46906a2baff542c61",
+      "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+    },
+    "sources_apres_fixtures": {
+      "fichiers": 564,
+      "sha256_chemins_et_contenus": "88fe9a03903b01aa49cb208a223193f9a948c25820d01747067f9e517d43abbf"
+    }
+  },
+  "outils": {
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "qemu_arm": "QEMU emulator version 11.1.3",
+    "qemu_x86": "QEMU emulator version 11.1.3",
+    "macos": "27.2"
+  },
+  "profils": {
+    "fp-gic3/aarch64-unknown-none-softfloat/release/novaos": "dce2e120fe71eafbe6d88c894b5f7bde5c63e44531e57ca621ebb3df606b4b91",
+    "fp-aarch64/aarch64-unknown-none-softfloat/release/novaos": "06695bfb63535072b1020038288afd29ae3914a8dc700bae74a443d7405e2817",
+    "fp-x86_64/x86_64-unknown-none/release/novaos": "c98d8c177d7d3f4ec608872dd3d7db1f3e052819640b7b832b041030867f626c"
+  },
+  "oracles": {
+    "aarch64/1/demarrage-aarch64": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "094bfcc52daa1a735887c79e0e40d0c2260a3c44a3b168ef80136525349bbacc",
+      "png_sha256": "f6cfaf64ad6a3f4ded1b336442c4096e6316294c40c44f7521590826bc5c290a"
+    },
+    "aarch64/2/demarrage-aarch64": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "094bfcc52daa1a735887c79e0e40d0c2260a3c44a3b168ef80136525349bbacc",
+      "png_sha256": "f6cfaf64ad6a3f4ded1b336442c4096e6316294c40c44f7521590826bc5c290a"
+    },
+    "aarch64/4/demarrage-aarch64": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "094bfcc52daa1a735887c79e0e40d0c2260a3c44a3b168ef80136525349bbacc",
+      "png_sha256": "f6cfaf64ad6a3f4ded1b336442c4096e6316294c40c44f7521590826bc5c290a"
+    },
+    "x86_64/1/demarrage": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "085912138b60b113b0778e26711184d208a7b8092727b47b594c23d6a6e70de5",
+      "png_sha256": "b13cfbde034d51eab8e6775fa23316ba806860e6f05ae1f0dc4a3ff8eae797f8"
+    },
+    "x86_64/1/composition": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "62bff0b5dc4d13173676f5cef71ba0762213651fdda4750e6281f48b260ba30f",
+      "png_sha256": "87b807eefd0438521ec43cc572de06f2e598b8b78f6804a432926a70cb464197"
+    },
+    "x86_64/1/frappe": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "e8ccc896eed05c7ba0eeb71f59e3eb8a20e05d97e204a6ad79b830e6c6f7d73f",
+      "png_sha256": "9cdc2b5a8b4e0dc181c5e7ddfda6b8d8122a5533dacc23101e4d81805e3d1548"
+    },
+    "x86_64/1/saisie": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "147ffdeecc8d37c17b337692477ae0413401e798c3e61ae894d81a8213b0cf0c",
+      "png_sha256": "737920fa13fe0046ae5916042a17902ad4eec2349ddc06d7838263c22d531f9c"
+    },
+    "x86_64/2/demarrage": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "085912138b60b113b0778e26711184d208a7b8092727b47b594c23d6a6e70de5",
+      "png_sha256": "b13cfbde034d51eab8e6775fa23316ba806860e6f05ae1f0dc4a3ff8eae797f8"
+    },
+    "x86_64/2/composition": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "62bff0b5dc4d13173676f5cef71ba0762213651fdda4750e6281f48b260ba30f",
+      "png_sha256": "87b807eefd0438521ec43cc572de06f2e598b8b78f6804a432926a70cb464197"
+    },
+    "x86_64/2/frappe": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "e8ccc896eed05c7ba0eeb71f59e3eb8a20e05d97e204a6ad79b830e6c6f7d73f",
+      "png_sha256": "9cdc2b5a8b4e0dc181c5e7ddfda6b8d8122a5533dacc23101e4d81805e3d1548"
+    },
+    "x86_64/2/saisie": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "147ffdeecc8d37c17b337692477ae0413401e798c3e61ae894d81a8213b0cf0c",
+      "png_sha256": "737920fa13fe0046ae5916042a17902ad4eec2349ddc06d7838263c22d531f9c"
+    },
+    "x86_64/4/demarrage": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "085912138b60b113b0778e26711184d208a7b8092727b47b594c23d6a6e70de5",
+      "png_sha256": "b13cfbde034d51eab8e6775fa23316ba806860e6f05ae1f0dc4a3ff8eae797f8"
+    },
+    "x86_64/4/composition": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "62bff0b5dc4d13173676f5cef71ba0762213651fdda4750e6281f48b260ba30f",
+      "png_sha256": "87b807eefd0438521ec43cc572de06f2e598b8b78f6804a432926a70cb464197"
+    },
+    "x86_64/4/frappe": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "e8ccc896eed05c7ba0eeb71f59e3eb8a20e05d97e204a6ad79b830e6c6f7d73f",
+      "png_sha256": "9cdc2b5a8b4e0dc181c5e7ddfda6b8d8122a5533dacc23101e4d81805e3d1548"
+    },
+    "x86_64/4/saisie": {
+      "largeur": 800,
+      "hauteur": 600,
+      "ppm_sha256": "147ffdeecc8d37c17b337692477ae0413401e798c3e61ae894d81a8213b0cf0c",
+      "png_sha256": "737920fa13fe0046ae5916042a17902ad4eec2349ddc06d7838263c22d531f9c"
+    }
+  },
+  "comparaison_graphiques": {
+    "aarch64/4/demarrage-aarch64": {
+      "pixels_modifies": 384,
+      "minimum_xy": [
+        498,
+        286
+      ],
+      "maximum_xy": [
+        565,
+        313
+      ],
+      "colonnes_x": [
+        498,
+        499,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        550,
+        551,
+        552,
+        553,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565
+      ],
+      "lignes_y": [
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313
+      ]
+    },
+    "x86_64/4/composition": {
+      "pixels_modifies": 384,
+      "minimum_xy": [
+        498,
+        286
+      ],
+      "maximum_xy": [
+        565,
+        313
+      ],
+      "colonnes_x": [
+        498,
+        499,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        550,
+        551,
+        552,
+        553,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565
+      ],
+      "lignes_y": [
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313
+      ]
+    },
+    "x86_64/4/demarrage": {
+      "pixels_modifies": 384,
+      "minimum_xy": [
+        498,
+        286
+      ],
+      "maximum_xy": [
+        565,
+        313
+      ],
+      "colonnes_x": [
+        498,
+        499,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        550,
+        551,
+        552,
+        553,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565
+      ],
+      "lignes_y": [
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313
+      ]
+    },
+    "x86_64/4/frappe": {
+      "pixels_modifies": 384,
+      "minimum_xy": [
+        498,
+        286
+      ],
+      "maximum_xy": [
+        565,
+        313
+      ],
+      "colonnes_x": [
+        498,
+        499,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        550,
+        551,
+        552,
+        553,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565
+      ],
+      "lignes_y": [
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313
+      ]
+    },
+    "x86_64/4/saisie": {
+      "pixels_modifies": 384,
+      "minimum_xy": [
+        498,
+        286
+      ],
+      "maximum_xy": [
+        565,
+        313
+      ],
+      "colonnes_x": [
+        498,
+        499,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        550,
+        551,
+        552,
+        553,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565
+      ],
+      "lignes_y": [
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313
+      ]
+    }
+  },
+  "slot31": [
+    {
+      "architecture": "x86_64",
+      "vcpu": 4,
+      "nom": "ipc",
+      "essai": 1,
+      "secondes": 8.421,
+      "retour": 0,
+      "elf_sha256": "468133b2dad41dcd0fd2102a5021bdb360979fc3e2623b7dc95a9ad3a321a700",
+      "log": "ipc-1.log",
+      "log_sha256": "9f95eaff9df492b103e722eeadcd6ec48b8a5987ee34451ff23a507815f597c8",
+      "marqueurs": [
+        "IPC slot_local=31 penurie retrait dernier droit et nouvelle generation OK"
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "vcpu": 4,
+      "nom": "ipc",
+      "essai": 1,
+      "secondes": 8.328,
+      "retour": 0,
+      "elf_sha256": "2e5b4c586d593bc9617522c0ca577ad9f5187833ed00e45162636db135d21a48",
+      "log": "ipc-1.log",
+      "log_sha256": "3d83d942b60b1f73415b14a4c897db63ef0162439d6bc3330bdb5017e091330a",
+      "marqueurs": [
+        "IPC slot_local=31 penurie retrait dernier droit et nouvelle generation OK"
+      ]
+    }
+  ],
+  "equite": {
+    "aarch64-1": {
+      "elf_sha256": "f4a6bba139857b09c7b2d8eacd066a91529f7b2cc195d007c3e92d4169d0afab",
+      "acteurs": 13,
+      "intervalles": 30,
+      "maximum_attente_pret_ns": 45794000,
+      "alertes": 0,
+      "minimum_progression": 123,
+      "bilan": {
+        "cadres": 62540,
+        "pages_ipc": 0
+      },
+      "journaux_sha256": "b9d71764c02fda4c87e239e3ab26a4ec8371b471f31179de22fee429f61de871"
+    },
+    "aarch64-2": {
+      "elf_sha256": "f4a6bba139857b09c7b2d8eacd066a91529f7b2cc195d007c3e92d4169d0afab",
+      "acteurs": 13,
+      "intervalles": 30,
+      "maximum_attente_pret_ns": 72160000,
+      "alertes": 0,
+      "minimum_progression": 1200,
+      "bilan": {
+        "cadres": 62506,
+        "pages_ipc": 0
+      },
+      "journaux_sha256": "2cbaddf1c1708288e27576e0b9d054c1f6ce3d4c1a4bf2d3130aa39f527cf645"
+    },
+    "aarch64-4": {
+      "elf_sha256": "f4a6bba139857b09c7b2d8eacd066a91529f7b2cc195d007c3e92d4169d0afab",
+      "acteurs": 13,
+      "intervalles": 30,
+      "maximum_attente_pret_ns": 19666000,
+      "alertes": 0,
+      "minimum_progression": 1532,
+      "bilan": {
+        "cadres": 62457,
+        "pages_ipc": 0
+      },
+      "journaux_sha256": "9a0aa6ea7b25f46a22fe3b58f19a69c17b22f40cc0466af0363a1349edcb5b0c"
+    },
+    "x86_64-1": {
+      "elf_sha256": "f20c572ccb63a9701c61a47a1690318cf654be96a14aa227f1273bd855406fa1",
+      "acteurs": 13,
+      "intervalles": 30,
+      "maximum_attente_pret_ns": 6456461,
+      "alertes": 0,
+      "minimum_progression": 125,
+      "bilan": {
+        "cadres": 63117,
+        "pages_ipc": 0
+      },
+      "journaux_sha256": "9982e62f36f38a4acf2006e26369dd8361ed2234530e48a78f94fdf7ecb98239"
+    },
+    "x86_64-2": {
+      "elf_sha256": "f20c572ccb63a9701c61a47a1690318cf654be96a14aa227f1273bd855406fa1",
+      "acteurs": 13,
+      "intervalles": 30,
+      "maximum_attente_pret_ns": 125113449,
+      "alertes": 0,
+      "minimum_progression": 1191,
+      "bilan": {
+        "cadres": 63060,
+        "pages_ipc": 0
+      },
+      "journaux_sha256": "f958a83d8fc19b54cc9c3190a3b9b21857da10eaf63e953b30f5886c2d20145b"
+    },
+    "x86_64-4": {
+      "elf_sha256": "f20c572ccb63a9701c61a47a1690318cf654be96a14aa227f1273bd855406fa1",
+      "acteurs": 13,
+      "intervalles": 30,
+      "maximum_attente_pret_ns": 330081059,
+      "alertes": 0,
+      "minimum_progression": 1172,
+      "bilan": {
+        "cadres": 62978,
+        "pages_ipc": 0
+      },
+      "journaux_sha256": "f709a4a1d260f46f6ed02d8994dcc74ff501a73eff4852680fcb16ec6fb2ad78"
+    }
+  },
+  "resultats": {
+    "aarch64-1": {
+      "suites": 26,
+      "groupes": {
+        "bloc": {
+          "duree_s": 175.509,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "275df0e536a22895495531d1c96baa01a016c5ca8e17e9f4faf0ffafcbd7bfaa"
+        },
+        "boot": {
+          "duree_s": 264.517,
+          "retour": 0,
+          "groupes_OK": 25,
+          "log_sha256": "c7b7c0ca1f145d30152717a54262e059f1601d2f9566aeabf096e21df45e8dcb"
+        },
+        "cli": {
+          "duree_s": 52.024,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "9a7096d83972faeb94015d4aa5f7892d16d81542e94a9788864ae3a779bc31e3"
+        },
+        "cli_p9": {
+          "duree_s": 56.256,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "f985029678efc999ede9fe93cb60268ec42e0bc625b11f69a5c08c5c4730b0f6"
+        },
+        "courses": {
+          "duree_s": 19.058,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "89cd8bbfaab0b421001920286a59d8f9badcfcc1a7275b1ec49967164ce59171"
+        },
+        "cycle-processus": {
+          "duree_s": 10.391,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "e194a7325b4edb3ab614f7625a8f946dd78d3668b506eb0910950793478106c1"
+        },
+        "elf": {
+          "duree_s": 7.022,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "70c8e5f2d7dc17125b7a983fb14371a1ad7a67d05318c5a065d70f35d4b0b239"
+        },
+        "fichiers": {
+          "duree_s": 540.542,
+          "retour": 0,
+          "groupes_OK": 44,
+          "log_sha256": "b344afa4150b6388879e89beb6e782766d5ab29dc3685c5e51f5e521b7695a60"
+        },
+        "fp-neon-gic2": {
+          "duree_s": 9.514,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "02828e39ae9d12b01bc9f841749d4bede01930e256c8f7e9a39dd21793e508c5"
+        },
+        "fp-neon-gic3": {
+          "duree_s": 7.112,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "d1ead9a729514c291e42997cfaece41e9199cf1811a8075853e4ddda08c65307"
+        },
+        "ipc": {
+          "duree_s": 7.761,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "3d83d942b60b1f73415b14a4c897db63ef0162439d6bc3330bdb5017e091330a"
+        },
+        "iso": {
+          "duree_s": 0.678,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "5becbcf9e5c879ab94c7d0c5912b71a9b1cc0b181619e3f24a1f39733ec41e42"
+        },
+        "namespace": {
+          "duree_s": 319.051,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "b7bf99bfcf513e6adc86925f5e04667172f320061b831af5e20dd77a4aeb0c1e"
+        },
+        "nsh": {
+          "duree_s": 30.214,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "f788c6f75ee14c3fcee20cdd6e3b6edf5c4f34f1e3cb064f8a655d2e486c4690"
+        },
+        "nsh_scripts": {
+          "duree_s": 36.069,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "f85b00bb2c82ab158bb284348ced2f3550f1960beeaedc3656a47c48d67f33c1"
+        },
+        "nsh_terminal": {
+          "duree_s": 14.8,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "ecf96a7917f289c1fe5ca1867d949b17e2a4740eaaa1ba1408967cf4a2ee1a46"
+        },
+        "processus-neon": {
+          "duree_s": 8.649,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "2eec77565248d2d0da26eabb2470eb1f9e10884e728175d7fecdf6c626b2cad1"
+        },
+        "processus-neon-gic3": {
+          "duree_s": 7.501,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "b333bd9e97e65edad2c32c52f4d7a80741d14644c04cc0deca8c0534ec76fcc4"
+        },
+        "smp": {
+          "duree_s": 6.867,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "ce0e3211943ce5e9eac0d5c213905aa2a63f75eab94469fe7435572cb496df19"
+        },
+        "smp-arret": {
+          "duree_s": 6.99,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "998f47e686dd297ae9dfb246b52a1321cd9b1c8fc5d152702d40b75beac2d26c"
+        },
+        "smp-arret-gic3": {
+          "duree_s": 6.553,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "04d37d11242bfa61a2b6b98c71639365448b3937031aae36d5b794583775daaa"
+        },
+        "smp-gic3": {
+          "duree_s": 8.159,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "6b5aa0d662876d52aca81944e6a7f0e8e84d2e8acd928f3f0607729c25f3365c"
+        },
+        "smp-panique": {
+          "duree_s": 8.08,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "a14d25cd67589d8cfb3ef9f7970474dcd6bbff5dddc78ef38ea435784ed54456"
+        },
+        "smp-panique-gic3": {
+          "duree_s": 6.41,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "6bc90c032e01807cbe55e5acb8e47304c6427ca8270ba692d18612e285dee1b5"
+        },
+        "vi": {
+          "duree_s": 53.566,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "1db9e7115245ed0fbf7c29e4111068c548435b4eaf31455d2b1125b0fb377fe9"
+        },
+        "vi_ecran": {
+          "duree_s": 9.57,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "0d787c8ed8b84d78dfee2fe4cd8382d2a8dcc1790a13e416133924b634978251"
+        }
+      },
+      "elf_ordinaires": {
+        "bloc": "9ff584997fbf568baad3b27a8d79d49ab5e8ef31b41cd9564b401a49e940693f",
+        "boot": "9ff584997fbf568baad3b27a8d79d49ab5e8ef31b41cd9564b401a49e940693f"
+      },
+      "smp": {
+        "serie-aarch64-smp-arret-1cpu-gic2.log": {
+          "sha256": "74a9b4cf9c06a7d1ca95578005ae89a52acdf4868e3679447ea774e44653cac4",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-arret-1cpu-gic3.log": {
+          "sha256": "2180b2679918f38b2d3f0a908ebcfdd24bac15b8158f19a8de651adfe2faa3a8",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-fp-1cpu-gic2.log": {
+          "sha256": "8dcaad9a4c5966606d5e0a786cffaf0ebed193cdbe13ffc34472f0a96ee847b3",
+          "resultat": [
+            "SMP FPU cycle=0 clients=2 migrations=0 OK",
+            "SMP FPU cycle=1 clients=2 migrations=0 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-fp-1cpu-gic3.log": {
+          "sha256": "c50ef83f3f5442f18d7748f1b8b8cd25b74cedb85554b7faedbd162d92a9af1a",
+          "resultat": [
+            "SMP FPU cycle=0 clients=2 migrations=0 OK",
+            "SMP FPU cycle=1 clients=2 migrations=0 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-panique-1cpu-gic2.log": {
+          "sha256": "67c1fb7c168785d93cd1dd71cc2d1c619430d1012e9b626b155d65818bb24c39",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-panique-1cpu-gic3.log": {
+          "sha256": "2aca19275f742d445721a5697ecd34475dfa2b397536e861bbe32466f427d366",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-test-1cpu-gic3.log": {
+          "sha256": "9146ed47f5bd2e21571ebbe11e420c9204ec3d359402aa4dfc8d5a13669bf246",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=93648",
+            "SMP preemptions=32",
+            "SMP stationnes=0 en_ligne=1",
+            "SMP rendezvous=0x1 actifs=1 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-test-1cpu.log": {
+          "sha256": "3b28be074b0fccacad033c063b3011a8f5145986f45f0c9005dc742919bd4817",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=94150",
+            "SMP preemptions=30",
+            "SMP stationnes=0 en_ligne=1",
+            "SMP rendezvous=0x1 actifs=1 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        }
+      },
+      "autres_json": [
+        "abi-aarch64-256-pan.json",
+        "abi-aarch64-256.json",
+        "cli-aarch64-4096.json",
+        "cli-aarch64-512.json",
+        "cli-p9-aarch64-4096.json",
+        "cli-p9-aarch64-512.json",
+        "endurance-aarch64-15s.json",
+        "ipc-aarch64-races-256.json",
+        "ipc-aarch64-test-128.json",
+        "ipc-aarch64-test-256.json",
+        "nsh-aarch64-4096.json",
+        "nsh-aarch64-512.json",
+        "scripts-aarch64-4096.json",
+        "scripts-aarch64-512.json",
+        "vi-aarch64-4096.json",
+        "vi-aarch64-512.json"
+      ],
+      "memoire_128mio": {
+        "residents_repos": 714,
+        "residents_saturation": 1195,
+        "cadres_ipc_saturation": 71,
+        "libres_apres_destruction": 29857,
+        "restitution_integrale": true
+      },
+      "courses": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 773
+      },
+      "nsh-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "nsh-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "scripts-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 115,
+        "reprise": true
+      },
+      "scripts-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 115,
+        "reprise": true
+      },
+      "vi-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 95,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "vi-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 95,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "restitution_elf": "ELF restitution OK libres=62561 allocations=1738 pic_cadres=282 creation_cycles=257063 chargement_cycles=151750 collecte_cycles=639375 hz=62500000",
+      "nsh_terminal": [
+        "aarch64/512 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 460 Kio",
+        "aarch64/4096 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 460 Kio"
+      ],
+      "vi_ecran": [
+        "aarch64 — 20 frappes, 20 lignes, quatre géométries dont 80 × 24, lignes modifiées, curseur, retour à nsh"
+      ]
+    },
+    "aarch64-2": {
+      "suites": 30,
+      "groupes": {
+        "bloc": {
+          "duree_s": 175.438,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "275df0e536a22895495531d1c96baa01a016c5ca8e17e9f4faf0ffafcbd7bfaa"
+        },
+        "boot": {
+          "duree_s": 260.627,
+          "retour": 0,
+          "groupes_OK": 25,
+          "log_sha256": "e89e339706bf59a249d3e98f2889c4b87f17389471002109270b49740b51af7f"
+        },
+        "cli": {
+          "duree_s": 52.697,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "8d8980f5c5654a6e274ffe3dba19e13c0e0a8b5407c1d37919d3c029b6bec0f8"
+        },
+        "cli_p9": {
+          "duree_s": 66.256,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "c5973b81a72fdcae88e81fb4fb51676694a732886546e2210d2d78d6620b60e9"
+        },
+        "courses": {
+          "duree_s": 30.942,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "89cd8bbfaab0b421001920286a59d8f9badcfcc1a7275b1ec49967164ce59171"
+        },
+        "cycle-processus": {
+          "duree_s": 7.638,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "e194a7325b4edb3ab614f7625a8f946dd78d3668b506eb0910950793478106c1"
+        },
+        "elf": {
+          "duree_s": 7.382,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "aee6bb8763a77764234272ecbeb5db401b1eda5129f158bf40c3c68984b893bf"
+        },
+        "fichiers": {
+          "duree_s": 549.93,
+          "retour": 0,
+          "groupes_OK": 44,
+          "log_sha256": "b344afa4150b6388879e89beb6e782766d5ab29dc3685c5e51f5e521b7695a60"
+        },
+        "fp-neon-gic2": {
+          "duree_s": 8.192,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "a3c86e593001c045f34450f81c0f6c8a98a15891d72e358dc8e581a45e268bf1"
+        },
+        "fp-neon-gic3": {
+          "duree_s": 6.636,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "0ef9f13fd73e7257d75c6978d94aed5424e8730b62f83a75b7f815c5df72bbf5"
+        },
+        "ipc": {
+          "duree_s": 7.114,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "3d83d942b60b1f73415b14a4c897db63ef0162439d6bc3330bdb5017e091330a"
+        },
+        "iso": {
+          "duree_s": 0.715,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "79699e64816e37180495d9591041d17ebff71871de4c4d3f78360393c36e3cfa"
+        },
+        "namespace": {
+          "duree_s": 323.554,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "b603869d2d29175f5d313c162dbeb620c2b76d1dff1c4fe639ca5de5d27b74ab"
+        },
+        "nsh": {
+          "duree_s": 40.817,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "2a4b5fbdfdd0bbfbab91333bcce4ee4d27b47f7749cb2e8022ffa8cd98dd2c3d"
+        },
+        "nsh_scripts": {
+          "duree_s": 35.52,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "e9482f97a647490ad7f0a1d057cf3fb90e0ed4c0a2bfb6703f53b731840596a2"
+        },
+        "nsh_terminal": {
+          "duree_s": 14.877,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "d2fc772de3f4b2112cb700afd8478c5a09a1715f34e6cbf2957e511edb030169"
+        },
+        "processus-neon": {
+          "duree_s": 7.874,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "2eec77565248d2d0da26eabb2470eb1f9e10884e728175d7fecdf6c626b2cad1"
+        },
+        "processus-neon-gic3": {
+          "duree_s": 7.993,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "b333bd9e97e65edad2c32c52f4d7a80741d14644c04cc0deca8c0534ec76fcc4"
+        },
+        "smp": {
+          "duree_s": 6.991,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "e29608fdcbaab6a08b32d056e6a9618c0e1168d49a63c404722656acede1bb02"
+        },
+        "smp-ap-absent": {
+          "duree_s": 19.479,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "b2577bf207263cdf5a17f707a17d7c6173b7df058d80beea89b390c2897a7f76"
+        },
+        "smp-ap-absent-gic3": {
+          "duree_s": 15.542,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "17f822ca14a83bb8e4bfbe14fdc3fd7dee5c83b71b33a5f3b7088bd97417872d"
+        },
+        "smp-arret": {
+          "duree_s": 7.038,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "76570d7b6af4e3139ba639d7e665d7da326ce4f7177096ef96eb1947870afa7f"
+        },
+        "smp-arret-gic3": {
+          "duree_s": 6.777,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "7518bcf0eeb87232df0680080ce99a720241080281a358ec13a61951c028bd0a"
+        },
+        "smp-cpu-muet": {
+          "duree_s": 8.321,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "c90789cb432812d42eb3a8e4abace0223435fd754acd2bc2288d036fdd6f3083"
+        },
+        "smp-cpu-muet-gic3": {
+          "duree_s": 10.619,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "906c3931fa2aab0ac8f7927aaa3100d0484437cca442374b40f74ef0234e9786"
+        },
+        "smp-gic3": {
+          "duree_s": 6.592,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "44610ebbd271dd2eed47b053353903d92c503823215b5230ded6d1bbf6560bcc"
+        },
+        "smp-panique": {
+          "duree_s": 7.937,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "9d116dd91715d4cb778626e89a9955db2009d718d680fdd895b1aef31b4a4d1d"
+        },
+        "smp-panique-gic3": {
+          "duree_s": 6.979,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "222a7d0f591b2a892e7b00f0fc31c40d6aa52ca8ee9affc6522e9868851d7788"
+        },
+        "vi": {
+          "duree_s": 34.249,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "e6914d4f18f1cff0e7593ac35fc06b7d7c96c37c73816d0557dbf22e658789a9"
+        },
+        "vi_ecran": {
+          "duree_s": 9.519,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "12e9d36b2fb33d01554bdf70ad222930d997b5f047bd6c22bcb4875f89dda10d"
+        }
+      },
+      "elf_ordinaires": {
+        "bloc": "9ff584997fbf568baad3b27a8d79d49ab5e8ef31b41cd9564b401a49e940693f",
+        "boot": "9ff584997fbf568baad3b27a8d79d49ab5e8ef31b41cd9564b401a49e940693f"
+      },
+      "smp": {
+        "serie-aarch64-smp-ap-absent-2cpu-gic2.log": {
+          "sha256": "340d8b7a5f56095a11d57671228071a89bcbaf57ecddc7fa936b8e5a6c596614",
+          "resultat": [
+            "SMP arret motif=amorcage coordinateur=0 attendus=0x3 en_ligne=0x1 ack=0x1 absents=0x2 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-ap-absent-2cpu-gic3.log": {
+          "sha256": "057a5711add153f367e9cea919a7e18b0ccbeea6f55439a9821bad63d423e79f",
+          "resultat": [
+            "SMP arret motif=amorcage coordinateur=0 attendus=0x3 en_ligne=0x1 ack=0x1 absents=0x2 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-arret-2cpu-gic2.log": {
+          "sha256": "0bb2c09aa11e466587ae37e59a535270440031484f5c9518bf0cc4e4c1add864",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-arret-2cpu-gic3.log": {
+          "sha256": "7dcae729ccac33bf0a7ceb6c17190016fc02db39abc4dad8ebf02c02cf79a398",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-cpu-muet-2cpu-gic2.log": {
+          "sha256": "80f223d05aa089eba9e138f023fa5cfbd457efc9aa399d4d262ee3de58af8b65",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x1 absents=0x0 muets=0x2"
+          ]
+        },
+        "serie-aarch64-smp-cpu-muet-2cpu-gic3.log": {
+          "sha256": "fe46db3c24dcebb8303fa8b96dd15aaf77bbed5dad6a0f125f24d3bf9a0ea196",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x1 absents=0x0 muets=0x2"
+          ]
+        },
+        "serie-aarch64-smp-fp-2cpu-gic2.log": {
+          "sha256": "6e72fe789c04aa1b5dcba8947fa993b59e35724cc5c3df6fdb42aea6053334b1",
+          "resultat": [
+            "SMP FPU cycle=0 clients=4 migrations=4 OK",
+            "SMP FPU cycle=1 clients=4 migrations=4 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-fp-2cpu-gic3.log": {
+          "sha256": "e677cde4acc32b2a20b6b67be37f04b1289f62eb38f086237eb4afb39f653c3f",
+          "resultat": [
+            "SMP FPU cycle=0 clients=4 migrations=4 OK",
+            "SMP FPU cycle=1 clients=4 migrations=4 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-panique-2cpu-gic2.log": {
+          "sha256": "94d70ce1c5ccde15bd35d78031e3ff6b573c1b9b188e41d11daea8bef125c475",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=1 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-panique-2cpu-gic3.log": {
+          "sha256": "1230508790dd783a8e87455550066eafac9e2c55b44d1f74ce7122c2b59a32b2",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=1 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-test-2cpu-gic3.log": {
+          "sha256": "fa9b273a1e251c17ecd3ddac51a3d0305165194777239650f56c846f45db09ef",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=168301",
+            "SMP preemptions=43",
+            "SMP traductions distantes masque=0x2 OK",
+            "SMP migration=0->1",
+            "SMP stationnes=1 en_ligne=1",
+            "SMP rendezvous=0x3 actifs=2 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x1 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-test-2cpu.log": {
+          "sha256": "c68a24e63ca8558d86631a2777b6ef5beaea9b24b3469e88f3d4f5a09bfebc9a",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=159378",
+            "SMP preemptions=44",
+            "SMP traductions distantes masque=0x2 OK",
+            "SMP migration=0->1",
+            "SMP stationnes=1 en_ligne=1",
+            "SMP rendezvous=0x3 actifs=2 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x1 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        }
+      },
+      "autres_json": [
+        "abi-aarch64-256-pan.json",
+        "abi-aarch64-256.json",
+        "cli-aarch64-4096.json",
+        "cli-aarch64-512.json",
+        "cli-p9-aarch64-4096.json",
+        "cli-p9-aarch64-512.json",
+        "endurance-aarch64-15s.json",
+        "ipc-aarch64-races-256.json",
+        "ipc-aarch64-test-128.json",
+        "ipc-aarch64-test-256.json",
+        "nsh-aarch64-4096.json",
+        "nsh-aarch64-512.json",
+        "scripts-aarch64-4096.json",
+        "scripts-aarch64-512.json",
+        "vi-aarch64-4096.json",
+        "vi-aarch64-512.json"
+      ],
+      "memoire_128mio": {
+        "residents_repos": 748,
+        "residents_saturation": 1229,
+        "cadres_ipc_saturation": 71,
+        "libres_apres_destruction": 29823,
+        "restitution_integrale": true
+      },
+      "courses": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 1152
+      },
+      "nsh-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "nsh-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "scripts-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 115,
+        "reprise": true
+      },
+      "scripts-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 115,
+        "reprise": true
+      },
+      "vi-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 95,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "vi-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 95,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "restitution_elf": "ELF restitution OK libres=62527 allocations=1738 pic_cadres=282 creation_cycles=580000 chargement_cycles=788375 collecte_cycles=1044125 hz=62500000",
+      "nsh_terminal": [
+        "aarch64/512 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 460 Kio",
+        "aarch64/4096 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 460 Kio"
+      ],
+      "vi_ecran": [
+        "aarch64 — 20 frappes, 20 lignes, quatre géométries dont 80 × 24, lignes modifiées, curseur, retour à nsh"
+      ]
+    },
+    "aarch64-4": {
+      "suites": 32,
+      "groupes": {
+        "bloc": {
+          "duree_s": 177.04,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "275df0e536a22895495531d1c96baa01a016c5ca8e17e9f4faf0ffafcbd7bfaa"
+        },
+        "boot": {
+          "duree_s": 265.015,
+          "retour": 0,
+          "groupes_OK": 25,
+          "log_sha256": "8eba01c4cfef0e4671c1244d58f9622df396462aadc4685e7fdf37b5a5fee226"
+        },
+        "cli": {
+          "duree_s": 55.687,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "2963a31eafc7300dc65037c07cc35b8d1f68d100af174eae41314c3dbc12c448"
+        },
+        "cli_p9": {
+          "duree_s": 68.179,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "5273b005c73c651085f5154edc1b0512ab01c7b7978fb8bc2cac564b4269f18b"
+        },
+        "courses": {
+          "duree_s": 30.111,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "89cd8bbfaab0b421001920286a59d8f9badcfcc1a7275b1ec49967164ce59171"
+        },
+        "cycle-processus": {
+          "duree_s": 7.999,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "e194a7325b4edb3ab614f7625a8f946dd78d3668b506eb0910950793478106c1"
+        },
+        "elf": {
+          "duree_s": 7.557,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "5cb8e598eb87c374aed7fd0ff05158101b33b199cb8907ca4186f152d012ee0d"
+        },
+        "endurance-ipc": {
+          "duree_s": 307.278,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "b2ce6ac709bafb6502a18992ea63150248f12f618696e7ab43a7c44a5d728a18"
+        },
+        "endurance-ordonnanceur": {
+          "duree_s": 70.27,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "89a186735370d342dd05e145ebe62f97b41ae9901a6885ded284647b926945fa"
+        },
+        "fichiers": {
+          "duree_s": 557.801,
+          "retour": 0,
+          "groupes_OK": 44,
+          "log_sha256": "b344afa4150b6388879e89beb6e782766d5ab29dc3685c5e51f5e521b7695a60"
+        },
+        "fp-neon-gic2": {
+          "duree_s": 9.023,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "00cd00dcbb7de32e660d6506d7236bf2773fa3b554e52eb8fa3cfdd67e5d88c6"
+        },
+        "fp-neon-gic3": {
+          "duree_s": 7.808,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "33abab938cd73c25d1fb524314475cf790a2efb6fd0cc22d06d636f3d831de04"
+        },
+        "ipc": {
+          "duree_s": 7.273,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "3d83d942b60b1f73415b14a4c897db63ef0162439d6bc3330bdb5017e091330a"
+        },
+        "iso": {
+          "duree_s": 0.675,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "b2b618c6bd27ce1904e328f199f8baade6f823626808e056a5918607f52c4a54"
+        },
+        "namespace": {
+          "duree_s": 329.46,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "4e9737dbec936e6f23fabc65f72e63083ab96fa82c50c6baff84fd72a86e430e"
+        },
+        "nsh": {
+          "duree_s": 49.869,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "ac7ac03984d733a5f4412830950c79cfafde42fc0c99cc5f132faca23400ded1"
+        },
+        "nsh_scripts": {
+          "duree_s": 28.243,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "5de2082261a71d0e854a27ca3ac499f9f2775f10b19383d99d29c0b22e93a169"
+        },
+        "nsh_terminal": {
+          "duree_s": 15.244,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "2ff38d16956e17f08c4b7c90dca4502cde16c5ac1458107ae80a260344099d71"
+        },
+        "processus-neon": {
+          "duree_s": 7.397,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "2eec77565248d2d0da26eabb2470eb1f9e10884e728175d7fecdf6c626b2cad1"
+        },
+        "processus-neon-gic3": {
+          "duree_s": 8.03,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "b333bd9e97e65edad2c32c52f4d7a80741d14644c04cc0deca8c0534ec76fcc4"
+        },
+        "smp": {
+          "duree_s": 7.064,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "1418efd2ed01f84c0b063da3af44e701b66402ba281775c8aaca2a442954a844"
+        },
+        "smp-ap-absent": {
+          "duree_s": 19.43,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "0c776a41129ed78bc54a66cccb07a4661a90ed515527e2bebddd075f0775c8af"
+        },
+        "smp-ap-absent-gic3": {
+          "duree_s": 16.145,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "496ae836b5b8f4502023d16b2fe009ef55d11b19e0ec642bb9830a4a9b067146"
+        },
+        "smp-arret": {
+          "duree_s": 7.039,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "40e6def52e201f48b89e270dff42454843089736e3206579c36f2f4e90f5422b"
+        },
+        "smp-arret-gic3": {
+          "duree_s": 6.386,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "4a95fc87a316a166a985f80b6d676f5461571f5eb9dab59ecfd096d919ccec8a"
+        },
+        "smp-cpu-muet": {
+          "duree_s": 8.206,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "dc59ae52d43fb58975e31c61c6c97de78418b5a9c5279c21726cb6f017ae6c4c"
+        },
+        "smp-cpu-muet-gic3": {
+          "duree_s": 9.168,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "66945fb4f41dbbedbf679d63a7ae63494ad670a41694f0ad1aaa707e1c68f79a"
+        },
+        "smp-gic3": {
+          "duree_s": 6.932,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "5b631290272b25a8c5dba651c86b45e6c28fd0c2b9a73e468d64ca6b7164652a"
+        },
+        "smp-panique": {
+          "duree_s": 8.204,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "ade126697bb9041cc9d2b34e1924cdaee093e6e62c9635c08cfd42f8bb51e024"
+        },
+        "smp-panique-gic3": {
+          "duree_s": 6.576,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "99489e7da5b298eed71c27bc52fcabbc3fa27e3145b60ec55c6526a61e45049e"
+        },
+        "vi": {
+          "duree_s": 34.741,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "9412f83eff8a519c2ed73f1fed088ff6c45df6e8d70090829a0929218dac037a"
+        },
+        "vi_ecran": {
+          "duree_s": 9.54,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "a5519b3bd269914ee13a5a3c8bfbfac441d474bd4113f7225675e4edb79caa6f"
+        }
+      },
+      "elf_ordinaires": {
+        "bloc": "9ff584997fbf568baad3b27a8d79d49ab5e8ef31b41cd9564b401a49e940693f",
+        "boot": "9ff584997fbf568baad3b27a8d79d49ab5e8ef31b41cd9564b401a49e940693f"
+      },
+      "smp": {
+        "serie-aarch64-smp-ap-absent-4cpu-gic2.log": {
+          "sha256": "af1f99bd37983cc887406d990efd29de764fec5f3cfd3d28d7e8164297f27583",
+          "resultat": [
+            "SMP arret motif=amorcage coordinateur=0 attendus=0xf en_ligne=0x7 ack=0x7 absents=0x8 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-ap-absent-4cpu-gic3.log": {
+          "sha256": "8c02dca1ebf67f80ce4a2cffb71dd400b34b1ffbb7d46d316be72eaff3bd2969",
+          "resultat": [
+            "SMP arret motif=amorcage coordinateur=0 attendus=0xf en_ligne=0x7 ack=0x7 absents=0x8 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-arret-4cpu-gic2.log": {
+          "sha256": "170c596f7296f680f4483e15cb3877a58aba4e589fddd15c5aad80121a4dad96",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-arret-4cpu-gic3.log": {
+          "sha256": "ea7b342389392ce2158b5c7b5e68bc3fafb74dab5162e5f9d372fcb893f35d2b",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-cpu-muet-4cpu-gic2.log": {
+          "sha256": "7307619789d9727c2a3719e666903629ac70354b8acb141a6701c09758ddb57d",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xd absents=0x0 muets=0x2"
+          ]
+        },
+        "serie-aarch64-smp-cpu-muet-4cpu-gic3.log": {
+          "sha256": "822c71ccd61c63f55ae5d0c0c07b8053cb1ff3e6b320a6ce3b325ac8e8ecc1f3",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xd absents=0x0 muets=0x2"
+          ]
+        },
+        "serie-aarch64-smp-fp-4cpu-gic2.log": {
+          "sha256": "18748d8899b6dd262832e035ee3a8b18dea976b084fb0db815bacf477696c1a4",
+          "resultat": [
+            "SMP FPU cycle=0 clients=8 migrations=8 OK",
+            "SMP FPU cycle=1 clients=8 migrations=8 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-fp-4cpu-gic3.log": {
+          "sha256": "0257b887db9646be91eec54cbc1f7fc3aad299e9342d0ea727e9153d7588ae08",
+          "resultat": [
+            "SMP FPU cycle=0 clients=8 migrations=8 OK",
+            "SMP FPU cycle=1 clients=8 migrations=8 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-panique-4cpu-gic2.log": {
+          "sha256": "92977aeb3319c2a8d4e4bad7f75e7700d245c00237906512bda8c4e414ec7737",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=1 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-panique-4cpu-gic3.log": {
+          "sha256": "92ff5eb03923583537f7f2bbc23ac47456fa562e24a7461fccc182daa8b9e6a1",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=1 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-test-4cpu-gic3.log": {
+          "sha256": "3dcb12694b6eb8c9348b82fad99bc8be13e0a09bed863c1ed46456957fa072cf",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=271322",
+            "SMP preemptions=54",
+            "SMP traductions distantes masque=0xe OK",
+            "SMP migration=0->1",
+            "SMP stationnes=3 en_ligne=1",
+            "SMP rendezvous=0xf actifs=4 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0x1 ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-aarch64-smp-test-4cpu.log": {
+          "sha256": "3a2f2ab1217954347ef3d6ab00a24033c666f6b23b529083a0bcb9d480553f0c",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=202691",
+            "SMP preemptions=68",
+            "SMP traductions distantes masque=0xe OK",
+            "SMP migration=0->1",
+            "SMP stationnes=3 en_ligne=1",
+            "SMP rendezvous=0xf actifs=4 OK"
+          ]
+        }
+      },
+      "autres_json": [
+        "abi-aarch64-256-pan.json",
+        "abi-aarch64-256.json",
+        "cli-aarch64-4096.json",
+        "cli-aarch64-512.json",
+        "cli-p9-aarch64-4096.json",
+        "cli-p9-aarch64-512.json",
+        "endurance-aarch64-15s.json",
+        "endurance-aarch64-60s.json",
+        "ipc-aarch64-endurance-300s.json",
+        "ipc-aarch64-races-256.json",
+        "ipc-aarch64-test-128.json",
+        "ipc-aarch64-test-256.json",
+        "nsh-aarch64-4096.json",
+        "nsh-aarch64-512.json",
+        "scripts-aarch64-4096.json",
+        "scripts-aarch64-512.json",
+        "vi-aarch64-4096.json",
+        "vi-aarch64-512.json"
+      ],
+      "memoire_128mio": {
+        "residents_repos": 797,
+        "residents_saturation": 1278,
+        "cadres_ipc_saturation": 71,
+        "libres_apres_destruction": 29774,
+        "restitution_integrale": true
+      },
+      "courses": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 491
+      },
+      "endurance_ordonnanceur": {
+        "architecture": "aarch64",
+        "secondes_demandees": 60,
+        "secondes_reelles": 64.093,
+        "avant": {
+          "blocs": 6,
+          "occupes": 108608,
+          "engages": 131072,
+          "libres": 62478
+        },
+        "bilan": {
+          "periode": 9,
+          "ticks": 12757,
+          "preemptions": 12715,
+          "collectes": 15213,
+          "attentes": 11296,
+          "mutex": 11305,
+          "A": 2750,
+          "B": 2739,
+          "allocations": 134509,
+          "audits": 38,
+          "penuries": 1,
+          "minimum": 62366,
+          "blocs": 6,
+          "occupes": 108608,
+          "engages": 131072,
+          "libres": 62478
+        }
+      },
+      "endurance_ipc": {
+        "architecture": "aarch64",
+        "mode": "endurance",
+        "ram_mio": 256,
+        "elf_sha256": "9ff584997fbf568baad3b27a8d79d49ab5e8ef31b41cd9564b401a49e940693f",
+        "secondes": 301.109,
+        "cycles": 30067,
+        "periodes": 240,
+        "libres": 62478
+      },
+      "nsh-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "nsh-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "scripts-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 115,
+        "reprise": true
+      },
+      "scripts-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 115,
+        "reprise": true
+      },
+      "vi-aarch64-4096": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 95,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "vi-aarch64-512": {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 95,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "restitution_elf": "ELF restitution OK libres=62478 allocations=1738 pic_cadres=282 creation_cycles=257000 chargement_cycles=118937 collecte_cycles=477500 hz=62500000",
+      "nsh_terminal": [
+        "aarch64/512 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 460 Kio",
+        "aarch64/4096 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 460 Kio"
+      ],
+      "vi_ecran": [
+        "aarch64 — 20 frappes, 20 lignes, quatre géométries dont 80 × 24, lignes modifiées, curseur, retour à nsh"
+      ]
+    },
+    "x86_64-1": {
+      "suites": 23,
+      "groupes": {
+        "bloc": {
+          "duree_s": 71.025,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "56fe9ef71de6d96d055483890b5b2918f35fb825416b87ffbb6c80ef7426aa45"
+        },
+        "boot": {
+          "duree_s": 173.357,
+          "retour": 0,
+          "groupes_OK": 25,
+          "log_sha256": "ab69634b2d0991f8ea84a397e41cce26fc26e0ae24394cddbf1f7a4b8d4168a5"
+        },
+        "cli": {
+          "duree_s": 22.408,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "8db0c326f4cac8dd531b429fc3500ab67288a36f113421b2dfbad21d1f541201"
+        },
+        "cli_p9": {
+          "duree_s": 25.156,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "bebf56ef656af479a08868c8572997f0768a3af5afa2cd37620b11144a535e7d"
+        },
+        "courses": {
+          "duree_s": 21.39,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "c1a361810a985b49c7ef2f93392a3251374ee6a5c77f39eeb8c921acfebeeaa0"
+        },
+        "cycle-processus": {
+          "duree_s": 5.243,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "39ccaa3cef4bf312d9268a0af0c1e2c85e808c3a2b0c0259c076cdfafbef2724"
+        },
+        "elf": {
+          "duree_s": 6.43,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "7ae12f58838c6a11c8355734acf46d7fee915b55a6380c9ae40a7885e25f4129"
+        },
+        "fichiers": {
+          "duree_s": 206.649,
+          "retour": 0,
+          "groupes_OK": 44,
+          "log_sha256": "a9bfba528ee8fcef4679e3a966a70a0c3394156d8d07ad3950961abbf2cbab3e"
+        },
+        "fp-avx": {
+          "duree_s": 2.331,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "29d40d5adae90bf592b64a62decf4dee04a611e6e5edbc143e187a9d82b52b31"
+        },
+        "fp-sans-avx": {
+          "duree_s": 2.683,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "eae195a301e3f36eed2544bc74f30fa90b4d2a487c25d20ca41bec9025081022"
+        },
+        "ipc": {
+          "duree_s": 5.457,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "9f95eaff9df492b103e722eeadcd6ec48b8a5987ee34451ff23a507815f597c8"
+        },
+        "iso": {
+          "duree_s": 0.712,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "c63f53fdf46a35684d10b6478b03c8734f15aa478858bb79e5cd1d0004025d45"
+        },
+        "namespace": {
+          "duree_s": 131.754,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "a44c140db2d606605273c34104d09b2a3f599b688bf66c62fa2fb4860f9526a6"
+        },
+        "nsh": {
+          "duree_s": 14.216,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "c40f53816a51b54e330acb3e7fa8f2eaa1199f10c2e68218ea3f74a032706a15"
+        },
+        "nsh_scripts": {
+          "duree_s": 11.442,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "9c4cc07c33479cd1d0a8b8109bed1f55879c8a8b4e21ea89e3d0a39101780146"
+        },
+        "nsh_terminal": {
+          "duree_s": 7.091,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "a01f57a16afabe7168dcb3f5831cda4f1923b79f32a84a58653ec284add13434"
+        },
+        "processus-avx": {
+          "duree_s": 6.008,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "20beb282af50135d5658c72ad5cb108f3e1aead501f39825583649ef087180d5"
+        },
+        "processus-sans-avx": {
+          "duree_s": 3.601,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "20beb282af50135d5658c72ad5cb108f3e1aead501f39825583649ef087180d5"
+        },
+        "smp": {
+          "duree_s": 3.36,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "9e869bdb6bdd2a4dd670e7d5036a787507314b883a2a3120914b505c7c9e983a"
+        },
+        "smp-arret": {
+          "duree_s": 2.311,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "0c12d184c85e56a1af0483d8f8b8d8f671cbcb7bbcd8174f92e6249dcef18dad"
+        },
+        "smp-panique": {
+          "duree_s": 2.372,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "b7a423319b7976ba07915b773cf3b36c3b292e283b640612eccd879f965c6cb7"
+        },
+        "vi": {
+          "duree_s": 18.566,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "1f8b76b66f56f0aa1bae896278ea2dc10ff6ed8af932bc1928fc2e3f5166d692"
+        },
+        "vi_ecran": {
+          "duree_s": 5.632,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "288461fb8096279e1be711ee6db65d8e3e332d879ad020162ab9885abc06cae6"
+        }
+      },
+      "elf_ordinaires": {
+        "bloc": "cc613c5a3332fa3def2a72dbebb197a7de3deec17a00f4f46906a2baff542c61",
+        "boot": "cc613c5a3332fa3def2a72dbebb197a7de3deec17a00f4f46906a2baff542c61"
+      },
+      "smp": {
+        "serie-x86_64-smp-arret-1cpu-.log": {
+          "sha256": "981fd859c01c84be7004f37911d7c0e6e5b7de36fcc0e07645c439a36103541e",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-fp-1cpu-max_vendor_GenuineIntel.log": {
+          "sha256": "32c33d678dace016f229b2e1bbc475058d46527e29a4218ef48c13a7188fceb6",
+          "resultat": [
+            "SMP FPU x86 sauvegarde=xsave64 xcr0_demande=7",
+            "SMP FPU cycle=0 clients=2 migrations=0 OK",
+            "SMP FPU cycle=1 clients=2 migrations=0 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-fp-1cpu-qemu64_vendor_GenuineIntel_-avx_-xsave.log": {
+          "sha256": "d0bd858b7014c19156f12d092ccf01dfacbfa2cb7c71f73ff17650ccf022ad55",
+          "resultat": [
+            "SMP FPU x86 sauvegarde=fxsave64 xcr0_demande=0",
+            "SMP FPU cycle=0 clients=2 migrations=0 OK",
+            "SMP FPU cycle=1 clients=2 migrations=0 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-panique-1cpu-.log": {
+          "sha256": "685ff3ee9f2b92f0f0a057758b99ef95778e21eeb4b77d5bcef21fe0ecac9809",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-test-1cpu.log": {
+          "sha256": "68cf6fbd06c0ccc0303e65189160de893d30fdd60b1c4b5c8564a0621d1e09bd",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=55100",
+            "SMP preemptions=33",
+            "SMP stationnes=0 en_ligne=1",
+            "SMP rendezvous=0x1 actifs=1 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0"
+          ]
+        }
+      },
+      "autres_json": [
+        "abi-x86_64-256.json",
+        "cli-p9-x86_64-4096.json",
+        "cli-p9-x86_64-512.json",
+        "cli-x86_64-4096.json",
+        "cli-x86_64-512.json",
+        "endurance-x86_64-15s.json",
+        "ipc-x86_64-races-256.json",
+        "ipc-x86_64-test-128.json",
+        "ipc-x86_64-test-256.json",
+        "nsh-x86_64-4096.json",
+        "nsh-x86_64-512.json",
+        "scripts-x86_64-4096.json",
+        "scripts-x86_64-512.json",
+        "vi-x86_64-4096.json",
+        "vi-x86_64-512.json"
+      ],
+      "memoire_128mio": {
+        "residents_repos": 743,
+        "residents_saturation": 1224,
+        "cadres_ipc_saturation": 71,
+        "libres_apres_destruction": 30427,
+        "restitution_integrale": true
+      },
+      "courses": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 890
+      },
+      "nsh-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "nsh-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "scripts-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 118,
+        "reprise": true
+      },
+      "scripts-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 118,
+        "reprise": true
+      },
+      "vi-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 96,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "vi-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 96,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "restitution_elf": "ELF restitution OK libres=63131 allocations=1798 pic_cadres=292 creation_cycles=617000 chargement_cycles=361000 collecte_cycles=216000 hz=1077812500",
+      "nsh_terminal": [
+        "x86_64/512 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 472 Kio",
+        "x86_64/4096 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 472 Kio"
+      ],
+      "vi_ecran": [
+        "x86_64 — 20 frappes, 20 lignes, quatre géométries dont 80 × 24, lignes modifiées, curseur, retour à nsh"
+      ]
+    },
+    "x86_64-2": {
+      "suites": 25,
+      "groupes": {
+        "bloc": {
+          "duree_s": 73.685,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "56fe9ef71de6d96d055483890b5b2918f35fb825416b87ffbb6c80ef7426aa45"
+        },
+        "boot": {
+          "duree_s": 176.138,
+          "retour": 0,
+          "groupes_OK": 25,
+          "log_sha256": "1e59206f5df43b6e3d8687f06d3afa6fbec5774ab9fa21a51f73061b7b2cbd2c"
+        },
+        "cli": {
+          "duree_s": 23.735,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "c3c562df63c1ef7e0c6f75bfc0107192e53c3c914c624ef1f7f56e085fe5fec6"
+        },
+        "cli_p9": {
+          "duree_s": 27.394,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "e9bc99efe3e3de741cd34f68f85a616801b8c191203bbf00b56004870b58787c"
+        },
+        "courses": {
+          "duree_s": 16.096,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "c1a361810a985b49c7ef2f93392a3251374ee6a5c77f39eeb8c921acfebeeaa0"
+        },
+        "cycle-processus": {
+          "duree_s": 3.071,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "39ccaa3cef4bf312d9268a0af0c1e2c85e808c3a2b0c0259c076cdfafbef2724"
+        },
+        "elf": {
+          "duree_s": 3.155,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "46d2435b3f183dfee9b90c339487eebd8fbe6c07462b34d7a6a444a47a5f81bc"
+        },
+        "fichiers": {
+          "duree_s": 222.82,
+          "retour": 0,
+          "groupes_OK": 44,
+          "log_sha256": "a9bfba528ee8fcef4679e3a966a70a0c3394156d8d07ad3950961abbf2cbab3e"
+        },
+        "fp-avx": {
+          "duree_s": 5.979,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "19868e69f33ff440b619ded1b22b0912db01e7a30a74638183a918276cc504ca"
+        },
+        "fp-sans-avx": {
+          "duree_s": 6.119,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "49f2fad98f5be7109f07e8c6a16178880b5b1f377fa63dc7443e28ee110b092c"
+        },
+        "ipc": {
+          "duree_s": 7.921,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "9f95eaff9df492b103e722eeadcd6ec48b8a5987ee34451ff23a507815f597c8"
+        },
+        "iso": {
+          "duree_s": 0.676,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "385f64260ba349cfa79862efc94d292d9af1de6279c03ecc257efb749b8c10ba"
+        },
+        "namespace": {
+          "duree_s": 147.364,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "5f8b60952f3c93d7c260546d159cde8b78e935c96f4fab0bb2d77ef36494d4e4"
+        },
+        "nsh": {
+          "duree_s": 16.567,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "38d898efab7f18fb3f227917940f4b75c163e3f04d286b2e8de8fe5e14a64dbc"
+        },
+        "nsh_scripts": {
+          "duree_s": 12.341,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "1b0be37c7818d0b96cf78caae8cd6c8c880ccb83765d440ac4ff43784f57c853"
+        },
+        "nsh_terminal": {
+          "duree_s": 7.925,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "027924aa936f33b2eeebbe93150b8af27d30711469c34fc4e6bc7e27756dbbfb"
+        },
+        "processus-avx": {
+          "duree_s": 9.439,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "20beb282af50135d5658c72ad5cb108f3e1aead501f39825583649ef087180d5"
+        },
+        "processus-sans-avx": {
+          "duree_s": 5.442,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "20beb282af50135d5658c72ad5cb108f3e1aead501f39825583649ef087180d5"
+        },
+        "smp": {
+          "duree_s": 3.602,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "1d602cad81e8c30a9d4221e0bb827bdcf57b005c940bd7caefa7ca4e8ecbe6f4"
+        },
+        "smp-ap-absent": {
+          "duree_s": 8.926,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "9ffc9616f81fc5458cda0ff9fae6ddfcba3c0d22680e26cbe27c12faed8915f1"
+        },
+        "smp-arret": {
+          "duree_s": 2.476,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "d383d178bfa96251439dadd41741df740aadcba371614dbe6204d64be8f6f935"
+        },
+        "smp-cpu-muet": {
+          "duree_s": 3.81,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "1c2a02b926ba9f3b3fcb5005d3c5e94684fae58edacfaa7bcf6f60876d49c7a0"
+        },
+        "smp-panique": {
+          "duree_s": 2.514,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "a37e652db3465ff19c808f25aa6ed07240a96bf6bb030fafed423bbca4ad001f"
+        },
+        "vi": {
+          "duree_s": 19.765,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "d160a534f037ac5d66c61d467a2566eef860db92486fa294106c80e9bb7eee95"
+        },
+        "vi_ecran": {
+          "duree_s": 5.603,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "cc04ccfec60ed6cd8a244f2b969d7d21d887f8df30b57f9ca599fd95b2b65f64"
+        }
+      },
+      "elf_ordinaires": {
+        "bloc": "cc613c5a3332fa3def2a72dbebb197a7de3deec17a00f4f46906a2baff542c61",
+        "boot": "cc613c5a3332fa3def2a72dbebb197a7de3deec17a00f4f46906a2baff542c61"
+      },
+      "smp": {
+        "serie-x86_64-smp-ap-absent-2cpu-.log": {
+          "sha256": "48827a1becccfd84bbc663c384470e19276378571a345b9dc0181a009d016e0c",
+          "resultat": [
+            "SMP arret motif=amorcage coordinateur=0 attendus=0x3 en_ligne=0x1 ack=0x1 absents=0x2 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-arret-2cpu-.log": {
+          "sha256": "52905da375c39181d1b3b45e850697b7029e6baeb5f9018893a1c30e978ce3ca",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-cpu-muet-2cpu-.log": {
+          "sha256": "0824b9a174e434241a497fcd5a3fc7858f960142fd8f091ccc89cee8dd1571fb",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x1 absents=0x0 muets=0x2"
+          ]
+        },
+        "serie-x86_64-smp-fp-2cpu-max_vendor_GenuineIntel.log": {
+          "sha256": "7438f38f38893ed0579880f1b37f272da5f3ce9c8ea6b3eb266a80c43d65120c",
+          "resultat": [
+            "SMP FPU x86 sauvegarde=xsave64 xcr0_demande=7",
+            "SMP FPU cycle=0 clients=4 migrations=4 OK",
+            "SMP FPU cycle=1 clients=4 migrations=4 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-fp-2cpu-qemu64_vendor_GenuineIntel_-avx_-xsave.log": {
+          "sha256": "abf02f3f7939942ac51eb84cb8b984ee0e9d65728a2c4497b88ac99e58bc239f",
+          "resultat": [
+            "SMP FPU x86 sauvegarde=fxsave64 xcr0_demande=0",
+            "SMP FPU cycle=0 clients=4 migrations=4 OK",
+            "SMP FPU cycle=1 clients=4 migrations=4 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-panique-2cpu-.log": {
+          "sha256": "c8461f61aac70cec702c3930783e5c9ca0d023333dae8dc1c83158e884027005",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=1 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-test-2cpu.log": {
+          "sha256": "e7c37025c4672598cc183e49d38c73a98386bedfb8f91ac033ff30bd90d03a89",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=119961",
+            "SMP preemptions=52",
+            "SMP traductions distantes masque=0x2 OK",
+            "SMP migration=0->1",
+            "SMP stationnes=1 en_ligne=1",
+            "SMP rendezvous=0x3 actifs=2 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x1 ack=0x3 absents=0x0 muets=0x0"
+          ]
+        }
+      },
+      "autres_json": [
+        "abi-x86_64-256.json",
+        "cli-p9-x86_64-4096.json",
+        "cli-p9-x86_64-512.json",
+        "cli-x86_64-4096.json",
+        "cli-x86_64-512.json",
+        "endurance-x86_64-15s.json",
+        "ipc-x86_64-races-256.json",
+        "ipc-x86_64-test-128.json",
+        "ipc-x86_64-test-256.json",
+        "nsh-x86_64-4096.json",
+        "nsh-x86_64-512.json",
+        "scripts-x86_64-4096.json",
+        "scripts-x86_64-512.json",
+        "vi-x86_64-4096.json",
+        "vi-x86_64-512.json"
+      ],
+      "memoire_128mio": {
+        "residents_repos": 792,
+        "residents_saturation": 1273,
+        "cadres_ipc_saturation": 71,
+        "libres_apres_destruction": 30370,
+        "restitution_integrale": true
+      },
+      "courses": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 664
+      },
+      "nsh-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "nsh-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "scripts-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 118,
+        "reprise": true
+      },
+      "scripts-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 118,
+        "reprise": true
+      },
+      "vi-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 96,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "vi-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 96,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "restitution_elf": "ELF restitution OK libres=63074 allocations=1798 pic_cadres=292 creation_cycles=1298000 chargement_cycles=989000 collecte_cycles=2860000 hz=997050781",
+      "nsh_terminal": [
+        "x86_64/512 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 472 Kio",
+        "x86_64/4096 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 472 Kio"
+      ],
+      "vi_ecran": [
+        "x86_64 — 20 frappes, 20 lignes, quatre géométries dont 80 × 24, lignes modifiées, curseur, retour à nsh"
+      ]
+    },
+    "x86_64-4": {
+      "suites": 27,
+      "groupes": {
+        "bloc": {
+          "duree_s": 73.131,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "56fe9ef71de6d96d055483890b5b2918f35fb825416b87ffbb6c80ef7426aa45"
+        },
+        "boot": {
+          "duree_s": 183.987,
+          "retour": 0,
+          "groupes_OK": 25,
+          "log_sha256": "a35ae668825162832b36394396e8f11b33f33e4c79af581c75ab4569332dd02a"
+        },
+        "cli": {
+          "duree_s": 24.608,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "0164cedc4f4e2a4797deb50fc465e639bf725da3a1a652fc4a7c8dd90d6da42f"
+        },
+        "cli_p9": {
+          "duree_s": 30.107,
+          "retour": 0,
+          "groupes_OK": 2,
+          "log_sha256": "a8a53aca31185d3cb32908aa03e8498569af9ca983af48af6c42543c7a9109d5"
+        },
+        "courses": {
+          "duree_s": 14.23,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "c1a361810a985b49c7ef2f93392a3251374ee6a5c77f39eeb8c921acfebeeaa0"
+        },
+        "cycle-processus": {
+          "duree_s": 6.216,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "39ccaa3cef4bf312d9268a0af0c1e2c85e808c3a2b0c0259c076cdfafbef2724"
+        },
+        "elf": {
+          "duree_s": 3.549,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "64c42ecaa86ba39fe67468298bd8a84e9af97706d81ff1c12df5eba974546a95"
+        },
+        "endurance-ipc": {
+          "duree_s": 302.511,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "84e8c65bf85d039350b6a5b823e7c7f7c4fcdd9410ed921eb2d5959ee29a7e69"
+        },
+        "endurance-ordonnanceur": {
+          "duree_s": 63.145,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "69b31f1acc3ca2c1c18b13937ff981e82d8cb1d9972e3e672b92025f4627375b"
+        },
+        "fichiers": {
+          "duree_s": 232.769,
+          "retour": 0,
+          "groupes_OK": 44,
+          "log_sha256": "a9bfba528ee8fcef4679e3a966a70a0c3394156d8d07ad3950961abbf2cbab3e"
+        },
+        "fp-avx": {
+          "duree_s": 7.656,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "80b9c094b69f85e544af7d1030d29c789872ba16b5fea08a9f174ec99ae168e5"
+        },
+        "fp-sans-avx": {
+          "duree_s": 6.365,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "cb4ac3ddeb21064e1ed91d8110113ab5adcbbef233876597911cdca394b59a53"
+        },
+        "ipc": {
+          "duree_s": 8.374,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "9f95eaff9df492b103e722eeadcd6ec48b8a5987ee34451ff23a507815f597c8"
+        },
+        "iso": {
+          "duree_s": 0.697,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "6e278c6a4b547f2463e6e6f265dcc7a71dc3421fea2a2bcc015d4e38f0475189"
+        },
+        "namespace": {
+          "duree_s": 155.041,
+          "retour": 0,
+          "groupes_OK": 24,
+          "log_sha256": "b2642ed792a17b76deb163c0b7da923e5f32c429c0bef4b4bb4541a9e5d36bd6"
+        },
+        "nsh": {
+          "duree_s": 18.324,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "ca4b66a35d3ab1e4f28cac332b5c7346d0b615f86b68c7d37948164536a3ede6"
+        },
+        "nsh_scripts": {
+          "duree_s": 13.443,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "a7c9aec776b5c555b604c38a34f0012e6eca02041efa6f64c4cd44421317d082"
+        },
+        "nsh_terminal": {
+          "duree_s": 7.774,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "d975f3d5410b319443c0201a38758283d628016de6c58bc7f6ebd0373cdf5cc3"
+        },
+        "processus-avx": {
+          "duree_s": 9.028,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "20beb282af50135d5658c72ad5cb108f3e1aead501f39825583649ef087180d5"
+        },
+        "processus-sans-avx": {
+          "duree_s": 7.36,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "20beb282af50135d5658c72ad5cb108f3e1aead501f39825583649ef087180d5"
+        },
+        "smp": {
+          "duree_s": 3.734,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "36505257debc7d9e14905c7660a5942edad115cf51b5a2b3beda77cf14b23d47"
+        },
+        "smp-ap-absent": {
+          "duree_s": 8.738,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "49a60258fce4e0f19bff4753108672dc56cb7cd8fe65400150ae1a57cccfc8be"
+        },
+        "smp-arret": {
+          "duree_s": 2.514,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "9179315b579817714e981f5f29454d0630f4f18565881e1bc5e0b2708fa9b561"
+        },
+        "smp-cpu-muet": {
+          "duree_s": 3.912,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "8a35d37e2efa92776309d2cb377cbbe18e487d30d06383bb26414d2f14383b16"
+        },
+        "smp-panique": {
+          "duree_s": 2.513,
+          "retour": 0,
+          "groupes_OK": 1,
+          "log_sha256": "3915c72fd2422146caf1844df68bc217644a338b7f24d91ae8d824c15adc2a5b"
+        },
+        "vi": {
+          "duree_s": 19.526,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "647c7ebec374f14f111c23e732107654ca8743acee5d636c05adf8b9832aa674"
+        },
+        "vi_ecran": {
+          "duree_s": 5.575,
+          "retour": 0,
+          "groupes_OK": 0,
+          "log_sha256": "3ea36c1363f1bbc7a8311243156024461db4babac4a5c6d72642493905f09037"
+        }
+      },
+      "elf_ordinaires": {
+        "bloc": "cc613c5a3332fa3def2a72dbebb197a7de3deec17a00f4f46906a2baff542c61",
+        "boot": "cc613c5a3332fa3def2a72dbebb197a7de3deec17a00f4f46906a2baff542c61"
+      },
+      "smp": {
+        "serie-x86_64-smp-ap-absent-4cpu-.log": {
+          "sha256": "8b03969afdd84c167ab100c380bd473a0af46519143030f813ddff6174af65f9",
+          "resultat": [
+            "SMP arret motif=amorcage coordinateur=0 attendus=0xf en_ligne=0x7 ack=0x7 absents=0x8 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-arret-4cpu-.log": {
+          "sha256": "49f3c58616c185ed62d1ecd05b07bb99ab8eb3a742f32551ca1a2def838a96db",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-cpu-muet-4cpu-.log": {
+          "sha256": "66c9cc777cbd01a0562d36978108f40d1f1638c89361992eb4402903f60768e5",
+          "resultat": [
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xd absents=0x0 muets=0x2"
+          ]
+        },
+        "serie-x86_64-smp-fp-4cpu-max_vendor_GenuineIntel.log": {
+          "sha256": "a9b5d57f28f786900459f9dc9edf884383e7478d0d52b1446b4770e1295b3c4d",
+          "resultat": [
+            "SMP FPU x86 sauvegarde=xsave64 xcr0_demande=7",
+            "SMP FPU cycle=0 clients=8 migrations=8 OK",
+            "SMP FPU cycle=1 clients=8 migrations=8 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-fp-4cpu-qemu64_vendor_GenuineIntel_-avx_-xsave.log": {
+          "sha256": "20aba88e7d188d3f281026dc83398ae8dadb617cc0136008c444a4d7b97b97d9",
+          "resultat": [
+            "SMP FPU x86 sauvegarde=fxsave64 xcr0_demande=0",
+            "SMP FPU cycle=0 clients=8 migrations=8 OK",
+            "SMP FPU cycle=1 clients=8 migrations=8 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-panique-4cpu-.log": {
+          "sha256": "7441ae4baa57aa0cb7382bf5af104124cbd8dc3169609fdb5a95380a3c5fc302",
+          "resultat": [
+            "SMP arret motif=panique coordinateur=1 attendus=0xf en_ligne=0xf ack=0xf absents=0x0 muets=0x0"
+          ]
+        },
+        "serie-x86_64-smp-test-4cpu.log": {
+          "sha256": "06437e0db2a196e30b3a21ee803a1d16602497090631df837ad097105f1424a3",
+          "resultat": [
+            "SMP IPC tours=1000 ns_par_tour=89883",
+            "SMP preemptions=80",
+            "SMP traductions distantes masque=0xe OK",
+            "SMP migration=0->1",
+            "SMP stationnes=3 en_ligne=1",
+            "SMP rendezvous=0xf actifs=4 OK",
+            "SMP arret motif=normal coordinateur=0 attendus=0xf en_ligne=0x1 ack=0xf absents=0x0 muets=0x0"
+          ]
+        }
+      },
+      "autres_json": [
+        "abi-x86_64-256.json",
+        "cli-p9-x86_64-4096.json",
+        "cli-p9-x86_64-512.json",
+        "cli-x86_64-4096.json",
+        "cli-x86_64-512.json",
+        "endurance-x86_64-15s.json",
+        "endurance-x86_64-60s.json",
+        "ipc-x86_64-endurance-300s.json",
+        "ipc-x86_64-races-256.json",
+        "ipc-x86_64-test-128.json",
+        "ipc-x86_64-test-256.json",
+        "nsh-x86_64-4096.json",
+        "nsh-x86_64-512.json",
+        "scripts-x86_64-4096.json",
+        "scripts-x86_64-512.json",
+        "vi-x86_64-4096.json",
+        "vi-x86_64-512.json"
+      ],
+      "memoire_128mio": {
+        "residents_repos": 858,
+        "residents_saturation": 1339,
+        "cadres_ipc_saturation": 71,
+        "libres_apres_destruction": 30288,
+        "restitution_integrale": true
+      },
+      "courses": {
+        "ordres": 5,
+        "repetitions": 10000,
+        "preemptions": 252
+      },
+      "endurance_ordonnanceur": {
+        "architecture": "x86_64",
+        "secondes_demandees": 60,
+        "secondes_reelles": 60.825,
+        "avant": {
+          "blocs": 6,
+          "occupes": 205888,
+          "engages": 262144,
+          "libres": 62992
+        },
+        "bilan": {
+          "periode": 9,
+          "ticks": 15095,
+          "preemptions": 15053,
+          "collectes": 14673,
+          "attentes": 10852,
+          "mutex": 10877,
+          "A": 3040,
+          "B": 2950,
+          "allocations": 129433,
+          "audits": 36,
+          "penuries": 1,
+          "minimum": 62888,
+          "blocs": 6,
+          "occupes": 205888,
+          "engages": 262144,
+          "libres": 62992
+        }
+      },
+      "endurance_ipc": {
+        "architecture": "x86_64",
+        "mode": "endurance",
+        "ram_mio": 256,
+        "elf_sha256": "cc613c5a3332fa3def2a72dbebb197a7de3deec17a00f4f46906a2baff542c61",
+        "secondes": 300.151,
+        "cycles": 29583,
+        "periodes": 256,
+        "libres": 62992
+      },
+      "nsh-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "nsh-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "commandes": 113,
+        "coupure": "alpha retiré, beta et témoin intègres"
+      },
+      "scripts-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 118,
+        "reprise": true
+      },
+      "scripts-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "commandes": 31,
+        "bash": [
+          "A:été blanc $nom $nom",
+          "oui",
+          "tour0",
+          "tour1",
+          "a0",
+          "b0",
+          "break=0",
+          "continue=0",
+          "secours",
+          "statut=1",
+          "vide"
+        ],
+        "pic_pages_privees_observe": 118,
+        "reprise": true
+      },
+      "vi-x86_64-4096": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 96,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "vi-x86_64-512": {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "elf_collectes": 17,
+        "fichiers_relus": 16,
+        "pic_pages_privees_observe": 96,
+        "refus_concurrent": true,
+        "revocation": true,
+        "refus_source_creuse_binaire_octets": 536870912,
+        "script_apres_redemarrage": true,
+        "octets_apres_redemarrage": true
+      },
+      "restitution_elf": "ELF restitution OK libres=62992 allocations=1798 pic_cadres=292 creation_cycles=3484000 chargement_cycles=1827000 collecte_cycles=8474000 hz=999382812",
+      "nsh_terminal": [
+        "x86_64/512 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 472 Kio",
+        "x86_64/4096 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 472 Kio"
+      ],
+      "vi_ecran": [
+        "x86_64 — 20 frappes, 20 lignes, quatre géométries dont 80 × 24, lignes modifiées, curseur, retour à nsh"
+      ]
+    }
+  },
+  "echecs": [],
+  "total_suites": 163,
+  "total_injections_courses": 300000
+}
