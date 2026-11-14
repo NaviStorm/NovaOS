@@ -229,20 +229,22 @@ fn device(key: u64, addr: u64, size: u64) -> Result<u64, u64> {
 
 // Sur le BSP, aucun décès ou retrait ne peut séparer cette admission de la copie.
 fn copier_reponse_disque(pid: Pid, key: u64, addr: u64, octets: &[u8]) -> Result<(), u64> {
-    with(|s| {
-        if !crate::hardware::block::admit(pid.number, key) {
-            return Err(REVOKED);
-        }
-        if octets.is_empty() {
-            return Ok(());
-        }
-        let espace = s.processes.get(pid).space.as_ref().ok_or(REVOKED)?;
-        if heap::with_pages(|m| Ok(espace.copy_to_user(m, addr, octets))).unwrap() {
-            Ok(())
-        } else {
-            Err(BAD_ADDRESS)
-        }
-    })
+    with(|s| livrer_disque(s, pid, key, addr, octets))
+}
+
+fn livrer_disque(s: &Core, pid: Pid, key: u64, addr: u64, octets: &[u8]) -> Result<(), u64> {
+    if !crate::hardware::block::admit(pid.number, key) {
+        return Err(REVOKED);
+    }
+    if octets.is_empty() {
+        return Ok(());
+    }
+    let espace = s.processes.get(pid).space.as_ref().ok_or(REVOKED)?;
+    if heap::with_pages(|m| Ok(espace.copy_to_user(m, addr, octets))).unwrap() {
+        Ok(())
+    } else {
+        Err(BAD_ADDRESS)
+    }
 }
 
 // Un seul terminal série. Les deux écrans possèdent chacun leur position.

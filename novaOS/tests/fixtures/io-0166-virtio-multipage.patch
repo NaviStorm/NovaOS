@@ -609,7 +609,7 @@
 +                return Err(REVOKED);
 +            }
 +            if !livre {
-+                r.doute = true;
++                r.retrait = true; // DMA terminé, livraison refusée et nouvel envoi interdit.
 +                return Err(BAD_ADDRESS);
 +            }
 +            r.index += self.nombre;

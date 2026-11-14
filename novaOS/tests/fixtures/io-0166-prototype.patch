@@ -310,7 +310,7 @@
 +        if lane.handles[side] != key || lane.reservation.is_some() {
              return Err(DENIED);
          }
-@@ -114,2 +121,281 @@
+@@ -114,2 +121,317 @@
      })
  }
 +
@@ -512,33 +512,69 @@
 +    })
 +}
 +
-+pub(in crate::sched::process) fn termine(cap: u64, tag: u64, op: u8, success: bool) -> bool {
++pub(in crate::sched::process) fn termine(
++    cap: u64,
++    tag: u64,
++    op: u8,
++    resultat: Res<()>,
++    livrer: impl FnOnce(&Core) -> Res<()>,
++) -> Res<()> {
 +    with(|s| {
-+        let pid = s.thread(s.current).owner.unwrap();
-+        let Ok(node) = s.ipc.lookup(pid, cap, SEND | RECEIVE) else {
-+            return false;
-+        };
-+        let Some(lane) = s.ipc.ends.get_mut(node.endpoint.slot()).bulk.as_mut() else {
-+            return false;
-+        };
-+        let Some(r) = lane.reservation.as_mut() else {
-+            return false;
-+        };
-+        if lane.parties[0] != pid.number || lane.handles[0] != cap || r.tag != tag || !r.en_vol {
-+            return false;
++        let pid = s.thread(s.current).owner.ok_or(REVOKED)?;
++        let node = s.ipc.lookup(pid, cap, SEND | RECEIVE)?;
++        let lane = s.ipc.ends.get(node.endpoint.slot()).bulk.ok_or(REVOKED)?;
++        let r = lane.reservation.ok_or(REVOKED)?;
++        if lane.parties[0] != pid.number
++            || lane.handles[0] != cap
++            || lane.nodes[0] != node.id
++            || r.tag != tag
++            || !r.en_vol
++        {
++            return Err(resultat.err().unwrap_or(REVOKED));
 +        }
++        // Une seule section BSP pour les deux capacités, la destination et le crédit.
++        let livraison = resultat.and_then(|()| {
++            if r.retrait || r.doute {
++                return Err(REVOKED);
++            }
++            let moteur = s.processes.slots[r.moteur.slot]
++                .as_ref()
++                .filter(|p| p.pid == r.moteur && p.space.is_some())
++                .ok_or(REVOKED)?;
++            let pair = s.ipc.lookup(moteur.pid, lane.handles[1], SEND | RECEIVE)?;
++            if lane.parties[1] != moteur.pid.number
++                || lane.nodes[1] != pair.id
++                || pair.endpoint != node.endpoint
++            {
++                return Err(REVOKED);
++            }
++            livrer(s)
++        });
++        let r = s
++            .ipc
++            .ends
++            .get_mut(node.endpoint.slot())
++            .bulk
++            .as_mut()
++            .unwrap()
++            .reservation
++            .as_mut()
++            .unwrap();
 +        r.en_vol = false;
-+        if !success {
-+            r.doute = true;
-+            return false;
++        if let Err(e) = livraison {
++            if resultat.is_err() {
++                r.doute = true;
++            } else {
++                r.retrait = true;
++            }
++            return Err(e);
 +        }
-+        if r.retrait || r.doute { return false; }
 +        if op == 4 {
 +            r.flush = true;
 +        } else {
 +            r.effectues += 1;
 +        }
-+        true
++        Ok(())
 +    })
 +}
 +
@@ -750,7 +786,7 @@
 +        0x10031 if b == 56 && c == 0 => commande_lot(a),
          IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
          IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
-@@ -441,2 +443,51 @@
+@@ -441,2 +443,50 @@
      Ok(len)
  }
 +
@@ -795,11 +831,10 @@
 +    }
 +    let autorise = || ipc::admis(cap, tag, i, n, op, block::wire::lba(&w), true);
 +    let resultat = block::commande_groupee(pid.number, key, &w, &mut page, autorise);
-+    let _garde = crate::hal::interrupts::Guard::new();
-+    let livre = ipc::termine(cap, tag, op, resultat.is_ok());
-+    resultat?;
-+    if !livre { return Err(REVOKED); }
-+    copier_reponse_disque(pid, key, adresse, if op == 2 { &page } else { &[] })?;
++    let livraison = ipc::termine(cap, tag, op, resultat, |s| {
++        livrer_disque(s, pid, key, adresse, if op == 2 { &page } else { &[] })
++    });
++    livraison?;
 +    Ok(0)
 +}
 --- a/novaOS/tests/ipc.py
