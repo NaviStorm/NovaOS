@@ -54,6 +54,39 @@ math:
     lea rdx,[r8+r8]
     cmp rax,rdx
     jne bad
+    // IEEE 754 : moins zéro plus moins zéro, NaN non ordonné.
+    mov eax,0x80000000
+    movd xmm0,eax
+    addss xmm0,xmm0
+    movd edx,xmm0
+    cmp edx,eax
+    jne bad
+    mov rax,0x7ff8000000000001
+    movq xmm0,rax
+    ucomisd xmm0,xmm0
+    jnp bad
+    movd xmm0,r8d
+    paddq xmm0,xmm0
+    movq rax,xmm0
+    lea rdx,[r8+r8]
+    cmp rax,rdx
+    jne bad
+    test r9d,r9d
+    jz control
+    cvtsi2sd xmm0,r8
+    vinsertf128 ymm0,ymm0,xmm0,1
+    vaddpd ymm0,ymm0,ymm0
+    vextractf128 xmm1,ymm0,1
+    cvttsd2si rax,xmm1
+    cmp rax,rdx
+    jne bad
+control:
+    mov r11d,r8d
+    and r11d,3
+    shl r11d,10
+    or r11d,0x037f
+    mov [rsp+12],r11w
+    fldcw [rsp+12]
     fild qword ptr [rdi+8]
     mov r10d,r8d
     and r10d,3
@@ -71,6 +104,9 @@ math:
 2:
     .endr
 again:
+    fnstcw [rsp+12]
+    cmp [rsp+12],r11w
+    jne bad
     stmxcsr [rsp]
     cmp [rsp],r10d
     jne bad

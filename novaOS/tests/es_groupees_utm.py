@@ -29,7 +29,7 @@ LV = bytes([0x62])*16
 IDS = (LV[:-1].hex()+"63", LV.hex())
 
 
-def image(raw, volume, elf, s):
+def image(raw, volume, elf, s, *, scenario="systeme-gpt"):
     esp = MIO//s
     p9 = esp * (61 if s == 512 else 265)
     fin = p9 + volume.stat().st_size//s
@@ -59,7 +59,7 @@ def image(raw, volume, elf, s):
             struct.pack_into("<I", entete, 16, zlib.crc32(entete))
             ecrire(lba, entete)
             ecrire(array, table)
-        fat = construire(elf, s)
+        fat = construire(elf, s, scenario=scenario)
         for pos in range(0, len(fat), s+4):
             ecrire(esp+struct.unpack_from("<I", fat, pos)[0], fat[pos+4:pos+4+s])
         disk.seek(p9*s)
@@ -112,8 +112,13 @@ def publier(c, nom, destination, coupure, observer=None, mesurer_cpu=None, horod
 
 
 def ouvrir_moniteur(machine, out, pile):
-    port = script(['tell application "UTM" to return address of second serial port of '
-                   '(virtual machine id (item 1 of argv))'], machine)
+    deadline = time.monotonic() + 10
+    while True:
+        port = script(['tell application "UTM" to return address of second serial port of '
+                       '(virtual machine id (item 1 of argv))'], machine)
+        if port or time.monotonic() >= deadline:
+            break
+        time.sleep(.05)
     if not port.startswith(("/dev/tty", "/dev/pty")):
         raise ValueError(f"Port moniteur inattendu {port!r}")
     fd = os.open(port, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)

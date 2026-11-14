@@ -117,13 +117,17 @@ static ACK: AtomicU64 = AtomicU64::new(0);
 static STOP_SP: [AtomicUsize; MAX_CPUS] = [const { AtomicUsize::new(0) }; MAX_CPUS];
 static IPI_READY: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
 
+pub(crate) fn record_park(cpu: usize) {
+    STOP_SP[cpu].store(hal::context::sp(), Ordering::Relaxed);
+    ACK.fetch_or(1 << cpu, Ordering::Release);
+}
+
 pub(crate) fn check_stop() {
     let owner = COORDINATOR.load(Ordering::Acquire);
     if owner != usize::MAX && owner != index() {
         hal::interrupts::mask();
         let cpu = index();
-        STOP_SP[cpu].store(hal::context::sp(), Ordering::Relaxed);
-        ACK.fetch_or(1 << cpu, Ordering::Release);
+        record_park(cpu);
         hal::cpu::park_local();
     }
 }
@@ -161,9 +165,17 @@ pub(crate) fn shutdown(reason: &str, details: core::fmt::Arguments<'_>) -> ! {
     }
     let ack = ACK.load(Ordering::Acquire);
     if let Some(write) = arch::DIAGNOSTIC {
+        for (id, saved) in STOP_SP[..count()].iter().enumerate() {
+            if ack & (1 << id) != 0 {
+                write(format_args!(
+                    "SMP diagnostic cpu={id} sp={:#x}",
+                    saved.load(Ordering::Acquire)
+                ));
+            }
+        }
         write(format_args!(
             "SMP arret motif={reason} coordinateur={cpu} attendus={expected:#x} en_ligne={online:#x} ack={ack:#x} absents={:#x} muets={:#x}",
-            expected & !online,
+            expected & !(online | ack),
             online & !ack
         ));
     }

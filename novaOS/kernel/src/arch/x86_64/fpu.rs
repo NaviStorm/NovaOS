@@ -48,6 +48,24 @@ pub fn prepare() {
             asm!("mov cr4, {}", in(reg) cr4 & !(1 << 18));
         }
     }
+    // Les bits MXCSR admis doivent rester restaurables après migration.
+    #[repr(align(16))]
+    struct Legacy([u8; 512]);
+    let mut legacy = Legacy([0; 512]);
+    unsafe {
+        asm!("clts","fxsave64 [{}]",in(reg)legacy.0.as_mut_ptr(),options(nostack));
+        let cr0: usize;
+        asm!("mov {},cr0",out(reg)cr0);
+        asm!("mov cr0,{}",in(reg)cr0|8);
+    }
+    let reported = u32::from_le_bytes(legacy.0[28..32].try_into().unwrap());
+    let writable = if reported == 0 { 0xffbf } else { reported };
+    static MXCSR_MASK: core::sync::atomic::AtomicU32 = core::sync::atomic::AtomicU32::new(0);
+    if let Err(previous) =
+        MXCSR_MASK.compare_exchange(0, writable, Ordering::AcqRel, Ordering::Acquire)
+    {
+        assert_eq!(previous, writable, "masques MXCSR hétérogènes");
+    }
     if crate::smp::index() == 0 {
         crate::hal::log(format_args!(
             "SMP FPU x86 sauvegarde={} xcr0_demande={}",

@@ -422,7 +422,7 @@ def endurance(arch, seconds):
     print(path, result, flush=True)
 
 
-def process_test(arch):
+def process_test(arch, *, user_fp=False):
     def verify(vm, directory, log):
         deadline = time.monotonic() + 45
         report = ""
@@ -454,6 +454,8 @@ def process_test(arch):
             ((1 << 47), "retour", "pile", 0) if arch == "x86_64" else ((1 << 47), "ecriture", "absente", 6),
             (0, "instruction", "privilege", 0), (0, "instruction", "fpu", 0),
         ]
+        if user_fp:
+            expected.remove((0, "instruction", "fpu", 0))
         assert len(faults) == len(expected)
         for (_, pc, detail), (addr, access, cause, code) in zip(faults, expected):
             assert f"adresse={addr:#x} acces={access} cause={cause} " in detail, detail
@@ -469,15 +471,18 @@ def process_test(arch):
             assert (int(pc,16) == addr if access == "execution" else 0x400000 <= int(pc,16) < 0x401000)
         # Les deux survivants sortent volontairement après la dernière faute.
         exits = [(int(pid), detail) for pid, _, detail in events if "sortie=" in detail]
+        if user_fp:
+            assert exits.pop(0) == (13, "sortie=255")
         assert exits[0][1] == "sortie=23"
         assert sorted(exits[1:3]) == [(1,"sortie=41"), (2,"sortie=82")]
         assert all(detail == "sortie=17" for _, detail in exits[3:])
-        assert report.index("cause=fpu") < report.index("sortie=41")
+        assert report.index("sortie=255" if user_fp else "cause=fpu") < report.index("sortie=41")
         if arch == "x86_64":
             wait_for_halt(vm, True)
         else:
             wait_for_wfi(vm)
-    scenario_vm(arch, "proc-test", verify)
+    suffix = "-fp-" + os.environ.get("NOVA_GIC", "2") if user_fp else ""
+    scenario_vm(arch, "proc-test", verify, suffix)
 
 
 def boot_fault(arch):

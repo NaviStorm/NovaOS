@@ -571,6 +571,7 @@ fn idle() {
             // a récolté les travailleurs. Le retrait du masque précède le HLT/WFI.
             crate::heap::with_pages(|_| {
                 crate::arch::poll_translation();
+                crate::smp::record_park(cpu);
                 crate::smp::ONLINE.fetch_and(!(1 << cpu), Ordering::Release);
                 Ok(())
             })

@@ -25,6 +25,22 @@ _start:
     fcvtzs x5,s0
     cmp x5,#3
     b.ne bad
+    // IEEE 754 : conservation du signe de zéro et comparaison non ordonnée.
+    mov w5,#0x80000000
+    fmov s0,w5
+    fadd s0,s0,s0
+    fmov w9,s0
+    cmp w9,w5
+    b.ne bad
+    mov x5,#0x7ff8000000000000
+    fmov d0,x5
+    fcmp d0,d0
+    b.vc bad
+    dup v0.2d,x4
+    add v0.2d,v0.2d,v0.2d
+    umov x5,v0.d[1]
+    cmp x5,x4,lsl #1
+    b.ne bad
     and x6,x4,#3
     lsl x7,x6,#22
     msr fpcr,x7

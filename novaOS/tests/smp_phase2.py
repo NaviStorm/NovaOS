@@ -4,7 +4,7 @@ import os
 import re
 import time
 
-from demarrage import scenario_vm
+from demarrage import process_test, scenario_vm
 
 
 def run(arch, name, cpus):
@@ -23,6 +23,11 @@ def run(arch, name, cpus):
         while time.monotonic() < end and vm.poll() is None:
             text = log.read_text(errors="replace") if log.exists() else ""
             if expected in text:
+                parked = [(int(cpu), int(sp, 16)) for cpu, sp in
+                          re.findall(r"SMP diagnostic cpu=(\d+) sp=(0x[0-9a-f]+)", text)]
+                assert sorted(cpu for cpu, _ in parked) == [
+                    i for i in range(cpus) if (full ^ absent ^ missing) & (1 << i)]
+                assert all(sp for _, sp in parked) and len(set(sp for _, sp in parked)) == len(parked)
                 if name == "smp-fp":
                     cycles = re.findall(r"SMP FPU cycle=(\d+) clients=(\d+) migrations=(\d+) OK", text)
                     assert cycles == [(str(i), str(2 * cpus), str(2 * cpus if cpus > 1 else 0)) for i in range(2)]
@@ -32,7 +37,9 @@ def run(arch, name, cpus):
             time.sleep(.04)
         raise RuntimeError(f"{expected}\n{text[-1800:]}")
 
-    scenario_vm(arch, name, verify, f"-{cpus}cpu", NOVA_VCPUS=str(cpus))
+    profile = os.environ.get("NOVA_X86_CPU", "") if arch == "x86_64" else "gic" + os.environ.get("NOVA_GIC", "2")
+    suffix = re.sub(r"[^a-zA-Z0-9_.-]", "_", profile)
+    scenario_vm(arch, name, verify, f"-{cpus}cpu-{suffix}", NOVA_VCPUS=str(cpus))
 
 
 if __name__ == "__main__":
@@ -45,3 +52,6 @@ if __name__ == "__main__":
             names += ["smp-ap-absent", "smp-cpu-muet"]
         for name in names:
             run(os.environ["NOVA_ARCH"], name, n)
+
+    if a.profile == "fp":
+        process_test(os.environ["NOVA_ARCH"], user_fp=True)

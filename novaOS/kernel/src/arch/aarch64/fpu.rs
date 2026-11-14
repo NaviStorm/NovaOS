@@ -12,7 +12,11 @@ pub fn prepare() {
         let simd = (id >> 20) & 15;
         assert!(fp <= 1 && simd <= 1, "FP/ASIMD absents");
         static PROFILE: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
-        let profile = 1 + fp + 16 * simd;
+        // Le laboratoire ne migre pas de contexte FP entre deux révisions
+        // de cœur différentes avant qualification de leurs contrôles optionnels.
+        let midr: u64;
+        asm!("mrs {},midr_el1",out(reg)midr);
+        let profile = ((midr & 0xffff_ffff) << 8) | (1 + fp + 16 * simd);
         if let Err(previous) = PROFILE.compare_exchange(
             0,
             profile,
