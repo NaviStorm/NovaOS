@@ -40,16 +40,26 @@ pub(super) enum Action {
 use Action::*;
 
 pub(super) fn spawn_demo(mode: Action, seed: u64, target: u64) -> Result<Child, Error> {
+    spawn_demo_on(mode, seed, target, None)
+}
+
+pub(super) fn spawn_demo_on(
+    mode: Action,
+    seed: u64,
+    target: u64,
+    mask: Option<u64>,
+) -> Result<Child, Error> {
     let mut config = [0u8; 24];
     for (out, value) in config.chunks_exact_mut(8).zip([mode as u64, seed, target]) {
         out.copy_from_slice(&value.to_le_bytes());
     }
     let marker = seed.to_le_bytes();
-    spawn_image(
+    prepare_and_publish(
         DEMO,
         &config,
         matches!(mode, Owner | WriteReadOnly).then_some(&marker[..]),
         None,
+        mask,
     )
 }
 
@@ -142,8 +152,10 @@ pub(crate) fn boot_demo(inject_fault: bool) {
 pub(crate) fn test() {
     let baseline = heap::audit(true);
     shortage();
-    let a = spawn_demo(Owner, 41, 0).unwrap();
-    let b = spawn_demo(Compute, 82, 0).unwrap();
+    // Le banc exige huit commutations réelles par travailleur. Sur deux CPU
+    // libres, deux acteurs permanents peuvent progresser sans être commutés.
+    let a = spawn_demo_on(Owner, 41, 0, Some(1)).unwrap();
+    let b = spawn_demo_on(Compute, 82, 0, Some(1)).unwrap();
     let start = ticks();
     while [&a, &b]
         .into_iter()
