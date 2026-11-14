@@ -3,6 +3,9 @@
 #[allow(dead_code)]
 #[path = "../abi/native.rs"]
 mod abi;
+#[cfg(ipc_equite_lab)]
+#[path = "ipc_equite.rs"]
+mod equite;
 mod gate;
 use abi::*;
 use core::arch::global_asm;
@@ -163,6 +166,8 @@ extern "C" fn worker() -> ! {
         let r = match op {
             x if x == u64::MAX - 1 => exchange(read(1), read(2), read(3) != 0),
             x if x == u64::MAX - 2 => background(read(1)),
+            #[cfg(ipc_equite_lab)]
+            x if x == u64::MAX - 5 => equite::travail(read(1)),
             // Le client de mesure termine sur la dernière réponse. Le serveur
             // attend que le contrôleur ait observé les sorties de tous les clients.
             #[cfg(ipc_smp_lab)]

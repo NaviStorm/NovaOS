@@ -3,6 +3,9 @@ use super::*;
 use crate::{hal::timer, smp};
 use core::sync::atomic::{AtomicBool, AtomicU64};
 
+#[cfg(feature = "ipc-equite-lab")]
+mod equite;
+
 const TOURS: u64 = 1000;
 static FIN: AtomicBool = AtomicBool::new(false);
 static TRAVAIL: AtomicU64 = AtomicU64::new(0);
@@ -99,6 +102,10 @@ impl Couple {
 }
 
 pub(super) fn run(scenario: &[u8]) -> ! {
+    #[cfg(feature = "ipc-equite-lab")]
+    if scenario == b"ipc-smp-equite" {
+        equite::run();
+    }
     let n = smp::count();
     let hz = timer::counter_hz();
     let lib = (1u64 << n) - 1;

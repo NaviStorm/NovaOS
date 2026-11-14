@@ -1,5 +1,7 @@
 //! Ordonnanceur préemptif à file partagée sous exclusion interprocesseurs. Aucun
 //! emprunt de la file ou d’un TCB ne traverse un changement de pile.
+#[cfg(feature = "ipc-equite-lab")]
+mod equite;
 mod gate;
 pub(crate) use gate::Guard;
 mod probes;
@@ -105,6 +107,8 @@ struct Stats {
     event_waits: u64,
 }
 struct Core {
+    #[cfg(feature = "ipc-equite-lab")]
+    equite: equite::Mesures,
     kernel_space: SpaceId,
     ipc: process::ipc::Domain,
     processes: process::Table,
@@ -176,6 +180,8 @@ impl Core {
             process::ipc::multicore::pret(i);
             profile::ipc_woke(gate::owner_index(), self.thread(i).blocked_since);
         }
+        #[cfg(feature = "ipc-equite-lab")]
+        self.equite.reveil(self.thread(i).id);
         self.thread_mut(i).blocked_since = 0;
         self.thread_mut(i).state = State::Ready;
         self.ready.push(i);
@@ -318,6 +324,16 @@ impl Core {
         } else {
             self.choose(cpu).unwrap_or(idle_slot)
         };
+        #[cfg(feature = "ipc-equite-lab")]
+        if self.equite.active {
+            if next == idle_slot && (cpu != 0 || self.stats.exits == self.stats.reaped) {
+                assert!(!(0..self.ready.len).any(|i| {
+                    let slot = self.ready.items[(self.ready.head + i) % MAX];
+                    self.thread(slot).cpu_mask & (1 << cpu) != 0
+                }), "idle choisi avant un prêt admissible");
+            }
+            self.equite.transition(self.thread(old).id, self.thread(next).id, state, cpu, why);
+        }
         #[cfg(feature = "user-fpu")]
         if old != next {
             let previous = self.thread(old).owner.is_some();
@@ -625,6 +641,8 @@ pub fn start(main: fn(), kernel_space: SpaceId) -> ! {
     // Sûreté : initialisation unique sur la pile d’amorçage, IRQ masquées.
     unsafe {
         CORE.0.get().write(Some(Core {
+            #[cfg(feature = "ipc-equite-lab")]
+            equite: equite::Mesures::new(),
             kernel_space,
             processes: process::Table::new(),
             ipc: process::ipc::Domain::new(),
