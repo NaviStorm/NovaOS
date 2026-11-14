@@ -1,6 +1,6 @@
 //! Échanges chronométrés entre deux acteurs et charges concurrentes facultatives.
 use super::*;
-fn word(a: Actor, i: usize, v: u64) {
+pub(super) fn word(a: Actor, i: usize, v: u64) {
     a.put(user::DATA + i as u64 * 8, &v.to_le_bytes());
 }
 fn revoked(a: Actor, b: Actor, hz: u64) {

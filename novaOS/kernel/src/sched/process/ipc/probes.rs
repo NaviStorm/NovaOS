@@ -2,6 +2,8 @@
 //! fournit aucune porte privilégiée à l’image utilisateur.
 use super::*;
 mod bulk;
+#[cfg(feature = "ipc-smp-lab")]
+pub(crate) mod multicore;
 mod contract;
 mod limits;
 mod perf;
@@ -227,6 +229,10 @@ fn t10() {
     ));
 }
 pub(crate) fn run(scenario: &[u8]) {
+    #[cfg(feature = "ipc-smp-lab")]
+    if scenario.starts_with(b"ipc-smp-") {
+        multicore::run(scenario);
+    }
     if scenario == b"ipc-perf" {
         perf::run();
         hal::log(format_args!("IPC validation OK"));

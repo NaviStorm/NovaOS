@@ -47,6 +47,9 @@ fn main() {
             name,
             "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
+        if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_SMP_LAB").is_some() {
+            rust.args(["--cfg", "ipc_smp_lab"]);
+        }
         if compact {
             rust.args([
                 "-C",

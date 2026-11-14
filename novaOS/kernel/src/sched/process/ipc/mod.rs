@@ -12,6 +12,8 @@ use pool::{Bits, Pool};
 mod bulk;
 mod probes;
 mod traffic;
+#[cfg(feature = "ipc-smp-lab")]
+pub(crate) use probes::multicore;
 pub(super) use bulk::transfer;
 pub(crate) use probes::{quiet, run};
 

@@ -88,6 +88,10 @@ impl<T: Copy, const N: usize, const BASE: usize, const PER: usize> Pool<T, N, BA
                 Err(memory::Error::Exhausted) => return Err(NO_MEMORY),
                 Err(e) => panic!("slab IPC : {e:?}"),
             }
+            #[cfg(feature = "ipc-smp-lab")]
+            if BASE == super::Waits::FIRST {
+                super::multicore::page_attente(true);
+            }
             self.mapped |= 1 << page;
         }
         // Sûreté : slot libre dans une page RW privée, aligné pour T, publication après écriture.
@@ -117,6 +121,10 @@ impl<T: Copy, const N: usize, const BASE: usize, const PER: usize> Pool<T, N, BA
             // Sûreté : page du pool vide, sans référence survivant à la transaction.
             heap::with_pages(|m| unsafe { m.release_page(VirtualAddress(Self::address(p))) })
                 .expect("collecte IPC");
+            #[cfg(feature = "ipc-smp-lab")]
+            if BASE == super::Waits::FIRST {
+                super::multicore::page_attente(false);
+            }
             self.mapped &= !(1 << p);
         }
     }

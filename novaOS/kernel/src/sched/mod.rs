@@ -168,6 +168,8 @@ impl Core {
     fn wake(&mut self, i: usize) {
         assert!(matches!(self.thread(i).state, State::Blocked(_)));
         if self.thread(i).blocked_since != 0 {
+            #[cfg(feature = "ipc-smp-lab")]
+            process::ipc::multicore::pret(i);
             profile::ipc_woke(crate::smp::index(), self.thread(i).blocked_since);
         }
         self.thread_mut(i).blocked_since = 0;
@@ -339,6 +341,8 @@ impl Core {
         if old == next {
             return None;
         }
+        #[cfg(feature = "ipc-smp-lab")]
+        if profile::ACTIVE.load(Ordering::Relaxed) { process::ipc::multicore::elu(next); }
         profile::switched(cpu, t.last_cpu != NONE && t.last_cpu != cpu);
         t.last_cpu = cpu;
         t.stack.check(t.saved);
