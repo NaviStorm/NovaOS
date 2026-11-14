@@ -1,0 +1,41 @@
+{
+  "smp-test": {
+    "elf": "dce2e120fe71eafbe6d88c894b5f7bde5c63e44531e57ca621ebb3df606b4b91",
+    "marque": "rendezvous=0xf actifs=4 OK",
+    "valeurs_hmp_distinctes": 1,
+    "echantillonnage": false,
+    "vcpu": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "serie_sha256": "6451cfa6b9c236898c4ea61ae47370b84785700ad12a2ba6412774df49442696"
+  },
+  "smp-fp": {
+    "elf": "dce2e120fe71eafbe6d88c894b5f7bde5c63e44531e57ca621ebb3df606b4b91",
+    "marque": "cycle=1 clients=8 migrations=8 OK",
+    "valeurs_hmp_distinctes": 1,
+    "echantillonnage": false,
+    "vcpu": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "serie_sha256": "ad0ac75cb2d8e118ac4d359655ec65b3e01128239feca91f37bbe63fd17c9f57"
+  },
+  "smp-arret": {
+    "elf": "dce2e120fe71eafbe6d88c894b5f7bde5c63e44531e57ca621ebb3df606b4b91",
+    "marque": "ack=0xf absents=0x0 muets=0x0",
+    "valeurs_hmp_distinctes": 1,
+    "echantillonnage": false,
+    "vcpu": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "serie_sha256": "f2af1f39f29a186111a2bbebe8b1cdbeb7090b07a45f01e33de3790cd471c298"
+  }
+}
