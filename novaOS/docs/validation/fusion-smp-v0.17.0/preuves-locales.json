@@ -1,0 +1,79 @@
+{
+  "chemin_depuis_le_depot_OS": "novaOS/build/qualification-finale-0170/stockage-e08b979-c6ly6pcy",
+  "revision_au_debut": "e08b9796e59523b917b9d020520d5df97c9a4380",
+  "mode_repertoire": "0700",
+  "images": "Les disques sont des données fictives. Les fichiers archivés sont en lecture seule (0400).",
+  "verification": "Pour chaque fichier copié, le SHA-256 de la source a été comparé à celui de la copie. Chaque entrée des bilans disponibles a été recoupée avec son nom, sa taille et son empreinte. Les inventaires énumèrent aussi les volumes et sorties des diagnostics préliminaires.",
+  "interpretation": "Les bilans comptent tous les répertoires conservés. Les rapports de scénario distinguent les échecs attendus des défauts de qualification.",
+  "campagnes": {
+    "classique": {
+      "inventaire": "classique/inventaire.json",
+      "sha256_inventaire": "7cc949f0e59de8a8a729ce00e6ddd14ce5737dcd7dd346bd560f234f695cbeec",
+      "fichiers": 540,
+      "octets": 421160619,
+      "bilans": {
+        "succes": 24,
+        "echec": 4
+      },
+      "entrees_de_bilans_verifiees": 496
+    },
+    "collecteur": {
+      "inventaire": "collecteur/inventaire.json",
+      "sha256_inventaire": "fd8037767ba97454314ff1b935cb8b3ad9e575c070316173ee55ae52bb393634",
+      "fichiers": 328,
+      "octets": 1025288820,
+      "bilans": {
+        "succes": 12,
+        "echec": 10
+      },
+      "entrees_de_bilans_verifiees": 291
+    },
+    "phases": {
+      "inventaire": "phases/inventaire.json",
+      "sha256_inventaire": "f84b7ea480d3f6928b9665249c88fb4a8c27542c9d29b449004ea464ed23f77e",
+      "fichiers": 2536,
+      "octets": 9099322751,
+      "bilans": {
+        "echec": 30,
+        "succes": 66
+      },
+      "entrees_de_bilans_verifiees": 2308
+    },
+    "reponses": {
+      "inventaire": "reponses/inventaire.json",
+      "sha256_inventaire": "f80a5495b150cc0f653929f9dc9629e2fac7816f750dfc7451c4efe453771a63",
+      "fichiers": 1249,
+      "octets": 4377386737,
+      "bilans": {
+        "echec": 22,
+        "succes": 34
+      },
+      "entrees_de_bilans_verifiees": 1094
+    }
+  },
+  "rejeu_post_commit": {
+    "inventaire": "reconstruction/inventaire.json",
+    "sha256_inventaire": "b02fefe52f71334c38dbdd7581f390386a0a92b9132fa8ed154f2d65df9b11d4",
+    "fichiers": 207,
+    "octets": 722324967,
+    "bilans": {
+      "succes": 4,
+      "echec": 4
+    },
+    "entrees_de_bilans_verifiees": 186,
+    "revision_git": "3a404bc0cead0200fe65a508e7b075b3e896cbf6"
+  },
+  "relecture_pilotes_classiques": {
+    "inventaire": "reprise-pilotes-classiques/inventaire.json",
+    "sha256_inventaire": "00f12b81f2a1023678fa73ed13c3e1d986a73a5a0447f6ed0fe19cdba3996dc7",
+    "fichiers": 41,
+    "octets": 30146292,
+    "bilans": {
+      "succes": 4
+    },
+    "entrees_de_bilans_verifiees": 36
+  },
+  "fichiers_campagnes_initiales": 4653,
+  "octets_campagnes_initiales": 14923158927,
+  "entrees_bilans_campagnes_initiales": 4189
+}

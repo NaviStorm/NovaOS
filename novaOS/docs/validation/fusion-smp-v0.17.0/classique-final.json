@@ -1,0 +1,452 @@
+{
+  "revision_invitee": "e08b9796e59523b917b9d020520d5df97c9a4380",
+  "profil": "brut / files-inject et files-recover / raw / QEMU 11.1.3 TCG, cache writeback, IOMMU",
+  "volume": "P9, 256 blocs de 4096 octets, Atime::No, source hote-Nova! (10 octets), ancienne destination ancien (6 octets), nouvelle destination de 4231 octets vérifiée octet par octet.",
+  "controle": "Deux ancres et leurs manifestes, vérification P9 et extraction hôte, redémarrage files-recover en lecture seule, égalité SHA-256 du disque après arrêt et de la copie redémarrée.",
+  "preliminaires": "Lors du réglage de blkdebug, une faute de lecture à usage unique n'a pas produit d'erreur visible pour le client invité. L'oracle l'a refusée. La campagne qualifiée maintient la faute jusqu'à l'arrêt de la première VM.",
+  "lectures_pilotes": [
+    {
+      "dossier": "nova-cow-aarch64-4096-classique-lecture-yqkzrx60",
+      "sha256_bilan": "d6f25c2c996635200a714a2f839e4715e10d52eb1de1f9005b99011ec105cd7c",
+      "transaction_confirmee": true,
+      "statut_client": 0,
+      "reprise_confirmee": {
+        "dossier": "nova-cow-aarch64-4096-reprise-pilote-2rdlja7l",
+        "bilan_sha256": "1f9b7ae731d9ef05724e57f739d4458748834ec7b6835c14499a111be1ae2914",
+        "sha256_arret_et_reprise": "db4da8aaa52783012e5ecf76f5e366797f28f16c09e4f44b9ec2bfc11c4c50bb",
+        "generation": 6,
+        "octets_destination": 4231,
+        "destination_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "source_sha256": "0d816ea0e8ccd4efd6a4f9486a2e7732fa417db433fe793348affc1f0c5795a3"
+      }
+    },
+    {
+      "dossier": "nova-cow-aarch64-512-classique-lecture-6mvdbimp",
+      "sha256_bilan": "7b67ba0b34246a37199dd8f512beb54ceb6605e3899561a39a73229935ea3f41",
+      "transaction_confirmee": true,
+      "statut_client": 0,
+      "reprise_confirmee": {
+        "dossier": "nova-cow-aarch64-512-reprise-pilote-wxinm3tp",
+        "bilan_sha256": "519915332ce408deb98f895c25edfed9c057d6f80de1e7065bb7921b4701a7cb",
+        "sha256_arret_et_reprise": "125681d36dc0295188d8f0a225df1231d0b887f5d08b181c5fdf16c27154fbb6",
+        "generation": 6,
+        "octets_destination": 4231,
+        "destination_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "source_sha256": "0d816ea0e8ccd4efd6a4f9486a2e7732fa417db433fe793348affc1f0c5795a3"
+      }
+    },
+    {
+      "dossier": "nova-cow-x86_64-4096-classique-lecture-cxp2_a9y",
+      "sha256_bilan": "100ac6575d15889bebef1795ad644c3c517f24201dbced28c23fbae217e98b18",
+      "transaction_confirmee": true,
+      "statut_client": 0,
+      "reprise_confirmee": {
+        "dossier": "nova-cow-x86_64-4096-reprise-pilote-f73xrkza",
+        "bilan_sha256": "7cc4a5c35911119db042581a453023f2f29ecfc1225867bec49b060e8a545435",
+        "sha256_arret_et_reprise": "106ef83253c3e2a4ea108d9c3ddbc8deae130d73df5c9bb8f760ba00296e991b",
+        "generation": 6,
+        "octets_destination": 4231,
+        "destination_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "source_sha256": "0d816ea0e8ccd4efd6a4f9486a2e7732fa417db433fe793348affc1f0c5795a3"
+      }
+    },
+    {
+      "dossier": "nova-cow-x86_64-512-classique-lecture-lit3otbg",
+      "sha256_bilan": "7476cba0ba8b141c860242d7114df39a3587c523b00d1c05fa39475c19edd1c1",
+      "transaction_confirmee": true,
+      "statut_client": 0,
+      "reprise_confirmee": {
+        "dossier": "nova-cow-x86_64-512-reprise-pilote-sli2229_",
+        "bilan_sha256": "b5028facfbbe6367f9761d50038cca53bde2708ae85afd8c7ab8dd02c96ee9ec",
+        "sha256_arret_et_reprise": "45c733a442ed7119c698bdb563510a23a024a70da7c383279699f343dcd821c1",
+        "generation": 6,
+        "octets_destination": 4231,
+        "destination_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "source_sha256": "0d816ea0e8ccd4efd6a4f9486a2e7732fa417db433fe793348affc1f0c5795a3"
+      }
+    }
+  ],
+  "profils": [
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "vcpu": 4,
+      "memoire_mio": 256,
+      "elf_sha256": "34857b1f9a06fdfc858170a3b5618888f82d98358a5c8f2bae2431a7df2b4563",
+      "campagne": "aarch64-4096.json",
+      "sha256_campagne": "46b9cc780ab351770bb8c054c0b8859f2b6eb18a53ad711bc0d4138e46c88b9a",
+      "essais": [
+        {
+          "point": "lecture",
+          "dossier": "nova-cow-aarch64-4096-classique-lecture-lrfn6z50",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "f3ba40964ca31847fe8a50fa8481a3ba6369299848751fa02fa2b98fbe5154a4",
+          "sha256_arret_et_reprise": "f3ba40964ca31847fe8a50fa8481a3ba6369299848751fa02fa2b98fbe5154a4",
+          "sha256_bilan": "dcf60279a6e8571ec7d54b70f53794d2c4695e36d4a0020ffdcf5ed4160d0e4a"
+        },
+        {
+          "point": "ecriture",
+          "dossier": "nova-cow-aarch64-4096-classique-ecriture-5w_bhtst",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "60b63fd815a9019a2b52d693e9e2f30518e75fe54bb53bcbcced812d7fe94f78",
+          "sha256_arret_et_reprise": "60b63fd815a9019a2b52d693e9e2f30518e75fe54bb53bcbcced812d7fe94f78",
+          "sha256_bilan": "803c8d42908e55df45a3fe84eba0c537013676287db2bec754906aafc5e35a02"
+        },
+        {
+          "point": "f1",
+          "dossier": "nova-cow-aarch64-4096-classique-f1-yzuomv8q",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "b80b16258653df2c714c92be3d7a49c540192436987f94434ebb5cb6b3ffbc0d",
+          "sha256_arret_et_reprise": "6502eff8851967c11455ab9200576ca6e2602d5b3825b70022cb7fb7a097db7c",
+          "sha256_bilan": "02cc46c4f4f3ea10c956e911dd3f9d0b294a480399bee8098a79ea237eab1eba"
+        },
+        {
+          "point": "ancre",
+          "dossier": "nova-cow-aarch64-4096-classique-ancre-lvuz1_th",
+          "code": 22,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "bd583e07068f40b55011595b89dc31ba612c7ff72258a16e037d39628fb1846f",
+          "sha256_arret_et_reprise": "ab510cb3b52bcbc020bba7a0d23f8369b94a6bc493b454d3bc671d27adfccd34",
+          "sha256_bilan": "72c3ff387f37cb847d6228d14b4abf7fd8f55f78005e6c5f280f40dd39feda00"
+        },
+        {
+          "point": "f2",
+          "dossier": "nova-cow-aarch64-4096-classique-f2-9wj6tj1b",
+          "code": 22,
+          "destination": "nouveau",
+          "taille_destination": 4231,
+          "generation_initiale": 5,
+          "generation_finale": 6,
+          "sha256_initiale": "0212aef348c2d85ea5a7a5ec686643fad0454e71eb8e6be06b263c2e1ab7652e",
+          "sha256_arret_et_reprise": "6af32064b376138dc32d88fc1b2fb90197bfe9bea951cbb0b49d80f73ce06bba",
+          "sha256_bilan": "834611cb6d9129329ecd382d14c8fa4ecd32bdea5f5ae3b4ab3926777bd4426f"
+        },
+        {
+          "point": "succes",
+          "dossier": "nova-cow-aarch64-4096-classique-succes-n9a9viu3",
+          "code": 0,
+          "destination": "nouveau",
+          "taille_destination": 4231,
+          "generation_initiale": 5,
+          "generation_finale": 6,
+          "sha256_initiale": "e53afbe465a052b1ced429ef0dd9bbdc8e6ef0f91cff094a2744c0de842e781c",
+          "sha256_arret_et_reprise": "bf12ba7390d6984d3d5416e376e31c0a49277da2cec5a7b0094925056bfe3a5e",
+          "sha256_bilan": "29173aaf360ae83e4bfd7e5f2b7a88c700dca1c1559f1e248c8f5fade1238d12"
+        }
+      ],
+      "historiques": {
+        "coupures": {
+          "passages": 10,
+          "journal": "coupures-historiques-aarch64-4096.log",
+          "sha256": "0ca4e457e7c6a7068d776b05d116fee49554e8f6e35a2e7b6ffd1ed2202108dc"
+        },
+        "erreurs": {
+          "passages": 4,
+          "journal": "erreurs-historiques-aarch64-4096.log",
+          "sha256": "a69bed3123f65ff7369cb46d718c3e1bf687721468b68bd3899fba2b9faa93db"
+        }
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "vcpu": 4,
+      "memoire_mio": 256,
+      "elf_sha256": "34857b1f9a06fdfc858170a3b5618888f82d98358a5c8f2bae2431a7df2b4563",
+      "campagne": "aarch64-512.json",
+      "sha256_campagne": "42d7d57c8588add0362634277af2bba35c7572157742452b65d62db1c03aa8e8",
+      "essais": [
+        {
+          "point": "lecture",
+          "dossier": "nova-cow-aarch64-512-classique-lecture-zomr76qq",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "e331992d700995abbea481fc6a11488d4aba9854cf348c8bbde3579da57d4ab7",
+          "sha256_arret_et_reprise": "e331992d700995abbea481fc6a11488d4aba9854cf348c8bbde3579da57d4ab7",
+          "sha256_bilan": "9f7771790dcd11bd5597030cac56f53b2b40a88864c40036934181fdf0a0c21d"
+        },
+        {
+          "point": "ecriture",
+          "dossier": "nova-cow-aarch64-512-classique-ecriture-4zimqu67",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "b667b780e77680d5ccbc6867b91a7f5ee598887e997dbd3c188f0ae251284a4a",
+          "sha256_arret_et_reprise": "b667b780e77680d5ccbc6867b91a7f5ee598887e997dbd3c188f0ae251284a4a",
+          "sha256_bilan": "2a6b2d711d9f17ba69a6771acf486126402fa39048d171399555a2585b060e90"
+        },
+        {
+          "point": "f1",
+          "dossier": "nova-cow-aarch64-512-classique-f1-j22wnmk_",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "c990220fa8f663a2092bdd249de0cacfb9258160ed7a7db7b202fd24d6a25230",
+          "sha256_arret_et_reprise": "921b03bd6b9e41b2c2b6e1f11247672540fe7b1a0315fb8aeaa3e2f4b5f9b969",
+          "sha256_bilan": "c342f655ac4b557a3eb89da33d58a55958b45f382ab82cd03f643df2d7ff3a86"
+        },
+        {
+          "point": "ancre",
+          "dossier": "nova-cow-aarch64-512-classique-ancre-svtsdsmt",
+          "code": 22,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "290dfb08ceeaea3bb0938e7e70881575e7e1d4250edc429d6bbc2a5ad9cd1812",
+          "sha256_arret_et_reprise": "78a0d06dac369855d49e43c9bb116963d16c31b1ba165ec79c4338cdbc0c4f24",
+          "sha256_bilan": "bff3968483d6eae9189dd5176bb8047e012879b1acbdbb9420188cfc3e115ede"
+        },
+        {
+          "point": "f2",
+          "dossier": "nova-cow-aarch64-512-classique-f2-u4fry9id",
+          "code": 22,
+          "destination": "nouveau",
+          "taille_destination": 4231,
+          "generation_initiale": 5,
+          "generation_finale": 6,
+          "sha256_initiale": "c2ae3b287ce60f095cb442326d577cdc9666f67931cd7109ffd8f0ab17df13bf",
+          "sha256_arret_et_reprise": "9ab65260f658654e6a784985ce1836f1b5a35841acf0631e8f5b5d65b52a3df4",
+          "sha256_bilan": "ab0465ba77bfe0da26392b2b7087c30651f91e95209cd5a18660db58a5644299"
+        },
+        {
+          "point": "succes",
+          "dossier": "nova-cow-aarch64-512-classique-succes-rmq_squz",
+          "code": 0,
+          "destination": "nouveau",
+          "taille_destination": 4231,
+          "generation_initiale": 5,
+          "generation_finale": 6,
+          "sha256_initiale": "09dc7b544a820a43b6a7c2249d5049edbf1efc7b96fe6b5157054ac6c4936f0f",
+          "sha256_arret_et_reprise": "23488078167de5bb690a007e48974586c39fc6ce095685c5bcc973853324e654",
+          "sha256_bilan": "47bd77316bb8250f3634feead9d498ded3b33511e1500bfcb0ef7cedc3c8145c"
+        }
+      ],
+      "historiques": {
+        "coupures": {
+          "passages": 10,
+          "journal": "coupures-historiques-aarch64-512.log",
+          "sha256": "e88bb3cd77631c0a7212143e1eb315c76cf481b202dcf176a405488c612044ef"
+        },
+        "erreurs": {
+          "passages": 4,
+          "journal": "erreurs-historiques-aarch64-512.log",
+          "sha256": "7e9e6c066a4f7b32df7f718b97050da6459929fc582ecc26ebdc3ab27c519376"
+        }
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "vcpu": 4,
+      "memoire_mio": 256,
+      "elf_sha256": "a74873b21339be95906e999767246b08fe0e8d73a1fb4c6a2c822469c77a9593",
+      "campagne": "x86_64-4096.json",
+      "sha256_campagne": "55994c8fe00e80b39b2a364e8a76aa8b60383fc751ce6b7aa215b48124ed4d3a",
+      "essais": [
+        {
+          "point": "lecture",
+          "dossier": "nova-cow-x86_64-4096-classique-lecture-mqg6j192",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "5259d163585c5c27b490c0105ebad3ebb17d61d3b6c109c0ac74c94b9f9fd734",
+          "sha256_arret_et_reprise": "5259d163585c5c27b490c0105ebad3ebb17d61d3b6c109c0ac74c94b9f9fd734",
+          "sha256_bilan": "3961c0e209dcd47f8675f3d6b6a1097b26662ec872ca14d77a8ecbcc6b8adfef"
+        },
+        {
+          "point": "ecriture",
+          "dossier": "nova-cow-x86_64-4096-classique-ecriture-al5xk27a",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "94b07ccefa778f807e1d4cf99a2e3a58e38d7d21f104908b8dee3cd2048af897",
+          "sha256_arret_et_reprise": "94b07ccefa778f807e1d4cf99a2e3a58e38d7d21f104908b8dee3cd2048af897",
+          "sha256_bilan": "1edf1a9e479d3ab300a5ac03dae2e2df8e690fb2c4e1cfe762a382b196c84fea"
+        },
+        {
+          "point": "f1",
+          "dossier": "nova-cow-x86_64-4096-classique-f1-ho3whlk1",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "c4e1f2a7c4bf95170f5aa2e378c6afaa57ce8d31b9f68184d658f321840dff66",
+          "sha256_arret_et_reprise": "525bc0e3ca044f34a1251e4d5e6fe6b8bda41e4ee8246150f71dda1e0c971d5e",
+          "sha256_bilan": "5903720ef89a253f8316a564324f4074340106a625b54199bb459728bd30f35b"
+        },
+        {
+          "point": "ancre",
+          "dossier": "nova-cow-x86_64-4096-classique-ancre-fthytxk2",
+          "code": 22,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "ac68cb2065fd033e2d8714c4ef03648fecd999715fc9b18bf7bf81178c2e13e3",
+          "sha256_arret_et_reprise": "abb7acf6f249106e0a04478d1c9bb8f678a7629282f8eaa53271ff8b71ec8a63",
+          "sha256_bilan": "fc47d5e3d09a28638601ad0bfabb68a8eb67d071b221d567e1fc53bd505b7657"
+        },
+        {
+          "point": "f2",
+          "dossier": "nova-cow-x86_64-4096-classique-f2-r14mom1p",
+          "code": 22,
+          "destination": "nouveau",
+          "taille_destination": 4231,
+          "generation_initiale": 5,
+          "generation_finale": 6,
+          "sha256_initiale": "73eb85437b6dc08a586ac6ff3e0b41da7b904c674e718a6b0191c644746b0597",
+          "sha256_arret_et_reprise": "293b0f86649c4636ccbf2fc02a7a9ff0968a8a29c601fd0b30b863334ba20a69",
+          "sha256_bilan": "03def40b5a8c72c40f367a77f9ae1dd740fc49cf102bc5c0b44b31a71625ec4b"
+        },
+        {
+          "point": "succes",
+          "dossier": "nova-cow-x86_64-4096-classique-succes-jg6e03k1",
+          "code": 0,
+          "destination": "nouveau",
+          "taille_destination": 4231,
+          "generation_initiale": 5,
+          "generation_finale": 6,
+          "sha256_initiale": "4fe160c6d1c4dac794fabcffe59f27813900cbf1e74185d5a43d0c343f810a49",
+          "sha256_arret_et_reprise": "44d87781ca3f19561eaa7d093a3d2ab0c63fccb4c2d6b980d3cc83ee290ff4d2",
+          "sha256_bilan": "59a89ad4f34706d818a13e1696d3857f50e13da634e8a26fa84cc33bf9d6c22a"
+        }
+      ],
+      "historiques": {
+        "coupures": {
+          "passages": 10,
+          "journal": "coupures-historiques-x86_64-4096.log",
+          "sha256": "0d22d1be41b075af7439be36828c65b9019c274aa2f40080c2cf735ad687af8f"
+        },
+        "erreurs": {
+          "passages": 4,
+          "journal": "erreurs-historiques-x86_64-4096.log",
+          "sha256": "47ee4fa834cafde7e806d531afcd0a33898f967ad95fe8d159ea3a440dc64ae6"
+        }
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "vcpu": 4,
+      "memoire_mio": 256,
+      "elf_sha256": "a74873b21339be95906e999767246b08fe0e8d73a1fb4c6a2c822469c77a9593",
+      "campagne": "x86_64-512.json",
+      "sha256_campagne": "d911f24b5febbb2ad34a51e83390eba0d6456b9c8e3b137f79da6ef8a907b48c",
+      "essais": [
+        {
+          "point": "lecture",
+          "dossier": "nova-cow-x86_64-512-classique-lecture-4hksha6c",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "e6f0f494d26ba3b06878a7b1ab58cd848d4d20716e38e2e47272f89a776be81b",
+          "sha256_arret_et_reprise": "e6f0f494d26ba3b06878a7b1ab58cd848d4d20716e38e2e47272f89a776be81b",
+          "sha256_bilan": "47a4bf7753c1beb8ff4f1a0901de9b348f1183387daf8058abb59a75351bb6f2"
+        },
+        {
+          "point": "ecriture",
+          "dossier": "nova-cow-x86_64-512-classique-ecriture-05907fbr",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "fcd84e1af2db87a414f7a7bb485ad7564338eeffdfa49acf862e70a293918e2f",
+          "sha256_arret_et_reprise": "fcd84e1af2db87a414f7a7bb485ad7564338eeffdfa49acf862e70a293918e2f",
+          "sha256_bilan": "27528a460386ffc82002c292a318cc916d747989cc04e5c7cc7223521d9e0797"
+        },
+        {
+          "point": "f1",
+          "dossier": "nova-cow-x86_64-512-classique-f1-4uw2dbj5",
+          "code": 26,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "59ea57b0a3da575d0c3d542fe0cf876ab4ffd071b70554f427a85ab94585ba1d",
+          "sha256_arret_et_reprise": "1678caee2d84603d867c2c0887cd3db8e7971db85dcd1aeffb10b8fe7a51f124",
+          "sha256_bilan": "aaf675eb5e196427edce2ba676bdbec77e80bdfd9dfd65697ff67f7eee8371fc"
+        },
+        {
+          "point": "ancre",
+          "dossier": "nova-cow-x86_64-512-classique-ancre-c7w0tgno",
+          "code": 22,
+          "destination": "ancien",
+          "taille_destination": 6,
+          "generation_initiale": 5,
+          "generation_finale": 5,
+          "sha256_initiale": "9397ac333a85323d38e2d38b48b32b85339ac553a56360f80843c47511f90f0a",
+          "sha256_arret_et_reprise": "69e3a874a3c696cfcafda762808d1e3eb4d9820ce6d05f41a352df6d10c9bfac",
+          "sha256_bilan": "6adc03b97f2e0f0ffe37cf2a206095666c2787a46778ee43b66257b2fb648f4a"
+        },
+        {
+          "point": "f2",
+          "dossier": "nova-cow-x86_64-512-classique-f2-uyzgwz65",
+          "code": 22,
+          "destination": "nouveau",
+          "taille_destination": 4231,
+          "generation_initiale": 5,
+          "generation_finale": 6,
+          "sha256_initiale": "95ad29e6181a9844b503c52a930bdc7ad774251f76f008ffbf2e0b5382fd9139",
+          "sha256_arret_et_reprise": "984c70171a38be2085397e4eb285a257acafa2bebde30dd03eae73841c8354fe",
+          "sha256_bilan": "ba7d753519504c7457ce779d8fbc6f861936e78d0bd2a59762b174ba2699ed1a"
+        },
+        {
+          "point": "succes",
+          "dossier": "nova-cow-x86_64-512-classique-succes-hq6wgmbr",
+          "code": 0,
+          "destination": "nouveau",
+          "taille_destination": 4231,
+          "generation_initiale": 5,
+          "generation_finale": 6,
+          "sha256_initiale": "4e66c813a503bd508c9d69cdc3987662cfccca4f9f6fde4bf6df941fb477f7a2",
+          "sha256_arret_et_reprise": "9a3eb7cca6893fb731f7ca6de865c77fde5b4d2b06110527c5bf07e182edb283",
+          "sha256_bilan": "eb84448dcd16a4c9ae8e3e7b3302ec8a96f0ad21dcae2c73eaafe3eda5f9d71e"
+        }
+      ],
+      "historiques": {
+        "coupures": {
+          "passages": 10,
+          "journal": "coupures-historiques-x86_64-512.log",
+          "sha256": "edbf21e3b3bf133e3784c779ab3c05743d350b1df52b4f6b7bb506d477394f27"
+        },
+        "erreurs": {
+          "passages": 4,
+          "journal": "erreurs-historiques-x86_64-512.log",
+          "sha256": "58bccd30a60b6d73380123cd4e2538da4415b412a48ab206c30f173c38baa1d7"
+        }
+      }
+    }
+  ],
+  "rapport_controle_pilotes_sha256": "306d47aeca00991959ffe5be32a35f257b14b8709b5224c90f43972561d04f69"
+}
