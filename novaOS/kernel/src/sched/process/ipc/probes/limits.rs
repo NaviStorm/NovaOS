@@ -51,6 +51,45 @@ fn shortage() {
     measure("ipc_reprise");
 }
 
+// Deux PID synthétiques partagent la dernière page du pool. La garde conserve
+// l'exclusivité des slots pendant la pénurie, la collecte et le changement de PID.
+#[cfg(feature = "ipc-smp-lab")]
+fn last_local_slot() {
+    with(|s| {
+        let number = s.processes.serial + 1;
+        let neighbor = Pid { slot: 30, number };
+        let first = Pid { slot: 31, number: number + 1 };
+        let second = Pid { slot: 31, number: number + 2 };
+        assert!(s.processes.slots[neighbor.slot].is_none());
+        assert!(s.processes.slots[first.slot].is_none());
+        let d = &mut s.ipc;
+        let pages = d.pages();
+        let retained_key = d.create(neighbor).unwrap();
+        d.empty_locals();
+        with_budget(0, || {
+            // La table locale tient sur la page du voisin. La page du nouvel
+            // endpoint manque après provision, avant l'installation du handle.
+            assert_eq!(d.create(first), Err(NO_MEMORY));
+            assert!(d.caps(first).is_some());
+            d.empty_locals();
+            d.collect();
+            assert!(!d.locals.has(first.slot));
+        });
+        let previous_key = d.create(first).unwrap();
+        d.empty_locals();
+        d.close(d.lookup(first, previous_key, ALL).unwrap());
+        assert!(!d.locals.has(first.slot));
+        let new_key = d.create(second).unwrap();
+        assert!(matches!(d.lookup(second, previous_key, SEND), Err(DENIED)));
+        assert!(matches!(d.lookup(first, new_key, SEND), Err(DENIED)));
+        d.close(d.lookup(second, new_key, ALL).unwrap());
+        d.close(d.lookup(neighbor, retained_key, ALL).unwrap());
+        d.collect();
+        assert_eq!(d.pages(), pages);
+    });
+    hal::log(format_args!("IPC slot_local=31 penurie retrait dernier droit et nouvelle generation OK"));
+}
+
 pub(super) fn quotas() {
     let base = heap::audit(false);
     assert!(matches!(
@@ -59,6 +98,8 @@ pub(super) fn quotas() {
     ));
     assert_eq!(heap::audit(false), base);
     shortage();
+    #[cfg(feature = "ipc-smp-lab")]
+    last_local_slot();
     let (children, actors) = group({
         let mut r = [0; 17];
         r[0] = ALL;

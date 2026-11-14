@@ -124,7 +124,8 @@ const _: () = assert!(
 // Les fenêtres et les trois tables neuves restent dans le budget IPC de 128 pages.
 type Endpoints = Pool<Endpoint, 64, 0, 1>;
 type Nodes = Pool<Node, 256, 64, 64>;
-type Locals = Pool<LocalCaps, 32, 72, 7>;
+type Locals = Pool<LocalCaps, MAX, 72, 7>;
+const _: () = assert!(MAX <= u32::BITS as usize); // Un bit de locals_to_check par slot de PID.
 // Deux cadres au maximum. Aucun alias transitoire à invalider à chaque rendez-vous.
 type Waits = Pool<Pending, 32, 80, 16, 2>;
 const _: () = assert!(
