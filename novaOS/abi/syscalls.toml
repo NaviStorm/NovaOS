@@ -1,0 +1,570 @@
+# Registre canonique des sélecteurs effectivement dispatchés, commun aux deux ISA.
+# Trois mots u64. « — » indique un argument inutilisé, 0 un zéro requis.
+# La clé de [call] forme NOVA_SYS_<clé> en C. rust_name précise le nom court
+# de la constante Rust lorsqu’il diffère de la clé ; module la qualifie.
+schema_version = 1
+abi_version = 1
+default_status = "active"
+endianness = "little"
+word_bits = 64
+reserved = [[0x1002a, 0x1002b], [0x1002e, 0x1003a]]
+reservation_source = "docs/es-v0.16.6-integration-interfaces.md"
+layout_source = "abi/native.rs.in"
+status_source = "abi/native.rs.in"
+
+statuses = ["OK", "BAD_VERSION", "UNKNOWN_CALL", "BAD_ARGUMENT", "BAD_ADDRESS", "DENIED", "LIMIT", "WOULD_BLOCK", "TIMED_OUT", "CANCELLED", "REVOKED", "CLOSED", "REFUSED", "NO_MEMORY"]
+
+# Taille et alignement en octets des structures repr(C) de l’ABI v1.
+[layout]
+Reply = [16, 8]
+WaitInfo = [32, 8]
+BulkV1 = [32, 8]
+SendV1 = [160, 8]
+ReceiveV1 = [184, 8]
+GiveV1 = [48, 8]
+
+[calling.x86_64]
+instruction = "syscall"
+selector = "RAX"
+arguments = ["RDI", "RSI", "RDX"]
+reply = ["RAX", "RDX"]
+
+[calling.aarch64]
+instruction = "svc #0x4e"
+selector = "x8"
+arguments = ["x0", "x1", "x2"]
+reply = ["x0", "x1"]
+
+[call.PROCESS_ID]
+number = 0x0001_0001
+module = "native"
+group = "processus"
+since = "0.7.0"
+arguments = "—"
+result = "PID"
+rights = "aucun droit additionnel"
+errors = []
+handler = "kernel/src/sched/process/syscall.rs#call"
+api = "process::id"
+
+[call.THREAD_ID]
+number = 0x0001_0002
+module = "native"
+group = "thread"
+since = "0.7.0"
+arguments = "—"
+result = "génération du thread"
+rights = "aucun droit additionnel"
+errors = []
+handler = "kernel/src/sched/process/syscall.rs#call"
+api = "thread::id"
+
+[call.THREAD_YIELD]
+number = 0x0001_0003
+module = "native"
+group = "thread"
+since = "0.7.0"
+arguments = "—"
+result = "0 à la reprise"
+rights = "aucun droit additionnel"
+errors = []
+handler = "kernel/src/sched/process/syscall.rs#call"
+api = "thread::yield_now"
+
+[call.PROCESS_EXIT]
+number = 0x0001_0004
+module = "native"
+group = "processus"
+since = "0.7.0"
+arguments = "code, —, —"
+result = "sans retour"
+rights = "processus appelant"
+errors = []
+handler = "kernel/src/sched/process/syscall.rs#call"
+api = "process::exit"
+
+[call.PROCESS_WAIT]
+number = 0x0001_0005
+module = "native"
+group = "processus"
+since = "0.7.0"
+arguments = "clé, *mut WaitInfo, 32"
+result = "32"
+rights = "droit de suivi, thread principal"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","CANCELLED"]
+handler = "kernel/src/sched/process/syscall.rs#wait"
+api = "process::wait"
+
+[call.DEBUG_WRITE]
+number = 0x0001_0006
+module = "native"
+group = "diagnostic"
+since = "0.7.0"
+arguments = "*const octets, longueur, —"
+result = "octets acceptés"
+rights = "quota de diagnostic"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","LIMIT"]
+handler = "kernel/src/sched/process/syscall.rs#debug_write"
+
+[call.IPC_CREATE]
+number = 0x10020
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "—"
+result = "handle racine"
+rights = "quotas locaux"
+errors = ["LIMIT","NO_MEMORY","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+api = "Endpoint::create"
+
+[call.IPC_DUP]
+number = 0x10021
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "handle, masque, —"
+result = "nouveau handle"
+rights = "GRANT, réduction des droits"
+errors = ["BAD_ARGUMENT","DENIED","LIMIT","NO_MEMORY","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+api = "Endpoint::duplicate"
+
+[call.IPC_CLOSE]
+number = 0x10022
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "handle, —, —"
+result = "0"
+rights = "possession du handle"
+errors = ["DENIED","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+api = "Endpoint::close"
+
+[call.IPC_REVOKE]
+number = 0x10023
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "handle, —, —"
+result = "descendants invalidés"
+rights = "MANAGE"
+errors = ["DENIED","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+api = "Endpoint::revoke"
+
+[call.IPC_SEND]
+number = 0x10024
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "canal, *const SendV1, 160"
+result = "octets acceptés"
+rights = "SEND"
+errors = ["BAD_VERSION","BAD_ARGUMENT","BAD_ADDRESS","DENIED","LIMIT","WOULD_BLOCK","TIMED_OUT","CANCELLED","REVOKED","CLOSED","NO_MEMORY"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+api = "Endpoint::send"
+
+[call.IPC_RECEIVE]
+number = 0x10025
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "canal, *mut ReceiveV1, 184"
+result = "type du message"
+rights = "RECEIVE"
+errors = ["BAD_VERSION","BAD_ARGUMENT","BAD_ADDRESS","DENIED","LIMIT","WOULD_BLOCK","TIMED_OUT","CANCELLED","REVOKED","CLOSED","NO_MEMORY"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+api = "Endpoint::receive"
+
+[call.IPC_GIVE]
+number = 0x10026
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "canal, *const GiveV1, 48"
+result = "0"
+rights = "SEND et GRANT, droits de la source"
+errors = ["BAD_VERSION","BAD_ARGUMENT","BAD_ADDRESS","DENIED","LIMIT","TIMED_OUT","CANCELLED","REVOKED","CLOSED","REFUSED","NO_MEMORY"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+api = "Endpoint::give"
+
+[call.IPC_NOTIFY]
+number = 0x10027
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "canal, bits non nuls, —"
+result = "0"
+rights = "SEND"
+errors = ["DENIED","LIMIT","BAD_ARGUMENT","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+
+[call.IPC_CANCEL]
+number = 0x10028
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "handle, —, —"
+result = "attentes annulées"
+rights = "MANAGE"
+errors = ["DENIED","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+
+[call.IPC_BOOTSTRAP]
+number = 0x10029
+module = "native"
+group = "IPC"
+since = "0.8.0"
+arguments = "—"
+result = "handle du lanceur"
+rights = "alias local installé"
+errors = ["DENIED","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/traffic.rs#start_call"
+
+[call.IPC_PUT]
+number = 0x1002c
+module = "native"
+group = "IPC"
+since = "0.16.6"
+arguments = "capacité, *const BulkV1, 32"
+result = "octets transférés"
+rights = "SEND et canal page lié"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","WOULD_BLOCK"]
+handler = "kernel/src/sched/process/ipc/bulk.rs#transfer"
+
+[call.IPC_TAKE]
+number = 0x1002d
+module = "native"
+group = "IPC"
+since = "0.16.6"
+arguments = "capacité, *const BulkV1, 32"
+result = "octets transférés"
+rights = "RECEIVE et canal page lié"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REFUSED"]
+handler = "kernel/src/sched/process/ipc/bulk.rs#transfer"
+
+[call.IPC_FEATURES]
+number = 0x1003b
+module = "native"
+group = "IPC"
+since = "0.16.6"
+arguments = "capacité, direction, 1"
+result = "masque de fonctions"
+rights = "SEND ou RECEIVE selon la direction"
+errors = ["DENIED","BAD_ARGUMENT"]
+handler = "kernel/src/sched/process/ipc/bulk.rs#features"
+
+[call.PORTAL]
+number = 0x0001_0040
+module = "block"
+group = "pilote bloc"
+since = "0.10.0"
+arguments = "bail, *mut trame bloc, 128"
+result = "128"
+rights = "pilote titulaire, thread principal"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REVOKED","CLOSED","REFUSED"]
+handler = "kernel/src/sched/process/syscall.rs#device"
+
+[call.HEAP_RESIZE]
+number = 0x0001_0041
+module = "native"
+group = "mémoire"
+since = "0.11.0"
+arguments = "ancienne borne, nouvelle borne, 0"
+result = "borne exclusive du tas"
+rights = "tas du processus, zéro/zéro consulte la borne"
+errors = ["BAD_ARGUMENT","NO_MEMORY"]
+handler = "kernel/src/sched/process/syscall.rs#call"
+api = "memory::heap_end memory::resize_heap"
+
+[call.SPAWN]
+number = 0x10042
+module = "terminal"
+group = "lanceur"
+since = "0.13.0"
+arguments = "indice, *const paquet, longueur"
+result = "droit de suivi"
+rights = "LAUNCH, thread principal et catalogue"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","LIMIT","NO_MEMORY"]
+handler = "kernel/src/sched/process/ipc/spawn.rs#spawn_program"
+
+[call.CONSOLE]
+number = 0x10043
+module = "terminal"
+group = "terminal"
+since = "0.13.0"
+arguments = "opération, adresse ou sous-opération, taille ou arguments"
+result = "selon le port"
+rights = "droits terminal de la session, thread principal"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","TIMED_OUT","REFUSED"]
+handler = "kernel/src/sched/process/syscall.rs#console_io"
+
+[call.CLOCK_UTC]
+number = 0x10044
+module = "native"
+group = "horloge"
+since = "0.14.0"
+arguments = "0, 0, 0"
+result = "secondes UTC depuis 1970"
+rights = "aucun droit additionnel"
+errors = ["REFUSED","BAD_ARGUMENT"]
+handler = "kernel/src/sched/process/syscall.rs#call"
+api = "clock::utc_seconds"
+
+[call.PROCESS_SAMPLE]
+number = 0x10045
+module = "terminal"
+group = "observation"
+since = "0.16.3"
+arguments = "indice, *mut sortie, 24"
+result = "0 absent ou 1 présent"
+rights = "OBSERVE_SESSION, thread principal"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS"]
+handler = "kernel/src/sched/process/syscall.rs#sample_process"
+
+[call.PAGE_PORTAL]
+number = 0x10046
+module = "block"
+group = "pilote bloc"
+since = "0.16.6"
+arguments = "bail, *mut trame bloc, adresse page"
+result = "4096"
+rights = "pilote titulaire, thread principal"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REVOKED","CLOSED","REFUSED"]
+handler = "kernel/src/sched/process/syscall.rs#device_page"
+
+[call.THREAD_CREATE]
+number = 0x10060
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "adresse RX, argument scalaire, pages pile"
+result = "droit de jonction"
+rights = "extension admise au catalogue"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","LIMIT","NO_MEMORY"]
+handler = "kernel/src/sched/process/threads.rs#create_member"
+api = "thread::spawn"
+
+[call.THREAD_EXIT]
+number = 0x10061
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "résultat, 0, 0"
+result = "sans retour"
+rights = "extension admise"
+errors = ["DENIED","BAD_ARGUMENT"]
+handler = "kernel/src/sched/process/threads.rs#exit"
+api = "thread::exit"
+
+[call.THREAD_JOIN]
+number = 0x10062
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "droit, 0, 0"
+result = "résultat du thread"
+rights = "droit de jonction du processus"
+errors = ["DENIED","BAD_ARGUMENT","REFUSED","CANCELLED"]
+handler = "kernel/src/sched/process/threads.rs#join"
+api = "JoinHandle::join"
+
+[call.THREAD_DETACH]
+number = 0x10063
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "droit, 0, 0"
+result = "0"
+rights = "droit de jonction du processus"
+errors = ["DENIED","REFUSED","BAD_ARGUMENT"]
+handler = "kernel/src/sched/process/threads.rs#detach_member"
+api = "JoinHandle::detach"
+
+[call.THREAD_CANCEL]
+number = 0x10064
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "droit, 0, 0"
+result = "0"
+rights = "droit local sur la génération visée"
+errors = ["DENIED","CLOSED","BAD_ARGUMENT"]
+handler = "kernel/src/sched/process/threads.rs#cancel"
+api = "JoinHandle::cancel"
+
+[call.THREAD_CANCELLED]
+number = 0x10065
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "0, 0, 0"
+result = "0 ou 1"
+rights = "extension admise"
+errors = ["DENIED","BAD_ARGUMENT"]
+handler = "kernel/src/sched/process/threads.rs#call"
+api = "thread::cancelled"
+
+[call.THREAD_TLS]
+number = 0x10066
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "0, 0, 0"
+result = "adresse de la page TLS"
+rights = "extension admise"
+errors = ["DENIED","BAD_ARGUMENT","NO_MEMORY"]
+handler = "kernel/src/sched/process/threads.rs#tls"
+api = "thread::tls_get thread::tls_set"
+
+[call.THREAD_WAIT]
+number = 0x10067
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "*mut mot aligné, valeur attendue, délai ticks"
+result = "0"
+rights = "extension admise, mot RW local"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","WOULD_BLOCK","TIMED_OUT","CANCELLED","LIMIT"]
+handler = "kernel/src/sched/process/threads.rs#wait_word"
+api = "sync::wait"
+
+[call.THREAD_NOTIFY]
+number = 0x10068
+module = "native"
+group = "threads applicatifs"
+since = "0.20.0"
+arguments = "*mut mot aligné, maximum, 0"
+result = "nombre de réveils"
+rights = "extension admise, mot RW local"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS"]
+handler = "kernel/src/sched/process/threads.rs#notify"
+api = "sync::notify"
+
+[call.INFO]
+number = 0x10070
+module = "instances"
+group = "instances"
+since = "0.21.0 phase 1"
+arguments = "mode, sortie éventuelle, 0 ou 32"
+result = "numéro local, installation ou 32"
+rights = "instance de l’appelant"
+errors = ["BAD_ARGUMENT","REFUSED","BAD_ADDRESS","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
+
+[call.WORKER]
+number = 0x10071
+module = "instances"
+group = "instances"
+since = "0.21.0 phase 1"
+arguments = "*const identité, argument, 32"
+result = "droit de suivi"
+rights = "principal admis, même instance, thread principal"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REFUSED","LIMIT","NO_MEMORY","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
+
+[call.STOP]
+number = 0x10072
+module = "instances"
+group = "instances"
+since = "0.21.0 phase 1"
+arguments = "droit de suivi, *const identité, 32"
+result = "0"
+rights = "offre de la cible et droit de suivi, thread principal"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REFUSED","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
+
+[call.OFFER_STOP]
+number = 0x10073
+module = "instances"
+group = "instances"
+since = "0.21.0 phase 1"
+arguments = "*const identité, 0, 32"
+result = "0"
+rights = "principal admissible et identité propre"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REFUSED","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
+
+[call.WATCH]
+number = 0x10074
+module = "instances"
+group = "instances"
+since = "0.21.0 phase 1"
+arguments = "étape, incarnation volatile, 0"
+result = "selon étape"
+rights = "gestionnaire lié"
+errors = ["DENIED","BAD_ARGUMENT","REFUSED"]
+handler = "kernel/src/sched/process/supervision.rs#watch"
+
+[call.OFFERED]
+number = 0x10075
+module = "instances"
+group = "instances"
+since = "0.21.0 phase 1"
+arguments = "droit de suivi, *mut identité, 32"
+result = "32"
+rights = "offre de la cible et droit de suivi, thread principal"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REFUSED","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
+
+[call.TMP_CAP]
+number = 0x10076
+module = "tmp"
+rust_name = "CAP"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "0, 0, 0"
+result = "capacité privée de l’instance"
+rights = "capacité locale déjà attribuée à ce processus, bail actif"
+errors = ["BAD_ARGUMENT","DENIED","CANCELLED"]
+handler = "kernel/src/sched/process/tmp.rs#call"
+
+[call.TMP_CALL]
+number = 0x10077
+module = "tmp"
+rust_name = "CALL"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "capacité, *mut trame fichier, 128"
+result = "OK, valeur 128 après copie de la réponse. Pour une E/S terminée par TMP_COMPLETE avec un statut de 1…255, TMP_CALL transmet ce statut à l’identique, valeur 0. Les erreurs propres au courtier utilisent aussi le champ statut, valeur 0. À la perte du service, une demande en file reçoit CLOSED. Entre NEXT et COMPLETE elle reçoit files::UNCERTAIN. Après COMPLETE, l’appelant d’origine reçoit le résultat acquitté ou BAD_ADDRESS si son tampon de réponse est devenu inaccessible après un succès. Tout nouvel appel avec la capacité retirée reçoit DENIED."
+rights = "processus titulaire du bail actif, trame lisible et inscriptible"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","LIMIT","NO_MEMORY","CANCELLED","REVOKED","CLOSED","TIMED_OUT","REFUSED","files::UNCERTAIN","files::NOT_FOUND","files::CORRUPT","files::FULL","files::BUSY","files::UNSUPPORTED","files::IO","files::EXISTS","files::NOT_EMPTY","files::NOT_DIR","files::IS_DIR"]
+handler = "kernel/src/sched/process/tmp.rs#io"
+
+[call.TMP_WORKER]
+number = 0x10078
+module = "tmp"
+rust_name = "WORKER"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "*const identité, argument, 32"
+result = "droit de suivi du travailleur"
+rights = "thread principal du principal admis, droit de création, identité complète courante et capacité tmp active à déléguer"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","REFUSED","LIMIT","NO_MEMORY","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
+
+[call.TMP_NEXT]
+number = 0x10079
+module = "tmp"
+rust_name = "NEXT"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "handle de réception, *mut enveloppe, 168"
+result = "ticket de la demande remise"
+rights = "serveur NovaFS admis pour ce montage, droit RECEIVE local"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","WOULD_BLOCK","REFUSED","LIMIT","CLOSED","CANCELLED"]
+handler = "kernel/src/sched/process/tmp.rs#next"
+
+[call.TMP_COMPLETE]
+number = 0x1007a
+module = "tmp"
+rust_name = "COMPLETE"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "ticket, *const réponse de 128 octets pour IO réussi (0 pour CREATE/REMOVE), statut 0…255"
+result = "0"
+rights = "même serveur NovaFS, ticket de l’unique opération en vol"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","REVOKED","CLOSED","CANCELLED"]
+handler = "kernel/src/sched/process/tmp.rs#complete"

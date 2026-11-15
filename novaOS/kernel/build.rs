@@ -26,6 +26,7 @@ fn main() {
         "demo",
         "instance_manager",
         "instance_sample",
+        "tmp_sample",
         "devices",
         "edu",
         "edu_dma",
@@ -57,7 +58,7 @@ fn main() {
         if name.starts_with("nvme_") && !nvme_lab {
             continue;
         }
-        let file_client = name == "storage/fileclient";
+        let file_client = matches!(name, "storage/fileclient" | "tmp_sample");
         let linker = format!(
             "link-arg=-T{}",
             user.join(if file_client {

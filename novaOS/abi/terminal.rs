@@ -1,6 +1,5 @@
 //! Extension additive de l'ABI native. Les numéros du catalogue désignent des ELF statiques.
-pub const SPAWN: u64 = 0x10042;
-pub const CONSOLE: u64 = 0x10043;
+include!("generated/terminal.rs");
 pub const INPUT: u8 = 1;
 pub const OUTPUT: u8 = 2;
 pub const ERROR: u8 = 4;
@@ -21,7 +20,6 @@ pub const EDIT: u8 = 8;
 pub const LAUNCH: u8 = 16;
 /// Autorité locale du shell. SPAWN ne la transmet pas aux enfants.
 pub const OBSERVE_SESSION: u8 = 128;
-pub const PROCESS_SAMPLE: u64 = 0x10045;
 /// PID, vivant (1) ou terminé (0), et nombre de pages privées de 4 Kio.
 pub const SAMPLE_BYTES: usize = 24;
 pub const QUALIFY: u8 = 32;

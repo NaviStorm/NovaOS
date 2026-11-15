@@ -1,6 +1,5 @@
 //! Protocole privé du service bloc, sans pointeurs. Cette version ne modifie pas l'ABI IPC v1.
-/// La réponse INFO fournit les droits effectifs du bail dans le u32 à +16.
-pub const PORTAL: u64 = 0x0001_0040;
+include!("generated/block.rs");
 pub const INFO: u8 = 1;
 pub const READ: u8 = 2;
 pub const WRITE: u8 = 3;
@@ -11,7 +10,6 @@ pub const PIECE: u8 = 1;
 pub const END: u8 = 2;
 /// Trame PAGE, phase 3 : exactement 4096 octets, transférés par la boîte dédiée.
 pub const PAGE_PHASE: u8 = 3;
-pub const PAGE_PORTAL: u64 = 0x10046;
 pub const ALL_RIGHTS: u8 = 31;
 pub const MAX: usize = 96;
 pub type Wire = [u8; 128];

@@ -1,6 +1,8 @@
 # ABI native NovaOS v1 — v0.7.0
 
-Le contrat partagé se trouve dans `abi/native.rs`. Les deux architectures utilisent des mots de 64 bits et un ordre little-endian. Un sélecteur vaut `(1 << 16) | opération`. Un appelant peut reconnaître une version incompatible avant d’interpréter sa réponse. Les valeurs attribuées dans cette version sont fixes. Une rupture future exige une nouvelle version et une notice de migration.
+[Index des appels noyau, des opérations de service et des fonctions du SDK](registre-abi.md) · [Qualification initiale du registre ABI v1](qualification-registre-abi-v1.md) · [Qualification intégrée des 46 sélecteurs et des ELF v0.20.0](integration-abi-tmp-v0.21.0.md).
+
+Les numéros proviennent du [registre canonique](../abi/syscalls.toml). Le noyau et le SDK Rust utilisent son produit `abi/native.rs`. Les deux architectures utilisent des mots de 64 bits et un ordre little-endian. Un sélecteur vaut `(1 << 16) | opération`. Un appelant peut reconnaître une version incompatible avant d’interpréter sa réponse. Les valeurs attribuées dans cette version sont fixes. Une rupture future exige une nouvelle version et une notice de migration.
 
 La v0.8.0 ajoute les sélecteurs `0x10020` à `0x10029`. Les appels ci-dessous conservent leurs valeurs et leur convention de retour. [Extension IPC](ipc-abi.md)
 
