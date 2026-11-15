@@ -58,7 +58,7 @@ La MOE propose trois étapes vérifiables. Spécifier d’abord les deux extrém
 
 ## Ergonomie de la commande service
 
-**Exigence ARC-025, à qualifier avant v0.30.0.** Depuis `nsh`, `service --help` et `service help` doivent afficher la même aide complète avec les verbes publics, leur syntaxe, leurs arguments et des exemples. Chaque sous-commande doit accepter `--help` sans cible ni effet sur le système. Cela couvre aussi `service capabilities restrict --help` et `service capabilities restore --help`. La commande doit distinguer une syntaxe incorrecte d’un service inconnu, citer l’élément en cause et indiquer l’aide pertinente. Un nom ou un ID valide ne confère aucun droit supplémentaire.
+**Exigence ARC-025, à qualifier avant v0.30.0.** Depuis `nsh`, `service --help` et `service help` doivent afficher la même aide complète avec toutes les sous-commandes publiques, leur syntaxe, une description concise de chacune et des exemples. Chaque sous-commande doit accepter `--help` sans cible ni effet sur le système. Cela couvre aussi `service capabilities restrict --help` et `service capabilities restore --help`. La commande doit distinguer une syntaxe incorrecte d’un service inconnu, citer l’élément en cause et indiquer l’aide pertinente. Un nom ou un ID valide ne confère aucun droit supplémentaire.
 
 `service list` doit donner une ligne par service enregistré dans le profil actif, y compris les services arrêtés, désactivés ou en attente. Chaque ligne indique l’ID numérique, le nom canonique, l’état courant et la politique de démarrage automatique enregistrée (activée ou désactivée). Une politique impossible à relire doit être signalée comme telle. Toute sous-commande qui cible un service accepte indifféremment son nom canonique ou l’identifiant numérique historique, avec les mêmes droits, effets et codes de retour.
 
@@ -80,7 +80,34 @@ service capabilities restrict journal JOURNAL_STORE
 service capabilities restore 16 JOURNAL_STORE
 ```
 
-**État des sources auditées.** Les deux aides générales partagent déjà un synopsis. Les cinq noms ci-dessus et les ID numériques sont résolus par le client. La liste affiche le nom, l’ID et l’état. L’aide par sous-commande, les exemples dans l’aide et la colonne de démarrage restent à réaliser. [Commande actuelle](../../../components/shell/services.rs) · [Recette prévue](acceptation-serveur.md#commande-service-dans-nsh)
+### Manuel natif obligatoire avant la stable
+
+Depuis une session ordinaire de `nsh`, `man service` doit ouvrir le manuel complet de la commande au moyen d’un lecteur natif NovaOS, sans dépendance POSIX obligatoire. Sa consultation et celle des aides ne demandent aucun droit d’exploitation ou de maintenance. La page doit fournir la description, la syntaxe, les options, les exemples par nom canonique et par ID numérique, les codes de retour, les capacités nécessaires et les conséquences de chaque opération. Les deux aides générales présentent le même inventaire, avec la syntaxe et une description concise de **chaque** sous-commande. Chaque aide locale, y compris `service capabilities restrict --help`, décrit le verbe demandé.
+
+Dans le tableau, `<service>` accepte le nom canonique ou l’ID enregistré dans le profil actif. Le manuel doit couvrir tous les verbes publics réellement disponibles, y compris `info` et `policy`, que le client v0.22.0 expose déjà. [Client natif](../../../components/shell/services.rs) · [Politique de supervision](../../user/services/policy.rs)
+
+| Syntaxe après `service` | Description et conséquence à expliquer | Autorité |
+|---|---|---|
+| `help`, `--help`, `<sous-commande> --help` | Afficher l’aide demandée, sans lancer d’opération sur un service. | Aide locale |
+| `list` | Énumérer les services enregistrés, leur état courant et leur politique de démarrage. | Consultation |
+| `status <service>` | Lire l’état courant, la politique enregistrée, les générations et la dépendance bloquante éventuelle. | Consultation |
+| `start <service>` | Demander le démarrage dans la session courante. L’acquittement de la demande peut précéder `READY`. La politique du prochain boot reste inchangée. | Exploitation |
+| `stop <service>` | Demander l’arrêt contrôlé dans la session courante. Les dépendants obligatoires concernés peuvent aussi être arrêtés. L’autostart enregistré est conservé. | Exploitation |
+| `restart <service>` | Demander une nouvelle incarnation. Expliquer l’interruption pour les clients et la vérification de disponibilité après relance. | Exploitation |
+| `enable <service>` | Enregistrer le démarrage automatique au prochain boot. Un service arrêté reste arrêté dans la session courante. | Maintenance persistante |
+| `disable <service>` | Désactiver le démarrage automatique au prochain boot. Un service actif poursuit son exécution, sous réserve de son cycle de vie normal. | Maintenance persistante |
+| `dependencies <service>` | Consulter les dépendances obligatoires et optionnelles avant d’intervenir. | Consultation |
+| `info <service>` | Interroger le service sur son canal et afficher la valeur de sa réponse native. | Consultation |
+| `policy <service>` | Consulter la politique de relance et le nombre de tentatives prévu. | Consultation |
+| `capabilities <service>` | Lire le plafond du catalogue, les droits enregistrés et ceux de l’instance active. | Consultation |
+| `capabilities restrict <service> <capacité>` | Enregistrer le retrait dans la configuration persistante. Le droit effectif de l’instance déjà lancée demeure celui reçu au lancement. | Maintenance persistante |
+| `capabilities restore <service> <capacité>` | Rétablir explicitement un droit dans le plafond du catalogue. Comme le retrait, le changement acquitté s’applique à la prochaine incarnation, même lors d’une relance sans reboot du système. | Maintenance persistante |
+
+**Exemple de dépendance critique.** `service dependencies cache` indique que le cache (10) exige `storage-info` (9). Sur un volume de qualification, `service stop storage-info` demande aussi l’arrêt de 10. `service start 9` demande le démarrage de 9 et laisse à l’opérateur le soin de vérifier 10. À l’inverse, `service disable 9` laisse 9 disponible pendant la session. Après redémarrage, 10 attend 9 et le chemin minimal de `nsh` vers P9 reste accessible. `service enable storage-info` rétablit la politique pour le prochain boot. La page doit expliquer comment repérer les dépendants touchés et contrôler leur état avant de reprendre l’exploitation. [Parcours 9 et 10](../services-configuration-v0.22.0.md)
+
+**Codes et conduite à tenir.** Pour chaque famille d’opérations, la page doit donner les codes effectivement renvoyés par le candidat et leur signification. Les repères actuels comprennent `0` pour une commande acceptée, `3` pour un argument invalide, `5` pour un accès refusé et `22` pour une publication à l’issue incertaine. Après `22`, relire `service status 9` pour l’autostart ou `service capabilities journal` pour les droits avant toute décision. Ne jamais répéter automatiquement la mutation. Confronter les exemples du manuel, l’aide intégrée et le comportement du binaire lors de chaque évolution de l’interface publique. [Traitement des résultats](../../../components/shell/services.rs) · [Contrat des mutations](../capacites-services-v0.22.0.md)
+
+**État des sources auditées.** Les deux aides générales partagent déjà un synopsis. Les cinq noms ci-dessus et les ID numériques sont résolus par le client. La liste affiche le nom, l’ID et l’état. L’aide par sous-commande, les exemples dans l’aide et la colonne de démarrage restent à réaliser. Le registre des commandes et les verbes intégrés de `nsh` ne proposent pas `man service` dans cette révision. Son implémentation et sa qualification relèvent d’un chantier ultérieur avant la stable. [Catalogue des commandes](../../../components/libraries/command.rs) · [Commandes de nsh](../../../components/shell/builtins.rs) · [Commande actuelle](../../../components/shell/services.rs) · [Recette prévue](acceptation-serveur.md#commande-service-dans-nsh)
 
 ## Contrats d’isolation du réseau à qualifier
 
