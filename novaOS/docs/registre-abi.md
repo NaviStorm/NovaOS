@@ -58,7 +58,7 @@ Les noms qualifiés correspondent aux constantes Rust. Le lien noyau mène au tr
 | 0x10078 | tmp::WORKER | tmp privé / 0.21.0 phase 2 / active | *const identité, argument, 32 → droit de suivi du travailleur | thread principal du principal admis, droit de création, identité complète courante et capacité tmp active à déléguer | BAD_ARGUMENT, BAD_ADDRESS, DENIED, REFUSED, LIMIT, NO_MEMORY, CANCELLED | [instance_call](../kernel/src/sched/process/ipc/spawn.rs#L220) | — |
 | 0x10079 | tmp::NEXT | tmp privé / 0.21.0 phase 2 / active | handle de réception, *mut enveloppe, 168 → ticket de la demande remise | serveur NovaFS admis pour ce montage, droit RECEIVE local | BAD_ARGUMENT, BAD_ADDRESS, DENIED, WOULD_BLOCK, REFUSED, LIMIT, CLOSED, CANCELLED | [next](../kernel/src/sched/process/tmp.rs#L417) | — |
 | 0x1007a | tmp::COMPLETE | tmp privé / 0.21.0 phase 2 / active | ticket, *const réponse de 128 octets pour IO réussi (0 pour CREATE/REMOVE), statut 0…255 → 0 | même serveur NovaFS, ticket de l’unique opération en vol | BAD_ARGUMENT, BAD_ADDRESS, DENIED, REVOKED, CLOSED, CANCELLED | [complete](../kernel/src/sched/process/tmp.rs#L438) | — |
-| 0x1007b | instances::SERVICE_PROCESS | processus supervisés / 0.21.0 phase 3 / active | opération, *mut 16 mots little-endian, 128 (NOW et DRAIN : 0, 0) → START : droit local avec PID et identité complète ; POLL : résultat collecté ; KILL : retrait de la famille ; NOW : millisecondes monotones ; DRAIN : arrêt du gestionnaire et confirmation du retrait des vues P9 | thread principal du gestionnaire lié par le démarrage P9 ; droit local du processus pour POLL et KILL ; seul le client initial peut demander DRAIN | DENIED, BAD_ARGUMENT, BAD_ADDRESS, REVOKED, CLOSED, LIMIT, NO_MEMORY, WOULD_BLOCK, REFUSED | [process](../kernel/src/sched/process/ipc/service.rs#L359) | — |
+| 0x1007b | instances::SERVICE_PROCESS | processus supervisés / 0.21.0 phase 3 / active | opération, *mut 16 mots little-endian, 128 (NOW et DRAIN : 0, 0) → START : droit local avec PID et identité complète ; POLL : résultat collecté ; KILL : retrait de la famille ; NOW : millisecondes monotones ; DRAIN : arrêt du gestionnaire et confirmation du retrait des vues P9 | thread principal du gestionnaire lié par le démarrage P9 ; droit local du processus pour POLL et KILL ; seul le client initial peut demander DRAIN | DENIED, BAD_ARGUMENT, BAD_ADDRESS, REVOKED, CLOSED, LIMIT, NO_MEMORY, WOULD_BLOCK, REFUSED | [process](../kernel/src/sched/process/ipc/service.rs#L394) | — |
 | 0x1007c | cache::CONTROL | cache applicatif / 0.21.0 phase 4 / active | opération, zéro (NEXT : endpoint, COMPLETE : ticket), *mut trame de 224 octets → NEXT remet un ticket à usage unique. OPEN retourne dans la trame un bail propre à l’instance et à la génération. Les autres opérations retournent zéro ou le statut du serveur. Une écriture remise sans confirmation reçoit files::UNCERTAIN. | identités attestées par le lanceur, vue du cache de l’instance ; purges étendues réservées à une autorité explicite ; RECOVER au service supervisé et NEXT/COMPLETE à l’unique serveur P9 | BAD_ARGUMENT, BAD_ADDRESS, DENIED, REVOKED, CLOSED, REFUSED, CANCELLED, TIMED_OUT, WOULD_BLOCK, LIMIT, NO_MEMORY, files::UNCERTAIN, files::NOT_FOUND, files::CORRUPT, files::FULL, files::BUSY, files::UNSUPPORTED, files::IO | [control](../kernel/src/sched/process/cache.rs#L443) | — |
 
 Les pointeurs sont des adresses virtuelles de l’appelant, transmises sur 64 bits. Sur x86_64, SYSCALL détruit RCX et R11. Sur AArch64, x2 à x30 et SP_EL0 sont préservés. [Contrat des registres](abi.md).
@@ -73,13 +73,13 @@ Le courtier tmp sérialise les opérations internes CREATE, REMOVE et IO dans un
 
 | Protocole | Opcode | Opération | Trame | Traitement ou transport | SDK Rust |
 |---|---|---|---|---|---|
-| fichiers | 1 | MOUNT | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L238) | — |
-| fichiers | 2 | INFO | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L238) | — |
-| fichiers | 3 | OPEN | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L238) | — |
-| fichiers | 4 | READ | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L238) | [File::read](../libs/nova-system/src/files.rs#L62), [Session::read_view](../libs/nova-system/src/files.rs#L23) |
-| fichiers | 5 | WRITE | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L238) | [File::write](../libs/nova-system/src/files.rs#L67) |
-| fichiers | 6 | SYNC | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L238) | [File::sync](../libs/nova-system/src/files.rs#L72) |
-| fichiers | 7 | CLOSE | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L238) | [File::close](../libs/nova-system/src/files.rs#L75) |
+| fichiers | 1 | MOUNT | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L239) | — |
+| fichiers | 2 | INFO | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L239) | — |
+| fichiers | 3 | OPEN | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L239) | — |
+| fichiers | 4 | READ | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L239) | [File::read](../libs/nova-system/src/files.rs#L62), [Session::read_view](../libs/nova-system/src/files.rs#L23) |
+| fichiers | 5 | WRITE | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L239) | [File::write](../libs/nova-system/src/files.rs#L67) |
+| fichiers | 6 | SYNC | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L239) | [File::sync](../libs/nova-system/src/files.rs#L72) |
+| fichiers | 7 | CLOSE | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L239) | [File::close](../libs/nova-system/src/files.rs#L75) |
 | fichiers | 8 | PATH_FRAGMENT | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | — |
 | fichiers | 9 | DIR_OPEN | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | [Session::directory](../libs/nova-system/src/files.rs#L48) |
 | fichiers | 10 | LOOKUP_AT | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | — |
@@ -93,14 +93,14 @@ Le courtier tmp sérialise les opérations internes CREATE, REMOVE et IO dans un
 | fichiers | 18 | DIR_CLOSE | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | [Directory::close](../libs/nova-system/src/files.rs#L104) |
 | fichiers | 19 | CHDIR | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | — |
 | fichiers | 20 | GETCWD | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | — |
-| fichiers | 21 | DELEGATE | [files.rs](../abi/files.rs) | [serve](../user/novafs/files.rs#L681) | — |
-| fichiers | 22 | STAGE | [files.rs](../abi/files.rs) | [serve](../user/novafs/files.rs#L681) | — |
+| fichiers | 21 | DELEGATE | [files.rs](../abi/files.rs) | [serve](../user/novafs/files.rs#L685) | — |
+| fichiers | 22 | STAGE | [files.rs](../abi/files.rs) | [serve](../user/novafs/files.rs#L685) | — |
 | fichiers | 23 | CREATE_NEW | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
 | fichiers | 24 | MOVE_SELECTED | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
 | fichiers | 25 | TOUCH_SELECTED | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
 | fichiers | 26 | PUBLISH_COPY | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
 | fichiers | 27 | COPY_RANGE | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
-| fichiers | 28 | READ_PAGE | [files.rs](../abi/files.rs) | [read_page](../user/novafs/files.rs#L635) | — |
+| fichiers | 28 | READ_PAGE | [files.rs](../abi/files.rs) | [read_page](../user/novafs/files.rs#L639) | — |
 | bloc | 1 | INFO | [block.rs](../abi/block.rs) | [driver](../user/storage/disk.rs#L11) | — |
 | bloc | 2 | READ | [block.rs](../abi/block.rs) | [driver](../user/storage/disk.rs#L11) | — |
 | bloc | 3 | WRITE | [block.rs](../abi/block.rs) | [driver](../user/storage/disk.rs#L11) | — |

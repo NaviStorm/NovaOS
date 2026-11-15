@@ -22,6 +22,12 @@ pub const CACHE_TEST: u64 = 12;
 pub const CACHE_ASYNC_WRITE: u64 = 13;
 /// Un passage de la politique de pression sur le port d'exploitation.
 pub const CACHE_MAINTAIN: u64 = 14;
+/// SETTINGS: génération appliquée [4], fournisseur bloquant [5], modification
+/// en attente [8], auto enregistré/appliqué [10/11], génération stockée [12],
+/// relance/budget [13/14] et statut du magasin [15].
+pub const SETTINGS: u64 = 25;
+pub const ENABLE: u64 = 26;
+pub const DISABLE: u64 = 27;
 
 pub const REGISTERED: u64 = 1;
 pub const WAITING: u64 = 2;
@@ -68,4 +74,17 @@ pub fn decode(bytes: &[u8]) -> Option<Frame> {
         *word = u64::from_le_bytes(field.try_into().ok()?);
     }
     Some(words)
+}
+
+/// Noms du catalogue installé. Un numéro désigne un service, jamais un PID.
+const INSTALLED_NAMES: &[(u64, &str)] =
+    &[(1, "clock"), (2, "tmp-health"), (9, "storage-info"), (10, "cache")];
+
+pub fn service_name(id: u64) -> Option<&'static str> {
+    INSTALLED_NAMES.iter().find(|(n, _)| *n == id).map(|(_, name)| *name)
+}
+
+pub fn service_id(s: &str) -> Option<u64> {
+    INSTALLED_NAMES.iter().find(|(_, name)| *name == s).map(|(n, _)| *n)
+        .or_else(|| s.parse::<u64>().ok().filter(|n| *n != 0))
 }

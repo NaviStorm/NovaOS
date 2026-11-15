@@ -7,6 +7,10 @@
 mod cache_steps;
 #[path = "services/catalog.rs"]
 mod catalog;
+#[path = "services/config_client.rs"]
+mod config_client;
+#[path = "services/configuration.rs"]
+mod configuration;
 #[path = "services/control.rs"]
 mod control;
 #[allow(dead_code)]
@@ -20,6 +24,8 @@ mod proc;
 mod protocol;
 #[path = "storage/runtime.rs"]
 mod runtime;
+#[path = "services/settings.rs"]
+mod settings;
 use policy::{Action, Cause, Declaration, Policy, State};
 use protocol::{self as p, Frame};
 use runtime as rt;
@@ -77,6 +83,7 @@ struct Pending {
 struct Manager<'a> {
     manifest: &'a [Declaration],
     policy: Policy<'a>,
+    config: configuration::Configuration,
     units: [Unit; MAX],
     qualification: bool,
     cache_lab: bool,
@@ -421,16 +428,25 @@ impl Manager<'_> {
 fn supervise() -> rt::Result<()> {
     let qualification = rt::config(2) == 1;
     let cache_lab = rt::config(2) == 2;
-    let manifest = if cache_lab {
+    let config = configuration::Configuration::open(rt::config(5), rt::config(6));
+    let loaded = config.records;
+    let installed = !cache_lab && !qualification;
+    let manifest: &[Declaration] = if cache_lab {
         catalog::CACHE_QUALIFICATION
     } else if qualification {
         catalog::QUALIFICATION
     } else {
-        catalog::INSTALLED
+        &loaded
     };
     let mut manager = Manager {
         manifest,
-        policy: Policy::new(manifest).map_err(control::error)?,
+        policy: if installed {
+            Policy::configured(manifest)
+        } else {
+            Policy::new(manifest)
+        }
+        .map_err(control::error)?,
+        config,
         units: [Unit::default(); MAX],
         qualification,
         cache_lab,
@@ -447,8 +463,11 @@ fn supervise() -> rt::Result<()> {
     let ports = [
         (rt::config(0), rt::config(1)),
         (rt::config(3), rt::config(4)),
+        (rt::config(7), rt::config(8)),
     ];
-    if ports.iter().any(|&(rx, tx)| rx == 0 || tx == 0) {
+    if ports[..2].iter().any(|&(rx, tx)| rx == 0 || tx == 0)
+        || ((ports[2].0 == 0) != (ports[2].1 == 0))
+    {
         return Err(rt::DENIED);
     }
     manager.run(ports)

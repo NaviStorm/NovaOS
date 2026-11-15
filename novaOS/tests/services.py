@@ -128,6 +128,11 @@ def guest(arch, sector, cpus, image, iso, scenario, out, cut):
                     assert f"attendus={mask} en_ligne={mask} ack={mask} absents=0x0 muets=0x0".encode() in buf
                     if console:
                         assert command_index == len(commands) and signalled
+                    elif scenario == "services-config-race":
+                        markers = (b"deux publications CAS 0 en vol : une confirmee, une BUSY, generation 1 relue",
+                                   b"resultat client UNCERTAIN apres admission et revocation",
+                                   b"deux relectures P9 generation 2, handle retire, aucune repetition")
+                        assert all(m in buf for m in markers), [m for m in markers if m not in buf]
                     elif scenario == "services-test":
                         assert all(s in buf for s in CONTROL), [s for s in CONTROL if s not in buf]
                     else:

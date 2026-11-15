@@ -1,6 +1,6 @@
 use alloc::string::String;
 use nova_cli::{fileapi::Client, protocol as w, runtime as rt};
-pub const COMMANDS: &str = "[ alias break cat cd clear continue cp echo exit export false head help history ls mkdir more mv nsh ps pwd return rm rmdir tail test top touch true unalias unset vi wc";
+pub const COMMANDS: &str = "[ alias break cat cd clear continue cp echo exit export false head help history ls mkdir more mv nsh ps pwd return rm rmdir service tail test top touch true unalias unset vi wc";
 pub fn console_action(action: u64) -> rt::Result<()> {
     use nova_cli::tty;
     rt::value(rt::call(tty::CONSOLE, tty::SCREEN.into(), action, 0)).map(|_| ())

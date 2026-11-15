@@ -939,7 +939,7 @@ fn publish_block_group<const N: usize>(
             (device, [output, mode, key, 0]),
             (
                 consumer,
-                [read_reply, if matches!(profile, 75..=86) { mode } else { profile }, if N == 3 { key } else { 0 }, 0],
+                [read_reply, if matches!(profile, 75..=88) { mode } else { profile }, if N == 3 { key } else { 0 }, 0],
             ),
         ] {
             let space = s.processes.get(pid).space.as_ref().unwrap();
@@ -1050,7 +1050,7 @@ fn publish_block_group<const N: usize>(
             .find(|t| t.owner == Some(device))
             .unwrap();
         pilote.cpu_mask = 1;
-        if matches!(profile, 41 | 42 | 75..=86) {
+        if matches!(profile, 41 | 42 | 75..=88) {
             tmp::install(s, consumer, group[3].0)?;
         }
         if !crate::hardware::block::attach(device.number, key) {
