@@ -51,5 +51,15 @@ pub fn run(args: &[&str]) -> rt::Result<()> {
         ["dep", id, index] => (wire::DEP, *id, number(index)?),
         _ => return Err(rt::BAD_ARGUMENT),
     };
-    show(&request(op, number(id)?, arg)?)
+    let frame = request(op, number(id)?, arg)?;
+    if op == wire::DEP {
+        let kind = match frame[11] {
+            0 => "optionnelle",
+            1 => "obligatoire",
+            _ => return Err(rt::REFUSED),
+        };
+        return console::write(tty::OUTPUT, &alloc::format!(
+            "service={} dependance={} {}\n", frame[2], frame[10], kind));
+    }
+    show(&frame)
 }

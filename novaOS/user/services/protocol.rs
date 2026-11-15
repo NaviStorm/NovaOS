@@ -8,6 +8,8 @@ pub const STATUS: u64 = 2;
 pub const START: u64 = 3;
 pub const STOP: u64 = 4;
 pub const RESTART: u64 = 5;
+/// Réponse DEP : le mot 10 identifie le fournisseur. Le mot 11 vaut 1 pour
+/// une dépendance obligatoire et 0 pour une dépendance optionnelle.
 pub const DEP: u64 = 6;
 pub const REGISTER: u64 = 7;
 pub const QUERY: u64 = 8;

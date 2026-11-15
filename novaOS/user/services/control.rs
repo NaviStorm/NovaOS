@@ -146,6 +146,7 @@ impl Manager<'_> {
                         .optional
                         .get(ordinal - d.required.len())
                         .ok_or(rt::REFUSED)?;
+                    answer[11] = 0;
                 }
                 return Ok(Some(answer));
             }

@@ -95,6 +95,7 @@ impl Control {
         require(self.call(svc::QUERY, 9, 0).is_err())?;
         self.call(svc::START, 9, 0)?;
         let next = self.state(9, svc::RUNNING)?;
+        require(first[11] == 1 && next[11] == 2)?;
         require(first[4] < next[4] && first[5] != next[5] && first[5] != 0)?;
         require(first[6..8] == next[6..8] && first[6..8] != [0, 0])?;
         require(first[8..10] != next[8..10] && next[14] > first[14])?;
@@ -115,6 +116,9 @@ impl Control {
         let current = self.state(8, svc::RUNNING)?;
         require(current[12] > 0 && current[13] == 1)?;
         self.state(7, svc::RUNNING)?;
+        let required = self.call(svc::DEP, 7, 0)?;
+        let optional = self.call(svc::DEP, 7, 1)?;
+        require(required[10..12] == [8, 1] && optional[10..12] == [2, 0])?;
         let delayed = self.call(svc::QUERY, 7, 0)?;
         require(delayed[10] == 0 && delayed[15] > 0)?;
         log(b"SVC-P3 READY courant admis dependant RUNNING");
@@ -135,6 +139,15 @@ impl Control {
         let before = self.state(3, svc::RUNNING)?;
         self.call(svc::STOP, 1, 0)?;
         self.state(1, svc::STOPPED)?;
+        // Relire les transitions produites par les deux vrais processus.
+        let mut entry = self.call(svc::LOG, 0, 0)?;
+        let mut consumer_stopped = false;
+        loop {
+            if entry[2] == 3 && entry[3] == svc::STOPPED { consumer_stopped = true; }
+            if entry[2] == 1 && entry[3] == svc::STOPPING { break; }
+            entry = self.call(svc::LOG, 0, entry[15].checked_add(1).ok_or(rt::LIMIT)?)?;
+        }
+        require(consumer_stopped)?;
         let dependent = self.call(svc::STATUS, 3, 0)?;
         require(dependent[3] != svc::RUNNING && dependent[3] != svc::READY)?;
         self.call(svc::START, 1, 0)?;
@@ -154,13 +167,17 @@ impl Control {
         self.call(svc::START, 4, 0)?;
         self.call(svc::START, 5, 0)?;
         self.state(4, svc::FAILED)?;
-        self.state(5, svc::FAILED)?;
+        let exhausted = self.state(5, svc::FAILED)?;
+        require(exhausted[4] == 3 && exhausted[14] == 3)?;
         log(b"SVC-P3 delai de disponibilite et boucle de fautes bornes");
         self.call(svc::START, 6, 0)?;
         self.state(6, svc::RUNNING)?;
         self.call(svc::STOP, 6, 0)?;
         self.state(6, svc::STOPPED)?;
         log(b"SVC-P3 arret force apres delai");
+        self.call(svc::RESTART, 9, 0)?;
+        self.until(9, |r| r[3] == svc::RUNNING && r[4] == 3 && r[14] >= 2)?;
+        require(self.call(svc::QUERY, 9, 0)?[10] == svc::NATIVE_INFO)?;
         Ok(())
     }
 }
