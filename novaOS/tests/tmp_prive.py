@@ -20,6 +20,19 @@ from bloc_qemu import command
 from session_cli import fixture_p9
 
 
+def identite_serie(data):
+    """Le noyau et nsh écrivent sur le même UART SMP. L’invite est entièrement non hexadécimale."""
+    line = re.search(rb"TMP d\xc3\xa9marrage ([^\r\n]*)\r?\n", data)
+    if not line:
+        return None, False
+    field = line[1]
+    digits = bytes(c for c in field if c in b"0123456789abcdef")
+    other = bytes(c for c in field if c not in b"0123456789abcdef")
+    if len(digits) != 32 or other not in (b"", b"nsh> "):
+        return None, False
+    return digits, bool(other)
+
+
 def capture(arch, sector, image, iso, scenario, log, vcpus):
     env = {**os.environ, "NOVA_ARCH": arch, "NOVA_ISO": str(iso), "NOVA_VCPUS": str(vcpus)}
     controls = ["-display", "none", "-monitor", "none", "-serial", "stdio"]
@@ -50,7 +63,7 @@ def capture(arch, sector, image, iso, scenario, log, vcpus):
                     vm.kill()
                     assert vm.wait(timeout=10) == -signal.SIGKILL
                     return bytes(data)
-                if done in data and b"nsh> " in data and not exited:
+                if done in data and not exited and (b"nsh> " in data or identite_serie(data)[1]):
                     # Ne pas laisser des acquittements du service manquer à l'arrêt.
                     vm.stdin.write(b"exit\n")
                     exited = True
@@ -104,7 +117,7 @@ def main():
             label = f"{seq}-{scenario}"
             log = proofs / (label + ".serial")
             data = capture(arch, args.secteur, image, iso, scenario, log, args.vcpus)
-            boot = re.search(rb"TMP d\xc3\xa9marrage (?:nsh> )?([0-9a-f]{32})\r?\n", data)
+            boot, _ = identite_serie(data)
             incarnation = re.search(rb"TMP (?:premi\xc3\xa8re|nouvelle) instance=(\d+) g\xc3\xa9n\xc3\xa9ration=(\d+)", data)
             assert boot and incarnation
             if scenario != "tmp-coupure":
@@ -125,7 +138,7 @@ def main():
             assert raw == image.read_bytes()
             rows.append(dict(scenario=scenario, qemu=qemu, architecture=arch, secteur=args.secteur,
                              vcpus=args.vcpus, noyau_sha256=kernel_sha,
-                             iso_sha256=hashlib.sha256(iso.read_bytes()).hexdigest(), boot=boot[1].decode(),
+                             iso_sha256=hashlib.sha256(iso.read_bytes()).hexdigest(), boot=boot.decode(),
                              instance=int(incarnation[1]), generation=int(incarnation[2]),
                              catalogue_sha256=hashlib.sha256(baseline).hexdigest(),
                              oracle=check, disque_sha256=hashlib.sha256(raw).hexdigest(),
