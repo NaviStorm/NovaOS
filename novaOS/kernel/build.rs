@@ -97,6 +97,12 @@ fn main() {
         if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_EQUITE_LAB").is_some() {
             rust.args(["--cfg", "ipc_equite_lab"]);
         }
+        // Ces ELF de services sont incorporés tels quels dans l'image noyau.
+        // La machine invitée ne charge que PT_LOAD. Les sections DWARF et les
+        // tables de symboles n'ont pas besoin de rester résidentes au démarrage.
+        if matches!(name, "service_manager" | "system_service" | "service_control_test" | "storage/managed") {
+            rust.args(["-C", "strip=symbols"]);
+        }
         if compact {
             rust.args([
                 "-C",
