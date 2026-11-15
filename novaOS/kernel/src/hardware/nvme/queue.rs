@@ -9,22 +9,34 @@ pub(super) const ACQ: usize = 1;
 const IOSQ: usize = 2;
 const IOCQ: usize = 3;
 pub(super) const DATA: usize = 4;
+pub(super) const SOURCE: usize = 5;
 
 impl Memory {
+    pub(super) fn writable(&self) -> bool {
+        self.cpu[SOURCE] != 0
+    }
+
+    pub(super) fn page_count(&self) -> usize {
+        SOURCE + usize::from(self.writable())
+    }
+
     pub(super) fn valid(self) -> bool {
+        let pages = self.page_count();
         self.epoch != 0
+            && self.writable() == (self.iova[SOURCE] != 0)
+            && (!self.writable() || self.phase2_media)
             && self.bar != 0
             && self.bar.is_multiple_of(PAGE)
             && self.len >= 0x1010
             && self.bar.checked_add(self.len).is_some()
-            && self.cpu.iter().enumerate().all(|(i, &p)| {
+            && self.cpu[..pages].iter().enumerate().all(|(i, &p)| {
                 p != 0
                     && p.is_multiple_of(PAGE)
                     && p.checked_add(PAGE).is_some()
                     && !self.cpu[..i].contains(&p)
                     && (p + PAGE <= self.bar || self.bar + self.len <= p)
             })
-            && self.iova.iter().enumerate().all(|(i, &p)| {
+            && self.iova[..pages].iter().enumerate().all(|(i, &p)| {
                 p != 0
                     && p.is_multiple_of(PAGE as u64)
                     && p.checked_add(PAGE as u64).is_some()
@@ -161,12 +173,20 @@ pub(super) fn entry(command: Command, cid: u16, mem: &Memory) -> [u32; 16] {
                 (0x05, Some(IOCQ))
             }
         }
-        Read { nsid, lba, blocks } => {
+        Read { nsid, lba, blocks } | Write { nsid, lba, blocks } => {
             entry[1] = nsid;
             entry[10] = lba as u32;
             entry[11] = (lba >> 32) as u32;
             entry[12] = u32::from(blocks - 1); // Taille validée dans submit.
-            (0x02, Some(DATA))
+            if matches!(command, Write { .. }) {
+                (0x01, Some(SOURCE))
+            } else {
+                (0x02, Some(DATA))
+            }
+        }
+        Flush { nsid } => {
+            entry[1] = nsid;
+            (0x00, None)
         }
         DeleteSq => {
             entry[10] = 1;

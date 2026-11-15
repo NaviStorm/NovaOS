@@ -5,12 +5,25 @@ use crate::runtime::*;
 #[path = "../../abi/block.rs"]
 mod w;
 use crate::runtime::bulk;
+
+// Le courtier NVMe qualifie les commandes avec une échéance matérielle de 5 s.
+// La réception du relais doit pouvoir rapporter ce statut avant son propre délai.
+#[cfg(feature = "nvme-lab")]
+fn receive(port: u64) -> Result<ReceiveV1> {
+    if matches!(config(1), 1000..=1002) {
+        receive_for(port, 3000)
+    } else {
+        crate::runtime::receive(port)
+    }
+}
 pub(crate) struct Block {
     tx: u64,
     rx: u64,
     tag: u64,
     pub(crate) features: u32,
     pub(crate) sector_size: usize,
+    #[cfg(feature = "nvme-lab")]
+    pub(crate) failed_cqe: Option<crate::nvme_diagnostic::Cause>,
 }
 impl Block {
     #[inline(never)]
@@ -20,6 +33,16 @@ impl Block {
         let r = receive(self.rx)?;
         if r.tag != self.tag || r.kind != 1 {
             return Err(BAD_ARGUMENT);
+        }
+        #[cfg(feature = "nvme-lab")]
+        if r.len as usize == 1 + crate::nvme_diagnostic::LEN && matches!(config(1), 1000..=1002) {
+            if u64::from(r.payload[0]) != crate::protocol::IO {
+                return Err(BAD_ARGUMENT);
+            }
+            let cause = crate::nvme_diagnostic::Cause::decode(&r.payload[1..r.len as usize])
+                .ok_or(BAD_ARGUMENT)?;
+            self.failed_cqe = Some(cause);
+            return Err(crate::protocol::IO);
         }
         if r.len == 1 {
             let status = u64::from(r.payload[0]);
@@ -256,7 +279,29 @@ fn exercise(d: &mut Block, mode: u64) -> Result<()> {
 }
 pub fn serve() -> Result<()> {
     let (tx, rx) = channels()?;
-    let mut d = Block { tx, rx, tag: 0, features: 0, sector_size: 0 };
+    let mut d = Block { tx, rx, tag: 0, features: 0, sector_size: 0,
+        #[cfg(feature = "nvme-lab")]
+        failed_cqe: None,
+    };
+    #[cfg(feature = "nvme-lab")]
+    if (1000..=1002).contains(&config(1)) {
+        d.negotiate()?;
+        if d.features & w::FEATURE_PAGE == 0 {
+            return Err(REFUSED);
+        }
+        let info = d.command(w::INFO)?;
+        let writable = config(1) != 1002;
+        if w::number(&info, 16) != (if writable { 15 } else { 9 }) {
+            return Err(DENIED);
+        }
+        let sector = w::number(&info, 4);
+        let count = w::lba(&info);
+        if u64::from(sector).checked_mul(count) != Some((4 << 20) - 4096) {
+            return Err(REFUSED);
+        }
+        let dev = crate::device::IpcDevice::new(&mut d, sector, count).map_err(crate::device::status)?;
+        return crate::files::serve(&dev, sector, writable);
+    }
     if matches!(config(1), 41 | 42) {
         d.negotiate()?;
     }

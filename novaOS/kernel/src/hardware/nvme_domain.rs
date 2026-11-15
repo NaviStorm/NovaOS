@@ -5,7 +5,7 @@ use super::{
     discovery::{Config, Drhd, vtd},
     nvme::{Controller, Drained, Memory},
     pci_inventory::{self as pci, resources::lab},
-    vtd_lab::{Engine, Lease},
+    vtd_lab::{Engine, Invalidation, Lease, NvmeLayout},
 };
 use crate::{hal::log, memory, sched::Guard};
 use alloc::vec::Vec;
@@ -20,7 +20,7 @@ const ID: u32 = 0x0010_1b36;
 const PAGE: usize = 4096;
 // Les slots UC du banc sont exclusifs entre les profils. 323 sert à l'AHCI.
 const BAR_SLOT: usize = 324;
-const PRIVATE_PAGES: usize = 5;
+
 static DISCOVERED: AtomicBool = AtomicBool::new(false);
 
 fn cfg(offset: usize, width: usize) -> u32 {
@@ -165,6 +165,9 @@ impl DataPage {
 }
 
 pub(crate) struct Admission {
+    source: Option<bool>,
+    phase2_media: bool,
+    retirement: Invalidation,
     data_page: DataPage,
     bar: Bar,
     drhd: Drhd,
@@ -249,10 +252,23 @@ pub(crate) fn discover() -> Option<Admission> {
     // L'admission ne possède aucun alias MMIO. Un refus du gestionnaire Ring 3
     // avant la création du domaine peut la laisser tomber sans ressource à rendre.
     bar.unmap().ok()?;
+    let scenario = crate::boot::scenario();
     Some(Admission {
         bar,
         drhd,
-        data_page: match crate::boot::scenario() {
+        phase2_media: scenario.starts_with(b"nvme-rw-"),
+        retirement: match scenario {
+            b"nvme-rw-qi-error" => Invalidation::InvalidContext,
+            b"nvme-rw-qi-delay" => Invalidation::ReceiptDelayed,
+            _ => Invalidation::Global,
+        },
+        source: match scenario {
+            b"nvme-rw-dma-fault" => Some(false),
+            b"nvme-rw-recover" | b"nvme-rw-rights" => None,
+            name if name.starts_with(b"nvme-rw-") => Some(true),
+            _ => None,
+        },
+        data_page: match scenario {
             b"nvme-permission" => DataPage::Withheld,
             b"nvme-permission-read" => DataPage::UntilRead,
             _ => DataPage::Mapped,
@@ -278,6 +294,9 @@ impl Unstarted<'_> {
     }
 }
 pub(crate) struct Domain {
+    source: Option<bool>,
+    phase2_media: bool,
+    retirement: Invalidation,
     data_page: DataPage,
     bar: Bar,
     engine: ManuallyDrop<Engine>,
@@ -303,12 +322,22 @@ impl Domain {
         })?;
         Ok(Self {
             data_page: admission.data_page,
+            source: admission.source,
+            phase2_media: admission.phase2_media,
+            retirement: admission.retirement,
             bar: admission.bar,
             engine: ManuallyDrop::new(engine),
             lease: None,
             memory: None,
             state: State::Parked,
         })
+    }
+
+    fn layout(&self) -> NvmeLayout {
+        NvmeLayout {
+            data: self.data_page.mapped(),
+            source: self.source,
+        }
     }
 
     pub(crate) fn prepare(&mut self, owner: u64) -> Result<Memory> {
@@ -318,8 +347,9 @@ impl Domain {
         let lease = self.engine.attach(owner)?;
         self.lease = Some(lease);
         self.state = State::Quarantine;
-        for slot in 0..PRIVATE_PAGES as u8 {
-            if let Err(e) = self.engine.map_nvme(lease, slot, self.data_page.mapped()) {
+        let layout = self.layout();
+        for slot in 0..layout.pages() as u8 {
+            if let Err(e) = self.engine.map_nvme(lease, slot, layout) {
                 self.engine.cancel_preparation(lease)?;
                 self.lease = None;
                 self.state = State::Parked;
@@ -327,29 +357,32 @@ impl Domain {
             }
         }
         self.engine.publish(lease)?;
-        if !self.engine.exact_nvme(lease, self.data_page.mapped()) {
+        if !self.engine.exact_nvme(lease, self.layout()) {
             return Err(Error::Quarantine);
         }
-        let mut cpu = [0; PRIVATE_PAGES];
-        for (slot, address) in cpu.iter_mut().enumerate() {
+        let mut cpu = [0; 6];
+        let mut iova = [0; 6];
+        for (slot, address) in cpu[..layout.pages()].iter_mut().enumerate() {
+            iova[slot] = lease.iova(slot as u8);
             *address = self
                 .engine
-                .page_address(lease, slot as u8, slot != 4 || self.data_page.mapped())
+                .page_address(lease, slot as u8, layout.mapped(slot))
                 .ok_or(Error::Quarantine)?;
         }
         let memory = Memory {
+            phase2_media: self.phase2_media,
             bar: Bar::va(0) as usize,
             len: 2 * PAGE,
             cpu,
-            iova: core::array::from_fn(|i| lease.iova(i as u8)),
+            iova,
             epoch: lease.epoch(),
         };
         self.memory = Some(memory);
         self.state = State::Prepared;
-        let (leaves, rights) = if self.data_page.mapped() {
-            (5, "R,W,R,W,W")
-        } else {
-            (4, "R,W,R,W")
+        let (leaves, rights) = match (self.data_page.mapped(), self.source) {
+            (true, Some(true)) => (6, "R,W,R,W,W,R"),
+            (true, _) => (5, "R,W,R,W,W"),
+            (false, _) => (4, "R,W,R,W"),
         };
         log(format_args!(
             "NVME VT-d SID={SID} DID=1 epoque={} feuilles={leaves} droits={rights} autres=0 service=8 BME=0",
@@ -383,8 +416,9 @@ impl Domain {
         self.memory = None;
         self.state = State::Parked;
         log(format_args!(
-            "NVME preparation annulee epoque={} BME=0 WAIT=confirme pages_restituees=5",
-            lease.epoch()
+            "NVME preparation annulee epoque={} BME=0 WAIT=confirme pages_restituees={}",
+            lease.epoch(),
+            self.layout().pages()
         ));
         Ok(())
     }
@@ -392,7 +426,7 @@ impl Domain {
         let _guard = Guard::new();
         let lease = self.lease.ok_or(Error::Denied)?;
         if !matches!(self.state, State::Prepared)
-            || !self.engine.exact_nvme(lease, self.data_page.mapped())
+            || !self.engine.exact_nvme(lease, self.layout())
             || !self
                 .memory
                 .as_ref()
@@ -457,7 +491,7 @@ impl Domain {
             return Err(Error::Quarantine);
         }
         self.engine
-            .retire_nvme(lease, proof, memory, || self.bar.fenced())?;
+            .retire_nvme(lease, proof, memory, self.retirement, || self.bar.fenced())?;
         if !self.engine.parked() {
             return Err(Error::Quarantine);
         }
@@ -465,8 +499,9 @@ impl Domain {
         self.memory = None;
         self.state = State::Parked;
         log(format_args!(
-            "NVME retrait epoque={} controleur=confirme BME=0 contexte=0 IOTLB=drain WAIT=confirme pages_restituees=5",
-            lease.epoch()
+            "NVME retrait epoque={} controleur=confirme BME=0 contexte=0 IOTLB=drain WAIT=confirme pages_restituees={}",
+            lease.epoch(),
+            self.layout().pages()
         ));
         Ok(())
     }
@@ -493,7 +528,7 @@ impl Domain {
         if !matches!(self.state, State::Prepared) {
             return None;
         }
-        self.engine.nvme_frames(self.lease?)
+        self.engine.nvme_frames(self.lease?, self.layout())
     }
     pub(crate) fn refused_data_intact(&self) -> bool {
         !self.data_page.mapped()
@@ -503,6 +538,23 @@ impl Domain {
                 .lease
                 .is_some_and(|l| self.engine.rejected_nvme_data(l))
     }
+    pub(crate) fn refused_write_source(&self, expected: &[u8]) -> bool {
+        self.source == Some(false)
+            && matches!(self.state, State::Quarantine)
+            && self.bar.fenced()
+            && self
+                .lease
+                .is_some_and(|l| self.engine.rejected_write_source(l, expected))
+    }
+
+    pub(crate) fn failed_invalidation(&self) -> bool {
+        matches!(self.state, State::Quarantine)
+            && self.bar.fenced()
+            && self
+                .lease
+                .is_some_and(|l| self.engine.failed_nvme_invalidation(l, self.retirement))
+    }
+
     pub(crate) fn pinned(&self) -> usize {
         self.engine.pinned()
     }

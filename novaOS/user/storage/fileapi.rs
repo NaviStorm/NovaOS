@@ -3,6 +3,8 @@ use crate::runtime::bulk;
 use crate::{protocol as w, runtime as rt};
 pub struct Client {
     bulk_reads: bool,
+    #[cfg(nvme_rw)]
+    failed_cqe: Option<crate::nvme_diagnostic::Cause>,
     tx: u64,
     rx: u64,
     tag: u64,
@@ -19,6 +21,8 @@ impl Client {
             session: 0,
             disconnected: false,
             bulk_reads: false,
+            #[cfg(nvme_rw)]
+            failed_cqe: None,
         })
     }
     /// Vue temporaire fournie au processus enfant par le lanceur.
@@ -33,6 +37,8 @@ impl Client {
             session: 1,
             disconnected: false,
             bulk_reads: false,
+            #[cfg(nvme_rw)]
+            failed_cqe: None,
         }
     }
     pub fn give(&self, source: u64, rights: u32) -> rt::Result<()> {
@@ -63,6 +69,8 @@ impl Client {
         self.request(q).map(|_| ())
     }
     pub fn request(&mut self, q: w::Frame) -> rt::Result<w::Frame> {
+        #[cfg(nvme_rw)]
+        { self.failed_cqe = None; }
         if self.disconnected {
             return Err(rt::CLOSED);
         }
@@ -103,10 +111,34 @@ impl Client {
                 e
             }
         })?;
+        #[cfg(nvme_rw)]
+        if matches!(rt::config(1), 1000..=1002 | 1015 | 1019)
+            && matches!(u64::from(r.payload[3]), w::UNCERTAIN | w::IO)
+            && r.payload[w::PAYLOAD..].iter().any(|&b| b != 0)
+        {
+            let end = w::PAYLOAD + crate::nvme_diagnostic::LEN;
+            let cause = crate::nvme_diagnostic::Cause::decode(&r.payload[w::PAYLOAD..end])
+                .ok_or(rt::BAD_ARGUMENT)?;
+            if r.payload[end..].iter().any(|&b| b != 0) {
+                return Err(rt::BAD_ARGUMENT);
+            }
+            self.failed_cqe = Some(cause);
+        }
         if r.payload[3] != 0 {
             return Err(r.payload[3] as u64);
         }
         Ok(r.payload)
+    }
+    #[cfg(nvme_rw)]
+    pub(crate) fn take_cqe(&mut self) -> Option<crate::nvme_diagnostic::Cause> {
+        self.failed_cqe.take()
+    }
+    /// Sonde de mort du client : quitter après soumission réelle de WRITE,
+    /// sans consommer une éventuelle réponse à sa transaction.
+    #[cfg(nvme_rw)]
+    pub(crate) fn submit_sync(&mut self, file: u64) -> rt::Result<()> {
+        self.tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
+        rt::send_for(self.tx, self.tag, &w::frame(w::SYNC, self.session, file), 15000)
     }
     pub fn simple(&mut self, op: u8, h: u64) -> rt::Result<w::Frame> {
         self.request(w::frame(op, self.session, h))

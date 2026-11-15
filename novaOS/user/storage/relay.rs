@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 mod runtime;
+mod block_service;
 #[allow(dead_code)]
 #[path = "../../abi/block.rs"]
 mod wire;
@@ -10,15 +11,7 @@ fn serve() -> Result<()> {
     let lower = (config(2), config(3));
     let mut last = 0;
     loop {
-        let mut m = match receive_for(input, 5000) {
-            Err(TIMED_OUT) if matches!(config(1), 41 | 42) => continue,
-            r => r?,
-        };
-        let valid = m.kind == 1 && m.tag > last && m.len == 128 && wire::syntax(&m.payload);
-        if !valid {
-            send(output, m.tag, &[BAD_ARGUMENT as u8])?;
-            continue;
-        }
+        let mut m = block_service::request(input, output, last, matches!(config(1), 41 | 42))?;
         if m.payload[1] == wire::DISCOVER {
             let bits = wire::number(&m.payload, 40) & wire::IMPLEMENTED;
             wire::put(&mut m.payload, 40, bits);

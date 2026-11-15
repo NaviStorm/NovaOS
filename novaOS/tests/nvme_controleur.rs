@@ -9,7 +9,8 @@ struct Aligned<const N: usize>([u8; N]);
 
 struct Model {
     bar: Box<Aligned<8192>>,
-    pages: Box<[Aligned<4096>; 5]>,
+    pages: Box<[Aligned<4096>; 6]>,
+    writable: bool,
     heads: [usize; 2],
     phases: [bool; 2],
 }
@@ -28,6 +29,7 @@ impl Model {
     fn new() -> Self {
         let mut model = Self {
             bar: Box::new(Aligned([0; 8192])),
+            writable: false,
             pages: Box::new(core::array::from_fn(|_| Aligned([0; 4096]))),
             heads: [0; 2],
             phases: [true; 2],
@@ -37,12 +39,19 @@ impl Model {
         model
     }
     fn memory(&mut self) -> Memory {
+        let mut cpu = self.pages.each_mut().map(|p| p.0.as_mut_ptr() as usize);
+        let mut iova = [0x10000, 0x11000, 0x12000, 0x13000, 0x14000, 0x15000];
+        if !self.writable {
+            cpu[5] = 0;
+            iova[5] = 0;
+        }
         Memory {
+            phase2_media: self.writable,
             epoch: 1,
             bar: self.bar.0.as_mut_ptr() as usize,
             len: 8192,
-            cpu: self.pages.each_mut().map(|p| p.0.as_mut_ptr() as usize),
-            iova: [0x10000, 0x11000, 0x12000, 0x13000, 0x14000],
+            cpu,
+            iova,
         }
     }
     fn prepare(&mut self) -> Controller {
@@ -88,7 +97,12 @@ impl Model {
             IdentifyController => {
                 data[0..2].copy_from_slice(&0x1b36u16.to_le_bytes());
                 data[4..64].fill(b' ');
-                data[4..16].copy_from_slice(b"NOVA0190READ");
+                let serial: &[u8] = if self.writable {
+                    b"NOVA0190RW"
+                } else {
+                    b"NOVA0190READ"
+                };
+                data[4..4 + serial.len()].copy_from_slice(serial);
                 data[24..38].copy_from_slice(b"QEMU NVMe Ctrl");
                 put32(data, 80, 0x10400);
                 data[512] = 0x66;
@@ -358,4 +372,199 @@ fn successful_cqe_with_iommu_fault_cannot_publish_even_zero_data() {
     assert!(c.read_data(0, &mut data).is_err());
     assert_eq!(data, [0xff; 16]);
     assert!(c.drained().is_none());
+}
+
+#[test]
+fn write_uses_only_immutable_source_and_flush_finishes_separately() {
+    for sector in [9, 12] {
+        let mut m = Model::new();
+        m.writable = true;
+        let mut c = m.activate(sector);
+        let size = 1usize << sector;
+        let blocks = (4096 / size) as u16;
+        let cmd = Write {
+            nsid: 1,
+            lba: 128 - u64::from(blocks),
+            blocks,
+        };
+        let mut payload: Vec<_> = (0..4096).map(|n| (n as u8).wrapping_mul(19)).collect();
+        assert!(c.submit(cmd, 49).is_err());
+        assert!(c.submit_write(cmd, &payload[..4095], 49).is_err());
+        assert!(c.submit_write(Flush { nsid: 1 }, &[], 49).is_err());
+        c.submit_write(cmd, &payload, 50).unwrap();
+        let cid1 = c.inflight_cid().unwrap();
+        assert_eq!(m.opcode(1), 1);
+        assert_eq!(u32_at(&m.pages[2].0, 4), 1);
+        assert_eq!(u32_at(&m.pages[2].0, 24), 0x15000);
+        assert_eq!(u32_at(&m.pages[2].0, 48), u32::from(blocks - 1));
+        assert_eq!(&m.pages[5].0[..], &payload);
+        payload.fill(0xff);
+        assert_eq!(c.submit_write(cmd, &payload, 51), Err(Error::Busy));
+        assert_eq!(c.submit(Flush { nsid: 1 }, 51), Err(Error::Busy));
+        assert_ne!(m.pages[5].0[0], payload[0]);
+        m.complete(1, false, 0);
+        assert_eq!(c.poll(52).unwrap().unwrap().cid, cid1);
+        assert_eq!(c.inflight_cid(), None);
+        assert!(c.read_data(0, &mut [0; 1]).is_err());
+        assert!(c.submit(Flush { nsid: 0xffff_ffff }, 53).is_err());
+        c.submit(Flush { nsid: 1 }, 53).unwrap();
+        let cid2 = c.inflight_cid().unwrap();
+        assert_ne!(cid1, cid2);
+        assert_eq!(m.opcode(1), 0);
+        let flush = &m.pages[2].0[64..128];
+        assert_eq!(u32_at(flush, 4), 1);
+        assert!(flush[8..].iter().all(|&b| b == 0));
+        assert!(c.poll(54).unwrap().is_none());
+        m.complete(1, false, 0);
+        assert_eq!(c.poll(55).unwrap().unwrap().cid, cid2);
+        let cmd = Write {
+            nsid: 1,
+            lba: 0,
+            blocks: 1,
+        };
+        c.submit_write(cmd, &payload[..size], 56).unwrap();
+        assert!(m.pages[5].0[size..].iter().all(|&b| b == 0));
+    }
+}
+
+#[test]
+fn readonly_role_foreign_namespace_bounds_and_source_aliases_are_rejected() {
+    let mut m = Model::new();
+    let mut c = m.activate(9);
+    let valid = Write {
+        nsid: 1,
+        lba: 1,
+        blocks: 1,
+    };
+    assert!(c.submit_write(valid, &[0; 512], 40).is_err());
+    assert!(c.submit(Flush { nsid: 1 }, 40).is_err());
+    assert_eq!(u32_at(&m.bar.0, 0x1008), 0);
+    let mut m = Model::new();
+    m.writable = true;
+    for corrupt in 0..4 {
+        let mut mem = m.memory();
+        match corrupt {
+            0 => mem.cpu[5] = mem.cpu[3],
+            1 => mem.iova[5] = mem.iova[2],
+            2 => mem.iova[5] = 0,
+            _ => mem.cpu[5] = 0,
+        }
+        assert!(matches!(
+            unsafe { Controller::prepare(mem) },
+            Err(Error::Memory)
+        ));
+    }
+    let mut c = m.activate(9);
+    for (nsid, lba, blocks) in [
+        (2, 0, 1),
+        (1, 127, 2),
+        (1, 128, 1),
+        (1, u64::MAX, 1),
+        (1, 0, 0),
+        (1, 0, 9),
+    ] {
+        assert!(
+            c.submit_write(Write { nsid, lba, blocks }, &[0; 512], 45)
+                .is_err()
+        );
+    }
+    assert_eq!(u32_at(&m.bar.0, 0x1008), 0);
+}
+
+#[test]
+fn write_or_flush_dma_fault_timeout_or_bad_cqe_never_confirms() {
+    for op in [
+        Write {
+            nsid: 1,
+            lba: 8,
+            blocks: 1,
+        },
+        Flush { nsid: 1 },
+    ] {
+        for failure in 0..4 {
+            let mut m = Model::new();
+            m.writable = true;
+            let mut c = m.activate(9);
+            if matches!(op, Write { .. }) {
+                c.submit_write(op, &[0xab; 512], 60).unwrap();
+            } else {
+                c.submit(op, 60).unwrap();
+            }
+            let cid = c.inflight_cid().unwrap();
+            m.complete(1, failure == 2, if failure == 3 { 0x181 } else { 0 });
+            let result = c.poll_checked(if failure == 1 { 5060 } else { 61 }, || failure != 0);
+            let expected = [
+                Error::DmaFault,
+                Error::Timeout,
+                Error::Completion,
+                Error::Status(0x181),
+            ];
+            assert_eq!(result.unwrap_err(), expected[failure]);
+            assert!(c.poll(5061).is_err());
+            assert_eq!(c.inflight_cid(), Some(cid));
+            assert!(c.drained().is_none());
+            if matches!(op, Write { .. }) {
+                assert_eq!(&m.pages[5].0[..512], &[0xab; 512]);
+            }
+        }
+    }
+}
+
+#[test]
+fn a_writable_lease_cannot_adopt_the_phase_one_disk() {
+    let mut m = Model::new();
+    m.writable = true;
+    let mut c = m.start();
+    c.submit(IdentifyController, 30).unwrap();
+    m.writable = false;
+    m.identify(IdentifyController, 9);
+    m.complete(0, false, 0);
+    assert!(matches!(c.poll(31), Err(Error::Identity)));
+}
+
+#[test]
+fn writable_media_reopens_with_only_five_readonly_lease_pages() {
+    let mut m = Model::new();
+    let mut mem = m.memory();
+    mem.phase2_media = true;
+    let mut c = unsafe { Controller::prepare(mem).unwrap() };
+    c.enable(0).unwrap();
+    put32(&mut m.bar.0, 0x1c, 1);
+    assert!(c.ready(1).unwrap());
+    m.writable = true; // Identify répond avec la série du média de phase 2.
+    for command in [
+        IdentifyController,
+        ListNamespaces,
+        IdentifyNamespace,
+        NumberQueues,
+        CreateCq,
+        CreateSq,
+    ] {
+        c.submit(command, 5).unwrap();
+        m.identify(command, 9);
+        m.complete(0, false, 0);
+        c.poll(6).unwrap().unwrap();
+    }
+    assert!(
+        c.submit_write(
+            Write {
+                nsid: 1,
+                lba: 0,
+                blocks: 1
+            },
+            &[1; 512],
+            10
+        )
+        .is_err()
+    );
+    assert!(c.submit(Flush { nsid: 1 }, 10).is_err());
+    c.submit(
+        Read {
+            nsid: 1,
+            lba: 0,
+            blocks: 1,
+        },
+        10,
+    )
+    .unwrap();
 }

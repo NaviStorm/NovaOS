@@ -1,10 +1,10 @@
-//! Courtier du profil Q35 x86_64 en lecture seule. L'ordonnancement des
+//! Courtier des profils NVMe Q35 x86_64. L'ordonnancement des
 //! demandes vient du pilote utilisateur. Aucune adresse ni SQE ne vient d'IPC.
 mod identify;
 mod queue;
 
 use core::sync::atomic::{Ordering, fence};
-use queue::{ACQ, ASQ, DATA, DEPTH, Queue};
+use queue::{ACQ, ASQ, DATA, DEPTH, Queue, SOURCE};
 
 const PAGE: usize = 4096;
 const CAP: usize = 0;
@@ -22,11 +22,12 @@ const IO_TIMEOUT_MS: u64 = 5_000;
 /// aucun accès matériel avant la vérification de provenance de prepare().
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub(crate) struct Memory {
+    pub(crate) phase2_media: bool,
     pub(crate) epoch: u64,
     pub(crate) bar: usize,
     pub(crate) len: usize,
-    pub(crate) cpu: [usize; 5],
-    pub(crate) iova: [u64; 5],
+    pub(crate) cpu: [usize; 6],
+    pub(crate) iova: [u64; 6],
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -38,8 +39,19 @@ pub(crate) enum Command {
     CreateCq,
     CreateSq,
     Read { nsid: u32, lba: u64, blocks: u16 },
+    Write { nsid: u32, lba: u64, blocks: u16 },
+    Flush { nsid: u32 },
     DeleteSq,
     DeleteCq,
+}
+
+impl Command {
+    fn io(self) -> bool {
+        matches!(
+            self,
+            Self::Read { .. } | Self::Write { .. } | Self::Flush { .. }
+        )
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -63,6 +75,8 @@ pub(crate) enum Error {
 
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct Completion {
+    pub(crate) cid: u16,
+    pub(crate) vwc: u8,
     pub(crate) bytes: usize,
     pub(crate) sectors: u64,
     pub(crate) block_size: u32,
@@ -77,6 +91,8 @@ pub(crate) struct Completion {
 
 impl Completion {
     const EMPTY: Self = Self {
+        cid: 0,
+        vwc: 0,
         bytes: 0,
         sectors: 0,
         block_size: 0,
@@ -151,7 +167,7 @@ fn initial(mem: &Memory) -> bool {
 impl Controller {
     /// # Safety
     /// L'appelant détient un groupe exclusif admis par le profil Q35, BME
-    /// fermé. La BAR UC couvre len octets. Les cinq pages CPU et IOVA sont
+    /// fermé. La BAR UC couvre len octets. Les cinq pages communes et la source optionnelle sont
     /// appariées, privées, cohérentes sur x86, alignées et valides jusqu'au
     /// retrait confirmé ou retenues en quarantaine. Un seul appelant à la fois
     /// contrôle cette incarnation. Aucun de ces pointeurs ne provient d'IPC.
@@ -174,7 +190,7 @@ impl Controller {
         if !initial(&mem) {
             return Err(Error::Inherited);
         }
-        for page in 0..mem.cpu.len() {
+        for page in 0..mem.page_count() {
             mem.zero(page);
         }
         let size = u32::from(DEPTH - 1);
@@ -244,6 +260,9 @@ impl Controller {
 
     fn length(&self, cmd: Command) -> Result<usize, Error> {
         use Command::*;
+        if matches!(cmd, Write { .. } | Flush { .. }) && !self.mem.writable() {
+            return Err(Error::Unsupported);
+        }
         match (self.state, cmd) {
             (State::Admin, IdentifyController)
             | (State::Identified, ListNamespaces)
@@ -253,7 +272,13 @@ impl Controller {
             | (State::Cq, CreateSq)
             | (State::Active, DeleteSq)
             | (State::SqDeleted, DeleteCq) => Ok(0),
-            (State::Active, Read { nsid, lba, blocks }) => {
+            (State::Active, Flush { nsid }) => {
+                if nsid != self.info.nsid {
+                    return Err(Error::Namespace);
+                }
+                Ok(0)
+            }
+            (State::Active, Read { nsid, lba, blocks } | Write { nsid, lba, blocks }) => {
                 if nsid != self.info.nsid {
                     return Err(Error::Namespace);
                 }
@@ -276,17 +301,41 @@ impl Controller {
     /// Le service détenteur a déjà autorisé le sous-intervalle de son bail.
     /// Le courtier recoupe ici l'opération avec l'identité et la taille réelles.
     pub(crate) fn submit(&mut self, cmd: Command, now_ms: u64) -> Result<(), Error> {
+        self.publish(cmd, None, now_ms)
+    }
+
+    /// Le slice appartient au courtier. La seule projection DMA de sa copie est
+    /// une page privée, lisible par le contrôleur et inaccessible en Ring 3.
+    pub(crate) fn submit_write(
+        &mut self,
+        cmd: Command,
+        source: &[u8],
+        now_ms: u64,
+    ) -> Result<(), Error> {
+        self.publish(cmd, Some(source), now_ms)
+    }
+
+    pub(crate) fn inflight_cid(&self) -> Option<u16> {
+        self.flight.map(|f| f.cid)
+    }
+
+    fn publish(&mut self, cmd: Command, source: Option<&[u8]>, now_ms: u64) -> Result<(), Error> {
         if self.flight.is_some() {
             return Err(Error::Busy);
         }
         let bytes = self.length(cmd)?;
+        match (cmd, source) {
+            (Command::Write { .. }, Some(buf)) if buf.len() == bytes => {}
+            (Command::Write { .. }, _) | (_, Some(_)) => return Err(Error::Bounds),
+            _ => {}
+        }
         if self.mem.reg32(CSTS) != 1 {
             return self.hold(Error::Fault);
         }
         let cid = self.next_cid;
         // Un CID n'est jamais recyclé dans cette incarnation.
         self.next_cid = cid.checked_add(1).ok_or(Error::Exhausted)?;
-        let queue = if matches!(cmd, Command::Read { .. }) {
+        let queue = if cmd.io() {
             &mut self.io
         } else {
             &mut self.admin
@@ -296,7 +345,15 @@ impl Controller {
         }
         let sqe = queue::entry(cmd, cid, &self.mem);
         self.info.bytes = 0;
-        if bytes != 0 {
+        if let Some(source) = source {
+            // Aucun DMA précédent en vol. Ne laisser aucun reliquat de l’ancien
+            // contenu si la nouvelle écriture est plus courte.
+            let dst = self.mem.cpu[SOURCE] as *mut u8;
+            unsafe {
+                core::ptr::copy_nonoverlapping(source.as_ptr(), dst, bytes);
+                core::ptr::write_bytes(dst.add(bytes), 0, PAGE - bytes);
+            }
+        } else if bytes != 0 {
             self.mem.zero(DATA);
         }
         self.flight = Some(Flight {
@@ -342,7 +399,7 @@ impl Controller {
         if self.mem.reg32(CSTS) != 1 {
             return self.hold(Error::Fault);
         }
-        let queue = if matches!(pending.command, Read { .. }) {
+        let queue = if pending.command.io() {
             &mut self.io
         } else {
             &mut self.admin
@@ -362,15 +419,14 @@ impl Controller {
         // L'acquisition CQ précède cette lecture de la page destination.
         let data = unsafe { &*(self.mem.cpu[DATA] as *const [u8; PAGE]) };
         let next = match pending.command {
-            IdentifyController => {
-                identify::controller(data, &mut self.info).map(|_| State::Identified)
-            }
+            IdentifyController => identify::controller(data, self.mem.phase2_media, &mut self.info)
+                .map(|_| State::Identified),
             ListNamespaces => identify::list(data).map(|_| State::Listed),
             IdentifyNamespace => identify::namespace(data, &mut self.info).map(|_| State::Geometry),
             NumberQueues if result != 0 => Err(Error::Completion), // une et une demandées
             NumberQueues => Ok(State::Negotiated),
             CreateCq => Ok(State::Cq),
-            CreateSq | Read { .. } => Ok(State::Active),
+            CreateSq | Read { .. } | Write { .. } | Flush { .. } => Ok(State::Active),
             DeleteSq => Ok(State::SqDeleted),
             DeleteCq => Ok(State::Empty),
         };
@@ -379,6 +435,7 @@ impl Controller {
             Ok(state) => self.state = state,
         }
         self.flight = None;
+        self.info.cid = pending.cid;
         if matches!(pending.command, Read { .. }) {
             self.info.bytes = pending.bytes;
         }

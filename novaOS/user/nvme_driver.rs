@@ -57,13 +57,18 @@ fn initialize(broker: &mut Broker) -> Result<()> {
         match op {
             hw::IDENTIFY_CONTROLLER => {
                 let serial = &out[hw::HEADER..hw::HEADER + 20];
+                #[cfg(not(nvme_rw))]
+                let known = hw::word(&out, 6) == u64::from_le_bytes(*b"NOVA0190")
+                    && u32::from_le_bytes(serial[8..12].try_into().unwrap())
+                        == u32::from_le_bytes(*b"READ")
+                    && serial[12..].iter().all(|&x| matches!(x, 0 | b' '));
+                #[cfg(nvme_rw)]
+                let known =
+                    serial.starts_with(b"NOVA0190RW") && serial[10..].iter().all(|&x| x == b' ');
                 check(
                     hw::word(&out, 3) == 0x1b36
                         && hw::word(&out, 4) == 0x10400
-                        && hw::word(&out, 6) == u64::from_le_bytes(*b"NOVA0190")
-                        && u32::from_le_bytes(serial[8..12].try_into().unwrap())
-                            == u32::from_le_bytes(*b"READ")
-                        && serial[12..].iter().all(|&x| matches!(x, 0 | b' '))
+                        && known
                         && out[68..108].iter().any(|&x| x > b' '),
                 )?;
             }
@@ -96,6 +101,8 @@ fn serve() -> Result<()> {
         match op {
             INVALID_TICKET => {
                 refused(broker.call(hw::SUBMIT_READ, [ticket, 0, 0]))?;
+                #[cfg(nvme_rw)]
+                refused(broker.call(hw::SUBMIT_WRITE, [ticket, 0, 0]))?;
                 send_reply(tx, seq, runtime::OK, [0; 3], &[])?;
             }
             READ if ticket != 0 => {
@@ -113,13 +120,28 @@ fn serve() -> Result<()> {
                 let status = match broker.wait(hw::POLL) {
                     Ok(result) => result,
                     Err(error) => {
-                        send_reply(tx, seq, error, [0; 3], &[])?;
+                        send_reply(tx, seq, error, broker.error_words(), &[])?;
                         return Err(error);
                     }
                 };
                 let bytes = hw::word(&status, 3);
                 check(bytes > 0 && bytes <= hw::MAX_TRANSFER)?;
                 send_reply(tx, seq, runtime::OK, [bytes, 0, 0], &[])?;
+            }
+            #[cfg(nvme_rw)]
+            hw::SUBMIT_WRITE | hw::SUBMIT_FLUSH if ticket != 0 => {
+                let submitted = broker.call(op, [ticket, 0, 0]);
+                if config(hw::MODE) == 1014 && op == hw::SUBMIT_WRITE && submitted.is_ok() {
+                    return debug(b"NVME RW pilote mort apres WRITE");
+                }
+                let result = submitted.and_then(|_| broker.wait(hw::POLL));
+                match result {
+                    Ok(done) => send_reply(tx, seq, runtime::OK, [hw::word(&done, 3), 0, 0], &[])?,
+                    Err(status) => {
+                        send_reply(tx, seq, status, broker.error_words(), &[])?;
+                        return Err(status);
+                    }
+                }
             }
             STOP if ticket == 0 => {
                 for op in [hw::DELETE_SQ, hw::DELETE_CQ] {

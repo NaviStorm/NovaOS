@@ -1,10 +1,11 @@
-//! Champs utilisés pour reconnaître le banc en lecture seule. Les identités
+//! Champs utilisés pour reconnaître le banc et son rôle. Les identités
 //! proviennent des octets DMA après une complétion vérifiée par le superviseur.
 use super::{Completion, Error, PAGE};
 
 pub(super) const VERSION: u32 = 0x0001_0400;
 const VID: u16 = 0x1b36;
-const SERIAL: &[u8] = b"NOVA0190READ";
+const READ_SERIAL: &[u8] = b"NOVA0190READ";
+const WRITE_SERIAL: &[u8] = b"NOVA0190RW";
 const MODEL: &[u8] = b"QEMU NVMe Ctrl";
 const EUI: [u8; 8] = *b"NOVA0190";
 
@@ -16,13 +17,24 @@ fn accepts_size(range: u8, exponent: u8) -> bool {
     (range & 0xf) <= exponent && range >> 4 >= exponent
 }
 
-pub(super) fn controller(data: &[u8; PAGE], info: &mut Completion) -> Result<(), Error> {
+pub(super) fn controller(
+    data: &[u8; PAGE],
+    phase2_media: bool,
+    info: &mut Completion,
+) -> Result<(), Error> {
     let vid = u16::from_le_bytes([data[0], data[1]]);
     let version = u32::from_le_bytes(data[80..84].try_into().unwrap());
     let namespaces = u32::from_le_bytes(data[516..520].try_into().unwrap());
     if vid != VID
         || version != VERSION
-        || !padded(&data[4..24], SERIAL)
+        || !padded(
+            &data[4..24],
+            if phase2_media {
+                WRITE_SERIAL
+            } else {
+                READ_SERIAL
+            },
+        )
         || !padded(&data[24..64], MODEL)
         || !accepts_size(data[512], 6)
         || !accepts_size(data[513], 4)
@@ -37,6 +49,7 @@ pub(super) fn controller(data: &[u8; PAGE], info: &mut Completion) -> Result<(),
     info.serial.copy_from_slice(&data[4..24]);
     info.model.copy_from_slice(&data[24..64]);
     info.mdts = data[77];
+    info.vwc = data[525];
     Ok(())
 }
 

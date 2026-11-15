@@ -25,8 +25,27 @@ impl Clock for Civil {
 }
 
 fn error(e: Error) -> u64 {
+    #[cfg(feature = "nvme-lab")]
+    if matches!(rt::config(1), 1000..=1002) {
+        // Le statut applicatif UNCERTAIN reste nécessaire après une publication.
+        // La cause basse exacte figure également dans la trace de qualification.
+        let cause = match &e {
+            Error::Publication { cause, .. } => cause.as_ref(),
+            error => error,
+        };
+        if let Error::Io(novafs::io::Error(novafs::io::ErrorKind::Status(status))) = cause {
+            let mut line = *b"NVME P9 statut bloc=00";
+            let hex = b"0123456789abcdef";
+            line[20] = hex[((status >> 4) & 15) as usize];
+            line[21] = hex[(status & 15) as usize];
+            rt::call(rt::DEBUG_WRITE, line.as_ptr() as u64, line.len() as u64, 0);
+        }
+    }
     match e {
         Error::UnknownOutcome | Error::Publication { .. } => w::UNCERTAIN,
+        #[cfg(feature = "nvme-lab")]
+        Error::Io(novafs::io::Error(novafs::io::ErrorKind::Status(code)))
+            if matches!(rt::config(1), 1000..=1002) => code,
         Error::Unavailable | Error::Io(_) => w::IO,
         Error::Corrupt(_) => w::CORRUPT,
         Error::Invalid(_) | Error::NotDirectory | Error::IsDirectory => rt::BAD_ARGUMENT,
@@ -174,6 +193,15 @@ impl Session<'_, '_> {
                 return Err(w::BUSY);
             }
             if self.fs.is_none() {
+                #[cfg(feature = "nvme-lab")]
+                if rt::config(1) == 1000 {
+                    // Le formatage de laboratoire exige le bail vierge entier.
+                    // Le moteur vérifie tous ses blocs avant sa première écriture.
+                    let ids = novafs::Ids { fs: *b"NOVA0190-Q35-P9F", lv: *b"NOVA0190-Q35-P9V" };
+                    self.clock.sample()?;
+                    let fs = Engine::format_p9(self.dev, ids, novafs::time::Atime::No, Some(self.clock.clone())).map_err(error)?;
+                    fs.unmount().map_err(error)?;
+                }
                 let first = self.dev.read(0).map_err(error)?;
                 if &first[..8] != b"NOVAP0FS" {
                     return Err(w::UNSUPPORTED);
@@ -702,6 +730,14 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
         if let Err(e) = r {
             a = w::frame(m.payload[1], 0, 0);
             a[3] = e as u8;
+            #[cfg(feature = "nvme-lab")]
+            if matches!(rt::config(1), 1000..=1002) && matches!(e, w::IO | w::UNCERTAIN)
+                && let Some(cause) = s.dev.take_cqe()
+            {
+                const AT: usize = w::PAYLOAD;
+                a[AT..AT + crate::nvme_diagnostic::LEN].copy_from_slice(&cause.encode());
+                cause.report(crate::nvme_diagnostic::Layer::Files, a[3]);
+            }
             if matches!(e, w::UNCERTAIN | w::IO | w::CORRUPT) {
                 s.failed = Some(e);
             }

@@ -1,5 +1,11 @@
 //! Protocole privé du profil Q35 NVMe, indépendant des sélecteurs de l’ABI.
 //! Une requête de courtier porte cinq mots LE, un seul appel en attente par PID.
+#[allow(dead_code)]
+#[path = "../abi/files.rs"]
+mod file_wire;
+/// Une erreur de complétion matérielle doit être visible comme une erreur d’E/S.
+pub const MEDIA_IO: u64 = file_wire::IO;
+
 pub const EPOCH: usize = 0;
 pub const BROKER_SEND: usize = 1;
 pub const BROKER_REPLY: usize = 2;
@@ -8,6 +14,9 @@ pub const FRONT_REPLY: usize = 4;
 pub const DRIVER_REQUEST: usize = 5;
 pub const DRIVER_REPLY: usize = 6;
 pub const MODE: usize = 7;
+pub const WRITE_CAP: usize = 8;
+pub const FLUSH_CAP: usize = 9;
+pub const PAGE_LANE: usize = 10;
 pub const RESPONSE_VA: u64 = 0x401100;
 
 pub const DISCOVER: u64 = 1;
@@ -30,6 +39,12 @@ pub const REGISTER: u64 = 17;
 pub const COLLECT: u64 = 18;
 pub const RELEASE: u64 = 19;
 pub const CANCEL: u64 = 20;
+pub const REGISTER_WRITE: u64 = 21;
+pub const REGISTER_FLUSH: u64 = 22;
+pub const SUBMIT_WRITE: u64 = 23;
+pub const SUBMIT_FLUSH: u64 = 24;
+pub const STAGE: u64 = 25;
+pub const COLLECT_PAGE: u64 = 26;
 
 pub const NSID: u64 = 1;
 pub const RESPONSE_SIZE: usize = 128;
@@ -55,3 +70,6 @@ pub const TIMEOUT_TEST: u64 = 4;
 // Ces nombres classent l'offre privée ; ils n'accordent pas de capacité IPC.
 pub const DRIVER_IMAGE: u32 = 0x4e56_1901;
 pub const DRIVER_INTENTS_RO: u32 = 1;
+
+pub const DRIVER_IMAGE_RW: u32 = 0x4e56_1902;
+pub const DRIVER_INTENTS_RW: u32 = 7;

@@ -13,6 +13,7 @@ test = false
 
 [features]
 installation = []
+nvme-lab = []
 
 [dependencies]
 novafs = { path = "../../../novaFS" }

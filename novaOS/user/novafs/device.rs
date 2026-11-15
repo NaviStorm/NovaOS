@@ -42,6 +42,10 @@ impl<'a> IpcDevice<'a> {
             progress: Cell::new(None),
         })
     }
+    #[cfg(feature = "nvme-lab")]
+    pub(crate) fn take_cqe(&self) -> Option<crate::nvme_diagnostic::Cause> {
+        self.session.borrow_mut().failed_cqe.take()
+    }
     pub(crate) fn close(&self) -> Result<()> {
         self.exchange(Block::close)
     }
@@ -116,6 +120,8 @@ impl Device for &IpcDevice<'_> {
             return self.transfer(block, &mut *zeroize::Zeroizing::new(*data), true);
         }
         let (first, _) = self.geometry.sectors(block, 1)?;
+        #[cfg(feature = "nvme-lab")]
+        self.qualification.before_page_write(block);
         self.exchange(|s| s.write_page(first, cap, data))?;
         self.qualification
             .sector(block, true, data.starts_with(b"NOVAP0FS"));

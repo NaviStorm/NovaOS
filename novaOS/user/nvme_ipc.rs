@@ -91,13 +91,41 @@ pub fn reply(cap: u64, seq: u64) -> Result<rt::ReceiveV1> {
 
 pub struct Broker {
     seq: u64,
+    #[cfg(nvme_rw)]
+    media_failure: Option<(u16, u16)>,
 }
 impl Broker {
     pub fn new() -> Self {
-        Self { seq: 0 }
+        Self {
+            seq: 0,
+            #[cfg(nvme_rw)]
+            media_failure: None,
+        }
+    }
+
+    pub fn error_words(&self) -> [u64; 3] {
+        #[cfg(nvme_rw)]
+        if let Some((cid, status)) = self.media_failure {
+            return [0, u64::from(cid), u64::from(status)];
+        }
+        [0; 3]
     }
 
     pub fn call_as(&mut self, epoch: u64, op: u64, args: [u64; 3]) -> Result<[u8; RESPONSE_SIZE]> {
+        self.call_on(rt::config(BROKER_SEND), epoch, op, args)
+    }
+
+    pub fn call_on(
+        &mut self,
+        cap: u64,
+        epoch: u64,
+        op: u64,
+        args: [u64; 3],
+    ) -> Result<[u8; RESPONSE_SIZE]> {
+        #[cfg(nvme_rw)]
+        {
+            self.media_failure = None;
+        }
         self.seq = self.seq.checked_add(1).ok_or(rt::LIMIT)?;
         let mut m = rt::SendV1 {
             version: rt::VERSION,
@@ -109,12 +137,7 @@ impl Broker {
             payload: [0; 128],
         };
         m.payload[..REQUEST_SIZE].copy_from_slice(&header(epoch, self.seq, args));
-        rt::value(rt::call(
-            rt::IPC_SEND,
-            rt::config(BROKER_SEND),
-            (&raw const m) as u64,
-            160,
-        ))?;
+        rt::value(rt::call(rt::IPC_SEND, cap, (&raw const m) as u64, 160))?;
         let notice = rt::receive_for(rt::config(BROKER_REPLY), WAIT)?;
         check(notice.kind == 2 && notice.aux == self.seq)?;
         // Sûreté : la page DATA privée existe pendant toute la vie du processus.
@@ -124,6 +147,16 @@ impl Broker {
         check(word(&out, 0) == rt::config(EPOCH) && word(&out, 1) == self.seq)?;
         match word(&out, 2) {
             rt::OK => Ok(out),
+            #[cfg(nvme_rw)]
+            MEDIA_IO if op == POLL => {
+                let cid = u16::try_from(word(&out, 4)).map_err(|_| rt::BAD_ARGUMENT)?;
+                let status = u16::try_from(word(&out, 5)).map_err(|_| rt::BAD_ARGUMENT)?;
+                if status == 0 {
+                    return Err(rt::BAD_ARGUMENT);
+                }
+                self.media_failure = Some((cid, status));
+                Err(MEDIA_IO)
+            }
             error => Err(error),
         }
     }

@@ -3,6 +3,7 @@
 use super::*;
 use crate::abi::{BAD_ARGUMENT, CANCELLED, DENIED, LIMIT, OK, REFUSED, TIMED_OUT, WOULD_BLOCK};
 use crate::hardware::nvme::{Command, Completion, Controller, Error as DeviceError};
+use alloc::vec::Vec;
 use wire::*;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -13,9 +14,10 @@ enum Stage {
 }
 struct Ticket {
     id: u64,
-    lba: u64,
     blocks: u16,
     stage: Stage,
+    command: Command,
+    source: Vec<u8>,
 }
 pub(super) struct Broker {
     pub(super) controller: Controller,
@@ -29,11 +31,14 @@ pub(super) struct Broker {
     pub(super) submitted: usize,
     pub(super) completed: usize,
     pub(super) revoked: bool,
+    mode: u64,
+    pub(super) writes: usize,
+    pub(super) flushes: usize,
 }
 type Status<T> = Result<T, u64>;
 
 impl Broker {
-    pub(super) fn new(controller: Controller) -> Self {
+    pub(super) fn new(controller: Controller, mode: u64) -> Self {
         Self {
             controller,
             seq: [0; 2],
@@ -46,6 +51,9 @@ impl Broker {
             submitted: 0,
             completed: 0,
             revoked: false,
+            mode,
+            writes: 0,
+            flushes: 0,
         }
     }
     fn apply<T>(&mut self, r: Result<T, DeviceError>) -> Status<T> {
@@ -60,51 +68,143 @@ impl Broker {
                 return BAD_ARGUMENT;
             }
             self.failure = Some(e);
-            if e == DeviceError::Timeout {
-                TIMED_OUT
-            } else {
-                REFUSED
+            match e {
+                DeviceError::Timeout => TIMED_OUT,
+                DeviceError::Status(_) if self.mode >= profile::INIT => MEDIA_IO,
+                _ => REFUSED,
             }
         })
     }
-    fn block(&mut self, tag: u64, seq: u64, args: [u64; 3], reply: &mut [u8; 128]) -> Status<()> {
+    fn limit(&self, g: Completion) -> u64 {
+        // La dernière page physique reste hors de tout bail du profil inscriptible.
+        if self.mode >= profile::INIT {
+            g.sectors - MAX_TRANSFER / u64::from(g.block_size)
+        } else {
+            g.sectors
+        }
+    }
+    pub(super) fn flight(&self) -> Option<Command> {
+        self.pending
+    }
+    pub(super) fn frozen_source(&self) -> Option<&[u8]> {
+        self.ticket
+            .as_ref()
+            .map(|t| t.source.as_slice())
+            .filter(|s| !s.is_empty())
+    }
+    fn block(
+        &mut self,
+        s: &mut Core,
+        pid: Pid,
+        domain: &Domain,
+        tag: u64,
+        seq: u64,
+        args: [u64; 3],
+        reply: &mut [u8; 128],
+    ) -> Status<()> {
         let [a, b, c] = args;
         match tag {
             GEOMETRY if args == [0; 3] => {
                 let g = self.geometry.filter(|_| self.active).ok_or(WOULD_BLOCK)?;
                 put(reply, 3, u64::from(g.nsid));
-                put(reply, 4, g.sectors);
+                put(reply, 4, self.limit(g));
                 put(reply, 5, u64::from(g.block_size));
             }
-            REGISTER => {
+            REGISTER | REGISTER_WRITE | REGISTER_FLUSH => {
                 let g = self.geometry.filter(|_| self.active).ok_or(REFUSED)?;
                 if self.ticket.is_some() {
                     return Err(LIMIT);
                 }
-                // Le bail couvre exactement le namespace unique de l'image RAW de test.
                 if a != u64::from(g.nsid) {
                     return Err(DENIED);
                 }
-                if c == 0
-                    || b >= g.sectors
-                    || c > g.sectors - b
-                    || c > MAX_TRANSFER / u64::from(g.block_size)
-                {
-                    return Err(BAD_ARGUMENT);
-                }
+                let command = if tag == REGISTER_FLUSH {
+                    if b != 0 || c != 0 {
+                        return Err(BAD_ARGUMENT);
+                    }
+                    Command::Flush { nsid: g.nsid }
+                } else {
+                    let limit = self.limit(g);
+                    if c == 0
+                        || b >= limit
+                        || c > limit - b
+                        || c > MAX_TRANSFER / u64::from(g.block_size)
+                    {
+                        return Err(BAD_ARGUMENT);
+                    }
+                    if tag == REGISTER_WRITE {
+                        Command::Write {
+                            nsid: g.nsid,
+                            lba: b,
+                            blocks: c as u16,
+                        }
+                    } else {
+                        Command::Read {
+                            nsid: g.nsid,
+                            lba: b,
+                            blocks: c as u16,
+                        }
+                    }
+                };
                 self.ticket = Some(Ticket {
                     id: seq,
-                    lba: b,
                     blocks: c as u16,
+                    command,
                     stage: Stage::Reserved,
+                    source: Vec::new(),
                 });
                 put(reply, 3, seq);
+            }
+            STAGE | COLLECT_PAGE => {
+                let t = self.ticket.as_mut().filter(|t| t.id == a).ok_or(DENIED)?;
+                let n = t.blocks as usize * self.geometry.ok_or(REFUSED)?.block_size as usize;
+                if n == 0 || n > MAX_TRANSFER as usize || c != n as u64 {
+                    return Err(BAD_ARGUMENT);
+                }
+                let space = s.processes.get(pid).space.as_ref().ok_or(DENIED)?;
+                if tag == STAGE {
+                    if t.stage != Stage::Reserved
+                        || !matches!(t.command, Command::Write { .. })
+                        || !t.source.is_empty()
+                    {
+                        return Err(DENIED);
+                    }
+                    let mut frozen = Vec::new();
+                    frozen.try_reserve_exact(n).map_err(|_| abi::NO_MEMORY)?;
+                    frozen.resize(n, 0);
+                    if !heap::with_pages(|m| Ok(space.copy_from_user(m, b, &mut frozen))).unwrap() {
+                        return Err(abi::BAD_ADDRESS);
+                    }
+                    t.source = frozen;
+                } else {
+                    if t.stage != Stage::Completed || !matches!(t.command, Command::Read { .. }) {
+                        return Err(DENIED);
+                    }
+                    let mut bytes = Vec::new();
+                    bytes.try_reserve_exact(n).map_err(|_| abi::NO_MEMORY)?;
+                    bytes.resize(n, 0);
+                    self.controller
+                        .read_data(0, &mut bytes)
+                        .map_err(|_| REFUSED)?;
+                    if !domain.dma_clean() {
+                        self.failure = Some(DeviceError::DmaFault);
+                        return Err(REFUSED);
+                    }
+                    if !heap::with_pages(|m| Ok(space.copy_to_user(m, b, &bytes))).unwrap() {
+                        return Err(abi::BAD_ADDRESS);
+                    }
+                }
+                put(reply, 3, n as u64);
             }
             COLLECT => {
                 let t = self
                     .ticket
                     .as_ref()
-                    .filter(|t| t.id == a && t.stage == Stage::Completed)
+                    .filter(|t| {
+                        t.id == a
+                            && t.stage == Stage::Completed
+                            && matches!(t.command, Command::Read { .. })
+                    })
                     .ok_or(DENIED)?;
                 let bytes =
                     usize::from(t.blocks) * self.geometry.ok_or(REFUSED)?.block_size as usize;
@@ -143,7 +243,10 @@ impl Broker {
         domain: &Domain,
         reply: &mut [u8; 128],
     ) -> Status<()> {
-        if matches!(tag, IDENTIFY_NAMESPACE | SUBMIT_READ) {
+        if matches!(
+            tag,
+            IDENTIFY_NAMESPACE | SUBMIT_READ | SUBMIT_WRITE | SUBMIT_FLUSH
+        ) {
             if args[1..] != [0, 0] {
                 return Err(BAD_ARGUMENT);
             }
@@ -169,12 +272,27 @@ impl Broker {
             }
             POLL => {
                 let cmd = self.pending.ok_or(DENIED)?;
+                let cid = self.controller.inflight_cid().ok_or(REFUSED)?;
                 let r = self.controller.poll_checked(now, || domain.dma_clean());
                 if let Err(error) = r {
                     self.failure = Some(error);
+                    if self.mode >= profile::INIT {
+                        let raw = match error {
+                            DeviceError::Status(status) => Some(status),
+                            _ => None,
+                        };
+                        put(reply, 4, cid.into());
+                        put(reply, 5, raw.map_or(u64::MAX, u64::from));
+                        hal::log(format_args!(
+                            "NVME RW erreur commande={cmd:?} cid={cid} statut_nvme={raw:?} erreur={error:?}"
+                        ));
+                    }
                 }
                 let info = self.apply(r)?.ok_or(WOULD_BLOCK)?;
                 self.pending = None;
+                if self.mode >= profile::INIT && cmd == Command::IdentifyController {
+                    hal::log(format_args!("NVME RW Identify VWC={:#x}", info.vwc));
+                }
                 match cmd {
                     Command::IdentifyController => {
                         put(reply, 3, info.vid.into());
@@ -203,14 +321,20 @@ impl Broker {
                             info.block_size,
                             u64::from_be_bytes(info.eui64)
                         ));
-                        if info.sectors.checked_mul(u64::from(info.block_size)) != Some(1 << 20) {
+                        if info.sectors.checked_mul(u64::from(info.block_size))
+                            != Some(if self.mode >= profile::INIT {
+                                4 << 20
+                            } else {
+                                1 << 20
+                            })
+                        {
                             self.failure = Some(DeviceError::Geometry);
                             return Err(REFUSED);
                         }
                         self.geometry = Some(info);
                     }
                     Command::CreateSq => self.active = true,
-                    Command::Read { .. } => {
+                    Command::Read { .. } | Command::Write { .. } | Command::Flush { .. } => {
                         let t = self
                             .ticket
                             .as_mut()
@@ -218,7 +342,23 @@ impl Broker {
                             .ok_or(DENIED)?;
                         t.stage = Stage::Completed;
                         self.completed += 1;
-                        put(reply, 3, info.bytes as u64);
+                        match cmd {
+                            Command::Write { .. } => self.writes += 1,
+                            Command::Flush { .. } => {
+                                self.flushes += 1;
+                                hal::log(format_args!(
+                                    "NVME RW FLUSH CQE cid={} ecritures={} numero={}",
+                                    info.cid, self.writes, self.flushes
+                                ));
+                            }
+                            _ => {}
+                        }
+                        let bytes = if matches!(cmd, Command::Write { .. }) {
+                            t.source.len()
+                        } else {
+                            info.bytes
+                        };
+                        put(reply, 3, bytes as u64);
                     }
                     _ => {}
                 }
@@ -247,24 +387,37 @@ impl Broker {
                     CREATE_SQ => Command::CreateSq,
                     DELETE_SQ if self.ticket.is_none() => Command::DeleteSq,
                     DELETE_CQ => Command::DeleteCq,
-                    SUBMIT_READ => {
+                    SUBMIT_READ | SUBMIT_WRITE | SUBMIT_FLUSH => {
                         let t = self
                             .ticket
                             .as_ref()
                             .filter(|t| t.id == args[0] && t.stage == Stage::Reserved)
                             .ok_or(DENIED)?;
-                        Command::Read {
-                            nsid: NSID as u32,
-                            lba: t.lba,
-                            blocks: t.blocks,
+                        if !matches!(
+                            (tag, t.command),
+                            (SUBMIT_READ, Command::Read { .. })
+                                | (SUBMIT_WRITE, Command::Write { .. })
+                                | (SUBMIT_FLUSH, Command::Flush { .. })
+                        ) {
+                            return Err(DENIED);
                         }
+                        t.command
                     }
                     _ => return Err(DENIED),
                 };
-                let r = self.controller.submit(cmd, now);
+                let r = if matches!(cmd, Command::Write { .. }) {
+                    let src = self
+                        .ticket
+                        .as_ref()
+                        .filter(|t| !t.source.is_empty())
+                        .ok_or(DENIED)?;
+                    self.controller.submit_write(cmd, &src.source, now)
+                } else {
+                    self.controller.submit(cmd, now)
+                };
                 self.apply(r)?;
                 self.pending = Some(cmd);
-                if tag == SUBMIT_READ {
+                if matches!(tag, SUBMIT_READ | SUBMIT_WRITE | SUBMIT_FLUSH) {
                     self.ticket.as_mut().unwrap().stage = Stage::Submitted;
                     self.submitted += 1;
                 }
@@ -325,7 +478,19 @@ impl Broker {
     ) -> Status<bool> {
         let pid = peers.pids[role];
         let cfg = &peers.cfg[role];
-        let Some((tag, [epoch, seq, a, b, c])) = s.ipc.nvme_request(pid, cfg[BROKER_SEND])? else {
+        // L'autorité dépend de l'endpoint d'arrivée identifié par le noyau.
+        // Une trame qui nomme WRITE sur un canal READ ne confère aucun droit.
+        let mut received = None;
+        for slot in [BROKER_SEND, WRITE_CAP, FLUSH_CAP] {
+            let port = cfg[slot];
+            if port != 0
+                && let Some(frame) = s.ipc.nvme_request(pid, port)?
+            {
+                received = Some((slot, frame));
+                break;
+            }
+        }
+        let Some((slot, (tag, [epoch, seq, a, b, c]))) = received else {
             return Ok(false);
         };
         if seq == 0 || seq <= self.seq[role] {
@@ -335,7 +500,60 @@ impl Broker {
         let mut reply = [0u8; RESPONSE_SIZE];
         put(&mut reply, 0, cfg[EPOCH]);
         put(&mut reply, 1, seq);
-        let mut result = if epoch != cfg[EPOCH] || self.revoked || self.failure.is_some() {
+        let expected_port = if role == 1 {
+            match tag {
+                REGISTER_WRITE | STAGE => WRITE_CAP,
+                REGISTER_FLUSH => FLUSH_CAP,
+                _ => BROKER_SEND,
+            }
+        } else {
+            BROKER_SEND
+        };
+        let permission = match tag {
+            REGISTER_WRITE | STAGE | SUBMIT_WRITE => Some(WRITE_CAP),
+            REGISTER_FLUSH | SUBMIT_FLUSH => Some(FLUSH_CAP),
+            POLL | RELEASE => self.ticket.as_ref().and_then(|t| match t.command {
+                Command::Write { .. } => Some(WRITE_CAP),
+                Command::Flush { .. } => Some(FLUSH_CAP),
+                _ => None,
+            }),
+            _ => None,
+        };
+        let file_io = matches!(
+            tag,
+            REGISTER
+                | REGISTER_WRITE
+                | REGISTER_FLUSH
+                | STAGE
+                | SUBMIT_READ
+                | SUBMIT_WRITE
+                | SUBMIT_FLUSH
+                | COLLECT_PAGE
+                | COLLECT
+                | RELEASE
+        ) || (tag == POLL && self.ticket.is_some());
+        let allowed = (!file_io || peers.file_authorized(s))
+            && permission.is_none_or(|k| {
+                let handle = peers.cfg[1][k];
+                profile::writable(self.mode)
+                    && handle != 0
+                    && s.ipc.nvme_live(peers.pids[1], handle, abi::SEND)
+            });
+        if file_io
+            && !allowed
+            && self.ticket.is_some()
+            && expected_port == slot
+            && epoch == cfg[EPOCH]
+            && (matches!(tag, POLL | RELEASE) || !peers.file_authorized(s))
+        {
+            self.revoked = true;
+        }
+        let mut result = if slot != expected_port
+            || !allowed
+            || epoch != cfg[EPOCH]
+            || self.revoked
+            || self.failure.is_some()
+        {
             Err(DENIED)
         } else if tag != POLL && !domain.dma_clean() {
             self.failure = Some(DeviceError::DmaFault);
@@ -343,7 +561,7 @@ impl Broker {
         } else if role == 0 {
             self.driver(tag, [a, b, c], now, domain, &mut reply)
         } else {
-            self.block(tag, seq, [a, b, c], &mut reply)
+            self.block(s, pid, domain, tag, seq, [a, b, c], &mut reply)
         };
         if role == 1 && tag == COLLECT && result.is_ok() && !domain.dma_clean() {
             // Les octets ne quittent le courtier qu'après cette dernière vérification.

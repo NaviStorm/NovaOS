@@ -8,6 +8,7 @@ use crate::{
     },
 };
 mod broker;
+pub(in crate::sched::process) mod profile;
 #[allow(dead_code)]
 #[path = "../../../../user/nvme_protocol.rs"]
 pub(super) mod wire;
@@ -20,9 +21,30 @@ const IMAGES: [&[u8]; 3] = [
 ];
 pub(super) struct Peers {
     pub(super) pids: [Pid; 3],
-    pub(super) cfg: [[u64; 8]; 3],
+    pub(super) cfg: [[u64; 11]; 3],
+    pub(super) app: Option<Pid>,
+    pub(super) app_notice: u64,
+    // Canaux client↔NovaFS et extrémité de la page IPC détenue par NovaFS.
+    pub(super) file_links: [u64; 5],
 }
 impl Peers {
+    fn file_authorized(&self, s: &Core) -> bool {
+        use abi::{RECEIVE, SEND};
+        let Some(app) = self.app else { return true };
+        let media = self.pids[2];
+        let [request, response, input, output, page] = self.file_links;
+        s.processes.get(app).outcome.is_none()
+            && [
+                (app, request, SEND),
+                (app, response, RECEIVE),
+                (media, input, RECEIVE),
+                (media, output, SEND),
+                (media, page, SEND | RECEIVE),
+                (self.pids[1], self.cfg[1][wire::PAGE_LANE], SEND | RECEIVE),
+            ]
+            .iter()
+            .all(|&(p, cap, rights)| s.ipc.nvme_live(p, cap, rights))
+    }
     // Contrôle sous la même garde que l'écriture du doorbell et la copie de
     // résultat. Une mort ou fermeture de n'importe quelle extrémité le précède ou le suit.
     fn authorized(&self, s: &Core) -> bool {
@@ -61,7 +83,7 @@ pub(crate) fn mode(s: &[u8]) -> Option<u64> {
         b"nvme-client" => Some(wire::CLIENT_DEATH),
         b"nvme-retrait" => Some(wire::REVOKE),
         b"nvme-delai" => Some(wire::TIMEOUT_TEST),
-        _ => None,
+        _ => profile::parse(s),
     }
 }
 fn now_ms() -> u64 {
@@ -74,10 +96,14 @@ fn supervise(
     mode: u64,
     domain: &mut Domain,
 ) -> Result<(), &'static str> {
-    let start = ticks();
+    let mut last_progress = ticks();
+    let mut last_completed = 0;
     let mut deny_read = mode == READ_PERMISSION_TEST;
+    let mut migrated = false;
+    let mut migration_witness = false;
+    let mut await_client = false;
     loop {
-        if ticks().wrapping_sub(start) > u64::from(HZ) * 35 {
+        if ticks().wrapping_sub(last_progress) > u64::from(HZ) * 35 {
             return Err("echeance supervision");
         }
         if deny_read && b.active {
@@ -89,11 +115,54 @@ fn supervise(
         }
         let mut progress = false;
         let admitted = with(|s| {
+            if await_client {
+                let live = peers
+                    .app
+                    .is_some_and(|a| s.processes.get(a).outcome.is_none());
+                return Ok(live);
+            }
             if !peers.authorized(s) {
                 return Ok(false);
             }
+            if mode == profile::RACE && b.active && crate::smp::count() > 1 {
+                if let Some(t) = s
+                    .slots
+                    .iter_mut()
+                    .flatten()
+                    .find(|t| t.owner == Some(peers.pids[0]))
+                {
+                    if !migrated
+                        && t.last_cpu != 0
+                        && matches!(t.state, State::Blocked(Wait::Ipc(_)))
+                    {
+                        t.cpu_mask = 1;
+                        migrated = true;
+                    } else if migrated && !migration_witness && t.last_cpu == 0 {
+                        migration_witness = true;
+                        hal::log(format_args!(
+                            "NVME RW migration pilote cpu_origine={} cpu_final=0",
+                            crate::smp::count() - 1
+                        ));
+                    }
+                }
+            }
             for role in [0, 1] {
                 progress |= b.step(s, peers, domain, role, now_ms())?;
+                if mode == profile::CLIENT_DEATH
+                    && matches!(
+                        b.flight(),
+                        Some(crate::hardware::nvme::Command::Write { .. })
+                    )
+                {
+                    let app = peers.app.ok_or(abi::DENIED)?;
+                    if !s.ipc.lab_notify(app, peers.app_notice, 1) {
+                        return Err(abi::DENIED);
+                    }
+                    s.flush_ipc();
+                    await_client = true;
+                    hal::log(format_args!("NVME RW client notifie apres doorbell WRITE"));
+                    break;
+                }
                 if b.failure.is_some() || b.stopped || b.revoked {
                     break;
                 }
@@ -111,7 +180,41 @@ fn supervise(
             Ok::<_, u64>(true)
         })
         .map_err(|_| "trame ou reponse IPC invalide")?;
+        let revoke = match (mode, b.flight()) {
+            (profile::REVOKE_WRITE, Some(crate::hardware::nvme::Command::Write { .. })) => {
+                Some(wire::WRITE_CAP)
+            }
+            (profile::REVOKE_FLUSH, Some(crate::hardware::nvme::Command::Flush { .. }))
+                if b.writes > 0 =>
+            {
+                Some(wire::FLUSH_CAP)
+            }
+            _ => None,
+        };
+        if let Some(slot) = revoke {
+            let target = crate::smp::count() - 1;
+            set_affinity(1 << target).map_err(|_| "migration pour revocation")?;
+            let cpu = crate::smp::index();
+            let withdrawn = with(|s| {
+                let holder = peers.pids[1];
+                let cap = peers.cfg[1][slot];
+                s.ipc.nvme_withdraw(holder, cap);
+                s.flush_ipc();
+                !s.ipc.nvme_live(holder, cap, abi::SEND)
+            });
+            set_affinity(1).map_err(|_| "retour apres revocation")?;
+            if !withdrawn || cpu != target {
+                return Err("revocation non confirmee");
+            }
+            b.revoked = true;
+            hal::log(format_args!(
+                "NVME RW revocation slot={slot} cpu={cpu} en_vol=true"
+            ));
+        }
         if b.stopped {
+            if mode == profile::RACE && crate::smp::count() > 1 && !migration_witness {
+                return Err("migration sans temoin");
+            }
             return Ok(());
         }
         if b.failure.is_some() {
@@ -119,6 +222,12 @@ fn supervise(
         }
         if b.revoked || !admitted {
             return Err("retrait ou mort du titulaire");
+        }
+        // La création P9 lit tout le bail. Seule une E/S effectivement
+        // achevée renouvelle son délai ; des appels POLL vides ne le prolongent pas.
+        if mode >= profile::INIT && b.completed != last_completed {
+            last_completed = b.completed;
+            last_progress = ticks();
         }
         if !progress {
             sleep(1);
@@ -129,11 +238,15 @@ fn supervise(
 struct Actors {
     children: [Child; 3],
     peers: Peers,
+    app: Option<Child>,
 }
 impl Actors {
+    fn all(&self) -> impl Iterator<Item = &Child> {
+        self.children.iter().chain(self.app.iter())
+    }
     fn wait(&self, limit: u64) -> bool {
         let start = ticks();
-        while self.children.iter().any(|c| c.try_result().is_none()) {
+        while self.all().any(|c| c.try_result().is_none()) {
             if ticks().wrapping_sub(start) >= limit {
                 return false;
             }
@@ -143,14 +256,24 @@ impl Actors {
     }
     fn close(&self) -> bool {
         ipc::close_block_channels(&self.peers.pids);
+        if let Some(app) = self.peers.app {
+            ipc::close_block_channels(&[app]);
+        }
         self.wait(u64::from(HZ) * 4)
     }
 }
 
 fn session(domain: &mut Domain, mode: u64) -> Result<(), &'static str> {
     let base = crate::memory::pinned_dma_frames();
-    let (children, peers) = ipc::nvme_group(IMAGES, mode).map_err(|_| "creation des acteurs")?;
-    let actors = Actors { children, peers };
+    let (children, peers, app) = ipc::nvme_group(IMAGES, mode).map_err(|code| {
+        hal::log(format_args!("NVME lancement refuse statut={code}"));
+        "creation des acteurs"
+    })?;
+    let actors = Actors {
+        children,
+        peers,
+        app,
+    };
     measure("nvme_session");
     let result = exercise(&actors, domain, mode, base);
     if !actors.close() {
@@ -177,7 +300,7 @@ fn exercise(
     let denied = domain.private_frames().ok_or("comptabilite des cadres")?;
     let isolated = with(|s| {
         heap::with_pages(|m| {
-            Ok(peers.pids.iter().all(|p| {
+            Ok(peers.pids.iter().chain(peers.app.iter()).all(|p| {
                 s.processes
                     .get(*p)
                     .space
@@ -193,8 +316,11 @@ fn exercise(
             .map_err(|_| "retrait du bail avant soumission")?;
         return Err("projection utilisateur de cadres prives");
     }
+    let frames = domain.pinned();
     hal::log(format_args!(
-        "NVME isolation tables_usager=3 cadres_interdits=13 alias=0"
+        "NVME isolation tables_usager={} cadres_interdits={} alias=0",
+        actors.all().count(),
+        frames + 8
     ));
     // Sûreté : le domaine conserve l'exclusivité, les pages et la BAR UC
     // pendant toute l'incarnation, y compris en cas de mise en quarantaine.
@@ -217,7 +343,7 @@ fn exercise(
         }
         domain.enable().map_err(|_| "ouverture PCI")?;
     }
-    let mut b = Broker::new(controller);
+    let mut b = Broker::new(controller, mode);
     hal::log(format_args!(
         "NVME acteurs pilote={pid} bloc={} client={} cpu_pilote={} cpu_bsp={} mode={mode}",
         peers.pids[1].number,
@@ -240,8 +366,8 @@ fn exercise(
             domain.pinned() == 0 && crate::memory::pinned_dma_frames() == base
         } else {
             domain.quarantine();
-            domain.pinned() == 5
-                && crate::memory::pinned_dma_frames() == base + 5
+            domain.pinned() == frames
+                && crate::memory::pinned_dma_frames() == base + frames as u64
                 && domain.prepare(pid).is_err()
         };
         if b.failure.is_some() {
@@ -268,6 +394,39 @@ fn exercise(
             !idle && safe
         ));
         let expected = match mode {
+            profile::DMA_FAULT => {
+                let intact = b
+                    .frozen_source()
+                    .is_some_and(|src| domain.refused_write_source(src));
+                hal::log(format_args!(
+                    "NVME RW faute source_verifiee={intact} ack=false"
+                ));
+                intact
+                    && b.failure == Some(crate::hardware::nvme::Error::DmaFault)
+                    && matches!(
+                        b.flight(),
+                        Some(crate::hardware::nvme::Command::Write { .. })
+                    )
+            }
+            profile::TIMEOUT => {
+                expired
+                    && matches!(
+                        b.flight(),
+                        Some(crate::hardware::nvme::Command::Write { .. })
+                    )
+            }
+            profile::REVOKE_WRITE | profile::REVOKE_FLUSH => b.revoked && b.flight().is_some(),
+            profile::DRIVER_DEATH => {
+                actors.children[0].try_result() == Some(Outcome::Exit(0))
+                    && matches!(
+                        b.flight(),
+                        Some(crate::hardware::nvme::Command::Write { .. })
+                    )
+            }
+            profile::CLIENT_DEATH => actors
+                .app
+                .as_ref()
+                .is_some_and(|a| a.try_result() == Some(Outcome::Exit(abi::CANCELLED))),
             wire::DRIVER_DEATH => {
                 b.submitted == 1 && actors.children[0].try_result() == Some(Outcome::Exit(0))
             }
@@ -303,29 +462,72 @@ fn exercise(
             }
             _ => false,
         };
-        return if expected && safe && b.completed == 0 {
+        return if expected
+            && safe
+            && (if mode >= profile::INIT {
+                b.submitted == b.completed + usize::from(b.flight().is_some())
+            } else {
+                b.completed == 0
+            }) {
             Ok(())
         } else {
             Err(reason)
         };
     }
     let proof = b.controller.drained().ok_or("absence de preuve de fin")?;
-    domain.retire(&proof).map_err(|_| "retrait non confirme")?;
+    let retirement = domain.retire(&proof);
+    if matches!(mode, profile::QI_ERROR | profile::QI_DELAY) {
+        domain.quarantine();
+        let held = retirement.is_err()
+            && domain.failed_invalidation()
+            && domain.pinned() == frames
+            && crate::memory::pinned_dma_frames() == base + frames as u64
+            && domain.prepare(pid).is_err();
+        hal::log(format_args!(
+            "NVME RW invalidation incertaine quarantaine={held} cadres={frames}"
+        ));
+        return if held
+            && actors.wait(u64::from(HZ) * 5)
+            && actors
+                .all()
+                .all(|c| c.try_result() == Some(Outcome::Exit(0)))
+        {
+            Ok(())
+        } else {
+            Err("preuve de retention QI")
+        };
+    }
+    retirement.map_err(|_| "retrait non confirme")?;
     if !actors.wait(u64::from(HZ) * 5)
         || actors
-            .children
-            .iter()
+            .all()
             .any(|c| c.try_result() != Some(Outcome::Exit(0)))
     {
         return Err("statut des acteurs");
     }
     let pages = crate::memory::pinned_dma_frames();
     let ipc_pages = with(|s| s.ipc.pages());
+    if mode >= profile::INIT {
+        hal::log(format_args!(
+            "NVME RW bilan mode={mode} write={} flush={} completions={} pages_ipc={ipc_pages}",
+            b.writes, b.flushes, b.completed
+        ));
+        if profile::writable(mode) != (b.writes > 0 && b.flushes > 0)
+            || (!profile::writable(mode) && (b.writes != 0 || b.flushes != 0))
+        {
+            return Err("comptage des droits de publication");
+        }
+    }
     hal::log(format_args!(
         "NVME fin incarnation pid={pid} soumises={} terminees={} epingles={pages} ipc_pages={ipc_pages}",
         b.submitted, b.completed
     ));
-    if pages != base || ipc_pages != 0 || b.submitted != 3 || b.completed != 3 {
+    if pages != base
+        || ipc_pages != 0
+        || b.submitted != b.completed
+        || b.submitted == 0
+        || (mode < profile::INIT && b.submitted != 3)
+    {
         return Err("comptabilite finale");
     }
     Ok(())
@@ -345,8 +547,16 @@ pub(crate) fn run(mode: u64, admission: Admission) -> bool {
             id >> 16,
             class,
             allowed,
-            wire::DRIVER_IMAGE as u64,
-            wire::DRIVER_INTENTS_RO as u64,
+            if mode >= profile::INIT {
+                wire::DRIVER_IMAGE_RW
+            } else {
+                wire::DRIVER_IMAGE
+            } as u64,
+            if mode >= profile::INIT {
+                wire::DRIVER_INTENTS_RW
+            } else {
+                wire::DRIVER_INTENTS_RO
+            } as u64,
         ];
         let mut cfg = [0u8; 56];
         for (i, v) in words.into_iter().enumerate() {

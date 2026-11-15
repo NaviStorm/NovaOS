@@ -31,11 +31,19 @@ fn select() -> Option<()> {
         image: u32::try_from(config(5)).ok()?,
         rights: u32::try_from(config(6)).ok()?,
     };
+    let (image, required) = match approved.image {
+        DRIVER_IMAGE => (DRIVER_IMAGE, DRIVER_INTENTS_RO),
+        nvme_protocol::DRIVER_IMAGE_RW => (
+            nvme_protocol::DRIVER_IMAGE_RW,
+            nvme_protocol::DRIVER_INTENTS_RW,
+        ),
+        _ => return None,
+    };
     let catalog = [Driver {
         vendor: 0x1b36,
         product: 0x0010,
-        image: DRIVER_IMAGE,
-        required: DRIVER_INTENTS_RO,
+        image,
+        required,
     }];
     controller.start(&catalog, Some(approved)).ok()?;
     Some(())
