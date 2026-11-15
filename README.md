@@ -8,7 +8,7 @@ L’archive UTM AArch64 **v0.17.0** installe un volume NovaFS P9 sur disque Virt
 
 Le stockage classique et le polling sont actifs par défaut. L’activation des E/S groupées dépend des correctifs expérimentaux de qualification. Les dix profils ont été reconstruits sur les sources v0.18.0. [État de la qualification](novaOS/docs/fusion-materiel-v0.18.0.md) [Journal des versions](CHANGELOG.md) · [Qualification SMP et profil de distribution à un vCPU](novaOS/docs/fusion-smp-v0.17.0.md) · [Mesures du stockage groupé](novaOS/docs/reservations-dma-v0.17.0.md#performance-de-la-sauvegarde-groupée)
 
-La première version stable prévue reste **v0.30.0**. [Stabilisation du terminal, mesures et qualification de nsh](novaOS/docs/nsh-v0.16.3.md)
+La MOA a fixé **NovaOS v0.30.0 comme première version stable serveur généraliste en mode texte**. Les sources publiées sont en v0.19.0. [Périmètre approuvé et jalons proposés](novaOS/docs/reconciliation-v0300/proposition.md)
 
 ## Philosophie et architecture
 
@@ -43,7 +43,8 @@ flowchart TD
 | Environnement utilisateur | Implémenté | Shell série et interpréteur de scripts avec édition UTF-8, historique privé et alias. Commandes isolées, dont `cp`, `mv`, `touch`, `more`, `wc` et `tail`. |
 | PCI, MMIO, IRQ et DMA | Profils expérimentaux | Pilote utilisateur EDU sous QEMU et Intel VT-d sur la topologie Q35 qualifiée. |
 | Distribution UTM AArch64 v0.17.0 | Qualifiée | Installation GPT et démarrage autonome sur un disque VirtIO avec NovaFS P9. |
-| Interface graphique et mises à jour | Prévu | NovaUI et système hybride immuable. |
+| Distribution serveur | Exigée pour v0.30.0 | Mises à jour signées et atomiques, retour de version autorisé et restauration des données protégées. |
+| Interface graphique native | Reportée après v0.30.0 | Serveur d’affichage, NovaWM, NovaUI et applications graphiques. Le framebuffer de console reste dans le périmètre serveur. |
 
 ## Compiler et démarrer
 
@@ -93,9 +94,9 @@ Les images de développement se construisent aujourd’hui depuis le workspace N
 
 ## Feuille de route
 
-La prise en charge native des catalogues de pools et des volumes chiffrés reste ouverte. Les orientations à plus long terme comprennent des comptes et permissions, des compilateurs natifs et une interface graphique NovaUI. La compatibilité SwiftUI/AppKit reste exploratoire.
+Le serveur devra prendre en charge les usages déclarés de bout en bout sur **QEMU x86_64**, référence principale, et **QEMU AArch64**, seconde référence obligatoire. Les critères couvrent l’installation autonome, les comptes et ACL, les données surprotégées, les threads utilisateur, la CLI/TUI, le réseau double pile et son pare-feu, les services, le serveur SSH, le client SSH, les transferts SFTP et la reprise après incident. L’équivalence avec un serveur Linux s’évalue sur ces usages. Le Tecra A50-J reste une cible physique expérimentale. [Décisions MOA](novaOS/docs/reconciliation-v0300/decisions.md) · [Parcours serveur bloquants](novaOS/docs/reconciliation-v0300/acceptation-serveur.md)
 
-La distribution vise une architecture hybride immuable, avec une base système mise à jour de manière atomique, un retour à la version précédente et des données utilisateur modifiables. Ce modèle reste à développer.
+La distribution vise une base système immuable et des données utilisateur modifiables. Les garanties de mise à jour signée, de rollback et de restauration avec les droits en vigueur restent à réaliser. Les catalogues de pools et volumes chiffrés natifs restent ouverts. Le SDK Rust/C/C++ vise des exécutables natifs NovaOS. La phase 1 de v0.20.0 engage la bibliothèque Rust et les fondations des threads sur une branche dédiée après la fusion documentaire. Les prochains lots conservent leur statut proposé. NovaWM et NovaUI sont conservés pour l’après-stable, sans numéro attribué. [Plan de livraison proposé](novaOS/docs/reconciliation-v0300/proposition.md)
 
 ## Contribuer
 
