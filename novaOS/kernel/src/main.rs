@@ -190,6 +190,12 @@ fn main_thread() {
     if scenario == b"smp-fp" {
         sched::process::fp_test();
     }
+    #[cfg(feature = "thread-probe")]
+    if scenario == b"threads-test" {
+        memory::user::test_thread_memory();
+        sched::process::ipc::thread_probe::run();
+        hal::cpu::halt()
+    }
     if scenario == b"smp-test" {
         sched::smp_test();
     }

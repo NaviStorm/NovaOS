@@ -102,9 +102,9 @@ pub fn kernel_stack(_: usize) {}
 
 // Sûreté : EL1h, racine TTBR0 privée active et interruptions masquées. ERET
 // reçoit un SPSR EL0t fixe avec IRQ permises. Aucun registre général ni TLS
-// du contexte noyau n’est observable à la première instruction.
+// du noyau n’est observable à la première instruction. X0 reçoit le seul argument.
 #[unsafe(naked)]
-pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize) -> ! {
+pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize, _: usize) -> ! {
     naked_asm!(
         "mov sp,x0",
         "msr elr_el1,x1",
@@ -113,7 +113,8 @@ pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize) -> ! {
         "msr spsr_el1,x0",
         "msr tpidr_el0,xzr",
         "msr tpidrro_el0,xzr",
-        ".irp n,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",
+        "mov x0,x3",
+        ".irp n,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",
         "mov x\\n,xzr",
         ".endr",
         "eret"

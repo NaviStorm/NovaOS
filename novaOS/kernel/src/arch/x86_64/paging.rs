@@ -149,3 +149,14 @@ pub fn device_cache() -> Result<u64> {
         .ok_or(Error::Mode)?;
     Ok(((i & 3) << 3) | ((i & 4) << 5))
 }
+
+/// Les deux plages HHDM/noyau sont validées, disjointes et restent mappées.
+/// Le contenu utilisateur peut changer sur un autre CPU pendant la copie.
+/// Aucune référence Rust n'est formée sur ces octets concurrents.
+pub(crate) unsafe fn copy_user_bytes(src: *const u8, dst: *mut u8, len: usize) {
+    // DF est nul dans l'ABI noyau, y compris à l'entrée IRQ/syscall depuis CPL3.
+    unsafe {
+        asm!("rep movsb", inout("rsi") src => _, inout("rdi") dst => _,
+             inout("rcx") len => _, options(nostack, preserves_flags));
+    }
+}

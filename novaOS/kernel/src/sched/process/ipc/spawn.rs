@@ -4,8 +4,44 @@ use super::*;
 use crate::terminal as tty;
 const IMAGES: &[(&[u8], bool)] = include!(concat!(env!("OUT_DIR"), "/cli_catalog.rs"));
 
+// Seule une entrée de ce catalogue immutable permet d’obtenir ce type.
+struct Application(&'static [u8]);
+impl Application {
+    fn entry(index: usize) -> Res<(Self, bool)> {
+        IMAGES
+            .get(index)
+            .map(|&(image, restricted)| (Self(image), restricted))
+            .ok_or(BAD_ARGUMENT)
+    }
+
+    fn launch(self, data: &[u8]) -> Res<Child> {
+        let _gate = Guard::new();
+        let child = create_image(self.0, data, None, None).map_err(launch_error)?;
+        with(|s| s.processes.get_mut(child.0).application_threads = true);
+        Ok(child)
+    }
+}
+
+#[cfg(feature = "thread-probe")]
+fn witness() -> Application {
+    let (image, restricted) = Application::entry(IMAGES.len() - 1).expect("témoin admis");
+    assert!(restricted && image.0.starts_with(b"\x7fELF"));
+    image
+}
+
+#[cfg(feature = "thread-probe")]
+pub(super) fn thread_witness() -> &'static [u8] {
+    witness().0
+}
+
+#[cfg(feature = "thread-probe")]
+pub(super) fn launch_thread_witness(data: &[u8]) -> Res<Child> {
+    witness().launch(data)
+}
+
 pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64) -> Res<u64> {
     let _guard = Guard::new();
+    with(|s| threads::status(s))?;
     let parent = with(|s| s.thread(s.current()).owner.unwrap());
     let authority = with(|s| s.processes.get(parent).terminal);
     if authority & tty::LAUNCH == 0 {
@@ -14,9 +50,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     if with(|s| s.processes.get(parent).wait_right.is_some()) {
         return Err(LIMIT);
     }
-    let (image, fixture) = *IMAGES
-        .get(usize::try_from(number).map_err(|_| BAD_ARGUMENT)?)
-        .ok_or(BAD_ARGUMENT)?;
+    let (image, fixture) = Application::entry(usize::try_from(number).map_err(|_| BAD_ARGUMENT)?)?;
     let mut bytes = [0; tty::HEADER + tty::ARG_MAX];
     let n = usize::try_from(len).map_err(|_| BAD_ARGUMENT)?;
     let data = bytes
@@ -50,7 +84,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     }
     data[..24].fill(0);
     let start = hal::timer::counter();
-    let child = create_image(image, data, None, None).map_err(launch_error)?;
+    let child = image.launch(data)?;
     let setup = with(|s| {
         let pid = child.0;
         if input != 0 {

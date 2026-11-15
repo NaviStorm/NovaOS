@@ -40,20 +40,26 @@ fn wait(key: u64, out: u64, len: u64) -> Result<u64, u64> {
     if len != WAIT_SIZE as u64 || out % 8 != 0 {
         return Err(BAD_ARGUMENT);
     }
+    let _irq = Guard::new();
     loop {
-        let _irq = Guard::new();
         // La vérification des droits précède toute consultation de la cible.
         // Sous le même masque, consommer le résultat ou publier l’attente.
         let target = with(|s| {
+            threads::status(s)?;
             let pid = caller(s);
-            let p = s.processes.get(pid);
+            let p = s.processes.get_mut(pid);
             let right = p.wait_right.filter(|r| r.key() == key).ok_or(DENIED)?;
+            if core::mem::replace(&mut p.wait_buffer, WaitBuffer::Idle) == WaitBuffer::Invalidated {
+                return Err(BAD_ADDRESS);
+            }
+            let p = s.processes.get(pid);
             let child = s.processes.get(right.target);
             let space = p.space.as_ref().unwrap();
             if child.space.is_some() {
                 if !heap::with_pages(|m| Ok(space.writable(m, out, WAIT_SIZE))).unwrap() {
                     return Err(BAD_ADDRESS);
                 }
+                s.processes.get_mut(pid).wait_buffer = WaitBuffer::Pending(out);
                 s.processes.blocked_waits += 1;
                 return Ok(Some(right.target));
             }
@@ -91,14 +97,17 @@ fn wait(key: u64, out: u64, len: u64) -> Result<u64, u64> {
 /// Les deux portes appellent cette fonction sur la pile privée, IRQ masquées.
 /// Le contexte entier est sauvegardé avant de permettre une préemption.
 pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static str) -> Reply {
-    let (exec, stack) = with(|s| {
+    threads::stop_if_dying();
+    let (exec, stack, secondary) = with(|s| {
         let space = s.processes.get(caller(s)).space.as_ref().unwrap();
         let exec = space.executable(pc);
-        let stack = (space.stack_bottom()..=space.stack_top()).contains(&sp);
+        let member = s.thread(s.current()).user.as_ref().unwrap();
+        let stack = (member.layout.bottom..=member.layout.top).contains(&sp);
+        let secondary = member.secondary;
         if exec && stack {
             s.thread_mut(s.current()).in_syscall = true;
         }
-        (exec, stack)
+        (exec, stack, secondary)
     });
     if !exec || !stack || (cfg!(target_arch = "aarch64") && (sp % 16 != 0 || pc % 4 != 0)) {
         finish(
@@ -116,6 +125,13 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     context::enable();
     let [a, b, c] = args;
     let result = match id {
+        // Les baux matériels, le terminal et le droit de suivi d’un enfant ont
+        // un titulaire d’exécution unique. Les appels IPC publics gardent la
+        // résolution ordinaire du handle et des droits dans la table du PID.
+        crate::hardware::block::wire::PAGE_PORTAL | crate::hardware::block::PORTAL
+        | crate::terminal::SPAWN | crate::terminal::PROCESS_SAMPLE | crate::terminal::CONSOLE
+        | PROCESS_WAIT if secondary => Err(DENIED),
+        THREAD_CREATE..=THREAD_NOTIFY => threads::call(id, args, pc, level),
         IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
         crate::hardware::block::wire::PAGE_PORTAL => device_page(a, b, c),
@@ -123,13 +139,17 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         HEAP_RESIZE if c == 0 => with(|s| {
             let pid = caller(s);
             let space = s.processes.get_mut(pid).space.as_mut().unwrap();
-            heap::with_pages(|m| space.resize_heap(m, a, b)).map_err(|e| {
+            let value = heap::with_pages(|m| space.resize_heap(m, a, b)).map_err(|e| {
                 if e == crate::memory::Error::Exhausted {
                     NO_MEMORY
                 } else {
                     BAD_ARGUMENT
                 }
-            })
+            })?;
+            if b < a {
+                threads::invalidate_range(s, pid, b, a);
+            }
+            Ok(value)
         }),
         HEAP_RESIZE => Err(BAD_ARGUMENT),
         CLOCK_UTC if args == [0; 3] => crate::arch::rtc::seconds().ok_or(REFUSED),
@@ -154,6 +174,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         _ => Err(UNKNOWN_CALL),
     };
     hal::interrupts::mask();
+    threads::stop_if_dying();
     with(|s| s.thread_mut(s.current()).in_syscall = false);
     #[cfg(feature = "materiel-lab")]
     super::stop_if_requested();
@@ -262,6 +283,7 @@ fn present(action: u64, argument: u64) -> Result<u64, u64> {
     if action == READ_TIMED && (1..=500).contains(&argument) {
         let start = crate::sched::ticks();
         loop {
+            with(|s| threads::status(s))?;
             if let Some(b) = serial::input() {
                 return Ok(b.into());
             }
@@ -380,6 +402,7 @@ fn console_io(port: u64, address: u64, len: u64) -> Result<u64, u64> {
             return Err(BAD_ARGUMENT);
         }
         loop {
+            with(|s| threads::status(s))?;
             if let Some(b) = crate::arch::serial::input() {
                 return Ok(b.into());
             }

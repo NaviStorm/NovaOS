@@ -89,6 +89,8 @@ Le parcours proposé pour la première stable comprend lancement d’une applica
 
 ## L — Développement
 
+ARC-022 rend obligatoire pour la stable la compilation native Rust, C et C++ depuis `nsh`, avec éditeur de liens, bibliothèques et Cargo. Les priorités L02, L03 et L07 ci-dessous conservent la proposition antérieure. [Critères en vigueur](acceptation-serveur.md#compilation-native-depuis-nsh)
+
 | ID et besoin | État et dépendances | Priorité et risque | Épreuve future et solution transitoire |
 |---|---|---|---|
 | L01 Rust et compilation croisée | Compilateur hôte Rust stable pour les deux ISA. Utilisateurs statiques no_std + alloc. Matériel et options de compilation à fixer pour chaque profil. | P1 pour reconstruire les logiciels livrés. Un binaire compilé n’atteste pas son lancement. | Depuis une base propre construire et lancer une application de référence sur chaque cible. Maintenir la chaîne hôte versionnée. |

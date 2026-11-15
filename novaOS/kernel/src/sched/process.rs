@@ -8,6 +8,7 @@ use crate::{
 
 mod abi_probe;
 mod demo;
+pub(super) mod threads;
 #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
 pub(crate) mod vtd;
 #[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
@@ -48,6 +49,9 @@ struct Process {
     pid: Pid,
     space: Option<UserSpace>,
     threads: usize,
+    application_threads: bool,
+    wait_buffer: WaitBuffer,
+    join_rights: Vec<threads::JoinRight>,
     observed: bool,
     wait_right: Option<WaitRight>,
     debug_messages: u8,
@@ -105,15 +109,20 @@ impl Table {
 }
 fn enter() {
     let _irq = Guard::new();
-    let (top, entry, user_top) = with(|s| {
+    threads::stop_if_dying();
+    let (top, entry, sp, arg) = with(|s| {
         let t = s.thread(s.current());
-        let space = s.processes.get(t.owner.unwrap()).space.as_ref().unwrap();
-        (t.stack.top, space.entry(), space.stack_top())
+        let user = t.user.as_ref().unwrap();
+        let sp = if cfg!(target_arch = "x86_64") && user.secondary {
+            user.layout.top - 8
+        } else {
+            user.layout.top
+        };
+        (t.stack.top, user.entry, sp, user.argument)
     });
-    // Sûreté : thread utilisateur fraîchement publié ; code RX et pile RW/NX
-    // validés, racine active, IRQ masquées jusqu’au retour matériel.
+    // La garde assure la publication complète du TCB jusqu’au retour matériel.
     _irq.unlock_masked();
-    unsafe { context::enter_user(top, entry as usize, user_top as usize) }
+    unsafe { context::enter_user(top, entry as usize, sp as usize, arg as usize) }
 }
 
 /// Droit noyau de suivre ce fils et de récolter son statut. Le PID numérique
@@ -125,6 +134,14 @@ struct Child(Pid);
 #[derive(Clone, Copy)]
 struct WaitRight {
     target: Pid,
+}
+// Un seul PROCESS_WAIT utilisateur par processus (titulaire principal).
+// La marque survit au réveil du TCB, jusqu’au contrôle sous la même garde.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum WaitBuffer {
+    Idle,
+    Pending(u64),
+    Invalidated,
 }
 impl WaitRight {
     fn key(self) -> u64 {
@@ -231,10 +248,14 @@ fn publish_image(space: UserSpace, wait_on: Option<Child>) -> Result<Child, Erro
             slot: proc_slot,
             number: s.processes.serial,
         };
+        let main = threads::Member::new(space.main_thread(), space.entry(), 0, false);
         s.processes.slots[proc_slot] = Some(Process {
             pid,
             space: Some(space),
             threads: 1,
+            application_threads: false,
+            wait_buffer: WaitBuffer::Idle,
+            join_rights: Vec::new(),
             observed: true,
             wait_right,
             debug_messages: 0,
@@ -245,6 +266,7 @@ fn publish_image(space: UserSpace, wait_on: Option<Child>) -> Result<Child, Erro
             preempted_on: 0,
         });
         s.thread_mut(slot).owner = Some(pid);
+        s.thread_mut(slot).user = Some(main);
         s.thread_mut(slot).space = root;
         Child(pid)
     }))
@@ -253,6 +275,8 @@ fn publish_image(space: UserSpace, wait_on: Option<Child>) -> Result<Child, Erro
 /// Appelé exclusivement depuis une exception synchrone dont le cadre matériel
 /// atteste le mode utilisateur. La pile privée du noyau est active, IRQ masquées.
 pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
+    let _gate = Guard::new();
+    threads::stop_if_dying();
     let entered = hal::timer::counter();
     let (pid, trace_exit) = with(|s| {
         let pid = s
@@ -269,13 +293,12 @@ pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
         s.ipc.collect();
         let p = s.processes.get_mut(pid);
         assert!(p.outcome.replace(result).is_none());
+        p.join_rights = Vec::new();
         p.exit_counter = entered;
-        (
-            pid,
-            p.terminal == 0
-                || p.terminal & crate::terminal::QUALIFY != 0
-                || matches!(result, Outcome::Fault(_)),
-        )
+        let trace = p.terminal == 0 || p.terminal & crate::terminal::QUALIFY != 0
+            || matches!(result, Outcome::Fault(_));
+        threads::wake_dying(s, pid);
+        (pid, trace)
     });
     if trace_exit && !ipc::quiet() {
         match result {

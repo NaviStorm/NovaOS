@@ -205,6 +205,18 @@ fn main() {
             std::fs::copy(&path, out.join("shell.elf")).unwrap();
         }
     }
+    // Admission explicite au catalogue de qualification. Les indices de la CLI
+    // restent stables et le profil ordinaire n'importe aucune image externe.
+    println!("cargo::rerun-if-env-changed=NOVA_THREAD_PROBE_ELF");
+    if env::var_os("CARGO_FEATURE_THREAD_PROBE").is_some() {
+        let source = PathBuf::from(env::var_os("NOVA_THREAD_PROBE_ELF")
+            .expect("thread-probe exige un ELF natif explicitement sélectionné"))
+            .canonicalize().expect("ELF du témoin externe absent");
+        println!("cargo::rerun-if-changed={}", source.display());
+        let admitted = out.join("thread-witness.elf");
+        std::fs::copy(&source, &admitted).expect("admission du témoin externe");
+        catalog.push_str(&format!("(include_bytes!({admitted:?}),true),"));
+    }
     catalog.push(']');
     std::fs::write(out.join("cli_catalog.rs"), catalog).unwrap();
 }

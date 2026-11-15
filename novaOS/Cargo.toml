@@ -1,5 +1,5 @@
 [workspace]
-members = ["kernel"]
+members = ["kernel", "libs/nova-system"]
 resolver = "3"
 
 [profile.dev]

@@ -11,6 +11,17 @@ pub const PROCESS_EXIT: u64 = 0x0001_0004;
 pub const PROCESS_WAIT: u64 = 0x0001_0005;
 pub const DEBUG_WRITE: u64 = 0x0001_0006;
 
+/// Extension native v1 Rust/threads. Les arguments inutilisés valent zéro.
+pub const THREAD_CREATE: u64 = 0x10060;
+pub const THREAD_EXIT: u64 = 0x10061;
+pub const THREAD_JOIN: u64 = 0x10062;
+pub const THREAD_DETACH: u64 = 0x10063;
+pub const THREAD_CANCEL: u64 = 0x10064;
+pub const THREAD_CANCELLED: u64 = 0x10065;
+pub const THREAD_TLS: u64 = 0x10066;
+pub const THREAD_WAIT: u64 = 0x10067;
+pub const THREAD_NOTIFY: u64 = 0x10068;
+
 pub const OK: u64 = 0;
 pub const BAD_VERSION: u64 = 1;
 pub const UNKNOWN_CALL: u64 = 2;

@@ -1,6 +1,10 @@
 //! Propriété des mappings privés. Toutes les copies passent par le HHDM du cadre validé.
 use super::*;
 mod elf;
+mod threads;
+#[cfg(feature = "thread-probe")]
+pub(crate) use threads::test_thread_memory;
+pub(crate) use threads::{MAX_SECONDARY_THREADS, MAX_THREAD_STACK_PAGES, ThreadMemory};
 #[cfg(feature = "materiel-lab")]
 mod mmio_lab;
 pub(crate) use elf::STACK_TOP as ELF_TOP;
@@ -38,6 +42,10 @@ pub(crate) struct UserSpace {
     loaded: usize,
     stack_extra: usize,
     heap_pages: usize,
+    main_stack: bool,
+    main_tls: u64,
+    thread_stacks: [u64; MAX_SECONDARY_THREADS],
+    thread_pages: [u8; MAX_SECONDARY_THREADS],
 }
 
 /// Témoin privé du banc. Seule la page RO identifiée d'un processus maintenu
@@ -245,6 +253,10 @@ impl UserSpace {
             loaded: 0,
             stack_extra: 0,
             heap_pages: 0,
+            main_stack: false,
+            main_tls: 0,
+            thread_stacks: [0; MAX_SECONDARY_THREADS],
+            thread_pages: [0; MAX_SECONDARY_THREADS],
         };
         let result = (|| {
             if let Some(e) = elf {
@@ -273,6 +285,7 @@ impl UserSpace {
             }
             s.add(m, DATA, Access::ReadWrite, config)?;
             s.add(m, s.stack_top() - PAGE, Access::ReadWrite, &[])?;
+            s.main_stack = true;
             if let Some(payload) = private_ro {
                 s.add(m, PRIVATE, Access::ReadOnly, payload)?;
             }
@@ -291,9 +304,12 @@ impl UserSpace {
     }
 
     pub(crate) fn page_counts(&self) -> (usize, usize) {
+        let tls_pages =
+            usize::from(self.main_tls != 0) + self.thread_pages.iter().filter(|&&n| n != 0).count();
+        let secondary_stacks: usize = self.thread_pages.iter().map(|&n| usize::from(n)).sum();
         (
-            self.len - 1 + self.loaded + self.heap_pages,
-            1 + self.stack_extra,
+            self.len - usize::from(self.main_stack) + self.loaded + self.heap_pages + tls_pages,
+            usize::from(self.main_stack) + self.stack_extra + secondary_stacks,
         )
     }
 
@@ -307,6 +323,9 @@ impl UserSpace {
         self.elf.map_or(STACK, |e| e.stack)
     }
     pub fn executable(&self, pc: u64) -> bool {
+        if cfg!(target_arch = "aarch64") && pc % 4 != 0 {
+            return false;
+        }
         self.elf.map_or_else(
             || (CODE..CODE + PAGE).contains(&pc),
             |e| {
@@ -317,12 +336,13 @@ impl UserSpace {
     }
     fn owns(&self, page: u64) -> bool {
         self.mapped[..self.len].contains(&page)
-            || (self.stack_bottom()..self.stack_top() - PAGE).contains(&page)
+            || (self.main_stack && (self.stack_bottom()..self.stack_top() - PAGE).contains(&page))
             || (HEAP..self.heap_end()).contains(&page)
             || self.elf.is_some_and(|e| {
                 e.segments()
                     .any(|s| (s.start & !(PAGE - 1)) <= page && page < s.end)
             })
+            || self.owns_thread_page(page)
     }
     fn heap_end(&self) -> u64 {
         HEAP + self.heap_pages as u64 * PAGE
@@ -419,7 +439,7 @@ impl UserSpace {
         for (ptr, n) in parts.into_iter().filter(|p| p.1 != 0) {
             // Sûreté : cadre RAM privé validé, alias HHDM lisible, plage
             // destination noyau disjointe et bornée, verrou conservé.
-            unsafe { core::ptr::copy_nonoverlapping(ptr, out.as_mut_ptr().add(offset), n) };
+            unsafe { paging::copy_user_bytes(ptr, out.as_mut_ptr().add(offset), n) };
             offset += n;
         }
         true
@@ -433,7 +453,7 @@ impl UserSpace {
         for (ptr, n) in parts.into_iter().filter(|p| p.1 != 0) {
             // Sûreté : mêmes bornes, accès RW vérifié sur chaque feuille avant
             // la première écriture. Les cadres restent possédés jusqu’au retour.
-            unsafe { core::ptr::copy_nonoverlapping(input.as_ptr().add(offset), ptr, n) };
+            unsafe { paging::copy_user_bytes(input.as_ptr().add(offset), ptr, n) };
             offset += n;
         }
         true
@@ -525,8 +545,12 @@ impl UserSpace {
         self.mapped[index] = self.mapped[self.len];
     }
 
+    pub(crate) fn remap_demo_data(&mut self, m: &mut Memory) {
+        self.add(m, DATA, Access::ReadWrite, &[]).unwrap();
+    }
+
     /// Espace inactif, dernier thread commuté. Seules les branches basses sont possédées.
-    pub fn release(self, m: &mut Memory) {
+    pub fn release(mut self, m: &mut Memory) {
         #[cfg(feature = "materiel-lab")]
         if m.lab_mapping
             .active
@@ -543,6 +567,7 @@ impl UserSpace {
                 return;
             }
         }
+        self.release_threads(m);
         if let Some(e) = self.elf {
             for va in e.segments().flat_map(|s| s.pages()).take(self.loaded) {
                 Self::release_page(&self.tables, m, va)
