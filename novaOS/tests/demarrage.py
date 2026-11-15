@@ -536,6 +536,7 @@ def abi_scenario(arch, ram, allow_firmware_limit=False, arm_pan=False):
         assert phases["actifs"]["processus"] == 2 and phases["actifs"]["upile"] == 2
         assert phases["repos_ui"]["processus"] == phases["repos_ui"]["chargeur"] == 0
         proof = re.search(r"ABI valide series=(\d+) preemptions=(\d+) attentes=(\d+) revocation=OK", report)
+        assert "ABI attente plage reutilisee intacte et droit conserve OK" in report
         assert proof and int(proof[1]) >= 4096 and int(proof[2]) > 0 and int(proof[3]) >= 2
         assert len(re.findall(r"^DEBUG pid=\d+ NovaABI$",report,re.M)) == 16
         assert len(re.findall(r"faute=ABI .*acces=retour cause=contexte",report)) == 2

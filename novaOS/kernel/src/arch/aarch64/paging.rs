@@ -280,3 +280,33 @@ fn install_roots(root: u64, temporary: u64, empty: u64, low: u64) {
             in("x4") lower, in("x5") tcr | (1<<7), out("x30") _, options(nostack));
     }
 }
+
+/// Les plages HHDM/noyau validées restent mappées sous le verrou Memory.
+/// Des pairs EL0 peuvent modifier les octets. Les accès assembleur bornés
+/// ne créent aucune référence Rust sur le tampon utilisateur concurrent.
+pub(crate) unsafe fn copy_user_bytes(src: *const u8, dst: *mut u8, len: usize) {
+    unsafe {
+        asm!(
+            "orr {scratch},{src},{dst}",
+            "tst {scratch},#7",
+            "b.ne 3f",
+            "2:",
+            "cmp {len},#8",
+            "b.lo 3f",
+            "ldr {scratch},[{src}],#8",
+            "str {scratch},[{dst}],#8",
+            "sub {len},{len},#8",
+            "b 2b",
+            "3:",
+            "cbz {len},5f",
+            "4:",
+            "ldrb {scratch:w},[{src}],#1",
+            "strb {scratch:w},[{dst}],#1",
+            "subs {len},{len},#1",
+            "b.ne 4b",
+            "5:",
+            src = inout(reg) src => _, dst = inout(reg) dst => _,
+            len = inout(reg) len => _, scratch = out(reg) _, options(nostack)
+        );
+    }
+}

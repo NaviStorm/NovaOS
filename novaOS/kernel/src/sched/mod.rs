@@ -37,6 +37,8 @@ enum Wait {
     Ipc(u64),
     Event(usize),
     Process(process::Pid),
+    Join(Id),
+    UserWord { address: u64, deadline: u64 },
     #[cfg(feature = "materiel-lab")]
     EduGrant(u64),
 }
@@ -62,6 +64,7 @@ struct Thread {
     id: Id,
     space: SpaceId,
     owner: Option<process::Pid>,
+    user: Option<process::threads::Member>,
     state: State,
     stack: Stack,
     saved: usize,
@@ -277,9 +280,16 @@ impl Core {
                     self.ipc.expire(now);
                     self.flush_ipc();
                     for i in 0..self.slots.len() {
-                        if matches!(self.slots[i].as_ref().map(|t| t.state),Some(State::Blocked(Wait::Until(end))) if end<=now)
-                        {
-                            self.wake(i);
+                        match self.slots[i].as_ref().map(|t| t.state) {
+                            Some(State::Blocked(Wait::Until(end))) if end <= now => self.wake(i),
+                            Some(State::Blocked(Wait::UserWord { deadline, .. }))
+                                if deadline != u64::MAX && deadline <= now =>
+                            {
+                                self.thread_mut(i).user.as_mut().unwrap().wait_status =
+                                    crate::abi::TIMED_OUT;
+                                self.wake(i);
+                            }
+                            _ => (),
                         }
                     }
                 }
@@ -293,7 +303,7 @@ impl Core {
                 State::Ready
             }
             Reason::Block(wait) => {
-                if matches!(wait, Wait::Event(_)) {
+                if matches!(wait, Wait::Event(_) | Wait::UserWord { .. }) {
                     self.stats.event_waits = self
                         .stats
                         .event_waits
@@ -401,6 +411,12 @@ impl Core {
                 .owner
                 .expect("IRQ utilisateur sans processus");
             self.processes.preempted(pid);
+            #[cfg(feature = "thread-probe")]
+            {
+                let member = self.thread_mut(old).user.as_mut().unwrap();
+                member.preemptions += 1;
+                member.preempted_on |= 1 << cpu;
+            }
         }
         Some((&raw mut self.thread_mut(old).saved, load))
     }
@@ -455,6 +471,9 @@ pub(crate) fn tick(user: bool) {
         process::stop_if_requested();
     }
     dispatch(Reason::Tick(user));
+    if user {
+        process::threads::stop_if_dying();
+    }
 }
 /// Canal stable pendant l’attente. Le prédicat appartient au pilote ou au mutex.
 pub(crate) struct Event {
@@ -510,6 +529,10 @@ fn reap() {
         if let Some(thread) = stack {
             thread.stack.release();
             if let Some(pid) = thread.owner {
+                #[cfg(feature = "user-fpu")]
+                // La commutation a sauvegardé ce contexte, le slot reste sous la garde.
+                unsafe { (*FP_STATE[i].0.get()).fill(0) };
+                process::threads::collected(pid, thread.id, thread.user.unwrap());
                 process::detach(pid);
             }
         }
@@ -546,6 +569,7 @@ fn create(slot: usize, entry: fn(), priority: Priority, cpu_mask: u64) -> Result
             id,
             space: s.kernel_space,
             owner: None,
+            user: None,
             state: State::Ready,
             stack,
             saved,

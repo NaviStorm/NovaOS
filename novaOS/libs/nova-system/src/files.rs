@@ -18,6 +18,25 @@ impl Session {
         }
     }
 
+    /// Lecture d'un fichier déjà désigné par une délégation FILE_VIEW ou GROUP.
+    /// La clef locale et la portée sont vérifiées à chaque demande par le service.
+    pub fn read_view(&mut self, key: u64, offset: u64, bytes: &mut [u8]) -> Result<usize> {
+        self.client.read(key, offset, bytes).map_err(Error)
+    }
+
+    /// Énumération d'une vue déjà déléguée, y compris une DIR_VIEW en lecture seule.
+    pub fn read_directory_view(
+        &mut self,
+        key: u64,
+        after: &[u8],
+        offset: u64,
+        generation: u64,
+    ) -> Result<[u8; 128]> {
+        self.client
+            .readdir_fragment(key, after, offset, generation)
+            .map_err(Error)
+    }
+
     pub fn open(&mut self, base: u64, name: &[u8], rights: u8) -> Result<File<'_>> {
         let key = self.client.open_at(base, name, rights).map_err(Error)?;
         Ok(File {

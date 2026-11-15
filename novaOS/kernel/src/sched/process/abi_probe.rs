@@ -120,6 +120,47 @@ pub(crate) fn test() {
     data(pid, 4, Some(1));
     assert_eq!(waiter.join(), Outcome::Exit(13));
 
+    // Même adresse, nouvelle incarnation RW avant la reprise de l’appelant.
+    // Le mode 13 exige BAD_ADDRESS, puis réutilise le droit vers sa pile.
+    let target = demo::spawn_demo(demo::Action::Compute, 86, 0).unwrap();
+    let pid = target.0;
+    let waiter = client(13, pid, Some(target), 0, 86);
+    until(|| blocked(waiter.0, pid));
+    let address = user::DATA + 256;
+    let fresh = [0x5au8; crate::abi::WAIT_SIZE];
+    with(|s| {
+        let space = s.processes.get_mut(waiter.0).space.as_mut().unwrap();
+        heap::with_pages(|m| {
+            space.revoke_demo_data(m);
+            space.remap_demo_data(m);
+            assert!(space.copy_to_user(m, address, &fresh));
+            Ok(())
+        })
+        .unwrap();
+        threads::invalidate_range(s, waiter.0, user::DATA, user::DATA + crate::memory::PAGE);
+    });
+    until(|| {
+        with(|s| {
+            matches!(s.processes.get(waiter.0).wait_buffer,
+        WaitBuffer::Pending(out) if out != address)
+        })
+    });
+    with(|s| {
+        let space = s.processes.get(waiter.0).space.as_ref().unwrap();
+        heap::with_pages(|m| {
+            let mut observed = [0; crate::abi::WAIT_SIZE];
+            assert!(space.copy_from_user(m, address, &mut observed));
+            assert_eq!(observed, fresh);
+            Ok(())
+        })
+        .unwrap();
+    });
+    data(pid, 4, Some(1));
+    assert_eq!(waiter.join(), Outcome::Exit(13));
+    hal::log(format_args!(
+        "ABI attente plage reutilisee intacte et droit conserve OK"
+    ));
+
     // Un droit maintient le statut d’un objet déjà collecté, sans conserver ses pages.
     let target = demo::spawn_demo(demo::Action::Privileged, 0, 0).unwrap();
     until(|| target.try_result().is_some());

@@ -5,6 +5,8 @@ use crate::abi::*;
 pub(crate) mod lifecycle;
 pub(super) use bulk::features;
 mod spawn;
+#[cfg(feature = "thread-probe")]
+pub(crate) mod thread_probe;
 pub(super) use spawn::spawn_program;
 pub(crate) mod metrics;
 mod pool;

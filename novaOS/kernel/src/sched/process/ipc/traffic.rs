@@ -126,6 +126,22 @@ impl Domain {
             }
         }
     }
+    // Un autre membre du PID peut retirer une pile ou une tranche du tas
+    // pendant un RECEIVE. Ne jamais livrer plus tard dans un nouveau mapping
+    // ayant repris la même adresse virtuelle.
+    pub(in crate::sched::process) fn invalidate_receive(&mut self, pid: Pid, start: u64, end: u64) {
+        for i in self.waits.ids() {
+            let wait = self.waits.get(i);
+            if wait.pid == pid && wait.done.is_none()
+                && matches!(wait.op, Operation::Receive { address, .. }
+                    if address < end && start < address.saturating_add(size_of::<ReceiveV1>() as u64))
+            {
+                self.complete(i, Err(BAD_ADDRESS));
+            }
+        }
+        self.signal_heads();
+    }
+
     fn check_wait(&self, pid: Pid, n: Node, timeout: u64, now: u64, receiver: bool) -> Res<()> {
         now.checked_add(timeout).ok_or(LIMIT)?;
         let mut by_pid = 0;
@@ -522,6 +538,11 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
             let t = s.thread(s.current());
             let p = t.owner.unwrap();
             let tid = t.id;
+            // death() a retiré les attentes du PID. Une pile réveillée pendant
+            // la destruction ne doit pas réémettre son ancienne opération.
+            if s.processes.get(p).outcome.is_some() {
+                return (Err(CANCELLED), 0, p.number);
+            }
             let space = s.processes.get(p).space.as_ref().unwrap();
             let resuming = s.ipc.waits.has(tid.slot);
             s.ipc.metrics.entry = entry;

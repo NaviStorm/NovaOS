@@ -108,12 +108,13 @@ pub fn kernel_stack(top: usize) {
 }
 
 // Sûreté : entrée sans retour sous masque IRQ. Le TSS désigne cette même pile
-// superviseur. Le cadre iretq fixe CPL3, IF=1 et IOPL=0. Aucun GPR du noyau
-// n’est transmis. Les sélecteurs utilisateur désignent des segments de base zéro.
+// superviseur. Le cadre iretq fixe CPL3, IF=1 et IOPL=0. Aucun GPR
+// du noyau n’est transmis. RDI reçoit le seul argument du lanceur.
 #[unsafe(naked)]
-pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize) -> ! {
+pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize, _: usize) -> ! {
     naked_asm!(
         "mov rsp,rdi",
+        "mov rdi,rcx",
         "push 0x4b",
         "push rdx",
         "push 0x202",
@@ -124,7 +125,7 @@ pub unsafe extern "C" fn enter_user(_: usize, _: usize, _: usize) -> ! {
         "mov es,ax",
         "mov fs,ax",
         "mov gs,ax",
-        ".irp r,rax,rbx,rcx,rdx,rdi,rsi,rbp,r8,r9,r10,r11,r12,r13,r14,r15",
+        ".irp r,rax,rbx,rcx,rdx,rsi,rbp,r8,r9,r10,r11,r12,r13,r14,r15",
         "xor \\r,\\r",
         ".endr",
         "iretq"

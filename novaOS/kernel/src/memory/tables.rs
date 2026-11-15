@@ -136,6 +136,9 @@ impl AddressSpace {
         if frames.entry(parent, path[3]) != 0 {
             return Err(Error::Occupied);
         }
+        // Un autre CPU peut déjà parcourir cette table. Publier les octets
+        // du cadre avant de rendre la feuille valide dans une racine active.
+        paging::publish();
         frames.put(parent, path[3], desc);
         Ok(())
     }
