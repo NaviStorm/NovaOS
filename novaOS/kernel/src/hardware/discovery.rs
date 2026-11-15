@@ -9,7 +9,7 @@ mod wire;
 #[cfg(feature = "materiel-lab")]
 pub(crate) use pci::resources::lab::EduBar;
 
-struct Config;
+pub(super) struct Config;
 impl pci::ConfigRead for Config {
     fn read32(&mut self, a: pci::Address, off: u16) -> Option<u32> {
         if a.segment != 0 || a.device > 31 || a.function > 7 || off & 3 != 0 || off >= 256 {
@@ -293,6 +293,6 @@ fn adopt_edu(resource: EduBar, old: u16) -> Option<EduBar> {
 
 #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
 #[path = "discovery/vtd.rs"]
-mod vtd;
+pub(super) mod vtd;
 #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
 pub(crate) use vtd::{Drhd, VtdProfile, vtd_edu};

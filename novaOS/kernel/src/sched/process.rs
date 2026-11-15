@@ -10,6 +10,8 @@ mod abi_probe;
 mod demo;
 #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
 pub(crate) mod vtd;
+#[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
+pub(crate) mod nvme;
 #[cfg(feature = "materiel-lab")]
 mod edu;
 #[cfg(feature = "materiel-lab")]

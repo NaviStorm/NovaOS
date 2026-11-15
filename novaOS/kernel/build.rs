@@ -15,11 +15,18 @@ fn main() {
     println!("cargo::rerun-if-changed=../abi");
     let target = env::var("TARGET").unwrap();
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    let nvme_lab = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NVME_LAB").is_some();
     for name in [
         "demo",
         "devices",
         "edu",
         "edu_dma",
+        "nvme_driver",
+        "nvme_rw_driver",
+        "nvme_rw_block",
+        "nvme_client",
+        "nvme_manager",
+        "nvme_block",
         "fp_probe",
         "ipc",
         "storage/service",
@@ -31,11 +38,15 @@ fn main() {
         "storage/control",
         "storage/fileclient",
     ] {
+        let nvme_rw = matches!(name, "nvme_rw_driver" | "nvme_rw_block");
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
         if name == "edu_dma" && (env::var_os("CARGO_FEATURE_VTD_LAB").is_none() || target != "x86_64-unknown-none") {
             continue;
         }
         if name == "edu" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_none() {
+            continue;
+        }
+        if name.starts_with("nvme_") && !nvme_lab {
             continue;
         }
         let file_client = name == "storage/fileclient";
@@ -52,7 +63,15 @@ fn main() {
             continue;
         }
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
-        let compact = matches!(
+        let linker = if nvme_rw {
+            format!("link-arg=-T{}", user.join("novafs/service.ld").display())
+        } else {
+            linker
+        };
+        if nvme_lab && (nvme_rw || name == "storage/fileclient") {
+            rust.arg("--cfg").arg("nvme_rw");
+        }
+        let compact = name.starts_with("nvme_") || matches!(
             name,
             "devices" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
@@ -75,13 +94,14 @@ fn main() {
                 "strip=symbols",
             ]);
         }
-        if file_client {
+        if file_client || nvme_rw {
             rust.args(["-C", "link-arg=-zmax-page-size=4096"]);
         } else {
             rust.args(["-C", "link-arg=--oformat=binary"]);
         }
+        let source = if name == "nvme_rw_driver" { "nvme_driver" } else { name };
         let ok = rust
-            .arg(user.join(format!("{name}.rs")))
+            .arg(user.join(format!("{source}.rs")))
             .args([
                 "--edition=2024",
                 "--target",
@@ -129,6 +149,9 @@ fn main() {
     cargo_service.args(["build", "--release", "--locked", "--target", &target]);
     if env::var_os("CARGO_FEATURE_INSTALLATION_GPT").is_some() {
         cargo_service.args(["--features", "installation"]);
+    }
+    if nvme_lab {
+        cargo_service.args(["--features", "nvme-lab"]);
     }
     let result = cargo_service
         .current_dir(service)

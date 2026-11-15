@@ -49,9 +49,62 @@ fn perf(mut c: Client) -> rt::Result<()> {
     c.close(0)?;
     Ok(())
 }
+// Le même client IPC que les qualifications historiques accède au service de
+// fichiers par MOUNT/OPEN/WRITE/SYNC/READ/CLOSE, indépendamment du pilote.
+#[cfg(nvme_rw)]
+fn nvme_transaction(c: &mut Client, mode: u64) -> rt::Result<()> {
+    c.mount()?;
+    let next: [u8; 4231] = core::array::from_fn(|i| (i as u8).wrapping_mul(73) ^ (i >> 5) as u8);
+    let rights = match mode {
+        1000 => w::READABLE | w::WRITABLE | w::CREATE,
+        1001 | 1015 | 1019 => w::READABLE | w::WRITABLE,
+        _ => w::READABLE,
+    };
+    let f = c.open(b"/sortie", rights)?;
+    if mode != 1002 {
+        let competing = if mode == 1019 { Some(c.open(b"/sortie", w::READABLE | w::WRITABLE)?) } else { None };
+        c.write(f, 0, if mode == 1000 { b"ancien" } else { &next })?;
+        if let Some(other) = competing {
+            ensure(c.write(other, 0, b"concurrent").err() == Some(w::BUSY))?;
+            let mut previous = [0; 7];
+            ensure(c.read(other, 0, &mut previous)? == 6 && &previous[..6] == b"ancien")?;
+            c.close(other)?;
+            log(b"NVME P9 ecrivain concurrent refuse ancienne vue verifiee");
+        }
+        if mode != 1000 { log(b"NVME P9 debut transaction"); }
+        if mode == 1015 {
+            c.submit_sync(f)?;
+            let edge = rt::receive_for(rt::config(3), 15000)?;
+            ensure(edge.kind == 2 && edge.aux == 1)?;
+            log(b"NVME RW client mort pendant WRITE");
+            rt::exit(rt::CANCELLED);
+        }
+        c.sync(f)?;
+        log(if mode == 1000 { b"NVME P9 creation confirmee" } else { b"NVME P9 sauvegarde confirmee" });
+    }
+    let mut actual = [0; 4232];
+    let n = c.read(f, 0, &mut actual)?;
+    if n == 6 && &actual[..n] == b"ancien" && matches!(mode, 1000 | 1002) {
+        log(b"NVME P9 oracle ancien");
+    } else {
+        ensure(n == next.len() && actual[..n] == next && mode != 1000)?;
+        log(b"NVME P9 oracle nouveau");
+    }
+    c.close(f)?;
+    c.close(0)
+}
+
 fn probe() -> rt::Result<()> {
     let mode = rt::config(1);
     let mut c = Client::new()?;
+    #[cfg(nvme_rw)]
+    if matches!(mode, 1000..=1002 | 1015 | 1019) {
+        let result = nvme_transaction(&mut c, mode);
+        if let Err(code) = result && let Some(cause) = c.take_cqe() {
+            cause.report(nvme_diagnostic::Layer::Application, code as u8);
+        }
+        return result;
+    }
     if (29..=40).contains(&mode) {
         return names::probe(c, mode);
     }
@@ -181,3 +234,7 @@ fn probe() -> rt::Result<()> {
 extern "C" fn run() -> ! {
     rt::exit(probe().err().unwrap_or(0))
 }
+
+#[cfg(nvme_rw)]
+#[path = "../nvme_diagnostic.rs"]
+mod nvme_diagnostic;

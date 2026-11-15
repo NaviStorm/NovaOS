@@ -1,0 +1,470 @@
+{
+  "base_git": "2ddf61196bb3ed8d7bb93e30071897cb47ea6233",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "modeles": [
+    {
+      "hote": "ARM64 Darwin natif",
+      "cible": "aarch64-apple-darwin",
+      "tests_ok": [
+        "a_writable_lease_cannot_adopt_the_phase_one_disk",
+        "alias_and_invalid_tail_doorbell_rejected",
+        "readonly_role_foreign_namespace_bounds_and_source_aliases_are_rejected",
+        "inherited_queues_or_enabled_controller_refused_before_mutation",
+        "reject_wrong_serial_and_namespace_list",
+        "release_requires_deleted_queues_shutdown_and_reset_with_matching_epoch",
+        "successful_cqe_with_iommu_fault_cannot_publish_even_zero_data",
+        "timeout_blocks_late_cqe_and_release",
+        "unknown_or_unsuccessful_completion_never_delivers",
+        "writable_media_reopens_with_only_five_readonly_lease_pages",
+        "write_uses_only_immutable_source_and_flush_finishes_separately",
+        "reject_untrusted_namespace_or_format",
+        "write_or_flush_dma_fault_timeout_or_bad_cqe_never_confirms",
+        "read_bounds_wrap_phase_and_exact_result_both_geometries"
+      ],
+      "sha256_test_rust": "02282c69cef6ac2f22c89cf9574b3f8ee38ecb27b7c2ed719ceeddc83e7b0a48",
+      "sha256_executable": "e2af3b9b498e81981a4e096aa49c3127cb7d284043ec94521b942f1a5d028210"
+    },
+    {
+      "hote": "x86_64 Darwin sous Rosetta",
+      "cible": "x86_64-apple-darwin",
+      "tests_ok": [
+        "alias_and_invalid_tail_doorbell_rejected",
+        "a_writable_lease_cannot_adopt_the_phase_one_disk",
+        "inherited_queues_or_enabled_controller_refused_before_mutation",
+        "readonly_role_foreign_namespace_bounds_and_source_aliases_are_rejected",
+        "successful_cqe_with_iommu_fault_cannot_publish_even_zero_data",
+        "release_requires_deleted_queues_shutdown_and_reset_with_matching_epoch",
+        "reject_untrusted_namespace_or_format",
+        "reject_wrong_serial_and_namespace_list",
+        "writable_media_reopens_with_only_five_readonly_lease_pages",
+        "unknown_or_unsuccessful_completion_never_delivers",
+        "timeout_blocks_late_cqe_and_release",
+        "write_or_flush_dma_fault_timeout_or_bad_cqe_never_confirms",
+        "write_uses_only_immutable_source_and_flush_finishes_separately",
+        "read_bounds_wrap_phase_and_exact_result_both_geometries"
+      ],
+      "sha256_test_rust": "02282c69cef6ac2f22c89cf9574b3f8ee38ecb27b7c2ed719ceeddc83e7b0a48",
+      "sha256_executable": "e01c4746ae733a275ce427279c2da1717e3255af6df266467618c4a7e18d935d"
+    }
+  ],
+  "regressions_vtd_edu": [
+    {
+      "profil": "erreur-qi",
+      "vcpus": 2,
+      "sha256_elf": "622b6e15ff987de5cd06f836ca4df8c073273bca130a8eb2912f0ffa42f45586",
+      "sha256_iso": "9b4ca1989e1d2f9bc10ed9a2443e45464995fdd218e1233bf7efeead1855e42a",
+      "sha256_serie": "e8abde02f920ab645dc78a5e7b2e0fe6cfd100596014ea2ee1d1f7832de0ea47",
+      "sha256_qemu": "5d0d9ad2124921285a1a752ddff850b5b376e9e19f8fa3bea417c97de227163f",
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "resultats": {
+        "triplets_invalidation_acquittes": 2,
+        "irq_qemu": 1,
+        "qi_en_erreur": true,
+        "cadres_clients_conserves": 2
+      },
+      "qi": {
+        "sha256": "d6fd45e07173b98936f0218b1b967171829f74c7512c5f49fab0d5d04416486e",
+        "triplets_soumis": 3,
+        "triplets_consommes": 2,
+        "dernier_recu": 0
+      },
+      "sha256_bilan_complet": "cbafe14854be7e4c49e63da78a18753eda238453107f353ff73fa8f3f158797b"
+    },
+    {
+      "profil": "normal",
+      "vcpus": 2,
+      "sha256_elf": "622b6e15ff987de5cd06f836ca4df8c073273bca130a8eb2912f0ffa42f45586",
+      "sha256_iso": "5861ea80087f74f5ceb9dd7d4de23162f396ef704c24d2a91db39621397d2296",
+      "sha256_serie": "73906ff639c7b4be36cea5da343e52ed31f40ba96f903c2ec85fa89c8225807d",
+      "sha256_qemu": "03c081562e3244704a42c3173ab7a7f5608f7a82d669e2ddcc9aac8c0d42839c",
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "resultats": {
+        "cas": [
+          "Normal",
+          "WarmWrite",
+          "WrongWrite",
+          "WrongRead",
+          "Unmapped",
+          "Other",
+          "Revoke",
+          "Death",
+          "Late",
+          "Restart"
+        ],
+        "irq_qemu": 6,
+        "triplets_invalidation_acquittes": 22,
+        "retours_traduction_qemu": 1040
+      },
+      "qi": {
+        "sha256": "3ffd7fe28e96536f1ba66a813dc5365e82ceccc365d257a8aeeef6aabc3381eb",
+        "triplets_soumis": 22,
+        "triplets_consommes": 22,
+        "dernier_recu": 22
+      },
+      "sha256_bilan_complet": "88c373ed94d53527fe58ac9c6430820e68513ddc1605d4bd5099049f2e1105c4"
+    },
+    {
+      "profil": "quarantaine",
+      "vcpus": 2,
+      "sha256_elf": "622b6e15ff987de5cd06f836ca4df8c073273bca130a8eb2912f0ffa42f45586",
+      "sha256_iso": "8dc62294da978abdb08836ff484c6e3913d38492cde48b007a625e35971cb862",
+      "sha256_serie": "f95433fe04572a0dcdbe78d2b7466c64873f9c6d039bd1de5bc6ce983dcde2e6",
+      "sha256_qemu": "95a7976ba292a9c104935c161a6b457d78d2bffef3f272ef693a330b748b79ac",
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "resultats": {
+        "cas": [
+          "Receipt",
+          "Restart"
+        ],
+        "irq_qemu": 0,
+        "triplets_invalidation_acquittes": 5,
+        "retours_traduction_qemu": 5
+      },
+      "qi": {
+        "sha256": "ce71a00875e68692e19bd5ac69bb24db61c2e760e5c734f51ab6fda7457d35b9",
+        "triplets_soumis": 5,
+        "triplets_consommes": 5,
+        "dernier_recu": 5
+      },
+      "sha256_bilan_complet": "cf7d6cd0ea5e8b52a2a8629d47e05ad3f235ab3bafe637da3bcbb62d16f24cdc"
+    }
+  ],
+  "reproduction": [
+    "Depuis novaOS, compiler tests/nvme_controleur.rs par rustup run stable rustc --test --edition 2024 --target ARCH-apple-darwin et exécuter chaque binaire avec arch -arm64 ou arch -x86_64.",
+    "Construire le noyau pour la cible x86_64-unknown-none avec --release --locked --features vtd-lab.",
+    "Pour chaque profil EDU décrit, python3 -B tests/vtd_edu.py --elf ELF --profile PROFIL --vcpus 2 --preuves REPERTOIRE_NEUF."
+  ],
+  "regressions_invites_classiques": [
+    {
+      "arch": "aarch64",
+      "elf_sha256": "a607160afb2caeaf655dab976fab351359339fc226be377fe84827781536a771",
+      "ram_mio": 256,
+      "ipc": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05/T06",
+        "T07/T15",
+        "T06/T08/T18",
+        "T10",
+        "lots",
+        "T11",
+        "T12/T18",
+        "T04/T11",
+        "T12",
+        "T13",
+        "T16",
+        "T18",
+        "T14"
+      ],
+      "ipc_serie_sha256": "f5ed56dce4d76969b303be823731f1bc422c3d48228db9bfb2e0cb85b208e295",
+      "stockage_serie_sha256": "b1e4e61b33c90ac5892ce30a2cc17d300a4abaa363990a6ddf164f5f3a80c0b0",
+      "processus_stockage": 8,
+      "resultats": [
+        "OK — aarch64-storage-test",
+        "OK — aarch64-ipc-test-256"
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "elf_sha256": "7733c7d89f4ba587e7342c32388d5774180c5642c94929cd2980347a08b13ef7",
+      "ram_mio": 256,
+      "ipc": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05/T06",
+        "T07/T15",
+        "T06/T08/T18",
+        "T10",
+        "lots",
+        "T11",
+        "T12/T18",
+        "T04/T11",
+        "T12",
+        "T13",
+        "T16",
+        "T18",
+        "T14"
+      ],
+      "ipc_serie_sha256": "4d7c6b05ff2705d09016642892391efcc4caa1dd9b9da27b41863faff42e29ce",
+      "stockage_serie_sha256": "5899ec565ab8a7e38cf5ca444086ff4faf1ae1a83ba8e5ad5b9781849d47ff41",
+      "processus_stockage": 8,
+      "resultats": [
+        "OK — x86_64-storage-test",
+        "OK — x86_64-ipc-test-256"
+      ]
+    }
+  ],
+  "regressions_nvme_phase1": [
+    {
+      "sha256_elf": "2303c41646c3574f588e3acbe2d53aaa09d4d7ff4c979314566faa5828a96443",
+      "sha256_preuves": "addd512b1b3e244ab82a774c018cf3c618ffd3b15c40a93e7e2d0c3a143468b2",
+      "profil": "lecture",
+      "vcpus": 4,
+      "secteur": 4096,
+      "sha256_serie": "e58bc212684aa2810db25b44cd473eba65c450035635c1082ce935095e861224",
+      "sha256_trace": "2d981d16926e9770741d72dcc30bcbbca8961e3f78e333cc7e22fef723b1bab6",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4,
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            4096
+          ],
+          [
+            255,
+            1,
+            4096
+          ],
+          [
+            128,
+            1,
+            4096
+          ],
+          [
+            0,
+            1,
+            4096
+          ],
+          [
+            255,
+            1,
+            4096
+          ],
+          [
+            128,
+            1,
+            4096
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 56
+      },
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "3",
+            "0",
+            "0"
+          ],
+          [
+            "6",
+            "7",
+            "8",
+            "3",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [
+          "7",
+          "7"
+        ],
+        "geometrie": [
+          [
+            "256",
+            "4096"
+          ],
+          [
+            "256",
+            "4096"
+          ]
+        ],
+        "fnv64_lus": [
+          "988973e58c8ae325",
+          "76f7bf15c8b58f25",
+          "c2f2805fc79c5925",
+          "988973e58c8ae325",
+          "76f7bf15c8b58f25",
+          "c2f2805fc79c5925"
+        ],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1330,
+            "retenu": 12123,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 128,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 1245,
+            "retenu": 12038,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 80,
+            "upile": 0,
+            "tables": 145
+          },
+          {
+            "phase": "nvme_session",
+            "resident": 1330,
+            "retenu": 12123,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 128,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 1245,
+            "retenu": 12038,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 80,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      }
+    },
+    {
+      "sha256_elf": "2303c41646c3574f588e3acbe2d53aaa09d4d7ff4c979314566faa5828a96443",
+      "sha256_preuves": "e15ed4f951331d37487996eb28e6031a579163104cddbb0850436d4fbd1ce5c6",
+      "profil": "permission-read",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_serie": "007c72839474f1c4bbc55669c20f07cd20777078ac8e9c9ec7263ccd1e0f8ad7",
+      "sha256_trace": "cd2b1192cc395a8334d877dc0187264faa5a304ca4ab9ff9753c5f9e46000d84",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            512
+          ]
+        ],
+        "faute_dma": {
+          "sid": 48,
+          "premiere_iova": 33570816,
+          "tentatives_interdites": 129,
+          "statuts_completion_qemu": [
+            "0x0"
+          ]
+        },
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 17
+      },
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "6"
+          ]
+        ],
+        "mdts": [
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1264,
+            "retenu": 11994,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 1184,
+            "retenu": 11914,
+            "ipc": 0,
+            "dma": 13,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      }
+    }
+  ]
+}

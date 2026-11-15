@@ -73,6 +73,14 @@ fn main_thread() {
         log(format_args!("VTD bilan ok=false"));
         hal::cpu::halt()
     }
+    #[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
+    let nvme = sched::process::nvme::mode(boot::scenario()).map(|mode| {
+        let Some(admission) = hardware::nvme_domain::discover() else {
+            log(format_args!("NVME admission refusee avant restitution firmware"));
+            hal::cpu::halt()
+        };
+        (mode, admission)
+    });
     crate::smp::launch();
     let start = sched::ticks();
     while crate::smp::ONLINE.load(core::sync::atomic::Ordering::Acquire)
@@ -92,6 +100,8 @@ fn main_thread() {
     let retain_loader = dma.is_some();
     #[cfg(not(all(target_arch = "x86_64", feature = "vtd-lab")))]
     let retain_loader = false;
+    #[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
+    let retain_loader = retain_loader || nvme.is_some();
     if !retain_loader {
         match unsafe { memory::reclaim_loader(screen.as_ref().ok().map(framebuffer::Screen::span)) }
         {
@@ -122,6 +132,12 @@ fn main_thread() {
             sched::process::vtd::run(bar.base, drhd, profile)
         });
         log(format_args!("VTD bilan ok={ok}"));
+        hal::cpu::halt()
+    }
+    #[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
+    if let Some((mode, admission)) = nvme {
+        let ok = sched::process::nvme::run(mode, admission);
+        log(format_args!("NVME bilan ok={ok}"));
         hal::cpu::halt()
     }
     if let Some(result) = inventory {

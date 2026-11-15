@@ -72,3 +72,7 @@ extern "C" fn run() -> ! {
             .unwrap_or(0),
     )
 }
+
+#[cfg(feature = "nvme-lab")]
+#[path = "../nvme_diagnostic.rs"]
+mod nvme_diagnostic;

@@ -1,0 +1,2605 @@
+{
+  "sha256_elf": "86cfce68cf0670a7ee9fbcc4e557bffbc7bb661ae6cd38d5c96fd2292473ca39",
+  "firmware": [
+    {
+      "nom": "edk2-x86_64-code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a"
+    },
+    {
+      "nom": "edk2-i386-vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+    }
+  ],
+  "qemu": "QEMU emulator version 11.1.3",
+  "cellules": [
+    {
+      "profil": "permission-read",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "42bf7c0d8c1196f3b3c595f87b5cd787545a4c1b4baf1596e64dfb980e4e20bc",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "5f97fb45ee6f4868d47608c9a96739eb381541b3cc08423e0357c7898df72f98",
+      "sha256_trace": "cd2b1192cc395a8334d877dc0187264faa5a304ca4ab9ff9753c5f9e46000d84",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "6"
+          ]
+        ],
+        "mdts": [
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 931,
+            "retenu": 11407,
+            "ipc": 0,
+            "dma": 13,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 3,
+        "gsts": 3288334336,
+        "fsts": 2,
+        "dma_refuse": {
+          "sid": 48,
+          "raison": 5,
+          "iova": 33570816,
+          "ecriture": true,
+          "gpa_temoin": 1732608,
+          "octets_verifies": 4096
+        },
+        "cadres_clients_mappes": [
+          {
+            "iova": 33554432,
+            "droits": 1
+          },
+          {
+            "iova": 33558528,
+            "droits": 2
+          },
+          {
+            "iova": 33562624,
+            "droits": 1
+          },
+          {
+            "iova": 33566720,
+            "droits": 2
+          }
+        ],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "a6c2ba81dca410027a5aa66b22ffabe0e194dd0a5be2dd4a5292025c1463cf20",
+          "qi": "ab5ffd7b0f51465cdabbc01f1642328afb555623d38d94c968bcff8ca4270b59",
+          "table-39": "136ab5a1d91c29136ac3f1735d13f0bc115ce4db56506fbaf762bbf33458956b",
+          "table-30": "0cb1cf144a2b5586a65910916c6c403c46e453cdc337497440116692a176ca59",
+          "table-21": "dd9a50f0f1674f991494d5575a853d8f8e8575f55ec2ad89f374127d63907d21",
+          "table-12": "248ef22dd37278568e347956ed317956544c04ef28aa3c1d38470eecb1e33ed9",
+          "temoin-refuse": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            512
+          ]
+        ],
+        "faute_dma": {
+          "sid": 48,
+          "premiere_iova": 33570816,
+          "tentatives_interdites": 129,
+          "statuts_completion_qemu": [
+            "0x0"
+          ]
+        },
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 17
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "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",
+        "trace.log": "H4sIAAAAAAAA/92ZWW/bOBSF3/sr+JYWSAY62mwHyABF4gJ5cIppMgXmiaBJKhBGiyPRS//9UJLT2O6C+KAzyCQPkUmR0v3OzaIPWjkj82oljW211FreF/VcFULXlbMbJ/wpVeRGOSuGM8WXN6vdLXntivnjrn7w7Z79HWuVO9muRXfcXds65ZatWDe5HyhjGhFsEJsgCIQ/r7rR/oVeeLXhm4XOZbUqrSzLvJY6u/fLa798Nrv+eNoVneX3fe1NXRS22c5cBJs49dcZaE2pGukaVbVFd1tjVyIIzoP0N3+jvF71Nwr6L3H2u7hf9DmpqBuXqv3bj7Ise6pEmTKvpC6N0LkREO2DPwSiXmi/MvXHSpVWnNx8nk3l+6uZvJxdyeur6c3d9Ye/To4oKD4oaPSjgmz1sLRLKxv7IHVdLgrr8rraVqeH6sw68Nu6I/rjNnv/8YiKcFBRfFDRvx52+KLDDl9X2NGLDjt6XWHH+2FPvh/27fROfpi+v/vz0/T25Fkxxa8rpmQ/puT7MV1+8hlN5eUfz8soeV0ZpfsZ4acZ3T4zo/Q/z+j/8owSHcEdHnAnP+po96yzbedIVG2X/Gb7pIFtX8P9vvpvfV99W692WtpYtXcZiMqH4R8L6mXlRIJQFHPVd+/Blsuz9kvrbHm2Gacyjc9FH5GvXrpatu3C2XNP5qx21oh+LBa2KfO27X5MbNPUjXjbrb/4+mf+VBR2ZQs/gdNhi//oZ/tAL/zcQvmyurl3Tzlmalk4MVBHgRiGyWP8j/9Ahp7gJ4WX5fKpJzulP851VWcqL5aNFW99yy76lp13Ve9T/NLabux6uy1vRVU70VhdN8bXZZZWuFp0v3qNHUKts2Fte1wF8dcKjto25rZpahsCbhvHBo4NHFvIsYUcW8ixhRxbxLFFHFvEsUUcW8yxxRxbzLHFHFvCsSUcW8KxJRxbyrGlHFvKsaUc24hjG3FsI45txLGNObYxxzbm2MYc24Rjm3BsE45twrEpjk1xbIpjUxzbnGObc2xzjm3OsWmOTXNsmmPTHJvh2AzHZjg2w7FZjs1ybJZjsxxbxrFlHFvGsWUUGwKKDZy/gfM3cP4Gzt/A+Rs4fwPnb+D8DZy/gfM3cP4Gzt/A+Rs4fwPnb+D8DZy/gfM3cP4Gzt/A+Rs4fwPnb+D8DZy/gfM3cP4Gzt/A+Rs4fwPnb+D8DZy/gfM3cP4Gzt/A+Rs4fwPnb+D8DZy/gfM3cP4Gzt/A+Rs4fwPnb+D8DZy/gfM3cP4Gzt/A+Rs4fwPnb+D8DZy/gfM3cP4Gzt/A+Rs4f8OOvz3ndfdoeN2NX/O6Ozp47ZsevPb9BxseUO9BKAAA",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3OsQ0AMAjAMOCGHtzTK/EDYqi9ZE0E/Cvv6VYujwAAAAx7NfDq+AAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/+3KwQnAIBBFQTUVCLaQ/lsRK4p6ip4i5DgDC/vh5bBq2777xfHUMnf+0KfD/nr1AAAAwP8eKpVpTQAQAAA=",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA==",
+        "nvme-vtd-table-12.bin": "H4sIAAAAAAAA/+3HQQ0AIAwAMYYMVCABCUiYfxWEDBMk7edyMUe7+qrGfp9VAAAA4H8Hav9eRAAQAAA=",
+        "nvme-vtd-table-21.bin": "H4sIAAAAAAAA/+3OAQkAAAgDsIMV7J/BiMYQZEuw5FZNHw8AAADgvwURq+OeABAAAA==",
+        "nvme-vtd-table-30.bin": "H4sIAAAAAAAA/+3BAQkAAAgDMOEV7I9R7XG25XYAAACAbg9u0yG4ABAAAA==",
+        "nvme-vtd-table-39.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDILdXMLiR7fEBuR0AAACg2wORFkutABAAAA==",
+        "nvme-vtd-temoin-refuse.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA="
+      }
+    },
+    {
+      "profil": "permission",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "4b821fe7cba2ad3bf3c8c6ffa275cab76bdcbeb0be9c4d0e0d4937793d81849c",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "db5a73fdb8ac5105c8d4ffa809c1e50d172466a1ed627d40dd4ff9d52e3541d6",
+      "sha256_trace": "5c76665dae66abbb2f87686e7cc1822b3a85a7c9ccb87fec3166dbe8ff43938b",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "5"
+          ]
+        ],
+        "mdts": [],
+        "geometrie": [],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 931,
+            "retenu": 11407,
+            "ipc": 0,
+            "dma": 13,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 2,
+        "gsts": 3288334336,
+        "fsts": 2,
+        "dma_refuse": {
+          "sid": 48,
+          "raison": 5,
+          "iova": 33570816,
+          "ecriture": true,
+          "gpa_temoin": 1732608,
+          "octets_verifies": 4096
+        },
+        "cadres_clients_mappes": [
+          {
+            "iova": 33554432,
+            "droits": 1
+          },
+          {
+            "iova": 33558528,
+            "droits": 2
+          },
+          {
+            "iova": 33562624,
+            "droits": 1
+          },
+          {
+            "iova": 33566720,
+            "droits": 2
+          }
+        ],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "a6c2ba81dca410027a5aa66b22ffabe0e194dd0a5be2dd4a5292025c1463cf20",
+          "qi": "f594e055688c4a9e916f188b4404a523d8615d20502ae88c0cbfbfc0b64ae299",
+          "table-39": "136ab5a1d91c29136ac3f1735d13f0bc115ce4db56506fbaf762bbf33458956b",
+          "table-30": "0cb1cf144a2b5586a65910916c6c403c46e453cdc337497440116692a176ca59",
+          "table-21": "dd9a50f0f1674f991494d5575a853d8f8e8575f55ec2ad89f374127d63907d21",
+          "table-12": "248ef22dd37278568e347956ed317956544c04ef28aa3c1d38470eecb1e33ed9",
+          "temoin-refuse": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6
+        ],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": {
+          "sid": 48,
+          "premiere_iova": 33570816,
+          "tentatives_interdites": 1024,
+          "statuts_completion_qemu": [
+            "0x0"
+          ]
+        },
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 2
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7VWW2/bNhR+D5BfkJeDPbVAkpLUxXIHDXDsZMowt4mdZgP64NES5RDVxSUpw92v36FIZc6WdBvQCa35kTo81+8c5eQj++nkI6HfE5qdfEyDh5MnB195eVHo2V68harlhWw2cNG2hhBC4bsPl1fXcHs5/wCz+9nZ4v0cbufEvYJStTXc5HKB0q/Inrx+gxsE9OqU7NnrN0tuuD3H3RU+p1bk+GiwpQ1X5v829jTq5zLx8lnlAMukA0FWOxAOJ1HWOBBnwoFR9taBJAMHxtnPPaAkax2gGXeAZYUDgVdIQ6+QRtnGgdjroSNvgibZ3oGxP2Ekyx2gWecAy4wDgbfFwmztQOTjYoPPbORNsCT7zYGxFw4GnwM6gEFzEGSvHAiz1w5EPvYgzt44MBr0JMP1sQch8XpC6oVD5mMPg0EmzHYORD6KMB5ejTLtQJKdOzBkIyI+wIhmpQPMxxUFXjgKBxANID6gAmF2nSMNkaUiN7JtNAgDvJJcw04oWUqhTyFiMRvBlm+EhkquldDnx0fv2h1/v4QdOafJOcH9/fwSL3MDspFG8gqm0xTJCdPl3bIHk9uJW5e3bp26dSeF2ojUqE4cH93fzeBmeo3WpILl9cxK4AN5W9e8KYTbj85+6NfghQtl8vULk8zeaJXRaQzT65TAcjK9s4v9mS7w52px2f+m5CUb/L86tX75Qp89e8MG+9b+i88J0HUQ44Zi+BXXGq9RkhAGF5MFQRU5GR4wXFaVSGkcJKHV49IJ8+V1WvJK9+js15RBITTHSu+EgOt3d/u05vpzhxvrZJjAxfzSBnyzeD+FrSxSCg3K8i5d4AQLYJuj2RA9WkegMX1SpNGBNPtH6W9LFCU2UhslLFc1shelMFfTyQ2ChBSMkCRnjJUkTmK4dOdlyOBHb8lpsfkooW6xLJXY8PyLj2KfhjDDtNAhOVqoncxFmgwK8tCn/2oxtTVmDFUuJnPYPnCsVrOrxUoLbV0DWWP/pPGYYq3WldBYKwafthKrNo6h60EAD4Jv04DBuiuKL5hPiTmkFDojK6m5EZ1Cwm5Vm6PWTuOFGjO5anMjkMpJFIbuoA9Jp6MxA5Ovh/dhTJLewmrH0ziKgti3cxqxMAwg5/kDlgjyB455RlOUhKMYs6yNNJ19I/ZG8ZWoytRWoxAtrorXq0csNKLG4E30Wgkjmg79D5MRFDVPk29W/V7N/d1ZMdTGFUpsW2QzglJ0tiEwZihUKzH4xekvp/gfeGdsxOSgmp70vU6p24rbSejLtOo01k2lNjsFXlzJxghVWI00cJPy8S5mHbOmsRWq1thqrqs2Rw/yStqcRJBvu5V/SfvNWm/Rk556h30UPN9HeUKHPqLM2/zcccUbbP9GeA/Rjg3ItX0pFBKiU2K1zaWbCUrwopY9KZ3QgeHwecPjcfBomB6IR8+LJ6Mn4r2fj45gtMjNVCiFucKB2BjVVha6k3TZ1uLVrOZXvKvMa9TTobN9wTDvNYbZY7HfStXXyQd6kIchTKSqNCu0UEq0PcTae6NE2WmYzScDfUqkBdYAKvwMopNeqcRvnG1rQsL+G2TzuzKibmU/avjInm6N7YzfhWoPufknj65tQ8jyix29+Hdgf7jia42n3tWibWxYK8+Tv88QvrXM8xE9M0nCyE8SjMRNEvLsJCFPBgk5GCTk64OE/NsxErFvOkbGweEUIW6K0OCxihrpoTCEYZjg3RJTXNne3GGD6XTok7WseAPtJ1+j5fwGCsk3TYtO5bYX7UTY2u+DfQizY52xfE2elaV/lWWBECMvy5HIxtO8aVWNMy5vW5wZzZB3bjCkwqZ9H4BoVpXcNKLf8PyTW3t+6H7w1Z1w6PjoD8JBwmD6DAAA",
+        "trace.log": "H4sIAAAAAAAA/83XTY/jRn7A4bs/hW67AeyFiiwWyQG8QBBvAB/GuQQBchLqdSBsv01L0zP77aPusWMbARbwc0pfqKJY5P9H9eV5ubbT+eHl1Pqlnmo9fbh7LPnuUB8frv3L9XD7Kt+dW772w9dv7v7xzctvt5wfr3fll11vi/+75/c7Pufz9XT5fHg9/vbayzVfP10On5/Pt0Vu7flw/BJiOx6Ph9v3+XX1+xv9P592+uapnk8PL/f9dH9/fjzV8eF2+ePt8vfvf/yPb1+HHucPb7M/P97d9eefz3x//BLT7T5fa9t9fj5dn/PD5e71sa2/HI7Hd8f0l9uDzo8vbw86vv0dvvvr4cPT23vK8+v6Pl/+fluNMX6dJLf788Op3rdDPbdDOFw+3g7Hw+NTvV2ZbseHfN8Pf/rpv97/7fSvP7w//dv7H04//vC3n/7zx3//7z9987Hff/ru8o/Ltd9/92VLpxTfHd7e1m2Q0/XxdLk8Xfu725DXXq+9Hd7Wh6f+fH++XM6PD4f+/Pz4fPjz6/Xfvw0eb4N+e7jrL/3udiJ8+3XL7ePt7Nu7/f527ilfzu313L/8+kpG/nR3PVxep/8yHw9fl8svv8TPd/755wn/ZPD7+0+/vt7fjP7LudepRz7ffXruhz/f3v73b2//3evUv6/4g7PFfzrbT/3zz9vOl8PD4/Xw3Ovjc7vN1T71w/Xx9q9y//Tcv77Ux/H12ssfm2D73wn+0LZK28LRtkXbZm3B2iZrm6xtsrbJ2mZrm61ttrbZ2qK1RWuL1hatbbG2xdoWa1usLVlbsrZkbcnaVmtbrW21ttXaNmvbrG2zts3admvbrW23tt3asrVla8vWlq2tWFuxtmJtxdqqtVVrq9ZWra1ZW7O2Zm3N2rq1dWvr1tatbVjbsLZhbYPawpHawpHagvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN+C+S2Y34L5LZjfgvktmN8m89tkfpvMb5P5bTK/Tea3yfw2md8m89tkfpvMb5P5bTK/Tea3yfw2md8m89tkfpvMb5P5bTK/Tea3yfw2md8m89tkfpvMb5P5bTK/Tea3yfw2md8m89tkfpvMb5P5bTK/Tea3yfw2md8m89tkfpvMb5P5bTK/Tea3yfw2md8m89tkfpvMb5P5bTK/Tea3yfw2md8m89tkfpvMb5P5bTK/Tea3yfw2md9m89tsfpvNb7P5bTa/zea32fw2m99m89tsfpvNb7P5bTa/zea32fw2m99m89tsfpvNb7P5bTa/zea32fw2m99m89tsfpvNb7P5bTa/zea32fw2m99m89tsfpvNb7P5bTa/zea32fw2m99m89tsfpvNb7P5bTa/zea32fw2m99m89tsfpvNb7P5bTa/zea32fw2m99m89tsfpvNb7P5bTa/zea32fw2m9+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfovktmt+i+S2a36L5LZrfFvPbYn5bzG+L+W0xvy3mt8X8tpjfFvPbYn5bzG+L+W0xvy3mt8X8tpjfFvPbYn5bzG+L+W0xvy3mt8X8tpjfFvPbYn5bzG+L+W0xvy3mt8X8tpjfFvPbYn5bzG+L+W0xvy3mt8X8tpjfFvPbYn5bzG+L+W0xvy3mt8X8tpjfFvPbYn5bzG+L+W0xvy3mt8X8tpjfFvPbYn5bzG+L+W0xvy3mt8X8tpjfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z35L5LZnfkvktmd+S+S2Z31bz22p+W81vq/ltNb+t5rfV/Laa31bz22p+W81vq/ltNb+t5rfV/Laa31bz22p+W81vq/ltNb+t5rfV/Laa31bz22p+W81vq/ltNb+t5rfV/Laa31bz22p+W81vq/ltNb+t5rfV/Laa31bz22p+W81vq/ltNb+t5rfV/Laa31bz22p+W81vq/ltNb+t5rfV/Laa31bz22p+W81vq/ltNb+t5rfV/Laa3zbz22Z+28xvm/ltM79t5rfN/LaZ3zbz22Z+28xvm/ltM79t5rfN/LaZ3zbz22Z+28xvm/ltM79t5rfN/LaZ3zbz22Z+28xvm/ltM79t5rfN/LaZ3zbz22Z+28xvm/ltM79t5rfN/LaZ3zbz22Z+28xvm/ltM79t5rfN/LaZ3zbz22Z+28xvm/ltM79t5rfN/LaZ3zbz22Z+28xvm/ltM79t5rfN/LaZ33bz225+281vu/ltN7/t5rfd/Lab33bz225+281vu/ltN7/t5rfd/Lab33bz225+281vu/ltN7/t5rfd/Lab33bz225+281vu/ltN7/t5rfd/Lab33bz225+281vu/ltN7/t5rfd/Lab33bz225+281vu/ltN7/t5rfd/Lab33bz225+281vu/ltN7/t5rfd/Lab33bz225+281vu/ltN7/t5rfd/Lab37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+y+S2b37L5LZvfsvktm9+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfivmtmN+K+a2Y34r5rZjfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a36r5rZrfqvmtmt+q+a2a35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+a+a2Z35r5rZnfmvmtmd+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfuvmtm9+6+a2b37r5rZvfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W2Y34b5bZjfhvltmN+G+W38xm9P9Xx6eLnvp/7w8VP/1E/P/eOpPt4/3fXr+fHhUG/3CYf68fV2h/b5eLvF6zG8HS/XfP10ef346+Ovz/nhcpdvN2/95XA8vjumv9zgd358yV8fH4635Xd/PXx4ej0Rcnxd3+fL32+rMcY3/wPW0NrN8d8AAA==",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3OsQ0AMAjAMOCGHtzTK/EDYqi9ZE0E/Cvv6VYujwAAAAx7NfDq+AAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/xNkQAWX0PiqQMwIYlwQAfMFiVDPhKR+FIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFAw8AvuvRvgAQAAA=",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA==",
+        "nvme-vtd-table-12.bin": "H4sIAAAAAAAA/+3HQQ0AIAwAMYYMVCABCUiYfxWEDBMk7edyMUe7+qrGfp9VAAAA4H8Hav9eRAAQAAA=",
+        "nvme-vtd-table-21.bin": "H4sIAAAAAAAA/+3OAQkAAAgDsIMV7J/BiMYQZEuw5FZNHw8AAADgvwURq+OeABAAAA==",
+        "nvme-vtd-table-30.bin": "H4sIAAAAAAAA/+3BAQkAAAgDMOEV7I9R7XG25XYAAACAbg9u0yG4ABAAAA==",
+        "nvme-vtd-table-39.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDILdXMLiR7fEBuR0AAACg2wORFkutABAAAA==",
+        "nvme-vtd-temoin-refuse.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA="
+      }
+    },
+    {
+      "profil": "lecture",
+      "vcpus": 1,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "e563ffa61c88b9dd48a70c774dc484bdf9178263a36c06508cc8c1e41f804f64",
+      "sha256_trace": "b4906c6854d0a2155010c7f10aaf34a0d215772cf4596a432c7d6c5379d592f7",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "6",
+            "7",
+            "8",
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [
+          "7",
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ],
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [
+          "4ff921accdcd0025",
+          "e5263f1001620225",
+          "c2f2805fc79c5925",
+          "4ff921accdcd0025",
+          "e5263f1001620225",
+          "c2f2805fc79c5925"
+        ],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 964,
+            "retenu": 11402,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 80,
+            "upile": 3,
+            "tables": 161
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 879,
+            "retenu": 11317,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 32,
+            "upile": 0,
+            "tables": 144
+          },
+          {
+            "phase": "nvme_session",
+            "resident": 964,
+            "retenu": 11402,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 80,
+            "upile": 3,
+            "tables": 161
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 879,
+            "retenu": 11317,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 32,
+            "upile": 0,
+            "tables": 144
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 5,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [],
+        "sha256_tables": {
+          "racine": "10444312672b1aab229d3a3b4913abe8fa1fec7f4b8d3b207059637e94de8e5a",
+          "contexte": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "qi": "ad583d256826a656637ce0abf9c41575f47d1a50e97ebfd751f418d9c6b7b947"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4,
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            512
+          ],
+          [
+            2047,
+            1,
+            512
+          ],
+          [
+            1024,
+            8,
+            4096
+          ],
+          [
+            0,
+            1,
+            512
+          ],
+          [
+            2047,
+            1,
+            512
+          ],
+          [
+            1024,
+            8,
+            4096
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 56
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "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",
+        "trace.log": "H4sIAAAAAAAA/+2YUa+aMBzF3++n6Jsv29IioC7ZkhvlJibzLru6JXtqaqmmGbQKiO7bryA3E6ZOWQUk88GKtOXwO6Hlf+LIxVzE2GUhxZTipSfnxANUiojtIqBOEY+7JGJgf8b7+RAfDuEy8uavo9KDP8fkR2wJj3C4BUl72DeMSLQJwTbg6oC4bgDgDiEKIQTqPEmO8hM1XK3xsKIci9hn2Pe5xHSxVN2l6j6ZjD+/SUQv+DLVHkjPY0H2zwe4M201z/5uXZ8EOAqICL3ksi6LAYTvof1OXYjLOL0QTD/g7UewXKWceslfwCfhD3W0WCx+KyGuzwWmvgsodwEC4Vo1EMgVVT1t1QriM9B5/jZx8ONogoeTER6PnOfZ+Ol75wpBZkGQfUoQE+sN2zAcsDWm0l95LOJSZOroXp27hWpY0qK0zdirn1coQgVF3YKim8M2Gg3baBfsbqNhd9sF28zDHhyHPXVm+Ml5nH19caadizCZ7cJk5TFZxzENXxQjBw+/XMbIahcjO88InWU0vZCR3VBGRmEm8xSj5O0hA9QDIkzuZZft3SgjZeRJqa+UlAI1OoAUMJKbBgGhXoHURis3IgIWMoA3J1fy0LEg9vYOIT0OdQuKrEod6utxqH/eod5V96HDo36LPBro8Whw6FE/88iEAzszSUmp2KRBQ00qW6DA/H4Aj+8HI+eTc8V+oGZt5oZQllKhjjPPUrr0zQJVW3/9Q7FsJsVy6fHwrlKF7l2pNavLQFDx4Tm5fFaUgaDien7yaa4qA0HFZ7D0el4W9s0yEC2wtWYg9cO+WQaiBbbWDKR+2HeRgdSPqfkZSP2Mmp+BaGTUigxEy4KoNQNBxdKtdFFSyqEGZiBaPNKagdTsURMzEC0mac1ANJpUtkC5gwyk/k3zHjKQv1L6n4FclCpYD78A85Vpe7YiAAA=",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/+3KuQ0AIAwEQd4CXAT9t0ANVMQTAREXsyNZ8klr7tSuXcb5+VRb2x76IPZR7JPY560HAAAAAOBHHfunTOUAEAAA",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDIB/BhvZPYY8PyO0AAAAA3R5Yei0VABAAAA=="
+      }
+    },
+    {
+      "profil": "lecture",
+      "vcpus": 1,
+      "secteur": 4096,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "30a1e19d1bbef8d466c28b29fa2842d93fb96babcf28e6cacd7b47ab23629b4d",
+      "sha256_trace": "3b69f4d15a4e415b8179a4fcc1d0ee1a2408ea384b591607db0fc4b123fbfc57",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "988973e58c8ae325"
+        ],
+        [
+          255,
+          1,
+          "76f7bf15c8b58f25"
+        ],
+        [
+          128,
+          1,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "6",
+            "7",
+            "8",
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [
+          "7",
+          "7"
+        ],
+        "geometrie": [
+          [
+            "256",
+            "4096"
+          ],
+          [
+            "256",
+            "4096"
+          ]
+        ],
+        "fnv64_lus": [
+          "988973e58c8ae325",
+          "76f7bf15c8b58f25",
+          "c2f2805fc79c5925",
+          "988973e58c8ae325",
+          "76f7bf15c8b58f25",
+          "c2f2805fc79c5925"
+        ],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 964,
+            "retenu": 11402,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 80,
+            "upile": 3,
+            "tables": 161
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 879,
+            "retenu": 11317,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 32,
+            "upile": 0,
+            "tables": 144
+          },
+          {
+            "phase": "nvme_session",
+            "resident": 963,
+            "retenu": 11401,
+            "ipc": 10,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 80,
+            "upile": 3,
+            "tables": 161
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 879,
+            "retenu": 11317,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 32,
+            "upile": 0,
+            "tables": 144
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 5,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [],
+        "sha256_tables": {
+          "racine": "10444312672b1aab229d3a3b4913abe8fa1fec7f4b8d3b207059637e94de8e5a",
+          "contexte": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "qi": "ad583d256826a656637ce0abf9c41575f47d1a50e97ebfd751f418d9c6b7b947"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4,
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            4096
+          ],
+          [
+            255,
+            1,
+            4096
+          ],
+          [
+            128,
+            1,
+            4096
+          ],
+          [
+            0,
+            1,
+            4096
+          ],
+          [
+            255,
+            1,
+            4096
+          ],
+          [
+            128,
+            1,
+            4096
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 56
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "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",
+        "trace.log": "H4sIAAAAAAAA/+2YX6+aMBjG78+n6J0329Iqoi7ZkhPlJCbzLDu6JbtqaltNMygKFd23X0GWSafHP6sCZl5YC215+T2Wl/dJFMNCJpjxmGJK8dwPp8QHNJSKbxTQp4gvGFEcbM/4Px+S3SkiVP7096ys8/ec4ow1EQrHa5C2u2NjRdQqButI6A5hLAJwgxCFEAJ9nqS94kIVj7b5sKACyyTgOAhEiOlsroeHevhoNPz8Jg16JuZZ7FHo+zzKj3yAG8fV62zvlgUkwioiMvbTyzKeAAjfQ/edvpAIk+xCMPuAtx/BfJFx6qSHQEDiH7o3m83+REJYICSmAQNUMIBAvNQNBOGC6pGubiUJOGg8fxt5+HEwwv3RAA8H3vNk+PS9cUZAjhGQeyggLpcrvuI44ktMw2DhcyVCmUdHt9GxNdTT0hZlbc5e/zwjImRE1DIiujrsZqVhN+8LdqvSsFv3Bdspwu7thz32JvjJe5x8ffHGjZMwOfeFqV3E1N6Pqf+iGXm4/+U0Ru37YuQWGaFXGY1PZORWlFHTWMk5xCh9e8gBdYCM03vZ5Lkb5aSaRVL6KyOlQQ12IEWcFJZBQOpXIJ1ow5VUwIE9F/hTciYQG0/EzlYiZEeilhFR+6YSde1I1D0i0Vn3YUOj7h1p1LOjUe+IRt1b76NeRTW6tECBxXwA9+eDgffJOyMf6FWrmRAupWTUcc6rlE59s0C3rb/+oVh20mL54vmwVq5Cq1bROrfzQJCxedxuyR4IMp/nB//xt/JAkLkHzQxzddhX80CswLbqgZQP+2oeiBXYVj2Q8mHXwgMpH1P1PZDyGVXfA7HIyCzezBKjHh6IlSeiVQ8EmbWbWRVfV6IKeiBWNLLqgZSsUQU9ECsaWfVALGp0aYFSAw+k/KRZBw/kKKX/HshJrkL74RfHnn5VtiIAAA==",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/+3KuQ0AIAwEQd4CXAT9t0ANVMQTAREXsyNZ8klr7tSuXcb5+VRb2x76IPZR7JPY560HAAAAAOBHHfunTOUAEAAA",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDIB/BhvZPYY8PyO0AAAAA3R5Yei0VABAAAA=="
+      }
+    },
+    {
+      "profil": "lecture",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "832f4b16c7c33a963f48bb91c3cc2c4e0f27f6addcd48e855b922c3f27ae3d9e",
+      "sha256_trace": "3cbd8ac18529fe3438ac9d3b24d92cd502e55e33af4284960774ca5e6d14178c",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "6",
+            "7",
+            "8",
+            "1",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [
+          "7",
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ],
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [
+          "4ff921accdcd0025",
+          "e5263f1001620225",
+          "c2f2805fc79c5925",
+          "4ff921accdcd0025",
+          "e5263f1001620225",
+          "c2f2805fc79c5925"
+        ],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 926,
+            "retenu": 11402,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          },
+          {
+            "phase": "nvme_session",
+            "resident": 1010,
+            "retenu": 11486,
+            "ipc": 10,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 926,
+            "retenu": 11402,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 5,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "qi": "ce71a00875e68692e19bd5ac69bb24db61c2e760e5c734f51ab6fda7457d35b9"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4,
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            512
+          ],
+          [
+            2047,
+            1,
+            512
+          ],
+          [
+            1024,
+            8,
+            4096
+          ],
+          [
+            0,
+            1,
+            512
+          ],
+          [
+            2047,
+            1,
+            512
+          ],
+          [
+            1024,
+            8,
+            4096
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 56
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "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",
+        "trace.log": "H4sIAAAAAAAA/+2YX6+aMBjG78+n6J0329IioC7ZkhPlJCbzLDu6JbtqaltNM/4oVHTffgU5mTB1yiogmRfWSltefk/al/eJJcPCjzHjEcWU4qUbzIkLaOBLvpNAXSKuYERysL/i/nyID6eIQLrz11lp5885+RlbIiSOtiBpD8dGkshNBLahUB3CWAjgDpkMQgjUdZL08gs1PFrjYUUF9mOPY88TAaaLpRoeqOGTyfjzmyTohVimsYeB6/Iw++cD3Jm2Wmf/tMwjIZYh8SM3uS3jMYDwPbTfqRuJIE5vBNMPePsRLFcpJ9JN+h6JfqjeYrH4HQlhnvAx9RigggEEorVqIAhWVI20VesTj4PO87eJgx9HEzycjPB45DzPxk/fO1cEZBYC6p0KiPvrDd9wHPI1poG3crkUgZ9FR/fRsS1U05IWpW3GXv28IiJUiMgsRHRz2EajYRvtgt1tNOxuu2CbediD47Cnzgw/OY+zry/OtHMRJrNdmKw8Jus4puGLYuTg4ZfLGFntYmTnGaGzjKYXMrIbysgorGSdYpS8PWSAesCPkmfZZbkbZaSMPCn1lZJSoEYHkEJOcssg4KtXIJVog40vgYUM4M7JlTx0HIi9vUJIj0LdQkR2pQr19SjUP69Q76rn0KFRv0UaDfRoNDjUqJ9pZMKBnYmksFcs0qChIpUtUGA+H8Dj+WDkfHKuyAdq1WYmhLKUCnWceZbSpW8WqNr66x+KZTMplkvPh3flKnTvKlqzOg8EFTfPyeOzIg8EFc/zk7u5Kg8EFfdg6fO8LOybeSBaYGv1QOqHfTMPRAtsrR5I/bDvwgOpH1PzPZD6GTXfA9HIqBUeiJYDUasHgoqlW+mipJRCDfRAtGik1QOpWaMmeiBaRNLqgWgUqWyBcgceSP1J8x48kL9S+u+BXOQqWA+/ANc9T4i2IgAA",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/+3KyQkAIAwFUdcCAmnB/lsRK3I5qSdzdh4E8mHEndq1yzg/n6pry0MfjH009snY560HAAAAAOBHHZRUrhsAEAAA",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA=="
+      }
+    },
+    {
+      "profil": "lecture",
+      "vcpus": 2,
+      "secteur": 4096,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "f7b180936c77cc05b13d019a8f2809d23dd8d15e2264c43cf494d6d6e8ce4a9e",
+      "sha256_trace": "c43a764962894193ace4b810c4a056413bc244139a6a3e848b96462867434de0",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "988973e58c8ae325"
+        ],
+        [
+          255,
+          1,
+          "76f7bf15c8b58f25"
+        ],
+        [
+          128,
+          1,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "6",
+            "7",
+            "8",
+            "1",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [
+          "7",
+          "7"
+        ],
+        "geometrie": [
+          [
+            "256",
+            "4096"
+          ],
+          [
+            "256",
+            "4096"
+          ]
+        ],
+        "fnv64_lus": [
+          "988973e58c8ae325",
+          "76f7bf15c8b58f25",
+          "c2f2805fc79c5925",
+          "988973e58c8ae325",
+          "76f7bf15c8b58f25",
+          "c2f2805fc79c5925"
+        ],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 926,
+            "retenu": 11402,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          },
+          {
+            "phase": "nvme_session",
+            "resident": 1010,
+            "retenu": 11486,
+            "ipc": 10,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 926,
+            "retenu": 11402,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 5,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "qi": "ce71a00875e68692e19bd5ac69bb24db61c2e760e5c734f51ab6fda7457d35b9"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4,
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            4096
+          ],
+          [
+            255,
+            1,
+            4096
+          ],
+          [
+            128,
+            1,
+            4096
+          ],
+          [
+            0,
+            1,
+            4096
+          ],
+          [
+            255,
+            1,
+            4096
+          ],
+          [
+            128,
+            1,
+            4096
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 56
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "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",
+        "trace.log": "H4sIAAAAAAAA/+2YUa+aMBiG78+v6J0329Iqoi7ZkhPlJCbzLDu6JbtqaltNM6AKFd2/X0GWCdOjsgpI5oW10paP50378b2RYlj4EWY8pJhSvHTlnLiASl/xnQL6EnEFI4qD/RX350N0OEVI5c5/z0o6f8/JztgSoXC4BXF7ODZURG1CsA2E7hDGAgB3yGIQQqCvk7iXXajm0bYfVlRgP/I49jwhMV0s9XCph08m489v4qAXYpnEHkjX5UH6zwe4s2y9zv5pmUcCrALih258W8YjAOF7aL/TNxIySm4Ekw94+xEsVwkn0on7Hgl/6N5isfgTCWGe8DH1GKCCAQTCtW4gkCuqR9q69YnHQev528TBj6MJHk5GeDxynmfjp++tKwKycgH1TgXE/fWGbzgO+BpT6a1croT00+joPjq2hXpa3KKkTdnrn1dEhHIRWbmIbg67XWvY7WbB7tQadqdZsK0s7MFx2FNnhp+cx9nXF2faugiT1SxM3Sym7nFMwxfNyMHDL5cx6jaLkZ1lhF5lNL2QkV1TRu3cSt1TjOK3hxRQD/hh/Cy7NHejlFQ7S0p/JaQ0qNEBpICTzDII+PoVSCdaufEVsODABu6cXAnExInY20uEzEjUyUVklypR34xE/TMSXfUcJjTqN0ijgRmNBmc06pe9jwY11ahogQKz+QAezwcj55NzRT7Qq9YzIRSllKvjrFcpXfpmgcqtv/6hWLbiYrnwfHhXrkLnrqK1yvNAUH7znDw+S/JAUP48P7mby/JAUH4PFj7Pi8K+mQdiBLZRD6R62DfzQIzANuqBVA/7LjyQ6jHV3wOpnlH9PRCDjJrhgRg5EY16IChfuxWuSgpJVEMPxIhGRj2QijWqoQdiRCOjHohBjYoWKHfggVSfNO/BAzlL6b8HcpGr0H34BaY9gvS2IgAA",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/+3KyQkAIAwFUdcCAmnB/lsRK3I5qSdzdh4E8mHEndq1yzg/n6pry0MfjH009snY560HAAAAAOBHHZRUrhsAEAAA",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA=="
+      }
+    },
+    {
+      "profil": "lecture",
+      "vcpus": 4,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "05fbe79f386ca8cb334e4885eb0b7194b0b6e6b90fa2a4b5a84186a9d5b851dc",
+      "sha256_trace": "e5222075a674faa78fa0150a7fd1fb3781840e3a4a1878735ee8fc1b8040d63c",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "3",
+            "0",
+            "0"
+          ],
+          [
+            "6",
+            "7",
+            "8",
+            "3",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [
+          "7",
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ],
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [
+          "4ff921accdcd0025",
+          "e5263f1001620225",
+          "c2f2805fc79c5925",
+          "4ff921accdcd0025",
+          "e5263f1001620225",
+          "c2f2805fc79c5925"
+        ],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1076,
+            "retenu": 11615,
+            "ipc": 10,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 128,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 992,
+            "retenu": 11531,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 80,
+            "upile": 0,
+            "tables": 145
+          },
+          {
+            "phase": "nvme_session",
+            "resident": 1076,
+            "retenu": 11615,
+            "ipc": 10,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 128,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 992,
+            "retenu": 11531,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 80,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 5,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [],
+        "sha256_tables": {
+          "racine": "1672c47c6a561bbf2cb69e6e67d448b9bc20dd6c3d7fffb5a445e24895774e44",
+          "contexte": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "qi": "d4a7a4c2fbe0943cfe23146ec4baa52cb90bb95524b9578a5d81a4fbe063e291"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4,
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            512
+          ],
+          [
+            2047,
+            1,
+            512
+          ],
+          [
+            1024,
+            8,
+            4096
+          ],
+          [
+            0,
+            1,
+            512
+          ],
+          [
+            2047,
+            1,
+            512
+          ],
+          [
+            1024,
+            8,
+            4096
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 56
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "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",
+        "trace.log": "H4sIAAAAAAAA/+2YX6+aMBjG7/0UvfNmW1oEhCVnyYlyEpN5lh3dkl01tRTTjD8KiO7bryAnE6YeZRWQzAtrpS0vvyfty/sksY25n2CbRRRTipdusCAuoIEfs10MxCXicpvEDOyvuL96yeEUHsTu4nVW1vl7TnHGlvAYR1uQtodjo5jEmwhsQy46xLZDAHfIcCCEQFwnaa+4UMujVXoryrGfeAx7Hg8wdZZieCCGT6eTL+/SoB2+zGIPA9dlYf7PA9ypulhn/7S2R0Ich8SP3PS2NksAhB+h/kHciAdJdiOYfcD7T2C5yjgxLe17JPopeo7j/ImE2B73MfVsQLkNEIjWooEgWFExUhetTzwG+s/fpxZ+HE/xaDrGk7H1PJ88/ehfEZBaCsg8FRDz1xu2YThka0wDb+WymAd+Hh3dR2dvoZiWtihrc/bi5xURoVJEeimim8NWWg1b6RbsQathD7oFWy3CNo/Dnllz/GQ9zr+9WLP+RZjUbmHSipi045hGL4KRhUdfL2OkdYuRXmSEzjKaXchIbykjpbTS8BSj9O0hBzQEfpQ+yy7P3SgnpRRJia+MlAA1PoAUMlJYBgFfvAKJRBts/BhoSAHuglzJQ8aBONwrhOQoNChFZNSqkCFHIeO8QsOrnkOGRkaHNDLlaGQeamTkGqnQ1HORBPaaRTJbKlLVAgUW8wE8ng/G1mfrinwgVm1nQqhKqVTHqWcpXfpmgeqtv/6hWFbTYrnyfHhXrsLgrqJV6/NAUHnznDw+a/JAUPk8P7mb6/JAUHkPVj7Pq8K+mQciBbZUD6R52DfzQKTAluqBNA/7LjyQ5jG13wNpnlH7PRCJjDrhgUg5EKV6IKhculUuSiop1EIPRIpGUj2QhjVqowciRSSpHohEkaoWKHfggTSfNO/BA3mT0n8P5CJXQev9Bq4O3SC2IgAA",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/+3KuQ0AIAwEQd4CnLkB+u+FSiiBJwIiHLMjWfJJK+5Ur13G+fk0XVse+mDso7FPxj5vPQAAAAAAP+qSwWt8ABAAAA==",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDIN/C2Ea2xwfkdgAAAIBuD84oHEIAEAAA"
+      }
+    },
+    {
+      "profil": "lecture",
+      "vcpus": 4,
+      "secteur": 4096,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "961c4ff239f49bfb7ab4a4c22dab17d125c1acbd0d426a917803429fd6647adc",
+      "sha256_trace": "2d981d16926e9770741d72dcc30bcbbca8961e3f78e333cc7e22fef723b1bab6",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "988973e58c8ae325"
+        ],
+        [
+          255,
+          1,
+          "76f7bf15c8b58f25"
+        ],
+        [
+          128,
+          1,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "3",
+            "0",
+            "0"
+          ],
+          [
+            "6",
+            "7",
+            "8",
+            "3",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [
+          "7",
+          "7"
+        ],
+        "geometrie": [
+          [
+            "256",
+            "4096"
+          ],
+          [
+            "256",
+            "4096"
+          ]
+        ],
+        "fnv64_lus": [
+          "988973e58c8ae325",
+          "76f7bf15c8b58f25",
+          "c2f2805fc79c5925",
+          "988973e58c8ae325",
+          "76f7bf15c8b58f25",
+          "c2f2805fc79c5925"
+        ],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1076,
+            "retenu": 11615,
+            "ipc": 10,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 128,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 992,
+            "retenu": 11531,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 80,
+            "upile": 0,
+            "tables": 145
+          },
+          {
+            "phase": "nvme_session",
+            "resident": 1077,
+            "retenu": 11616,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 128,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 992,
+            "retenu": 11531,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 80,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 5,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [],
+        "sha256_tables": {
+          "racine": "1672c47c6a561bbf2cb69e6e67d448b9bc20dd6c3d7fffb5a445e24895774e44",
+          "contexte": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "qi": "d4a7a4c2fbe0943cfe23146ec4baa52cb90bb95524b9578a5d81a4fbe063e291"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4,
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            4096
+          ],
+          [
+            255,
+            1,
+            4096
+          ],
+          [
+            128,
+            1,
+            4096
+          ],
+          [
+            0,
+            1,
+            4096
+          ],
+          [
+            255,
+            1,
+            4096
+          ],
+          [
+            128,
+            1,
+            4096
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 56
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "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",
+        "trace.log": "H4sIAAAAAAAA/+2YX6+aMBjG7/0UvfNmW1pFhJNsyYlyEpN5lh3dkl01tS2mGX8UEN23X0GWCUePyiogmRfWSltefk/al/eJI4aFF2PGQ4opxUvHXxAHUN+L+C4C8hJxBCMRB/srzq9OfDhF+JGz+DMr7byek5+xJSLC4RYk7eHYMCLRJgTbQMgOYSwAcIcMG0II5HWS9PILNTzaXmdFBfZil2PXFT6m9lIO9+Xw6XTy5V0StC2WaeyB7zg8yP75CHeaLtfZPy1zSYCjgHihk9yW8RhA+AD1D/JGwo/TG8H0A95/AstVyokPkr5Lwp+yZ9v230gIc4WHqcsAFQwgEK5lA4G/onKkLluPuBx0n79PLfw4nuLRdIwnY+t5Pnn60b0iIK0QkHkqIO6tN3zDccDXmPruyuGR8L0sOrqPjm2hnJa0KG0z9vLnFRGhQkR6IaKbw+41GnavXbD7jYbdbxdsLQ/bPA57Zs3xk/U4//ZizboXYdLahWmQxzQ4jmn0IhlZePT1MkaDdjHS84zQm4xmFzLSG8qoV1hpeIpR8vaQARoCL0yeZZflbpSR6uVJya+UlAQ1PoAUcJJbBgFPvgLJROtvvAho0NSBsyBXAlFxIg73EiE1EvULERmVSmSokcg4I9FVz6FCI6NFGplqNDLPaGRUvY/MhmpUtkCB+XwAj+eDsfXZuiIfyFWbmRDKUirUcdqblC59s0DV1l//UCxrSbFcej68K1ehf1fRatV5IKi4eU4enxV5IKh4np/czVV5IKi4B0uf52Vh38wDUQJbqQdSP+ybeSBKYCv1QOqHfRceSP2Ymu+B1M+o+R6IQkbt8ECUnIhKPRBUrN1KVyWlJGqgB6JEI6UeSM0aNdADUaKRUg9EoUZlC5Q78EDqT5r34IGcpfTfA7nIVRh0fgPnXMYbtiIAAA==",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/+3KuQ0AIAwEQd4CnLkB+u+FSiiBJwIiHLMjWfJJK+5Ur13G+fk0XVse+mDso7FPxj5vPQAAAAAAP+qSwWt8ABAAAA==",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDIN/C2Ea2xwfkdgAAAIBuD84oHEIAEAAA"
+      }
+    },
+    {
+      "profil": "mort",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "b88a202fe9b7e360e00812a9f300879c08384964577660b475efbe0a91b5fc8c",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "d06f07b4c70ad6ae3674a1efffda3cac64b23bb1bb591243a8555e889d978e3d",
+      "sha256_trace": "019b81c02620ca5b53912e3d0f90832311b91b6b0b61d7b63bda3b70bc75e7c7",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "1"
+          ]
+        ],
+        "mdts": [
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 931,
+            "retenu": 11407,
+            "ipc": 0,
+            "dma": 13,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 2,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [
+          {
+            "iova": 33554432,
+            "droits": 1
+          },
+          {
+            "iova": 33558528,
+            "droits": 2
+          },
+          {
+            "iova": 33562624,
+            "droits": 1
+          },
+          {
+            "iova": 33566720,
+            "droits": 2
+          },
+          {
+            "iova": 33570816,
+            "droits": 2
+          }
+        ],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "a6c2ba81dca410027a5aa66b22ffabe0e194dd0a5be2dd4a5292025c1463cf20",
+          "qi": "f594e055688c4a9e916f188b4404a523d8615d20502ae88c0cbfbfc0b64ae299",
+          "table-39": "136ab5a1d91c29136ac3f1735d13f0bc115ce4db56506fbaf762bbf33458956b",
+          "table-30": "0cb1cf144a2b5586a65910916c6c403c46e453cdc337497440116692a176ca59",
+          "table-21": "dd9a50f0f1674f991494d5575a853d8f8e8575f55ec2ad89f374127d63907d21",
+          "table-12": "d1c0e48db1c7aac12137b79b9a9b3903d904163b2b2aff6043659508c97dec6b"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            512
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 18
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7VWbW/bNhD+HiC/IF8O+7QCSUpSL5Y7aIBjO1WGOS92mg7oB4+WaIeoXlySMtx/v6NIBW6WdBvQCa35kDre8Z47PsrJJ/bbySdCfyE0O/mUBo8n3yx85+VFoSd78Q7Khhey3sBF0xhCCIWfPkwvr+BuOvsAk4fJ2fxmBncz4l7BWjUV3OZyjtY/kz158xYnCOjlKdmzN28X3HC7jrNLfE6tyfFRH0sbrsz/HezbrF9i4vW10gGWSQeCrHIg7FeirHYgzoQDg+ydA0kGDgyz3ztASdY4QDPuAMsKBwLvkIbeIY2yjQOx90MHPgRNsr0DQ7/CSJY7QLPWAZYZBwIfi4XZyoHI58X6M7OBD8GS7E8Hht446M8c0B70noMg+9mBMHvjQORzD+LsrQOD3k/Sbx96EBLvJ6TeOGQ+9zDobcJs50Dkswjj/tUg0w4k2bkDPRsR8QlGNFs7wHxeUeCNo7AHUQ/ig1YgzI4zbEPsUpEb2dQahAFeSq5hJ5RcS6FPIWIxG8CWb4SGUq6U0OfHR9fNjt8sYEfOaXJOcP4wm+JmbkDW0khewnicYnPCeHG/6MDobuTGxZ0bx27cSaE2IjWqFcdHD/cTuB1fYTSpYHE1sRb4QN5UFa8L4eaDs1+7MXhlwzr5/oZRZnc0yug0hvFVSmAxGt/bwf6M5/hzOZ92vyl5LQb/r4davb6hY8/usMm+s//icwJ0FcQ4oZh+ybXGbZQkhMHFaE7QRU76BwyXZSlSGgdJaP04OmG2uErXvNQdOvsjZVAIzbHSOyHg6vp+n1Zcf2lxYg8ZJnAxm9qEb+c3Y9jKIqVQoy1v0zkqWADbHMOGeKJVBBrpkyKNDqzZP1r/2EZRYiO1UcL2qsbuRSvkajy6RZCQghGS5IyxNYmTGKZufR0yeO8jOS+WjzVUDZalFBuef/VZ7NMQJkgL7cnRQu1kLtKkd5CHnv7L+djWmDF0OR/NYPvIsVr1rhJLLbQ9GsgK708aDynWalUKjbVi8HkrsWrDGNoOBPAo+DYNGKzaoviKfErkkFJojSyl5ka0Cht2q5ocvbYaN1TI5LLJjcBWTqIwdAtdSjodDBmYfNW/D2OSdBGWO57GURTE/jqnEQvDAHKeP2KJIH/kyDOGoiQcxMiyNtK09o3YG8WXolynthqFaHBUvFo+YaER1QZ34qmVMKJu8fxhMoCi4mnyw6rfuXm4Pyv62rhCiW2D3YxgLVp7ITAzKFQjMfn56cdT+/8j8NbYnMlBPX3bd16lbkputdAXatlqrJxKLT8FblzK2ghVWJ80cFr5tBd5R940XoayMbaeq7LJsY3yUlpWIsi37dK/pN1kpbd4kq75qHdyZRmU668wbmqjGkxDWbJtc6MewE53bY6tZxNABtPrm4cRoUMyn44mnStspe6vC3QnYGxUCVWBxx08D3DNK6G3PBdQ6+6y26+ATSBlBDktVzyNKAPkMg7TUITrKA5pQAIaDANMeTK9+PC+u/gBdI5dZuBu/1MU/KKssbuRFdsQ+vV9TiOAo53GSVvJ7uocCEzwssDkCX0uMF9arniNslgLXzdk35bZyeFaKLworRLLbS6dVirBCx/RGR3EDV+OOxwGL8lg9LJ1Mniypn2tn86BdUOyUmRIcWmgaXFBGShasHevxO+IAKGUvZXXTS08PVZGALuxwjS7lhb7rVRd9/pED3jo0+wiLPOmXksM3uf6TLa6Iiz74/xdvMLIixf2iRMv8qJ4kW+0ixxoF/m+dpF/q1wR+6HKNQwOhYs44aL9JxrNkHmFKfT6hXvXssYRxWCHNxrvjrddyZLX0Hz2krWY3UIh+aZu8FC5vfxWgrb2k2QfwuyXhLF8RV60pc9tWSDEwNty7AzjW6huVIWymjcNilTd884NplRY2vcBiHpZyk0tugnPP7txpTF/3Wlt1QqHjo/+ApuijfxtDQAA",
+        "trace.log": "H4sIAAAAAAAA/92WTYvbMBCG7/sr5pZLWyTHdmihhSXxQg7e0k1a6EkokhxE9ZHYipP++44dl8bubklgCyE+eDzWfLx6BJLqIJl2NZOqEkwItjZ+xQ0I74I6BMAhbrTkQcFxxPy8q09TtA9m9Turdf7O6WfsuQ6s2kNjT2OrwMOugn2p0eFSlkAONJaEEMBx3nj9QleuNrrbCM1cbRWzVnsmijWGewzP8/nnN43oQq9b7aU3RpXdn4/kEKdY5zhbaXnJQsldZZq2UtVAyAeSvsNG2tdtI9I+8PYTrDctJz5ufMurH+gVRfFHCZdWOyasBKElUKi2aAj4jcDIFK3jVsHo8VuesftZzqb5jM1n2eNy/vB9dIGgeCBo8pIg5bY7tVOsVFsmvN0YFbR3nTpxVCf3BNMaS1vbscfPCxTRgaJ4oOi/w46uGnZ0W7DHVw17fFuw4z7s98/DXmRL9pDdL78+ZYvRWZji28KU9DElz2OaPiGjjE2/nMcouS1GaZ8R/SejxZmM0itlFA0qJS8xam4PHaAJuKqZy6E7u2lHKuqTwldLCkHNTiCVivfKUHB4BcKD1u9cgIRGYFb8Qh6vsSFOjitEX2eFxgNF6UDRLxy9rWr0CgAA",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3OsQ0AMAjAMOCGHtzTK/EDYqi9ZE0E/Cvv6VYujwAAAAx7NfDq+AAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/xNkQAWX0PiqQMwIYlwQAfMFiVDPhKR+FIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFAw8AvuvRvgAQAAA=",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA==",
+        "nvme-vtd-table-12.bin": "H4sIAAAAAAAA/+3HQQkAIBAAQc8YpjCCEYxgBPu/RM4Swsxn2eitXHVkY75frzsLAAAA/OsAlXrVrAAQAAA=",
+        "nvme-vtd-table-21.bin": "H4sIAAAAAAAA/+3OAQkAAAgDsIMV7J/BiMYQZEuw5FZNHw8AAADgvwURq+OeABAAAA==",
+        "nvme-vtd-table-30.bin": "H4sIAAAAAAAA/+3BAQkAAAgDMOEV7I9R7XG25XYAAACAbg9u0yG4ABAAAA==",
+        "nvme-vtd-table-39.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDILdXMLiR7fEBuR0AAACg2wORFkutABAAAA=="
+      }
+    },
+    {
+      "profil": "client",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "1bd787c47a245367da93dd8f54380517c5ca4bf0053939de73fb648775449d55",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "7e173cd634be63f55419b86bd73f236669f8b0c26a992ba8e22aa76a2cdf61c4",
+      "sha256_trace": "c9e020a7c1774242de0a904410864cef829a54e6bac31d18eeb5f1f51dd051b4",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "2"
+          ]
+        ],
+        "mdts": [
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 926,
+            "retenu": 11402,
+            "ipc": 0,
+            "dma": 8,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 3,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "qi": "ab5ffd7b0f51465cdabbc01f1642328afb555623d38d94c968bcff8ca4270b59"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1,
+          0,
+          4
+        ],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 19
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7VWW2/bNhR+D5BfkJeDPbVAkpLUxXIHDXBsp/JQ52Kn6YA+eLREOUR1cUnJcP/9DkUqdbOk24BOaM1P1Ll+5/AwJ5/Y7yefCP2V0OTkU+w9nHy38YOPF5me7MVbKGqeyWoDF3XdEEIo/PJhejmD2+n8A0zuJ2eL6znczon9BLmqS7hJ5QKlX5E9ef0GXxDQy1OyZ6/fLHnDzT6+XeJzakSOj3pfuuGq+b+dfZ/1c0y8vFdYwBJpgZeUFvj9TpBUFoSJsGCQvLUgSsCCYfK+A5QktQU04RawJLPAcwap7wzSINlYEDo7dOBc0CjZWzB0O4wkqQU0aS1gSWOB53wxP1lbELi8WB8zGzgXLEr+tGDohL0+Zo/2oLfseckrC/zktQWBy90LkzcWDHo7Ua8+dMAnzo5PnbDPXO6+18v4yc6CwGXhh/2nQaItiJJzC3o2AuISDGiSW8BcXoHnhAO/B0EPwoNWIMysc2xD7FKRNrKuNIgGeCG5hp1QMpdCn0LAQjaALd8IDYVcK6HPj4+u6h2/XsKOnNPonOD7/XyKyrwBWclG8gLG4xibE8bLu2UHRrcjuy5v7Tq2604KtRFxo1pxfHR/N4Gb8Qy9SQXL2cRI4ANpXZa8yoR9H5z91q3eCwp59GOFUWI0atXoOITxLCawHI3vzGJ+xgv8uVxMu9+YvOSD/9eg1i8rdOwZDZPsW/MvPCdA116ILxTTL7jWqEZJRBhcjBYETaSkf6DhsihETEMv8o0dSyfMl7M454Xu0NkfMYNMaI6V3gkBs6u7fVxy/aXFFxOkH8HFfGoSvllcj2Ers5hChbK8jRc4wTzYpujWx4jWAWikT4o4OJBm/yj9cxtFiY3UjRKmVzV2L0ohV+PRDYKIZIyQKGWM5SSMQpja/dxn8M55slYMHzmUNZalEBuefnVZ7GMfJkgL7cnRQu1kKuKoN5D6jv7LxdjUmDE0uRjNYfvAsVrVrhQrLbQJDWSJ5ycOhxRrtS6Exlox+LyVWLVhCG0HPHgQfBt7DNZtln1FPiVySCm0jSyk5o1oFTbsVtUpWm01KpTI5KpOG4GtHAW+bze6lHQ8GDJo0nX/3Q9J1HlY7XgcBoEXuuMcB8z3PUh5+oAlgvSBI8/oihJ/ECLLupFNa76IfaP4ShR5bKqRiRpXxcvVIxYaUdWgJkatRCOqFuP3owFkJY+jn1b9zsz93VnW18YWSmxr7GYEuWjNgcDMIFO1xOQXpx9Pzf+PwNvG5EwO6unavrMqdV1wMwtdoVatxsqp2PCToeJKVo1QmbFJPTsrH3WRd+RN42Eo6sbUc13UKbZRWkjDSgDptl25j7R7WestRtI1H3NGZoZBmX+FcV01qsY0lCHbNDfOA9jprs2x9UwCyGB8dX0/InRIFtPRpDOFrdT9dYHmBIwbVUCZYbiDpw6ueCn0lqcCKt0ddnMLmARiRpDTYs3jgDJALkM/9oWfB6FPPeJRb+hhypPpxYd33cH3oDNsMwN7+h+94I2SY3cjK6Yh9KFeYPUsPW5GAEc5jc2DlURjmYACo2qVOBg0wfODJhp4TwcNulRcNt86I7WkmvZGmEtVClv+7gs2uOnz2fXd+4s4Q80KPo5md99Eu1tw1R8J02AHYXnPh5VGtA+L0gNx/3nx4dA7FO/SyAU6NyRgfZHUuE+rbnFDNZC1YAIq8L4RIJQy6V3VlUBDbSl11+7YtaWsRIfFfitV1+XufvjScsUrvEYq4Xaci1Wfujt5T8ZbV6xVH87fh5wfuCGH/WSHHHl2yJHvZhw5mHHkxzOO/NsJF7DoZ064IQsPBhxeyocDDqWQeIUZ9GMOVXNZ4RrBDs+9fjzta1nwCurPjt7l/AYyyTdVjSGlZkSYQbU1F5d5CDP3DWPpmjwrS5/KMk+IgZPl2BeNa6CqViUO37SucZRVPeu8wYQyQ/reA1GtCrmpRPfC0892XWvMXncTuWyFRcdHfwFQMKpkkw0AAA==",
+        "trace.log": "H4sIAAAAAAAA/93WQU/CMBQH8DufojcuajoYA000ITASEodR0MTTS2k70tiusJWB395uYGSIBDQaHJfHW/vWP7+EpKlhIKIUGE8oUAoTqcdEIqojw5cG2SUiBSOGo9WKfK2kmyNCGzl+n8qbzzPFiQURBpIFyurm3sQQM0/QIha2IYzFCC8dl2GMkV0nWVd80YmnrVWmVECUKg5KCQ00nNjt2m4Pgv7dWRY6FJM8e6yl5PH6yTVeup59z+rXMkViMDGJEpkdy3iKML7C3oU9SOg0PwjnH3R+gybT3InUs16R5MV2YRh+JCFMiQioYogKhhyUzGzBSE+p3enZGhHFUXXwFPjQ7gbQCbrQ7/qDUb/3XD0ikLsVqPlVIB7N5nzOIeYzoFpNJTdCR+t0dJWOLbAdy6qT17W9/XpEImcrkbuV6NexayeNXSsXdv2ksevlwnaL2Je7sYf+CHp+e/T44A+rBzG55WJqFJkau5k6D9bIh879YUaNchl5RSNnr9HwQCOvXEbNohHebdT1b/0jjJrlMmoVjdy9Rof+11p/avSD26Ob3R6/PY//1TW7XnkDktsGEcMMAAA=",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/+3KwQnAIBBFQTUVCLaQ/lsRK4p6ip4i5DgDC/vh5bBq2777xfHUMnf+0KfD/nr1AAAAwP8eKpVpTQAQAAA=",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA=="
+      }
+    },
+    {
+      "profil": "retrait",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "3c14f6242b727430afe5673aad2d3111cb318b9cc10bae11bd05e614d64289d0",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "85f34558a3a5b89128f527b44245479d6e0f9880c832886a55f5c8e1e8806cb6",
+      "sha256_trace": "019b81c02620ca5b53912e3d0f90832311b91b6b0b61d7b63bda3b70bc75e7c7",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "3"
+          ]
+        ],
+        "mdts": [
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 931,
+            "retenu": 11407,
+            "ipc": 0,
+            "dma": 13,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 2,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [
+          {
+            "iova": 33554432,
+            "droits": 1
+          },
+          {
+            "iova": 33558528,
+            "droits": 2
+          },
+          {
+            "iova": 33562624,
+            "droits": 1
+          },
+          {
+            "iova": 33566720,
+            "droits": 2
+          },
+          {
+            "iova": 33570816,
+            "droits": 2
+          }
+        ],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "a6c2ba81dca410027a5aa66b22ffabe0e194dd0a5be2dd4a5292025c1463cf20",
+          "qi": "f594e055688c4a9e916f188b4404a523d8615d20502ae88c0cbfbfc0b64ae299",
+          "table-39": "136ab5a1d91c29136ac3f1735d13f0bc115ce4db56506fbaf762bbf33458956b",
+          "table-30": "0cb1cf144a2b5586a65910916c6c403c46e453cdc337497440116692a176ca59",
+          "table-21": "dd9a50f0f1674f991494d5575a853d8f8e8575f55ec2ad89f374127d63907d21",
+          "table-12": "d1c0e48db1c7aac12137b79b9a9b3903d904163b2b2aff6043659508c97dec6b"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            512
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 18
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "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",
+        "trace.log": "H4sIAAAAAAAA/92WTYvbMBCG7/sr5pZLWyTHdmihhSXxQg7e0k1a6EkokhxE9ZHYipP++44dl8bubklgCyE+eDzWfLx6BJLqIJl2NZOqEkwItjZ+xQ0I74I6BMAhbrTkQcFxxPy8q09TtA9m9Turdf7O6WfsuQ6s2kNjT2OrwMOugn2p0eFSlkAONJaEEMBx3nj9QleuNrrbCM1cbRWzVnsmijWGewzP8/nnN43oQq9b7aU3RpXdn4/kEKdY5zhbaXnJQsldZZq2UtVAyAeSvsNG2tdtI9I+8PYTrDctJz5ufMurH+gVRfFHCZdWOyasBKElUKi2aAj4jcDIFK3jVsHo8VuesftZzqb5jM1n2eNy/vB9dIGgeCBo8pIg5bY7tVOsVFsmvN0YFbR3nTpxVCf3BNMaS1vbscfPCxTRgaJ4oOi/w46uGnZ0W7DHVw17fFuw4z7s98/DXmRL9pDdL78+ZYvRWZji28KU9DElz2OaPiGjjE2/nMcouS1GaZ8R/SejxZmM0itlFA0qJS8xam4PHaAJuKqZy6E7u2lHKuqTwldLCkHNTiCVivfKUHB4BcKD1u9cgIRGYFb8Qh6vsSFOjitEX2eFxgNF6UDRLxy9rWr0CgAA",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3OsQ0AMAjAMOCGHtzTK/EDYqi9ZE0E/Cvv6VYujwAAAAx7NfDq+AAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/xNkQAWX0PiqQMwIYlwQAfMFiVDPhKR+FIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFAw8AvuvRvgAQAAA=",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA==",
+        "nvme-vtd-table-12.bin": "H4sIAAAAAAAA/+3HQQkAIBAAQc8YpjCCEYxgBPu/RM4Swsxn2eitXHVkY75frzsLAAAA/OsAlXrVrAAQAAA=",
+        "nvme-vtd-table-21.bin": "H4sIAAAAAAAA/+3OAQkAAAgDsIMV7J/BiMYQZEuw5FZNHw8AAADgvwURq+OeABAAAA==",
+        "nvme-vtd-table-30.bin": "H4sIAAAAAAAA/+3BAQkAAAgDMOEV7I9R7XG25XYAAACAbg9u0yG4ABAAAA==",
+        "nvme-vtd-table-39.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDILdXMLiR7fEBuR0AAACg2wORFkutABAAAA=="
+      }
+    },
+    {
+      "profil": "delai",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "48f2552f13e1e249585952e0294c8780c90f5dff53e06dd805b198f7deb3692d",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "5cd5b8d68c0e048e3e76a35791de8c593263344f7936cf6a20f19019562efe23",
+      "sha256_trace": "743abe6f922a01106847d666a7d5ba5b8db10bef4a6d09329e87e31144ad4012",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "4"
+          ]
+        ],
+        "mdts": [
+          "7"
+        ],
+        "geometrie": [
+          [
+            "2048",
+            "512"
+          ]
+        ],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 931,
+            "retenu": 11407,
+            "ipc": 0,
+            "dma": 13,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 2,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [
+          {
+            "iova": 33554432,
+            "droits": 1
+          },
+          {
+            "iova": 33558528,
+            "droits": 2
+          },
+          {
+            "iova": 33562624,
+            "droits": 1
+          },
+          {
+            "iova": 33566720,
+            "droits": 2
+          },
+          {
+            "iova": 33570816,
+            "droits": 2
+          }
+        ],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "a6c2ba81dca410027a5aa66b22ffabe0e194dd0a5be2dd4a5292025c1463cf20",
+          "qi": "f594e055688c4a9e916f188b4404a523d8615d20502ae88c0cbfbfc0b64ae299",
+          "table-39": "136ab5a1d91c29136ac3f1735d13f0bc115ce4db56506fbaf762bbf33458956b",
+          "table-30": "0cb1cf144a2b5586a65910916c6c403c46e453cdc337497440116692a176ca59",
+          "table-21": "dd9a50f0f1674f991494d5575a853d8f8e8575f55ec2ad89f374127d63907d21",
+          "table-12": "d1c0e48db1c7aac12137b79b9a9b3903d904163b2b2aff6043659508c97dec6b"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6,
+          6,
+          9,
+          5,
+          1
+        ],
+        "read_lba_nblocs_octets": [
+          [
+            0,
+            1,
+            512
+          ]
+        ],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 17
+      },
+      "retard_backend_demontre": true,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7VWbW/bNhD+HiC/IF8O+9QCSUpSL5Y7aIBjO1WGOS92mg3oB4+WKIeo3kpKhvvvdxSpzA2SbgM6oTUfUsc73nPHRzn5xH49+UToz4QmJ59i7/Hkm4XvvLzI9Gwv3kNR80xWW7io65YQQuGnj/PLK7ibLz7C7GF2trxZwN2C2FeQq7qE21Qu0foN2ZO373CCgF6ekj17+27FW27WcXaJz6kxOT4aYumWq/b/DvZt1i8x8fpaYQFLpAVeUlrgDytBUlkQJsKCUfLegigBC8bJbz2gJKktoAm3gCWZBZ5zSH3nkAbJ1oLQ+aEjF4JGyd6CsVthJEktoElnAUtaCzwXi/nJxoLA5cWGM7ORC8Gi5E8Lxs7YG87s0QEMnj0veWOBn7y1IHC5e2HyzoLR4Ccato8d8Inz41Nn7DOXu+8NNn6ysyBwWfjh8GqUaAui5NyCgY2AuAQDmuQWMJdX4DnjwB9AMIDwoBUIM+MC2xC7VKStrCsNogVeSK5hJ5TMpdCnELCQjaDhW6GhkBsl9Pnx0XW94zcr2JFzGp0TnD8s5riZtyAr2UpewHQaY3PCdHW/6sHkbmLH1Z0dp3bcSaG2Im5VJ46PHu5ncDu9wmhSwepqZizwgbQuS15lws5HZ7/0o/fKhjz6/oZJYnbUqtVxCNOrmMBqMr03g/mZLvHncjnvf2PyWgz+Xw+1eX1Dz57ZYZJ9b/6F5wToxgtxQjH9gmuN2yiJCIOLyZKgi5QMD7RcFoWIaehFvvFj6YTF6irOeaF7dPZHzCATmmOld0LA1fX9Pi65/tLhxBzSj+BiMTcJ3y5vptDILKZQoS3v4iUqmAdNimF9PNEmAI30SREHB9bsH61/bKMosZW6VcL0qsbuRSvkajq5RRCRjBESpYyxnIRRCHO7nvsMPrhI1ovhI4eyxrIUYsvTry6LfezDDGmhAzlaqJ1MRRwNDlLf0X+5nJoaM4Yul5MFNI8cq1XtSrHWQpujgSzx/sThmGKtNoXQWCsGnxuJVRuH0PXAg0fBm9hjsOmy7CvyKZFDSqFrZSE1b0WnsGEbVafotdO4oUQm13XaCmzlKPB9u9CnpOPRmEGbbob3fkiiPsJ6x+MwCLzQXec4YL7vQcrTRywRpI8cecZQlPijEFnWrWw780bsW8XXoshjU41M1DgqXq6fsNCIqhZ34qmVaEXV4fn9aARZyePoh1W/d/Nwf5YNtbGFEk2N3YwgF525EJgZZKqWmPzy9PdT8/934F1rciYH9XRt33uVui640UJXqHWnsXIqNvxkuHEtq1aozPikntXKp73IO/Km8TIUdWvquSnqFNsoLaRhJYC06dbuJe0nG93gSfrm852TK8OgzL/CtK5aVWMaypBtmhv1AHa6b3NsPZMAMhhf3zxMCB2T5Xwy611hK/V/XaA7AdNWFVBmeNzR8wDXvBS64amASveX3XwFTAIxI8hpseFxQBkgl6Ef+8LPg9CnHvGoN/Yw5dn84uOH/uJ70Du2mYG9/U9R8IuSY3cjK6YhtDvEl44rXqFuVcIRi/SYOli9yoXCTu6UWDeptGKmBM9K2d8ma3SgPN7LypNGdFCe6MDaf9l6PPYOrP/OLrDZ2SJCgRzhufAuNFKhcvIu7Srorxhep506PFbwcqBo5D0XxKd8sYDIWiyUwkLgB6NvAQPtSryqS/HmXpai7tq36KVDSoyaADZliWT2nd2frW9iS90B2QOXeJFlu0b/ucTIA6HPxIs3puGd8QsS5gdOwrBbrISRFyWMfKNg5EDByPcVjPxb/QrYD9WvsXcoX8TKFx0+1GiGxCtMYVAx3JvLCkeUhB3ea7xBznYjC47t8dkJ12pxC5nk26rGQ6VGAowQNebDZB7CzPeEsXRDXrSlz22ZJ8TI2XLskNb1T1WrEsU1rWuUqmrgnbeYUmZo33sgqnUht5XoJzz9bMeNxvx1r7hlJyw6PvoL3azGt3MNAAA=",
+        "trace.log": "H4sIAAAAAAAA/92WXWvbMBSG7/srzl1utiE5tkMHG5TEhVy4o0022JVQJDmI6SOxFSf99z12PBZnbUlggxBf+PhY5+PVI5BUB8m0q5lUlWBCsKXxC25AeBfULgAOcaMlDwr2I+b5pj5M0T6Yxe+s1vk7p5+x5TqwaguNPYytAg+bCralRodLWQLZ0VgSQgDHeeP1C1242uhmJTRztVXMWu2ZKJYY7jE8z6ffPjSiC71stZfeGFV2f76QXZxinf1speUlCyV3lWnaSlUDIZ9J+gkbaV+3jUj7wMevsFy1nPiw8S2vfqFXFMUfJVxa7ZiwEoSWQKFaoyHgVwIjU7SOWwWDhx95xu4mORvnEzadZA/z6f3PwRmC4iNBo7cEKbfeqI1ipVoz4e3KqKC969SJvTq5JZjWWNrajj1+nqGIHimKjxT9d9jRRcOOrgv28KJhD68LdtyHffs67Fk2Z/fZ3fz7UzYbnIQpvi5MSR9T8jqm8RMyytj48TRGyXUxSvuM6LuMZicySi+UUXRUKXmLUXN76ACNwFXNXHbd2U07UlGfFL5aUghqcgCpVLxXhoLDKxAetH7jAiQ0ArPgZ/L4FxviaL9C9L0VegEPyDMxqgoAAA==",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/0vKyU5JTSpNt1IILi0uSM1LSU1RKEotLE0tLlFQTywpSc0rSdXNyy9LVOdKgisNSi0uzc3MS8elEgA279RYVQAAAA==",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3OsQ0AMAjAMOCGHtzTK/EDYqi9ZE0E/Cvv6VYujwAAAAx7NfDq+AAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/xNkQAWX0PiqQMwIYlwQAfMFiVDPhKR+FIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFAw8AvuvRvgAQAAA=",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA==",
+        "nvme-vtd-table-12.bin": "H4sIAAAAAAAA/+3HQQkAIBAAQc8YpjCCEYxgBPu/RM4Swsxn2eitXHVkY75frzsLAAAA/OsAlXrVrAAQAAA=",
+        "nvme-vtd-table-21.bin": "H4sIAAAAAAAA/+3OAQkAAAgDsIMV7J/BiMYQZEuw5FZNHw8AAADgvwURq+OeABAAAA==",
+        "nvme-vtd-table-30.bin": "H4sIAAAAAAAA/+3BAQkAAAgDMOEV7I9R7XG25XYAAACAbg9u0yG4ABAAAA==",
+        "nvme-vtd-table-39.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDILdXMLiR7fEBuR0AAACg2wORFkutABAAAA=="
+      }
+    },
+    {
+      "profil": "mauvaise-serie",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "43e728a86c93b9a1939e66e7fad7bca950ce12283cbbbc74331201ae23b296e7",
+      "sha256_trace": "8762b3766d9a41acf671ffae0faca99153b73d92eef68801b97ce9a80a47cfb1",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [],
+        "geometrie": [],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 931,
+            "retenu": 11407,
+            "ipc": 0,
+            "dma": 13,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 2,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [
+          {
+            "iova": 33554432,
+            "droits": 1
+          },
+          {
+            "iova": 33558528,
+            "droits": 2
+          },
+          {
+            "iova": 33562624,
+            "droits": 1
+          },
+          {
+            "iova": 33566720,
+            "droits": 2
+          },
+          {
+            "iova": 33570816,
+            "droits": 2
+          }
+        ],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "a6c2ba81dca410027a5aa66b22ffabe0e194dd0a5be2dd4a5292025c1463cf20",
+          "qi": "f594e055688c4a9e916f188b4404a523d8615d20502ae88c0cbfbfc0b64ae299",
+          "table-39": "136ab5a1d91c29136ac3f1735d13f0bc115ce4db56506fbaf762bbf33458956b",
+          "table-30": "0cb1cf144a2b5586a65910916c6c403c46e453cdc337497440116692a176ca59",
+          "table-21": "dd9a50f0f1674f991494d5575a853d8f8e8575f55ec2ad89f374127d63907d21",
+          "table-12": "d1c0e48db1c7aac12137b79b9a9b3903d904163b2b2aff6043659508c97dec6b"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6
+        ],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 3
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7VUW2/bNhR+D5BfkJeDPTVAkpLUxXIHDXCcZPIwt4mdpgP64NES7RDVxSUpw/33OxSpwOmcbgMyITE/kud+zseTz+y3k8+E/kxodvI5DR5Pnh384PKy0Fc78Q7KhheyXsNl0xhCCIWfPl7fTODuevoRrh6uzmcfpnA3Je4KVqqp4DaXM5R+Q3bk9C1uENCbM7Jjp2/n3HB7jrsb/M6syPFR70sbrsz/7ex51ocq8fJZ6QDLpANBVjkQ9idRVjsQZ8KBQfbOgSQDB4bZ7x2gJGscoBl3gGWFA4E3SENvkEbZ2oHY26ED74Im2c6BoT9hJMsdoFnrAMuMA4H3xcJs6UDk82J9zGzgXbAk+9OBoRcO+pgD2oPechBkbxwIs1MHIp97EGdvHRj0dpJefehBSLydkHrhkPncw6CXCbOtA5HPIoz7q0GmHUiyCwf6akTEJxjRbOUA83lFgReOwh5EPYj3RoEwu05xDHFKRW5kU2sQBngpuYatUHIlhT6DiMVsABu+FhpKuVRCXxwfvW+2/MMctuSCJhcE9w/Ta1TmBmQtjeQljMcpDieM5/fzDozuRm6d37l17NatFGotUqNacXz0cH8Ft+MJepMK5pMrK4Ef5E1V8boQbj84/6VbgxcUVsmPFUaZ1WiU0WkM40lKYD4a39vF/oxn+HMzu+5+U/KSD/5fg1q+rNBVz2rYZN/Zv/iCAF0GMW4opl9yrVGNkoQwuBzNCJrISf+B4bIsRUrjIAmtHVdOmM4n6YqXukPnf6QMCqE5dnorBEze3+/SiuuvLW5skGECl9Nrm/Dt7MMYNrJIKdQoy9t0hi9YAJsc3YYY0TICjeWTIo32pNk/Sr/uoCixltooYWdV4/SiFNZqPLpFkJCCEZLkjLEViZMYrt35KmTwq/fkrNh6rKBqsC2lWPP8m89il4ZwhWWhfXG0UFuZizTpDeShL//NbGx7zBianI2msHnk2K16W4mFFtqGBrJC/qTxkGKvlqXQ2CsGXzYSuzaMoe1AAI+Cb9KAwbItim9YT4k1pBRaI0upuRGtwoHdqCZHq61GhQoruWhyI3CUkygM3UGXkk4HQwYmX/b3YUySzsNiy9M4ioLY0zmNWBgGkPP8EVsE+SPHOqMrSsJBjFXWRprW3oidUXwhylVqu1GIBlfFq8UTFhpRbVATo1bCiLrF+MNkAEXF0+TVut+Zebg/L/reuEaJTYPTjGAlWksIzAwK1UhMfnb26cz+fwLeGpsz2eunH/vOqtRNye1b6Bu1aDV2TqW2PgUqLmRthCqsTRq4t/JJF+uOddNIhrIxtp/LsslxjPJS2qpEkG/ahb+k3WapNxhJN3z7vAsOMylPaM8kyrzPry1XvMYHoBY+QvRjE3LEXwmFI9Eqsdjk0r0KSvCikt1YOqE9x+Fhx8Nh8OSY7olHh8WTwTPxLs6nQDBbnM5UKIW1wiexNqopLXQn6bypxJuJHSNpvp2inRaD7RqGda8wzQ6L3Uaqrk8+0b069GnisEqzQA8rib77XL8jKN/YpnrhAzQNI09TnDJHU3KQpuQZS8keS8mPWUr+LUcj9qocHQb7FCWOojR4zbFybMeIc/hbu/0tGsYOKyxV/yJgjCtZ44r02iJHdNqP+lKWvIbmS29+Pr2FQvJ13WD2ueWTZfXGvvL2I8w+zozlS3JQln4vywIhBl6WY7zGj2rdqApfqrxpkPd132BusHaF7e8uAFEvSrmuRbfh+Re3LjUWWnfPV9UKh46P/gL8qtQ7wAwAAA==",
+        "trace.log": "H4sIAAAAAAAA/82QP0/DMBDF936K27oAciAqEhJIiBYpQ8qCkJhOru1EFv6T2k5Svj2XNIi2iKEbXp6f757vZ3dJonYdShUFCoG18RtuQHiX1C4BlbjRkicF+4r5nHWHEe2T2XynRvM7c5zouU4Yexj0sDcmntoIfdBkuJQB2C7LJWMMqM4Hd3zRP6e9njVCo+usQmu1R1HV1O6pvSyLl4sButL1yB68MSpMJ/dsly/onv1rpeUBU+AummGsVB0wdscWVzRI+24cxMYFlw9QN+M/8ZvBWx4/yFVV9UPCpdUOhZUgtIQM4paEgW8EdS5IHbcK5uu3coWPyxKfyiUWy9X6tXh+n58BlJ8A3f4FpNy2Va3CoLYovG2MStq7iU7s6WTPKDZoNur097Q9gyg7IcpPiL4AUKuLagkDAAA=",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3OsQ0AMAjAMOCGHtzTK/EDYqi9ZE0E/Cvv6VYujwAAAAx7NfDq+AAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/xNkQAWX0PiqQMwIYlwQAfMFiVDPhKR+FIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFAw8AvuvRvgAQAAA=",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA==",
+        "nvme-vtd-table-12.bin": "H4sIAAAAAAAA/+3HQQkAIBAAQc8YpjCCEYxgBPu/RM4Swsxn2eitXHVkY75frzsLAAAA/OsAlXrVrAAQAAA=",
+        "nvme-vtd-table-21.bin": "H4sIAAAAAAAA/+3OAQkAAAgDsIMV7J/BiMYQZEuw5FZNHw8AAADgvwURq+OeABAAAA==",
+        "nvme-vtd-table-30.bin": "H4sIAAAAAAAA/+3BAQkAAAgDMOEV7I9R7XG25XYAAACAbg9u0yG4ABAAAA==",
+        "nvme-vtd-table-39.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDILdXMLiR7fEBuR0AAACg2wORFkutABAAAA=="
+      }
+    },
+    {
+      "profil": "mauvais-nsid",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "c8988603a73c125370793f1c3618454610cb136923ecf96cb555b16d9bce0c3a",
+      "sha256_trace": "bdda51639f8f4b616d3a73f3dddee932cf0deac4951945fd28d0ed12d3460ec1",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "acteurs": [
+          [
+            "3",
+            "4",
+            "5",
+            "1",
+            "0",
+            "0"
+          ]
+        ],
+        "mdts": [
+          "7"
+        ],
+        "geometrie": [],
+        "fnv64_lus": [],
+        "memoire_pages": [
+          {
+            "phase": "nvme_session",
+            "resident": 1011,
+            "retenu": 11487,
+            "ipc": 11,
+            "dma": 8,
+            "processus": 3,
+            "utilisateur": 6,
+            "kpile": 96,
+            "upile": 3,
+            "tables": 162
+          },
+          {
+            "phase": "nvme_apres_retrait",
+            "resident": 931,
+            "retenu": 11407,
+            "ipc": 0,
+            "dma": 13,
+            "processus": 0,
+            "utilisateur": 0,
+            "kpile": 48,
+            "upile": 0,
+            "tables": 145
+          }
+        ]
+      },
+      "qmp": {
+        "commande_pci": 1027,
+        "qi_et_wait": 2,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "dma_refuse": null,
+        "cadres_clients_mappes": [
+          {
+            "iova": 33554432,
+            "droits": 1
+          },
+          {
+            "iova": 33558528,
+            "droits": 2
+          },
+          {
+            "iova": 33562624,
+            "droits": 1
+          },
+          {
+            "iova": 33566720,
+            "droits": 2
+          },
+          {
+            "iova": 33570816,
+            "droits": 2
+          }
+        ],
+        "sha256_tables": {
+          "racine": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+          "contexte": "a6c2ba81dca410027a5aa66b22ffabe0e194dd0a5be2dd4a5292025c1463cf20",
+          "qi": "f594e055688c4a9e916f188b4404a523d8615d20502ae88c0cbfbfc0b64ae299",
+          "table-39": "136ab5a1d91c29136ac3f1735d13f0bc115ce4db56506fbaf762bbf33458956b",
+          "table-30": "0cb1cf144a2b5586a65910916c6c403c46e453cdc337497440116692a176ca59",
+          "table-21": "dd9a50f0f1674f991494d5575a853d8f8e8575f55ec2ad89f374127d63907d21",
+          "table-12": "d1c0e48db1c7aac12137b79b9a9b3903d904163b2b2aff6043659508c97dec6b"
+        }
+      },
+      "trace": {
+        "opcodes_admin": [
+          6,
+          6
+        ],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 6
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7VWW2/bNhR+D5BfkJeDPbVAkpLUxXIHDXCcZMow52Kn6YA+eLREO0R1K0kZ7r/foUgVTpd0G5AZifmJOjyX7xx+ydEn9tvRJ0J/JjQ7+pQGj0dPNn7w8qzQ5zvxHsqGF7LewFnTGEIIhZ8+XFxewd3F7AOcP5yfzG9mcDcj7hWsVVPBbS7naP2G7Mjbd/iAgF4ekx17+27BDbf7+HSJn2NrcngwxNKGK/N/B3ta9XNMvLxXOsAy6UCQVQ6Ew06U1Q7EmXBglL13IMnAgXH2ew8oyRoHaMYdYFnhQOAd0tA7pFG2cSD2fujIh6BJtnNg7HcYyXIHaNY5wDLjQOBjsTBbORD5utiQMxv5ECzJ/nRg7I2DIeeADmDwHATZGwfC7K0Dka89iLN3DowGP8lwfOxBSLyfkHrjkPnaw2CwCbOtA5GvIoyHV6NMO5Bkpw4MbETEFxjRbO0A83VFgTeOwgFEA4j3RoEwu85wDHFKRW5kU2sQBngpuYatUHIthT6GiMVsBC3fCA2lXCmhTw8Prpstv1nAlpzS5JTg88PsAg9zA7KWRvISptMUhxOmi/tFDyZ3E7cu7tw6detWCrURqVGdODx4uD+H2+kVRpMKFlfn1gI/kDdVxetCuOfRyS/9GrxwYJ38+MAksycaZXQaw/QqJbCYTO/tYr+mc/y6nF/03yl5KQb/r0mtXj7Qs2dP2GLf25/4lABdBTE+UCy/5FrjMUoSwuBsMifoIifDBwyXZSlSGgdJaP04OmG2uErXvNQ9OvkjZVAIzbHTWyHg6vp+l1Zcf+nwwSYZJnA2u7AF385vptDKIqVQoy3v0jkqWABtjmFDzGgVgUb6pEijPWv2j9avOyhKbKQ2SthZ1Ti9aIVcTSe3CBJSMEKSnDG2JnESw4XbX4cMfvWRnBfLxxqqBttSig3Pv/oqdmkI50gLHcjRQm1lLtJkcJCHnv7L+dT2mDF0OZ/MoH3k2K16W4mlFtqmBrLC+5PGY4q9WpVCY68YfG4ldm0cQ9eDAB4Fb9OAwaoriq/Ip0QOKYXOyFJqbkSncGBb1eTotdN4oEIml01uBI5yEoWh2+hL0ulozMDkq+F9GJOkj7Dc8jSOoiD21zmNWBgGkPP8EVsE+SNHnjEUJeEoRpa1kaazb8TOKL4U5Tq13ShEg6vi1fIbFhpRbfAkZq2EEXWH+YfJCIqKp8mrdb9383B/Ugy9cY0SbYPTjGAtOnshsDIoVCOx+Pnxx2P7+xF4Z2zNZK+ffux7r1I3Jbda6Bu17DR2TqWWnwIPLmVthCqsTxo4rfx2FnlH3jRehrIxtp+rsslxjPJSWlYiyNtu6V/S/mGlW8ykH77ByZVlUK6/wrSpjWqwDGXJtsONegBb3Y85jp4tABlMr28eJoSOyfxict67wlHq/7tAdwKmRpVQFZjuaO+qBs9f1Tyhw1UdVOlLxxWvUWBq4RnAOixhTljWQuHIdUos21w61VGCF5Xsx94Z7cUNn487HgdDXEr3zKPnzZPRE/M+z2+JIAVIXyqUwl6g5PYkWuh20kVTiTfXvBK65bl4i446zLafCGxshXX2WOxaqfpB8JXuETHUibdBmiWGWEsMPhT7nQLw1k6NN35GB8LI6wCOsdMB8qwOkCcyQPZkgPxYBsi/FYGIvaoIjIN9DSBOA+irzpWTE8w4h7/1279Fx9hhhVQNkoM5rmWNK97fLV5CnTJvu5Ilr6H5PLhfzG6hkHxTN1h9bi+slY3W/hmxH8Ks+jOWr8iztvR7WxYIMfK2HPM1flbrRlUohXnToLDUQ4O5Qe4K299dAKJelnJTi/6B55/dutJItO71seqEQ4cHfwGwtwAwIQ0AAA==",
+        "trace.log": "H4sIAAAAAAAA/82QP0/DMBDF936K27oAckpUJCSQEClSh5QFITGdrrYTWfhPartJ+fY4aRFtEUMHULO8nO+e7+fXRoHKtihk4Mg51totSQN3NspNhNQirQRFCduO/hi1+xblol5+uYbip+fQ0ZGKGDrodX82RIrrAJ1XqSAhPLBNlgvGGKQ+9dXhRWdOOxk1XKFtjURjlENe1WncpfGynD9f9NCVqgd277SWfndyxzb5NN2zfa0w5DF6skH3a4VsgbFbNr1Ki5Rrh0Vs+ODyHupmyImu+9pQeE9VVVXfJCSMssiNAK4EZBBWSRi4hqfJaVJLRsJ48VrO8KEo8bEscF7MFi/zp7fxCUD5EdDNb0DSrtZyLdHLFXJnGi2jcnZHx7d0omPJ1ms26C779HsCUXZElB8R/XnYk7MOe/KvYX8C53YC93YEAAA=",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "nvme-vtd-contexte.bin": "H4sIAAAAAAAA/+3OsQ0AMAjAMOCGHtzTK/EDYqi9ZE0E/Cvv6VYujwAAAAx7NfDq+AAQAAA=",
+        "nvme-vtd-qi.bin": "H4sIAAAAAAAA/xNkQAWX0PiqQMwIYlwQAfMFiVDPhKR+FIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFAw8AvuvRvgAQAAA=",
+        "nvme-vtd-racine.bin": "H4sIAAAAAAAA/+3BQREAAAgDINfBoPZ/2WMH5HYAAACAbg+g1zLiABAAAA==",
+        "nvme-vtd-table-12.bin": "H4sIAAAAAAAA/+3HQQkAIBAAQc8YpjCCEYxgBPu/RM4Swsxn2eitXHVkY75frzsLAAAA/OsAlXrVrAAQAAA=",
+        "nvme-vtd-table-21.bin": "H4sIAAAAAAAA/+3OAQkAAAgDsIMV7J/BiMYQZEuw5FZNHw8AAADgvwURq+OeABAAAA==",
+        "nvme-vtd-table-30.bin": "H4sIAAAAAAAA/+3BAQkAAAgDMOEV7I9R7XG25XYAAACAbg9u0yG4ABAAAA==",
+        "nvme-vtd-table-39.bin": "H4sIAAAAAAAA/+3BAQ0AAAgDILdXMLiR7fEBuR0AAACg2wORFkutABAAAA=="
+      }
+    },
+    {
+      "profil": "absent",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "d41a17fd00ec8253c1bcaf973e3e9b39f88fadbacaac67426efb963d3501684a",
+      "sha256_trace": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "admission": "refus avant restitution firmware"
+      },
+      "qmp": {},
+      "trace": {
+        "opcodes_admin": [],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 0
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7WTTY/aMBCG70j8Ai6jnhaJgu0kfGzFZQtoqEqXXbR74dCaxKFWSYJih9J/X2fHlrrqx62++Jnx63c8lt3biw+9PePvGMfefh597b1K/GPxLjOLq7qFUyUzXR7hrqosY4zDm6flag0Py80TLJ4Xbx/vN/CwYbQEeV0VsE31o1PfsCvrj1zggK8G7Cr6o520ss27aOXGoJV0O6GWsbK2/7vY667/dBN/z50IBGqCCAuCOGQSLAnGqAgmeEswRSCY4ccX4AwrAo6SQGBGEHlDHntDnuCRYOx9+MSX4FO8Esx8RjBMCTg2BAItQeRriRgPBInvS4Qzi4kvIab4hWDmxVE4c8QDBOcowhuCGPsEie89GuOIYBJ8pmH7zEPMvE/MvTgWvvc4CpoYLwSJ7yIeh6UJGoIpDgnCbSTMN5hwzAmE7yuJvDiJAyQBxr88BSbaeeOeoXulKrW6Kg0oC/KkpYGLqnWulRlAIsZiAmd5VAZO+lArM+x2PlUXeb+DCxvy6ZC5+HmzBJkV2hjnA9v3a6hV3hilYJ2p0mr74zdREMiLLK2LjFM17TEg13XxXdaq29lttpBpeSwrt5pCem7mDMx5zq55O5hoP44Q6YGRVta1a6GorM7nZVUX8gRpVdXuu0urmtptltaqMmuMs4hAlZ9P+lgqF3CQ6TeaD8aduBUIKBr1Qs7+J+K1AxZ4BAAA",
+        "trace.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "pci.json": "H4sIAAAAAAAA/82TP2+DMBDFdz6FxUwlg40h3dKpHTqlW1QhAkdqieDEdiKlUb57zZ8QKqcVbaS0A0K8O947/zjmDkIHcyHkcrlJ1rxy7xH2WmWxVYOnTQ67hOdGcd1OUqXQg46sTJVKeFUII7auJ9UIfkiYdxJzUFnt9CiURgvJ8yW4Te3YeTVBh3P7jmdQm2AWx72L2i7UXmlY3e2gyoU0DWyCcV/vVRJMcGC/ZiqUhMGn4GJbZZqLIQcJSyPUZ5i/Ol3n1dCIP5ZaZFF7mk1/Bi0M8L+E5o+FZl5pDvIrhgELLISz6csUZaLSUpQlyLEcyc04BjbHzuI0WM0trQOod1YUf4cmc6CleS6hJUEZxYOK3q/rbpcLtxOPnp2yllCAzt5MZ5GWCgYGK1gltUnC6IVqO15oj0fxhF0e0KcRjQmj8YUpTZiQ+37S5v7Xu0VwZP+fs+cHEzpypSi91UqRq1aK0S9WKozY9yt1/lDOq/MBfjGLj3IGAAA=",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+      }
+    },
+    {
+      "profil": "sans-iommu",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "10229c1dbbe2a6c5e28e6fabccc47af98622c599c76865fb622a28e549dc7736",
+      "sha256_trace": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "admission": "refus avant restitution firmware"
+      },
+      "qmp": {},
+      "trace": {
+        "opcodes_admin": [],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 0
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7WTy24aMRSG95HyBGyOugoSJbbnAqRi0QjQadRpEtKwySI1g4danQsaeyiPXw/Hlhqp7a7e+Dt3/5Y9eBF3gxfGPzCOg5d59H3wxvGP4O3OLE7qBspG7nS9h9umsYwxDu+el6tP8LjMnmGxWbxf32fwmDEKQdE2FTzkeu2yr9iJDa+d4YCvRuwkhtdP0sre76yVW6M+5fIizDJWtvZ/D3ur+k838XdfSSBQE0RYEcTBk2BNkKIimOANwRSBYIafz8AZNgQcJYHAHUHkG/LYN+QJ7glS34dP/Ag+xRPBzHsEw5yAY0cg0BJEfpaIcUuQeF0inFlM/AgxxW8EM58chTNHPEDoHEV4RRDjkCDx2qMUrwkmoc80lM88xMz3iblPjoXXHkchJ8YjQeJVxGkITdAQTHFMEG4jYV5gwrEgEF5XEvnkJA6QBEh/ewpM9HvmnqF7pSq3uqkNKAuy1NLAUbW60MqMIBGpmMBB7pWBUm9bZcaXF1+ao7x/giMb8+mYXV5svi5gkX1cw8HFVW3VvJClUdDV2qpXuau08S5Xu8mWcHYZNxNaVXRGKZBHWVtnGatt158GCt1WP2XrSp6yB9hpua8bF80hP3RzBuYwZ6eiX0z0/0eIfMsoV7atU1I1VhfzumkrWULeNK379dKqrnXF0lpV7zrjWkSg6tdS72vlDA4y/0H7thfSJwioOnUm1/4Xbibra38EAAA=",
+        "trace.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+      }
+    },
+    {
+      "profil": "identifiant-pci",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "d41a17fd00ec8253c1bcaf973e3e9b39f88fadbacaac67426efb963d3501684a",
+      "sha256_trace": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "admission": "refus avant restitution firmware"
+      },
+      "qmp": {},
+      "trace": {
+        "opcodes_admin": [],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 0
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7WTTY/aMBCG70j8Ai6jnhaJgu0kfGzFZQtoqEqXXbR74dCaxKFWSYJih9J/X2fHlrrqx62++Jnx63c8lt3biw+9PePvGMfefh597b1K/GPxLjOLq7qFUyUzXR7hrqosY4zDm6flag0Py80TLJ4Xbx/vN/CwYbQEeV0VsE31o1PfsCvrj1zggK8G7Cr6o520ss27aOXGoJV0O6GWsbK2/7vY667/dBN/z50IBGqCCAuCOGQSLAnGqAgmeEswRSCY4ccX4AwrAo6SQGBGEHlDHntDnuCRYOx9+MSX4FO8Esx8RjBMCTg2BAItQeRriRgPBInvS4Qzi4kvIab4hWDmxVE4c8QDBOcowhuCGPsEie89GuOIYBJ8pmH7zEPMvE/MvTgWvvc4CpoYLwSJ7yIeh6UJGoIpDgnCbSTMN5hwzAmE7yuJvDiJAyQBxr88BSbaeeOeoXulKrW6Kg0oC/KkpYGLqnWulRlAIsZiAmd5VAZO+lArM+x2PlUXeb+DCxvy6ZC5+HmzBJkV2hjnA9v3a6hV3hilYJ2p0mr74zdREMiLLK2LjFM17TEg13XxXdaq29lttpBpeSwrt5pCem7mDMx5zq55O5hoP44Q6YGRVta1a6GorM7nZVUX8gRpVdXuu0urmtptltaqMmuMs4hAlZ9P+lgqF3CQ6TeaD8aduBUIKBr1Qs7+J+K1AxZ4BAAA",
+        "trace.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQz0lp7aQ0/pLYoQD5NaIjixASmN8u81b1LSlrRSqh5QxMx6dzOeYaXp+lE9um4wsfd3LDPudWA2SFjI0ds+pqXPYoUYRgvJlOejiigNpPRZlnAFNl07VAGWjYjZgTGVUdXpkctcDwWLN9SouVPbqx50HMpLFtGqCSCu23eRRSgPMqfbu5JmMReqgHgA9HyPIugBOD2mGIxseDY4KbIoZ3ysg6AbBVT/YbXW2sqJaNZ3omVlJ5s6VB2wzlUks1SEBM/RCULbc/5Qp7ZFt5gid4ImNI9eFZsEqaTmQG3p1s8PO+oTrNhcFGMyDMQwolmLvdVWIMjFIziIY0FrjVyICUIOBC6Co4JqRHURahwXB6MlTvXv5/d6bRiQNTcNziQNT8vFdWGwIfifYfgQBfAjDSGBEwmXi5eFHvEsFzxNqZirI7qZjnBOWBrT46npzww9OF4ZHoMLVme8t7k5nTI7kh/ZZj17uh4GHrm8oIUd7CKC3QtbXhfI23gLAWeaz+Xzgxo601IY38pS6FeWIpc/ohDbDvnaUsNFaWvtHWlzLixKCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+      }
+    },
+    {
+      "profil": "bar-supplementaire",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "e67a744768bea268722d878a23450e8b5550f78f7784501e6cf4352507b8a549",
+      "sha256_trace": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "admission": "refus avant restitution firmware"
+      },
+      "qmp": {},
+      "trace": {
+        "opcodes_admin": [],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 0
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7WTyW7bMBCG7wH8BL4MeooB1yEpyUsKX9IkmARVsyG5+NDSEuUS1WKQlOvHL5UhgQZdbuWF3yz8Z4YgxxtxO94w/oFxHG/WybfxG8c/ghelvTyqc6g7Wep2Bxdd5xhjHN49X13fwMNV/gyXL5fvH+9yeMgZhaAyXQP3hX702afsyCZn3vDAr6fsKCZnT9LJwe+ta7+mQ8roJNayThr3v4u9nfpPN/F3X00gUBMk2BCk0ZNhSzBHRbDAc4IlAsEKP70CZ9gRcJQEAkuCJAjyNAjyDHcE86DDF6EEX+KRYBU8gmFBwLEnEOgIklBLpLglyMJcIvYsFqGEWOJXglVITmLPCY8QlZMETwlSnBBkYfZkjmcEi6izjMdXAVIWdFIeklMRZk+TmJPigSALU6TzGFqgJVjijCDeRsbCgBnHikCEubIkJGdphCzC/JenwMSw5/4Z+leqCqe71oJyIGstLRyU0ZVWdgqZmIsF7OVOWaj11ig7G5187g7y7gkObMaXM+btl/wKZNloa70O3H+8AaOq3ioFF9L8Fo8xeZCt85Z12vVDB1Bp0/yQRo1OnvJ7KLXctZ2PFlDs+zUDu1+zYzUsJoY/I0SxZZQrjfHdN53T1brtTCNrKLrO+J8uneqNPyydU23ZWy+RgGq/1HrXKm9wkMV32rdWtW5IEND06pW8/E+ObFGbcwQAAA==",
+        "trace.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "pci.json": "H4sIAAAAAAAA/81UQW+CMBi9+ysIZ5eU9qPAbu60HXZyN7MQheKaINUWTZzxv68ICgpq2RKzgyF+7+v3PR7vdTKwrJ3+WZbN5Spc8sx+ttCwrMzWqvFvFbNNyGNdse2qpFKRNzqidKpUyLNE6GI59VjVBccldHgsxkxFxaRXoXJrJnk8Z/YB21ezDot2dfuGR6wYgqjvn6ao9UxtVc4WTxuWxULqBhogdMJPVYIDhNvHNALExWeLk3UW5Vw0dZBsrgvFO0w+B1VnSzTnnmjZ5iibPlQccM5VpEYqYgpGOtH+ItGAdpzqr1E14khKg0vJEpZHXxpNpqliwxpasEWYb5cspKDRXK6b4Gwq6xUlLf5dvh7xoVGexrFkB318DJSARwNAfqOhWFF8BL1OyK1dAfvhTa4XbAyo4g6qCHzXo9fJEg8jn+D7ZA/P6wbsm1riGBlOx9ZrxfZtPOqXWhej/ob8D6m9yCz6lYaY4paE49HHyIpElkuRpkya6kgepiM2SXZpe2jb/szQteO14QF1WJ0Lw0zevj8u0ZKe26YHKOiOJHbAA59QMLg97gTyMd4iyGvnc/z+opcaWgrgUZYif7IU7b7xMZxfrx2Wqj/U4HPwAxqe80bzCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+      }
+    },
+    {
+      "profil": "topologie",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "a20d93f1eda9df6547b45cde3f178b3f896505efff72885331a6d791be2fe6dd",
+      "sha256_trace": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "admission": "refus avant restitution firmware"
+      },
+      "qmp": {},
+      "trace": {
+        "opcodes_admin": [],
+        "read_lba_nblocs_octets": [],
+        "faute_dma": null,
+        "write": 0,
+        "flush": 0,
+        "traductions_vtd": 0
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7WTy44aMRBF90h8AZtSVoNEwHY/gInYjABVopB5oJkNi8R0u4mVfqC2m/D5cU/ZUkZKsos3PlW+vuWy7NFBfBodGP/AOI4Oq+j76E3iH4t3uVlf1S2Ujcx1fYK7prGMMQ7vnjfbj/C42T3D+mX9/ul+B487RktQtE0FD5l+cuobdmXjmQsc8O2EXcV4tpdW9nkXbd2Y9JLhINQyVrb2fxd72/WfbuLvuZJAoCaIsCKIQybBmiBFRTDHW4IFAsESP78CZ9gQcJQEAnOCyBvy2BvyBE8Eqffhc1+CL/BKsPQZwTAj4NgRCLQEka8lYjwSJL4vEc4s5r6EWOA3gqUXR+HMEQ8QnKMIbwhiHBMkvvcoxRnBPPgswvalh5h5n5h7cSx873EUNDFeCBLfRZyGpTkaggVOCcJtJMw3mHAsCITvK4m8OIkDJAHS354CE/28c8/QvVKVWd3UBpQFWWpp4KJaXWhlJpCIVKRwlidloNTHVpnpcPClucj7PVzYlC+mzMUvuw3IvNLGOB9oVdEZpUBeZG1dZKy2XV8BCt1WP2WrhoP97gFyLU9141YzyM7dioE5r9i16AcT/Z8QIjsy0sq2daerGquLVd20lSwha5rW/WRpVde6zdJaVeedcRYRqPprqU+1cgEHmf2g+WhUbXuBgKpTr+TsfwGLcEIjUwQAAA==",
+        "trace.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA=",
+        "pci.json": "H4sIAAAAAAAA/9VWTY+bMBC951cgzlQytjHQW9pL91CpUnpbrRAfztYS4KwNkdJV/nvNR8AENwu725V6iKLMG8+z37yxc7+xrGf1sSybiafowEr7swWcLpLUUvv1lNFjxDIVse0+JHNeaRlpHksZsXLPVbCreomqgOsh4lyCGZVpU+kbl5WVCJY9UrvFzn2tluh5TD+ylDZFAAmCoYqsE3mSFS0+HWmZcaESSAjAgA9RBEMA58sUgpEHJ8T7ukwrxnUdBH1UgeYM9w+bPnMmmvuSaOXxIpta1CxwpyqSRSpCghfpRNaLREJiWLVeo77EZVMKPAi6p1X6S6H7OJfUGaGCFlF1OtCIYIVWotbBJBYjRbct9rs7HgqwFo6zTNBWnwB6rg+80PWxntBQNE1QdFyc7B44t99re3pIWdRbVpO+yzEcOk5yGom4nKS3GTkrWDXdM3L0hCSWtMUxQciHIEBwgM9TEdWpbpNAF4deAPwwNFEo1McBIjgwEkia8jKLlXKDKJ1U/DYpBqFnoiMuxsDIVNZFQmddrxMuMlbGVdv8zdWy3vbDgI5G1cZPxCkrKb49g/7CmwwDjbu7yX58vVt1kUHzAH7MnF2jfx001UBinLPOTjiYwK+bsrXPDXIXdgn5sy7d7bbrnhsPjq3+r56bK6ODV2kICZxJuNv+3FrqOqgEz3M1qgt1RB+mI1wyKp3j8dzxCJr9jgkGBqszPtjcmbO8cSC9+fZeGEgQANMu3+PZe29vIeDP53P3/YsiXWip8YX/15ZCb7IUMf9VgdjzTbenZqmxUZuHzR+p5neUrAsAAA==",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+      }
+    },
+    {
+      "profil": "heritage",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_iso": "0fa00cce3ecbb8f3e89325663946e5d85df42d69efef259b54ceca747cc46f56",
+      "sha256_raw_avant": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_raw_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458",
+      "sha256_serie": "bb80bcba97a8a25cae6c83aec3a47346a92a8b1a7a61280861ee7726bbf3f68a",
+      "sha256_trace": "6eb678931c31b4b50a648eccb7be5c242ef5bb79746f80881364a074207d1152",
+      "lecture_hote": [
+        [
+          0,
+          1,
+          "4ff921accdcd0025"
+        ],
+        [
+          2047,
+          1,
+          "e5263f1001620225"
+        ],
+        [
+          1024,
+          8,
+          "c2f2805fc79c5925"
+        ]
+      ],
+      "observations_invite": {
+        "admission": "refus avant restitution firmware"
+      },
+      "qmp": {
+        "bar_physique": 824633720832,
+        "cc": 4587521,
+        "csts": 1,
+        "aqa": 65537
+      },
+      "trace": {
+        "commandes_admin_firmware": 6,
+        "commandes_io_firmware": 0
+      },
+      "retard_backend_demontre": false,
+      "preuves_gzip_base64": {
+        "serie.log": "H4sIAAAAAAAA/7WTTW8aMRCG75HyC7iMegoSBdu7XpZUHAgfmlSlCaHJhUsNeKkl2EVrQ/n59TK21Ehtb92Ln/me1/K2VuJza8X4J8axtRomP1rvHP8IPmzt5KLvYV+prSl38FBVjjHG4cPrdPYIi+n8FSZvk48vT3NYzBmFoKirAzxvzIvPvmMX1u55wwOfddhFtHtL5VTj99bMf50m5fYmzrJO1e5/D3uv+k838XffnkCgIUjwQJBGj8SSIENN0Md7ghyBYIBfrsAZVgQcFYHALUESGvI0NOQSdwRZ6MP7YQTP8UIwCB7BcEPA8UQg0BEkYZZIcU0ggy4Rdxb9MELk+J1gEJKTuHPCI8TOSYJ3BCm2CWTQnmTYI+jHPnksHwRIWeiT8pCciqA9TWJOimcCGVSkWQz10RLk2CWItyFZECg5FgQi6JJJSJZpBBkh++0pMNGcc/8M/SvVG2eq0oJ2oPZGWTjr2hRG2w5IkQkJR7XTFvZmXWvbvb35Wp3V0xLOrMvzLvP223zqi5UDUxpn1B7G4yG7pNn1XY+X35be4jBajJrz6hwtF551vpbehNE4WE0FnI2ud3pYqL3VobnaHoy1fkmodXGyWoM6q9J5yzrjTs36UJj68FPVvmQ5f4atUbuy8tENbI6nIQN79COK5mOi+eGE2KwZ5aq69tIPlTPFsKzqX13IDuxkBAAA",
+        "trace.log": "H4sIAAAAAAAA/+2SwarCMBBF9+8rZufGRSLqzoW0FbqIoojgaijpKIEmadNU/Xy1rWhB0Ofj7VxdmDCHE+bmUqE5aEKtlUW528PRWU8gRLzog7Rmp/bX8M5mGbl2MmEn9pN/ujocM8b4fT9JtTIodQpSpcCgLOqwuQR2Gl/SJJqgN9+ICKehwECEGIfRfB3Ptr07hkxRUUXoqEBpdZ6RV9a0TNkw0yO7MK/J6yx94qsSOt/p6vCuzui5TrCKpusIg+V7Pvxzn8F/+Axe+gz548XIuRrTPjcIUzbXe1y5Wf6xLN+yfcv2i7KdAZkVmvPVBAAA",
+        "pci.json": "H4sIAAAAAAAA/9VUy26DMBC88xWIM5WMbQzpLT21h57SWxQhHia1RHBiA1Ia5d9rXoEE2kIrReoBRcysd5fxTNaarp/Uo+sGEwdvz1LjUQdmjQS57L0dIlp4LFKIYTSQTHjWqwgTX0qPpTFXYN21RRVg2YiYLRhRGZadnrnM9ECwaEuNijs3vapBp668YCEtmwDiupcuMg/kUWZ091DQNOJCFZAFABf+giK4AHB4TDEY2fBqcJynYcZ4XwdBtwoov2G90ZrKgWjWT6KlRSubOlQesK5VJJNUhARP0onMF4ksyMip+Ro1LdqlFLkXNKZZ+K7Y2E8kNTtqR3dedtxTj2DFZiLvk4EvuhH1Wuyj/jzk4h7sR5GglT4uxAQhBwIXwV5BOaK8BDWOi6PREOfq9+s7nRsEZE1NgjNIwstqOS8INgT/Mwg3MQC/0hASOJBwtXxb6iFPM8GThIqpOqK76QinhKU2PR6a/srQneOV4TEYsTrjF5ubwymTI3nL1uvZw/UwWJDxBS3sYBcR7I5sOS+Q9/EWAs4wn6vXJzV0oqUwvpel0J8sRcb/RCG2HfK9pbqL0jbaJwRJ8fNGCAAA",
+        "sortie-qemu.log": "H4sIAAAAAAAA/wMAAAAAAAAAAAA="
+      }
+    }
+  ]
+}

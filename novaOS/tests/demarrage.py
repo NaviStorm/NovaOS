@@ -14,14 +14,14 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
-BANNER = b"NovaOS v0.18.0\r\n"
+BANNER = b"NovaOS v0.19.0\r\n"
 # Captures PPM intégrales vérifiées visuellement en 800 × 600.
 SCREENS = {
-    "demarrage-aarch64": "89e3226761990d952e9af8944ca11ab41643e1b20e7731d47e43435e320bfa6c",
-    "demarrage": "3b07d92f6cc9e7f7bad0b5a658f1c0cdc7df029d73b3e3a2948360a9a344ba30",
-    "composition": "3c40fe8c613b5fe676077db1a1b4302113ee153c99968c8a80dfa1340c3b4c53",
-    "frappe": "c08ce16d45e3c5b8f6d7e3d82731055a0ee7130dfec64139a627ef6d2578676c",
-    "saisie": "3df01982db0b997c362085ab9c52b803a8877f3856dcea0b4010ff12b343ca1e",
+    "demarrage-aarch64": "72191c74adcc6a86feda9721bf197a07345cc49fee018e315f76bd324029cd03",
+    "demarrage": "97161d998aba257e9e1d985fe676064249f4337a721cf3b294390ce540dee9a6",
+    "composition": "f37b597817a050f0906dec007dc1a99887f98c619bac513a29c0b612c1a4c16e",
+    "frappe": "4d01b10ded6a002fdfc410e5623b51b9d55a9f46220f6c098c7c03bcd2cf8e71",
+    "saisie": "c4d5833e47727e54fb6e407a384d4bc90b46ecd1b7d0458757db72d1b56a8fca",
 }
 
 
@@ -177,6 +177,7 @@ def check_without_vga(vm, directory, log):
 
 
 def check_arm(vm, directory, log):
+    wait_for_serial(vm, log, "Affichage prêt.")
     wait_demo(vm, log, "EL0")
     wait_storage(vm, log)
     expect_screen(vm, directory, "demarrage-aarch64", timeout=45)
@@ -621,10 +622,17 @@ def suite():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--endurance", type=int, metavar="SECONDES")
+    parser.add_argument("--banniere", action="store_true", help="Vérifier le démarrage ordinaire et son écran pour l’architecture choisie")
     parser.add_argument("--ram-test", action="store_true")
     parser.add_argument("--storage-test", action="store_true")
     args = parser.parse_args()
-    if args.storage_test:
+    if args.banniere:
+        arch = os.environ.get("NOVA_ARCH", "x86_64")
+        if arch == "aarch64":
+            boot("aarch64", check_arm)
+        else:
+            boot("std", check_x86, NOVA_VGA="std")
+    elif args.storage_test:
         storage_test(os.environ.get("NOVA_ARCH", "x86_64"))
     elif args.ram_test:
         from ipc import campaign

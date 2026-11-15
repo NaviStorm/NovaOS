@@ -1,0 +1,2191 @@
+{
+  "sha256_elf": "2303c41646c3574f588e3acbe2d53aaa09d4d7ff4c979314566faa5828a96443",
+  "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+  "firmware": {
+    "edk2-x86_64-code.fd": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+    "edk2-i386-vars.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+  },
+  "qemu": "QEMU emulator version 11.1.3",
+  "geometrie": {
+    "raw": 4194304,
+    "zone_p9": 4190208
+  },
+  "machine": "pc-q35-11.1, TCG, cpu max, 256 Mio, RAW local, cache=writeback, no-flush=false",
+  "coupe": "SIGKILL du seul processus QEMU, Mac alimenté. La reprise utilise une nouvelle VM et un disque présenté en lecture seule.",
+  "sha256_bilan_complet": "6be42909234d35a1335f83756a4c70b76a0bd165ac19a6ac0c99342ea2a5ab35",
+  "creation": {
+    "512": {
+      "sha256_raw": "350100c1e1e31e0afda438719a52d9291aedd3e3e71b15d5aa1234a6f9f40feb",
+      "generation": 3,
+      "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "garde_sha256": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6",
+      "write": 16,
+      "flush": 7,
+      "sha256_serie": "342572331c40103f7188434e48759025681194e4a53e7ca8bc2cdc4cb91b4e30",
+      "sha256_trace": "f7c53e9cd7d8d1a6f14917345cf61b5c93eed1cc557ddc3893a8398d6272014b"
+    },
+    "4096": {
+      "sha256_raw": "4a5783e9e10568cafecf93b607294a9882a85a7f8aceea31de61c10b3c0473d2",
+      "generation": 3,
+      "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "garde_sha256": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6",
+      "write": 16,
+      "flush": 7,
+      "sha256_serie": "e842196b1993f0eb77336475be1af5ed4c0a1c543304023c921165847b3151e9",
+      "sha256_trace": "70591af42c864931673b4cb839479bfe833b4e5ee3fe848adab2bebfcfdef93d"
+    }
+  },
+  "cellules": [
+    {
+      "cas": "cycle",
+      "vcpus": 1,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "ab89f5afdc019aebbdca98538e24bd2d4701fa886df55a36dcc44a62fd3b0487",
+      "raw_sha256": "f6349b0006cea32b9c9a6ed6542fc0997eebdfe6c083490d5ae40d77cdac1ff0",
+      "ack": true,
+      "opcode": {
+        "read": 22,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.465,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 473000,
+        "wr_total_time_ns": 201000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "8776c6345802d252b61dea9ff6db2e1cdaf77f3a3b7cc76adf63815454b46101",
+        "ef6ce10cc53fdab74b2ad17d77c7cf73bb8fd88a1d591cea4ea70a17455b4c96"
+      ],
+      "trace_sha256": [
+        "ba205eba594f7e33ca8a64a3b51d38290e5f95ea15003405c4b4a525a377a728",
+        "0792ec9fcc8da4fd4c8c890868ef828ebb8e48a2c6bc3f44610ed8b8f12995c1"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      },
+      "acquittement": {
+        "f1_cid": 32,
+        "f2_cid": 34,
+        "confirmation_apres_f2": true
+      },
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      }
+    },
+    {
+      "cas": "cycle",
+      "vcpus": 1,
+      "secteur": 4096,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "cd76f57ac36d72bad1115be9963375045f970eb28cd7caf1156123bf8c4ea9e1",
+      "raw_sha256": "239fed50906d0d9809107d1c7f9e2ea56373e7ae49318d7cd7f3c24f839a1f7c",
+      "ack": true,
+      "opcode": {
+        "read": 22,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.464,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 514000,
+        "wr_total_time_ns": 230000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "8f1d45e1d69bf803256a31fdf08843e41000244feb3b9b64c4d504af7c081685",
+        "3f0f89b756d861da6dba93f2627c2dfe303d81f582b311514d7726426e3fd1b8"
+      ],
+      "trace_sha256": [
+        "44d31dbf8bcebd39343474706a9c0856b41ac00a2c14865823b4152979f2fb4c",
+        "c51ae734be8eaf0048fe02e7113d081dbf89df9c9f8a7039669ec253179a250c"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      },
+      "acquittement": {
+        "f1_cid": 32,
+        "f2_cid": 34,
+        "confirmation_apres_f2": true
+      },
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      }
+    },
+    {
+      "cas": "cycle",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "c25dd0b77b4741f7a7f54f73a498178aa18851798e9a12986f276ca3ab8d4638",
+      "raw_sha256": "3c72071e7b37db8efcf9a3b375be8fbc5966f156437ac093534729da2dcf0f18",
+      "ack": true,
+      "opcode": {
+        "read": 22,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.787,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 646000,
+        "wr_total_time_ns": 540000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "e28ed8d47e66b57a3790a86376c6c5d3e923c7fd627796a3b7a9410aeb1a6689",
+        "24855784b0912b3aed04a68d10d8aa9fe40d07434b74c5ee9dd79deecafc2b59"
+      ],
+      "trace_sha256": [
+        "20ceac30c998788055b46dcc8ded96d810a2fd3f95e86831ccd497a4f1bcfecd",
+        "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      },
+      "acquittement": {
+        "f1_cid": 32,
+        "f2_cid": 34,
+        "confirmation_apres_f2": true
+      },
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      }
+    },
+    {
+      "cas": "cycle",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "dd7da6f4a684a7fdd914d279b6f056fe57c5812905535ec078f2ab21f0732cce",
+      "raw_sha256": "1fb9ea41329e6de88533aa9140303b2ed7193036a7fe1c69636a27ab711b4705",
+      "ack": true,
+      "opcode": {
+        "read": 22,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.777,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 502000,
+        "wr_total_time_ns": 189000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "9ab49c833877c8920bb28b6001bd0fd5e6241208345770a2880ec8c30ba5e213",
+        "ffab83f4ed2cbab0e17ce19d9dcad54aa1a511043aad3a2428c50e4490a06329"
+      ],
+      "trace_sha256": [
+        "1aa397108a4afe7256951d67567f353a648cb043f250014f38cbf014cf53f405",
+        "9444953e38142f4942109e6fce05fe0115595d81385b35cdaa68156bcc50496b"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      },
+      "acquittement": {
+        "f1_cid": 32,
+        "f2_cid": 34,
+        "confirmation_apres_f2": true
+      },
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      }
+    },
+    {
+      "cas": "cycle",
+      "vcpus": 4,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "2b24b054193b8781dc80e4d517b97c225600963e3db1896dd1eac7a0429e6aad",
+      "raw_sha256": "fe0547d362bc57004be1627d67bc3ccd2e805e895d1b7105aea94fcdb8b78956",
+      "ack": true,
+      "opcode": {
+        "read": 22,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.652,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 502000,
+        "wr_total_time_ns": 197000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "bef374fcc6a28af5549d778b873b0cfb8c4c80f694020591295c4b245190b061",
+        "85a5790007de5aa54a55a558961f34651630836a47da8551578bdb56e474d21e"
+      ],
+      "trace_sha256": [
+        "c4d77d0e02346b74fea1487ddb1702aaa985bbf7c8f5c7e9246654de4f2b84e9",
+        "cb9fc46eb245ae46aa0c3083274ba11c32345bacfe4051ccadddf32e945c0128"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      },
+      "acquittement": {
+        "f1_cid": 32,
+        "f2_cid": 34,
+        "confirmation_apres_f2": true
+      },
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      }
+    },
+    {
+      "cas": "cycle",
+      "vcpus": 4,
+      "secteur": 4096,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "43e32b7d981548d8b42ccd661601f869145acf9f9a25102da0742180e0b230b9",
+      "raw_sha256": "da2919b99d77877d54535ec28361f2e5186cde7df6b298f5c8f417dac3a2a69f",
+      "ack": true,
+      "opcode": {
+        "read": 22,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.682,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 504000,
+        "wr_total_time_ns": 247000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "a3afa8b26ab6ce1e208c6d9546fbf027c9d1b2b2bc3058134aaa1263b51ba236",
+        "6107878abc107fddbe899ede5edf654b760abb651ee7db6aaf4a6a7f94027e44"
+      ],
+      "trace_sha256": [
+        "410e3d7058265ef24cab8bb6b590c09c0fbefc74d7decb7c5a76dc453903fcb2",
+        "62e970de1ab287e53add885c45793118176fb5d3aaebeaa65a90e1e4e07f116a"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      },
+      "acquittement": {
+        "f1_cid": 32,
+        "f2_cid": 34,
+        "confirmation_apres_f2": true
+      },
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      }
+    },
+    {
+      "cas": "before-write",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "350100c1e1e31e0afda438719a52d9291aedd3e3e71b15d5aa1234a6f9f40feb",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 0,
+        "flush": 1
+      },
+      "temps_hote_s": 2.147,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 466000,
+        "wr_total_time_ns": 0,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "f104e54c902651b5ba820dadb03430d162eb496857b934c451a43e3a3136fc68",
+        "8a39a782fb0ae8855861b75f3e381db23be0076385737ff4d6cd59c40f1ca1e6"
+      ],
+      "trace_sha256": [
+        "b3b5dbd8a989e79d149a3e856e277cb44a81a820ff48471ce18bb017d56e930a",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "ordre": {
+        "premier_cid": null,
+        "write": 0,
+        "flush_cid": [],
+        "ancre_cid": [],
+        "derniere": null
+      }
+    },
+    {
+      "cas": "before-write",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "da772fb9c68ea3afffcada8fb533eea08772d6c1237ee35f41b19af911ef69c9",
+      "raw_sha256": "4a5783e9e10568cafecf93b607294a9882a85a7f8aceea31de61c10b3c0473d2",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 0,
+        "flush": 1
+      },
+      "temps_hote_s": 2.332,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 504000,
+        "wr_total_time_ns": 0,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "ee1ed1c59d00b8e62cde887c46706b78fa636bab8c353d4adcc5c5e740d3e837",
+        "2beafe5df17d5545f61fb867a91f62b2f5bc99838f47bb01817f1adaccfe30c3"
+      ],
+      "trace_sha256": [
+        "c9659fe788969945ab1ad1c508b7ddc051b42fb163116540e633ede04a5f777d",
+        "b7408fb12e4efcf36d6d587fbbae859e91227d1b0ad2c4265241db6e62fe59a5"
+      ],
+      "ordre": {
+        "premier_cid": null,
+        "write": 0,
+        "flush_cid": [],
+        "ancre_cid": [],
+        "derniere": null
+      }
+    },
+    {
+      "cas": "during-write",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "350100c1e1e31e0afda438719a52d9291aedd3e3e71b15d5aa1234a6f9f40feb",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 3.111,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 411000,
+        "wr_total_time_ns": 0,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "673e99efe2320623eb6fe7f46f55a6988b3580ec990c582eb9d4d4e48a68e475",
+        "850fb96041e7ec3026a03f3c0afb215a7ad89916f2f27cc6965ef23543793413"
+      ],
+      "trace_sha256": [
+        "195169031ccab372a5892b33c004b3b9378bf94225be141c334b5f59e8164e3e",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 1,
+        "flush_cid": [],
+        "ancre_cid": [],
+        "derniere": {
+          "cid": 26,
+          "op": "WRITE",
+          "lba": 16,
+          "blocs": 8
+        }
+      }
+    },
+    {
+      "cas": "during-write",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "da772fb9c68ea3afffcada8fb533eea08772d6c1237ee35f41b19af911ef69c9",
+      "raw_sha256": "4a5783e9e10568cafecf93b607294a9882a85a7f8aceea31de61c10b3c0473d2",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 3.159,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 397000,
+        "wr_total_time_ns": 0,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "f4897c098c60d17e742548d1ad3452205454b0c9d8a3d2858ca1149e6877f385",
+        "fd84d38724327f208a993f736525a05a44ee34b0ec8061af9a736e6c2e404a78"
+      ],
+      "trace_sha256": [
+        "5bdcb861a2c051e820395f5c8863c057ef3450a9456ac65bc263b7b82d240a79",
+        "b7408fb12e4efcf36d6d587fbbae859e91227d1b0ad2c4265241db6e62fe59a5"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 1,
+        "flush_cid": [],
+        "ancre_cid": [],
+        "derniere": {
+          "cid": 26,
+          "op": "WRITE",
+          "lba": 2,
+          "blocs": 1
+        }
+      }
+    },
+    {
+      "cas": "after-write",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.165,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 429000,
+        "wr_total_time_ns": 45000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "c39f275f0c1e7a9d275d0a4f9748a429a0a6bbf9fc0b9562aeed6346526379fd",
+        "cd15d475897054f004c2becccec94ed265d7dd23eab5fa72a0e0ab60532cc31b"
+      ],
+      "trace_sha256": [
+        "7ac57369be0b845ed5c6bbe9699ec37cae4cdfb983d529dd33f79a5f34ff31aa",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 1,
+        "flush_cid": [],
+        "ancre_cid": [],
+        "derniere": {
+          "cid": 26,
+          "op": "WRITE",
+          "lba": 16,
+          "blocs": 8,
+          "cqe": 0
+        }
+      }
+    },
+    {
+      "cas": "after-write",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "da772fb9c68ea3afffcada8fb533eea08772d6c1237ee35f41b19af911ef69c9",
+      "raw_sha256": "b0cd39d865328d2d7bedee35fe79cb6dfd27d49dba5e7aad4add3bae0808cfab",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.174,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 418000,
+        "wr_total_time_ns": 36000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "33a32cb213e4972907bc5e1a3e9a23e7ab9b24da4be7c548fd3814cc14ba82f5",
+        "977170c4486ab98145dd8876d536ffd209bb44c32919dd8eee8f3c9f058347ab"
+      ],
+      "trace_sha256": [
+        "9e0059e66f564f60499ecdfc2062d9c62d725996e3933036fdc22dd5009577f7",
+        "b7408fb12e4efcf36d6d587fbbae859e91227d1b0ad2c4265241db6e62fe59a5"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 1,
+        "flush_cid": [],
+        "ancre_cid": [],
+        "derniere": {
+          "cid": 26,
+          "op": "WRITE",
+          "lba": 2,
+          "blocs": 1,
+          "cqe": 0
+        }
+      }
+    },
+    {
+      "cas": "during-f1",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "b842775438c504ed967780390988b9621d8d3085aaeb5c92e2e2b239f45a6a7b",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 6,
+        "flush": 2
+      },
+      "temps_hote_s": 3.289,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 441000,
+        "wr_total_time_ns": 164000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "1b049f2a069edfc1b6177de2c840f3e33d46e6ce0caf7b15c0293be2d1bed28e",
+        "97ebce194e486623cd057e720a3953b7765e8a2bf286816ebbf76efd20b209c3"
+      ],
+      "trace_sha256": [
+        "7e5e14236bc67dfcae569f7101b9e0e0881f3410731a5cdbbe201de1db5dd1b4",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 6,
+        "flush_cid": [
+          32
+        ],
+        "ancre_cid": [],
+        "derniere": {
+          "cid": 32,
+          "op": "FLUSH"
+        }
+      }
+    },
+    {
+      "cas": "during-f1",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "da772fb9c68ea3afffcada8fb533eea08772d6c1237ee35f41b19af911ef69c9",
+      "raw_sha256": "f3844f875c5ad051fadb361d4585d2e6391278d76a7c598b0125ac4b7ffaa598",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 6,
+        "flush": 2
+      },
+      "temps_hote_s": 3.262,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 433000,
+        "wr_total_time_ns": 148000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "9b2e9cd3e65eb66bc8d05ac42fd023b91a11aa1720fbf827415af973b38c3af1",
+        "1cb9629d9a1143229cd23cca20227d6dc6655c0648f6fc0ade986e6909bcb8b2"
+      ],
+      "trace_sha256": [
+        "7e37b195699a7d25cb55573edea7fba6c5b2448eb2bcf3c4acdd8ef93dbdc3bb",
+        "b7408fb12e4efcf36d6d587fbbae859e91227d1b0ad2c4265241db6e62fe59a5"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 6,
+        "flush_cid": [
+          32
+        ],
+        "ancre_cid": [],
+        "derniere": {
+          "cid": 32,
+          "op": "FLUSH"
+        }
+      }
+    },
+    {
+      "cas": "after-f1",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "b842775438c504ed967780390988b9621d8d3085aaeb5c92e2e2b239f45a6a7b",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 6,
+        "flush": 2
+      },
+      "temps_hote_s": 2.266,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 406000,
+        "wr_total_time_ns": 178000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "20f2d01825feedf12a5b53c1745cc806a4e3f21c37f653c0f2ff71dfadfc0f41",
+        "ffbab05966afcdeb164f4f7198b1926ea9bde77e9fba94853e8fc93465252715"
+      ],
+      "trace_sha256": [
+        "2dbb71afa5ef7bdebf5e333c7f1d3b362f4a69e1cc5bbf98ac91f93a9670529f",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 6,
+        "flush_cid": [
+          32
+        ],
+        "ancre_cid": [],
+        "derniere": {
+          "cid": 32,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      }
+    },
+    {
+      "cas": "after-f1",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "da772fb9c68ea3afffcada8fb533eea08772d6c1237ee35f41b19af911ef69c9",
+      "raw_sha256": "f3844f875c5ad051fadb361d4585d2e6391278d76a7c598b0125ac4b7ffaa598",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 6,
+        "flush": 2
+      },
+      "temps_hote_s": 2.243,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 451000,
+        "wr_total_time_ns": 163000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "2f3bea00fee3ee3dbbdbd227a122460de175d2b7bdabcee128f83d98e4fbb231",
+        "1c8297e4bd6ef0bc061060ee2e73cf17c7acd0e20b7ce82426723f74981f1f1b"
+      ],
+      "trace_sha256": [
+        "bb3ca287e141f07f06f4e609198df7890c7bb7600001c0c997d813ba8cc4abf8",
+        "b7408fb12e4efcf36d6d587fbbae859e91227d1b0ad2c4265241db6e62fe59a5"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 6,
+        "flush_cid": [
+          32
+        ],
+        "ancre_cid": [],
+        "derniere": {
+          "cid": 32,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      }
+    },
+    {
+      "cas": "during-publish",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "0979fca58eee5c4a9e0832073540bc3910f833b0866578752a4599917cb65e73",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 7,
+        "flush": 2
+      },
+      "temps_hote_s": 3.218,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 490000,
+        "wr_total_time_ns": 192000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "d6db2df1d51c87c39227c35ee2438acf3082293ea154801fed70b5c0538dbf62",
+        "cf77d60891b5373746129a1e716e47ba9e830abb154463217abe83545c3cb87f"
+      ],
+      "trace_sha256": [
+        "bc9fea234274c862c53e516a91c25e17309b665f858bc5486aa1221a0caf0edc",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 33,
+          "op": "WRITE",
+          "lba": 0,
+          "blocs": 8
+        }
+      }
+    },
+    {
+      "cas": "during-publish",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "da772fb9c68ea3afffcada8fb533eea08772d6c1237ee35f41b19af911ef69c9",
+      "raw_sha256": "1882431d5d1183c7b68a18dcd289714b17cc35d686b1f2a0e55eb7d9f675541c",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 7,
+        "flush": 2
+      },
+      "temps_hote_s": 3.271,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 482000,
+        "wr_total_time_ns": 209000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "b9dbb90f6e2b3487b8d93a48d5934cc095ff0da72aeb89f03a1d60cc2bbf86d8",
+        "d57afaf679e4704a6c0967dffa4d3d3ce0b03012b6a4f19012f6602bf2d27076"
+      ],
+      "trace_sha256": [
+        "dc597c32d0019dc16d4b28fd910285b0a10616c43e84dfbfa49aa423604b70d3",
+        "b7408fb12e4efcf36d6d587fbbae859e91227d1b0ad2c4265241db6e62fe59a5"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 33,
+          "op": "WRITE",
+          "lba": 0,
+          "blocs": 1
+        }
+      }
+    },
+    {
+      "cas": "during-f2",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "92d52da88ce7caaeea7a24417a480032fbedfb81ab2a48053a8db01b7c215da3",
+      "raw_sha256": "fc105f49e987fe5ac93951b2573988b9ff90e612912b254812beac2f6a1b57f1",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 3.352,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 440000,
+        "wr_total_time_ns": 219000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "bd05fd8489bfb39d59d59f27bdf40c32b69e186f6bf476e85170f9629527322a",
+        "d44af0b38321066aff1474a215f86dec02f460e6a7092db61f19b596b3649705"
+      ],
+      "trace_sha256": [
+        "ffc50c122fc6735b54cc7a81bb7679b66094d0bd2210596303de2352dae09146",
+        "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH"
+        }
+      }
+    },
+    {
+      "cas": "during-f2",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "8ad4839d2287726967a6242ba987e10fe34461950456da4333c04aab2540d92e",
+      "raw_sha256": "e198438f523133461766f0e61085160359910ff89b35455dfea9b2206fdadf60",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 3.34,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 565000,
+        "wr_total_time_ns": 199000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "b62ff2237c426362d7d6fc1342a24b9aa9053259dca1592e0c1c28a9127678e1",
+        "e6d3833f52454b44b8b172c77295e78384f2af77ff90bb078257fa37ff37925d"
+      ],
+      "trace_sha256": [
+        "b269c62f2b5867290ca6028a9b3e8e5bee074c6ff60a8577dc715b91ec733394",
+        "9444953e38142f4942109e6fce05fe0115595d81385b35cdaa68156bcc50496b"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH"
+        }
+      }
+    },
+    {
+      "cas": "after-f2",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "e7289a19eb8b9ae86ccd154521bf2e3d0be6cac0cbb859cd8b925278bcfb173d",
+      "raw_sha256": "ef40f0e391ea30ded58e16cf475eae8ef8b203f9c1e0618498cf8aa7d3a3b084",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.4,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 491000,
+        "wr_total_time_ns": 226000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "28743ff16fd72a72bf707ead4c0f78f5ff1b835531f84a036dfc91376f5896bf",
+        "99b89a902bfafe1beb299f40d6eb12d728ecb70b5f7085ef3b5de51833349a1d"
+      ],
+      "trace_sha256": [
+        "009217ae0e98f33398addc056a765db5d27463a048a884e76259103c90d830e6",
+        "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      }
+    },
+    {
+      "cas": "after-f2",
+      "vcpus": 2,
+      "secteur": 4096,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "7dc67e2a4b149c30706950607a5c7c76e4861ca9decc5261f62b4dd165c0d9ed",
+      "raw_sha256": "11dcd2389ee7b22a98cc2a0d84e983216553d7ca6c9d36849f16e99d1c1cb064",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.293,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 473000,
+        "wr_total_time_ns": 221000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "1977bd954c6bf7ccd3f46ebe03688ee8f3d1a1c0efaa8606dd15ed3fc6efffcc",
+        "02e78c4f641754e1b2532cdad54188bb32e0eb442c0afa67e0a92b5293acf646"
+      ],
+      "trace_sha256": [
+        "42dfb4e32521d37baea5a557b4356cbda111c0449f8cda7fcee9b0e0a07372ae",
+        "9444953e38142f4942109e6fce05fe0115595d81385b35cdaa68156bcc50496b"
+      ],
+      "ordre": {
+        "premier_cid": 26,
+        "write": 7,
+        "flush_cid": [
+          32,
+          34
+        ],
+        "ancre_cid": [
+          33
+        ],
+        "derniere": {
+          "cid": 34,
+          "op": "FLUSH",
+          "cqe": 0
+        }
+      }
+    },
+    {
+      "cas": "rights",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "350100c1e1e31e0afda438719a52d9291aedd3e3e71b15d5aa1234a6f9f40feb",
+      "ack": false,
+      "opcode": {
+        "read": 17,
+        "write": 0,
+        "flush": 0
+      },
+      "temps_hote_s": 2.264,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 6209000,
+        "wr_total_time_ns": 0,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "37e6427768544a92db6696e482d629c420ed55f8224067434d3581eabcfe7a7a",
+        "8a39a782fb0ae8855861b75f3e381db23be0076385737ff4d6cd59c40f1ca1e6"
+      ],
+      "trace_sha256": [
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      }
+    },
+    {
+      "cas": "revoke-write",
+      "vcpus": 1,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.078,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 8002000,
+        "wr_total_time_ns": 25499000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "60185b3beacae1ca55b18e3b646ceff4b9c7832f0d267e38f87eb926a2df2ec1",
+        "5d7d706b21ddf086162becccff79f03f339e3cfad1ead6a98aa089a6413f5c78"
+      ],
+      "trace_sha256": [
+        "050c446563f7c855be417c616b861dbd7fd16f066735867671e0f36d3f297473",
+        "f4ac67d00545bed2242c21ed5aac6ebc9f764e1ca091bb2923e0baddc2738084"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      },
+      "migration": [],
+      "revocation": [
+        [
+          "8",
+          "0"
+        ]
+      ]
+    },
+    {
+      "cas": "revoke-write",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.142,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 433000,
+        "wr_total_time_ns": 30833000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "e5aa0947f6546553990f493093f9c7ec002b4f614a3ec282273a9b69d38bfcab",
+        "2f58c567be24e4aa81ce9d4c0101e0272c4fc2177d7dfb9e82b9c49d8928895b"
+      ],
+      "trace_sha256": [
+        "7ac57369be0b845ed5c6bbe9699ec37cae4cdfb983d529dd33f79a5f34ff31aa",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      },
+      "migration": [],
+      "revocation": [
+        [
+          "8",
+          "1"
+        ]
+      ]
+    },
+    {
+      "cas": "revoke-write",
+      "vcpus": 4,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.242,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 423000,
+        "wr_total_time_ns": 42670000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "40565406dca350a976fe131599d8fbc77f690d400ce2c71c62586299c6ef8928",
+        "ac377ad7d3f7a212323b9af2b1f3d856cc79d03418256355486ccd428905554f"
+      ],
+      "trace_sha256": [
+        "cb042957c66a022c7b4bd9da2ce92e34098b0421dfe4d9da94b417ae6f5ed90b",
+        "a8d7f3702da2ec664e35036831790569bb53b91a678ab0a03691d6e97a88c7f8"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      },
+      "migration": [],
+      "revocation": [
+        [
+          "8",
+          "3"
+        ]
+      ]
+    },
+    {
+      "cas": "revoke-flush",
+      "vcpus": 1,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "d24dfb33c31a0e8f20b9c899f1879806b51bd3c2841b13a511194030162e1095",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 6,
+        "flush": 2
+      },
+      "temps_hote_s": 2.137,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 384000,
+        "wr_total_time_ns": 140000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "bff2dedd828eaef7d7680064ada0216a651bea2c39e93cbeb926c46388b922ef",
+        "5ffe8ed5ca49db52f110112c1738a27a1fb4335355ea6ea9100fcb3948265bf9"
+      ],
+      "trace_sha256": [
+        "9a779038db3aca35f01f90c5dcd7aa88846f779e59b0c69e21d3d009a0bf6ca4",
+        "f4ac67d00545bed2242c21ed5aac6ebc9f764e1ca091bb2923e0baddc2738084"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 32,
+        "op": "FLUSH",
+        "cqe": 0
+      },
+      "migration": [],
+      "revocation": [
+        [
+          "9",
+          "0"
+        ]
+      ]
+    },
+    {
+      "cas": "revoke-flush",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "d24dfb33c31a0e8f20b9c899f1879806b51bd3c2841b13a511194030162e1095",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 6,
+        "flush": 2
+      },
+      "temps_hote_s": 2.301,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 479000,
+        "wr_total_time_ns": 159000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "4172bf43eb9cdecd386b4dc4c43c7933e91dd4891c2ccbe8e24e8cb0f717d6d4",
+        "3a8876960e2274ca4f04313474444843fb2b5c4000153cf9bee27cf46913fb2c"
+      ],
+      "trace_sha256": [
+        "2dbb71afa5ef7bdebf5e333c7f1d3b362f4a69e1cc5bbf98ac91f93a9670529f",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 32,
+        "op": "FLUSH",
+        "cqe": 0
+      },
+      "migration": [],
+      "revocation": [
+        [
+          "9",
+          "1"
+        ]
+      ]
+    },
+    {
+      "cas": "revoke-flush",
+      "vcpus": 4,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "524c85f31c174ec8c7307a5840ce83d570f4cdf04c7b42cb4b4b0fcf8ff514b7",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 6,
+        "flush": 2
+      },
+      "temps_hote_s": 2.323,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 429000,
+        "wr_total_time_ns": 172000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "2c9d4dc7da71687174e138650f482f2239bbd0c9842e59e3f48d234ca9a3b379",
+        "1eedc1d9c019ae21459485401e84ac1a58c479c25d8c4cc69501c63c3d52000a"
+      ],
+      "trace_sha256": [
+        "9872f6dcf8dd9fe25071714d123ef30f482e457d7d4a531fc51314828c85d538",
+        "a8d7f3702da2ec664e35036831790569bb53b91a678ab0a03691d6e97a88c7f8"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 32,
+        "op": "FLUSH",
+        "cqe": 0
+      },
+      "migration": [],
+      "revocation": [
+        [
+          "9",
+          "3"
+        ]
+      ]
+    },
+    {
+      "cas": "timeout",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 9.166,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 506000,
+        "wr_total_time_ns": 7014382000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "223944c677d7cf28378036aab1bf58c14d100a2805bc50a892ea081410d2a226",
+        "20400485e8d19706a174bd527356efd82c02795f8fc0ecad0ffc769fd7921927"
+      ],
+      "trace_sha256": [
+        "7ac57369be0b845ed5c6bbe9699ec37cae4cdfb983d529dd33f79a5f34ff31aa",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      }
+    },
+    {
+      "cas": "driver-death",
+      "vcpus": 1,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.051,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 404000,
+        "wr_total_time_ns": 27146000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "a4ece1e544a1400eb7c3aa3b89032b25fdf12420a2e0f6988234511f79541ee6",
+        "639ca2595604b10510111654c2154a2a93b880fb9118f91f559bd5908eea9d89"
+      ],
+      "trace_sha256": [
+        "050c446563f7c855be417c616b861dbd7fd16f066735867671e0f36d3f297473",
+        "f4ac67d00545bed2242c21ed5aac6ebc9f764e1ca091bb2923e0baddc2738084"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      }
+    },
+    {
+      "cas": "driver-death",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.15,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 498000,
+        "wr_total_time_ns": 23421000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "859f7b0b7bd17368cff16ceb3af251bb0f1a84881712b2c90996423dac2b5988",
+        "9174343c19b0ab34d6a985ad459a47e79208744eca9bd067e753fb9cd258d4ef"
+      ],
+      "trace_sha256": [
+        "7ac57369be0b845ed5c6bbe9699ec37cae4cdfb983d529dd33f79a5f34ff31aa",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      }
+    },
+    {
+      "cas": "driver-death",
+      "vcpus": 4,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.171,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 353000,
+        "wr_total_time_ns": 31074000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "955aa612e3c75d2802550b502ed41adadf3484fc0973fef1bff05e15f3dc2163",
+        "ac377ad7d3f7a212323b9af2b1f3d856cc79d03418256355486ccd428905554f"
+      ],
+      "trace_sha256": [
+        "cb042957c66a022c7b4bd9da2ce92e34098b0421dfe4d9da94b417ae6f5ed90b",
+        "a8d7f3702da2ec664e35036831790569bb53b91a678ab0a03691d6e97a88c7f8"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      }
+    },
+    {
+      "cas": "client-death",
+      "vcpus": 1,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 1.969,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 318000,
+        "wr_total_time_ns": 31100000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "3260a1a2b64e92f9111f118e83e4719433b7bc9293136e0adf9d08c833b82009",
+        "5ffe8ed5ca49db52f110112c1738a27a1fb4335355ea6ea9100fcb3948265bf9"
+      ],
+      "trace_sha256": [
+        "050c446563f7c855be417c616b861dbd7fd16f066735867671e0f36d3f297473",
+        "f4ac67d00545bed2242c21ed5aac6ebc9f764e1ca091bb2923e0baddc2738084"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      }
+    },
+    {
+      "cas": "client-death",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.121,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 338000,
+        "wr_total_time_ns": 33838000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "09c128ac7ae89467e943a42eba43d15fd48abb117c343535007bac93fee56592",
+        "2f58c567be24e4aa81ce9d4c0101e0272c4fc2177d7dfb9e82b9c49d8928895b"
+      ],
+      "trace_sha256": [
+        "7ac57369be0b845ed5c6bbe9699ec37cae4cdfb983d529dd33f79a5f34ff31aa",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      }
+    },
+    {
+      "cas": "client-death",
+      "vcpus": 4,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 2.172,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 481000,
+        "wr_total_time_ns": 42652000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "949a0cc92fb094775154ba9fbaece86f2e42b786bddd801958345abc05214bb7",
+        "ac377ad7d3f7a212323b9af2b1f3d856cc79d03418256355486ccd428905554f"
+      ],
+      "trace_sha256": [
+        "cb042957c66a022c7b4bd9da2ce92e34098b0421dfe4d9da94b417ae6f5ed90b",
+        "a8d7f3702da2ec664e35036831790569bb53b91a678ab0a03691d6e97a88c7f8"
+      ],
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      },
+      "cqe_tardive": {
+        "cid": 26,
+        "op": "WRITE",
+        "lba": 16,
+        "blocs": 8,
+        "cqe": 0
+      }
+    },
+    {
+      "cas": "dma-fault",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "fad5c075fcb2a5a0ac97afa6c13079f10debbb7fefe1e778b229ef8ea684276c",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 4.137,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 483000,
+        "wr_total_time_ns": 2187000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "079e0410455b8d282f2c4f39a46f38428abc188457e5e919d4aa0e6e8ad8686a",
+        "91247730bd3a946fa98a9fe395e9a2c49b770b6fd17145fb45b1329b0c759752"
+      ],
+      "trace_sha256": [
+        "0bd48c6e0f110ad4d20dd03c69d5910dd3146ee6c81bb89860b36e125cba8e45",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "impact_write_sans_confirmation": {
+        "octets_changes": 100,
+        "blocs_p9_changes": [
+          2
+        ]
+      },
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 2,
+        "faute_source": {
+          "iova": 33574912,
+          "frcd_hi": 13835058081051967536
+        },
+        "source_témoin_sha256": "a021f429cce5bcfe234ddaff2dd12aef478e06e871609b077a227b73d2421228",
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "cas": "qi-error",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "3cf675a6039e66aa76e4b369a4e40b63be55103616f29c93053b4a0ad424fef9",
+      "raw_sha256": "62535aed35c96788af33eaae0e0a1512253245399a730bb8506b72b10d5d67e8",
+      "ack": true,
+      "opcode": {
+        "read": 22,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.432,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 530000,
+        "wr_total_time_ns": 219000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "d4d2df2e3555fe8ef6c4e4de6056427cd79d21d1415ef5a31bb2cde63a6c5183",
+        "61fdea9a62f9f3abc52ddd8d4788be1bb5bf6ca7cbb043bb6285ae29ce9ac763"
+      ],
+      "trace_sha256": [
+        "62d97decf220beb7df5ed53ba7dc926f16a555648af31cc22f41ae2e44058231",
+        "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd"
+      ],
+      "retrait": {
+        "fsts": 16,
+        "iqh": 96,
+        "iqt": 144,
+        "cookie_lu_hote": 0,
+        "retrait_confirme": false
+      }
+    },
+    {
+      "cas": "qi-delay",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "ea1778ee906b6f7beae0e08ff6d02828399d3753335991a9d970a4d09075c52a",
+      "raw_sha256": "5a40958c0712c223b2431bd82072455e1501e81b16286a07975c3a54f42e5f2f",
+      "ack": true,
+      "opcode": {
+        "read": 22,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.366,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 535000,
+        "wr_total_time_ns": 165000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "deea4034729a69e1cec905be3a319eaa9cc2171064687035b3f51f584ab8dd01",
+        "cbcc3c0534b5263b9d1ae39f01b298506b02f944d9f72574e965b8c4040b2b04"
+      ],
+      "trace_sha256": [
+        "20ceac30c998788055b46dcc8ded96d810a2fd3f95e86831ccd497a4f1bcfecd",
+        "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd"
+      ],
+      "retrait": {
+        "fsts": 0,
+        "iqh": 144,
+        "iqt": 144,
+        "cookie_lu_hote": 3,
+        "retrait_confirme": false
+      }
+    },
+    {
+      "cas": "race",
+      "vcpus": 1,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "3e13bd6d79833fdbcd56b1ad15ec88315452d4005ed76d46ea674e854fedee38",
+      "raw_sha256": "62d0b33ca1bf951dc7efad8faa8f51491a2fdaa18ec660b619865945307d0733",
+      "ack": true,
+      "opcode": {
+        "read": 23,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.32,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 508000,
+        "wr_total_time_ns": 202000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "1f919f9c72244a342a0b0382e1105dd3ff6d46df97b655a2170266faea97a5d2",
+        "cf83a6474aa45f9cca0343470e20ae4f65f41ad643f9ffeadfe948ae656887af"
+      ],
+      "trace_sha256": [
+        "831d7e042a6f8cdc3a84a6699e1400947d0ee4ed6ac6afe5c3b72053ad6b3cee",
+        "0792ec9fcc8da4fd4c8c890868ef828ebb8e48a2c6bc3f44610ed8b8f12995c1"
+      ],
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      }
+    },
+    {
+      "cas": "race",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "c2bffe0f163a226b41522c11715a64c97b85ef1f3af493497c69cbfe00be7b03",
+      "raw_sha256": "433decc383d8bf26b648b1c195b14d2022f4538162812dbcd88e6787ba2c7b7e",
+      "ack": true,
+      "opcode": {
+        "read": 23,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.381,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 475000,
+        "wr_total_time_ns": 138000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "c2517174a45d090cde4b8c123ba55b85b837751033339e1b7094183af2f16a5d",
+        "b3af384d8d63d5885c87048fbef2c3a1f8de282ecba7155ac359470c228e65dd"
+      ],
+      "trace_sha256": [
+        "8a3960919757f2b578f76fe4fa8bfc9b0a854025da3e8aaed2dcdfa1d0acffe3",
+        "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd"
+      ],
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      },
+      "migration": [
+        [
+          "1",
+          "0"
+        ]
+      ],
+      "revocation": []
+    },
+    {
+      "cas": "race",
+      "vcpus": 4,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "d0fd585b2d665222d9d32e4d90bd5d33f03851bd747cc195c40c3b7d9c684297",
+      "raw_sha256": "9ed5b3bbac36144621cfe5749105d918018c64be2f5cc6da1289fef788b6eccb",
+      "ack": true,
+      "opcode": {
+        "read": 23,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 2.515,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 558000,
+        "wr_total_time_ns": 173000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "96e3bb6f317b3e859811ea8f85d8bcefad9c44e70433fb6dd1b19599fd0a8bf4",
+        "dcb6d0446e7f302152a698e1c0f199f41260a659508e12af72ccde211ce3b983"
+      ],
+      "trace_sha256": [
+        "9c104014e616d0608802f04dcbb7f636b5fc5c849eeb169d6337b2af8e959a01",
+        "cb9fc46eb245ae46aa0c3083274ba11c32345bacfe4051ccadddf32e945c0128"
+      ],
+      "retrait": {
+        "qi_et_wait": 3,
+        "fsts": 0,
+        "droits_dma_residuels": []
+      },
+      "migration": [
+        [
+          "3",
+          "0"
+        ]
+      ],
+      "revocation": []
+    },
+    {
+      "cas": "eio-write",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "350100c1e1e31e0afda438719a52d9291aedd3e3e71b15d5aa1234a6f9f40feb",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 1,
+        "flush": 1
+      },
+      "temps_hote_s": 4.093,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 453000,
+        "wr_total_time_ns": 12000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "386501c605b7facd3cc1425a7e8832059b7873991ca823fff7cbe7a09c3b8316",
+        "8a39a782fb0ae8855861b75f3e381db23be0076385737ff4d6cd59c40f1ca1e6"
+      ],
+      "trace_sha256": [
+        "9a6b14c3dd822d20668e23f361dfc2cde5aaed09fabc686b69a7496456ea7a0f",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "signalement": {
+        "retours": {
+          "3": 26,
+          "4": 26,
+          "5": 11,
+          "6": 26
+        },
+        "cid": 26,
+        "statut_nvme": 640,
+        "commande": "WRITE",
+        "codes_dans_les_trames": {
+          "bloc": 26,
+          "p9": 26,
+          "app": 26
+        }
+      },
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "cas": "eio-f1",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 3,
+      "etat": "ancien",
+      "fichier_sha256": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "manifeste_sha256": "ab2d852bf7348a9aa307e828939a195e00d1f8f90ae3c2b23dd3b203899950a4",
+      "raw_sha256": "b1f5af8b61ba653f3fd20f1db47c605d3cedb7010476b23f1c8b5f3a5640aa36",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 6,
+        "flush": 2
+      },
+      "temps_hote_s": 4.275,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 354000,
+        "wr_total_time_ns": 139000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "158d30ef658d1b02703ba3465c6885cd5c9c26ff29a67073f0394b731a676a01",
+        "5115b019e45ef54a1cb822e3b181f123fbb1820764fa448367291adca83fd3b3"
+      ],
+      "trace_sha256": [
+        "7f98a83e10c1eed083ea44daa41e288055ba190d064de869a005960200925448",
+        "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b"
+      ],
+      "signalement": {
+        "retours": {
+          "3": 26,
+          "4": 26,
+          "5": 11,
+          "6": 26
+        },
+        "cid": 32,
+        "statut_nvme": 640,
+        "commande": "FLUSH",
+        "codes_dans_les_trames": {
+          "bloc": 26,
+          "p9": 26,
+          "app": 26
+        }
+      },
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "cas": "eio-f2",
+      "vcpus": 2,
+      "secteur": 512,
+      "generation": 4,
+      "etat": "nouveau",
+      "fichier_sha256": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "manifeste_sha256": "2be3d60d0c1fb24573c597c746faf1a6c8430d55279aaedcf8032003ce74c70f",
+      "raw_sha256": "7f3bef4560a9455b520dd45f3e9dade53ee4919f8502cc9875d59d5938363875",
+      "ack": false,
+      "opcode": {
+        "read": 18,
+        "write": 7,
+        "flush": 3
+      },
+      "temps_hote_s": 4.176,
+      "temps_bloc_hote_ns": {
+        "rd_total_time_ns": 263000,
+        "wr_total_time_ns": 129000,
+        "flush_total_time_ns": 0
+      },
+      "serie_sha256": [
+        "fc28e986922fb4a705ff2ac771ad97ba35a380064553abb02bc0cae018a39dde",
+        "b3af384d8d63d5885c87048fbef2c3a1f8de282ecba7155ac359470c228e65dd"
+      ],
+      "trace_sha256": [
+        "1e51437400d4ee9c119d7cd2c1ef8f0c876475e634c20b35118766e290b30b71",
+        "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd"
+      ],
+      "signalement": {
+        "retours": {
+          "3": 26,
+          "4": 26,
+          "5": 11,
+          "6": 22
+        },
+        "cid": 34,
+        "statut_nvme": 640,
+        "commande": "FLUSH",
+        "codes_dans_les_trames": {
+          "bloc": 26,
+          "p9": 22,
+          "app": 22
+        }
+      },
+      "retrait": {
+        "qi_et_wait": 2,
+        "fsts": 0,
+        "droits_dma_residuels": [
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ]
+      }
+    }
+  ]
+}
