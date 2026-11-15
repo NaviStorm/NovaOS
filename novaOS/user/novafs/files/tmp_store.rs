@@ -26,6 +26,12 @@ pub struct Store {
     seal: u64,
 }
 
+#[derive(Debug, Default)]
+pub struct Recovery {
+    pub removed: usize,
+    pub quarantined: usize,
+}
+
 fn optional<D: Device>(fs: &Engine<D>, parent: u64, name: &str) -> Result<Option<Stat>> {
     match fs.lookup_at(parent, name) {
         Ok(st) => Ok(Some(st)),
@@ -61,6 +67,23 @@ fn name_of(prefix: char, id: &[u8; 32]) -> String {
         name.push(char::from(DIGITS[usize::from(b & 15)]));
     }
     name
+}
+
+fn identity_from(name: &str, prefix: char) -> Option<[u8; 32]> {
+    let raw = name.strip_prefix(prefix)?.as_bytes();
+    if raw.len() != 64 {
+        return None;
+    }
+    let digit = |b| match b {
+        b'0'..=b'9' => Some(b - b'0'),
+        b'a'..=b'f' => Some(b - b'a' + 10),
+        _ => None,
+    };
+    let mut id = [0; 32];
+    for (byte, pair) in id.iter_mut().zip(raw.chunks_exact(2)) {
+        *byte = digit(pair[0])? << 4 | digit(pair[1])?;
+    }
+    valid_identity(&id).then_some(id)
 }
 
 impl Store {
@@ -243,6 +266,45 @@ impl Store {
         collect(fs)
     }
 
+    pub fn recover<D: Device>(&self, fs: &mut Engine<D>, boot: [u8; 16]) -> Result<Recovery> {
+        if boot == [0; 16] {
+            return Err(Error::Unavailable);
+        }
+        self.root_valid(fs)?;
+        self.check_room(fs, 0)?;
+        let mut count = Recovery::default();
+        let mut after = None;
+        while let Some(name) = fs.inspect_dir(self.id, after.as_deref(), 1)?.pop() {
+            if let Some(owner) = identity_from(&name, 'r') {
+                let file = fs.lookup_at(self.id, &name)?;
+                if owner[..16] == boot {
+                    // Un redémarrage du service pendant le même boot n’autorise
+                    // ni l’adoption d’une capacité perdue ni la suppression.
+                    count.quarantined += 1;
+                } else {
+                    match self
+                        .owned_root(fs, &owner, file)
+                        .and_then(|id| self.purge(fs, owner, id))
+                    {
+                        Ok(()) => count.removed += 1,
+                        Err(Error::Invalid(UNVERIFIED)) => count.quarantined += 1,
+                        Err(e) => return Err(e),
+                    }
+                }
+            } else if let Some(owner) = identity_from(&name, 't') {
+                if optional(fs, self.id, &name_of('r', &owner))?.is_none() {
+                    count.quarantined += 1;
+                }
+            } else if name != SEAL {
+                count.quarantined += 1;
+            }
+            after = Some(name);
+        }
+        // Un arrêt après retrait du dernier nom peut laisser des extents
+        // dans la file Garbages P9. Le moteur ne collecte que des objets morts.
+        collect(fs)?;
+        Ok(count)
+    }
 }
 
 fn remove_tree<D: Device>(fs: &mut Engine<D>, parent: u64, name: String, st: Stat) -> Result<()> {

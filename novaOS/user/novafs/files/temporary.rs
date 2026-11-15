@@ -71,6 +71,13 @@ impl Session<'_, '_> {
             Some(_) => return Err(rt::REFUSED),
             None => {
                 let store = tmp_store::Store::mount(fs).map_err(namespace::error)?;
+                let audit = store.recover(fs, epoch).map_err(namespace::error)?;
+                if audit.quarantined != 0 {
+                    log(b"TMP reprise quarantaine");
+                }
+                if audit.removed != 0 {
+                    log(b"TMP reprise orphelins retires");
+                }
                 self.temporary.store = Some((store, epoch));
                 store
             }
