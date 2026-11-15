@@ -1,5 +1,7 @@
 # Données, identité, stockage et distribution
 
+**Portée du registre initial.** Les conditions de profil ci-dessous sont celles de l’audit v0.19.0. Le mandat serveur exige désormais comptes, groupes, rôles, ACL persistantes, données surprotégées, sauvegardes avec droits et rollback système. Les options de réalisation restent à instruire. [Couverture serveur](exigences-serveur.md) · [Contrat de protection](contrat-autorisations.md)
+
 **Base publiée examinée** `1b3bb5a8df767a09fa0671bcfd95e6e734693a3a`, NovaOS v0.19.0 et NovaFS v0.9.13 P9. Ce registre distingue intégration en source, qualification sur un profil et livraison UTM v0.17.0. « Ouvert » indique une exigence sans parcours opérationnel identifié dans cette base. Les priorités et essais sont des propositions à la MOE/MOA. Toute exigence nouvelle a une **version à arbitrer**. P0 désigne une condition de sûreté pour l’usage indiqué, P1 un besoin de la stable proposée, P2 une fonction reportable si le profil l’autorise, P3 une extension ultérieure. Une condition de profil s’applique dès que la MOA promet ce profil.
 
 ## C. Accès aux données

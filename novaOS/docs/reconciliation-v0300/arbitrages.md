@@ -1,5 +1,7 @@
 # Décisions, exigences sans affectation et reports
 
+**Archive de l’audit antérieur à la décision serveur.** Les options, affectations et statuts du tableau reflètent l’instruction de cet audit. Pour le périmètre en vigueur, se reporter aux décisions ARC-014 à ARC-018. Pour les affectations soumises à la MOA/MOE, utiliser le scénario serveur ARC-019. [Décisions et filiation](decisions.md) · [Répartition révisée](proposition.md)
+
 Les lignes du registre ci-dessous rassemblent des **besoins sans affectation MOA retrouvée pour la période v0.20–v0.30**. Un domaine peut être cité dans une feuille de route sans que son périmètre, ses prérequis ou son numéro aient été décidés. La priorité reflète l’avis technique de l’audit. La colonne « version proposée » indique soit une hypothèse du scénario, soit une condition d’entrée sans numéro. Les conséquences, épreuves et solutions provisoires de chaque exigence figurent aux identifiants correspondants du [socle](socle.md), des [données](donnees.md) ou des [applications](applications.md).
 
 | Exigence | Priorité proposée et motif | Dépendances | État actuel | Version proposée, non validée | Validation MOA |

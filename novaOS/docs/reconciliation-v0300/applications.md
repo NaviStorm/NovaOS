@@ -1,6 +1,8 @@
 # Applications, réseau, interfaces et développement
 
-Inventaire et exigences E, H, J, K et L sur les sources publiées v0.19.0. Dans chaque ligne, la priorité est une recommandation motivée pour la première stable. Une priorité conditionnelle dépend du produit que choisira la MOA. Les épreuves décrivent des résultats à obtenir dans de futurs mandats. La [matrice historique](historique.md) traite séparément l’attribution des numéros.
+**Portée du registre initial.** Les priorités conditionnelles ci-dessous ont précédé la décision serveur. La double pile réseau, NovaTUI, la CLI et les applications serveur sont exigées. La famille K, à l’exception des primitives utiles à la console texte, relève de l’après-v0.30.0. [Exigences serveur en vigueur](exigences-serveur.md)
+
+Inventaire et exigences E, H, J, K et L sur les sources publiées v0.19.0. Dans chaque ligne, la priorité est une recommandation motivée pour la première stable. Ces priorités conditionnelles ont été proposées avant le choix de la stable serveur. Les épreuves décrivent des résultats à obtenir dans de futurs mandats. La [matrice historique](historique.md) traite séparément l’attribution des numéros.
 
 ## E — Bibliothèques et ABI
 

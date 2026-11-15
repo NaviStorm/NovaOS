@@ -1,24 +1,19 @@
-# NovaOS — Dossier de décision pour la première stable v0.30.0
+# NovaOS — Première stable serveur en mode texte
 
-**Situation au 15 novembre 2026.** `origin/main` publie les sources NovaOS v0.19.0 au commit `1b3bb5a8df767a09fa0671bcfd95e6e734693a3a`. Le dernier installateur UTM AArch64 distribué est en v0.17.0 et NovaFS en v0.9.13 P9. La décision en attente porte sur les engagements futurs et leur ordre. Le mandat autorise un audit documentaire sur la branche `codex/roadmap-reconciliation-v0300`. [README publié](../../../README.md#feuille-de-route) · [Distribution](../../../distribution/README.md)
+**Décision approuvée par la MOA le 15 novembre 2026.** NovaOS v0.30.0 sera un serveur généraliste administrable et exploitable en mode texte. Une application serveur native devra pouvoir être installée, jointe depuis une autre machine, supervisée, sauvegardée et remise en service avec les droits attendus. La pile graphique complète est reportée après v0.30.0. QEMU x86_64 est la référence principale, QEMU AArch64 la seconde référence obligatoire. Le Tecra A50-J reste la cible physique expérimentale prioritaire. [Registre de décision](decisions.md) · [Plateformes de qualification](contrat-plateforme.md)
 
-## Contrats soumis à décision le 15 novembre 2026
+## Lire le dossier serveur
 
-| Décision structurante | Documents d’arbitrage |
+| Question | Document de référence |
 |---|---|
-| Profil de la première stable | [Critères sur les deux VM, le bureau natif et le Tecra](contrat-plateforme.md) |
-| Bibliothèque système Rust puis threads utilisateur | [Trois niveaux d’API, règles de terminaison et de compatibilité](contrat-rust-threads.md) |
-| Autorité sur les données et garde des clés | [Identités, ACL, capacités et secours](contrat-autorisations.md) · [Persistance, compatibilité et récupération P9](dependances-p9.md) |
+| Quelles fonctions faudra-t-il démontrer, lesquelles manquent en v0.19.0 et de quoi dépendent-elles ? | [Matrice des exigences serveur, des commandes et des profils applicatifs](exigences-serveur.md) |
+| Comment la MOA pourra-t-elle accepter ou refuser un candidat ? | [Seize étapes de bout en bout, sur les deux architectures, et qualification selon le risque](acceptation-serveur.md) |
+| Quel est le premier chantier à préparer ? | [Bibliothèque système Rust et cycle de vie des threads](contrat-rust-threads.md) |
+| Comment un enfant de nsh accède-t-il à une donnée surprotégée et que devient ce droit après restauration ? | [Identités, délégations et garde des clés](contrat-autorisations.md) · [Limites et options du stockage P9](dependances-p9.md) |
+| Quels numéros et choix attendent encore une validation MOA/MOE ? | [Répartition proposée et dépendances critiques](proposition.md) |
+| Pourquoi les anciens documents plaçaient-ils NovaWM avant la stable ? | [Historique et sources](historique.md) · [Proposition antérieure figée](https://github.com/NaviStorm/NovaOS/blob/29049a50758f73d472f03ad733bcb3eac74b5259/novaOS/docs/reconciliation-v0300/proposition.md) |
 
-La MOA peut statuer sur les [trois choix avant v0.20.0](proposition.md#trois-arbitrages-indispensables-avant-v0200) indépendamment du calendrier complet. La [matrice des écarts de couverture](ecarts-couverture.md) complète les 181 exigences initiales. Le [registre des décisions](decisions.md) consigne, pour chaque texte, son origine, son statut et la validation dont il dispose.
-
-Le contrôle documentaire a relié les 16 thèmes du mandat au registre initial, vérifié les 11 champs de chacune des 13 décisions et retrouvé les mêmes 13 tranches proposées. Les cinq écarts de couverture ont chacun une preuve future et une échéance d’arbitrage. Les critères d’acceptation des nouveaux contrats seront à exercer sur un candidat ultérieur.
-
-## Ce que doit trancher la MOA
-
-- **Ordre des travaux.** La livraison SMP a avancé la partie multicœur ; l’API permettant à une application de créer et joindre ses propres threads reste ouverte. Le NVMe publié n’a pas livré la bibliothèque système Rust publique que la MOA se rappelle pour v0.19.0. Pour NovaWM, le mandat graphique ancien indiquait v0.18.0 ; la MOA se rappelle également v0.28.1. Le 15 novembre, elle précise ne pas disposer du tableau d’origine daté et demande de traiter v0.19.0 et v0.28.1 comme références à vérifier. [Chronologie, sources et matrice](historique.md)
-- **Protection des données.** Les capacités bornent les opérations que peut faire un client. Il reste à décider qui accorde ces capacités, comment l’autorisation persiste, qui détient les clés et ce que signifie « administrateur non autorisé » sur une machine en fonctionnement. L’impact d’une révocation doit être défini pour les handles, les pages déjà lues, les snapshots et les sauvegardes. [Modèle proposé et conditions](donnees.md)
-- **Profil de la stable.** Choisir les machines, le périmètre réseau, le parcours graphique NovaWM/NovaUI, les programmes cibles du SDK, les moyens de secours et les limites publiables. Une preuve sur disque Q35 virtuel ne qualifie pas le NVMe du portable. Le choix d’un démarrage physique modifie les prérequis et le coût. [Options et critères par version](proposition.md) · [Décisions à soumettre](arbitrages.md)
+La dernière publication de sources reste NovaOS v0.19.0 au commit `1b3bb5a8df767a09fa0671bcfd95e6e734693a3a`. La distribution UTM AArch64 demeure v0.17.0 et NovaFS v0.9.13 P9. Les contrôles de cette mission portent sur les documents, leurs liens, les contraintes et la traçabilité des verdicts à produire. Le serveur stable reste à développer et à qualifier. [Distribution](../../../distribution/README.md)
 
 ## Les versions effectivement publiées
 
@@ -32,7 +27,7 @@ Les arbres Git de l’ABI native (`a70d5f23ae91211dd7a54c429e723f5157600e58`) et
 
 ## Registre, dépendances et priorités
 
-Les **181 entrées** des trois matrices spécialisées couvrent les quatorze domaines du mandat. Une entrée réunit des fonctions lorsqu’elles partagent le même composant et le même contrôle. Chaque ligne décrit l’existant, sa portée, le préalable, le risque déterminant, le niveau recommandé, la preuve future attendue et une option de repli. Les désignations A01 à N11 sont des références de dossier, indépendantes des priorités et des numéros de version.
+Les **181 entrées** des trois matrices spécialisées constituent l’inventaire de la réconciliation antérieure au mandat serveur. La matrice serveur précise les obligations désormais approuvées. Une entrée réunit des fonctions lorsqu’elles partagent le même composant et le même contrôle. Chaque ligne décrit l’existant, sa portée, le préalable, le risque déterminant, le niveau recommandé, la preuve future attendue et une option de repli. Les désignations A01 à N11 sont des références de dossier, indépendantes des priorités et des numéros de version.
 
 | Registre | Familles et nombre d’entrées | Questions de décision |
 |---|---|---|
@@ -43,11 +38,11 @@ Les **181 entrées** des trois matrices spécialisées couvrent les quatorze dom
 | Priorité recommandée | Décision de livraison |
 |---|---|
 | P0 | Fonctionnement sûr ou protection indispensable sur le profil annoncé. Exemple : refus d’une nouvelle soumission DMA après révocation et absence de restitution sans confirmation matérielle. |
-| P1 | Nécessaire à l’usage stable promis, comme une procédure de restauration éprouvée ou un parcours graphique utilisable. Si la condition de profil s’applique, il faut la couvrir ou redéfinir explicitement le profil. |
-| P2 | Importante, avec solution temporaire acceptable sur le profil retenu. Exemple : plusieurs écrans si un écran unique est supporté et documenté. |
+| P1 | Nécessaire à l’usage stable promis, comme une procédure de restauration éprouvée ou une console accessible après un défaut réseau. Si la condition de profil s’applique, il faut la couvrir ou redéfinir explicitement le profil. |
+| P2 | Importante, avec solution temporaire acceptable sur le profil retenu. Exemple : un outil de confort supplémentaire disposant déjà d’un équivalent documenté. |
 | P3 | Amélioration future hors besoin de référence identifié. Exemple : placement NUMA de production pour une stable sur machine uniforme. |
 
-Le [registre séparé des exigences sans affectation](arbitrages.md) regroupe les décisions ouvertes et conserve les deux reports explicites. La [proposition par version](proposition.md) présente un scénario de v0.20.0 à v0.30.0, des alternatives et les prérequis qui peuvent bloquer un jalon. La **matrice de réconciliation** est la [confrontation des plans avec les livraisons](historique.md), dont chaque ligne porte sa source et son niveau de certitude.
+Le [registre de l’audit antérieur](arbitrages.md) conserve les arbitrages tels qu’ils se présentaient avant la décision serveur. La [proposition par version](proposition.md) présente un scénario de v0.20.0 à v0.30.0, des alternatives et les prérequis qui peuvent bloquer un jalon. La **matrice de réconciliation** est la [confrontation des plans avec les livraisons](historique.md), dont chaque ligne porte sa source et son niveau de certitude.
 
 ## Autorité des sources et contrôle documentaire
 
@@ -62,4 +57,6 @@ Le [registre séparé des exigences sans affectation](arbitrages.md) regroupe le
 
 Le corpus suivi de la révision publiée comprend 89 Markdown et 107 résultats JSON sous `novaOS/docs/`, 52 Markdown, 99 JSON et 12 JSONL sous `novaFS/docs/`, les tableaux de validation, les docs et manifestes des workspaces, le catalogue utilisateur et les manifestes internes des 11 archives UTM. Les archives de traces et images sont traitées comme les pièces des campagnes déjà exécutées. Le dossier d’audit antérieur contient 13 Markdown au commit `a602051c9f3f1119552dd51a6b58ffc64285c556`, sur la base publiée v0.17.0. [Audit précédent figé](https://github.com/NaviStorm/NovaOS/tree/a602051c9f3f1119552dd51a6b58ffc64285c556/novaOS/docs/audit-v0.30.0) · [Journal des versions](../../../CHANGELOG.md) · [Composants](../../../components/README.md)
 
-Les vérifications de cet audit portent sur les références et différences Git, les manifestes, l’existence des cibles de liens, la couverture des matrices et le statut des affirmations. Les contrôles ont retrouvé 181 identifiants uniques dans 14 familles, 16 lignes historiques comportant chacune une référence et 13 tranches futures dans le scénario proposé. Les liens locaux et les objets Git visés, dont les 11 références indirectes de la matrice historique, ont été résolus. Les résultats système cités proviennent des rapports antérieurs. Aucune nouvelle exécution de VM, de benchmark ou de suite NovaFS/SMP n’entre dans cet audit. La décision à consigner est la combinaison **profil stable, priorités, affectations approuvées, critères de sortie, options reportées et propriétaire de la qualification**.
+Les vérifications de l’audit antérieur portaient sur les références et différences Git, les manifestes, l’existence des cibles de liens, la couverture des matrices et le statut des affirmations. Les contrôles ont retrouvé 181 identifiants uniques dans 14 familles, 16 lignes historiques comportant chacune une référence et 13 tranches futures dans le scénario antérieur. Les liens locaux et les objets Git visés, dont les 11 références indirectes de la matrice historique, ont été résolus. Les résultats système cités proviennent des rapports antérieurs. Aucune nouvelle exécution de VM, de benchmark ou de suite NovaFS/SMP n’entre dans cet audit. Le mandat serveur fixe désormais le produit et ses plateformes. L’affectation des versions intermédiaires et l’acceptation d’un candidat restent à décider.
+
+Pour la révision serveur, la vérification documentaire couvre les 16 fichiers Markdown de ce changement et leurs liens. Elle a retrouvé les 181 identifiants du registre initial, les deux décisions MOA séparées sur le produit et la GUI, les onze règles de surprotection et les 26 commandes du mandat. Les seize étapes ont chacune deux cases de résultat, toutes à l’état « Non exécuté ». Les comptes et parcours sont vérifiables dans les matrices liées en tête du dossier.

@@ -1,5 +1,7 @@
 # Origine des jalons et matrice de réconciliation
 
+**Lecture historique.** Ce tableau conserve ce qui était connu lors de la réconciliation. Depuis, la MOA a approuvé v0.30.0 serveur texte et reporté toute la pile graphique après la stable, sans nouveau numéro. Les interrogations anciennes sur NovaWM et les profils se lisent à la date des pièces citées. [Décision qui révise le plan](decisions.md)
+
 Au 15 novembre 2026, trois pièces donnent des réponses différentes à la question « que devait livrer v0.19.0 ? ». Thierry se souvient de la bibliothèque système Rust. L’audit écrit le 14 novembre proposait la consolidation du SMP, de la mémoire et de l’ABI. Le commit publié le 15 livre NVMe sur un profil virtuel précis. Ces trois faits comprennent respectivement un témoignage, une proposition et une livraison vérifiable. Aucun n’emporte à lui seul une décision sur le prochain numéro. [Proposition du 14 novembre][A] · [Qualification NVMe](../nvme-phase3-v0.19.0.md)
 
 ## Pièces et degré de certitude
@@ -27,7 +29,8 @@ Les empreintes des mandats hors Git permettent à leurs détenteurs de comparer 
 | 14 novembre | [Audit v0.30.0][A] | Commit documentaire séparé dont l’unique parent est la fusion SMP. Le calendrier A affecte v0.18.0 aux conditions de qualification, v0.19.0 à SMP/mémoire/ABI, et place notamment le graphique en v0.23–v0.24. Le même audit demande encore de choisir le profil matériel stable. [Décisions soumises][D] |
 | 14–15 novembre | [Qualification matérielle][F18] | Après mandat v0.18.0 « Phase 1 : fondations matérielles, ACPI, PCIe et isolation des pilotes », la fusion v0.18.0 publie découverte, attribution de ressources et qualification VT-d sur profils limités. Le numéro associé à la préparation ou à la consolidation dans d’autres pièces est consommé. |
 | 15 novembre | [Fusion v0.19.0][F19] | Les mandats NVMe aboutissent à READ/WRITE/FLUSH, barrières, retrait et quarantaine sur Q35. Le backend et l’archive d’installation ordinaires conservent leur profil. Un mandat de fusion conditionnelle constitue une décision sur ce travail précis. Il ne ratifie pas une réaffectation des jalons futurs. |
-| 15 novembre | Mandat H et précision T | L’audit de réconciliation est autorisé. La première stable, les reports et la conservation de NovaWM/NovaUI sont explicites. La MOE doit proposer, puis la MOA statuer avant tout nouveau calendrier. |
+| 15 novembre, audit initial | Mandat H et précision T | L’audit de réconciliation est autorisé. La première stable, les reports et la conservation de NovaWM/NovaUI sont explicites. La MOE doit proposer, puis la MOA statuer avant tout nouveau calendrier. |
+| 15 novembre, après le registre `29049a5` | Décision MOA sur la stable serveur | La MOA fixe deux plateformes QEMU et les usages serveur texte. Elle reporte la GUI complète après v0.30.0, y compris NovaWM et NovaUI, avec conservation des prototypes. Les lots intermédiaires restent proposés. [Registre actuel](decisions.md) |
 
 Les modifications des paragraphes publics sont attribuables par `git blame` à la refonte `2e9ad2c` et à la CLI `bcea8e1`. Le repère stable vient de `562cf13`. Les merges SMP, matériel et NVMe ont modifié l’état des livraisons. La comparaison de la rubrique « Feuille de route » entre `bcea8e1` et le `main` v0.19.0 conserve les deux paragraphes d’orientation. Aucun diff du README n’établit la suppression d’un tableau numéroté v0.18.0–v0.30.0 auparavant public. [Rubrique livrée][R19]
 
@@ -74,7 +77,7 @@ git show -s --format='%H %P %s' 010ae39 a602051 386e53d 1b3bb5a
 [R11]: https://github.com/NaviStorm/NovaOS/blob/24609a52e64a5626527827babc912ba7731d70de/README.md#feuille-de-route
 [R13]: https://github.com/NaviStorm/NovaOS/blob/bcea8e1d63e1c5c4a1c6051dea63c96afb579ef9/README.md#feuille-de-route
 [R16]: https://github.com/NaviStorm/NovaOS/blob/562cf137457e4ab8d8e9038dcd957a9a4dfe43b8/README.md
-[R19]: ../../../README.md#feuille-de-route
+[R19]: https://github.com/NaviStorm/NovaOS/blob/1b3bb5a8df767a09fa0671bcfd95e6e734693a3a/README.md#feuille-de-route
 [F17]: ../fusion-smp-v0.17.0.md
 [F18]: ../fusion-materiel-v0.18.0.md
 [F19]: ../nvme-phase3-v0.19.0.md

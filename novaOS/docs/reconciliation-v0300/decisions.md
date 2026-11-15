@@ -1,10 +1,38 @@
 # Registre des décisions d’architecture
 
-Registre arrêté au 15 novembre 2026. Ses deux tables se lisent avec le même identifiant. La première donne le texte et l’autorité, la seconde indique ce que la décision engage et comment en vérifier la provenance. La date est celle de la publication historique ou de l’inscription de la proposition, en heure de Paris.
+## Décisions en vigueur pour le serveur
+
+**Source MOA du 15 novembre 2026.** Le mandat « Validation MOA de la stable serveur v0.30.0 et préparation de v0.20.0 » a pour SHA-256 `b19f19a1154519412df599e3b8b787524e44611d1477185a04e0e68df3b78a48`. La validation engage le périmètre et les critères ci-dessous. Elle autorise la publication des documents sur la branche de réconciliation. La validation de la répartition intermédiaire, le mandat de réalisation de v0.20.0, toute fusion dans `main` et la publication du logiciel sont des actes ultérieurs.
+
+| Identifiant | Date | Sujet | Décision ou proposition | Origine | Statut |
+|---|---|---|---|---|---|
+| ARC-014 | 2026-11-15 | NovaOS v0.30.0 — Stable serveur complète en mode texte | Livrer un serveur généraliste utilisable pour les usages explicitement pris en charge, administrable à distance. Les 16 étapes de bout en bout sont bloquantes sur chacune des deux architectures. | MOA, §§1, 3, 5, 15–16, 19 | Approuvé |
+| ARC-015 | 2026-11-15 | Pile graphique NovaWM/NovaUI après v0.30.0 | Reporter la pile GUI complète après la première stable sans échéance numérotée. Conserver les prototypes et les interfaces utiles à une future intégration. Console texte/série, framebuffer de console, clavier, diagnostics et TUI native restent dans la stable. | MOA, §§4 et 19 | Approuvé |
+| ARC-016 | 2026-11-15 | Références matérielles du serveur | QEMU x86_64 est la référence principale et QEMU AArch64 la seconde référence obligatoire. Le Tecra A50-J garde le statut de cible physique expérimentale prioritaire. Préserver SSD professionnel et partitions Windows/BitLocker. | MOA, §5 | Approuvé |
+| ARC-017 | 2026-11-15 | Utilisateurs et données surprotégées | Comptes, identités et permissions persistantes, propriétaires, groupes, rôles, sessions, ACL et capacités, surprotection récursive et révocable. Uniquement le propriétaire peut créer une copie indépendante et en décider la déclassification. | MOA, §§3, 6–8 et 14 | Approuvé |
+| ARC-018 | 2026-11-15 | Premier chantier et exécution applicative | Préparer le contrat de bibliothèque native Rust. Les threads utilisateur et l’exécution d’applications serveur natives sont exigés pour la stable. Le noyau conserve `no_std`. Rust `std` complet et les modalités de compatibilité étendue ont leur propre planification. | MOA, §§3, 9–10, 15 et 17 | Approuvé |
+| ARC-019 | 2026-11-15 | Répartition serveur intermédiaire | Soumettre les lots de la bibliothèque jusqu’au candidat d’intégration avec leurs dépendances, moyens de preuve et jalons de sécurité. | Codex, proposition à la MOE/MOA sur demande §17 | Proposé |
+
+| Identifiant | Justification | Conséquences | Versions affectées | Références | Validation MOA |
+|---|---|---|---|---|---|
+| ARC-014 | La MOA exige une exploitation serveur complète et une équivalence fonctionnelle sur les usages déclarés. | Couvrir administration locale et distante, hébergement natif, données, sauvegarde et rétablissement sur les deux VM. Documenter les limites et toute étape non exécutée. | Première stable v0.30.0 | [Exigences serveur](exigences-serveur.md) · [Acceptation](acceptation-serveur.md) | Explicite aux §§1, 3, 16 et 19. |
+| ARC-015 | La priorité va au serveur en mode texte. | La preuve de bon fonctionnement du bureau sort des conditions de publication de la stable. NovaWM, NovaUI et leurs dépendances restent prévus pour la suite. | Après v0.30.0 pour la GUI, sans numéro | [Périmètres](proposition.md) | Explicite aux §§4 et 19. |
+| ARC-016 | Une preuve fonctionnelle doit être reproductible pour chaque architecture. Le NVMe Q35 et l’archive UTM ne qualifient pas le portable. | Deux verdicts de parcours serveur par étape. Qualifier le matériel réel séparément sur supports dédiés. | v0.30.0, étapes préparatoires | [Plateformes](contrat-plateforme.md) | Explicite au §5. |
+| ARC-017 | L’identité d’un compte, son mode de permission Unix éventuel et un rôle de maintenance ne confèrent aucun accès implicite à l’original. | Refus par défaut et aucun héritage automatique pour les enfants. Révoquer à la fin de session, conserver les protections à la restauration et étudier les clés, y compris leur perte. | Obligatoire pour v0.30.0 ; lots intermédiaires proposés | [Autorisations](contrat-autorisations.md) · [Dépendances P9](dependances-p9.md) | Explicite aux §§6–8 pour les garanties. Support des ACL, conception des clés et migration éventuelle restent à arbitrer. |
+| ARC-018 | Le SMP publié ne fournit pas à lui seul un runtime applicatif multithread. | Formaliser propriété des ressources, TLS, sortie, synchronisation et compatibilité sur les deux architectures. Conserver les interfaces publiées durant cette mission. | Après v0.19.0, v0.20.0 à préparer, v0.30.0 | [Contrat technique](contrat-rust-threads.md) | Explicite sur la préparation et les exigences de la stable. Le démarrage de l’implémentation attend validation. |
+| ARC-019 | Les créneaux graphiques antérieurement proposés sortent du périmètre. Il faut financer et qualifier les dépendances serveur. | Préserver les trois versions publiées et les reports de CPython et de l’hyperviseur. Toute modification future du périmètre stable revient à la MOA. | v0.20.0 à v0.29.0 proposés ; v0.30.0 approuvée comme cible | [Séquence et points d’arbitrage](proposition.md) | En attente pour les versions intermédiaires, leur charge et les mandats de réalisation. |
+
+### Effet sur les décisions antérieures
+
+ARC-001 à ARC-003 restent les publications de référence. ARC-014 précise le produit v0.30.0 d’ARC-004, et ARC-015 fixe le report de la GUI. ARC-005 (CPython et hyperviseur) et ARC-006 (P9) demeurent applicables. ARC-014 à ARC-016 remplacent le profil conjoint « VM et bureau » proposé en ARC-007. ARC-017 et ARC-018 tranchent les exigences de fond d’ARC-008 à ARC-010. Les mécanismes de persistance et de garde des clés d’ARC-011/012 restent à décider. ARC-019 remplace le calendrier proposé en ARC-013. [État du registre avant cette décision](https://github.com/NaviStorm/NovaOS/blob/29049a50758f73d472f03ad733bcb3eac74b5259/novaOS/docs/reconciliation-v0300/decisions.md)
+
+## Historique du premier mandat d’arbitrage
+
+L’état suivant est celui de la révision `29049a5`, antérieure au mandat serveur. Ses deux tables se lisent avec le même identifiant. La première donne le texte et l’autorité, la seconde indique ce que la décision engage et comment en vérifier la provenance. La date est celle de la publication historique ou de l’inscription de la proposition, en heure de Paris.
 
 Le mandat MOA *Arbitrages architecturaux et préparation de la feuille de route officielle v0.20.0–v0.30.0* comporte des propositions MOE aux §§2–4, des engagements à conserver au §7 et une autorisation de publication **documentaire** au §10. Son empreinte SHA-256 est `1a64bf1996067e3388a55c2115a1ce15bc4e4e37f6a4eb4c56b8ffb1f28d39c2`. Le renvoi « mandat » désigne cette pièce. Le dépôt publie les références des pièces antérieures dans l’[historique](historique.md).
 
-## Texte soumis et autorité
+### Texte soumis et autorité
 
 | Identifiant | Date | Sujet | Décision ou proposition | Origine | Statut |
 |---|---|---|---|---|---|
@@ -22,7 +50,7 @@ Le mandat MOA *Arbitrages architecturaux et préparation de la feuille de route 
 | ARC-012 | 2026-11-15 | Clés et récupération | Séparer secours d’identité et récupération cryptographique. Choisir le détenteur des clés et la politique de secours avant de promettre un accès après perte. | MOE pour la séparation, options instruites par Codex au §4 | Proposé |
 | ARC-013 | 2026-11-15 | Séquence future | Reprendre les treize tranches du scénario documentaire, compléter leurs dépendances et soumettre les affectations à la MOA. | Codex, consolidation de la proposition soumise à la MOE | Proposé |
 
-## Justifications, conséquences et validation
+### Justifications, conséquences et validation
 
 | Identifiant | Justification | Conséquences | Versions affectées | Références | Validation MOA |
 |---|---|---|---|---|---|
@@ -32,13 +60,13 @@ Le mandat MOA *Arbitrages architecturaux et préparation de la feuille de route 
 | ARC-004 | Objectif de produit réaffirmé. | Préserver fenêtres et widgets dans les travaux à instruire. Le placement des deux composants reste soumis à décision. | v0.30.0 ; numéros graphiques ouverts | [Historique des plans](historique.md) | Explicite, §7, pour l’objectif et la conservation des deux composants. |
 | ARC-005 | Bornes explicites du produit stable. | Une réouverture exige un nouveau mandat. | Après v0.30.0 | [Registre des reports](arbitrages.md#reports-et-fonctionnalités-conditionnelles) | Explicite, §7. |
 | ARC-006 | Le volume autonome et sa récupération ont des lecteurs et des garanties déjà publiés. | Préserver images, refus de montage ambigu et garanties de publication. Une ACL portable ou un nouveau lecteur exige ses propres preuves. | NovaFS v0.9.13 P9, transversal | [Contrats NovaFS](../../../novaFS/AGENTS.md) | Explicite, §5, sur la préservation de P9. |
-| ARC-007 | Les preuves QEMU, UTM et matériel physique ont des périmètres distincts. | Fixer les deux cibles du SDK et le parcours graphique final. Un engagement physique intégral ajoute pilotes, médias dédiés et qualification. | Base v0.20.0 ; v0.28.x–v0.30.0 proposés | [Plateforme](contrat-plateforme.md) | À statuer sur la référence et le caractère bloquant du parcours physique. |
+| ARC-007 | Les preuves QEMU, UTM et matériel physique ont des périmètres distincts. | Fixer les deux cibles du SDK et le parcours graphique final. Un engagement physique intégral ajoute pilotes, médias dédiés et qualification. | Base v0.20.0 ; v0.28.x–v0.30.0 proposés | [Plateforme alors proposée](https://github.com/NaviStorm/NovaOS/blob/29049a50758f73d472f03ad733bcb3eac74b5259/novaOS/docs/reconciliation-v0300/contrat-plateforme.md) | À statuer sur la référence et le caractère bloquant du parcours physique. |
 | ARC-008 | Le catalogue actuel permet des programmes isolés et une bibliothèque interne ; une API publique doit avoir un contrat durable. | Geler uniquement les opérations et erreurs vérifiables de ce profil. Une nouvelle primitive exige son mandat. | v0.20.0 proposée | [Bibliothèque et threads](contrat-rust-threads.md) | À statuer sur le périmètre et le lancement d’une première tranche. |
 | ARC-009 | SMP ne suffit pas à gérer plusieurs piles, TLS, sorties et droits dans un processus. | Prévoir qualification de l’isolation, de la terminaison et du réemploi sur les deux ISA avant exposition. | Tranche v0.21.0 conditionnelle ; `std` sans numéro | [Contrat d’exécution](contrat-rust-threads.md) | À statuer sur le profil applicatif. Toute extension de l’ABI se décide séparément. |
 | ARC-010 | La possession d’un handle local n’établit pas une identité durable. | Borner le SDK aux pouvoirs délégués. Fixer les règles d’ouverture, de retrait et de traçabilité avant une session multiutilisateur. | Contrainte de conception dès v0.20.0, fonctions sans numéro | [Autorisations](contrat-autorisations.md) | À statuer sur le principe, la frontière de confiance et l’engagement du SDK. |
 | ARC-011 | Une association périmée peut rendre les droits d’un objet supprimé ou d’une vue restaurée. | Évaluer la cohérence après coupure, restauration et import. Durant l’étude, les profils actuels gardent leur portée. | Sans affectation ; avant toute promesse d’ACL durables | [Options de persistance](dependances-p9.md) | À statuer lors du choix de persistance. Aucune migration autorisée. |
 | ARC-012 | Récupérer un compte après perte d’un facteur ne restitue pas une clé de déchiffrement perdue. | L’option sans séquestre peut rendre des données irrécupérables. Un secours indépendant introduit une autorité à protéger. | Sans affectation ; avant les engagements sur les secrets | [Administration et récupération](contrat-autorisations.md) | À statuer sur adversaire, dépositaire éventuel et cas de perte définitive. |
-| ARC-013 | Les affectations historiques individuelles v0.20–v0.24 restent inconnues. | Présenter l’effort, les prérequis et le sort de tout lot déplacé avant ratification. | v0.20.0–v0.30.0 | [Scénario consolidé](proposition.md) · [Écarts historiques](historique.md) | Ratification des affectations en attente. |
+| ARC-013 | Les affectations historiques individuelles v0.20–v0.24 restent inconnues. | Présenter l’effort, les prérequis et le sort de tout lot déplacé avant ratification. | v0.20.0–v0.30.0 | [Scénario alors proposé](https://github.com/NaviStorm/NovaOS/blob/29049a50758f73d472f03ad733bcb3eac74b5259/novaOS/docs/reconciliation-v0300/proposition.md) · [Écarts historiques](historique.md) | Ratification des affectations en attente. |
 
 ## Mise à jour du registre
 
