@@ -5,7 +5,7 @@ use pci::resources::lab::{EDU, LabPlatform};
 
 /// Autorisation de lire les registres du DRHD, après fermeture des masters
 /// hérités et recoupement du profil. Aucune construction depuis des données utilisateur.
-pub(crate) struct Drhd(acpi::Q35Dmar);
+pub(crate) struct Drhd(acpi::Q35Dmar, u16);
 impl Drhd {
     pub(crate) fn base(&self) -> u64 {
         self.0.base
@@ -14,7 +14,7 @@ impl Drhd {
         self.0.host_bits
     }
     pub(crate) fn sid(&self) -> u16 {
-        u16::from(EDU.device) << 3 | u16::from(EDU.function)
+        self.1
     }
 }
 
@@ -99,11 +99,29 @@ pub(crate) fn vtd_edu(_: VtdProfile) -> Option<(EduBar, Option<Drhd>)> {
         return None;
     }
     log(format_args!("VTD EDU reprise moteur_vierge=true BME=0"));
-    if !quiesce_peers(&functions) {
+    if !quiesce_peers(&functions, EDU) {
         log(format_args!("VTD reprise DMA pairs refusee"));
         return None;
     }
-    let candidate = boot::rsdp_physical()
+    let candidate = q35_drhd(EDU);
+    if let Some(drhd) = &candidate {
+        log(format_args!(
+            "VTD DMAR DRHD segment=0 base={:#x} HAW={} SID={:#06x} portee_explicite={}",
+            drhd.base(),
+            drhd.host_bits(),
+            drhd.sid(),
+            drhd.0.explicit
+        ));
+    }
+    Some((edu, candidate))
+}
+
+pub(in crate::hardware) fn q35_drhd(target: pci::Address) -> Option<Drhd> {
+    if target != pci::resources::lab::Q35_LAB_SLOT {
+        return None;
+    }
+    let sid = u16::from(target.device) << 3 | u16::from(target.function);
+    boot::rsdp_physical()
         .and_then(|pa| {
             acpi::discover(pa, firmware::copy_acpi)
                 .map_err(|e| {
@@ -132,22 +150,15 @@ pub(crate) fn vtd_edu(_: VtdProfile) -> Option<(EduBar, Option<Drhd>)> {
             inv.q35_dmar
         })
         .filter(|d| firmware::unlisted_extent(d.base, memory::PAGE))
-        .map(Drhd);
-    if let Some(drhd) = &candidate {
-        log(format_args!(
-            "VTD DMAR DRHD segment=0 base={:#x} HAW={} SID={:#06x} portee_explicite={}",
-            drhd.base(),
-            drhd.host_bits(),
-            drhd.sid(),
-            drhd.0.explicit
-        ));
-    }
-    Some((edu, candidate))
+        .map(|d| Drhd(d, sid))
 }
 
-fn quiesce_peers(functions: &[(pci::Address, pci::Function)]) -> bool {
+pub(in crate::hardware) fn quiesce_peers(
+    functions: &[(pci::Address, pci::Function)],
+    target: pci::Address,
+) -> bool {
     for &(a, f) in functions {
-        if a == EDU {
+        if a == target {
             continue;
         }
         // Seule la fonction AHCI de ce chipset QEMU possède un moteur
@@ -209,7 +220,7 @@ fn edu_idle(bar: u64) -> bool {
     }
     idle && retired
 }
-fn ahci_ports(bar: u64, stop: bool) -> bool {
+pub(in crate::hardware) fn ahci_ports(bar: u64, stop: bool) -> bool {
     // ABAR5 appartient au seul ICH9 2922 du profil, 4 Kio, dans le trou PCI Q35.
     if !(0x8000_0000..0xb000_0000).contains(&bar)
         || !firmware::unlisted_extent(bar, memory::PAGE)

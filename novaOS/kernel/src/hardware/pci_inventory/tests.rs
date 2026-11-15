@@ -550,3 +550,69 @@ fn profil_refuse_taille_inconnue_et_bar_hors_aperture() {
         Err(Error::Range)
     );
 }
+
+#[test]
+fn profil_nvme_q35_ferme_et_bar_64_du_firmware() {
+    use resources::lab::{LabPlatform, qualify_edu, qualify_nvme};
+    let mut fabric = Fabric::default();
+    for (dev, fun, id, pin) in [
+        (0, 0, 0x29c0_8086, 0),
+        (6, 0, 0x0010_1b36, 1),
+        (31, 0, 0x2918_8086, 0),
+        (31, 2, 0x2922_8086, 1),
+        (31, 3, 0x2930_8086, 1),
+    ] {
+        let row = fabric.endpoint(a(5, dev, fun));
+        row[0] = id;
+        row[15] = pin << 8;
+        if dev == 31 && fun == 0 {
+            row[3] |= 0x80 << 16;
+        }
+        if dev == 6 {
+            row[1] = (1 << 20) | 7;
+            row[2] = 0x01080202;
+            row[4] = 4;
+            row[5] = 0xc0;
+            row[13] = 0x40;
+            row[16] = 0x18011;
+            row[17] = 0x2000;
+            row[18] = 0x3000;
+            row[32] = 0x926010;
+            row[24] = 0x30001;
+        }
+    }
+    let mut entries: Vec<_> = fabric
+        .run()
+        .into_iter()
+        .map(|(a, f)| {
+            (
+                Address {
+                    segment: 0,
+                    bus: 0,
+                    ..a
+                },
+                f.unwrap(),
+            )
+        })
+        .collect();
+    assert_eq!(qualify_nvme(&entries), Ok((0xc0_0000_0000, 7)));
+    assert_eq!(
+        qualify_edu(LabPlatform::Q35, &entries),
+        Err(Error::Identity)
+    );
+    let saved = entries[1];
+    entries[1].1.interface = 0;
+    assert_eq!(qualify_nvme(&entries), Err(Error::Bar));
+    entries[1] = saved;
+    entries[1].1.command &= !2;
+    assert_eq!(qualify_nvme(&entries), Err(Error::Bar));
+    entries[1] = saved;
+    entries[1].1.bars[0].as_mut().unwrap().base += 16384;
+    assert_eq!(qualify_nvme(&entries), Err(Error::Range));
+    entries[1] = saved;
+    entries[1].1.device += 1;
+    assert_eq!(qualify_nvme(&entries), Err(Error::Identity));
+    entries[1] = saved;
+    entries.pop();
+    assert_eq!(qualify_nvme(&entries), Err(Error::Identity));
+}

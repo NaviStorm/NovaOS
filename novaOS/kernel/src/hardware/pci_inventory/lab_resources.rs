@@ -31,6 +31,8 @@ pub(in super::super) fn extent(bar: Bar, size: u64) -> Result<Span, Error> {
 fn profile_bar(a: Address, f: &Function, index: usize) -> Option<(BarKind, bool, u64)> {
     use BarKind::{Io, Memory32, Memory64};
     match (a.device, a.function, f.vendor, f.device, index) {
+        #[cfg(any(test, feature = "nvme-lab"))]
+        (6, 0, 0x1b36, 0x0010, 0) => Some((Memory64, false, NVME_SIZE)),
         (6, 0, 0x1234, 0x11e8, 0) => Some((Memory32, false, EDU_SIZE)),
         (31, 2, 0x8086, 0x2922, 4) => Some((Io, false, 32)),
         (31, 2, 0x8086, 0x2922, 5) => Some((Memory32, false, 4096)),
@@ -66,12 +68,15 @@ pub struct EduBar {
 }
 
 pub const EDU_SIZE: u64 = 1 << 20;
-pub const EDU: Address = Address {
+pub const Q35_LAB_SLOT: Address = Address {
     segment: 0,
     bus: 0,
     device: 6,
     function: 0,
 };
+
+// EDU et NVMe sont deux profils mutuellement exclusifs au même BDF de test.
+pub const EDU: Address = Q35_LAB_SLOT;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum LabPlatform {
@@ -118,26 +123,7 @@ pub fn qualify_edu(
             },
         ),
     };
-    // Ce profil ne comporte aucun pont PCI-PCI. Un pont ajouté, même avec des
-    // fenêtres fermées, invalide aussi le fait que le routage INTx est exclusif.
-    if functions.len() != profile.len() {
-        return Err(Error::Identity);
-    }
-    for &(dev, fun, vendor, device, pin) in profile {
-        let addr = Address {
-            segment: 0,
-            bus: 0,
-            device: dev,
-            function: fun,
-        };
-        let (_, f) = functions
-            .iter()
-            .find(|(a, _)| *a == addr)
-            .ok_or(Error::Identity)?;
-        if (f.vendor, f.device, f.header, f.irq_pin) != (vendor, device, 0, pin) || f.rom_enabled {
-            return Err(Error::Identity);
-        }
-    }
+    check_slots(profile, functions)?;
     let (_, edu) = functions
         .iter()
         .find(|(a, _)| *a == EDU)
@@ -158,6 +144,40 @@ pub fn qualify_edu(
     if candidate.base < aperture.base || candidate.last > aperture.last {
         return Err(Error::Range);
     }
+    check_bars(functions)?;
+    Ok(EduBar {
+        base: bar.base,
+        size: EDU_SIZE,
+        irq_pin: edu.irq_pin,
+        irq_line: edu.irq_line,
+    })
+}
+
+fn check_slots(profile: &[Slot], functions: &[(Address, Function)]) -> Result<(), Error> {
+    // Ce profil ne comporte aucun pont PCI-PCI. Un pont ajouté, même avec des
+    // fenêtres fermées, invalide aussi le fait que le routage INTx est exclusif.
+    if functions.len() != profile.len() {
+        return Err(Error::Identity);
+    }
+    for &(dev, fun, vendor, device, pin) in profile {
+        let addr = Address {
+            segment: 0,
+            bus: 0,
+            device: dev,
+            function: fun,
+        };
+        let (_, f) = functions
+            .iter()
+            .find(|(a, _)| *a == addr)
+            .ok_or(Error::Identity)?;
+        if (f.vendor, f.device, f.header, f.irq_pin) != (vendor, device, 0, pin) || f.rom_enabled {
+            return Err(Error::Identity);
+        }
+    }
+    Ok(())
+}
+
+fn check_bars(functions: &[(Address, Function)]) -> Result<(), Error> {
     // La taille du profil bornera même une BAR dont la base est très alignée.
     // Un BAR non décrit ou une intersection entre deux propriétaires ferme l’accès.
     let mut occupied = Vec::new();
@@ -178,10 +198,37 @@ pub fn qualify_edu(
             occupied.push((io, window));
         }
     }
-    Ok(EduBar {
-        base: bar.base,
-        size: EDU_SIZE,
-        irq_pin: edu.irq_pin,
-        irq_line: edu.irq_line,
-    })
+    Ok(())
+}
+
+#[cfg(any(test, feature = "nvme-lab"))]
+pub const NVME_SIZE: u64 = 16 * 1024;
+
+/// Topologie fermée QEMU 11.1.3, un contrôleur sur le bus racine, sans pont
+/// ni fonction voisine derrière le même groupe. La géométrie provient du
+/// profil public Q35, max_ioqpairs=1, msix_qsize=2, sans CMB ni PMR.
+#[cfg(any(test, feature = "nvme-lab"))]
+pub fn qualify_nvme(functions: &[(Address, Function)]) -> Result<(u64, u16), Error> {
+    let profile = [Q35[0], (6, 0, 0x1b36, 0x0010, 1), Q35[2], Q35[3], Q35[4]];
+    check_slots(&profile, functions)?;
+    check_bars(functions)?;
+    let f = &functions
+        .iter()
+        .find(|(a, _)| *a == Q35_LAB_SLOT)
+        .ok_or(Error::Identity)?
+        .1;
+    if (f.class, f.subclass, f.interface) != (1, 8, 2)
+        || !f.pcie
+        || !f.msix
+        || f.msi
+        || f.command & 2 == 0
+        || f.bars[1..].iter().any(Option::is_some)
+    {
+        return Err(Error::Bar);
+    }
+    let span = extent(f.bars[0].ok_or(Error::Bar)?, NVME_SIZE)?;
+    if span.base != 0xc0_0000_0000 {
+        return Err(Error::Range);
+    }
+    Ok((span.base, f.command))
 }

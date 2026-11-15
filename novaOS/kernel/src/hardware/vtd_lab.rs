@@ -21,6 +21,7 @@ const IQE: u32 = 1 << 4;
 const VECTOR: u32 = 0x53;
 const RECORD_LIMIT: usize = 32;
 const ANCHORS: usize = 8;
+const SLOTS: usize = if cfg!(feature = "nvme-lab") { 5 } else { 2 };
 const CTX: usize = SID as usize * 16;
 const MMIO_SLOT: usize = 328;
 const APIC_SLOT: usize = 329;
@@ -143,7 +144,7 @@ pub(crate) struct Engine {
     cache_line: usize,
     lease: Option<Lease>, // conserve aussi l'identité de la dernière incarnation retirée
     state: State,
-    pages: [Option<Mapping>; 2],
+    pages: [Option<Mapping>; SLOTS],
     tail: u16,
     cookie: u32,
     in_queue: bool,
@@ -267,7 +268,7 @@ impl Engine {
             cache_line,
             state: State::Empty,
             lease: None,
-            pages: [None; 2],
+            pages: [None; SLOTS],
             tail: 0,
             cookie: 0,
             in_queue: false,
@@ -425,7 +426,7 @@ impl Engine {
         let lease = Lease { owner, epoch };
         self.lease = Some(lease);
         self.state = State::Preparing;
-        // Un bail a deux pages possibles dans la même feuille de niveau 1.
+        // Les pages d’un bail tiennent dans la même feuille de niveau 1.
         let base = lease.iova(0);
         for (i, shift) in [39, 30, 21].into_iter().enumerate() {
             self.service[2 + i].mem.w64(
@@ -445,6 +446,156 @@ impl Engine {
         ) {
             return Err(Error::Geometry);
         }
+        self.map_private(lease, slot, dir, true)
+    }
+
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn map_nvme(&mut self, lease: Lease, slot: u8, allow_data: bool) -> Result<()> {
+        use Direction::*;
+        let dir = match slot {
+            0 | 2 => ReadByDevice,        // ASQ, IOSQ
+            1 | 3 | 4 => WrittenByDevice, // ACQ, IOCQ, données
+            _ => return Err(Error::Geometry),
+        };
+        if self.state != State::Preparing || self.lease != Some(lease) {
+            return Err(Error::Denied);
+        }
+        self.map_private(lease, slot, dir, slot != 4 || allow_data)
+    }
+
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn page_address(&self, lease: Lease, slot: u8, allowed: bool) -> Option<usize> {
+        if !self.active(lease) || self.mapped_iova(lease, lease.iova(slot))? != allowed {
+            return None;
+        }
+        Some(self.mapping(lease, slot)?.frame.mem.base())
+    }
+
+    /// Vérification positive et négative des tables réellement publiées. Le
+    /// superviseur ne suit que les huit pages dont il est propriétaire.
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn exact_nvme(&self, lease: Lease, allow_data: bool) -> bool {
+        if !self.active(lease) || self.pinned() != 5 {
+            return false;
+        }
+        for (level, frame) in self.service[..6].iter().enumerate() {
+            for index in 0..512 {
+                let expected = match level {
+                    0 if index == 0 => self.service[1].pa | 1,
+                    1 if index == CTX / 8 => self.service[2].pa | 1,
+                    1 if index == CTX / 8 + 1 => (u64::from(DID) << 8) | 2,
+                    2..=4
+                        if index == ((lease.iova(0) >> [39, 30, 21][level - 2]) & 511) as usize =>
+                    {
+                        self.service[level + 1].pa | 3
+                    }
+                    5 => {
+                        let first = (lease.iova(0) >> 12) as usize & 511;
+                        if let Some(slot) = index.checked_sub(first).filter(|&slot| slot < 5) {
+                            let Some(mapping) = self.pages[slot] else {
+                                return false;
+                            };
+                            if slot == 4 && !allow_data {
+                                0
+                            } else {
+                                mapping.frame.pa | if slot == 0 || slot == 2 { 1 } else { 2 }
+                            }
+                        } else {
+                            0
+                        }
+                    }
+                    _ => 0,
+                };
+                if frame.mem.r64(index * 8) != expected {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn nvme_frames(&self, lease: Lease) -> Option<[u64; 24]> {
+        if !self.active(lease) || self.pinned() != 5 {
+            return None;
+        }
+        let mut frames = [0; 24];
+        for (dest, service) in frames.iter_mut().zip(self.service.iter()) {
+            *dest = service.pa;
+        }
+        for (slot, dest) in frames[ANCHORS..ANCHORS + 5].iter_mut().enumerate() {
+            *dest = self.mapping(lease, slot as u8)?.frame.pa;
+        }
+        Some(frames)
+    }
+
+    /// Un dépassement de file, un FRCD valide, un masque dû au handler ou
+    /// un reçu QI incertain suspendent toutes les livraisons de ce bail.
+    /// Aucun de ces registres n'est modifié par l'observation.
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn clean_nvme(&self, lease: Lease) -> bool {
+        self.active(lease)
+            && self.regs.r32(0x38) == 0
+            && FAULT_IRQS.load(Ordering::Acquire) == 0
+            && self.regs.r64(0x80) == u64::from(self.tail)
+            && self.regs.r64(0x88) == u64::from(self.tail)
+            && self.service[7].mem.r32(0) == self.cookie
+            && !self.fault_pending()
+    }
+
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn remove_nvme_data(&mut self, lease: Lease) -> Result<()> {
+        if !self.exact_nvme(lease, true) || !self.clean_nvme(lease) {
+            return Err(Error::Denied);
+        }
+        let offset = ((lease.iova(4) >> 12) as usize & 511) * 8;
+        self.service[5].mem.w64(offset, 0);
+        self.resync(lease)?;
+        if !self.exact_nvme(lease, false) || !self.clean_nvme(lease) {
+            return Err(Error::Quarantine);
+        }
+        Ok(())
+    }
+
+    /// Conserve le défaut original du DRHD et la preuve RAM, sans acquitter
+    /// la faute. Le banc QMP relit le FRCD, les tables et le cadre témoin.
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn rejected_nvme_data(&self, lease: Lease) -> bool {
+        if self.lease != Some(lease)
+            || self.state != State::Closing
+            || !self.context()
+            || self.pinned() != 5
+            || !self.running()
+        {
+            return false;
+        }
+        let page = match self.mapping(lease, 4) {
+            Some(m) => m.frame,
+            None => return false,
+        };
+        let iova = lease.iova(4);
+        let pte = self.service[5].mem.r64(((iova >> 12) as usize & 511) * 8);
+        let Some(fault) = format::record(
+            self.regs.r32(0x34),
+            self.regs.r64(self.record),
+            self.regs.r64(self.record + 8),
+        ) else {
+            return false;
+        };
+        let intact = self.matches(lease, 4, 0);
+        hal::log(format_args!(
+            "NVME refus DMA SID={} faute={} lecture={} iova={:#x} cadre_temoin={:#x} pte={pte} zero={intact}",
+            fault.sid, fault.reason, fault.read, fault.iova, page.pa
+        ));
+        pte == 0
+            && fault.sid == SID
+            && fault.iova == iova
+            && !fault.read
+            && fault.reason == 5
+            && intact
+    }
+
+    fn map_private(&mut self, lease: Lease, slot: u8, dir: Direction, install: bool) -> Result<()> {
         let entry = self
             .pages
             .get_mut(usize::from(slot))
@@ -466,7 +617,9 @@ impl Engine {
             direction: dir,
         });
         let offset = ((lease.iova(slot) >> 12) & 511) as usize * 8;
-        self.service[5].mem.w64(offset, frame.pa | access);
+        if install {
+            self.service[5].mem.w64(offset, frame.pa | access);
+        }
         Ok(())
     }
     pub(crate) fn publish(&mut self, lease: Lease) -> Result<()> {
@@ -685,13 +838,45 @@ impl Engine {
         self.retirement(lease, device, Invalidation::InvalidContext)
     }
     fn retirement(&mut self, lease: Lease, device: &Drained<'_>, mode: Invalidation) -> Result<()> {
-        if self.lease != Some(lease)
-            || device.lease() != lease
-            || !matches!(self.state, State::Closing | State::Invalidating)
+        if device.lease() != lease {
+            return Err(Error::Denied);
+        }
+        self.retire_confirmed(lease, mode, || device.confirmed())
+    }
+
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn retire_nvme(
+        &mut self,
+        lease: Lease,
+        drained: &super::nvme::Drained<'_>,
+        memory: &super::nvme::Memory,
+        pci_fenced: impl Fn() -> bool,
+    ) -> Result<()> {
+        self.retire_confirmed(lease, Invalidation::Global, || {
+            pci_fenced() && drained.confirmed(memory)
+        })
+    }
+
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn retire_unstarted_nvme(
+        &mut self,
+        lease: Lease,
+        never: &super::nvme_domain::Unstarted<'_>,
+    ) -> Result<()> {
+        self.retire_confirmed(lease, Invalidation::Global, || never.confirmed(lease))
+    }
+
+    fn retire_confirmed(
+        &mut self,
+        lease: Lease,
+        mode: Invalidation,
+        confirmed: impl Fn() -> bool,
+    ) -> Result<()> {
+        if self.lease != Some(lease) || !matches!(self.state, State::Closing | State::Invalidating)
         {
             return Err(Error::Denied);
         }
-        if !device.confirmed() || !self.running() || self.fault_pending() {
+        if !confirmed() || !self.running() || self.fault_pending() {
             return Err(Error::Quarantine);
         }
         if self.state == State::Closing {
@@ -718,7 +903,7 @@ impl Engine {
         }
         if !self.running()
             || self.fault_pending()
-            || !device.confirmed()
+            || !confirmed()
             || self.service[1].mem.r64(CTX) != 0
             || self.service[1].mem.r64(CTX + 8) != 0
         {

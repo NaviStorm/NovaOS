@@ -20,6 +20,10 @@ fn main() {
         "devices",
         "edu",
         "edu_dma",
+        "nvme_driver",
+        "nvme_client",
+        "nvme_manager",
+        "nvme_block",
         "fp_probe",
         "ipc",
         "storage/service",
@@ -38,6 +42,9 @@ fn main() {
         if name == "edu" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_none() {
             continue;
         }
+        if name.starts_with("nvme_") && (env::var_os("CARGO_FEATURE_NVME_LAB").is_none() || target != "x86_64-unknown-none") {
+            continue;
+        }
         let file_client = name == "storage/fileclient";
         let linker = format!(
             "link-arg=-T{}",
@@ -52,7 +59,7 @@ fn main() {
             continue;
         }
         let mut rust = Command::new(env::var_os("RUSTC").unwrap());
-        let compact = matches!(
+        let compact = name.starts_with("nvme_") || matches!(
             name,
             "devices" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );

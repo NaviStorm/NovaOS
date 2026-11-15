@@ -22,6 +22,11 @@ pub(crate) use probes::smp_roundtrip;
 pub(crate) use probes::multicore;
 
 
+#[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
+mod nvme_port;
+#[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
+pub(super) use nvme_port::nvme_group;
+
 type Res<T> = core::result::Result<T, u64>;
 const ALL: u32 = SEND | RECEIVE | GRANT | MANAGE;
 const ABSENT: u8 = u8::MAX;
