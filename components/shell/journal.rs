@@ -322,7 +322,7 @@ fn admin(args: &[&str]) -> rt::Result<()> {
             console::write(
                 tty::OUTPUT,
                 &alloc::format!(
-                    "boot={:016x}{:016x} premier={} suivant={} segments={} rétention={} révision={} quota={} octets={} pertes={}\n",
+                    "boot={:016x}{:016x} premier={} suivant={} segments={} rétention={} révision={} quota={} octets={}\n",
                     f[10],
                     f[11],
                     f[3],
@@ -331,8 +331,7 @@ fn admin(args: &[&str]) -> rt::Result<()> {
                     f[6],
                     f[7],
                     f[8],
-                    f[9],
-                    f[12]
+                    f[9]
                 ),
             )
         }

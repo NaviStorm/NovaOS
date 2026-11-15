@@ -58,3 +58,11 @@ python3 -B novaOS/tests/journalisation.py aarch64 2 4096 "../preuves-journal/exe
 ```
 
 Le banc démarre les services du catalogue réel, puis accède au journal par les commandes natives. Il conserve la sortie série, le média de démarrage, la configuration QEMU, une copie compressée de l’image et un bilan. La relecture de l’image utilise l’outil NovaFS hôte. Le scénario de rétention et de purge utilise une copie indépendante du disque de diagnostic. L’argument d’architecture accepte aussi `x86_64`, avec les tailles de secteur 512 et 4096 et 1, 2 ou 4 vCPU. Les temps hôtes comprennent l’entrée série, le traitement des commandes et leur sortie. [Banc de qualification](../tests/journalisation.py)
+
+Après une modification du rendu ou de la pagination, le parcours ciblé reprend l’image conservée au terme de la réactivation. Le banc vérifie le SHA-256 de cette source avant et après le rejeu. Il publie 33 notices avec une rétention de deux segments, désactive le service 9 sur la copie, puis compare sa lecture chronologique et sa lecture inverse après éviction de l’ancienne séquence. La rotation, la purge, la disponibilité de NovaFS et la réponse native du service 9 sont ensuite contrôlées.
+
+```sh
+NOVA_KERNEL_ELF="$PWD/novaOS/build/target-journal-livraison/aarch64-unknown-none-softfloat/release/novaos" \
+  python3 -B novaOS/tests/journalisation.py aarch64 1 512 "../preuves-journal/rejeu-aarch64" \
+  --rotation-source "../preuves-journal/candidat-aarch64-1-512/volume.raw"
+```

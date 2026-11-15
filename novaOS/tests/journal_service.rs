@@ -61,6 +61,7 @@ mod journal_backend {
         pub reads: Rc<Cell<usize>>,
         pub admissions: Rc<Cell<usize>>,
         pub lose_ack: Rc<Cell<bool>>,
+        pub corrupt: Rc<Cell<bool>>,
     }
     impl Client {
         pub fn new(sector: u32) -> Self {
@@ -79,12 +80,19 @@ mod journal_backend {
                 reads: Rc::default(),
                 admissions: Rc::default(),
                 lose_ack: Rc::default(),
+                corrupt: Rc::default(),
             }
         }
         pub fn status(&mut self) -> rt::Result<Status> {
+            if self.corrupt.get() {
+                return Err(file::CORRUPT);
+            }
             Ok(Journal::load(&self.fs.borrow()).unwrap().status())
         }
         pub fn read(&mut self, seq: u64) -> rt::Result<[u8; 96]> {
+            if self.corrupt.get() {
+                return Err(file::CORRUPT);
+            }
             self.reads.set(self.reads.get() + 1);
             Journal::load(&self.fs.borrow())
                 .unwrap()
@@ -363,6 +371,15 @@ fn watch_fairness_snapshot_and_wakeup_after_durable_append() {
             immediate(&mut j, &ask(w::NEXT, 0, 1))[2..4],
             [rt::REVOKED, 3]
         );
+        // Le plus ancien conservé porte désormais la séquence 3. La fin
+        // naturelle en lecture inverse ne doit pas être signalée comme un retrait.
+        immediate(&mut j, &emit(2, 8));
+        let mut reverse = ask(w::NEXT, 0, 0);
+        reverse[8] = 1;
+        let last = immediate(&mut j, &reverse);
+        assert_eq!((last[2], last[3], last[5]), (rt::OK, w::END, 3));
+        reverse[3] = last[3];
+        assert_eq!(immediate(&mut j, &reverse)[2], rt::WOULD_BLOCK);
     }
 }
 
@@ -403,9 +420,16 @@ fn lost_durable_ack_is_never_replayed() {
         let mut j = daemon(&db, C, 63, PORT);
         let e = emit(1, 7);
         db.lose_ack.set(true);
+        assert!(j.terminal(&ask(w::WATCH, 0, 0), 700).unwrap().is_none());
         let before = db.admissions.get();
         assert_eq!(j.terminal(&e, 31), Err(file::UNCERTAIN));
         assert_eq!(j.terminal(&e, 32), Err(file::BUSY));
+        assert_eq!(
+            rt::take(),
+            vec![(PORT, 700, journal::reply(w::WATCH, rt::WOULD_BLOCK, 1))]
+        );
+        let observed = immediate(&mut j, &ask(w::NEXT, 0, 1));
+        assert_eq!((observed[2], observed[5]), (rt::OK, 1));
         assert_eq!(db.admissions.get(), before + 1);
         let s = db.status().unwrap();
         assert_eq!((s.first, s.next, s.revision), (1, 2, 1));
@@ -445,4 +469,20 @@ fn own_follow_does_not_rescan_the_volume_when_idle() {
         assert!(reader.terminal(&query, tag).unwrap().is_none());
     }
     assert_eq!(db.reads.get(), 48);
+}
+
+#[test]
+fn known_corruption_blocks_previously_cached_answers() {
+    let db = Client::new(512);
+    let mut j = daemon(&db, C, 63, PORT);
+    for i in 1..=33 {
+        j.append(access::manager_event(&manager(i), M).unwrap())
+            .unwrap();
+    }
+    immediate(&mut j, &w::request(w::STATUS));
+    db.corrupt.set(true);
+    assert_eq!(j.terminal(&ask(w::NEXT, 0, 1), 680), Err(file::CORRUPT));
+    assert_eq!(j.terminal(&ask(w::NEXT, 0, 33), 681), Err(file::CORRUPT));
+    db.corrupt.set(false);
+    assert_eq!(immediate(&mut j, &ask(w::NEXT, 0, 33))[5], 33);
 }

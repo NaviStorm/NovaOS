@@ -89,16 +89,33 @@ impl Journal {
         }
     }
 
+    fn unreadable(&mut self) {
+        self.metadata = None;
+        self.next = None;
+        self.own_scan = None;
+        for entry in &mut self.cache {
+            entry[1] = 0;
+        }
+        self.finish_watch();
+    }
+
     pub fn refresh(&mut self) -> rt::Result<Status> {
         self.metadata = None;
         self.next = None;
-        let s = self.backend.status()?;
+        let s = match self.backend.status() {
+            Ok(s) => s,
+            Err(e) => {
+                self.unreadable();
+                return Err(e);
+            }
+        };
         if s.first == 0
             || s.first > s.next
             || s.next - s.first > 128
             || s.bytes != (s.next - s.first) * 96
         {
-            return Err(rt::REFUSED);
+            self.unreadable();
+            return Err(file::CORRUPT);
         }
         self.metadata = Some(s);
         self.next = Some(s.next);
@@ -122,7 +139,15 @@ impl Journal {
         event[1] = expected;
         self.metadata = None;
         self.next = None;
-        let seq = self.backend.append(expected, &w::bytes(&event))?;
+        let seq = match self.backend.append(expected, &w::bytes(&event)) {
+            Ok(seq) => seq,
+            Err(e) => {
+                // Un ACK perdu peut cacher un append durable. Repartir du même
+                // curseur évite de sauter cette entrée au prochain réveil.
+                self.finish_watch();
+                return Err(e);
+            }
+        };
         self.next = if seq == expected {
             expected.checked_add(1)
         } else {
@@ -157,9 +182,16 @@ impl Journal {
     fn record(&mut self, seq: u64) -> rt::Result<w::Event> {
         let slot = seq as usize % CACHE_SLOTS;
         if self.cache[slot][1] != seq {
-            let event = w::from_bytes(&self.backend.read(seq)?);
+            let event = match self.backend.read(seq) {
+                Ok(bytes) => w::from_bytes(&bytes),
+                Err(e) => {
+                    self.unreadable();
+                    return Err(e);
+                }
+            };
             if !w::valid(&event) || event[1] != seq {
-                return Err(rt::REFUSED);
+                self.unreadable();
+                return Err(file::CORRUPT);
             }
             self.cache[slot] = event;
         }
@@ -202,6 +234,11 @@ impl Journal {
                 n
             };
             if let Some((record, next)) = filter.visible(&self.record(seq)?, self.shell) {
+                let next = if !own && filter.reverse && seq == s.first {
+                    w::END
+                } else {
+                    next
+                };
                 if own && !filter.reverse {
                     let mut resume = filter;
                     resume.cursor = next;
@@ -273,16 +310,16 @@ impl Journal {
                 self.probe.check_admin(op)?;
                 self.metadata = None;
                 self.next = None;
-                let revision = match op {
-                    w::ROTATE => self.backend.rotate(f[3])?,
-                    w::PURGE => self.backend.purge(f[3])?,
-                    _ => self.backend.retain(f[3], f[4])?,
+                let result = match op {
+                    w::ROTATE => self.backend.rotate(f[3]),
+                    w::PURGE => self.backend.purge(f[3]),
+                    _ => self.backend.retain(f[3], f[4]),
                 };
                 // Une rotation/purge peut retirer le curseur du lecteur pendant
                 // l'attente. Le lecteur redemandera les bornes après le
                 // WOULD_BLOCK ; le prochain NEXT contrôlera le curseur exact.
                 self.finish_watch();
-                Ok(Some(reply(op, rt::OK, revision)))
+                Ok(Some(reply(op, rt::OK, result?)))
             }
             w::SELF_NOTICE => {
                 let event = access::notice(f, self.shell)?;

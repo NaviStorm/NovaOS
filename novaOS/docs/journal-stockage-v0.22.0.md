@@ -94,3 +94,29 @@ Le stockage charge un objet de 12 384 octets au maximum. Le tableau des événem
 L’archive durable se trouve dans `OS-worktrees/preuves-journalisation-0220-phase2/stockage/`. Les journaux `aarch64-complet.log` et `x86_64-complet.log` contiennent les mesures individuelles et les résultats d’injection. Leurs SHA-256 vérifiés sont respectivement `9474d95dfe7f4fe6a96e44e8925a9d1b517e3091188bdcdc3b81031fa152be71` et `6231da3d8220b7795fd29c5a0e06712a90852faa36c27c4a5b83ded15884616d`. Les fichiers de transport portent le préfixe `transport-`.
 
 Le rejeu avec les trois noms ressemblants confirme également que le seul préfixe provoquant un refus de montage dans la matrice est de 96 octets. Les sorties se nomment `aarch64-alias.log` et `x86_64-alias.log` et leur manifeste `SHA256SUMS-ALIAS` porte l’empreinte `f0cce9cd7cd764cfd517b372b0e66e11e9a8bca52e03169ae4be2224b44ec82e`.
+
+### Refus du premier append sur un volume rempli dans QEMU
+
+Le banc crée un fichier public de 1 245 184 octets sur une copie d’un volume P9 de 512 blocs de 4 Kio. Il écrit 304 blocs de contenu déterministe et les relit intégralement. La politique de réserve P9 et les binaires du système gardent leur configuration de qualification. Sur une autre copie de cette image, une tentative inaugurale par le client hôte du moteur renvoie `NoSpace`. La comparaison SHA-256 avant/après confirme que cette tentative préserve chaque octet de la copie.
+
+Dans la VM, le démon doit publier son événement `ONLINE` avant d’annoncer `READY`. Sur le volume rempli, le superviseur constate `FAILED` pour le service 16. La commande native `journal status` retourne `journal indisponible (12)`. Le service 10 atteint `RUNNING`. Les opérations de lecture de `/documents/exemple.txt` et les requêtes `NVFS` du service 9 réussissent, y compris après son arrêt contrôlé et sa relance sous une nouvelle identité. Les deux vCPU acquittent l’arrêt. Une relecture indépendante de l’image confirme l’absence des noms publié et de préparation du journal, la révision 0, la prochaine séquence 1, et l’identité et le contenu des deux fichiers publics. Le refus observé dans la VM est celui du seuil de réserve lors de la première création. Le diagnostic `NoSpace` est observé directement sur sa copie hôte.
+
+| QEMU, 2 vCPU | Secteur | Blocs ordinaires libres avant / après | Réserve maintenance avant / après | Génération P9 finale |
+| --- | ---: | ---: | ---: | ---: |
+| AArch64 | 512 | 55 / 51 | 128 / 128 | 398 |
+| x86_64 | 4 096 | 55 / 51 | 128 / 128 | 398 |
+
+Les deux essais utilisent `novaOS/build/target-journal-qualifie`. Les SHA-256 des noyaux sont `109ea1a5bdbac4a6d2cd05c439f671c2b47e8ea5b2f0d16297477de877176ed1` sur AArch64 et `e54fe3aaf98a2c4981674224a274ab34cffb59bde5a400d42ee65c8b654d1318` sur x86_64. Les séries, images, commandes QEMU et résultats JSON se trouvent dans `OS-worktrees/preuves-journalisation-0220-phase2/stockage/volume-plein/`. La relecture des 37 entrées du manifeste a réussi. SHA-256 du manifeste `4b7bafc766cbb8dddd79d712b6cbb6a4dac954f0843ca75f1a0f2beeb02ce961`.
+
+Depuis la racine du dépôt, avec `NOVAOS_TMPDIR` configuré, une bibliothèque NovaFS hôte construite par le banc précédent et un répertoire de preuves durable existant désigné par `PREUVES`, exécuter les commandes suivantes. Chaque argument de dossier d’essai doit désigner un nouveau répertoire. [Préparation du volume](../tests/journal_saturation_fixture.rs) · [Scénario QEMU](../tests/journal_saturation.py)
+
+```sh
+rustup run stable rustc --edition 2024 --target aarch64-apple-darwin -C opt-level=2 \
+    -L dependency=novaFS/target/aarch64-apple-darwin/release/deps \
+    --extern novafs=novaFS/target/aarch64-apple-darwin/release/libnovafs.rlib \
+    novaOS/tests/journal_saturation_fixture.rs -o "$PREUVES/fixture-enospc"
+python3 -B novaOS/tests/journal_saturation.py aarch64 512 "$PREUVES/arm" "$PREUVES/fixture-enospc" \
+    novaOS/build/target-journal-qualifie/aarch64-unknown-none-softfloat/release/novaos
+python3 -B novaOS/tests/journal_saturation.py x86_64 4096 "$PREUVES/x86" "$PREUVES/fixture-enospc" \
+    novaOS/build/target-journal-qualifie/x86_64-unknown-none/release/novaos
+```
