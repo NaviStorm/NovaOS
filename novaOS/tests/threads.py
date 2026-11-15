@@ -5,9 +5,10 @@ import json
 import os
 from pathlib import Path
 import re
-import shutil
 import struct
 import subprocess
+import sys
+import tarfile
 import tempfile
 import time
 
@@ -18,26 +19,26 @@ CARGO = ["rustup", "run", "stable", "cargo"]
 TARGETS = {"x86_64": "x86_64-unknown-none", "aarch64": "aarch64-unknown-none-softfloat"}
 
 
-def build_application(work, arch, env):
+def build_application(work, arch, env, example):
     if work.is_relative_to(ROOT.parent):
         raise ValueError("la construction du témoin exige un workspace externe")
-    project = work / "temoin"
-    shutil.copytree(ROOT / "tests/external-threads", project / "src")
-    library = json.dumps(str(ROOT / "libs/nova-system"), ensure_ascii=False)
-    (project / "Cargo.toml").write_text(
-        '[workspace]\n[package]\nname = "temoin"\nversion = "0.1.0"\nedition = "2024"\n'
-        f'[dependencies]\nnova-system = {{ path = {library} }}\n'
-        '[profile.release]\npanic = "abort"\n'
-    )
+    pack = ROOT.parent / "distribution/scripts/sdk_rust.py"
+    archive = Path(subprocess.check_output([sys.executable, pack, "--check"], text=True).strip())
+    with tarfile.open(archive, "r:gz") as bundle:
+        bundle.extractall(work, filter="data")
+    sdk = work / archive.name.removesuffix(".tar.gz")
+    project = sdk / "examples/threads"
+    metadata = json.loads(subprocess.check_output(
+        [*CARGO, "metadata", "--locked", "--offline", "--format-version", "1"],
+        cwd=project, env=env))
+    packages = {p["name"]: Path(p["manifest_path"]).resolve() for p in metadata["packages"]}
+    assert packages == {"temoin": project / "Cargo.toml", "nova-system": sdk / "libs/nova-system/Cargo.toml"}
     target = TARGETS[arch]
-    linker = ROOT / "user/novafs/service.ld"
-    args = [*CARGO, "build", "--release", "--offline", "--target", target]
+    args = [sys.executable, sdk / "build.py", arch]
+    if not example:
+        args.extend(["--features", "qualification"])
     subprocess.run(args, cwd=project, check=True, env={
         **env, "CARGO_TARGET_DIR": str(work / "application-target"),
-        "CARGO_ENCODED_RUSTFLAGS": "\x1f".join([
-            "-Crelocation-model=static", "-Cno-redzone=yes",
-            "-Clink-arg=-zmax-page-size=4096", f"-Clink-arg=-T{linker}",
-        ]),
     })
     elf = work / "application-target" / target / "release/temoin"
     data = elf.read_bytes()
@@ -49,7 +50,9 @@ def build_application(work, arch, env):
     assert 1 in types and not set(types).intersection((2, 3, 7))
     return elf, {"cible": target, "application": str(project), "artefact": str(elf),
                  "sha256": hashlib.sha256(data).hexdigest(), "octets": len(data),
-                 "segments_elf": types}
+                 "segments_elf": types, "sdk": archive.name,
+                 "sdk_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+                 "exemple_sans_sonde": example}
 
 
 def exercise(arch, cpus, suffix):
@@ -74,6 +77,7 @@ def exercise(arch, cpus, suffix):
                    "FPU SIMD GPR TLS conserves sur deux threads",
                    "THREAD principal collecte dernier resultat=19",
                    "auto-join refuse attenteur unique join annule cible collectee ancien handle refuse",
+                   "SDK A annule transfere le handle de B a C collecte unique double join refuse",
                    "attente et join annules", "THREAD sorties concurrentes=2 dernier=",
                    "THREAD garde adresse=", "faute=confirmee",
                    "THREAD destruction attentes=2 ipc=1 calcul=1 join=1 survivants=0"]
@@ -94,10 +98,28 @@ def exercise(arch, cpus, suffix):
     return scenario_vm(arch, "threads-test", check, f"-{cpus}cpu{suffix}", NOVA_VCPUS=str(cpus))
 
 
+def exercise_example(arch, cpus):
+    def check(vm, directory, log):
+        marker = "SDK exemple admis sortie=0 restitution=OK"
+        level = "EL0" if arch == "aarch64" else "Ring3"
+        deadline = time.monotonic() + 60
+        while time.monotonic() < deadline:
+            output = log.read_text(errors="replace") if log.exists() else ""
+            if marker in output and re.search(rf"niveau={level} .* sortie=0", output):
+                return {"vcpus": cpus, "niveau": level, "sortie": 0, "restitution": True}
+            if vm.poll() is not None or "Panique du noyau" in output:
+                break
+            time.sleep(.05)
+        raise RuntimeError(f"exemple SDK incomplet\n{output[-1800:]}")
+    return scenario_vm(arch, "sdk-example", check, f"-{cpus}cpu", NOVA_VCPUS=str(cpus))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--vcpus", type=int, choices=(1, 2, 4),
                         help="exécuter uniquement cette géométrie (par défaut : 1, 2 et 4)")
+    parser.add_argument("--exemple-sdk", action="store_true",
+                        help="exécuter l'exemple de l'archive dans sa configuration ordinaire à 2 vCPU par défaut")
     args = parser.parse_args()
     arch = os.environ["NOVA_ARCH"]
     target = TARGETS[arch]
@@ -106,8 +128,10 @@ def main():
     rustc = subprocess.check_output(["rustup", "which", "--toolchain", "stable", "rustc"], text=True).strip()
     env = {**os.environ, "RUSTC": rustc}
     with tempfile.TemporaryDirectory(prefix="novaos-native-") as tmp:
-        elf, report = build_application(Path(tmp).resolve(), arch, env)
+        elf, report = build_application(Path(tmp).resolve(), arch, env, args.exemple_sdk)
         cargo_target = out / ("cargo-cible" if args.vcpus else "cargo")
+        if args.exemple_sdk:
+            cargo_target = out / "cargo-exemple"
         subprocess.run([*CARGO, "build", "-p", "novaos", "--release", "--locked", "--offline",
                         "--target", target, "--features", "thread-probe"], cwd=ROOT, check=True,
                        env={**env, "CARGO_TARGET_DIR": str(cargo_target), "NOVA_THREAD_PROBE_ELF": str(elf)})
@@ -116,9 +140,14 @@ def main():
         report["noyau_sha256"] = hashlib.sha256(kernel.read_bytes()).hexdigest()
         report["qemu"] = subprocess.check_output(
             [f"qemu-system-{arch}", "--version"], text=True).splitlines()[0]
-        profiles = [args.vcpus] if args.vcpus else [1, 2, 4]
-        report["profils"] = [exercise(arch, n, "-cible" if args.vcpus else "") for n in profiles]
-        name = f"{arch}-{args.vcpus}cpu" if args.vcpus else arch
+        if args.exemple_sdk:
+            cpus = args.vcpus or 2
+            report["profils"] = [exercise_example(arch, cpus)]
+            name = f"{arch}-exemple-{cpus}cpu"
+        else:
+            profiles = [args.vcpus] if args.vcpus else (1, 2, 4)
+            report["profils"] = [exercise(arch, n, "-cible" if args.vcpus else "") for n in profiles]
+            name = f"{arch}-{args.vcpus}cpu" if args.vcpus else arch
         (out / f"{name}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
 
 

@@ -9,6 +9,9 @@ L’archive UTM distribuée fournit l’installateur NovaOS v0.17.0 AArch64 pour
 | `manifests/` | Sélection et versions des composants à livrer. |
 | `images/` | Image de livraison UTM AArch64. |
 | `scripts/` | Assemblage et validation des livraisons. |
+| `sdk/` | SDK source Rust de la phase 2. |
+
+La branche de phase 2 fournit la crate `nova-system` 0.2.0, un exemple à deux threads, son verrou Cargo, le script de liaison et la documentation pour construire hors du dépôt. Depuis la racine du monorepo, `python3 distribution/scripts/sdk_rust.py` assemble l’archive et son empreinte. L’option `--check` compare son contenu aux sources et vérifie son SHA-256. [Archive du SDK](sdk/nova-system-0.2.0.tar.gz) · [SHA-256](sdk/nova-system-0.2.0.tar.gz.sha256) · [Compilation et API](../novaOS/docs/sdk-rust-v0.20.0.md)
 
 Le projet de distribution prévoit une ISO UEFI x86_64 et une IMG UEFI AArch64, avec essais de démarrage dans QEMU et vérification de compatibilité UTM. Le modèle hybride immuable séparera le système livré des données modifiables. Les mises à jour atomiques et signées et le retour à une version précédente restent à concevoir et à valider.
 
