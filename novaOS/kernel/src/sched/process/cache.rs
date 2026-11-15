@@ -125,10 +125,12 @@ impl Broker {
     }
 }
 
-fn role(s: &Core, pid: Pid) -> Result<(u64, u64)> {
+fn role(s: &Core, pid: Pid, required: u64) -> Result<(u64, u64)> {
     let session = s.processes.manager.ok_or(DENIED)?;
     let p = s.processes.get(pid);
-    if !p.principal || p.service_owner != Some(session.manager) || p.outcome.is_some() {
+    if !p.principal || p.service_owner != Some(session.manager) || p.outcome.is_some()
+        || p.service_caps & required != required
+    {
         return Err(DENIED);
     }
     Ok((session.profile, p.service_id))
@@ -158,8 +160,9 @@ fn admit(s: &mut Core, pid: Pid, op: u64, address: u64) -> Result<u64> {
     if threads::cancelled(s) {
         return Err(CANCELLED);
     }
-    let (profile, actor) = role(s, pid)?;
     let service_op = matches!(op, RECOVER | PRESSURE | AUTO_PURGE);
+    let required = if service_op { service_caps::CACHE_BACKEND } else { service_caps::CACHE_CLIENT };
+    let (profile, actor) = role(s, pid, required)?;
     let mut key = if service_op {
         if actor != 10 {
             return Err(DENIED);
@@ -464,7 +467,7 @@ fn probe(s: &Core, pid: Pid, op: u64, b: u64) -> Result<u64> {
     }
     let cache = &s.processes.cache;
     if op == TEST_WRITE_SENT {
-        let (profile, actor) = role(s, pid)?;
+        let (profile, actor) = role(s, pid, service_caps::CACHE_CLIENT)?;
         if actor != 11 || b != 0 {
             return Err(DENIED);
         }

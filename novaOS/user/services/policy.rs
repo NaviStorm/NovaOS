@@ -82,6 +82,7 @@ pub enum Cause {
     Limit,
     LaunchError,
     Invalid,
+    SecurityPolicy,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
@@ -124,6 +125,7 @@ struct Slot {
     stop: Option<Cause>,
     dependency: u64,
     killed: bool,
+    security_blocked: bool,
     // Au plus huit instants triés. Le budget est glissant même à sa frontière.
     restarts: [u64; MAX_RETRIES],
     used: usize,
@@ -139,6 +141,7 @@ impl Slot {
         stop: None,
         dependency: 0,
         killed: false,
+        security_blocked: false,
         restarts: [0; MAX_RETRIES],
         used: 0,
     };
@@ -474,7 +477,11 @@ impl<'a> Policy<'a> {
         if !s.state.live()
             || !matches!(
                 cause,
-                Cause::Exited | Cause::Crash | Cause::Killed | Cause::LaunchError
+                Cause::Exited
+                    | Cause::Crash
+                    | Cause::Killed
+                    | Cause::LaunchError
+                    | Cause::SecurityPolicy
             )
         {
             return Err(self.invalid(i));
@@ -493,8 +500,9 @@ impl<'a> Policy<'a> {
         };
         self.slots[i].stop = None;
         self.slots[i].dependency = 0;
+        self.slots[i].security_blocked = reason == Cause::SecurityPolicy;
         self.transition(i, state, reason, exit, s.dependency);
-        if !s.wanted || state == State::Waiting {
+        if !s.wanted || state == State::Waiting || self.slots[i].security_blocked {
             return Ok(());
         }
         if matches!(reason, Cause::Restart | Cause::Requested) {
@@ -597,7 +605,9 @@ impl<'a> Policy<'a> {
             if let Some(dep) = self.unavailable(i) {
                 // Le démarrage d'une dépendance en cours maintient WAITING.
                 // Un fournisseur en échec terminal requiert une intervention.
-                if matches!(self.slots[dep].state, State::Failed | State::Stopped) {
+                if !self.slots[dep].security_blocked
+                    && matches!(self.slots[dep].state, State::Failed | State::Stopped)
+                {
                     self.transition(
                         i,
                         State::Failed,
@@ -613,6 +623,7 @@ impl<'a> Policy<'a> {
                 continue;
             };
             self.slots[i].attempt = attempt;
+            self.slots[i].security_blocked = false;
             self.slots[i].deadline = now.saturating_add(self.manifest[i].start_ticks);
             self.slots[i].killed = false;
             self.transition(i, State::Starting, Cause::Started, 0, 0);

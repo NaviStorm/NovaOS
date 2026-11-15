@@ -48,7 +48,6 @@ fn rejets_de_catalogues_non_autorises() {
         |r| r.id = 99,
         |r| r.image = 15,
         |r| r.caps = 9,
-        |r| r.caps = 0,
         |r| r.args = &[1],
         |r| r.required = &[99],
         |r| r.required = &[1],
@@ -73,7 +72,7 @@ fn rejets_de_catalogues_non_autorises() {
 fn blocage_du_cache_et_demarrage_manuel_du_fournisseur() {
     let mut r = settings::defaults();
     r[2].auto = false;
-    let mut p = policy::Policy::configured(&r).unwrap();
+    let mut p = policy::Policy::configured(&r[..catalog::INSTALLED.len()]).unwrap();
     let mut launched = Vec::new();
     while let Some(action) = p.next_action(1) {
         if let policy::Action::Launch { id, attempt } = action {
@@ -103,4 +102,52 @@ fn blocage_du_cache_et_demarrage_manuel_du_fournisseur() {
         Some(policy::Action::Launch { id: 10, attempt: 1 })
     );
     assert_eq!(p.blocking_provider(10), None);
+}
+
+#[test]
+fn quatre_entrees_historiques_et_cinq_plafonds_verifies() {
+    let mut records = settings::defaults();
+    records[2].auto = false;
+    records[3].retries = 0;
+    let mut bytes = [0; settings::BYTES];
+    let n = settings::encode_legacy(&records, &mut bytes).unwrap();
+    assert!(settings::historical(&bytes[..n]));
+    let old = settings::decode(&bytes[..n]).unwrap();
+    assert!(!old[2].auto);
+    assert_eq!(old[3].retries, 0);
+    assert_eq!(old[4].caps, catalog::JOURNAL_STORE);
+    records[2].caps = 0;
+    let n = settings::encode_legacy(&records, &mut bytes).unwrap();
+    assert!(settings::decode(&bytes[..n]).is_none());
+    records[4].caps = 0;
+    let n = settings::encode(&records, &mut bytes).unwrap();
+    assert!(!settings::historical(&bytes[..n]));
+    let new = settings::decode(&bytes[..n]).unwrap();
+    assert_eq!((new[2].caps, new[4].caps), (0, 0));
+    assert!(!new[2].auto);
+    assert_eq!(new[3].retries, 0);
+}
+
+#[test]
+fn dependance_en_attente_apres_retrait_indispensable() {
+    use policy::{Action, Cause, State};
+    let records = settings::defaults();
+    let mut p = policy::Policy::configured(&records).unwrap();
+    while let Some(Action::Launch {id, attempt}) = p.next_action(1) {
+        assert_ne!(id, 10);
+        if id == 9 {
+            p.finished(id, attempt, Cause::SecurityPolicy, 5, 1).unwrap();
+        } else {
+            p.ready(id, attempt, 1).unwrap();
+        }
+    }
+    assert_eq!(p.state(9), Ok(State::Failed));
+    assert_eq!(p.state(10), Ok(State::Waiting));
+    assert_eq!(p.blocking_provider(10), Some(9));
+    assert_eq!(p.next_action(600), None);
+    p.start(9).unwrap();
+    assert_eq!(p.next_action(601), Some(Action::Launch {id: 9, attempt: 2}));
+    assert_eq!(p.next_action(601), None);
+    p.ready(9, 2, 601).unwrap();
+    assert_eq!(p.next_action(601), Some(Action::Launch {id: 10, attempt: 1}));
 }

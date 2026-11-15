@@ -1,11 +1,12 @@
 //! Déclarations natives version 1 embarquées dans l'ELF du gestionnaire embarqué
 //! dans l'image système de confiance. Le profil de démarrage choisit une tranche immuable.
 use super::policy::{Declaration as D, Restart};
-pub const PRIVATE_TMP: u64 = 1;
+#[allow(dead_code)]
+#[path = "../../abi/service_caps.rs"]
+mod service_caps;
+pub use service_caps::{CACHE_BACKEND, CACHE_CLIENT, JOURNAL_STORE, PRIVATE_TMP};
 pub const SYSTEM_IMAGE: u64 = 1;
 pub const STORAGE_IMAGE: u64 = 2;
-pub const CACHE_BACKEND: u64 = 2;
-pub const CACHE_CLIENT: u64 = 4;
 
 const BASE: D = D {
     version: 1,
@@ -27,7 +28,6 @@ const BASE: D = D {
 };
 
 pub const JOURNAL_IMAGE: u64 = 3;
-pub const JOURNAL_STORE: u64 = 8;
 pub const JOURNAL: D = D {
     id: 16, image: JOURNAL_IMAGE, caps: JOURNAL_STORE,
     start_ticks: 20_000, heartbeat_ticks: 20_000, ..BASE

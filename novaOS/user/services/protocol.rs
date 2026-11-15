@@ -28,6 +28,13 @@ pub const CACHE_MAINTAIN: u64 = 14;
 pub const SETTINGS: u64 = 25;
 pub const ENABLE: u64 = 26;
 pub const DISABLE: u64 = 27;
+#[path = "../../abi/service_caps.rs"]
+pub mod service_caps;
+pub use service_caps::CAPABILITY_NAMES;
+pub const QUERY_CAPS: u64 = 42;
+pub const RESTRICT_CAP: u64 = 43;
+pub const RESTORE_CAP: u64 = 44;
+pub const QUALIFY_CACHE_MASK: u64 = 45;
 
 pub const REGISTERED: u64 = 1;
 pub const WAITING: u64 = 2;

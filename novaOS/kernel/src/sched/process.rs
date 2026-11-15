@@ -12,6 +12,8 @@ mod instances;
 mod supervision;
 pub(crate) mod tmp;
 mod cache;
+#[path = "../../../abi/service_caps.rs"]
+mod service_caps;
 use crate::instance_abi as iw;
 use instances::{Instance, Registry};
 #[cfg(feature = "materiel-lab")]
@@ -62,6 +64,7 @@ struct Process {
     service_owner: Option<Pid>,
     service_forced: bool,
     service_id: u64,
+    service_caps: u64,
     launch_grants: ipc::LaunchGrants,
     tmp_cap: u64,
     legacy_p8_launcher: bool,
@@ -301,6 +304,7 @@ fn publish_image(
             service_owner: None,
             service_forced: false,
             service_id: 0,
+            service_caps: 0,
             launch_grants: ipc::LaunchGrants::default(),
             tmp_cap: 0,
             legacy_p8_launcher: false,

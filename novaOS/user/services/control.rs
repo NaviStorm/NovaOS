@@ -1,6 +1,8 @@
 //! Port d'exploitation et port de lecture indépendants. Un numéro de service ne
 //! donne jamais le droit noyau correspondant.
 use super::*;
+#[path = "start_probe.rs"]
+mod start_probe;
 
 pub(super) fn error(e: policy::Error) -> u64 {
     use policy::Error::*;
@@ -76,6 +78,33 @@ impl Manager<'_> {
         Ok(reply)
     }
 
+    fn capabilities(&mut self, id: u64) -> rt::Result<Frame> {
+        let i = self.index(id)?;
+        let maximum = p::service_caps::maximum(id).ok_or(rt::REFUSED)?;
+        self.config.refresh();
+        let configured = self.config.records.iter().find(|d| d.id == id).ok_or(rt::REFUSED)?;
+        let live = self.units[i].live;
+        let active = live.right != 0;
+        let mut out = self.report(id);
+        out[4..12].copy_from_slice(&[
+            maximum, configured.caps, live.caps, self.config.stored, live.generation,
+            u64::from(active), u64::from(self.config.verified && active && configured.caps != live.caps),
+            self.config.status,
+        ]);
+        Ok(out)
+    }
+
+    // Sonde fermée du profil 88 : l’envoi est admis, puis le demandeur perd
+    // les canaux de réponse. Aucune nouvelle requête de maintenance n’est admise.
+    fn interrupt_config_reply(&self) -> rt::Result<()> {
+        for slot in [7, 8] {
+            if rt::value(rt::call(rt::IPC_REVOKE, rt::config(slot), 0, 0))? != 1 {
+                return Err(rt::REFUSED);
+            }
+        }
+        Ok(())
+    }
+
     fn shutdown(&mut self, time: u64) {
         if self.stopping { return; }
         self.stopping = true;
@@ -100,6 +129,51 @@ impl Manager<'_> {
         }
         if tag == 0 {
             return Err(rt::BAD_ARGUMENT);
+        }
+        if op == p::QUALIFY_CACHE_MASK {
+            if !admin || !self.cache_lab || id != 11 { return Err(rt::DENIED); }
+            if !matches!(arg, 1 | 5) || f[4..].iter().any(|&x| x != 0) {
+                return Err(rt::BAD_ARGUMENT);
+            }
+            if self.stopping || self.units[self.index(id)?].live.right == 0 {
+                return Err(rt::REFUSED);
+            }
+            start_probe::occupied_actor()?;
+            self.reduced_actor = arg == catalog::PRIVATE_TMP;
+            return Ok(Some(self.report(id)));
+        }
+        if matches!(op, p::QUERY_CAPS | p::RESTRICT_CAP | p::RESTORE_CAP) {
+            if self.cache_lab || self.qualification { return Err(rt::REFUSED); }
+            if op == p::QUERY_CAPS {
+                if f[3..].iter().any(|&x| x != 0) { return Err(rt::BAD_ARGUMENT); }
+                return self.capabilities(id).map(Some);
+            }
+            if port != 2 { return Err(rt::DENIED); }
+            if self.stopping { return Err(rt::CLOSED); }
+            if arg != 0 || f[4] != 0 || f[7..].iter().any(|&x| x != 0) {
+                return Err(rt::BAD_ARGUMENT);
+            }
+            let i = self.index(id)?;
+            let (expected, bit) = (f[5], f[6]);
+            let subject = self.units[i].live.identity;
+            let restore = op == p::RESTORE_CAP;
+            if rt::config(9) == 88 && restore && id == 9 && bit == catalog::PRIVATE_TMP
+                && expected == 13 && self.config.stored == expected && self.config.status == rt::OK
+            {
+                self.interrupt_config_reply()?;
+            }
+            if let Err(e) = self.config.capability(id, bit, restore, expected) {
+                self.journal.record(id, subject, j::WARN, j::CONFIG,
+                    if e == rt::DENIED { j::CAP_REFUSED } else { j::CONFIG_ERROR },
+                    time, [expected, bit]);
+                return Err(e);
+            }
+            self.journal.record(id, subject, j::INFO, j::CONFIG,
+                if restore { j::RESTORE } else { j::RESTRICT },
+                time, [self.config.stored, bit]);
+            let mut reply = self.report(id);
+            reply[4] = self.config.stored;
+            return Ok(Some(reply));
         }
         if matches!(op, p::SETTINGS | p::ENABLE | p::DISABLE) {
             if f[4..].iter().any(|&v| v != 0) {
@@ -128,10 +202,7 @@ impl Manager<'_> {
                 if rt::config(9) == 88 && op == p::ENABLE && id == 9 && arg == 1
                     && self.config.stored == 1 && self.config.status == rt::OK
                 {
-                    for slot in [7, 8] {
-                        let removed = rt::value(rt::call(rt::IPC_REVOKE, rt::config(slot), 0, 0))?;
-                        if removed != 1 { return Err(rt::REFUSED); }
-                    }
+                    self.interrupt_config_reply()?;
                 }
                 let subject = self.units[self.index(id)?].live.identity;
                 if let Err(e) = self.config.autostart(id, op == p::ENABLE, arg) {
@@ -238,6 +309,10 @@ impl Manager<'_> {
             };
         }
         let i = self.index(id)?;
+        if matches!(op, p::START | p::RESTART) && !self.cache_lab && !self.qualification {
+            self.config.refresh();
+            if !self.config.verified { return Err(self.config.status); }
+        }
         match op {
             p::STATUS if arg == 0 => {
                 self.policy.state(id).map_err(error)?;

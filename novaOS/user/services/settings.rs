@@ -5,13 +5,19 @@ use super::{
     policy::{Declaration, Restart},
 };
 
-pub const COUNT: usize = catalog::INSTALLED.len();
+const LEGACY_COUNT: usize = catalog::INSTALLED.len();
+pub const COUNT: usize = LEGACY_COUNT + 1;
 pub const BYTES: usize = 1024;
 pub type Records = [Declaration; COUNT];
 const MAGIC: &[u8; 8] = b"NVSVCC01";
 
 pub fn defaults() -> Records {
-    core::array::from_fn(|i| catalog::INSTALLED[i])
+    core::array::from_fn(|i| {
+        catalog::INSTALLED
+            .get(i)
+            .copied()
+            .unwrap_or(catalog::JOURNAL)
+    })
 }
 
 fn restart_code(value: Restart) -> u64 {
@@ -43,10 +49,22 @@ impl Writer<'_> {
 }
 
 pub fn encode(records: &Records, out: &mut [u8]) -> Option<usize> {
+    encode_list(records, out)
+}
+
+pub fn encode_legacy(records: &Records, out: &mut [u8]) -> Option<usize> {
+    encode_list(&records[..LEGACY_COUNT], out)
+}
+
+pub fn historical(data: &[u8]) -> bool {
+    data.starts_with(MAGIC) && data.get(8..16) == Some(&(LEGACY_COUNT as u64).to_le_bytes()[..])
+}
+
+fn encode_list(records: &[Declaration], out: &mut [u8]) -> Option<usize> {
     let size = out.len();
     let mut w = Writer(out);
     w.bytes(MAGIC)?;
-    w.word(COUNT as u64)?;
+    w.word(records.len() as u64)?;
     for d in records {
         for v in [u64::from(d.version), d.id, d.image, d.caps] {
             w.word(v)?;
@@ -97,17 +115,24 @@ impl Reader<'_> {
     }
 }
 
-// Les images installées demandent exactement leur masque attesté pour pouvoir
-// démarrer. Le catalogue v1 ne contient aucun droit facultatif réductible.
+// Les quatre entrées historiques précèdent l’enrôlement des restrictions.
+// Leur masque exact empêche une ancienne représentation de contourner le témoin.
 pub fn decode(input: &[u8]) -> Option<Records> {
     let mut r = Reader(input.strip_prefix(MAGIC)?);
-    r.expect(COUNT as u64)?;
+    let count = usize::try_from(r.word()?).ok()?;
+    if count != LEGACY_COUNT && count != COUNT {
+        return None;
+    }
     let mut out = defaults();
-    for d in &mut out {
+    for d in &mut out[..count] {
         r.expect(u64::from(d.version))?;
         r.expect(d.id)?;
         r.expect(d.image)?;
-        r.expect(d.caps)?;
+        let allowed = r.word()?;
+        if allowed & !d.caps != 0 || (count == LEGACY_COUNT && allowed != d.caps) {
+            return None;
+        }
+        d.caps = allowed;
         for list in [d.args, d.required, d.optional] {
             r.list(list)?;
         }

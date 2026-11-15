@@ -47,8 +47,10 @@ fn serve() -> rt::Result<()> {
     let attempt = rt::config(4);
     let own_id = rt::config(2);
     let rights = rt::config(9);
+    let (store_tx, store_rx) = (rt::config(5), rt::config(6));
     if own_id != w::JOURNAL_ID
         || attempt == 0
+        || store_tx == 0 || store_rx == 0
         || rights & !63 != 0
         || rt::value(rt::call(rt::IPC_BOOTSTRAP, 0, 0, 0))? != mgr_rx
     {
@@ -67,7 +69,7 @@ fn serve() -> rt::Result<()> {
     }
     let terminal_tx = rt::config(8);
     let mut j = Journal::new(
-        Client::new(rt::config(5), rt::config(6)),
+        Client::new(store_tx, store_rx),
         shell,
         manager,
         rights,

@@ -45,6 +45,8 @@ struct Binding {
     pid: u64,
     identity: [u64; 4],
     right: u64,
+    caps: u64,
+    generation: u64,
     rx: u64,
     tx: u64,
 }
@@ -94,6 +96,7 @@ struct Manager<'a> {
     units: [Unit; MAX],
     qualification: bool,
     cache_lab: bool,
+    reduced_actor: bool,
     stopping: bool,
     delayed: Option<(u64, Frame)>,
     held: Option<(u64, Frame)>,
@@ -125,15 +128,24 @@ impl Manager<'_> {
             .ok_or(rt::REFUSED)
     }
 
-    fn spawn(&mut self, i: usize, d: Declaration, attempt: u64) -> rt::Result<()> {
+    fn launch_caps(&mut self, id: u64) -> rt::Result<(u64, u64)> {
+        let max = p::service_caps::maximum(id).ok_or(rt::REFUSED)?;
+        if self.cache_lab || self.qualification {
+            // Ces profils fermés ne disposent pas du magasin de production.
+            let mask = if self.cache_lab && self.reduced_actor && id == 11 {
+                max & !catalog::CACHE_CLIENT
+            } else { max };
+            return Ok((mask, 0));
+        }
+        self.config.refresh();
+        if !self.config.verified { return Err(self.config.status); }
+        let d = self.config.records.iter().find(|d| d.id == id).ok_or(rt::REFUSED)?;
+        if d.caps & !max != 0 { return Err(rt::DENIED); }
+        Ok((max & d.caps, self.config.stored))
+    }
+
+    fn spawn(&mut self, i: usize, d: Declaration, attempt: u64, time: u64) -> rt::Result<()> {
         if self.units[i].live.right != 0
-            || d.caps
-                != match d.id {
-                    10 => catalog::CACHE_BACKEND,
-                    j::JOURNAL_ID => catalog::JOURNAL_STORE,
-                    11..=15 if self.cache_lab => catalog::PRIVATE_TMP | catalog::CACHE_CLIENT,
-                    _ => catalog::PRIVATE_TMP,
-                }
             || d.args.len() != 1
             || (d.image == catalog::STORAGE_IMAGE) != (d.id == 9)
             || (d.image == catalog::JOURNAL_IMAGE) != (d.id == j::JOURNAL_ID)
@@ -141,8 +153,11 @@ impl Manager<'_> {
         {
             return Err(rt::DENIED);
         }
+        let (caps, generation) = self.launch_caps(d.id)?;
         let mut words = [0; 16];
         words[0] = d.id;
+        words[5] = p::service_caps::START_MASK_VERSION;
+        words[6] = caps;
         words[3] = d.args[0];
         words[4] = attempt;
         let right = syscall(proc::START, &mut words)?;
@@ -151,12 +166,15 @@ impl Manager<'_> {
             attempt,
             pid: words[4],
             right,
+            caps,
+            generation,
             rx: words[1],
             tx: words[2],
             identity: words[5..9].try_into().unwrap(),
         };
         let old = self.units[i].previous;
-        if binding.pid == 0
+        if words[9] != caps
+            || binding.pid == 0
             || binding.right == 0
             || binding.rx == 0
             || binding.tx == 0
@@ -178,6 +196,10 @@ impl Manager<'_> {
             self.units[i].authority = u64::from(!d.auto) + 1;
         }
         self.units[i].live = binding;
+        if !self.cache_lab && !self.qualification && generation != 0 {
+            self.journal.record(d.id, binding.identity, j::INFO, j::CAPABILITY, j::CAP_APPLIED,
+                time, [generation, caps]);
+        }
         self.units[i].probe = 0;
         Ok(())
     }
@@ -187,9 +209,12 @@ impl Manager<'_> {
             match action {
                 Action::Launch { id, attempt } => {
                     let i = self.index(id)?;
-                    if let Err(e) = self.spawn(i, self.manifest[i], attempt) {
+                    if let Err(e) = self.spawn(i, self.manifest[i], attempt, time) {
+                        let reason = if !self.config.verified && !self.cache_lab && !self.qualification {
+                            Cause::SecurityPolicy
+                        } else { Cause::LaunchError };
                         self.policy
-                            .finished(id, attempt, Cause::LaunchError, e, time)
+                            .finished(id, attempt, reason, e, time)
                             .map_err(control::error)?;
                     }
                 }
@@ -436,12 +461,19 @@ impl Manager<'_> {
             self.units[i].previous = live;
             self.units[i].live = Binding::default();
             self.units[i].withdrawals = self.units[i].withdrawals.saturating_add(1);
-            let cause = match kind {
+            let mut cause = match kind {
                 0 => Cause::Exited,
                 1 => Cause::Crash,
                 2 => Cause::Killed,
                 _ => return Err(rt::REFUSED),
             };
+            if kind == 0 && words[1] == rt::DENIED && self.policy.state(live.id) == Ok(State::Starting)
+                && p::service_caps::maximum(live.id).is_some_and(|m| m != live.caps)
+            {
+                cause = Cause::SecurityPolicy;
+                self.journal.record(live.id, live.identity, j::ERROR, j::CAPABILITY, j::CAP_MISSING,
+                    time, [live.generation, live.caps]);
+            }
             self.policy
                 .finished(live.id, live.attempt, cause, words[1], time)
                 .map_err(control::error)?;
@@ -458,15 +490,14 @@ fn supervise() -> rt::Result<()> {
     let loaded = config.records;
     let installed = !cache_lab && !qualification;
     let with_journal = installed && rt::config(10) == 1;
-    let extended = [loaded[0], loaded[1], loaded[2], loaded[3], catalog::JOURNAL];
     let manifest: &[Declaration] = if cache_lab {
         catalog::CACHE_QUALIFICATION
     } else if qualification {
         catalog::QUALIFICATION
     } else if with_journal {
-        &extended
-    } else {
         &loaded
+    } else {
+        &loaded[..catalog::INSTALLED.len()]
     };
     let mut manager = Manager {
         manifest,
@@ -482,6 +513,7 @@ fn supervise() -> rt::Result<()> {
         units: [Unit::default(); MAX],
         qualification,
         cache_lab,
+        reduced_actor: false,
         stopping: false,
         delayed: None,
         held: None,

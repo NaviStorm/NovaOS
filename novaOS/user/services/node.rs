@@ -35,9 +35,13 @@ pub fn worker(mode: u64) -> rt::Result<()> {
     }
 }
 
-fn verify_delegation(identity: &[u8; 32]) -> rt::Result<()> {
+fn verify_delegation(identity: &[u8; 32], has_tmp: bool) -> rt::Result<()> {
     for (call, mode) in [(instance::WORKER, 100), (tmp::WORKER, 101)] {
-        let child = rt::value(rt::call(call, identity.as_ptr() as u64, mode, 32))?;
+        let launched = rt::value(rt::call(call, identity.as_ptr() as u64, mode, 32));
+        if call == tmp::WORKER && !has_tmp {
+            return if launched == Err(rt::DENIED) { Ok(()) } else { Err(rt::REFUSED) };
+        }
+        let child = launched?;
         let mut result = [0u64; 4];
         rt::value(rt::call(
             rt::PROCESS_WAIT,
@@ -81,26 +85,22 @@ pub fn serve_extension(
     {
         return Err(rt::DENIED);
     }
+    let mut identity = [0u8; 32];
+    rt::value(rt::call(instance::INFO, 2, identity.as_mut_ptr() as u64, 32))?;
+    let own_tmp = rt::value(rt::call(tmp::CAP, 0, 0, 0));
+    if id == 2 {
+        verify_delegation(&identity, own_tmp.is_ok())?;
+    }
     let cap = if id == 10 {
-        if rt::call(tmp::CAP, 0, 0, 0).status != rt::DENIED {
+        if own_tmp != Err(rt::DENIED) {
             return Err(rt::REFUSED);
         }
         None
     } else {
-        let cap = rt::value(rt::call(tmp::CAP, 0, 0, 0))?;
+        let cap = own_tmp?;
         root_empty(cap)?;
         Some(cap)
     };
-    let mut identity = [0u8; 32];
-    rt::value(rt::call(
-        instance::INFO,
-        2,
-        identity.as_mut_ptr() as u64,
-        32,
-    ))?;
-    if id == 2 {
-        verify_delegation(&identity)?;
-    }
     let mut stamp = p::request(p::ANNOUNCE, id, attempt);
     for (out, bytes) in stamp[4..8].iter_mut().zip(identity.chunks_exact(8)) {
         *out = u64::from_le_bytes(bytes.try_into().unwrap());
