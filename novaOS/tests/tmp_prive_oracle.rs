@@ -103,7 +103,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         "services-actifs" => {
             let seal = fs.lookup_at(store, "registre")?.id;
             let roots: Vec<_> = names.iter().filter_map(|n| n.strip_prefix('t')).collect();
-            assert!(roots.len() >= 3 && names.len() == 1 + 2 * roots.len());
+            assert_eq!(roots.len(), 5, "nsh, gestionnaire et trois services prêts");
+            assert_eq!(names.len(), 1 + 2 * roots.len());
             for suffix in roots {
                 assert_eq!(suffix.len(), 64);
                 let owner: Vec<u8> = (0..32)

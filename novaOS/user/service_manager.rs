@@ -85,7 +85,6 @@ struct Manager<'a> {
     response: Option<(u64, u64, Frame)>,
     logs: [Frame; LOG_COUNT],
     last_log: u64,
-    storage_seen: bool,
 }
 
 fn syscall(operation: u64, frame: &mut Frame) -> rt::Result<u64> {
@@ -259,11 +258,6 @@ impl Manager<'_> {
                 self.units[i].probe = 0;
                 if valid && self.policy.ready(live.id, live.attempt, time).is_ok() {
                     self.units[i].admitted = self.units[i].admitted.saturating_add(1);
-                    if !self.storage_seen {
-                        self.storage_seen = true;
-                        let text = b"SVC stockage INFO disponible";
-                        rt::call(rt::DEBUG_WRITE, text.as_ptr() as u64, text.len() as u64, 0);
-                    }
                 } else {
                     let _ = self
                         .policy
@@ -436,7 +430,6 @@ fn supervise() -> rt::Result<()> {
         response: None,
         logs: [[0; 16]; LOG_COUNT],
         last_log: 0,
-        storage_seen: false,
     };
     let ports = [
         (rt::config(0), rt::config(1)),

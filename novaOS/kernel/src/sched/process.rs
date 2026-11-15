@@ -337,9 +337,10 @@ pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
             .owner
             .expect("exception hors processus");
         let p = s.processes.get(pid);
-        let trace = p.watch == supervision::Watch::None && p.terminal == 0
-            || p.terminal & crate::terminal::QUALIFY != 0
-            || matches!(result, Outcome::Fault(_));
+        let trace = !ipc::service::uses_private_journal(s, p.instance)
+            && (p.watch == supervision::Watch::None && p.terminal == 0
+                || p.terminal & crate::terminal::QUALIFY != 0
+                || matches!(result, Outcome::Fault(_)));
         stop_process(s, pid, result, entered);
         (pid, trace)
     });

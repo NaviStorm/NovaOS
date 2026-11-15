@@ -28,6 +28,14 @@ pub(in crate::sched::process) fn owns_family(s: &Core, pid: Pid) -> bool {
         .is_some_and(|m| m.manager == pid || s.processes.get(pid).service_owner == Some(m.manager))
 }
 
+// En exploitation, le journal du gestionnaire reçoit les sorties des services.
+// L'identité d'instance couvre aussi leurs travailleurs sans leur donner de droits.
+pub(in crate::sched::process) fn uses_private_journal(s: &Core, instance: Instance) -> bool {
+    s.processes.manager.is_some_and(|m| !m.lab)
+        && s.processes.instances.app(instance)
+            .is_some_and(|app| (INSTALLATION..=INSTALLATION + 9).contains(&app))
+}
+
 fn image(elf: &'static [u8], stable: u64) -> Res<Child> {
     let space = heap::with_pages(|m| UserSpace::new(m, elf, &[], None))
         .map_err(|e| launch_error(Error::Memory(e)))?;

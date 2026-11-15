@@ -18,7 +18,6 @@ from bloc_qemu import command as block_command
 from session_cli import fixture_p9
 
 TARGETS = {"aarch64": "aarch64-unknown-none-softfloat", "x86_64": "x86_64-unknown-none"}
-STORAGE_READY = b"SVC stockage INFO disponible"
 CONTROL = [
     b"SVC-P3 stockage INFO arret nouvelle-identite anciens-canaux-retires INFO OK",
     b"SVC-P3 READY ancien refuse dependant WAITING sans PID",
@@ -42,8 +41,11 @@ def guest(arch, sector, cpus, image, iso, scenario, out, cut):
     buf = bytearray()
     # Tous les profils gardent leurs rôles réels. Le rôle lecture ne peut arrêter un service.
     console = scenario in ("cli", "services-admin")
-    commands = [("cat /documents/exemple.txt", rb"\r?\nNovaOS\r?\n"),
-                ("@services info 9", rb"service=9 etat=5 .*valeur=1397118542 ")]
+    # Le client observe les trois incarnations par le protocole public avant de
+    # tester INFO. Une console silencieuse reste utilisable pendant leur démarrage.
+    commands = [(f"@services status {id}", f"service={id} etat=5 ".encode()) for id in (1, 2, 9)]
+    commands.extend([("cat /documents/exemple.txt", rb"\r?\nNovaOS\r?\n"),
+                     ("@services info 9", rb"service=9 etat=5 .*valeur=1397118542 ")])
     if scenario == "services-admin":
         commands.extend([("@services stop 9", rb"service=9 "),
                          ("@services status 9", rb"service=9 etat=7 "),
@@ -79,11 +81,9 @@ def guest(arch, sector, cpus, image, iso, scenario, out, cut):
                             log.write(rest)
                             buf.extend(rest)
                     break
-                if console and STORAGE_READY in buf and b"nsh> " in buf:
-                    if cut:
-                        vm.kill()
-                        assert vm.wait(timeout=10) == -signal.SIGKILL
-                        return bytes(buf)
+                if console and b"nsh> " in buf:
+                    assert b"SVC stockage INFO disponible" not in buf
+                    assert b"SVC tmp prive ordinaire" not in buf
                     if not signalled and sent_at is None:
                         command, _ = commands[command_index]
                         sent_at = len(buf)
@@ -94,7 +94,7 @@ def guest(arch, sector, cpus, image, iso, scenario, out, cut):
                         if first_line >= 0 and b"nsh> " in segment[first_line+2:]:
                             command, expected = commands[command_index]
                             match = re.search(expected, segment)
-                            if not match and command == "@services status 9":
+                            if not match and command.startswith("@services status "):
                                 # L'arrêt et le démarrage sont asynchrones. Interroger l'état réel.
                                 sent_at = len(buf)
                                 vm.stdin.write(command.encode()+b"\n")
@@ -106,6 +106,10 @@ def guest(arch, sector, cpus, image, iso, scenario, out, cut):
                                         first_identity = identity
                                     else:
                                         assert identity != first_identity
+                                    if cut:
+                                        vm.kill()
+                                        assert vm.wait(timeout=10) == -signal.SIGKILL
+                                        return bytes(buf)
                                 command_index += 1
                                 sent_at = None
                                 if command_index == len(commands):

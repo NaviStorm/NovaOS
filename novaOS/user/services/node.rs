@@ -83,8 +83,6 @@ pub fn serve(storage: bool, mut info: impl FnMut(u64, &[u8]) -> [u8; 12]) -> rt:
     ))?;
     if id == 2 {
         verify_delegation(&identity)?;
-        let msg = b"SVC tmp prive ordinaire refuse et delegation verifiee";
-        rt::call(rt::DEBUG_WRITE, msg.as_ptr() as u64, msg.len() as u64, 0);
     }
     let mut stamp = p::request(p::ANNOUNCE, id, attempt);
     for (out, bytes) in stamp[4..8].iter_mut().zip(identity.chunks_exact(8)) {

@@ -20,7 +20,7 @@ mod instances;
 mod service_process;
 
 use runtime as rt;
-
+const UNKNOWN_CONTROL_OPERATION: u64 = 12345;
 fn log(line: &[u8]) {
     rt::call(rt::DEBUG_WRITE, line.as_ptr() as u64, line.len() as u64, 0);
 }
@@ -134,7 +134,7 @@ impl Control {
             require(self.call(svc::REGISTER, invalid, 0).err() == Some(rt::BAD_ARGUMENT))?;
             require(self.call(svc::STATUS, invalid, 0).err() == Some(rt::REFUSED))?;
         }
-        require(self.call(12345, 9, 0).is_err())?;
+        require(self.call(UNKNOWN_CONTROL_OPERATION, 9, 0).is_err())?;
         self.call(svc::START, 3, 0)?;
         let before = self.state(3, svc::RUNNING)?;
         self.call(svc::STOP, 1, 0)?;
