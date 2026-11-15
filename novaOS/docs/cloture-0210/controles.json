@@ -1,0 +1,73 @@
+{
+  "date_locale": "2026-11-15",
+  "base": "80a3699c76af0db9ccdc1a85964fe15576c32439",
+  "candidat": "4a3d3079bad8a8ef074601df5afdf9c6d5faacfb",
+  "fusion": "4569a6876720f6b4efa901db707b670e415abeeb",
+  "parents": [
+    "80a3699c76af0db9ccdc1a85964fe15576c32439",
+    "4a3d3079bad8a8ef074601df5afdf9c6d5faacfb"
+  ],
+  "arbre_commun": "ea3fab4c63f669b3325ecf3c7af0aa5e21f68a7b",
+  "commits_phase4": [
+    "1ea146d1a4451cac5ef9698f00f3efb0894053c9",
+    "2a5d775ab88625ba8619b229002802fd13607362",
+    "4a3d3079bad8a8ef074601df5afdf9c6d5faacfb"
+  ],
+  "registre": {
+    "version": 1,
+    "anciens_inchanges": 47,
+    "total": 48,
+    "ajout": {
+      "rust": "cache::CONTROL",
+      "c": "NOVA_SYS_CACHE_CONTROL",
+      "numero": "0x1007c"
+    }
+  },
+  "controles_sur_la_fusion": {
+    "python3 -B novaOS/scripts/generate_abi.py --check": "statut 0",
+    "python3 -B novaOS/tests/abi_registre.py -v": {
+      "statut": 0,
+      "groupes_reussis": [
+        "entetes_c_cpp",
+        "exports_tmp",
+        "extension_services",
+        "invalides",
+        "portes_et_dispatch",
+        "regeneration",
+        "selecteurs_litteraux",
+        "signatures_historiques",
+        "statut_tmp_call"
+      ]
+    }
+  },
+  "comparaisons": {
+    "novaFS": "aucun changement entre base et fusion",
+    "distribution": "aucun changement entre base et fusion"
+  },
+  "sha256_fichiers_relus": {
+    "novaOS/abi/syscalls.toml": "b4d4f183fd64c8c2868891d55f83db4f4bcd9f95f053d91c2915d1f13c543ce8",
+    "novaOS/abi/native.rs": "f12506b581f88eca89dea068dab0083e827171afb534ab76bc831cd2933350a7",
+    "novaOS/scripts/generate_abi.py": "154442428554b29e441d9728f40b85a7a3f3c30a26d8063fd3ed4f96b567c8c4",
+    "novaOS/tests/abi_registre.py": "bf4a81f7bb95e6ad31eeef22dee3a03d25536b52631e11ee832aa0ff886c0d16",
+    "novaOS/docs/validation/cache-phase4-v0.21.0-preuves.tar.gz": "6034653cb7c2182cb3a6010db909e1ed9ed1f0086b04510f5ccc12f0051b3bf2",
+    "novaOS/docs/validation/cache-phase4-v0.21.0.json": "63004adbade7d5ae4050b606f38aa325c7ed27d87eebddb64121231ea185551f",
+    "distribution/images/novaos-0.17.0-utm-aarch64.tar.gz": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+    "distribution/sdk/nova-system-0.2.0.tar.gz": "6feff113b64eef2352c430fc5c64fc2f1f865cfe40339ecbec5e6a4f3ff469a4",
+    "novaOS/abi/generated/block.rs": "ceaa9e4725b2dfa8fb946c17c2c48c2a98cc8674aac35de1b8787da9895c8587",
+    "novaOS/abi/generated/cache.rs": "7e43785f21127ff1a419da9c3ad1fdbf58b07fd9e1e113c6bcbde2e7c9c1c71c",
+    "novaOS/abi/generated/instances.rs": "201c2fd600bb5f52163fa84b3ec0c2b70222feb48270378e74325d67ab71203e",
+    "novaOS/abi/generated/nova_abi.h": "16123e67faa06eab1fd0f498878fa4eda68777d9d5f31011488f7465dd1cf1a3",
+    "novaOS/abi/generated/terminal.rs": "5a874573804c8149c2c1c3589888cf57e0cfcffd673020d74b8b4cc3eff3023e",
+    "novaOS/abi/generated/tmp.rs": "0b9413ca052644c5314868151c3db061ffac20089df732dcf011eca35e83ab59"
+  },
+  "archive_locale": {
+    "index": "preuves-cache-0210-phase4-80a3699/index-sha256.json",
+    "sha256_index": "a1cf7197c8a5cf359f7f5429e581f30ce337b5c86a32cabcc58932a9ef0d589a",
+    "paires_relues": 4159,
+    "octets_logiques": 2720208175
+  },
+  "empreintes_inventaires_candidat_avant_et_apres": {
+    "suivis": "652928e252401f3fe0453b43f9c6c840e1d43d1ddd83cd58c505a419b722430b",
+    "ignores": "5f0ca19717806b5b3fdf084a2414bc8b4e2b5896e3202c40a60dcdc8036df5f2"
+  }
+}
