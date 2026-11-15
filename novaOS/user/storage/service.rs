@@ -1,55 +1,44 @@
 #![no_std]
 #![no_main]
+mod info_session;
 mod runtime;
+
+#[cfg(service_managed)]
+#[path = "../services/node.rs"]
+mod node;
+#[cfg(service_managed)]
+#[path = "../services/protocol.rs"]
+mod protocol;
+#[cfg(service_managed)]
+#[allow(dead_code)]
+#[path = "../../abi/service_process.rs"]
+mod service_process;
 use runtime::*;
 
+#[cfg(not(service_managed))]
 fn serve() -> Result<()> {
     let (requests, replies) = channels()?;
-    let mut last = 0;
+    let mut session = info_session::Session::new();
     loop {
-        let msg = match receive_for(requests, if last == 0 { 15_000 } else { TIMEOUT }) {
+        let msg = match receive_for(requests, if session.active() { TIMEOUT } else { 15_000 }) {
             Ok(msg) => msg,
-            Err(TIMED_OUT) if last == 0 => continue,
+            Err(TIMED_OUT) if !session.active() => continue,
             Err(CLOSED | DENIED) => return Ok(()),
             Err(status) => return Err(status),
         };
-        if msg.kind != 1 {
-            // Une notification ne contient ni trame ni identifiant de requête.
-            continue;
-        }
-        let p = &msg.payload;
-        let mut finish = false;
-        let status = if msg.tag <= last || msg.len != 8 {
-            BAD_FRAME
-        } else {
-            last = msg.tag;
-            if p[0] != WIRE_VERSION || p[2..4] != [0; 2] {
-                BAD_FRAME
-            } else if p[4..8] != [0; 4] {
-                NO_VOLUME
-            } else {
-                match p[1] {
-                    INFO => 0,
-                    FIN => {
-                        finish = true;
-                        0
-                    }
-                    _ => UNSUPPORTED,
-                }
-            }
-        };
-        let mut answer = [0; 12];
-        answer[0] = WIRE_VERSION;
-        answer[1] = status;
-        answer[8..].copy_from_slice(IDENTITY);
-        send(replies, msg.tag, &answer)?;
-        if finish {
-            last = 0;
+        if msg.kind == 1 {
+            let answer = session.answer(msg.tag, &msg.payload[..msg.len as usize]);
+            send(replies, msg.tag, &answer)?;
         }
     }
 }
 
-// Sûreté : point d'entrée Rust unique appelé par _start dans cette image.
+#[cfg(service_managed)]
+fn serve() -> Result<()> {
+    let mut session = info_session::Session::new();
+    node::serve(true, |tag, packet| session.answer(tag, packet))
+}
+
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
     exit(serve().err().unwrap_or(0))

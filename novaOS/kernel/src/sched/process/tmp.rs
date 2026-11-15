@@ -31,6 +31,7 @@ struct Lease {
     cap: u64,
     stage: Stage,
     closing: bool,
+    managed: bool,
 }
 
 struct Request {
@@ -70,6 +71,14 @@ impl Broker {
             requests: Vec::new(),
             flight: None,
         }
+    }
+
+    pub(super) fn has_service_lease(&self, instance: Option<Instance>) -> bool {
+        self.leases.iter().any(|l| l.managed && instance.is_none_or(|k| l.instance == k))
+    }
+
+    pub(super) fn online(&self) -> bool {
+        self.server.is_some()
     }
 
     pub(super) fn diskless_profile(&self) -> bool {
@@ -181,11 +190,12 @@ fn notice(s: &mut Core) {
     }
 }
 
-fn new_lease(s: &mut Core, pid: Pid) -> Result<u64> {
+pub(super) fn new_lease(s: &mut Core, pid: Pid) -> Result<u64> {
     let instance = s.processes.get(pid).instance;
     instance
         .identity(crate::boot_id::current())
         .ok_or(REFUSED)?;
+    let managed = ipc::service::owns_family(s, pid);
     let broker = &mut s.processes.temporary;
     if broker.server.is_none() {
         return Err(CLOSED);
@@ -200,6 +210,7 @@ fn new_lease(s: &mut Core, pid: Pid) -> Result<u64> {
         cap,
         stage: Stage::Create,
         closing: false,
+        managed,
     });
     s.processes.get_mut(pid).tmp_cap = cap;
     notice(s);
@@ -458,7 +469,12 @@ fn complete(s: &mut Core, pid: Pid, ticket: u64, address: u64, status: u64) -> R
         let cap = broker.leases[i].cap;
         let closing = broker.leases[i].closing;
         if f.operation == wire::REMOVE {
-            broker.leases.swap_remove(i);
+            let lease = broker.leases.swap_remove(i);
+            if lease.managed && status != OK
+                && let Some(session) = &mut s.processes.manager
+            {
+                session.purge_error.get_or_insert(status);
+            }
             hal::log(format_args!(
                 "TMP retrait instance={} statut={status}",
                 f.instance.serial

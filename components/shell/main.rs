@@ -2,6 +2,12 @@
 #![no_main]
 extern crate alloc;
 use nova_cli::{console, fileapi::Client, runtime as rt, tty};
+#[allow(dead_code)]
+#[path = "../../novaOS/abi/instances.rs"]
+mod instances;
+#[allow(dead_code)]
+#[path = "../../novaOS/abi/service_process.rs"]
+mod service_process;
 mod aliases;
 mod builtins;
 mod capabilities;
@@ -15,6 +21,7 @@ mod line_editor;
 mod parser;
 mod paths;
 mod script;
+mod services;
 mod vi;
 
 fn session() -> rt::Result<()> {
@@ -86,6 +93,11 @@ fn session() -> rt::Result<()> {
             }
         }
     };
+    if rt::config(11) != 0 {
+        // Le seul lanceur de cette session ferme son portefeuille avant le volume
+        // qui assure la purge des vues privées. Le noyau authentifie l'appelant.
+        rt::value(rt::call(instances::SERVICE_PROCESS, service_process::DRAIN, 0, 0))?;
+    }
     fs.close(0)?;
     if exit != 0 {
         return Err(exit);

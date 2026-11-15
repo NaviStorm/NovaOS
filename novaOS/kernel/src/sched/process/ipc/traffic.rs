@@ -85,7 +85,7 @@ impl Domain {
         }
     }
 
-    fn add_notification(&mut self, ep: Reference, bits: u64) -> Res<()> {
+    pub(super) fn add_notification(&mut self, ep: Reference, bits: u64) -> Res<()> {
         if bits == 0 {
             return Err(BAD_ARGUMENT);
         }

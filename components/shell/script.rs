@@ -260,6 +260,11 @@ impl<'a> Engine<'a> {
         let args = glob::arguments(self.fs, &words)?;
         let argv: Vec<_> = args.iter().map(String::as_str).collect();
         let code = match name.as_str() {
+            "@services" if depth == 0 => {
+                super::services::run(&argv)?;
+                0
+            }
+            "@services" => return Err(rt::DENIED),
             "exit" | "return" => {
                 let n = match argv.as_slice() {
                     [] if depth == 0 => 0,

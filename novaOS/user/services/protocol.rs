@@ -50,7 +50,9 @@ pub fn encode(words: &Frame) -> [u8; 128] {
 }
 
 pub fn decode(bytes: &[u8]) -> Option<Frame> {
-    if bytes.len() != 128 { return None; }
+    if bytes.len() != 128 {
+        return None;
+    }
     let mut words = [0; 16];
     for (word, field) in words.iter_mut().zip(bytes.chunks_exact(8)) {
         *word = u64::from_le_bytes(field.try_into().ok()?);

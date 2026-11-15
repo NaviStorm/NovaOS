@@ -26,6 +26,10 @@ fn main() {
         "demo",
         "instance_manager",
         "instance_sample",
+        "service_manager",
+        "system_service",
+        "service_control_test",
+        "storage/managed",
         "tmp_sample",
         "devices",
         "edu",
@@ -58,7 +62,7 @@ fn main() {
         if name.starts_with("nvme_") && !nvme_lab {
             continue;
         }
-        let file_client = matches!(name, "storage/fileclient" | "tmp_sample");
+        let file_client = matches!(name, "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "service_control_test" | "storage/managed");
         let linker = format!(
             "link-arg=-T{}",
             user.join(if file_client {
@@ -108,7 +112,14 @@ fn main() {
         } else {
             rust.args(["-C", "link-arg=--oformat=binary"]);
         }
-        let source = if name == "nvme_rw_driver" { "nvme_driver" } else { name };
+        let source = match name {
+            "nvme_rw_driver" => "nvme_driver",
+            "storage/managed" => {
+                rust.args(["--cfg", "service_managed"]);
+                "storage/service"
+            }
+            other => other,
+        };
         let ok = rust
             .arg(user.join(format!("{source}.rs")))
             .args([

@@ -87,6 +87,15 @@ class Registre(unittest.TestCase):
             self.assertTrue(old)
             self.assertLessEqual(old, set(re.findall(pattern, current)))
 
+    def test_extension_services(self):
+        previous = tomllib.loads(historical(
+            "bcdfe4ccfd98c9e4a58f5cead3ce666e917ce33c", "abi/syscalls.toml").decode())
+        self.assertEqual(len(previous["call"]), 46)
+        self.assertEqual({k: self.calls[k] for k in previous["call"]}, previous["call"])
+        self.assertEqual(set(self.calls)-set(previous["call"]), {"SERVICE_PROCESS"})
+        self.assertEqual(self.calls["SERVICE_PROCESS"]["number"], 0x1007b)
+        self.assertEqual(self.calls["SERVICE_PROCESS"]["module"], "instances")
+
     def test_portes_et_dispatch(self):
         rust_gate = (ROOT / "user/gate.rs").read_text().lower()
         for arch, gate in self.registry["calling"].items():

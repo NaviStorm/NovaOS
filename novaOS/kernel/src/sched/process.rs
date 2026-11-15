@@ -58,6 +58,9 @@ struct Process {
     instance: Instance,
     principal: bool,
     stop_offered: bool,
+    service_owner: Option<Pid>,
+    service_forced: bool,
+    service_id: u64,
     launch_grants: ipc::LaunchGrants,
     tmp_cap: u64,
     legacy_p8_launcher: bool,
@@ -80,6 +83,7 @@ pub(super) struct Table {
     serial: u64,
     instances: Registry<MAX>,
     temporary: tmp::Broker,
+    manager: Option<ipc::service::Session>,
     pub(super) syscall_switches: u64,
     blocked_waits: u64,
     #[cfg(feature = "materiel-lab")]
@@ -92,6 +96,7 @@ impl Table {
             serial: 0,
             instances: Registry::new(),
             temporary: tmp::Broker::new(),
+            manager: None,
             syscall_switches: 0,
             blocked_waits: 0,
             #[cfg(feature = "materiel-lab")]
@@ -290,6 +295,9 @@ fn publish_image(
             instance,
             principal: member.is_none(),
             stop_offered: false,
+            service_owner: None,
+            service_forced: false,
+            service_id: 0,
             launch_grants: ipc::LaunchGrants::default(),
             tmp_cap: 0,
             legacy_p8_launcher: false,
@@ -376,6 +384,7 @@ fn retire_member(s: &mut Core, pid: Pid, result: Outcome, entered: u64) {
     vtd::died(pid);
     #[cfg(feature = "materiel-lab")]
     edu::died(s, pid);
+    ipc::service::retired(s, pid, entered);
     tmp::retired(s, pid, Some(result));
     ipc::withdraw_grants(s, pid);
     s.ipc.death(pid, ticks());

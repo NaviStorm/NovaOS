@@ -258,8 +258,8 @@ const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fil
 // configuration. Seul NovaFS reçoit le sélecteur distinct de format.
 pub(super) fn cli_mode(profile: u64) -> u64 {
     match profile {
-        73 => 42,
-        74 => 41,
+        73 | 75 | 76 => 42,
+        74 | 77 => 41,
         n => n,
     }
 }
@@ -307,7 +307,9 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         (MEDIA, 1),
         (DISK, 0),
         (
-            if matches!(mode, 41 | 42) {
+            if matches!(profile, 75 | 76) {
+                include_bytes!(concat!(env!("OUT_DIR"), "/service_control_test.bin"))
+            } else if matches!(mode, 41 | 42) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/nsh.elf"))
             } else if mode >= 11 && !matches!(mode, 43 | 44) {
                 FILE_CLIENT
@@ -317,7 +319,11 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
             0,
         ),
     ];
-    let group = if matches!(mode, 29 | 30 | 38) {
+    let mut manager = None;
+    let group = if matches!(profile, 41 | 42 | 75 | 76 | 77) && probe.is_none() {
+        ipc::service::launch_session(members, key, profile, session.map(|(_, id)| id))
+            .map(|(group, child)| { manager = Some(child); (group, None) })
+    } else if matches!(mode, 29 | 30 | 38) {
         let [r, s, d, a] = members;
         ipc::launch_block([r, s, d, a, (FILE_CLIENT, 0)], key, mode)
             .map(|[r, s, d, a, p]| ([r, s, d, a], Some(p)))
@@ -345,6 +351,9 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     }
     let ids = [relay.0, service.0, driver.0];
     let a = wait(app);
+    if let Some(manager) = manager {
+        ipc::service::finish_session(manager);
+    }
     if peer.is_none() && a != Outcome::Exit(0) {
         block::died(driver.0.number);
         ipc::close_block_channels(&ids);
