@@ -4,7 +4,7 @@ NovaOS est un système d’exploitation expérimental à micro-noyau, développ�
 
 **Les deux phases Rust de NovaOS v0.20.0 sont intégrées dans `main`.** Le SDK source `nova-system` 0.2.0 permet de compiler sur l’hôte une application Rust `no_std` pour AArch64 et x86_64. L’exemple admis au catalogue crée deux threads, leur attribue des valeurs TLS distinctes, synchronise leur travail avec un mutex et recueille leurs résultats par jonction. [Guide du SDK](novaOS/docs/sdk-rust-v0.20.0.md) · [Qualification sur les deux architectures](novaOS/docs/rust-sdk-phase2-v0.20.0.md)
 
-La clôture de v0.20.0 attend la validation finale MOA/MOE du périmètre et des livrables. [Matrice de clôture](novaOS/docs/cloture-rust-v0.20.0.md)
+Le jalon NovaOS v0.20.0 est clos avec la livraison du SDK Rust natif `nova-system` 0.2.0. [Matrice de clôture](novaOS/docs/cloture-rust-v0.20.0.md)
 
 La v0.19.0 a introduit un pilote NVMe isolé en Ring 3 dans le profil expérimental QEMU Q35 x86_64 avec Intel VT-d. Des capacités distinctes autorisent la lecture, l’écriture et la synchronisation d’un namespace virtuel. Le service NovaFS y monte un volume P9 et confirme ses transactions après la seconde barrière. [Qualification NVMe et limites](novaOS/docs/nvme-phase3-v0.19.0.md) · [Fondations matérielles](novaOS/docs/materiel-phase4-v0.18.0.md)
 

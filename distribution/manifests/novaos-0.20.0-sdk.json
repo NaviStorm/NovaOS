@@ -1,6 +1,6 @@
 {
-  "objet": "Proposition de livraison du SDK Rust croisé",
-  "statut": "Soumis à la MOA/MOE pour clôture",
+  "objet": "NovaOS SDK Rust — nova-system v0.2.0",
+  "statut": "Livraison officielle",
   "novaos": "0.20.0",
   "commit_integration": "7114badafa50a30d43e92174d03e2fe997285b73",
   "commit_qualifie": "b46ddf1902678265b45642a0c2c90a696b21f53f",
@@ -29,7 +29,7 @@
     "novaOS/docs/validation/rust-sdk-phase2-v0.20.0.json",
     "novaOS/docs/validation/compat-rust-sdk-v0.20.0.json"
   ],
-  "documentation_soumise": [
+  "documentation": [
     "novaOS/docs/contrat-public-rust-v0.20.0.md",
     "novaOS/docs/cloture-rust-v0.20.0.md"
   ]

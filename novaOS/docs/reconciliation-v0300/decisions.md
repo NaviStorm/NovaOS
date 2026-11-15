@@ -8,7 +8,7 @@
 
 **Mandat de qualification finale du 15 novembre 2026.** Le mandat « NovaOS v0.20.0 — Qualification finale et fusion conditionnelle » a pour SHA-256 `da76881a608d006147972be7ff857e139992d6216e0db9bb362edf707e3aaf7a` et cite le candidat `47e3ff53d15610795f54bc55933848d16165bdfc`. Son §15 complète le SDK prévu par ARC-020. La MOA a ensuite précisé la portée de la fusion de la phase 1, consignée en ARC-023.
 
-**Suite d’ARC-023, 15 novembre 2026.** La MOA/MOE a ensuite autorisé la phase 2, puis sa fusion conditionnelle dans `main` par le mandat « Fusion phase 2 et préparation de la clôture » (SHA-256 `80ac053a29c00e32e48cdb39a7081c326622c6e532978f04d2e2198412de7594`). La fusion `7114badafa50a30d43e92174d03e2fe997285b73` applique cette décision. La validation du contrat source et de la livraison complète reste ouverte. [Dossier soumis à la MOA/MOE](../cloture-rust-v0.20.0.md)
+**Suite d’ARC-023, 15 novembre 2026.** La MOA/MOE a ensuite autorisé la phase 2, puis sa fusion conditionnelle dans `main` par le mandat « Fusion phase 2 et préparation de la clôture » (SHA-256 `80ac053a29c00e32e48cdb39a7081c326622c6e532978f04d2e2198412de7594`). La fusion `7114badafa50a30d43e92174d03e2fe997285b73` applique cette décision. Le mandat ultérieur « Clôture officielle du jalon Rust et SDK natif » (SHA-256 `30037c97a73626acea8e3b17732de65c6b9b6e352c8c09ef442d654aa8d164ef`) délègue à la MOE le périmètre stable et la livraison. La MOE clôt v0.20.0 avec le SDK croisé 0.2.0 et sa documentation. L’installateur UTM reste en v0.17.0. Le jalon suivant exige une décision distincte. [Décision et preuves](../cloture-rust-v0.20.0.md)
 
 | Identifiant | Date | Sujet | Décision ou proposition | Origine | Statut |
 |---|---|---|---|---|---|
