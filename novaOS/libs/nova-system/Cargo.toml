@@ -1,0 +1,12 @@
+[package]
+name = "nova-system"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[lib]
+doctest = false
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nvme_rw)'] }
