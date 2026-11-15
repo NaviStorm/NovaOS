@@ -2,7 +2,7 @@
 use core::sync::atomic::{AtomicU64, Ordering};
 use nova_cli::{console, runtime as rt, tty};
 #[path = "../../novaOS/user/services/protocol.rs"]
-mod wire;
+pub(super) mod wire;
 
 static TAG: AtomicU64 = AtomicU64::new(0);
 
@@ -102,7 +102,7 @@ service start|stop|restart <nom>\n\
 service enable|disable <nom>\n\
 enable et disable enregistrent le choix pour le prochain démarrage.\n";
 
-fn state(value: u64) -> rt::Result<&'static str> {
+pub(super) fn state(value: u64) -> rt::Result<&'static str> {
     Ok(match value {
         0 => "UNREGISTERED",
         wire::REGISTERED => "REGISTERED",
@@ -144,6 +144,11 @@ fn status(frame: &wire::Frame) -> rt::Result<()> {
             frame[12]
         ),
     )?;
+    if id == super::journal::j::JOURNAL_ID {
+        console::write(tty::OUTPUT, &alloc::format!(
+            "Journal gestionnaire: perdus={} incertains={} dernière_erreur={}\n",
+            frame[6], frame[7], frame[9]))?;
+    }
     if frame[5] != 0 {
         console::write(
             tty::OUTPUT,

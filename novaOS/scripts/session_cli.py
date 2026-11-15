@@ -56,12 +56,13 @@ def fixture_p9(path, sector):
         ], check=True)
 
 
-def machine(arch, sector, image, test=False, manual=False, *, iso=None, historique_p8=False, profil_config=False):
+def machine(arch, sector, image, test=False, manual=False, *, iso=None, historique_p8=False,
+            profil_config=False, profil_journal=False):
     profile = "cli-p8" if historique_p8 else "cli"
-    if profil_config:
-        if historique_p8 or test:
+    if profil_config or profil_journal:
+        if historique_p8 or test or (profil_config and profil_journal):
             raise ValueError("Le profil de configuration exige la session de maintenance P9.")
-        profile = "services-config-admin"
+        profile = "journal-admin" if profil_journal else "services-config-admin"
     if test:
         profile += "-test"
     if iso is None:
@@ -82,11 +83,14 @@ if __name__ == "__main__":
     parser.add_argument("--sector", type=int, choices=[512, 4096], default=512)
     parser.add_argument("--historique-p8", action="store_true",
                         help="Utiliser le profil historique sans tmp sur une image P8 existante.")
-    parser.add_argument("--admin-services", action="store_true",
+    admin = parser.add_mutually_exclusive_group()
+    admin.add_argument("--admin-journal", action="store_true",
+                      help="Démarrer le profil P9 de maintenance des journaux et services.")
+    admin.add_argument("--admin-services", action="store_true",
                         help="Démarrer le profil P9 détenant le contrôle et la configuration des services.")
     args = parser.parse_args()
-    if args.admin_services and (args.action == "image" or args.historique_p8):
-        parser.error("--admin-services exige une session P9 (run ou demo)")
+    if (args.admin_services or args.admin_journal) and (args.action == "image" or args.historique_p8):
+        parser.error("Le profil de maintenance exige une session P9 (run ou demo)")
     if args.historique_p8 and args.action != "run":
         parser.error("--historique-p8 exige run et une image existante")
     if args.action == "image":
@@ -98,5 +102,6 @@ if __name__ == "__main__":
             except FileExistsError:
                 pass
         cmd, env = machine(os.environ.get("NOVA_ARCH", "x86_64"), args.sector, args.image, manual=True,
-                           historique_p8=args.historique_p8, profil_config=args.admin_services)
+                           historique_p8=args.historique_p8, profil_config=args.admin_services,
+                           profil_journal=args.admin_journal)
         os.execvpe(cmd[0], cmd, env)
