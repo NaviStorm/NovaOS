@@ -6,6 +6,14 @@
 - Avant de travailler dans un composant, lire ses consignes locales. Pour un changement qui traverse la frontière entre système et stockage, lire les deux fichiers et vérifier le contrat des deux côtés. [Consignes NovaOS](novaOS/AGENTS.md) · [Consignes NovaFS](novaFS/AGENTS.md)
 - Travailler et répondre en français, avec concision, sans introduction ni conclusion. Pour une réponse de code, fournir uniquement le bloc nouveau ou corrigé. Expliquer la cause d’un bug corrigé et fournir les bilans expressément demandés.
 
+## Worktrees additionnels et preuves
+
+Le dépôt principal conserve son emplacement `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS`. Créer tous les worktrees Git additionnels de NovaOS exclusivement sous `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/`. Réserver `/tmp` et `/private/tmp` aux fichiers réellement jetables.
+
+- Conserver les journaux, images disque, traces et résultats nécessaires aux qualifications. Toute preuve à conserver doit avoir une copie hors de `/tmp` et `/private/tmp`. Vérifier son emplacement physique, son existence, sa lisibilité et son SHA-256 en lisant ses octets. Une empreinte publiée seule ne sauvegarde pas le fichier.
+- Avant un déplacement, relever le chemin, la branche, le HEAD et l’état des fichiers suivis, non suivis et ignorés. Inventorier les preuves et calculer leurs SHA-256. Vérifier qu’aucune tâche, VM ni aucun processus n’utilise le worktree ou ses images. Reporter le déplacement en cas de doute.
+- Utiliser `git worktree move` sans forcer. Préserver les permissions, les liens, les métadonnées Git et les modifications locales. À destination, relire les preuves, recalculer leurs SHA-256 et comparer les inventaires et références Git. Consigner les écarts et conserver les originaux si la migration est bloquée.
+
 ## Composants et décisions
 
 - `novaOS/` contient le micro-noyau, la HAL, l’ABI native, les services et les pilotes. `novaFS/` possède le moteur portable, le format disque et son laboratoire. `components/` contient `nsh`, les commandes et leur bibliothèque. `distribution/` rassemble les livraisons. Préserver les workspaces et les licences respectives, MIT pour NovaOS et les composants CLI, MPL-2.0 pour NovaFS. [Organisation du dépôt](README.md) · [Composants utilisateur](components/README.md) · [Distribution](distribution/README.md)
