@@ -13,7 +13,7 @@
 | Quels numéros et choix attendent encore une validation MOA/MOE ? | [Répartition proposée et dépendances critiques](proposition.md) |
 | Pourquoi les anciens documents plaçaient-ils NovaWM avant la stable ? | [Historique et sources](historique.md) · [Proposition antérieure figée](https://github.com/NaviStorm/NovaOS/blob/29049a50758f73d472f03ad733bcb3eac74b5259/novaOS/docs/reconciliation-v0300/proposition.md) |
 
-La réconciliation initiale portait sur les sources NovaOS v0.19.0 au commit `1b3bb5a8df767a09fa0671bcfd95e6e734693a3a`. Ses vérifications concernaient les documents, leurs liens et les verdicts à produire. Depuis, la phase 1 de v0.20.0 a ajouté la bibliothèque Rust native et les threads utilisateur. L’archive distribuée pour UTM AArch64 porte la version v0.17.0 et utilise NovaFS v0.9.13 P9. [Qualification de phase 1](../rust-threads-v0.20.0.md) · [Distribution](../../../distribution/README.md)
+La réconciliation initiale portait sur les sources NovaOS v0.19.0 au commit `1b3bb5a8df767a09fa0671bcfd95e6e734693a3a`. Ses vérifications concernaient les documents, leurs liens et les verdicts à produire. La phase 1 de v0.20.0 a ajouté la bibliothèque Rust native et les threads utilisateur. La phase 2, également intégrée dans `main`, a qualifié la reprise de jonction et le SDK autonome 0.2.0. Le jalon NovaOS v0.20.0 est clos avec la livraison du SDK Rust natif `nova-system` 0.2.0. L’archive distribuée pour UTM AArch64 porte la version v0.17.0 et utilise NovaFS v0.9.13 P9. [Qualification de phase 1](../rust-threads-v0.20.0.md) · [Matrice de clôture](../cloture-rust-v0.20.0.md) · [Distribution](../../../distribution/README.md)
 
 ## Versions sources publiées à la date de la réconciliation initiale
 

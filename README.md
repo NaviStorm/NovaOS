@@ -2,9 +2,9 @@
 
 NovaOS est un système d’exploitation expérimental à micro-noyau, développé principalement en Rust pour x86_64 et AArch64. Le projet explore une question concrète : comment faire coopérer des programmes, des services et des pilotes tout en donnant à chacun le minimum de droits nécessaire ? Son noyau `no_std` et son interface binaire native (ABI) lui permettent de définir ses propres contrats, sans dépendance obligatoire à POSIX.
 
-**La phase 1 de NovaOS v0.20.0** intègre la bibliothèque Rust native `nova-system` 0.1.0 et une première API de threads pour les applications admises. Un programme Rust `no_std` peut créer deux threads, leur attribuer des valeurs TLS distinctes, synchroniser leur travail avec un mutex et recueillir leurs résultats par jonction. Le programme de référence se compile sur l’hôte pour chacune des deux architectures. [Contrat de la bibliothèque](novaOS/docs/rust-threads-v0.20.0.md) · [Qualification finale de la phase 1](novaOS/docs/qualification-rust-threads-v0.20.0.md)
+**Les deux phases Rust de NovaOS v0.20.0 sont intégrées dans `main`.** Le SDK source `nova-system` 0.2.0 permet de compiler sur l’hôte une application Rust `no_std` pour AArch64 et x86_64. L’exemple admis au catalogue crée deux threads, leur attribue des valeurs TLS distinctes, synchronise leur travail avec un mutex et recueille leurs résultats par jonction. [Guide du SDK](novaOS/docs/sdk-rust-v0.20.0.md) · [Qualification sur les deux architectures](novaOS/docs/rust-sdk-phase2-v0.20.0.md)
 
-La branche de phase 2 prépare le SDK autonome `nova-system` 0.2.0 et corrige la reprise de jonction après annulation. Sa fusion et la clôture de v0.20.0 attendent une validation MOA/MOE. [Contrat et qualification de phase 2](novaOS/docs/rust-sdk-phase2-v0.20.0.md)
+Le jalon NovaOS v0.20.0 est clos avec la livraison du SDK Rust natif `nova-system` 0.2.0. [Matrice de clôture](novaOS/docs/cloture-rust-v0.20.0.md)
 
 La v0.19.0 a introduit un pilote NVMe isolé en Ring 3 dans le profil expérimental QEMU Q35 x86_64 avec Intel VT-d. Des capacités distinctes autorisent la lecture, l’écriture et la synchronisation d’un namespace virtuel. Le service NovaFS y monte un volume P9 et confirme ses transactions après la seconde barrière. [Qualification NVMe et limites](novaOS/docs/nvme-phase3-v0.19.0.md) · [Fondations matérielles](novaOS/docs/materiel-phase4-v0.18.0.md)
 
@@ -40,7 +40,7 @@ flowchart TD
 |---|---|---|
 | Démarrage et affichage | Implémenté | UEFI avec Limine, framebuffer et journal série sur les deux architectures. |
 | Mémoire et exécution | Implémenté | Mémoire virtuelle protégée, ELF multipages, tas privés, piles gardées, ordonnanceur SMP préemptif qualifié sur 1, 2 et 4 vCPU et processus isolés en Ring 3 ou EL0. |
-| Applications Rust | Phase 1 expérimentale | Bibliothèque native, threads dans un processus, piles gardées et TLS via `nova-system`. |
+| Applications Rust | SDK 0.2.0 qualifié sur deux ISA | Compilation croisée, admission au catalogue, piles gardées, TLS et collecte unique après transfert du droit de jonction. |
 | ABI et services | Implémenté | Appels système natifs et IPC à capacités entre processus disposant d’espaces d’adressage distincts. |
 | Stockage bloc | Implémenté | Lecture, écriture et synchronisation sur un disque VirtIO optionnel. Le service bloc et le pilote s’exécutent en espace utilisateur. Le profil NVMe Q35 se sélectionne explicitement. |
 | NovaFS | En développement | Le moteur macOS gère transactions CoW, snapshots, clones, compression LZ4, chiffrement et vérification des blocs. NovaOS expose le montage et les transactions sur les fichiers des volumes autonomes. |
@@ -101,7 +101,7 @@ Les images de développement se construisent aujourd’hui depuis le workspace N
 
 Le serveur devra prendre en charge les usages déclarés de bout en bout sur **QEMU x86_64**, référence principale, et **QEMU AArch64**, seconde référence obligatoire. Les critères couvrent l’installation autonome, les comptes et ACL, les données surprotégées, les threads utilisateur, la CLI/TUI, le réseau double pile et son pare-feu, les services, le serveur SSH, le client SSH, les transferts SFTP et la reprise après incident. L’équivalence avec un serveur Linux s’évalue sur ces usages. Le Tecra A50-J reste une cible physique expérimentale. [Décisions MOA](novaOS/docs/reconciliation-v0300/decisions.md) · [Parcours serveur bloquants](novaOS/docs/reconciliation-v0300/acceptation-serveur.md)
 
-La distribution vise une base système immuable et des données utilisateur modifiables. Les garanties de mise à jour signée, de rollback et de restauration avec les droits en vigueur restent à réaliser. Les catalogues de pools et volumes chiffrés natifs restent ouverts. Pour v0.30.0, les compilateurs Rust, C et C++, l’éditeur de liens, les bibliothèques et les outils de construction, dont Cargo, devront s’exécuter sur NovaOS. Depuis `nsh`, chaque programme de référence devra être compilé, lié puis exécuté sur place. La suite de v0.20.0 et sa clôture attendent un nouvel arbitrage MOA/MOE. NovaWM et NovaUI sont conservés pour l’après-stable, sans numéro attribué. [Plan de livraison proposé](novaOS/docs/reconciliation-v0300/proposition.md)
+La distribution vise une base système immuable et des données utilisateur modifiables. Les garanties de mise à jour signée, de rollback et de restauration avec les droits en vigueur restent à réaliser. Les catalogues de pools et volumes chiffrés natifs restent ouverts. Pour v0.30.0, les compilateurs Rust, C et C++, l’éditeur de liens, les bibliothèques et les outils de construction, dont Cargo, devront s’exécuter sur NovaOS. Depuis `nsh`, chaque programme de référence devra être compilé, lié puis exécuté sur place. NovaWM et NovaUI sont conservés pour l’après-stable, sans numéro attribué. [Plan de livraison proposé](novaOS/docs/reconciliation-v0300/proposition.md)
 
 ## Contribuer
 
