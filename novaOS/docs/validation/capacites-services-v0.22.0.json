@@ -1,0 +1,425 @@
+{
+  "date": "2026-11-16",
+  "fusion_phase2": "7e705d37989bf451b486d1fa6c97e00e4da6e751",
+  "arbre_phase2": "7d5fde69bd88be9dd39942f8628017fbb7685a4d",
+  "qemu": "11.1.3",
+  "demarrages_qemu_qualifies": 96,
+  "demarrages_par_campagne": {
+    "matrice_et_courses": {
+      "demarrages": 56,
+      "rapports": [
+        {
+          "chemin": "matrice-01/aarch64-1-4096/resultats.json",
+          "sha256": "63f82bc1265b232fdc65ad09cf81c65333e1b7cd9ec6763a2d5ad5545ece441f"
+        },
+        {
+          "chemin": "matrice-01/aarch64-1-512/resultats.json",
+          "sha256": "666a3a540044506a0b3e0f61645344bffc7e00e3e8a2084f2c9a762c16ef2f57"
+        },
+        {
+          "chemin": "matrice-01/aarch64-1-512-course/resultats.json",
+          "sha256": "94e21531d54f70972310079e9a8faeb884999ad1f372e58d379aba870e98f920"
+        },
+        {
+          "chemin": "matrice-01/aarch64-2-4096/resultats.json",
+          "sha256": "21a21fa5706a13735277cb3c38a386fd4e40ad748b392c9d5433475f35a4a97c"
+        },
+        {
+          "chemin": "matrice-01/aarch64-2-512/resultats.json",
+          "sha256": "d2b749f781f24ed8723f809e10c1f55fd8f9df872ec88bc55464847bacf88c47"
+        },
+        {
+          "chemin": "matrice-01/aarch64-2-512-course/resultats.json",
+          "sha256": "2bb61f81572b4da1b497be3083558d8f8b7f038497b14c51fa6158344a0ae81b"
+        },
+        {
+          "chemin": "matrice-01/aarch64-4-4096/resultats.json",
+          "sha256": "1502d5bded918f1128a7439f2ae45cd011da6bc38d9c691db3e99d931c85e7b7"
+        },
+        {
+          "chemin": "matrice-01/aarch64-4-512/resultats.json",
+          "sha256": "e486c941f66ccfa421b0075b7ccda888c9a4144e442498e7b14675ffe3a8e893"
+        },
+        {
+          "chemin": "matrice-01/aarch64-4-512-course/resultats.json",
+          "sha256": "5db0984e65f445e5f2dd433ebb2922b6093de1ec1f9ada546fcf83b45c56de43"
+        },
+        {
+          "chemin": "matrice-01/bilan.json",
+          "sha256": "c5d2ec90838abd9ebe95d51950593ac1bea0e8b7d763f3e9a4e8ccda42f89452"
+        },
+        {
+          "chemin": "matrice-01/x86_64-1-4096/resultats.json",
+          "sha256": "2ef31fca68998766e9e475206c46ab6b273f56b48b37ef2e12163a65d39db268"
+        },
+        {
+          "chemin": "matrice-01/x86_64-1-4096-course/resultats.json",
+          "sha256": "13d5b0eecf889a255d6892198c8fe19a0f7a3357b1bc88037bbdea5210dbb4a1"
+        },
+        {
+          "chemin": "matrice-01/x86_64-1-512/resultats.json",
+          "sha256": "a361114531b1c709d2b5be88ff59a7622f9a1e1cb8e03061764c76d5d5956f10"
+        },
+        {
+          "chemin": "matrice-01/x86_64-2-4096/resultats.json",
+          "sha256": "9b318a205acde9374e4ffca13a80f7e06cc1b69339a137d4d1010606d93d35fa"
+        },
+        {
+          "chemin": "matrice-01/x86_64-2-4096-course/resultats.json",
+          "sha256": "248422c8e6fbe7fa1ce31eaa206e58bf7ecc0494713f4561fa7a5f735c5a10ae"
+        },
+        {
+          "chemin": "matrice-01/x86_64-2-512/resultats.json",
+          "sha256": "6668a2ae757b5bd7db260b24e383322eb3ddc393bf82d662401cc06ac3203439"
+        },
+        {
+          "chemin": "matrice-01/x86_64-4-4096/resultats.json",
+          "sha256": "391e5450d90be5e31a619d79cafbaeb3f21687fab8fcd56536a5697a24ebbfd5"
+        },
+        {
+          "chemin": "matrice-01/x86_64-4-4096-course/resultats.json",
+          "sha256": "e6aa665f7ba36ceed03384542e026cec540e6fad4d0aa8efc25ec2e61ef12d61"
+        },
+        {
+          "chemin": "matrice-01/x86_64-4-512/resultats.json",
+          "sha256": "954817ff988971decaab2392aaea2a5959459178ac62d37c6384494986a11588"
+        }
+      ]
+    },
+    "acteur_cache": {
+      "demarrages": 6,
+      "rapports": [
+        {
+          "chemin": "cache-final-aarch64-1-512/resultats.json",
+          "sha256": "51dd4849e8ab8930e00ee817c166d306394a4c108fbf3e8ef6f2f38d55049267"
+        },
+        {
+          "chemin": "cache-final-aarch64-2-4096/resultats.json",
+          "sha256": "348acfc687bbb9b0e81f62948ee80df84156d661bbec2c1f5266cf8c2481a1e3"
+        },
+        {
+          "chemin": "cache-final-aarch64-4-512/resultats.json",
+          "sha256": "75fd5018886f2bed92db8badd2658ef3591ddbb004e6f5f181bbe7fcd59d264d"
+        },
+        {
+          "chemin": "cache-final-x86_64-1-4096/resultats.json",
+          "sha256": "610f063e90a0a1b42f48b6c830b0b496d50781fe264b369f133249d3f028e673"
+        },
+        {
+          "chemin": "cache-final-x86_64-2-512/resultats.json",
+          "sha256": "9ba78a770e6e101d88c10a88ec70b4f74b9ddf463252ba28184324b6acf299e9"
+        },
+        {
+          "chemin": "cache-final-x86_64-4-4096/resultats.json",
+          "sha256": "59bf5c74cb2877b39cdde5ebcb6d9c9595fb30c6227359d8aeab37a1fb88b0c2"
+        }
+      ]
+    },
+    "delegation": {
+      "demarrages": 2,
+      "rapports": [
+        {
+          "chemin": "delegation-aarch64/resultats.json",
+          "sha256": "9c55c99f827aaa9f957eb472a474e1cf5e5cca68fdcbf1de263cc013124ca54e"
+        },
+        {
+          "chemin": "delegation-x86_64/resultats.json",
+          "sha256": "f93ae8426dcf33f8c5b3a76955f6345259a8792bbf9b7f6c9eba536662ae5d89"
+        }
+      ]
+    },
+    "declarations_personnalisees": {
+      "demarrages": 4,
+      "rapports": [
+        {
+          "chemin": "journal-historique-final-aarch64-2-4096/resultats.json",
+          "sha256": "367e6e9097a73579d566dabaa41c85f312afd23e43b34938232822b2e62201f9"
+        },
+        {
+          "chemin": "journal-historique-final-x86_64-4-512/resultats.json",
+          "sha256": "69b270a1101b0dff56dcbd8e921308b872e361e274b49353e4ed6f23d175bde6"
+        }
+      ]
+    },
+    "volumes_archives_phase2": {
+      "demarrages": 4,
+      "rapports": [
+        {
+          "chemin": "heritage-phase2/aarch64/resultats.json",
+          "sha256": "31eceea52dc52036d8f1532ef1947c9a27cc510cfe450b1aeb535f2d95e6f902"
+        },
+        {
+          "chemin": "heritage-phase2/x86_64/resultats.json",
+          "sha256": "1e89c611b335bd5bd92678d87f7294beed2656f59a9b6fcf58a95470d910a1ae"
+        }
+      ]
+    },
+    "regressions_gestionnaire_config_p8": {
+      "demarrages": 16,
+      "rapports": [
+        {
+          "chemin": "regressions-historiques/aarch64/P8/resultat.json",
+          "sha256": "20fef57411890adbc93e60f6ad17208a652740fa29007920f0a806a12c7cc7f4"
+        },
+        {
+          "chemin": "regressions-historiques/aarch64/binaires.json",
+          "sha256": "53ee2395ffc19b7c65970acb815bd7e9ba92bdd466c999a268dc97b01f6b1360"
+        },
+        {
+          "chemin": "regressions-historiques/aarch64/invalides/resultats.json",
+          "sha256": "05a20929e346f9608148477c5940c73e6567aaa87e2c5062ed123f526ae84d5d"
+        },
+        {
+          "chemin": "regressions-historiques/aarch64/perte/resultat.json",
+          "sha256": "21c80b2d4adcb3527fef2c4f00a9125048844094fc4d4e9d3be59baf713a435b"
+        },
+        {
+          "chemin": "regressions-historiques/x86_64/P8/resultat.json",
+          "sha256": "06d878e9ed14fd3d60dd4f101f0876925860c17defd251ebd60f02e191efd871"
+        },
+        {
+          "chemin": "regressions-historiques/x86_64/binaires.json",
+          "sha256": "8ea2eb0fefdeb3d55d47437b3305754ed237664e8e98e41e0f9f5652efcc3644"
+        },
+        {
+          "chemin": "regressions-historiques/x86_64/invalides/resultats.json",
+          "sha256": "33c2914b9196edca53030931e254544cbae55f5d9685e56d84701c5a79a3ebcb"
+        },
+        {
+          "chemin": "regressions-historiques/x86_64/perte/resultat.json",
+          "sha256": "ee0f6939c3353fd96546dbaaa28c77f657df9b54b88f249acdb5ac980147fab2"
+        }
+      ]
+    },
+    "regression_journal": {
+      "demarrages": 8,
+      "rapports": [
+        {
+          "chemin": "journal-regression-aarch64/resultats.json",
+          "sha256": "f88220e58f5939b173af4b7c0565503f3afb703b5f9a21b3abd7cdf7045be20c"
+        },
+        {
+          "chemin": "journal-regression-x86_64/resultats.json",
+          "sha256": "121a25da4df04f06fadfd4af774cf330e3132b99a5a76f8fe1812df0e01a110a"
+        }
+      ]
+    }
+  },
+  "matrice": {
+    "aarch64": [
+      {
+        "cellule": "aarch64-1-4096",
+        "demarrages": 3,
+        "pics_cadres_par_session": {
+          "restauration": 1043
+        }
+      },
+      {
+        "cellule": "aarch64-1-512",
+        "demarrages": 3,
+        "pics_cadres_par_session": {
+          "restauration": 1043
+        }
+      },
+      {
+        "cellule": "aarch64-1-512-course",
+        "demarrages": 2,
+        "pics_cadres_par_session": {
+          "course": 877
+        }
+      },
+      {
+        "cellule": "aarch64-2-4096",
+        "demarrages": 5,
+        "pics_cadres_par_session": {
+          "corrupt-latest": 642,
+          "corrupt-authority": 642,
+          "restauration": 1038
+        }
+      },
+      {
+        "cellule": "aarch64-2-512",
+        "demarrages": 5,
+        "pics_cadres_par_session": {
+          "corrupt-latest": 642,
+          "corrupt-authority": 642,
+          "restauration": 1038
+        }
+      },
+      {
+        "cellule": "aarch64-2-512-course",
+        "demarrages": 2,
+        "pics_cadres_par_session": {
+          "course": 873
+        }
+      },
+      {
+        "cellule": "aarch64-4-4096",
+        "demarrages": 3,
+        "pics_cadres_par_session": {
+          "restauration": 1038
+        }
+      },
+      {
+        "cellule": "aarch64-4-512",
+        "demarrages": 3,
+        "pics_cadres_par_session": {
+          "restauration": 1038
+        }
+      },
+      {
+        "cellule": "aarch64-4-512-course",
+        "demarrages": 2,
+        "pics_cadres_par_session": {
+          "course": 873
+        }
+      }
+    ],
+    "x86_64": [
+      {
+        "cellule": "x86_64-1-4096",
+        "demarrages": 3,
+        "pics_cadres_par_session": {
+          "restauration": 1051
+        }
+      },
+      {
+        "cellule": "x86_64-1-4096-course",
+        "demarrages": 2,
+        "pics_cadres_par_session": {
+          "course": 882
+        }
+      },
+      {
+        "cellule": "x86_64-1-512",
+        "demarrages": 3,
+        "pics_cadres_par_session": {
+          "restauration": 1051
+        }
+      },
+      {
+        "cellule": "x86_64-2-4096",
+        "demarrages": 5,
+        "pics_cadres_par_session": {
+          "corrupt-latest": 648,
+          "corrupt-authority": 648,
+          "restauration": 1044
+        }
+      },
+      {
+        "cellule": "x86_64-2-4096-course",
+        "demarrages": 2,
+        "pics_cadres_par_session": {
+          "course": 871
+        }
+      },
+      {
+        "cellule": "x86_64-2-512",
+        "demarrages": 5,
+        "pics_cadres_par_session": {
+          "corrupt-latest": 648,
+          "corrupt-authority": 648,
+          "restauration": 1044
+        }
+      },
+      {
+        "cellule": "x86_64-4-4096",
+        "demarrages": 3,
+        "pics_cadres_par_session": {
+          "restauration": 1044
+        }
+      },
+      {
+        "cellule": "x86_64-4-4096-course",
+        "demarrages": 2,
+        "pics_cadres_par_session": {
+          "course": 871
+        }
+      },
+      {
+        "cellule": "x86_64-4-512",
+        "demarrages": 3,
+        "pics_cadres_par_session": {
+          "restauration": 1044
+        }
+      }
+    ]
+  },
+  "noyaux": {
+    "aarch64": "fa14b1bf933099149c9a0c7b31290ff7bf0adc1cf27124043bc424b682e651a9",
+    "x86_64": "38ad282de5111ed4eb51fb20de851fcff17bc1b75b891cfca48018cd8d35aafb"
+  },
+  "stockage": {
+    "injections": 168,
+    "par_architecture_et_secteur": 42,
+    "journaux": [
+      {
+        "chemin": "stockage/banc-aarch64.log",
+        "sha256": "e127da26a8904397113c36eb0cbb6423db0c9b8ca6b3f414f8f141d155da7ea2"
+      },
+      {
+        "chemin": "stockage/banc-x86_64.log",
+        "sha256": "e127da26a8904397113c36eb0cbb6423db0c9b8ca6b3f414f8f141d155da7ea2"
+      }
+    ]
+  },
+  "controles_hotes": [
+    {
+      "chemin": "controle/abi.log",
+      "sha256": "f80036f5d459e23eedce0b87d8872e946c563aee113d5c9e599b4ed29d48c8c9"
+    },
+    {
+      "chemin": "controle/delegation-aarch64.log",
+      "sha256": "fd2af94c4759cb9002a8c258bab4fadb0b4c94a531aefd30048187c6b15d805e"
+    },
+    {
+      "chemin": "controle/delegation-x86_64.log",
+      "sha256": "b6a1100be5c3df56d26dd26928d6cd33e9766ddaa4c30d1b3bbc15c0b78812bd"
+    },
+    {
+      "chemin": "controle/journal-regression-aarch64.log",
+      "sha256": "5e8897203fcff599a8ad79cabebe8d74630ac0ad00030b766eca87b2c04bdb9e"
+    },
+    {
+      "chemin": "controle/journal-regression-x86_64.log",
+      "sha256": "22ce33bc7037d674020a1f7c7b2db908bf398e5456d294a4a62273a721b44cc1"
+    },
+    {
+      "chemin": "controle/journal_publication-aarch64.log",
+      "sha256": "a7c7c365816f32202e98b25fd4fb4fa726de1c8a0dc7168032580905d5dec02d"
+    },
+    {
+      "chemin": "controle/journal_publication-x86_64.log",
+      "sha256": "a7c7c365816f32202e98b25fd4fb4fa726de1c8a0dc7168032580905d5dec02d"
+    },
+    {
+      "chemin": "controle/journal_transport-aarch64.log",
+      "sha256": "b8ce8990d9fa4d73bfeb7a4a686e608303a89855dbc7621b5923ba13428fb724"
+    },
+    {
+      "chemin": "controle/journal_transport-x86_64.log",
+      "sha256": "b8ce8990d9fa4d73bfeb7a4a686e608303a89855dbc7621b5923ba13428fb724"
+    },
+    {
+      "chemin": "controle/services_configuration-aarch64.log",
+      "sha256": "eb9887bae90bbd2f705595266b2239c3b2b6d595b9606f67734f87b0d51e7f56"
+    },
+    {
+      "chemin": "controle/services_configuration-x86_64.log",
+      "sha256": "26d5e0edfc54e6fa5bf37e23d9ef35483e516b6bb1fb1bca473892be1e6f8b23"
+    },
+    {
+      "chemin": "controle/services_politique-aarch64.log",
+      "sha256": "22ea2012fa7b1d0ea9fe7bc0fbc01623a86593fdcfb7929587162688bdac74ea"
+    },
+    {
+      "chemin": "controle/services_politique-x86_64.log",
+      "sha256": "68fdf8b1d66b1e65a99d1ba69d5a8bc3f84ce8b44449b3506697de02747e1d86"
+    }
+  ],
+  "limites": [
+    "Support intégralement restauré avec ses références",
+    "Coupure électrique physique non exercée",
+    "Profil facultatif réservé à la qualification"
+  ]
+}

@@ -52,6 +52,13 @@ pub const RESTART: u16 = 9;
 pub const DROPPED: u16 = 10;
 pub const NOTICE: u16 = 11;
 pub const ONLINE: u16 = 12;
+// RESTRICT, RESTORE et CAP_REFUSED authentifient le port privé de
+// maintenance. Les données contiennent la génération et le bit demandé.
+pub const RESTRICT: u16 = 13;
+pub const RESTORE: u16 = 14;
+pub const CAP_REFUSED: u16 = 15;
+pub const CAP_APPLIED: u16 = 16;
+pub const CAP_MISSING: u16 = 17;
 
 pub fn request(op: u64) -> Frame {
     let mut f = [0; 16];
@@ -170,5 +177,5 @@ pub fn valid(e: &Event) -> bool {
         && quality(e) <= MONOTONIC
         && (quality(e) != UNKNOWN_TIME || e[9] == 0)
         && (MANAGER..=LOGGER).contains(&origin(e))
-        && (BOOT..=ONLINE).contains(&code(e))
+        && (BOOT..=CAP_MISSING).contains(&code(e))
 }

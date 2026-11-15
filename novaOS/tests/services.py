@@ -128,6 +128,9 @@ def guest(arch, sector, cpus, image, iso, scenario, out, cut):
                     assert f"attendus={mask} en_ligne={mask} ack={mask} absents=0x0 muets=0x0".encode() in buf
                     if console:
                         assert command_index == len(commands) and signalled
+                    elif scenario == "services-capacites-race":
+                        assert b"SVC-CAP CAS 12 reponses OK BUSY restart concurrence" in buf
+                        assert b"SVC-CAP restauration UNCERTAIN generation 14 relue deux fois, handle revoque NVFS OK" in buf
                     elif scenario == "services-config-race":
                         markers = (b"deux publications CAS 0 en vol : une confirmee, une BUSY, generation 1 relue",
                                    b"resultat client UNCERTAIN apres admission et revocation",

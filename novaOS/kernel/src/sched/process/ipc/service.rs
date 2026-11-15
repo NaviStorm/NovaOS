@@ -233,7 +233,7 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
     let id = words[0];
     let argument = words[3];
     let attempt = words[4];
-    if words[1..3] != [0, 0] || words[5..].iter().any(|v| *v != 0) || attempt == 0 {
+    if words[1..3] != [0, 0] || words[7..].iter().any(|v| *v != 0) || attempt == 0 {
         return Err(BAD_ARGUMENT);
     }
     let elf = match id {
@@ -245,6 +245,14 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
         3..=8 if m.lab && argument <= 6 => UTILITY,
         _ => return Err(DENIED),
     };
+    let maximum = service_caps::maximum(id).ok_or(DENIED)?;
+    let caps = match (words[5], words[6]) {
+        (0, 0) => maximum,
+        (service_caps::START_MASK_VERSION, requested) if requested & !maximum == 0 => requested,
+        (service_caps::START_MASK_VERSION, _) => return Err(DENIED),
+        _ => return Err(BAD_ARGUMENT),
+    };
+    let report_caps = words[5] == service_caps::START_MASK_VERSION;
     with(|s| {
         if m.stopping || !s.processes.temporary.online() {
             return Err(CLOSED);
@@ -273,13 +281,14 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
         s.ipc.locals.get_mut(target.slot).bootstrap = commands;
         s.processes.get_mut(target).service_owner = Some(pid);
         s.processes.get_mut(target).service_id = id;
+        s.processes.get_mut(target).service_caps = caps;
         // L'image de vérification du tmp peut déléguer à un travailleur de sa
         // propre incarnation. Aucune autorité du terminal ni du volume public.
         if id == 2 {
             s.processes.get_mut(target).worker_image = Some(elf);
         }
         config(s, target, 0, &[events, commands, id, argument, attempt]);
-        if !matches!(id, 10 | JOURNAL_ID) {
+        if caps & service_caps::PRIVATE_TMP != 0 {
             tmp::new_lease(s, target)?;
         }
         words[1] = receive;
@@ -288,8 +297,11 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
         for (i, b) in identity.encode().chunks_exact(8).enumerate() {
             words[5 + i] = u64::from_le_bytes(b.try_into().unwrap());
         }
+        if report_caps {
+            words[9] = caps;
+        }
         reply(s, pid, address, &words)?;
-        if id == JOURNAL_ID {
+        if caps & service_caps::JOURNAL_STORE != 0 {
             connect_journal(s, m, target)?;
             #[cfg(feature = "journal-pannes-lab")]
             journal_memory(s, target, "lancement");

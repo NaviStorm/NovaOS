@@ -120,10 +120,11 @@ def main():
     parser.add_argument("--preuves", type=Path, required=True)
     parser.add_argument("--oracle", type=Path, required=True)
     parser.add_argument("--pression", action="store_true", help="Pression physique sur un volume neuf")
+    parser.add_argument("--capacites", action="store_true", help="Qualification ciblée du masque de l’acteur 11")
     parser.add_argument("--alterer", type=Path, help="Outil de qualification pour altérer le marqueur sur une copie")
     args = parser.parse_args()
-    if args.pression and args.alterer:
-        parser.error("utiliser deux volumes distincts pour la pression et la corruption")
+    if sum(map(bool, (args.capacites, args.pression, args.alterer))) > 1:
+        parser.error("les qualifications ciblées exigent des volumes distincts")
     out = args.preuves.resolve()
     out.mkdir(parents=True, exist_ok=False)
     disk = out / "volume.raw"
@@ -146,6 +147,8 @@ def main():
         label = f"{len(rows):02d}-{profile}"
         serial = vm(args.arch, args.vcpus, args.secteur, image, iso, profile, out/(label+".serial"), cut)
         if profile == "cache-test":
+            assert b"CAPS-P3 START legacy et masque valides doublon, hors plafond DENIED, version et reserves BAD_ARGUMENT" in serial
+            assert b"CAPS-P3 acteur 11 tmp accessible cache refuse avant restauration ancien jeton revoque" in serial
             assert b"CACHE-P4 pret VFS lecture cache ecriture lecture tmp retrait OK" in serial
         raw = image.read_bytes()
         snapshot = out / (label+".raw.gz")
@@ -184,6 +187,8 @@ def main():
     owner, gen = witness(normal, 42)
     other = [witness(normal, v) for v in (73, 91)]
     assert len({owner, *(p for p, _ in other)}) == 3
+    if args.capacites:
+        return
     if args.alterer:
         damaged = out / "provenance-invalide.raw"
         shutil.copyfile(disk, damaged)

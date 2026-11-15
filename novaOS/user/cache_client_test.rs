@@ -172,6 +172,40 @@ impl Lab {
         Ok(())
     }
 
+    fn restricted_incarnation(&mut self) -> rt::Result<()> {
+        use p::service_caps::{PRIVATE_TMP, CACHE_CLIENT};
+        let before = self.state(FIRST, p::RUNNING)?;
+        let mut stale = [0; 4];
+        for (i, word) in stale.iter_mut().enumerate() {
+            *word = self.action(FIRST, step::EXPORT + i as u64, 0, rt::OK)?;
+        }
+
+        self.call(p::QUALIFY_CACHE_MASK, FIRST, PRIVATE_TMP, 0)?;
+        log(b"CAPS-P3 START legacy et masque valides doublon, hors plafond DENIED, version et reserves BAD_ARGUMENT");
+        self.check(FIRST, 42)?;
+        self.stop(FIRST)?;
+        self.check(SECOND, 42)?;
+        let reduced = self.start(FIRST)?;
+        require(before[6..10] != reduced[6..10])?;
+        self.action(FIRST, step::TMP, 0, rt::OK)?;
+        self.action(FIRST, step::OPEN, 0, rt::DENIED)?;
+        self.action(FIRST, step::RACE_SENT, 0, rt::DENIED)?;
+
+        self.call(p::QUALIFY_CACHE_MASK, FIRST, PRIVATE_TMP | CACHE_CLIENT, 0)?;
+        self.action(FIRST, step::OPEN, 0, rt::DENIED)?;
+        self.stop(FIRST)?;
+        let restored = self.start(FIRST)?;
+        require(reduced[6..10] != restored[6..10] && before[6..10] != restored[6..10])?;
+        self.opened(FIRST)?;
+        for (i, word) in stale.into_iter().enumerate() {
+            self.action(FIRST, step::IMPORT + i as u64, word, rt::OK)?;
+        }
+        self.action(FIRST, step::FOREIGN_READ, 0, rt::REVOKED)?;
+        self.check(FIRST, 42)?;
+        log(b"CAPS-P3 acteur 11 tmp accessible cache refuse avant restauration ancien jeton revoque");
+        Ok(())
+    }
+
     fn race(&mut self) -> rt::Result<()> {
         self.call(p::CACHE_ASYNC_WRITE, SECOND, step::RACE_WRITE, 153)?;
         let mut sent = false;
@@ -254,11 +288,7 @@ impl Lab {
         self.action(SECOND, step::PURGE_SYSTEM, 0, rt::DENIED)?;
         self.action(SECOND, step::QUOTA, 0, protocol::FULL)?;
         self.check(SECOND, 42)?;
-        self.stop(FIRST)?;
-        self.check(SECOND, 42)?;
-        self.start(FIRST)?;
-        self.opened(FIRST)?;
-        self.check(FIRST, 42)?;
+        self.restricted_incarnation()?;
         // Les deux incarnations exercent leurs droits sur le même objet.
         self.race()?;
         self.action(FIRST, step::WRITE, 42, rt::OK)?;
@@ -467,6 +497,8 @@ fn run_suite() -> rt::Result<()> {
     require(lab.call(p::QUERY, 10, 0, 0)?[10] == u32::from_le_bytes(*b"CACH") as u64)?;
     let success: &[u8] = match profile {
         78 => {
+            require(read_only.call(p::QUALIFY_CACHE_MASK, FIRST, p::service_caps::PRIVATE_TMP, 0).err()
+                    == Some(rt::DENIED))?;
             lab.functional(&mut fs)?;
             b"CACHE-P4 fonctionnel OK" as &[u8]
         }

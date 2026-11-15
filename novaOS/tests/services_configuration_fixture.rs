@@ -34,19 +34,25 @@ fn mount(file: File, sector: u32, mode: Mode) -> Result<Engine<FileImage>> {
     Ok(fs)
 }
 
-fn save(fs: &mut Engine<FileImage>, gen_id: u64, records: &settings::Records) -> Result<()> {
+// La disposition historique définie par NVSVCC01 est quatre déclarations de
+// 136 octets puis le mot de dépendance de 10. Le cinquième est absent du volume.
+fn save_historical(
+    fs: &mut Engine<FileImage>,
+    gen_id: u64,
+    records: &settings::Records,
+) -> Result<()> {
     let mut buf = [0; settings::BYTES];
-    let n = settings::encode(records, &mut buf).ok_or("codage")?;
+    let n = settings::encode_legacy(records, &mut buf).ok_or("codage historique")?;
+    if n != 568 {
+        return Err("largeur historique inattendue".into());
+    }
     if config_store::save(fs, gen_id, &buf[..n])? != gen_id + 1 {
         return Err("génération imprévue".into());
     }
     Ok(())
 }
 
-fn prepare(src: &str, target: &str, sector: u32, cas: &str) -> Result<()> {
-    if !matches!(cas, "enveloppe" | "capacite" | "sans-secours") {
-        return Err("cas inconnu".into());
-    }
+fn copy_volume(src: &str, target: &str, sector: u32) -> Result<Engine<FileImage>> {
     let mut original = File::open(src)?;
     let mut copy = OpenOptions::new()
         .create_new(true)
@@ -54,7 +60,14 @@ fn prepare(src: &str, target: &str, sector: u32, cas: &str) -> Result<()> {
         .read(true)
         .open(target)?;
     io::copy(&mut original, &mut copy)?;
-    let mut fs = mount(copy, sector, Mode::ReadWrite)?;
+    mount(copy, sector, Mode::ReadWrite)
+}
+
+fn prepare(src: &str, target: &str, sector: u32, cas: &str) -> Result<()> {
+    if !matches!(cas, "enveloppe" | "capacite" | "sans-secours") {
+        return Err("cas inconnu".into());
+    }
+    let mut fs = copy_volume(src, target, sector)?;
     if config_store::load(&fs, false)?.is_some() {
         return Err("configurations préexistantes".into());
     }
@@ -64,7 +77,7 @@ fn prepare(src: &str, target: &str, sector: u32, cas: &str) -> Result<()> {
         .find(|d| d.id == 9)
         .ok_or("service 9 absent")?
         .auto = false;
-    save(&mut fs, 0, &previous)?;
+    save_historical(&mut fs, 0, &previous)?;
     let mut next = settings::defaults();
     if cas == "capacite" {
         // Enveloppe et format intacts, tentative de déclarer un droit hors du catalogue.
@@ -73,12 +86,55 @@ fn prepare(src: &str, target: &str, sector: u32, cas: &str) -> Result<()> {
             .ok_or("service absent")?
             .caps |= catalog::CACHE_BACKEND;
     }
-    save(&mut fs, 1, &next)?;
+    save_historical(&mut fs, 1, &next)?;
     if cas != "capacite" {
         let n = if cas == "sans-secours" { 2 } else { 1 };
         for name in &SLOTS[..n] {
             let id = fs.lookup_at(fs.root_id(), name)?.id;
             fs.prepare_write_id(id, 0, b"X")?.commit()?;
+        }
+    }
+    fs.unmount()?.into_file().sync_all()?;
+    Ok(())
+}
+
+fn mutate_copy(op: &str, src: &str, target: &str, sector: u32, generation: u64) -> Result<()> {
+    let mut fs = copy_volume(src, target, sector)?;
+    let seen = config_store::load(&fs, false)?.map_or(0, |r| r.generation);
+    if matches!(op, "legacy" | "legacy-custom") {
+        if seen != 0 || !(1..=13).contains(&generation) {
+            return Err("volume de départ ou génération invalide".into());
+        }
+        let mut records = settings::defaults();
+        if op == "legacy-custom" {
+            for d in &mut records {
+                if matches!(d.id, 9 | 10) {
+                    d.retries = 1;
+                }
+            }
+        }
+        for g in 0..generation {
+            save_historical(&mut fs, g, &records)?;
+        }
+    } else {
+        if seen == 0 || seen != generation {
+            return Err("génération à injecter inattendue".into());
+        }
+        let name = if op == "corrupt-latest" {
+            SLOTS[(generation % 2) as usize]
+        } else {
+            config_store::AUTHORITY
+        };
+        let file = fs.lookup_at(fs.root_id(), name)?;
+        fs.prepare_write_id(file.id, 0, b"X")?.commit()?;
+        if !matches!(
+            config_store::load(&fs, false),
+            Err(novafs::Error::Corrupt(_))
+        ) || !matches!(
+            config_store::load(&fs, true),
+            Err(novafs::Error::Corrupt(_))
+        ) {
+            return Err("injection sans refus attendu".into());
         }
     }
     fs.unmount()?.into_file().sync_all()?;
@@ -112,6 +168,14 @@ fn main() -> Result<()> {
     match args.as_slice() {
         [op, src, target, sector, cas] if op == "prepare" => {
             prepare(src, target, sector.parse()?, cas)
+        }
+        [op, src, target, sector, generation]
+            if matches!(
+                op.as_str(),
+                "legacy" | "legacy-custom" | "corrupt-latest" | "corrupt-authority"
+            ) =>
+        {
+            mutate_copy(op, src, target, sector.parse()?, generation.parse()?)
         }
         [op, path, sector] if op == "inspect" => inspect(path, sector.parse()?),
         _ => Err("prepare SOURCE COPIE SECTEUR CAS | inspect COPIE SECTEUR".into()),

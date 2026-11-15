@@ -17,7 +17,7 @@ const CATEGORIES: [&str; 7] = [
     "CAPABILITY",
     "SERVICE",
 ];
-const CODES: [&str; 13] = [
+const CODES: [&str; 18] = [
     "",
     "BOOT",
     "SHUTDOWN",
@@ -31,6 +31,11 @@ const CODES: [&str; 13] = [
     "DROPPED",
     "NOTICE",
     "ONLINE",
+    "CAP_RESTRICTED",
+    "CAP_RESTORED",
+    "CAP_DENIED",
+    "CAP_APPLIED",
+    "CAP_MISSING",
 ];
 const MAX_DISPLAY: usize = 128;
 const HELP: &str = "\
