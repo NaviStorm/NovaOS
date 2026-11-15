@@ -5,9 +5,10 @@ use crate::abi::*;
 pub(crate) mod lifecycle;
 pub(super) use bulk::features;
 mod spawn;
+pub(crate) mod instance_probe;
 #[cfg(feature = "thread-probe")]
 pub(crate) mod thread_probe;
-pub(super) use spawn::spawn_program;
+pub(super) use spawn::{spawn_program, instance_call};
 pub(crate) mod metrics;
 mod pool;
 use pool::{Bits, Pool};
@@ -35,6 +36,33 @@ const ABSENT: u8 = u8::MAX;
 
 #[derive(Default, Clone, Copy, PartialEq, Eq, Debug)]
 struct Reference(u64);
+
+/// Références générationnelles privées du lanceur. Une fermeture locale ou
+/// un déplacement ne supprime pas le lien avec la durée de vie du bénéficiaire.
+#[derive(Default)]
+pub(super) struct LaunchGrants([Reference; 2]);
+
+fn bind_grants(s: &mut Core, pid: Pid, handles: [u64; 2]) -> Res<()> {
+    let [a, b] = handles;
+    s.processes.get_mut(pid).launch_grants = LaunchGrants([
+        s.ipc.lookup(pid, a, 0)?.id,
+        s.ipc.lookup(pid, b, 0)?.id,
+    ]);
+    Ok(())
+}
+
+pub(super) fn withdraw_grants(s: &mut Core, pid: Pid) {
+    let roots = core::mem::take(&mut s.processes.get_mut(pid).launch_grants);
+    for id in roots.0 {
+        if let Some(node) = s.ipc.node(id) {
+            s.ipc.revoke(node);
+            if let Some(root) = s.ipc.node(id) {
+                s.ipc.close(root);
+            }
+        }
+    }
+}
+
 impl Reference {
     fn slot(self) -> usize {
         self.0 as u8 as usize
@@ -645,7 +673,7 @@ pub(super) fn call(id: u64, args: [u64; 3]) -> Res<u64> {
 pub(super) fn undo_unpublished(child: Child) {
     let pid = child.0;
     core::mem::forget(child);
-    let (stack, space) = with(|s| {
+    let (stack, space, instance) = with(|s| {
         let index = s
             .slots
             .iter()
@@ -660,7 +688,11 @@ pub(super) fn undo_unpublished(child: Child) {
         let t = s.slots[index].take().unwrap();
         assert_eq!(t.state, State::Ready);
         let mut p = s.processes.slots[pid.slot].take().unwrap();
-        (t.stack, p.space.take().unwrap())
+        if p.principal {
+            assert!(s.processes.instances.stop(p.instance));
+        }
+        s.processes.instances.exited(p.instance);
+        (t.stack, p.space.take().unwrap(), p.instance)
     });
     stack.release();
     heap::with_pages(|m| {
@@ -668,9 +700,10 @@ pub(super) fn undo_unpublished(child: Child) {
         Ok(())
     })
     .unwrap();
+    release_instance(instance);
 }
 
-fn launch_error(e: Error) -> u64 {
+pub(super) fn launch_error(e: Error) -> u64 {
     match e {
         Error::Full => LIMIT,
         Error::Memory(crate::memory::Error::Exhausted) => NO_MEMORY,
@@ -936,12 +969,14 @@ pub(super) fn launch_block_identifie<const N: usize>(
             let tx = s.ipc.derive(consumer, a, control, rights.into())?;
             if shell {
                 use crate::terminal::*;
+                s.processes.instances.admit_shell(s.processes.get(control).instance);
                 let trace = if mode == 42 { QUALIFY } else { 0 };
                 s.processes.get_mut(control).terminal =
                     INPUT | OUTPUT | ERROR | EDIT | LAUNCH | OBSERVE_SESSION | trace;
             }
             let rx = s.ipc.derive(consumer, b, control, RECEIVE.into())?;
             if shell {
+                bind_grants(s, control, [tx, rx])?;
                 s.ipc.bind_lane(consumer, b, control, rx)?;
             }
             s.ipc.locals.get_mut(control.slot).bootstrap = tx;

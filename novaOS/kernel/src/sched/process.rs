@@ -8,13 +8,17 @@ use crate::{
 
 mod abi_probe;
 mod demo;
+mod instances;
+mod supervision;
+use crate::instance_abi as iw;
+use instances::{Instance, Registry};
+#[cfg(feature = "materiel-lab")]
+mod edu;
+#[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
+pub(crate) mod nvme;
 pub(super) mod threads;
 #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
 pub(crate) mod vtd;
-#[cfg(all(target_arch = "x86_64", feature = "nvme-lab"))]
-pub(crate) mod nvme;
-#[cfg(feature = "materiel-lab")]
-mod edu;
 #[cfg(feature = "materiel-lab")]
 pub(crate) use edu::{lab_irq_notice, run as edu_lab, stop_if_requested};
 pub(crate) mod ipc;
@@ -50,6 +54,12 @@ struct Process {
     space: Option<UserSpace>,
     threads: usize,
     application_threads: bool,
+    instance: Instance,
+    principal: bool,
+    stop_offered: bool,
+    launch_grants: ipc::LaunchGrants,
+    watch: supervision::Watch,
+    worker_image: Option<&'static [u8]>,
     wait_buffer: WaitBuffer,
     join_rights: Vec<threads::JoinRight>,
     observed: bool,
@@ -65,6 +75,7 @@ struct Process {
 pub(super) struct Table {
     slots: [Option<Process>; MAX],
     serial: u64,
+    instances: Registry<MAX>,
     pub(super) syscall_switches: u64,
     blocked_waits: u64,
     #[cfg(feature = "materiel-lab")]
@@ -75,6 +86,7 @@ impl Table {
         Self {
             slots: [const { None }; MAX],
             serial: 0,
+            instances: Registry::new(),
             syscall_switches: 0,
             blocked_waits: 0,
             #[cfg(feature = "materiel-lab")]
@@ -176,7 +188,7 @@ fn prepare_and_publish(
     let space =
         heap::with_pages(|m| UserSpace::new(m, image, data, private_ro)).map_err(Error::Memory)?;
     let _gate = Guard::new();
-    let child = publish_image(space, wait_on)?;
+    let child = publish_image(space, wait_on, iw::SYSTEM, None)?;
     if let Some(mask) = mask {
         with(|s| {
             s.slots
@@ -199,11 +211,19 @@ fn create_image(
 ) -> Result<Child, Error> {
     let space =
         heap::with_pages(|m| UserSpace::new(m, image, data, private_ro)).map_err(Error::Memory)?;
-    publish_image(space, wait_on)
+    publish_image(space, wait_on, iw::SYSTEM, None)
 }
-fn publish_image(space: UserSpace, wait_on: Option<Child>) -> Result<Child, Error> {
+fn publish_image(
+    space: UserSpace,
+    wait_on: Option<Child>,
+    app: u64,
+    member: Option<Instance>,
+) -> Result<Child, Error> {
     reap();
     let Some((slot, proc_slot)) = with(|s| {
+        if member.is_none() && !s.processes.instances.available() {
+            return None;
+        }
         Some((
             s.slots.iter().position(Option::is_none)?,
             s.processes.slots.iter().position(Option::is_none)?,
@@ -249,7 +269,24 @@ fn publish_image(space: UserSpace, wait_on: Option<Child>) -> Result<Child, Erro
             number: s.processes.serial,
         };
         let main = threads::Member::new(space.main_thread(), space.entry(), 0, false);
+        let instance = match member {
+            Some(key) => {
+                assert!(s.processes.instances.attach(key));
+                key
+            }
+            None => {
+                let key = s.processes.instances.create(app).expect("slot réservé");
+                s.processes.instances.activate(key);
+                key
+            }
+        };
         s.processes.slots[proc_slot] = Some(Process {
+            instance,
+            principal: member.is_none(),
+            stop_offered: false,
+            launch_grants: ipc::LaunchGrants::default(),
+            watch: supervision::Watch::None,
+            worker_image: None,
             pid,
             space: Some(space),
             threads: 1,
@@ -283,21 +320,11 @@ pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
             .thread(s.current())
             .owner
             .expect("exception hors processus");
-        crate::hardware::block::died(pid.number);
-        #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
-        vtd::died(pid);
-        #[cfg(feature = "materiel-lab")]
-        edu::died(s, pid);
-        s.ipc.death(pid, ticks());
-        s.flush_ipc();
-        s.ipc.collect();
-        let p = s.processes.get_mut(pid);
-        assert!(p.outcome.replace(result).is_none());
-        p.join_rights = Vec::new();
-        p.exit_counter = entered;
-        let trace = p.terminal == 0 || p.terminal & crate::terminal::QUALIFY != 0
+        let p = s.processes.get(pid);
+        let trace = p.watch == supervision::Watch::None && p.terminal == 0
+            || p.terminal & crate::terminal::QUALIFY != 0
             || matches!(result, Outcome::Fault(_));
-        threads::wake_dying(s, pid);
+        stop_process(s, pid, result, entered);
         (pid, trace)
     });
     if trace_exit && !ipc::quiet() {
@@ -316,6 +343,60 @@ pub(crate) fn finish(result: Outcome, pc: u64, level: &'static str) -> ! {
     unreachable!("processus terminé repris")
 }
 
+// Seuls les processus d’une même incarnation sont concernés. La garde empêche
+// toute admission entre l’arrêt du principal et le retrait des droits.
+fn stop_process(s: &mut Core, pid: Pid, result: Outcome, entered: u64) {
+    let p = s.processes.get(pid);
+    let key = p.instance;
+    if p.principal {
+        assert!(s.processes.instances.stop(key));
+        for slot in 0..MAX {
+            let Some(worker) = s.processes.slots[slot].as_ref() else {
+                continue;
+            };
+            if worker.instance == key && !worker.principal && worker.outcome.is_none() {
+                retire_member(s, worker.pid, Outcome::Exit(125), entered);
+            }
+        }
+    }
+    retire_member(s, pid, result, entered);
+}
+
+fn retire_member(s: &mut Core, pid: Pid, result: Outcome, entered: u64) {
+    crate::hardware::block::died(pid.number);
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    vtd::died(pid);
+    #[cfg(feature = "materiel-lab")]
+    edu::died(s, pid);
+    ipc::withdraw_grants(s, pid);
+    s.ipc.death(pid, ticks());
+    s.flush_ipc();
+    s.ipc.collect();
+    let p = s.processes.get_mut(pid);
+    assert!(p.outcome.replace(result).is_none());
+    p.join_rights = Vec::new();
+    p.exit_counter = entered;
+    s.processes.instances.exited(s.processes.get(pid).instance);
+    threads::wake_dying(s, pid);
+    let watch = s.processes.get(pid).watch;
+    if watch != supervision::Watch::None {
+        s.signal(Wait::Policy(pid));
+    }
+    // Une faute du gestionnaire ferme sa famille encore active.
+    if let supervision::Watch::Bound(key) = watch {
+        if let Some(principal) = s
+            .processes
+            .slots
+            .iter()
+            .flatten()
+            .find(|p| p.principal && p.instance == key && p.outcome.is_none())
+            .map(|p| p.pid)
+        {
+            stop_process(s, principal, Outcome::Exit(125), entered);
+        }
+    }
+}
+
 pub(super) fn detach(pid: Pid) {
     let last = with(|s| {
         let p = s.processes.get_mut(pid);
@@ -323,6 +404,7 @@ pub(super) fn detach(pid: Pid) {
         if p.threads == 0 {
             assert!(p.outcome.is_some());
             let space = p.space.take().expect("dernier espace");
+            let instance = p.instance;
             let orphan = !p.observed;
             let unused = p.wait_right.take();
             if orphan {
@@ -332,18 +414,28 @@ pub(super) fn detach(pid: Pid) {
                 s.processes.release_observer(right.target);
             }
             s.signal(Wait::Process(pid));
-            Some(space)
+            Some((space, instance))
         } else {
             None
         }
     });
-    if let Some(space) = last {
+    if let Some((space, instance)) = last {
         heap::with_pages(|m| {
             space.release(m);
             Ok(())
         })
         .unwrap();
+        release_instance(instance);
     }
+}
+
+fn release_instance(instance: Instance) {
+    with(|s| {
+        s.processes.instances.released(instance);
+        if s.processes.instances.destroyed(instance) {
+            supervision::released(s, instance);
+        }
+    });
 }
 
 impl Child {

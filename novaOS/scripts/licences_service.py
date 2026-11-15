@@ -5,16 +5,19 @@ import subprocess
 import sys
 
 
-def notices(target, destination):
+def notices(target, destination, *, relais=False):
     root = Path(__file__).resolve().parents[1]
     manifest = root / "user" / "novafs" / "Cargo.toml"
     texts = {}
     components = root.parent / "components"
     packages = {}
-    for project in (manifest, components / "Cargo.toml"):
+    projects = [(manifest, target), (components / "Cargo.toml", target)]
+    if relais:
+        projects.append((root / "boot/relais-bootid/Cargo.toml", "aarch64-unknown-uefi"))
+    for project, platform in projects:
         data = subprocess.check_output([
             "rustup", "run", "stable", "cargo", "metadata", "--format-version", "1",
-            "--manifest-path", project, "--filter-platform", target, "--locked", "--offline",
+            "--manifest-path", project, "--filter-platform", platform, "--locked", "--offline",
         ], cwd=project.parent)
         for package in json.loads(data)["packages"]:
             packages[package["id"]] = package
@@ -22,8 +25,10 @@ def notices(target, destination):
         folder = Path(package["manifest_path"]).parent
         files = sorted(p for p in folder.iterdir() if p.is_file()
                        and p.name.upper().startswith(("LICENSE", "COPYRIGHT", "NOTICE")))
-        if package["name"] == "novaos-storage":
+        if package["name"] in ("novaos-storage", "relais-bootid"):
             files.append(root / "LICENSE")
+        if package["name"] == "r-efi":
+            files.append(folder / "AUTHORS")  # Contient les notices amont complètes.
         if not files:
             raise ValueError(f"Licence introuvable pour {package['name']}")
         for p in files:
@@ -37,4 +42,4 @@ def notices(target, destination):
 
 
 if __name__ == "__main__":
-    notices(sys.argv[1], Path(sys.argv[2]))
+    notices(sys.argv[1], Path(sys.argv[2]), relais=sys.argv[1] == "aarch64-unknown-none-softfloat")

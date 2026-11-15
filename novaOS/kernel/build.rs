@@ -1,3 +1,9 @@
+#[allow(dead_code)]
+#[path = "../abi/instances.rs"]
+mod instance_abi;
+#[allow(dead_code)]
+#[path = "../abi/installation.rs"]
+mod installation;
 use std::{
     env,
     path::{Path, PathBuf},
@@ -18,6 +24,8 @@ fn main() {
     let nvme_lab = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NVME_LAB").is_some();
     for name in [
         "demo",
+        "instance_manager",
+        "instance_sample",
         "devices",
         "edu",
         "edu_dma",
@@ -73,7 +81,7 @@ fn main() {
         }
         let compact = name.starts_with("nvme_") || matches!(
             name,
-            "devices" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
+            "instance_manager" | "instance_sample" | "devices" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
         if name == "devices" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_some() {
             rust.arg("--cfg").arg("materiel_lab");
@@ -192,14 +200,12 @@ fn main() {
         .expect("compilation des ELF CLI");
     assert!(result.success(), "liaison des composants CLI");
     let mut catalog = String::from("&[");
-    for name in [
-        "pwd", "ls", "cat", "head", "mkdir", "rm", "probe", "cp", "mv", "touch", "more", "wc",
-        "tail", "rmdir", "vi", "nsh",
-    ] {
+    // Identifiants du manifeste de l’installation embarquée, indépendants des indices CLI.
+    for &(name, installation) in installation::COMMANDS {
         let path = out.join(format!("{name}.elf"));
         std::fs::copy(work.join(&target).join("release").join(name), &path).unwrap();
         if name != "nsh" {
-            catalog.push_str(&format!("(include_bytes!({path:?}),{}),", name == "probe"));
+            catalog.push_str(&format!("(include_bytes!({path:?}),{installation},{}),", name == "probe"));
         } else {
             // Nom historique de l’image privée du lanceur, même ELF nsh.
             std::fs::copy(&path, out.join("shell.elf")).unwrap();
@@ -215,8 +221,13 @@ fn main() {
         println!("cargo::rerun-if-changed={}", source.display());
         let admitted = out.join("thread-witness.elf");
         std::fs::copy(&source, &admitted).expect("admission du témoin externe");
-        catalog.push_str(&format!("(include_bytes!({admitted:?}),true),"));
+        catalog.push_str(&format!("(include_bytes!({admitted:?}),crate::instance_abi::WITNESS,true),"));
+    } else {
+        // L’indice 15 est réservé au profil SDK.
+        catalog.push_str("(&[],0,true),");
     }
+    let sample = out.join("instance_sample.bin");
+    catalog.push_str(&format!("(include_bytes!({sample:?}),crate::instance_abi::SAMPLE,false),"));
     catalog.push(']');
     std::fs::write(out.join("cli_catalog.rs"), catalog).unwrap();
 }

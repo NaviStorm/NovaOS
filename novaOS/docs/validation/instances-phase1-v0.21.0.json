@@ -1,0 +1,324 @@
+{
+  "commit_code": "49e907321e89909396835f3eaa8c978226d2e875",
+  "base": "3514e7804f4c5ea7a0e79d4bfa57632c3938ac9e",
+  "hote": "macOS 27.2 (26B123), arm64",
+  "rust": "1.99.1 (58cf8f9c3 2026-10-13)",
+  "qemu": "11.1.3, TCG",
+  "architectures": {
+    "aarch64": {
+      "unites_reussies": 3,
+      "profils_instances": {
+        "1": {
+          "familles": [
+            {
+              "mode": 0,
+              "incarnation": "9223372036854775815",
+              "pid": 8,
+              "cpu_cible": 0
+            },
+            {
+              "mode": 1,
+              "incarnation": "9223372036854775816",
+              "pid": 9,
+              "cpu_cible": 0
+            },
+            {
+              "mode": 2,
+              "incarnation": "9223372036854775819",
+              "pid": 16,
+              "cpu_cible": 0
+            },
+            {
+              "mode": 3,
+              "incarnation": "9223372036854775821",
+              "pid": 20,
+              "cpu_cible": 0
+            }
+          ],
+          "cadres_libres_avant_et_apres": 62536,
+          "tcb_avant_et_apres": 2,
+          "journal": "serie-aarch64-instances-test-1cpu.log",
+          "sha256": "590558f34b726a326b44b50497c9cc98a6e1243bc920f407ce5710985f4f8d89"
+        },
+        "2": {
+          "familles": [
+            {
+              "mode": 0,
+              "incarnation": "9223372036854775815",
+              "pid": 8,
+              "cpu_cible": 1
+            },
+            {
+              "mode": 1,
+              "incarnation": "9223372036854775816",
+              "pid": 9,
+              "cpu_cible": 1
+            },
+            {
+              "mode": 2,
+              "incarnation": "9223372036854775819",
+              "pid": 16,
+              "cpu_cible": 1
+            },
+            {
+              "mode": 3,
+              "incarnation": "9223372036854775821",
+              "pid": 20,
+              "cpu_cible": 1
+            }
+          ],
+          "cadres_libres_avant_et_apres": 62502,
+          "tcb_avant_et_apres": 3,
+          "journal": "serie-aarch64-instances-test-2cpu.log",
+          "sha256": "bcffbf813cd54dda1e3ee2eaf4b2c176983993400d5653986b99ef0df4a7349f"
+        },
+        "4": {
+          "familles": [
+            {
+              "mode": 0,
+              "incarnation": "9223372036854775814",
+              "pid": 7,
+              "cpu_cible": 3
+            },
+            {
+              "mode": 1,
+              "incarnation": "9223372036854775816",
+              "pid": 11,
+              "cpu_cible": 3
+            },
+            {
+              "mode": 2,
+              "incarnation": "9223372036854775819",
+              "pid": 16,
+              "cpu_cible": 3
+            },
+            {
+              "mode": 3,
+              "incarnation": "9223372036854775821",
+              "pid": 20,
+              "cpu_cible": 3
+            }
+          ],
+          "cadres_libres_avant_et_apres": 62453,
+          "tcb_avant_et_apres": 5,
+          "journal": "serie-aarch64-instances-test-4cpu.log",
+          "sha256": "2a9c03cc58b637e6d0fcd898cfeb3abf7e34e5c4cc6d46f85df1eb2011c730a8"
+        }
+      },
+      "threads": [
+        {
+          "vcpus": 1,
+          "niveau": "EL0",
+          "cpu_final": 0,
+          "preemptions": [
+            3,
+            3
+          ],
+          "migrations": 0,
+          "cadres_avant": 62490,
+          "cadres_apres": 62490,
+          "blocs": 3,
+          "tcb_apres": 2
+        },
+        {
+          "vcpus": 2,
+          "niveau": "EL0",
+          "cpu_final": 1,
+          "preemptions": [
+            7,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 62456,
+          "cadres_apres": 62456,
+          "blocs": 4,
+          "tcb_apres": 3
+        },
+        {
+          "vcpus": 4,
+          "niveau": "EL0",
+          "cpu_final": 3,
+          "preemptions": [
+            4,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 62407,
+          "cadres_apres": 62407,
+          "blocs": 6,
+          "tcb_apres": 5
+        }
+      ],
+      "regressions_reussies": [
+        "aarch64-proc-lifecycle",
+        "aarch64-elf-test",
+        "aarch64-ipc-races-256",
+        "aarch64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+        "aarch64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+        "aarch64-smp-test-1cpu",
+        "aarch64-smp-test-2cpu",
+        "aarch64-smp-test-4cpu"
+      ]
+    },
+    "x86_64": {
+      "unites_reussies": 3,
+      "profils_instances": {
+        "1": {
+          "familles": [
+            {
+              "mode": 0,
+              "incarnation": "9223372036854775815",
+              "pid": 8,
+              "cpu_cible": 0
+            },
+            {
+              "mode": 1,
+              "incarnation": "9223372036854775816",
+              "pid": 9,
+              "cpu_cible": 0
+            },
+            {
+              "mode": 2,
+              "incarnation": "9223372036854775819",
+              "pid": 16,
+              "cpu_cible": 0
+            },
+            {
+              "mode": 3,
+              "incarnation": "9223372036854775821",
+              "pid": 20,
+              "cpu_cible": 0
+            }
+          ],
+          "cadres_libres_avant_et_apres": 63097,
+          "tcb_avant_et_apres": 2,
+          "journal": "serie-x86_64-instances-test-1cpu.log",
+          "sha256": "1eb4f8a69b558c9009f48f7031f8dea2ac259dedfc8921e7cd206ab91506ab32"
+        },
+        "2": {
+          "familles": [
+            {
+              "mode": 0,
+              "incarnation": "9223372036854775816",
+              "pid": 9,
+              "cpu_cible": 1
+            },
+            {
+              "mode": 1,
+              "incarnation": "9223372036854775815",
+              "pid": 8,
+              "cpu_cible": 1
+            },
+            {
+              "mode": 2,
+              "incarnation": "9223372036854775819",
+              "pid": 16,
+              "cpu_cible": 1
+            },
+            {
+              "mode": 3,
+              "incarnation": "9223372036854775821",
+              "pid": 20,
+              "cpu_cible": 1
+            }
+          ],
+          "cadres_libres_avant_et_apres": 63040,
+          "tcb_avant_et_apres": 3,
+          "journal": "serie-x86_64-instances-test-2cpu.log",
+          "sha256": "dce03df2c76c9fb5982be6a964febd5f4a98f715acda5c7a9570668efc8a3389"
+        },
+        "4": {
+          "familles": [
+            {
+              "mode": 0,
+              "incarnation": "9223372036854775815",
+              "pid": 8,
+              "cpu_cible": 3
+            },
+            {
+              "mode": 1,
+              "incarnation": "9223372036854775816",
+              "pid": 9,
+              "cpu_cible": 3
+            },
+            {
+              "mode": 2,
+              "incarnation": "9223372036854775819",
+              "pid": 16,
+              "cpu_cible": 3
+            },
+            {
+              "mode": 3,
+              "incarnation": "9223372036854775821",
+              "pid": 20,
+              "cpu_cible": 3
+            }
+          ],
+          "cadres_libres_avant_et_apres": 62958,
+          "tcb_avant_et_apres": 5,
+          "journal": "serie-x86_64-instances-test-4cpu.log",
+          "sha256": "10a10c0b99cdbfdc830439f778480b77765665546d83babc09c66eff7cd46e2b"
+        }
+      },
+      "threads": [
+        {
+          "vcpus": 1,
+          "niveau": "Ring3",
+          "cpu_final": 0,
+          "preemptions": [
+            3,
+            3
+          ],
+          "migrations": 0,
+          "cadres_avant": 63066,
+          "cadres_apres": 63066,
+          "blocs": 3,
+          "tcb_apres": 2
+        },
+        {
+          "vcpus": 2,
+          "niveau": "Ring3",
+          "cpu_final": 1,
+          "preemptions": [
+            5,
+            4
+          ],
+          "migrations": 2,
+          "cadres_avant": 63009,
+          "cadres_apres": 63009,
+          "blocs": 4,
+          "tcb_apres": 3
+        },
+        {
+          "vcpus": 4,
+          "niveau": "Ring3",
+          "cpu_final": 3,
+          "preemptions": [
+            4,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 62927,
+          "cadres_apres": 62927,
+          "blocs": 6,
+          "tcb_apres": 5
+        }
+      ],
+      "regressions_reussies": [
+        "x86_64-proc-lifecycle",
+        "x86_64-elf-test",
+        "x86_64-ipc-races-256",
+        "x86_64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+        "x86_64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44",
+        "x86_64-smp-test-1cpu",
+        "x86_64-smp-test-2cpu",
+        "x86_64-smp-test-4cpu"
+      ]
+    }
+  },
+  "sdk_sha256": "6feff113b64eef2352c430fc5c64fc2f1f865cfe40339ecbec5e6a4f3ff469a4",
+  "archive_des_six_journaux": {
+    "fichier": "instances-phase1-v0.21.0-journaux.tar.gz",
+    "sha256": "71d33984bfdf402c334fd8dbf6d71a421c9b23dc21e3f272d3ad1c79c4d2c1b4"
+  }
+}

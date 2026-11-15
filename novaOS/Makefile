@@ -166,3 +166,17 @@ vtd-edu-test:
 	  export NOVA_KERNEL_ELF="$$CARGO_TARGET_DIR/$$rust_target/release/novaos" && \
 	  python3 -B tests/vtd_edu.py --elf "$$NOVA_KERNEL_ELF" && \
 	  python3 -B tests/vtd_dmar.py --elf "$$NOVA_KERNEL_ELF" --preuves "$$(mktemp -d build/vtd-phase3/admission.XXXXXX)/resultats"
+
+.PHONY: instances-test
+instances-test: kernel
+	python3 -B tests/instances.py
+
+.PHONY: instances-reboot-test
+instances-reboot-test: kernel
+	python3 -B tests/instances_reboot.py
+
+.PHONY: instances-modele-test
+instances-modele-test:
+	mkdir -p build
+	rustup run stable rustc --edition 2024 --test --target "$(ARCH)-apple-darwin" tests/instances_modele.rs -o "build/instances-modele-$(ARCH)"
+	"build/instances-modele-$(ARCH)"

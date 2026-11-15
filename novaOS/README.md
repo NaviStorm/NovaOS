@@ -106,7 +106,7 @@ L’ISO amorçable est produite dans `build/novaos.iso` et le noyau ELF dans `ta
 Par défaut, les commandes ciblent x86_64. Pour QEMU `virt`, installer la cible AArch64 bare-metal et choisir explicitement l’architecture. La variante Rust `softfloat` convient à l’entrée du noyau, où les registres SIMD et flottants peuvent être désactivés. [Cibles AArch64 bare-metal de Rust](https://doc.rust-lang.org/rustc/platform-support/aarch64-unknown-none.html)
 
 ```sh
-rustup target add --toolchain stable aarch64-unknown-none-softfloat
+rustup target add --toolchain stable aarch64-unknown-none-softfloat aarch64-unknown-uefi
 make ARCH=aarch64 kernel
 make ARCH=aarch64 test
 make ARCH=aarch64 run
@@ -175,4 +175,6 @@ Les journaux et bilans de la matrice RAM sont conservés dans `build/`. Le test 
 
 ## Provenance de Limine
 
-Les fichiers `BOOTX64.EFI`, `BOOTAA64.EFI` et `limine-uefi-cd.bin` proviennent de la distribution binaire officielle **v10.8.5**, commit `7a9013f305de0bea1f6310e76e7baba30499fef0`. Leurs empreintes SHA-256 sont contrôlées à chaque création d’ISO. Le noyau utilise la révision de base 3 du protocole via la crate `limine` 0.5.0. Les licences des composants tiers sont incluses dans `licenses/` et sur l’ISO. [Distribution Limine épinglée](https://github.com/Limine-Bootloader/Limine/tree/7a9013f305de0bea1f6310e76e7baba30499fef0) · [Liaisons Rust 0.5.0](https://docs.rs/limine/0.5.0/limine/)
+Les fichiers `BOOTX64.EFI`, `BOOTAA64.EFI` et `limine-uefi-cd.bin` proviennent de la distribution binaire officielle **v10.8.5**, commit `7a9013f305de0bea1f6310e76e7baba30499fef0`. Leurs empreintes SHA-256 sont contrôlées à chaque création d’ISO. Sur le CD AArch64 de développement, le relais UEFI de NovaOS s’exécute en premier puis charge le binaire Limine vérifié sous le nom `LIMINE.EFI`. [Contrat du BootID](docs/bootid-phase1-v0.21.0.md)
+
+Le noyau utilise la révision de base 3 du protocole via la crate `limine` 0.5.0. Les licences des composants tiers sont incluses dans `licenses/` et sur l’ISO. [Distribution Limine épinglée](https://github.com/Limine-Bootloader/Limine/tree/7a9013f305de0bea1f6310e76e7baba30499fef0) · [Liaisons Rust 0.5.0](https://docs.rs/limine/0.5.0/limine/)

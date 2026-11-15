@@ -89,3 +89,7 @@ Sur le port SCREEN, FRESH_LINE (6) termine la ligne si le dernier texte du termi
 Les sélecteurs natifs `0x10060` à `0x10068` couvrent les membres d’un processus, leur TLS et leurs attentes. Le noyau valide désormais le retour utilisateur sur la pile du membre appelant. [Contrat, droits et qualification](rust-threads-v0.20.0.md#contrat-des-appels-natifs)
 
 Le SDK 0.2.0 reprend la même convention de jonction `THREAD_JOIN(droit, 0, 0)`. Une attente annulée conserve le droit de collecte du processus. Le nouveau wrapper Rust permet à son propriétaire de le transmettre. Le délai relatif est une opération de `THREAD_WAIT` sur un mot atomique. [Propriété et qualification de phase 2](rust-sdk-phase2-v0.20.0.md)
+
+## Développement v0.21.0 · identité d’instance
+
+La branche de phase 1 ajoute une extension interne à l’ABI v1. Les binaires v0.20.0 conservent leurs sélecteurs, leurs structures et leurs conventions de retour. Le SDK public 0.2.0 garde son contrat de compatibilité. Le numéro local reste disponible. Les opérations expérimentales sensibles exigent désormais le triplet BootID, InstanceID et génération, en plus des droits de l’appelant. [Contrat des instances](reconciliation-v0300/contrat-instances-services.md) · [Sélecteurs actuels et qualification du BootID](bootid-phase1-v0.21.0.md)
