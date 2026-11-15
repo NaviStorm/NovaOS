@@ -2,6 +2,8 @@
 
 **Verdict du 15 novembre 2026.** La phase 1 satisfait les critères d’intégration sur QEMU AArch64 et x86_64. Ses binaires portent la version 0.20.0. La MOA/MOE réserve la clôture de v0.20.0 et la définition de la phase suivante à une décision ultérieure. L’archive UTM installable distribuée reste celle de v0.17.0. [Décision ARC-023](reconciliation-v0300/decisions.md) · [Distribution](../../distribution/README.md)
 
+La reprise de jonction identifiée lors de cette qualification fait l’objet de la [phase 2 du SDK Rust](rust-sdk-phase2-v0.20.0.md). Les observations ci-dessous décrivent les binaires de phase 1.
+
 ## Périmètre des preuves
 
 | Référence | Objet contrôlé |

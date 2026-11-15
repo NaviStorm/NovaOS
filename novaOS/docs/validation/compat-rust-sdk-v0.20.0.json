@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-15",
+  "profil": "QEMU TCG, 1 vCPU, 256 Mio, disque VirtIO jetable P9 en secteurs 512 octets",
+  "clients": [
+    "nova-system 0.1.0 (phase 1)",
+    "nova-system 0.2.0 (phase 2)"
+  ],
+  "resultats": [
+    {
+      "arch": "aarch64",
+      "qemu": "QEMU emulator version 11.1.3",
+      "invites": {
+        "v019": {
+          "reference": "2bcb64575e396790089e3078d443b63d69ac05d7",
+          "kernel_sha256": "814429bafbb0bf949aa2fcdb5cd1e19be6a8757f22a4f895bad159e29aef7ab7",
+          "service_sha256": "886c4b003317897e8a25525d54d6b9fb1e8121cd56459ade4fee9ebbf4e18fac",
+          "journal_sha256": "3362301eeafb60085b6e408fcb26a82aa4ce9b495c8ccbef326776d7004f1cf0",
+          "statut_des_clients": 19
+        },
+        "phase1": {
+          "reference": "90de918fa6ca090d731500127cf400c4836a0fec",
+          "kernel_sha256": "ad206563e2fddd6b497c4b979fcd3def0c9f25e35f307c8d6374039ba96e070a",
+          "service_sha256": "1cfbc45c8ed331e6ee7bf0a8b11ee3c6dcb777b453d1cd5f3cebb4db67ed9b80",
+          "journal_sha256": "a29916fcf07bf8b114835b2b5a04d8aaff09e421f9d245bc0014e7c7e64d3f2e",
+          "statut_des_clients": 0
+        }
+      },
+      "clients_sha256": [
+        "fa5bb734f951aae0b7ffccc164c4eb2a25030ee134f29e6cb8f778d71bc01c50",
+        "d6e5e50ab6b16a87211f00c8959979fc7e8f9786c57b132936e7f32eabcea5e3"
+      ]
+    },
+    {
+      "arch": "x86_64",
+      "qemu": "QEMU emulator version 11.1.3",
+      "invites": {
+        "v019": {
+          "reference": "2bcb64575e396790089e3078d443b63d69ac05d7",
+          "kernel_sha256": "39b682e0c6986c06f2f2675d8f05178dac85d04f972a6db44968462a1e04bc90",
+          "service_sha256": "b16893f0fadeaa0d0582857ea3f052c2675b677c0c613fe7710c23aa0d7dbc82",
+          "journal_sha256": "7b948fc64209feeb825a5a0b281c9a0cd5d1c13e7fa27b1ce1b9776330dcb377",
+          "statut_des_clients": 19
+        },
+        "phase1": {
+          "reference": "90de918fa6ca090d731500127cf400c4836a0fec",
+          "kernel_sha256": "8c8deada029704585b70991fe6c4c9e5ce60416fcf3730afd063b17458c5e731",
+          "service_sha256": "b1fda3f882774e51c1d89835866c80e86d1579b33e7769a30637ff0f593a3e14",
+          "journal_sha256": "dabe385ec9f36aa53bb9044705c4a25dcea2f1465fe02f3e3ee2a545c82d92b1",
+          "statut_des_clients": 0
+        }
+      },
+      "clients_sha256": [
+        "c6f29c95631ee5e51a7f7131e23eb25f4ac6c11ebe2523c925abda603fce0418",
+        "21e2dda75e27af8452ceb9247ebaa3102b0d8d87575055e5d4a58edae3527da4"
+      ]
+    }
+  ]
+}

@@ -87,3 +87,5 @@ Sur le port SCREEN, FRESH_LINE (6) termine la ligne si le dernier texte du termi
 ## Extension expérimentale de la phase 1 de v0.20.0
 
 Les sélecteurs natifs `0x10060` à `0x10068` couvrent les membres d’un processus, leur TLS et leurs attentes. Le noyau valide désormais le retour utilisateur sur la pile du membre appelant. [Contrat, droits et qualification](rust-threads-v0.20.0.md#contrat-des-appels-natifs)
+
+Le SDK 0.2.0 reprend la même convention de jonction `THREAD_JOIN(droit, 0, 0)`. Une attente annulée conserve le droit de collecte du processus. Le nouveau wrapper Rust permet à son propriétaire de le transmettre. Le délai relatif est une opération de `THREAD_WAIT` sur un mot atomique. [Propriété et qualification de phase 2](rust-sdk-phase2-v0.20.0.md)
