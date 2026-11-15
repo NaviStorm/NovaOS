@@ -59,7 +59,43 @@ impl Manager<'_> {
         if version != p::VERSION {
             return Err(rt::BAD_VERSION);
         }
-        if tag == 0 || f[4..].iter().any(|&w| w != 0) {
+        if tag == 0 {
+            return Err(rt::BAD_ARGUMENT);
+        }
+        if matches!(op, p::CACHE_TEST | p::CACHE_ASYNC_WRITE) {
+            if !admin || !self.cache_lab || self.stopping || !(11..=15).contains(&id) {
+                return Err(rt::DENIED);
+            }
+            if (op == p::CACHE_ASYNC_WRITE && (id != 12 || arg != cache_steps::RACE_WRITE))
+                || f[5..].iter().any(|w| *w != 0)
+            {
+                return Err(rt::BAD_ARGUMENT);
+            }
+            let i = self.index(id)?;
+            if !matches!(self.policy.state(id), Ok(State::Ready | State::Running)) {
+                return Err(rt::REFUSED);
+            }
+            let live = self.units[i].live;
+            let serial = self.next_tag()?;
+            let mut cmd = p::request(p::CACHE_STEP, id, live.attempt);
+            cmd[4..8].copy_from_slice(&live.identity);
+            cmd[8..10].copy_from_slice(&[arg, f[4]]);
+            rt::send_frame(live.tx, serial, &p::encode(&cmd), 0, false)?;
+            if op == p::CACHE_ASYNC_WRITE {
+                // L'acteur 12 effectue le véritable WRITE et en conserve le résultat.
+                // L'acteur 11 reste disponible pour confirmer la remise puis purger.
+                return Ok(Some(self.report(id)));
+            }
+            self.pending = Some(Pending {
+                tag: serial,
+                incoming: tag,
+                destination: dest,
+                instance: live,
+                deadline: time.saturating_add(15_000),
+            });
+            return Ok(None);
+        }
+        if f[4..].iter().any(|&w| w != 0) {
             return Err(rt::BAD_ARGUMENT);
         }
         let read = matches!(op, p::LIST | p::STATUS | p::DEP | p::QUERY);
@@ -150,7 +186,7 @@ impl Manager<'_> {
                 }
                 return Ok(Some(answer));
             }
-            p::QUERY if arg == 0 => {
+            p::QUERY | p::CACHE_MAINTAIN if arg == 0 && (op == p::QUERY || id == 10) => {
                 if !matches!(self.policy.state(id), Ok(State::Ready | State::Running)) {
                     return Err(rt::REFUSED);
                 }
@@ -160,14 +196,23 @@ impl Manager<'_> {
                     let packet = [rt::WIRE_VERSION, rt::INFO, 0, 0, 0, 0, 0, 0];
                     rt::send_frame(live.tx, serial, &packet, 0, false)?;
                 } else {
-                    live.command(p::SAMPLE, 0, serial)?;
+                    let command = if op == p::CACHE_MAINTAIN {
+                        p::MAINTAIN
+                    } else {
+                        p::SAMPLE
+                    };
+                    live.command(command, 0, serial)?;
                 }
                 self.pending = Some(Pending {
                     tag: serial,
                     incoming: tag,
                     destination: dest,
                     instance: live,
-                    deadline: time.saturating_add(1_000),
+                    deadline: time.saturating_add(if op == p::CACHE_MAINTAIN {
+                        15_000
+                    } else {
+                        1_000
+                    }),
                 });
                 return Ok(None);
             }

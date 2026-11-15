@@ -16,6 +16,12 @@ pub const QUERY: u64 = 8;
 pub const SHUTDOWN: u64 = 9;
 pub const INJECT: u64 = 10;
 pub const LOG: u64 = 11;
+/// Port d'administration du seul catalogue CACHE de qualification. Les mots
+/// 3 et 4 désignent un essai applicatif et un argument scalaire.
+pub const CACHE_TEST: u64 = 12;
+pub const CACHE_ASYNC_WRITE: u64 = 13;
+/// Un passage de la politique de pression sur le port d'exploitation.
+pub const CACHE_MAINTAIN: u64 = 14;
 
 pub const REGISTERED: u64 = 1;
 pub const WAITING: u64 = 2;
@@ -35,6 +41,8 @@ pub const LOST: u64 = 19;
 pub const HALT: u64 = 20;
 pub const SAMPLE: u64 = 21;
 pub const DISTURB: u64 = 22;
+pub const CACHE_STEP: u64 = 23;
+pub const MAINTAIN: u64 = 24;
 pub const NATIVE_INFO: u64 = u32::from_le_bytes(*b"NVFS") as u64;
 
 pub fn request(operation: u64, id: u64, arg: u64) -> Frame {

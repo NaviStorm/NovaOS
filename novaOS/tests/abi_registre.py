@@ -69,7 +69,7 @@ class Registre(unittest.TestCase):
             self.assertEqual(self.calls[name], spec, name)
         symbols = {(spec["module"], spec.get("rust_name", key)): spec["number"]
                    for key, spec in self.calls.items()}
-        for module in abi.MODULES:
+        for module in ("native", "terminal", "block", "instances", "tmp"):
             commit = "35f7d9619f116f42491f001af4b1cf5bdc84b395" if module == "tmp" else BASE
             old = historical(commit, f"abi/{module}.rs").decode()
             numbers = {name: int(value, 16) for name, value in re.findall(
@@ -92,7 +92,12 @@ class Registre(unittest.TestCase):
             "bcdfe4ccfd98c9e4a58f5cead3ce666e917ce33c", "abi/syscalls.toml").decode())
         self.assertEqual(len(previous["call"]), 46)
         self.assertEqual({k: self.calls[k] for k in previous["call"]}, previous["call"])
-        self.assertEqual(set(self.calls)-set(previous["call"]), {"SERVICE_PROCESS"})
+        self.assertEqual(set(self.calls)-set(previous["call"]), {"SERVICE_PROCESS", "CACHE_CONTROL"})
+        phase3 = tomllib.loads(historical(
+            "aa2c44a81e3ce444a75db40efa91f91f68b093a4", "abi/syscalls.toml").decode())["call"]
+        self.assertEqual(len(phase3), 47)
+        self.assertEqual({k: self.calls[k] for k in phase3}, phase3)
+        self.assertEqual(self.calls["CACHE_CONTROL"]["number"], 0x1007c)
         self.assertEqual(self.calls["SERVICE_PROCESS"]["number"], 0x1007b)
         self.assertEqual(self.calls["SERVICE_PROCESS"]["module"], "instances")
 
@@ -105,7 +110,7 @@ class Registre(unittest.TestCase):
         for file in ("kernel/src/main.rs", "libs/nova-system/src/lib.rs"):
             self.assertIn("abi/native.rs", (ROOT / file).read_text())
         dispatch = (ROOT / "kernel/src/sched/process/syscall.rs").read_text()
-        prefixes = {"": "native", "iw": "instances", "tmp::wire": "tmp",
+        prefixes = {"": "native", "iw": "instances", "tmp::wire": "tmp", "cache::wire": "cache",
                     "crate::terminal": "terminal", "crate::hardware::block": "block",
                     "crate::hardware::block::wire": "block"}
         numbers = {(spec["module"], spec.get("rust_name", key)): spec["number"]

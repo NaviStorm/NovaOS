@@ -32,3 +32,12 @@ groups = [["user/novafs/files/temporary.rs#serve_tmp", "CREATE REMOVE IO"]]
 [edition]
 source = "../components/libraries/vi_wire.rs"
 groups = [["../components/shell/vi.rs#reply", "INFO READ KEY BEGIN NAME TEXT SAVE FIN VIEW LOCATE CLEAR_TAIL VERIFY"]]
+
+[cache]
+source = "abi/cache.rs"
+wire_type = "u64"
+groups = [
+  ["user/novafs/files/cache.rs#cache_operation", "OPEN READ WRITE PURGE PURGE_USER PURGE_SYSTEM RECOVER PRESSURE AUTO_PURGE"],
+  ["kernel/src/sched/process/cache.rs#control", "NEXT COMPLETE"],
+  ["kernel/src/sched/process/cache.rs#probe", "TEST_WRITE_SENT TEST_PURGE_PENDING"],
+]

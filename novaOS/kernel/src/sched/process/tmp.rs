@@ -77,6 +77,10 @@ impl Broker {
         self.leases.iter().any(|l| l.managed && instance.is_none_or(|k| l.instance == k))
     }
 
+    pub(super) fn serves(&self, pid: Pid) -> bool {
+        self.server == Some(pid)
+    }
+
     pub(super) fn online(&self) -> bool {
         self.server.is_some()
     }
@@ -86,7 +90,7 @@ impl Broker {
     }
 
     fn issue(&mut self) -> Result<u64> {
-        self.serial = self.serial.checked_add(1).ok_or(LIMIT)?;
+        self.serial = self.serial.checked_add(1).filter(|n| *n < 1 << 63).ok_or(LIMIT)?;
         Ok(self.serial)
     }
 
@@ -154,7 +158,7 @@ fn owner(s: &Core) -> Pid {
     s.thread(s.current()).owner.unwrap()
 }
 
-fn copy_in<const N: usize>(s: &Core, pid: Pid, addr: u64, writable: bool) -> Result<[u8; N]> {
+pub(super) fn copy_in<const N: usize>(s: &Core, pid: Pid, addr: u64, writable: bool) -> Result<[u8; N]> {
     let mut bytes = [0; N];
     let space = s.processes.get(pid).space.as_ref().ok_or(CLOSED)?;
     let ok = heap::with_pages(|m| {
@@ -164,13 +168,13 @@ fn copy_in<const N: usize>(s: &Core, pid: Pid, addr: u64, writable: bool) -> Res
     ok.then_some(bytes).ok_or(BAD_ADDRESS)
 }
 
-fn copy_out(s: &Core, pid: Pid, addr: u64, bytes: &[u8]) -> Result<()> {
+pub(super) fn copy_out(s: &Core, pid: Pid, addr: u64, bytes: &[u8]) -> Result<()> {
     let space = s.processes.get(pid).space.as_ref().ok_or(CLOSED)?;
     let ok = heap::with_pages(|m| Ok(space.copy_to_user(m, addr, bytes))).unwrap();
     ok.then_some(()).ok_or(BAD_ADDRESS)
 }
 
-fn wake(s: &mut Core, ticket: u64) {
+pub(super) fn wake(s: &mut Core, ticket: u64) {
     for slot in 0..s.slots.len() {
         if s.slots[slot].as_ref().is_some_and(
             |t| matches!(t.state, State::Blocked(Wait::Temporary { token, .. }) if token == ticket),
@@ -180,7 +184,7 @@ fn wake(s: &mut Core, ticket: u64) {
     }
 }
 
-fn notice(s: &mut Core) {
+pub(super) fn notice(s: &mut Core) {
     if let Some(server) = s.processes.temporary.server {
         let rx = s.processes.temporary.receiver;
         if rx != 0 {

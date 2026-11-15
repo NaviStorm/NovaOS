@@ -136,6 +136,7 @@ struct Session<'a, 'b> {
     pending: Option<Pending>,
     failed: Option<u64>,
     temporary: temporary::Views,
+    cache: Option<cache_store::Store>,
 }
 fn shape(ok: bool) -> rt::Result<()> {
     if ok { Ok(()) } else { Err(rt::BAD_ARGUMENT) }
@@ -613,6 +614,8 @@ impl Session<'_, '_> {
         Ok(())
     }
 }
+mod cache;
+mod cache_store;
 mod delegated;
 mod namespace;
 mod selected;
@@ -621,6 +624,14 @@ mod tmp_store;
 
 use crate::runtime::bulk;
 impl Session<'_, '_> {
+    /// Deux lots indépendants de huit. Une file pleine n'empêche pas de
+    /// sonder l'autre, y compris pendant l'édition sur un canal délégué.
+    fn serve_private(&mut self, rx:u64) -> rt::Result<bool> {
+        let tmp_busy=self.serve_tmp(rx)?;
+        let cache_busy=self.serve_cache(rx)?;
+        Ok(tmp_busy || cache_busy)
+    }
+
     fn read_page(
         &mut self,
         c: &Client,
@@ -677,6 +688,7 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
         next: 0,
         pending: None,
         failed: None,
+        cache: None,
         temporary: temporary::Views::new(matches!(rt::config(1), 41 | 42)),
     };
     let cli = matches!(rt::config(1), 41 | 42 | 73 | 74);
@@ -714,7 +726,7 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
         if client.closed {
             continue;
         }
-        let tmp_busy = s.serve_tmp(ports[i].0)?;
+        let tmp_busy = s.serve_private(ports[i].0)?;
         let timeout = if tmp_busy { 0 } else if pair { 1 } else { 15000 };
         let m = match rt::receive_options(ports[i].0, timeout, u32::from(cli)) {
             Err(rt::WOULD_BLOCK) if tmp_busy => continue,

@@ -63,17 +63,34 @@ pub fn crash() -> ! {
     }
 }
 
-pub fn serve(storage: bool, mut info: impl FnMut(u64, &[u8]) -> [u8; 12]) -> rt::Result<()> {
+#[allow(dead_code)]
+pub fn serve(storage: bool, info: impl FnMut(u64, &[u8]) -> [u8; 12]) -> rt::Result<()> {
+    serve_extension(storage, info, |_, _, _, _| Err(rt::DENIED))
+}
+
+pub fn serve_extension(
+    storage: bool,
+    mut info: impl FnMut(u64, &[u8]) -> [u8; 12],
+    mut extension: impl FnMut(u64, u64, u64, u64) -> rt::Result<u64>,
+) -> rt::Result<()> {
     let (tx, rx, id, attempt) = (rt::config(0), rt::config(1), rt::config(2), rt::config(4));
     if attempt == 0
-        || !(1..=9).contains(&id)
+        || !(1..=15).contains(&id)
         || storage != (id == 9)
         || rt::value(rt::call(rt::IPC_BOOTSTRAP, 0, 0, 0))? != rx
     {
         return Err(rt::DENIED);
     }
-    let cap = rt::value(rt::call(tmp::CAP, 0, 0, 0))?;
-    root_empty(cap)?;
+    let cap = if id == 10 {
+        if rt::call(tmp::CAP, 0, 0, 0).status != rt::DENIED {
+            return Err(rt::REFUSED);
+        }
+        None
+    } else {
+        let cap = rt::value(rt::call(tmp::CAP, 0, 0, 0))?;
+        root_empty(cap)?;
+        Some(cap)
+    };
     let mut identity = [0u8; 32];
     rt::value(rt::call(
         instance::INFO,
@@ -108,7 +125,7 @@ pub fn serve(storage: bool, mut info: impl FnMut(u64, &[u8]) -> [u8; 12]) -> rt:
     outside[fs::PAYLOAD..fs::PAYLOAD + name.len()].copy_from_slice(name);
     if rt::call(
         tmp::CALL,
-        cap,
+        cap.unwrap_or(0),
         outside.as_mut_ptr() as u64,
         outside.len() as u64,
     )
@@ -116,6 +133,9 @@ pub fn serve(storage: bool, mut info: impl FnMut(u64, &[u8]) -> [u8; 12]) -> rt:
         != rt::DENIED
     {
         return Err(rt::REFUSED);
+    }
+    if id >= 10 {
+        extension(id, p::ANNOUNCE, 0, 0)?;
     }
     if id == 1 {
         rt::value(rt::call(rt::CLOCK_UTC, 0, 0, 0))?;
@@ -144,16 +164,28 @@ pub fn serve(storage: bool, mut info: impl FnMut(u64, &[u8]) -> [u8; 12]) -> rt:
     }
     let mut silent = false;
     let mut delayed_sample = None;
+    let mut maintenance_intervals = 0u8;
     loop {
         let msg = match rt::receive_for(rx, 25) {
             Ok(msg) => msg,
             Err(rt::TIMED_OUT) => {
+                if id == 10 {
+                    maintenance_intervals += 1;
+                    if maintenance_intervals == 64 {
+                        maintenance_intervals = 0;
+                        extension(id, p::MAINTAIN, 0, 0)?;
+                    }
+                }
                 if let Some(tag) = delayed_sample.take() {
-                    let status = root_empty(cap).err().unwrap_or(rt::OK);
+                    let status = cap
+                        .ok_or(rt::DENIED)
+                        .and_then(root_empty)
+                        .err()
+                        .unwrap_or(rt::OK);
                     emit(p::VALUE, 0, status, tag)?;
                 }
                 if id != 4 && !silent {
-                    if rt::call(tmp::CAP, 0, 0, 0).status != rt::OK {
+                    if cap.is_some() && rt::call(tmp::CAP, 0, 0, 0).status != rt::OK {
                         emit(p::LOST, 0, 0, 1)?;
                         return Err(rt::REVOKED);
                     }
@@ -185,15 +217,24 @@ pub fn serve(storage: bool, mut info: impl FnMut(u64, &[u8]) -> [u8; 12]) -> rt:
             // Le témoin rend l'échantillon à l'échéance suivante, ce qui exerce
             // une réponse différée sur un vrai canal, même avec un seul vCPU.
             p::SAMPLE if id == 7 => delayed_sample = Some(msg.tag),
-            p::SAMPLE => {
+            p::SAMPLE | p::MAINTAIN if frame[1] == p::SAMPLE || id == 10 => {
                 let result = if id == 1 {
                     rt::value(rt::call(rt::CLOCK_UTC, 0, 0, 0))
+                } else if id >= 10 {
+                    extension(id, frame[1], 0, 0)
                 } else {
-                    root_empty(cap).map(|()| 0)
+                    cap.ok_or(rt::DENIED).and_then(root_empty).map(|()| 0)
                 };
                 let (value, status) = match result {
                     Ok(n) => (n, 0),
                     Err(e) => (0, e),
+                };
+                emit(p::VALUE, value, status, msg.tag)?;
+            }
+            p::CACHE_STEP if (11..=15).contains(&id) => {
+                let (value, status) = match extension(id, p::CACHE_STEP, frame[8], frame[9]) {
+                    Ok(value) => (value, rt::OK),
+                    Err(error) => (0, error),
                 };
                 emit(p::VALUE, value, status, msg.tag)?;
             }

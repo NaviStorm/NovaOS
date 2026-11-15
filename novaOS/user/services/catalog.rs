@@ -4,6 +4,8 @@ use super::policy::{Declaration as D, Restart};
 pub const PRIVATE_TMP: u64 = 1;
 pub const SYSTEM_IMAGE: u64 = 1;
 pub const STORAGE_IMAGE: u64 = 2;
+pub const CACHE_BACKEND: u64 = 2;
+pub const CACHE_CLIENT: u64 = 4;
 
 const BASE: D = D {
     version: 1,
@@ -31,12 +33,38 @@ const STORAGE_INFO: D = D {
     image: STORAGE_IMAGE,
     ..BASE
 };
-pub const INSTALLED: &[D] = &[CLOCK, TMP_HEALTH, STORAGE_INFO];
+// L'accès au stockage P9 est provisionné avant son admission. Ni le service
+// CACHE ni les clients du cache n'ont besoin d'un tmp pour démarrer.
+const CACHE: D = D {
+    id: 10,
+    required: &[9],
+    caps: CACHE_BACKEND,
+    ..BASE
+};
+pub const INSTALLED: &[D] = &[CLOCK, TMP_HEALTH, STORAGE_INFO, CACHE];
 const MANUAL: D = D {
     auto: false,
     restart: Restart::Never,
     ..BASE
 };
+const ACTOR: D = D {
+    caps: PRIVATE_TMP | CACHE_CLIENT,
+    ..MANUAL
+};
+// Les acteurs n'ont pas de dépendance de vie sur CACHE : leur processus doit
+// pouvoir constater la révocation pendant l'arrêt de ce fournisseur.
+pub const CACHE_QUALIFICATION: &[D] = &[
+    CLOCK,
+    TMP_HEALTH,
+    STORAGE_INFO,
+    CACHE,
+    D { id: 11, ..ACTOR },
+    D { id: 12, ..ACTOR },
+    D { id: 13, ..ACTOR },
+    D { id: 14, ..ACTOR },
+    D { id: 15, ..ACTOR },
+];
+
 pub const QUALIFICATION: &[D] = &[
     CLOCK,
     TMP_HEALTH,

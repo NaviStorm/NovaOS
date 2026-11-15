@@ -258,7 +258,7 @@ const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fil
 // configuration. Seul NovaFS reçoit le sélecteur distinct de format.
 pub(super) fn cli_mode(profile: u64) -> u64 {
     match profile {
-        73 | 75 | 76 => 42,
+        73 | 75 | 76 | 78..=86 => 42,
         74 | 77 => 41,
         n => n,
     }
@@ -307,7 +307,9 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         (MEDIA, 1),
         (DISK, 0),
         (
-            if matches!(profile, 75 | 76) {
+            if matches!(profile, 78..=86) {
+                include_bytes!(concat!(env!("OUT_DIR"), "/cache_client_test.bin"))
+            } else if matches!(profile, 75 | 76) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/service_control_test.bin"))
             } else if matches!(mode, 41 | 42) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/nsh.elf"))
@@ -320,7 +322,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         ),
     ];
     let mut manager = None;
-    let group = if matches!(profile, 41 | 42 | 75 | 76 | 77) && probe.is_none() {
+    let group = if matches!(profile, 41 | 42 | 75..=86) && probe.is_none() {
         ipc::service::launch_session(members, key, profile, session.map(|(_, id)| id))
             .map(|(group, child)| { manager = Some(child); (group, None) })
     } else if matches!(mode, 29 | 30 | 38) {

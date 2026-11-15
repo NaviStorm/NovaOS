@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ABI = ROOT / "abi"
 DOC = ROOT / "docs"
 ORIGIN = "Généré par scripts/generate_abi.py depuis abi/syscalls.toml. Modifier les sources."
-MODULES = ("native", "terminal", "block", "instances", "tmp")
+MODULES = ("native", "terminal", "block", "instances", "tmp", "cache")
 
 
 def read_toml(path):
