@@ -1,5 +1,8 @@
 # NovaOS v0.19.0
 
+La branche de développement v0.20.0 apporte une bibliothèque Rust native et des threads utilisateur. La fiche de la phase 1 donne le contrat, le témoin compilé hors dépôt et les commandes de qualification. [Rust et threads utilisateur](docs/rust-threads-v0.20.0.md)
+
+
 L’installateur AArch64 distribué en v0.17.0 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable v0.17.0](../distribution/images/novaos-0.17.0-utm-aarch64.tar.gz) · [Installation et qualification](docs/fusion-smp-v0.17.0.md#installation-dans-utm)
 
 Depuis la racine du monorepo : `make -C novaOS ARCH=x86_64 block-test` ou `make -C novaOS ARCH=aarch64 block-test`. Pour un démarrage graphique avec une image raw existante : `make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512` (AArch64 : `ARCH=aarch64`, secteur 512 ou 4096).

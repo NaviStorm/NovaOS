@@ -1,0 +1,202 @@
+{
+  "date": "2026-11-15",
+  "branche": "codex/rust-system-0200",
+  "commit_code_et_tests": "9eb14a82adb2f493d1aea49c505ef6934c6f3e8b",
+  "base_fusion_documentaire": "2bcb64575e396790089e3078d443b63d69ac05d7",
+  "profil": "thread-probe avec user-fpu, invité neuf par géométrie, TCG, 256 Mio",
+  "scenario": "threads-test",
+  "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+  "construction_externe": {
+    "workspace": "Répertoire temporaire créé et vérifié hors du monorepo avant la construction",
+    "manifest": "temoin/Cargo.toml",
+    "artefact": "application-target/<cible>/release/temoin",
+    "admission": "NOVA_THREAD_PROBE_ELF, catalogue de qualification",
+    "format": "ELF64 ET_EXEC, 3 PT_LOAD et PT_GNU_STACK"
+  },
+  "controles_communs": [
+    "Même exécutable en mode mono-titulaire : CREATE, WAIT et TLS refusés, ID, YIELD et EXIT exécutés.",
+    "Deux travailleurs retournent 7 et 11 par join. Mutex et mémoire commune donnent 432, TLS séparés.",
+    "Pile de 0 ou 65 pages, identifiant nul ou inexistant, double join, droit détaché et neuvième droit refusés.",
+    "Annulation coopérative, expiration effective, notifications à deux attentes noyau établies (1, 1, 0) et valeur déjà modifiée.",
+    "Handles délégués et révoqués, refus interprocessus sur une génération vivante puis détruite, racine IPC encore utilisable.",
+    "Borne du tas alignée et stable, RTC UTC, ouvertures et lectures de vues fichier et répertoire refusées sur des ports sans autorité.",
+    "Réception IPC bloquée suivie du retrait de sa page : BAD_ADDRESS, nouveau trajet confirmé par le message 37.",
+    "Calcul en double précision, réglage MXCSR ou FPCR, deux moitiés du registre SIMD, registres entiers et TLS après préemption et migration.",
+    "Faute matérielle en écriture sur la garde basse du secondaire. Deux racines aux mêmes adresses virtuelles gardent des cadres distincts.",
+    "Pénurie VM provoquée par deux cadres restants : rollback des pages partielles, tables et slot. Réemploi zéro des pages de pile et TLS.",
+    "Destruction du processus avec deux attentes de mots, une réception IPC et un calcul sans yield. Aucun TCB survivant.",
+    "Collecte du principal avant la fin du dernier travailleur. Le processus rend le statut 19 du dernier travailleur.",
+    "Audit égal avant et après : cadres libres, blocs alloués, octets occupés, tas engagé et nombre de TCB résidents."
+  ],
+  "architectures": {
+    "x86_64": {
+      "cible": "x86_64-unknown-none",
+      "commande": "make -C novaOS ARCH=x86_64 threads-test",
+      "qemu": "QEMU emulator version 11.1.3",
+      "machine": "Q35, CPU max",
+      "temoin_octets": 53864,
+      "temoin_sha256": "08c23cdfb6997fe7772f011557b7db4c2a54fcadeba6d2697532cf31c1fb1d60",
+      "noyau_sha256": "ac584e2f965759e72d0df8699f6a023dbc0c759920d0166ecefdefc430fda1ef",
+      "profils": [
+        {
+          "vcpus": 1,
+          "niveau": "Ring3",
+          "cpu_final": 0,
+          "preemptions": [
+            3,
+            3
+          ],
+          "migrations": 0,
+          "cadres_avant": 63056,
+          "cadres_apres": 63056,
+          "blocs": 3,
+          "tcb_apres": 2,
+          "garde_basse": "0x403fff",
+          "journal_sha256": "a9cb9847b58e8020ada1fe8d2e9be5979d7dacdd7988ff14831f9663600f45e0"
+        },
+        {
+          "vcpus": 2,
+          "niveau": "Ring3",
+          "cpu_final": 1,
+          "preemptions": [
+            5,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 62999,
+          "cadres_apres": 62999,
+          "blocs": 4,
+          "tcb_apres": 3,
+          "garde_basse": "0x403fff",
+          "journal_sha256": "12f26c2316610fe70697f4e89f42572f8bf137fed42b0b1f390bd1a49f7a4504"
+        },
+        {
+          "vcpus": 4,
+          "niveau": "Ring3",
+          "cpu_final": 3,
+          "preemptions": [
+            5,
+            4
+          ],
+          "migrations": 2,
+          "cadres_avant": 62917,
+          "cadres_apres": 62917,
+          "blocs": 6,
+          "tcb_apres": 5,
+          "garde_basse": "0x403fff",
+          "journal_sha256": "afbf1779bc89904fdfb63e512751b91ae8a039ca8c1e7e2f221d6092bb6ba445"
+        }
+      ],
+      "regressions": {
+        "noyau_ordinaire_sha256": "145e8e58fa3b0e0d53a9e635882d746d272a43b00a1b640ba7bc1ee72fc76de5",
+        "elf": "réussi",
+        "processus_collectes": 128,
+        "familles": 64,
+        "ipc_test": "réussi",
+        "ipc_races": "réussi",
+        "abi_series": 4608,
+        "abi_preemptions": 1,
+        "abi_attentes": 4,
+        "abi_process_wait_destination_recyclee": "refusée, droit conservé",
+        "fichiers_p9": {
+          "secteur": 512,
+          "generation_initiale": 3,
+          "generation_relue": 6,
+          "oracle_hote_et_image_ro": "vérifiés"
+        }
+      }
+    },
+    "aarch64": {
+      "cible": "aarch64-unknown-none-softfloat",
+      "commande": "make -C novaOS ARCH=aarch64 threads-test",
+      "qemu": "QEMU emulator version 11.1.3",
+      "machine": "virt, cortex-a72, GICv2",
+      "temoin_octets": 66680,
+      "temoin_sha256": "6442c3465018c0b9b2738693d2744ef7d0a56082c5fdd6e3b9795f010ef79755",
+      "noyau_sha256": "b29891a3894a5b4317c63779e7c6fff96dfc7d5625275f72ee65f3b90342901f",
+      "profils": [
+        {
+          "vcpus": 1,
+          "niveau": "EL0",
+          "cpu_final": 0,
+          "preemptions": [
+            3,
+            3
+          ],
+          "migrations": 0,
+          "cadres_avant": 62529,
+          "cadres_apres": 62529,
+          "blocs": 3,
+          "tcb_apres": 2,
+          "garde_basse": "0x403fff",
+          "journal_sha256": "125212ca58df2421118698aff06a7845282008c0f756cc4e9eef0a276427472e"
+        },
+        {
+          "vcpus": 2,
+          "niveau": "EL0",
+          "cpu_final": 1,
+          "preemptions": [
+            6,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 62495,
+          "cadres_apres": 62495,
+          "blocs": 4,
+          "tcb_apres": 3,
+          "garde_basse": "0x403fff",
+          "journal_sha256": "e0d6cae9da5bf1b52b7972cb01a6b5840e4b96e97a123624b73918ae5a51d1fe"
+        },
+        {
+          "vcpus": 4,
+          "niveau": "EL0",
+          "cpu_final": 3,
+          "preemptions": [
+            4,
+            4
+          ],
+          "migrations": 2,
+          "cadres_avant": 62446,
+          "cadres_apres": 62446,
+          "blocs": 6,
+          "tcb_apres": 5,
+          "garde_basse": "0x403fff",
+          "journal_sha256": "d7b4ed09466463a077349f4cffb6189779ca3de4ac83760b695d81d67628ee99"
+        }
+      ],
+      "regressions": {
+        "noyau_ordinaire_sha256": "2d3705a081fc63afedfc424ebaf6ba743471daa8df1c73bdd20db44993148c38",
+        "elf": "réussi",
+        "processus_collectes": 128,
+        "familles": 64,
+        "ipc_test": "réussi",
+        "ipc_races": "réussi",
+        "abi_series": 54528,
+        "abi_preemptions": 1,
+        "abi_attentes": 4,
+        "abi_process_wait_destination_recyclee": "refusée, droit conservé",
+        "fichiers_p9": {
+          "secteur": 512,
+          "generation_initiale": 3,
+          "generation_relue": 6,
+          "oracle_hote_et_image_ro": "vérifiés"
+        }
+      }
+    }
+  },
+  "profils_materiels": {
+    "aarch64_materiel_lab_gicv3_lab": {
+      "controle": "compilation release",
+      "noyau_sha256": "6f93dfaaa7e8b3c68ad3919411cbca4ffa8460be2b940b5d5d295073567412cb"
+    },
+    "x86_64_nvme_lab": {
+      "controle": "Q35 lecture, 2 vCPU, 512 octets",
+      "noyau_sha256": "9e542af71406c2e49d7d536f0bd09463fb475bdffe8be7e9f0ad1563d6335131",
+      "lectures": 6,
+      "ecritures": 0,
+      "flush": 0,
+      "fautes_dma": 0,
+      "sha256_image_avant_et_apres": "0bdeae2c9e25d26126f1d7ba12e4e9040fdde6879e979632fb09ff68a02e6458"
+    }
+  }
+}
