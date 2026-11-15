@@ -39,6 +39,8 @@ Ces cinq questions précisent les exigences précédentes. Leur effet sur la sta
 
 ## Décisions retrouvées et décisions demandées
 
+Ce tableau restitue les conclusions de l’audit de réconciliation. Le [registre de gouvernance](decisions.md) porte les identifiants, dates, statuts et validations MOA du mandat d’arbitrage suivant.
+
 | Statut | Autorité et objet | Conséquence vérifiable |
 |---|---|---|
 | Décidé | MOA, présent mandat §§1, 2, 7 et 14. v0.19.0 est publiée ; v0.30.0 est la première stable ; CPython et hyperviseur natif viennent après. | Garder les numéros publiés et les deux reports dans tout scénario. Le livrable actuel est une branche documentaire. |

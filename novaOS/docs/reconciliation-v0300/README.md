@@ -2,6 +2,18 @@
 
 **Situation au 15 novembre 2026.** `origin/main` publie les sources NovaOS v0.19.0 au commit `1b3bb5a8df767a09fa0671bcfd95e6e734693a3a`. Le dernier installateur UTM AArch64 distribué est en v0.17.0 et NovaFS en v0.9.13 P9. La décision en attente porte sur les engagements futurs et leur ordre. Le mandat autorise un audit documentaire sur la branche `codex/roadmap-reconciliation-v0300`. [README publié](../../../README.md#feuille-de-route) · [Distribution](../../../distribution/README.md)
 
+## Contrats soumis à décision le 15 novembre 2026
+
+| Décision structurante | Documents d’arbitrage |
+|---|---|
+| Profil de la première stable | [Critères sur les deux VM, le bureau natif et le Tecra](contrat-plateforme.md) |
+| Bibliothèque système Rust puis threads utilisateur | [Trois niveaux d’API, règles de terminaison et de compatibilité](contrat-rust-threads.md) |
+| Autorité sur les données et garde des clés | [Identités, ACL, capacités et secours](contrat-autorisations.md) · [Persistance, compatibilité et récupération P9](dependances-p9.md) |
+
+La MOA peut statuer sur les [trois choix avant v0.20.0](proposition.md#trois-arbitrages-indispensables-avant-v0200) indépendamment du calendrier complet. La [matrice des écarts de couverture](ecarts-couverture.md) complète les 181 exigences initiales. Le [registre des décisions](decisions.md) consigne, pour chaque texte, son origine, son statut et la validation dont il dispose.
+
+Le contrôle documentaire a relié les 16 thèmes du mandat au registre initial, vérifié les 11 champs de chacune des 13 décisions et retrouvé les mêmes 13 tranches proposées. Les cinq écarts de couverture ont chacun une preuve future et une échéance d’arbitrage. Les critères d’acceptation des nouveaux contrats seront à exercer sur un candidat ultérieur.
+
 ## Ce que doit trancher la MOA
 
 - **Ordre des travaux.** La livraison SMP a avancé la partie multicœur ; l’API permettant à une application de créer et joindre ses propres threads reste ouverte. Le NVMe publié n’a pas livré la bibliothèque système Rust publique que la MOA se rappelle pour v0.19.0. Pour NovaWM, le mandat graphique ancien indiquait v0.18.0 ; la MOA se rappelle également v0.28.1. Le 15 novembre, elle précise ne pas disposer du tableau d’origine daté et demande de traiter v0.19.0 et v0.28.1 comme références à vérifier. [Chronologie, sources et matrice](historique.md)
