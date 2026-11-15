@@ -20,7 +20,7 @@ Les profils de diagnostic matériel inventorient ACPI et, sur QEMU, les fonction
 
 Dans le profil `materiel-lab`, un pilote utilisateur lit la carte EDU de QEMU et reçoit son interruption. La phase 2 qualifie le retrait de ses droits MMIO et IRQ sur 1, 2 et 4 vCPU. [Procédure et résultats de phase 2](docs/materiel-phase2-v0.18.0.md) La phase 3 qualifie ensuite le DMA de cette carte sous Intel VT-d sur Q35 x86_64, avec retrait confirmé et conservation des cadres en cas d’erreur de file. [Qualification VT-d et limites du modèle](docs/materiel-phase3-v0.18.0.md) La phase 4 explique le silence des fautes à chaud et vérifie la reprise PCIe, le drainage et le réemploi des cadres. [Rapport et preuves de phase 4](docs/materiel-phase4-v0.18.0.md)
 
-La conception v0.19.0 propose un pilote NVMe utilisateur pour QEMU et précise les droits à valider avant son développement. [Architecture, amorçage et arbitrages NVMe](docs/nvme-v0.19.0.md)
+Le profil expérimental `nvme-lab` identifie un contrôleur NVMe QEMU Q35 puis lit des blocs de 512 ou 4 096 octets avec un pilote isolé en Ring 3 et un domaine Intel VT-d. [Procédure, résultats et limites de la phase 1](docs/nvme-phase1-v0.19.0.md) · [Conception NVMe](docs/nvme-v0.19.0.md)
 
 ## Stockage et portabilité de NovaFS
 

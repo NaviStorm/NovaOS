@@ -1,0 +1,415 @@
+{
+  "base": "d6a84a35c15d474a2670a2f2b10eedb247cfecd8",
+  "date": "2026-11-15",
+  "suites_hote": [
+    {
+      "execution": "Darwin ARM64 natif",
+      "suites": {
+        "firmware_pages": 3,
+        "mmio_lab": 2,
+        "acpi": 16,
+        "virt_dtb": 5,
+        "pci_inventory": 19,
+        "driver_resources": 8,
+        "physical_dma": 4,
+        "format": 4,
+        "device_inventory": 1,
+        "device_lifecycle": 4
+      },
+      "total": 66
+    },
+    {
+      "execution": "Darwin x86_64 Rosetta",
+      "suites": {
+        "firmware_pages": 3,
+        "mmio_lab": 2,
+        "acpi": 16,
+        "virt_dtb": 5,
+        "pci_inventory": 19,
+        "driver_resources": 8,
+        "physical_dma": 4,
+        "format": 4,
+        "device_inventory": 1,
+        "device_lifecycle": 4
+      },
+      "total": 66
+    }
+  ],
+  "commande_hote": "python3 -B novaOS/tests/materiel_modeles.py",
+  "commande_compilation": "Depuis novaOS: RUSTC=\"$(rustup which --toolchain stable rustc)\" CARGO_TARGET_DIR=build/nvme-edu-regression/cargo rustup run stable cargo build --release --locked --target x86_64-unknown-none --features vtd-lab",
+  "commande_qemu": "Depuis novaOS: python3 -B tests/vtd_edu.py --elf build/nvme-edu-regression/cargo/x86_64-unknown-none/release/novaos --profile PROFIL --vcpus 2 --preuves DOSSIER_NEUF",
+  "q35": [
+    {
+      "profil": "fin-incertaine",
+      "vcpus": 2,
+      "sha256_elf": "f68ec3a24b44370b3d26cae3f1c91f4ae6fb534f88a78d785b99d23a209bc29a",
+      "sha256_iso": "385e9fd5fc9565e4f6eeea8f0fb54e2e50fc3471edf0654ae4c6a8735da8e213",
+      "sha256_serie": "1cd546d8854e343a5a8f1e8f23c72b97c10613aa1871a2a7ac64a3a6cdcaa535",
+      "sha256_qemu": "058194865c486e10e45b4f94869791aa1766f9eb4c3ba229bdb8093b7c5a0309",
+      "resultats": {
+        "cadres_clients": 2,
+        "retours_traduction": 1,
+        "retraits_acquittes": 0
+      },
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "qi": {
+        "sha256": "f594e055688c4a9e916f188b4404a523d8615d20502ae88c0cbfbfc0b64ae299",
+        "triplets_soumis": 2,
+        "triplets_consommes": 2,
+        "adresse_recu": 1363968,
+        "dernier_recu": 2
+      },
+      "sha256_archive_du_banc": "4a419486cec3d8806313227b1f5fb91a2f922cd98cff62a603943c49279059ed"
+    },
+    {
+      "profil": "normal",
+      "vcpus": 2,
+      "sha256_elf": "f68ec3a24b44370b3d26cae3f1c91f4ae6fb534f88a78d785b99d23a209bc29a",
+      "sha256_iso": "266c4797ba00fdc7029fa75dd874b69c481439a10ccb3816768651ed6889f95d",
+      "sha256_serie": "73906ff639c7b4be36cea5da343e52ed31f40ba96f903c2ec85fa89c8225807d",
+      "sha256_qemu": "bfcf7776fcbd51a28f3c2ee99c576827e2c9da15f10a54b2106f29ce33f2a733",
+      "resultats": {
+        "cas": [
+          "Normal",
+          "WarmWrite",
+          "WrongWrite",
+          "WrongRead",
+          "Unmapped",
+          "Other",
+          "Revoke",
+          "Death",
+          "Late",
+          "Restart"
+        ],
+        "pid": [
+          2,
+          1,
+          3,
+          4,
+          5,
+          6,
+          8,
+          7,
+          9,
+          10,
+          11,
+          12
+        ],
+        "fautes": [
+          [
+            "48",
+            "None",
+            "0x2011000",
+            "false",
+            "2",
+            "1"
+          ],
+          [
+            "48",
+            "None",
+            "0x2011000",
+            "false",
+            "2",
+            "2"
+          ],
+          [
+            "48",
+            "Some(1)",
+            "0x2030000",
+            "false",
+            "5",
+            "3"
+          ],
+          [
+            "48",
+            "Some(1)",
+            "0x2041000",
+            "true",
+            "6",
+            "4"
+          ],
+          [
+            "48",
+            "Some(1)",
+            "0x2052000",
+            "false",
+            "5",
+            "5"
+          ],
+          [
+            "48",
+            "Some(1)",
+            "0x186000",
+            "false",
+            "5",
+            "6"
+          ]
+        ],
+        "diagnostic": [
+          {
+            "cas": "Normal",
+            "epoque": 2,
+            "wait": 3,
+            "hits_iotlb": 0,
+            "frcd_valide": true,
+            "msi_intervalle_wait": 2,
+            "cpu_collecte": 0,
+            "acquittement_verifie": true
+          },
+          {
+            "cas": "Normal",
+            "epoque": 2,
+            "wait": 3,
+            "hits_iotlb": 0,
+            "frcd_valide": true,
+            "msi_intervalle_wait": 2,
+            "cpu_collecte": 0,
+            "acquittement_verifie": true
+          },
+          {
+            "cas": "WarmWrite",
+            "epoque": 3,
+            "wait": 4,
+            "hits_iotlb": 1024,
+            "frcd_valide": false,
+            "msi_intervalle_wait": 0,
+            "cpu_collecte": null,
+            "acquittement_verifie": false
+          },
+          {
+            "cas": "WrongWrite",
+            "epoque": 4,
+            "wait": 7,
+            "hits_iotlb": 0,
+            "frcd_valide": true,
+            "msi_intervalle_wait": 1,
+            "cpu_collecte": 0,
+            "acquittement_verifie": true
+          },
+          {
+            "cas": "WrongRead",
+            "epoque": 5,
+            "wait": 9,
+            "hits_iotlb": 0,
+            "frcd_valide": true,
+            "msi_intervalle_wait": 1,
+            "cpu_collecte": 1,
+            "acquittement_verifie": true
+          },
+          {
+            "cas": "Unmapped",
+            "epoque": 6,
+            "wait": 11,
+            "hits_iotlb": 0,
+            "frcd_valide": true,
+            "msi_intervalle_wait": 1,
+            "cpu_collecte": 0,
+            "acquittement_verifie": true
+          },
+          {
+            "cas": "Other",
+            "epoque": 7,
+            "wait": 13,
+            "hits_iotlb": 0,
+            "frcd_valide": true,
+            "msi_intervalle_wait": 1,
+            "cpu_collecte": 0,
+            "acquittement_verifie": true
+          }
+        ],
+        "callbacks_faute_qemu_par_page": [
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024
+        ],
+        "irq_qemu": 6,
+        "triplets_invalidation_acquittes": 22,
+        "retours_traduction_qemu": 1040
+      },
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "qi": {
+        "sha256": "3ffd7fe28e96536f1ba66a813dc5365e82ceccc365d257a8aeeef6aabc3381eb",
+        "triplets_soumis": 22,
+        "triplets_consommes": 22,
+        "adresse_recu": 1363968,
+        "dernier_recu": 22
+      },
+      "sha256_archive_du_banc": "bfb15bc7d926ec9e24fead60e2bc61df0e85a8440dfb42a9f7a14765b6396500"
+    }
+  ],
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "modele_controleur": [
+    {
+      "hote": "aarch64-apple-darwin",
+      "tests": [
+        "alias_and_invalid_tail_doorbell_rejected",
+        "inherited_queues_or_enabled_controller_refused_before_mutation",
+        "reject_untrusted_namespace_or_format",
+        "reject_wrong_serial_and_namespace_list",
+        "unknown_or_unsuccessful_completion_never_delivers",
+        "release_requires_deleted_queues_shutdown_and_reset_with_matching_epoch",
+        "timeout_blocks_late_cqe_and_release",
+        "successful_cqe_with_iommu_fault_cannot_publish_even_zero_data",
+        "read_bounds_wrap_phase_and_exact_result_both_geometries"
+      ],
+      "fichier": "novaOS/tests/nvme_controleur.rs",
+      "sha256_source_test": "f6c769fceca11e44173716e782f7a580384a9a96901b6bffc3ec530a4e2bd99d"
+    },
+    {
+      "hote": "x86_64-apple-darwin",
+      "tests": [
+        "alias_and_invalid_tail_doorbell_rejected",
+        "inherited_queues_or_enabled_controller_refused_before_mutation",
+        "release_requires_deleted_queues_shutdown_and_reset_with_matching_epoch",
+        "reject_untrusted_namespace_or_format",
+        "successful_cqe_with_iommu_fault_cannot_publish_even_zero_data",
+        "reject_wrong_serial_and_namespace_list",
+        "unknown_or_unsuccessful_completion_never_delivers",
+        "timeout_blocks_late_cqe_and_release",
+        "read_bounds_wrap_phase_and_exact_result_both_geometries"
+      ],
+      "fichier": "novaOS/tests/nvme_controleur.rs",
+      "sha256_source_test": "f6c769fceca11e44173716e782f7a580384a9a96901b6bffc3ec530a4e2bd99d"
+    }
+  ],
+  "invites_classiques": [
+    {
+      "architecture": "aarch64",
+      "sha256_elf": "cc43230cb0dcfaaee9df8f45520618d53a2a630d92a88ddff3d3d57c7a089000",
+      "ram_mio": 256,
+      "ipc-test": {
+        "cas": [
+          "T01",
+          "T02",
+          "T03",
+          "T04",
+          "T05/T06",
+          "T07/T15",
+          "T06/T08/T18",
+          "T10",
+          "lots",
+          "T11",
+          "T12/T18",
+          "T04/T11",
+          "T12",
+          "T13",
+          "T16",
+          "T18",
+          "T14"
+        ],
+        "nombre": 17,
+        "sha256_serie": "69983f6612e595c70830750c8d3389c23af4d63ce28896bc8cbf64bc628eb231"
+      },
+      "storage-test": {
+        "sha256_serie": "1501f592ef5aa4b30c3ca23726041f111bc36fb327b109d87f7036acb1f5f609",
+        "sorties_processus": [
+          "PROC pid=1 niveau=EL0 pc=0x4001cc sortie=5",
+          "PROC pid=2 niveau=EL0 pc=0x4000e0 sortie=70",
+          "PROC pid=3 niveau=EL0 pc=0x4001cc sortie=11",
+          "PROC pid=5 niveau=EL0 pc=0x4001cc sortie=0",
+          "PROC pid=6 niveau=EL0 pc=0x4001cc sortie=0",
+          "PROC pid=4 niveau=EL0 pc=0x4001d8 sortie=0",
+          "PROC pid=8 niveau=EL0 pc=0x4001cc sortie=0",
+          "PROC pid=7 niveau=EL0 pc=0x4001d8 sortie=0"
+        ],
+        "compteurs": [
+          "STOCKAGE arret service=2 resultats=Exit(70),Exit(11)",
+          "STOCKAGE session=2 service=4 client=5 INFO volumes=0 FIN confirmee",
+          "STOCKAGE seconde session service=4 client=6",
+          "STOCKAGE arret service=4 resultats=Exit(0),Exit(0)",
+          "STOCKAGE cadres allocations=161 pic=55 blocs_repos=3 buddy_octets=10304",
+          "STOCKAGE trafic tours=513 ns=30144000",
+          "IPC hist type=aller_retour n=513 p50=57344 p95=65536 p99=81920 max=327008",
+          "STOCKAGE campagne tours=513 ns=36646000 hz=62500000",
+          "STOCKAGE publication annulee budget=53",
+          "STOCKAGE validation OK"
+        ]
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "sha256_elf": "93b5f87286d0db13a5750f89898aa91244394015471a204693603e6e80e34170",
+      "ram_mio": 256,
+      "ipc-test": {
+        "cas": [
+          "T01",
+          "T02",
+          "T03",
+          "T04",
+          "T05/T06",
+          "T07/T15",
+          "T06/T08/T18",
+          "T10",
+          "lots",
+          "T11",
+          "T12/T18",
+          "T04/T11",
+          "T12",
+          "T13",
+          "T16",
+          "T18",
+          "T14"
+        ],
+        "nombre": 17,
+        "sha256_serie": "204c5340acda67c313bd55e1d2075090498abfdb20ae8a135812f0c6ca93993d"
+      },
+      "storage-test": {
+        "sha256_serie": "0d22ec80c652ce603fff0ed9045c11cb481e20a3af4a6bb0f1d9453153560d6d",
+        "sorties_processus": [
+          "PROC pid=1 niveau=Ring3 pc=0x40019c sortie=5",
+          "PROC pid=2 niveau=Ring3 pc=0x4000b7 sortie=70",
+          "PROC pid=3 niveau=Ring3 pc=0x40019c sortie=11",
+          "PROC pid=5 niveau=Ring3 pc=0x40019c sortie=0",
+          "PROC pid=6 niveau=Ring3 pc=0x40019c sortie=0",
+          "PROC pid=4 niveau=Ring3 pc=0x4001a4 sortie=0",
+          "PROC pid=8 niveau=Ring3 pc=0x40019c sortie=0",
+          "PROC pid=7 niveau=Ring3 pc=0x4001a4 sortie=0"
+        ],
+        "compteurs": [
+          "STOCKAGE arret service=2 resultats=Exit(70),Exit(11)",
+          "STOCKAGE session=2 service=4 client=5 INFO volumes=0 FIN confirmee",
+          "STOCKAGE seconde session service=4 client=6",
+          "STOCKAGE arret service=4 resultats=Exit(0),Exit(0)",
+          "STOCKAGE cadres allocations=161 pic=55 blocs_repos=3 buddy_octets=9280",
+          "STOCKAGE trafic tours=513 ns=17022701",
+          "IPC hist type=aller_retour n=513 p50=30649 p95=40865 p99=61298 max=307290",
+          "STOCKAGE campagne tours=513 ns=18591080 hz=1002308593",
+          "STOCKAGE publication annulee budget=53",
+          "STOCKAGE validation OK"
+        ]
+      }
+    }
+  ],
+  "applications_correctifs_0166": {
+    "controle": "patch -p1 -F0 --batch --forward en copie privée, y compris les sondes du profil diagnostic-stockage",
+    "profils": {
+      "regression": 6,
+      "sans": 7,
+      "sonde": 13,
+      "coupe": 10,
+      "defauts": 11,
+      "course": 9,
+      "utm": 8,
+      "utm-sonde": 14,
+      "utm-coupe": 11,
+      "diagnostic-stockage": 13
+    }
+  }
+}
