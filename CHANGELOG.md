@@ -1,5 +1,12 @@
 # Journal des versions
 
+## NovaOS v0.20.0 — Intégration source de la phase 1 Rust et threads
+
+- La bibliothèque Rust `nova-system` 0.1.0 expose les capacités IPC, le processus, le tas, l’horloge et les opérations de fichiers et de répertoires délégués. Les applications Rust `no_std` utilisent la porte native v1 et le chargeur ELF statique existant. [API Rust](novaOS/libs/nova-system/src/lib.rs) · [ABI](novaOS/docs/abi.md)
+- Neuf appels ajoutent aux processus admis la création de threads dans le même espace mémoire, la terminaison, la jonction, le détachement, l’annulation coopérative, le TLS expérimental et l’attente/notification sur mot atomique. Le témoin de phase 1, compilé hors dépôt, a exercé ces interfaces sur QEMU AArch64 et x86_64 à 1, 2 et 4 vCPU. [Contrat et résultats de phase 1](novaOS/docs/rust-threads-v0.20.0.md)
+- Le numéro 0.20.0 des manifestes et bannières identifie cette phase. Les travaux suivants et la clôture de la version requièrent une nouvelle décision MOA/MOE. [Qualification finale de la phase 1](novaOS/docs/qualification-rust-threads-v0.20.0.md)
+- Les ISO de développement utilisent VirtIO-blk et le polling par défaut. L’archive installable UTM AArch64 porte la version v0.17.0 et le moteur NovaFS la version v0.9.13 au format P9. [Distribution](distribution/README.md)
+
 ## NovaOS v0.19.0 — Pilote NVMe isolé sur Q35
 
 - Le pilote utilisateur NVMe identifié par le profil `nvme-lab` accède au namespace virtuel par des capacités de lecture, d’écriture et de synchronisation distinctes. Le courtier vérifie la complétion, les bornes du bail et l’état du domaine Intel VT-d. [Contrat matériel](novaOS/docs/nvme-phase2-contrats.md)

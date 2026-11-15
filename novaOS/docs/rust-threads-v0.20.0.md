@@ -1,6 +1,6 @@
 # Bibliothèque système Rust et threads utilisateur · v0.20.0, phase 1
 
-Cette branche de développement part de la fusion documentaire `2bcb64575e396790089e3078d443b63d69ac05d7`. Le noyau publié porte la version v0.19.0. Le numéro de la bibliothèque source est 0.1.0, celui de la porte native est 1 et celui du protocole fichier est 2. L’admission du témoin au catalogue est propre à la construction de qualification. [Mandat et compatibilité](reconciliation-v0300/contrat-rust-threads.md)
+La première campagne est partie de la fusion documentaire `2bcb64575e396790089e3078d443b63d69ac05d7` et du noyau v0.19.0. Les manifestes du candidat final portent 0.20.0 pour la phase 1. La bibliothèque source porte le numéro 0.1.0, la porte native le numéro 1 et le protocole fichier le numéro 2. L’admission du témoin au catalogue est propre à la construction de qualification. [Qualification finale et portée de la fusion](qualification-rust-threads-v0.20.0.md) · [Mandat et compatibilité](reconciliation-v0300/contrat-rust-threads.md)
 
 ## Ce que réutilise la phase 1
 
@@ -132,4 +132,4 @@ python3 tests/nvme_qemu.py --elf target/x86_64-unknown-none/release/novaos \
     --profil lecture --vcpus 2 --secteur 512
 ```
 
-La qualification couvre QEMU à 1, 2 et 4 vCPU. UTM, le matériel physique, l’endurance IPC et les campagnes étendues de stockage restent hors de cette phase. Le modèle de distribution continue d’exiger une admission au catalogue. La fusion du développement v0.20.0 requiert une nouvelle décision MOA/MOE.
+La première campagne couvre QEMU à 1, 2 et 4 vCPU. UTM, le matériel physique, l’endurance IPC et les campagnes étendues de stockage restent hors de cette phase. Le modèle de distribution exige une admission au catalogue. La MOA/MOE a ensuite autorisé la fusion de la seule phase 1 après les contrôles finaux. La version reste ouverte. [Qualification complémentaire](qualification-rust-threads-v0.20.0.md) · [Décision ARC-023](reconciliation-v0300/decisions.md)

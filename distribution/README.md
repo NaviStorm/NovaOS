@@ -1,6 +1,6 @@
 # Distribution NovaOS
 
-Les sources NovaOS v0.19.0 construisent les noyaux et les ISO de développement AArch64 et x86_64. [Qualification de la version source](../novaOS/docs/nvme-phase3-v0.19.0.md)
+Les noyaux et les ISO de développement AArch64 et x86_64 construits depuis ces sources affichent 0.20.0, numéro de l’intégration source de la phase 1. Les images ordinaires utilisent VirtIO-blk avec polling. Le banc de qualification Rust ajoute son application externe au catalogue par la feature explicite `thread-probe`. [Qualification de la phase 1](../novaOS/docs/qualification-rust-threads-v0.20.0.md)
 
 L’archive UTM distribuée fournit l’installateur NovaOS v0.17.0 AArch64 pour UTM 5.0.8 à un vCPU avec le shell de scripts, l’éditeur `vi` et NovaFS v0.9.13 P9. L’archive contient le support QCOW2 en lecture seule et le firmware expérimental propre à chaque VM. [Télécharger l’image](images/novaos-0.17.0-utm-aarch64.tar.gz) · [Créer la VM et installer NovaOS](../novaOS/docs/fusion-smp-v0.17.0.md#installation-dans-utm)
 

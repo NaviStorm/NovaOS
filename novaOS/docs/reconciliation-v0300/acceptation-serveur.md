@@ -31,7 +31,19 @@ Préparer trois images système identifiées. **A** est la version initialement 
 | S15 · Restaurer les données | Depuis le secours autorisé, restaurer la sauvegarde S11 sur une nouvelle cible isolée. Vérifier archive, état de politique, identités et moyens de déchiffrement avant d’ouvrir les sessions. Exercer aussi une archive altérée et un moyen de déchiffrement manquant. | Les octets sont identiques au manifeste du point sauvegardé. La source est préservée. Une archive corrompue, une clé manquante ou l’impossibilité d’établir la fraîcheur exigée provoque un refus explicite sur le périmètre affecté. | Non exécuté | Non exécuté |
 | S16 · Vérifier les permissions restaurées | Redémarrer sur la cible restaurée. Rejouer les accès d’Alice, Boris, du rôle administratif, du service, de `nsh` et de l’enfant. Réessayer le handle expiré et l’octroi révoqué après S11. | Le propriétaire légitime retrouve l’original par autorisation de session. L’original et ses descendants restent protégés, la copie garde sa classification, les droits retirés restent inactifs. Comparer avec la politique attendue, puis arrêter et rouvrir la session avant le verdict final. | Non exécuté | Non exécuté |
 
-**Verdict de publication.** Deux résultats favorables pour chacun des seize critères, soit **32 résultats d’acceptation**, sont nécessaires. Relier chaque résultat à l’image, au profil et à sa preuve. Une étape manquante, interrompue ou en échec laisse le candidat non qualifié. Les fonctions obligatoires hors du parcours principal conservent leurs contrôles spécifiques, notamment le SDK et les threads, les commandes et la TUI, les quotas, la gestion applicative et la récupération. Vérifier que les guides permettent à un utilisateur et à un administrateur de reproduire les usages déclarés. [Contrat Rust et threads](contrat-rust-threads.md) · [Autorisations](contrat-autorisations.md) · [Limites de P9](dependances-p9.md)
+## Compilation native depuis nsh
+
+Le §15 du mandat de qualification finale v0.20.0 ajoute trois épreuves bloquantes pour la première stable serveur v0.30.0. Dans chaque invité, ouvrir une session `nsh` sur le candidat et partir des sources seules des trois programmes témoins. Exécuter les compilateurs, l’éditeur de liens et les outils de construction dans NovaOS avec les bibliothèques livrées. Lancer dans cette session chaque binaire obtenu. Consigner les versions des outils, les commandes de compilation et de liaison, l’empreinte du binaire et le résultat attendu et observé à l’exécution. [Décision ARC-022](decisions.md)
+
+| Langage | Opérations à observer dans la session | QEMU x86_64 | QEMU AArch64 |
+|---|---|---|---|
+| Rust | Construire le projet avec Cargo natif, relever l’invocation du compilateur Rust et de l’éditeur de liens, puis exécuter le programme produit. | Non exécuté | Non exécuté |
+| C | Compiler le source C en objet avec le compilateur C, lier l’objet avec les bibliothèques nécessaires, puis exécuter le programme produit. | Non exécuté | Non exécuté |
+| C++ | Compiler le source C++ en objet avec le compilateur C++, lier l’objet avec les bibliothèques nécessaires, puis exécuter le programme produit. | Non exécuté | Non exécuté |
+
+## Verdict de publication
+
+La publication exige **32 résultats favorables** pour le parcours S01 à S16 et **six résultats favorables** pour la compilation native (trois langages sur deux architectures). Relier chaque résultat à l’image, au profil et à sa preuve. Une étape ou une épreuve de compilation manquante, interrompue ou en échec laisse le candidat non qualifié. Les fonctions obligatoires hors du parcours principal conservent leurs contrôles spécifiques, notamment le SDK et les threads, les commandes et la TUI, les quotas, la gestion applicative et la récupération. Vérifier que les guides permettent à un utilisateur et à un administrateur de reproduire les usages déclarés. [Contrat Rust et threads](contrat-rust-threads.md) · [Autorisations](contrat-autorisations.md) · [Limites de P9](dependances-p9.md)
 
 ## Qualification proportionnée au changement
 

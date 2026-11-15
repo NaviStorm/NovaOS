@@ -84,6 +84,6 @@ Les binaires de démonstration v0.6.0 utilisant `int 0x81` ou `svc #0x51` doiven
 
 Sur le port SCREEN, FRESH_LINE (6) termine la ligne si le dernier texte du terminal la laisse ouverte. CLEAR_SCREEN (7) efface l’écran et place le curseur en haut à gauche. L’entrée en écran alternatif conserve l’état de ligne de l’écran principal. À la sortie, le terminal restaure cet état pour une reprise à la bonne ligne. Ces deux nouvelles actions exigent les droits INPUT, OUTPUT et EDIT du propriétaire du terminal et un argument nul.
 
-## Extension expérimentale de la branche v0.20.0
+## Extension expérimentale de la phase 1 de v0.20.0
 
 Les sélecteurs natifs `0x10060` à `0x10068` couvrent les membres d’un processus, leur TLS et leurs attentes. Le noyau valide désormais le retour utilisateur sur la pile du membre appelant. [Contrat, droits et qualification](rust-threads-v0.20.0.md#contrat-des-appels-natifs)

@@ -6,16 +6,16 @@
 
 | Question | Document de référence |
 |---|---|
-| Quelles fonctions faudra-t-il démontrer, lesquelles manquent en v0.19.0 et de quoi dépendent-elles ? | [Matrice des exigences serveur, des commandes et des profils applicatifs](exigences-serveur.md) |
-| Comment la MOA pourra-t-elle accepter ou refuser un candidat ? | [Seize étapes de bout en bout, sur les deux architectures, et qualification selon le risque](acceptation-serveur.md) |
-| Quel est le périmètre de la phase 1 v0.20.0 autorisée sur sa branche après fusion ? | [Bibliothèque système Rust et cycle de vie des threads](contrat-rust-threads.md) |
+| Quelles fonctions le serveur devra-t-il démontrer et de quoi dépendent-elles ? | [Matrice des exigences serveur, des commandes et des profils applicatifs](exigences-serveur.md) |
+| Comment la MOA pourra-t-elle accepter ou refuser un candidat ? | [Seize étapes de bout en bout](acceptation-serveur.md) et [trois épreuves de compilation native sur les deux architectures](acceptation-serveur.md#compilation-native-depuis-nsh) |
+| Quel est le périmètre de la phase 1 v0.20.0 ? | [Bibliothèque système Rust et cycle de vie des threads](contrat-rust-threads.md) |
 | Comment un enfant de nsh accède-t-il à une donnée surprotégée et que devient ce droit après restauration ? | [Identités, délégations et garde des clés](contrat-autorisations.md) · [Limites et options du stockage P9](dependances-p9.md) |
 | Quels numéros et choix attendent encore une validation MOA/MOE ? | [Répartition proposée et dépendances critiques](proposition.md) |
 | Pourquoi les anciens documents plaçaient-ils NovaWM avant la stable ? | [Historique et sources](historique.md) · [Proposition antérieure figée](https://github.com/NaviStorm/NovaOS/blob/29049a50758f73d472f03ad733bcb3eac74b5259/novaOS/docs/reconciliation-v0300/proposition.md) |
 
-La dernière publication de sources reste NovaOS v0.19.0 au commit `1b3bb5a8df767a09fa0671bcfd95e6e734693a3a`. La distribution UTM AArch64 demeure v0.17.0 et NovaFS v0.9.13 P9. Les contrôles de cette mission portent sur les documents, leurs liens, les contraintes et la traçabilité des verdicts à produire. Le serveur stable reste à développer et à qualifier. Le mandat suivant autorise la fusion du dossier dans `main`, puis la phase 1 de la bibliothèque et des threads sur `codex/rust-system-0200`. Le mandat ne publie aucun binaire v0.20.0. [Distribution](../../../distribution/README.md)
+La réconciliation initiale portait sur les sources NovaOS v0.19.0 au commit `1b3bb5a8df767a09fa0671bcfd95e6e734693a3a`. Ses vérifications concernaient les documents, leurs liens et les verdicts à produire. Depuis, la phase 1 de v0.20.0 a ajouté la bibliothèque Rust native et les threads utilisateur. L’archive distribuée pour UTM AArch64 porte la version v0.17.0 et utilise NovaFS v0.9.13 P9. [Qualification de phase 1](../rust-threads-v0.20.0.md) · [Distribution](../../../distribution/README.md)
 
-## Les versions effectivement publiées
+## Versions sources publiées à la date de la réconciliation initiale
 
 | Version et commit de fusion | Réalisation vérifiée dans la source | Qualification disponible et limites |
 |---|---|---|
@@ -23,7 +23,7 @@ La dernière publication de sources reste NovaOS v0.19.0 au commit `1b3bb5a8df76
 | v0.18.0 · [386e53da7e9abb7ce1ef5e32bd64f5c667c74bb7](https://github.com/NaviStorm/NovaOS/commit/386e53da7e9abb7ce1ef5e32bd64f5c667c74bb7) | Découverte ACPI/PCIe, ressources MMIO/IRQ du pilote EDU isolé, domaine expérimental Intel VT-d et retrait conditionnel. [Découverte](../../kernel/src/hardware/discovery.rs) · [Domaine VT-d](../../kernel/src/hardware/vtd_lab.rs) | Attributions et fautes vérifiées sur les topologies d’essai ; la garantie de retrait exige l’invalidation confirmée. Portée distincte d’une HAL universelle AMD/ARM et d’un poste physique prêt à installer. [Fusion matérielle](../fusion-materiel-v0.18.0.md) |
 | v0.19.0 · [1b3bb5a8df767a09fa0671bcfd95e6e734693a3a](https://github.com/NaviStorm/NovaOS/commit/1b3bb5a8df767a09fa0671bcfd95e6e734693a3a) | Pilote NVMe Ring 3, capacités READ/WRITE/FLUSH, courtier, domaine VT-d et montage NovaFS P9. F1 puis publication de l’ancre puis F2 avant confirmation. [Pilote](../../user/nvme_driver.rs) · [Contrat du service](../nvme-phase2-service-bloc.md) | Q35 x86_64 sur namespace virtuel jetable, secteurs de 512 et 4 096 octets. Phase 2 : 45 scénarios, 16 coupures. Phase 3 : cinq scénarios, 12 démarrages, cinq remontages RO. Portée source et profil NVMe explicite. L’archive v0.17.0 conserve son propre numéro. [Qualification finale](../nvme-phase3-v0.19.0.md) · [Versions et composants](../validation/nvme-phase3-compatibilite.json) |
 
-Les arbres Git de l’ABI native (`a70d5f23ae91211dd7a54c429e723f5157600e58`) et de NovaFS (`3379ccd023e821e912130c7413113fe7546070cc`) correspondent à ceux de v0.18.0. L’empreinte des images distribuées est également conservée. Les rôles du micro-noyau, des services, des pilotes et du moteur portable restent distincts. [Contrat commun](../../../AGENTS.md)
+En v0.19.0, les arbres Git de l’ABI native (`a70d5f23ae91211dd7a54c429e723f5157600e58`) et de NovaFS (`3379ccd023e821e912130c7413113fe7546070cc`) correspondent à ceux de v0.18.0. L’empreinte des images distribuées est également conservée. Les rôles du micro-noyau, des services, des pilotes et du moteur portable restent distincts. [Contrat commun](../../../AGENTS.md)
 
 ## Registre, dépendances et priorités
 
