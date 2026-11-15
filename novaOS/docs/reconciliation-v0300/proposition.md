@@ -34,6 +34,8 @@ La phase 1 a associé bibliothèque Rust et fondations des threads applicatifs, 
 | v0.29.0 | Candidat d’intégration, durcissement et manuels. | Rejouer les parcours complets sur les binaires du candidat. Relier chaque écart aux preuves, au propriétaire de sa correction et aux instructions d’exploitation. Éprouver les procédures depuis les guides utilisateur et administrateur sur deux installations indépendantes. |
 | v0.30.0 | Première stable serveur texte, périmètre approuvé. | Exiger les 16 étapes et les trois épreuves de compilation native depuis `nsh` sur chacune des deux architectures, les autres contrôles de la matrice et un dossier de distribution identifiant images, limites, mises à jour et secours. La décision de publication portera sur le candidat effectivement qualifié. |
 
+**Administration locale avant la stable.** La décision MOE ARC-025 impose de réaliser et qualifier l’ergonomie de `service` depuis `nsh` sur les deux architectures. L’aide, les noms, l’inventaire du catalogue actif et les exemples de restriction doivent être utilisables en exploitation. Le lot peut accompagner les outils d’administration en mode texte. Son numéro intermédiaire reste ouvert. [Exigences de la commande](exigences-serveur.md#ergonomie-de-la-commande-service) · [Recette serveur](acceptation-serveur.md#commande-service-dans-nsh)
+
 ## Dépendances critiques et décisions restantes
 
 | À résoudre | Quand et pourquoi | Conséquence si la preuve manque |

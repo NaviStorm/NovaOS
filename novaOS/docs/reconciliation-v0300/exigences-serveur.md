@@ -56,6 +56,32 @@ Le langage présent couvre variables, guillemets, scripts UTF-8, conditions, bou
 
 La MOE propose trois étapes vérifiables. Spécifier d’abord les deux extrémités d’un pipe, sa capacité bornée, la contre-pression, EOF, la fermeture sur erreur et le code rendu par une chaîne de commandes. Définir ensuite la redirection d’entrée, de sortie et d’erreur dans une racine déléguée, l’ouverture sans écrasement et les erreurs de publication. Pour les jobs, définir lancement en arrière-plan, attente, interruption autorisée et fin de session. Tester une chaîne dont le lecteur s’arrête, une cible de redirection refusée et un job qui poursuit une tâche pendant qu’une session se ferme. Les handles, la mémoire et l’autorité associés doivent avoir une issue observable dans chaque cas.
 
+## Ergonomie de la commande service
+
+**Exigence ARC-025, à qualifier avant v0.30.0.** Depuis `nsh`, `service --help` et `service help` doivent afficher la même aide complète avec les verbes publics, leur syntaxe, leurs arguments et des exemples. Chaque sous-commande doit accepter `--help` sans cible ni effet sur le système. Cela couvre aussi `service capabilities restrict --help` et `service capabilities restore --help`. La commande doit distinguer une syntaxe incorrecte d’un service inconnu, citer l’élément en cause et indiquer l’aide pertinente. Un nom ou un ID valide ne confère aucun droit supplémentaire.
+
+`service list` doit donner une ligne par service enregistré dans le profil actif, y compris les services arrêtés, désactivés ou en attente. Chaque ligne indique l’ID numérique, le nom canonique, l’état courant et la politique de démarrage automatique enregistrée (activée ou désactivée). Une politique impossible à relire doit être signalée comme telle. Toute sous-commande qui cible un service accepte indifféremment son nom canonique ou l’identifiant numérique historique, avec les mêmes droits, effets et codes de retour.
+
+| ID | Nom canonique vérifié dans les sources v0.22.0 | Présence dans le profil installé |
+|---:|---|---|
+| 1 | `clock` | Catalogue de base |
+| 2 | `tmp-health` | Catalogue de base |
+| 9 | `storage-info` | Catalogue de base |
+| 10 | `cache` | Catalogue de base |
+| 16 | `journal` | Profil installé avec journal |
+
+Le profil de qualification de la supervision enregistre aussi les ID 3 à 8. Le banc du cache enregistre les ID 11 à 15. Ces sondes n’ont pas de nom individuel dans la table des noms actuelle. Le libellé générique `sonde` ne permet pas de les sélectionner par nom. Leur présence dans la liste doit suivre le manifeste actif. Toute correspondance canonique future devra être déclarée et vérifiée avant publication. [Déclarations](../../user/services/catalog.rs) · [Sélection du manifeste](../../user/service_manager.rs) · [Noms canoniques](../../user/services/protocol.rs)
+
+**Exemples à fournir dans l’aide.** Sur le profil avec journal, la première commande consulte les capacités de 16. Les deux suivantes demandent à une session de maintenance de retirer puis de rétablir le droit de stockage. Un changement acquitté s’applique à la prochaine incarnation du service. [Contrat des restrictions](../capacites-services-v0.22.0.md)
+
+```text
+service capabilities journal
+service capabilities restrict journal JOURNAL_STORE
+service capabilities restore 16 JOURNAL_STORE
+```
+
+**État des sources auditées.** Les deux aides générales partagent déjà un synopsis. Les cinq noms ci-dessus et les ID numériques sont résolus par le client. La liste affiche le nom, l’ID et l’état. L’aide par sous-commande, les exemples dans l’aide et la colonne de démarrage restent à réaliser. [Commande actuelle](../../../components/shell/services.rs) · [Recette prévue](acceptation-serveur.md#commande-service-dans-nsh)
+
 ## Contrats d’isolation du réseau à qualifier
 
 | Frontière proposée | Autorité et dépendances | Preuve à obtenir |
