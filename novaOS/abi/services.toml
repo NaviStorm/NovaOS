@@ -1,0 +1,28 @@
+# Les modules de trame possèdent déjà les numéros du protocole.
+# Chaque groupe pointe sur la fonction qui interprète ou achemine ces opérations.
+[fichiers]
+source = "abi/files.rs"
+groups = [
+  ["user/novafs/files.rs#dispatch", "MOUNT INFO OPEN READ WRITE SYNC CLOSE"],
+  ["user/novafs/files/namespace.rs#directory_request", "PATH_FRAGMENT DIR_OPEN LOOKUP_AT OPEN_AT READDIR MKDIR_AT RMDIR UNLINK_AT RENAME_AT STAT DIR_CLOSE CHDIR GETCWD"],
+  ["user/novafs/files.rs#serve", "DELEGATE STAGE"],
+  ["user/novafs/files/selected.rs#execute", "CREATE_NEW MOVE_SELECTED TOUCH_SELECTED PUBLISH_COPY COPY_RANGE"],
+  ["user/novafs/files.rs#read_page", "READ_PAGE"],
+]
+[fichiers.api]
+READ = "File::read Session::read_view"
+CLOSE = "File::close"
+DIR_CLOSE = "Directory::close"
+WRITE = "File::write"
+SYNC = "File::sync"
+OPEN_AT = "Session::open"
+DIR_OPEN = "Session::directory"
+READDIR = "Directory::read_fragment Session::read_directory_view"
+
+[bloc]
+source = "abi/block.rs"
+groups = [["user/storage/disk.rs#driver", "INFO READ WRITE FLUSH CLOSE DISCOVER"]]
+
+[edition]
+source = "../components/libraries/vi_wire.rs"
+groups = [["../components/shell/vi.rs#reply", "INFO READ KEY BEGIN NAME TEXT SAVE FIN VIEW LOCATE CLEAR_TAIL VERIFY"]]

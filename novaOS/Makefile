@@ -6,7 +6,14 @@ build: kernel
 	sh scripts/iso.sh
 
 # Homebrew peut fournir un rustc distinct de celui qui possède la cible bare-metal.
-kernel:
+.PHONY: abi-generate abi-check
+abi-generate:
+	python3 scripts/generate_abi.py
+
+abi-check:
+	python3 scripts/generate_abi.py --check
+
+kernel: abi-check
 	. scripts/target.sh && RUSTC="$$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$$rust_target"
 
 ifneq ($(strip $(IMAGE)),)
