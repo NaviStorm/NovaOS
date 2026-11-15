@@ -509,6 +509,17 @@ rights = "offre de la cible et droit de suivi, thread principal"
 errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REFUSED","CANCELLED"]
 handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
 
+[call.SERVICE_PROCESS]
+number = 0x1007b
+module = "instances"
+group = "processus supervisés"
+since = "0.21.0 phase 3"
+arguments = "opération, *mut 16 mots little-endian, 128 (NOW et DRAIN : 0, 0)"
+result = "START : droit local avec PID et identité complète ; POLL : résultat collecté ; KILL : retrait de la famille ; NOW : millisecondes monotones ; DRAIN : arrêt du gestionnaire et confirmation du retrait des vues P9"
+rights = "thread principal du gestionnaire lié par le démarrage P9 ; droit local du processus pour POLL et KILL ; seul le client initial peut demander DRAIN"
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REVOKED","CLOSED","LIMIT","NO_MEMORY","WOULD_BLOCK","REFUSED"]
+handler = "kernel/src/sched/process/ipc/service.rs#process"
+
 [call.TMP_CAP]
 number = 0x10076
 module = "tmp"

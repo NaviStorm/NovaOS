@@ -145,6 +145,12 @@ impl<const N: usize> Registry<N> {
             .map(|e| e.app)
     }
 
+    // Une entrée subsiste en nettoyage jusqu'à restitution de la dernière pile,
+    // même si le descripteur du principal a déjà perdu son espace utilisateur.
+    pub fn contains_app(&self, apps: core::ops::RangeInclusive<u64>) -> bool {
+        self.entries.iter().flatten().any(|e| apps.contains(&e.app))
+    }
+
     pub fn stop(&mut self, key: Instance) -> bool {
         self.advance(key, Phase::Active, Phase::Stopping)
     }

@@ -5,6 +5,7 @@ use crate::abi::*;
 pub(crate) mod lifecycle;
 pub(super) use bulk::features;
 mod spawn;
+pub(super) mod service;
 pub(crate) mod instance_probe;
 pub(crate) mod tmp_probe;
 #[cfg(feature = "thread-probe")]
@@ -901,16 +902,27 @@ pub(super) fn launch_block_identifie<const N: usize>(
     volume: Option<[u8; 16]>,
 ) -> Res<[Child; N]> {
     assert!(matches!(N, 3..=5));
-    let profile = mode;
-    let mode = storage::cli_mode(profile);
     let private = crate::hardware::block::private_frames().map_err(|_| DENIED)?;
     let _guard = Guard::new();
+    publish_block_group(images, key, mode, volume, &private)
+}
+
+// Le propriétaire tient la garde de publication de l’ensemble. Le relevé des
+// cadres DMA a déjà libéré le mutex du périphérique avant cette garde.
+fn publish_block_group<const N: usize>(
+    images: [(&'static [u8], u32); N],
+    key: u64,
+    profile: u64,
+    volume: Option<[u8; 16]>,
+    private: &[u64; 24],
+) -> Res<[Child; N]> {
+    let mode = storage::cli_mode(profile);
     let group = launch(images)?;
     let (server, consumer, device) = (group[0].0, group[1].0, group[2].0);
     let configured = with(|s| {
         for pid in [device, server, consumer] {
             let space = s.processes.get(pid).space.as_ref().unwrap();
-            if !heap::with_pages(|m| Ok(space.audit_driver(m, &private))).unwrap() {
+            if !heap::with_pages(|m| Ok(space.audit_driver(m, private))).unwrap() {
                 return Err(DENIED);
             }
         }
@@ -926,7 +938,7 @@ pub(super) fn launch_block_identifie<const N: usize>(
             (device, [output, mode, key, 0]),
             (
                 consumer,
-                [read_reply, profile, if N == 3 { key } else { 0 }, 0],
+                [read_reply, if matches!(profile, 75 | 76 | 77) { mode } else { profile }, if N == 3 { key } else { 0 }, 0],
             ),
         ] {
             let space = s.processes.get(pid).space.as_ref().unwrap();
@@ -1037,7 +1049,7 @@ pub(super) fn launch_block_identifie<const N: usize>(
             .find(|t| t.owner == Some(device))
             .unwrap();
         pilote.cpu_mask = 1;
-        if matches!(profile, 41 | 42) {
+        if matches!(profile, 41 | 42 | 75 | 76 | 77) {
             tmp::install(s, consumer, group[3].0)?;
         }
         if !crate::hardware::block::attach(device.number, key) {

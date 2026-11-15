@@ -33,6 +33,8 @@ Préparer trois images système identifiées. **A** est la version initialement 
 
 ## Temporaire privé dans le parcours applicatif
 
+La [supervision de phase 3](../services-phase3-v0.21.0.md) fournit un essai partiel de S07 en QEMU avec un catalogue embarqué, un client local et un service d’information de stockage. Le parcours serveur complet exige encore l’installation depuis une distribution admise, la tâche d’entretien, les droits d’exploitation de la version serveur et la recette sur le candidat v0.30.0.
+
 Pour S03, S04 et S07, démarrer deux instances du même manifeste sur P9 et vérifier leur confinement par capacité. Contrôler un travailleur avec puis sans délégation, la destruction avec un handle ouvert et la reprise avec une nouvelle époque après coupure. Relire les objets publics avec un outil indépendant. Pour les bancs historiques sur P8, contrôler séparément l’absence d’écriture lors d’une lecture et le refus explicite de P8 par le lanceur P9. Les essais v0.21.0 portent sur deux profils invités QEMU. S03, S04 et S07 devront encore être exercés avec les identités utilisateur, les politiques et les binaires du candidat serveur v0.30.0. [Contrat du temporaire](../contrat-tmp-prive-v0.21.0.md) · [Résultats de la phase 2](../tmp-prive-phase2-v0.21.0.md)
 
 ## Compilation native depuis nsh

@@ -26,6 +26,10 @@ fn main() {
         "demo",
         "instance_manager",
         "instance_sample",
+        "service_manager",
+        "system_service",
+        "service_control_test",
+        "storage/managed",
         "tmp_sample",
         "devices",
         "edu",
@@ -58,7 +62,7 @@ fn main() {
         if name.starts_with("nvme_") && !nvme_lab {
             continue;
         }
-        let file_client = matches!(name, "storage/fileclient" | "tmp_sample");
+        let file_client = matches!(name, "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "service_control_test" | "storage/managed");
         let linker = format!(
             "link-arg=-T{}",
             user.join(if file_client {
@@ -93,6 +97,12 @@ fn main() {
         if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_EQUITE_LAB").is_some() {
             rust.args(["--cfg", "ipc_equite_lab"]);
         }
+        // Ces ELF de services sont incorporés tels quels dans l'image noyau.
+        // La machine invitée ne charge que PT_LOAD. Les sections DWARF et les
+        // tables de symboles n'ont pas besoin de rester résidentes au démarrage.
+        if matches!(name, "service_manager" | "system_service" | "service_control_test" | "storage/managed") {
+            rust.args(["-C", "strip=symbols"]);
+        }
         if compact {
             rust.args([
                 "-C",
@@ -108,7 +118,14 @@ fn main() {
         } else {
             rust.args(["-C", "link-arg=--oformat=binary"]);
         }
-        let source = if name == "nvme_rw_driver" { "nvme_driver" } else { name };
+        let source = match name {
+            "nvme_rw_driver" => "nvme_driver",
+            "storage/managed" => {
+                rust.args(["--cfg", "service_managed"]);
+                "storage/service"
+            }
+            other => other,
+        };
         let ok = rust
             .arg(user.join(format!("{source}.rs")))
             .args([

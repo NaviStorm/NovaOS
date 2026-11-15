@@ -5,3 +5,4 @@ pub const STOP: u64 = 0x10072;
 pub const OFFER_STOP: u64 = 0x10073;
 pub const WATCH: u64 = 0x10074;
 pub const OFFERED: u64 = 0x10075;
+pub const SERVICE_PROCESS: u64 = 0x1007b;

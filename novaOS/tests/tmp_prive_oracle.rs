@@ -100,6 +100,32 @@ fn main() -> Result<(), Box<dyn Error>> {
     let names = fs.inspect_dir(store, None, 32)?;
     match args[3].as_str() {
         "propre" => assert_eq!(names, ["registre"]),
+        "services-actifs" => {
+            let seal = fs.lookup_at(store, "registre")?.id;
+            let roots: Vec<_> = names.iter().filter_map(|n| n.strip_prefix('t')).collect();
+            assert_eq!(roots.len(), 5, "nsh, gestionnaire et trois services prêts");
+            assert_eq!(names.len(), 1 + 2 * roots.len());
+            for suffix in roots {
+                assert_eq!(suffix.len(), 64);
+                let owner: Vec<u8> = (0..32)
+                    .map(|i| u8::from_str_radix(&suffix[i * 2..i * 2 + 2], 16))
+                    .collect::<Result<_, _>>()?;
+                let marker = fs.lookup_at(store, &format!("r{suffix}"))?;
+                let root = fs.lookup_at(store, &format!("t{suffix}"))?;
+                assert!(root.kind == Kind::Directory && marker.kind == Kind::File);
+                assert_eq!(marker.size, 104);
+                let bytes = fs.inspect_id(marker.id, 0, 104)?;
+                assert_eq!(&bytes[..8], b"NVTMP001");
+                assert_eq!(&bytes[8..24], &ids.fs);
+                assert_eq!(&bytes[24..40], &ids.lv);
+                assert_eq!(&bytes[40..48], &store.to_le_bytes());
+                assert_eq!(&bytes[48..56], &seal.to_le_bytes());
+                assert_eq!(&bytes[56..88], &owner);
+                assert_eq!(&bytes[88..96], &marker.id.to_le_bytes());
+                assert_eq!(&bytes[96..104], &root.id.to_le_bytes());
+                println!("racine={suffix} oid={}", root.id);
+            }
+        }
         "coupure" => {
             let roots: Vec<_> = names.iter().filter(|n| n.starts_with('t')).collect();
             assert_eq!(roots.len(), 2, "nsh et le principal interrompu");
