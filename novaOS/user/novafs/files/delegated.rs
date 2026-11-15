@@ -301,11 +301,22 @@ impl Grant {
     pub fn serve(&mut self, s: &mut Session<'_, '_>, owner: &Client) -> rt::Result<()> {
         let mut last = 0;
         loop {
-            let m = match rt::receive_for(self.ports.rx, 15000) {
+            // Le shell révoque le canal éphémère dès la fin du fils. La
+            // révocation peut être constatée à l'armement ou à la réception.
+            let tmp_busy = match s.serve_tmp(self.ports.rx) {
+                Err(rt::REVOKED | rt::DENIED | rt::CLOSED) => return Ok(()),
+                result => result?,
+            };
+            let timeout = if tmp_busy { 0 } else { 15000 };
+            let m = match rt::receive_for(self.ports.rx, timeout) {
+                Err(rt::WOULD_BLOCK) if tmp_busy => continue,
                 Err(rt::REVOKED | rt::DENIED | rt::CLOSED) => return Ok(()),
                 Err(rt::TIMED_OUT) => continue,
                 r => r?,
             };
+            if m.kind == 2 {
+                continue;
+            }
             let mut a = w::frame(m.payload[1], 1, 0);
             let r = if m.kind == 1 && m.len == 128 && m.tag > last {
                 last = m.tag;

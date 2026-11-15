@@ -10,6 +10,7 @@ mod abi_probe;
 mod demo;
 mod instances;
 mod supervision;
+pub(crate) mod tmp;
 use crate::instance_abi as iw;
 use instances::{Instance, Registry};
 #[cfg(feature = "materiel-lab")]
@@ -58,6 +59,8 @@ struct Process {
     principal: bool,
     stop_offered: bool,
     launch_grants: ipc::LaunchGrants,
+    tmp_cap: u64,
+    legacy_p8_launcher: bool,
     watch: supervision::Watch,
     worker_image: Option<&'static [u8]>,
     wait_buffer: WaitBuffer,
@@ -76,6 +79,7 @@ pub(super) struct Table {
     slots: [Option<Process>; MAX],
     serial: u64,
     instances: Registry<MAX>,
+    temporary: tmp::Broker,
     pub(super) syscall_switches: u64,
     blocked_waits: u64,
     #[cfg(feature = "materiel-lab")]
@@ -87,6 +91,7 @@ impl Table {
             slots: [const { None }; MAX],
             serial: 0,
             instances: Registry::new(),
+            temporary: tmp::Broker::new(),
             syscall_switches: 0,
             blocked_waits: 0,
             #[cfg(feature = "materiel-lab")]
@@ -122,6 +127,7 @@ impl Table {
 fn enter() {
     let _irq = Guard::new();
     threads::stop_if_dying();
+    tmp::before_entry();
     let (top, entry, sp, arg) = with(|s| {
         let t = s.thread(s.current());
         let user = t.user.as_ref().unwrap();
@@ -285,6 +291,8 @@ fn publish_image(
             principal: member.is_none(),
             stop_offered: false,
             launch_grants: ipc::LaunchGrants::default(),
+            tmp_cap: 0,
+            legacy_p8_launcher: false,
             watch: supervision::Watch::None,
             worker_image: None,
             pid,
@@ -368,6 +376,7 @@ fn retire_member(s: &mut Core, pid: Pid, result: Outcome, entered: u64) {
     vtd::died(pid);
     #[cfg(feature = "materiel-lab")]
     edu::died(s, pid);
+    tmp::retired(s, pid, Some(result));
     ipc::withdraw_grants(s, pid);
     s.ipc.death(pid, ticks());
     s.flush_ipc();

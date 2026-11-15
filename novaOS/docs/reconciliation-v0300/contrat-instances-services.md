@@ -28,13 +28,13 @@ Le principal admis peut créer un travailleur du même programme dans sa propre 
 
 Les deux nœuds IPC initiaux délégués par le lanceur sont suivis par leurs références générationnelles. La destruction du bénéficiaire coupe leur branche, même après fermeture locale ou déplacement d’un handle. Un endpoint créé par le bénéficiaire est détruit avec lui. Les autres branches d’un propriétaire indépendant restent utilisables. La fermeture ordinaire d’un handle conserve la sémantique IPC publiée. [Architecture IPC](../ipc-architecture.md)
 
-[Qualification du BootID](../bootid-phase1-v0.21.0.md) · [Contrat du futur temporaire](../contrat-tmp-prive-v0.21.0.md)
+[Qualification du BootID](../bootid-phase1-v0.21.0.md) · [Contrat du temporaire privé](../contrat-tmp-prive-v0.21.0.md)
 
-## Contrats réservés aux phases suivantes
+## Contrats et état des phases suivantes
 
 | Objet | Propriétaire et contrat à réaliser | Condition préalable |
 |---|---|---|
-| `tmp` privé | Une racine par incarnation, accessible par une capacité initiale bornée. Les threads partagent la vue du processus. Tout partage avec un autre processus exige une délégation explicite. À l’arrêt, rendre la vue inaccessible avant la purge. | Exiger un BootID qualifié sur le profil utilisé, une provenance vérifiée des métadonnées, des quotas et une purge reprenable. Isoler les orphelins de propriétaire incertain. Un numéro de cette phase, repris seul après redémarrage, ne permet ni réattribution ni suppression. |
+| `tmp` privé | [Phase 2 sur branche dédiée](../tmp-prive-phase2-v0.21.0.md). Une racine par incarnation, accessible par une capacité initiale bornée. Les threads partagent la vue du processus. Tout partage avec un autre processus exige une délégation explicite. À l’arrêt, rendre la vue inaccessible avant la purge. | Exiger un BootID qualifié sur le profil utilisé, une provenance vérifiée des métadonnées, des quotas et une purge reprenable. Isoler les orphelins de propriétaire incertain. Un numéro de cette phase, repris seul après redémarrage, ne permet ni réattribution ni suppression. |
 | `cache` persistant | Un espace reconstructible par identité d’installation et d’utilisateur. À chaque lancement autorisé, ouvrir une nouvelle vue après vérification de la politique. La destruction d’une instance éteint sa vue et préserve les données partagées selon la politique de purge. | Arbitrer l’identité durable, les quotas, la concurrence entre instances, la purge, les réinstallations et les restaurations. Un nom de compte ou un chemin identique ne suffit pas. |
 | Services système | Séparer les droits d’appel, de supervision et d’accès aux données d’un client. Prévoir disponibilité explicite, dépendances, budget de relance et renouvellement des canaux. | La phase 1 identifie le paquet système. L’enrôlement distinct des services, le graphe de démarrage et les relances automatiques restent à qualifier. |
 | `permissions list` | Distinguer application installée, principal utilisateur, instance active, politique persistante versionnée et capacités effectives détenues. | Définir qui peut consulter chaque information et quelle source l’atteste. |

@@ -56,8 +56,10 @@ def fixture_p9(path, sector):
         ], check=True)
 
 
-def machine(arch, sector, image, test=False, manual=False, *, iso=None):
-    profile = "cli-test" if test else "cli"
+def machine(arch, sector, image, test=False, manual=False, *, iso=None, historique_p8=False):
+    profile = "cli-p8" if historique_p8 else "cli"
+    if test:
+        profile += "-test"
     if iso is None:
         iso = ROOT / "build" / f"{profile}-{arch}.iso"
     env = {**os.environ, "NOVA_ARCH": arch, "NOVA_ISO": str(iso)}
@@ -74,7 +76,11 @@ if __name__ == "__main__":
     parser.add_argument("action", choices=["image", "run", "demo"])
     parser.add_argument("image", type=Path)
     parser.add_argument("--sector", type=int, choices=[512, 4096], default=512)
+    parser.add_argument("--historique-p8", action="store_true",
+                        help="Utiliser le profil historique sans tmp sur une image P8 existante.")
     args = parser.parse_args()
+    if args.historique_p8 and args.action != "run":
+        parser.error("--historique-p8 exige run et une image existante")
     if args.action == "image":
         fixture_p9(args.image, args.sector)
     else:
@@ -83,5 +89,6 @@ if __name__ == "__main__":
                 fixture_p9(args.image, args.sector)
             except FileExistsError:
                 pass
-        cmd, env = machine(os.environ.get("NOVA_ARCH", "x86_64"), args.sector, args.image, manual=True)
+        cmd, env = machine(os.environ.get("NOVA_ARCH", "x86_64"), args.sector, args.image, manual=True,
+                           historique_p8=args.historique_p8)
         os.execvpe(cmd[0], cmd, env)
