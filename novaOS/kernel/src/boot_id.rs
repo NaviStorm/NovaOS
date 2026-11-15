@@ -1,6 +1,10 @@
 //! Époque opaque de ce démarrage. Publication unique par le BSP avant les AP.
 use core::sync::atomic::{AtomicU8, AtomicU64, Ordering};
 
+#[cfg(any(test, target_arch = "aarch64"))]
+#[path = "boot_id/efi.rs"]
+mod efi;
+
 const EMPTY: u8 = 0;
 const WRITING: u8 = 1;
 const READY: u8 = 2;
@@ -87,7 +91,7 @@ fn source() -> Option<([u64; 2], &'static str)> {
     Some((words, "RDRAND"))
 }
 
-#[cfg(target_arch = "aarch64")]
+#[cfg(all(target_arch = "aarch64", not(test)))]
 fn source() -> Option<([u64; 2], &'static str)> {
     let features: u64;
     // Sûreté : lecture d'un registre architectural accessible en EL1.
@@ -105,10 +109,12 @@ fn source() -> Option<([u64; 2], &'static str)> {
                     v = out(reg) value, ok = out(reg) ok, options(nomem, nostack));
             }
             (ok != 0).then_some(value)
-        })?;
-        return Some((words, "RNDR"));
+        });
+        if let Some(words) = words {
+            return Some((words, "RNDR"));
+        }
     }
-    None
+    efi::read().map(|words| (words, "UEFI-QEMU-RNG-SEED"))
 }
 
 #[cfg(test)]

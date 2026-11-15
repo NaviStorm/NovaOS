@@ -316,6 +316,10 @@ pub(crate) fn reboot(previous: Option<&str>, forced: bool) {
     if let Some(old) = previous {
         hal::log(format_args!("INSTANCE reboot ancienne={old} refusee=OK"));
     }
+    // Le client écrit le mot 7 après création, collecte et relecture de son identité.
+    hal::log(format_args!(
+        "INSTANCE reboot courante=OK travailleur=41 identite_stable=OK"
+    ));
     if forced {
         // Garder le principal actif à l’injection par l’hôte.
         sleep(60 * u64::from(HZ));

@@ -1,0 +1,21 @@
+[package]
+name = "relais-bootid"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "relais-bootid"
+path = "main.rs"
+
+[dependencies]
+r-efi = "=6.0.0"
+sha2 = { version = "=0.10.9", default-features = false, features = ["force-soft"] }
+
+[profile.release]
+panic = "abort"
+opt-level = "s"
+strip = true

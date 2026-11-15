@@ -53,6 +53,28 @@ request!(RSDP: limine::request::RsdpRequest = limine::request::RsdpRequest::new(
 #[cfg(target_arch = "aarch64")]
 request!(DTB: limine::request::DeviceTreeBlobRequest = limine::request::DeviceTreeBlobRequest::new());
 
+#[cfg(target_arch = "aarch64")]
+request!(EFI_TYPE: limine::request::FirmwareTypeRequest = limine::request::FirmwareTypeRequest::new());
+#[cfg(target_arch = "aarch64")]
+request!(EFI_SYSTEM: limine::request::EfiSystemTableRequest = limine::request::EfiSystemTableRequest::new());
+#[cfg(target_arch = "aarch64")]
+request!(EFI_MAP: limine::request::EfiMemoryMapRequest = limine::request::EfiMemoryMapRequest::new());
+
+#[cfg(target_arch = "aarch64")]
+pub(crate) fn efi_tables() -> Option<(u64, &'static limine::response::EfiMemoryMapResponse)> {
+    assert!(!RETIRED.load(core::sync::atomic::Ordering::Acquire));
+    if BASE.loaded_revision() != Some(3)
+        || EFI_TYPE.get_response()?.firmware_type() != limine::firmware_type::FirmwareType::UEFI_64
+    {
+        return None;
+    }
+    // Révision 3 : table système physique, copie de la carte EFI dans le HHDM du chargeur.
+    Some((
+        EFI_SYSTEM.get_response()?.address() as u64,
+        EFI_MAP.get_response()?,
+    ))
+}
+
 pub(crate) fn rsdp_physical() -> Option<u64> {
     assert!(!RETIRED.load(core::sync::atomic::Ordering::Acquire));
     // Limine ne rend une adresse physique pour cette requête qu’en révision de base 3.

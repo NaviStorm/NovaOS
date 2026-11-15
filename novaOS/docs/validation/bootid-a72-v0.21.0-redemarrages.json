@@ -1,0 +1,207 @@
+{
+  "base": "10ccf2666bcf003262141c05983e03d3554049e7",
+  "hote": "macOS 27.2 arm64",
+  "acceleration": "TCG",
+  "ram_mio": 256,
+  "profils": {
+    "aarch64-cortex-a72": {
+      "architecture": "aarch64",
+      "vcpus": 1,
+      "cpu": "cortex-a72",
+      "elf_sha256": "a42d406aad836fceb8b8adc325f817089a5b67d15ed02077f2c1efdbd60d1f13",
+      "sources": [
+        "UEFI-QEMU-RNG-SEED",
+        "UEFI-QEMU-RNG-SEED",
+        "UEFI-QEMU-RNG-SEED"
+      ],
+      "qemu": "QEMU emulator version 11.1.3",
+      "identites": [
+        "e82a4fb1c84b5e2c408e4565f988190d80000000000000020000000000000001",
+        "fa77ccafa2197f01ed25adaa0295f15080000000000000020000000000000001",
+        "bd31f51e200607b4e49dc5e9d5d7f6db80000000000000020000000000000001"
+      ],
+      "transitions": [
+        "arrêt normal invité puis system_reset QMP",
+        "SIGKILL QEMU puis relance"
+      ],
+      "resultats_transitions": [
+        {
+          "ancienne_refusee": "e82a4fb1c84b5e2c408e4565f988190d80000000000000020000000000000001",
+          "courante_acceptee": "fa77ccafa2197f01ed25adaa0295f15080000000000000020000000000000001",
+          "instance_generation_identiques": true,
+          "code_travailleur": 41,
+          "identite_relue_apres_travailleur": "identique",
+          "admission": "même principal, même manifeste worker_image",
+          "argument_travailleur": 3
+        },
+        {
+          "ancienne_refusee": "fa77ccafa2197f01ed25adaa0295f15080000000000000020000000000000001",
+          "courante_acceptee": "bd31f51e200607b4e49dc5e9d5d7f6db80000000000000020000000000000001",
+          "instance_generation_identiques": true,
+          "code_travailleur": 41,
+          "identite_relue_apres_travailleur": "identique",
+          "admission": "même principal, même manifeste worker_image",
+          "argument_travailleur": 3
+        }
+      ],
+      "sans_entropie": {
+        "cpu": "cortex-a72",
+        "arguments_supplementaires": [
+          "-machine",
+          "dtb-randomness=off",
+          "-S"
+        ],
+        "identite_durable": "refusée",
+        "chemin_historique": "réussi"
+      },
+      "journaux_sha256": {
+        "reset.serial": "b38565b226ea203bd029ab519855eab92f6a67de43e2fea048441a1a755db5a1",
+        "relance.serial": "6fceec91b5d1e1fc44fbf969f5821d44a385d9b534df9a5283c3ff0d5b85016e",
+        "absence.serial": "a81dadf4abb9a087e49d797a4c25724222f7988feb0e1b8b70f0e79a2630e0c4"
+      },
+      "bootid_recalcules_depuis_dtb_physique": [
+        "e82a4fb1c84b5e2c408e4565f988190d",
+        "fa77ccafa2197f01ed25adaa0295f150",
+        "bd31f51e200607b4e49dc5e9d5d7f6db"
+      ]
+    },
+    "aarch64-max": {
+      "architecture": "aarch64",
+      "vcpus": 1,
+      "cpu": "max",
+      "elf_sha256": "a42d406aad836fceb8b8adc325f817089a5b67d15ed02077f2c1efdbd60d1f13",
+      "sources": [
+        "RNDR",
+        "RNDR",
+        "RNDR"
+      ],
+      "qemu": "QEMU emulator version 11.1.3",
+      "identites": [
+        "3dce3aa2fe08eb96b16dda6fff4e120180000000000000020000000000000001",
+        "906e29a5083a46d0663d1ae4f625bc3580000000000000020000000000000001",
+        "cc4e39eeaed3b94b2506bfdc9f21ed2d80000000000000020000000000000001"
+      ],
+      "transitions": [
+        "arrêt normal invité puis system_reset QMP",
+        "SIGKILL QEMU puis relance"
+      ],
+      "resultats_transitions": [
+        {
+          "ancienne_refusee": "3dce3aa2fe08eb96b16dda6fff4e120180000000000000020000000000000001",
+          "courante_acceptee": "906e29a5083a46d0663d1ae4f625bc3580000000000000020000000000000001",
+          "instance_generation_identiques": true,
+          "code_travailleur": 41,
+          "identite_relue_apres_travailleur": "identique",
+          "admission": "même principal, même manifeste worker_image",
+          "argument_travailleur": 3
+        },
+        {
+          "ancienne_refusee": "906e29a5083a46d0663d1ae4f625bc3580000000000000020000000000000001",
+          "courante_acceptee": "cc4e39eeaed3b94b2506bfdc9f21ed2d80000000000000020000000000000001",
+          "instance_generation_identiques": true,
+          "code_travailleur": 41,
+          "identite_relue_apres_travailleur": "identique",
+          "admission": "même principal, même manifeste worker_image",
+          "argument_travailleur": 3
+        }
+      ],
+      "sans_entropie": {
+        "cpu": "cortex-a72",
+        "arguments_supplementaires": [
+          "-machine",
+          "dtb-randomness=off",
+          "-S"
+        ],
+        "identite_durable": "refusée",
+        "chemin_historique": "réussi"
+      },
+      "journaux_sha256": {
+        "reset.serial": "aee8a8d8f6ea852520c5a7ccd6082cbb7eb59100f27c650be80896182b08830a",
+        "relance.serial": "216ebd8db05eeb5759781a17b7a47aef32fb434ff074ae1478a22d02d3dd144b",
+        "absence.serial": "a81dadf4abb9a087e49d797a4c25724222f7988feb0e1b8b70f0e79a2630e0c4"
+      }
+    },
+    "x86_64-max": {
+      "architecture": "x86_64",
+      "vcpus": 1,
+      "cpu": "max",
+      "elf_sha256": "cdd5f4f207ba8712b55891504301dc15f94d5a72d9c42d76d79c204e0712d940",
+      "sources": [
+        "RDRAND",
+        "RDRAND",
+        "RDRAND"
+      ],
+      "qemu": "QEMU emulator version 11.1.3",
+      "identites": [
+        "5e6b26c05bcb77973327bb18f8d30f4c80000000000000020000000000000001",
+        "a8c71aab6d42b4affd8c0d35c828725a80000000000000020000000000000001",
+        "d282b07d82c9aa91413cb1d612c898fc80000000000000020000000000000001"
+      ],
+      "transitions": [
+        "arrêt normal invité puis system_reset QMP",
+        "SIGKILL QEMU puis relance"
+      ],
+      "resultats_transitions": [
+        {
+          "ancienne_refusee": "5e6b26c05bcb77973327bb18f8d30f4c80000000000000020000000000000001",
+          "courante_acceptee": "a8c71aab6d42b4affd8c0d35c828725a80000000000000020000000000000001",
+          "instance_generation_identiques": true,
+          "code_travailleur": 41,
+          "identite_relue_apres_travailleur": "identique",
+          "admission": "même principal, même manifeste worker_image",
+          "argument_travailleur": 3
+        },
+        {
+          "ancienne_refusee": "a8c71aab6d42b4affd8c0d35c828725a80000000000000020000000000000001",
+          "courante_acceptee": "d282b07d82c9aa91413cb1d612c898fc80000000000000020000000000000001",
+          "instance_generation_identiques": true,
+          "code_travailleur": 41,
+          "identite_relue_apres_travailleur": "identique",
+          "admission": "même principal, même manifeste worker_image",
+          "argument_travailleur": 3
+        }
+      ],
+      "sans_entropie": {
+        "cpu": "max,rdrand=off,rdseed=off",
+        "arguments_supplementaires": [],
+        "identite_durable": "refusée",
+        "chemin_historique": "réussi"
+      },
+      "journaux_sha256": {
+        "reset.serial": "b7454e59f458d1f5e162d19fbb6b3e93fd5b9f264c68fffd931ec3a0d0a7bc55",
+        "relance.serial": "97d80ac21a567076d9065d456ad5d2a26f5bf4b3f1488c6fdad1d4abb67dca54",
+        "absence.serial": "2e088b168c8c7664fea34a7e68be92a5d4ace0bcc10cf7bb7ffae6dbe308efdb"
+      }
+    }
+  },
+  "artefacts_sha256": {
+    "qemu-system-aarch64": "a7ace1986bb2af7e706402c3bd36b8450a463409e17a707a4c5a078cc521aba1",
+    "qemu-system-x86_64": "a462b64050825e6adfc88ea14b3896205056b2f0b0090938b536ce69381739ab",
+    "edk2-aarch64-code.fd": "47765fe344818cbc464b1c14ae658fb4b854f5c2ceffa982411731eb4865594d",
+    "edk2-arm-vars.fd": "b3b855c5a80310168051164986855692d1bdb06e67619856177965cd87c6774f",
+    "edk2-x86_64-code.fd": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+    "edk2-i386-vars.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+    "relais-bootid.efi": "64decacc65b2ac854f9b657148e1b63fd276b30b20634abd625d54838b6bad04",
+    "BOOTAA64.EFI": "bdf0c089d40ea7de9879a43c2a3ea648f1ea0b2eb297e8b1a750511db872b2fb",
+    "BOOTX64.EFI": "91ef81c1f95c4ac8bf77c4393a0b2fcd2628550827d7abf89a43194400e17a85",
+    "limine-uefi-cd.bin": "c25328b0e58f188d6b1a588827596d1c19a9e1d0d5e9dbc16a3aab238deb4aa4"
+  },
+  "archive": "bootid-a72-v0.21.0-journaux.tar.gz",
+  "archive_sha256": "6afe34d14cf59123e70c5eec011c5e45abfc72d302f8f0d18cf1bcd203327b5b",
+  "membres_sha256": {
+    "aarch64-cortex-a72/resultats.json": "a71ec1353d34e05523fc6b8b20649514ad9a59a4ad581b8ea3fb9c05109bd669",
+    "aarch64-cortex-a72/reset.serial": "b38565b226ea203bd029ab519855eab92f6a67de43e2fea048441a1a755db5a1",
+    "aarch64-cortex-a72/relance.serial": "6fceec91b5d1e1fc44fbf969f5821d44a385d9b534df9a5283c3ff0d5b85016e",
+    "aarch64-cortex-a72/absence.serial": "a81dadf4abb9a087e49d797a4c25724222f7988feb0e1b8b70f0e79a2630e0c4",
+    "aarch64-max/resultats.json": "c6dac3491d1c7cb0b6d1dccaba84d7030905f9351bfed0e60987bc6ed925bd3b",
+    "aarch64-max/reset.serial": "aee8a8d8f6ea852520c5a7ccd6082cbb7eb59100f27c650be80896182b08830a",
+    "aarch64-max/relance.serial": "216ebd8db05eeb5759781a17b7a47aef32fb434ff074ae1478a22d02d3dd144b",
+    "aarch64-max/absence.serial": "a81dadf4abb9a087e49d797a4c25724222f7988feb0e1b8b70f0e79a2630e0c4",
+    "x86_64-max/resultats.json": "4fe3d8941726e1fe84a68259ec27172014803c7c41c31155d42b25742a2561cf",
+    "x86_64-max/reset.serial": "b7454e59f458d1f5e162d19fbb6b3e93fd5b9f264c68fffd931ec3a0d0a7bc55",
+    "x86_64-max/relance.serial": "97d80ac21a567076d9065d456ad5d2a26f5bf4b3f1488c6fdad1d4abb67dca54",
+    "x86_64-max/absence.serial": "2e088b168c8c7664fea34a7e68be92a5d4ace0bcc10cf7bb7ffae6dbe308efdb",
+    "sonde-efi-independante/bootid-a72-firmware-normal.serial": "e63eb433384d010cf576e44acc2ec08f2eb31c6dd1c4b89cccc16e9e295a2159",
+    "sonde-efi-independante/bootid-a72-firmware-sans-source.serial": "e55a718ee54ef39205402fe80812591ef4ef72c6201d212e19694a5fd6f89a10"
+  }
+}

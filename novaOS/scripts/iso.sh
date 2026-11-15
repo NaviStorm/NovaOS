@@ -6,11 +6,20 @@ root=$(CDPATH= cd "$(dirname "$0")/.." && pwd)
 (cd "$root/third_party/limine" && shasum -a 256 -c SHA256SUMS)
 iso="$root/$iso"
 mkdir -p "$root/build"
-stage=$(mktemp -d "$root/build/iso.XXXXXXXX")
+stage=$(mktemp -d "${NOVAOS_TMPDIR:-$root/build}/iso.XXXXXXXX")
 trap 'rm -rf "$stage"' EXIT
 mkdir -p "$stage/root/boot" "$stage/root/EFI/BOOT"
-cp "$root/third_party/limine/limine-uefi-cd.bin" "$stage/root/boot/"
-cp "$root/third_party/limine/$efi_loader" "$stage/root/EFI/BOOT/"
+limine="$root/third_party/limine"
+esp="$stage/root/EFI/BOOT"
+if [ "$efi_loader" = "BOOTAA64.EFI" ]; then
+    sh "$root/scripts/construire-relais-bootid.sh" "$esp/$efi_loader"
+    cp "$limine/$efi_loader" "$esp/LIMINE.EFI"
+    python3 -B "$root/scripts/efi_relais_cd.py" "$limine/limine-uefi-cd.bin" \
+        "$esp/$efi_loader" "$stage/root/boot/limine-uefi-cd.bin"
+else
+    cp "$limine/limine-uefi-cd.bin" "$stage/root/boot/"
+    cp "$limine/$efi_loader" "$esp/"
+fi
 cp "$root/boot/limine.conf" "$stage/root/"
 if [ "$#" -ne 0 ]; then
     [ "$#" -eq 2 ] || exit 2

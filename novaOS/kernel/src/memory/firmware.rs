@@ -34,16 +34,19 @@ fn read_page<T>(m: &mut Memory, page: u64, attr: u64, read: impl FnOnce(usize) -
     Ok(value)
 }
 
-pub(crate) fn copy_acpi(mut address: u64, mut out: &mut [u8]) -> bool {
+/// Chaque page doit être couverte exclusivement par des entrées Limine admises.
+fn copy_firmware(
+    mut address: u64,
+    mut out: &mut [u8],
+    accepts: impl Fn(EntryType) -> bool,
+) -> bool {
     while !out.is_empty() {
         let page = address & !(PAGE - 1);
         let offset = (address - page) as usize;
         let n = out.len().min(PAGE as usize - offset);
         if page > PHYS_MASK
             || crate::heap::with_pages(|m| {
-                if !page_authorized(m, page, |kind| {
-                    matches!(kind, EntryType::ACPI_RECLAIMABLE | EntryType::ACPI_NVS)
-                }) {
+                if !page_authorized(m, page, &accepts) {
                     return Err(Error::Reserved);
                 }
                 read_page(m, page, m.cache, |va| {
@@ -66,6 +69,19 @@ pub(crate) fn copy_acpi(mut address: u64, mut out: &mut [u8]) -> bool {
         out = &mut out[n..];
     }
     true
+}
+
+pub(crate) fn copy_acpi(address: u64, out: &mut [u8]) -> bool {
+    copy_firmware(address, out, |kind| {
+        matches!(kind, EntryType::ACPI_RECLAIMABLE | EntryType::ACPI_NVS)
+    })
+}
+
+/// Le lecteur a déjà vérifié la couverture EfiRuntimeServicesData/WB de la
+/// carte EFI. La carte Limine (révision 3) doit aussi réserver ces cadres.
+#[cfg(target_arch = "aarch64")]
+pub(crate) fn copy_efi_runtime(address: u64, out: &mut [u8]) -> bool {
+    copy_firmware(address, out, |kind| kind == EntryType::RESERVED)
 }
 
 #[cfg(target_arch = "aarch64")]
