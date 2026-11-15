@@ -1,9 +1,5 @@
 //! Contrat privé du gestionnaire de temporaires. Aucun pointeur interprocessus.
-pub const CAP: u64 = 0x10076;
-pub const CALL: u64 = 0x10077;
-pub const WORKER: u64 = 0x10078;
-pub const NEXT: u64 = 0x10079;
-pub const COMPLETE: u64 = 0x1007a;
+include!("generated/tmp.rs");
 
 pub const CREATE: u64 = 1;
 pub const REMOVE: u64 = 2;

@@ -1,5 +1,7 @@
 # Registre canonique des sélecteurs effectivement dispatchés, commun aux deux ISA.
 # Trois mots u64. « — » indique un argument inutilisé, 0 un zéro requis.
+# La clé de [call] forme NOVA_SYS_<clé> en C. rust_name précise le nom court
+# de la constante Rust lorsqu’il diffère de la clé ; module la qualifie.
 schema_version = 1
 abi_version = 1
 default_status = "active"
@@ -506,3 +508,63 @@ result = "32"
 rights = "offre de la cible et droit de suivi, thread principal"
 errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","REFUSED","CANCELLED"]
 handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
+
+[call.TMP_CAP]
+number = 0x10076
+module = "tmp"
+rust_name = "CAP"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "0, 0, 0"
+result = "capacité privée de l’instance"
+rights = "capacité locale déjà attribuée à ce processus, bail actif"
+errors = ["BAD_ARGUMENT","DENIED","CANCELLED"]
+handler = "kernel/src/sched/process/tmp.rs#call"
+
+[call.TMP_CALL]
+number = 0x10077
+module = "tmp"
+rust_name = "CALL"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "capacité, *mut trame fichier, 128"
+result = "128 après succès"
+rights = "processus titulaire du bail actif, trame lisible et inscriptible"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","LIMIT","NO_MEMORY","CANCELLED","REVOKED","CLOSED","TIMED_OUT","files::UNCERTAIN","files::NOT_FOUND","files::CORRUPT","files::FULL","files::BUSY","files::UNSUPPORTED","files::IO","files::EXISTS","files::NOT_EMPTY","files::NOT_DIR","files::IS_DIR"]
+handler = "kernel/src/sched/process/tmp.rs#io"
+
+[call.TMP_WORKER]
+number = 0x10078
+module = "tmp"
+rust_name = "WORKER"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "*const identité, argument, 32"
+result = "droit de suivi du travailleur"
+rights = "thread principal du principal admis, droit de création, identité complète courante et capacité tmp active à déléguer"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","REFUSED","LIMIT","NO_MEMORY","CANCELLED"]
+handler = "kernel/src/sched/process/ipc/spawn.rs#instance_call"
+
+[call.TMP_NEXT]
+number = 0x10079
+module = "tmp"
+rust_name = "NEXT"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "handle de réception, *mut enveloppe, 168"
+result = "ticket de la demande remise"
+rights = "serveur NovaFS admis pour ce montage, droit RECEIVE local"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","WOULD_BLOCK","REFUSED","LIMIT","CLOSED","CANCELLED"]
+handler = "kernel/src/sched/process/tmp.rs#next"
+
+[call.TMP_COMPLETE]
+number = 0x1007a
+module = "tmp"
+rust_name = "COMPLETE"
+group = "tmp privé"
+since = "0.21.0 phase 2"
+arguments = "ticket, *const réponse de 128 octets pour IO réussi (0 pour CREATE/REMOVE), statut 0…255"
+result = "0"
+rights = "même serveur NovaFS, ticket de l’unique opération en vol"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","REVOKED","CLOSED","CANCELLED"]
+handler = "kernel/src/sched/process/tmp.rs#complete"

@@ -2,6 +2,7 @@
 # Chaque groupe pointe sur la fonction qui interprète ou achemine ces opérations.
 [fichiers]
 source = "abi/files.rs"
+statuses = ["NOT_FOUND", "CORRUPT", "UNCERTAIN", "FULL", "BUSY", "UNSUPPORTED", "IO", "EXISTS", "NOT_EMPTY", "NOT_DIR", "IS_DIR"]
 groups = [
   ["user/novafs/files.rs#dispatch", "MOUNT INFO OPEN READ WRITE SYNC CLOSE"],
   ["user/novafs/files/namespace.rs#directory_request", "PATH_FRAGMENT DIR_OPEN LOOKUP_AT OPEN_AT READDIR MKDIR_AT RMDIR UNLINK_AT RENAME_AT STAT DIR_CLOSE CHDIR GETCWD"],
@@ -22,6 +23,11 @@ READDIR = "Directory::read_fragment Session::read_directory_view"
 [bloc]
 source = "abi/block.rs"
 groups = [["user/storage/disk.rs#driver", "INFO READ WRITE FLUSH CLOSE DISCOVER"]]
+
+[tmp]
+source = "abi/tmp.rs"
+wire_type = "u64"
+groups = [["user/novafs/files/temporary.rs#serve_tmp", "CREATE REMOVE IO"]]
 
 [edition]
 source = "../components/libraries/vi_wire.rs"

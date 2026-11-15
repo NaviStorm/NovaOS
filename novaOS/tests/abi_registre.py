@@ -2,6 +2,7 @@
 import contextlib
 import copy
 import io
+import json
 from pathlib import Path
 import re
 import subprocess
@@ -55,17 +56,27 @@ class Registre(unittest.TestCase):
             changed["call"]["IPC_CREATE"]["number"] = number
             with self.assertRaisesRegex(ValueError, diagnostic):
                 abi.validate(changed, self.template)
+        changed = copy.deepcopy(self.registry)
+        changed["call"]["TMP_NEXT"]["rust_name"] = "CALL"
+        with self.assertRaisesRegex(ValueError, "Rust dupliquée"):
+            abi.validate(changed, self.template)
         with self.assertRaisesRegex(ValueError, "fonction absente"):
             abi.link("user/gate.rs#fonction_absente")
 
     def test_signatures_historiques(self):
+        qualified = tomllib.loads(historical("df88f1cfeaf0940da876ea543584e59215abacd4", "abi/syscalls.toml").decode())
+        for name, spec in qualified["call"].items():
+            self.assertEqual(self.calls[name], spec, name)
+        symbols = {(spec["module"], spec.get("rust_name", key)): spec["number"]
+                   for key, spec in self.calls.items()}
         for module in abi.MODULES:
-            old = historical(BASE, f"abi/{module}.rs").decode()
+            commit = "35f7d9619f116f42491f001af4b1cf5bdc84b395" if module == "tmp" else BASE
+            old = historical(commit, f"abi/{module}.rs").decode()
             numbers = {name: int(value, 16) for name, value in re.findall(
                 r"pub const (\w+): u64 = (0x[\da-fA-F_]+);", old)
                 if int(value, 16) >> 16 == 1}
             for name, value in numbers.items():
-                self.assertEqual((module, value), (self.calls[name]["module"], self.calls[name]["number"]))
+                self.assertEqual(symbols[module, name], value)
         # Autoriser des extensions tout en contrôlant les déclarations de l’archive v0.20.
         previous = historical(LIVRAISON, "abi/native.rs").decode()
         current = (abi.ABI / "native.rs").read_text()
@@ -85,11 +96,66 @@ class Registre(unittest.TestCase):
         for file in ("kernel/src/main.rs", "libs/nova-system/src/lib.rs"):
             self.assertIn("abi/native.rs", (ROOT / file).read_text())
         dispatch = (ROOT / "kernel/src/sched/process/syscall.rs").read_text()
-        self.assertIn("THREAD_CREATE..=THREAD_NOTIFY", dispatch)
-        self.assertIn("IPC_CREATE..=IPC_BOOTSTRAP", dispatch)
-        for name, spec in self.calls.items():
+        prefixes = {"": "native", "iw": "instances", "tmp::wire": "tmp",
+                    "crate::terminal": "terminal", "crate::hardware::block": "block",
+                    "crate::hardware::block::wire": "block"}
+        numbers = {(spec["module"], spec.get("rust_name", key)): spec["number"]
+                   for key, spec in self.calls.items()}
+
+        def resolve(token):
+            prefix, _, name = token.rpartition("::")
+            return numbers[prefixes[prefix], name]
+
+        # Lire les motifs des branches externes du match. Les refus préalables
+        # des threads secondaires ne comptent pas comme un traitement du syscall.
+        body = dispatch.split("    let result = match id {", 1)[1].split("\n    };", 1)[0]
+        body = re.sub(r"\n        \|", " |", body)
+        seen = set()
+        for line in body.splitlines():
+            if not re.match(r"^        [\w]", line):
+                continue
+            pattern, sep, _ = line.strip().partition(" =>")
+            self.assertTrue(sep, line)
+            cases, _, guard = pattern.partition(" if ")
+            if cases == "_" or guard == "secondary":
+                continue
+            for case in cases.split(" | "):
+                first, interval, last = case.partition("..=")
+                if interval:
+                    seen.update(range(resolve(first), resolve(last) + 1))
+                else:
+                    seen.add(resolve(first))
+        self.assertEqual(seen, set(numbers.values()))
+
+        for key, spec in self.calls.items():
+            name = spec.get("rust_name", key)
             path = ROOT / spec["handler"].split("#")[0]
             self.assertRegex(dispatch + path.read_text(), rf"\b{name}\b")
+
+    def test_exports_tmp(self):
+        header = (abi.ABI / "generated/nova_abi.h").read_text()
+        old = historical("df88f1cfeaf0940da876ea543584e59215abacd4", "abi/generated/nova_abi.h").decode()
+        self.assertLessEqual({line for line in old.splitlines() if line.startswith("#define NOVA_SYS_")},
+                             set(header.splitlines()))
+        added = {"CAP": "0x10076", "CALL": "0x10077", "WORKER": "0x10078", "NEXT": "0x10079", "COMPLETE": "0x1007A"}
+        for name, literal in added.items():
+            self.assertIn(f"#define NOVA_SYS_TMP_{name} {literal}", header.splitlines())
+        self.assertIn('include!("generated/tmp.rs");', (abi.ABI / "tmp.rs").read_text())
+        for path in ("kernel/src/sched/process/tmp.rs", "user/tmp_sample.rs", "user/novafs/files/temporary.rs"):
+            self.assertIn("abi/tmp.rs", (ROOT / path).read_text())
+
+        source = ["#![no_std]", "#![allow(dead_code)]"]
+        for module in abi.MODULES:
+            path = json.dumps(str(abi.ABI / f"{module}.rs"), ensure_ascii=False)
+            source.append(f"#[path = {path}] mod {module};")
+        for key, spec in self.calls.items():
+            symbol = spec["module"] + "::" + spec.get("rust_name", key)
+            source.append(f"const _: () = assert!({symbol} == {spec['number']}u64);")
+        with tempfile.TemporaryDirectory() as tmp:
+            for target in ("x86_64-unknown-none", "aarch64-unknown-none-softfloat"):
+                subprocess.run(["rustup", "run", "stable", "rustc", "--edition=2024", "--crate-type=lib",
+                                "--emit=metadata", "--target", target, "-o", Path(tmp) / f"{target}.rmeta", "-"],
+                               input="\n".join(source), text=True, check=True)
 
     def test_selecteurs_litteraux(self):
         files = subprocess.check_output(["git", "ls-files", "-z", "--", "*.rs", "*.S", "*.s"],
@@ -119,7 +185,7 @@ class Registre(unittest.TestCase):
             for compiler, language, standard in (("clang", "c", "c11"), ("clang++", "c++", "c++11")):
                 assertion = "_Static_assert" if language == "c" else "static_assert"
                 test = '#include "nova_abi.h"\n' + "\n".join(
-                    f'{assertion}(NOVA_SYS_{name} == {s["number"]}, "{name}");'
+                    f'{assertion}((uint64_t)NOVA_SYS_{name} == UINT64_C({s["number"]}), "{name}");'
                     for name, s in self.calls.items())
                 subprocess.run([compiler, "-target", target, "-ffreestanding", "-fsyntax-only",
                                 "-pedantic-errors", "-Wall", "-Werror", "-std=" + standard,

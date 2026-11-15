@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ABI = ROOT / "abi"
 DOC = ROOT / "docs"
 ORIGIN = "Généré par scripts/generate_abi.py depuis abi/syscalls.toml. Modifier les sources."
-MODULES = ("native", "terminal", "block", "instances")
+MODULES = ("native", "terminal", "block", "instances", "tmp")
 
 
 def read_toml(path):
@@ -34,9 +34,15 @@ def validate(registry, template):
         require(0x10000 <= low <= high <= 0x1ffff, "plage réservée invalide")
     calls = registry["call"]
     numbers = set()
+    rust_names = set()
     constants = set(registry["statuses"])
     require(all(re.search(rf"pub const {name}: u64 = \d+;", template) for name in constants),
             "statuts absents du contrat natif")
+    protocol = read_toml(ABI / "services.toml")["fichiers"]
+    file_words = dict(re.findall(r"pub const (\w+): u64 = (\d+);", (ROOT / protocol["source"]).read_text()))
+    for name in protocol["statuses"]:
+        require(name in file_words and int(file_words[name]) <= 255, f"statut de fichier inconnu {name}")
+        constants.add("files::" + name)
     require(registry["default_status"] == "active", "état par défaut inconnu")
     for name, spec in calls.items():
         require(spec.get("status", registry["default_status"]) in {"active", "deprecated"}, f"état de {name}")
@@ -47,6 +53,11 @@ def validate(registry, template):
         require(all(not lo <= n <= hi for lo, hi in registry["reserved"]), f"numéro réservé {n:#x}")
         numbers.add(n)
         require(spec["module"] in MODULES, f"module de {name}")
+        rust = spec.get("rust_name", name)
+        require(re.fullmatch(r"[A-Z][A-Z0-9_]*", rust), f"constante Rust invalide {rust}")
+        symbol = (spec["module"], rust)
+        require(symbol not in rust_names, f"constante Rust dupliquée {symbol}")
+        rust_names.add(symbol)
         for key in ("group", "since", "arguments", "result", "rights", "handler"):
             require(isinstance(spec[key], str) and spec[key].strip(), f"{name}.{key}")
         require(isinstance(spec["errors"], list) and set(spec["errors"]) <= constants,
@@ -56,11 +67,11 @@ def validate(registry, template):
 
 def native_source(template, calls):
     slots = re.findall(r"@(\w+)(:grouped)?@", template)
-    native = {name for name, spec in calls.items() if spec["module"] == "native"}
-    require(len(slots) == len(native) and {k for k, _ in slots} == native,
+    native = {spec.get("rust_name", name): spec for name, spec in calls.items() if spec["module"] == "native"}
+    require(len(slots) == len(native) and {k for k, _ in slots} == set(native),
             "désaccord entre le gabarit et les appels du module native")
     def replace(match):
-        number = calls[match[1]]["number"]
+        number = native[match[1]]["number"]
         if match[2]:
             return f"0x{number >> 16:04x}_{number & 65535:04x}"
         return hex(number)
@@ -73,7 +84,8 @@ def header(calls, template, layouts):
            "#define NOVA_ABI_ASSERT static_assert", "#define NOVA_ABI_ALIGN alignof", "#else",
            "#define NOVA_ABI_ASSERT _Static_assert", "#define NOVA_ABI_ALIGN _Alignof", "#endif", ""]
     for name, spec in calls.items():
-        out.append(f"#define NOVA_SYS_{name} UINT64_C({spec['number']:#x})")
+        literal = f"0x{spec['number']:X}" if spec["module"] == "tmp" else f"UINT64_C({spec['number']:#x})"
+        out.append(f"#define NOVA_SYS_{name} {literal}")
     for name, width, value in re.findall(r"pub const (\w+): u(32|64) = (\d+);", template):
         out.append(f"#define NOVA_{name} UINT{width}_C({value})")
     for name, body in re.findall(r"pub struct (\w+) \{\n(.*?)\n\}", template, re.S):
@@ -136,7 +148,7 @@ def document(registry, calls):
                 "|---|---|---|---|---|---|---|---|"])
     for name, s in calls.items():
         api = ", ".join(sdk_link(item) for item in s.get("api", "").split()) or "—"
-        out.append(f"| {s['number']:#x} | {s['module']}::{name} | {s['group']} / {s['since']} / {s.get('status', registry['default_status'])} | "
+        out.append(f"| {s['number']:#x} | {s['module']}::{s.get('rust_name', name)} | {s['group']} / {s['since']} / {s.get('status', registry['default_status'])} | "
                    f"{s['arguments']} → {s['result']} | {s['rights']} | {', '.join(s['errors']) or '—'} | "
                    f"{link(s['handler'])} | {api} |")
     out.extend(["", "Les pointeurs sont des adresses virtuelles de l’appelant, transmises sur 64 bits. "
@@ -150,11 +162,17 @@ def document(registry, calls):
                 "traite les requêtes du SDK via IPC. Le pilote bloc utilise son propre format. "
                 "Le canal d’édition relie vi à nsh. L’admission des instances utilise une page "
                 "privée et la porte noyau WATCH. " + link("user/instance_manager.rs#run", "Gestionnaire") + ".",
+                "", "Le courtier tmp sérialise les opérations internes CREATE, REMOVE et IO dans une enveloppe "
+                "de 168 octets. IO transporte une trame fichier de 128 octets. Un CALL transmet le statut "
+                "non nul renvoyé par le service. Une interruption après remise peut renvoyer files::UNCERTAIN. "
+                + link("docs/contrat-tmp-prive-v0.21.0.md", "Portée et révocation de la capacité") + ".",
                 "", "| Protocole | Opcode | Opération | Trame | Traitement ou transport | SDK Rust |",
                 "|---|---|---|---|---|---|"])
     for service, protocol in read_toml(ABI / "services.toml").items():
         path = protocol["source"]
-        values = dict(re.findall(r"pub const (\w+): u8 = (\d+);", (ROOT / path).read_text()))
+        width = protocol.get("wire_type", "u8")
+        require(width in {"u8", "u64"}, f"largeur d’opcode de {service}")
+        values = dict(re.findall(rf"pub const (\w+): {width} = (\d+);", (ROOT / path).read_text()))
         numbers = set()
         for handler, names in protocol["groups"]:
             dest = link(handler)
@@ -191,7 +209,7 @@ def outputs():
         lines = [f"// {ORIGIN}"]
         for name, spec in calls.items():
             if spec["module"] == module:
-                lines.append(f"pub const {name}: u64 = {spec['number']:#x};")
+                lines.append(f"pub const {spec.get('rust_name', name)}: u64 = {spec['number']:#x};")
         files[ABI / f"generated/{module}.rs"] = "\n".join(lines) + "\n"
     return files
 
