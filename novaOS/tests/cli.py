@@ -19,10 +19,12 @@ from session_cli import HOST, LONG, fixture, machine
 
 class Terminal:
     def __init__(self, arch, sector, image, label, test=False, *, qmp_bloc=None, defaut_bloc=None, entries=None,
-                 journal=None, diagnostic=False, historique_p8=False):
+                 journal=None, diagnostic=False, historique_p8=False, profil_config=False):
         if diagnostic and journal is None:
             raise ValueError("Le diagnostic requiert un journal privé.")
         options = {}
+        if profil_config:
+            options["profil_config"] = True
         if journal is not None:
             # Chaque passage journalisé conserve le média ayant effectivement démarré la VM.
             options["iso"] = journal.with_suffix(".iso").resolve()
