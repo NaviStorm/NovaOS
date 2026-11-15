@@ -22,6 +22,8 @@ Dans le profil `materiel-lab`, un pilote utilisateur lit la carte EDU de QEMU et
 
 Le profil expérimental `nvme-lab` identifie un contrôleur NVMe QEMU Q35 puis lit des blocs de 512 ou 4 096 octets avec un pilote isolé en Ring 3 et un domaine Intel VT-d. [Procédure, résultats et limites de la phase 1](docs/nvme-phase1-v0.19.0.md) · [Conception NVMe](docs/nvme-v0.19.0.md)
 
+Les profils explicites `nvme-rw-*` relient le service NovaFS P9 à un namespace NVMe Q35 jetable. Le courtier sépare les droits READ, WRITE et FLUSH et contrôle la complétion de chaque barrière. [Qualification des écritures, coupures et remontages](docs/nvme-phase2-v0.19.0.md)
+
 ## Stockage et portabilité de NovaFS
 
 La construction ordinaire conserve le stockage classique et le polling VirtIO-blk. Les dix profils expérimentaux d’E/S groupées se reconstruisent sur activation explicite. [État des profils](docs/fusion-materiel-v0.18.0.md) [Activation des profils de stockage](docs/integration-v0.16.6.md)

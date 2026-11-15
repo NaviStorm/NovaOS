@@ -7,9 +7,11 @@ from materiel_pilote import read_config
 from vtd_edu import physical32, registers, require, table
 
 
-def observe(vm, directory, quarantine, permission=False, serial=None):
+def observe(vm, directory, quarantine, permission=False, serial=None, *, writable=False, missing_source=False):
     """Conserve les tables de cette VM jetable et vérifie leur contenu via QMP."""
     require(not permission or quarantine, "Le témoin sans feuille doit demeurer en quarantaine")
+    require(not missing_source or (writable and quarantine and not permission),
+            "La source retirée exige une VM WRITE en quarantaine")
     seen = set()
     digests = {}
 
@@ -67,6 +69,8 @@ def observe(vm, directory, quarantine, permission=False, serial=None):
         entries = page(ptr & ~4095, "table-12")
         slots = [i for i, entry in enumerate(entries) if entry]
         expected_rights = (1, 2, 1, 2) if permission else (1, 2, 1, 2, 2)
+        if writable and not missing_source:
+            expected_rights += (1,)
         require(len(slots) == len(expected_rights)
                 and slots == list(range(slots[0], slots[0] + len(expected_rights))),
                 "Nombre et position des feuilles")

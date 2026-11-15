@@ -1,0 +1,51 @@
+{
+  "objet": "Régression du service bloc partagé avec VirtIO. Profils ordinaires, backend classique.",
+  "reproduire": "NOVA_ARCH=aarch64 python3 -B tests/bloc.py --only durable ; puis NOVA_ARCH=x86_64 depuis novaOS, avec le noyau ordinaire construit pour chaque architecture. Les mesures archivées utilisent Bench.durable avec ISO et image isolées.",
+  "temoins": [
+    {
+      "arch": "aarch64",
+      "sector": 4096,
+      "resultat": "WRITE et FLUSH, arret force, nouvelle VM puis READ et comparaison image entiere",
+      "image_sha256": "daf5af5d49e3d77c1c96438ea403c6a29aa35e0765cc4ece06874d4fccb29c3c",
+      "sha256_elf": "a607160afb2caeaf655dab976fab351359339fc226be377fe84827781536a771",
+      "serie_sha256": {
+        "storage-read.serial": "a31e1138029d37786bd8acb485968503968588a77bc3bfe9cf6c92a0a67d7239",
+        "storage-write.serial": "f2416af6fae51b7fbd4e8202175e15deebe592bd598168ec263d1cfd3cf4b926"
+      }
+    },
+    {
+      "arch": "aarch64",
+      "sector": 512,
+      "resultat": "WRITE et FLUSH, arret force, nouvelle VM puis READ et comparaison image entiere",
+      "image_sha256": "2cd9259f470d087b52670ba4b8e00062fb079795fbd5694391cac461993423d9",
+      "sha256_elf": "a607160afb2caeaf655dab976fab351359339fc226be377fe84827781536a771",
+      "serie_sha256": {
+        "storage-read.serial": "21544aed21554744f20d4e2ea5ffa041d197dd7e40864bfaefeab14b507c75ce",
+        "storage-write.serial": "542854772cb95d454138de4ccc8443b2e19b7a8e0d1126728ff880d61971132a"
+      }
+    },
+    {
+      "arch": "x86_64",
+      "sector": 4096,
+      "resultat": "WRITE et FLUSH, arret force, nouvelle VM puis READ et comparaison image entiere",
+      "image_sha256": "daf5af5d49e3d77c1c96438ea403c6a29aa35e0765cc4ece06874d4fccb29c3c",
+      "sha256_elf": "7733c7d89f4ba587e7342c32388d5774180c5642c94929cd2980347a08b13ef7",
+      "serie_sha256": {
+        "storage-read.serial": "5eca5f6be8b813fd7cd74191667324ed918bbeb6171e205ea3dbce33cfd66c1d",
+        "storage-write.serial": "863dd91a780753158ac3079902d3fcd94114cd1fd93f0bd4a46843fefb0bbf28"
+      }
+    },
+    {
+      "arch": "x86_64",
+      "sector": 512,
+      "resultat": "WRITE et FLUSH, arret force, nouvelle VM puis READ et comparaison image entiere",
+      "image_sha256": "2cd9259f470d087b52670ba4b8e00062fb079795fbd5694391cac461993423d9",
+      "sha256_elf": "7733c7d89f4ba587e7342c32388d5774180c5642c94929cd2980347a08b13ef7",
+      "serie_sha256": {
+        "storage-read.serial": "331573571ba87c6364f14b78f1e1d733f3625042bab731719f868e37b9a93325",
+        "storage-write.serial": "e32b33732314650e34d0f9b439aa99360479c02a47713628be4c642bc0f0eef8"
+      }
+    }
+  ],
+  "correctifs_0166": "10 profils appliqués sur copies par patch -p1 -F0 ; ce contrôle porte sur les contextes des correctifs."
+}
