@@ -8,11 +8,25 @@
 
 ## Worktrees additionnels et preuves
 
-Le dépôt principal conserve son emplacement `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS`. Créer tous les worktrees Git additionnels de NovaOS exclusivement sous `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/`. Réserver `/tmp` et `/private/tmp` aux fichiers réellement jetables.
+Le dépôt principal conserve son emplacement `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS`. Créer tous les worktrees Git additionnels de NovaOS exclusivement sous `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/`. Placer les temporaires de développement jetables dans le sous-répertoire frère `OS-worktrees/tmp/`. Ne créer volontairement aucun fichier de travail NovaOS dans `/tmp` ou `/private/tmp`. Cette politique concerne les outils de développement sur macOS. Le futur `tmp` des applications dans NovaOS relève du contrat du système invité.
 
-- Conserver les journaux, images disque, traces et résultats nécessaires aux qualifications. Toute preuve à conserver doit avoir une copie hors de `/tmp` et `/private/tmp`. Vérifier son emplacement physique, son existence, sa lisibilité et son SHA-256 en lisant ses octets. Une empreinte publiée seule ne sauvegarde pas le fichier.
+- Conserver les journaux, images disque, traces et résultats nécessaires aux qualifications. Toute preuve à conserver, y compris les traces, mesures et artefacts nécessaires à la reproduction, doit avoir une copie durable hors de `/tmp`, de `/private/tmp` et de `OS-worktrees/tmp/`. Vérifier son emplacement physique, son existence, sa lisibilité et son SHA-256 en lisant ses octets. Une empreinte publiée seule ne sauvegarde pas le fichier.
 - Avant un déplacement, relever le chemin, la branche, le HEAD et l’état des fichiers suivis, non suivis et ignorés. Inventorier les preuves et calculer leurs SHA-256. Vérifier qu’aucune tâche, VM ni aucun processus n’utilise le worktree ou ses images. Reporter le déplacement en cas de doute.
 - Utiliser `git worktree move` sans forcer. Préserver les permissions, les liens, les métadonnées Git et les modifications locales. À destination, relire les preuves, recalculer leurs SHA-256 et comparer les inventaires et références Git. Consigner les écarts et conserver les originaux si la migration est bloquée.
+
+### Temporaires des outils macOS
+
+Pour chaque commande, compilation ou test NovaOS, définir ces variables dans le processus de travail et ses descendants. Laisser la configuration de macOS, du shell et de Git globale intacte.
+
+```sh
+export NOVAOS_TMPDIR="/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp"
+mkdir -p "$NOVAOS_TMPDIR"
+export TMPDIR="$NOVAOS_TMPDIR/"
+```
+
+- Fournir le chemin explicitement lorsqu’un outil expose un paramètre de répertoire temporaire. Vérifier qu’il est accessible en écriture dans le contexte effectif. Python peut sélectionner une autre racine si le bac à sable refuse le chemin. Plusieurs bancs du dépôt utilisent `TemporaryDirectory(dir=BUILD)` et le constructeur d’ISO donne un chemin explicite à `mktemp`. Contrôler séparément ces chemins et signaler les outils qui imposent le leur. Les caches internes de macOS ou de dépendances peuvent suivre leurs propres règles.
+- Vérifier que `OS-worktrees/tmp/` reste hors de tout worktree. Limiter un nettoyage à des éléments identifiés comme jetables après la fin des tests, absence d’utilisateur actif et vérification des archives. Conserver les fichiers en cas de doute.
+- Pour éviter de synchroniser les temporaires, proposer à Thierry la désélection de **ce seul sous-répertoire** dans les règles de synchronisation par dossier de la tâche Synology Drive, si le client et son mode le permettent. Vérifier le chemin exact et que les worktrees et archives restent sélectionnés. Toute modification des réglages de synchronisation exige une demande distincte. [Règles de sélection des dossiers Synology](https://kb.synology.com/DSM/tutorial/Why_are_files_not_synced_between_Synology_Drive_and_Drive_desktop_application)
 
 ## Composants et décisions
 
