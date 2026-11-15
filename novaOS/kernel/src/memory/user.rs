@@ -1,12 +1,32 @@
 //! Propriété des mappings privés. Toutes les copies passent par le HHDM du cadre validé.
 use super::*;
 mod elf;
+#[cfg(feature = "materiel-lab")]
+mod mmio_lab;
 pub(crate) use elf::STACK_TOP as ELF_TOP;
 use elf::{Elf, HEAP};
 
 pub const CODE: u64 = 0x400000;
 pub const DATA: u64 = 0x401000;
 pub const PRIVATE: u64 = 0x600000;
+/// Adresse privée fixe du pilote EDU plat ; jamais utilisable pour un copyin/copyout.
+#[cfg(feature = "materiel-lab")]
+pub(crate) const LAB_MMIO: u64 = 0x700000;
+
+/// Réservation globale sous le verrou de Memory. Le pointeur de BAR n'appartient
+/// pas à l'allocateur de cadres. La génération est conservée après restitution.
+#[cfg(feature = "materiel-lab")]
+#[derive(Default)]
+pub(super) struct LabMapping {
+    last_epoch: u64,
+    active: Option<LabLeaf>,
+}
+#[cfg(feature = "materiel-lab")]
+#[derive(Clone, Copy)]
+struct LabLeaf {
+    root: u64,
+    descriptor: u64,
+}
 pub const STACK: u64 = 0x800000;
 pub const TOP: u64 = STACK + PAGE;
 
@@ -20,7 +40,123 @@ pub(crate) struct UserSpace {
     heap_pages: usize,
 }
 
+/// Témoin privé du banc. Seule la page RO identifiée d'un processus maintenu
+/// en vie peut alimenter la sonde interprocessus. Aucune conversion depuis un
+/// entier, aucune adresse transmise à l'espace utilisateur.
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(crate) struct PrivateWitness(u64);
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+pub(super) struct WitnessPin {
+    frame: u64,
+    detached: bool,
+}
+
+#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+impl PrivateWitness {
+    pub(crate) fn iova(&self) -> u64 {
+        self.0
+    }
+    pub(crate) fn release(self) -> bool {
+        crate::heap::with_pages(|m| {
+            let pin = m
+                .witness_pin
+                .as_ref()
+                .filter(|p| p.frame == self.0)
+                .ok_or(Error::Reserved)?;
+            if pin.detached {
+                m.frames.release(self.0);
+            }
+            m.witness_pin = None;
+            Ok(())
+        })
+        .is_ok()
+    }
+}
+
 impl UserSpace {
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    pub(crate) fn vtd_witness(&self, m: &mut Memory) -> Option<PrivateWitness> {
+        let frame = self.frame_for(m, PRIVATE, false)?;
+        let descriptor = self.tables.descriptor(&m.frames, PRIVATE).ok()?;
+        let ro = paging::user_leaf(frame, Access::ReadOnly, paging::cache(descriptor, 3));
+        if self.elf.is_some() || !paging::matches(descriptor, ro) || m.witness_pin.is_some() {
+            return None;
+        }
+        m.witness_pin = Some(WitnessPin {
+            frame,
+            detached: false,
+        });
+        Some(PrivateWitness(frame))
+    }
+
+    /// Le lanceur a authentifié le pilote et obtenu son bail PCI. La MMU refuse
+    /// indépendamment une autre racine, une BAR inconnue ou un epoch périmé.
+    #[cfg(feature = "materiel-lab")]
+    pub(crate) fn map_lab_mmio(
+        &self,
+        m: &mut Memory,
+        bar: u64,
+        size: u64,
+        epoch: u64,
+    ) -> Result<()> {
+        if m.lab_mapping.active.is_some() {
+            return Err(Error::Occupied);
+        }
+        if epoch <= m.lab_mapping.last_epoch || self.elf.is_some() || self.owns(LAB_MMIO) {
+            return Err(Error::Reserved);
+        }
+        if !mmio_lab::valid_bar(bar, size, m.frames.regions().map(|e| (e.base, e.length))) {
+            return Err(Error::Geometry);
+        }
+        for va in [LAB_MMIO - PAGE, LAB_MMIO, LAB_MMIO + PAGE] {
+            match self.tables.descriptor(&m.frames, va) {
+                Err(Error::Missing) => (),
+                Ok(_) => return Err(Error::Occupied),
+                Err(e) => return Err(e),
+            }
+        }
+        let descriptor = paging::user_leaf(bar, Access::ReadOnly, paging::device_cache()?);
+        self.tables.insert(&mut m.frames, LAB_MMIO, descriptor)?;
+        m.lab_mapping.last_epoch = epoch;
+        m.lab_mapping.active = Some(LabLeaf {
+            root: self.tables.root,
+            descriptor,
+        });
+        paging::publish();
+        paging::invalidate(LAB_MMIO);
+        if !self
+            .tables
+            .descriptor(&m.frames, LAB_MMIO)
+            .is_ok_and(|leaf| paging::matches(leaf, descriptor))
+        {
+            // PTE incertaine : maintenir la réservation jusqu'à un retrait prouvé.
+            return Err(Error::Verification);
+        }
+        Ok(())
+    }
+
+    /// Le retrait détruit la PTE puis attend l'invalidation distante dans remove().
+    /// Les pages de tables seront rendues après l'acquittement ; la BAR ne sera
+    /// jamais libérée comme un cadre RAM. Une erreur conserve la réservation.
+    #[cfg(feature = "materiel-lab")]
+    pub(crate) fn revoke_lab_mmio(&self, m: &mut Memory, epoch: u64) -> Result<()> {
+        let lease = m.lab_mapping.active.ok_or(Error::Missing)?;
+        if lease.root != self.tables.root || epoch != m.lab_mapping.last_epoch {
+            return Err(Error::Reserved);
+        }
+        let desc = self.tables.descriptor(&m.frames, LAB_MMIO)?;
+        if !paging::matches(desc, lease.descriptor) {
+            return Err(Error::Verification);
+        }
+        if self.tables.remove(&mut m.frames, LAB_MMIO)? != lease.descriptor & PHYS_MASK
+            || self.tables.descriptor(&m.frames, LAB_MMIO) != Err(Error::Missing)
+        {
+            return Err(Error::Verification);
+        }
+        m.lab_mapping.active = None;
+        Ok(())
+    }
+
     pub(crate) fn audit_driver(&self, m: &Memory, dma: &[u64; 24]) -> bool {
         self.tables.audit_driver(
             &m.frames,
@@ -340,6 +476,11 @@ impl UserSpace {
             .direct_alias(&m.frames, frame)
             .expect("alias du cadre");
         alias.protect(&mut m.frames, Access::ReadWrite);
+        #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+        if let Some(pin) = m.witness_pin.as_mut().filter(|p| p.frame == frame) {
+            pin.detached = true;
+            return;
+        }
         m.frames.release(frame);
     }
 
@@ -386,6 +527,22 @@ impl UserSpace {
 
     /// Espace inactif, dernier thread commuté. Seules les branches basses sont possédées.
     pub fn release(self, m: &mut Memory) {
+        #[cfg(feature = "materiel-lab")]
+        if m.lab_mapping
+            .active
+            .is_some_and(|lease| lease.root == self.tables.root)
+        {
+            let epoch = m.lab_mapping.last_epoch;
+            if self.revoke_lab_mmio(m, epoch).is_err() {
+                // Aucune racine de remplacement ne doit pouvoir hériter de ce bail.
+                // L'espace entier reste en quarantaine avec ses cadres, y compris sa racine.
+                log(format_args!(
+                    "MMIO quarantaine racine={:#x} epoque={epoch}",
+                    self.tables.root
+                ));
+                return;
+            }
+        }
         if let Some(e) = self.elf {
             for va in e.segments().flat_map(|s| s.pages()).take(self.loaded) {
                 Self::release_page(&self.tables, m, va)

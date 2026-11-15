@@ -1,6 +1,6 @@
 [package]
 name = "novaos"
-version = "0.17.0"
+version = "0.18.0"
 edition = "2024"
 publish = false
 
@@ -11,6 +11,8 @@ test = false
 bench = false
 
 [features]
+materiel-lab = []
+vtd-lab = ["materiel-lab"]
 user-fpu = []
 ipc-smp-lab = []
 ipc-equite-lab = ["ipc-smp-lab"]

@@ -10,7 +10,7 @@ pub(super) const WINDOW: u64 = memory::IO_BASE;
 
 /// Région bornée, toujours superviseur. Les constructeurs fixent l'origine et la durée de vie.
 #[derive(Clone, Copy)]
-pub(super) struct Region {
+pub(in crate::hardware) struct Region {
     base: usize,
     len: usize,
 }
@@ -113,11 +113,11 @@ impl Region {
     }
 }
 #[derive(Clone, Copy)]
-pub(super) struct Frame {
+pub(in crate::hardware) struct Frame {
     pub pa: u64,
     pub mem: Region,
 }
-pub(super) const EMPTY: Frame = Frame {
+pub(in crate::hardware) const EMPTY: Frame = Frame {
     pa: 0,
     mem: Region { base: 0, len: 0 },
 };
@@ -162,7 +162,7 @@ impl Pages {
         }
     }
 }
-pub(super) fn barrier() {
+pub(in crate::hardware) fn barrier() {
     fence(Ordering::SeqCst);
     #[cfg(target_arch = "aarch64")]
     // Sûreté : barrière système entre la RAM cohérente et le transport Device sur virt.
@@ -170,7 +170,7 @@ pub(super) fn barrier() {
         core::arch::asm!("dsb sy", options(nostack, preserves_flags))
     }
 }
-pub(super) fn wait(mut ready: impl FnMut() -> bool) -> Result<()> {
+pub(in crate::hardware) fn wait(mut ready: impl FnMut() -> bool) -> Result<()> {
     let begin = crate::hal::timer::counter();
     // Limite de secours, indépendante d'une IRQ qu'un arrêt peut masquer.
     for _ in 0..4_000_000 {

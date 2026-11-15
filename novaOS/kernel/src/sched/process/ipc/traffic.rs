@@ -56,6 +56,37 @@ impl Domain {
         e.sequence = e.sequence.checked_add(1).ok_or(LIMIT)?;
         Ok(e.sequence)
     }
+    /// Notifications dérivées d'une source matérielle privée, au format IPC existant.
+    #[cfg(feature = "materiel-lab")]
+    pub(in crate::sched::process) fn lab_notify(&mut self, pid: Pid, key: u64, bits: u64) -> bool {
+        let Ok(node) = self.lookup(pid, key, RECEIVE) else {
+            return false;
+        };
+        let ep = self.ends.get(node.endpoint.slot());
+        if node.rights != RECEIVE || ep.root != node.id || ep.owner != pid.number {
+            return false;
+        }
+        if self.add_notification(node.endpoint, bits).is_err() {
+            return false;
+        }
+        self.signal_heads();
+        true
+    }
+
+    fn add_notification(&mut self, ep: Reference, bits: u64) -> Res<()> {
+        if bits == 0 {
+            return Err(BAD_ARGUMENT);
+        }
+        if self.ends.get(ep.slot()).bits == 0 {
+            let rank = self.next_rank(ep)?;
+            let e = self.ends.get_mut(ep.slot());
+            e.notified = rank;
+            e.notified_at = metrics::stamp();
+        }
+        self.ends.get_mut(ep.slot()).bits |= bits;
+        Ok(())
+    }
+
     fn head(&self, ep: Reference) -> Option<Head> {
         let e = self.ends.get(ep.slot());
         let mut first = (e.len != 0).then(|| (e.deposits[e.head].rank, Head::Deposit));
@@ -335,15 +366,7 @@ impl Domain {
             IPC_REVOKE => self.revoke(n),
             IPC_CANCEL => self.cancel(n),
             IPC_NOTIFY => {
-                if b == 0 {
-                    return Err(BAD_ARGUMENT);
-                }
-                if self.ends.get(ep.slot()).bits == 0 {
-                    let rank = self.next_rank(ep)?;
-                    self.ends.get_mut(ep.slot()).notified = rank;
-                    self.ends.get_mut(ep.slot()).notified_at = metrics::stamp();
-                }
-                self.ends.get_mut(ep.slot()).bits |= b;
+                self.add_notification(ep, b)?;
                 0
             }
             IPC_SEND => {

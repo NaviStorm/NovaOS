@@ -12,6 +12,8 @@ use pool::{Bits, Pool};
 mod bulk;
 mod probes;
 mod traffic;
+#[cfg(feature = "materiel-lab")]
+mod lab_command;
 pub(super) use bulk::transfer;
 pub(crate) use probes::{quiet, run};
 
@@ -381,6 +383,27 @@ impl Domain {
         self.install(p, slot, root, key);
         Ok(key)
     }
+    /// Racine privée, uniquement RECEIVE dès sa première publication à ce PID.
+    #[cfg(feature = "materiel-lab")]
+    pub(super) fn lab_receiver(&mut self, pid: Pid) -> Res<u64> {
+        let key = self.create(pid)?;
+        let node = self.lookup(pid, key, ALL).expect("racine à peine créée");
+        self.nodes.get_mut(node.id.slot()).rights = RECEIVE;
+        Ok(key)
+    }
+
+    #[cfg(feature = "materiel-lab")]
+    pub(super) fn lab_close(&mut self, pid: Pid, key: u64) {
+        if let Ok(node) = self.lookup(pid, key, RECEIVE) {
+            let ep = self.ends.get(node.endpoint.slot());
+            if node.rights == RECEIVE && ep.root == node.id && ep.owner == pid.number {
+                self.close(node);
+                self.signal_heads();
+                self.collect();
+            }
+        }
+    }
+
     fn check_mask(n: Node, mask: u64) -> Res<u32> {
         if mask == 0 || mask & !u64::from(ALL) != 0 {
             return Err(BAD_ARGUMENT);
@@ -612,7 +635,7 @@ pub(super) fn call(id: u64, args: [u64; 3]) -> Res<u64> {
     traffic::invoke(id, args)
 }
 
-fn undo_unpublished(child: Child) {
+pub(super) fn undo_unpublished(child: Child) {
     let pid = child.0;
     core::mem::forget(child);
     let (stack, space) = with(|s| {

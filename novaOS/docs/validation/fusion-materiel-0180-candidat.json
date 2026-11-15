@@ -1,0 +1,528 @@
+{
+  "revision_sources_et_oracles": "7b7374f807e775978eeefdeb0ee40fba0f741a2d",
+  "bases_images_ecrans": "65037718d8f8c20fcaa256d06df4774e8bf7709a",
+  "architecture": {
+    "aarch64": {
+      "cli": {
+        "architecture": "aarch64",
+        "profil": "cli-test",
+        "secteur": 512,
+        "banniere": "NovaOS v0.18.0",
+        "sha256_elf": "e16b34c2671d8c255fce83f5a3eec498b88ed1dd47e28914ce19e8da6418649a",
+        "sha256_iso": "5d315af1c2d322f2bb0b93172aed6f39009f5d10b2fbed63d9fa5d4f38219d6b",
+        "sha256_serie": "7e49ab9f21d008fd24469fcf6bc86eef5b9c453182bf598f63173d6e34535b8e",
+        "sha256_p9_avant": "14bcd069562b3105383f57f20966e169a23585e53a6ab22f5c8d0a63e19ee531",
+        "sha256_p9_apres": "14bcd069562b3105383f57f20966e169a23585e53a6ab22f5c8d0a63e19ee531",
+        "commandes": [
+          {
+            "commande": "pwd --version",
+            "serie": "CLI spawn image=0 pid=5 cycles=489813 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=5 privees=7 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=127 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62072 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1267 retenu=1736 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=5 niveau=EL0 pc=0x10001b0 sortie=0\r\nCLI collecte pid=5 cycles=120937\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "eeee98f2420a613af7f05625a066c422df8fb9d7daf4ff12680d1bd54032ddd4",
+            "duree_ms": 18.182
+          },
+          {
+            "commande": "ls --version",
+            "serie": "CLI spawn image=1 pid=6 cycles=47250 pages=79\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=6 privees=15 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=135 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62064 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1275 retenu=1744 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=6 niveau=EL0 pc=0x10004e8 sortie=0\r\nCLI collecte pid=6 cycles=49750\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "9d99709dde3f7056719a9c6cecac777183793db8888e5b22462d06d7c1e75a9f",
+            "duree_ms": 3.575
+          },
+          {
+            "commande": "cat --version",
+            "serie": "CLI spawn image=2 pid=7 cycles=12312 pages=72\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=7 privees=8 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=128 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62071 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1268 retenu=1737 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=7 niveau=EL0 pc=0x10002d8 sortie=0\r\nCLI collecte pid=7 cycles=45500\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "62bba330c452645af5978fd5c84c5a41640152064a92d91d5a9334125e0ca3fb",
+            "duree_ms": 4.346
+          },
+          {
+            "commande": "head --version",
+            "serie": "CLI spawn image=3 pid=8 cycles=22500 pages=72\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=8 privees=8 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=128 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62071 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1268 retenu=1737 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=8 niveau=EL0 pc=0x10002e0 sortie=0\r\nCLI collecte pid=8 cycles=49938\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "efc95eeff67af0667eeb3841f902559ae5f3e7dc64ba098f2d06a685cd705788",
+            "duree_ms": 4.603
+          },
+          {
+            "commande": "mkdir --version",
+            "serie": "CLI spawn image=4 pid=9 cycles=12938 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=9 privees=7 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=127 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62072 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1267 retenu=1736 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=9 niveau=EL0 pc=0x1000410 sortie=0\r\nCLI collecte pid=9 cycles=41625\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "f7c955dce4f859784a9992ab6305584c057f491d5d7fa6ce0af9466b5b9a5926",
+            "duree_ms": 4.132
+          },
+          {
+            "commande": "rm --version",
+            "serie": "CLI spawn image=5 pid=10 cycles=38875 pages=74\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=10 privees=10 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=130 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62069 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1270 retenu=1739 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=10 niveau=EL0 pc=0x10003d8 sortie=0\r\nCLI collecte pid=10 cycles=43500\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "984e29d38568b43ea31112991a42414fcd72030b5d771199f29a75b46d8f2dd4",
+            "duree_ms": 5.293
+          },
+          {
+            "commande": "cp --version",
+            "serie": "CLI spawn image=7 pid=11 cycles=24750 pages=73\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=11 privees=9 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=129 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62070 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1269 retenu=1738 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=11 niveau=EL0 pc=0x1000410 sortie=0\r\nCLI collecte pid=11 cycles=43125\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "24fa32fe5fa04c35c840438020d85ea56c6f289fff56d1a685e10e04bda375e3",
+            "duree_ms": 5.424
+          },
+          {
+            "commande": "mv --version",
+            "serie": "CLI spawn image=8 pid=12 cycles=14500 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=12 privees=7 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=127 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62072 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1267 retenu=1736 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=12 niveau=EL0 pc=0x1000438 sortie=0\r\nCLI collecte pid=12 cycles=43875\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "ae44063979151196c29885a2044cd72bc90b9a8933bb4423d6e5d6dc60fe9b82",
+            "duree_ms": 5.497
+          },
+          {
+            "commande": "touch --version",
+            "serie": "CLI spawn image=9 pid=13 cycles=17813 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=13 privees=7 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=127 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62072 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1267 retenu=1736 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=13 niveau=EL0 pc=0x1000454 sortie=0\r\nCLI collecte pid=13 cycles=43437\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "454b72d2d184d207ef44d281797ed3fcc411906b8cc98f1c4d1f82392d1959ff",
+            "duree_ms": 5.129
+          },
+          {
+            "commande": "more --version",
+            "serie": "CLI spawn image=10 pid=14 cycles=33062 pages=73\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=14 privees=9 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=129 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62070 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1269 retenu=1738 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=14 niveau=EL0 pc=0x10002d4 sortie=0\r\nCLI collecte pid=14 cycles=45750\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "8c2d9822634202555e5611dee7d5be2f06d0d1c029b48bc581a4cbda5409853e",
+            "duree_ms": 5.442
+          },
+          {
+            "commande": "wc --version",
+            "serie": "CLI spawn image=11 pid=15 cycles=26375 pages=73\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=15 privees=9 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=129 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62070 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1269 retenu=1738 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=15 niveau=EL0 pc=0x10002e4 sortie=0\r\nCLI collecte pid=15 cycles=44437\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "a9f94e04409322eeec9bd39a0e6169b64b8c8f2d31ecd5176b1864de2c486915",
+            "duree_ms": 5.57
+          },
+          {
+            "commande": "tail --version",
+            "serie": "CLI spawn image=12 pid=16 cycles=15875 pages=72\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=16 privees=8 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=128 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62071 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1268 retenu=1737 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=16 niveau=EL0 pc=0x10002e0 sortie=0\r\nCLI collecte pid=16 cycles=42687\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "28c8d9c1a5c7509c9b242091f37f63973e2b1e0c07ab01915cbae6ff3d5fa942",
+            "duree_ms": 4.22
+          },
+          {
+            "commande": "rmdir --version",
+            "serie": "CLI spawn image=13 pid=17 cycles=14875 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=17 privees=7 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=127 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62072 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1267 retenu=1736 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=17 niveau=EL0 pc=0x10002d4 sortie=0\r\nCLI collecte pid=17 cycles=45687\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "f5465b9412a6591bec1cf1c60c1f12a97f1605eb242f152c61433b5234e71ccc",
+            "duree_ms": 5.57
+          },
+          {
+            "commande": "vi --version",
+            "serie": "CLI spawn image=14 pid=18 cycles=43875 pages=79\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nCLI mem pid=18 privees=15 pile=64\r\nRAM phase=cli_enfant image=600 tables=193 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=135 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62064 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1275 retenu=1744 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=18 niveau=EL0 pc=0x1006098 sortie=0\r\nCLI collecte pid=18 cycles=49063\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=64 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=51 pile=64\r\nRAM phase=cli_repos image=600 tables=185 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=120 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62167 cache=0 chargeur=0 restitue=7256 extra_elf=0 video=469 ram_video=469 resident=1172 retenu=1641 dma=16\r\nCLI repos pages=115 libres=62167 buddy=43040\r\nnsh> ",
+            "sha256": "3f11f00f83ff7c63442d8e1007ee45e54ac58f1d3c7eb450d0c29c6eb634eb8b",
+            "duree_ms": 4.258
+          }
+        ]
+      },
+      "captures": {
+        "demarrage-aarch64": {
+          "ppm_0170": "094bfcc52daa1a735887c79e0e40d0c2260a3c44a3b168ef80136525349bbacc",
+          "ppm_0180_prevu": "89e3226761990d952e9af8944ca11ab41643e1b20e7731d47e43435e320bfa6c",
+          "pixels_changes": 256,
+          "png_qmp_sha256": "20bc13a4d853323f858df3888b597e342798435347acfdf89f6962d31208ecad"
+        }
+      },
+      "iso_ordinaire_sha256": "c32112156398790793907cc51e4e6d2b2b6092b3c7bfab08497f2b00f54298e2",
+      "serie_demarrage": "UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)\r\nArmTrngLib could not be correctly initialized.\r\nError: Image at 0004FDB6000 start failed: 00000001\r\nError: Image at 0004FCB2000 start failed: Unsupported\r\nError: Image at 0004FC37000 start failed: Not Found\r\nError: Image at 0004FB5D000 start failed: Aborted\r\nTpm2SubmitCommand - Tcg2 - Not Found\r\nTpm2GetCapabilityPcrs fail!\r\nTpm2SubmitCommand - Tcg2 - Not Found\r\n\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU QEMU CD-ROM \" from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU QEMU CD-ROM \" from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)\r\nConvertPages: range 4EFE3000 - 4EFE6FFF covers multiple entries\r\nConvertPages: Incompatible memory types, the pages to allocate have been allocated\r\nConvertPages: Incompatible memory types, the pages to allocate have been allocated\r\nConvertPages: Incompatible memory types, the pages to allocate have been allocated\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01HMMU : sections et alias verifies, 55346 pages libres.\r\nNovaOS v0.18.0\r\nAffichage prêt.\r\nPROC pid=1 niveau=EL0 pc=0x400280 sortie=41\r\nPROC pid=2 niveau=EL0 pc=0x400280 sortie=82\r\nPROC demonstration terminee\r\nPROC pid=4 niveau=EL0 pc=0x4001cc sortie=0\r\nRAM phase=stockage_boot image=600 tables=152 kpile=48 upile=1 heap=3 buddy=1 ipc=5 utilisateur=2 processus=1 meta_octets=8472 meta_actifs=264 tcb_octets=4608 heap_va=65536 libres=62527 cache=0 chargeur=0 restitue=7254 extra_elf=0 video=469 ram_video=469 resident=812 retenu=1281 dma=0\r\nSTOCKAGE session=1 service=3 client=4 INFO volumes=0 FIN confirmee\r\n",
+      "classique_durable": [
+        "OK — aarch64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+        "OK — aarch64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière"
+      ]
+    },
+    "x86_64": {
+      "cli": {
+        "architecture": "x86_64",
+        "profil": "cli-test",
+        "secteur": 512,
+        "banniere": "NovaOS v0.18.0",
+        "sha256_elf": "68b1d7fd356d35d253afce76d88a2800ba98a6024d18aac0b888766a4a13ea04",
+        "sha256_iso": "e0fa5bead3b11347ee35754471d62ef79384010b3562b420c2a4894b05469098",
+        "sha256_serie": "163c1be87b454bc708f395aac2128f2eaf848371d16bcb2cf21741c7811f9263",
+        "sha256_p9_avant": "d699b6c16bb4eb372c69aa345bf5d5a0c8caffeab6866dce67262b42388cdc43",
+        "sha256_p9_apres": "d699b6c16bb4eb372c69aa345bf5d5a0c8caffeab6866dce67262b42388cdc43",
+        "commandes": [
+          {
+            "commande": "pwd --version",
+            "serie": "CLI spawn image=0 pid=5 cycles=1280000 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=5 privees=7 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=135 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62595 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1343 retenu=1343 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=5 niveau=Ring3 pc=0x10001d5 sortie=0\r\nCLI collecte pid=5 cycles=1547000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "83556a91faa04f94a74dcba484d1fd15bda90ccf706409bf323c3cf88deec9e0",
+            "duree_ms": 7.353
+          },
+          {
+            "commande": "ls --version",
+            "serie": "CLI spawn image=1 pid=6 cycles=682000 pages=79\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=6 privees=15 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=143 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62587 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1351 retenu=1351 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=6 niveau=Ring3 pc=0x1000499 sortie=0\r\nCLI collecte pid=6 cycles=1027000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "39801a88121d6d4bbefc7045aa69ebbd97c890c0619e06a89ad2b69708378cb0",
+            "duree_ms": 7.172
+          },
+          {
+            "commande": "cat --version",
+            "serie": "CLI spawn image=2 pid=7 cycles=118000 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=7 privees=7 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=135 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62595 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1343 retenu=1343 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=7 niveau=Ring3 pc=0x1000342 sortie=0\r\nCLI collecte pid=7 cycles=175000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "aa1e244c3501a5140dc9a21307e8b6018ed18600114b68ccaf3ce2a308fc17a8",
+            "duree_ms": 2.167
+          },
+          {
+            "commande": "head --version",
+            "serie": "CLI spawn image=3 pid=8 cycles=463000 pages=72\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=8 privees=8 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=136 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62594 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1344 retenu=1344 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=8 niveau=Ring3 pc=0x1000356 sortie=0\r\nCLI collecte pid=8 cycles=173000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "055d55abc9d38e66ab437f2b54a693b9621351eb0d253b2829e9868b6fd02815",
+            "duree_ms": 4.791
+          },
+          {
+            "commande": "mkdir --version",
+            "serie": "CLI spawn image=4 pid=9 cycles=149000 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=9 privees=7 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=135 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62595 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1343 retenu=1343 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=9 niveau=Ring3 pc=0x1000727 sortie=0\r\nCLI collecte pid=9 cycles=161000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "b4b41fdd1000eb705bf5947e0816cba04eba9891f1d0c3788e31f7fdaf15bc09",
+            "duree_ms": 3.519
+          },
+          {
+            "commande": "rm --version",
+            "serie": "CLI spawn image=5 pid=10 cycles=619000 pages=74\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=10 privees=10 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=138 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62592 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1346 retenu=1346 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=10 niveau=Ring3 pc=0x1000752 sortie=0\r\nCLI collecte pid=10 cycles=176000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "f740e565742c0b1ecc362db5521ee990bdc3318ad28aea063ee437485497faa8",
+            "duree_ms": 3.461
+          },
+          {
+            "commande": "cp --version",
+            "serie": "CLI spawn image=7 pid=11 cycles=447000 pages=73\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=11 privees=9 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=137 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62593 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1345 retenu=1345 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=11 niveau=Ring3 pc=0x1000470 sortie=0\r\nCLI collecte pid=11 cycles=165000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "c1fc4ccae0b609cea12df62c326424cb0c9e0f70f9f3cf586ccc5aec57fcf4e2",
+            "duree_ms": 4.702
+          },
+          {
+            "commande": "mv --version",
+            "serie": "CLI spawn image=8 pid=12 cycles=156000 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=12 privees=7 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=135 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62595 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1343 retenu=1343 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=12 niveau=Ring3 pc=0x10004a0 sortie=0\r\nCLI collecte pid=12 cycles=169000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "ddb1c8e81812bee999d9c6b0a6c587475e86382d02a99eafa3c986526f7a155c",
+            "duree_ms": 3.353
+          },
+          {
+            "commande": "touch --version",
+            "serie": "CLI spawn image=9 pid=13 cycles=238000 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=13 privees=7 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=135 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62595 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1343 retenu=1343 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=13 niveau=Ring3 pc=0x1000496 sortie=0\r\nCLI collecte pid=13 cycles=193000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "33593a9071b851d46546c43be40ec5c30bf6fb4fd7f643fec43ad7f7842a7ae5",
+            "duree_ms": 4.639
+          },
+          {
+            "commande": "more --version",
+            "serie": "CLI spawn image=10 pid=14 cycles=528000 pages=73\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=14 privees=9 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=137 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62593 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1345 retenu=1345 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=14 niveau=Ring3 pc=0x100035d sortie=0\r\nCLI collecte pid=14 cycles=180000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "d002b1dce1a24f6229b5ee08317b63297b13b68fc6f0236f2f490add8f455702",
+            "duree_ms": 3.507
+          },
+          {
+            "commande": "wc --version",
+            "serie": "CLI spawn image=11 pid=15 cycles=591000 pages=74\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=15 privees=10 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=138 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62592 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1346 retenu=1346 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=15 niveau=Ring3 pc=0x1000378 sortie=0\r\nCLI collecte pid=15 cycles=181000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "042c48aad931c262a95fff9e9f9b38148ec3546acc85da9111aa13ac089c641d",
+            "duree_ms": 4.798
+          },
+          {
+            "commande": "tail --version",
+            "serie": "CLI spawn image=12 pid=16 cycles=127000 pages=72\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=16 privees=8 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=136 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62594 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1344 retenu=1344 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=16 niveau=Ring3 pc=0x1000360 sortie=0\r\nCLI collecte pid=16 cycles=179000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "bacc9cc59cf449aca0ed4e3d24069f6ffb8c64ee98de6f035b45c4578cfc453d",
+            "duree_ms": 3.51
+          },
+          {
+            "commande": "rmdir --version",
+            "serie": "CLI spawn image=13 pid=17 cycles=170000 pages=71\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=17 privees=7 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=135 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62595 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1343 retenu=1343 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=17 niveau=Ring3 pc=0x100032e sortie=0\r\nCLI collecte pid=17 cycles=184000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "ff517300bc0e585389415dcd7cb7cbc0df2c88e01e771a2d669a55871da7b22b",
+            "duree_ms": 3.671
+          },
+          {
+            "commande": "vi --version",
+            "serie": "CLI spawn image=14 pid=18 cycles=651000 pages=80\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nCLI mem pid=18 privees=16 pile=64\r\nRAM phase=cli_enfant image=670 tables=191 kpile=112 upile=194 heap=12 buddy=1 ipc=12 utilisateur=144 processus=5 meta_octets=8472 meta_actifs=1320 tcb_octets=4608 heap_va=65536 libres=62586 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1352 retenu=1352 dma=16\r\nNovaOS 0.18.0\r\nPROC pid=18 niveau=Ring3 pc=0x100659d sortie=0\r\nCLI collecte pid=18 cycles=189000\r\n[statut sortie 0]\r\nCLI mem pid=1 privees=2 pile=1\r\nCLI mem pid=2 privees=69 pile=64\r\nCLI mem pid=3 privees=3 pile=1\r\nCLI mem pid=4 privees=54 pile=64\r\nRAM phase=cli_repos image=670 tables=183 kpile=96 upile=130 heap=12 buddy=1 ipc=12 utilisateur=128 processus=4 meta_octets=8472 meta_actifs=1056 tcb_octets=4608 heap_va=65536 libres=62690 cache=0 chargeur=0 restitue=10497 extra_elf=0 video=469 ram_video=0 resident=1248 retenu=1248 dma=16\r\nCLI repos pages=118 libres=62690 buddy=42016\r\nnsh> ",
+            "sha256": "35253a7c5884bfcb25379410003227d029c87209d3a2e0837e8f00f01449b455",
+            "duree_ms": 4.709
+          }
+        ]
+      },
+      "captures": {
+        "demarrage": {
+          "ppm_0170": "085912138b60b113b0778e26711184d208a7b8092727b47b594c23d6a6e70de5",
+          "ppm_0180_prevu": "3b07d92f6cc9e7f7bad0b5a658f1c0cdc7df029d73b3e3a2948360a9a344ba30",
+          "pixels_changes": 256,
+          "png_qmp_sha256": "17b3cd71970fca53918e65592664ba93b7d1a5a7ff3f0c60eb9aaa7f0dd4a3c0"
+        },
+        "composition": {
+          "ppm_0170": "62bff0b5dc4d13173676f5cef71ba0762213651fdda4750e6281f48b260ba30f",
+          "ppm_0180_prevu": "3c40fe8c613b5fe676077db1a1b4302113ee153c99968c8a80dfa1340c3b4c53",
+          "pixels_changes": 256,
+          "png_qmp_sha256": "ae42613c4f453c9a770a6d7ba68ba38a8eea84850a6d0c8b1f13a3a2a1f69e52"
+        },
+        "frappe": {
+          "ppm_0170": "e8ccc896eed05c7ba0eeb71f59e3eb8a20e05d97e204a6ad79b830e6c6f7d73f",
+          "ppm_0180_prevu": "c08ce16d45e3c5b8f6d7e3d82731055a0ee7130dfec64139a627ef6d2578676c",
+          "pixels_changes": 256,
+          "png_qmp_sha256": "7f72529282f19c804a6bed97a54b07c522dd01a3feb0efc94cf1c0ff7779bfaa"
+        },
+        "saisie": {
+          "ppm_0170": "147ffdeecc8d37c17b337692477ae0413401e798c3e61ae894d81a8213b0cf0c",
+          "ppm_0180_prevu": "3df01982db0b997c362085ab9c52b803a8877f3856dcea0b4010ff12b343ca1e",
+          "pixels_changes": 256,
+          "png_qmp_sha256": "d26eb9fd2142c78077c787632614db7d69f211fa13396314b9450febdda6f9b0"
+        }
+      },
+      "iso_ordinaire_sha256": "3951f59c671a0c33c190c0756d6a9e011f88605face90e7cf2a751b1861f3905",
+      "serie_demarrage": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01HMMU : sections et alias verifies, 52656 pages libres.\r\nNovaOS v0.18.0\r\nAffichage prêt.\r\nClavier PS/2 prêt (AZERTY).\r\nPROC pid=1 niveau=Ring3 pc=0x400190 sortie=41\r\nPROC pid=2 niveau=Ring3 pc=0x400190 sortie=82\r\nPROC demonstration terminee\r\nPROC pid=4 niveau=Ring3 pc=0x40019c sortie=0\r\nRAM phase=stockage_boot image=670 tables=151 kpile=64 upile=1 heap=3 buddy=1 ipc=5 utilisateur=2 processus=1 meta_octets=8472 meta_actifs=264 tcb_octets=4608 heap_va=65536 libres=63041 cache=0 chargeur=0 restitue=10474 extra_elf=0 video=469 ram_video=0 resident=897 retenu=897 dma=0\r\nSTOCKAGE session=1 service=3 client=4 INFO volumes=0 FIN confirmee\r\n",
+      "classique_durable": [
+        "OK — x86_64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+        "OK — x86_64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière"
+      ]
+    }
+  },
+  "vtd_2_vcpu": {
+    "profil": "normal",
+    "vcpus": 2,
+    "options": [
+      "-device",
+      "edu,id=edu-phase3,bus=pcie.0,addr=06.0",
+      "-device",
+      "intel-iommu,id=unite,aw-bits=48,intremap=off,eim=off,caching-mode=on,device-iotlb=off,scalable-mode=off,dma-translation=on",
+      "-trace",
+      "enable=vtd_dmar_fault",
+      "-trace",
+      "enable=vtd_dmar_translate",
+      "-trace",
+      "enable=vtd_inv_desc_cc_global",
+      "-trace",
+      "enable=vtd_inv_desc_iotlb_global",
+      "-trace",
+      "enable=vtd_inv_desc_wait_sw",
+      "-trace",
+      "enable=vtd_irq_generate",
+      "-trace",
+      "enable=vtd_iotlb_page_hit",
+      "-trace",
+      "enable=vtd_iotlb_page_update",
+      "-trace",
+      "enable=vtd_iotlb_cc_hit",
+      "-trace",
+      "enable=vtd_iotlb_cc_update",
+      "-trace",
+      "enable=vtd_reg_write_fectl"
+    ],
+    "resultats": {
+      "cas": [
+        "Normal",
+        "WarmWrite",
+        "WrongWrite",
+        "WrongRead",
+        "Unmapped",
+        "Other",
+        "Revoke",
+        "Death",
+        "Late",
+        "Restart"
+      ],
+      "pid": [
+        2,
+        1,
+        3,
+        4,
+        5,
+        6,
+        8,
+        7,
+        9,
+        10,
+        11,
+        12
+      ],
+      "fautes": [
+        [
+          "48",
+          "None",
+          "0x2011000",
+          "false",
+          "2",
+          "1"
+        ],
+        [
+          "48",
+          "None",
+          "0x2011000",
+          "false",
+          "2",
+          "2"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2030000",
+          "false",
+          "5",
+          "3"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2041000",
+          "true",
+          "6",
+          "4"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x2052000",
+          "false",
+          "5",
+          "5"
+        ],
+        [
+          "48",
+          "Some(1)",
+          "0x186000",
+          "false",
+          "5",
+          "6"
+        ]
+      ],
+      "diagnostic": [
+        {
+          "cas": "Normal",
+          "epoque": 2,
+          "wait": 3,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 2,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Normal",
+          "epoque": 2,
+          "wait": 3,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 2,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "WarmWrite",
+          "epoque": 3,
+          "wait": 4,
+          "hits_iotlb": 1024,
+          "frcd_valide": false,
+          "msi_intervalle_wait": 0,
+          "cpu_collecte": null,
+          "acquittement_verifie": false
+        },
+        {
+          "cas": "WrongWrite",
+          "epoque": 4,
+          "wait": 7,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "WrongRead",
+          "epoque": 5,
+          "wait": 9,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 1,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Unmapped",
+          "epoque": 6,
+          "wait": 11,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        },
+        {
+          "cas": "Other",
+          "epoque": 7,
+          "wait": 13,
+          "hits_iotlb": 0,
+          "frcd_valide": true,
+          "msi_intervalle_wait": 1,
+          "cpu_collecte": 0,
+          "acquittement_verifie": true
+        }
+      ],
+      "callbacks_faute_qemu_par_page": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "irq_qemu": 6,
+      "triplets_invalidation_acquittes": 22,
+      "retours_traduction_qemu": 1040
+    },
+    "qmp": {
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "cpu": [
+        0,
+        1
+      ],
+      "pci": {
+        "00.0": 3,
+        "06.0": 0,
+        "1f.0": 3,
+        "1f.2": 3,
+        "1f.3": 3
+      },
+      "edu": {
+        "irq_pin": 1,
+        "bus": 0,
+        "qdev_id": "edu-phase3",
+        "irq": 11,
+        "slot": 6,
+        "class_info": {
+          "class": 255
+        },
+        "id": {
+          "device": 4584,
+          "subsystem-vendor": 6900,
+          "vendor": 4660,
+          "subsystem": 4352
+        },
+        "function": 0,
+        "regions": [
+          {
+            "prefetch": false,
+            "mem_type_64": false,
+            "bar": 0,
+            "size": 1048576,
+            "address": -1,
+            "type": "memory"
+          }
+        ]
+      },
+      "bar0": 2147483648,
+      "unite": {
+        "ver": 16,
+        "cap": 9282482383832942214,
+        "ecap": 3906,
+        "gsts": 3288334336,
+        "root": 1335296,
+        "fsts": 0,
+        "fectl": 0,
+        "fedata": 83,
+        "feaddr": 4276092928,
+        "iqh": 1056,
+        "iqt": 1056,
+        "iqa": 1359872
+      },
+      "file_invalidation": {
+        "sha256": "3ffd7fe28e96536f1ba66a813dc5365e82ceccc365d257a8aeeef6aabc3381eb",
+        "triplets_soumis": 22,
+        "triplets_consommes": 22,
+        "adresse_recu": 1363968,
+        "dernier_recu": 22
+      },
+      "racine": {
+        "sha256": "954e213d1937d1292fff750b45f9bb76b13561313a8582f1570050dedcfd2fce",
+        "bus0": 1339393,
+        "autres_octets_nuls": true
+      },
+      "contextes": {
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "octets_nuls": 4096
+      }
+    },
+    "sha256_elf": "2ac357a5bb7c2949b2c83aaee8e83cc95d41ae94ac870af75540763453821189",
+    "sha256_iso": "f4f5a172de4af32f5598388eac29db287fce368d75d33c3f8603dbac90e34c3a",
+    "sha256_serie": "b3afc1ce4bc047bdf18041d7d34d83089fc2705f0a6b6f89054a4bb198b812d5",
+    "serie": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01Hl\u001b[01;02Hi\u001b[01;03Hm\u001b[01;04Hi\u001b[01;05Hn\u001b[01;06He\u001b[01;07H:\u001b[01;08H \u001b[01;09HL\u001b[01;10Ho\u001b[01;11Ha\u001b[01;12Hd\u001b[01;13Hi\u001b[01;14Hn\u001b[01;15Hg\u001b[01;16H \u001b[01;17He\u001b[01;18Hx\u001b[01;19He\u001b[01;20Hc\u001b[01;21Hu\u001b[01;22Ht\u001b[01;23Ha\u001b[01;24Hb\u001b[01;25Hl\u001b[01;26He\u001b[01;27H \u001b[01;28H`\u001b[01;29Hb\u001b[01;30Ho\u001b[01;31Ho\u001b[01;32Ht\u001b[01;33H(\u001b[01;34H)\u001b[01;35H:\u001b[01;36H/\u001b[01;37Hb\u001b[01;38Ho\u001b[01;39Ho\u001b[01;40Ht\u001b[01;41H/\u001b[01;42Hn\u001b[01;43Ho\u001b[01;44Hv\u001b[01;45Ha\u001b[01;46Ho\u001b[01;47Hs\u001b[01;48H.\u001b[01;49He\u001b[01;50Hl\u001b[01;51Hf\u001b[01;52H`\u001b[01;53H.\u001b[01;54H.\u001b[01;55H.\u001b[01;56H\u001b[01;01H\u001b[02;01HMMU : sections et alias verifies, 52652 pages libres.\r\nNovaOS v0.18.0\r\nLAB-BAR 0000:00:06.0 n=0 base=0x80000000 taille=1048576 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=4 base=0x6040 taille=32 type=Io prefetch=false\r\nLAB-BAR 0000:00:1f.2 n=5 base=0x80100000 taille=4096 type=Memory32 prefetch=false\r\nLAB-BAR 0000:00:1f.3 n=4 base=0x6000 taille=64 type=Io prefetch=false\r\nVTD precontrole groupe=racine EDU_vierge=true AHCI_sans_commandes=true\r\nEDU PCI 0000:00:06.0 BAR0 base=0x80000000 taille=1048576 pin=1 ligne=11 commande=0x0007->0x0002 master=false\r\nVTD EDU reprise moteur_vierge=true BME=0\r\nVTD PCI pair SID=0x0000 commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00f8 commande=0x0007->0x0003\r\nVTD AHCI ports=6 CI=0 SACT=0 ST=0 CR=0 FRE=0 FR=0\r\nVTD PCI pair SID=0x00fa commande=0x0007->0x0003\r\nVTD PCI pair SID=0x00fb commande=0x0007->0x0003\r\nVTD DMAR DRHD segment=0 base=0xfed90000 HAW=48 SID=0x0030 portee_explicite=true\r\nVTD registre version=0x10 CAP=0x80d2008c222f0686 ECAP=0xf42 GSTS=0x0\r\nVTD actif mode=legacy niveaux=4 DID=1 SID=48 service=8 GSTS=0xc4000000 FRCD=0x220\r\nVTD debut Normal\r\nVTD preparation annulee aucun cadre publie\r\nDEBUG pid=2 EDU DMA Ring3 domaine concurrent refuse\r\nPROC pid=2 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD concurrent pid=2 titulaire=1 refus=true\r\nVTD migration pilote pid=1 depart=1 arrivee=0\r\nDEBUG pid=1 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=1 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD diagnostic epoque=2 etape=avant-sonde fsts=0x0 fr_hi=0x0 fr_lo=0x0 fectl=0x0 irq=0 cpu_irq=-1 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=fin-sonde fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=avant-ack fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=apres-ack fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD faute sid=48 did=None iova=0x2011000 lecture=false raison=2 statut=0x2 irq=1\r\nVTD diagnostic epoque=2 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=1 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=fin-sonde fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=avant-ack fsts=0x2 fr_hi=0x8000000200000030 fr_lo=0x2011000 fectl=0x80000000 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD diagnostic epoque=2 etape=apres-ack fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0x90 iqt=0x90 wait=3\r\nVTD faute sid=48 did=None iova=0x2011000 lecture=false raison=2 statut=0x2 irq=2\r\nVTD anciens cadres realloues=2 octets_intacts=8192\r\nVTD cas=Normal pid=1 epoque=2 ok=true\r\nVTD debut WarmWrite\r\nVTD diagnostic epoque=3 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0xc0 iqt=0xc0 wait=4\r\nVTD diagnostic epoque=3 etape=fin-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0xc0 iqt=0xc0 wait=4\r\nVTD observation cas=WarmWrite sentinelles=true faute_enregistree=false\r\nDEBUG pid=3 EDU DMA Ring3 sonde terminee\r\nPROC pid=3 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WarmWrite pid=3 epoque=3 ok=true\r\nVTD debut WrongWrite\r\nVTD diagnostic epoque=4 etape=avant-sonde fsts=0x0 fr_hi=0x200000030 fr_lo=0x2011000 fectl=0x0 irq=2 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD diagnostic epoque=4 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2030000 fectl=0x80000000 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD observation cas=WrongWrite sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=4 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2030000 fectl=0x80000000 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD diagnostic epoque=4 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x2030000 fectl=0x0 irq=3 cpu_irq=0 cpu=0 iqh=0x150 iqt=0x150 wait=7\r\nVTD faute sid=48 did=Some(1) iova=0x2030000 lecture=false raison=5 statut=0x2 irq=3\r\nDEBUG pid=4 EDU DMA Ring3 sonde terminee\r\nPROC pid=4 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WrongWrite pid=4 epoque=4 ok=true\r\nVTD debut WrongRead\r\nVTD diagnostic epoque=5 etape=avant-sonde fsts=0x0 fr_hi=0x500000030 fr_lo=0x2030000 fectl=0x0 irq=3 cpu_irq=0 cpu=0 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD diagnostic epoque=5 etape=fin-sonde fsts=0x2 fr_hi=0xc000000600000030 fr_lo=0x2041000 fectl=0x80000000 irq=4 cpu_irq=0 cpu=1 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD observation cas=WrongRead sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=5 etape=avant-ack fsts=0x2 fr_hi=0xc000000600000030 fr_lo=0x2041000 fectl=0x80000000 irq=4 cpu_irq=0 cpu=1 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD diagnostic epoque=5 etape=apres-ack fsts=0x0 fr_hi=0x4000000600000030 fr_lo=0x2041000 fectl=0x0 irq=4 cpu_irq=0 cpu=1 iqh=0x1b0 iqt=0x1b0 wait=9\r\nVTD faute sid=48 did=Some(1) iova=0x2041000 lecture=true raison=6 statut=0x2 irq=4\r\nDEBUG pid=5 EDU DMA Ring3 sonde terminee\r\nPROC pid=5 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=WrongRead pid=5 epoque=5 ok=true\r\nVTD debut Unmapped\r\nVTD diagnostic epoque=6 etape=avant-sonde fsts=0x0 fr_hi=0x4000000600000030 fr_lo=0x2041000 fectl=0x0 irq=4 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD diagnostic epoque=6 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2052000 fectl=0x80000000 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD observation cas=Unmapped sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=6 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x2052000 fectl=0x80000000 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD diagnostic epoque=6 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x2052000 fectl=0x0 irq=5 cpu_irq=0 cpu=0 iqh=0x210 iqt=0x210 wait=11\r\nVTD faute sid=48 did=Some(1) iova=0x2052000 lecture=false raison=5 statut=0x2 irq=5\r\nDEBUG pid=6 EDU DMA Ring3 sonde terminee\r\nPROC pid=6 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Unmapped pid=6 epoque=6 ok=true\r\nVTD debut Other\r\nVTD diagnostic epoque=7 etape=avant-sonde fsts=0x0 fr_hi=0x500000030 fr_lo=0x2052000 fectl=0x0 irq=5 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD diagnostic epoque=7 etape=fin-sonde fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x186000 fectl=0x80000000 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD observation cas=Other sentinelles=true faute_enregistree=true\r\nVTD diagnostic epoque=7 etape=avant-ack fsts=0x2 fr_hi=0x8000000500000030 fr_lo=0x186000 fectl=0x80000000 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD diagnostic epoque=7 etape=apres-ack fsts=0x0 fr_hi=0x500000030 fr_lo=0x186000 fectl=0x0 irq=6 cpu_irq=0 cpu=0 iqh=0x270 iqt=0x270 wait=13\r\nVTD faute sid=48 did=Some(1) iova=0x186000 lecture=false raison=5 statut=0x2 irq=6\r\nDEBUG pid=8 EDU DMA Ring3 page temoin privee 4096 octets intacts\r\nPROC pid=8 niveau=Ring3 pc=0x400152 sortie=0\r\nDEBUG pid=7 EDU DMA Ring3 sonde terminee\r\nPROC pid=7 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Other pid=7 epoque=7 ok=true\r\nVTD debut Revoke\r\nVTD retrait en_vol=true mort=false depart_cpu=0 invalidation_cpu=1\r\nDEBUG pid=9 EDU DMA Ring3 ancienne capacite refusee\r\nPROC pid=9 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Revoke pid=9 epoque=8 ok=true\r\nVTD debut Death\r\nDEBUG pid=10 EDU DMA Ring3 sortie volontaire apres soumission\r\nPROC pid=10 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD retrait en_vol=true mort=true depart_cpu=0 invalidation_cpu=1\r\nVTD cas=Death pid=10 epoque=9 ok=true\r\nVTD debut Late\r\nPROC pid=11 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD demande tardive refusee avant doorbell\r\nVTD cas=Late pid=11 epoque=10 ok=true\r\nVTD debut Restart\r\nDEBUG pid=12 EDU DMA Ring3 lecture et ecriture confirmees\r\nPROC pid=12 niveau=Ring3 pc=0x400152 sortie=0\r\nVTD cas=Restart pid=12 epoque=11 ok=true\r\nVTD ressources epingles_service=8 epingles_clients=0 ipc=0 tas_restitue=true reemploi=true\r\nEDU PCI retrait 0000:00:06.0 BAR0=0x80000000 commande=0x0000\r\nVTD bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d30\r\nSMP diagnostic cpu=1 sp=0xfffff0200023ee70\r\nSMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0\r\n",
+    "sha256_qemu": "03c081562e3244704a42c3173ab7a7f5608f7a82d669e2ddcc9aac8c0d42839c",
+    "journal_qemu_gzip_base64": "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t6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd/2D/12t95cPd6+Ol/1w83po918WOffrcfTn3/6S8dLXvn4IQGv7/5x9Wa9W3d2/tHn39vnvr/8OU17sPPtFF72CtI7eWi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGi1eGj/a5/T/tc+p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb07rN6f1m9P6zWn95rR+c1q/Oa3fnNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb07rN6f1m9P6zWn95rR+c1q/Oa3fnNZvTus3p/Wb0/rNaf3mtH5zWr85rd+c1m9O6zen9ZvT+s1p/ea0fnNavzmt35zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9e6zev9ZvX+s1r/ea1fvNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9e6zev9ZvX+s1r/ea1fvNav3mt37zWb17rN6/1m9f6zWv95rV+81q/ea3fvNZvXus3r/Wb1/rNa/3mtX7zWr95rd+81m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvQeu3oPVb0PotaP0WtH4LWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvQeu3oPVb0PotaP0WtH4LWr8Frd+C1m9B67eg9VvQ+i1o/Ra0fgtavwWt34LWb0Hrt6D1W9D6LWj9FrR+C1q/Ba3fgtZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb1Hrt6j1W9T6LWr9FrV+i1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb1Hrt6j1W9T6LWr9FrV+i1q/Ra3fotZvUeu3qPVb1Potav0WtX6LWr9Frd+i1m9R67eo9VvU+i1q/Ra1fotav0Wt36LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9J67ek9VvS+i1p/Za0fktavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9J67ek9VvS+i1p/Za0fktavyWt35LWb0nrt6T1W9L6LWn9lrR+S1q/Ja3fktZvSeu3pPVb0votaf2WtH5LWr8lrd+S1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvWeu3rPVb1vota/2WtX7LWr9lrd+y1m9Z67es9VvW+i1r/Za1fstav2Wt37LWb1nrt6z1W9b6LWv9lrV+y1q/Za3fstZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb0Xrt6L1W9H6rWj9VrR+K1q/Fa3fitZvReu3ovVb0fqtaP1WtH4rWr8Vrd+K1m9F67ei9VvR+q1o/Va0fitavxWt34rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9V67eq9VvV+q1q/Va1fqtav1Wt36rWb1Xrt6r1W9X6rWr9VrV+q1q/Va3fqtZvVeu3qvVb1fqtav1WtX6rWr9Vrd+q1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvTeu3pvVb0/qtaf3WtH5rWr81rd+a1m9N67em9VvT+q1p/da0fmtavzWt35rWb03rt6b1W9P6rWn91rR+a1q/Na3fmtZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m+m9Ztp/WZav5nWb6b1m2n9Zlq/mdZvpvWbaf1mWr+Z1m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvXeu3rvVb1/qta/3WtX7rWr91rd+61m9d67eu9VvX+q1r/da1futav3Wt37rWb13rt671W9f6rWv91rV+61q/da3futZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb0Prt6H129D6bWj9NrR+G1q/Da3fhtZvQ+u3ofXb0PptaP02tH4bWr8Nrd+G1m9D67eh9dvQ+m1o/Ta0fhtavw2t34bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9T67ep9dvU+m1q/Ta1fptav02t36bWb1Prt6n129T6bWr9NrV+m1q/Ta3fptZvU+u3qfXb1Pptav02tX6bWr9Nrd+m1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvS+u3pfXb0vptaf22tH5bWr8trd+W1m9L67el9dvS+m1p/ba0fltavy2t35bWb0vrt6X129L6bWn9trR+W1q/La3fltZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t37bWb1vrt63129b6bWv9trV+21q/ba3fttZvW+u3rfXb1vpta/22tX7bWr9trd+21m9b67et9dvW+m1r/ba1fttav22t3/YP/Xa33lw93r46X/XDzemj3XxY59+tx9Off/pLT/dev/t4Ndf9uBrj6s3Nbbeb07h997B+eTid77Kb62nnl3u65+bX5w+5vn246V8e9Xjjt495/ohPdv1wdf/pdPnv9797/2APH+4/X9vnC3Zxni/hdL7fzrfi0xM9vuL5qB/ePz7uf/zv//if//3rgT//sJ+f6Xx5p7k+7ndP7+Xfrt/87fKUhz/d3H56fPLze+ROb9a78zv8018f//L9S7y3N+v5i1x+8uUVvn5G17cf7fGz8Ze3+3R/8/7h8ta63C7PPm/f2vXlBN99yA939u7+5vIk5+OdjuPnI//5+M0TXU703r4803F6a/d/P9/ae/94xr+d38jvDni5+Uc8XUSfrqJPN8inc+jdOfTuHHp3Dr07j96dR+/Oo3fn0bsL6N0F9O4CencBvbuI3l1E7y6idxfRu0vo3SX07hJ6dwm9u4zeXUbvLqN3l9G7K+jdFfTuCnp3Bb27it5dRe+uondX0btr6N019O4aencNvTtD787QuzP07gy9u47eXUfvrqN319G7G+jdDfTuBnp3A727id7dRO9uonc30btb6N0t9O4WencLvbuN3t1G726jd7fJu3MHeXcO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7O4f2dw7t7xza3zm0v3Nof+fQ/s6h/Z1D+zuH9ncO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7O4f2dw7t7xza3zm0v3Nof+fQ/s6h/Z1D+zuH9ncO7e8c2t85tL9zaH/n0P7Oof2dQ/s7h/Z3Du3vHNrfObS/c2h/59D+zqH9nUP7u/PTok9H3p1H+zuP9nce7e88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"
+  }
+}

@@ -1,0 +1,590 @@
+{
+  "date_locale": "2026-11-14",
+  "base": "010ae3998aa158811b8a05c6d47753cd4589ad9a",
+  "revision_code": "8a6ce9720eb72c871001bd7e69fd556d6cfb7041",
+  "audit": "a602051c9f3f1119552dd51a6b58ffc64285c556",
+  "hote": "27.2 (26B123) Darwin arm64",
+  "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "inventaires": [
+    {
+      "architecture": "aarch64",
+      "acpi_desactive": false,
+      "acces_pci": true,
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "peripheriques_compares": 4,
+      "sha256_iso": "9ce3cc4830541595f700b033e31c78ab75511d313696230766500fc6ebdb4d87",
+      "sha256_elf": "7b29b2479e2f462b9840dc951be6b714ebf9f2a055ca5569243dd9bc149a94b0",
+      "sha256_qmp": "d45fb42fccae963c5bc1aeda3444fa361a4dc558a31d70df07a9bd08bcce611b",
+      "sha256_serie": "34d028f65ffbb1ec66cb2f069547f32dd2302ca3ebffb1e97f035d807b1ca0bd",
+      "signatures_acpi": [
+        "FACP",
+        "APIC",
+        "PPTT",
+        "GTDT",
+        "MCFG",
+        "SPCR",
+        "DBG2",
+        "IORT",
+        "BGRT"
+      ],
+      "processus": "PROC pid=1 niveau=EL0 pc=0x40001c sortie=0"
+    },
+    {
+      "architecture": "aarch64",
+      "acpi_desactive": true,
+      "acces_pci": true,
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "peripheriques_compares": 4,
+      "sha256_iso": "9ce3cc4830541595f700b033e31c78ab75511d313696230766500fc6ebdb4d87",
+      "sha256_elf": "7b29b2479e2f462b9840dc951be6b714ebf9f2a055ca5569243dd9bc149a94b0",
+      "sha256_qmp": "d45fb42fccae963c5bc1aeda3444fa361a4dc558a31d70df07a9bd08bcce611b",
+      "sha256_serie": "b40d8ffbc8f7a8ea50dc53609d9edb2e80227f84c978085537a3a2398ca70797",
+      "signatures_acpi": [],
+      "processus": "PROC pid=1 niveau=EL0 pc=0x40001c sortie=0"
+    },
+    {
+      "architecture": "x86_64",
+      "acpi_desactive": false,
+      "acces_pci": true,
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "peripheriques_compares": 7,
+      "sha256_iso": "e572836006b178ab18a8e34fe5419558c7e7b56babc1efa887361c9bab29181c",
+      "sha256_elf": "0ac9f25c1105c4ec64006baeb85f7b5944ea5baf376076a38c75c59b1d8618fa",
+      "sha256_qmp": "3ca0dc693e68373e09e8e232a3af9bea6bf2f76e83ac2c83a0170b5b82d20a4c",
+      "sha256_serie": "9c4d31dfefe725e95bbd64da355d5e48b3ad3ee453d7789eb08056bbae99228e",
+      "signatures_acpi": [
+        "FACP",
+        "APIC",
+        "HPET",
+        "MCFG",
+        "WAET",
+        "BGRT"
+      ],
+      "processus": "PROC pid=1 niveau=Ring3 pc=0x400012 sortie=0"
+    },
+    {
+      "architecture": "x86_64",
+      "acpi_desactive": false,
+      "acces_pci": false,
+      "qemu": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "peripheriques_compares": 0,
+      "sha256_iso": "8348ac32236f644bd0967bbec0f3caf0e2c8e630b41bbab78bf95708a4ed1fdd",
+      "sha256_elf": "0ac9f25c1105c4ec64006baeb85f7b5944ea5baf376076a38c75c59b1d8618fa",
+      "sha256_qmp": "3ca0dc693e68373e09e8e232a3af9bea6bf2f76e83ac2c83a0170b5b82d20a4c",
+      "sha256_serie": "ccb3f85487465f91917f7503f6f301ef8f7bc62187c5e3a7afdca13b3b3f8f67",
+      "signatures_acpi": [
+        "FACP",
+        "APIC",
+        "HPET",
+        "MCFG",
+        "WAET",
+        "BGRT"
+      ],
+      "processus": "PROC pid=1 niveau=Ring3 pc=0x400012 sortie=0"
+    }
+  ],
+  "comparaisons_qmp": {
+    "d45fb42fccae963c5bc1aeda3444fa361a4dc558a31d70df07a9bd08bcce611b": [
+      {
+        "bus": 0,
+        "devices": [
+          {
+            "irq_pin": 0,
+            "bus": 0,
+            "qdev_id": "",
+            "slot": 0,
+            "class_info": {
+              "class": 1536,
+              "desc": "Host bridge"
+            },
+            "id": {
+              "device": 8,
+              "subsystem-vendor": 6900,
+              "vendor": 6966,
+              "subsystem": 4352
+            },
+            "function": 0,
+            "regions": []
+          },
+          {
+            "irq_pin": 1,
+            "bus": 0,
+            "qdev_id": "",
+            "irq": 255,
+            "slot": 1,
+            "class_info": {
+              "class": 256,
+              "desc": "SCSI controller"
+            },
+            "id": {
+              "device": 4100,
+              "subsystem-vendor": 6900,
+              "vendor": 6900,
+              "subsystem": 8
+            },
+            "function": 0,
+            "regions": [
+              {
+                "bar": 0,
+                "size": 64,
+                "address": 0,
+                "type": "io"
+              },
+              {
+                "prefetch": false,
+                "mem_type_64": false,
+                "bar": 1,
+                "size": 4096,
+                "address": -1,
+                "type": "memory"
+              },
+              {
+                "prefetch": true,
+                "mem_type_64": true,
+                "bar": 4,
+                "size": 16384,
+                "address": -1,
+                "type": "memory"
+              }
+            ]
+          },
+          {
+            "irq_pin": 1,
+            "bus": 0,
+            "pci_bridge": {
+              "bus": {
+                "prefetchable_range": {
+                  "limit": 549756862463,
+                  "base": 549755813888
+                },
+                "memory_range": {
+                  "limit": 270532607,
+                  "base": 268435456
+                },
+                "secondary": 1,
+                "io_range": {
+                  "limit": 4095,
+                  "base": 61440
+                },
+                "number": 0,
+                "subordinate": 1
+              },
+              "devices": [
+                {
+                  "irq_pin": 1,
+                  "bus": 1,
+                  "qdev_id": "inventaire-enfant",
+                  "irq": 255,
+                  "slot": 0,
+                  "class_info": {
+                    "class": 255
+                  },
+                  "id": {
+                    "device": 4164,
+                    "subsystem-vendor": 6900,
+                    "vendor": 6900,
+                    "subsystem": 4352
+                  },
+                  "function": 0,
+                  "regions": [
+                    {
+                      "prefetch": false,
+                      "mem_type_64": false,
+                      "bar": 1,
+                      "size": 4096,
+                      "address": 268435456,
+                      "type": "memory"
+                    },
+                    {
+                      "prefetch": true,
+                      "mem_type_64": true,
+                      "bar": 4,
+                      "size": 16384,
+                      "address": 549755813888,
+                      "type": "memory"
+                    }
+                  ]
+                }
+              ]
+            },
+            "qdev_id": "inventaire-pont",
+            "irq": 255,
+            "slot": 10,
+            "class_info": {
+              "class": 1540,
+              "desc": "PCI bridge"
+            },
+            "id": {
+              "device": 12,
+              "vendor": 6966
+            },
+            "function": 0,
+            "regions": [
+              {
+                "prefetch": false,
+                "mem_type_64": false,
+                "bar": 0,
+                "size": 4096,
+                "address": 270532608,
+                "type": "memory"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "3ca0dc693e68373e09e8e232a3af9bea6bf2f76e83ac2c83a0170b5b82d20a4c": [
+      {
+        "bus": 0,
+        "devices": [
+          {
+            "irq_pin": 0,
+            "bus": 0,
+            "qdev_id": "",
+            "slot": 0,
+            "class_info": {
+              "class": 1536,
+              "desc": "Host bridge"
+            },
+            "id": {
+              "device": 10688,
+              "subsystem-vendor": 6900,
+              "vendor": 32902,
+              "subsystem": 4352
+            },
+            "function": 0,
+            "regions": []
+          },
+          {
+            "irq_pin": 0,
+            "bus": 0,
+            "qdev_id": "",
+            "slot": 1,
+            "class_info": {
+              "class": 768,
+              "desc": "VGA controller"
+            },
+            "id": {
+              "device": 4369,
+              "subsystem-vendor": 6900,
+              "vendor": 4660,
+              "subsystem": 4352
+            },
+            "function": 0,
+            "regions": [
+              {
+                "prefetch": true,
+                "mem_type_64": false,
+                "bar": 0,
+                "size": 16777216,
+                "address": 2147483648,
+                "type": "memory"
+              },
+              {
+                "prefetch": false,
+                "mem_type_64": false,
+                "bar": 2,
+                "size": 4096,
+                "address": 2166431744,
+                "type": "memory"
+              },
+              {
+                "prefetch": false,
+                "mem_type_64": false,
+                "bar": 6,
+                "size": 65536,
+                "address": -1,
+                "type": "memory"
+              }
+            ]
+          },
+          {
+            "irq_pin": 1,
+            "bus": 0,
+            "pci_bridge": {
+              "bus": {
+                "prefetchable_range": {
+                  "limit": 825170591743,
+                  "base": 824633720832
+                },
+                "memory_range": {
+                  "limit": 2166358015,
+                  "base": 2164260864
+                },
+                "secondary": 1,
+                "io_range": {
+                  "limit": 4095,
+                  "base": 61440
+                },
+                "number": 0,
+                "subordinate": 1
+              },
+              "devices": [
+                {
+                  "irq_pin": 1,
+                  "bus": 1,
+                  "qdev_id": "inventaire-enfant",
+                  "irq": 11,
+                  "slot": 0,
+                  "class_info": {
+                    "class": 255
+                  },
+                  "id": {
+                    "device": 4164,
+                    "subsystem-vendor": 6900,
+                    "vendor": 6900,
+                    "subsystem": 4352
+                  },
+                  "function": 0,
+                  "regions": [
+                    {
+                      "prefetch": false,
+                      "mem_type_64": false,
+                      "bar": 1,
+                      "size": 4096,
+                      "address": 2164260864,
+                      "type": "memory"
+                    },
+                    {
+                      "prefetch": true,
+                      "mem_type_64": true,
+                      "bar": 4,
+                      "size": 16384,
+                      "address": 824633720832,
+                      "type": "memory"
+                    }
+                  ]
+                }
+              ]
+            },
+            "qdev_id": "inventaire-pont",
+            "irq": 11,
+            "slot": 10,
+            "class_info": {
+              "class": 1540,
+              "desc": "PCI bridge"
+            },
+            "id": {
+              "device": 12,
+              "vendor": 6966
+            },
+            "function": 0,
+            "regions": [
+              {
+                "prefetch": false,
+                "mem_type_64": false,
+                "bar": 0,
+                "size": 4096,
+                "address": 2166427648,
+                "type": "memory"
+              }
+            ]
+          },
+          {
+            "irq_pin": 0,
+            "bus": 0,
+            "qdev_id": "",
+            "slot": 31,
+            "class_info": {
+              "class": 1537,
+              "desc": "ISA bridge"
+            },
+            "id": {
+              "device": 10520,
+              "subsystem-vendor": 6900,
+              "vendor": 32902,
+              "subsystem": 4352
+            },
+            "function": 0,
+            "regions": []
+          },
+          {
+            "irq_pin": 1,
+            "bus": 0,
+            "qdev_id": "",
+            "irq": 10,
+            "slot": 31,
+            "class_info": {
+              "class": 262,
+              "desc": "SATA controller"
+            },
+            "id": {
+              "device": 10530,
+              "subsystem-vendor": 6900,
+              "vendor": 32902,
+              "subsystem": 4352
+            },
+            "function": 2,
+            "regions": [
+              {
+                "bar": 4,
+                "size": 32,
+                "address": 24640,
+                "type": "io"
+              },
+              {
+                "prefetch": false,
+                "mem_type_64": false,
+                "bar": 5,
+                "size": 4096,
+                "address": 2166423552,
+                "type": "memory"
+              }
+            ]
+          },
+          {
+            "irq_pin": 1,
+            "bus": 0,
+            "qdev_id": "",
+            "irq": 10,
+            "slot": 31,
+            "class_info": {
+              "class": 3077,
+              "desc": "SMBus"
+            },
+            "id": {
+              "device": 10544,
+              "subsystem-vendor": 6900,
+              "vendor": 32902,
+              "subsystem": 4352
+            },
+            "function": 3,
+            "regions": [
+              {
+                "bar": 4,
+                "size": 64,
+                "address": 24576,
+                "type": "io"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "series": {
+    "34d028f65ffbb1ec66cb2f069547f32dd2302ca3ebffb1e97f035d807b1ca0bd": "UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)\r\nArmTrngLib could not be correctly initialized.\r\nError: Image at 0004FDB6000 start failed: 00000001\r\nError: Image at 0004FCB2000 start failed: Unsupported\r\nError: Image at 0004FC37000 start failed: Not Found\r\nError: Image at 0004FB5D000 start failed: Aborted\r\nTpm2SubmitCommand - Tcg2 - Not Found\r\nTpm2GetCapabilityPcrs fail!\r\nTpm2SubmitCommand - Tcg2 - Not Found\r\n\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU QEMU CD-ROM \" from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU QEMU CD-ROM \" from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)\r\nConvertPages: range 4EFDF000 - 4EFE2FFF covers multiple entries\r\nConvertPages: Incompatible memory types, the pages to allocate have been allocated\r\nConvertPages: Incompatible memory types, the pages to allocate have been allocated\r\nConvertPages: Incompatible memory types, the pages to allocate have been allocated\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01HMMU : sections et alias verifies, 55355 pages libres.\r\nNovaOS v0.17.0\r\nACPI revision=2 xsdt=true tables=9\r\nACPI table FACP\r\nACPI table APIC\r\nACPI table PPTT\r\nACPI table GTDT\r\nACPI table MCFG\r\nACPI table SPCR\r\nACPI table DBG2\r\nACPI table IORT\r\nACPI table BGRT\r\nMCFG segment=0 bus=0..255 base=0x4010000000\r\nPCI 0000:00:00.0 1b36:0008 classe=060000 msi=false msix=false pcie=false pin=0 ligne=255 master=false etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:00:01.0 n=1 type=Memory32 base=0x10201000 taille=inconnue\r\nBAR 0000:00:01.0 n=4 type=Memory64 base=0x8000100000 taille=inconnue\r\nPCI 0000:00:01.0 1af4:1004 classe=010000 msi=false msix=true pcie=false pin=1 ligne=255 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:00:0a.0 n=0 type=Memory32 base=0x10200000 taille=inconnue\r\nPCI 0000:00:0a.0 1b36:000c classe=060400 msi=false msix=true pcie=true pin=1 ligne=255 master=false etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:01:00.0 n=1 type=Memory32 base=0x10000000 taille=inconnue\r\nBAR 0000:01:00.0 n=4 type=Memory64 base=0x8000000000 taille=inconnue\r\nPCI 0000:01:00.0 1af4:1044 classe=00ff00 msi=false msix=true pcie=true pin=1 ligne=255 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nMATERIEL fonctions=Ok(4) inventaire_complet=true\r\nDEBUG pid=1 MATERIEL gestionnaire inventaire lu; pilotes natifs actifs=0 droits-materiel=aucun fonctions=0x04\r\nPROC pid=1 niveau=EL0 pc=0x40001c sortie=0\r\nMATERIEL bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022dd0\r\nSMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0\r\n",
+    "b40d8ffbc8f7a8ea50dc53609d9edb2e80227f84c978085537a3a2398ca70797": "UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)\r\nArmTrngLib could not be correctly initialized.\r\nError: Image at 0004FDB6000 start failed: 00000001\r\nError: Image at 0004FCB2000 start failed: Unsupported\r\nError: Image at 0004FC37000 start failed: Not Found\r\nError: Image at 0004FB5D000 start failed: Aborted\r\nTpm2SubmitCommand - Tcg2 - Not Found\r\nTpm2GetCapabilityPcrs fail!\r\nTpm2SubmitCommand - Tcg2 - Not Found\r\n\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU QEMU CD-ROM \" from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU QEMU CD-ROM \" from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01HMMU : sections et alias verifies, 55121 pages libres.\r\nNovaOS v0.17.0\r\nACPI absent dtb=true\r\nDTB ECAM verifie base=0x4010000000 bus=0..255\r\nPCI 0000:00:00.0 1b36:0008 classe=060000 msi=false msix=false pcie=false pin=0 ligne=255 master=false etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:00:01.0 n=1 type=Memory32 base=0x10201000 taille=inconnue\r\nBAR 0000:00:01.0 n=4 type=Memory64 base=0x8000100000 taille=inconnue\r\nPCI 0000:00:01.0 1af4:1004 classe=010000 msi=false msix=true pcie=false pin=1 ligne=255 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:00:0a.0 n=0 type=Memory32 base=0x10200000 taille=inconnue\r\nPCI 0000:00:0a.0 1b36:000c classe=060400 msi=false msix=true pcie=true pin=1 ligne=255 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:01:00.0 n=1 type=Memory32 base=0x10000000 taille=inconnue\r\nBAR 0000:01:00.0 n=4 type=Memory64 base=0x8000000000 taille=inconnue\r\nPCI 0000:01:00.0 1af4:1044 classe=00ff00 msi=false msix=true pcie=true pin=1 ligne=255 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nMATERIEL fonctions=Ok(4) inventaire_complet=true\r\nDEBUG pid=1 MATERIEL gestionnaire inventaire lu; pilotes natifs actifs=0 droits-materiel=aucun fonctions=0x04\r\nPROC pid=1 niveau=EL0 pc=0x40001c sortie=0\r\nMATERIEL bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022dd0\r\nSMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0\r\n",
+    "9c4d31dfefe725e95bbd64da355d5e48b3ad3ee453d7789eb08056bbae99228e": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01HMMU : sections et alias verifies, 52697 pages libres.\r\nNovaOS v0.17.0\r\nACPI revision=2 xsdt=true tables=6\r\nACPI table FACP\r\nACPI table APIC\r\nACPI table HPET\r\nACPI table MCFG\r\nACPI table WAET\r\nACPI table BGRT\r\nMCFG segment=0 bus=0..255 base=0xe0000000\r\nPCI 0000:00:00.0 8086:29c0 classe=060000 msi=false msix=false pcie=false pin=0 ligne=255 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:00:01.0 n=0 type=Memory32 base=0x80000000 taille=inconnue\r\nBAR 0000:00:01.0 n=2 type=Memory32 base=0x81212000 taille=inconnue\r\nPCI 0000:00:01.0 1234:1111 classe=030000 msi=false msix=false pcie=false pin=0 ligne=255 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:00:0a.0 n=0 type=Memory32 base=0x81211000 taille=inconnue\r\nPCI 0000:00:0a.0 1b36:000c classe=060400 msi=false msix=true pcie=true pin=1 ligne=11 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nPCI 0000:00:1f.0 8086:2918 classe=060100 msi=false msix=false pcie=false pin=0 ligne=255 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:00:1f.2 n=4 type=Io base=0x6040 taille=inconnue\r\nBAR 0000:00:1f.2 n=5 type=Memory32 base=0x81210000 taille=inconnue\r\nPCI 0000:00:1f.2 8086:2922 classe=010601 msi=true msix=false pcie=false pin=1 ligne=10 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:00:1f.3 n=4 type=Io base=0x6000 taille=inconnue\r\nPCI 0000:00:1f.3 8086:2930 classe=0c0500 msi=false msix=false pcie=false pin=1 ligne=10 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nBAR 0000:01:00.0 n=1 type=Memory32 base=0x81000000 taille=inconnue\r\nBAR 0000:01:00.0 n=4 type=Memory64 base=0xc000000000 taille=inconnue\r\nPCI 0000:01:00.0 1af4:1044 classe=00ff00 msi=false msix=true pcie=true pin=1 ligne=11 master=true etat=inventorie pilote=non-attribue modele=inconnu\r\nMATERIEL fonctions=Ok(7) inventaire_complet=true\r\nDEBUG pid=1 MATERIEL gestionnaire inventaire lu; pilotes natifs actifs=0 droits-materiel=aucun fonctions=0x07\r\nPROC pid=1 niveau=Ring3 pc=0x400012 sortie=0\r\nMATERIEL bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d70\r\nSMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0\r\n",
+    "ccb3f85487465f91917f7503f6f301ef8f7bc62187c5e3a7afdca13b3b3f8f67": "\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[=3h\u001b[2J\u001b[01;01HBdsDxe: loading Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\nBdsDxe: starting Boot0001 \"UEFI QEMU DVD-ROM QM00005 \" from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)\r\n\u001b[2J\u001b[01;01H\u001b[01;01H\u001b[2J\u001b[01;01H\u001b[01;01HMMU : sections et alias verifies, 52697 pages libres.\r\nNovaOS v0.17.0\r\nACPI revision=2 xsdt=true tables=6\r\nACPI table FACP\r\nACPI table APIC\r\nACPI table HPET\r\nACPI table MCFG\r\nACPI table WAET\r\nACPI table BGRT\r\nMCFG segment=0 bus=0..255 base=0xe0000000\r\nPCI acces non attribue\r\nDEBUG pid=1 MATERIEL gestionnaire inventaire lu; pilotes natifs actifs=0 droits-materiel=aucun fonctions=0x00\r\nPROC pid=1 niveau=Ring3 pc=0x400012 sortie=0\r\nMATERIEL bilan ok=true\r\nSMP diagnostic cpu=0 sp=0xfffff02000022d70\r\nSMP arret motif=normal coordinateur=0 attendus=0x1 en_ligne=0x1 ack=0x1 absents=0x0 muets=0x0\r\n"
+  },
+  "modeles": {
+    "Darwin ARM64 natif": {
+      "firmware_pages": 3,
+      "acpi": 13,
+      "virt_dtb": 5,
+      "pci_inventory": 12,
+      "driver_resources": 8,
+      "device_inventory": 1,
+      "device_lifecycle": 4
+    },
+    "Darwin x86_64 Rosetta": {
+      "firmware_pages": 3,
+      "acpi": 13,
+      "virt_dtb": 5,
+      "pci_inventory": 12,
+      "driver_resources": 8,
+      "device_inventory": 1,
+      "device_lifecycle": 4
+    }
+  },
+  "regressions": {
+    "aarch64": {
+      "dma": [
+        "OK — aarch64/512 : motif invité et retrait",
+        "OK — aarch64/512 : protections DMA et interruption pendante",
+        "OK — aarch64/512 : baux, descripteurs, panne et relance",
+        "OK — aarch64/512 : panne en vol et quarantaine",
+        "OK — aarch64/4096 : motif invité et retrait",
+        "OK — aarch64/4096 : protections DMA et interruption pendante",
+        "OK — aarch64/4096 : baux, descripteurs, panne et relance",
+        "OK — aarch64/4096 : panne en vol et quarantaine"
+      ],
+      "durable": [
+        "OK — aarch64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+        "OK — aarch64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière"
+      ],
+      "smp": [
+        "OK — aarch64-smp-test-4cpu"
+      ],
+      "fp": [
+        "OK — aarch64-smp-fp-4cpu-gic2"
+      ],
+      "sha256_elf_fpu": "97cf29351f7b7e3ebf0ee3e5632d0c1d5c1fab7e967a57433bfaec1706abcc9a",
+      "sha256_serie_smp": "d6b66ca401c9b723a1bf38de0909021bae2ae99f76440f02c69bcb71ebc98d23",
+      "marqueurs_smp": [
+        "SMP traductions distantes masque=0xe OK",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ],
+      "sha256_serie_fpu": "32d1a5787f5db5108a02d3315b044e63a7f6a594eee390f850e3716591740bce",
+      "marqueurs_fpu": [
+        "SMP FPU cycle=0 clients=8 migrations=8 OK",
+        "SMP FPU cycle=1 clients=8 migrations=8 OK"
+      ]
+    },
+    "x86_64": {
+      "dma": [
+        "OK — x86_64/512 : motif invité et retrait",
+        "OK — x86_64/512 : protections DMA et interruption pendante",
+        "OK — x86_64/512 : baux, descripteurs, panne et relance",
+        "OK — x86_64/512 : panne en vol et quarantaine",
+        "OK — x86_64/4096 : motif invité et retrait",
+        "OK — x86_64/4096 : protections DMA et interruption pendante",
+        "OK — x86_64/4096 : baux, descripteurs, panne et relance",
+        "OK — x86_64/4096 : panne en vol et quarantaine"
+      ],
+      "durable": [
+        "OK — x86_64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+        "OK — x86_64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière"
+      ],
+      "smp": [
+        "OK — x86_64-smp-test-4cpu"
+      ],
+      "fp": [
+        "OK — x86_64-smp-fp-4cpu-"
+      ],
+      "sha256_elf_fpu": "1b78d6f884c904754012536cb0a03c2352980575c569cc90910d2073df1df997",
+      "sha256_serie_smp": "d187fcc42edf67b83b36abc8de896c32afa8f0a8be8982220ee6a77f8f70cf17",
+      "marqueurs_smp": [
+        "SMP traductions distantes masque=0xe OK",
+        "SMP stationnes=3 en_ligne=1",
+        "SMP rendezvous=0xf actifs=4 OK"
+      ],
+      "sha256_serie_fpu": "8a0951b8d4810ab1d5feb47586f600e35fa84de027cc11a8983a5aa161d6732b",
+      "marqueurs_fpu": [
+        "SMP FPU cycle=0 clients=8 migrations=8 OK",
+        "SMP FPU cycle=1 clients=8 migrations=8 OK"
+      ]
+    }
+  },
+  "relecture_traces": "SHA-256 sur les octets UTF-8 des chaînes série (CR/LF conservés), ou sur json.dumps(comparaisons_qmp[sha], indent=2) suivi d’un LF pour QMP."
+}

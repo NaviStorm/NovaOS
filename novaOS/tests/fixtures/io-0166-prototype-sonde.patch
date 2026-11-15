@@ -85,9 +85,9 @@
 +    }
      let pid = with(|s| {
          let p = s.processes.get_mut(caller(s));
-@@ -156,4 +174,7 @@
-     hal::interrupts::mask();
-     with(|s| s.thread_mut(s.current()).in_syscall = false);
+@@ -159,4 +177,7 @@
+     #[cfg(feature = "materiel-lab")]
+     super::stop_if_requested();
 +    if result.is_ok() {
 +        crate::mesures_save::appel_file(id);
 +    }

@@ -37,6 +37,8 @@ enum Wait {
     Ipc(u64),
     Event(usize),
     Process(process::Pid),
+    #[cfg(feature = "materiel-lab")]
+    EduGrant(u64),
 }
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 enum State {
@@ -448,6 +450,10 @@ pub(crate) fn tick(user: bool) {
     smp_probe::pulse();
     let irq = Guard::new();
     assert!(!irq.was_enabled(), "tick hors interruption");
+    #[cfg(feature = "materiel-lab")]
+    if user {
+        process::stop_if_requested();
+    }
     dispatch(Reason::Tick(user));
 }
 /// Canal stable pendant l’attente. Le prédicat appartient au pilote ou au mutex.

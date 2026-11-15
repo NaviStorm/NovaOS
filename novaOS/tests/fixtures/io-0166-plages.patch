@@ -1008,14 +1008,14 @@
      pub(crate) fn descriptor(&self, frames: &Frames, va: u64) -> Result<u64> {
 --- a/novaOS/kernel/src/memory/user.rs
 +++ b/novaOS/kernel/src/memory/user.rs
-@@ -18,6 +18,7 @@
+@@ -38,6 +38,7 @@
      loaded: usize,
      stack_extra: usize,
      heap_pages: usize,
 +    pret: Option<(u64, u64)>,
  }
 
- impl UserSpace {
+ /// Témoin privé du banc. Seule la page RO identifiée d'un processus maintenu
 @@ -109,6 +110,7 @@
              loaded: 0,
              stack_extra: 0,
@@ -1202,7 +1202,7 @@
 +pub(in crate::sched) use scelle::collecter;
  mod probes;
  mod traffic;
- pub(super) use bulk::{admis, lot, termine, transfer};
+ #[cfg(feature = "materiel-lab")]
 @@ -141,6 +144,8 @@
      locals_to_check: u32,
      waits: Waits,
@@ -1638,9 +1638,9 @@
          crate::hardware::block::wire::PAGE_PORTAL => device_page(a, b, c),
 --- a/novaOS/kernel/src/sched/process.rs
 +++ b/novaOS/kernel/src/sched/process.rs
-@@ -199,6 +199,7 @@
-             .expect("exception hors processus");
-         crate::hardware::block::died(pid.number);
+@@ -263,6 +263,7 @@
+         #[cfg(feature = "materiel-lab")]
+         edu::died(s, pid);
          s.ipc.death(pid, ticks());
 +        ipc::collecter(s);
          s.flush_ipc();

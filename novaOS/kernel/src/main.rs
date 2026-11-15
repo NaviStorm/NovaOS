@@ -54,6 +54,25 @@ pub extern "C" fn nova_start() -> ! {
 }
 
 fn main_thread() {
+    // Le diagnostic capture les tables tant que le chargeur les possède, sur le BSP seul.
+    let inventory = match boot::scenario() {
+        b"materiel-inventaire" => Some(hardware::discovery::capture(false)),
+        b"materiel-inventaire-qemu" => Some(hardware::discovery::capture(true)),
+        _ => None,
+    };
+    #[cfg(feature = "materiel-lab")]
+    let lab = (boot::scenario() == b"materiel-pilote-qemu").then(hardware::discovery::lab_edu);
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    let dma = hardware::discovery::VtdProfile::selected()
+        .map(|profile| (profile, hardware::discovery::vtd_edu(profile)));
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    if matches!(dma, Some((_, None))) {
+        log(format_args!(
+            "VTD reprise refusee avant restitution firmware"
+        ));
+        log(format_args!("VTD bilan ok=false"));
+        hal::cpu::halt()
+    }
     crate::smp::launch();
     let start = sched::ticks();
     while crate::smp::ONLINE.load(core::sync::atomic::Ordering::Acquire)
@@ -67,14 +86,49 @@ fn main_thread() {
     let (args, screen) = boot::handoff();
     // Sûreté : tous les CPU exécutent leur pile privée et leurs propres tables, GDT/TSS
     // ou VBAR. Les réponses ont été copiées ; aucun lecteur Limine ne subsiste.
-    match unsafe { memory::reclaim_loader(screen.as_ref().ok().map(framebuffer::Screen::span)) } {
-        Ok(()) => (),
-        Err(memory::Error::Exhausted) => log(format_args!(
-            "Carte mémoire conservée dans les cadres Limine."
-        )),
-        Err(e) => panic!("Restitution du chargeur : {e:?}"),
+    // Tant que le profil expérimental conserve la responsabilité du remappage,
+    // les anciennes pages du firmware ne peuvent pas changer de propriétaire.
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    let retain_loader = dma.is_some();
+    #[cfg(not(all(target_arch = "x86_64", feature = "vtd-lab")))]
+    let retain_loader = false;
+    if !retain_loader {
+        match unsafe { memory::reclaim_loader(screen.as_ref().ok().map(framebuffer::Screen::span)) }
+        {
+            Ok(()) => (),
+            Err(memory::Error::Exhausted) => log(format_args!(
+                "Carte mémoire conservée dans les cadres Limine."
+            )),
+            Err(e) => panic!("Restitution du chargeur : {e:?}"),
+        }
     }
     let scenario = args.as_slice();
+    #[cfg(feature = "materiel-lab")]
+    if let Some(bar) = lab {
+        let ok = match bar {
+            Some(resource) => sched::process::edu_lab(resource),
+            None => {
+                let closed = hardware::lab_irq::shutdown();
+                log(format_args!("PILOTE adoption refusee fermeture={closed}"));
+                false
+            }
+        };
+        log(format_args!("PILOTE bilan ok={ok}"));
+        hal::cpu::halt()
+    }
+    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    if let Some((profile, ticket)) = dma {
+        let ok = ticket.is_some_and(|(bar, drhd)| {
+            sched::process::vtd::run(bar.base, drhd, profile)
+        });
+        log(format_args!("VTD bilan ok={ok}"));
+        hal::cpu::halt()
+    }
+    if let Some(result) = inventory {
+        let ok = result.is_some_and(|data| sched::process::device_manager(&data));
+        log(format_args!("MATERIEL bilan ok={ok}"));
+        hal::cpu::halt()
+    }
     #[cfg(all(target_arch = "aarch64", feature = "gicv3-lab"))]
     if cfg!(feature = "dma-sequentiel") {
         #[cfg(feature = "ancres-p9-lab")]

@@ -1,0 +1,61 @@
+{
+  "modeles": [
+    "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "Darwin ARM64 natif — firmware_pages — 3 réussis",
+    "Darwin ARM64 natif — mmio_lab — 2 réussis",
+    "Darwin ARM64 natif — acpi — 16 réussis",
+    "Darwin ARM64 natif — virt_dtb — 5 réussis",
+    "Darwin ARM64 natif — pci_inventory — 18 réussis",
+    "Darwin ARM64 natif — driver_resources — 8 réussis",
+    "Darwin ARM64 natif — physical_dma — 4 réussis",
+    "Darwin ARM64 natif — format — 3 réussis",
+    "Darwin ARM64 natif — device_inventory — 1 réussis",
+    "Darwin ARM64 natif — device_lifecycle — 4 réussis",
+    "Darwin ARM64 natif — total 64 réussis dans 10 suites",
+    "Darwin x86_64 Rosetta — firmware_pages — 3 réussis",
+    "Darwin x86_64 Rosetta — mmio_lab — 2 réussis",
+    "Darwin x86_64 Rosetta — acpi — 16 réussis",
+    "Darwin x86_64 Rosetta — virt_dtb — 5 réussis",
+    "Darwin x86_64 Rosetta — pci_inventory — 18 réussis",
+    "Darwin x86_64 Rosetta — driver_resources — 8 réussis",
+    "Darwin x86_64 Rosetta — physical_dma — 4 réussis",
+    "Darwin x86_64 Rosetta — format — 3 réussis",
+    "Darwin x86_64 Rosetta — device_inventory — 1 réussis",
+    "Darwin x86_64 Rosetta — device_lifecycle — 4 réussis",
+    "Darwin x86_64 Rosetta — total 64 réussis dans 10 suites"
+  ],
+  "bloc": [
+    "OK — x86_64/512 : motif invité et retrait",
+    "OK — x86_64/512 : protections DMA et interruption pendante",
+    "OK — x86_64/512 : baux, descripteurs, panne et relance",
+    "OK — x86_64/512 : panne en vol et quarantaine",
+    "OK — x86_64/4096 : motif invité et retrait",
+    "OK — x86_64/4096 : protections DMA et interruption pendante",
+    "OK — x86_64/4096 : baux, descripteurs, panne et relance",
+    "OK — x86_64/4096 : panne en vol et quarantaine"
+  ],
+  "durable": [
+    "OK — x86_64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière",
+    "OK — x86_64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière"
+  ],
+  "smp": [
+    "OK — x86_64-smp-test-4cpu"
+  ],
+  "fpu": [
+    "OK — x86_64-smp-fp-4cpu-"
+  ],
+  "reg-aarch64": [
+    "OK — aarch64, 2 vCPU, 11 scénarios du pilote EDU."
+  ],
+  "reg-x86_64": [
+    "OK — x86_64, 2 vCPU, 11 scénarios du pilote EDU."
+  ],
+  "fichiers": [
+    "OK — x86_64/512 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO",
+    "OK — x86_64/4096 : fichier hôte, création et deux transactions, oracle hôte et nouvelle VM RO"
+  ],
+  "p9": [
+    "OK x86_64 P9 512 LV=e609113cac3cd3c03692793f38407f66 SHA-256 avant/apres=a2b177a85d31559d82589fe183940d4aa16e4ffabf31b2e83d2d1f2ffb8bb0a5",
+    "OK x86_64 P9 4096 LV=9443ebe82ff1e37ff11af1de6eabe40f SHA-256 avant/apres=368ea73ba8223d387c3c5f6913ffab543b5fc541b6827db019b67e5d9aa7a79e"
+  ]
+}
