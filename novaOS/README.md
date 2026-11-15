@@ -1,6 +1,8 @@
-# NovaOS v0.20.0 — Phase 1
+# NovaOS v0.20.0 — Phases 1 et 2 intégrées
 
-La phase 1 intègre la bibliothèque Rust native `nova-system` 0.1.0 qui donne aux applications admises accès aux threads, à l’attente/notification et au TLS expérimental via l’ABI native v1. La fiche de phase 1 décrit le témoin compilé hors dépôt, son admission explicite et les essais sur les deux architectures. [Rust et threads utilisateur](docs/rust-threads-v0.20.0.md) · [Qualification finale de la phase 1](docs/qualification-rust-threads-v0.20.0.md)
+La phase 1 a ouvert les threads, l’attente sur mot et le TLS expérimental aux applications admises via l’ABI native v1. La phase 2 intègre le SDK autonome `nova-system` 0.2.0 et permet au propriétaire d’un `JoinHandle` de transmettre son droit de collecte après une attente annulée. Les exemples ont été compilés hors dépôt et exécutés sous QEMU sur les deux architectures. [Contrat des threads](docs/rust-threads-v0.20.0.md) · [Guide du SDK](docs/sdk-rust-v0.20.0.md) · [Résultats de phase 2](docs/rust-sdk-phase2-v0.20.0.md)
+
+NovaOS v0.20.0 reste ouverte jusqu’à la décision finale MOA/MOE. [Préparation de la clôture](docs/cloture-rust-v0.20.0.md)
 
 L’installateur AArch64 distribué en v0.17.0 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable v0.17.0](../distribution/images/novaos-0.17.0-utm-aarch64.tar.gz) · [Installation et qualification](docs/fusion-smp-v0.17.0.md#installation-dans-utm)
 

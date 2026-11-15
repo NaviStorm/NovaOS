@@ -1,0 +1,36 @@
+{
+  "objet": "Proposition de livraison du SDK Rust croisé",
+  "statut": "Soumis à la MOA/MOE pour clôture",
+  "novaos": "0.20.0",
+  "commit_integration": "7114badafa50a30d43e92174d03e2fe997285b73",
+  "commit_qualifie": "b46ddf1902678265b45642a0c2c90a696b21f53f",
+  "arbre_qualifie": "07de51a6fc93c46eff7e79600dcec0126caa9b56",
+  "abi_native": 1,
+  "protocole_fichier": 2,
+  "novafs": { "version": "0.9.13", "format": "P9" },
+  "sdk": {
+    "nom": "nova-system",
+    "version": "0.2.0",
+    "licence": "MIT",
+    "archive": "distribution/sdk/nova-system-0.2.0.tar.gz",
+    "empreinte": "distribution/sdk/nova-system-0.2.0.tar.gz.sha256",
+    "sha256": "6feff113b64eef2352c430fc5c64fc2f1f865cfe40339ecbec5e6a4f3ff469a4",
+    "octets": 21237,
+    "fichiers": 23,
+    "format_executable": "ELF64 statique NovaOS",
+    "cibles": ["aarch64-unknown-none-softfloat", "x86_64-unknown-none"],
+    "rustc_qualifie": "1.99.1",
+    "guide": "novaOS/docs/sdk-rust-v0.20.0.md",
+    "assembleur": "distribution/scripts/sdk_rust.py"
+  },
+  "qualification": [
+    "novaOS/docs/validation/rust-threads-v0.20.0.json",
+    "novaOS/docs/validation/rust-threads-finale-v0.20.0.json",
+    "novaOS/docs/validation/rust-sdk-phase2-v0.20.0.json",
+    "novaOS/docs/validation/compat-rust-sdk-v0.20.0.json"
+  ],
+  "documentation_soumise": [
+    "novaOS/docs/contrat-public-rust-v0.20.0.md",
+    "novaOS/docs/cloture-rust-v0.20.0.md"
+  ]
+}

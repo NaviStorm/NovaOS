@@ -1,6 +1,6 @@
 # Distribution NovaOS
 
-Les noyaux et les ISO de développement AArch64 et x86_64 construits depuis ces sources affichent 0.20.0, numéro de l’intégration source de la phase 1. Les images ordinaires utilisent VirtIO-blk avec polling. Le banc de qualification Rust ajoute son application externe au catalogue par la feature explicite `thread-probe`. [Qualification de la phase 1](../novaOS/docs/qualification-rust-threads-v0.20.0.md)
+Les noyaux et les ISO de développement AArch64 et x86_64 construits depuis `main` affichent 0.20.0 après l’intégration des deux phases Rust. La clôture de cette version attend la décision finale MOA/MOE. Les images ordinaires utilisent VirtIO-blk avec polling. Le banc de qualification Rust ajoute son application externe au catalogue par la feature explicite `thread-probe`. [Qualification du SDK](../novaOS/docs/rust-sdk-phase2-v0.20.0.md) · [Périmètre de clôture](../novaOS/docs/cloture-rust-v0.20.0.md)
 
 L’archive UTM distribuée fournit l’installateur NovaOS v0.17.0 AArch64 pour UTM 5.0.8 à un vCPU avec le shell de scripts, l’éditeur `vi` et NovaFS v0.9.13 P9. L’archive contient le support QCOW2 en lecture seule et le firmware expérimental propre à chaque VM. [Télécharger l’image](images/novaos-0.17.0-utm-aarch64.tar.gz) · [Créer la VM et installer NovaOS](../novaOS/docs/fusion-smp-v0.17.0.md#installation-dans-utm)
 
@@ -11,7 +11,7 @@ L’archive UTM distribuée fournit l’installateur NovaOS v0.17.0 AArch64 pour
 | `scripts/` | Assemblage et validation des livraisons. |
 | `sdk/` | SDK source Rust de la phase 2. |
 
-La branche de phase 2 fournit la crate `nova-system` 0.2.0, un exemple à deux threads, son verrou Cargo, le script de liaison et la documentation pour construire hors du dépôt. Depuis la racine du monorepo, `python3 distribution/scripts/sdk_rust.py` assemble l’archive et son empreinte. L’option `--check` compare son contenu aux sources et vérifie son SHA-256. [Archive du SDK](sdk/nova-system-0.2.0.tar.gz) · [SHA-256](sdk/nova-system-0.2.0.tar.gz.sha256) · [Compilation et API](../novaOS/docs/sdk-rust-v0.20.0.md)
+L’archive source du SDK fournit la crate `nova-system` 0.2.0, un exemple à deux threads, son verrou Cargo, le script de liaison et la documentation pour construire hors du dépôt. Depuis la racine du monorepo, `python3 distribution/scripts/sdk_rust.py` assemble l’archive et son empreinte. L’option `--check` compare son contenu aux sources et vérifie son SHA-256. [Archive du SDK](sdk/nova-system-0.2.0.tar.gz) · [SHA-256](sdk/nova-system-0.2.0.tar.gz.sha256) · [Compilation et API](../novaOS/docs/sdk-rust-v0.20.0.md)
 
 Le projet de distribution prévoit une ISO UEFI x86_64 et une IMG UEFI AArch64, avec essais de démarrage dans QEMU et vérification de compatibilité UTM. Le modèle hybride immuable séparera le système livré des données modifiables. Les mises à jour atomiques et signées et le retour à une version précédente restent à concevoir et à valider.
 
