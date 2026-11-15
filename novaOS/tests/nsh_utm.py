@@ -197,8 +197,8 @@ def grand_fichier(console):
     return ouverture_ms
 
 
-def verifier_persistance(console):
-    transfert(console, b"nsh> ", 56)
+def verifier_persistance(console, banniere=b"NovaOS v0.17.0"):
+    transfert(console, b"nsh> ", 56, banniere=banniere)
     ouverture_ms = reouvrir_vi(console, "recettes/volume.txt")
     os.write(console.fd, b":q\r")
     console.attendre(b"nsh> ")
@@ -216,7 +216,9 @@ def verifier_persistance(console):
     return ouverture_ms
 
 
-def qualifier(distribution, dest):
+def qualifier(distribution, dest, version="0.17.0"):
+    banniere = f"NovaOS v{version}".encode()
+    version_cli = f"NovaOS {version}".encode()
     dest.mkdir()
     support = distribution / "installateur.qcow2"
     original = digest(support)
@@ -225,7 +227,7 @@ def qualifier(distribution, dest):
     copie = dest / "installee.utm"
     with enregistrer(paquet, ident) as machine:
         with demarrer(machine, dest / "installation.serial") as console:
-            selection = transfert(console, PROMPT.encode(), 48)
+            selection = transfert(console, PROMPT.encode(), 48, banniere=banniere)
             assert b"DISQUE vierge verifie" in selection
             assert f"CIBLE serie={SERIE} sid=56 capacite=67108864 secteur=512".encode() in selection
             os.write(console.fd, f"AUTORISER {SERIE} 67108864\r".encode())
@@ -240,8 +242,8 @@ def qualifier(distribution, dest):
     autonome, ident = nommer(copie, "systeme")
     with enregistrer(autonome, ident) as machine:
         with demarrer(machine, dest / "autonome.serial") as console:
-            transfert(console, b"nsh> ", 56)
-            assert b"NovaOS 0.17.0" in console.ligne("ls --version")
+            transfert(console, b"nsh> ", 56, banniere=banniere)
+            assert version_cli in console.ligne("ls --version")
             assert b"/\r\nnsh> " in console.ligne("pw\t")
             assert b"NovaOS\r\nnsh> " in console.ligne("cat /syst\t")
             assert b"Nova\r\nnsh> " in console.ligne("head -c4 /systeme")
@@ -253,7 +255,7 @@ def qualifier(distribution, dest):
             for cmd in ["mkdir recettes", "cp /systeme recettes/preuve.txt", "cd recettes", "cd .."]:
                 out = console.ligne(cmd)
                 assert b"statut " not in out and b"erreur" not in out, (cmd, out)
-            assert b"NovaOS 0.17.0" in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
+            assert version_cli in console.ligne("rm --version recettes/preuve.txt recettes/preuve.txt")
             assert b"NovaOS\r\n" in console.ligne("cat **/*.txt")
             script = console.ligne("nsh /verification.nsh")
             assert "Lecture du disque système".encode() in script and b"NovaOS\r\n" in script
@@ -263,9 +265,9 @@ def qualifier(distribution, dest):
             ouverture_ms = grand_fichier(console)
             console.ligne("exit", b"SYSTEME bilan Ok(())")
         with demarrer(machine, dest / "persistance.serial") as console:
-            reouverture_ms = verifier_persistance(console)
+            reouverture_ms = verifier_persistance(console, banniere)
     assert digest(support) == original
-    return dict(application="UTM", profil="AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
+    return dict(application="UTM", version=version, profil="AArch64, CRB, GICv3 sans ITS, VirtIO QCOW2/512",
                 serie="PTY de l’application", installation=True, support_sha256=original,
                 disque_installe_sha256=cible, demarrages_autonomes=2, contenu_relu="NovaOS\n",
                 ouverture_vi_ms=ouverture_ms, reouverture_apres_redemarrage_ms=reouverture_ms,
@@ -278,6 +280,8 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("distribution", type=Path)
     p.add_argument("sortie", type=Path)
+    p.add_argument("--version", choices=("0.17.0", "0.18.0"), default="0.17.0",
+                   help="version attendue du noyau et des commandes (archive UTM distribuée : 0.17.0)")
     args = p.parse_args()
-    result = qualifier(args.distribution.resolve(), args.sortie.resolve())
+    result = qualifier(args.distribution.resolve(), args.sortie.resolve(), args.version)
     (args.sortie / "resultats.json").write_text(json.dumps(result, ensure_ascii=False, indent=2)+"\n")
