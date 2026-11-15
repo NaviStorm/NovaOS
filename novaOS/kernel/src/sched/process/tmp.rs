@@ -12,6 +12,9 @@ mod files;
 #[path = "../../../../abi/tmp.rs"]
 pub(super) mod wire;
 
+#[path = "tmp_wait_probe.rs"]
+pub(crate) mod wait_probe;
+
 type Result<T> = core::result::Result<T, u64>;
 const TIMEOUT: u64 = 15000;
 
@@ -208,6 +211,16 @@ pub(super) fn install(s: &mut Core, server: Pid, shell: Pid) -> Result<()> {
         return Err(status);
     }
     Ok(())
+}
+
+pub(crate) fn ready_shell() -> bool {
+    with(|s| {
+        s.processes.slots.iter().flatten().any(|p| {
+            p.outcome.is_none()
+                && s.processes.instances.app(p.instance) == Some(iw::SHELL)
+                && s.processes.temporary.live(p.instance, p.tmp_cap)
+        })
+    })
 }
 
 fn wait_live(pid: Pid, cap: u64) -> Result<()> {

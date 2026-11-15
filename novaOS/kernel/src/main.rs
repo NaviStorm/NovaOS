@@ -217,6 +217,10 @@ fn main_thread() {
             hal::cpu::halt()
         }
     }
+    if scenario == b"tmp-attentes" {
+        sched::process::tmp::wait_probe::run();
+        hal::cpu::halt()
+    }
     if scenario == b"instances-test" {
         sched::process::ipc::instance_probe::run();
         hal::cpu::halt()
@@ -243,6 +247,9 @@ fn main_thread() {
         b"cli-test" => Some(42),
         b"cli-p8-test" => Some(73),
         b"cli-p8" => Some(74),
+        b"tmp-test" => Some(70),
+        b"tmp-reprise" => Some(71),
+        b"tmp-coupure" => Some(72),
         b"namespace-write" => Some(29),
         b"namespace-read" => Some(30),
         b"namespace-rename" => Some(31),

@@ -6,6 +6,7 @@ pub(crate) mod lifecycle;
 pub(super) use bulk::features;
 mod spawn;
 pub(crate) mod instance_probe;
+pub(crate) mod tmp_probe;
 #[cfg(feature = "thread-probe")]
 pub(crate) mod thread_probe;
 pub(super) use spawn::{spawn_program, instance_call};

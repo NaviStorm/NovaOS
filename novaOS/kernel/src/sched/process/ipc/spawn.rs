@@ -287,6 +287,10 @@ pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) 
     }
 }
 
+pub(super) fn tmp_sample() -> Application {
+    Application(include_bytes!(concat!(env!("OUT_DIR"), "/tmp_sample.bin")), iw::SAMPLE)
+}
+
 pub(super) fn sample() -> Application {
     Application::entry(iw::SAMPLE_INDEX)
         .expect("application de référence")

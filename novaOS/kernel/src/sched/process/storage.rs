@@ -269,6 +269,12 @@ pub(crate) fn volume(mode: u64) -> bool {
 }
 pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     use crate::hardware::block;
+    let (mode, probe): (_, Option<&[u8]>) = match mode {
+        70 => (42, Some(b"tmp-test")),
+        71 => (42, Some(b"tmp-reprise")),
+        72 => (42, Some(b"tmp-coupure")),
+        _ => (mode, None),
+    };
     let profile = mode;
     let mode = cli_mode(profile);
     FILE_TIMING.store(matches!(mode, 25 | 36 | 42), Ordering::Relaxed);
@@ -333,6 +339,9 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     ));
     if matches!(mode, 6 | 25 | 36 | 42) {
         measure("bloc_publie")
+    }
+    if let Some(scenario) = probe {
+        ipc::tmp_probe::run(scenario);
     }
     let ids = [relay.0, service.0, driver.0];
     let a = wait(app);
