@@ -1,0 +1,106 @@
+{
+  "date": "2026-11-15",
+  "base": "90de918fa6ca090d731500127cf400c4836a0fec",
+  "commit_sdk": "0d5808c80bdc948f298d3a8e308954b110fbab3f",
+  "sdk_archive": "nova-system-0.2.0.tar.gz",
+  "sdk_sha256": "6feff113b64eef2352c430fc5c64fc2f1f865cfe40339ecbec5e6a4f3ff469a4",
+  "sdk_octets": 21237,
+  "vm": [
+    {
+      "architecture": "aarch64",
+      "profil": "threads-test",
+      "qemu": "QEMU emulator version 11.1.3",
+      "accelerateur": "tcg",
+      "ram_mio": 256,
+      "sdk_sha256_premiere_construction": "d6a2e9d08e1e40144d16925abe29bbf20b0cb80c320f9e70811c1fafe2bdeb9f",
+      "elf_sha256": "fa1640df7589a2700f172acc43197c2904e6e2f833fb748048bc15984575cbd9",
+      "elf_octets": 77176,
+      "elf_reconstruit_depuis_archive_finale_identique_au_catalogue": true,
+      "noyau_sha256": "01eb8806d72da583a7a51aa6a161e071bec75648170387f90a9b8ea85b623c1a",
+      "journal": "serie-aarch64-threads-test-2cpu-cible.log",
+      "journal_sha256": "43a65bbbaefd5cb8fb3f86ecaf334d11ecd9421e3f7d046079fc426a94c50c50",
+      "mesures": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "cpu_final": 1,
+        "preemptions": [
+          6,
+          6
+        ],
+        "migrations": 2,
+        "cadres_avant": 62490,
+        "cadres_apres": 62490,
+        "blocs": 4,
+        "tcb_apres": 3
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "profil": "sdk-example",
+      "qemu": "QEMU emulator version 11.1.3",
+      "accelerateur": "tcg",
+      "ram_mio": 256,
+      "sdk_sha256_premiere_construction": "d6a2e9d08e1e40144d16925abe29bbf20b0cb80c320f9e70811c1fafe2bdeb9f",
+      "elf_sha256": "db2d14ec8a1f8d1ac22acc331ee4d3d90336a90adc8d50ca057c3129e129c3a8",
+      "elf_octets": 28400,
+      "elf_reconstruit_depuis_archive_finale_identique_au_catalogue": true,
+      "noyau_sha256": "d663e2ec91b780d14978f0efe7f4232e4328b4db7486c3585dbb3b6e9b9f343e",
+      "journal": "serie-aarch64-sdk-example-2cpu.log",
+      "journal_sha256": "b2a7e2ba4b2135bf1fe374db0f8f030bc81431a4eac939e47353b861ef56b410",
+      "mesures": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "sortie": 0,
+        "restitution": true
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "profil": "threads-test",
+      "qemu": "QEMU emulator version 11.1.3",
+      "accelerateur": "tcg",
+      "ram_mio": 256,
+      "sdk_sha256_premiere_construction": "d6a2e9d08e1e40144d16925abe29bbf20b0cb80c320f9e70811c1fafe2bdeb9f",
+      "elf_sha256": "6073a78fb2ffa5c716e75ac942932728faa218d614c3dedf6f30c9f067f6b30c",
+      "elf_octets": 62736,
+      "elf_reconstruit_depuis_archive_finale_identique_au_catalogue": true,
+      "noyau_sha256": "7b614972e13a5ffea9c145ed4c286934b1e1048f4691e407153dffdd2751e203",
+      "journal": "serie-x86_64-threads-test-2cpu-cible.log",
+      "journal_sha256": "c7024c936ba4988b038f992146f1358b43b0f45e3d306bef8256fcadda3004a1",
+      "mesures": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 63017,
+        "cadres_apres": 63017,
+        "blocs": 4,
+        "tcb_apres": 3
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "profil": "sdk-example",
+      "qemu": "QEMU emulator version 11.1.3",
+      "accelerateur": "tcg",
+      "ram_mio": 256,
+      "sdk_sha256_premiere_construction": "d6a2e9d08e1e40144d16925abe29bbf20b0cb80c320f9e70811c1fafe2bdeb9f",
+      "elf_sha256": "1ad5ebf8b6a0d80b10d2df826500f39052fdc222fac418640b408b9657d78c6e",
+      "elf_octets": 22080,
+      "elf_reconstruit_depuis_archive_finale_identique_au_catalogue": true,
+      "noyau_sha256": "60a6ce0d37a910abe50704ec5f9cb16c932babbc81f01a83b164a2c6035af16e",
+      "journal": "serie-x86_64-sdk-example-2cpu.log",
+      "journal_sha256": "737900c6e141c125a8c641b6b5700448129be919ea47329f77875f5a805cc4b8",
+      "mesures": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "sortie": 0,
+        "restitution": true
+      }
+    }
+  ]
+}

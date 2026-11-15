@@ -1,0 +1,21 @@
+[workspace]
+
+[package]
+name = "temoin"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "MIT"
+
+[[bin]]
+name = "temoin"
+path = "main.rs"
+
+[features]
+qualification = []
+
+[dependencies]
+nova-system = { version = "=0.2.0", path = "../../libs/nova-system" }
+
+[profile.release]
+panic = "abort"

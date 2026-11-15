@@ -1,5 +1,5 @@
 use crate::{Error, Result, abi, call};
-use core::sync::atomic::{AtomicUsize, Ordering};
+use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 
 /// Point d’entrée indépendant de l’architecture. L’argument est un scalaire.
 pub trait Task {
@@ -22,33 +22,44 @@ pub fn spawn<T: Task>(arg: usize, stack_pages: usize) -> Result<JoinHandle> {
         arg as u64,
         stack_pages as u64,
     )
-    .map(JoinHandle)
+    .map(|key| JoinHandle(AtomicU64::new(key)))
 }
 
 #[must_use = "une jonction rapporte la valeur du thread, le drop le détache"]
-pub struct JoinHandle(u64);
+pub struct JoinHandle(AtomicU64);
 impl JoinHandle {
+    /// Génération du droit, ou zéro après sa consommation.
     pub fn raw(&self) -> u64 {
-        self.0
+        self.0.load(Ordering::Relaxed)
+    }
+    fn key(&self) -> Result<u64> {
+        match self.raw() {
+            0 => Err(Error(abi::DENIED)),
+            key => Ok(key),
+        }
     }
     pub fn cancel(&self) -> Result<()> {
-        call(abi::THREAD_CANCEL, self.0, 0, 0).map(|_| ())
+        call(abi::THREAD_CANCEL, self.key()?, 0, 0).map(|_| ())
     }
-    pub fn join(mut self) -> Result<usize> {
-        let result = call(abi::THREAD_JOIN, self.0, 0, 0)?;
-        self.0 = 0;
+    /// Emprunte le handle. Seule une collecte réussie consomme le droit.
+    /// Un membre annulé peut transmettre le handle à un autre membre du processus.
+    pub fn join(&self) -> Result<usize> {
+        let result = call(abi::THREAD_JOIN, self.key()?, 0, 0)?;
+        self.0.store(0, Ordering::Relaxed);
         Ok(result as usize)
     }
-    pub fn detach(mut self) -> Result<()> {
-        call(abi::THREAD_DETACH, self.0, 0, 0)?;
-        self.0 = 0;
+    /// Un détachement réussi abandonne définitivement le résultat.
+    pub fn detach(&self) -> Result<()> {
+        call(abi::THREAD_DETACH, self.key()?, 0, 0)?;
+        self.0.store(0, Ordering::Relaxed);
         Ok(())
     }
 }
 impl Drop for JoinHandle {
     fn drop(&mut self) {
-        if self.0 != 0 {
-            let _ = call(abi::THREAD_DETACH, self.0, 0, 0);
+        let key = *self.0.get_mut();
+        if key != 0 {
+            let _ = call(abi::THREAD_DETACH, key, 0, 0);
         }
     }
 }

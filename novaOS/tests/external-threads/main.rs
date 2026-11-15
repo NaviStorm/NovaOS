@@ -4,6 +4,7 @@
 use core::sync::atomic::{AtomicU64, Ordering};
 use nova_system::{process, raw, sync, thread};
 
+#[cfg(feature = "qualification")]
 mod checks;
 
 static TOTAL: sync::Mutex<usize> = sync::Mutex::new(0);
@@ -39,16 +40,20 @@ fn example() {
     assert_ne!(first.raw(), second.raw());
     START.store(1, Ordering::Release);
     sync::notify(&START, 2).unwrap();
+    #[cfg(feature = "qualification")]
     let former = first.raw();
     assert_eq!(first.join().unwrap(), 7);
     assert_eq!(second.join().unwrap(), 11);
     assert_eq!(*TOTAL.lock().unwrap(), (7 + 11) * ROUNDS);
-    assert_eq!(
-        unsafe { raw::call(raw::THREAD_JOIN, former, 0, 0) }.status,
-        raw::DENIED
-    );
-    checks::mark(b"externe somme=432 threads=2 tls=7,11 double-join=refuse");
-    checks::lifecycle();
+    #[cfg(feature = "qualification")]
+    {
+        assert_eq!(
+            unsafe { raw::call(raw::THREAD_JOIN, former, 0, 0) }.status,
+            raw::DENIED
+        );
+        checks::mark(b"externe somme=432 threads=2 tls=7,11 double-join=refuse");
+        checks::lifecycle();
+    }
 }
 
 // L'entree ELF recoit un sommet de pile, avant tout appel C ou Rust.
@@ -59,6 +64,9 @@ core::arch::global_asm!(".globl _start", "_start:", "bl witness_main", "brk #0")
 
 #[unsafe(no_mangle)]
 extern "C" fn witness_main() -> ! {
+    #[cfg(not(feature = "qualification"))]
+    example();
+    #[cfg(feature = "qualification")]
     match checks::word(0).load(Ordering::Acquire) {
         0 => example(),
         mode => checks::scenario(mode),

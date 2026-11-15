@@ -259,6 +259,19 @@ fn withdraw_receive_page() {
     assert_eq!(child.join(), Outcome::Exit(0));
 }
 
+/// Exécute l’ELF public sans protocole de test ni délégation de service.
+pub(crate) fn run_example() {
+    let initial = heap::audit(true);
+    let slots = with(|s| s.audit());
+    let app = spawn::launch_thread_witness(&[]).expect("exemple admis au catalogue");
+    assert_eq!(app.join(), Outcome::Exit(0));
+    assert!(with(
+        |s| s.processes.slots.iter().all(Option::is_none) && s.audit() == slots
+    ));
+    assert_eq!(heap::audit(true), initial);
+    hal::log(format_args!("SDK exemple admis sortie=0 restitution=OK"));
+}
+
 pub(crate) fn run() {
     let initial = heap::audit(true);
     let slots = with(|s| s.audit());
