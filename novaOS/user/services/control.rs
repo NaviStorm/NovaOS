@@ -47,20 +47,83 @@ impl Manager<'_> {
         Ok(self.serial)
     }
 
+    fn settings(&self, id: u64) -> rt::Result<Frame> {
+        let active = self.manifest[self.index(id)?];
+        let stored = self
+            .config
+            .records
+            .iter()
+            .find(|d| d.id == id)
+            .ok_or(rt::REFUSED)?;
+        let mut reply = self.report(id);
+        reply[4] = self.config.applied;
+        reply[5] = self.policy.blocking_provider(id).unwrap_or(0);
+        reply[8] = u64::from(settings::differs(&active, stored));
+        reply[10..].copy_from_slice(&[
+            u64::from(stored.auto),
+            u64::from(active.auto),
+            self.config.stored,
+            settings::restart(stored.restart),
+            u64::from(stored.retries),
+            self.config.status,
+        ]);
+        Ok(reply)
+    }
+
     fn request(
         &mut self,
         f: Frame,
-        admin: bool,
+        port: usize,
         tag: u64,
         dest: u64,
         time: u64,
     ) -> rt::Result<Option<Frame>> {
+        let admin = port == 0;
         let [version, op, id, arg, ..] = f;
         if version != p::VERSION {
             return Err(rt::BAD_VERSION);
         }
         if tag == 0 {
             return Err(rt::BAD_ARGUMENT);
+        }
+        if matches!(op, p::SETTINGS | p::ENABLE | p::DISABLE) {
+            if f[4..].iter().any(|&v| v != 0) {
+                return Err(rt::BAD_ARGUMENT);
+            }
+            if self.cache_lab || self.qualification {
+                return Err(rt::REFUSED);
+            }
+            if op == p::SETTINGS {
+                if arg != 0 {
+                    return Err(rt::BAD_ARGUMENT);
+                }
+                // Une réponse peut disparaître du seul côté appelant. Le gestionnaire
+                // ne peut inférer ce doute de son propre dernier acquittement.
+                self.config.refresh();
+            } else {
+                if port != 2 {
+                    return Err(rt::DENIED);
+                }
+                if self.stopping {
+                    return Err(rt::CLOSED);
+                }
+                // Profil fermé du banc. Après admission de ENABLE CAS 1, le
+                // noyau révoque les deux délégations clientes. Le gestionnaire
+                // termine la publication déjà remise, sans pouvoir répondre au client.
+                if rt::config(9) == 88 && op == p::ENABLE && id == 9 && arg == 1
+                    && self.config.stored == 1 && self.config.status == rt::OK
+                {
+                    for slot in [7, 8] {
+                        let removed = rt::value(rt::call(rt::IPC_REVOKE, rt::config(slot), 0, 0))?;
+                        if removed != 1 { return Err(rt::REFUSED); }
+                    }
+                }
+                self.config.autostart(id, op == p::ENABLE, arg)?;
+            }
+            return self.settings(id).map(Some);
+        }
+        if port == 2 {
+            return Err(rt::DENIED);
         }
         if matches!(op, p::CACHE_TEST | p::CACHE_ASYNC_WRITE) {
             if !admin || !self.cache_lab || self.stopping || !(11..=15).contains(&id) {
@@ -235,8 +298,8 @@ impl Manager<'_> {
         Ok(Some(self.report(id)))
     }
 
-    fn control_message(&mut self, admin: bool, tx: u64, msg: &rt::ReceiveV1, time: u64) {
-        if msg.kind == 2 && admin && msg.aux & proc::SHUTDOWN_NOTICE != 0 {
+    fn control_message(&mut self, port: usize, tx: u64, msg: &rt::ReceiveV1, time: u64) {
+        if msg.kind == 2 && port == 0 && msg.aux & proc::SHUTDOWN_NOTICE != 0 {
             self.policy.shutdown();
             self.stopping = true;
             return;
@@ -246,7 +309,7 @@ impl Manager<'_> {
         }
         let frame = p::decode(&msg.payload[..msg.len as usize]);
         let reply = match frame {
-            Some(frame) => match self.request(frame, admin, msg.tag, tx, time) {
+            Some(frame) => match self.request(frame, port, msg.tag, tx, time) {
                 Ok(Some(reply)) => reply,
                 Ok(None) => return,
                 Err(e) => p::request(e, frame[2], 0),
@@ -256,7 +319,7 @@ impl Manager<'_> {
         self.response = Some((tx, msg.tag, reply));
     }
 
-    pub(super) fn run(&mut self, ports: [(u64, u64); 2]) -> rt::Result<()> {
+    pub(super) fn run(&mut self, ports: [(u64, u64); 3]) -> rt::Result<()> {
         let mut first = 0;
         let mut blocked_since = None;
         loop {
@@ -316,11 +379,15 @@ impl Manager<'_> {
                 continue;
             }
             let mut served = false;
-            for n in [first, 1 - first] {
+            for offset in 0..ports.len() {
+                let n = (first + offset) % ports.len();
+                if ports[n].0 == 0 {
+                    continue;
+                }
                 match rt::receive_for(ports[n].0, 0) {
                     Ok(msg) => {
-                        self.control_message(n == 0, ports[n].1, &msg, time);
-                        first = 1 - n;
+                        self.control_message(n, ports[n].1, &msg, time);
+                        first = (n + 1) % ports.len();
                         served = true;
                         break;
                     }
@@ -331,7 +398,7 @@ impl Manager<'_> {
             if !served {
                 // Temps borné pour les événements sur les autres ports et les échéances du graphe.
                 match rt::receive_for(ports[0].0, 2) {
-                    Ok(msg) => self.control_message(true, ports[0].1, &msg, now()?),
+                    Ok(msg) => self.control_message(0, ports[0].1, &msg, now()?),
                     Err(rt::TIMED_OUT) => (),
                     Err(rt::REVOKED | rt::CLOSED | rt::DENIED) => {
                         // La racine d'exploitation appartient au gestionnaire.

@@ -220,7 +220,7 @@ impl Session<'_, '_> {
             let mut names = names;
             while base == fs.root_id()
                 && fs.atime_policy().is_some()
-                && names.first().is_some_and(|n| tmp_store::hidden_root_name(n) || cache_store::hidden(n))
+                && names.first().is_some_and(|n| tmp_store::hidden_root_name(n) || cache_store::hidden(n) || config_store::hidden(n))
             {
                 names = fs.inspect_dir(base, Some(&names[0]), 1).map_err(error)?;
             }

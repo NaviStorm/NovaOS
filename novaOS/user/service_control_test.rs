@@ -182,9 +182,55 @@ impl Control {
     }
 }
 
+/// Profil de qualification 88 uniquement, séquence sur un volume P9 neuf.
+fn config_race(fs: &mut fileapi::Client) -> rt::Result<()> {
+    let mut admin = Control { tx: rt::config(16), rx: rt::config(17), tag: 0 };
+    let mut read = Control { tx: rt::config(11), rx: rt::config(12), tag: 0 };
+    read.state(9, svc::RUNNING)?;
+    let initial = read.call(svc::SETTINGS, 9, 0)?;
+    require(initial[15] == rt::OK && initial[10] == 1 && initial[12] == 0)?;
+    // Deux publications en vol avec la même précondition ; aucune collecte
+    // d'acquittement entre les deux dépôts dans la file IPC du gestionnaire.
+    for (tag, op) in [(1,svc::DISABLE),(2,svc::ENABLE)] {
+        rt::send_frame(admin.tx,tag,&svc::encode(&svc::request(op,9,0)),0,false)?;
+    }
+    for (tag,status) in [(1,rt::OK),(2,protocol::BUSY)] {
+        let msg = rt::receive_for(admin.rx, 15_000)?;
+        require(msg.kind == 1 && msg.tag == tag && msg.len == 128)?;
+        let f = svc::decode(&msg.payload).ok_or(rt::BAD_ARGUMENT)?;
+        require(f[0] == svc::VERSION && f[1] == status && f[2] == 9)?;
+    }
+    let after = read.call(svc::SETTINGS, 9, 0)?;
+    require(after[10] == 0 && after[11] == 1 && after[12] == 1 && after[15] == rt::OK)?;
+    log(b"SVC-CFG deux publications CAS 0 en vol : une confirmee, une BUSY, generation 1 relue");
+
+    // Le rendez-vous doit avoir remis l'operation au gestionnaire. La perte
+    // de la seule preuve de fin est UNCERTAIN pour ce client.
+    admin.tag = 2;
+    admin.submit(svc::ENABLE,9,1)?;
+    let lost = matches!(rt::receive_for(admin.rx,15_000),
+        Err(rt::REVOKED | rt::CLOSED | rt::DENIED));
+    require(lost)?;
+    log(b"SVC-CFG resultat client UNCERTAIN apres admission et revocation");
+    for _ in 0..2 {
+        let current = read.call(svc::SETTINGS,9,0)?;
+        require(current[10] == 1 && current[12] == 2 && current[15] == rt::OK)?;
+    }
+    // Vérifier le retrait sans réémettre la mutation dont la réponse manquait.
+    require(matches!(admin.submit(svc::SETTINGS,9,0),
+        Err(rt::REVOKED | rt::CLOSED | rt::DENIED)))?;
+    log(b"SVC-CFG deux relectures P9 generation 2, handle retire, aucune repetition");
+    let mut ops = Control {tx: rt::config(14), rx: rt::config(15), tag:0};
+    ops.call(svc::SHUTDOWN,0,0)?;
+    rt::value(rt::call(instances::SERVICE_PROCESS, service_process::DRAIN, 0, 0))?;
+    fs.close(0)?;
+    Ok(())
+}
+
 fn run_suite() -> rt::Result<()> {
     let mut fs = fileapi::Client::new()?;
     fs.mount()?;
+    if rt::config(13) == 88 { return config_race(&mut fs); }
     require(rt::call(instances::SERVICE_PROCESS, service_process::NOW, 0, 0).status == rt::DENIED)?;
     let mut client = Control { tx: rt::config(14), rx: rt::config(15), tag: 0 };
     require(client.tx != 0 && client.rx != 0)?;

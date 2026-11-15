@@ -95,11 +95,18 @@ pub(in crate::sched::process) fn launch_session(
         if matches!(profile, 78..=86) {
             config(s, group[1].0, 13, &[profile]);
         }
-        let admin = (lab || matches!(profile, 77..=86)).then_some(client);
+        let admin = (lab || matches!(profile, 77..=88)).then_some(client);
         let (rx, admin_tx) = channel(s, owner, admin, RECEIVE)?;
         let (tx, admin_rx) = channel(s, owner, admin, SEND)?;
-        let (read_rx, query_tx) = channel(s, owner, Some(client), RECEIVE)?;
-        let (read_tx, query_rx) = channel(s, owner, Some(client), SEND)?;
+        let ((read_rx, query_tx), (read_tx, query_rx)) = if profile == 88 {
+            // La sonde conserve la consultation après révocation des mutations.
+            // Répartir les racines sans relever le quota de quatre par processus.
+            let (query_tx, read_rx) = channel(s, client, Some(owner), SEND)?;
+            let (query_rx, read_tx) = channel(s, client, Some(owner), RECEIVE)?;
+            ((read_rx, query_tx), (read_tx, query_rx))
+        } else {
+            (channel(s, owner, Some(client), RECEIVE)?, channel(s, owner, Some(client), SEND)?)
+        };
         config(s, owner, 0, &[rx, tx, if matches!(profile, 78..=86) { 2 } else { u64::from(lab) }, read_rx, read_tx]);
         config(
             s,
@@ -108,11 +115,39 @@ pub(in crate::sched::process) fn launch_session(
             &[
                 query_tx,
                 query_rx,
-                if matches!(profile, 78..=86) { profile } else { u64::from(profile == 76) },
+                if matches!(profile, 78..=86 | 88) { profile } else { u64::from(profile == 76) },
                 admin_tx,
                 admin_rx,
             ],
         );
+        // Les profils historiques de sonde conservent leur câblage. Le droit
+        // de configuration est distinct du port d'exploitation du profil 77.
+        if matches!(profile, 41 | 42 | 77 | 87 | 88) {
+            let fs = group[1].0;
+            // Les racines suivent la durée de vie du fournisseur P9.
+            let (read, requests) = channel(s, fs, Some(owner), RECEIVE)?;
+            let (write, replies) = channel(s, fs, Some(owner), SEND)?;
+            config(s, owner, 5, &[requests, replies]);
+            config(s, fs, 14, &[read, write]);
+        }
+        if profile == 87 {
+            // La fin du client de maintenance retire ses deux racines.
+            let (send, rx) = channel(s, client, Some(owner), SEND)?;
+            let (receive, tx) = channel(s, client, Some(owner), RECEIVE)?;
+            config(s, owner, 7, &[rx, tx]);
+            config(s, client, 16, &[send, receive]);
+        } else if profile == 88 {
+            let (rx, send) = channel(s, owner, Some(client), RECEIVE)?;
+            let (tx, receive) = channel(s, owner, Some(client), SEND)?;
+            // Le gestionnaire de la sonde peut révoquer les enfants de ces
+            // deux seules racines. La sonde cliente conserve les droits minimaux.
+            for (root, direction) in [(rx, RECEIVE), (tx, SEND)] {
+                let node = s.ipc.lookup(owner, root, direction)?;
+                s.ipc.nodes.get_mut(node.id.slot()).rights |= MANAGE;
+            }
+            config(s, owner, 7, &[rx, tx, profile]);
+            config(s, client, 16, &[send, receive]);
+        }
         s.processes.manager = Some(Session {
             manager: owner,
             client,

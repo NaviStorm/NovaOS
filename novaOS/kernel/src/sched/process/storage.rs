@@ -258,8 +258,8 @@ const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fil
 // configuration. Seul NovaFS reçoit le sélecteur distinct de format.
 pub(super) fn cli_mode(profile: u64) -> u64 {
     match profile {
-        73 | 75 | 76 | 78..=86 => 42,
-        74 | 77 => 41,
+        73 | 75 | 76 | 78..=86 | 88 => 42,
+        74 | 77 | 87 => 41,
         n => n,
     }
 }
@@ -277,10 +277,11 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     };
     let profile = mode;
     let mode = cli_mode(profile);
+    let measure_session = matches!(mode, 6 | 25 | 36 | 42) || profile == 87;
     FILE_TIMING.store(matches!(mode, 25 | 36 | 42), Ordering::Relaxed);
     let start = heap::audit(true);
     let hz = hal::timer::counter_hz();
-    if matches!(mode, 6 | 25 | 36 | 42) {
+    if measure_session {
         measure("bloc_repos");
         heap::with_pages(|m| {
             m.begin_frame_sample();
@@ -309,7 +310,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         (
             if matches!(profile, 78..=86) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/cache_client_test.bin"))
-            } else if matches!(profile, 75 | 76) {
+            } else if matches!(profile, 75 | 76 | 88) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/service_control_test.bin"))
             } else if matches!(mode, 41 | 42) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/nsh.elf"))
@@ -322,7 +323,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         ),
     ];
     let mut manager = None;
-    let group = if matches!(profile, 41 | 42 | 75..=86) && probe.is_none() {
+    let group = if matches!(profile, 41 | 42 | 75..=88) && probe.is_none() {
         ipc::service::launch_session(members, key, profile, session.map(|(_, id)| id))
             .map(|(group, child)| { manager = Some(child); (group, None) })
     } else if matches!(mode, 29 | 30 | 38) {
@@ -345,7 +346,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         "BLOC chaine novaFS={} bloc={} pilote={} client={} generation={key}",
         service.0.number, relay.0.number, driver.0.number, app.0.number
     ));
-    if matches!(mode, 6 | 25 | 36 | 42) {
+    if measure_session {
         measure("bloc_publie")
     }
     if let Some(scenario) = probe {
@@ -373,7 +374,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     hal::log(format_args!(
         "BLOC bilan mode={mode} service={s:?} bloc={b:?} pilote={d:?} client={a:?} retrait={retired:?} cycles_retrait={ticks}"
     ));
-    if matches!(mode, 6 | 25 | 36 | 42) {
+    if measure_session {
         ipc::end_measure(hz);
         block::metrics::report();
         let frames = heap::with_pages(|m| Ok(m.end_frame_sample())).unwrap();

@@ -146,6 +146,7 @@ impl Slot {
 
 pub struct Policy<'a> {
     manifest: &'a [Declaration],
+    implicit_starts: u16,
     slots: [Slot; MAX_SERVICES],
     required: [u16; MAX_SERVICES],
     optional: [u16; MAX_SERVICES],
@@ -158,11 +159,22 @@ pub struct Policy<'a> {
 
 impl<'a> Policy<'a> {
     pub fn new(manifest: &'a [Declaration]) -> Result<Self, Error> {
+        Self::build(manifest, false)
+    }
+
+    /// Catalogue administré. Au boot, une dépendance inhibée reste enregistrée,
+    /// et le consommateur attend l'autorité de lancement ou la prochaine configuration.
+    pub fn configured(manifest: &'a [Declaration]) -> Result<Self, Error> {
+        Self::build(manifest, true)
+    }
+
+    fn build(manifest: &'a [Declaration], configured: bool) -> Result<Self, Error> {
         if manifest.len() > MAX_SERVICES {
             return Err(Error::InvalidDeclaration);
         }
         let mut policy = Self {
             manifest,
+            implicit_starts: if configured { 0 } else { u16::MAX },
             slots: [Slot::EMPTY; MAX_SERVICES],
             required: [0; MAX_SERVICES],
             optional: [0; MAX_SERVICES],
@@ -216,11 +228,30 @@ impl<'a> Policy<'a> {
             policy.order[pos] = i;
             seen |= 1 << i;
         }
-        for d in manifest.iter().filter(|d| d.auto) {
-            policy.register(d.id)?;
-            policy.start(d.id)?;
+        if configured {
+            for (i, d) in manifest.iter().enumerate() {
+                policy.register(d.id)?;
+                if d.auto {
+                    policy.implicit_starts |= 1 << i;
+                    policy.slots[i].wanted = true;
+                    policy.transition(i, State::Waiting, Cause::Requested, 0, 0);
+                }
+            }
+        } else {
+            for d in manifest.iter().filter(|d| d.auto) {
+                policy.register(d.id)?;
+                policy.start(d.id)?;
+            }
         }
         Ok(policy)
+    }
+
+    pub fn blocking_provider(&self, id: u64) -> Option<u64> {
+        let i = self.index(id).ok()?;
+        if self.slots[i].state != State::Waiting {
+            return None;
+        }
+        self.unavailable(i).map(|source| self.manifest[source].id)
     }
 
     fn index(&self, id: u64) -> Result<usize, Error> {
@@ -304,11 +335,11 @@ impl<'a> Policy<'a> {
         Error::InvalidState
     }
 
-    fn closure(&self, i: usize) -> u16 {
+    fn closure(&self, i: usize, allowed: u16) -> u16 {
         let mut mask = 1 << i;
         for &j in self.order[..self.manifest.len()].iter().rev() {
             if mask & (1 << j) != 0 {
-                mask |= self.required[j] | self.optional[j];
+                mask |= (self.required[j] | self.optional[j]) & allowed;
             }
         }
         mask
@@ -317,7 +348,7 @@ impl<'a> Policy<'a> {
     /// Le client désigne une déclaration de confiance par son ID. Les dépendances
     /// du même catalogue sont enregistrées atomiquement dans l'ordre du graphe.
     pub fn register(&mut self, id: u64) -> Result<(), Error> {
-        let mask = self.closure(self.index(id)?);
+        let mask = self.closure(self.index(id)?, u16::MAX);
         for pos in 0..self.manifest.len() {
             let i = self.order[pos];
             if mask & (1 << i) != 0 && !self.slots[i].registered {
@@ -330,7 +361,7 @@ impl<'a> Policy<'a> {
 
     pub fn start(&mut self, id: u64) -> Result<(), Error> {
         let target = self.registered_index(id)?;
-        let mask = self.closure(target);
+        let mask = self.closure(target, self.implicit_starts);
         for pos in 0..self.manifest.len() {
             let i = self.order[pos];
             if mask & (1 << i) == 0 {

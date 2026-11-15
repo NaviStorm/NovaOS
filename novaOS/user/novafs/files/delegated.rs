@@ -307,7 +307,7 @@ impl Grant {
                 Err(rt::REVOKED | rt::DENIED | rt::CLOSED) => return Ok(()),
                 result => result?,
             };
-            let timeout = if tmp_busy { 0 } else { 15000 };
+            let timeout = if tmp_busy { 0 } else if rt::config(14) != 0 { 8 } else { 15000 };
             let m = match rt::receive_for(self.ports.rx, timeout) {
                 Err(rt::WOULD_BLOCK) if tmp_busy => continue,
                 Err(rt::REVOKED | rt::DENIED | rt::CLOSED) => return Ok(()),
