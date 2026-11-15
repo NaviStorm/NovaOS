@@ -1,0 +1,1136 @@
+{
+  "revision": "082ff4a78cf8f20ca4da5b5174183d888fc845e8",
+  "composition": [
+    {
+      "profil": "brut",
+      "success": true,
+      "patchs": 0,
+      "fichiers": 0,
+      "inchanges": 0,
+      "merge_git": 0,
+      "composition_exacte": 0
+    },
+    {
+      "profil": "regression",
+      "success": true,
+      "patchs": 6,
+      "fichiers": 58,
+      "inchanges": 49,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "sans",
+      "success": true,
+      "patchs": 7,
+      "fichiers": 58,
+      "inchanges": 49,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "sonde",
+      "success": true,
+      "patchs": 13,
+      "fichiers": 62,
+      "inchanges": 51,
+      "merge_git": 7,
+      "composition_exacte": 4
+    },
+    {
+      "profil": "coupe",
+      "success": true,
+      "patchs": 10,
+      "fichiers": 58,
+      "inchanges": 49,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "defauts",
+      "success": true,
+      "patchs": 11,
+      "fichiers": 58,
+      "inchanges": 49,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "course",
+      "success": true,
+      "patchs": 9,
+      "fichiers": 58,
+      "inchanges": 49,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "utm",
+      "success": true,
+      "patchs": 8,
+      "fichiers": 59,
+      "inchanges": 50,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "utm-sonde",
+      "success": true,
+      "patchs": 14,
+      "fichiers": 63,
+      "inchanges": 52,
+      "merge_git": 7,
+      "composition_exacte": 4
+    },
+    {
+      "profil": "utm-coupe",
+      "success": true,
+      "patchs": 11,
+      "fichiers": 59,
+      "inchanges": 50,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "diagnostic-stockage",
+      "success": true,
+      "patchs": 12,
+      "fichiers": 60,
+      "inchanges": 51,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "diagnostic-stockage-phases",
+      "success": true,
+      "patchs": 13,
+      "fichiers": 60,
+      "inchanges": 51,
+      "merge_git": 6,
+      "composition_exacte": 3
+    },
+    {
+      "profil": "diagnostic-stockage-reponses",
+      "success": true,
+      "patchs": 13,
+      "fichiers": 62,
+      "inchanges": 51,
+      "merge_git": 7,
+      "composition_exacte": 4
+    },
+    {
+      "profil": "diagnostic-stockage-reponses-endurance",
+      "success": true,
+      "patchs": 14,
+      "fichiers": 64,
+      "inchanges": 52,
+      "merge_git": 6,
+      "composition_exacte": 6
+    }
+  ],
+  "profils": {
+    "coupe": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "f98ff3f45092be368f733cad1999eff4765a8b65a94594796be7a76cb847a390",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "47f15699c76b29ed1223cbbaf33ad332711998e7d8f67da4e57a97182de7808d",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-plages-coupure": "20dee62e3b324fc783229520f463568e9e4c6b1116e4aa5f97d0fde92fda022d",
+        "io-0166-barrieres": "6a90ac38806aa861f912685f22c8e06e1679e9b7ab5ef4c9724e4b1cebcc7398",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-coupure": "f60b21ac5f2af5e145ba82be69f6dcd283c6fe864ae471a9877b36b468ffc229",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 654,
+        "sha256_chemins_et_contenus": "ac9a506552b6d269c73323ee2b471db375065d2214b959acaaae0c8eaafe3a6d"
+      },
+      "provenance_sha256": "ab00cdb593d2e7e2c4dd388515f11a1f7d096bd21c65e0eabb0833ec09127f5f"
+    },
+    "course": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "53c36e65b18c7319ab4cd2b8c5f6ef00ea8d28f17a59dbe64346964026cd6124",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "36b8d56bfa727c5a2f1765bc56390a4a7076a93f0423384c3418fd4363cdc374",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "vi-conflit-source": "0d73d349d9cb808523050dff13229fdf9fbac2493cc1b3ac62c17a972ba1e4c4",
+        "io-0166-course-nom": "5c3c1efa8832b67df7638c2c1b305b5f15001c9e23ab46a07e0875cf14a7c0a3",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 653,
+        "sha256_chemins_et_contenus": "27533e118f64fa1e5228b4e8626cd0b881e0cc1c56db80470fb8d2b92ea4a629"
+      },
+      "provenance_sha256": "149e8fa27c839f3d6d522f40481033e0621c573a9bfbd99cd92819be164c30e4"
+    },
+    "defauts": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "d4746b7dfeb0925b09c94c1e74c7f869bfaad0bf480187a4cd1feb9574d84ad6",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "4eb115dcb524dfedb07bcff22212500060942c5bd5e6d770209977e926186e9a",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-plages-coupure": "20dee62e3b324fc783229520f463568e9e4c6b1116e4aa5f97d0fde92fda022d",
+        "io-0166-barrieres": "6a90ac38806aa861f912685f22c8e06e1679e9b7ab5ef4c9724e4b1cebcc7398",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-coupure": "f60b21ac5f2af5e145ba82be69f6dcd283c6fe864ae471a9877b36b468ffc229",
+        "io-0166-dma-defauts": "727c8d0379fa92f8f2a7e232af3a6699510467065ad2dbedb30d60b36983954e",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 654,
+        "sha256_chemins_et_contenus": "1ad9d822ccaf17eaea03e8b1a37b9a88d464c69afaf85e3740ef1ecb2d707c8d"
+      },
+      "provenance_sha256": "ffdc90069f4cd95258c2a6822d48f08845bb744a518aa99aa594ed0426f4f185"
+    },
+    "diagnostic-stockage": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "7f89efcfd4e187a07c39e9bec34219444721a2efb04f9cfb7be3c50942753e30",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "21e63ca06319d26a38572380d750f3da275504671ad25dab5d5cf2209337cece",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "7ecd00f536d1cc6260af8c4ec95f710bcd5ef33f3d285d0e556c0d214a724b2e"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-plages-coupure": "20dee62e3b324fc783229520f463568e9e4c6b1116e4aa5f97d0fde92fda022d",
+        "io-0166-barrieres": "6a90ac38806aa861f912685f22c8e06e1679e9b7ab5ef4c9724e4b1cebcc7398",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-coupure": "f60b21ac5f2af5e145ba82be69f6dcd283c6fe864ae471a9877b36b468ffc229",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 654,
+        "sha256_chemins_et_contenus": "40d77372c21abc723aef5acd79b4e012851dcbc657bb9822de5dd0c41b9f6ac9"
+      },
+      "provenance_sha256": "2cd85c0f49fc5755c72c2793a55c2afe096b423cc858ac231def8258412d3452"
+    },
+    "regression": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "0dcf8d95c387843c1bbc7ed4bb05e37dfe7845bb8d87191b14cba8f4d15fa5b2",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "a07f31e44a6b9ec88ef1690a84663ca79f7c9f708eda57e6a7e43c72addaaadf",
+        "novaOS/target-gicv3-lab/aarch64-unknown-none-softfloat/release/novaos": "ef70ceab6ce1f9c15273c5c83f7a5c2f74e33207e71e14244580afd78d29f083",
+        "novaOS/target-dma-sequentiel/aarch64-unknown-none-softfloat/release/novaos": "52c640a93a7288a15a5cad91df78b495f3e068273c2c098a275054525b6e0ca5",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 653,
+        "sha256_chemins_et_contenus": "155ab7bb393cdb506825b66525fe28f4b4f489488b6f282ac4cb71ade17010fb"
+      },
+      "provenance_sha256": "9ce56bb2c0e8cb7e06b32c1414dc30fe620683fb1f6a2e414eb07766c352574e"
+    },
+    "sans": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "78d1f8e835c50028aca09cdb11c22a4d76ad7d276fa8afdd7a90fc10f2f57c63",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "2f39ff34e646de6faa3e3833f2e6a555a4cd6a0adeadcfe470f1c8fe93a32364",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+        "novaFS/target/aarch64-apple-darwin/release/examples/es-groupees": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 652,
+        "sha256_chemins_et_contenus": "f2088ec8f03ebac553de0c407f4123221886eed454288724a5a94118a31b5181"
+      },
+      "provenance_sha256": "abdf8ca4472c291308c18adb1a55c7adf9d32e8f2963dc6e0b6d528950714d67"
+    },
+    "sonde": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "60b56e241fa4e2392ce48adb03517c7e1a253c61d0504fbf0eb18bab9eb29d5e",
+        "novaOS/target/x86_64-unknown-none/release/novaos": "6600f57580a2f5a8306df51bc0535168b22d8b48dec2ab57d359f8233e24bca4",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-prototype-sonde": "a4c2f2a1241960c25446bff87261a92680f4932931c633caebc0ac2b99ae0e35",
+        "io-0166-plages-sonde": "ee0f74a0f68295ef11ddf3021962f648a41fcc0413a599052e960a744a698e48",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-sonde": "c0868b0b16391ed988167f07a6f0672053f206e1be0eb0f640f68f0b6bb7ffee",
+        "io-0166-vcpu": "51a48c415aaa229ed01d36941e6b388f13d731282efce061f049013aac599a1b",
+        "io-0166-irq-latences": "4c18d6b9ebb3ec48342ac21911c18beaaa5e085467bf52ae81026039128af35e",
+        "io-0166-negociation-sonde": "f77433e817d4df70e9378eb74c85a89e6254edb3435562ac2a078f3e10b97007",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 656,
+        "sha256_chemins_et_contenus": "08cdf378d27d1904f0fd68a7484fbbc5e10ccfd368c9a26a56b10e12cb081702"
+      },
+      "provenance_sha256": "9ef6937b55519abb5a07ca4baa9388b32b6e25b6caf61493d0649971929974f0"
+    },
+    "utm": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "c09efab145b264e9ea0fd71a4ae81013a659cdabb23442175ecac3513ddd3d3f",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-systeme-qualification": "4f4a0b965b585df2ce624cb3d43aca8323797591256e5af962323d4863478f8e",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 653,
+        "sha256_chemins_et_contenus": "ae47f663b148617e6236ca23ebd61b682281810c97e167ec82b21b27082130b1"
+      },
+      "provenance_sha256": "086b356f7b869e569f47a10d3dfb228043563c34840157ddd0759d9700453fed"
+    },
+    "utm-coupe": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "a2789539add3d9bc9024cde52d45b651cdb2d7d272580feceba795263ccf19f0",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-plages-coupure": "20dee62e3b324fc783229520f463568e9e4c6b1116e4aa5f97d0fde92fda022d",
+        "io-0166-barrieres": "6a90ac38806aa861f912685f22c8e06e1679e9b7ab5ef4c9724e4b1cebcc7398",
+        "io-0166-systeme-qualification": "4f4a0b965b585df2ce624cb3d43aca8323797591256e5af962323d4863478f8e",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-coupure": "f60b21ac5f2af5e145ba82be69f6dcd283c6fe864ae471a9877b36b468ffc229",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 655,
+        "sha256_chemins_et_contenus": "c4b9deeb32f77ae378eba0ea808837eda15d959a5ce841269ab6ad3409ab8d5c"
+      },
+      "provenance_sha256": "78c1f5be4317084e02bd7775ade7903372a6fb85ca169b3a9ec5589bd750745e"
+    },
+    "utm-sonde": {
+      "cibles": {
+        "novaOS/target/aarch64-unknown-none-softfloat/release/novaos": "1acb9397fefe264ab6560c6aabb58155f16a1bbe3d98e608d5647cc7ef2e574b",
+        "novaFS/target/aarch64-apple-darwin/release/novafs": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f"
+      },
+      "correctifs": {
+        "io-0166-prototype": "c65d340c4470bacd6eaf795b43b0b717da8c9a969a8332690a6e2840a3e38f8d",
+        "io-0166-plages": "e45dd4f277c28f94b4b51e423920efa56697fe8dfee40b78b92883204013a923",
+        "io-0166-prototype-sonde": "a4c2f2a1241960c25446bff87261a92680f4932931c633caebc0ac2b99ae0e35",
+        "io-0166-plages-sonde": "ee0f74a0f68295ef11ddf3021962f648a41fcc0413a599052e960a744a698e48",
+        "io-0166-systeme-qualification": "4f4a0b965b585df2ce624cb3d43aca8323797591256e5af962323d4863478f8e",
+        "io-0166-charge-4m": "f1324ce72f3b10cc7aa6c23f8be2e86590fec41d23fa26df01e10619a7b07faa",
+        "io-0166-virtio-multipage": "cc238b8286b77229b95694b18ed46bcfc88a4fe5e5c7b01c93c00b0deff58511",
+        "io-0166-invite": "c9a0487b86644c307bc6a50765c9122e2017c9ed88ca96eaf92bf074d3c5811b",
+        "io-0166-dma-sonde": "c0868b0b16391ed988167f07a6f0672053f206e1be0eb0f640f68f0b6bb7ffee",
+        "io-0166-vcpu": "51a48c415aaa229ed01d36941e6b388f13d731282efce061f049013aac599a1b",
+        "io-0166-irq-latences": "4c18d6b9ebb3ec48342ac21911c18beaaa5e085467bf52ae81026039128af35e",
+        "io-0166-negociation-sonde": "f77433e817d4df70e9378eb74c85a89e6254edb3435562ac2a078f3e10b97007",
+        "io-0166-negociation": "1cdb459703114ac9096deccc32c2724c94ed0c3da32e5d5acfefd00a8ec5e08d",
+        "stockage-0170-retrait": "b308def4287cdd082bda171d9eaab6b4e1a6c9b4c5bf2c94e88ae88f10f65123"
+      },
+      "sources": {
+        "fichiers": 657,
+        "sha256_chemins_et_contenus": "e6cbc7d89ab8e5f03ddb1ba42201340717852263099bacc9f6cb4fcda6286775"
+      },
+      "provenance_sha256": "db18bfba9e6b17b7a59646318b3e00f2351fd332315f9ac400d6524ae993cfc6"
+    }
+  },
+  "sauvegardes": {
+    "lot-aarch64": {
+      "chemin": "groupe",
+      "plateforme": "qemu-aarch64",
+      "secteur": 4096,
+      "cas": "neuf-4m",
+      "releve": "compteurs",
+      "debut_utc_ns": 1794713822376363000,
+      "fin_utc_ns": 1794713832094251000,
+      "charge_avant": [
+        11.0263671875,
+        5.6015625,
+        3.4384765625
+      ],
+      "charge_apres": [
+        10.48681640625,
+        5.66357421875,
+        3.4853515625
+      ],
+      "provenance_sha256": "9ef6937b55519abb5a07ca4baa9388b32b6e25b6caf61493d0649971929974f0",
+      "revision": "082ff4a78cf8f20ca4da5b5174183d888fc845e8",
+      "bilan_livraison_sha256": null,
+      "noyau_sha256": "60b56e241fa4e2392ce48adb03517c7e1a253c61d0504fbf0eb18bab9eb29d5e",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "lecteur_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "serial_sha256": "11832793cfb71ff31cd2365294646ba1745aeb5d13a34506bce0bad9f2e4699f",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 1756,
+        "3": 36,
+        "4": 460,
+        "5": 12872
+      },
+      "mesure": {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "cas": "neuf-4m",
+        "entrees_file": null,
+        "cpu_hote_qemu": {
+          "utilisateur_ns": 130142416,
+          "systeme_ns": 24932416,
+          "utilisateur_p_ns": 113664250,
+          "systeme_p_ns": 18367250,
+          "instructions": 2451171738,
+          "cycles": 571574600
+        },
+        "blocs": 4096,
+        "blocs_libres": 3042,
+        "extents_source": 128,
+        "octets_tiers": null,
+        "avant": [
+          65,
+          66
+        ],
+        "apres": [
+          66,
+          67
+        ],
+        "temoin_lecture": null,
+        "pic_cadres_session": 4029,
+        "sonde": true,
+        "memoire_observee_kio": {
+          "1": 12,
+          "2": 1756,
+          "3": 36,
+          "4": 460,
+          "5": 12872
+        },
+        "chemin": "groupe",
+        "sauvegarde_ms": 129.238,
+        "apres_oui_ms": 109.101,
+        "compteur": {
+          "appels_locaux_pret": [
+            1,
+            1,
+            6,
+            1,
+            1,
+            1
+          ],
+          "avec_copies_locales_pret": 42,
+          "ipc_par_liaison": {
+            "moteur_bloc": 8,
+            "bloc_pilote": 8,
+            "nsh_moteur": 5,
+            "vi_nsh": 4
+          },
+          "dons_acquittes": 2,
+          "total": 27,
+          "controles_noyau_locaux": {
+            "create": 2,
+            "dup": 0,
+            "close": 2,
+            "revoke": 0,
+            "notify": 0,
+            "cancel": 0,
+            "bootstrap": 0,
+            "ipc_features": 0
+          },
+          "put": 8,
+          "take": 8,
+          "bloc": {
+            "lecture": {
+              "nombre": 19,
+              "millisecondes": 1.297
+            },
+            "ecriture": {
+              "nombre": 22,
+              "millisecondes": 10.232
+            },
+            "flush": {
+              "nombre": 2,
+              "millisecondes": 1.595
+            }
+          },
+          "total_avec_controles_locaux": 36,
+          "appels_file_locaux": {
+            "reserve": 7,
+            "copie": 0,
+            "position": 0,
+            "soumet": 2,
+            "termine": 7
+          },
+          "lots": [
+            1,
+            18,
+            4,
+            1024,
+            2,
+            23
+          ],
+          "preparation_et_donnees_ms": 79.208,
+          "metadonnees_et_F1_ms": 4.31,
+          "ancre_et_F2_ms": 0.598,
+          "persistance_acquise_ms": 84.224,
+          "dma": {
+            "groupes_in": 18,
+            "groupes_out": 22,
+            "pages_in": 18,
+            "pages_out": 1047,
+            "max_pages_par_chaine": 64,
+            "cadres_arene": 65,
+            "kicks": 43,
+            "irq": 43,
+            "copie_in_ms": 0.286,
+            "copie_out_ms": 2.905,
+            "soumission_ms": 0.739,
+            "kick_a_used_observe_ms": 12.301,
+            "used_a_acquittement_ms": 0.061,
+            "traitement_irq_ms": 0.148,
+            "kick_a_entree_irq_ms": 11.633
+          },
+          "phases_moteur_ms": {
+            "sha256_source": 0.0,
+            "sha256_candidate": 23.487,
+            "validation_texte": 5.281,
+            "reservation_pages": 0.172,
+            "construction_extents": 2.496,
+            "copie_source_et_pret": 2.64,
+            "allocation_fenetres": 0.72,
+            "recherche_extents": 0.0,
+            "effacement_liberation": 0.229
+          },
+          "vcpu": 2,
+          "flush_physiques_ms": [
+            1.518,
+            0.077
+          ],
+          "repos_invite_ms": 109.577,
+          "actif_ordonnanceur_invite_ms": 116.357,
+          "lots_bloc_lecture_ms": 3.788,
+          "lots_bloc_ecriture_ms": 17.123,
+          "appel_publish_ms": 112.967,
+          "commande_au_succes_ms": 129.238,
+          "oui_au_succes_ms": 109.101083,
+          "session_compteur_historique": 2222,
+          "ipc_conforme": true,
+          "temps_conforme": true
+        },
+        "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed"
+      }
+    },
+    "lot-x86_64": {
+      "chemin": "groupe",
+      "plateforme": "qemu-x86_64",
+      "secteur": 4096,
+      "cas": "neuf-4m",
+      "releve": "compteurs",
+      "debut_utc_ns": 1794713832232910000,
+      "fin_utc_ns": 1794713838480127000,
+      "charge_avant": [
+        10.48681640625,
+        5.66357421875,
+        3.4853515625
+      ],
+      "charge_apres": [
+        12.44970703125,
+        6.150390625,
+        3.669921875
+      ],
+      "provenance_sha256": "9ef6937b55519abb5a07ca4baa9388b32b6e25b6caf61493d0649971929974f0",
+      "revision": "082ff4a78cf8f20ca4da5b5174183d888fc845e8",
+      "bilan_livraison_sha256": null,
+      "noyau_sha256": "6600f57580a2f5a8306df51bc0535168b22d8b48dec2ab57d359f8233e24bca4",
+      "generateur_sha256": "ce6f56f84023f20bd90dcc25c0b74d8d125a11c4a45e5c5be91c80a1901c7f95",
+      "lecteur_sha256": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+      "serial_sha256": "8469343f681279081771d974f09f399f57d899d93ca148a6a50fe44053ae2d3a",
+      "memoire_pid_kio": {
+        "1": 12,
+        "2": 1784,
+        "3": 36,
+        "4": 476,
+        "5": 12872
+      },
+      "mesure": {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "cas": "neuf-4m",
+        "entrees_file": null,
+        "cpu_hote_qemu": {
+          "utilisateur_ns": 190563125,
+          "systeme_ns": 12915250,
+          "utilisateur_p_ns": 190563125,
+          "systeme_p_ns": 12915250,
+          "instructions": 3742569795,
+          "cycles": 788434759
+        },
+        "blocs": 4096,
+        "blocs_libres": 3042,
+        "extents_source": 128,
+        "octets_tiers": null,
+        "avant": [
+          65,
+          66
+        ],
+        "apres": [
+          66,
+          67
+        ],
+        "temoin_lecture": null,
+        "pic_cadres_session": 4032,
+        "sonde": true,
+        "memoire_observee_kio": {
+          "1": 12,
+          "2": 1784,
+          "3": 36,
+          "4": 476,
+          "5": 12872
+        },
+        "chemin": "groupe",
+        "sauvegarde_ms": 155.191,
+        "apres_oui_ms": 113.595,
+        "compteur": {
+          "appels_locaux_pret": [
+            1,
+            1,
+            6,
+            1,
+            1,
+            1
+          ],
+          "avec_copies_locales_pret": 42,
+          "ipc_par_liaison": {
+            "moteur_bloc": 8,
+            "bloc_pilote": 8,
+            "nsh_moteur": 5,
+            "vi_nsh": 4
+          },
+          "dons_acquittes": 2,
+          "total": 27,
+          "controles_noyau_locaux": {
+            "create": 2,
+            "dup": 0,
+            "close": 2,
+            "revoke": 0,
+            "notify": 0,
+            "cancel": 0,
+            "bootstrap": 0,
+            "ipc_features": 0
+          },
+          "put": 8,
+          "take": 8,
+          "bloc": {
+            "lecture": {
+              "nombre": 19,
+              "millisecondes": 1.06
+            },
+            "ecriture": {
+              "nombre": 22,
+              "millisecondes": 1.446
+            },
+            "flush": {
+              "nombre": 2,
+              "millisecondes": 2.687
+            }
+          },
+          "total_avec_controles_locaux": 36,
+          "appels_file_locaux": {
+            "reserve": 7,
+            "copie": 0,
+            "position": 0,
+            "soumet": 2,
+            "termine": 7
+          },
+          "lots": [
+            1,
+            18,
+            4,
+            1024,
+            2,
+            23
+          ],
+          "preparation_et_donnees_ms": 113.193,
+          "metadonnees_et_F1_ms": 3.327,
+          "ancre_et_F2_ms": 1.492,
+          "persistance_acquise_ms": 118.103,
+          "dma": {
+            "groupes_in": 18,
+            "groupes_out": 22,
+            "pages_in": 18,
+            "pages_out": 1047,
+            "max_pages_par_chaine": 64,
+            "cadres_arene": 65,
+            "kicks": 43,
+            "irq": 43,
+            "copie_in_ms": 0.323,
+            "copie_out_ms": 1.843,
+            "soumission_ms": 0.652,
+            "kick_a_used_observe_ms": 4.467,
+            "used_a_acquittement_ms": 0.062,
+            "traitement_irq_ms": 0.067,
+            "kick_a_entree_irq_ms": 4.304
+          },
+          "phases_moteur_ms": {
+            "sha256_source": 0.0,
+            "sha256_candidate": 39.706,
+            "validation_texte": 1.806,
+            "reservation_pages": 0.134,
+            "construction_extents": 2.635,
+            "copie_source_et_pret": 2.994,
+            "allocation_fenetres": 3.72,
+            "recherche_extents": 0.0,
+            "effacement_liberation": 0.228
+          },
+          "vcpu": 2,
+          "flush_physiques_ms": [
+            1.647,
+            1.04
+          ],
+          "repos_invite_ms": 121.462,
+          "actif_ordonnanceur_invite_ms": 134.147,
+          "lots_bloc_lecture_ms": 3.816,
+          "lots_bloc_ecriture_ms": 15.041,
+          "appel_publish_ms": 127.805,
+          "commande_au_succes_ms": 155.191,
+          "oui_au_succes_ms": 113.594916,
+          "session_compteur_historique": 2222,
+          "ipc_conforme": true,
+          "temps_conforme": true
+        },
+        "sha256_destination": "37e348633fb3b4cd2c6969a6047cce79bb5c5981cda9a2b8a8eb33bd5780b6ed"
+      }
+    }
+  },
+  "qualification_retrait": {
+    "revision": "082ff4a78cf8f20ca4da5b5174183d888fc845e8",
+    "profil_instrumente": "defauts",
+    "construction_sha256": "ffdc90069f4cd95258c2a6822d48f08845bb744a518aa99aa594ed0426f4f185",
+    "source": "524416 octets, insertion locale d’un octet au début, nom de destination neuf confirmé dans vi",
+    "stockage": "QEMU direct TCG 11.1.3, disques RAW synthétiques, une VM de sauvegarde et une de remontage par cellule, 1 vCPU, 256 Mio",
+    "limites": "Coupure de la VM au marqueur, sans panne d’alimentation hôte. Les deux géométries sont réparties entre architectures. Le test de décodage des trames utilise un transport simulé sur Darwin. Aucun résultat temporel ou IPC de sauvegarde tiré du profil defauts.",
+    "negociation": {
+      "sources_sha256": {
+        "novaOS/tests/decouverte_trames.rs": "bd4e947ec0a057b59a2c30ee7f78b1f788cfafbe63d9e2e59ea002e38fd30f68",
+        "novaOS/abi/block.rs": "a9ac4883ab29c2f4a8a8cb35e1ff3d3c1fc064bca77e4606633c9bb1f390890a",
+        "novaOS/abi/files.rs": "a01cd53cd68dd4179ce4130e705902ce2c2c81263f195bc8821e210ebbafe835",
+        "novaOS/abi/native.rs": "4d8b2b4debad75395c789870bdbc0a57b0e5daa800fdd317e0d037dc92134768",
+        "components/libraries/vi_wire.rs": "f544c4749ea90eae62569864bf6ae1a8909fe35667a7d498eb54ffe7165aad27"
+      },
+      "oracles": [
+        {
+          "arch": "aarch64",
+          "sortie": [
+            "",
+            "running 5 tests",
+            "test bloc_version_sens_et_champs_reserves ... ok",
+            "test fichier_session_version_masque_et_anciens_opcodes ... ok",
+            "test reponse_bloc_historique_et_reference_exacte ... ok",
+            "test vi_erreurs_historiques_erreurs_transport_et_revocation ... ok",
+            "test vi_masques_autorises_et_champs_invalides ... ok",
+            "",
+            "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+            ""
+          ],
+          "sha256_test": "2813c434b87cec379ee14a52d8ab454b1e35f24064ed2745155341e2b5b18bb4"
+        },
+        {
+          "arch": "x86_64",
+          "sortie": [
+            "",
+            "running 5 tests",
+            "test bloc_version_sens_et_champs_reserves ... ok",
+            "test fichier_session_version_masque_et_anciens_opcodes ... ok",
+            "test reponse_bloc_historique_et_reference_exacte ... ok",
+            "test vi_erreurs_historiques_erreurs_transport_et_revocation ... ok",
+            "test vi_masques_autorises_et_champs_invalides ... ok",
+            "",
+            "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+            ""
+          ],
+          "sha256_test": "ea1fc6dbaae3b1374deb66f20b4d98dde4872a3e9c16a66fe295ff2f0abcf656"
+        }
+      ]
+    },
+    "methodes": {
+      "coupures_et_retrait": "tests/coupure_cow_groupee.py essai(..., taille=TAILLE), defauts ; échantillonnage f1, f2, retrait, retrait-vol, controles, erreur-sg sans EIO",
+      "droits": "tests/ipc.py campaign(architecture, \"test\")",
+      "negociation": "rustc --edition=2024 --test --target <architecture>-apple-darwin decouverte_trames.rs, avec modules ABI et client vi du profil"
+    },
+    "qemu": [
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "sha256_elf": "d4746b7dfeb0925b09c94c1e74c7f869bfaad0bf480187a4cd1feb9574d84ad6",
+        "ipc_test": {
+          "groupes": [
+            "T01",
+            "T02",
+            "T03",
+            "T04",
+            "T05/T06",
+            "T07/T15",
+            "T06/T08/T18",
+            "T10",
+            "lots",
+            "file-revocable",
+            "pret-multipage",
+            "T11",
+            "T12/T18",
+            "T04/T11",
+            "T12",
+            "T13",
+            "T16",
+            "T18",
+            "T14"
+          ],
+          "pages_ipc_final": 0,
+          "cadres_dma_final": 0
+        },
+        "essais": [
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "fb261921f2ff713d0f14f4bfa1c531e3ce0eaa3cf4b7029a526b123ab5736941",
+            "sha256_apres_coupure": "e2672215dd8d2fa62fad22f88fd08037a6dd425cbf63f3e90a00ef83a4850f8b",
+            "sha256_reprise": "e2672215dd8d2fa62fad22f88fd08037a6dd425cbf63f3e90a00ef83a4850f8b",
+            "generations": {
+              "0": 12,
+              "1": 11
+            },
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false,
+            "scenario": "f1",
+            "sha256_serie": "84c1b85ab718302f7aabcb22ea5a8e6ffd7f938e2d661c12facfe4dec2c58b48",
+            "sha256_serie_remontage": "3e5811ace8c933cc582796c9d79d61441e49c18396e213c556c70b4fe928b0f1",
+            "confirme_meme_generation_apres_remontage": true
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "981558258aaec22cedfd40616260736f55dd3cc2c11bb8e4c925d20954e24197",
+            "sha256_apres_coupure": "d2eb73ced4e6bdd9a727001ef0bcad480fc2dcde32f854179e62a4226e4172a6",
+            "sha256_reprise": "d2eb73ced4e6bdd9a727001ef0bcad480fc2dcde32f854179e62a4226e4172a6",
+            "generations": {
+              "0": 12,
+              "1": 13
+            },
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false,
+            "scenario": "f2",
+            "sha256_serie": "651e3ef635971e06ca044e29be9c669dea50242cab7c43a8b75ff740254151f5",
+            "sha256_serie_remontage": "6001676a1605428717dbbf232a2d5d6ce0667bd6adcd3a43dcf76db666807a04",
+            "confirme_meme_generation_apres_remontage": true
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "a47cf015fd3eee4898eb85759b6dea490bf0aaa661959f07e01951db61337601",
+            "sha256_apres_coupure": "9c9bfff11e81d868eae1a7e547224271965f2495397038c1a4d85fc05a962201",
+            "sha256_reprise": "9c9bfff11e81d868eae1a7e547224271965f2495397038c1a4d85fc05a962201",
+            "generations": {
+              "0": 12,
+              "1": 11
+            },
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false,
+            "scenario": "retrait",
+            "sha256_serie": "fb837fbe329028ac8741b57ab3a42c507715405ee059beb709af1a1007cfd6b2",
+            "sha256_serie_remontage": "fa9a8790b717c66a67a29d22b8b88969fb14f26212b295895eee29a2bea27952",
+            "confirme_meme_generation_apres_remontage": true
+          },
+          {
+            "frontiere": "controles",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "4c0af5b6e14c8ae5544f1ca1ccc52e49ba63fa17f52be46fd407e8f96c06d510",
+            "sha256_apres_coupure": "727d7002f23cb76b1d1a260c7baefab1b23949911fb43f0204aff777f850cc06",
+            "sha256_reprise": "727d7002f23cb76b1d1a260c7baefab1b23949911fb43f0204aff777f850cc06",
+            "generations": {
+              "0": 12,
+              "1": 13
+            },
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true,
+            "scenario": "controles",
+            "sha256_serie": "e188bad9cb822bb4ef6c79efe81258dfebfa74ea4924f01534b5b486e20fa13a",
+            "sha256_serie_remontage": "76994207b5b47bf623b3c4acec2c510b7d92f94c6222ee63658a78cb55f7fcb3",
+            "confirme_meme_generation_apres_remontage": true
+          },
+          {
+            "frontiere": "retrait-vol",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "3764ef39e75d3c777b279299ec084f0a67f5d8590633bd54be19e5b6f98e4852",
+            "sha256_apres_coupure": "c1b37313383d0f520a43142bc1261684dcc102f93c028374df86ea562060e332",
+            "sha256_reprise": "c1b37313383d0f520a43142bc1261684dcc102f93c028374df86ea562060e332",
+            "generations": {
+              "0": 12,
+              "1": 11
+            },
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false,
+            "scenario": "retrait-vol",
+            "sha256_serie": "bb1dbbbda45f92595afd96a7260200a935f10db6e99ee35be1da86adf29523b1",
+            "sha256_serie_remontage": "e33955548cd1ea5c4edfa1588159c17952000c4c998687af69746807a7a37abf",
+            "confirme_meme_generation_apres_remontage": true,
+            "sha256_trace_qmp": "fa1eb899f7ec13684ac85b31bf2d7df6d2d07cd0aea44360d8ff353c2bb775fb"
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 1016,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "a8ebdde701dd09ed5579b178a5b84c541729720ba86e3561f3e109ef64f153c9",
+            "sha256_apres_coupure": "5ebb61aa38d851d8a9adc1875ca9f837c633bc267e90e300d9ef4374db1efae3",
+            "sha256_reprise": "5ebb61aa38d851d8a9adc1875ca9f837c633bc267e90e300d9ef4374db1efae3",
+            "generations": {
+              "0": 12,
+              "1": 13
+            },
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true,
+            "scenario": "temoin",
+            "sha256_serie": "f3b95d9db7e18a8933b48e939b45aa870568b3c9ae739a0770a6098bbda4e148",
+            "sha256_serie_remontage": "3ad01e70ec132a6052bfba5e8ee7c1364019ee614b506658f3773c154f4dff5d",
+            "confirme_meme_generation_apres_remontage": true
+          }
+        ]
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "sha256_elf": "4eb115dcb524dfedb07bcff22212500060942c5bd5e6d770209977e926186e9a",
+        "ipc_test": {
+          "groupes": [
+            "T01",
+            "T02",
+            "T03",
+            "T04",
+            "T05/T06",
+            "T07/T15",
+            "T06/T08/T18",
+            "T10",
+            "lots",
+            "file-revocable",
+            "pret-multipage",
+            "T11",
+            "T12/T18",
+            "T04/T11",
+            "T12",
+            "T13",
+            "T16",
+            "T18",
+            "T14"
+          ],
+          "pages_ipc_final": 0,
+          "cadres_dma_final": 0
+        },
+        "essais": [
+          {
+            "frontiere": "f1",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "3c053e780fa009be685a388b57fefdeecb2d16eb5d72bbdfb75395e6fda9d604",
+            "sha256_apres_coupure": "461cf901070c8b44f6e77d491c54d9a83735e49581d77400c273dc711055aa19",
+            "sha256_reprise": "461cf901070c8b44f6e77d491c54d9a83735e49581d77400c273dc711055aa19",
+            "generations": {
+              "0": 12,
+              "1": 11
+            },
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false,
+            "scenario": "f1",
+            "sha256_serie": "803fa11f363a09bc4956d75399f38a70e69620ccc258872707aa3ec6b176e523",
+            "sha256_serie_remontage": "c3208aa4cd874e1a8d5a96675d80db2980297b571221f237b23e950faa3ff1f0",
+            "confirme_meme_generation_apres_remontage": true
+          },
+          {
+            "frontiere": "f2",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "1d11ecb8d5950b336e861b1f5ba89c975caa28240bd3c132b32c9c1b994cfd75",
+            "sha256_apres_coupure": "fa59b8f5a069971cb8dd99fa061a585c88c71daf00e32b2515df168458e34342",
+            "sha256_reprise": "fa59b8f5a069971cb8dd99fa061a585c88c71daf00e32b2515df168458e34342",
+            "generations": {
+              "0": 12,
+              "1": 13
+            },
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false,
+            "scenario": "f2",
+            "sha256_serie": "3f4786fde5946a74aa020ac3c558664eb36c3358054a69f980b1eacaadfcd58b",
+            "sha256_serie_remontage": "02d89ea38ac58af449af3cf9ea15d85734e6f924f04a379d996f33d475be50c8",
+            "confirme_meme_generation_apres_remontage": true
+          },
+          {
+            "frontiere": "retrait",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "d1302361c57aad3d15a983a92553a1432f1a2f4c16173f4d51012a2383ff03c6",
+            "sha256_apres_coupure": "7bd48bd4d623c081c4fc288b96458fe8cbefb5fd7df07ba1aaf1330e90951c39",
+            "sha256_reprise": "7bd48bd4d623c081c4fc288b96458fe8cbefb5fd7df07ba1aaf1330e90951c39",
+            "generations": {
+              "0": 12,
+              "1": 11
+            },
+            "destination_complete": false,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": false,
+            "scenario": "retrait",
+            "sha256_serie": "09467e02421855d89aab37866267e5b45b01ecb1deea0821ebd7b363fbeeb854",
+            "sha256_serie_remontage": "b3bbf3e830f42e0cdaeb039b4439962df2aba5e2fd64642f24695401229d6581",
+            "confirme_meme_generation_apres_remontage": true
+          },
+          {
+            "frontiere": "controles",
+            "evenement_suspendu": null,
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "2d9a79b916d28ed49afa66f01e61f7b699d44fdbfbfc4fe30150942e976269e8",
+            "sha256_apres_coupure": "72d5e6b0bb05b31709ba31fa313b2b7ef027f64f02c63a7fb739ff8624f04f1d",
+            "sha256_reprise": "72d5e6b0bb05b31709ba31fa313b2b7ef027f64f02c63a7fb739ff8624f04f1d",
+            "generations": {
+              "0": 12,
+              "1": 13
+            },
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true,
+            "scenario": "controles",
+            "sha256_serie": "63ab9dd86ff1a10928a5a887e21516a0152e40b0dfdb3afc123c17a2e5fedd3e",
+            "sha256_serie_remontage": "55f63dbc0583afc8c0fd4c10096f6555ba8dea54d252e8bea079d6b8c8482c69",
+            "confirme_meme_generation_apres_remontage": true
+          },
+          {
+            "frontiere": "retrait-vol",
+            "evenement_suspendu": "write_aio",
+            "secteur_sonde": null,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "fc0634f2db473edafd9fa374b5eee5c71648fbaec4434ab55e1a440a5a86bb48",
+            "sha256_apres_coupure": "fe9043b9607e859d6c22e987dd90cbd6eb8fd9616f90ecf39142d6fb0f0bd232",
+            "sha256_reprise": "fe9043b9607e859d6c22e987dd90cbd6eb8fd9616f90ecf39142d6fb0f0bd232",
+            "generations": {
+              "0": 12,
+              "1": 11
+            },
+            "destination_complete": false,
+            "flush_termines_au_point": 3,
+            "acquit_avant_coupure": false,
+            "scenario": "retrait-vol",
+            "sha256_serie": "6477a9d72d942a04656eed9d11fdbf932ba2ae51c12571d14e212a1d5272b154",
+            "sha256_serie_remontage": "4227128f534bafe49f2040f150bf993e3460a6e3a434ff18cf416e6c45d44eb0",
+            "confirme_meme_generation_apres_remontage": true,
+            "sha256_trace_qmp": "3315cf791ee52fdf403c11c4923757d7aa30756d1314bb9bb7fb569410f5723d"
+          },
+          {
+            "frontiere": "erreur-sg",
+            "evenement_suspendu": null,
+            "secteur_sonde": 1016,
+            "octets_source": 524416,
+            "multipage": false,
+            "montage_normal": true,
+            "relecture_exacte": true,
+            "sha256_initiale": "07f027fd12f4f8a4daaf897dfd9ae391e820605bcd786cee337e3e0eade98bae",
+            "sha256_apres_coupure": "30143beb13cd0563891fe744b02e8279b0ae565d674b6327da7f1ea4161f3d64",
+            "sha256_reprise": "30143beb13cd0563891fe744b02e8279b0ae565d674b6327da7f1ea4161f3d64",
+            "generations": {
+              "0": 12,
+              "1": 13
+            },
+            "destination_complete": true,
+            "flush_termines_au_point": null,
+            "acquit_avant_coupure": true,
+            "scenario": "temoin",
+            "sha256_serie": "d630aa2b6e938b3d07cd9c22647759519f8e6ff87024fc81d5a41b6889c93078",
+            "sha256_serie_remontage": "ca4a4b6470a0c6e829f56a50543239bd3fa7c02424f4bb94b9f68817a9e6abc5",
+            "confirme_meme_generation_apres_remontage": true
+          }
+        ]
+      }
+    ]
+  }
+}
