@@ -21,6 +21,7 @@ mod line_editor;
 mod parser;
 mod paths;
 mod script;
+mod journal;
 mod services;
 mod vi;
 

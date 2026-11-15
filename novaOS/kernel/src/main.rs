@@ -248,6 +248,7 @@ fn main_thread() {
         b"services-test" => Some(75),
         b"services-perte" => Some(76),
         b"services-admin" => Some(77),
+        b"journal-admin" => Some(89),
         b"services-config-admin" => Some(87),
         b"services-config-race" => Some(88),
         b"cache-test" => Some(78),

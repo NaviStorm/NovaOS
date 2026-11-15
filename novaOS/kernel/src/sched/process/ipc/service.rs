@@ -9,6 +9,11 @@ mod wire;
 const MANAGER: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/service_manager.bin"));
 const UTILITY: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/system_service.bin"));
 const STORAGE: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-managed.bin"));
+const JOURNAL: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/journal_service.bin"));
+const JOURNAL_ID: u64 = 16;
+fn journal_profile(profile: u64) -> bool {
+    matches!(profile, 41 | 42 | 77 | 87 | 89)
+}
 const INSTALLATION: u64 = 0x5345_5256_0000_0000;
 const STOP_LIMIT: u64 = 15_000;
 
@@ -16,6 +21,8 @@ const STOP_LIMIT: u64 = 15_000;
 pub(in crate::sched::process) struct Session {
     pub(in crate::sched::process) manager: Pid,
     client: Pid,
+    fs: Pid,
+    relay: Pid,
     administration: u64,
     lab: bool,
     pub(in crate::sched::process) profile: u64,
@@ -34,7 +41,7 @@ pub(in crate::sched::process) fn owns_family(s: &Core, pid: Pid) -> bool {
 pub(in crate::sched::process) fn uses_private_journal(s: &Core, instance: Instance) -> bool {
     s.processes.manager.is_some_and(|m| !m.lab)
         && s.processes.instances.app(instance)
-            .is_some_and(|app| (INSTALLATION..=INSTALLATION + 15).contains(&app))
+            .is_some_and(|app| (INSTALLATION..=INSTALLATION + JOURNAL_ID).contains(&app))
 }
 
 fn image(elf: &'static [u8], stable: u64) -> Res<Child> {
@@ -60,7 +67,14 @@ fn channel(s: &mut Core, owner: Pid, peer: Option<Pid>, direction: u32) -> Res<(
     let root = s.ipc.create(owner)?;
     let opposite = if direction == SEND { RECEIVE } else { SEND };
     let limited = if let Some(peer) = peer {
-        s.ipc.derive(owner, root, peer, opposite.into())?
+        match s.ipc.derive(owner, root, peer, opposite.into()) {
+            Ok(child) => child,
+            Err(e) => {
+                let node = s.ipc.lookup(owner, root, MANAGE)?;
+                s.ipc.close(node);
+                return Err(e);
+            }
+        }
     } else {
         0
     };
@@ -74,6 +88,7 @@ pub(in crate::sched::process) fn launch_session(
     key: u64,
     profile: u64,
     volume: Option<[u8; 16]>,
+    early_ms: [u64; 2],
 ) -> Res<([Child; 4], Child)> {
     let private = crate::hardware::block::private_frames().map_err(|_| DENIED)?;
     let guard = Guard::new();
@@ -95,7 +110,7 @@ pub(in crate::sched::process) fn launch_session(
         if matches!(profile, 78..=86) {
             config(s, group[1].0, 13, &[profile]);
         }
-        let admin = (lab || matches!(profile, 77..=88)).then_some(client);
+        let admin = (lab || matches!(profile, 77..=89)).then_some(client);
         let (rx, admin_tx) = channel(s, owner, admin, RECEIVE)?;
         let (tx, admin_rx) = channel(s, owner, admin, SEND)?;
         let ((read_rx, query_tx), (read_tx, query_rx)) = if profile == 88 {
@@ -122,7 +137,7 @@ pub(in crate::sched::process) fn launch_session(
         );
         // Les profils historiques de sonde conservent leur câblage. Le droit
         // de configuration est distinct du port d'exploitation du profil 77.
-        if matches!(profile, 41 | 42 | 77 | 87 | 88) {
+        if matches!(profile, 41 | 42 | 77 | 87 | 88 | 89) {
             let fs = group[1].0;
             // Les racines suivent la durée de vie du fournisseur P9.
             let (read, requests) = channel(s, fs, Some(owner), RECEIVE)?;
@@ -130,7 +145,7 @@ pub(in crate::sched::process) fn launch_session(
             config(s, owner, 5, &[requests, replies]);
             config(s, fs, 14, &[read, write]);
         }
-        if profile == 87 {
+        if matches!(profile, 87 | 89) {
             // La fin du client de maintenance retire ses deux racines.
             let (send, rx) = channel(s, client, Some(owner), SEND)?;
             let (receive, tx) = channel(s, client, Some(owner), RECEIVE)?;
@@ -148,7 +163,10 @@ pub(in crate::sched::process) fn launch_session(
             config(s, owner, 7, &[rx, tx, profile]);
             config(s, client, 16, &[send, receive]);
         }
+        config(s, owner, 10, &[u64::from(journal_profile(profile)), early_ms[0], early_ms[1]]);
         s.processes.manager = Some(Session {
+            fs: group[1].0,
+            relay: group[0].0,
             manager: owner,
             client,
             administration: rx,
@@ -221,6 +239,7 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
     let elf = match id {
         1 | 2 if argument == 0 => UTILITY,
         9 if argument == 0 => STORAGE,
+        JOURNAL_ID if journal_profile(m.profile) && argument == 0 => JOURNAL,
         10 if argument == 0 => UTILITY,
         11..=15 if matches!(m.profile, 78..=86) && argument == 0 => UTILITY,
         3..=8 if m.lab && argument <= 6 => UTILITY,
@@ -260,7 +279,7 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
             s.processes.get_mut(target).worker_image = Some(elf);
         }
         config(s, target, 0, &[events, commands, id, argument, attempt]);
-        if id != 10 {
+        if !matches!(id, 10 | JOURNAL_ID) {
             tmp::new_lease(s, target)?;
         }
         words[1] = receive;
@@ -270,6 +289,11 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
             words[5 + i] = u64::from_le_bytes(b.try_into().unwrap());
         }
         reply(s, pid, address, &words)?;
+        if id == JOURNAL_ID {
+            connect_journal(s, m, target)?;
+            #[cfg(feature = "journal-pannes-lab")]
+            journal_memory(s, target, "lancement");
+        }
         Ok(WaitRight { target }.key())
     });
     match result {
@@ -282,6 +306,64 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
             Err(status)
         }
     }
+}
+
+#[cfg(feature = "journal-pannes-lab")]
+fn journal_memory(s: &Core, pid: Pid, phase: &str) {
+    if let Some(space) = s.processes.get(pid).space.as_ref() {
+        let (data, stack) = space.page_counts();
+        hal::log(format_args!("JOURNAL RAM {phase} pid={} privees={data} pile={stack} octets_page=4096", pid.number));
+    }
+}
+
+// Une racine privée sans droit d'usage est imputée au relais minimal, qui a
+// déjà démarré. Une dérivation par direction est remise à chaque extrémité.
+// Le terminal conserve ses deux places pour les commandes ELF déléguées.
+fn journal_channel(s: &mut Core, owner: Pid, sender: Pid, receiver: Pid) -> Res<(Node,u64,u64)> {
+    let key = s.ipc.create(owner)?;
+    let root = s.ipc.lookup(owner, key, MANAGE)?;
+    let grants = s.ipc.derive(owner, key, sender, SEND.into()).and_then(|tx|
+        s.ipc.derive(owner, key, receiver, RECEIVE.into()).map(|rx| (tx, rx)));
+    match grants {
+        Ok((tx,rx)) => {
+            s.ipc.nodes.get_mut(root.id.slot()).rights = 0;
+            Ok((root,tx,rx))
+        }
+        Err(e) => { s.ipc.close(root); Err(e) }
+    }
+}
+
+fn connect_journal(s: &mut Core, m: Session, target: Pid) -> Res<()> {
+    let mut ids = [0; 8];
+    for (i, pid) in [m.client, m.manager].into_iter().enumerate() {
+        let proc = s.processes.slots[pid.slot].as_ref()
+            .filter(|p| p.pid == pid && p.outcome.is_none() && p.space.is_some()).ok_or(CLOSED)?;
+        let id = proc.instance.identity(crate::boot_id::current()).ok_or(REFUSED)?.encode();
+        for (j, field) in id.chunks_exact(8).enumerate() {
+            ids[4*i+j] = u64::from_le_bytes(field.try_into().unwrap());
+        }
+    }
+    for peer in [m.fs, m.relay] {
+        if !s.processes.slots[peer.slot].as_ref().is_some_and(|p|
+            p.pid == peer && p.outcome.is_none() && p.space.is_some()) {
+            return Err(CLOSED);
+        }
+    }
+    let (store_tx, fs_rx) = channel(s, target, Some(m.fs), SEND)?;
+    let (store_rx, fs_tx) = channel(s, target, Some(m.fs), RECEIVE)?;
+    let (root_tx, cli_tx, journal_rx) = journal_channel(s, m.relay, m.client, target)?;
+    let (root_rx, journal_tx, cli_rx) = match journal_channel(s, m.relay, target, m.client) {
+        Ok(pair) => pair,
+        Err(e) => { s.ipc.close(root_tx); return Err(e); }
+    };
+    s.processes.get_mut(target).launch_grants = LaunchGrants([root_tx.id, root_rx.id]);
+    let rights = if m.profile == 89 { 63 } else { 1 };
+    config(s, target, 5, &[store_tx, store_rx, journal_rx, journal_tx, rights]);
+    config(s, target, 10, &ids);
+    config(s, target, 18, &[ticks().saturating_mul(1000) / u64::from(HZ)]);
+    config(s, m.fs, 16, &[fs_rx, fs_tx]);
+    config(s, m.client, 18, &[cli_tx, cli_rx]);
+    Ok(())
 }
 
 fn collect_or_stop(op: u64, pid: Pid, address: u64, mut words: [u64; 16]) -> Res<u64> {
@@ -372,7 +454,7 @@ fn drain(pid: Pid) -> Res<u64> {
                 && !s
                     .processes
                     .instances
-                    .contains_app(INSTALLATION..=INSTALLATION + 15)
+                    .contains_app(INSTALLATION..=INSTALLATION + JOURNAL_ID)
                 && !s.processes.temporary.has_service_lease(None)
                 && s.processes.cache.drained())
         })? {
@@ -418,7 +500,22 @@ pub(in crate::sched::process) fn retired(s: &mut Core, pid: Pid, now: u64) {
     let Some(m) = s.processes.manager else {
         return;
     };
+    if s.processes.get(pid).service_owner == Some(m.manager)
+        && s.processes.get(pid).service_id == JOURNAL_ID {
+        #[cfg(feature = "journal-pannes-lab")]
+        journal_memory(s, pid, "retrait");
+        for (peer, slot) in [(m.fs, 16), (m.client, 18)] {
+            if s.processes.slots[peer.slot].as_ref().is_some_and(|p|
+                p.pid == peer && p.space.is_some() && p.outcome.is_none()) {
+                config(s, peer, slot, &[0, 0]);
+            }
+        }
+    }
     if m.client == pid {
+        if let Some(target) = s.processes.slots.iter().flatten().find(|p|
+            p.service_owner == Some(m.manager) && p.service_id == JOURNAL_ID).map(|p| p.pid) {
+            withdraw_grants(s, target);
+        }
         let _ = begin_drain(s, m);
     }
     if m.manager != pid {
@@ -433,10 +530,12 @@ pub(in crate::sched::process) fn retired(s: &mut Core, pid: Pid, now: u64) {
         }
         let target = child.pid;
         let living = child.outcome.is_none();
-        s.processes.get_mut(target).service_owner = None;
         if living {
+            // Le retrait du journal reconnaît son propriétaire pour mettre à zéro
+            // les ports P9 et nsh, y compris lors d'un arrêt de toute la famille.
             stop_process(s, target, Outcome::Exit(125), now);
         }
+        s.processes.get_mut(target).service_owner = None;
         s.processes.release_observer(target);
     }
 }

@@ -54,6 +54,7 @@ impl Manager<'_> {
             .records
             .iter()
             .find(|d| d.id == id)
+            .or_else(|| (id == j::JOURNAL_ID).then_some(&active))
             .ok_or(rt::REFUSED)?;
         let mut reply = self.report(id);
         reply[4] = self.config.applied;
@@ -67,7 +68,21 @@ impl Manager<'_> {
             u64::from(stored.retries),
             self.config.status,
         ]);
+        if id == j::JOURNAL_ID {
+            reply[6] = self.journal.lost;
+            reply[7] = self.journal.uncertain;
+            reply[9] = self.journal.last_error;
+        }
         Ok(reply)
+    }
+
+    fn shutdown(&mut self, time: u64) {
+        if self.stopping { return; }
+        self.stopping = true;
+        self.journal.record(0, self.journal.identity, j::INFO, j::SYSTEM, j::SHUTDOWN, time, [0,0]);
+        // Drainage borné en fin de session seulement. Un journal arrêté ne
+        // ralentit ni la supervision ni l'administration pendant la session.
+        self.shutdown_deadline = Some(time.saturating_add(1500));
     }
 
     fn request(
@@ -118,7 +133,15 @@ impl Manager<'_> {
                         if removed != 1 { return Err(rt::REFUSED); }
                     }
                 }
-                self.config.autostart(id, op == p::ENABLE, arg)?;
+                let subject = self.units[self.index(id)?].live.identity;
+                if let Err(e) = self.config.autostart(id, op == p::ENABLE, arg) {
+                    self.journal.record(id, subject, j::ERROR, j::CONFIG, j::CONFIG_ERROR,
+                        time, [e, arg]);
+                    return Err(e);
+                }
+                self.journal.record(id, subject, j::INFO, j::CONFIG,
+                    if op == p::ENABLE { j::ENABLED } else { j::DISABLED },
+                    time, [self.config.stored, self.config.applied]);
             }
             return self.settings(id).map(Some);
         }
@@ -178,8 +201,7 @@ impl Manager<'_> {
             return Ok(Some(answer));
         }
         if op == p::SHUTDOWN && id == 0 && arg == 0 {
-            self.policy.shutdown();
-            self.stopping = true;
+            self.shutdown(time);
             return Ok(Some(self.report(0)));
         }
         if op == p::INJECT && self.qualification && id == 0 && arg == 5 {
@@ -300,8 +322,7 @@ impl Manager<'_> {
 
     fn control_message(&mut self, port: usize, tx: u64, msg: &rt::ReceiveV1, time: u64) {
         if msg.kind == 2 && port == 0 && msg.aux & proc::SHUTDOWN_NOTICE != 0 {
-            self.policy.shutdown();
-            self.stopping = true;
+            self.shutdown(time);
             return;
         }
         if msg.kind != 1 {
@@ -326,6 +347,16 @@ impl Manager<'_> {
             let time = now()?;
             self.services(time)?;
             self.actions(time)?;
+            let logger = self.index(j::JOURNAL_ID).ok().and_then(|i| {
+                matches!(self.policy.state(j::JOURNAL_ID), Ok(State::Ready | State::Running))
+                    .then_some(self.units[i].live)
+            });
+            if let Some(live) = logger { self.journal.submit(live, time); }
+            if self.shutdown_deadline.is_some_and(|end|
+                self.journal.idle() || logger.is_none() || time >= end) {
+                self.shutdown_deadline = None;
+                self.policy.shutdown();
+            }
             if self.pending.is_some_and(|q| time >= q.deadline) {
                 self.queued_response(rt::TIMED_OUT, 0);
             }

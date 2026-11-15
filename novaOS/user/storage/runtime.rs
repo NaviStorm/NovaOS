@@ -54,10 +54,13 @@ pub fn channels() -> Result<(u64, u64)> {
 }
 
 pub fn config(word: usize) -> u64 {
-    assert!(word <= 17);
-    // Sûreté : le lanceur initialise les mots alignés de la page DATA privée
-    // avant publication. Ce sont des valeurs locales, jamais des pointeurs.
-    unsafe { (0x401000 as *const u64).add(word).read_volatile() }
+    assert!(word <= 19);
+    // Les liaisons du journal sont renouvelées à chaque incarnation. Le noyau
+    // publie ces mots alignés avec Release. Seul le noyau authentifie les droits.
+    unsafe {
+        (&*(0x401000 as *const core::sync::atomic::AtomicU64).add(word))
+            .load(core::sync::atomic::Ordering::Acquire)
+    }
 }
 
 #[path = "client_io.rs"]

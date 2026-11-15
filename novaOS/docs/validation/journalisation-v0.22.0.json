@@ -1,0 +1,406 @@
+{
+  "aarch64": {
+    "noyau_sha256": "a52aa30b04ca77a372f08c09fb459d9be63f30d03fe25f5e7fc40e2beea9c7cf",
+    "sessions": 25,
+    "cellules": [
+      {
+        "vcpu": 1,
+        "secteur": 512,
+        "boots": [
+          "4191696221770c63344f4cbe06587623",
+          "a56fcef6485b6889a1a2583f4a9c96b8",
+          "fbac742d7c0055b7e8456c579d9b0b9f"
+        ],
+        "latences_ns": [
+          50676541,
+          55072292,
+          65072209
+        ],
+        "rapport_sha256": "3246d4c4572a2e2c71a1cb4873e542f9c683fd919191badd4383666d25b478dc",
+        "rotation": {
+          "latences_ns": [
+            93967083,
+            50140125,
+            47033084,
+            49866083,
+            55355000,
+            67868709,
+            63167083,
+            78247875,
+            108569209,
+            52667709,
+            51611208,
+            48459542,
+            49366625,
+            48509916,
+            49229417,
+            50740125,
+            56808625,
+            60447125,
+            78961000,
+            100062875,
+            106490500,
+            47302083,
+            48567875,
+            46951250,
+            48547250,
+            48745292,
+            48572875,
+            50419333,
+            57649459,
+            61162375,
+            81746791,
+            103126292,
+            50530166
+          ],
+          "percentiles_ns": {
+            "p50": 51611208,
+            "p95": 106490500,
+            "p99": 108569209,
+            "p100": 108569209
+          },
+          "moyenne_ns": 62451210.878787875,
+          "emissions_par_s": 16.012499772677092,
+          "confirmation_ns": 92120250,
+          "saturation": {
+            "premier": "87",
+            "suivant": "104",
+            "segments": "2",
+            "rétention": "2",
+            "quota": "3072",
+            "octets": "1632"
+          }
+        }
+      },
+      {
+        "vcpu": 1,
+        "secteur": 4096,
+        "boots": [
+          "9a96a603e49e09219da108a787cba6d3",
+          "081bda58ef93922ba32b57be87069f58",
+          "96116bfa65880bd072abb1f8efe7ddc0"
+        ],
+        "latences_ns": [
+          50186375,
+          52945625,
+          69309125
+        ],
+        "rapport_sha256": "376da58200d2bc739f86735e0a2da98edfab89e46498bfb87d6cd5ad8d8ed385"
+      },
+      {
+        "vcpu": 2,
+        "secteur": 512,
+        "boots": [
+          "2035f5a545acd3794182a7b57fb0d9c5",
+          "5bfe010e3013eee06154b2d1e97cafda",
+          "fe0280c7d20a5563bc956d55ed4c1b89"
+        ],
+        "latences_ns": [
+          51421667,
+          56427458,
+          56352416
+        ],
+        "rapport_sha256": "a8fab2f226334d13293be6e3b3e884a06b0e855c6a6eb322a10439b949202f8a"
+      },
+      {
+        "vcpu": 2,
+        "secteur": 4096,
+        "boots": [
+          "c10ac24dd2939af8165a18d5013cbfaa",
+          "6899ee887e0cf4d095ba969fe24ebeb3",
+          "9f49c2cc049f8393c0031170d21da9fc"
+        ],
+        "latences_ns": [
+          54149708,
+          49802041,
+          56130625
+        ],
+        "rapport_sha256": "a3f4531cd96eea74f26ef88b889d1e495bf8cfff2f37a605fc3fe5de92399a9a"
+      },
+      {
+        "vcpu": 4,
+        "secteur": 512,
+        "boots": [
+          "30de7b44362ae5d70f3c20e62a0b08e7",
+          "500c351b9a30d8b6a30dfa5249a2dfc8",
+          "3290bdadcc8466d8f9d5a154109743cc"
+        ],
+        "latences_ns": [
+          50966750,
+          52112500,
+          65164125
+        ],
+        "rapport_sha256": "285506acfae5653da1c3437341f6cde6a2da8def9a9362fa7c5902ac7c74a08a"
+      },
+      {
+        "vcpu": 4,
+        "secteur": 4096,
+        "boots": [
+          "76a0d81815beb521fb4b4af0860a80d0",
+          "e9db08868ba4f8aab80c93b3f3da9bd2",
+          "9a9f1aee9de22d51346534dfb9d928ba"
+        ],
+        "latences_ns": [
+          51549334,
+          52066666,
+          57162208
+        ],
+        "rapport_sha256": "c47d27e5243224449088d44c3fc12fc0b2333b56bf4c64eb9cd9b389b01f10c9"
+      }
+    ],
+    "pannes": [
+      {
+        "banc": "livraison-pannes-aarch64-1-4096",
+        "sha256": "3b72e62f3560dfa93cc8fcfd781207a21578e94f51011a3bb466f2cbfec0e3a4",
+        "sha256_noyau": "089d7c70cae56718d94464bacd6806e6ca283d0b824db3d0315b53f488f61b47"
+      },
+      {
+        "banc": "livraison-pannes-aarch64-2-4096",
+        "sha256": "41a442bdbecc95e84a274a6e6da451a0c32aa4781a32d4236936f93f037d4cfe",
+        "sha256_noyau": "089d7c70cae56718d94464bacd6806e6ca283d0b824db3d0315b53f488f61b47"
+      },
+      {
+        "banc": "livraison-pannes-aarch64-4-512",
+        "sha256": "b4e62cd7d475bf6ada23ce32f5ce05b8de8dd2140db9ca23af6e5ef11524d8a5",
+        "sha256_noyau": "089d7c70cae56718d94464bacd6806e6ca283d0b824db3d0315b53f488f61b47"
+      }
+    ],
+    "saturation": {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "vcpus": 2,
+      "noyau": "a52aa30b04ca77a372f08c09fb459d9be63f30d03fe25f5e7fc40e2beea9c7cf",
+      "outil": "af5858f6cf5f8b1b310d2cf225b359dd5498f27110be27cb98ad8ff1edbd1edb",
+      "original": "ccc9051c29aecd22d42051f7c3d9e355357074496757db3103d3f08a252f1a5e",
+      "avant_sha256": "c3726b03cac0874655829b02306487d8ad305d0cf4e18dbc72f693c028b94b1f",
+      "sonde_enospc": "c3726b03cac0874655829b02306487d8ad305d0cf4e18dbc72f693c028b94b1f",
+      "avant": {
+        "blocs_ordinaires_libres": 55,
+        "reserve_maintenance": 128,
+        "octets_sentinelle": 1245184,
+        "oid_sentinelle": 38,
+        "oid_exemple": 3,
+        "revision_journal": 0,
+        "prochaine_sequence": 1
+      },
+      "apres": {
+        "blocs_ordinaires_libres": 51,
+        "reserve_maintenance": 128,
+        "octets_sentinelle": 1245184,
+        "oid_sentinelle": 38,
+        "oid_exemple": 3,
+        "revision_journal": 0,
+        "prochaine_sequence": 1
+      },
+      "ancienne_instance": "26a4f3e938466276/771ff341870c44c7/8000000000000008/0000000000000001",
+      "nouvelle_instance": "26a4f3e938466276/771ff341870c44c7/800000000000000f/0000000000000002",
+      "journal_indisponible": "\r\njournal: journal indisponible (12)\r\njournalrc=12\r\n",
+      "generation_p9": 398,
+      "sha256_disque": "e6d4edb9779eed0f87a92b0fe9cb27ef17f502114ab57a5444cce2e4b25282cd",
+      "sha256_serie": "c4c670346f580c5c776cf95b186b72070d51bfa669099cfd169e8ad098c3591d"
+    },
+    "configuration_invalide_boot": "b1c33634ae09bb39343c2b83ee0b5089"
+  },
+  "x86_64": {
+    "noyau_sha256": "cfd5976da61ff5841855014fe238c90d36f1cf028a6e7727c4361b659d76736c",
+    "sessions": 25,
+    "cellules": [
+      {
+        "vcpu": 1,
+        "secteur": 512,
+        "boots": [
+          "15df249d81894e46b275068d5e90c07c",
+          "4ed834caceaf34297058a21678847250",
+          "7d6957b6cf87903727d079115f904779"
+        ],
+        "latences_ns": [
+          48688292,
+          40284875,
+          46610709
+        ],
+        "rapport_sha256": "2591bb62087de3de5032e314ba761902f93c8de4034745871de694bfff09bf2e",
+        "rotation": {
+          "latences_ns": [
+            75716250,
+            44923208,
+            44024708,
+            48506791,
+            42788000,
+            44839666,
+            43944750,
+            43599708,
+            44320458,
+            45145625,
+            43890958,
+            43282916,
+            43770250,
+            44810958,
+            43232417,
+            44026333,
+            43412208,
+            44640083,
+            43062750,
+            48972208,
+            41977209,
+            41567667,
+            43605500,
+            43980334,
+            44334792,
+            43287917,
+            44665750,
+            43629500,
+            44450458,
+            43756916,
+            44729125,
+            43448833,
+            44113084
+          ],
+          "percentiles_ns": {
+            "p50": 43980334,
+            "p95": 48972208,
+            "p99": 75716250,
+            "p100": 75716250
+          },
+          "moyenne_ns": 45104767.57575758,
+          "emissions_par_s": 22.1706053206107,
+          "confirmation_ns": 74964875,
+          "saturation": {
+            "premier": "87",
+            "suivant": "104",
+            "segments": "2",
+            "rétention": "2",
+            "quota": "3072",
+            "octets": "1632"
+          }
+        }
+      },
+      {
+        "vcpu": 1,
+        "secteur": 4096,
+        "boots": [
+          "0b8ed41767e31dac6eda1a97f8f843a7",
+          "c51ad4a23e8b7da8bfa46e23abd46182",
+          "f515decec5e7c6fda1fe977aa026cfb0"
+        ],
+        "latences_ns": [
+          51982833,
+          45920292,
+          42454959
+        ],
+        "rapport_sha256": "3b986feeff409e5ac7955e426aa2ee536180e344c32f6eb918044aa68393431d"
+      },
+      {
+        "vcpu": 2,
+        "secteur": 512,
+        "boots": [
+          "a312127dfac63021f65e4e1352539016",
+          "4d1f994772abe8a39be3501d0e71abf0",
+          "4b31fca2ac0a405ff4eef70a21a52af7"
+        ],
+        "latences_ns": [
+          49546958,
+          41312042,
+          42815750
+        ],
+        "rapport_sha256": "41249a3cc35902a50eb5996d9c237cc9edd8490fb2fe16d6464da258b360a54e"
+      },
+      {
+        "vcpu": 2,
+        "secteur": 4096,
+        "boots": [
+          "dfd73149b31f971ccc8fc9fffaaa4edb",
+          "abe28720638861262e74f26646544930",
+          "46128f4b97b8f911717215d44d531d04"
+        ],
+        "latences_ns": [
+          47148917,
+          49386459,
+          47714291
+        ],
+        "rapport_sha256": "3302c035b818b0d7b88d0b6335295356d6d6f25c5741c8502a5fc0ac48a700a3"
+      },
+      {
+        "vcpu": 4,
+        "secteur": 512,
+        "boots": [
+          "914cc336120057ebf8df9a04208b2eb7",
+          "e5d940717ec938a57a497e102fc2d220",
+          "a8743df905e47a2dbbada8d7c62144a9"
+        ],
+        "latences_ns": [
+          56032084,
+          44640292,
+          50540625
+        ],
+        "rapport_sha256": "b2be446a9641ba38cb61ae8b3c84339da9ac7acd8c66dcac0da88490f34a9393"
+      },
+      {
+        "vcpu": 4,
+        "secteur": 4096,
+        "boots": [
+          "9dd65f3bd2ee323f8f449371d34b517c",
+          "ac8ab5e44a02db00cf4b99f3a9abf55c",
+          "42c6a9234e2d2e9372fc5936fbc29cce"
+        ],
+        "latences_ns": [
+          42262208,
+          44463792,
+          43906416
+        ],
+        "rapport_sha256": "a52be8c651066a59ff12b47892fbc048b1911d9941827e48593eb9c23f103251"
+      }
+    ],
+    "pannes": [
+      {
+        "banc": "livraison-pannes-x86_64-1-512",
+        "sha256": "9fce266166e9c45a925ef9c4b073c544c950c7c0f4fdcca51fa4fe7c7a6d2b9c",
+        "sha256_noyau": "11eee9a8f28eebfe8c360a60bb32da49d4861f4c8e180f5a7c5468af9ec0676c"
+      },
+      {
+        "banc": "livraison-pannes-x86_64-2-512",
+        "sha256": "7fe582ff76e0ea2279156b7af823f23cb1dde42977bc0fd56fab51d35bf1ca66",
+        "sha256_noyau": "11eee9a8f28eebfe8c360a60bb32da49d4861f4c8e180f5a7c5468af9ec0676c"
+      },
+      {
+        "banc": "livraison-pannes-x86_64-4-4096",
+        "sha256": "d00b1b4ad8677076dc40fe19c78d47c8017812fd883fb60a7dcd40feac5630e3",
+        "sha256_noyau": "11eee9a8f28eebfe8c360a60bb32da49d4861f4c8e180f5a7c5468af9ec0676c"
+      }
+    ],
+    "saturation": {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "vcpus": 2,
+      "noyau": "cfd5976da61ff5841855014fe238c90d36f1cf028a6e7727c4361b659d76736c",
+      "outil": "af5858f6cf5f8b1b310d2cf225b359dd5498f27110be27cb98ad8ff1edbd1edb",
+      "original": "e5862ecc73f164755d6b9bac0df4664d34c98cc0375b22bf2ac7bee1b4104b6f",
+      "avant_sha256": "8d52efe0042ee61f940dbb633154a3213ab3a1494f7a3623b730e16b91135372",
+      "sonde_enospc": "8d52efe0042ee61f940dbb633154a3213ab3a1494f7a3623b730e16b91135372",
+      "avant": {
+        "blocs_ordinaires_libres": 55,
+        "reserve_maintenance": 128,
+        "octets_sentinelle": 1245184,
+        "oid_sentinelle": 38,
+        "oid_exemple": 3,
+        "revision_journal": 0,
+        "prochaine_sequence": 1
+      },
+      "apres": {
+        "blocs_ordinaires_libres": 51,
+        "reserve_maintenance": 128,
+        "octets_sentinelle": 1245184,
+        "oid_sentinelle": 38,
+        "oid_exemple": 3,
+        "revision_journal": 0,
+        "prochaine_sequence": 1
+      },
+      "ancienne_instance": "0a81c058d6b7fdb2/2a87aa4c93ce72b2/8000000000000008/0000000000000001",
+      "nouvelle_instance": "0a81c058d6b7fdb2/2a87aa4c93ce72b2/800000000000000f/0000000000000002",
+      "journal_indisponible": "\r\njournal: journal indisponible (12)\r\njournalrc=12\r\n",
+      "generation_p9": 400,
+      "sha256_disque": "d0e15dac4f421e6dcc358368fd90293bc66163d674d3007716671b647d2dba2d",
+      "sha256_serie": "4fdeef40e92e819fa72097fbeb30e18895642eb6356f3499e2bfe6c1b8a6bfe2"
+    },
+    "configuration_invalide_boot": "4a384f7a7f506820170b9e4235efe210"
+  }
+}

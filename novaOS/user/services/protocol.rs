@@ -78,7 +78,7 @@ pub fn decode(bytes: &[u8]) -> Option<Frame> {
 
 /// Noms du catalogue installé. Un numéro désigne un service, jamais un PID.
 const INSTALLED_NAMES: &[(u64, &str)] =
-    &[(1, "clock"), (2, "tmp-health"), (9, "storage-info"), (10, "cache")];
+    &[(1, "clock"), (2, "tmp-health"), (9, "storage-info"), (10, "cache"), (16, "journal")];
 
 pub fn service_name(id: u64) -> Option<&'static str> {
     INSTALLED_NAMES.iter().find(|(n, _)| *n == id).map(|(_, name)| *name)
