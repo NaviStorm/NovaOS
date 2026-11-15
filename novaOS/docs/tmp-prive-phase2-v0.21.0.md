@@ -68,4 +68,4 @@ python3 -B novaOS/tests/tmp_attentes.py
 sh novaOS/tests/tmp_prive_stockage.sh "$NOVA_ARCH"
 ```
 
-La qualification couvre ces deux machines QEMU et le modèle de panne exercé. Le profil UTM installé, NVMe, une coupure électrique physique et la restauration d’une VM mémoire comprise n’ont pas été qualifiés ici. La phase 2 nécessite la revue MOA/MOE avant fusion et la coordination des cinq nouveaux sélecteurs avec le registre ABI. Le cache persistant et la commande `permissions` relèvent d’arbitrages ultérieurs.
+La qualification couvre ces deux machines QEMU et le modèle de panne exercé. Le profil UTM installé, NVMe, une coupure électrique physique et la restauration d’une VM mémoire comprise n’ont pas été qualifiés ici. Au terme de cette campagne de phase 2, la coordination des cinq sélecteurs avec le registre ABI restait à réaliser. La [qualification intégrée](integration-abi-tmp-v0.21.0.md) consigne le résultat sur le code commun. Le cache persistant et la commande `permissions` relèvent d’arbitrages ultérieurs.

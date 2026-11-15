@@ -1,6 +1,6 @@
 # Qualification du registre ABI v1
 
-Le registre recense 41 sélecteurs dispatchés sur x86_64 et AArch64. La base auditée est la fusion de la phase 1 de v0.21.0, `a6df93fb8687c68893680707f8763471d9f8a2b3`. Par rapport à la clôture v0.20.0, les modules installation et instances ont été ajoutés et six sélecteurs d’instance ont rejoint le dispatch. L’audit et la préparation documentaire non fusionnés n’ajoutaient aucun sélecteur sur leur propre ligne de développement. La v0.21.0 reste ouverte.
+Au commit `df88f1cfeaf0940da876ea543584e59215abacd4`, le registre recensait 41 sélecteurs dispatchés sur x86_64 et AArch64. Les cinq ajouts ultérieurs sont couverts par la [qualification intégrée du temporaire privé](integration-abi-tmp-v0.21.0.md). La base auditée est la fusion de la phase 1 de v0.21.0, `a6df93fb8687c68893680707f8763471d9f8a2b3`. Par rapport à la clôture v0.20.0, les modules installation et instances ont été ajoutés et six sélecteurs d’instance ont rejoint le dispatch. L’audit et la préparation documentaire non fusionnés n’ajoutaient aucun sélecteur sur leur propre ligne de développement. La v0.21.0 reste ouverte.
 
 ## Correspondance et génération
 
