@@ -39,6 +39,12 @@ Pour S03, S04 et S07, démarrer deux instances du même manifeste sur P9 et vér
 
 Pour le cache de S03, S04 et S07, lancer également une application sans utilisateur attesté, exercer son temporaire et vérifier le refus explicite du cache. Avec des identités provisionnées, exiger le partage limité au couple utilisateur/installation, la révocation de toute ancienne génération après purge et la mise en quarantaine d'une restauration sans continuité vérifiée. Répéter avec les autorités définitives sur le candidat serveur. [Contrat et qualification du cache de phase 4](../cache-prive-phase4-v0.21.0.md)
 
+## Cache et permissions dans le parcours serveur
+
+Pour S03, exercer la future commande native `permissions` dans `nsh`. Comparer les droits annoncés par `list` aux lectures et écritures effectivement admises. L’inspection d’un objet ou d’une instance hors délégation doit échouer sans révéler de données. Exercer `grant` et `revoke` sous l’autorité de politique compétente, puis vérifier l’effet du retrait sur l’accès. Cet essai reste à exécuter sur chacune des deux architectures du candidat serveur. [Contrat des sous-commandes](contrat-instances-services.md) · [Préparation de la recette S03](https://github.com/NaviStorm/NovaOS/blob/622d8d97e547434d62b65da00827324cf9405507/novaOS/docs/reconciliation-v0300/acceptation-serveur.md)
+
+Les quatre phases v0.21.0 figurent dans l’arbre de `main` au commit `4569a68`. Le cache y est exercé avec une autorité de test. En session ordinaire sans identité utilisateur attestée, l’application dispose de son `tmp` sur P9 et l’ouverture du cache est refusée. Les preuves QEMU des phases 1 à 4 ont leur propre matrice. Les verdicts S01 à S16 et les épreuves de compilation ci-dessous restent à établir sur la distribution candidate v0.30.0. [Rapport des sources v0.21.0](../cloture-v0.21.0.md)
+
 ## Compilation native depuis nsh
 
 Le §15 du mandat de qualification finale v0.20.0 ajoute trois épreuves bloquantes pour la première stable serveur v0.30.0. Dans chaque invité, ouvrir une session `nsh` sur le candidat et partir des sources seules des trois programmes témoins. Exécuter les compilateurs, l’éditeur de liens et les outils de construction dans NovaOS avec les bibliothèques livrées. Lancer dans cette session chaque binaire obtenu. Consigner les versions des outils, les commandes de compilation et de liaison, l’empreinte du binaire et le résultat attendu et observé à l’exécution. [Décision ARC-022](decisions.md)
