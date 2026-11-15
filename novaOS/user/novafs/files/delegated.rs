@@ -303,7 +303,7 @@ impl Grant {
         loop {
             // Le shell révoque le canal éphémère dès la fin du fils. La
             // révocation peut être constatée à l'armement ou à la réception.
-            let tmp_busy = match s.serve_tmp(self.ports.rx) {
+            let tmp_busy = match s.serve_private(self.ports.rx) {
                 Err(rt::REVOKED | rt::DENIED | rt::CLOSED) => return Ok(()),
                 result => result?,
             };

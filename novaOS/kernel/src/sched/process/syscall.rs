@@ -132,6 +132,7 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         | crate::terminal::SPAWN | crate::terminal::PROCESS_SAMPLE | crate::terminal::CONSOLE
         | iw::SERVICE_PROCESS | tmp::wire::WORKER | iw::WORKER | iw::OFFER_STOP | iw::STOP | iw::OFFERED | PROCESS_WAIT if secondary => Err(DENIED),
         iw::WATCH => supervision::watch(a, b, c),
+        cache::wire::CONTROL => cache::control(a, b, c),
         iw::SERVICE_PROCESS => ipc::service::process(a, b, c),
         tmp::wire::CAP | tmp::wire::CALL | tmp::wire::NEXT | tmp::wire::COMPLETE => tmp::call(id,a,b,c),
         tmp::wire::WORKER | iw::INFO | iw::WORKER | iw::OFFER_STOP | iw::STOP | iw::OFFERED => {

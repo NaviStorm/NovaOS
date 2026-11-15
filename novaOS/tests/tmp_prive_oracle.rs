@@ -3,6 +3,9 @@ extern crate alloc;
 #[allow(dead_code)]
 #[path = "../user/novafs/files/tmp_store.rs"]
 mod tmp_store;
+#[allow(dead_code)]
+#[path = "../user/novafs/files/cache_store.rs"]
+mod cache_store;
 use novafs::{Device, Engine, Kind, Mode, Stat, codec::Anchor, device::FileImage};
 use std::{
     env,
@@ -66,7 +69,7 @@ fn catalogue(
                 break;
             }
             for name in names {
-                if depth != 0 || !tmp_store::hidden_root_name(&name) {
+                if depth != 0 || !(tmp_store::hidden_root_name(&name) || cache_store::hidden(&name)) {
                     let child = fs.lookup_at(stat.id, &name)?;
                     let child_path = format!("{}/{name}", path.trim_end_matches('/'));
                     catalogue(fs, out, child, &child_path, depth + 1)?;
@@ -90,6 +93,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     if args[3] == "catalogue" {
         let mut out = io::BufWriter::new(io::stdout().lock());
         catalogue(&fs, &mut out, fs.stat_id(fs.root_id())?, "/", 0)?;
+        out.flush()?;
+        return Ok(());
+    }
+    if args[3] == "catalogue-cache" {
+        let mut out = io::BufWriter::new(io::stdout().lock());
+        let store = fs.lookup_at(fs.root_id(), cache_store::ROOT)?;
+        assert_eq!(store.kind, Kind::Directory);
+        catalogue(&fs, &mut out, store, "/", 1)?;
         out.flush()?;
         return Ok(());
     }

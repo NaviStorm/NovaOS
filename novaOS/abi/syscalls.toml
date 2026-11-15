@@ -579,3 +579,15 @@ result = "0"
 rights = "même serveur NovaFS, ticket de l’unique opération en vol"
 errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","REVOKED","CLOSED","CANCELLED"]
 handler = "kernel/src/sched/process/tmp.rs#complete"
+
+[call.CACHE_CONTROL]
+number = 0x1007c
+module = "cache"
+rust_name = "CONTROL"
+group = "cache applicatif"
+since = "0.21.0 phase 4"
+arguments = "opération, zéro (NEXT : endpoint, COMPLETE : ticket), *mut trame de 224 octets"
+result = "NEXT remet un ticket à usage unique. OPEN retourne dans la trame un bail propre à l’instance et à la génération. Les autres opérations retournent zéro ou le statut du serveur. Une écriture remise sans confirmation reçoit files::UNCERTAIN."
+rights = "identités attestées par le lanceur, vue du cache de l’instance ; purges étendues réservées à une autorité explicite ; RECOVER au service supervisé et NEXT/COMPLETE à l’unique serveur P9"
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","REVOKED","CLOSED","REFUSED","CANCELLED","TIMED_OUT","WOULD_BLOCK","LIMIT","NO_MEMORY","files::UNCERTAIN","files::NOT_FOUND","files::CORRUPT","files::FULL","files::BUSY","files::UNSUPPORTED","files::IO"]
+handler = "kernel/src/sched/process/cache.rs#control"

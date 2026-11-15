@@ -2,6 +2,9 @@
 //! locale à cet ELF ; le noyau possède les processus, identités et dérivations IPC.
 #![no_std]
 #![no_main]
+#[allow(dead_code)]
+#[path = "services/cache_steps.rs"]
+mod cache_steps;
 #[path = "services/catalog.rs"]
 mod catalog;
 #[path = "services/control.rs"]
@@ -76,6 +79,7 @@ struct Manager<'a> {
     policy: Policy<'a>,
     units: [Unit; MAX],
     qualification: bool,
+    cache_lab: bool,
     stopping: bool,
     delayed: Option<(u64, Frame)>,
     held: Option<(u64, Frame)>,
@@ -109,7 +113,12 @@ impl Manager<'_> {
 
     fn spawn(&mut self, i: usize, d: Declaration, attempt: u64) -> rt::Result<()> {
         if self.units[i].live.right != 0
-            || d.caps != catalog::PRIVATE_TMP
+            || d.caps
+                != match d.id {
+                    10 => catalog::CACHE_BACKEND,
+                    11..=15 if self.cache_lab => catalog::PRIVATE_TMP | catalog::CACHE_CLIENT,
+                    _ => catalog::PRIVATE_TMP,
+                }
             || d.args.len() != 1
             || (d.image == catalog::STORAGE_IMAGE) != (d.id == 9)
             || !matches!(d.image, catalog::STORAGE_IMAGE | catalog::SYSTEM_IMAGE)
@@ -411,7 +420,10 @@ impl Manager<'_> {
 
 fn supervise() -> rt::Result<()> {
     let qualification = rt::config(2) == 1;
-    let manifest = if qualification {
+    let cache_lab = rt::config(2) == 2;
+    let manifest = if cache_lab {
+        catalog::CACHE_QUALIFICATION
+    } else if qualification {
         catalog::QUALIFICATION
     } else {
         catalog::INSTALLED
@@ -421,6 +433,7 @@ fn supervise() -> rt::Result<()> {
         policy: Policy::new(manifest).map_err(control::error)?,
         units: [Unit::default(); MAX],
         qualification,
+        cache_lab,
         stopping: false,
         delayed: None,
         held: None,

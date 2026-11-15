@@ -36,11 +36,12 @@ def main():
         with Terminal(arch, args.secteur, image, "tmp-public", test=True, journal=journal) as terminal:
             terminal.until(b"nsh> ")
             terminal.line("ls -a /", status="sortie 0", has=["documents", "lignes"],
-                          absent=[b"NovaOS-tmp-v1", b"registre"])
+                          absent=[b"NovaOS-tmp-v1", b"NovaOS-cache-v1", b"registre"])
             terminal.line("cat /documents/exemple.txt", status="sortie 0", has=[b"\r\nNovaOS\r\n"])
             terminal.line("touch témoin-cli", status="sortie 0")
             terminal.line("ls -a /", status="sortie 0", has=["témoin-cli"], absent=[b"NovaOS-tmp-v1"])
             terminal.line("rm témoin-cli", status="sortie 0")
+            terminal.line("@probe cache-sans-identite", status="sortie 0")
             terminal.line("@probe droits", status="sortie 0")
             terminal.line("@probe revocation", status="sortie 0")
             terminal.exit()

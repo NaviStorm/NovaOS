@@ -29,6 +29,10 @@ impl Views {
         }
     }
 
+    pub(super) fn any_pending(&self) -> bool {
+        self.open.iter().any(|v| v.pending.is_some())
+    }
+
     fn find(&self, owner: &[u8; 32]) -> Option<usize> {
         self.open.iter().position(|entry| entry.owner == *owner)
     }

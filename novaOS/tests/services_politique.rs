@@ -419,3 +419,20 @@ fn profils_embarques_et_plafonds_delegues() {
     }
     assert!(ordinary.contains(&9));
 }
+
+#[test]
+fn autorites_et_dependances_du_cache() {
+    let provider = catalog::INSTALLED.iter().find(|d| d.id == 10).unwrap();
+    assert!(provider.auto);
+    assert_eq!(provider.required, &[9]);
+    assert_eq!(provider.caps, catalog::CACHE_BACKEND);
+    let mut ordinary = Policy::new(catalog::INSTALLED).unwrap();
+    let mut lab = Policy::new(catalog::CACHE_QUALIFICATION).unwrap();
+    for id in 11..=15 {
+        assert_eq!(ordinary.register(id), Err(Error::Unknown));
+        let actor = catalog::CACHE_QUALIFICATION.iter().find(|d| d.id == id).unwrap();
+        assert!(!actor.auto);
+        assert_eq!(actor.caps, catalog::CACHE_CLIENT | catalog::PRIVATE_TMP);
+        assert_eq!(lab.register(id), Ok(()));
+    }
+}

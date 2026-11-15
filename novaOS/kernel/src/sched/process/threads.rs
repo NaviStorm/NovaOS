@@ -214,6 +214,7 @@ pub(super) fn invalidate_range(s: &mut Core, pid: Pid, start: u64, end: u64) {
         }
     }
     tmp::invalidate(s, pid, start, end);
+    cache::invalidate(s, pid, start, end);
     s.ipc.invalidate_receive(pid, start, end);
     s.flush_ipc();
     for slot in 0..s.slots.len() {

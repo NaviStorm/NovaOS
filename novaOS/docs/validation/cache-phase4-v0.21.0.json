@@ -1,0 +1,248 @@
+{
+  "fusion_phase3": "80a3699c76af0db9ccdc1a85964fe15576c32439",
+  "sha256_archive": "6034653cb7c2182cb3a6010db909e1ed9ed1f0086b04510f5ccc12f0051b3bf2",
+  "fichiers_verifies": 510,
+  "noyaux": {
+    "aarch64": "6160e9a28a0cc04b0a63a7f44687161ff0af70ac1f107601969eb02ee774468c",
+    "x86_64": "9f7a19bbdb67ac5c1c93820f16b07c6a69a2c106cd6257adc3aad6f3c846f7fd"
+  },
+  "cellules": [
+    {
+      "test": "cache-x86_64-2-4096",
+      "code": 0
+    },
+    {
+      "test": "cache-x86_64-2-512",
+      "code": 0
+    },
+    {
+      "test": "cache-aarch64-2-512",
+      "code": 0
+    },
+    {
+      "test": "cache-aarch64-2-4096",
+      "code": 0
+    },
+    {
+      "test": "cache-x86_64-4-4096",
+      "code": 0
+    },
+    {
+      "test": "cache-aarch64-4-4096",
+      "code": 0
+    },
+    {
+      "test": "cache-x86_64-4-512",
+      "code": 0
+    },
+    {
+      "test": "cache-aarch64-4-512",
+      "code": 0
+    },
+    {
+      "test": "cache-x86_64-1-4096",
+      "code": 0
+    },
+    {
+      "test": "cache-x86_64-1-512",
+      "code": 0
+    },
+    {
+      "test": "cache-aarch64-1-4096",
+      "code": 0
+    },
+    {
+      "test": "pression-aarch64-2-4096",
+      "code": 0
+    },
+    {
+      "test": "pression-x86_64-2-512",
+      "code": 0
+    },
+    {
+      "test": "cache-aarch64-1-512",
+      "code": 0
+    },
+    {
+      "test": "services-x86_64-2-512",
+      "code": 0
+    },
+    {
+      "test": "refus-aarch64-1-512",
+      "code": 0
+    },
+    {
+      "test": "services-aarch64-2-4096",
+      "code": 0
+    },
+    {
+      "test": "refus-x86_64-1-512",
+      "code": 0
+    },
+    {
+      "test": "refus-aarch64-1-4096",
+      "code": 0
+    },
+    {
+      "test": "refus-x86_64-1-4096",
+      "code": 0
+    },
+    {
+      "test": "cli-aarch64-1-512",
+      "code": 0
+    },
+    {
+      "test": "cli-x86_64-1-512",
+      "code": 0
+    },
+    {
+      "test": "cli-x86_64-1-4096",
+      "code": 0
+    },
+    {
+      "test": "cli-aarch64-1-4096",
+      "code": 0
+    },
+    {
+      "test": "p8-x86_64-1-512",
+      "code": 0
+    },
+    {
+      "test": "p8-x86_64-1-4096",
+      "code": 0
+    },
+    {
+      "test": "p8-aarch64-1-512",
+      "code": 0
+    },
+    {
+      "test": "p8-aarch64-1-4096",
+      "code": 0
+    }
+  ],
+  "demarrages_cache": {
+    "cache-test": 12,
+    "cache-reprise": 12,
+    "cache-actualise": 12,
+    "cache-restaure": 24,
+    "cache-reinstalle": 12,
+    "cache-coupure": 12,
+    "cache-reprise-purge": 12,
+    "cache-propriete-invalide": 2,
+    "cache-pression": 2
+  },
+  "mesures_par_architecture": {
+    "aarch64": {
+      "allocations": [
+        1127,
+        1970
+      ],
+      "pic_cadres": [
+        941,
+        1339
+      ],
+      "courtier_pic": [
+        1344,
+        1696
+      ],
+      "courtier_final": [
+        0,
+        0
+      ],
+      "fonctionnel": [
+        {
+          "vcpus": 1,
+          "secteur": 4096,
+          "pic_cadres": 1151,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 1,
+          "secteur": 512,
+          "pic_cadres": 1151,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 2,
+          "secteur": 4096,
+          "pic_cadres": 1147,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 2,
+          "secteur": 512,
+          "pic_cadres": 1147,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 4,
+          "secteur": 4096,
+          "pic_cadres": 1147,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 4,
+          "secteur": 512,
+          "pic_cadres": 1147,
+          "courtier_pic": 1696
+        }
+      ]
+    },
+    "x86_64": {
+      "allocations": [
+        1125,
+        2057
+      ],
+      "pic_cadres": [
+        939,
+        1337
+      ],
+      "courtier_pic": [
+        1344,
+        1696
+      ],
+      "courtier_final": [
+        0,
+        0
+      ],
+      "fonctionnel": [
+        {
+          "vcpus": 1,
+          "secteur": 4096,
+          "pic_cadres": 1156,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 1,
+          "secteur": 512,
+          "pic_cadres": 1156,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 2,
+          "secteur": 4096,
+          "pic_cadres": 1145,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 2,
+          "secteur": 512,
+          "pic_cadres": 1145,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 4,
+          "secteur": 4096,
+          "pic_cadres": 1145,
+          "courtier_pic": 1696
+        },
+        {
+          "vcpus": 4,
+          "secteur": 512,
+          "pic_cadres": 1145,
+          "courtier_pic": 1696
+        }
+      ]
+    }
+  }
+}

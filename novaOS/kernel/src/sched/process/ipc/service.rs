@@ -14,10 +14,11 @@ const STOP_LIMIT: u64 = 15_000;
 
 #[derive(Clone, Copy)]
 pub(in crate::sched::process) struct Session {
-    manager: Pid,
+    pub(in crate::sched::process) manager: Pid,
     client: Pid,
     administration: u64,
     lab: bool,
+    pub(in crate::sched::process) profile: u64,
     stopping: bool,
     pub(in crate::sched::process) purge_error: Option<u64>,
 }
@@ -33,7 +34,7 @@ pub(in crate::sched::process) fn owns_family(s: &Core, pid: Pid) -> bool {
 pub(in crate::sched::process) fn uses_private_journal(s: &Core, instance: Instance) -> bool {
     s.processes.manager.is_some_and(|m| !m.lab)
         && s.processes.instances.app(instance)
-            .is_some_and(|app| (INSTALLATION..=INSTALLATION + 9).contains(&app))
+            .is_some_and(|app| (INSTALLATION..=INSTALLATION + 15).contains(&app))
 }
 
 fn image(elf: &'static [u8], stable: u64) -> Res<Child> {
@@ -91,12 +92,15 @@ pub(in crate::sched::process) fn launch_session(
     let client = group[3].0;
     let lab = matches!(profile, 75 | 76);
     let setup = with(|s| {
-        let admin = (lab || profile == 77).then_some(client);
+        if matches!(profile, 78..=86) {
+            config(s, group[1].0, 13, &[profile]);
+        }
+        let admin = (lab || matches!(profile, 77..=86)).then_some(client);
         let (rx, admin_tx) = channel(s, owner, admin, RECEIVE)?;
         let (tx, admin_rx) = channel(s, owner, admin, SEND)?;
         let (read_rx, query_tx) = channel(s, owner, Some(client), RECEIVE)?;
         let (read_tx, query_rx) = channel(s, owner, Some(client), SEND)?;
-        config(s, owner, 0, &[rx, tx, u64::from(lab), read_rx, read_tx]);
+        config(s, owner, 0, &[rx, tx, if matches!(profile, 78..=86) { 2 } else { u64::from(lab) }, read_rx, read_tx]);
         config(
             s,
             client,
@@ -104,7 +108,7 @@ pub(in crate::sched::process) fn launch_session(
             &[
                 query_tx,
                 query_rx,
-                u64::from(profile == 76),
+                if matches!(profile, 78..=86) { profile } else { u64::from(profile == 76) },
                 admin_tx,
                 admin_rx,
             ],
@@ -114,6 +118,7 @@ pub(in crate::sched::process) fn launch_session(
             client,
             administration: rx,
             lab,
+            profile,
             stopping: false,
             purge_error: None,
         });
@@ -181,6 +186,8 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
     let elf = match id {
         1 | 2 if argument == 0 => UTILITY,
         9 if argument == 0 => STORAGE,
+        10 if argument == 0 => UTILITY,
+        11..=15 if matches!(m.profile, 78..=86) && argument == 0 => UTILITY,
         3..=8 if m.lab && argument <= 6 => UTILITY,
         _ => return Err(DENIED),
     };
@@ -218,7 +225,9 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
             s.processes.get_mut(target).worker_image = Some(elf);
         }
         config(s, target, 0, &[events, commands, id, argument, attempt]);
-        tmp::new_lease(s, target)?;
+        if id != 10 {
+            tmp::new_lease(s, target)?;
+        }
         words[1] = receive;
         words[2] = send;
         words[4] = target.number;
@@ -328,9 +337,15 @@ fn drain(pid: Pid) -> Res<u64> {
                 && !s
                     .processes
                     .instances
-                    .contains_app(INSTALLATION..=INSTALLATION + 9)
-                && !s.processes.temporary.has_service_lease(None))
+                    .contains_app(INSTALLATION..=INSTALLATION + 15)
+                && !s.processes.temporary.has_service_lease(None)
+                && s.processes.cache.drained())
         })? {
+            with(|s| {
+                if s.processes.manager.is_some_and(|m| matches!(m.profile, 78..=86)) {
+                    hal::log(format_args!("CACHE memoire courtier pic={} final=0 octets", s.processes.cache.peak()));
+                }
+            });
             measure("services_draines");
             return Ok(0);
         }

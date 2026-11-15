@@ -11,6 +11,7 @@ mod demo;
 mod instances;
 mod supervision;
 pub(crate) mod tmp;
+mod cache;
 use crate::instance_abi as iw;
 use instances::{Instance, Registry};
 #[cfg(feature = "materiel-lab")]
@@ -83,6 +84,7 @@ pub(super) struct Table {
     serial: u64,
     instances: Registry<MAX>,
     temporary: tmp::Broker,
+    cache: cache::Broker,
     manager: Option<ipc::service::Session>,
     pub(super) syscall_switches: u64,
     blocked_waits: u64,
@@ -96,6 +98,7 @@ impl Table {
             serial: 0,
             instances: Registry::new(),
             temporary: tmp::Broker::new(),
+            cache: cache::Broker::new(),
             manager: None,
             syscall_switches: 0,
             blocked_waits: 0,
@@ -386,6 +389,7 @@ fn retire_member(s: &mut Core, pid: Pid, result: Outcome, entered: u64) {
     #[cfg(feature = "materiel-lab")]
     edu::died(s, pid);
     ipc::service::retired(s, pid, entered);
+    cache::retired(s, pid);
     tmp::retired(s, pid, Some(result));
     ipc::withdraw_grants(s, pid);
     s.ipc.death(pid, ticks());
