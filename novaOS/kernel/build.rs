@@ -27,6 +27,7 @@ fn main() {
         "instance_manager",
         "instance_sample",
         "service_manager",
+        "journal_service",
         "system_service",
         "service_control_test",
         "cache_client_test",
@@ -63,7 +64,7 @@ fn main() {
         if name.starts_with("nvme_") && !nvme_lab {
             continue;
         }
-        let file_client = matches!(name, "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "service_control_test" | "cache_client_test" | "storage/managed");
+        let file_client = matches!(name, "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
         let linker = format!(
             "link-arg=-T{}",
             user.join(if file_client {
@@ -92,6 +93,9 @@ fn main() {
         if name == "devices" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_some() {
             rust.arg("--cfg").arg("materiel_lab");
         }
+        if name == "journal_service" && env::var_os("CARGO_FEATURE_JOURNAL_PANNES_LAB").is_some() {
+            rust.args(["--cfg", "journal_pannes"]);
+        }
         if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_SMP_LAB").is_some() {
             rust.args(["--cfg", "ipc_smp_lab"]);
         }
@@ -101,7 +105,7 @@ fn main() {
         // Ces ELF de services sont incorporés tels quels dans l'image noyau.
         // La machine invitée ne charge que PT_LOAD. Les sections DWARF et les
         // tables de symboles n'ont pas besoin de rester résidentes au démarrage.
-        if matches!(name, "service_manager" | "system_service" | "service_control_test" | "cache_client_test" | "storage/managed") {
+        if matches!(name, "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed") {
             rust.args(["-C", "strip=symbols"]);
         }
         if compact {

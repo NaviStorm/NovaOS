@@ -16,6 +16,11 @@ mod control;
 #[allow(dead_code)]
 #[path = "../abi/instances.rs"]
 mod instance;
+#[path = "services/journal_publisher.rs"]
+mod journal_publisher;
+#[path = "services/journal_wire.rs"]
+mod journal_wire;
+use journal_wire as j;
 #[path = "services/policy.rs"]
 mod policy;
 #[path = "../abi/service_process.rs"]
@@ -82,6 +87,8 @@ struct Pending {
 }
 struct Manager<'a> {
     manifest: &'a [Declaration],
+    journal: journal_publisher::Publisher,
+    shutdown_deadline: Option<u64>,
     policy: Policy<'a>,
     config: configuration::Configuration,
     units: [Unit; MAX],
@@ -123,12 +130,14 @@ impl Manager<'_> {
             || d.caps
                 != match d.id {
                     10 => catalog::CACHE_BACKEND,
+                    j::JOURNAL_ID => catalog::JOURNAL_STORE,
                     11..=15 if self.cache_lab => catalog::PRIVATE_TMP | catalog::CACHE_CLIENT,
                     _ => catalog::PRIVATE_TMP,
                 }
             || d.args.len() != 1
             || (d.image == catalog::STORAGE_IMAGE) != (d.id == 9)
-            || !matches!(d.image, catalog::STORAGE_IMAGE | catalog::SYSTEM_IMAGE)
+            || (d.image == catalog::JOURNAL_IMAGE) != (d.id == j::JOURNAL_ID)
+            || !matches!(d.image, catalog::STORAGE_IMAGE | catalog::SYSTEM_IMAGE | catalog::JOURNAL_IMAGE)
         {
             return Err(rt::DENIED);
         }
@@ -203,13 +212,13 @@ impl Manager<'_> {
                     }
                 }
             }
-            self.collect_logs();
+            self.collect_logs(time);
         }
-        self.collect_logs();
+        self.collect_logs(time);
         Ok(())
     }
 
-    fn collect_logs(&mut self) {
+    fn collect_logs(&mut self, time: u64) {
         while let Some(event) = self.policy.pop_event() {
             let Ok(i) = self.index(event.id) else {
                 continue;
@@ -222,6 +231,15 @@ impl Manager<'_> {
             } else {
                 Binding::default()
             };
+            let state = control::state(event.to);
+            if matches!(event.to, State::Starting | State::Ready | State::Failed | State::Stopped | State::Restarting) {
+                let severity = if event.to == State::Failed { j::ERROR } else { j::INFO };
+                let code = if event.to == State::Restarting { j::RESTART } else { j::STATE };
+                self.journal.record(event.id, binding.identity, severity, j::LIFECYCLE, code, time, [state,event.cause as u64]);
+            }
+            if event.to == State::Waiting && let Some(dep) = self.policy.blocking_provider(event.id) {
+                self.journal.record(event.id, binding.identity, j::WARN, j::DEPENDENCY, j::DEPENDENCY_WAIT, time, [dep, state]);
+            }
             let mut line = [0; 16];
             line[0] = p::VERSION;
             line[2] = event.id;
@@ -300,11 +318,17 @@ impl Manager<'_> {
         let Some(f) = p::decode(&msg.payload[..msg.len as usize]) else {
             return;
         };
+        if live.id == j::JOURNAL_ID && self.journal.acknowledge(msg.tag, &f) {
+            return;
+        }
         if !live.accepts(live.rx, &f) {
             return;
         }
         match f[1] {
             p::ANNOUNCE => {
+                if live.id != j::JOURNAL_ID && self.policy.state(live.id) == Ok(State::Starting) {
+                    self.journal.notice(live, time);
+                }
                 if live.id == 9 {
                     if self.units[i].probe == 0 && self.policy.state(9) == Ok(State::Starting) {
                         let issued = self.next_tag().and_then(|tag| {
@@ -407,6 +431,8 @@ impl Manager<'_> {
             if self.pending.is_some_and(|q| q.instance.right == live.right) {
                 self.queued_response(rt::CLOSED, 0);
             }
+            if live.id == j::JOURNAL_ID { self.journal.disconnected(); }
+            self.journal.record(live.id, live.identity, j::INFO, j::CAPABILITY, j::WITHDRAWN, time, [kind, words[1]]);
             self.units[i].previous = live;
             self.units[i].live = Binding::default();
             self.units[i].withdrawals = self.units[i].withdrawals.saturating_add(1);
@@ -419,7 +445,7 @@ impl Manager<'_> {
             self.policy
                 .finished(live.id, live.attempt, cause, words[1], time)
                 .map_err(control::error)?;
-            self.collect_logs();
+            self.collect_logs(time);
         }
         Ok(())
     }
@@ -431,15 +457,21 @@ fn supervise() -> rt::Result<()> {
     let config = configuration::Configuration::open(rt::config(5), rt::config(6));
     let loaded = config.records;
     let installed = !cache_lab && !qualification;
+    let with_journal = installed && rt::config(10) == 1;
+    let extended = [loaded[0], loaded[1], loaded[2], loaded[3], catalog::JOURNAL];
     let manifest: &[Declaration] = if cache_lab {
         catalog::CACHE_QUALIFICATION
     } else if qualification {
         catalog::QUALIFICATION
+    } else if with_journal {
+        &extended
     } else {
         &loaded
     };
     let mut manager = Manager {
         manifest,
+        journal: journal_publisher::Publisher::new(with_journal)?,
+        shutdown_deadline: None,
         policy: if installed {
             Policy::configured(manifest)
         } else {
@@ -469,6 +501,14 @@ fn supervise() -> rt::Result<()> {
         || ((ports[2].0 == 0) != (ports[2].1 == 0))
     {
         return Err(rt::DENIED);
+    }
+    if with_journal {
+        manager.journal.record(0, manager.journal.identity, j::INFO, j::SYSTEM, j::BOOT,
+            rt::config(11), [rt::config(12), now()?]);
+        if manager.config.status != rt::OK {
+            manager.journal.record(0, manager.journal.identity, j::ERROR, j::CONFIG, j::CONFIG_ERROR,
+                now()?, [manager.config.status, manager.config.stored]);
+        }
     }
     manager.run(ports)
 }

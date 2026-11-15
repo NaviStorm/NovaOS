@@ -259,7 +259,7 @@ const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fil
 pub(super) fn cli_mode(profile: u64) -> u64 {
     match profile {
         73 | 75 | 76 | 78..=86 | 88 => 42,
-        74 | 77 | 87 => 41,
+        74 | 77 | 87 | 89 => 41,
         n => n,
     }
 }
@@ -269,6 +269,8 @@ pub(crate) fn volume(mode: u64) -> bool {
 }
 pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     use crate::hardware::block;
+    // Deux jalons bornés avant l'exécution du gestionnaire et du service P9.
+    let start_ms = ticks().saturating_mul(1000) / u64::from(HZ);
     let (mode, probe): (_, Option<&[u8]>) = match mode {
         70 => (42, Some(b"tmp-test")),
         71 => (42, Some(b"tmp-reprise")),
@@ -277,7 +279,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     };
     let profile = mode;
     let mode = cli_mode(profile);
-    let measure_session = matches!(mode, 6 | 25 | 36 | 42) || profile == 87;
+    let measure_session = matches!(mode, 6 | 25 | 36 | 42) || matches!(profile, 87 | 89);
     FILE_TIMING.store(matches!(mode, 25 | 36 | 42), Ordering::Relaxed);
     let start = heap::audit(true);
     let hz = hal::timer::counter_hz();
@@ -303,6 +305,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
             return false;
         }
     };
+    let block_ms = ticks().saturating_mul(1000) / u64::from(HZ);
     let members = [
         (RELAY, 15),
         (MEDIA, 1),
@@ -323,8 +326,8 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         ),
     ];
     let mut manager = None;
-    let group = if matches!(profile, 41 | 42 | 75..=88) && probe.is_none() {
-        ipc::service::launch_session(members, key, profile, session.map(|(_, id)| id))
+    let group = if matches!(profile, 41 | 42 | 75..=89) && probe.is_none() {
+        ipc::service::launch_session(members, key, profile, session.map(|(_, id)| id), [start_ms, block_ms])
             .map(|(group, child)| { manager = Some(child); (group, None) })
     } else if matches!(mode, 29 | 30 | 38) {
         let [r, s, d, a] = members;

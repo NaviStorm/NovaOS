@@ -11,7 +11,7 @@ pub const CONFLICT: &str = "génération de configuration périmée";
 pub fn hidden(n: &str) -> bool {
     n == STAGE || ROOTS.contains(&n)
 }
-fn crc(bytes: &[u8]) -> u32 {
+pub(super) fn crc(bytes: &[u8]) -> u32 {
     let mut c = !0u32;
     for &b in bytes {
         c ^= b as u32;

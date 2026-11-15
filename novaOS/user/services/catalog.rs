@@ -26,6 +26,13 @@ const BASE: D = D {
     log: true,
 };
 
+pub const JOURNAL_IMAGE: u64 = 3;
+pub const JOURNAL_STORE: u64 = 8;
+pub const JOURNAL: D = D {
+    id: 16, image: JOURNAL_IMAGE, caps: JOURNAL_STORE,
+    start_ticks: 20_000, heartbeat_ticks: 20_000, ..BASE
+};
+
 const CLOCK: D = BASE;
 const TMP_HEALTH: D = D { id: 2, ..BASE };
 const STORAGE_INFO: D = D {

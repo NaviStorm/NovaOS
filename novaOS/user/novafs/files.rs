@@ -138,6 +138,7 @@ struct Session<'a, 'b> {
     temporary: temporary::Views,
     cache: Option<cache_store::Store>,
     configuration: configuration::State,
+    journal: journal::State,
 }
 fn shape(ok: bool) -> rt::Result<()> {
     if ok { Ok(()) } else { Err(rt::BAD_ARGUMENT) }
@@ -622,6 +623,8 @@ mod namespace;
 mod selected;
 mod configuration;
 mod config_store;
+mod journal_store;
+mod journal;
 mod temporary;
 mod tmp_store;
 
@@ -633,7 +636,8 @@ impl Session<'_, '_> {
         let tmp_busy=self.serve_tmp(rx)?;
         let cache_busy=self.serve_cache(rx)?;
         let config_busy = self.serve_configuration()?;
-        Ok(tmp_busy || cache_busy || config_busy)
+        let journal_busy = self.serve_journal()?;
+        Ok(tmp_busy || cache_busy || config_busy || journal_busy)
     }
 
     fn read_page(
@@ -694,6 +698,7 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
         failed: None,
         cache: None,
         configuration: configuration::State::default(),
+        journal: journal::State::default(),
         temporary: temporary::Views::new(matches!(rt::config(1), 41 | 42)),
     };
     let cli = matches!(rt::config(1), 41 | 42 | 73 | 74);
@@ -732,7 +737,7 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             continue;
         }
         let tmp_busy = s.serve_private(ports[i].0)?;
-        let timeout = if tmp_busy { 0 } else if pair { 1 } else if rt::config(14) != 0 { 8 } else { 15000 };
+        let timeout = if tmp_busy { 0 } else if pair { 1 } else if rt::config(14) != 0 || rt::config(16) != 0 { 8 } else { 15000 };
         let m = match rt::receive_options(ports[i].0, timeout, u32::from(cli)) {
             Err(rt::WOULD_BLOCK) if tmp_busy => continue,
             Err(rt::TIMED_OUT) if cli => continue,
