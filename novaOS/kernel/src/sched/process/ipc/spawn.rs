@@ -2,29 +2,55 @@
 //! interprète seul la sélection d'objet. Un parent ne peut suivre qu'un fils à la fois.
 use super::*;
 use crate::terminal as tty;
-const IMAGES: &[(&[u8], bool)] = include!(concat!(env!("OUT_DIR"), "/cli_catalog.rs"));
+const IMAGES: &[(&[u8], u64, bool)] = include!(concat!(env!("OUT_DIR"), "/cli_catalog.rs"));
 
 // Seule une entrée de ce catalogue immutable permet d’obtenir ce type.
-struct Application(&'static [u8]);
+#[derive(Clone, Copy)]
+pub(super) struct Application(&'static [u8], u64);
 impl Application {
     fn entry(index: usize) -> Res<(Self, bool)> {
         IMAGES
             .get(index)
-            .map(|&(image, restricted)| (Self(image), restricted))
+            .filter(|entry| entry.1 != 0)
+            .map(|&(image, app, restricted)| (Self(image, app), restricted))
             .ok_or(BAD_ARGUMENT)
     }
 
-    fn launch(self, data: &[u8]) -> Res<Child> {
-        let _gate = Guard::new();
-        let child = create_image(self.0, data, None, None).map_err(launch_error)?;
-        with(|s| s.processes.get_mut(child.0).application_threads = true);
+    pub(super) fn admission(self, ports: u64, files: bool) -> Res<supervision::Admission> {
+        let mut plan = [0; 24];
+        for (chunk, value) in plan
+            .chunks_exact_mut(8)
+            .zip([self.1, ports, u64::from(files)])
+        {
+            chunk.copy_from_slice(&value.to_le_bytes());
+        }
+        supervision::decide(&plan)
+    }
+
+    pub(super) fn principal(self, data: &[u8], admission: supervision::Admission) -> Res<Child> {
+        let _guard = Guard::new();
+        let child = self.launch(data, admission.workers(), None)?;
+        admission.bind(with(|s| s.processes.get(child.0).instance));
+        Ok(child)
+    }
+
+    // Appelé sous la garde du lanceur ; les droits sont installés avant le premier quantum.
+    pub(super) fn launch(self, data: &[u8], workers: bool, member: Option<Instance>) -> Res<Child> {
+        let space = heap::with_pages(|m| UserSpace::new(m, self.0, data, None))
+            .map_err(|e| launch_error(Error::Memory(e)))?;
+        let child = publish_image(space, None, self.1, member).map_err(launch_error)?;
+        with(|s| {
+            let p = s.processes.get_mut(child.0);
+            p.application_threads = true;
+            p.worker_image = workers.then_some(self.0);
+        });
         Ok(child)
     }
 }
 
 #[cfg(feature = "thread-probe")]
 fn witness() -> Application {
-    let (image, restricted) = Application::entry(IMAGES.len() - 1).expect("témoin admis");
+    let (image, restricted) = Application::entry(15).expect("témoin admis");
     assert!(restricted && image.0.starts_with(b"\x7fELF"));
     image
 }
@@ -36,7 +62,10 @@ pub(super) fn thread_witness() -> &'static [u8] {
 
 #[cfg(feature = "thread-probe")]
 pub(super) fn launch_thread_witness(data: &[u8]) -> Res<Child> {
-    witness().launch(data)
+    let app = witness();
+    let workers = app.admission(0, false)?;
+    let _gate = Guard::new();
+    app.principal(data, workers)
 }
 
 pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64) -> Res<u64> {
@@ -84,12 +113,17 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     }
     data[..24].fill(0);
     let start = hal::timer::counter();
-    let child = image.launch(data)?;
+    drop(_guard);
+    let workers = image.admission(ports, input != 0)?;
+    let _guard = Guard::new();
+    with(|s| threads::status(s))?;
+    let child = image.principal(data, workers)?;
     let setup = with(|s| {
         let pid = child.0;
         if input != 0 {
             let tx = s.ipc.derive(parent, input, pid, SEND.into())?;
             let rx = s.ipc.derive(parent, output, pid, RECEIVE.into())?;
+            bind_grants(s, pid, [tx, rx])?;
             s.ipc.locals.get_mut(pid.slot).bootstrap = tx;
             heap::with_pages(|m| {
                 s.processes
@@ -135,4 +169,78 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
             Err(e)
         }
     }
+}
+
+pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) -> Res<u64> {
+    let _guard = Guard::new();
+    let (pid, key, app, principal, worker_image) = with(|s| -> Res<_> {
+        threads::status(s)?;
+        let p = s.processes.get(s.thread(s.current()).owner.unwrap());
+        Ok((
+            p.pid,
+            p.instance,
+            s.processes.instances.app(p.instance).unwrap(),
+            p.principal,
+            p.worker_image,
+        ))
+    })?;
+    match op {
+        iw::INFO if b == 0 && c == 0 => match a {
+            0 => Ok(key.serial),
+            1 => Ok(app),
+            _ => Err(BAD_ARGUMENT),
+        },
+        iw::WORKER if c == 0 => {
+            let image = worker_image.ok_or(DENIED)?;
+            if !principal || key.serial != a {
+                return Err(DENIED);
+            }
+            if with(|s| s.processes.get(pid).wait_right.is_some()) {
+                return Err(LIMIT);
+            }
+            let child = Application(image, app).launch(&b.to_le_bytes(), false, Some(key))?;
+            let right = WaitRight { target: child.0 };
+            with(|s| s.processes.get_mut(pid).wait_right = Some(right));
+            core::mem::forget(child);
+            Ok(right.key())
+        }
+        iw::OFFER_STOP if b == 0 && c == 0 => {
+            if !principal || key.serial != a || app == iw::SYSTEM || app == iw::SHELL {
+                return Err(DENIED);
+            }
+            with(|s| s.processes.get_mut(pid).stop_offered = true);
+            Ok(0)
+        }
+        iw::STOP | iw::OFFERED if c == 0 => with(|s| {
+            let right = s
+                .processes
+                .get(pid)
+                .wait_right
+                .filter(|r| r.key() == a)
+                .ok_or(DENIED)?;
+            let p = s.processes.get(right.target);
+            if !p.principal || !p.stop_offered || p.outcome.is_some() {
+                return Err(DENIED);
+            }
+            if op == iw::OFFERED {
+                return if b == 0 {
+                    Ok(p.instance.serial)
+                } else {
+                    Err(BAD_ARGUMENT)
+                };
+            }
+            if p.instance.serial != b {
+                return Err(DENIED);
+            }
+            stop_process(s, right.target, Outcome::Exit(125), hal::timer::counter());
+            Ok(0)
+        }),
+        _ => Err(BAD_ARGUMENT),
+    }
+}
+
+pub(super) fn sample() -> Application {
+    Application::entry(iw::SAMPLE_INDEX)
+        .expect("application de référence")
+        .0
 }

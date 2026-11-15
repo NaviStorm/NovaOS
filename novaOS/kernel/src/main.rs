@@ -6,6 +6,9 @@ extern crate alloc;
 
 #[path = "../../abi/native.rs"]
 mod abi;
+#[allow(dead_code)]
+#[path = "../../abi/instances.rs"]
+mod instance_abi;
 mod arch;
 mod boot;
 mod console;
@@ -199,6 +202,10 @@ fn main_thread() {
     if scenario == b"threads-test" {
         memory::user::test_thread_memory();
         sched::process::ipc::thread_probe::run();
+        hal::cpu::halt()
+    }
+    if scenario == b"instances-test" {
+        sched::process::ipc::instance_probe::run();
         hal::cpu::halt()
     }
     if scenario == b"smp-test" {

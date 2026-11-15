@@ -37,6 +37,7 @@ enum Wait {
     Ipc(u64),
     Event(usize),
     Process(process::Pid),
+    Policy(process::Pid),
     Join(Id),
     UserWord { address: u64, deadline: u64 },
     #[cfg(feature = "materiel-lab")]

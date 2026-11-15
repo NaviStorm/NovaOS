@@ -130,7 +130,11 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
         // résolution ordinaire du handle et des droits dans la table du PID.
         crate::hardware::block::wire::PAGE_PORTAL | crate::hardware::block::PORTAL
         | crate::terminal::SPAWN | crate::terminal::PROCESS_SAMPLE | crate::terminal::CONSOLE
-        | PROCESS_WAIT if secondary => Err(DENIED),
+        | iw::WORKER | iw::OFFER_STOP | iw::STOP | iw::OFFERED | PROCESS_WAIT if secondary => Err(DENIED),
+        iw::WATCH => supervision::watch(a, b, c),
+        iw::INFO | iw::WORKER | iw::OFFER_STOP | iw::STOP | iw::OFFERED => {
+            ipc::instance_call(id, a, b, c)
+        }
         THREAD_CREATE..=THREAD_NOTIFY => threads::call(id, args, pc, level),
         IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),

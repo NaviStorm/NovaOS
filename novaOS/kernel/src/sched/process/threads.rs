@@ -69,7 +69,7 @@ pub(super) fn wake_dying(s: &mut Core, pid: Pid) {
                 && matches!(
                     t.state,
                     State::Blocked(
-                        Wait::Ipc(_) | Wait::Join(_) | Wait::UserWord { .. } | Wait::Process(_)
+                        Wait::Ipc(_) | Wait::Join(_) | Wait::UserWord { .. } | Wait::Process(_) | Wait::Policy(_)
                     )
                 )
         }) {
