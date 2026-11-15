@@ -41,9 +41,10 @@ def guest(arch, sector, cpus, image, iso, scenario, out, cut):
     buf = bytearray()
     # Tous les profils gardent leurs rôles réels. Le rôle lecture ne peut arrêter un service.
     console = scenario in ("cli", "services-admin")
-    # Le client observe les trois incarnations par le protocole public avant de
+    # Le client observe les quatre incarnations par le protocole public avant de
     # tester INFO. Une console silencieuse reste utilisable pendant leur démarrage.
-    commands = [(f"@services status {id}", f"service={id} etat=5 ".encode()) for id in (1, 2, 9)]
+    commands = [(f"@services status {id}", f"service={id} etat=5 ".encode()) for id in (1, 2, 9, 10)]
+    commands.append(("@services info 10", rb"service=10 etat=5 .*valeur=1212367171 "))
     if not cut:
         # cat lance un autre ELF avec un sixième tmp. La coupure ciblée des
         # cinq principaux a lieu avant toute commande qui crée une instance.

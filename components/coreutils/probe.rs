@@ -2,6 +2,12 @@
 #![no_main]
 //! Image accessible uniquement dans le profil de qualification.
 use nova_cli::{fileapi::Client, process, protocol as w, runtime as rt, tty};
+#[allow(dead_code)]
+#[path = "../../novaOS/abi/cache.rs"]
+mod cache;
+#[allow(dead_code)]
+#[path = "../../novaOS/abi/tmp.rs"]
+mod tmp;
 fn ambient_refused(c: &mut Client) -> bool {
     c.open(b"/temoin", w::READABLE).err() == Some(rt::DENIED)
         && c.at(w::MKDIR_AT, 1, b"intrus", 0).err() == Some(rt::DENIED)
@@ -21,6 +27,19 @@ fn verify() -> rt::Result<()> {
             unsafe {
                 core::arch::asm!("ud2", options(noreturn, nostack))
             }
+        }
+        ["cache-sans-identite"] => {
+            let cap = rt::value(rt::call(tmp::CAP, 0, 0, 0))?;
+            let mut file = w::frame(w::OPEN_AT, 1, 0);
+            file[2] = w::READABLE | w::WRITABLE | w::CREATE;
+            let name = b"sonde";
+            w::size(&mut file, name.len());
+            file[w::PAYLOAD..w::PAYLOAD + name.len()].copy_from_slice(name);
+            rt::value(rt::call(tmp::CALL, cap, file.as_mut_ptr() as u64, file.len() as u64))?;
+            let mut request = [0; cache::FRAME];
+            let status = rt::call(cache::CONTROL, cache::OPEN, 0,
+                request.as_mut_ptr() as u64).status;
+            if status == rt::DENIED { Ok(()) } else { Err(rt::REFUSED) }
         }
         ["stat"] => {
             let mut c = Client::scoped()?;
