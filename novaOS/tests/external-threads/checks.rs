@@ -46,6 +46,50 @@ fn wait_arrivals(expected: u64) {
     }
 }
 
+struct Joining;
+impl thread::Task for Joining {
+    fn run(target: usize) -> usize {
+        assert_eq!(
+            unsafe { raw::call(raw::THREAD_JOIN, thread::id().unwrap(), 0, 0) }.status,
+            raw::BAD_ARGUMENT
+        );
+        let reply = unsafe { raw::call(raw::THREAD_JOIN, target as u64, 0, 0) };
+        assert_eq!(reply.status, raw::CANCELLED);
+        assert!(thread::cancelled().unwrap());
+        67
+    }
+}
+
+fn cancelled_join() {
+    let target = thread::spawn::<Waiting>(0, 4).unwrap();
+    let old = target.raw();
+    let joiner = thread::spawn::<Joining>(old as usize, 4).unwrap();
+    // Le contrôleur a observé le join enregistré et la cible endormie.
+    while word(1).load(Ordering::Acquire) != 1 {
+        thread::yield_now();
+    }
+    for call in [raw::THREAD_JOIN, raw::THREAD_DETACH] {
+        assert_eq!(unsafe { raw::call(call, old, 0, 0) }.status, raw::REFUSED);
+    }
+    joiner.cancel().unwrap();
+    assert_eq!(joiner.join().unwrap(), 67);
+    target.cancel().unwrap();
+    assert_eq!(target.join().unwrap(), 63);
+
+    let replacement = thread::spawn::<Waiting>(0, 4).unwrap();
+    word(2).store(replacement.raw(), Ordering::Release);
+    // Le contrôleur confirme le même slot et une nouvelle génération vivante.
+    while word(1).load(Ordering::Acquire) != 2 {
+        thread::yield_now();
+    }
+    for call in [raw::THREAD_CANCEL, raw::THREAD_JOIN, raw::THREAD_DETACH] {
+        assert_eq!(unsafe { raw::call(call, old, 0, 0) }.status, raw::DENIED);
+    }
+    replacement.cancel().unwrap();
+    assert_eq!(replacement.join().unwrap(), 63);
+    mark(b"auto-join refuse attenteur unique join annule cible collectee ancien handle refuse");
+}
+
 static DELEGATED: sync::Mutex<Option<ipc::Endpoint>> = sync::Mutex::new(None);
 struct Sender;
 impl thread::Task for Sender {
@@ -199,6 +243,7 @@ impl thread::Task for LastWorker {
     fn run(value: usize) -> usize {
         assert_eq!(thread::tls_get(1).unwrap(), 0);
         thread::tls_set(1, value).unwrap();
+        word(2).fetch_add(1, Ordering::Release);
         while word(1).load(Ordering::Acquire) == 0 {
             thread::yield_now();
         }
@@ -245,7 +290,8 @@ pub(super) fn scenario(mode: u64) {
             panic!("garde accessible");
         }
         3 => {
-            let _first = thread::spawn::<Waiting>(0, 4).unwrap();
+            let first = thread::spawn::<Waiting>(0, 4).unwrap();
+            let _joining = thread::spawn::<Joining>(first.raw() as usize, 4).unwrap();
             let _second = thread::spawn::<Waiting>(0, 4).unwrap();
             let _receiving = thread::spawn::<Receiving>(0, 4).unwrap();
             let _running = thread::spawn::<Burning>(0, 4).unwrap();
@@ -327,6 +373,12 @@ pub(super) fn scenario(mode: u64) {
             thread::yield_now();
             assert_eq!(DONE.load(Ordering::Acquire), 0);
             mark(b"admission absente creation attente TLS refusees ID et yield OK");
+        }
+        9 => cancelled_join(),
+        10 => {
+            let _a = thread::spawn::<LastWorker>(71, 4).unwrap();
+            let _b = thread::spawn::<LastWorker>(73, 4).unwrap();
+            thread::exit(17);
         }
         _ => panic!("mode de qualification inconnu"),
     }

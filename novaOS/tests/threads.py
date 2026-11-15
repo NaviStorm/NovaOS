@@ -1,4 +1,5 @@
 """Compile le témoin natif hors du monorepo, l'admet, puis l'exécute en TCG."""
+import argparse
 import hashlib
 import json
 import os
@@ -51,7 +52,7 @@ def build_application(work, arch, env):
                  "segments_elf": types}
 
 
-def exercise(arch, cpus):
+def exercise(arch, cpus, suffix):
     def check(vm, directory, log):
         deadline = time.monotonic() + 75
         text = ""
@@ -72,8 +73,10 @@ def exercise(arch, cpus):
                    "notifications 1+1+0 concurrence valeur-publiee=29",
                    "FPU SIMD GPR TLS conserves sur deux threads",
                    "THREAD principal collecte dernier resultat=19",
+                   "auto-join refuse attenteur unique join annule cible collectee ancien handle refuse",
+                   "attente et join annules", "THREAD sorties concurrentes=2 dernier=",
                    "THREAD garde adresse=", "faute=confirmee",
-                   "THREAD destruction attentes=2 ipc=1 calcul=1 survivants=0"]
+                   "THREAD destruction attentes=2 ipc=1 calcul=1 join=1 survivants=0"]
         if not all(marker in text for marker in markers):
             raise RuntimeError(f"témoignage utilisateur incomplet\n{text[-1800:]}")
         progress = re.search(r"THREAD calcul cpu=0->(\d+) preemptions=(\d+),(\d+) migrations=(\d+) isolation=OK", text)
@@ -88,10 +91,14 @@ def exercise(arch, cpus):
         return {"vcpus": cpus, "niveau": level, "cpu_final": dest, "preemptions": [a, b],
                 "migrations": moved, "cadres_avant": before, "cadres_apres": after,
                 "blocs": blocks, "tcb_apres": slots}
-    return scenario_vm(arch, "threads-test", check, f"-{cpus}cpu", NOVA_VCPUS=str(cpus))
+    return scenario_vm(arch, "threads-test", check, f"-{cpus}cpu{suffix}", NOVA_VCPUS=str(cpus))
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--vcpus", type=int, choices=(1, 2, 4),
+                        help="exécuter uniquement cette géométrie (par défaut : 1, 2 et 4)")
+    args = parser.parse_args()
     arch = os.environ["NOVA_ARCH"]
     target = TARGETS[arch]
     out = BUILD / "rust-threads"
@@ -100,7 +107,7 @@ def main():
     env = {**os.environ, "RUSTC": rustc}
     with tempfile.TemporaryDirectory(prefix="novaos-native-") as tmp:
         elf, report = build_application(Path(tmp).resolve(), arch, env)
-        cargo_target = out / "cargo"
+        cargo_target = out / ("cargo-cible" if args.vcpus else "cargo")
         subprocess.run([*CARGO, "build", "-p", "novaos", "--release", "--locked", "--offline",
                         "--target", target, "--features", "thread-probe"], cwd=ROOT, check=True,
                        env={**env, "CARGO_TARGET_DIR": str(cargo_target), "NOVA_THREAD_PROBE_ELF": str(elf)})
@@ -109,8 +116,10 @@ def main():
         report["noyau_sha256"] = hashlib.sha256(kernel.read_bytes()).hexdigest()
         report["qemu"] = subprocess.check_output(
             [f"qemu-system-{arch}", "--version"], text=True).splitlines()[0]
-        report["profils"] = [exercise(arch, n) for n in (1, 2, 4)]
-        (out / f"{arch}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+        profiles = [args.vcpus] if args.vcpus else [1, 2, 4]
+        report["profils"] = [exercise(arch, n, "-cible" if args.vcpus else "") for n in profiles]
+        name = f"{arch}-{args.vcpus}cpu" if args.vcpus else arch
+        (out / f"{name}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
 
 
 if __name__ == "__main__":

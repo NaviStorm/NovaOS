@@ -138,6 +138,50 @@ fn wait_for_two_words(pid: Pid) {
     });
 }
 
+fn parked_join(pid: Pid) -> Option<Id> {
+    with(|s| {
+        s.slots
+            .iter()
+            .flatten()
+            .find_map(|thread| match thread.state {
+                State::Blocked(Wait::Join(id))
+                    if thread.owner == Some(pid)
+                        && matches!(
+                            s.thread(id.slot).state,
+                            State::Blocked(Wait::UserWord { .. })
+                        ) =>
+                {
+                    Some(id)
+                }
+                _ => None,
+            })
+    })
+}
+
+fn cancelled_join() {
+    let child = launch(9, 0);
+    let pid = child.0;
+    until(|| parked_join(pid).is_some());
+    let old = parked_join(pid).unwrap();
+    word(pid, 1, Some(1));
+    until(|| word(pid, 2, None) != 0);
+    let replacement = word(pid, 2, None);
+    assert_ne!(old.generation, replacement);
+    until(|| {
+        with(|s| {
+            let t = s.thread(old.slot);
+            assert_eq!((t.owner, t.id.generation), (Some(pid), replacement));
+            matches!(t.state, State::Blocked(Wait::UserWord { .. }))
+        })
+    });
+    word(pid, 1, Some(2));
+    assert_eq!(child.join(), Outcome::Exit(0));
+    hal::log(format_args!(
+        "THREAD slot={} generations={},{} attente et join annules",
+        old.slot, old.generation, replacement
+    ));
+}
+
 fn destroy_waiters() {
     let child = launch(3, 0);
     let pid = child.0;
@@ -150,6 +194,7 @@ fn destroy_waiters() {
                 .any(|t| t.owner == Some(pid) && matches!(t.state, State::Blocked(Wait::Ipc(_))))
         })
     });
+    until(|| parked_join(pid).is_some());
     until(|| word(pid, 5, None) > 0);
     word(pid, 1, Some(1));
     assert_eq!(child.join(), Outcome::Exit(33));
@@ -159,7 +204,29 @@ fn destroy_waiters() {
         .flatten()
         .all(|t| t.owner != Some(pid))));
     hal::log(format_args!(
-        "THREAD destruction attentes=2 ipc=1 calcul=1 survivants=0"
+        "THREAD destruction attentes=2 ipc=1 calcul=1 join=1 survivants=0"
+    ));
+}
+
+fn concurrent_exits() {
+    let child = launch(10, 0);
+    let pid = child.0;
+    until(|| {
+        reap();
+        word(pid, 2, None) == 2 && with(|s| s.processes.get(pid).threads == 2)
+    });
+    // Le principal est collecté, les deux derniers membres attendent le même feu vert.
+    word(pid, 1, Some(1));
+    let Outcome::Exit(result @ (71 | 73)) = child.join() else {
+        panic!("résultat du dernier membre");
+    };
+    assert!(with(|s| s
+        .slots
+        .iter()
+        .flatten()
+        .all(|t| t.owner != Some(pid))));
+    hal::log(format_args!(
+        "THREAD sorties concurrentes=2 dernier={result} survivants=0"
     ));
 }
 
@@ -198,6 +265,7 @@ pub(crate) fn run() {
     let denied = spawn_image(spawn::thread_witness(), &8u64.to_le_bytes(), None, None).unwrap();
     assert_eq!(denied.join(), Outcome::Exit(0));
     assert_eq!(launch(0, 0).join(), Outcome::Exit(0));
+    cancelled_join();
     withdraw_receive_page();
     let notifying = launch(5, 0);
     wait_for_two_words(notifying.0);
@@ -206,6 +274,7 @@ pub(crate) fn run() {
     observe_compute();
     guard_page();
     destroy_waiters();
+    concurrent_exits();
     let last = launch(6, 0);
     until(|| {
         reap();

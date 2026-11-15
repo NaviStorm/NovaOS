@@ -106,7 +106,7 @@ def snapshot(channel, folder, log, when):
 
 def verify(mode, boot, ops, log, seed, image, old):
     cpus, sector = CELLS[mode]
-    require("NovaOS v0.19.0" in log, "Version du binaire invité")
+    require("NovaOS v0.20.0" in log, "Version du binaire invité")
     blk=boot['processus']['bloc']
     require(log.count(f'DEBUG pid={blk} NVME RW admissions statuts exacts verifies')==1,
             "Erreurs de capacité, époque, namespace, plage, taille et adresse dans le service bloc")

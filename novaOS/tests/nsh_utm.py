@@ -280,7 +280,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("distribution", type=Path)
     p.add_argument("sortie", type=Path)
-    p.add_argument("--version", choices=("0.17.0", "0.18.0", "0.19.0"), default="0.17.0",
+    p.add_argument("--version", choices=("0.17.0", "0.18.0", "0.19.0", "0.20.0"), default="0.17.0",
                    help="version attendue du noyau et des commandes (archive UTM distribuée : 0.17.0)")
     args = p.parse_args()
     result = qualifier(args.distribution.resolve(), args.sortie.resolve(), args.version)
