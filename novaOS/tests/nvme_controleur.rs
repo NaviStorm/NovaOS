@@ -352,6 +352,65 @@ fn release_requires_deleted_queues_shutdown_and_reset_with_matching_epoch() {
 }
 
 #[test]
+fn cid_exhaustion_never_wraps_and_never_rings_the_doorbell() {
+    let mut m = Model::new();
+    let mut c = m.activate(9);
+    let cmd = Read { nsid: 1, lba: 0, blocks: 1 };
+    for cid in 7..u16::MAX {
+        c.submit(cmd, 61).unwrap();
+        assert_eq!(c.inflight_cid(), Some(cid));
+        m.complete(1, false, 0);
+        assert_eq!(c.poll(62).unwrap().unwrap().cid, cid);
+    }
+    let tail = u32_at(&m.bar.0, 0x1008);
+    for _ in 0..2 {
+        assert_eq!(c.submit(cmd, 63), Err(Error::Exhausted));
+        assert_eq!(c.inflight_cid(), None);
+        assert_eq!(u32_at(&m.bar.0, 0x1008), tail);
+    }
+    assert!(c.drained().is_none());
+}
+
+#[test]
+fn cid_one_after_reset_uses_only_the_new_incarnations_queue() {
+    let mut old = Model::new();
+    let mut first = old.activate(9);
+    assert_eq!(u32_at(&old.pages[1].0, 12) & 0xffff, 1);
+    for command in [DeleteSq, DeleteCq] {
+        first.submit(command, 40).unwrap();
+        old.complete(0, false, 0);
+        first.poll(41).unwrap();
+    }
+    first.shutdown(42).unwrap();
+    put32(&mut old.bar.0, 0x1c, 1 | 8);
+    assert!(!first.stopped(43).unwrap());
+    put32(&mut old.bar.0, 0x1c, 0);
+    assert!(first.stopped(44).unwrap());
+    let previous = old.memory();
+    assert!(first.drained().unwrap().confirmed(&previous));
+    let mut new = Model::new();
+    core::mem::swap(&mut new.bar, &mut old.bar); // Le même contrôleur redémarre.
+    let mut memory = new.memory();
+    memory.epoch = previous.epoch + 1;
+    for iova in memory.iova.iter_mut().filter(|addr| **addr != 0) {
+        *iova += 0x10000;
+    }
+    assert!(!first.drained().unwrap().confirmed(&memory));
+    let mut second = unsafe { Controller::prepare(memory) }.unwrap();
+    second.enable(50).unwrap();
+    put32(&mut new.bar.0, 0x1c, 1);
+    assert!(second.ready(51).unwrap());
+    second.submit(IdentifyController, 52).unwrap();
+    assert_eq!(second.inflight_cid(), Some(1));
+    // L'ancien CQ contient toujours un succès pour ce même CID.
+    assert_eq!(u32_at(&old.pages[1].0, 12) & 0x1ffff, 0x10001);
+    assert!(second.poll(53).unwrap().is_none());
+    new.identify(IdentifyController, 9);
+    new.complete(0, false, 0);
+    assert_eq!(second.poll(54).unwrap().unwrap().cid, 1);
+}
+
+#[test]
 fn successful_cqe_with_iommu_fault_cannot_publish_even_zero_data() {
     let mut m = Model::new();
     let mut c = m.activate(9);

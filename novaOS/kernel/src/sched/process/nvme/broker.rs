@@ -86,6 +86,27 @@ impl Broker {
     pub(super) fn flight(&self) -> Option<Command> {
         self.pending
     }
+    /// Point d'observation du premier transfert de la transaction P9. La
+    /// FLUSH d'ouverture a déjà fini et les auto-contrôles de droits sont passés.
+    pub(super) fn withdrawal_point(&self, mode: u64) -> Option<u64> {
+        let t = self.ticket.as_ref()?;
+        if self.flushes == 0
+            || self.pending.is_some()
+            || !matches!(t.command, Command::Write { .. })
+        {
+            return None;
+        }
+        match (mode, t.stage) {
+            (profile::REVOKE_BEFORE, Stage::Reserved)
+                if !t.source.is_empty() && self.writes == 0 =>
+            {
+                Some(t.id)
+            }
+            (profile::REVOKE_AFTER, Stage::Completed) if self.writes == 1 => Some(t.id),
+            _ => None,
+        }
+    }
+
     pub(super) fn frozen_source(&self) -> Option<&[u8]> {
         self.ticket
             .as_ref()

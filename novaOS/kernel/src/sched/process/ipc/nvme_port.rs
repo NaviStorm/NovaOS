@@ -34,6 +34,25 @@ impl Domain {
             .is_ok_and(|n| n.rights == rights)
     }
 
+    /// Observer sans consommer la prochaine demande du titulaire dans le
+    /// témoin de révocation ; seul nvme_request effectue le retrait de file.
+    pub(in crate::sched::process) fn nvme_front(
+        &self,
+        pid: Pid,
+        port: u64,
+    ) -> Res<Option<(u64, u64)>> {
+        let n = self.lookup(pid, port, SEND)?;
+        let queue = self.ends.get(n.endpoint.slot());
+        if queue.len == 0 {
+            return Ok(None);
+        }
+        let msg = &queue.deposits[queue.head].msg;
+        if msg.len as usize != wire::REQUEST_SIZE {
+            return Err(BAD_ARGUMENT);
+        }
+        Ok(Some((msg.tag, wire::word(&msg.bytes, 2))))
+    }
+
     pub(in crate::sched::process) fn nvme_request(
         &mut self,
         pid: Pid,

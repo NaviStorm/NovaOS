@@ -861,6 +861,12 @@ impl Engine {
     pub(crate) fn frame_stamp(&self, lease: Lease, slot: u8) -> Option<FrameStamp> {
         self.mapping(lease, slot).map(|p| FrameStamp(p.frame.pa))
     }
+    /// Identité physique privée pour contrelecture QMP des profils NVMe.
+    #[cfg(feature = "nvme-lab")]
+    pub(super) fn nvme_page_pa(&self, lease: Lease, slot: u8) -> Option<u64> {
+        self.active(lease).then_some(())?;
+        Some(self.mapping(lease, slot)?.frame.pa)
+    }
     pub(crate) fn pinned(&self) -> usize {
         self.pages.iter().flatten().count()
     }

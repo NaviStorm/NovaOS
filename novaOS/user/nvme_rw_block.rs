@@ -78,29 +78,36 @@ impl Backend {
         let rd = config(hw::BROKER_SEND);
         let wr = config(hw::WRITE_CAP);
         let fl = config(hw::FLUSH_CAP);
-        for (cap, generation, op, args) in [
-            (rd, epoch, hw::REGISTER_WRITE, [hw::NSID, 0, 1]),
-            (rd, epoch, hw::REGISTER_FLUSH, [hw::NSID, 0, 0]),
-            (rd, epoch - 1, hw::REGISTER, [hw::NSID, 0, 1]),
-            (rd, epoch, hw::REGISTER, [hw::NSID + 1, 0, 1]),
-            (rd, epoch, hw::REGISTER, [hw::NSID, self.sectors, 1]),
+        for (generation, op, args, expected) in [
+            (epoch, hw::REGISTER_WRITE, [hw::NSID, 0, 1], runtime::DENIED),
+            (epoch, hw::REGISTER_FLUSH, [hw::NSID, 0, 0], runtime::DENIED),
+            (epoch - 1, hw::REGISTER, [hw::NSID, 0, 1], runtime::DENIED),
+            (epoch, hw::REGISTER, [hw::NSID + 1, 0, 1], runtime::DENIED),
+            (
+                epoch,
+                hw::REGISTER,
+                [hw::NSID, self.sectors, 1],
+                runtime::BAD_ARGUMENT,
+            ),
         ] {
-            check(matches!(
-                self.broker.call_on(cap, generation, op, args),
-                Err(runtime::DENIED | runtime::BAD_ARGUMENT | runtime::REVOKED)
-            ))?;
+            check(self.broker.call_on(rd, generation, op, args).err() == Some(expected))?;
         }
         if wr != 0 {
-            for (op, args) in [
-                (hw::REGISTER_FLUSH, [hw::NSID, 0, 0]),
-                (hw::REGISTER_WRITE, [hw::NSID, self.sectors, 1]),
-                (hw::REGISTER_WRITE, [hw::NSID + 1, 0, 1]),
-                (hw::REGISTER_WRITE, [hw::NSID, 0, 1 + 4096 / self.sector]),
+            for (op, args, expected) in [
+                (hw::REGISTER_FLUSH, [hw::NSID, 0, 0], runtime::DENIED),
+                (
+                    hw::REGISTER_WRITE,
+                    [hw::NSID, self.sectors, 1],
+                    runtime::BAD_ARGUMENT,
+                ),
+                (hw::REGISTER_WRITE, [hw::NSID + 1, 0, 1], runtime::DENIED),
+                (
+                    hw::REGISTER_WRITE,
+                    [hw::NSID, 0, 1 + 4096 / self.sector],
+                    runtime::BAD_ARGUMENT,
+                ),
             ] {
-                check(matches!(
-                    self.broker.call_on(wr, epoch, op, args),
-                    Err(runtime::DENIED | runtime::BAD_ARGUMENT)
-                ))?;
+                check(self.broker.call_on(wr, epoch, op, args).err() == Some(expected))?;
             }
             let args = [hw::NSID, 0, 1];
             let ticket = hw::word(
@@ -111,7 +118,8 @@ impl Backend {
             check(
                 self.broker
                     .call_on(wr, epoch, hw::STAGE, [ticket, u64::MAX, self.sector])
-                    .is_err(),
+                    .err()
+                    == Some(runtime::BAD_ADDRESS),
             )?;
             let source = [ticket, page.as_ptr() as u64, self.sector];
             page.fill(0x5a);
@@ -128,10 +136,12 @@ impl Backend {
             check(
                 self.broker
                     .call_on(fl, epoch, hw::REGISTER_WRITE, [hw::NSID, 0, 1])
-                    .is_err(),
+                    .err()
+                    == Some(runtime::DENIED),
             )?;
         }
-        nvme_ipc::debug(b"NVME RW droits generation plage taille et adresse verifies")
+        nvme_ipc::debug(b"NVME RW droits generation plage taille et adresse verifies")?;
+        nvme_ipc::debug(b"NVME RW admissions statuts exacts verifies")
     }
 
     fn work(&mut self, tag: u64, f: &mut wire::Wire, page: &mut [u8; 4096]) -> Result<()> {

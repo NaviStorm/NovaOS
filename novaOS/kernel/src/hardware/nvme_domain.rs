@@ -1,5 +1,6 @@
 //! Admission du seul NVMe Q35 sur 00:06.0, avant restitution des pages firmware.
 //! Les adresses physiques, pages de tables, descripteurs et fenêtres UC restent au superviseur.
+mod reuse;
 pub(crate) use super::vtd_lab::Error;
 use super::{
     discovery::{Config, Drhd, vtd},
@@ -303,6 +304,7 @@ pub(crate) struct Domain {
     lease: Option<Lease>,
     memory: Option<Memory>,
     state: State,
+    reuse: Option<reuse::Probe>,
 }
 impl Domain {
     pub(crate) fn new(mut admission: Admission) -> Result<Self> {
@@ -330,7 +332,69 @@ impl Domain {
             lease: None,
             memory: None,
             state: State::Parked,
+            reuse: None,
         })
+    }
+
+    pub(crate) fn arm_reuse_probe(&mut self) -> Result<()> {
+        if self.reuse.is_some()
+            || !matches!(self.state, State::Parked)
+            || self.source != Some(true)
+            || !self.engine.parked()
+            || !self.bar.fenced()
+        {
+            return Err(Error::Denied);
+        }
+        self.reuse = Some(reuse::Probe::new());
+        Ok(())
+    }
+
+    pub(crate) fn trace_owners(&self) -> Result<()> {
+        let lease = self.lease.ok_or(Error::Denied)?;
+        if !matches!(self.state, State::Prepared) || !self.engine.exact_nvme(lease, self.layout()) {
+            return Err(Error::Denied);
+        }
+        for slot in 0..self.layout().pages() as u8 {
+            let pa = self.engine.nvme_page_pa(lease, slot).ok_or(Error::Denied)?;
+            log(format_args!(
+                "NVME P3 bail epoque={} pid={} slot={slot} iova={:#x} gpa={pa:#x}",
+                lease.epoch(),
+                lease.owner(),
+                lease.iova(slot)
+            ));
+        }
+        Ok(())
+    }
+
+    pub(crate) fn witness_pages(&self) -> usize {
+        self.reuse.as_ref().map_or(0, reuse::Probe::pages)
+    }
+
+    pub(crate) fn observe_parked_witnesses(&self) -> Result<()> {
+        if !matches!(self.state, State::Parked)
+            || self.lease.is_some()
+            || self.memory.is_some()
+            || !self.bar.fenced()
+            || !self.engine.parked()
+        {
+            return Err(Error::Quarantine);
+        }
+        self.reuse.as_ref().ok_or(Error::Denied)?.observe(false)
+    }
+
+    pub(crate) fn observe_readback(&self, proof: &Drained<'_>) -> Result<()> {
+        let lease = self.lease.ok_or(Error::Denied)?;
+        let memory = self.memory.as_ref().ok_or(Error::Denied)?;
+        if !matches!(self.state, State::Active)
+            || self.source.is_some()
+            || !self.bar.snapshot(self.bar.command | 4)
+            || !self.dma_clean()
+            || !self.engine.exact_nvme(lease, self.layout())
+            || !proof.confirmed(memory)
+        {
+            return Err(Error::Quarantine);
+        }
+        self.reuse.as_ref().ok_or(Error::Denied)?.observe(true)
     }
 
     fn layout(&self) -> NvmeLayout {
@@ -388,6 +452,13 @@ impl Domain {
             "NVME VT-d SID={SID} DID=1 epoque={} feuilles={leaves} droits={rights} autres=0 service=8 BME=0",
             lease.epoch()
         ));
+        if self.reuse.as_ref().is_some_and(|p| !p.first()) {
+            self.trace_owners()?;
+            self.reuse
+                .as_mut()
+                .unwrap()
+                .reopen(&self.engine, lease, &memory)?;
+        }
         Ok(memory)
     }
     pub(crate) fn cancel_prepared(&mut self) -> Result<()> {
@@ -485,6 +556,10 @@ impl Domain {
         if !matches!(self.state, State::Active) {
             return Err(Error::Denied);
         }
+        let first = self.reuse.as_ref().is_some_and(reuse::Probe::first);
+        if let Some(probe) = self.reuse.as_mut().filter(|_| first) {
+            probe.capture(&self.engine, lease, memory)?;
+        }
         self.state = State::Quarantine;
         self.engine.close(lease)?;
         if !proof.confirmed(memory) || !self.bar.master(false) {
@@ -503,6 +578,10 @@ impl Domain {
             lease.epoch(),
             self.layout().pages()
         ));
+        if let Some(probe) = self.reuse.as_mut().filter(|_| first) {
+            probe.reallocate()?;
+            self.source = None; // La seconde incarnation utilise le profil RECOVER.
+        }
         Ok(())
     }
     /// Issue terminale : garde les propriétaires et interdit toute réouverture.
@@ -528,7 +607,11 @@ impl Domain {
         if !matches!(self.state, State::Prepared) {
             return None;
         }
-        self.engine.nvme_frames(self.lease?, self.layout())
+        let mut frames = self.engine.nvme_frames(self.lease?, self.layout())?;
+        if let Some(probe) = &self.reuse {
+            probe.deny_cpu(&mut frames)?;
+        }
+        Some(frames)
     }
     pub(crate) fn refused_data_intact(&self) -> bool {
         !self.data_page.mapped()
@@ -562,6 +645,9 @@ impl Domain {
         if !matches!(self.state, State::Parked) || !self.engine.parked() || !self.bar.fenced() {
             return Err(Error::Quarantine);
         }
+        if let Some(probe) = self.reuse.as_mut() {
+            probe.finish()?;
+        }
         self.bar.unmap()?;
         self.state = State::Finished;
         Ok(())
@@ -571,7 +657,8 @@ impl Domain {
 /// Les huit cadres de service demeurent publiés dans le remappeur même sans
 /// bail. Une sortie du banc conserve le propriétaire des tables et de tous
 /// les cadres de quarantaine. CLAIMED ne permet qu'un seul Engine par machine.
-static RETAINED: crate::sched::sync::Mutex<Option<Engine>> = crate::sched::sync::Mutex::new(None);
+static RETAINED: crate::sched::sync::Mutex<Option<(Engine, Option<reuse::Probe>)>> =
+    crate::sched::sync::Mutex::new(None);
 impl Drop for Domain {
     fn drop(&mut self) {
         if !matches!(
@@ -586,6 +673,9 @@ impl Drop for Domain {
         let mut retained = RETAINED.lock();
         debug_assert!(retained.is_none());
         // Sûreté : unique déplacement dans Drop, aucun Drop implicite d'Engine.
-        *retained = Some(unsafe { ManuallyDrop::take(&mut self.engine) });
+        *retained = Some((
+            unsafe { ManuallyDrop::take(&mut self.engine) },
+            self.reuse.take(),
+        ));
     }
 }

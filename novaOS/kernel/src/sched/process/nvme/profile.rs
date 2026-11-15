@@ -3,6 +3,10 @@
 pub(in crate::sched::process) const INIT: u64 = 1000;
 pub(in crate::sched::process) const UPDATE: u64 = 1001;
 pub(in crate::sched::process) const RECOVER: u64 = 1002;
+pub(in crate::sched::process) const REVOKE_BEFORE: u64 = 1003;
+pub(in crate::sched::process) const REVOKE_AFTER: u64 = 1004;
+pub(in crate::sched::process) const TIMEOUT_FLUSH: u64 = 1005;
+pub(in crate::sched::process) const REUSE: u64 = 1006;
 pub(in crate::sched::process) const RIGHTS: u64 = 1010;
 pub(in crate::sched::process) const REVOKE_WRITE: u64 = 1011;
 pub(in crate::sched::process) const REVOKE_FLUSH: u64 = 1012;
@@ -20,6 +24,10 @@ pub(in crate::sched::process) fn parse(name: &[u8]) -> Option<u64> {
         b"init" => INIT,
         b"update" => UPDATE,
         b"recover" => RECOVER,
+        b"revoke-before" => REVOKE_BEFORE,
+        b"revoke-after" => REVOKE_AFTER,
+        b"timeout-flush" => TIMEOUT_FLUSH,
+        b"reuse" => REUSE,
         b"rights" => RIGHTS,
         b"revoke-write" => REVOKE_WRITE,
         b"revoke-flush" => REVOKE_FLUSH,
