@@ -229,7 +229,7 @@
 +mod arena;
  #[cfg(all(target_arch = "aarch64", feature = "systeme-gpt"))]
  mod gpt;
- mod io;
+ pub(super) mod io;
 -pub(crate) use lease::commande_groupee;
 +mod trace_dma;
 +pub(crate) use lease::{commande_groupee, multipage};
@@ -636,9 +636,9 @@
              || r.n != taille as usize
 --- a/novaOS/kernel/src/sched/process/ipc/mod.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
-@@ -15,4 +15,5 @@
- mod probes;
- mod traffic;
+@@ -18,4 +18,5 @@
+ #[cfg(feature = "materiel-lab")]
+ mod lab_command;
 +pub(crate) use bulk::multipage::DemandeDma;
  pub(super) use bulk::{admis, lot, termine, transfer};
  pub(crate) use probes::{quiet, run};

@@ -198,9 +198,9 @@
          return false;
 --- a/novaOS/kernel/build.rs
 +++ b/novaOS/kernel/build.rs
-@@ -29,9 +29,9 @@
-     ] {
-         let output = out.join(format!("{}.bin", name.replace('/', "-")));
+@@ -39,9 +39,9 @@
+             continue;
+         }
 -        let file_client = name == "storage/fileclient";
 +        let file_client = matches!(name, "storage/fileclient" | "storage/disk");
          let linker = format!(
@@ -273,7 +273,7 @@
 +++ b/novaOS/kernel/src/hardware/block/mod.rs
 @@ -3,4 +3,5 @@
  mod gpt;
- mod io;
+ pub(super) mod io;
 +pub(crate) use lease::commande_groupee;
  mod lease;
  pub(crate) mod metrics;
@@ -630,9 +630,9 @@
 +}
 --- a/novaOS/kernel/src/sched/process/ipc/mod.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
-@@ -12,5 +12,5 @@
- mod probes;
- mod traffic;
+@@ -15,5 +15,5 @@
+ #[cfg(feature = "materiel-lab")]
+ mod lab_command;
 -pub(super) use bulk::transfer;
 +pub(super) use bulk::{admis, lot, termine, transfer};
  pub(crate) use probes::{quiet, run};
