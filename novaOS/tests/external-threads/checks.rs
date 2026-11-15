@@ -46,6 +46,8 @@ fn wait_arrivals(expected: u64) {
     }
 }
 
+static JOIN_TARGET: sync::Mutex<Option<thread::JoinHandle>> = sync::Mutex::new(None);
+
 struct Joining;
 impl thread::Task for Joining {
     fn run(target: usize) -> usize {
@@ -53,17 +55,48 @@ impl thread::Task for Joining {
             unsafe { raw::call(raw::THREAD_JOIN, thread::id().unwrap(), 0, 0) }.status,
             raw::BAD_ARGUMENT
         );
-        let reply = unsafe { raw::call(raw::THREAD_JOIN, target as u64, 0, 0) };
-        assert_eq!(reply.status, raw::CANCELLED);
+        if target == 0 {
+            // A prend possession du handle de B et le prête pendant join.
+            let handle = JOIN_TARGET.lock().unwrap().take().unwrap();
+            let key = handle.raw();
+            assert_ne!(key, thread::id().unwrap());
+            assert_eq!(handle.join(), Err(Error(raw::CANCELLED)));
+            assert_eq!(handle.raw(), key);
+            // Transfert de propriété vers C. A ne conserve aucune copie.
+            *JOIN_TARGET.lock().unwrap() = Some(handle);
+        } else {
+            // Le processus sera détruit alors que cette jonction est bloquée.
+            let _ = unsafe { raw::call(raw::THREAD_JOIN, target as u64, 0, 0) };
+            panic!("reprise après destruction");
+        }
         assert!(thread::cancelled().unwrap());
         67
+    }
+}
+
+struct Collecting;
+impl thread::Task for Collecting {
+    fn run(target: usize) -> usize {
+        let handle = JOIN_TARGET.lock().unwrap().take().unwrap();
+        assert!(!thread::cancelled().unwrap());
+        assert_eq!(handle.raw(), target as u64);
+        let id = thread::id().unwrap();
+        assert_ne!(id, target as u64);
+        word(3).store(id, Ordering::Release);
+        handle.cancel().unwrap();
+        let value = handle.join().unwrap();
+        assert_eq!(handle.join(), Err(Error(raw::DENIED)));
+        assert_eq!(handle.raw(), 0);
+        value
     }
 }
 
 fn cancelled_join() {
     let target = thread::spawn::<Waiting>(0, 4).unwrap();
     let old = target.raw();
-    let joiner = thread::spawn::<Joining>(old as usize, 4).unwrap();
+    *JOIN_TARGET.lock().unwrap() = Some(target);
+    let joiner = thread::spawn::<Joining>(0, 4).unwrap();
+    let first = joiner.raw();
     // Le contrôleur a observé le join enregistré et la cible endormie.
     while word(1).load(Ordering::Acquire) != 1 {
         thread::yield_now();
@@ -73,8 +106,14 @@ fn cancelled_join() {
     }
     joiner.cancel().unwrap();
     assert_eq!(joiner.join().unwrap(), 67);
-    target.cancel().unwrap();
-    assert_eq!(target.join().unwrap(), 63);
+    let collector = thread::spawn::<Collecting>(old as usize, 4).unwrap();
+    let last = collector.raw();
+    assert_ne!(last, first);
+    assert_ne!(last, old);
+    assert_eq!(collector.join().unwrap(), 63);
+    assert_eq!(word(3).load(Ordering::Acquire), last);
+    assert!(JOIN_TARGET.lock().unwrap().is_none());
+    mark(b"SDK A annule transfere le handle de B a C collecte unique double join refuse");
 
     let replacement = thread::spawn::<Waiting>(0, 4).unwrap();
     word(2).store(replacement.raw(), Ordering::Release);
@@ -172,6 +211,7 @@ pub(super) fn lifecycle() {
     let detached = thread::spawn::<Returning>(17, 4).unwrap();
     let old = detached.raw();
     detached.detach().unwrap();
+    assert_eq!(detached.join(), Err(Error(raw::DENIED)));
     while DONE.load(Ordering::Acquire) < 9 {
         thread::yield_now();
     }
