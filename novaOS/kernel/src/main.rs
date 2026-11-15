@@ -11,6 +11,7 @@ mod abi;
 mod instance_abi;
 mod arch;
 mod boot;
+mod boot_id;
 mod console;
 pub mod hal;
 mod hardware;
@@ -57,6 +58,7 @@ pub extern "C" fn nova_start() -> ! {
 }
 
 fn main_thread() {
+    boot_id::init();
     // Le diagnostic capture les tables tant que le chargeur les possède, sur le BSP seul.
     let inventory = match boot::scenario() {
         b"materiel-inventaire" => Some(hardware::discovery::capture(false)),
@@ -203,6 +205,17 @@ fn main_thread() {
         memory::user::test_thread_memory();
         sched::process::ipc::thread_probe::run();
         hal::cpu::halt()
+    }
+    if scenario == b"instances-reboot" {
+        sched::process::ipc::instance_probe::reboot(None, false);
+        hal::cpu::halt()
+    }
+    for (prefix, forced) in [(b"instances-reboot=".as_slice(), false), (b"instances-coupure=".as_slice(), true)] {
+        if let Some(previous) = scenario.strip_prefix(prefix) {
+            let previous = core::str::from_utf8(previous).expect("identité de test hexadécimale");
+            sched::process::ipc::instance_probe::reboot(Some(previous), forced);
+            hal::cpu::halt()
+        }
     }
     if scenario == b"instances-test" {
         sched::process::ipc::instance_probe::run();

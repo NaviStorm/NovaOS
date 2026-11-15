@@ -1,0 +1,92 @@
+{
+  "base": "d381d8fd15de9c5560163573a14a3c7a38b67a41",
+  "hote": "macOS 27.2",
+  "profils": {
+    "aarch64": {
+      "architecture": "aarch64",
+      "vcpus": 1,
+      "cpu": "max",
+      "elf_sha256": "c59182ce85266cfbc9efcb418ef32f36d2b3277adad73cc7add1eeb44531c5ab",
+      "sources": [
+        "RNDR",
+        "RNDR",
+        "RNDR"
+      ],
+      "qemu": "QEMU emulator version 11.1.3",
+      "identites": [
+        "47d8626582a5782cdaea2377da9e05ca80000000000000020000000000000001",
+        "cdf5574743ff2965540d2ac06eedc2ec80000000000000020000000000000001",
+        "e4f3e11e6fc27c49a93a9a74f420ddd580000000000000020000000000000001"
+      ],
+      "transitions": [
+        "arrêt normal invité puis system_reset QMP",
+        "SIGKILL QEMU puis relance"
+      ],
+      "identites_refusees": [
+        "47d8626582a5782cdaea2377da9e05ca80000000000000020000000000000001",
+        "cdf5574743ff2965540d2ac06eedc2ec80000000000000020000000000000001"
+      ],
+      "sans_entropie": {
+        "cpu": "cortex-a72",
+        "arguments_supplementaires": [
+          "-machine",
+          "dtb-randomness=off"
+        ],
+        "identite_durable": "refusée",
+        "chemin_historique": "réussi"
+      },
+      "journaux_sha256": {
+        "reset.serial": "dc7392385349e65cf8cb98c9d14caa41bc99a68447d68a6fd0fd3d074bc1eb48",
+        "relance.serial": "7e80fd170956c9b8e5e1ac7a9f040074742acf97760a456655294b45aa0b00dd",
+        "absence.serial": "cb2219c89cc3bf4022cf4dbd0db9afde736b49c3e2797f3287f1976ee9bfa556",
+        "cortex-a72.serial": "cb2219c89cc3bf4022cf4dbd0db9afde736b49c3e2797f3287f1976ee9bfa556"
+      },
+      "profil_ordinaire": {
+        "cpu": "cortex-a72",
+        "arguments_supplementaires": [],
+        "identite_durable": "refusée",
+        "chemin_historique": "réussi"
+      }
+    },
+    "x86_64": {
+      "architecture": "x86_64",
+      "vcpus": 1,
+      "cpu": "max",
+      "elf_sha256": "6eda8d148675623a4f757d09755a1e6f72e86c856f5f664a76fef8a616c4fb55",
+      "sources": [
+        "RDRAND",
+        "RDRAND",
+        "RDRAND"
+      ],
+      "qemu": "QEMU emulator version 11.1.3",
+      "identites": [
+        "1259713fae30e3fb255285d5de4d415c80000000000000020000000000000001",
+        "d4d2f588fa5eb0aca4fbdb50daea279880000000000000020000000000000001",
+        "4b9c90733115036d82db103a1153409f80000000000000020000000000000001"
+      ],
+      "transitions": [
+        "arrêt normal invité puis system_reset QMP",
+        "SIGKILL QEMU puis relance"
+      ],
+      "identites_refusees": [
+        "1259713fae30e3fb255285d5de4d415c80000000000000020000000000000001",
+        "d4d2f588fa5eb0aca4fbdb50daea279880000000000000020000000000000001"
+      ],
+      "sans_entropie": {
+        "cpu": "max,rdrand=off,rdseed=off",
+        "arguments_supplementaires": [],
+        "identite_durable": "refusée",
+        "chemin_historique": "réussi"
+      },
+      "journaux_sha256": {
+        "reset.serial": "8593e82a63c77cfde494cb529ab7de98aa58a7ae2fe22461b164e4c4c5b9a819",
+        "relance.serial": "4919e833f7bbd6c9901be9627359cd8b38d12241ebb1ddf1f1d0ac98be8dd7f4",
+        "absence.serial": "2e088b168c8c7664fea34a7e68be92a5d4ace0bcc10cf7bb7ffae6dbe308efdb"
+      }
+    }
+  },
+  "archive": {
+    "nom": "bootid-v0.21.0-journaux.tar.gz",
+    "sha256": "45bca778e369d82e4a94a6e9d186e33e85bbf7600e28f5b5fbc0ccb2a05e01e2"
+  }
+}

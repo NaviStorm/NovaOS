@@ -24,3 +24,7 @@ fn catalogue_unique_et_droits_bornes() {
     assert_eq!(grant(instance_abi::SAMPLE, 0, 1), None);
     assert_eq!(grant(instance_abi::SHELL, 0, 0), None);
 }
+
+#[allow(dead_code)]
+#[path = "../kernel/src/boot_id.rs"]
+mod boot_id;

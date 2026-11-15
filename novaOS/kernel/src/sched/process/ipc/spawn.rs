@@ -171,6 +171,29 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     }
 }
 
+fn export_identity(s: &Core, pid: Pid, key: Instance, address: u64) -> Res<u64> {
+    let bytes = key
+        .identity(crate::boot_id::current())
+        .ok_or(REFUSED)?
+        .encode();
+    let space = s.processes.get(pid).space.as_ref().unwrap();
+    let written = heap::with_pages(|m| Ok(space.copy_to_user(m, address, &bytes))).unwrap();
+    written.then_some(iw::Identity::SIZE).ok_or(BAD_ADDRESS)
+}
+
+fn verify_identity(s: &Core, pid: Pid, key: Instance, address: u64) -> Res<()> {
+    let expected = key.identity(crate::boot_id::current()).ok_or(REFUSED)?;
+    let mut bytes = [0; iw::Identity::SIZE as usize];
+    let space = s.processes.get(pid).space.as_ref().unwrap();
+    let read = heap::with_pages(|m| Ok(space.copy_from_user(m, address, &mut bytes))).unwrap();
+    if !read {
+        return Err(BAD_ADDRESS);
+    }
+    (iw::Identity::decode(bytes) == expected)
+        .then_some(())
+        .ok_or(DENIED)
+}
+
 pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) -> Res<u64> {
     let _guard = Guard::new();
     let (pid, key, app, principal, worker_image) = with(|s| -> Res<_> {
@@ -190,11 +213,13 @@ pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) 
             1 => Ok(app),
             _ => Err(BAD_ARGUMENT),
         },
-        iw::WORKER if c == 0 => {
+        iw::INFO if a == 2 && c == iw::Identity::SIZE => with(|s| export_identity(s, pid, key, b)),
+        iw::WORKER if c == iw::Identity::SIZE => {
             let image = worker_image.ok_or(DENIED)?;
-            if !principal || key.serial != a {
+            if !principal {
                 return Err(DENIED);
             }
+            with(|s| verify_identity(s, pid, key, a))?;
             if with(|s| s.processes.get(pid).wait_right.is_some()) {
                 return Err(LIMIT);
             }
@@ -204,14 +229,15 @@ pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) 
             core::mem::forget(child);
             Ok(right.key())
         }
-        iw::OFFER_STOP if b == 0 && c == 0 => {
-            if !principal || key.serial != a || app == iw::SYSTEM || app == iw::SHELL {
+        iw::OFFER_STOP if b == 0 && c == iw::Identity::SIZE => {
+            if !principal || app == iw::SYSTEM || app == iw::SHELL {
                 return Err(DENIED);
             }
+            with(|s| verify_identity(s, pid, key, a))?;
             with(|s| s.processes.get_mut(pid).stop_offered = true);
             Ok(0)
         }
-        iw::STOP | iw::OFFERED if c == 0 => with(|s| {
+        iw::STOP | iw::OFFERED if c == iw::Identity::SIZE => with(|s| {
             let right = s
                 .processes
                 .get(pid)
@@ -223,15 +249,9 @@ pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) 
                 return Err(DENIED);
             }
             if op == iw::OFFERED {
-                return if b == 0 {
-                    Ok(p.instance.serial)
-                } else {
-                    Err(BAD_ARGUMENT)
-                };
+                return export_identity(s, pid, p.instance, b);
             }
-            if p.instance.serial != b {
-                return Err(DENIED);
-            }
+            verify_identity(s, pid, p.instance, b)?;
             stop_process(s, right.target, Outcome::Exit(125), hal::timer::counter());
             Ok(0)
         }),

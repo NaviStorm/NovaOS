@@ -3,6 +3,19 @@
 pub(super) struct Instance {
     slot: usize,
     pub serial: u64,
+    generation: u64,
+}
+
+impl Instance {
+    // Tous les processus de ce noyau partagent la même époque immuable.
+    // Sans époque attestée, seule la clé interne, volatile, reste disponible.
+    pub fn identity(self, boot: Option<[u8; 16]>) -> Option<crate::instance_abi::Identity> {
+        Some(crate::instance_abi::Identity {
+            boot: boot?,
+            instance: self.serial,
+            generation: self.generation,
+        })
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -28,7 +41,7 @@ struct Entry {
 pub(super) struct Registry<const N: usize> {
     entries: [Option<Entry>; N],
     // Dernière destruction par slot, sans référence ni droit sur les ressources.
-    last_destroyed: [u64; N],
+    last_generation: [u64; N],
     serial: u64,
 }
 
@@ -36,7 +49,7 @@ impl<const N: usize> Registry<N> {
     pub const fn new() -> Self {
         Self {
             entries: [None; N],
-            last_destroyed: [0; N],
+            last_generation: [0; N],
             // Les PID publics sont strictement inférieurs à 2^63.
             serial: 1 << 63,
         }
@@ -50,7 +63,7 @@ impl<const N: usize> Registry<N> {
     }
 
     pub fn available(&self) -> bool {
-        self.serial < u64::MAX && self.entries.iter().any(Option::is_none)
+        self.serial < u64::MAX && self.free_slot().is_some()
     }
 
     pub fn admit_shell(&mut self, key: Instance) {
@@ -59,11 +72,22 @@ impl<const N: usize> Registry<N> {
         e.app = crate::instance_abi::SHELL;
     }
 
+    fn free_slot(&self) -> Option<usize> {
+        self.entries
+            .iter()
+            .enumerate()
+            .position(|(i, entry)| entry.is_none() && self.last_generation[i] < u64::MAX)
+    }
+
     pub fn create(&mut self, app: u64) -> Option<Instance> {
-        let slot = self.entries.iter().position(Option::is_none)?;
+        let slot = self.free_slot()?;
         let serial = self.serial.checked_add(1)?;
         self.serial = serial;
-        let key = Instance { slot, serial };
+        let key = Instance {
+            slot,
+            serial,
+            generation: self.last_generation[slot] + 1,
+        };
         self.entries[slot] = Some(Entry {
             key,
             app,
@@ -135,7 +159,7 @@ impl<const N: usize> Registry<N> {
     }
 
     pub fn destroyed(&self, key: Instance) -> bool {
-        self.last_destroyed.get(key.slot) == Some(&key.serial)
+        self.last_generation.get(key.slot) == Some(&key.generation)
     }
 
     pub fn released(&mut self, key: Instance) {
@@ -143,7 +167,7 @@ impl<const N: usize> Registry<N> {
         e.resources = e.resources.checked_sub(1).expect("double restitution");
         if e.resources == 0 {
             assert!(self.advance(key, Phase::Cleaning, Phase::Destroyed));
-            self.last_destroyed[key.slot] = key.serial;
+            self.last_generation[key.slot] = key.generation;
             self.entries[key.slot] = None;
         }
     }
@@ -182,6 +206,27 @@ mod tests {
         assert_eq!(r.app(b), Some(14));
     }
     #[test]
+    fn durable_identity_and_reboot() {
+        let mut r = Registry::<1>::new();
+        let first = r.create(14).unwrap();
+        assert_eq!(first.identity(None), None);
+        let a = first.identity(Some([7; 16])).unwrap();
+        assert_eq!(a, crate::instance_abi::Identity::decode(a.encode()));
+        assert_eq!(first.identity(Some([7; 16])), Some(a));
+        r.activate(first);
+        r.stop(first);
+        r.exited(first);
+        r.released(first);
+        let reused = r.create(14).unwrap();
+        assert_eq!(reused.slot, first.slot);
+        assert_eq!(reused.generation, first.generation + 1);
+        assert!(!r.stop(first) && !r.attach(first));
+        let after_boot = Registry::<1>::new().create(14).unwrap();
+        assert_eq!(after_boot, first);
+        assert_ne!(after_boot.identity(Some([9; 16])), Some(a));
+    }
+
+    #[test]
     fn exhaustion_is_closed() {
         let mut r = Registry::<1>::new();
         let a = r.create(42).unwrap();
@@ -191,6 +236,9 @@ mod tests {
         r.stop(a);
         r.exited(a);
         r.released(a);
+        r.last_generation[a.slot] = u64::MAX;
+        assert!(!r.available() && r.create(42).is_none());
+        r.last_generation[a.slot] = 0;
         r.serial = u64::MAX;
         assert!(r.create(42).is_none());
     }

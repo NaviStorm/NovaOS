@@ -2,7 +2,9 @@
 
 Branche de développement `codex/instances-0210`, issue de `3514e7804f4c5ea7a0e79d4bfa57632c3938ac9e`. Les manifestes livrés restent à NovaOS v0.20.0, SDK nova-system v0.2.0 et NovaFS v0.9.13 P9. Le périmètre est le lancement d’applications du catalogue et la durée de vie de leurs ressources. [Contrat d’architecture](reconciliation-v0300/contrat-instances-services.md)
 
-## Interface interne expérimentale
+Ce rapport conserve les preuves de la première qualification au commit `49e907321e89909396835f3eaa8c978226d2e875`. Les nouvelles trames et la qualification entre démarrages figurent dans le [rapport BootID](bootid-phase1-v0.21.0.md).
+
+## Interface interne expérimentale de la première qualification
 
 Les arguments sont trois entiers natifs de 64 bits. Le statut et la valeur sont retournés dans les registres habituels de l’ABI v1. Les droits restent dans les tables protégées du noyau. Le chemin ancien de la CLI continue à transmettre son en-tête à `SPAWN`.
 

@@ -18,3 +18,32 @@ pub const OFFERED: u64 = 0x10075;
 
 /// Indice du programme de référence de l’installation embarquée.
 pub const SAMPLE_INDEX: usize = 16;
+
+/// Identité publique, sans autorité. Les octets du BootID sont opaques. Les
+/// deux entiers sont little-endian. Les trois champs forment un seul message.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Identity {
+    pub boot: [u8; 16],
+    pub instance: u64,
+    pub generation: u64,
+}
+
+impl Identity {
+    pub const SIZE: u64 = 32;
+
+    pub fn encode(self) -> [u8; Self::SIZE as usize] {
+        let mut bytes = [0; Self::SIZE as usize];
+        bytes[..16].copy_from_slice(&self.boot);
+        bytes[16..24].copy_from_slice(&self.instance.to_le_bytes());
+        bytes[24..].copy_from_slice(&self.generation.to_le_bytes());
+        bytes
+    }
+
+    pub fn decode(bytes: [u8; Self::SIZE as usize]) -> Self {
+        Self {
+            boot: bytes[..16].try_into().unwrap(),
+            instance: u64::from_le_bytes(bytes[16..24].try_into().unwrap()),
+            generation: u64::from_le_bytes(bytes[24..].try_into().unwrap()),
+        }
+    }
+}

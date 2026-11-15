@@ -92,4 +92,4 @@ Le SDK 0.2.0 reprend la même convention de jonction `THREAD_JOIN(droit, 0, 0)`.
 
 ## Développement v0.21.0 · identité d’instance
 
-La branche de phase 1 ajoute une extension interne à l’ABI v1. Les binaires v0.20.0 conservent leurs sélecteurs, leurs structures et leurs conventions de retour. Le SDK public 0.2.0 garde son contrat de compatibilité. Les identifiants d’instance sont locaux au démarrage et leur connaissance seule ne confère aucun droit. [Contrat des instances](reconciliation-v0300/contrat-instances-services.md) · [Sélecteurs et qualification](instances-phase1-v0.21.0.md)
+La branche de phase 1 ajoute une extension interne à l’ABI v1. Les binaires v0.20.0 conservent leurs sélecteurs, leurs structures et leurs conventions de retour. Le SDK public 0.2.0 garde son contrat de compatibilité. Le numéro local reste disponible. Les opérations expérimentales sensibles exigent désormais le triplet BootID, InstanceID et génération, en plus des droits de l’appelant. [Contrat des instances](reconciliation-v0300/contrat-instances-services.md) · [Sélecteurs actuels et qualification du BootID](bootid-phase1-v0.21.0.md)

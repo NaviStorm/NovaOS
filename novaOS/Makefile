@@ -171,6 +171,10 @@ vtd-edu-test:
 instances-test: kernel
 	python3 -B tests/instances.py
 
+.PHONY: instances-reboot-test
+instances-reboot-test: kernel
+	python3 -B tests/instances_reboot.py
+
 .PHONY: instances-modele-test
 instances-modele-test:
 	mkdir -p build

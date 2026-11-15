@@ -253,3 +253,82 @@ pub(crate) fn run() {
         baseline.free_pages, slots
     ));
 }
+
+/// Premier lancement identique à chaque démarrage du banc. Le client présente
+/// le triplet enregistré sur l’hôte à la même porte que sa nouvelle identité.
+pub(crate) fn reboot(previous: Option<&str>, forced: bool) {
+    if crate::boot_id::current().is_none() {
+        assert!(previous.is_none() && !forced);
+        assert_eq!(sample(14).join(), Outcome::Exit(14));
+        hal::log(format_args!(
+            "INSTANCE reboot sans_entropie identite_refusee=OK historique=OK"
+        ));
+        return;
+    }
+    let mut config = [0; 40];
+    let mode = if previous.is_some() { 13u64 } else { 12 };
+    config[..8].copy_from_slice(&mode.to_le_bytes());
+    if let Some(encoded) = previous {
+        assert!(encoded.len() == 64 && encoded.bytes().all(|b| b.is_ascii_hexdigit()));
+        let old = iw::Identity {
+            boot: u128::from_str_radix(&encoded[..32], 16)
+                .unwrap()
+                .to_be_bytes(),
+            instance: u64::from_str_radix(&encoded[32..48], 16).unwrap(),
+            generation: u64::from_str_radix(&encoded[48..], 16).unwrap(),
+        };
+        config[8..].copy_from_slice(&old.encode());
+    }
+    let app = spawn::sample();
+    let admission = app.admission(0, false).unwrap();
+    let client = app.principal(&config, admission).unwrap();
+    let read = |index| {
+        with(|s| {
+            let p = s.processes.get(client.0);
+            assert!(
+                p.outcome.is_none(),
+                "échec du client de redémarrage {:?}",
+                p.outcome
+            );
+            heap::with_pages(|m| Ok(p.space.as_ref().unwrap().read_data(m, index))).unwrap()
+        })
+    };
+    until(|| read(7) == 1);
+    let mut raw = [0; 32];
+    for (i, chunk) in raw.chunks_exact_mut(8).enumerate() {
+        chunk.copy_from_slice(&read(i + 1).to_le_bytes());
+    }
+    let actual = iw::Identity::decode(raw);
+    assert_eq!(
+        Some(actual),
+        with(|s| s
+            .processes
+            .get(client.0)
+            .instance
+            .identity(crate::boot_id::current()))
+    );
+    hal::log(format_args!(
+        "INSTANCE reboot identite={:032x}{:016x}{:016x}",
+        u128::from_be_bytes(actual.boot),
+        actual.instance,
+        actual.generation
+    ));
+    if let Some(old) = previous {
+        hal::log(format_args!("INSTANCE reboot ancienne={old} refusee=OK"));
+    }
+    if forced {
+        // Garder le principal actif à l’injection par l’hôte.
+        sleep(60 * u64::from(HZ));
+        panic!("arrêt forcé du banc absent");
+    }
+    with(|s| {
+        let space = s.processes.get(client.0).space.as_ref().unwrap();
+        heap::with_pages(|m| {
+            space.write_data(m, 6, 1);
+            Ok(())
+        })
+        .unwrap();
+    });
+    assert_eq!(client.join(), Outcome::Exit(0));
+    hal::log(format_args!("INSTANCE reboot termine=OK"));
+}
