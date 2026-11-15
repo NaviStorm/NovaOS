@@ -1,0 +1,490 @@
+{
+  "perimetre": "Deux nouveaux démarrages ordinaires QEMU sans disque NVMe, cinq comparaisons de framebuffer par QMP sans interface UTM. Contrelecture hors VM des preuves de phase 2 et extraction indépendante des deux générations sur les 16 RAW de coupure.",
+  "base": {
+    "386e53da7e9abb7ce1ef5e32bd64f5c667c74bb7": "14851beb3e9b0ded16a64b886b3204f039b6ad55",
+    "164a98677c9d9640a9f6f4e5aa86c8cbd1253793": "f30b1a6dd2ca903149fad7fc2a9e6b350abd782a",
+    "21a8553cf7babf2b80fd6d1b030ea7117c1bc5e7": "9f6415e645b5d527364befeb0fb6cd4dcd214939"
+  },
+  "versions": {
+    "nova-cli": {
+      "version": "0.19.0",
+      "manifeste": "components/Cargo.toml",
+      "verrou": "components/Cargo.lock"
+    },
+    "novaos": {
+      "version": "0.19.0",
+      "manifeste": "novaOS/kernel/Cargo.toml",
+      "verrou": "novaOS/Cargo.lock"
+    },
+    "novaos-storage": {
+      "version": "0.19.0",
+      "manifeste": "novaOS/user/novafs/Cargo.toml",
+      "verrou": "novaOS/user/novafs/Cargo.lock"
+    },
+    "novafs": {
+      "version": "0.9.13",
+      "manifeste": "novaFS/Cargo.toml",
+      "verrou": "novaFS/Cargo.lock"
+    }
+  },
+  "abi_native": 1,
+  "format": "NovaFS P9",
+  "par_defaut": "VirtIO-blk avec polling. Le binaire ordinaire ne contient pas le client de qualification NVMe. Le pilote NVMe demande nvme-lab x86_64 et un scénario explicite. Les E/S groupées relèvent des profils expérimentaux.",
+  "archive_utm": {
+    "version": "0.17.0",
+    "sha256": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+    "action": "Empreinte relue. Archive existante conservée."
+  },
+  "git_identique_depuis_main_v0180": {
+    "novaFS": "3379ccd023e821e912130c7413113fe7546070cc",
+    "novaOS/abi": "a70d5f23ae91211dd7a54c429e723f5157600e58",
+    "novaOS/kernel/src/hardware/block": "3d28bce5c123b421b1767ee7919cb718f5080db9",
+    "distribution/images": "c1bbc8ed7b6f9908653d4e34ca42d0aecd8ad092"
+  },
+  "git_identique_depuis_phase2": {
+    "novaOS/user/novafs/device.rs": "8f92611eb98ccd187341736321fbe1cb9ada48c9",
+    "novaOS/user/novafs/files.rs": "2f77c7f7ee034e7b72d0eed023ae7a05309c1207",
+    "novaOS/user/novafs/qualification.rs": "49158a09d7818c976052a2f26572e46c19dbb619",
+    "novaOS/user/nvme_diagnostic.rs": "2b4d31f6796338ae2c7e78f0e862169c1c03b11a",
+    "novaOS/user/nvme_driver.rs": "be8a77dcaa94c5ab99726e56541246876ddc8343",
+    "novaOS/user/storage/medium.rs": "e5335e95f2db37e1ded488462015468712b69928",
+    "novaOS/user/storage/fileapi.rs": "656a7742a6b889807762274a44066aa70687d7d4",
+    "novaOS/user/storage/fileclient.rs": "e70165eb4101d59c11b947a47620813380abd5f5",
+    "novaOS/kernel/src/hardware/nvme": "67d9bca09d0261cffa8c9c882cb09e3080a7a874"
+  },
+  "changements_qualifies_separement": "Les manifestes et les bannières changent en phase 3. Les oracles du backend de laboratoire vérifient précisément les refus d’admission. Les essais de révocation et quarantaine supplémentaires concernent le courtier. La chronologie des WRITE/FLUSH, le moteur P9 et le client de transactions de phase 2 sont les références réutilisées.",
+  "compilateur": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "demarrages": {
+    "aarch64": {
+      "cible": "aarch64-unknown-none-softfloat",
+      "features": [],
+      "vcpus": 1,
+      "ram_mio": 256,
+      "banniere": "NovaOS v0.19.0",
+      "niveau": "EL0",
+      "qemu": "QEMU emulator version 11.1.3",
+      "sha256_elf": "2eefdea234a0bbe878e333f7cd1b48f76e27f30a628011c5ed4f7d3890a37196",
+      "sha256_iso": "795429950e5a3691bcd9c0138bf12b60afaf12365b230abab5a33a27710c6f4d",
+      "sha256_serie": "2f2f5656f127620464000c31e9d533ed33c3e02154a66b659052de9623c2b4bc",
+      "demarrage": "OK — aarch64",
+      "binaires_avec_version_cli_0190": [
+        "cat",
+        "cp",
+        "head",
+        "ls",
+        "mkdir",
+        "more",
+        "mv",
+        "pwd",
+        "rm",
+        "rmdir",
+        "tail",
+        "touch",
+        "vi",
+        "wc"
+      ]
+    },
+    "x86_64": {
+      "cible": "x86_64-unknown-none",
+      "features": [],
+      "vcpus": 1,
+      "ram_mio": 256,
+      "banniere": "NovaOS v0.19.0",
+      "niveau": "Ring3",
+      "qemu": "QEMU emulator version 11.1.3",
+      "sha256_elf": "dbfd9b2752c69c862243b7c4a619728107e315279b33b3b1fc56d1846c6b5b4a",
+      "sha256_iso": "99285f5ed4dbb1246a8f1b98f3796f4294458d7ba44e767b637780f460543108",
+      "sha256_serie": "37c2ea7da833d011d5e16ad0147b4512a93db96bfb64b407b0ae9cc1369eec09",
+      "demarrage": "OK — std",
+      "binaires_avec_version_cli_0190": [
+        "cat",
+        "cp",
+        "head",
+        "ls",
+        "mkdir",
+        "more",
+        "mv",
+        "pwd",
+        "rm",
+        "rmdir",
+        "tail",
+        "touch",
+        "vi",
+        "wc"
+      ]
+    }
+  },
+  "captures": {
+    "methode": "Remplacement du seul glyphe 8 par le glyphe 9 dans cinq références PPM 800×600 vérifiées au SHA-256 de v0.18.0. Comparaison de chaque capture intégrale au résultat calculé avant le démarrage.",
+    "images": {
+      "demarrage-aarch64": {
+        "ppm_reference_v0180": "89e3226761990d952e9af8944ca11ab41643e1b20e7731d47e43435e320bfa6c",
+        "ppm_attendu_v0190": "72191c74adcc6a86feda9721bf197a07345cc49fee018e315f76bd324029cd03",
+        "pixels_remplaces": 48,
+        "ppm_capture_v0190": "72191c74adcc6a86feda9721bf197a07345cc49fee018e315f76bd324029cd03"
+      },
+      "demarrage": {
+        "ppm_reference_v0180": "3b07d92f6cc9e7f7bad0b5a658f1c0cdc7df029d73b3e3a2948360a9a344ba30",
+        "ppm_attendu_v0190": "97161d998aba257e9e1d985fe676064249f4337a721cf3b294390ce540dee9a6",
+        "pixels_remplaces": 48,
+        "ppm_capture_v0190": "97161d998aba257e9e1d985fe676064249f4337a721cf3b294390ce540dee9a6"
+      },
+      "composition": {
+        "ppm_reference_v0180": "3c40fe8c613b5fe676077db1a1b4302113ee153c99968c8a80dfa1340c3b4c53",
+        "ppm_attendu_v0190": "f37b597817a050f0906dec007dc1a99887f98c619bac513a29c0b612c1a4c16e",
+        "pixels_remplaces": 48,
+        "ppm_capture_v0190": "f37b597817a050f0906dec007dc1a99887f98c619bac513a29c0b612c1a4c16e"
+      },
+      "frappe": {
+        "ppm_reference_v0180": "c08ce16d45e3c5b8f6d7e3d82731055a0ee7130dfec64139a627ef6d2578676c",
+        "ppm_attendu_v0190": "4d01b10ded6a002fdfc410e5623b51b9d55a9f46220f6c098c7c03bcd2cf8e71",
+        "pixels_remplaces": 48,
+        "ppm_capture_v0190": "4d01b10ded6a002fdfc410e5623b51b9d55a9f46220f6c098c7c03bcd2cf8e71"
+      },
+      "saisie": {
+        "ppm_reference_v0180": "3df01982db0b997c362085ab9c52b803a8877f3856dcea0b4010ff12b343ca1e",
+        "ppm_attendu_v0190": "c4d5833e47727e54fb6e407a384d4bc90b46ecd1b7d0458757db72d1b56a8fca",
+        "pixels_remplaces": 48,
+        "ppm_capture_v0190": "c4d5833e47727e54fb6e407a384d4bc90b46ecd1b7d0458757db72d1b56a8fca"
+      }
+    }
+  },
+  "relecture_phase2": {
+    "rapport_de_references": "novaOS/docs/validation/nvme-phase2-qemu.json",
+    "rapport_regenere_identique_sha256": "712117f2192aeee7386bb966a746b7da3dfb8e86f90b4814b55137ff9a38fe3e",
+    "sha256_elf_phase2": "2303c41646c3574f588e3acbe2d53aaa09d4d7ff4c979314566faa5828a96443",
+    "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+    "sha256_bilan_complet": "6be42909234d35a1335f83756a4c70b76a0bd165ac19a6ac0c99342ea2a5ab35",
+    "cellules_phase2": 45,
+    "demarrages_phase2": 92,
+    "remontages_phase2": 45,
+    "coupures_relues": 16,
+    "nouveaux_demarrages_pour_ces_preuves": 0,
+    "garde_sha256": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6",
+    "controle": "Ancres de générations consécutives, vérification globale du volume, montage invité à froid en lecture seule d’après les traces. Source du transfert = motif candidat de 4 231 octets ; destination = /sortie précédemment confirmée. La nouvelle extraction Darwin compare les octets directement sur le slot de génération 3 et le slot de tête. Les arbres historique et courant peuvent partager ce slot lorsque 3 reste la tête.",
+    "fichiers_distincts_copies": false,
+    "cases": [
+      {
+        "point": "before-write",
+        "secteur": 512,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "350100c1e1e31e0afda438719a52d9291aedd3e3e71b15d5aa1234a6f9f40feb"
+      },
+      {
+        "point": "before-write",
+        "secteur": 4096,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "4a5783e9e10568cafecf93b607294a9882a85a7f8aceea31de61c10b3c0473d2"
+      },
+      {
+        "point": "during-write",
+        "secteur": 512,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "350100c1e1e31e0afda438719a52d9291aedd3e3e71b15d5aa1234a6f9f40feb"
+      },
+      {
+        "point": "during-write",
+        "secteur": 4096,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "4a5783e9e10568cafecf93b607294a9882a85a7f8aceea31de61c10b3c0473d2"
+      },
+      {
+        "point": "after-write",
+        "secteur": 512,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "f87cf9b94876d779fa8896fb76e1b21f468a184e55bea9d92bf6127641ba88a0"
+      },
+      {
+        "point": "after-write",
+        "secteur": 4096,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "b0cd39d865328d2d7bedee35fe79cb6dfd27d49dba5e7aad4add3bae0808cfab"
+      },
+      {
+        "point": "during-f1",
+        "secteur": 512,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "b842775438c504ed967780390988b9621d8d3085aaeb5c92e2e2b239f45a6a7b"
+      },
+      {
+        "point": "during-f1",
+        "secteur": 4096,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "f3844f875c5ad051fadb361d4585d2e6391278d76a7c598b0125ac4b7ffaa598"
+      },
+      {
+        "point": "after-f1",
+        "secteur": 512,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "b842775438c504ed967780390988b9621d8d3085aaeb5c92e2e2b239f45a6a7b"
+      },
+      {
+        "point": "after-f1",
+        "secteur": 4096,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "f3844f875c5ad051fadb361d4585d2e6391278d76a7c598b0125ac4b7ffaa598"
+      },
+      {
+        "point": "during-publish",
+        "secteur": 512,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "0979fca58eee5c4a9e0832073540bc3910f833b0866578752a4599917cb65e73"
+      },
+      {
+        "point": "during-publish",
+        "secteur": 4096,
+        "slot_generation_3": 1,
+        "slot_courant": 1,
+        "generation_courante": 3,
+        "octets_ancien": 6,
+        "octets_actuel": 6,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_raw": "1882431d5d1183c7b68a18dcd289714b17cc35d686b1f2a0e55eb7d9f675541c"
+      },
+      {
+        "point": "during-f2",
+        "secteur": 512,
+        "slot_generation_3": 1,
+        "slot_courant": 0,
+        "generation_courante": 4,
+        "octets_ancien": 6,
+        "octets_actuel": 4231,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_raw": "fc105f49e987fe5ac93951b2573988b9ff90e612912b254812beac2f6a1b57f1"
+      },
+      {
+        "point": "during-f2",
+        "secteur": 4096,
+        "slot_generation_3": 1,
+        "slot_courant": 0,
+        "generation_courante": 4,
+        "octets_ancien": 6,
+        "octets_actuel": 4231,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_raw": "e198438f523133461766f0e61085160359910ff89b35455dfea9b2206fdadf60"
+      },
+      {
+        "point": "after-f2",
+        "secteur": 512,
+        "slot_generation_3": 1,
+        "slot_courant": 0,
+        "generation_courante": 4,
+        "octets_ancien": 6,
+        "octets_actuel": 4231,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_raw": "ef40f0e391ea30ded58e16cf475eae8ef8b203f9c1e0618498cf8aa7d3a3b084"
+      },
+      {
+        "point": "after-f2",
+        "secteur": 4096,
+        "slot_generation_3": 1,
+        "slot_courant": 0,
+        "generation_courante": 4,
+        "octets_ancien": 6,
+        "octets_actuel": 4231,
+        "sha256_ancien": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_actuel": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_raw": "11dcd2389ee7b22a98cc2a0d84e983216553d7ca6c9d36849f16e99d1c1cb064"
+      }
+    ],
+    "eio": {
+      "eio-write": {
+        "retours": {
+          "3": 26,
+          "4": 26,
+          "5": 11,
+          "6": 26
+        },
+        "cid": 26,
+        "statut_nvme": 640,
+        "commande": "WRITE",
+        "codes_dans_les_trames": {
+          "bloc": 26,
+          "p9": 26,
+          "app": 26
+        },
+        "ack": false,
+        "generation": 3
+      },
+      "eio-f1": {
+        "retours": {
+          "3": 26,
+          "4": 26,
+          "5": 11,
+          "6": 26
+        },
+        "cid": 32,
+        "statut_nvme": 640,
+        "commande": "FLUSH",
+        "codes_dans_les_trames": {
+          "bloc": 26,
+          "p9": 26,
+          "app": 26
+        },
+        "ack": false,
+        "generation": 3
+      },
+      "eio-f2": {
+        "retours": {
+          "3": 26,
+          "4": 26,
+          "5": 11,
+          "6": 22
+        },
+        "cid": 34,
+        "statut_nvme": 640,
+        "commande": "FLUSH",
+        "codes_dans_les_trames": {
+          "bloc": 26,
+          "p9": 22,
+          "app": 22
+        },
+        "ack": false,
+        "generation": 4
+      }
+    },
+    "sans_cqe_erreur": {
+      "timeout": {
+        "code_application": 8,
+        "statut_cqe": null,
+        "cid_commande_superviseur": 26,
+        "generation": 3,
+        "ack": false,
+        "serie_sha256": "223944c677d7cf28378036aab1bf58c14d100a2805bc50a892ea081410d2a226"
+      },
+      "dma-fault": {
+        "code_application": 12,
+        "statut_cqe": null,
+        "cid_commande_superviseur": 26,
+        "generation": 3,
+        "ack": false,
+        "serie_sha256": "079e0410455b8d282f2c4f39a46f38428abc188457e5e919d4aa0e6e8ad8686a"
+      }
+    },
+    "chronologie_phase2": {
+      "f1_cid": 32,
+      "f2_cid": 34,
+      "confirmation_apres_f2": true,
+      "write_ancre_cid": 33
+    }
+  },
+  "codec": {
+    "aarch64": {
+      "execution": "Darwin ARM64 natif",
+      "reussis": 2,
+      "echoues": 0,
+      "sha256_executable": "c5a55582a83b1555f08560bed9df48e72484fd077e56a75393abf800bdc81d2f",
+      "sha256_journal": "83651f310c1eb3b308191382767f99caa06930f33fe25779c292860c78785cf8"
+    },
+    "x86_64": {
+      "execution": "Darwin x86_64 sous Rosetta",
+      "reussis": 2,
+      "echoues": 0,
+      "sha256_executable": "c68b9f3925bd9b48bf0c04b317cf141d0300c0e44da04c1f7f7ce2eee5270804",
+      "sha256_journal": "83651f310c1eb3b308191382767f99caa06930f33fe25779c292860c78785cf8"
+    }
+  },
+  "reproduire": [
+    "Depuis novaOS : rustup run stable cargo build --release --locked --offline --target aarch64-unknown-none-softfloat ; pour x86_64 employer x86_64-unknown-none. Construire chaque ISO avec NOVA_ARCH=<arch> sh scripts/iso.sh, puis NOVA_ARCH=<arch> python3 -B tests/demarrage.py --banniere. Si les ELF sont construits ailleurs, renseigner NOVA_KERNEL_ELF pour iso.sh.",
+    "Depuis la racine : python3 -B novaOS/tests/nvme_phase3_recuperation.py novaOS/build/nvme-rw-finale-2303c416 --lecteur novaFS/target/phase2-oracle/aarch64-apple-darwin/release/novafs",
+    "Relire les seules preuves historiques avec tests/nvme_phase2_rapport.py du commit 21a8553cf7babf2b80fd6d1b030ea7117c1bc5e7, sur le dossier de RAW/traces, avec --lecteur et --rapport vers un nouveau fichier. Comparer octet à octet au JSON versionné de phase 2.",
+    "Depuis novaOS, pour chaque architecture Darwin : rustup run stable rustc --edition=2024 --test --target aarch64-apple-darwin tests/nvme_diagnostic.rs -o build/diagnostic-arm64 && build/diagnostic-arm64 ; répéter avec x86_64-apple-darwin."
+  ],
+  "limites": "Les coupures arrêtent le processus QEMU sur un hôte alimenté. Cette contrelecture ne qualifie ni secteur déchiré, ni perte d’alimentation physique, ni SSD réel. Aucun essai GUI UTM, endurance IPC, million d’opérations différentielles ou campagne VirtIO complète en phase 3.",
+  "es_groupees": {
+    "methode": "Sur dix copies isolées, application séquentielle de chaque série dans l’ordre de tests/reconstruire_es_0166.py, avec patch -p1 -F0 --batch --forward. Diagnostic-stockage comprend les sondes service et bloc de phase 2 et stockage-0170-reponses.patch.",
+    "nombres_par_profil": {
+      "regression": 6,
+      "sans": 7,
+      "sonde": 13,
+      "coupe": 10,
+      "defauts": 11,
+      "course": 9,
+      "utm": 8,
+      "utm-sonde": 14,
+      "utm-coupe": 11,
+      "diagnostic-stockage": 13
+    },
+    "profils_valides": 10,
+    "applications_reussies": 102,
+    "correctifs_distincts": 23,
+    "chemins_cibles": 66,
+    "fuzz": 0,
+    "fichiers_cibles_modifies_depuis_phase2": {
+      "novaOS/scripts/iso.sh": "6a931625580d68731007a5bca7a6be22966c8ee99e8924b69e6062d5dc3001b3",
+      "novaOS/user/novafs/Cargo.toml": "0654b5cdb11fd7446cee759de263cc8fe6dbc387853aa5cd55fd9b0de4a9d0d0"
+    },
+    "compilations_de_profils_rejouees": 0,
+    "demarrages_de_profils_rejoues": 0
+  }
+}

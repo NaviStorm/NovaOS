@@ -80,6 +80,19 @@ def wait_for(vm, serial, marker, deadline):
     raise RuntimeError(f"Échéance en attendant {marker!r}, série conservée : {serial}")
 
 
+def wait_trace(vm, trace, start, prefix, deadline):
+    """Attendre le dispatch matériel sans bloquer le thread QEMU/TCG dans HMP."""
+    with trace.open("rb") as fd:
+        fd.seek(start)
+        pending = b""
+        while time.monotonic() < deadline and vm.poll() is None:
+            *lines, pending = (pending + fd.read()).split(b"\n")
+            if any(row.startswith(prefix) for row in lines):
+                return
+            time.sleep(.01)
+    raise RuntimeError(f"Échéance sans événement {prefix!r} dans {trace}")
+
+
 def host_caps(channel, cpus, sector, mode):
     require(len(qmp(channel, "query-cpus-fast")) == cpus, "vCPU QMP")
     item, = [d["inserted"] for d in qmp(channel, "query-block") if d.get("device") == "source"]
@@ -155,7 +168,8 @@ def processes(doc,log,mode,cpus,sector):
     doc["migration"] = re.findall(r"NVME RW migration pilote cpu_origine=(\d+) cpu_final=(\d+)",log)
     doc["revocation"] = re.findall(r"NVME RW revocation slot=(\d+) cpu=(\d+) en_vol=true",log)
     doc["identite_namespace"] = re.findall(r"NVME Identify Namespace nsid=(\d+) secteurs=(\d+) lba=(\d+) eui64=([0-9a-f]+)",log)
-    require(doc["identite_namespace"] == [("1",str(RAW_BYTES//sector),str(sector),"4e4f564130313930")],
+    epochs = 2 if mode=="reuse" else 1
+    require(doc["identite_namespace"] == [("1",str(RAW_BYTES//sector),str(sector),"4e4f564130313930")]*epochs,
             "L'identité et la capacité physiques doivent couvrir le RAW jetable")
     if mode in ("init","update","recover","rights","race"):
         require(all(pid in ends and ends[pid]==0 for pid in (driver,block,service,app_pid)),
@@ -218,7 +232,7 @@ class Bench:
                                stdout=log, stderr=subprocess.STDOUT, check=True)
         return target
 
-    def vm(self, mode, cpus, sector, image, out):
+    def vm(self, mode, cpus, sector, image, out, frame_probe=None):
         out.mkdir(exist_ok=False)
         iso = self.iso("update" if mode in EIO else mode)
         cfg = None
@@ -234,6 +248,9 @@ class Bench:
         cut = mode.removeprefix("cut-") if mode.startswith("cut-") else None
         stop = CUTS.get(cut)
         initial = sha256(image)
+        late_flush = mode in ("revoke-flush", "timeout-flush")
+        late = late_flush or mode in ("timeout","revoke-write","driver-death","client-death")
+        samples = {}
         local, child = socket.socketpair()
         local.settimeout(8)
         with local, child, trace.open("xb") as err, (out/"backend.log").open("xb") as stdout:
@@ -246,11 +263,27 @@ class Bench:
                     channel = SimpleNamespace(stdin=stream, stdout=stream)
                     qmp(channel,"qmp_capabilities")
                     graph = host_caps(channel,cpus,sector,mode)
-                    if mode in ("timeout","revoke-write","revoke-flush","driver-death","client-death"):
-                        evt = "flush_to_disk" if mode == "revoke-flush" else "write_aio"
+                    if mode == "timeout-flush":
+                        hmp(channel, 'qemu-io source "break write_aio premier"')
+                    elif late:
+                        evt = "flush_to_disk" if late_flush else "write_aio"
                         hmp(channel, f'qemu-io source "break {evt} retard"')
                     qmp(channel,"cont")
                     deadline = start+self.timeout
+                    if mode == "timeout-flush":
+                        wait_trace(vm, trace, 0, b"pci_nvme_write ", deadline)
+                        hmp(channel, 'qemu-io source "wait_break premier"')
+                        hmp(channel, 'qemu-io source "break flush_to_disk retard"')
+                        hmp(channel, 'qemu-io source "resume premier"')
+                    if mode == "reuse":
+                        require(frame_probe, "La réadmission exige la contrelecture physique des baux")
+                        for label,witness in (("entre_incarnations","NVME P3 entre incarnations temoins=6"),
+                                              ("avant_retrait_lecture","NVME P3 lectures achevees avant retrait"),
+                                              ("avant_liberation","NVME P3 temoins intacts octets=24576")):
+                            wait_for(vm,serial,witness,deadline)
+                            qmp(channel,"stop")
+                            samples[label]=frame_probe(channel,out,serial.read_text(errors="replace"),label)
+                            qmp(channel,"cont")
                     marker = f"NVME RW coupe {cut}" if cut else "NVME bilan ok="
                     log = wait_for(vm, serial, marker, deadline)
                     if cut:
@@ -260,15 +293,7 @@ class Bench:
                             # HMP wait_break peut retenir le thread principal QEMU/TCG.
                             # L'invité doit d'abord quitter sa porte et atteindre le NVMe.
                             prefix = b"pci_nvme_flush_ns " if stop=="flush_to_disk" else b"pci_nvme_write "
-                            with trace.open("rb") as fd:
-                                fd.seek(pos)
-                                submitted = False
-                                while time.monotonic() < deadline and vm.poll() is None:
-                                    if any(row.startswith(prefix) for row in fd.readlines()):
-                                        submitted = True
-                                        break
-                                    time.sleep(.01)
-                                require(submitted, f"{mode}: aucune soumission NVMe après la porte")
+                            wait_trace(vm,trace,pos,prefix,deadline)
                             hmp(channel, 'qemu-io source "wait_break coupe"')
                         disk = counters(channel)
                         # SIGKILL préserve l'état exact du fichier et empêche le FLUSH
@@ -279,22 +304,25 @@ class Bench:
                     else:
                         require(("NVME bilan ok=false" if mode in EIO else "NVME bilan ok=true") in log,
                                 f"Bilan invité inattendu : {log[-1100:]}")
-                        late = mode in ("timeout","revoke-write","revoke-flush","driver-death","client-death")
                         if late:
                             hmp(channel, 'qemu-io source "wait_break retard"')
+                            if frame_probe:
+                                samples["avant_cqe_tardive"]=frame_probe(channel,out,log,"avant")
                             hmp(channel, 'qemu-io source "resume retard"')
                         qmp(channel, "stop")
                         disk = counters(channel)
                         held = "NVME quarantaine " in log
                         domain = (held_domain(channel,out,mode,log) if held else
                                   observe(channel,out,quarantine=False,serial=log))
+                        if frame_probe:
+                            samples["au_bilan"]=frame_probe(channel,out,log,"final")
                         qmp(channel,"quit")
                         require(vm.wait(timeout=10) == 0, "Sortie QEMU")
             finally:
                 if vm.poll() is None:
                     vm.kill()
                     vm.wait()
-        ops = io_trace(trace, sector)
+        ops = io_trace(trace, sector, 2 if mode=="reuse" else 1)
         doc = {"mode": mode, "vcpus": cpus, "secteur": sector, "arret": "SIGKILL" if cut else "QMP quit",
                "commandes": len(ops), "write":sum(o["op"]=="WRITE" for o in ops),
                "flush":sum(o["op"]=="FLUSH" for o in ops), "compteurs_qemu": disk,
@@ -303,11 +331,13 @@ class Bench:
                "secondes_ecoulees_hote": round(time.monotonic()-start,3), "domaine":domain,
                "confirmation_client":ACK in log, "breakpoint_confirme":stop or None}
         processes(doc,log,mode,cpus,sector)
-        if mode in ("timeout","revoke-write","revoke-flush","driver-death","client-death"):
+        if samples:
+            doc["cadres_physiques"]=samples
+        if late:
             last = ops[-1] if ops else {}
             notices = (out/"backend.log").read_text()
             require("Suspended request 'retard'" in notices and "Resuming request 'retard'" in notices
-                    and last.get("op") == ("FLUSH" if mode == "revoke-flush" else "WRITE")
+                    and last.get("op") == ("FLUSH" if late_flush else "WRITE")
                     and last.get("cqe") == 0 and not doc["confirmation_client"],
                     "La CQE du backend doit devenir observable après la clôture du bail")
             doc["cqe_tardive_apres_bilan"] = last

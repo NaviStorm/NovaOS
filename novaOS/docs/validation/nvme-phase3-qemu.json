@@ -1,0 +1,925 @@
+{
+  "sha256_elf": "5ac916e1088468aa14f73749a7eef1b902a4c0b7bec000d07b651cac89c30eb1",
+  "sha256_lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+  "firmware": {
+    "edk2-x86_64-code.fd": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+    "edk2-i386-vars.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+  },
+  "qemu": "QEMU emulator version 11.1.3",
+  "geometrie": {
+    "raw": 4194304,
+    "zone_p9": 4190208
+  },
+  "phase2_sha256": "712117f2192aeee7386bb966a746b7da3dfb8e86f90b4814b55137ff9a38fe3e",
+  "cellules": [
+    {
+      "profil": "revoke-before",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_serie": "e8826f61fca37a485357268769ff2df66c84c06a2ee495586986b410928ae885",
+      "sha256_trace": "9ae8a17aac8afa84819930a7c36f1adf49e3bd4326602667db52ccab3a0ea266",
+      "sha256_iso": "909a2c0e60c2c232a04b51d7e9ca2105196d5394b64b38522d7961c09f136f2c",
+      "ack_fichier": false,
+      "write": 0,
+      "flush": 1,
+      "retours": {
+        "3": 5,
+        "4": 5,
+        "5": 11,
+        "6": 5
+      },
+      "baux": {
+        "1": [
+          {
+            "iova": 33554432,
+            "gpa": 3178496,
+            "pid": 3
+          },
+          {
+            "iova": 33558528,
+            "gpa": 3182592,
+            "pid": 3
+          },
+          {
+            "iova": 33562624,
+            "gpa": 3186688,
+            "pid": 3
+          },
+          {
+            "iova": 33566720,
+            "gpa": 3190784,
+            "pid": 3
+          },
+          {
+            "iova": 33570816,
+            "gpa": 3194880,
+            "pid": 3
+          },
+          {
+            "iova": 33574912,
+            "gpa": 3198976,
+            "pid": 3
+          }
+        ]
+      },
+      "observations_qmp": {
+        "au_bilan": {
+          "qi_iqh": 144,
+          "qi_iqt": 144,
+          "fsts": 0,
+          "commande_pci": 1027,
+          "cc": 0,
+          "csts": 0,
+          "pages": [
+            {
+              "iova": 33554432,
+              "gpa": 3178496,
+              "pid": 3,
+              "sha256": "633717f1ec25b610583d428ef5c5e55566285d1097c10a79722ebe70a3967319"
+            },
+            {
+              "iova": 33558528,
+              "gpa": 3182592,
+              "pid": 3,
+              "sha256": "e297613189f4a422abba70c23248a3acd8121ab054950fdfe5e1e27cae3ed6d5"
+            },
+            {
+              "iova": 33562624,
+              "gpa": 3186688,
+              "pid": 3,
+              "sha256": "a734186583514782de1b9ad270230d9fdcdfb3b96c24ce101f75f660accf6db8"
+            },
+            {
+              "iova": 33566720,
+              "gpa": 3190784,
+              "pid": 3,
+              "sha256": "24df00855b96da169b2f32fb2c931c0f5f5289291e5be7757262581f2c083b2b"
+            },
+            {
+              "iova": 33570816,
+              "gpa": 3194880,
+              "pid": 3,
+              "sha256": "720de7d829fe0b43bb4eff491ac59dc395615836c06d3e9317d44c0d1dee05a5"
+            },
+            {
+              "iova": 33574912,
+              "gpa": 3198976,
+              "pid": 3,
+              "sha256": "f5630205b3a9f364feaa23804b0771bee75e5ec1f135448af9fa403aeebd05bf"
+            }
+          ],
+          "pte": []
+        }
+      },
+      "refus": {
+        "operation": 23,
+        "statut": 5,
+        "cpu": 1,
+        "ticket": 73
+      },
+      "destination": "ancien",
+      "qi_et_wait": 3,
+      "relecture": {
+        "generation": 3,
+        "sha256_fichier": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6",
+        "ancres": {
+          "0": {
+            "generation": 2,
+            "manifeste_bloc": 7,
+            "sha256": "a35fcf7b40f1f8ed061dc7975f5c59707ae5bd96756fb9d778cacd3172247cb1"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "173fdbebf7096b973cfafdefbb8c6c033e6f454f9d3b1b72520d1ea91e0a79ac"
+          }
+        },
+        "raw_sha256": "fb7f539e04ef38536ab2fc942a7d6f81059fd4bc1c6a1d01c99cef86dc6def87",
+        "trace_sha256": "2b89295d33ea49720421a2af112e6c5900aeec6fae355f76e365f983594bb58b",
+        "serie_sha256": "b84bd5954e638712f32f6390a54c3b48c2a2553d1624e6c69ccde6beb3e2b4ac"
+      }
+    },
+    {
+      "profil": "revoke-after",
+      "vcpus": 4,
+      "secteur": 4096,
+      "sha256_serie": "c0db5262d6b42960c4f031d4046a3cafadf2ee9e98a1009f3c85652a84d8f944",
+      "sha256_trace": "90b43a4e2cf35a4f4e43edc13d96bb714f1716697423c78f6087a3556bb0a3f0",
+      "sha256_iso": "609b10643b9f6bac9da9d72a0f96324590584eccee9c4a9ee0d64a1f23d5a0e4",
+      "ack_fichier": false,
+      "write": 1,
+      "flush": 1,
+      "retours": {
+        "3": 11,
+        "4": 5,
+        "5": 11,
+        "6": 5
+      },
+      "baux": {
+        "1": [
+          {
+            "iova": 33554432,
+            "gpa": 3526656,
+            "pid": 3
+          },
+          {
+            "iova": 33558528,
+            "gpa": 3530752,
+            "pid": 3
+          },
+          {
+            "iova": 33562624,
+            "gpa": 3534848,
+            "pid": 3
+          },
+          {
+            "iova": 33566720,
+            "gpa": 3538944,
+            "pid": 3
+          },
+          {
+            "iova": 33570816,
+            "gpa": 3543040,
+            "pid": 3
+          },
+          {
+            "iova": 33574912,
+            "gpa": 3547136,
+            "pid": 3
+          }
+        ]
+      },
+      "observations_qmp": {
+        "au_bilan": {
+          "qi_iqh": 144,
+          "qi_iqt": 144,
+          "fsts": 0,
+          "commande_pci": 1027,
+          "cc": 0,
+          "csts": 0,
+          "pages": [
+            {
+              "iova": 33554432,
+              "gpa": 3526656,
+              "pid": 3,
+              "sha256": "4cc2c35c2c90d76828fe3005ccbbd6215bfdcd304a95eee7de69d739e364fdc2"
+            },
+            {
+              "iova": 33558528,
+              "gpa": 3530752,
+              "pid": 3,
+              "sha256": "0a971839c430d9bd93b7b369bca957460a4836845dee540756169dfa39e0538d"
+            },
+            {
+              "iova": 33562624,
+              "gpa": 3534848,
+              "pid": 3,
+              "sha256": "5c8bfa730f38197771fe03e2e173187241b54298f156a7a89102f21d88f14e04"
+            },
+            {
+              "iova": 33566720,
+              "gpa": 3538944,
+              "pid": 3,
+              "sha256": "41addd41fa8ac4f9a0ca8530077f1415835b0eb86bea2b053743cd65cc442113"
+            },
+            {
+              "iova": 33570816,
+              "gpa": 3543040,
+              "pid": 3,
+              "sha256": "483af36b56d39f0845c8b21a6ff8d2292e1961a1a2c8991c34f8ef379319ae2a"
+            },
+            {
+              "iova": 33574912,
+              "gpa": 3547136,
+              "pid": 3,
+              "sha256": "3cc59e6220d03f4479db60b965a4e8c17a0ae8c9a6b739d164a19a14d53e1c0f"
+            }
+          ],
+          "pte": []
+        }
+      },
+      "refus": {
+        "operation": 19,
+        "statut": 5,
+        "cpu": 3,
+        "ticket": 73
+      },
+      "effet_sur_raw": {
+        "octets_changes": 4080,
+        "blocs_p9_changes": [
+          2
+        ]
+      },
+      "destination": "ancien",
+      "qi_et_wait": 3,
+      "relecture": {
+        "generation": 3,
+        "sha256_fichier": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6",
+        "ancres": {
+          "0": {
+            "generation": 2,
+            "manifeste_bloc": 7,
+            "sha256": "bf25f11d82602b20c2a8abf926cb3e6c4e4a05829d2578d7fee5699dcc2ea85a"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "75cb641ad1223fb5d99424ab7cb738c1541b2b28c242f74d79b19074f0d9ba26"
+          }
+        },
+        "raw_sha256": "3f49c7ef89ba81e3914e2c5aabf000b53d5f7a74f68146c654b930262b1414fc",
+        "trace_sha256": "f5dce7a704642b445622b144542270e6e619be622f9c4e2ac322649685adfd3a",
+        "serie_sha256": "0d4dfeef681a7aea98fbea6a03ff19688ca552aa03bc15f77f55710b1c7a5b31"
+      }
+    },
+    {
+      "profil": "timeout-flush",
+      "vcpus": 2,
+      "secteur": 4096,
+      "sha256_serie": "1088887014bb0084cb85ad1990a6a91f84b942e39dd27eb6cbbc79cec2bd05c8",
+      "sha256_trace": "bb3ca287e141f07f06f4e609198df7890c7bb7600001c0c997d813ba8cc4abf8",
+      "sha256_iso": "5647dd82faf4b9dd484ec80d4785ca7d53c2c9beac47b868b4e80d302552bfa8",
+      "ack_fichier": false,
+      "write": 6,
+      "flush": 2,
+      "retours": {
+        "3": 8,
+        "4": 8,
+        "5": 11,
+        "6": 8
+      },
+      "baux": {
+        "1": [
+          {
+            "iova": 33554432,
+            "gpa": 3256320,
+            "pid": 3
+          },
+          {
+            "iova": 33558528,
+            "gpa": 3260416,
+            "pid": 3
+          },
+          {
+            "iova": 33562624,
+            "gpa": 3264512,
+            "pid": 3
+          },
+          {
+            "iova": 33566720,
+            "gpa": 3268608,
+            "pid": 3
+          },
+          {
+            "iova": 33570816,
+            "gpa": 3272704,
+            "pid": 3
+          },
+          {
+            "iova": 33574912,
+            "gpa": 3276800,
+            "pid": 3
+          }
+        ]
+      },
+      "observations_qmp": {
+        "avant_cqe_tardive": {
+          "qi_iqh": 96,
+          "qi_iqt": 96,
+          "fsts": 0,
+          "commande_pci": 1027,
+          "cc": 4587521,
+          "csts": 1,
+          "pages": [
+            {
+              "iova": 33554432,
+              "gpa": 3256320,
+              "pid": 3,
+              "sha256": "e61ccd6b20758f99688d2834e634d8c2e09e143e6bacaf9cea2695521554f681"
+            },
+            {
+              "iova": 33558528,
+              "gpa": 3260416,
+              "pid": 3,
+              "sha256": "3eabcc944adbed2a54a46d9524eab1fe3f5f57b0b1c4413be919c6efb49a551b"
+            },
+            {
+              "iova": 33562624,
+              "gpa": 3264512,
+              "pid": 3,
+              "sha256": "5159136a4cfb2ad57b04bdcd959165ba9140595b450d8db8600fd58837ddd5f3"
+            },
+            {
+              "iova": 33566720,
+              "gpa": 3268608,
+              "pid": 3,
+              "sha256": "966b69539cedbd9d6dd2148d865c45e5a77e76bfb3eaebb4d510b69e838a1a31"
+            },
+            {
+              "iova": 33570816,
+              "gpa": 3272704,
+              "pid": 3,
+              "sha256": "5df75cfb0dc48cff0f02dd9d048b1550a329c658f99ef1c55668973c9b757b7f"
+            },
+            {
+              "iova": 33574912,
+              "gpa": 3276800,
+              "pid": 3,
+              "sha256": "537eea232da9935b5d34af3ef7469e823b21f390967d99a17ba5e0f2721c7143"
+            }
+          ],
+          "pte": [
+            [
+              33554432,
+              3256320,
+              1
+            ],
+            [
+              33558528,
+              3260416,
+              2
+            ],
+            [
+              33562624,
+              3264512,
+              1
+            ],
+            [
+              33566720,
+              3268608,
+              2
+            ],
+            [
+              33570816,
+              3272704,
+              2
+            ],
+            [
+              33574912,
+              3276800,
+              1
+            ]
+          ]
+        },
+        "au_bilan": {
+          "qi_iqh": 96,
+          "qi_iqt": 96,
+          "fsts": 0,
+          "commande_pci": 1027,
+          "cc": 4587521,
+          "csts": 2,
+          "pages": [
+            {
+              "iova": 33554432,
+              "gpa": 3256320,
+              "pid": 3,
+              "sha256": "e61ccd6b20758f99688d2834e634d8c2e09e143e6bacaf9cea2695521554f681"
+            },
+            {
+              "iova": 33558528,
+              "gpa": 3260416,
+              "pid": 3,
+              "sha256": "3eabcc944adbed2a54a46d9524eab1fe3f5f57b0b1c4413be919c6efb49a551b"
+            },
+            {
+              "iova": 33562624,
+              "gpa": 3264512,
+              "pid": 3,
+              "sha256": "5159136a4cfb2ad57b04bdcd959165ba9140595b450d8db8600fd58837ddd5f3"
+            },
+            {
+              "iova": 33566720,
+              "gpa": 3268608,
+              "pid": 3,
+              "sha256": "966b69539cedbd9d6dd2148d865c45e5a77e76bfb3eaebb4d510b69e838a1a31"
+            },
+            {
+              "iova": 33570816,
+              "gpa": 3272704,
+              "pid": 3,
+              "sha256": "5df75cfb0dc48cff0f02dd9d048b1550a329c658f99ef1c55668973c9b757b7f"
+            },
+            {
+              "iova": 33574912,
+              "gpa": 3276800,
+              "pid": 3,
+              "sha256": "537eea232da9935b5d34af3ef7469e823b21f390967d99a17ba5e0f2721c7143"
+            }
+          ],
+          "pte": [
+            [
+              33554432,
+              3256320,
+              1
+            ],
+            [
+              33558528,
+              3260416,
+              2
+            ],
+            [
+              33562624,
+              3264512,
+              1
+            ],
+            [
+              33566720,
+              3268608,
+              2
+            ],
+            [
+              33570816,
+              3272704,
+              2
+            ],
+            [
+              33574912,
+              3276800,
+              1
+            ]
+          ]
+        }
+      },
+      "cqe_tardive": {
+        "cid": 32,
+        "op": "FLUSH",
+        "cqe": 0
+      },
+      "cadres_modifies_par_cqe": [],
+      "effet_sur_raw": {
+        "octets_changes": 4896,
+        "blocs_p9_changes": [
+          2,
+          3,
+          4,
+          14,
+          15,
+          16
+        ]
+      },
+      "destination": "ancien",
+      "qi_et_wait": 2,
+      "relecture": {
+        "generation": 3,
+        "sha256_fichier": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6",
+        "ancres": {
+          "0": {
+            "generation": 2,
+            "manifeste_bloc": 7,
+            "sha256": "bf25f11d82602b20c2a8abf926cb3e6c4e4a05829d2578d7fee5699dcc2ea85a"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "75cb641ad1223fb5d99424ab7cb738c1541b2b28c242f74d79b19074f0d9ba26"
+          }
+        },
+        "raw_sha256": "fd941328ea81adb752b22ebdbadef24dc2200a628fe4d19a89c84f337752a89f",
+        "trace_sha256": "b7408fb12e4efcf36d6d587fbbae859e91227d1b0ad2c4265241db6e62fe59a5",
+        "serie_sha256": "a2f26df97348455de972005a234495d240582317e78b9b0e44cd26f63c34957c"
+      }
+    },
+    {
+      "profil": "reuse",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_serie": "b44c09af15a05be837da6f57abfa1fb441b57ff024500146200500d7f18dc100",
+      "sha256_trace": "e077e243bde87e1405d2e20237798fd9a729d0e71557497af50dacbdb6aa7757",
+      "sha256_iso": "dab9b38b36d50d659947ec144782411321ee56f42aa6f84e32f9206ad5b05edf",
+      "ack_fichier": true,
+      "write": 7,
+      "flush": 3,
+      "retours": {
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0
+      },
+      "baux": {
+        "1": [
+          {
+            "iova": 33554432,
+            "gpa": 3178496,
+            "pid": 3
+          },
+          {
+            "iova": 33558528,
+            "gpa": 3182592,
+            "pid": 3
+          },
+          {
+            "iova": 33562624,
+            "gpa": 3186688,
+            "pid": 3
+          },
+          {
+            "iova": 33566720,
+            "gpa": 3190784,
+            "pid": 3
+          },
+          {
+            "iova": 33570816,
+            "gpa": 3194880,
+            "pid": 3
+          },
+          {
+            "iova": 33574912,
+            "gpa": 3198976,
+            "pid": 3
+          }
+        ],
+        "2": [
+          {
+            "iova": 33619968,
+            "gpa": 3121152,
+            "pid": 7
+          },
+          {
+            "iova": 33624064,
+            "gpa": 3112960,
+            "pid": 7
+          },
+          {
+            "iova": 33628160,
+            "gpa": 3280896,
+            "pid": 7
+          },
+          {
+            "iova": 33632256,
+            "gpa": 3284992,
+            "pid": 7
+          },
+          {
+            "iova": 33636352,
+            "gpa": 3289088,
+            "pid": 7
+          }
+        ]
+      },
+      "observations_qmp": {
+        "entre_incarnations": {
+          "qi_iqh": 144,
+          "qi_iqt": 144,
+          "fsts": 0,
+          "commande_pci": 1027,
+          "cc": 0,
+          "csts": 0,
+          "pages": [
+            {
+              "iova": 33554432,
+              "gpa": 3178496,
+              "pid": 3,
+              "sha256": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+            },
+            {
+              "iova": 33558528,
+              "gpa": 3182592,
+              "pid": 3,
+              "sha256": "53d25efde6fa17ffe9747697a1fa49f7495223052f8f32e6486b4a8923e0d72e"
+            },
+            {
+              "iova": 33562624,
+              "gpa": 3186688,
+              "pid": 3,
+              "sha256": "0158ff9b7ba3cc7fa833004dd266fcc3f18e7b4fda7b875c3a46fa2ef549f5a3"
+            },
+            {
+              "iova": 33566720,
+              "gpa": 3190784,
+              "pid": 3,
+              "sha256": "b056b1b4716975b4f76d4b5f9e3a391bcb67ea468fc9c90318161166fd037ed5"
+            },
+            {
+              "iova": 33570816,
+              "gpa": 3194880,
+              "pid": 3,
+              "sha256": "7189ddf9bd2a0b73d50193ab52d4a1857d04e85bae62cefbae5e054582a9bdd6"
+            },
+            {
+              "iova": 33574912,
+              "gpa": 3198976,
+              "pid": 3,
+              "sha256": "f600eca824e84a43f0691b267bd620e462c50da165c5b80e17aecb7a924f1fa8"
+            }
+          ],
+          "pte": []
+        },
+        "avant_retrait_lecture": {
+          "qi_iqh": 192,
+          "qi_iqt": 192,
+          "fsts": 0,
+          "commande_pci": 1031,
+          "cc": 0,
+          "csts": 0,
+          "pages": [
+            {
+              "iova": 33554432,
+              "gpa": 3178496,
+              "pid": 3,
+              "sha256": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+            },
+            {
+              "iova": 33558528,
+              "gpa": 3182592,
+              "pid": 3,
+              "sha256": "53d25efde6fa17ffe9747697a1fa49f7495223052f8f32e6486b4a8923e0d72e"
+            },
+            {
+              "iova": 33562624,
+              "gpa": 3186688,
+              "pid": 3,
+              "sha256": "0158ff9b7ba3cc7fa833004dd266fcc3f18e7b4fda7b875c3a46fa2ef549f5a3"
+            },
+            {
+              "iova": 33566720,
+              "gpa": 3190784,
+              "pid": 3,
+              "sha256": "b056b1b4716975b4f76d4b5f9e3a391bcb67ea468fc9c90318161166fd037ed5"
+            },
+            {
+              "iova": 33570816,
+              "gpa": 3194880,
+              "pid": 3,
+              "sha256": "7189ddf9bd2a0b73d50193ab52d4a1857d04e85bae62cefbae5e054582a9bdd6"
+            },
+            {
+              "iova": 33574912,
+              "gpa": 3198976,
+              "pid": 3,
+              "sha256": "f600eca824e84a43f0691b267bd620e462c50da165c5b80e17aecb7a924f1fa8"
+            }
+          ],
+          "pte": [
+            [
+              33619968,
+              3121152,
+              1
+            ],
+            [
+              33624064,
+              3112960,
+              2
+            ],
+            [
+              33628160,
+              3280896,
+              1
+            ],
+            [
+              33632256,
+              3284992,
+              2
+            ],
+            [
+              33636352,
+              3289088,
+              2
+            ]
+          ]
+        },
+        "avant_liberation": {
+          "qi_iqh": 240,
+          "qi_iqt": 240,
+          "fsts": 0,
+          "commande_pci": 1027,
+          "cc": 0,
+          "csts": 0,
+          "pages": [
+            {
+              "iova": 33554432,
+              "gpa": 3178496,
+              "pid": 3,
+              "sha256": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+            },
+            {
+              "iova": 33558528,
+              "gpa": 3182592,
+              "pid": 3,
+              "sha256": "53d25efde6fa17ffe9747697a1fa49f7495223052f8f32e6486b4a8923e0d72e"
+            },
+            {
+              "iova": 33562624,
+              "gpa": 3186688,
+              "pid": 3,
+              "sha256": "0158ff9b7ba3cc7fa833004dd266fcc3f18e7b4fda7b875c3a46fa2ef549f5a3"
+            },
+            {
+              "iova": 33566720,
+              "gpa": 3190784,
+              "pid": 3,
+              "sha256": "b056b1b4716975b4f76d4b5f9e3a391bcb67ea468fc9c90318161166fd037ed5"
+            },
+            {
+              "iova": 33570816,
+              "gpa": 3194880,
+              "pid": 3,
+              "sha256": "7189ddf9bd2a0b73d50193ab52d4a1857d04e85bae62cefbae5e054582a9bdd6"
+            },
+            {
+              "iova": 33574912,
+              "gpa": 3198976,
+              "pid": 3,
+              "sha256": "f600eca824e84a43f0691b267bd620e462c50da165c5b80e17aecb7a924f1fa8"
+            }
+          ],
+          "pte": []
+        },
+        "au_bilan": {
+          "qi_iqh": 240,
+          "qi_iqt": 240,
+          "fsts": 0,
+          "commande_pci": 1027,
+          "cc": 0,
+          "csts": 0,
+          "pages": [
+            {
+              "iova": 33554432,
+              "gpa": 3178496,
+              "pid": 3,
+              "sha256": "a734186583514782de1b9ad270230d9fdcdfb3b96c24ce101f75f660accf6db8"
+            },
+            {
+              "iova": 33558528,
+              "gpa": 3182592,
+              "pid": 3,
+              "sha256": "24df00855b96da169b2f32fb2c931c0f5f5289291e5be7757262581f2c083b2b"
+            },
+            {
+              "iova": 33562624,
+              "gpa": 3186688,
+              "pid": 3,
+              "sha256": "720de7d829fe0b43bb4eff491ac59dc395615836c06d3e9317d44c0d1dee05a5"
+            },
+            {
+              "iova": 33566720,
+              "gpa": 3190784,
+              "pid": 3,
+              "sha256": "f5630205b3a9f364feaa23804b0771bee75e5ec1f135448af9fa403aeebd05bf"
+            },
+            {
+              "iova": 33570816,
+              "gpa": 3194880,
+              "pid": 3,
+              "sha256": "b33e3dc2a676ac4578cebc253dfbc279cb72094d98d161ac8c96ff15edf84d11"
+            },
+            {
+              "iova": 33574912,
+              "gpa": 3198976,
+              "pid": 3,
+              "sha256": "5981f724b909284cd6a346ffce3a2904bce6146c9ebfabb312ce0863be37ab8e"
+            }
+          ],
+          "pte": []
+        }
+      },
+      "cadres_dma_apres_restitution": 8,
+      "publication": {
+        "f1_cid": 32,
+        "f2_cid": 34,
+        "confirmation_apres_f2": true
+      },
+      "cid_io_reutilises": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "destination": "nouveau",
+      "qi_et_wait": 5,
+      "relecture": {
+        "generation": 4,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6",
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "a7a429f4ef30861a3b49a6428c79432def812967d4df61e8efc51353201fddd0"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "173fdbebf7096b973cfafdefbb8c6c033e6f454f9d3b1b72520d1ea91e0a79ac"
+          }
+        },
+        "raw_sha256": "e2c3f520aaa5e165a83e66e769f52b25c109f0eb18ad8fc029ca0a827c790c8a",
+        "trace_sha256": "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd",
+        "serie_sha256": "435b5a8d704fb24ba377836d87985cbaea12fa887f91a093e4f0262b2890a92e"
+      }
+    },
+    {
+      "profil": "eio-f2",
+      "vcpus": 2,
+      "secteur": 512,
+      "sha256_serie": "533930333658d88c0ccac51a29a6fb4cca293aa8e5776aab9dd02d65f871093a",
+      "sha256_trace": "1e51437400d4ee9c119d7cd2c1ef8f0c876475e634c20b35118766e290b30b71",
+      "sha256_iso": "1fa0b143aaa74a2ca7eed23c0ea2a82525d694777adcc47830dda4f9ba240f55",
+      "ack_fichier": false,
+      "write": 7,
+      "flush": 3,
+      "retours": {
+        "3": 26,
+        "4": 26,
+        "5": 11,
+        "6": 22
+      },
+      "erreur_application": {
+        "retours": {
+          "3": 26,
+          "4": 26,
+          "5": 11,
+          "6": 22
+        },
+        "cid": 34,
+        "statut_nvme": 640,
+        "commande": "FLUSH",
+        "codes_dans_les_trames": {
+          "bloc": 26,
+          "p9": 22,
+          "app": 22
+        }
+      },
+      "destination": "nouveau",
+      "relecture": {
+        "generation": 4,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6",
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "2106e8a112c8f7574d9886b6cc292f6855adc3e8de8119d6d12f94f2ceee3e81"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "173fdbebf7096b973cfafdefbb8c6c033e6f454f9d3b1b72520d1ea91e0a79ac"
+          }
+        },
+        "raw_sha256": "c5fdc09dc2efb5233d31cf1657d2710156d9cdf2049f5e8e08670db509e208ad",
+        "trace_sha256": "fcc61d6efdbeb0cf11eab223b7b96785817ba6df6949026f580997294a7e08dd",
+        "serie_sha256": "50d80c3c4dd4f6be947ff010dd2862573cbe6c10fa4f029b0f9e5a520143da80"
+      }
+    }
+  ]
+}

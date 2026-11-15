@@ -1,6 +1,6 @@
 # Distribution NovaOS
 
-Les sources NovaOS v0.18.0 construisent les noyaux et les ISO de développement AArch64 et x86_64. [Qualification de la version source](../novaOS/docs/fusion-materiel-v0.18.0.md)
+Les sources NovaOS v0.19.0 construisent les noyaux et les ISO de développement AArch64 et x86_64. [Qualification de la version source](../novaOS/docs/nvme-phase3-v0.19.0.md)
 
 L’archive UTM distribuée fournit l’installateur NovaOS v0.17.0 AArch64 pour UTM 5.0.8 à un vCPU avec le shell de scripts, l’éditeur `vi` et NovaFS v0.9.13 P9. L’archive contient le support QCOW2 en lecture seule et le firmware expérimental propre à chaque VM. [Télécharger l’image](images/novaos-0.17.0-utm-aarch64.tar.gz) · [Créer la VM et installer NovaOS](../novaOS/docs/fusion-smp-v0.17.0.md#installation-dans-utm)
 

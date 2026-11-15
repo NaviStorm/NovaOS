@@ -1,5 +1,11 @@
 # Journal des versions
 
+## NovaOS v0.19.0 — Pilote NVMe isolé sur Q35
+
+- Le pilote utilisateur NVMe identifié par le profil `nvme-lab` accède au namespace virtuel par des capacités de lecture, d’écriture et de synchronisation distinctes. Le courtier vérifie la complétion, les bornes du bail et l’état du domaine Intel VT-d. [Contrat matériel](novaOS/docs/nvme-phase2-contrats.md)
+- NovaFS v0.9.13 P9 conserve les deux barrières de publication et rend l’état incertain lorsque F2 échoue. Le client peut alors lire le CID et le statut de la complétion en erreur. Les campagnes QEMU utilisent des disques jetables en secteurs de 512 et 4 096 octets. [Qualification NVMe](novaOS/docs/nvme-phase3-v0.19.0.md)
+- Les ISO ordinaires AArch64 et x86_64 conservent VirtIO-blk et le polling. L’archive UTM distribuée reste celle de v0.17.0. [Versions et preuves de compatibilité](novaOS/docs/validation/nvme-phase3-compatibilite.json)
+
 ## NovaOS v0.18.0 — Découverte matérielle et isolation des pilotes
 
 - Découverte ACPI et PCI bornée, validation des BAR et attribution de ressources MMIO et IRQ au pilote EDU isolé sous QEMU. Le laboratoire qualifie la révocation et la destruction du pilote sur un, deux et quatre vCPU. [Découverte matérielle](novaOS/docs/materiel-v0.18.0.md) · [Qualification MMIO/IRQ](novaOS/docs/materiel-phase2-v0.18.0.md)

@@ -59,6 +59,21 @@ class Proofs(unittest.TestCase):
             with self.assertRaises(ValueError):
                 unconfirmed_write(seed,image,write,512)
 
+    def test_reused_cid_requires_an_explicit_reset(self):
+        first = ("pci_nvme_admin_cmd cid 1 sqid 0 opc 0x6 opname 'NVME_ADM_CMD_IDENTIFY'\n"
+                 "pci_nvme_io_cmd cid 7 nsid 0x1 sqid 1 opc 0x0 opname 'NVME_NVM_CMD_FLUSH'\n"
+                 "pci_nvme_enqueue_req_completion cid 7 cqid 1 dw0 0x0 status 0x0\n")
+        reset = "pci_nvme_mmio_cfg wrote MMIO, config controller config=0x0\n"
+        with tempfile.TemporaryDirectory() as root:
+            trace=Path(root)/"trace"
+            trace.write_text(first+first+reset)
+            with self.assertRaises(ValueError):
+                io_trace(trace,512,2)
+            trace.write_text((first+reset)*2)
+            self.assertEqual([(op["epoque"],op["cid"]) for op in io_trace(trace,512,2)],[(1,7),(2,7)])
+            with self.assertRaises(ValueError):
+                io_trace(trace,512)
+
 
 if __name__ == "__main__":
     unittest.main()

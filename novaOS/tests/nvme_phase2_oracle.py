@@ -88,10 +88,29 @@ def unconfirmed_write(seed, image, ops, sector):
     return {"octets_changes":sum(changed.values()), "blocs_p9_changes":sorted(changed)}
 
 
-def io_trace(path, sector):
+def io_trace(path, sector, epochs=1):
     """Rapprocher CID, commande, NSID, plage et CQ de l'unique paire d'E/S."""
+    lines = path.read_text(errors="replace").splitlines()
+    if epochs == 1:
+        return decode_io(lines, sector)
+    starts = [i for i,line in enumerate(lines) if line.startswith("pci_nvme_admin_cmd cid 1 sqid 0 opc 0x6 ")]
+    require(len(starts)==epochs, "Nombre d'incarnations du contrôleur")
+    require(not any(row.startswith("pci_nvme_io_cmd ") for row in lines[:starts[0]]),
+            "Commande d'E/S antérieure à l'identification initiale")
+    result = []
+    for epoch, (start,end) in enumerate(zip(starts,starts[1:]+[len(lines)]), 1):
+        phase = lines[start:end]
+        reset = [i for i,row in enumerate(phase) if row.endswith("config controller config=0x0")]
+        require(len(reset)==1 and not any(row.startswith(("pci_nvme_io_cmd ","pci_nvme_enqueue_req_completion "))
+                                         for row in phase[reset[0]+1:]),
+                "Frontière matérielle absente ou commande/CQE après réinitialisation")
+        result.extend(op | {"epoque":epoch} for op in decode_io(phase,sector))
+    return result
+
+
+def decode_io(lines, sector):
     ops = {}
-    for line in path.read_text(errors="replace").splitlines():
+    for line in lines:
         if line.startswith("pci_nvme_io_cmd "):
             m = re.match(r"pci_nvme_io_cmd cid (\d+) nsid 0x([0-9a-f]+) sqid (\d+) opc 0x([0-9a-f]+)", line)
             require(m, line)

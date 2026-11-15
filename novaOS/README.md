@@ -1,10 +1,10 @@
-# NovaOS v0.18.0
+# NovaOS v0.19.0
 
 L’installateur AArch64 distribué en v0.17.0 prépare un disque VirtIO vierge et démarre ensuite `nsh` depuis ce disque. Le profil UTM utilise le firmware EDK II expérimental de la VM, un TPM CRB et GICv3 sans ITS. [Image installable v0.17.0](../distribution/images/novaos-0.17.0-utm-aarch64.tar.gz) · [Installation et qualification](docs/fusion-smp-v0.17.0.md#installation-dans-utm)
 
 Depuis la racine du monorepo : `make -C novaOS ARCH=x86_64 block-test` ou `make -C novaOS ARCH=aarch64 block-test`. Pour un démarrage graphique avec une image raw existante : `make -C novaOS ARCH=x86_64 block-run IMAGE=/chemin/absolu/support.raw SECTOR=512` (AArch64 : `ARCH=aarch64`, secteur 512 ou 4096).
 
-Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.18.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
+Un noyau Rust `no_std` commun démarre depuis un CD UEFI avec Limine. En mode diagnostic sans disque, la cible x86_64 affiche `NovaOS v0.19.0`, écrit ses diagnostics sur COM1 et présente le prompt `nova>`. Cliquer dans la fenêtre QEMU pour lui donner le clavier. La cible AArch64 affiche la même bannière puis entre en veille. Les deux noyaux activent leurs propres tables de pages avant l’affichage.
 
 Le tas superviseur fournit un allocateur global Rust commun à x86_64 et AArch64. Il engage ses premières pages à la demande. L’éditeur de ligne utilise désormais un `Vec<char>` réservé de manière faillible et conserve la limite de 128 caractères. [Fonctionnement et tests du tas](docs/tas.md)
 
@@ -22,7 +22,7 @@ Dans le profil `materiel-lab`, un pilote utilisateur lit la carte EDU de QEMU et
 
 Le profil expérimental `nvme-lab` identifie un contrôleur NVMe QEMU Q35 puis lit des blocs de 512 ou 4 096 octets avec un pilote isolé en Ring 3 et un domaine Intel VT-d. [Procédure, résultats et limites de la phase 1](docs/nvme-phase1-v0.19.0.md) · [Conception NVMe](docs/nvme-v0.19.0.md)
 
-Les profils explicites `nvme-rw-*` relient le service NovaFS P9 à un namespace NVMe Q35 jetable. Le courtier sépare les droits READ, WRITE et FLUSH et contrôle la complétion de chaque barrière. [Qualification des écritures, coupures et remontages](docs/nvme-phase2-v0.19.0.md)
+Les profils explicites `nvme-rw-*` relient le service NovaFS P9 à un namespace NVMe Q35 jetable. Le courtier sépare les droits READ, WRITE et FLUSH et contrôle la complétion de chaque barrière. [Qualification des écritures, coupures et remontages](docs/nvme-phase2-v0.19.0.md) · [Qualification finale et limites](docs/nvme-phase3-v0.19.0.md)
 
 ## Stockage et portabilité de NovaFS
 
