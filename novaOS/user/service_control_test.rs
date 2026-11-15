@@ -182,12 +182,18 @@ impl Control {
     }
 }
 
+#[path = "service_caps_race.rs"]
+mod caps_race;
+
 /// Profil de qualification 88 uniquement, séquence sur un volume P9 neuf.
 fn config_race(fs: &mut fileapi::Client) -> rt::Result<()> {
     let mut admin = Control { tx: rt::config(16), rx: rt::config(17), tag: 0 };
     let mut read = Control { tx: rt::config(11), rx: rt::config(12), tag: 0 };
     read.state(9, svc::RUNNING)?;
     let initial = read.call(svc::SETTINGS, 9, 0)?;
+    if initial[12] == 12 {
+        return caps_race::run(fs, admin, read);
+    }
     require(initial[15] == rt::OK && initial[10] == 1 && initial[12] == 0)?;
     // Deux publications en vol avec la même précondition ; aucune collecte
     // d'acquittement entre les deux dépôts dans la file IPC du gestionnaire.
