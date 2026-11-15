@@ -73,6 +73,18 @@ impl Domain {
         true
     }
 
+    pub(in crate::sched::process) fn tmp_arm(&self, service: Pid, key: u64) -> Res<()> {
+        self.lookup(service, key, RECEIVE).map(|_| ())
+    }
+
+    pub(in crate::sched::process) fn tmp_notice(&mut self, service: Pid, key: u64) {
+        if let Ok(node) = self.lookup(service, key, RECEIVE) {
+            if self.add_notification(node.endpoint, tmp::wire::WAKE).is_ok() {
+                self.signal_heads();
+            }
+        }
+    }
+
     fn add_notification(&mut self, ep: Reference, bits: u64) -> Res<()> {
         if bits == 0 {
             return Err(BAD_ARGUMENT);

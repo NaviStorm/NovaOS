@@ -254,11 +254,23 @@ pub(crate) fn qualify_transport(delayed: bool) {
 const MEDIA: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-media.bin"));
 const CONTROL: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-control.bin"));
 const FILE_CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fileclient.bin"));
+// Les versions historiques du relais, du pilote et de nsh gardent leur
+// configuration. Seul NovaFS reçoit le sélecteur distinct de format.
+pub(super) fn cli_mode(profile: u64) -> u64 {
+    match profile {
+        73 => 42,
+        74 => 41,
+        n => n,
+    }
+}
+
 pub(crate) fn volume(mode: u64) -> bool {
     volume_avec(mode, None)
 }
 pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     use crate::hardware::block;
+    let profile = mode;
+    let mode = cli_mode(profile);
     FILE_TIMING.store(matches!(mode, 25 | 36 | 42), Ordering::Relaxed);
     let start = heap::audit(true);
     let hz = hal::timer::counter_hz();
@@ -304,7 +316,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         ipc::launch_block([r, s, d, a, (FILE_CLIENT, 0)], key, mode)
             .map(|[r, s, d, a, p]| ([r, s, d, a], Some(p)))
     } else {
-        ipc::launch_block_identifie(members, key, mode, session.map(|(_, id)| id))
+        ipc::launch_block_identifie(members, key, profile, session.map(|(_, id)| id))
             .map(|group| (group, None))
     };
     let ([relay, service, driver, app], peer) = match group {

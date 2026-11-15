@@ -19,14 +19,16 @@ from session_cli import HOST, LONG, fixture, machine
 
 class Terminal:
     def __init__(self, arch, sector, image, label, test=False, *, qmp_bloc=None, defaut_bloc=None, entries=None,
-                 journal=None, diagnostic=False):
+                 journal=None, diagnostic=False, historique_p8=False):
         if diagnostic and journal is None:
             raise ValueError("Le diagnostic requiert un journal privé.")
+        options = {}
         if journal is not None:
             # Chaque passage journalisé conserve le média ayant effectivement démarré la VM.
-            cmd, env = machine(arch, sector, image, test, iso=journal.with_suffix(".iso").resolve())
-        else:
-            cmd, env = machine(arch, sector, image, test)
+            options["iso"] = journal.with_suffix(".iso").resolve()
+        if historique_p8:
+            options["historique_p8"] = True
+        cmd, env = machine(arch, sector, image, test, **options)
         if entries is not None:
             assert entries in (8, 16, 32, 64, 128, 256)
             index, = [i for i, arg in enumerate(cmd) if str(arg).startswith("virtio-blk-pci,id=b,")]
@@ -237,17 +239,25 @@ def verify_processes(log, arch):
     assert end == [("0", "0", "0")], end
 
 
-def check(arch, sector, tmp):
+def check(arch, sector, tmp, *, preuves=False):
     image = tmp / "volume.raw"
     fixture(image, sector)
+    if preuves:
+        from preuves_stockage import figer_initiale
+        figer_initiale(image)
+
+    def ouvrir(label, test=False):
+        journal = tmp / (label + ".serial") if preuves else None
+        return Terminal(arch, sector, image, label, test=test, historique_p8=True, journal=journal)
+
     initial = verify_image(image, sector)
-    with Terminal(arch, sector, image, "session", test=True) as t:
+    with ouvrir("session", test=True) as t:
         measures = interactive(t)
     verify_processes(t.archive.read_text(errors="replace"), arch)
     committed = verify_image(image, sector)
     assert committed > initial
 
-    with Terminal(arch, sector, image, "remontage") as t:
+    with ouvrir("remontage") as t:
         t.until(b"nsh> ")
         t.line("cd documents")
         t.line("ls", has=["répertoire répertoire neuf"], absent=[b"exemple.txt"])
@@ -257,13 +267,13 @@ def check(arch, sector, tmp):
         t.exit()
     assert verify_image(image, sector) == committed
 
-    with Terminal(arch, sector, image, "coupure") as t:
+    with ouvrir("coupure") as t:
         t.until(b"nsh> ")
         t.line("mkdir confirme", absent=[b"erreur", b"statut "])
         # La sortie du contexte tue QEMU avant exit/CLOSE.
     after = verify_image(image, sector)
     assert after == committed + 1, (committed, after)
-    with Terminal(arch, sector, image, "apres-coupure") as t:
+    with ouvrir("apres-coupure") as t:
         t.until(b"nsh> ")
         t.line("cd confirme")
         t.line("pwd", has=[b"/confirme\r\n"])
@@ -272,13 +282,25 @@ def check(arch, sector, tmp):
 
     path = ROOT / "build" / f"cli-{arch}-{sector}.json"
     path.write_text(json.dumps(measures, indent=2, ensure_ascii=False) + "\n")
+    if preuves:
+        from preuves_stockage import empreinte, enregistrer
+        enregistrer(tmp, "resultat.json", dict(architecture=arch, secteur=sector,
+                    generations=[initial, committed, after], sha256_image=empreinte(image),
+                    journaux={j.name: empreinte(j) for j in sorted(tmp.glob("*.serial"))},
+                    mesures=measures))
     print(f"OK — {arch}/{sector} : terminal, ELF isolés, révocation, faute, remontages G{committed}/G{after}", flush=True)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sector", type=int, choices=[512, 4096])
+    parser.add_argument("--preuves", type=Path, help="Conserver les volumes fictifs et les journaux des quatre démarrages.")
     args = parser.parse_args()
     for sector in [args.sector] if args.sector else [512, 4096]:
-        with tempfile.TemporaryDirectory(prefix="nova-cli-") as tmp:
-            check(os.environ["NOVA_ARCH"], sector, Path(tmp))
+        if args.preuves:
+            tmp = args.preuves.resolve() / f"{os.environ['NOVA_ARCH']}-{sector}"
+            tmp.mkdir(parents=True, exist_ok=False)
+            check(os.environ["NOVA_ARCH"], sector, tmp, preuves=True)
+        else:
+            with tempfile.TemporaryDirectory(prefix="nova-cli-") as tmp:
+                check(os.environ["NOVA_ARCH"], sector, Path(tmp))

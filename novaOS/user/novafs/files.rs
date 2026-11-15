@@ -91,6 +91,7 @@ struct Client {
     mounted: bool,
     closed: bool,
     scoped: bool,
+    private_root: Option<u64>,
     copy_source: Option<u64>,
     rights: u8,
     cwd: (u64, u8),
@@ -107,6 +108,7 @@ impl Client {
             mounted: false,
             closed: false,
             scoped: false,
+            private_root: None,
             copy_source: None,
             rights,
             cwd: (0, 0),
@@ -133,11 +135,105 @@ struct Session<'a, 'b> {
     next: u64,
     pending: Option<Pending>,
     failed: Option<u64>,
+    temporary: temporary::Views,
 }
 fn shape(ok: bool) -> rt::Result<()> {
     if ok { Ok(()) } else { Err(rt::BAD_ARGUMENT) }
 }
 impl Session<'_, '_> {
+    fn require_cli_format(&self, p9: bool) -> rt::Result<()> {
+        // Les deux ancres et leurs manifestes sont lus et vérifiés via le
+        // codec P9 avant un montage inscriptible, donc avant même son FLUSH.
+        let mut profile = None;
+        for slot in 0..=1 {
+            let anchor = Anchor::decode(&self.dev.read(slot).map_err(error)?, slot).map_err(error)?;
+            let bytes = self.dev.read(anchor.manifest.block).map_err(error)?;
+            let manifest = novafs::codec::Manifest::decode(&bytes, anchor.ids, anchor.manifest)
+                .map_err(error)?;
+            let seen = (anchor.ids, manifest.atime.is_some());
+            if profile.replace(seen).is_some_and(|previous| previous != seen) {
+                return Err(w::CORRUPT);
+            }
+        }
+        if profile.is_none_or(|(_, has_dates)| has_dates != p9) {
+            let message: &[u8] = if p9 {
+                b"TMP format P8 non pris en charge"
+            } else {
+                b"CLI historique P8 refuse le format P9"
+            };
+            rt::call(rt::DEBUG_WRITE, message.as_ptr() as u64, message.len() as u64, 0);
+            return Err(w::UNSUPPORTED);
+        }
+        Ok(())
+    }
+
+    fn mount_volume(&mut self) -> rt::Result<()> {
+        if self.fs.is_some() {
+            return Ok(());
+        }
+        #[cfg(feature = "nvme-lab")]
+        if rt::config(1) == 1000 {
+            // Le formatage de laboratoire exige le bail vierge entier.
+            // Le moteur vérifie tous ses blocs avant sa première écriture.
+            let ids = novafs::Ids { fs: *b"NOVA0190-Q35-P9F", lv: *b"NOVA0190-Q35-P9V" };
+            self.clock.sample()?;
+            let fs = Engine::format_p9(self.dev, ids, novafs::time::Atime::No, Some(self.clock.clone())).map_err(error)?;
+            fs.unmount().map_err(error)?;
+        }
+        let first = self.dev.read(0).map_err(error)?;
+        if &first[..8] != b"NOVAP0FS" {
+            return Err(w::UNSUPPORTED);
+        }
+        if rt::config(1) == 23 {
+            crate::qualification::stop(b"COUPURE remontage");
+        }
+        let ids = Anchor::decode(&first, 0).map_err(error)?.ids;
+        let mut lv = [0u8; 16];
+        if rt::config(1) == 41 {
+            lv[..8].copy_from_slice(&rt::config(2).to_le_bytes());
+            lv[8..].copy_from_slice(&rt::config(3).to_le_bytes());
+        }
+        if lv != [0; 16] {
+            let mut fs_id = lv;
+            fs_id[15] ^= 1;
+            if ids != (novafs::Ids { fs: fs_id, lv }) {
+                return Err(w::CORRUPT);
+            }
+            let check =
+                Engine::mount_current(self.dev, ids, Mode::ReadOnly).map_err(error)?;
+            if check.atime_policy() != Some(novafs::time::Atime::Relative) {
+                return Err(w::UNSUPPORTED);
+            }
+            check.unmount().map_err(error)?;
+        }
+        let mode = if self.writable {
+            Mode::ReadWrite
+        } else {
+            Mode::ReadOnly
+        };
+        let mut fs = if matches!(rt::config(1), 73 | 74) {
+            Engine::mount(self.dev, ids, mode)
+        } else {
+            Engine::mount_current(self.dev, ids, mode)
+        }.map_err(error)?;
+        if self.writable && fs.atime_policy().is_some() {
+            self.clock.sample()?;
+            fs.set_clock(self.clock.clone());
+        }
+        self.fs = Some(fs);
+        Ok(())
+    }
+
+    fn close_volume(&mut self) -> rt::Result<()> {
+        let fs = self.fs.as_mut().ok_or(rt::CLOSED)?;
+        if self.writable {
+            while fs.collection_pending().map_err(error)? {
+                fs.collect().map_err(error)?;
+            }
+        }
+        self.fs.take().unwrap().unmount().map_err(error)?.close().map_err(error)
+    }
+
     fn dispatch(
         &mut self,
         client: &mut Client,
@@ -192,54 +288,7 @@ impl Session<'_, '_> {
             if client.mounted {
                 return Err(w::BUSY);
             }
-            if self.fs.is_none() {
-                #[cfg(feature = "nvme-lab")]
-                if rt::config(1) == 1000 {
-                    // Le formatage de laboratoire exige le bail vierge entier.
-                    // Le moteur vérifie tous ses blocs avant sa première écriture.
-                    let ids = novafs::Ids { fs: *b"NOVA0190-Q35-P9F", lv: *b"NOVA0190-Q35-P9V" };
-                    self.clock.sample()?;
-                    let fs = Engine::format_p9(self.dev, ids, novafs::time::Atime::No, Some(self.clock.clone())).map_err(error)?;
-                    fs.unmount().map_err(error)?;
-                }
-                let first = self.dev.read(0).map_err(error)?;
-                if &first[..8] != b"NOVAP0FS" {
-                    return Err(w::UNSUPPORTED);
-                }
-                if rt::config(1) == 23 {
-                    crate::qualification::stop(b"COUPURE remontage");
-                }
-                let ids = Anchor::decode(&first, 0).map_err(error)?.ids;
-                let mut lv = [0u8; 16];
-                if rt::config(1) == 41 {
-                    lv[..8].copy_from_slice(&rt::config(2).to_le_bytes());
-                    lv[8..].copy_from_slice(&rt::config(3).to_le_bytes());
-                }
-                if lv != [0; 16] {
-                    let mut fs_id = lv;
-                    fs_id[15] ^= 1;
-                    if ids != (novafs::Ids { fs: fs_id, lv }) {
-                        return Err(w::CORRUPT);
-                    }
-                    let check =
-                        Engine::mount_current(self.dev, ids, Mode::ReadOnly).map_err(error)?;
-                    if check.atime_policy() != Some(novafs::time::Atime::Relative) {
-                        return Err(w::UNSUPPORTED);
-                    }
-                    check.unmount().map_err(error)?;
-                }
-                let mode = if self.writable {
-                    Mode::ReadWrite
-                } else {
-                    Mode::ReadOnly
-                };
-                let mut fs = Engine::mount_current(self.dev, ids, mode).map_err(error)?;
-                if self.writable && fs.atime_policy().is_some() {
-                    self.clock.sample()?;
-                    fs.set_clock(self.clock.clone());
-                }
-                self.fs = Some(fs);
-            }
+            self.mount_volume()?;
             client.cwd = (self.fs.as_ref().unwrap().root_id(), client.rights);
             client.mounted = true;
             w::set(a, 8, client.id);
@@ -354,19 +403,8 @@ impl Session<'_, '_> {
                 {
                     return Err(w::BUSY);
                 }
-                if other.is_none_or(|c| c.closed) {
-                    if self.writable {
-                        while fs.collection_pending().map_err(error)? {
-                            fs.collect().map_err(error)?;
-                        }
-                    }
-                    self.fs
-                        .take()
-                        .unwrap()
-                        .unmount()
-                        .map_err(error)?
-                        .close()
-                        .map_err(error)?;
+                if other.is_none_or(|c| c.closed) && !self.temporary.enabled {
+                    self.close_volume()?;
                 }
             }
             w::READ | w::WRITE | w::SYNC | w::CLOSE => {
@@ -512,8 +550,10 @@ impl Session<'_, '_> {
                                 && n <= p.size - p.bytes.len(),
                         )?;
                         p.bytes.extend_from_slice(&q[w::PAYLOAD..w::PAYLOAD + n]);
-                        if p.bytes.len() == p.size {
-                            // Le seul écrivain reste à cette génération jusqu'à SYNC ou abandon.
+                        // Les vues tmp préparent uniquement leurs propres octets.
+                        // Leur réservation disque s'effectue dans la transaction de SYNC.
+                        if p.bytes.len() == p.size && client.private_root.is_none() {
+                            // Le seul écrivain historique reste à cette génération jusqu'à SYNC ou abandon.
                             // La réservation est évaluée par le moteur, y compris le coût des métadonnées.
                             match fs.prepare_write_id(file.id, p.offset, &p.bytes) {
                                 Ok(plan) => {
@@ -576,6 +616,8 @@ impl Session<'_, '_> {
 mod delegated;
 mod namespace;
 mod selected;
+mod temporary;
+mod tmp_store;
 
 use crate::runtime::bulk;
 impl Session<'_, '_> {
@@ -635,7 +677,15 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
         next: 0,
         pending: None,
         failed: None,
+        temporary: temporary::Views::new(matches!(rt::config(1), 41 | 42)),
     };
+    let cli = matches!(rt::config(1), 41 | 42 | 73 | 74);
+    if cli {
+        s.require_cli_format(s.temporary.enabled)?;
+        if s.temporary.enabled {
+            s.mount_volume()?;
+        }
+    }
     let pid = rt::value(rt::call(rt::PROCESS_ID, 0, 0, 0))?;
     let pair = rt::config(6) != 0;
     let mut clients = [
@@ -648,7 +698,6 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
     ];
     let mut last = [0; 2];
     let mut lane = 0;
-    let cli = matches!(rt::config(1), 41 | 42);
     let mut admission = delegated::Ports::default();
     loop {
         let i = lane;
@@ -665,8 +714,10 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
         if client.closed {
             continue;
         }
-        let timeout = if pair { 1 } else { 15000 };
+        let tmp_busy = s.serve_tmp(ports[i].0)?;
+        let timeout = if tmp_busy { 0 } else if pair { 1 } else { 15000 };
         let m = match rt::receive_options(ports[i].0, timeout, u32::from(cli)) {
+            Err(rt::WOULD_BLOCK) if tmp_busy => continue,
             Err(rt::TIMED_OUT) if cli => continue,
             Err(rt::TIMED_OUT) if pair => match rt::receive_for(rt::config(8 + i), 0) {
                 Err(rt::WOULD_BLOCK) => continue,
@@ -694,6 +745,9 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             },
             r => r?,
         };
+        if s.temporary.enabled && m.kind == 2 {
+            continue;
+        }
         if cli && m.kind == 3 {
             admission.accept(m);
             continue;
@@ -744,7 +798,9 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
         }
         let done = r.is_ok() && m.payload[1] == w::CLOSE && w::word(&m.payload, 16) == 0;
         if done {
-            rt::value(rt::call(rt::IPC_CLOSE, ports[i].0, 0, 0))?;
+            if !s.temporary.enabled {
+                rt::value(rt::call(rt::IPC_CLOSE, ports[i].0, 0, 0))?;
+            }
             client.closed = true;
             client.handles.clear();
             client.paths = Default::default();
@@ -780,6 +836,9 @@ pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Res
             result?;
         }
         if done && other.is_none_or(|c| c.closed) {
+            if s.temporary.enabled {
+                s.finish_tmp(ports[i].0)?;
+            }
             return Ok(());
         }
     }

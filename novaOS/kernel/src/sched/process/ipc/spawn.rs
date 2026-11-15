@@ -28,10 +28,30 @@ impl Application {
     }
 
     pub(super) fn principal(self, data: &[u8], admission: supervision::Admission) -> Res<Child> {
+        self.principal_in(data, admission, false)
+    }
+
+    fn principal_in(self, data: &[u8], admission: supervision::Admission, legacy_p8: bool) -> Res<Child> {
         let _guard = Guard::new();
         let child = self.launch(data, admission.workers(), None)?;
+        // Les deux ELF de qualification historiques peuvent exécuter leur sonde
+        // sans disque. Un lancement applicatif ordinaire requiert le service.
+        let no_disk_probe = self.diskless_fixture()
+            && with(|s| s.processes.temporary.diskless_profile());
+        if !legacy_p8 && !no_disk_probe && let Err(status) = tmp::prepare(child.0) {
+            retire_unpublished(child);
+            return Err(status);
+        }
         admission.bind(with(|s| s.processes.get(child.0).instance));
         Ok(child)
+    }
+
+    fn diskless_fixture(self) -> bool {
+        #[cfg(feature = "thread-probe")]
+        if self.1 == iw::WITNESS && core::ptr::eq(self.0, witness().0) {
+            return true;
+        }
+        self.1 == iw::SAMPLE && core::ptr::eq(self.0, sample().0)
     }
 
     // Appelé sous la garde du lanceur ; les droits sont installés avant le premier quantum.
@@ -117,7 +137,10 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     let workers = image.admission(ports, input != 0)?;
     let _guard = Guard::new();
     with(|s| threads::status(s))?;
-    let child = image.principal(data, workers)?;
+    // L’appelant ne fournit aucun sélecteur de profil. Le lanceur de boot
+    // attribue ce marqueur uniquement au shell du profil P8 explicite.
+    let legacy_p8 = with(|s| s.processes.get(parent).legacy_p8_launcher);
+    let child = image.principal_in(data, workers, legacy_p8)?;
     let setup = with(|s| {
         let pid = child.0;
         if input != 0 {
@@ -214,7 +237,7 @@ pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) 
             _ => Err(BAD_ARGUMENT),
         },
         iw::INFO if a == 2 && c == iw::Identity::SIZE => with(|s| export_identity(s, pid, key, b)),
-        iw::WORKER if c == iw::Identity::SIZE => {
+        iw::WORKER | tmp::wire::WORKER if c == iw::Identity::SIZE => {
             let image = worker_image.ok_or(DENIED)?;
             if !principal {
                 return Err(DENIED);
@@ -224,6 +247,11 @@ pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) 
                 return Err(LIMIT);
             }
             let child = Application(image, app).launch(&b.to_le_bytes(), false, Some(key))?;
+            if op == tmp::wire::WORKER &&
+                let Err(e) = with(|s| tmp::delegate(s, pid, child.0)) {
+                retire_unpublished(child);
+                return Err(e);
+            }
             let right = WaitRight { target: child.0 };
             with(|s| s.processes.get_mut(pid).wait_right = Some(right));
             core::mem::forget(child);

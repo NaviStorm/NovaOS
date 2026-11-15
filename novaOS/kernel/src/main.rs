@@ -241,6 +241,8 @@ fn main_thread() {
         b"namespace-inspect" => Some(37),
         b"cli" => Some(41),
         b"cli-test" => Some(42),
+        b"cli-p8-test" => Some(73),
+        b"cli-p8" => Some(74),
         b"namespace-write" => Some(29),
         b"namespace-read" => Some(30),
         b"namespace-rename" => Some(31),

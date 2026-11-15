@@ -45,6 +45,10 @@ fn owner(s: &Core) -> Pid {
     s.thread(s.current()).owner.unwrap()
 }
 
+pub(super) fn cancelled(s: &Core) -> bool {
+    s.thread(s.current()).user.as_ref().unwrap().cancelled
+}
+
 pub(super) fn status(s: &Core) -> Result<(), u64> {
     if s.processes.get(owner(s)).outcome.is_some() {
         Err(CANCELLED)
@@ -69,7 +73,7 @@ pub(super) fn wake_dying(s: &mut Core, pid: Pid) {
                 && matches!(
                     t.state,
                     State::Blocked(
-                        Wait::Ipc(_) | Wait::Join(_) | Wait::UserWord { .. } | Wait::Process(_) | Wait::Policy(_)
+                        Wait::Ipc(_) | Wait::Join(_) | Wait::UserWord { .. } | Wait::Process(_) | Wait::Policy(_) | Wait::Temporary { .. }
                     )
                 )
         }) {
@@ -209,6 +213,7 @@ pub(super) fn invalidate_range(s: &mut Core, pid: Pid, start: u64, end: u64) {
             s.wake(slot);
         }
     }
+    tmp::invalidate(s, pid, start, end);
     s.ipc.invalidate_receive(pid, start, end);
     s.flush_ipc();
     for slot in 0..s.slots.len() {
@@ -316,7 +321,7 @@ fn cancel(key: u64) -> Result<u64, u64> {
         t.user.as_mut().unwrap().cancelled = true;
         if matches!(
             t.state,
-            State::Blocked(Wait::UserWord { .. } | Wait::Join(_))
+            State::Blocked(Wait::UserWord { .. } | Wait::Join(_) | Wait::Temporary { .. })
         ) {
             t.user.as_mut().unwrap().wait_status = CANCELLED;
             s.wake(target.slot);

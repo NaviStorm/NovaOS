@@ -38,6 +38,8 @@ enum Wait {
     Event(usize),
     Process(process::Pid),
     Policy(process::Pid),
+    TmpStart,
+    Temporary { token: u64, deadline: u64 },
     Join(Id),
     UserWord { address: u64, deadline: u64 },
     #[cfg(feature = "materiel-lab")]
@@ -282,7 +284,8 @@ impl Core {
                     self.flush_ipc();
                     for i in 0..self.slots.len() {
                         match self.slots[i].as_ref().map(|t| t.state) {
-                            Some(State::Blocked(Wait::Until(end))) if end <= now => self.wake(i),
+                            Some(State::Blocked(Wait::Until(end))) |
+                            Some(State::Blocked(Wait::Temporary { deadline: end, .. })) if end <= now => self.wake(i),
                             Some(State::Blocked(Wait::UserWord { deadline, .. }))
                                 if deadline != u64::MAX && deadline <= now =>
                             {

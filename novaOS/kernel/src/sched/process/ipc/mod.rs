@@ -674,6 +674,7 @@ pub(super) fn undo_unpublished(child: Child) {
     let pid = child.0;
     core::mem::forget(child);
     let (stack, space, instance) = with(|s| {
+        tmp::retired(s, pid, None);
         let index = s
             .slots
             .iter()
@@ -899,6 +900,8 @@ pub(super) fn launch_block_identifie<const N: usize>(
     volume: Option<[u8; 16]>,
 ) -> Res<[Child; N]> {
     assert!(matches!(N, 3..=5));
+    let profile = mode;
+    let mode = storage::cli_mode(profile);
     let private = crate::hardware::block::private_frames().map_err(|_| DENIED)?;
     let _guard = Guard::new();
     let group = launch(images)?;
@@ -922,7 +925,7 @@ pub(super) fn launch_block_identifie<const N: usize>(
             (device, [output, mode, key, 0]),
             (
                 consumer,
-                [read_reply, mode, if N == 3 { key } else { 0 }, 0],
+                [read_reply, profile, if N == 3 { key } else { 0 }, 0],
             ),
         ] {
             let space = s.processes.get(pid).space.as_ref().unwrap();
@@ -970,6 +973,7 @@ pub(super) fn launch_block_identifie<const N: usize>(
             if shell {
                 use crate::terminal::*;
                 s.processes.instances.admit_shell(s.processes.get(control).instance);
+                s.processes.get_mut(control).legacy_p8_launcher = matches!(profile, 73 | 74);
                 let trace = if mode == 42 { QUALIFY } else { 0 };
                 s.processes.get_mut(control).terminal =
                     INPUT | OUTPUT | ERROR | EDIT | LAUNCH | OBSERVE_SESSION | trace;
@@ -1032,6 +1036,9 @@ pub(super) fn launch_block_identifie<const N: usize>(
             .find(|t| t.owner == Some(device))
             .unwrap();
         pilote.cpu_mask = 1;
+        if matches!(profile, 41 | 42) {
+            tmp::install(s, consumer, group[3].0)?;
+        }
         if !crate::hardware::block::attach(device.number, key) {
             return Err(DENIED);
         }

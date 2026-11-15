@@ -302,10 +302,10 @@ pub fn serve() -> Result<()> {
         let dev = crate::device::IpcDevice::new(&mut d, sector, count).map_err(crate::device::status)?;
         return crate::files::serve(&dev, sector, writable);
     }
-    if matches!(config(1), 41 | 42) {
+    if matches!(config(1), 41 | 42 | 73 | 74) {
         d.negotiate()?;
     }
-    if (11..=42).contains(&config(1)) {
+    if matches!(config(1), 11..=42 | 73 | 74) {
         let info = d.command(w::INFO)?;
         let writable = w::number(&info, 16) & 6 == 6;
         if !writable && !matches!(config(1), 12 | 13 | 23 | 26 | 30 | 37 | 38) {

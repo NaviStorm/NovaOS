@@ -157,7 +157,7 @@ impl Session<'_, '_> {
             // à 32 les composants temporaires ; aucun chemin absolu n'est
             // matérialisé et la résolution ordinaire ne parcourt pas les parents.
             let mut names = Vec::new();
-            while node != fs.root_id() {
+            while node != c.private_root.unwrap_or(fs.root_id()) {
                 if names.len() == Engine::<&IpcDevice>::MAX_DIRECTORY_DEPTH {
                     return Err(w::CORRUPT);
                 }
@@ -215,6 +215,15 @@ impl Session<'_, '_> {
                 fs.inspect_dir(base, after.as_deref(), 1)
             }
             .map_err(error)?;
+            // Le conteneur interne et les préparations ne figurent jamais dans le VFS.
+            // Avancer avec le vrai curseur P9, y compris si plusieurs préparations se suivent.
+            let mut names = names;
+            while base == fs.root_id()
+                && fs.atime_policy().is_some()
+                && names.first().is_some_and(|n| tmp_store::hidden_root_name(n))
+            {
+                names = fs.inspect_dir(base, Some(&names[0]), 1).map_err(error)?;
+            }
             let bytes = names.first().map_or(&[][..], |s| s.as_bytes());
             w::set(a, 24, fs.generation());
             return fragment(
@@ -228,7 +237,7 @@ impl Session<'_, '_> {
         let path = if let Some(rest) = name.strip_prefix('/') {
             // Un nom absolu exige l'autorité de la session de montage. Une
             // capacité de sous-répertoire explicite ne permet pas ce raccourci.
-            if key != 0 {
+            if key != 0 || c.private_root.is_some() {
                 return Err(rt::DENIED);
             }
             base = fs.root_id();
@@ -330,6 +339,9 @@ impl Session<'_, '_> {
                 rights(permitted, w::MOVE | w::REMOVE)?;
                 rights(rights_dest, w::MOVE | w::ADD | w::TRAVERSE)?;
                 let to = c.take_path(1, &[])?;
+                if c.private_root.is_some() && to.starts_with('/') {
+                    return Err(rt::DENIED);
+                }
                 self.dev.start_probe();
                 fs.rename_at(base, path, dest, &to).map_err(error)?;
             }
