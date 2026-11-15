@@ -528,9 +528,9 @@ rust_name = "CALL"
 group = "tmp privé"
 since = "0.21.0 phase 2"
 arguments = "capacité, *mut trame fichier, 128"
-result = "128 après succès"
+result = "OK, valeur 128 après copie de la réponse. Pour une E/S terminée par TMP_COMPLETE avec un statut de 1…255, TMP_CALL transmet ce statut à l’identique, valeur 0. Les erreurs propres au courtier utilisent aussi le champ statut, valeur 0."
 rights = "processus titulaire du bail actif, trame lisible et inscriptible"
-errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","LIMIT","NO_MEMORY","CANCELLED","REVOKED","CLOSED","TIMED_OUT","files::UNCERTAIN","files::NOT_FOUND","files::CORRUPT","files::FULL","files::BUSY","files::UNSUPPORTED","files::IO","files::EXISTS","files::NOT_EMPTY","files::NOT_DIR","files::IS_DIR"]
+errors = ["BAD_ARGUMENT","BAD_ADDRESS","DENIED","LIMIT","NO_MEMORY","CANCELLED","REVOKED","CLOSED","TIMED_OUT","REFUSED","files::UNCERTAIN","files::NOT_FOUND","files::CORRUPT","files::FULL","files::BUSY","files::UNSUPPORTED","files::IO","files::EXISTS","files::NOT_EMPTY","files::NOT_DIR","files::IS_DIR"]
 handler = "kernel/src/sched/process/tmp.rs#io"
 
 [call.TMP_WORKER]

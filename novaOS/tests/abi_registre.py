@@ -132,6 +132,23 @@ class Registre(unittest.TestCase):
             path = ROOT / spec["handler"].split("#")[0]
             self.assertRegex(dispatch + path.read_text(), rf"\b{name}\b")
 
+    def test_statut_tmp_call(self):
+        call = self.calls["TMP_CALL"]
+        self.assertIn("1…255", call["result"])
+        self.assertIn("ce statut à l’identique, valeur 0", call["result"])
+        self.assertIn("erreurs propres au courtier", call["result"])
+        self.assertIn("REFUSED", call["errors"])
+        self.assertIn("0…255", self.calls["TMP_COMPLETE"]["arguments"])
+        broker = (ROOT / "kernel/src/sched/process/tmp.rs").read_text()
+        complete = broker.split("fn complete(", 1)[1].split("pub(super) fn call(", 1)[0]
+        self.assertIn("if status > 255 ||", complete)
+        self.assertIn("r.done = Some(status);", complete)
+        io = broker.split("fn io(", 1)[1].split("fn next(", 1)[0]
+        self.assertRegex(io, r"if status != OK \{\s*return Err\(status\);")
+        self.assertIn("return Ok(wire::FRAME as u64)", io)
+        dispatch = (ROOT / "kernel/src/sched/process/syscall.rs").read_text()
+        self.assertIn("Err(status) => Reply { status, value: 0 }", dispatch)
+
     def test_exports_tmp(self):
         header = (abi.ABI / "generated/nova_abi.h").read_text()
         old = historical("df88f1cfeaf0940da876ea543584e59215abacd4", "abi/generated/nova_abi.h").decode()
