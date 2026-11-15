@@ -44,8 +44,11 @@ def guest(arch, sector, cpus, image, iso, scenario, out, cut):
     # Le client observe les trois incarnations par le protocole public avant de
     # tester INFO. Une console silencieuse reste utilisable pendant leur démarrage.
     commands = [(f"@services status {id}", f"service={id} etat=5 ".encode()) for id in (1, 2, 9)]
-    commands.extend([("cat /documents/exemple.txt", rb"\r?\nNovaOS\r?\n"),
-                     ("@services info 9", rb"service=9 etat=5 .*valeur=1397118542 ")])
+    if not cut:
+        # cat lance un autre ELF avec un sixième tmp. La coupure ciblée des
+        # cinq principaux a lieu avant toute commande qui crée une instance.
+        commands.append(("cat /documents/exemple.txt", rb"\r?\nNovaOS\r?\n"))
+    commands.append(("@services info 9", rb"service=9 etat=5 .*valeur=1397118542 "))
     if scenario == "services-admin":
         commands.extend([("@services stop 9", rb"service=9 "),
                          ("@services status 9", rb"service=9 etat=7 "),

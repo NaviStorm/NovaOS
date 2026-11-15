@@ -150,7 +150,10 @@ def trial(arch, sector, folder):
         t.until(b"[o/N] ")
 
     serial = t.archive.read_text()
-    memory = re.findall(r"CLI mem pid=4 privees=(\d+) pile=(\d+)", serial)
+    clients = re.findall(r"^BLOC chaine novaFS=\d+ bloc=\d+ pilote=\d+ client=(\d+) ", serial, re.M)
+    assert len(clients) == 1 and int(clients[0]) > 0, "PID du client CLI absent ou ambigu"
+    client = int(clients[0])
+    memory = re.findall(rf"^CLI mem pid={client} privees=(\d+) pile=(\d+)$", serial, re.M)
     assert memory
     with image.open("rb") as disk:
         subprocess.run([HOST, "verify", "512", str(sector), fs, lv], stdin=disk, check=True)
@@ -161,6 +164,7 @@ def trial(arch, sector, folder):
         t.line("cat garde", status="sortie 0", has=["temoin"])
         t.exit()
     return dict(architecture=arch, secteur=sector, commandes=len(checked), bash=bash.splitlines(),
+                pid_client=client, echantillons_memoire=len(memory),
                 pic_pages_privees_observe=max(int(a) + int(b) for a, b in memory), reprise=True)
 
 

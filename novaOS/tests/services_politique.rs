@@ -397,6 +397,11 @@ mod catalog;
 
 #[test]
 fn profils_embarques_et_plafonds_delegues() {
+    assert!(matches!(Policy::new(catalog::CYCLE), Err(Error::Cycle)));
+    assert!(matches!(
+        Policy::new(catalog::MISSING),
+        Err(Error::MissingDependency)
+    ));
     let ordinary: Vec<u64> = catalog::INSTALLED.iter().map(|d| d.id).collect();
     let mut installed = Policy::new(catalog::INSTALLED).unwrap();
     let mut qualification = Policy::new(catalog::QUALIFICATION).unwrap();
