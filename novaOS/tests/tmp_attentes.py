@@ -2,6 +2,7 @@
 import hashlib
 import json
 import os
+import re
 import time
 
 from demarrage import BUILD, scenario_vm
@@ -14,8 +15,17 @@ def check(vm, directory, log):
     while time.monotonic() < deadline:
         if log.exists():
             raw = log.read_bytes()
-            if expected in raw:
-                return expected.decode()
+            lignes = re.findall(rb"TMP fin-service phase=(\d) appel=(\d+) autre=(\d+) effets=(\d+) ancien=(\d+) ticket=(\d+) nouveau=DENIED file=0\r?\n", raw)
+            if expected in raw and len(lignes) == 5:
+                precedent = 0
+                phases = []
+                for donnees, (phase, statut, compteur) in zip(lignes, [(5, 23, 0), (4, 0, 1), (3, 22, 1), (2, 22, 0), (1, 11, 0)], strict=True):
+                    p, appel, autre, effets, ancien, ticket = map(int, donnees)
+                    assert (p, appel, autre, effets, ancien) == (phase, statut, 11, compteur, precedent)
+                    assert ticket > ancien
+                    phases.append(dict(phase=p, appel=appel, autre=autre, effets=effets, ancien=ancien, ticket=ticket))
+                    precedent = ticket
+                return dict(historique=expected.decode(), fin_service=phases)
             if b"Panique du noyau" in raw:
                 break
         if vm.poll() is not None:

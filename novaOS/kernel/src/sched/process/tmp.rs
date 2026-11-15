@@ -37,7 +37,7 @@ struct Request {
     ticket: u64,
     owner: Pid,
     instance: Instance,
-    address: u64,
+    address: Option<u64>,
     frame: [u8; wire::FRAME],
     done: Option<u64>,
 }
@@ -79,6 +79,12 @@ impl Broker {
     fn issue(&mut self) -> Result<u64> {
         self.serial = self.serial.checked_add(1).ok_or(LIMIT)?;
         Ok(self.serial)
+    }
+
+    fn release_empty_queue(&mut self) {
+        if self.server.is_none() && self.requests.is_empty() {
+            self.requests = Vec::new();
+        }
     }
 
     fn live(&self, key: Instance, cap: u64) -> bool {
@@ -341,7 +347,7 @@ fn io(pid: Pid, cap: u64, address: u64) -> Result<u64> {
             ticket,
             owner: pid,
             instance,
-            address,
+            address: Some(address),
             frame,
             done: None,
         });
@@ -351,28 +357,37 @@ fn io(pid: Pid, cap: u64, address: u64) -> Result<u64> {
     let deadline = ticks().saturating_add(TIMEOUT);
     loop {
         let ready = with(|s| -> Result<_> {
-            authority(s, pid, cap)?;
+            // Le ticket de cette pile identifie une demande déjà admise. Le
+            // retrait du bail interdit les appels suivants, mais son résultat
+            // reste consommable une seule fois par le demandeur encore vivant.
+            threads::status(s)?;
             let cancelled = threads::cancelled(s);
             let broker = &mut s.processes.temporary;
             let index = broker
                 .requests
                 .iter()
-                .position(|r| r.ticket == ticket)
+                .position(|r| r.ticket == ticket && r.owner == pid)
                 .ok_or(REVOKED)?;
             if let Some(status) = broker.requests[index].done {
                 let r = broker.requests.remove(index);
+                broker.release_empty_queue();
                 if status != OK {
                     return Err(status);
                 }
-                copy_out(s, pid, address, &r.frame)?;
+                copy_out(s, pid, r.address.ok_or(BAD_ADDRESS)?, &r.frame)?;
                 return Ok(true);
             }
-            if cancelled || ticks() >= deadline {
-                broker.requests.remove(index);
-                let reason = if cancelled { CANCELLED } else { TIMED_OUT };
-                return Err(broker.interruption(ticket, reason));
-            }
-            Ok(false)
+            let reason = if broker.requests[index].address.is_none() {
+                BAD_ADDRESS
+            } else if cancelled {
+                CANCELLED
+            } else if ticks() >= deadline {
+                TIMED_OUT
+            } else {
+                return Ok(false);
+            };
+            broker.requests.remove(index);
+            Err(broker.interruption(ticket, reason))
         })?;
         if ready {
             return Ok(wire::FRAME as u64);
@@ -481,16 +496,18 @@ pub(super) fn call(id: u64, a: u64, b: u64, c: u64) -> Result<u64> {
 pub(super) fn invalidate(s: &mut Core, pid: Pid, start: u64, end: u64) {
     for i in 0..s.processes.temporary.requests.len() {
         let broker = &mut s.processes.temporary;
-        let r = &broker.requests[i];
-        if r.owner == pid && r.address < end && start < r.address.saturating_add(wire::FRAME as u64)
+        let r = &mut broker.requests[i];
+        if r.owner == pid
+            && r.address
+                .is_some_and(|a| a < end && start < a.saturating_add(wire::FRAME as u64))
         {
+            // Ne jamais copier la réponse dans une future page à cette adresse.
+            r.address = None;
             let ticket = r.ticket;
-            let status = match r.done {
-                Some(OK) => files::UNCERTAIN,
-                Some(e) => e,
-                None => broker.interruption(ticket, BAD_ADDRESS),
-            };
-            broker.requests[i].done = Some(status);
+            if broker.flight.is_none_or(|f| f.ticket != ticket) {
+                // Une requête encore en file ne pourra plus être remise.
+                r.done.get_or_insert(BAD_ADDRESS);
+            }
             wake(s, ticket);
         }
     }
@@ -516,8 +533,17 @@ pub(super) fn retired(s: &mut Core, pid: Pid, outcome: Option<Outcome>) {
         }
         broker.server = None;
         broker.receiver = 0;
-        broker.flight = None;
-        broker.requests = Vec::new();
+        let in_flight = broker.flight.take().map(|f| f.ticket);
+        for r in &mut broker.requests {
+            // Un seul NEXT a pu remettre une E/S. Un COMPLETE déjà enregistré
+            // conserve son statut et sa trame, y compris après réinstallation.
+            r.done.get_or_insert(if in_flight == Some(r.ticket) {
+                files::UNCERTAIN
+            } else {
+                CLOSED
+            });
+        }
+        broker.release_empty_queue();
         for i in 0..s.slots.len() {
             if s.slots[i]
                 .as_ref()
@@ -536,6 +562,7 @@ pub(super) fn retired(s: &mut Core, pid: Pid, outcome: Option<Outcome>) {
     s.processes.get_mut(pid).tmp_cap = 0;
     let broker = &mut s.processes.temporary;
     broker.requests.retain(|r| r.owner != pid);
+    broker.release_empty_queue();
     if !principal {
         return;
     }

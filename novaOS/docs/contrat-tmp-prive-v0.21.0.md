@@ -30,7 +30,19 @@ Les OID sont des entiers little-endian. Les deux noms `r<identité>` et `t<ident
 
 ## Retrait, coupure et reprise
 
-La sortie, l’arrêt forcé ou la faute du principal ferme l’autorité avant le nettoyage. Le courtier sérialise la requête déjà remise au service et le retrait. Le service invalide la table de handles et abandonne les fragments privés non synchronisés. Si le chemin public détient une réservation de blocs pour une écriture en cours, le retrait physique attend sa libération. Une annulation ou une expiration avant remise peut être acquittée comme telle. Après remise d’une opération dont l’issue est encore inconnue, le client reçoit `UNCERTAIN`.
+La sortie, l’arrêt forcé ou la faute du principal ferme l’autorité avant le nettoyage. Le courtier sérialise la requête déjà remise au service et le retrait. Le service invalide la table de handles et abandonne les fragments privés non synchronisés. Si le chemin public détient une réservation de blocs pour une écriture en cours, le retrait physique attend sa libération. Une annulation ou une expiration avant remise donne respectivement `CANCELLED` ou `TIMED_OUT`. Après remise d’une opération dont l’issue est encore inconnue, le client reçoit `files::UNCERTAIN`.
+
+Au retrait du service NovaFS, tous les anciens droits sont révoqués. Le résultat d’un appel déjà admis appartient au seul appelant d’origine et dépend du dernier état atteint sous la garde du courtier.
+
+| État de la demande au retrait du service | Résultat de `TMP_CALL` pour l’appelant encore vivant |
+|---|---|
+| En file, avant la remise par `TMP_NEXT` | `CLOSED`. Le service n’a pas reçu cette demande. |
+| Remise par `TMP_NEXT`, sans acquittement par `TMP_COMPLETE` | `files::UNCERTAIN`. Le service a pu effectuer l’opération. Aucune réexécution automatique. |
+| Acquittée avec succès par `TMP_COMPLETE` | Le courtier remet la trame déjà reçue et renvoie `OK`, valeur 128. Si le tampon d’origine a été invalidé avant la copie, il renvoie `BAD_ADDRESS`, valeur 0. Le succès d’exécution reste acquis. |
+| Acquittée avec un statut de service de 1 à 255 | Le courtier transmet le statut exact avec la valeur 0. |
+| Nouvel appel avec la capacité retirée | `DENIED`. Les autres instances ne peuvent ni lire la trame ni récupérer l’issue du ticket. |
+
+La remise du résultat termine l’attente. Elle ne rétablit aucun droit et ne soumet aucune nouvelle opération. La mort de l’appelant libère son attente sans transférer son ticket.
 
 La purge contrôle le sceau, les noms et les OID du marqueur et de sa racine. Elle descend par les enfants du catalogue, détache chaque feuille, retire la racine puis le marqueur. Une seconde notification après retrait complet est sans effet. Un parent inconnu, un marqueur incomplet ou un OID substitué demeure inaccessible. La restitution physique peut aussi terminer la collecte P9 d’objets déjà détachés sur ce volume.
 

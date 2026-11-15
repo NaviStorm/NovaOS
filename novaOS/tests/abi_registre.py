@@ -138,6 +138,9 @@ class Registre(unittest.TestCase):
         self.assertIn("ce statut à l’identique, valeur 0", call["result"])
         self.assertIn("erreurs propres au courtier", call["result"])
         self.assertIn("REFUSED", call["errors"])
+        for status in ("CLOSED", "files::UNCERTAIN", "BAD_ADDRESS", "DENIED"):
+            self.assertIn(status, call["result"])
+            self.assertIn(status, call["errors"])
         self.assertIn("0…255", self.calls["TMP_COMPLETE"]["arguments"])
         broker = (ROOT / "kernel/src/sched/process/tmp.rs").read_text()
         complete = broker.split("fn complete(", 1)[1].split("pub(super) fn call(", 1)[0]

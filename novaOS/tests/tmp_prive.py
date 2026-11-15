@@ -104,7 +104,7 @@ def main():
             label = f"{seq}-{scenario}"
             log = proofs / (label + ".serial")
             data = capture(arch, args.secteur, image, iso, scenario, log, args.vcpus)
-            boot = re.search(rb"TMP d\xc3\xa9marrage ([0-9a-f]{32})", data)
+            boot = re.search(rb"TMP d\xc3\xa9marrage (?:nsh> )?([0-9a-f]{32})\r?\n", data)
             incarnation = re.search(rb"TMP (?:premi\xc3\xa8re|nouvelle) instance=(\d+) g\xc3\xa9n\xc3\xa9ration=(\d+)", data)
             assert boot and incarnation
             if scenario != "tmp-coupure":
