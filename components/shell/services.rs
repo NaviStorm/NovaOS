@@ -7,9 +7,15 @@ pub(super) mod wire;
 static TAG: AtomicU64 = AtomicU64::new(0);
 
 fn request(op: u64, id: u64, arg: u64) -> rt::Result<wire::Frame> {
-    let persistent = matches!(op, wire::ENABLE | wire::DISABLE);
+    exchange(wire::request(op, id, arg))
+}
+
+fn exchange(message: wire::Frame) -> rt::Result<wire::Frame> {
+    let op = message[1];
+    let id = message[2];
+    let persistent = matches!(op, wire::ENABLE | wire::DISABLE | wire::RESTRICT_CAP | wire::RESTORE_CAP);
     let slot = match op {
-        wire::ENABLE | wire::DISABLE => 16,
+        _ if persistent => 16,
         wire::START | wire::STOP | wire::RESTART => 14,
         _ => 11,
     };
@@ -21,7 +27,7 @@ fn request(op: u64, id: u64, arg: u64) -> rt::Result<wire::Frame> {
         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
         .map_err(|_| rt::LIMIT)?;
     let tag = prev + 1;
-    rt::send_for(tx, tag, &wire::encode(&wire::request(op, id, arg)), 15000)?;
+    rt::send_for(tx, tag, &wire::encode(&message), 15000)?;
     // Une réponse perdue après la remise d'une mutation laisse son résultat inconnu.
     // Une lecture ultérieure peut rencontrer l'acquittement tardif sur la même paire.
     let missing = |e| {
@@ -100,6 +106,9 @@ service list\n\
 service status|dependencies|policy|info <nom>\n\
 service start|stop|restart <nom>\n\
 service enable|disable <nom>\n\
+service capabilities <service>\n\
+service capabilities restrict|restore <service> <capacité>\n\
+Les droits enregistrés prennent effet à la prochaine instance.\n\
 enable et disable enregistrent le choix pour le prochain démarrage.\n";
 
 pub(super) fn state(value: u64) -> rt::Result<&'static str> {
@@ -161,6 +170,74 @@ fn status(frame: &wire::Frame) -> rt::Result<()> {
     Ok(())
 }
 
+fn capability_bit(name: &str) -> Option<u64> {
+    // Les noms du catalogue et les identifiants symboliques comme JOURNAL_STORE
+    // sont équivalents. Un nombre libre ne confère aucun sens à un bit inconnu.
+    wire::CAPABILITY_NAMES.iter().find_map(|&(bit, label)| {
+        let equal = name.len() == label.len() && name.bytes().zip(label.bytes()).all(|(a, b)| {
+            a.eq_ignore_ascii_case(&b) || (matches!(a, b'-' | b'_') && matches!(b, b'-' | b'_'))
+        });
+        equal.then_some(bit)
+    })
+}
+
+fn capability_list(mask: u64) -> rt::Result<alloc::string::String> {
+    let mut remaining = mask;
+    let mut names = alloc::string::String::new();
+    for &(bit, label) in wire::CAPABILITY_NAMES {
+        if mask & bit != 0 {
+            if !names.is_empty() { names.push(','); }
+            names.push_str(label);
+            remaining &= !bit;
+        }
+    }
+    if remaining != 0 { return Err(rt::BAD_VERSION); }
+    if names.is_empty() { names.push_str("aucune"); }
+    Ok(names)
+}
+
+fn show_capabilities(f: &wire::Frame) -> rt::Result<()> {
+    let id = f[2];
+    let name = wire::service_name(id).unwrap_or("sonde");
+    let active = match f[9] {
+        0 if f[6] == 0 => "aucune instance active".into(),
+        1 => capability_list(f[6])?,
+        _ => return Err(rt::BAD_ARGUMENT),
+    };
+    let pending = match f[10] {
+        0 => "no",
+        1 => "yes",
+        _ => return Err(rt::BAD_ARGUMENT),
+    };
+    console::write(tty::OUTPUT, &alloc::format!(
+        "service={name} id={id}\nCatalogue: {}\nConfiguration: {}\nInstance: {active}\nStored generation: {}\nEffective generation: {}\nPending restart: {pending}\n",
+        capability_list(f[4])?, capability_list(f[5])?, f[7], f[8]))?;
+    if f[11] != rt::OK { return Err(f[11]); }
+    Ok(())
+}
+
+fn capabilities(args: &[&str]) -> rt::Result<()> {
+    let (name, change) = match args {
+        [name] => (*name, None),
+        [verb @ ("restrict" | "restore"), name, cap] => {
+            let bit = capability_bit(cap).ok_or(rt::BAD_ARGUMENT)?;
+            let op = if *verb == "restrict" { wire::RESTRICT_CAP } else { wire::RESTORE_CAP };
+            (*name, Some((op, bit)))
+        }
+        _ => return Err(rt::BAD_ARGUMENT),
+    };
+    let id = wire::service_id(name).ok_or(nova_cli::protocol::NOT_FOUND)?;
+    let current = request(wire::QUERY_CAPS, id, 0)?;
+    let Some((op, bit)) = change else { return show_capabilities(&current); };
+    if current[11] != rt::OK { return Err(current[11]); }
+    let mut msg = wire::request(op, id, 0);
+    msg[5] = current[7];
+    msg[6] = bit;
+    let ack = exchange(msg)?;
+    console::write(tty::OUTPUT, &alloc::format!("capacité enregistrée génération={}\n", ack[4]))?;
+    show_capabilities(&request(wire::QUERY_CAPS, id, 0)?)
+}
+
 fn admin(args: &[&str]) -> rt::Result<()> {
     if args == ["--help"] || args == ["help"] {
         return console::write(tty::OUTPUT, HELP);
@@ -183,6 +260,9 @@ fn admin(args: &[&str]) -> rt::Result<()> {
             }
         }
         return Ok(());
+    }
+    if let ["capabilities", rest @ ..] = args {
+        return capabilities(rest);
     }
     let [verb, name] = args else {
         return Err(rt::BAD_ARGUMENT);
@@ -291,10 +371,11 @@ pub fn command(args: &[&str]) -> rt::Result<u64> {
         Ok(()) => Ok(0),
         Err(e) => {
             let reason = match e {
+                w::UNCERTAIN if args.first() == Some(&"capabilities") => "publication incertaine. Relire service capabilities avant toute décision",
                 w::UNCERTAIN => "publication incertaine. Consulter service status",
                 w::BUSY => "configuration modifiée ou occupée",
                 w::FULL => "volume plein",
-                w::CORRUPT => "configuration corrompue",
+                w::CORRUPT => "configuration corrompue. Configuration de sécurité non vérifiable",
                 rt::BAD_ARGUMENT => "argument invalide (service --help)",
                 rt::REFUSED => "service ou transition indisponible",
                 rt::TIMED_OUT => "délai dépassé",
