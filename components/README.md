@@ -6,7 +6,8 @@ Le workspace Cargo construit un ELF Rust `no_std + alloc` par programme, pour x8
 |---|---|
 | `shell/` | Analyseur et exécuteur partagés par le terminal, les fichiers et `nsh -c`. Édition UTF-8, variables, conditions, boucles, globbing et délégation de capacités. Tab complète les commandes et les chemins. L’historique est privé à la session. [Commandes du terminal et portée de ps/top](../novaOS/docs/nsh-v0.16.3.md) |
 | `vi/` | Éditeur modal UTF-8 dans son propre ELF. Le terminal garde l’entrée série et confirme chaque autre destination de sauvegarde. [Chemin de lecture et mesures](../novaOS/docs/vi-v0.16.4.md) · [Rendu et essais dans UTM](../novaOS/docs/vi-v0.16.2.md) · [Commandes et protections](../novaOS/docs/vi-v0.16.1.md) |
-| `coreutils/` | Programmes isolés `pwd`, `ls`, `cat`, `head`, `mkdir`, `rm`, `rmdir`, `cp`, `mv`, `touch`, `more`, `wc` et `tail`. L’ELF `probe` sert à la qualification. |
+| `coreutils/` | Programmes isolés `pwd`, `ls`, `cat`, `head`, `mkdir`, `rm`, `rmdir`, `cp`, `mv`, `touch`, `more`, `wc`, `tail` et `sha256sum`. L’ELF `probe` sert à la qualification. |
+| `sha256sum/` | Moteur et analyseur de manifeste partagés avec macOS ARM64. [Construction](sha256sum/CONSTRUCTION.md) · [Recette depuis nsh](sha256sum/RECETTE-NSH.md) |
 | `libraries/` | Catalogue, protocole de lancement, attente, flux de texte et accès au client IPC commun. |
 
 Depuis la racine, `make -C novaOS ARCH=x86_64 cli` ou `make -C novaOS ARCH=aarch64 cli` ouvre le terminal. Le manifeste produit l’exécutable `nsh`. Le paquet de construction fournit aussi le nom historique `shell.elf`. Un interpréteur de remplacement peut utiliser les mêmes interfaces natives. [Scripts et tests](../novaOS/docs/nsh-scripts-v0.16.0.md) · [Commandes natives](../novaOS/docs/cli-v0.15.1.md)

@@ -72,8 +72,19 @@ with tempfile.TemporaryDirectory(dir=os.environ["TMPDIR"]) as tmp:
         if args.large:sizes.append(4*GiB+4097)
         if args.above_ram:sizes.append(ram+4097)
     for size in sizes:
-        if shutil.disk_usage(tmp).free < 8*GiB+len(list(marks(size)))*MiB:
+        free = shutil.disk_usage(tmp).free
+        reserve = 8 * GiB
+        required = len(list(marks(size))) * MiB
+        if free < reserve + required:
             raise SystemExit("Réserve disque insuffisante pour le corpus creux.")
+        if free < reserve + size:
+            # Tester le comportement réel dans le répertoire du corpus avant le grand truncate.
+            with tempfile.TemporaryFile(dir=tmp) as probe:
+                probe.seek(8 * MiB)
+                probe.write(b"1")
+                probe.flush()
+                if os.fstat(probe.fileno()).st_blocks * 512 >= MiB:
+                    raise SystemExit("Ce volume alloue les zones creuses et son espace libre est insuffisant.")
         file=Path("corpus")
         with file.open("wb") as f:
             f.truncate(size)

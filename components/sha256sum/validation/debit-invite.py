@@ -6,6 +6,7 @@ from statistics import median
 root=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(root/"novaOS/tests"))
 from cli import HOST, Terminal
+from cpu_hote_utm import CpuMoteur
 from pipe_natif import host
 from journalisation import arret
 p=argparse.ArgumentParser(description=__doc__)
@@ -41,14 +42,17 @@ report=dict(architecture=a.arch,secteur=a.sector,ram_octets=128<<20,vcpu=2,emula
     references=hashes,mesures=[],resume=[])
 def save():(out/"debits.json").write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
 def execute(cmd,rc=0,timeout=120):
-    vm.vm.stdin.write((cmd+"; echo PERF_RC_$?__fin\n").encode())
+    before = cpu.relever()
     start=time.monotonic()
+    vm.vm.stdin.write((cmd+"; echo PERF_RC_$?__fin\n").encode())
     raw=vm.until(f"PERF_RC_{rc}__fin".encode(),timeout=timeout)
     seconds=time.monotonic()-start
+    usage = cpu.difference(before, cpu.relever())
     vm.until(b"nsh> ")
-    return raw.replace(b"\r\n",b"\n"),seconds
+    return raw.replace(b"\r\n",b"\n"), seconds, (usage["utilisateur_ns"] + usage["systeme_ns"]) / 1e9
 with Terminal(a.arch,a.sector,image,"sha-debit",test=True,journal=out/"debit.serial") as vm:
     vm.until(b"nsh> ")
+    cpu = CpuMoteur(vm.vm.pid)
     for i in range(12):execute(f"SHA256SUM_READ_{i+1}=p{i}")
     tasks=[("sha256sum -c --quiet LOTS",len(manifest)+12*16,None)]
     for name,size in sizes.items():
@@ -56,14 +60,14 @@ with Terminal(a.arch,a.sector,image,"sha-debit",test=True,journal=out/"debit.ser
     for cmd,size,expected in tasks:
         speeds=[]
         for i in range(1 if size>1<<20 else 3):
-            raw,seconds=execute(cmd,timeout=7200)
+            raw, seconds, cpu_qemu = execute(cmd,timeout=7200)
             if expected:assert expected.encode() in raw
             if "|" in cmd:assert b"[pipe sha256sum=0]" in raw and b"[pipe cat=0]" in raw
             pages=int(re.search(rb"CLI spawn image=19 pid=\d+ cycles=\d+ pages=(\d+)",raw)[1])
-            peak=re.search(rb"\\[sha256sum pic_tas_octets=(\\d+)\\]",raw)
+            peak=re.search(rb"\[sha256sum pic_tas_octets=(\d+)\]",raw)
             speed=size/seconds/(1<<20)
             speeds.append(speed)
-            report["mesures"].append(dict(commande=cmd,octets=size,secondes=seconds,mio_s=speed,pages_admission=pages,
+            report["mesures"].append(dict(commande=cmd,octets=size,secondes=seconds,cpu_qemu_s=cpu_qemu,mio_s=speed,pages_admission=pages,
                 pic_prive_octets=pages*4096+int(peak[1]) if peak else None))
             save()
         report["resume"].append(dict(commande=cmd,n=len(speeds),mediane_mio_s=median(speeds),min_mio_s=min(speeds),max_mio_s=max(speeds)))
