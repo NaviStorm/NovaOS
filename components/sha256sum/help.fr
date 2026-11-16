@@ -1,0 +1,15 @@
+Usage : sha256sum [OPTION]... [FICHIER]...
+Calcule ou vérifie les empreintes SHA-256. Sans fichier, ou avec -, lit stdin.
+  -b, --binary      marque les entrées binaires avec *
+  -t, --text        marque les entrées texte avec une espace (par défaut)
+      --tag         écrit un manifeste au format BSD
+  -z, --zero        termine par NUL et conserve le nom brut
+  -c, --check       vérifie chaque entrée des manifestes
+      --ignore-missing  ignore les fichiers absents ; exige une concordance
+      --quiet       masque les concordances
+      --status      indique le résultat par le statut de sortie
+      --strict      échoue aussi sur les lignes mal formées
+  -w, --warn        signale chaque ligne mal formée
+      --help        affiche cette aide
+      --version     affiche la version
+Les chemins du manifeste sont relatifs au répertoire courant.

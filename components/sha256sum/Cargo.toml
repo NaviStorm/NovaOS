@@ -1,0 +1,21 @@
+[package]
+name = "nova-sha256sum"
+version = "0.24.0"
+edition = "2024"
+publish = false
+license = "MIT"
+
+[workspace]
+
+[[bin]]
+name = "sha256sum"
+path = "src/main.rs"
+
+[dependencies]
+sha2 = { version = "=0.11.1", default-features = false }
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+strip = true

@@ -1,0 +1,15 @@
+Usage: sha256sum [OPTION]... [FILE]...
+Compute or verify SHA-256 digests. With no file, or with -, read stdin.
+  -b, --binary      mark binary input with *
+  -t, --text        mark text input with a space (default)
+      --tag         write a BSD-style manifest
+  -z, --zero        terminate with NUL and preserve raw filenames
+  -c, --check       verify each entry of the manifests
+      --ignore-missing  skip absent files and require at least one match
+      --quiet       omit successful matches
+      --status      indicate the result through the exit status
+      --strict      fail on malformed lines as well
+  -w, --warn        diagnose each malformed line
+      --help        show this help
+      --version     show the component version
+Manifest paths are relative to the current working directory.
