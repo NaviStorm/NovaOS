@@ -9,7 +9,7 @@ fn decode<const N: usize>(s: &str) -> [u8; N] {
 }
 fn main() {
     let arg: Vec<_> = env::args().collect();
-    let init = arg[1] == "init";
+    let init = matches!(arg[1].as_str(), "init" | "fixture");
     let p = Path::new(&arg[2]);
     let sector = arg[3].parse().unwrap();
     let image = |name, n| {
@@ -40,7 +40,60 @@ fn main() {
         },
     )
     .unwrap();
-    if init {
+    if arg[1] == "fixture" {
+        let dir = fs.lookup_at(fs.root_id(), "\u{1f}NovaAuth-D").unwrap().id;
+        match arg[4].as_str() {
+            "avant" | "apres" => {
+                let file = fs.create_at(dir, "injection", Kind::File).unwrap();
+                let boundary = if arg[4] == "avant" { 1 } else { 2 };
+                fs.prepare_write_id(file.id, 0, &[boundary])
+                    .unwrap()
+                    .commit()
+                    .unwrap();
+            }
+            mode @ ("mise-a-jour" | "reinstallation") => {
+                let mut reg = Registry::open(&mut fs, &mut ledger, dom).unwrap();
+                let owner = created_user(&reg.outcome([1; 16]).unwrap().unwrap());
+                let install = installed(&reg.outcome([4; 16]).unwrap().unwrap());
+                let auth = reg.grant_attested(owner).unwrap();
+                let granted = reg
+                    .set_permission(auth, owner, dir, install, Origin::Direct, READ, [6; 16])
+                    .unwrap();
+                // Deux modifications admises avec la même génération : la seconde doit relire.
+                assert!(matches!(
+                    reg.set_permission(auth, owner, dir, install, Origin::Direct, WRITE, [66; 16]),
+                    Err(Fault::Conflict)
+                ));
+                assert_eq!(reg.outcome([66; 16]).unwrap(), None);
+                if mode == "mise-a-jour" {
+                    reg.provision_install(
+                        granted,
+                        [80; 16],
+                        owner,
+                        InstallChange::Update(install, decode(&arg[5])),
+                    )
+                    .unwrap();
+                } else {
+                    let removed = reg
+                        .provision_install(granted, [89; 16], owner, InstallChange::Remove(install))
+                        .unwrap();
+                    let new = reg
+                        .provision_install(
+                            removed,
+                            [90; 16],
+                            owner,
+                            InstallChange::New(decode(&arg[5])),
+                        )
+                        .unwrap();
+                    assert_ne!(installed(&new), install);
+                }
+                println!(
+                    "Deux demandes concurrentes de generation 5 : premiere acquittee, seconde en conflit, aucune decision pour la seconde."
+                );
+            }
+            _ => panic!("fixture inconnue"),
+        }
+    } else if init {
         let reference = |s: &str| -> Id {
             let v = decode::<32>(s);
             let mut h = Sha256::new();
@@ -111,6 +164,17 @@ fn main() {
         );
     } else {
         let h = ledger.current().unwrap();
+        if arg[5] == "recul" {
+            assert!(matches!(
+                Registry::open(&mut fs, &mut ledger, dom),
+                Err(Fault::StaleVolume | Fault::StateMismatch)
+            ));
+            println!(
+                "Recul du P9 seul refuse par comparaison avec la decision externe de generation {}",
+                h.generation
+            );
+            return;
+        }
         let reg = Registry::open(&mut fs, &mut ledger, dom).unwrap();
         let alice = created_user(&reg.outcome([1; 16]).unwrap().unwrap());
         let bob = created_user(&reg.outcome([2; 16]).unwrap().unwrap());
@@ -128,6 +192,32 @@ fn main() {
             installation,
             digest: decode(&arg[4]),
         };
+        if matches!(arg[5].as_str(), "avant" | "apres") {
+            let after = arg[5] == "apres";
+            let decision = reg.outcome([6; 16]).unwrap();
+            assert_eq!(decision.is_some(), after);
+            if after {
+                assert_eq!(decision, Some(h));
+            }
+            assert_eq!(h.generation, if after { 6 } else { 5 });
+            assert_eq!(
+                reg.stored_permission(
+                    reg.grant_attested(alice).unwrap(),
+                    dir,
+                    installation,
+                    Origin::Direct
+                )
+                .unwrap(),
+                if after { READ } else { 0 }
+            );
+            println!(
+                "Coupure {} : generation {}, issue de la requete 06 = {:?}; aucune repetition.",
+                arg[5],
+                h.generation,
+                decision.map(|d| d.generation)
+            );
+            return;
+        }
         let member = arg[5] == "member";
         assert_eq!(
             reg.permission(alice, image, alice, dir, Origin::Direct)
@@ -143,6 +233,13 @@ fn main() {
         for o in [Origin::Direct, Origin::Group(group)] {
             assert!(reg.permission(bob, image, alice, dir, o).is_err());
         }
+        drop(reg);
+        let data = fs.lookup_at(dir, "registre").unwrap();
+        assert_eq!(data.size, 8);
+        assert_eq!(fs.inspect_id(data.id, 0, 8).unwrap(), 35u64.to_le_bytes());
+        println!(
+            "Relecture octet par octet : seule la requete 35 figure dans le fichier; 36 et 37 absentes."
+        );
         println!(
             "P9/{sector} domaine et empreinte verifies; generation {}; Alice lecture directe, groupe={member}; Bob exclu",
             h.generation

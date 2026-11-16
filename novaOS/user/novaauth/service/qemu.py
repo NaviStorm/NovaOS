@@ -33,6 +33,9 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert', p
     completion=b"NA3 refus collecte" if refusal else b"NA3 quatre processus collectes"
     if policy:
         completion=refusal or b"NAP cinq processus collectes"
+    cut={"avant":b"NAP coupure avant decision","apres":b"NAP coupure apres decision"}.get(policy)
+    lifecycle=policy in ("mise-a-jour","reinstallation")
+    if lifecycle: completion=b"NAP cycle installation termine"
     before=authority.read_bytes()
     assert (disk.stat().st_size, authority.stat().st_size) == (512*4096,12*4096)
     descriptor = out / "disque.vmdk"
@@ -53,6 +56,9 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert', p
                 if not chunk:break
                 data.extend(chunk)
                 with (out/'invité.serial').open('ab') as trace:trace.write(chunk)
+                if cut and cut in data:
+                    vm.kill()
+                    break
                 if not stopping and completion in data:
                     vm.stdin.write(b"exit\n")
                     vm.stdin.flush()
@@ -79,10 +85,18 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert', p
             "retrait":[b"NAP retrait groupe descendants refuses lecture conservee"],
             "reprise":[b"NAP retrait persistant apres reauthentification"],
             "recul":[b"NAP registre refuse avant lancement"],
+            "mise-a-jour":[b"NAP ELF mis a jour execute", b"NAP mise a jour attestee lecture autorisee",completion],
+            "reinstallation":[b"NAP reinstallation meme ELF sans droits",completion],
+            "avant":[cut], "apres":[cut],
         }[policy]
-        if policy!="recul":
+        if policy in ("attribution","retrait","reprise"):
+            required.append(b"NAP zero handle preparation attente")
             required += [b"NAP deux titulaires authentifies",b"NAP meme image admise deux instances",b"NAP cinq processus collectes",b"NA3 preuve acceptee"]
-        ok=all(marker in data for marker in required+[b"BLOC session terminee ok=true",b"absents=0x0 muets=0x0"])
+        if cut:
+            ok=vm.returncode==-9 and cut in data and b"NAP politique modifiee application arretee" not in data
+        else:
+            ok=all(marker in data for marker in required+[b"BLOC session terminee ok=true",b"absents=0x0 muets=0x0"])
+        if lifecycle: ok=ok and b"NAP deux titulaires authentifies" in data
         if policy=="recul":
             ok=ok and before==authority.read_bytes() and b"NA3 preuve acceptee" not in data
         expected=policy
