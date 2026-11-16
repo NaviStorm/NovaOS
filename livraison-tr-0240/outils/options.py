@@ -64,6 +64,9 @@ def cases(large):
         sets=["".join(rng.choices(tokens,k=rng.randrange(0,5))) for _ in range(rng.randint(1,2))]
         yield flag+sets,rng.randbytes(rng.randrange(128))+b"XXaaa",rng.choice([1,13,128,4096])
 
+    for flag in [b"-\xff", b"--d\xe9", b"--=\xff", "-é".encode()]:
+        yield [os.fsdecode(flag)], SAMPLE, 7
+
 def run(binary,args,data,locale,size):
     env=dict(os.environ,LC_ALL=locale,LANG="en",LANGUAGE="C",NOVA_TR_READ_SIZE=str(size))
     p=subprocess.run(["tr",*args],executable=binary,input=data,capture_output=True,env=env)

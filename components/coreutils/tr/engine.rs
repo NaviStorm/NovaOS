@@ -71,8 +71,11 @@ pub fn prepare(
     mut warn: impl FnMut(String),
 ) -> Result<Action, Vec<u8>> {
     let mut opt = Options::default();
-    let usage =
-        |msg: String| format!("{msg}\nTry '{name} --help' for more information.").into_bytes();
+    let suffix = format!("\nTry '{name} --help' for more information.");
+    let usage = |msg: String| [msg.as_bytes(), suffix.as_bytes()].concat();
+    let option_error = |prefix: &[u8], raw: &[u8], end: &[u8]| {
+        [prefix, raw, end, suffix.as_bytes()].concat()
+    };
     while let Some((&arg, tail)) = args.split_first() {
         if arg == b"--" {
             args = tail;
@@ -84,15 +87,16 @@ pub fn prepare(
         let long;
         let flags = if let Some(raw) = arg.strip_prefix(b"--") {
             let key = raw.split(|&b| b == b'=').next().unwrap();
-            let show = String::from_utf8_lossy(arg);
             if key.is_empty() {
-                return Err(usage(format!(
-                    "option '{show}' is ambiguous; possibilities: '--complement' '--delete' '--squeeze-repeats' '--truncate-set1' '--help' '--version'"
-                )));
+                return Err(option_error(
+                    b"option '",
+                    arg,
+                    b"' is ambiguous; possibilities: '--complement' '--delete' '--squeeze-repeats' '--truncate-set1' '--help' '--version'",
+                ));
             }
             let Some(&(option, flag)) = LONG.iter().find(|(s, _)| s.as_bytes().starts_with(key))
             else {
-                return Err(usage(format!("unrecognized option '{show}'")));
+                return Err(option_error(b"unrecognized option '", arg, b"'"));
             };
             if key.len() != raw.len() {
                 return Err(usage(format!(
@@ -116,7 +120,7 @@ pub fn prepare(
                 b's' => opt.squeeze = true,
                 b't' => opt.truncate = true,
                 b'A' => opt.ascii = true,
-                _ => return Err(usage(format!("invalid option -- '{}'", flag as char))),
+                _ => return Err(option_error(b"invalid option -- '", &[flag], b"'")),
             }
         }
         args = tail;

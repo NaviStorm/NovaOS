@@ -1,6 +1,7 @@
 """Dictionnaire de blocs et références u32 little-endian, utilisé par le témoin SDK."""
 import gzip
 import json
+import os
 from pathlib import Path
 import struct
 import sys
@@ -23,7 +24,7 @@ def generate(source,target):
         args=row["args"]
         rows.extend(struct.pack("<BBIBIII",int(row["locale"]!="C"),kind,row["chunk"],len(args),
                                 index(bytes.fromhex(row["stdin"])),index(b"" if doc else raw),index(err)))
-        for arg in args: rows.extend(struct.pack("<I",index(arg.encode())))
+        for arg in args: rows.extend(struct.pack("<I",index(os.fsencode(arg))))
         count+=1
     with target.open("wb") as out:
         out.write(struct.pack("<II",len(pool),count))
