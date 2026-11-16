@@ -122,7 +122,7 @@ impl Client {
     }
 }
 fn from_manager(tag: u64, len: u32) -> rt::Result<[u8; 128]> {
-    let m = rt::receive_for(rt::config(1), 20000)?;
+    let m = rt::receive_for(rt::config(1), 15000)?;
     check(m.kind == 1 && m.tag == tag && m.len == len)?;
     Ok(m.payload)
 }
@@ -208,14 +208,15 @@ fn ordinary(c: &mut Client, expected: [u8; 16]) -> rt::Result<()> {
     check(code == 0)?;
     let (code, ro) = c.directory(id, 2, 1, 1, 0)?;
     check(code == 0 && c.directory(id, 5, ro, 0, REQUEST)?.0 == rt::REVOKED)?;
-    check(c.directory(id, 5, child, 0, REQUEST)?.0 == 0)?;
+    let cancelled = REQUEST - 1;
+    check(c.directory(id, 5, child, 0, cancelled)?.0 == 0)?;
     check(c.directory(id, 9, parent, 0, 0)?.0 == 0)?;
-    check(c.directory(id, 6, child, 0, REQUEST)?.0 == rt::REVOKED)?;
+    check(c.directory(id, 6, child, 0, cancelled)?.0 == rt::REVOKED)?;
     check(
         c.directory(id, 3, parent, 0, 0)?.0 == rt::REVOKED
             && c.directory(id, 3, child, 0, 0)?.0 == rt::REVOKED,
     )?;
-    check(c.directory(id, 8, ro, 0, REQUEST)? == (0, 0))?;
+    check(c.directory(id, 8, ro, 0, cancelled)? == (0, 0))?;
     check(c.directory(id, 5, 1, 0, REQUEST)?.0 == 0)?;
     check(c.directory(id, 7, 1, 0, REQUEST)?.0 == 22)?;
     check(c.directory(id, 8, ro, 0, REQUEST)? == (0, 1))?;
@@ -286,7 +287,11 @@ extern "C" fn run() -> ! {
     match exercise() {
         Ok(()) => rt::exit(0),
         Err(e) => {
-            marker(b"NA3 client echec");
+            let mut reason = *b"NA3 client echec 000";
+            for (i, b) in reason[17..].iter_mut().rev().enumerate() {
+                *b = b'0' + ((e / 10u64.pow(i as u32)) % 10) as u8;
+            }
+            marker(&reason);
             rt::exit(e)
         }
     }
