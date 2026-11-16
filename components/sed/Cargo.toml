@@ -24,3 +24,6 @@ tempfile = "3"
 panic = "abort"
 opt-level = "s"
 lto = true
+
+[target.'cfg(target_os = "none")'.dependencies]
+nova-cli = { path = ".." }

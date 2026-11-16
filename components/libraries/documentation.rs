@@ -31,6 +31,19 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "sed",
+        provider: "nova-sed",
+        description: Text("Edit a stream of records.", "Éditer un flux d’enregistrements."),
+        syntax: Text("sed [OPTIONS] SCRIPT [FILE]", "sed [OPTIONS] SCRIPT [FICHIER]"),
+        arguments: Text(include_str!("../sed/help.en"), include_str!("../sed/help.fr")),
+        examples: Text::same("sed -n '1,3p' fichier.txt"),
+        rights: Text("Documentation needs no file or pipe capability.", "La consultation ne demande aucune capacité fichier ou pipe."),
+        effects: Text("Help and manual only write to the terminal.", "L’aide et le manuel écrivent uniquement au terminal."),
+        limits: Text("ELF admission pending. P9 blocks -i. Script file access and shell execution require separate capabilities.",
+                    "Admission de l’ELF en attente. P9 bloque -i. Les fichiers nommés par le script et le shell exigent des capacités distinctes."),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1144,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.name == "sed" {
+            return "NovaOS sed 0.1.0 (QSE 0.9.1 / TRE)\n".into();
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
@@ -1207,10 +1223,10 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
+                if self.name == "sed" { lang.select("Status and limits: syntax 1, missing input 2, I/O 4.", "Codes et limites : syntaxe 1, entrée absente 2, E/S 4.") } else { lang.select(
                     "Status, errors and limits: 0 success, 3 invalid argument.",
                     "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                ) },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )

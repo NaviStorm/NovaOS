@@ -1,6 +1,10 @@
 //! Traitement local avant la résolution des chemins et le choix des capacités.
 use nova_cli::{command::Program, console, documentation, options, runtime as rt, tty};
 
+#[allow(dead_code)]
+#[path = "../sed/src/options.rs"]
+mod sed_options;
+
 fn invalid(option: &str) -> rt::Result<Option<u64>> {
     console::printable(
         tty::ERROR,
@@ -13,6 +17,33 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "sed" {
+        let words = args.iter().map(|s| s.as_bytes().to_vec()).collect::<alloc::vec::Vec<_>>();
+        let parsed = match sed_options::Options::parse(&words) {
+            Ok(parsed) => parsed,
+            Err(message) => {
+                console::printable(tty::ERROR, &alloc::format!("sed : {message}\n"))?;
+                return Ok(Some(1));
+            }
+        };
+        let text = if parsed.help {
+            page.render(&[], false, lang).ok_or(rt::BAD_ARGUMENT)?
+        } else if parsed.version {
+            page.version(lang)
+        } else {
+            let why = if parsed.inplace.is_some() {
+                lang.select("sed: P9 cannot replace an existing destination.\n",
+                            "sed : P9 ne peut pas remplacer une destination existante.\n")
+            } else {
+                lang.select("sed: executable not admitted by the application catalogue.\n",
+                            "sed : exécutable en attente d’admission au catalogue.\n")
+            };
+            console::write(tty::ERROR, why)?;
+            return Ok(Some(4));
+        };
+        console::write(tty::OUTPUT, &text)?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

@@ -13,6 +13,9 @@ case "${1:-macos}" in
     *) exit 2 ;;
 esac
 if [ "$target" != aarch64-apple-darwin ]; then
+    : "${AR:=$(command -v llvm-ar || xcrun --find llvm-ar)}"
+    : "${RANLIB:=$(command -v llvm-ranlib || xcrun --find llvm-ranlib)}"
+    export AR RANLIB
     linker=$(cd ../../novaOS/user/novafs && pwd -P)/service.ld
     export RUSTFLAGS="-Crelocation-model=static -Cno-redzone=yes -Clink-arg=-zmax-page-size=4096 -Clink-arg=-T$linker"
 fi
