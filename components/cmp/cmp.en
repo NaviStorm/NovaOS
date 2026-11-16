@@ -1,0 +1,20 @@
+cmp — Compare two inputs byte by byte
+cmp [OPTION]… FILE1 [FILE2 [SKIP1 [SKIP2]]]
+
+-b, --print-bytes     Show the values and representations of differing bytes.
+-c, --print-chars     Historical alias for -b.
+-i, --ignore-initial=N[:M]   Skip N bytes on the left and M on the right (default N).
+-l, --verbose         List decimal positions and octal values.
+-n, --bytes=N         Compare at most N bytes.
+-s, --quiet, --silent Report comparison status only.
+-v, --version         Show the component version.
+    --help            Show this help.
+    --                End option processing.
+
+A dash or an omitted second file selects standard input. Positions begin at 1 after skipping. Counts accept decimal, octal (0), hexadecimal (0x) and suffixes K through Y, kB, MiB and their multiples. -l and -s are incompatible.
+
+cmp -bl a.bin b.bin
+cat a.bin | cmp -s b.bin -
+
+Status: 0 equal, 1 different, 2 trouble.
+Capabilities: read each delegated file and selected input stream. Comparison reads in blocks. Help and version use only the output stream.

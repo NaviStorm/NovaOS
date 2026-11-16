@@ -213,6 +213,10 @@ fn main() {
         "Cargo.lock",
         "libraries",
         "coreutils",
+        "cmp/src/options.rs",
+        "cmp/cmp.en",
+        "cmp/cmp.fr",
+        "cmp/VERSION",
         "shell",
         "vi",
     ] {

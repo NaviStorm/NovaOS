@@ -1,6 +1,10 @@
 //! Traitement local avant la résolution des chemins et le choix des capacités.
 use nova_cli::{command::Program, console, documentation, options, runtime as rt, tty};
 
+#[allow(dead_code)]
+#[path = "../cmp/src/options.rs"]
+mod cmp_options;
+
 fn invalid(option: &str) -> rt::Result<Option<u64>> {
     console::printable(
         tty::ERROR,
@@ -13,6 +17,19 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "cmp" {
+        let argv: alloc::vec::Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        match cmp_options::parse(&argv, b"cmp", false) {
+            Ok(cmp_options::Action::Compare(_)) => return Ok(None),
+            Ok(cmp_options::Action::Help) => console::write(tty::OUTPUT, page.arguments.get(lang))?,
+            Ok(cmp_options::Action::Version) => console::write(tty::OUTPUT, &page.version(lang))?,
+            Err(reason) => {
+                console::printable(tty::ERROR, &alloc::format!("cmp: {reason}\ncmp: Try 'cmp --help' for more information.\n"))?;
+                return Ok(Some(2));
+            }
+        }
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

@@ -31,6 +31,18 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "cmp",
+        provider: "nova-cmp",
+        description: Text("Compare two inputs byte by byte", "Comparer deux entrées octet par octet"),
+        syntax: Text("cmp [OPTION]… FILE1 [FILE2 [SKIP1 [SKIP2]]]", "cmp [OPTION]… FICHIER1 [FICHIER2 [SAUT1 [SAUT2]]]"),
+        arguments: Text(include_str!("../cmp/cmp.en"), include_str!("../cmp/cmp.fr")),
+        examples: Text::same("cmp -bl a.bin b.bin"),
+        rights: Text("read each delegated file", "lecture de chaque fichier délégué"),
+        effects: Text("Comparison reads in blocks", "La commande lit par blocs"),
+        limits: Text("0 equal, 1 different, 2 trouble", "0 identiques, 1 différents, 2 incident"),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1143,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.name == "cmp" {
+            return format!("cmp (NovaOS) {}\n", include_str!("../cmp/VERSION").trim());
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
@@ -1148,6 +1163,12 @@ impl Page {
     }
 
     pub fn render(&self, path: &[&str], manual: bool, lang: Language) -> Option<String> {
+        if self.name == "cmp" {
+            if !path.is_empty() { return None; }
+            let mut text = String::from(self.arguments.get(lang));
+            if manual { text.push_str(&self.version(lang)); }
+            return Some(text);
+        }
         let mut text = String::new();
         if path.is_empty() {
             writeln!(

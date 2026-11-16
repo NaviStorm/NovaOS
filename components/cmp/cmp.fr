@@ -1,0 +1,20 @@
+cmp — Comparer deux entrées octet par octet
+cmp [OPTION]… FICHIER1 [FICHIER2 [SAUT1 [SAUT2]]]
+
+-b, --print-bytes     Afficher la valeur et la représentation des octets différents.
+-c, --print-chars     Alias historique de -b.
+-i, --ignore-initial=N[:M]   Ignorer N octets à gauche et M à droite (N par défaut).
+-l, --verbose         Lister les positions décimales et les valeurs octales.
+-n, --bytes=N         Comparer au plus N octets.
+-s, --quiet, --silent Rendre uniquement le statut de comparaison.
+-v, --version         Afficher la version du composant.
+    --help            Afficher cette aide.
+    --                Terminer les options.
+
+Un tiret ou le second fichier omis désigne l’entrée standard. Les positions commencent à 1 après le saut. Les sauts et limites acceptent le décimal, l’octal (0) et l’hexadécimal (0x), ainsi que les suffixes K à Y, kB, MiB et leurs multiples. -l et -s sont incompatibles.
+
+cmp -bl a.bin b.bin
+cat a.bin | cmp -s b.bin -
+
+Statuts : 0 identiques, 1 différents, 2 incident.
+Droits : lecture de chaque fichier délégué et du flux sélectionné. La commande lit par blocs, sans modifier les entrées. Aide et version utilisent uniquement la sortie.
