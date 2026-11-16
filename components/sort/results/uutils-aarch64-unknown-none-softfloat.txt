@@ -1,0 +1,63 @@
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded jiff-static v0.2.45
+  Downloaded icu_collections v2.4.0
+  Downloaded jiff-icu v0.2.4
+  Downloaded ctrlc v3.5.2
+  Downloaded icu_locale_fallback_data v2.4.0
+  Downloaded icu_calendar_data v2.4.0
+  Downloaded icu_plurals_data v2.4.0
+  Downloaded icu_decimal_data v2.4.0
+  Downloaded icu_locale_fallback v2.4.0
+  Downloaded smallvec v1.16.1
+  Downloaded icu_time_data v2.4.0
+  Downloaded tinystr v0.8.5
+  Downloaded icu_decimal v2.4.0
+  Downloaded icu_normalizer_data v2.4.0
+  Downloaded icu_locale v2.4.0
+  Downloaded icu_plurals v2.4.0
+  Downloaded icu_provider v2.4.0
+  Downloaded icu_time v2.4.0
+  Downloaded calendrical_calculations v0.2.4
+  Downloaded icu_locale_core v2.4.0
+  Downloaded rand v0.10.4
+  Downloaded num-bigint v0.4.8
+  Downloaded bigdecimal v0.4.11
+  Downloaded jiff-core v0.1.7
+  Downloaded icu_properties v2.4.0
+  Downloaded icu_properties_data v2.4.0
+  Downloaded icu_datetime v2.4.0
+  Downloaded icu_collator_data v2.4.0
+  Downloaded icu_normalizer v2.4.0
+  Downloaded jiff v0.2.45
+  Downloaded icu_calendar v2.4.0
+  Downloaded icu_collator v2.4.0
+  Downloaded icu_locale_data v2.4.0
+  Downloaded icu_datetime_data v2.4.0
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+    Checking stable_deref_trait v1.2.1
+    Checking either v1.19.0
+    Checking litemap v0.8.3
+   Compiling icu_locale_fallback_data v2.4.0
+   Compiling libm v0.2.16
+    Checking smallvec v1.16.1
+   Compiling autocfg v1.5.1
+   Compiling icu_calendar_data v2.4.0
+   Compiling thiserror v2.0.21
+   Compiling crossbeam-utils v0.8.23
+   Compiling icu_time_data v2.4.0
+    Checking utf8_iter v1.0.4
+   Compiling crossbeam-epoch v0.9.21
+error[E0463]: can't find crate for `std`
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/either-1.19.0/src/lib.rs:19:1
+   |
+19 | extern crate std;
+   | ^^^^^^^^^^^^^^^^^ can't find crate
+   |
+   = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+
+For more information about this error, try `rustc --explain E0463`.
+error: could not compile `either` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

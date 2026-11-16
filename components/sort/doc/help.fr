@@ -1,0 +1,40 @@
+Usage : sort [OPTION]... [FICHIER]...
+Trier les entrées. Un tiret désigne l’entrée standard.
+
+Options de classement
+  -b, --ignore-leading-blanks        Ignorer les blancs en début de clé
+  -d, --dictionary-order             Comparer les blancs, lettres et chiffres
+  -f, --ignore-case                  Replier les lettres ASCII en majuscules
+  -g, --general-numeric-sort         Comparer les nombres flottants
+  -i, --ignore-nonprinting           Ignorer les octets non imprimables
+  -M, --month-sort                   Comparer les noms de mois
+  -h, --human-numeric-sort           Comparer les nombres signés avec unité
+  -n, --numeric-sort                 Comparer les décimaux sans perte de précision
+  -R, --random-sort                  Mélanger les clés en regroupant les clés égales
+      --random-source=FILE           Lire la graine dans FICHIER
+  -r, --reverse                      Inverser les comparaisons
+      --sort=WORD                    Choisir general-numeric, human-numeric, month, numeric, random ou version
+  -V, --version-sort                 Comparer les composantes de version
+
+Autres options
+      --batch-size=N                 Fusionner au plus N entrées à la fois
+  -c, --check[=diagnose-first]       Signaler le premier enregistrement en désordre
+  -C, --check=quiet, --check=silent  Vérifier silencieusement
+      --compress-program=PROG        Compresser les lots et les décoder avec PROG -d
+      --debug                        Souligner les clés de comparaison en sortie
+      --files0-from=F                Lire les noms des entrées séparés par NUL dans F
+  -k, --key=KEYDEF                   Comparer selon F[.C][OPTS][,F[.C][OPTS]]
+  -m, --merge                        Fusionner les entrées déjà triées
+  -o, --output=FILE                  Écrire le résultat dans FICHIER
+  -s, --stable                       Préserver l’ordre initial des clés égales
+  -S, --buffer-size=SIZE             Régler le budget de formation des lots
+  -t, --field-separator=SEP          Séparer les champs avec SEP
+  -T, --temporary-directory=DIR      Répartir les lots entre les répertoires spécifiés
+      --parallel=N                   Trier les lots avec N travailleurs
+  -u, --unique                       Conserver le premier enregistrement de chaque clé
+  -z, --zero-terminated              Séparer les enregistrements par NUL
+      --help                         Afficher cette aide
+      --version                      Afficher la version du composant
+
+Les champs et caractères sont numérotés à partir de 1. -S accepte b, K à Q et %.
+Statuts : 0 succès, 1 désordre en contrôle, 2 erreur.

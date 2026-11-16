@@ -1,0 +1,46 @@
+.TH SORT 1 "2026-11-16" "NovaOS sort 0.1.0"
+.SH NAME
+sort \- sort or merge records
+.SH USAGE
+.nf
+Usage: sort [OPTION]... [FILE]...
+Sort input records. A dash selects standard input.
+
+Ordering options
+  -b, --ignore-leading-blanks        Skip leading blanks in keys
+  -d, --dictionary-order             Compare blanks, letters and digits
+  -f, --ignore-case                  Fold ASCII letters to uppercase
+  -g, --general-numeric-sort         Compare floating point values
+  -i, --ignore-nonprinting           Skip nonprinting bytes
+  -M, --month-sort                   Compare month names
+  -h, --human-numeric-sort           Compare signed numbers with size suffixes
+  -n, --numeric-sort                 Compare decimals at their original precision
+  -R, --random-sort                  Randomize key order, keeping equal keys together
+      --random-source=FILE           Read the random seed from FILE
+  -r, --reverse                      Reverse comparisons
+      --sort=WORD                    Select general-numeric, human-numeric, month, numeric, random or version
+  -V, --version-sort                 Compare version components
+
+Other options
+      --batch-size=N                 Merge at most N inputs at once
+  -c, --check[=diagnose-first]       Report the first out-of-order record
+  -C, --check=quiet, --check=silent  Check order silently
+      --compress-program=PROG        Compress runs and decode with PROG -d
+      --debug                        Mark comparison keys in the output
+      --files0-from=F                Read NUL-separated input names from F
+  -k, --key=KEYDEF                   Compare by F[.C][OPTS][,F[.C][OPTS]]
+  -m, --merge                        Merge ordered inputs
+  -o, --output=FILE                  Write the result to FILE
+  -s, --stable                       Keep input order for matching keys
+  -S, --buffer-size=SIZE             Set the initial run budget
+  -t, --field-separator=SEP          Split fields on SEP
+  -T, --temporary-directory=DIR      Cycle through the specified run directories
+      --parallel=N                   Sort runs with N workers
+  -u, --unique                       Keep the first record for each key
+  -z, --zero-terminated              Separate records with NUL
+      --help                         Display this help
+      --version                      Display the component version
+
+Fields and characters start at 1. -S accepts b, K through Q and %.
+Exit status: 0 success, 1 disorder when checking, 2 error.
+.fi
