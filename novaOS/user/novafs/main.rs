@@ -2,10 +2,15 @@
 #![no_main]
 extern crate alloc;
 mod device;
+#[cfg(feature = "novaauth-lab")]
+#[path = "../novaauth/lab/guest.rs"]
+mod identity_probe;
 mod files;
 #[path = "../heap.rs"]
 mod heap;
 fn allocation_probe() {
+    #[cfg(feature = "novaauth-lab")]
+    identity_probe::sample_heap();
     if runtime::config(1) == 105 {
         core::hint::black_box(probes::load(0x20000));
     }

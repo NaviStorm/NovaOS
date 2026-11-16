@@ -181,6 +181,12 @@ fn main() {
     if env::var_os("CARGO_FEATURE_INSTALLATION_GPT").is_some() {
         cargo_service.args(["--features", "installation"]);
     }
+    if env::var_os("CARGO_FEATURE_NOVAAUTH_LAB").is_some() {
+        for path in ["src", "lab/guest.rs", "Cargo.toml"] {
+            println!("cargo::rerun-if-changed=../user/novaauth/{path}");
+        }
+        cargo_service.args(["--features", "novaauth-lab"]);
+    }
     if nvme_lab {
         cargo_service.args(["--features", "nvme-lab"]);
     }

@@ -11,6 +11,7 @@ test = false
 bench = false
 
 [features]
+novaauth-lab = []
 materiel-lab = []
 vtd-lab = ["materiel-lab"]
 nvme-lab = ["vtd-lab"]
