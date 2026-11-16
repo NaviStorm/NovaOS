@@ -40,6 +40,8 @@ with ExitStack() as stack:
     vm=stack.enter_context(Terminal(a.architecture,a.secteur,image,"cmp",journal=serial,qmp_bloc=peer.fileno()))
     peer.close()
     qmp(monitor,"qmp_capabilities")
+    ram=qmp(monitor,"query-memory-size-summary")
+    assert ram["base-memory"]==256<<20
     def snapshot():
         stats,=[d["stats"] for d in qmp(monitor,"query-blockstats") if d["device"]=="d"]
         return dict(sha256=empreinte(image),writes=stats["wr_operations"],flush=stats["flush_operations"])
@@ -92,5 +94,5 @@ cmp = Path(__file__).resolve().parent/"bin"/("cmp-"+a.architecture+".elf")
 embedded["cmp_present"] = cmp.read_bytes() in data
 assert not embedded["cmp_present"]
 (out/"temoin.json").write_text(json.dumps(dict(iso=empreinte(iso),kernel=empreinte(kernel),
-    elf=embedded,ram_mio=256,observations=rows),indent=2)+"\n")
+    elf=embedded,ram_qmp=ram,observations=rows),indent=2)+"\n")
 print(a.architecture, a.secteur, [(r["commande"],r["statut_nsh"]) for r in rows])

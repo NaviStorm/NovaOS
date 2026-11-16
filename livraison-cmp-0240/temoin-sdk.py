@@ -4,12 +4,14 @@ import json
 import os
 import shutil
 import subprocess
+import time
 import sys
 from pathlib import Path
 from laboratoire import HERE,TMP,digest
 root=HERE.parent
 sys.path.insert(0,str(root/"novaOS/tests"))
-from threads import TARGETS,exercise_example
+from threads import TARGETS
+from demarrage import boot
 
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument("arch",choices=TARGETS)
@@ -31,9 +33,26 @@ build(root/"novaOS",["--features","thread-probe"],NOVA_THREAD_PROBE_ELF=str(elf)
 kernel=TMP/"cmp-sdk"/target/"release/novaos"
 assert elf.read_bytes() in kernel.read_bytes()
 os.environ.update(NOVA_ARCH=a.arch,NOVA_KERNEL_ELF=str(kernel),NOVAOS_TMPDIR=str(TMP),TMPDIR=str(TMP)+"/")
-result=exercise_example(a.arch,2)
-log=root/"novaOS/build"/f"serie-{a.arch}-sdk-example-2cpu.log"
+iso=out/"sdk.iso"
+subprocess.run(["sh",root/"novaOS/scripts/iso.sh","sdk-example",iso],check=True)
+extracted=out/"noyau.elf"
+subprocess.run(["xorriso","-osirrox","on","-indev",iso,"-extract","/boot/novaos.elf",extracted],check=True)
+assert digest(extracted)==digest(kernel)
+def check(vm,directory,log):
+    end=time.monotonic()+60
+    count=len(json.loads((HERE/"preuves/vecteurs.json").read_text()))
+    while time.monotonic()<end and vm.poll() is None:
+        trace=log.read_bytes() if log.exists() else b""
+        if b"Panique du noyau" in trace:raise RuntimeError(trace[-1200:])
+        if b"SDK exemple admis sortie=0 restitution=OK" in trace:
+            assert f"CMP vecteurs={count} ecarts=0".encode() in trace
+            return dict(cas=count,sortie=0,restitution=True)
+        time.sleep(0.1)
+    raise RuntimeError("témoignage SDK incomplet")
+label="cmp-sdk-"+a.arch
+result=boot(label,check,NOVA_ISO=str(iso),NOVA_VCPUS="2")
+log=root/"novaOS/build"/("serie-"+label+".log")
 shutil.copy2(log,out/"serie.log")
 assert f"ecarts=0" in log.read_text()
-(out/"resultat.json").write_text(json.dumps(dict(resultat=result,noyau=digest(kernel),elf=digest(elf),
+(out/"resultat.json").write_text(json.dumps(dict(resultat=result,iso=digest(iso),noyau=digest(kernel),elf=digest(elf),
     vecteurs=digest(HERE/"preuves/vecteurs.bin")),indent=2)+"\n")

@@ -21,7 +21,7 @@ def tools(args):
     if both or args.novaOS:
         result["Nova"] = HERE/"bin/cmp"
     if both or args.macOS:
-        result["GNU"] = Path(os.environ.get("GNU_CMP",TMP/"cmp-0240/gnu/bin/cmp")).resolve()
+        result["GNU"] = Path(os.environ.get("GNU_CMP",HERE/"reference-gnu/bin/cmp")).resolve()
     for name,path in result.items():
         ver=subprocess.check_output([path,"--version"],env={**os.environ,"LC_ALL":"C"}).splitlines()[0]
         if name=="GNU" and ver!=b"cmp (GNU diffutils) 3.12":
