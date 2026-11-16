@@ -15,7 +15,12 @@ enum Input {
         offset: u64,
         end: u64,
     },
-    Pipe(u64),
+    Pipe {
+        key: u64,
+        frame: [u8; process::PIPE_FRAME],
+        start: usize,
+        end: usize,
+    },
     Terminal,
 }
 struct Native<'a> {
@@ -87,7 +92,27 @@ impl Streams for Native<'_> {
                     }
                 })
             }
-            Input::Pipe(key) => process::pipe_read(*key, buf),
+            Input::Pipe {
+                key,
+                frame,
+                start,
+                end,
+            } => {
+                if *start == *end {
+                    *end = match process::pipe_read(*key, frame) {
+                        Ok(count) => count,
+                        Err(code) => {
+                            self.failure = code;
+                            return Err(console::reason(code).into());
+                        }
+                    };
+                    *start = 0;
+                }
+                let count = buf.len().min(*end - *start);
+                buf[..count].copy_from_slice(&frame[*start..*start + count]);
+                *start += count;
+                Ok(count)
+            }
             Input::Terminal => {
                 rt::value(rt::call(tty::CONSOLE, tty::INPUT.into(), 0, 0)).map(|v| {
                     let b = v as u8;
@@ -166,7 +191,8 @@ fn command() -> Result<u64, (u64, String)> {
     if status != 0 {
         return Err(map(status));
     }
-    let key = rt::config(1);
+    let writer = rt::config(1);
+    let reader = rt::config(2);
     let name = opt.files.first().map(Vec::as_slice).unwrap_or(b"-");
     let input = if name != b"-" {
         let mut client = Client::scoped().map_err(map)?;
@@ -176,20 +202,30 @@ fn command() -> Result<u64, (u64, String)> {
             offset: 0,
             end,
         }
-    } else if key != 0 {
-        Input::Pipe(key)
+    } else if reader != 0 {
+        Input::Pipe {
+            key: reader,
+            frame: [0; process::PIPE_FRAME],
+            start: 0,
+            end: 0,
+        }
     } else {
         Input::Terminal
     };
     let mut io = Native {
         input,
         name,
-        producer: (name != b"-" && key != 0).then_some(key),
+        producer: (writer != 0).then_some(writer),
         failure: 4,
         carry: Vec::new(),
     };
     let status = program.run(&mut io).map_err(|e| (io.failure, e))?;
-    io.display(&[], true).map_err(map)?;
+    if reader != 0 {
+        rt::value(rt::call(rt::IPC_CLOSE, reader, 0, 0)).map_err(map)?;
+    }
+    if writer == 0 {
+        io.display(&[], true).map_err(map)?;
+    }
     Ok(status.unwrap_or(0) as u64)
 }
 #[unsafe(no_mangle)]
