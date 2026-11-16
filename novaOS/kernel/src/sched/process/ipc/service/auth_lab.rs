@@ -67,6 +67,11 @@ pub(super) fn connect(s: &mut Core, m: Session, target: Pid, id: u64) -> Res<()>
             config(s, verifier, offset + 1, &[write, peer[2], peer[3]]);
             config(s, verifier, offset, &[read]);
             config(s, target, 7, &[ask, answer]);
+            let (submit, incoming) = channel(s, target, Some(m.fs), SEND)?;
+            let (receive, respond) = channel(s, target, Some(m.fs), RECEIVE)?;
+            let pair = if id == CLIENT { 24 } else { 26 };
+            config(s, m.fs, pair, &[incoming, respond]);
+            config(s, target, 9, &[submit, receive]);
         }
         _ => return Err(DENIED),
     }

@@ -172,6 +172,26 @@ fn serve() -> rt::Result<()> {
                 4 => sessions
                     .close(m.payload[40..72].try_into().unwrap(), route)
                     .map_err(|_| rt::DENIED)?,
+                11 => {
+                    let current = current.ok_or(rt::DENIED)?;
+                    let sid = m.payload[40..72].try_into().unwrap();
+                    let subject = sessions
+                        .inspect(sid, route, Some(current), now()?)
+                        .map_err(|_| rt::DENIED)?;
+                    let mut q = [0; 128];
+                    q[..8].copy_from_slice(b"NA3DATT1");
+                    q[8] = lane as u8;
+                    q[16..24].copy_from_slice(&m.tag.to_le_bytes());
+                    q[24..40].copy_from_slice(&subject);
+                    q[40..72].copy_from_slice(&sid);
+                    q[72..104].copy_from_slice(&current.head);
+                    rpc_seq = rpc_seq.checked_add(1).ok_or(rt::LIMIT)?;
+                    rt::send_for(rt::config(5), rpc_seq, &q, 5000)?;
+                    let reply = remote(rt::config(6), rpc_seq).map_err(|_| files::UNCERTAIN)?;
+                    if number(&reply.payload) != 0 {
+                        return Err(number(&reply.payload));
+                    }
+                }
                 5..=10 => {
                     sessions
                         .inspect(

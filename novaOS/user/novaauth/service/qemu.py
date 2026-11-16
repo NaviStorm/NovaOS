@@ -42,7 +42,7 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert'):
     stopping=False
     with subprocess.Popen(argv,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,bufsize=0) as vm:
         try:
-            while vm.poll() is None and time.monotonic()-start<90:
+            while vm.poll() is None and time.monotonic()-start<180:
                 if not select.select([vm.stdout],[],[],1)[0]:continue
                 chunk=os.read(vm.stdout.fileno(),8192)
                 if not chunk:break
@@ -63,7 +63,7 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert'):
         if match:actors[role]=int(match[1])
     ordinary=re.search(rb"DEBUG pid=(\d+) NA3 session et facteur revoques",data)
     if ordinary:actors["second_client"]=int(ordinary[1])
-    ok=(len(set(actors.values()))==3 and all(x in data for x in (b"NA3 client termine",b"NA3 administrateur termine",b"NA3 client rejeu refuse",b"NA3 expiration refusee",b"NA3 signature incorrecte refusee",b"NA3 administration refusee",b"NA3 fermeture independante",b"NA3 trois sessions simultanees",b"NA3 desactivation confirmee",b"NA3 renomme et groupe retire",b"NA3 nouveau titulaire distinct",b"NA3 ancien facteur refuse apres recreation",b"NA3 trois ELF collectes",b"BLOC session terminee ok=true",b"absents=0x0 muets=0x0")))
+    ok=(len(set(actors.values()))==3 and all(x in data for x in (b"NA3 client termine",b"NA3 administrateur termine",b"NA3 client rejeu refuse",b"NA3 expiration refusee",b"NA3 signature incorrecte refusee",b"NA3 administration refusee",b"NA3 fermeture independante",b"NA3 trois sessions simultanees",b"NA3 D descendants retires temoin actif issue retrouvee",b"NA3 D autre titulaire refuse",b"NA3 desactivation confirmee",b"NA3 renomme et groupe retire",b"NA3 nouveau titulaire distinct",b"NA3 ancien facteur refuse apres recreation",b"NA3 trois ELF collectes",b"BLOC session terminee ok=true",b"absents=0x0 muets=0x0")))
     if refusal:
         ok=(refusal in data and b"NA3 refus collecte" in data and b"NA3 preuve acceptee" not in data and before==authority.read_bytes()
             and b"BLOC session terminee ok=true" in data and b"absents=0x0 muets=0x0" in data)

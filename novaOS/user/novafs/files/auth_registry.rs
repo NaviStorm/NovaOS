@@ -151,12 +151,15 @@ impl Session<'_, '_> {
             Err(e) => return Err(e),
         };
         let mut a = [0; 128];
-        let status = if msg.kind == 1
+        let status = if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA3DATT1" {
+            self.attest_folder(&msg.payload).err().unwrap_or(rt::OK)
+        } else if msg.kind == 1
             && msg.len == 128
             && matches!(
                 &msg.payload[..8],
                 b"NA3CREAT" | b"NA3DISAB" | b"NA3DELET" | b"NA3RENAM" | b"NA3UNGRP" | b"NA3ISSUE"
-            ) {
+            )
+        {
             self.auth_mutate(&msg.payload, &mut a)
                 .err()
                 .unwrap_or(rt::OK)

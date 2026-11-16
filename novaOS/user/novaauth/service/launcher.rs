@@ -72,6 +72,25 @@ pub(super) fn launch() -> rt::Result<()> {
     if live.kind != 1 || live.tag != 2 || live.len != 32 {
         return Err(rt::REFUSED);
     }
+    let mut provision = [0; 128];
+    provision[..8].copy_from_slice(b"NA3DIR01");
+    provision[8..24].copy_from_slice(&published.payload[..16]);
+    provision[24..56].copy_from_slice(&live.payload[..32]);
+    rt::send_for(rt::config(5), 2, &provision, 5000)?;
+    let receipt = rt::receive_for(rt::config(6), 5000)?;
+    if receipt.kind != 1
+        || receipt.len != 128
+        || receipt.tag != 2
+        || u64::from_le_bytes(receipt.payload[16..24].try_into().unwrap()) != rt::OK
+    {
+        return Err(rt::REFUSED);
+    }
+    rt::send_for(second[2], 7, &[1], 5000)?;
+    let exercised = rt::receive_for(second[1], 15000)?;
+    if exercised.tag != 7 || exercised.kind != 1 || exercised.len != 1 || exercised.payload[0] != 1
+    {
+        return Err(rt::REFUSED);
+    }
     rt::send_for(client[2], 2, &live.payload[..32], 5000)?;
     let withdrawn = rt::receive_for(client[1], 5000)?;
     if withdrawn.kind != 1 || withdrawn.tag != 3 || withdrawn.len != 1 || withdrawn.payload[0] != 1

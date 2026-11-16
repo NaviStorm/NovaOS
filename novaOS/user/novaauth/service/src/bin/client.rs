@@ -35,6 +35,30 @@ impl Client {
         self.seq += 1;
         rpc(rt::config(7), rt::config(8), self.seq, q)
     }
+    fn directory(
+        &mut self,
+        session: [u8; 32],
+        op: u8,
+        key: u64,
+        rights: u8,
+        request: u64,
+    ) -> rt::Result<(u64, u64)> {
+        let mut data = [0; 128];
+        data[0] = op;
+        data[1] = rights;
+        data[8..16].copy_from_slice(&key.to_le_bytes());
+        data[16..24].copy_from_slice(&request.to_le_bytes());
+        let tag = self.seq.checked_add(1).ok_or(rt::LIMIT)?;
+        rt::send_for(rt::config(9), tag, &data, 5000)?;
+        let mut auth = self.frame(11);
+        auth[40..72].copy_from_slice(&session);
+        let result = self.send(&auth)?;
+        if number(&result) != 0 {
+            return Ok((number(&result), 0));
+        }
+        let reply = remote(rt::config(10), tag)?.payload;
+        Ok((number(&reply), number(&reply[8..])))
+    }
     fn challenge(&mut self) -> rt::Result<[u8; 128]> {
         let mut q = self.frame(1);
         q[40..56].copy_from_slice(&random()?[..16]);
@@ -93,7 +117,7 @@ impl Client {
     }
 }
 fn from_manager(tag: u64, len: u32) -> rt::Result<[u8; 128]> {
-    let m = rt::receive_for(rt::config(1), 10000)?;
+    let m = rt::receive_for(rt::config(1), 20000)?;
     check(m.kind == 1 && m.tag == tag && m.len == len)?;
     Ok(m.payload)
 }
@@ -134,6 +158,8 @@ fn admin(c: &mut Client, other: [u8; 16]) -> rt::Result<()> {
     let other_session = from_manager(2, 32)?[..32].try_into().unwrap();
     check(number(&c.session(3, other_session, [0; 16])?) == rt::DENIED)?;
     check(other_session != session && other_session != second)?;
+    check(c.directory(session, 3, 1, 0, 0)?.0 == rt::DENIED)?;
+    marker(b"NA3 D autre titulaire refuse");
     check(number(&c.session(3, second, [0; 16])?) == 0)?;
     check(number(&c.session(3, session, [0; 16])?) == 0)?;
     marker(b"NA3 trois sessions simultanees");
@@ -162,6 +188,32 @@ fn ordinary(c: &mut Client, expected: [u8; 16]) -> rt::Result<()> {
     check(number(&c.session(6, id, subject)?) == rt::DENIED)?;
     marker(b"NA3 administration refusee");
     rt::send_for(rt::config(0), 2, &id, 5000)?;
+    from_manager(7, 1)?;
+    const REQUEST: u64 = 0x4132303236;
+    let (code, root_entries) = c.directory(id, 3, 1, 0, 0)?;
+    check(code == 0 && root_entries == 0)?;
+    let (again, second, _) = c.login()?;
+    check(again == subject && c.directory(second, 3, 1, 0, 0)?.0 != 0)?;
+    check(c.directory(id, 4, 1, 0, 0)?.0 == rt::DENIED)?;
+    let (code, parent) = c.directory(id, 2, 1, 3, 0)?;
+    check(code == 0)?;
+    let (code, child) = c.directory(id, 2, parent, 3, 0)?;
+    check(code == 0)?;
+    let (code, ro) = c.directory(id, 2, 1, 1, 0)?;
+    check(code == 0 && c.directory(id, 5, ro, 0, REQUEST)?.0 == rt::REVOKED)?;
+    check(c.directory(id, 5, child, 0, REQUEST)?.0 == 0)?;
+    check(c.directory(id, 9, parent, 0, 0)?.0 == 0)?;
+    check(c.directory(id, 6, child, 0, REQUEST)?.0 == rt::REVOKED)?;
+    check(
+        c.directory(id, 3, parent, 0, 0)?.0 == rt::REVOKED
+            && c.directory(id, 3, child, 0, 0)?.0 == rt::REVOKED,
+    )?;
+    check(c.directory(id, 8, ro, 0, REQUEST)? == (0, 0))?;
+    check(c.directory(id, 5, 1, 0, REQUEST)?.0 == 0)?;
+    check(c.directory(id, 7, 1, 0, REQUEST)?.0 == 22)?;
+    check(c.directory(id, 8, ro, 0, REQUEST)? == (0, 1))?;
+    marker(b"NA3 D descendants retires temoin actif issue retrouvee");
+    rt::send_for(rt::config(0), 7, &[1], 5000)?;
     from_manager(2, 1)?;
     check(
         number(&c.session(3, id, [0; 16])?) == rt::DENIED && number(&c.challenge()?) == rt::DENIED,
