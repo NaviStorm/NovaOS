@@ -1,0 +1,17 @@
+-G, -E, -F, -P   Motif BRE, ERE, littéral ou PCRE2.
+-e MOTIF, -f FICHIER   Ajouter des motifs, un par ligne.
+-i (-y), --no-ignore-case   Ignorer ou respecter la casse.
+-w, -x, -v   Exiger un mot entier, une ligne entière ou inverser la sélection.
+-n, -b, -H, -h, -T   Numéro, position en octets, nom, sans nom, alignement.
+-c, -l, -L, -o   Compter, lister avec/sans sélection, afficher les fragments.
+-q, -s, -m N   Mode silencieux, masquer les erreurs d’accès, limiter par entrée.
+-A N, -B N, -C N, -N   Contexte après, avant ou des deux côtés.
+--group-separator=TEXTE, --no-group-separator   Séparateur de groupes.
+-r, -R   Parcourir les répertoires. -R suit aussi les liens rencontrés.
+--include=MOTIF, --exclude=MOTIF, --exclude-from=FICHIER, --exclude-dir=MOTIF
+-d ACTION, -D ACTION   Traitement des répertoires et des fichiers spéciaux.
+-a, -I, --binary-files=TYPE   Texte, ignorer les binaires ou choisir le mode.
+-U, -z, -Z   Mode binaire, délimiter les lignes ou les noms avec NUL.
+--color[=QUAND], --colour[=QUAND]   Coloration always, never ou auto.
+--label=NOM, --line-buffered   Nom de stdin, vidage après chaque ligne.
+--   Fin des options. Le fichier « - » désigne stdin.

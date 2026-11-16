@@ -1,0 +1,17 @@
+-G, -E, -F, -P   Choose BRE, ERE, literal or PCRE2 patterns.
+-e PATTERN, -f FILE   Add patterns, one per line.
+-i (-y), --no-ignore-case   Ignore or respect case distinctions.
+-w, -x, -v   Require a whole word, require a whole line or invert selection.
+-n, -b, -H, -h, -T   Line number, byte offset, filename, no filename, alignment.
+-c, -l, -L, -o   Count, list files with/without selections, print matching spans.
+-q, -s, -m N   Quiet mode, suppress access diagnostics, limit selections per input.
+-A N, -B N, -C N, -N   Show trailing, leading or both kinds of context.
+--group-separator=TEXT, --no-group-separator   Context group separator.
+-r, -R   Search directories. -R also follows links encountered during traversal.
+--include=GLOB, --exclude=GLOB, --exclude-from=FILE, --exclude-dir=GLOB
+-d ACTION, -D ACTION   Choose directory and special-file handling.
+-a, -I, --binary-files=TYPE   Text mode, skip binary input or select its mode.
+-U, -z, -Z   Binary I/O, NUL-delimited records or NUL-terminated names.
+--color[=WHEN], --colour[=WHEN]   Highlight always, never or automatically.
+--label=NAME, --line-buffered   Name stdin, flush after each output line.
+--   End options. The file operand '-' reads stdin.

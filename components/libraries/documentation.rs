@@ -31,6 +31,18 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "grep",
+        provider: "uutils/grep",
+        description: Text("Search for a pattern in input records.", "Rechercher un motif dans les lignes d’entrée."),
+        syntax: Text("grep [OPTION]... PATTERN [FILE]...", "grep [OPTION]... MOTIF [FICHIER]..."),
+        arguments: Text(include_str!("grep/options.en"), include_str!("grep/options.fr")),
+        examples: Text::same("grep -n erreur journal.txt\ngrep -Ei 'warning|error' journal.txt"),
+        rights: Text("Documentation needs no file capability.", "Les consultations documentaires ne demandent aucun droit sur les fichiers."),
+        effects: Text("The manual reads the embedded catalogue.", "Le manuel lit le catalogue embarqué."),
+        limits: Text("0 selected, 1 no selection, 2 error. Native search awaits admission.", "0 sélection, 1 aucune sélection, 2 erreur. La recherche native attend son admission."),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1143,10 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.name == "grep" {
+            return lang.select("grep (uutils 0.2.0, ARC-027) — reference: GNU grep 3.12\n",
+                               "grep (uutils 0.2.0, ARC-027) — référence : GNU grep 3.12\n").into();
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
@@ -1207,10 +1223,10 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
+                if self.name == "grep" { lang.select("Exit status:", "Codes de retour :") } else { lang.select(
                     "Status, errors and limits: 0 success, 3 invalid argument.",
                     "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                ) },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )
