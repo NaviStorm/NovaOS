@@ -49,14 +49,19 @@ impl Client {
         data[8..16].copy_from_slice(&key.to_le_bytes());
         data[16..24].copy_from_slice(&request.to_le_bytes());
         let tag = self.seq.checked_add(1).ok_or(rt::LIMIT)?;
-        rt::send_for(rt::config(9), tag, &data, 5000)?;
+        rt::send_frame(rt::config(9), tag, &data, 0, false)?;
         let mut auth = self.frame(11);
         auth[40..72].copy_from_slice(&session);
-        let result = self.send(&auth)?;
+        let result = self
+            .send(&auth)
+            .map_err(|e| if matches!(op, 6 | 7) { 22 } else { e })?;
         if number(&result) != 0 {
             return Ok((number(&result), 0));
         }
-        let reply = remote(rt::config(10), tag)?.payload;
+        let reply = remote(rt::config(10), tag)
+            .map_err(|e| if matches!(op, 6 | 7) { 22 } else { e })?
+            .payload;
+        check(&reply[120..] == b"DIRREPLY")?;
         Ok((number(&reply), number(&reply[8..])))
     }
     fn challenge(&mut self) -> rt::Result<[u8; 128]> {
@@ -187,6 +192,8 @@ fn ordinary(c: &mut Client, expected: [u8; 16]) -> rt::Result<()> {
     check(subject == expected)?;
     check(number(&c.session(6, id, subject)?) == rt::DENIED)?;
     marker(b"NA3 administration refusee");
+    check(c.directory(id, 3, 1, 0, 0)?.0 == rt::DENIED)?;
+    marker(b"NA3 D avant attribution refuse");
     rt::send_for(rt::config(0), 2, &id, 5000)?;
     from_manager(7, 1)?;
     const REQUEST: u64 = 0x4132303236;
@@ -212,6 +219,12 @@ fn ordinary(c: &mut Client, expected: [u8; 16]) -> rt::Result<()> {
     check(c.directory(id, 5, 1, 0, REQUEST)?.0 == 0)?;
     check(c.directory(id, 7, 1, 0, REQUEST)?.0 == 22)?;
     check(c.directory(id, 8, ro, 0, REQUEST)? == (0, 1))?;
+    check(c.directory(id, 9, 1, 0, 0)?.0 == 0)?;
+    check(
+        c.directory(id, 3, 1, 0, 0)?.0 == rt::REVOKED
+            && c.directory(id, 3, ro, 0, 0)?.0 == rt::REVOKED,
+    )?;
+    check(c.directory(id, 1, 0, 3, 0)?.0 == rt::DENIED)?;
     marker(b"NA3 D descendants retires temoin actif issue retrouvee");
     rt::send_for(rt::config(0), 7, &[1], 5000)?;
     from_manager(2, 1)?;

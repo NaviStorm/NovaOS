@@ -315,7 +315,8 @@ impl Session<'_, '_> {
             let status = result.as_ref().err().copied().unwrap_or(rt::OK);
             reply[..8].copy_from_slice(&status.to_le_bytes());
             reply[8..16].copy_from_slice(&result.unwrap_or(0).to_le_bytes());
-            rt::send_for(tx, tag, &reply, 5000).map_err(|_| w::UNCERTAIN)?;
+            reply[120..].copy_from_slice(b"DIRREPLY");
+            rt::send_frame(tx, tag, &reply, 0, false).map_err(|_| w::UNCERTAIN)?;
             return Ok(());
         }
         Err(rt::DENIED)

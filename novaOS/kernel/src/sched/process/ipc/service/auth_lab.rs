@@ -30,6 +30,22 @@ fn identity(s: &Core, pid: Pid) -> Res<[u64; 4]> {
         u64::from_le_bytes(encoded[i * 8..i * 8 + 8].try_into().unwrap())
     }))
 }
+// Chaque client conserve deux canaux de supervision et deux conversations
+// privées. Les deux interlocuteurs peuvent envoyer et recevoir, sans déléguer.
+fn conversation(s: &mut Core, owner: Pid, peer: Pid) -> Res<(u64, u64)> {
+    let root = s.ipc.create(owner)?;
+    let node = s.ipc.lookup(owner, root, MANAGE)?;
+    let mask = SEND | RECEIVE;
+    let child = match s.ipc.derive(owner, root, peer, mask.into()) {
+        Ok(c) => c,
+        Err(e) => {
+            s.ipc.close(node);
+            return Err(e);
+        }
+    };
+    s.ipc.nodes.get_mut(node.id.slot()).rights = mask;
+    Ok((root, child))
+}
 pub(super) fn connect(s: &mut Core, m: Session, target: Pid, id: u64) -> Res<()> {
     if let Some(space) = s.processes.get(target).space.as_ref() {
         let (pages, stack) = space.page_counts();
@@ -60,15 +76,15 @@ pub(super) fn connect(s: &mut Core, m: Session, target: Pid, id: u64) -> Res<()>
                 })
                 .ok_or(CLOSED)?
                 .pid;
-            let (ask, read) = channel(s, target, Some(verifier), SEND)?;
-            let (answer, write) = channel(s, target, Some(verifier), RECEIVE)?;
+            let (ask, read) = conversation(s, target, verifier)?;
+            let (answer, write) = (ask, read);
             let offset = if id == CLIENT { 11 } else { 15 };
             let peer = identity(s, target)?;
             config(s, verifier, offset + 1, &[write, peer[2], peer[3]]);
             config(s, verifier, offset, &[read]);
             config(s, target, 7, &[ask, answer]);
-            let (submit, incoming) = channel(s, target, Some(m.fs), SEND)?;
-            let (receive, respond) = channel(s, target, Some(m.fs), RECEIVE)?;
+            let (submit, incoming) = conversation(s, target, m.fs)?;
+            let (receive, respond) = (submit, incoming);
             let pair = if id == CLIENT { 24 } else { 26 };
             config(s, m.fs, pair, &[incoming, respond]);
             config(s, target, 9, &[submit, receive]);
