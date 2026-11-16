@@ -3,6 +3,7 @@ use super::*;
 #[derive(Clone, Copy)]
 struct Lease {
     id: Digest32,
+    domain: Id,
     subject: Id,
     reference: Id,
     route: Route,
@@ -60,6 +61,7 @@ impl Sessions {
         let id = digest.finalize().into();
         *slot = Some(Lease {
             id,
+            domain: current.domain,
             subject: current.subject,
             reference: current.reference,
             route: proof.route,
@@ -82,7 +84,9 @@ impl Sessions {
             .find(|l| l.is_some_and(|l| l.id == id && l.route == route))
             .ok_or(Error::Refused)?;
         let lease = slot.unwrap();
-        if !current.is_some_and(|b| b.subject == lease.subject && b.reference == lease.reference) {
+        if !current.is_some_and(|b| {
+            b.domain == lease.domain && b.subject == lease.subject && b.reference == lease.reference
+        }) {
             *slot = None;
             return Err(Error::Refused);
         }

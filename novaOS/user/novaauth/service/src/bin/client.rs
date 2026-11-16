@@ -110,12 +110,7 @@ fn admin(c: &mut Client, other: [u8; 16]) -> rt::Result<()> {
     marker(b"NA3 client preuve valide");
     let (again, second, _) = c.login()?;
     check(subject == again && session != second)?;
-    check(
-        number(&c.session(4, second, [0; 16])?) == 0
-            && number(&c.session(3, second, [0; 16])?) == rt::DENIED,
-    )?;
-    check(number(&c.session(3, session, [0; 16])?) == 0)?;
-    marker(b"NA3 fermeture independante");
+
     check(number(&c.send(&signed)?) == rt::DENIED)?;
     marker(b"NA3 client rejeu refuse");
     pause(12)?;
@@ -138,6 +133,14 @@ fn admin(c: &mut Client, other: [u8; 16]) -> rt::Result<()> {
     rt::send_for(rt::config(0), 2, &alice, 5000)?;
     let other_session = from_manager(2, 32)?[..32].try_into().unwrap();
     check(number(&c.session(3, other_session, [0; 16])?) == rt::DENIED)?;
+    check(other_session != session && other_session != second)?;
+    check(number(&c.session(3, second, [0; 16])?) == 0)?;
+    check(number(&c.session(3, session, [0; 16])?) == 0)?;
+    marker(b"NA3 trois sessions simultanees");
+    check(number(&c.session(4, second, [0; 16])?) == 0)?;
+    check(number(&c.session(3, second, [0; 16])?) == rt::DENIED)?;
+    check(number(&c.session(3, session, [0; 16])?) == 0)?;
+    marker(b"NA3 fermeture independante");
     check(number(&c.session(8, session, alice)?) == 0)?;
     check(number(&c.session(9, session, alice)?) == 0)?;
     marker(b"NA3 renomme et groupe retire");
