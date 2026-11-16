@@ -3,11 +3,13 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "novaOS/tests"))
 from cli import Terminal
+from cli_p9 import programme_oracle
 from journalisation import sortie
 from nsh_scripts import COMMUN, fixture
 
@@ -16,6 +18,8 @@ def main(arch, sector, out):
     os.environ.update(NOVA_VCPUS="2", NOVA_RAM="256")
     out.mkdir(parents=True, exist_ok=False)
     disk, _, _ = fixture(out, sector)
+    oracle = programme_oracle(arch, out)
+    subprocess.run([oracle, "initialiser", disk, str(sector)], check=True)
     before = hashlib.sha256(disk.read_bytes()).hexdigest()
     names = ("sous", "commun.nsh", "enfant", "parent", "vide", "brise",
              "utf8-invalide", "etranger", "boucle", "grand", "stop", "garde",
@@ -27,7 +31,11 @@ def main(arch, sector, out):
         for name in names:
             assert name in result, (name, result)
         assert "\x1b[34m" in result, result
-        results["ls -latr --color /"] = list(names)
+        dates = ("2001-01-01 00:00:00.200000123Z", "2001-01-01 00:00:00.800000001Z")
+        assert all(date in result for date in dates), result
+        assert result.index(dates[0]) < result.index(dates[1]), result
+        assert "inconnue" in result and ".cache" in result, result
+        results["ls -latr --color /"] = {"noms": names, "ordre_dates": dates}
         # The fixture contains 8193 bytes and no final newline.
         vm.vm.stdin.write(b"nsh -c 'echo debutlecture; cat grand; echo finlecture=$?'\n")
         vm.until(b"\r\ndebutlecture\r\n")
