@@ -23,6 +23,15 @@ pub struct Frame {
     pub status: u64,
 }
 impl Frame {
+    fn uniq_environment(&self,name:&str,words:&mut Vec<Word>) {
+        if name!="uniq" {return;}
+        let variable=|key:&str| self.vars.get(key).filter(|(_,export)|*export).map(|(v,_)|v.as_str());
+        let locale=["LC_ALL","LC_CTYPE","LANG"].iter().find_map(|key|variable(key).filter(|s|!s.is_empty())).unwrap_or("").to_ascii_lowercase();
+        let version=variable("_POSIX2_VERSION").and_then(|s|s.parse::<i32>().ok()).unwrap_or(200112);
+        let mode=u8::from(locale.contains("utf-8")||locale.contains("utf8")) |
+            (u8::from(variable("POSIXLY_CORRECT").is_some())<<1) | (u8::from(!(200112..200809).contains(&version))<<2);
+        if mode!=0 {words.insert(0,Word{text:alloc::format!("\0uniq:{mode}"),active:Vec::new()});}
+    }
     fn child(&self) -> Self {
         Self {
             vars: self
@@ -135,23 +144,25 @@ impl<'a> Engine<'a> {
         match cmd {
             Command::Pipe(left, right) => {
                 let consumer = match right[0] {
+                    "uniq" => executor::PipeReader::Uniq,
                     "head" => executor::PipeReader::FirstLine,
                     "wc" => executor::PipeReader::Count,
                     _ => return Err(rt::BAD_ARGUMENT),
                 };
                 let (_, reader_name, options) = consumer.spec();
                 let mut stages = Vec::new();
-                for (raw, expected) in [(left, "cat"), (right, reader_name)] {
+                for (raw, expected) in [(left, left[0]), (right, reader_name)] {
                     let name = f.word(raw[0], &self.pid)?.text;
                     let mut words = self.words(f, &raw[1..])?;
                     let name = f.aliases.expand(name, &mut words, |s| f.word(s, &self.pid))?;
                     if name != expected { return Err(rt::BAD_ARGUMENT); }
+                    f.uniq_environment(&name,&mut words);
                     stages.push(words);
                 }
                 // L'aide publique et les options invalides précèdent les accès P9.
                 let lang = nova_cli::documentation::Language::from_tag(
                     f.vars.get("LANG").map(|(tag, _)| tag.as_str()));
-                for (name, words) in ["cat", reader_name].into_iter().zip(&stages) {
+                for (name, words) in [left[0], reader_name].into_iter().zip(&stages) {
                     let literal: Vec<_> = words.iter().map(|w| {
                         if glob::has_pattern(w) { "0" } else { w.text.as_str() }
                     }).collect();
@@ -159,11 +170,13 @@ impl<'a> Engine<'a> {
                         return Ok(Flow::Status(code));
                     }
                 }
-                if !stages[1].iter().map(|w| w.text.as_str()).eq(options.iter().copied()) {
+                if !matches!(consumer,executor::PipeReader::Uniq) && !stages[1].iter().map(|w| w.text.as_str()).eq(options.iter().copied()) {
                     return Err(rt::BAD_ARGUMENT);
                 }
                 let args = glob::arguments(self.fs, &stages[0])?;
-                executor::pipeline(self.fs, &args, consumer, self.test, executor::PipeTrial::Normal).map(Flow::Status)
+                let producer=if left[0]=="sort"{Program::Sort}else{Program::Cat};
+                let reader_args:Vec<_>=stages[1].iter().map(|w|w.text.clone()).collect();
+                executor::run_pipeline(self.fs, producer,&args, consumer, &reader_args,self.test, executor::PipeTrial::Normal).map(Flow::Status)
             }
             Command::Simple(words) => self.simple(f, words, depth, loops),
             Command::If(arms, other) => {
@@ -258,6 +271,7 @@ impl<'a> Engine<'a> {
         let name = f
             .aliases
             .expand(name, &mut words, |s| f.word(s, &self.pid))?;
+        f.uniq_environment(&name,&mut words);
         let page = nova_cli::documentation::lookup(&name);
         let probe = self.test && option_env!("NOVA_DOC_TRACE") == Some("1") && name == "@probe";
         if page.is_some() || probe {

@@ -253,6 +253,20 @@ fn main() {
     }
     let sample = out.join("instance_sample.bin");
     catalog.push_str(&format!("(include_bytes!({sample:?}),crate::instance_abi::SAMPLE,false,false),"));
+    let uniq = components.join("uniq");
+    println!("cargo::rerun-if-changed={}",uniq.display());
+    let result=Command::new(env::var_os("CARGO").unwrap())
+        .args(["build","--release","--locked","--target",&target])
+        .current_dir(uniq).env("CARGO_TARGET_DIR",&work).env("CARGO_ENCODED_RUSTFLAGS",&flags)
+        .status().expect("compilation de uniq");
+    assert!(result.success(),"liaison de uniq");
+    let path=out.join("uniq.elf");
+    std::fs::copy(work.join(&target).join("release/uniq"),&path).unwrap();
+    catalog.push_str(&format!("(include_bytes!({path:?}),{},false,true),",installation::UNIQ));
+    // Le banc épingle un ELF sort issu de la branche du fournisseur pour chaque ISA.
+    let sort=manifest.join("../../livraison-uniq-0240/bin").join(format!("sort-{}.elf",target.split('-').next().unwrap()));
+    println!("cargo::rerun-if-changed={}",sort.display());
+    catalog.push_str(&format!("(include_bytes!({sort:?}),{},false,false),",installation::SORT));
     catalog.push(']');
     std::fs::write(out.join("cli_catalog.rs"), catalog).unwrap();
 }

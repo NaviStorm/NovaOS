@@ -107,6 +107,9 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
         tty::PIPE_CAT => Some(Role::Cat),
         tty::PIPE_WC => Some(Role::Wc),
         tty::PIPE_HEAD => Some(Role::Head),
+        tty::PIPE_SORT => Some(Role::Sort),
+        tty::PIPE_UNIQ => Some(Role::Uniq),
+        n if n == Role::Sort as u64 => return Err(DENIED),
         _ => None,
     };
     let number = role.map_or(number, |r| r as u64);

@@ -19,6 +19,9 @@ pub const COMMANDS: &[(&str, u64)] = &[
     ("nsh", 0x4e4f_5641_0000_0010),
 ];
 
+pub const UNIQ: u64 = 0x4e4f_5641_0000_0111;
+pub const SORT: u64 = 0x4e4f_5641_0000_0112;
+
 /// Les anciennes applications ne délèguent pas de création de travailleurs.
 /// Un nouveau profil multiprocessus doit être admis explicitement ici.
 pub fn grant(installation: u64, ports: u64, pair: u64) -> Option<bool> {
@@ -30,6 +33,8 @@ pub fn grant(installation: u64, ports: u64, pair: u64) -> Option<bool> {
         wire::SAMPLE if ports == 0 && pair == 0 => Some(true),
         wire::WITNESS if ports == 0 && pair == 0 => Some(false),
         wire::SHELL => None,
+        UNIQ => Some(false),
+        SORT if ports == 4 => Some(false),
         id if COMMANDS.iter().any(|&(_, app)| app == id) => Some(false),
         _ => None,
     }

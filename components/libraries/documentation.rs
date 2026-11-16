@@ -31,6 +31,16 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name:"uniq",provider:"NovaOS",description:Text("Filter adjacent matching records.","Filtrer les enregistrements adjacents identiques."),
+        syntax:Text("uniq [OPTION]... [INPUT [OUTPUT]]","uniq [OPTION]... [ENTRÉE [SORTIE]]"),
+        arguments:Text(include_str!("../uniq/options.en"),include_str!("../uniq/options.fr")),
+        examples:Text::same("uniq -u cities.txt\nsort cities.txt | uniq -c\nuniq -d -i cities.txt\nuniq -D -i cities.txt\nuniq -s 1 -c cities.txt"),
+        rights:Text("Read selected input; create selected fresh output.","Lire l’entrée sélectionnée et créer la sortie sélectionnée."),
+        effects:Text("Stream records; RAM follows the longest record.","Traiter en flux ; la mémoire dépend de la ligne la plus longue."),
+        limits:Text("A terminal displays escaped controls. Nonzero status on failure.","Le terminal échappe les contrôles. Statut non nul en cas d’échec."),
+        topics:&[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1141,11 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.name == "uniq" {
+            let version = include_str!("../uniq/Cargo.toml").lines()
+                .find_map(|line| line.strip_prefix("version = \"")).unwrap().trim_end_matches('"');
+            return format!("uniq (NovaOS) {version}\n");
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {

@@ -97,11 +97,12 @@ pub fn execute(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::
 pub enum PipeTrial { Normal, Pressure, Early, Revoke, Admission, OutputDenied, ReaderWait, ReaderRevoke }
 
 #[derive(Clone, Copy)]
-pub enum PipeReader { Count, FirstLine }
+pub enum PipeReader { Count, FirstLine, Uniq }
 
 impl PipeReader {
     pub fn spec(self) -> (Program, &'static str, &'static [&'static str]) {
         match self {
+            Self::Uniq => (Program::Uniq, "uniq", &[]),
             Self::Count => (Program::Wc, "wc", &["-l"]),
             Self::FirstLine => (Program::Head, "head", &["-n", "1"]),
         }
@@ -109,9 +110,19 @@ impl PipeReader {
 }
 
 pub fn pipeline(fs: &mut Client, args: &[String], consumer: PipeReader, test: bool, trial: PipeTrial) -> rt::Result<u64> {
+    let options: Vec<_> = consumer.spec().2.iter().copied().map(String::from).collect();
+    run_pipeline(fs, Program::Cat, args, consumer, &options, test, trial)
+}
+
+pub fn run_pipeline(fs: &mut Client, producer:Program, args: &[String], consumer: PipeReader, reader_args:&[String], test: bool, trial: PipeTrial) -> rt::Result<u64> {
     let words: Vec<_> = args.iter().map(String::as_str).collect();
-    let op = operand(Program::Cat, &words)?;
-    let nova_cli::command::Operand::Batch(_, Program::Cat) = &op else { return Err(rt::BAD_ARGUMENT); };
+    let op = operand(producer, &words)?;
+    let nova_cli::command::Operand::Batch(_, _) = &op else { return Err(rt::BAD_ARGUMENT); };
+    if matches!(consumer, PipeReader::Uniq) {
+        let rw:Vec<_>=reader_args.iter().map(String::as_str).collect();
+        let opts=options::parse(Program::Uniq,&rw)?;
+        if opts.help || opts.version || opts.files.iter().any(|s|*s!="-") { return Err(rt::BAD_ARGUMENT); }
+    }
     let root = rt::value(rt::call(tty::SPAWN, tty::PIPE_OPEN, 0, 0))?;
     let mut grant = Grant::new();
     let prep = grant.select(fs, &op).err().unwrap_or(0);
@@ -122,10 +133,10 @@ pub fn pipeline(fs: &mut Client, args: &[String], consumer: PipeReader, test: bo
         let hold_writer = matches!(trial, PipeTrial::ReaderWait | PipeTrial::ReaderRevoke);
         if hold_writer && prep != 0 { return Err(prep); }
         let writer_prep = if hold_writer { tty::PIPE_PROBE_WAIT } else { prep };
-        let writer = process::pipe_spawn(Program::Cat, args, channels, writer_prep, root)?;
-        let (program, name, options) = consumer.spec();
-        let options = if trial == PipeTrial::Early { &["--invalide"][..] } else { options };
-        let reader_args: Vec<_> = options.iter().copied().map(String::from).collect();
+        let writer = process::pipe_spawn(producer, args, channels, writer_prep, root)?;
+        let (program, name, _) = consumer.spec();
+        let invalid=[String::from("--invalide")];
+        let reader_args=if trial==PipeTrial::Early {&invalid[..]} else {reader_args};
         // Une clé étrangère refuse le second lancement. Retirer les extrémités
         // avant d'attendre le producteur, qui peut déjà dormir sur une file pleine.
         let gate = || -> rt::Result<()> {
@@ -143,7 +154,7 @@ pub fn pipeline(fs: &mut Client, args: &[String], consumer: PipeReader, test: bo
                 _ if ordered_revoke => tty::PIPE_PROBE_REVOKE,
                 _ => 0,
             };
-            process::pipe_spawn(program, &reader_args, (0, 0), status,
+            process::pipe_spawn(program, reader_args, (0, 0), status,
                 if trial == PipeTrial::Admission { 0 } else { root })
         })();
         let synchronization = if hold_writer && reader.is_ok() { gate() } else { Ok(()) };
@@ -177,7 +188,7 @@ pub fn pipeline(fs: &mut Client, args: &[String], consumer: PipeReader, test: bo
         let (fault, number) = produced?;
         let writer_status = if fault { 128 } else { number };
         if test {
-            write(tty::ERROR, &alloc::format!("[pipe cat={writer_status}]\n"))?;
+            write(tty::ERROR, &alloc::format!("[pipe {}={writer_status}]\n", if producer==Program::Sort {"sort"} else {"cat"}))?;
         }
         let (fault, number) = consumed?;
         let reader_status = if fault { 128 } else { number };

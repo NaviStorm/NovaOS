@@ -1,0 +1,19 @@
+-c, --count              Prefix each group with its count (minimum width 7).
+-d, --repeated           First record of each repeated group.
+-D, --all-repeated[=METHOD]   All repeated records (none, prepend, separate).
+--group[=METHOD]         All records (separate, prepend, append, both).
+-u, --unique             Singletons only.
+-i, --ignore-case        Compare ignoring ASCII case; retain original spelling.
+-f N, --skip-fields=N    Skip N fields, including leading blanks.
+-s N, --skip-chars=N     Skip N characters after fields.
+-w N, --check-chars=N    Compare at most N remaining characters.
+-z, --zero-terminated    Use NUL for records and group separators.
+--help, --version        Display documentation or the component version.
+-- ends option parsing. Use - for stdin or stdout. A named output must be free.
+Methods with long options require '='. -D defaults to none; --group defaults to separate.
+none omits separators; separate inserts one between selected groups.
+prepend inserts one before every group, append after every group, both at each boundary including the ends.
+In C, -s and -w count bytes. In UTF-8 they count characters, treating each invalid byte as one character.
+Count conflicts with -D. Group conflicts with -c, -d, -D and -u.
+Without options, keep the first record in each adjacent run. Status 0 on success;
+host errors return 1. NovaOS reports native argument, capability and I/O status.

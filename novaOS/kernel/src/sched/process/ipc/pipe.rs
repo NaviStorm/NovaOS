@@ -8,18 +8,21 @@ pub(super) enum Role {
     Cat = 2,
     Head = 3,
     Wc = 11,
+    Uniq = 17,
+    Sort = 18,
 }
 impl Role {
-    pub(super) fn reader(self) -> bool { self != Self::Cat }
+    pub(super) fn reader(self) -> bool { matches!(self, Self::Head | Self::Wc | Self::Uniq) }
 
     fn name(self) -> &'static str {
-        match self { Self::Cat => "cat", Self::Head => "head", Self::Wc => "wc" }
+        match self { Self::Cat => "cat", Self::Head => "head", Self::Wc => "wc", Self::Uniq => "uniq", Self::Sort => "sort" }
     }
 }
 
 #[derive(Clone, Copy, Default)]
 pub(super) struct Pipe {
     writer: Option<Pid>,
+    writer_role: Option<Role>,
     reader: Option<Pid>,
     pub(super) writer_closed: bool,
     pub(super) reader_closed: bool,
@@ -63,6 +66,7 @@ impl Domain {
 
     pub(super) fn pipe_attach(&mut self, root: Node, child: Pid, role: Role) -> Res<u64> {
         let reader = role.reader();
+        if reader && self.ends.get(root.endpoint.slot()).pipe.as_ref().and_then(|p|p.writer_role)==Some(Role::Sort) && role!=Role::Uniq { return Err(DENIED); }
         let key = self.install_child(root, child, if reader { RECEIVE } else { SEND })?;
         let pipe = self
             .ends
@@ -74,6 +78,7 @@ impl Domain {
             pipe.reader = Some(child);
         } else {
             pipe.writer = Some(child);
+            pipe.writer_role = Some(role);
         }
         if pipe.trace {
             let opposite = if reader { SEND } else { RECEIVE };

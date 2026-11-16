@@ -71,7 +71,7 @@ fn catalogue_et_rendu() {
                 "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
                 "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
-                "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
+                "test", "top", "touch", "true", "unalias", "uniq", "unset", "vi", "wc"
             ]
         );
     }
@@ -94,7 +94,7 @@ fn grammaire_des_utilitaires() {
                 .split(|c: char| !(c.is_ascii_alphanumeric() || c == '-'))
                 .filter(|x| x.starts_with("--") && x.len() > 2)
             {
-                let extra = if x == "--width"
+                let extra = if matches!(x,"--width" | "--skip-fields" | "--skip-chars" | "--check-chars")
                     || matches!(name, "head" | "tail") && matches!(x, "--lines" | "--bytes")
                 {
                     vec![x, "8"]
@@ -104,8 +104,9 @@ fn grammaire_des_utilitaires() {
                 assert!(options::parse(p, &extra).is_ok(), "{name} {x}");
             }
             assert!(options::parse(p, &["--inconnue"]).is_err());
-            let o = options::parse(p, &["--", "--help", "--version", "--inconnue"]).unwrap();
-            assert_eq!(o.files, ["--help", "--version", "--inconnue"]);
+            let literals = if name == "uniq" { &["--", "--help", "--version"][..] } else { &["--", "--help", "--version", "--inconnue"][..] };
+            let o = options::parse(p, literals).unwrap();
+            assert_eq!(o.files, literals[1..]);
             assert!(!o.help && !o.version);
         }
     }

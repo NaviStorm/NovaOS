@@ -24,7 +24,10 @@ impl Grant {
                     &opts.files
                 };
                 for (i, path) in paths.iter().enumerate() {
+                    if *program == Uniq && *path == "-" { continue; }
                     let role = match program {
+                        Sort | Uniq if i == 0 => w::SELECT_FILE,
+                        Uniq => w::SELECT_NEW,
                         Ls if opts.has(b'R') => w::SELECT_TREE,
                         Ls => w::SELECT_LIST,
                         Cp if i == 0 && (opts.has(b'R') || opts.has(b'r')) => w::SELECT_COPY_TREE,

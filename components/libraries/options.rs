@@ -1,6 +1,12 @@
 //! Analyse commune au shell (sélection des capacités) et aux exécutables.
 use crate::{command::Program, runtime as rt};
 use alloc::vec::Vec;
+#[allow(dead_code)]
+#[path = "../uniq/src/engine.rs"]
+mod engine;
+#[allow(dead_code)]
+#[path = "../uniq/src/args.rs"]
+mod uniq_args;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub enum Color {
@@ -50,6 +56,8 @@ pub fn usage(p: Program) -> &'static str {
         Rmdir => "rmdir [-v] [--] répertoire...",
         Vi => "vi [--] fichier",
         Pwd => "pwd [-LP]",
+        Uniq => "uniq [OPTION]... [ENTRÉE [SORTIE]]",
+        Sort => "sort [--] fichier | uniq [OPTION]...",
         Probe => "@probe scénario",
     }
 }
@@ -125,6 +133,17 @@ fn parse_with_context<'a>(
         help: false,
         version: false,
     };
+    if p == Program::Uniq {
+        let bytes: Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        match uniq_args::native(&bytes).map_err(|_| rt::BAD_ARGUMENT)? {
+            uniq_args::Action::Help => o.help = true,
+            uniq_args::Action::Version => o.version = true,
+            uniq_args::Action::Run(_, files) => {
+                for path in files { o.files.push(core::str::from_utf8(path).map_err(|_|rt::BAD_ARGUMENT)?); }
+            }
+        }
+        return Ok(o);
+    }
     let mut end = false;
     let mut args = args.iter().copied();
     while let Some(arg) = args.next() {

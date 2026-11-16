@@ -197,7 +197,7 @@ impl<'a> Parser<'a> {
                 return Err(self.need());
             }
             // Valider la forme admise avant l'exécution de toute la liste.
-            if w[0] != "cat" || !matches!(reader[0], "wc" | "head") {
+            if !matches!((w[0],reader[0]), ("cat","wc" | "head" | "uniq") | ("sort","uniq")) {
                 return Err(Error::Invalid);
             }
             return Ok(Command::Pipe(w, reader));

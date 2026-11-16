@@ -11,6 +11,8 @@ pub fn pipe_spawn(
     pipe: u64,
 ) -> rt::Result<u64> {
     let number = match p {
+        Program::Uniq => tty::PIPE_UNIQ,
+        Program::Sort => tty::PIPE_SORT,
         Program::Cat => tty::PIPE_CAT,
         Program::Wc => tty::PIPE_WC,
         Program::Head => tty::PIPE_HEAD,
@@ -43,7 +45,11 @@ fn launch(
     if count > tty::ARG_MAX {
         return Err(rt::LIMIT);
     }
-    let reads_input = status == 0
+    let terminal_uniq = p == Program::Uniq && pipe.is_none() && status == 0 && {
+        let options = crate::options::parse(p, &args.iter().map(String::as_str).collect::<Vec<_>>())?;
+        !options.help && !options.version && options.files.first().is_none_or(|s| *s == "-")
+    };
+    let reads_input = terminal_uniq || status == 0
         && channels.0 != 0
         && (p == Program::More
             || matches!(p, Program::Cp | Program::Mv | Program::Rm)
@@ -51,7 +57,7 @@ fn launch(
                     .has(b'i'));
     let streams = tty::ERROR
         | if (status == 0 || p == Program::Head && pipe.is_some() && status == tty::PIPE_PROBE_REVOKE)
-            && p != Program::Probe && !(pipe.is_some() && p == Program::Cat) {
+            && p != Program::Probe && !(pipe.is_some() && matches!(p, Program::Cat | Program::Sort)) {
             tty::OUTPUT
         } else {
             0

@@ -1,0 +1,19 @@
+-c, --count              Préfixe chaque groupe par son effectif (largeur minimale 7).
+-d, --repeated           Première ligne de chaque groupe répété.
+-D, --all-repeated[=MÉTHODE]   Toutes les répétitions (none, prepend, separate).
+--group[=MÉTHODE]        Toutes les lignes (separate, prepend, append, both).
+-u, --unique             Groupes d’une seule ligne.
+-i, --ignore-case        Ignore la casse ASCII et conserve la graphie émise.
+-f N, --skip-fields=N    Saute N champs, blancs initiaux compris.
+-s N, --skip-chars=N     Saute N caractères après les champs.
+-w N, --check-chars=N    Compare au plus N caractères restants.
+-z, --zero-terminated    Délimite les lignes et les groupes avec NUL.
+--help, --version        Affiche l’aide ou la version du composant.
+-- termine les options. Le tiret désigne stdin ou stdout. Le nom de sortie doit être libre.
+Une méthode se joint avec « = ». Valeurs par défaut : none pour -D, separate pour --group.
+none omet les séparateurs ; separate en insère un entre les groupes retenus.
+prepend en ajoute un avant chaque groupe, append après chaque groupe, both aux deux extrémités et entre groupes.
+En locale C, -s et -w comptent les octets. En UTF-8, ils comptent les caractères ; un octet invalide compte pour un.
+-c est incompatible avec -D. --group est incompatible avec -c, -d, -D et -u.
+Sans option, conserve la première ligne de chaque groupe adjacent. Succès 0.
+Sur Mac, erreur 1. NovaOS transmet les statuts natifs d’argument, de capacité et d’E/S.

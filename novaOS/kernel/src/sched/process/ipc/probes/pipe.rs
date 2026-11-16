@@ -10,10 +10,17 @@ pub(super) fn lifecycle() {
             let d = &mut s.ipc;
             let control = d.pipe_open(owner.0, false).unwrap();
             let root = d.pipe_check(owner.0, control, None).unwrap();
-            let tx = d.pipe_attach(root, writer.0, super::super::pipe::Role::Cat).unwrap();
+            use super::super::pipe::Role;
+            let producer = if action == "donnees" { Role::Sort } else { Role::Cat };
+            let tx = d.pipe_attach(root, writer.0, producer).unwrap();
             assert!(matches!(d.pipe_check(reader.0, control, Some(writer.0)), Err(DENIED)));
             let root = d.pipe_check(owner.0, control, Some(writer.0)).unwrap();
-            let rx = d.pipe_attach(root, reader.0, super::super::pipe::Role::Head).unwrap();
+            let consumer = if producer == Role::Sort {
+                assert_eq!(d.pipe_attach(root, reader.0, Role::Head), Err(DENIED));
+                assert_eq!(d.pipe_attach(root, reader.0, Role::Wc), Err(DENIED));
+                Role::Uniq
+            } else { Role::Head };
+            let rx = d.pipe_attach(root, reader.0, consumer).unwrap();
             (control, tx, rx)
         });
         assert_eq!(reader.call(IPC_DUP, rx, RECEIVE.into(), 0), Err(DENIED));

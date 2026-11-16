@@ -17,6 +17,8 @@ pub enum Program {
     Tail,
     Rmdir,
     Vi,
+    Uniq = 17,
+    Sort = 18,
 }
 impl Program {
     pub fn named(s: &str, test: bool) -> Option<Self> {
@@ -34,6 +36,7 @@ impl Program {
             "mkdir" => Self::Mkdir,
             "rm" => Self::Rm,
             "rmdir" => Self::Rmdir,
+            "uniq" => Self::Uniq,
             "vi" => Self::Vi,
             "@probe" if test => Self::Probe,
             _ => return None,
@@ -58,6 +61,10 @@ pub fn operand<'a>(p: Program, args: &[&'a str]) -> Result<Operand<'a>, u64> {
         return Ok(Operand::Info(options.help));
     }
     let count = options.files.len();
+    if p == Uniq {
+        return if options.files.iter().all(|s| *s == "-") { Ok(Operand::Noop) } else { Ok(Operand::Batch(options,p)) };
+    }
+    if p == Sort && count == 1 && options.files[0] != "-" { return Ok(Operand::Batch(options,p)); }
     match p {
         Ls | Cat | Head | Tail | More | Wc | Cp | Mv | Touch => {
             if matches!(p, Cp | Mv) && count != 2 || p != Ls && count == 0 {
