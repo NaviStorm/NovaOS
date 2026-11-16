@@ -228,8 +228,14 @@ impl<'a> Engine<'a> {
             .expand(name, &mut words, |s| f.word(s, &self.pid))?;
         if nova_cli::documentation::lookup(&name).is_some() {
             let literal: Vec<_> = words.iter().map(|w| w.text.as_str()).collect();
+            if name == "man" && !literal.iter().any(|a| matches!(*a, "--help" | "--version") || a.starts_with('-')) {
+                return super::manual::open(&literal).map(Flow::Status);
+            }
             if let Some(code) = super::doc_options::answer(&name, &literal)? {
                 return Ok(Flow::Status(code));
+            }
+            if name == "man" {
+                return super::manual::open(literal.strip_prefix(&["--"]).unwrap_or(&literal)).map(Flow::Status);
             }
         }
         match name.as_str() {

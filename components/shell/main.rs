@@ -17,6 +17,8 @@ mod executor;
 mod glob;
 mod history;
 mod input;
+mod manual;
+mod screen_input;
 mod lexer;
 mod line_editor;
 mod parser;
