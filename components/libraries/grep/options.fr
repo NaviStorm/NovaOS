@@ -1,17 +1,62 @@
--G, -E, -F, -P   Motif BRE, ERE, littéral ou PCRE2.
--e MOTIF, -f FICHIER   Ajouter des motifs, un par ligne.
--i (-y), --no-ignore-case   Ignorer ou respecter la casse.
--w, -x, -v   Exiger un mot entier, une ligne entière ou inverser la sélection.
--n, -b, -H, -h, -T   Numéro, position en octets, nom, sans nom, alignement.
--c, -l, -L, -o   Compter, lister avec/sans sélection, afficher les fragments.
--q, -s, -m N   Mode silencieux, masquer les erreurs d’accès, limiter par entrée.
--A N, -B N, -C N, -N   Contexte après, avant ou des deux côtés.
---group-separator=TEXTE, --no-group-separator   Séparateur de groupes.
--r, -R   Parcourir les répertoires. -R suit aussi les liens rencontrés.
---include=MOTIF, --exclude=MOTIF, --exclude-from=FICHIER, --exclude-dir=MOTIF
--d ACTION, -D ACTION   Traitement des répertoires et des fichiers spéciaux.
--a, -I, --binary-files=TYPE   Texte, ignorer les binaires ou choisir le mode.
--U, -z, -Z   Mode binaire, délimiter les lignes ou les noms avec NUL.
---color[=QUAND], --colour[=QUAND]   Coloration always, never ou auto.
---label=NOM, --line-buffered   Nom de stdin, vidage après chaque ligne.
---   Fin des options. Le fichier « - » désigne stdin.
+Sélection et interprétation des motifs :
+  -E, --extended-regexp         Chercher une expression régulière étendue.
+  -F, --fixed-strings           Chercher des chaînes littérales.
+  -G, --basic-regexp            Chercher une expression régulière de base (défaut).
+  -P, --perl-regexp             Utiliser les expressions compatibles Perl (PCRE2).
+  -e, --regexp=PATTERNS         Ajouter un ou plusieurs motifs.
+  -f, --file=FILE               Lire un motif par ligne dans le fichier.
+  -i, --ignore-case             Ignorer la casse (alias : -y).
+      --no-ignore-case          Respecter la casse (défaut).
+  -w, --word-regexp             Sélectionner les mots entiers.
+  -x, --line-regexp             Sélectionner les lignes entières.
+  -z, --null-data               Délimiter les enregistrements par NUL.
+
+Options diverses :
+  -s, --no-messages             Masquer les diagnostics d’accès aux fichiers.
+  -v, --invert-match            Sélectionner les lignes sans correspondance.
+  -V, --version                 Afficher la version du composant grep.
+      --help                    Afficher la liste des options.
+      --                        Terminer la lecture des options.
+
+Contrôle de la sortie :
+  -m, --max-count=NUM           Limiter les lignes sélectionnées par entrée.
+  -b, --byte-offset             Préfixer les résultats par leur position en octets.
+  -n, --line-number             Préfixer les résultats par le numéro de ligne.
+      --line-buffered           Vider le tampon après chaque ligne.
+  -H, --with-filename           Toujours afficher le nom du fichier.
+  -h, --no-filename             Omettre le nom du fichier.
+      --label=LABEL             Nommer l’entrée standard avec LABEL.
+  -o, --only-matching           Afficher chaque fragment trouvé non vide.
+  -q, --quiet, --silent         Désactiver la sortie et arrêter au premier résultat.
+      --binary-files=TYPE       Choisir binary, text ou without-match.
+  -a, --text                    Traiter les données binaires comme du texte.
+  -I                            Ignorer les correspondances des fichiers binaires.
+  -d, --directories=ACTION      Répertoires : read, skip ou recurse.
+  -D, --devices=ACTION          Périphériques et tubes nommés : read ou skip.
+  -r, --recursive               Parcourir les répertoires récursivement.
+  -R, --dereference-recursive   Parcourir aussi les liens symboliques rencontrés.
+      --include=GLOB            Inclure les noms correspondant au motif.
+      --exclude=GLOB            Exclure les noms correspondant au motif.
+      --exclude-from=FILE       Lire les motifs d’exclusion dans le fichier.
+      --exclude-dir=GLOB        Ignorer les répertoires correspondant au motif.
+  -L, --files-without-match     Lister les fichiers sans ligne sélectionnée.
+  -l, --files-with-matches      Lister les fichiers avec une ligne sélectionnée.
+  -c, --count                   Afficher le nombre de sélections par fichier.
+  -T, --initial-tab             Aligner le texte après les préfixes.
+  -Z, --null                    Terminer les noms de fichier par NUL.
+
+Contrôle du contexte :
+  -B, --before-context=NUM      Afficher NUM lignes avant la sélection.
+  -A, --after-context=NUM       Afficher NUM lignes après la sélection.
+  -C, --context=NUM             Afficher NUM lignes de chaque côté.
+  -NUM                          Forme courte de --context=NUM.
+      --group-separator=SEP     Séparer les groupes de contexte avec SEP.
+      --no-group-separator      Omettre le séparateur entre groupes de contexte.
+      --color[=WHEN], --colour[=WHEN]
+                                Colorer les résultats : always, never ou auto.
+  -U, --binary                  Choisir le mode d’E/S binaire.
+
+Le fichier « - » désigne l’entrée standard. Sans fichier, lire cette entrée
+ou parcourir le répertoire courant si la récursivité est demandée.
+Codes de retour : 0 pour une sélection, 1 pour aucune, 2 pour une erreur.
+Avec -q, une sélection rend 0 même après une erreur de lecture.

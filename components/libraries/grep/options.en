@@ -1,17 +1,62 @@
--G, -E, -F, -P   Choose BRE, ERE, literal or PCRE2 patterns.
--e PATTERN, -f FILE   Add patterns, one per line.
--i (-y), --no-ignore-case   Ignore or respect case distinctions.
--w, -x, -v   Require a whole word, require a whole line or invert selection.
--n, -b, -H, -h, -T   Line number, byte offset, filename, no filename, alignment.
--c, -l, -L, -o   Count, list files with/without selections, print matching spans.
--q, -s, -m N   Quiet mode, suppress access diagnostics, limit selections per input.
--A N, -B N, -C N, -N   Show trailing, leading or both kinds of context.
---group-separator=TEXT, --no-group-separator   Context group separator.
--r, -R   Search directories. -R also follows links encountered during traversal.
---include=GLOB, --exclude=GLOB, --exclude-from=FILE, --exclude-dir=GLOB
--d ACTION, -D ACTION   Choose directory and special-file handling.
--a, -I, --binary-files=TYPE   Text mode, skip binary input or select its mode.
--U, -z, -Z   Binary I/O, NUL-delimited records or NUL-terminated names.
---color[=WHEN], --colour[=WHEN]   Highlight always, never or automatically.
---label=NAME, --line-buffered   Name stdin, flush after each output line.
---   End options. The file operand '-' reads stdin.
+Pattern selection and interpretation:
+  -E, --extended-regexp         Match extended regular expressions.
+  -F, --fixed-strings           Match literal strings.
+  -G, --basic-regexp            Match basic regular expressions (default).
+  -P, --perl-regexp             Use Perl-compatible expressions (PCRE2).
+  -e, --regexp=PATTERNS         Add one or more search patterns.
+  -f, --file=FILE               Read one pattern per line from FILE.
+  -i, --ignore-case             Ignore case when matching (alias: -y).
+      --no-ignore-case          Use case-sensitive matching (default).
+  -w, --word-regexp             Require a whole word.
+  -x, --line-regexp             Require a whole input line.
+  -z, --null-data               Separate records with NUL instead of LF.
+
+Miscellaneous:
+  -s, --no-messages             Hide diagnostics for inaccessible files.
+  -v, --invert-match            Select lines without a match.
+  -V, --version                 Show the grep component version.
+      --help                    Show this option list.
+      --                        End option parsing.
+
+Output control:
+  -m, --max-count=NUM           Limit selected lines per input.
+  -b, --byte-offset             Prefix results with their byte offset.
+  -n, --line-number             Prefix results with their line number.
+      --line-buffered           Flush output after each line.
+  -H, --with-filename           Prefix every result with its file name.
+  -h, --no-filename             Omit the file name prefix.
+      --label=LABEL             Use LABEL as the name of standard input.
+  -o, --only-matching           Print each nonempty match separately.
+  -q, --quiet, --silent         Suppress output; stop at the first match.
+      --binary-files=TYPE       Choose binary, text or without-match.
+  -a, --text                    Read binary input as text.
+  -I                            Skip matches in binary input.
+  -d, --directories=ACTION      Directory handling: read, skip or recurse.
+  -D, --devices=ACTION          Device and FIFO handling: read or skip.
+  -r, --recursive               Search directories recursively.
+  -R, --dereference-recursive   Recurse and follow symbolic links.
+      --include=GLOB            Search file names matching GLOB.
+      --exclude=GLOB            Skip file names matching GLOB.
+      --exclude-from=FILE       Read exclusion patterns from FILE.
+      --exclude-dir=GLOB        Skip directories matching GLOB.
+  -L, --files-without-match     List files without a selection.
+  -l, --files-with-matches      List files with a selection.
+  -c, --count                   Print the selection count per file.
+  -T, --initial-tab             Align the text after output prefixes.
+  -Z, --null                    End file name prefixes with NUL.
+
+Context control:
+  -B, --before-context=NUM      Show NUM preceding lines.
+  -A, --after-context=NUM       Show NUM following lines.
+  -C, --context=NUM             Show NUM lines on each side.
+  -NUM                          Short form of --context=NUM.
+      --group-separator=SEP     Separate context groups with SEP.
+      --no-group-separator      Omit separators between context groups.
+      --color[=WHEN], --colour[=WHEN]
+                                Highlight matches: always, never or auto.
+  -U, --binary                  Select binary I/O mode.
+
+Read standard input when FILE is '-'. With no file operand, read stdin
+or search the current directory when recursion is requested.
+Exit status: 0 for a match, 1 for none, 2 for an error.
+With -q, a match returns 0 even after an input error.

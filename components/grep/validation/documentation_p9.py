@@ -53,6 +53,14 @@ def main(arch, sector, out):
             for cmd, want in [("grep --help", desc), ("grep --version", "référence" if fr else "reference")]:
                 result = sortie(vm, cmd)
                 assert want in result, (tag, cmd, result)
+                if cmd == "grep --help":
+                    headings = (["Syntaxe :", "Sélection et interprétation des motifs", "Options diverses",
+                                 "Contrôle de la sortie", "Contrôle du contexte", "Manuel : man grep"]
+                                if fr else ["Usage:", "Pattern selection and interpretation:", "Miscellaneous:",
+                                            "Output control:", "Context control:", "Manual: man grep"])
+                    positions = [result.index(heading) for heading in headings]
+                    assert positions == sorted(positions), (tag, headings)
+                    assert "-E, --extended-regexp" in result and "-Z, --null" in result
                 rows.append(dict(tag=tag, cmd=cmd, result=result))
             vm.vm.stdin.write(b"man grep; echo pagercode=$?\n")
             frame = vm.until(b"q quitter" if fr else b"q quit  / search")

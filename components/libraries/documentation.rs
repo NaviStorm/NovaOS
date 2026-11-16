@@ -34,7 +34,7 @@ pub static PAGES: &[Page] = &[
         name: "grep",
         provider: "uutils/grep",
         description: Text("Search for a pattern in input records.", "Rechercher un motif dans les lignes d’entrée."),
-        syntax: Text("grep [OPTION]... PATTERN [FILE]...", "grep [OPTION]... MOTIF [FICHIER]..."),
+        syntax: Text("grep [OPTION]... PATTERNS [FILE]...", "grep [OPTION]... MOTIFS [FICHIER]..."),
         arguments: Text(include_str!("grep/options.en"), include_str!("grep/options.fr")),
         examples: Text::same("grep -n erreur journal.txt\ngrep -Ei 'warning|error' journal.txt"),
         rights: Text("Documentation needs no file capability.", "Les consultations documentaires ne demandent aucun droit sur les fichiers."),
@@ -1165,7 +1165,20 @@ impl Page {
 
     pub fn render(&self, path: &[&str], manual: bool, lang: Language) -> Option<String> {
         let mut text = String::new();
-        if path.is_empty() {
+        if self.name == "grep" && path.is_empty() {
+            writeln!(
+                text,
+                "{} {}\n{}\n{} {}\n{}\n\n{}",
+                lang.select("Usage:", "Syntaxe :"),
+                self.syntax.get(lang),
+                self.description.get(lang),
+                lang.select("Example:", "Exemple :"),
+                self.examples.get(lang).lines().next()?,
+                lang.select("Separate multiple patterns with newlines.",
+                            "Séparer les motifs multiples par des sauts de ligne."),
+                self.arguments.get(lang).trim_end()
+            ).ok()?;
+        } else if path.is_empty() {
             writeln!(
                 text,
                 "{} — {}\n{} {}",
@@ -1202,19 +1215,21 @@ impl Page {
             )
             .ok()?;
         }
-        writeln!(
-            text,
-            "{} {}\n{}\n{}\n{}",
-            lang.select("Arguments and options:", "Arguments et options :"),
-            self.arguments.get(lang),
-            lang.select(
-                "--help: help; --version: version.",
-                "--help : aide ; --version : version."
-            ),
-            lang.select("Examples:", "Exemples :"),
-            self.examples.get(lang)
-        )
-        .ok()?;
+        if self.name != "grep" {
+            writeln!(
+                text,
+                "{} {}\n{}\n{}\n{}",
+                lang.select("Arguments and options:", "Arguments et options :"),
+                self.arguments.get(lang),
+                lang.select(
+                    "--help: help; --version: version.",
+                    "--help : aide ; --version : version."
+                ),
+                lang.select("Examples:", "Exemples :"),
+                self.examples.get(lang)
+            )
+            .ok()?;
+        }
         if manual {
             writeln!(
                 text,
