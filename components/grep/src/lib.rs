@@ -286,11 +286,18 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
     if devices.is_some_and(|v| !matches!(v, "skip" | "read")) {
         return Err(USimpleError::new(2, "unknown devices method"));
     }
+    let locale = ["LC_ALL", "LC_CTYPE", "LANG"]
+        .iter()
+        .find_map(|key| std::env::var(key).ok().filter(|v| !v.is_empty()))
+        .unwrap_or_default()
+        .to_ascii_lowercase();
+    let utf8 = locale.contains("utf-8") || locale.contains("utf8");
     if let Some(value) = directories
         && !matches!(value, "skip" | "read" | "recurse")
     {
+        let (l, r) = if utf8 { ("‘", "’") } else { ("'", "'") };
         eprintln!(
-            "grep: invalid argument '{value}' for '--directories'\nValid arguments are:\n  - 'read'\n  - 'recurse'\n  - 'skip'\n{USAGE}"
+            "grep: invalid argument {l}{value}{r} for {l}--directories{r}\nValid arguments are:\n  - {l}read{r}\n  - {l}recurse{r}\n  - {l}skip{r}\n{USAGE}"
         );
         return Err(ExitCode::new(1));
     }
@@ -501,13 +508,8 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
     }
     let color_config = ColorConfig::from_env(&grep_color, &grep_colors);
 
-    let locale = ["LC_ALL", "LC_CTYPE", "LANG"]
-        .iter()
-        .find_map(|key| std::env::var(key).ok().filter(|v| !v.is_empty()))
-        .unwrap_or_default()
-        .to_ascii_lowercase();
     let config = Config {
-        utf8: locale.contains("utf-8") || locale.contains("utf8"),
+        utf8,
         // Searcher
         directory_mode,
         device_mode,
