@@ -1,6 +1,6 @@
 # NovaOS v0.22.0 — Audit des sources intégrées
 
-**Avis technique du 16 novembre 2026.** Les trois phases remplissent leurs critères sur les profils qualifiés. Leur clôture peut être soumise à la MOA/MOE. Cette décision concerne les sources intégrées au commit `b83ebb1dd6eb5aeaa2f67bf478112acfd0c72556`. Le noyau affiche v0.20.0 et l’image UTM distribuée est celle de v0.17.0. La décision officielle sur le jalon reste ouverte.
+**NovaOS v0.22.0 — Sources officiellement clôturées le 16 novembre 2026.** La MOA/MOE approuve les sources intégrées au commit `b83ebb1dd6eb5aeaa2f67bf478112acfd0c72556` sur la base du rapport `470f87ce383df8cdc470c59402ed3c31d5029f44`. Sur les 46 exigences du jalon, 35 sont validées, 11 sont validées avec limites et aucune n’est non validée.
 
 ## Fusion et preuves
 
@@ -102,6 +102,6 @@ Le statut REPORTÉ porte ici sur la qualification intégrale de chaque engagemen
 
 **Complément documentaire du 16 novembre.** Le relevé distingue les 34 noms publics de la dernière image UTM, les commandes `service` et `journal` des sources intégrées, et le script de vérification distribué sur P9. La couverture de l’aide, de la version, du manuel et de leurs garanties de sécurité est détaillée par commande. La décision ARC-026 étend le contrat de `service` sans changer les verdicts des trois phases v0.22.0. [Inventaire documentaire](reconciliation-v0300/inventaire-commandes.md) · [Recette v0.30.0](reconciliation-v0300/acceptation-serveur.md#documentation-de-toutes-les-commandes)
 
-## Décision soumise à la MOA/MOE
+## Décision officielle de la MOA/MOE
 
-L’avis favorable porte sur les sources des trois phases et les garanties vérifiées dans leur modèle de panne. Les réserves déterminantes pour l’exploitation sont le refus possible de montage sur ancre P9 déchirée, l’impossibilité de détecter le recul cohérent du support entier, la perte possible d’événements non acquittés, et l’écart entre le code qualifié et l’installateur distribué. La clôture officielle et la fusion de cette documentation nécessitent la décision de la MOA/MOE.
+La clôture couvre la configuration persistante des services, la journalisation persistante et les restrictions de capacités, dans les profils et modèles de panne décrits ci-dessus. La MOA/MOE accepte les limites consignées dans les matrices et maintient les engagements futurs à leurs échéances documentées. Le noyau affiche v0.20.0, le SDK nova-system porte la version v0.2.0 et l’ABI native v1 compte 48 sélecteurs. NovaFS v0.9.13 conserve le format P9 et la compatibilité historique P8. L’image UTM distribuée reste celle de v0.17.0.
