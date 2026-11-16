@@ -13,6 +13,26 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "tr" {
+        let bytes: alloc::vec::Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        let mut warnings = alloc::vec::Vec::new();
+        let action = nova_cli::tr::prepare("tr", &bytes, false, |msg| warnings.push(msg));
+        let text = match action {
+            Ok(nova_cli::tr::Action::Help) => page.render(&[], false, lang).ok_or(rt::BAD_ARGUMENT)?,
+            Ok(nova_cli::tr::Action::Version) => page.version(lang),
+            Ok(nova_cli::tr::Action::Filter(_)) => return Ok(None),
+            Err(msg) => {
+                for warning in warnings {
+                    console::printable(tty::ERROR, &alloc::format!("tr: {warning}\n"))?;
+                }
+                let msg = alloc::string::String::from_utf8_lossy(&msg);
+                console::printable(tty::ERROR, &alloc::format!("tr: {msg}\n"))?;
+                return Ok(Some(1));
+            }
+        };
+        console::write(tty::OUTPUT, &text)?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

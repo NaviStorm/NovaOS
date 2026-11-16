@@ -3,6 +3,8 @@ extern crate alloc;
 extern crate self as nova_cli;
 #[path = "../../components/shell/doc_options.rs"]
 mod doc_options;
+#[path = "../../components/coreutils/tr/engine.rs"]
+pub mod tr;
 pub mod tty {
     pub const OUTPUT: u64 = 1;
     pub const ERROR: u64 = 2;
@@ -71,7 +73,7 @@ fn catalogue_et_rendu() {
                 "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
                 "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
-                "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
+                "test", "top", "touch", "tr", "true", "unalias", "unset", "vi", "wc"
             ]
         );
     }
@@ -128,10 +130,11 @@ fn aiguillage_sans_aucune_interface_metier() {
             }
             assert_eq!(
                 doc_options::answer(page.name, &["--inconnue"], lang),
-                Ok(Some(3))
+                Ok(Some(if page.name == "tr" { 1 } else { 3 }))
             );
+            let operands = if page.name == "tr" { &["--", "--inconnue", "x"][..] } else { &["--", "--inconnue"][..] };
             assert_eq!(
-                doc_options::answer(page.name, &["--", "--inconnue"], lang),
+                doc_options::answer(page.name, operands, lang),
                 Ok(None)
             );
         }

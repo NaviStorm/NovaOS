@@ -31,6 +31,20 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "tr",
+        provider: "nova-cli",
+        description: Text("Translate, delete or squeeze bytes from standard input.", "Traduire, supprimer ou comprimer des octets de l’entrée standard."),
+        syntax: Text::same("tr [OPTION]... SET1 [SET2]"),
+        arguments: Text(
+            "-c, -C, --complement  complement SET1\n-d, --delete  delete SET1\n-s, --squeeze-repeats  squeeze the last set after processing\n-t, --truncate-set1  truncate SET1 to SET2\n-A  use C byte classes\n--  end options\nTwo sets translate. With one set, choose -d or -s. Use two sets with -ds.\nA short SET2 repeats its final byte unless -t is given.\nRanges a-z, equivalence [=x=], octal \\NNN and escapes \\\\, \\a, \\b, \\f, \\n, \\r, \\t, \\v.\n[x*N] repeats x (leading 0 means octal). [x*] fills SET2.\n[:name:] accepts alnum, alpha, blank, cntrl, digit, graph, lower, print, punct, space, upper and xdigit.",
+            "-c, -C, --complement  complément de SET1\n-d, --delete  supprimer SET1\n-s, --squeeze-repeats  comprimer le dernier ensemble après traitement\n-t, --truncate-set1  limiter SET1 à la longueur de SET2\n-A  utiliser les classes de la locale C\n--  terminer les options\nDeux ensembles traduisent. Avec un seul, choisir -d ou -s. Avec -ds, donner deux ensembles.\nSi SET2 est trop court, son dernier octet se répète sauf avec -t.\nPlages a-z, équivalence [=x=], octal \\NNN et échappements \\\\, \\a, \\b, \\f, \\n, \\r, \\t, \\v.\n[x*N] répète x (un zéro initial indique l’octal). [x*] complète SET2.\n[:nom:] accepte alnum, alpha, blank, cntrl, digit, graph, lower, print, punct, space, upper et xdigit."),
+        examples: Text::same("cat entree | tr '[:lower:]' '[:upper:]'\ncat entree | tr -s ' '"),
+        rights: Text("Read the input pipe and write to the terminal.", "Lire le pipe d’entrée et écrire au terminal."),
+        effects: Text("Works in bounded buffers. No file operands.", "Traite le flux par tampons bornés. Aucun opérande fichier."),
+        limits: Text("Sets accept byte ranges, escapes, [:class:], [=x=], [x*] and [x*N].", "Les ensembles acceptent plages, échappements, [:classe:], [=x=], [x*] et [x*N]."),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1207,10 +1221,11 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
-                    "Status, errors and limits: 0 success, 3 invalid argument.",
-                    "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                if self.name == "tr" {
+                    lang.select("Status: 0 success, 1 invalid arguments. Native I/O errors keep their status.", "Codes : 0 succès, 1 arguments invalides. Les erreurs d’E/S conservent leur code natif.")
+                } else {
+                    lang.select("Status, errors and limits: 0 success, 3 invalid argument.", "Codes, erreurs et limites : 0 succès, 3 argument invalide.")
+                },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )
