@@ -67,7 +67,7 @@ fn catalogue_et_rendu() {
         }
         assert_eq!(
             names.into_iter().collect::<Vec<_>>(),
-            ["cd", "journal", "ls", "man", "nsh", "rm", "service", "vi"]
+            ["cat","cd","head","journal","ls","man","more","nsh","pwd","rm","service","tail","vi","wc"]
         );
     }
 }

@@ -229,7 +229,7 @@ fn main() {
         let path = out.join(format!("{name}.elf"));
         std::fs::copy(work.join(&target).join("release").join(name), &path).unwrap();
         if name != "nsh" {
-            let documentation = matches!(name, "ls" | "rm" | "vi");
+            let documentation = matches!(name, "ls" | "rm" | "vi" | "pwd" | "cat" | "head" | "tail" | "wc" | "more");
             catalog.push_str(&format!("(include_bytes!({path:?}),{installation},{},{documentation}),", name == "probe"));
         } else {
             // Nom historique de l’image privée du lanceur, même ELF nsh.

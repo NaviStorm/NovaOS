@@ -234,7 +234,8 @@ impl<'a> Engine<'a> {
             );
             let literal: Vec<_> = words.iter().map(|w| w.text.as_str()).collect();
             if probe && let ["documentation", app, option @ ("--help" | "--version")] = literal.as_slice()
-                && let Some(program @ (Program::Rm | Program::Ls | Program::Vi)) = Program::named(app, false)
+                && let Some(program) = Program::named(app, false)
+                && nova_cli::documentation::lookup(app).is_some()
             {
                 return executor::document(program, *option == "--help", language).map(Flow::Status);
             }
