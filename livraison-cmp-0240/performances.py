@@ -21,11 +21,12 @@ M=1<<20
 env={**os.environ,"LANG":"C","LC_ALL":"C"}
 env.pop("POSIXLY_CORRECT",None)
 report=dict(graine=SEED,systeme=platform.platform(),ram=int(subprocess.check_output(["sysctl","-n","hw.memsize"])),
+    echauffements=1, repetitions=3, architecture=platform.machine(),
     cache="lecture après échauffement, cache Darwin non purgé",libre=shutil.disk_usage(TMP).free,
     outils={name:dict(path=str(path),sha256=digest(path),version=subprocess.check_output([path,"--version"]).decode().splitlines()[0])
             for name,path in bins.items()},mesures=[])
 if report["libre"]<2*max(sizes)*M+128*M:raise SystemExit("espace insuffisant")
-print(f"{'Taille':>10} | {'Traitement':<18} | {'Nova (s)':>10} | {'GNU (s)':>10} | {'Mio/s Nova':>11} | {'Mio/s GNU':>11}",flush=True)
+print(f"{'Taille ou lignes':>16} | {'Traitement':<18} | {'Nova cmp':>28} | {'GNU cmp':>28}", flush=True)
 with tempfile.TemporaryDirectory(dir=TMP,prefix="cmp-mesures-") as tmp:
     work=Path(tmp)
     left,right=work/"gauche",work/"droite"
@@ -56,7 +57,13 @@ with tempfile.TemporaryDirectory(dir=TMP,prefix="cmp-mesures-") as tmp:
                      arguments=flags,differences=[i+1 for i in positions],mesures={},ordre=[])
             for name in bins:row["mesures"][name]=[]
             order=list(bins)
-            for turn in range(4):
+            # Les trois tailles sont des multiples du bloc du GNU 3.12 livré.
+            row["statuts_attendus"] = {
+                name: 0 if name == "GNU" and label == "liste clairsemée" else expected
+                for name in bins
+            }
+            sorties = None
+            for turn in range(1 + report["repetitions"]):
                 for name in (order if turn%2==0 else order[::-1]):
                     # Même fichier ordinaire pour les deux outils. /dev/null modifie le chemin GNU.
                     out=work/"stdout";err=work/"stderr"
@@ -68,22 +75,36 @@ with tempfile.TemporaryDirectory(dir=TMP,prefix="cmp-mesures-") as tmp:
                         elapsed=(time.perf_counter_ns()-start)*1e-9
                     rc=os.waitstatus_to_exitcode(status)
                     data=out.read_bytes();diag=err.read_bytes()
+                    if sorties is None:
+                        sorties = (data, diag)
+                    if (data, diag) != sorties:
+                        raise AssertionError((label, name, "stdout ou stderr divergent", data, diag))
                     if label=="liste clairsemée":
                         assert [int(line.split()[0]) for line in data.splitlines()]==[i+1 for i in positions]
                     elif label=="EOF":assert f"after byte {n-1},".encode() in diag
                     elif expected:assert f"char {pos}, line ".encode() in data
                     else:assert not data and not diag
-                    if rc!=expected and not(name=="GNU" and label=="liste clairsemée" and rc==0):
-                        raise AssertionError((label,name,rc,expected))
+                    if rc != row["statuts_attendus"][name]:
+                        raise AssertionError((label, name, rc, row["statuts_attendus"][name]))
                     if turn:
                         row["ordre"].append(name)
                         row["mesures"][name].append(dict(secondes=elapsed,rss_octets=usage.ru_maxrss,statut=rc))
             report["mesures"].append(row)
-            values={k:statistics.median(m["secondes"] for m in v) for k,v in row["mesures"].items()}
-            def number(name,rate=False):
-                if name not in values or rate and not full:return "—"
-                return f"{full/M/values[name]:.1f}" if rate else f"{values[name]:.6f}"
-            print(f"{size:6} Mio | {label:<18} | {number('Nova'):>10} | {number('GNU'):>10} | {number('Nova',True):>11} | {number('GNU',True):>11}",flush=True)
+            row["synthese"] = {}
+            def cellule(name):
+                if name not in row["mesures"]:
+                    return "—"
+                samples = row["mesures"][name]
+                median = statistics.median(sample["secondes"] for sample in samples)
+                rate = full/M/median if full else None
+                row["synthese"][name] = dict(mediane_secondes=median, debit_mio_s=rate,
+                                             pic_rss_octets=max(sample["rss_octets"] for sample in samples))
+                value = f"{median*1000:.3f} ms"
+                if rate is not None:
+                    value += f" · {rate:.1f} Mio/s"
+                return value
+            taille = "1 Gio" if size == 1024 else f"{size} Mio"
+            print(f"{taille:>16} | {label:<18} | {cellule('Nova'):>28} | {cellule('GNU'):>28}", flush=True)
             if a.json:a.json.write_text(json.dumps(report,ensure_ascii=False,indent=1)+"\n")
             modify(positions,0)
             if label=="EOF":

@@ -1,0 +1,725 @@
+{
+ "graine": 270240,
+ "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+ "ram": 137438953472,
+ "echauffements": 1,
+ "repetitions": 3,
+ "architecture": "arm64",
+ "cache": "lecture après échauffement, cache Darwin non purgé",
+ "libre": 521875427328,
+ "outils": {
+  "Nova": {
+   "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cmp-bancs-v0300/livraison-cmp-0240/bin/cmp",
+   "sha256": "58199b0810ccfc8385521950aa706983a123e8bb5c158a1394d225631c73b29e",
+   "version": "cmp (NovaOS) 0.24.0"
+  },
+  "GNU": {
+   "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cmp-bancs-v0300/livraison-cmp-0240/reference-gnu/bin/cmp",
+   "sha256": "e986a20d14dd933c057b9b80f7445ac9c23821812ff379258ce9304c021e01d8",
+   "version": "cmp (GNU diffutils) 3.12"
+  }
+ },
+ "mesures": [
+  {
+   "taille_octets": 1048576,
+   "traitement": "égaux",
+   "premier_ecart": null,
+   "parcours_pour_debit": 1048576,
+   "arguments": [],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.001879959,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001802208,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001626416,
+      "rss_octets": 2162688,
+      "statut": 0
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.0017690000000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001770375,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "secondes": 0.00173875,
+      "rss_octets": 1916928,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 0,
+    "GNU": 0
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.001802208,
+     "debit_mio_s": 554.8749090005149,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.0017690000000000002,
+     "debit_mio_s": 565.2911249293386,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "début",
+   "premier_ecart": 1,
+   "parcours_pour_debit": 0,
+   "arguments": [],
+   "differences": [
+    1
+   ],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.001529542,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001581708,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001466,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.001437375,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0013890830000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0015050830000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.001529542,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001437375,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "milieu",
+   "premier_ecart": 524289,
+   "parcours_pour_debit": 0,
+   "arguments": [],
+   "differences": [
+    524289
+   ],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.001663708,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001667,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001728125,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.001708667,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001569167,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001604333,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.001667,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001604333,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "fin",
+   "premier_ecart": 1048576,
+   "parcours_pour_debit": 1048576,
+   "arguments": [],
+   "differences": [
+    1048576
+   ],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.001839333,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0017484170000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001853709,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.0017989590000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0017884160000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001793375,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.001839333,
+     "debit_mio_s": 543.6753431814685,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001793375,
+     "debit_mio_s": 557.607862270858,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "EOF",
+   "premier_ecart": 1048576,
+   "parcours_pour_debit": 1048575,
+   "arguments": [],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.001710167,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0017056670000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001685541,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.001731792,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0019065420000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0017633750000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.0017056670000000001,
+     "debit_mio_s": 586.2803503413523,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.0017633750000000002,
+     "debit_mio_s": 567.093809499218,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "limite",
+   "premier_ecart": null,
+   "parcours_pour_debit": 262144,
+   "arguments": [
+    "-n",
+    "262144"
+   ],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.0015465000000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001534959,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001481667,
+      "rss_octets": 2162688,
+      "statut": 0
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.001507083,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "secondes": 0.0015981670000000002,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "secondes": 0.00155225,
+      "rss_octets": 1916928,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 0,
+    "GNU": 0
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.001534959,
+     "debit_mio_s": 162.87079980637918,
+     "pic_rss_octets": 2162688
+    },
+    "GNU": {
+     "mediane_secondes": 0.00155225,
+     "debit_mio_s": 161.05653084232566,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "deux sauts",
+   "premier_ecart": null,
+   "parcours_pour_debit": 1048559,
+   "arguments": [
+    "-i",
+    "17:17"
+   ],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.0017074590000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "secondes": 0.0017407920000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001757,
+      "rss_octets": 2162688,
+      "statut": 0
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.001824333,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001726167,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "secondes": 0.0017612910000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 0,
+    "GNU": 0
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.0017407920000000001,
+     "debit_mio_s": 574.4418560842541,
+     "pic_rss_octets": 2162688
+    },
+    "GNU": {
+     "mediane_secondes": 0.0017612910000000001,
+     "debit_mio_s": 567.7561445193446,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "sauts distincts",
+   "premier_ecart": 1,
+   "parcours_pour_debit": 0,
+   "arguments": [
+    "-i",
+    "17:23"
+   ],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.001628083,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.001524125,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0015039580000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.001399667,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0013122090000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0014304160000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.001524125,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001399667,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "liste clairsemée",
+   "premier_ecart": 1,
+   "parcours_pour_debit": 1048576,
+   "arguments": [
+    "-l"
+   ],
+   "differences": [
+    1,
+    524289,
+    1048576
+   ],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.0016645000000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0015573750000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "secondes": 0.0016450420000000002,
+      "rss_octets": 2162688,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.001715916,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "secondes": 0.00169325,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "secondes": 0.0017670420000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 0
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.0016450420000000002,
+     "debit_mio_s": 607.8872150376707,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001715916,
+     "debit_mio_s": 582.7791103993435,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "même objet",
+   "premier_ecart": null,
+   "parcours_pour_debit": 0,
+   "arguments": [],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "secondes": 0.001379667,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001434292,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "secondes": 0.0014414170000000002,
+      "rss_octets": 1998848,
+      "statut": 0
+     }
+    ],
+    "GNU": [
+     {
+      "secondes": 0.001438042,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "secondes": 0.001389875,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "secondes": 0.00128625,
+      "rss_octets": 1900544,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "GNU",
+    "Nova",
+    "Nova",
+    "GNU",
+    "GNU",
+    "Nova"
+   ],
+   "statuts_attendus": {
+    "Nova": 0,
+    "GNU": 0
+   },
+   "synthese": {
+    "Nova": {
+     "mediane_secondes": 0.001434292,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1998848
+    },
+    "GNU": {
+     "mediane_secondes": 0.001389875,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1900544
+    }
+   }
+  }
+ ]
+}

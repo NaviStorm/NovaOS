@@ -25,6 +25,8 @@ Le véritable GNU cmp est fourni dans `reference-gnu/bin/cmp` avec son archive o
 
 Le candidat uutils/diffutils 0.6.0 emploie std, les fichiers et les erreurs de l’hôte, avec des dépendances dont libc. Sur huit sondes discriminantes, six divergent de GNU, dont les alias, les abréviations et des arguments numériques. Le composant livré est une implémentation originale MIT. Le Mach-O utilise std et libSystem, les ELF utilisent alloc et le runtime natif de nova-cli. Les notices du runtime sont dans `licences/`. Les sources correspondantes de NovaFS embarquées dans les noyaux de recette sont dans `novaFS/` du monorepo, sous MPL-2.0. [Évaluation de la candidate](preuves/evaluation-uutils.json) · [Licences](licences/)
 
+La [recette réutilisable pour v0.30.0](RECETTE-v0300.md) fournit les relances rapide et complète et leurs preuves sur le Mac ARM64.
+
 ## Reproduire sur le Mac
 
 Depuis la racine du worktree, avec Rust stable et les cibles aarch64-apple-darwin, aarch64-unknown-none-softfloat et x86_64-unknown-none installées, Python 3.11+ et le cache Cargo du projet disponible. Les archives QEMU nécessitent aussi les outils de démarrage habituels du dépôt.

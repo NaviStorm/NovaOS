@@ -1,5 +1,4 @@
 """Compare les statuts et les deux sorties brutes, octet par octet."""
-import base64
 import json
 import os
 import random
@@ -16,10 +15,11 @@ from vecteurs import Vectors
 vectors=Vectors()
 bins = tools(a)
 # Une exécution d'une seule cible vérifie les résultats de référence livrés.
-snapshot = HERE/"preuves/options.json"
 expected = {}
-if len(bins)==1 and snapshot.exists():
-    expected = {r["id"]: r for r in json.loads(snapshot.read_text())["cas"]}
+if len(bins) == 1:
+    for snapshot in [HERE/"preuves/options.json", HERE/"preuves/bancs-v0300/options.json"]:
+        if snapshot.is_file():
+            expected.update({row["id"]: row for row in json.loads(snapshot.read_text())["cas"]})
 rows=[]
 failures=[]
 def case(key,argv,stdin=b"",status=None,locale="C",lang="C",doc=None,regular=False, direct=None):
@@ -69,6 +69,26 @@ with tempfile.TemporaryDirectory(dir=TMP,prefix="cmp-options-") as tmp:
     for n,data in files.items():(work/n).write_bytes(data)
     os.chmod(work/"interdit",0)
     os.link(work/"a",work/"lien")
+    # Socle lisible avant la matrice exhaustive et ses variantes d’erreur.
+    for name, flags, status in [
+        ("egal", [], 0), ("silence", ["-s"], 1), ("liste", ["-l"], 1),
+        ("octets", ["-b"], 1), ("limite", ["-n", "2"], 0), ("saut", ["-i", "2"], 1),
+        ("liste-octets-limite", ["-lb", "-n3"], 1), ("silence-saut-limite", ["-s", "-i2", "-n0"], 0),
+    ]:
+        case("socle-"+name, flags+["a", "copie" if name=="egal" else "b"], status=status)
+    source = b"AB\nCD"
+    (work/"positions-a").write_bytes(source)
+    for position, offset in [("premier", 0), ("milieu", 2), ("dernier", 4)]:
+        other = bytearray(source)
+        other[offset] = ord("X")
+        (work/"positions-b").write_bytes(other)
+        case("position-"+position, ["positions-a","positions-b"], status=1)
+    for name, args, rc in [
+        ("vides", ["vide", "-"], 0), ("prefixe", ["lf", "a"], 1),
+        ("absent", ["absent", "a"], 2), ("contradiction", ["-sl", "a", "b"], 2),
+        ("nombre-invalide", ["-n", "xyz", "a", "b"], 2),
+    ]:
+        case("socle-"+name, args, status=rc)
     for flag in ["","-l","-s"]:
         for left in ["a","b","vide","absent"]:
             for right in ["a","b","vide","absent"]:

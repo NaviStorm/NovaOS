@@ -1,0 +1,11 @@
+Taille ou lignes | Traitement         |                     Nova cmp |                      GNU cmp
+           1 Mio | égaux              |       1.802 ms · 554.9 Mio/s |       1.769 ms · 565.3 Mio/s
+           1 Mio | début              |                     1.530 ms |                     1.437 ms
+           1 Mio | milieu             |                     1.667 ms |                     1.604 ms
+           1 Mio | fin                |       1.839 ms · 543.7 Mio/s |       1.793 ms · 557.6 Mio/s
+           1 Mio | EOF                |       1.706 ms · 586.3 Mio/s |       1.763 ms · 567.1 Mio/s
+           1 Mio | limite             |       1.535 ms · 162.9 Mio/s |       1.552 ms · 161.1 Mio/s
+           1 Mio | deux sauts         |       1.741 ms · 574.4 Mio/s |       1.761 ms · 567.8 Mio/s
+           1 Mio | sauts distincts    |                     1.524 ms |                     1.400 ms
+           1 Mio | liste clairsemée   |       1.645 ms · 607.9 Mio/s |       1.716 ms · 582.8 Mio/s
+           1 Mio | même objet         |                     1.434 ms |                     1.390 ms

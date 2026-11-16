@@ -19,7 +19,7 @@ def tools(args):
     both = not (args.macOS or args.novaOS)
     result = {}
     if both or args.novaOS:
-        result["Nova"] = HERE/"bin/cmp"
+        result["Nova"] = Path(os.environ.get("NOVA_CMP", HERE/"bin/cmp")).resolve()
     if both or args.macOS:
         result["GNU"] = Path(os.environ.get("GNU_CMP",HERE/"reference-gnu/bin/cmp")).resolve()
     for name,path in result.items():
