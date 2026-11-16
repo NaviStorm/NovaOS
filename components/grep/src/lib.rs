@@ -23,9 +23,11 @@ use crate::matcher::Matcher;
 use crate::output::OutputWriter;
 use crate::searcher::Searcher;
 use clap::{Arg, ArgAction, Command};
+use std::collections::HashSet;
 use std::ffi::{OsStr, OsString};
-use std::io::{IsTerminal as _, Read};
+use std::io::{BufRead, BufReader, IsTerminal as _};
 use std::path::Path;
+use std::rc::Rc;
 use uucore::error::{ExitCode, UError, UResult, USimpleError, strip_errno};
 use uucore::show_warning;
 
@@ -136,6 +138,25 @@ pub struct Config<'a> {
     pub group_separator: Option<&'a str>,
     pub use_color: bool,
     pub color_config: ColorConfig<'a>,
+}
+
+/// Preserve the GNU pattern order while reading arbitrarily many duplicate lines.
+fn read_patterns(
+    mut reader: impl BufRead,
+    seen: &mut HashSet<Rc<[u8]>>,
+    ordered: &mut Vec<Rc<[u8]>>,
+) -> std::io::Result<()> {
+    let mut line = Vec::new();
+    while reader.read_until(b'\n', &mut line)? != 0 {
+        let bytes = line.strip_suffix(b"\n").unwrap_or(&line);
+        if !seen.contains(bytes) {
+            let pattern = Rc::<[u8]>::from(bytes);
+            seen.insert(Rc::clone(&pattern));
+            ordered.push(pattern);
+        }
+        line.clear();
+    }
+    Ok(())
 }
 
 /// A file named by `-f` or `--exclude-from` that cannot be read is a usage
@@ -336,35 +357,18 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
             }
         }
 
-        let mut remaining = 8usize * 1024 * 1024;
+        let mut seen = HashSet::new();
         for path in file_pattern {
-            let read = |mut stream: Box<dyn Read>| -> std::io::Result<Vec<u8>> {
-                let mut data = Vec::new();
-                stream
-                    .by_ref()
-                    .take(remaining as u64 + 1)
-                    .read_to_end(&mut data)?;
-                if data.len() > remaining {
-                    return Err(std::io::Error::other("pattern files exceed 8 MiB"));
-                }
-                Ok(data)
-            };
-            let data = if path == "-" {
-                read(Box::new(std::io::stdin())).map_err(|e| read_error("(standard input)", &e))?
+            if path == "-" {
+                read_patterns(std::io::stdin().lock(), &mut seen, &mut pattern_strings)
+                    .map_err(|e| read_error("(standard input)", &e))?;
             } else {
                 std::fs::File::open(path)
-                    .and_then(|f| read(Box::new(f)))
-                    .map_err(|e| read_error(path.to_string_lossy(), &e))?
-            };
-            remaining -= data.len();
-            pattern_strings.push(data);
-        }
-        for contents in &pattern_strings {
-            if !contents.is_empty() {
-                let body = contents.strip_suffix(b"\n").unwrap_or(contents);
-                patterns.extend(body.split(|&b| b == b'\n'));
+                    .and_then(|f| read_patterns(BufReader::new(f), &mut seen, &mut pattern_strings))
+                    .map_err(|e| read_error(path.to_string_lossy(), &e))?;
             }
         }
+        patterns.extend(pattern_strings.iter().map(Rc::as_ref));
         if let Some(pos) = positional_pattern {
             patterns.extend(pos.as_encoded_bytes().split(|&b| b == b'\n'));
         }
