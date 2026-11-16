@@ -568,6 +568,9 @@ impl Domain {
             if matches!(w.op, Operation::Send(_))
                 && self.ends.get(w.ep.slot()).pipe.is_some_and(|pipe| pipe.reader_closed) {
                 self.complete(i, Err(CLOSED));
+                if self.ends.get(w.ep.slot()).pipe.is_some_and(|pipe| pipe.trace) {
+                    hal::log(format_args!("PIPE reveil producteur pid={} statut={CLOSED}", w.pid.number));
+                }
                 continue;
             }
             let valid = |entry: Entry| {

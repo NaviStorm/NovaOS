@@ -134,8 +134,14 @@ impl<'a> Engine<'a> {
     ) -> rt::Result<Flow> {
         match cmd {
             Command::Pipe(left, right) => {
+                let consumer = match right[0] {
+                    "head" => executor::PipeReader::FirstLine,
+                    "wc" => executor::PipeReader::Count,
+                    _ => return Err(rt::BAD_ARGUMENT),
+                };
+                let (_, reader_name, options) = consumer.spec();
                 let mut stages = Vec::new();
-                for (raw, expected) in [(left, "cat"), (right, "wc")] {
+                for (raw, expected) in [(left, "cat"), (right, reader_name)] {
                     let name = f.word(raw[0], &self.pid)?.text;
                     let mut words = self.words(f, &raw[1..])?;
                     let name = f.aliases.expand(name, &mut words, |s| f.word(s, &self.pid))?;
@@ -145,7 +151,7 @@ impl<'a> Engine<'a> {
                 // L'aide publique et les options invalides précèdent les accès P9.
                 let lang = nova_cli::documentation::Language::from_tag(
                     f.vars.get("LANG").map(|(tag, _)| tag.as_str()));
-                for (name, words) in ["cat", "wc"].into_iter().zip(&stages) {
+                for (name, words) in ["cat", reader_name].into_iter().zip(&stages) {
                     let literal: Vec<_> = words.iter().map(|w| {
                         if glob::has_pattern(w) { "0" } else { w.text.as_str() }
                     }).collect();
@@ -153,9 +159,11 @@ impl<'a> Engine<'a> {
                         return Ok(Flow::Status(code));
                     }
                 }
-                if stages[1].len() != 1 || stages[1][0].text != "-l" { return Err(rt::BAD_ARGUMENT); }
+                if !stages[1].iter().map(|w| w.text.as_str()).eq(options.iter().copied()) {
+                    return Err(rt::BAD_ARGUMENT);
+                }
                 let args = glob::arguments(self.fs, &stages[0])?;
-                executor::pipeline(self.fs, &args, self.test, executor::PipeTrial::Normal).map(Flow::Status)
+                executor::pipeline(self.fs, &args, consumer, self.test, executor::PipeTrial::Normal).map(Flow::Status)
             }
             Command::Simple(words) => self.simple(f, words, depth, loops),
             Command::If(arms, other) => {
@@ -288,15 +296,24 @@ impl<'a> Engine<'a> {
             words.remove(0);
         }
         if self.test && name == "@probe" && words.len() == 2 {
-            let trial = match words[0].text.as_str() {
-                "pipe-pression" => Some(executor::PipeTrial::Pressure),
-                "pipe-fermeture" => Some(executor::PipeTrial::Early),
-                "pipe-revocation" => Some(executor::PipeTrial::Revoke),
-                "pipe-admission" => Some(executor::PipeTrial::Admission),
+            let probe = words[0].text.as_str();
+            let (reader, probe) = match probe.strip_prefix("pipe-head-") {
+                Some(name) => (executor::PipeReader::FirstLine, name),
+                None => (executor::PipeReader::Count, probe.strip_prefix("pipe-").unwrap_or("")),
+            };
+            let trial = match probe {
+                "lecteur" if matches!(reader, executor::PipeReader::FirstLine) => Some(executor::PipeTrial::ReaderWait),
+                "retrait-lecteur" if matches!(reader, executor::PipeReader::FirstLine) => Some(executor::PipeTrial::ReaderRevoke),
+                "acquitte" if matches!(reader, executor::PipeReader::FirstLine) => Some(executor::PipeTrial::Pressure),
+                "pression" => Some(executor::PipeTrial::Pressure),
+                "fermeture" => Some(executor::PipeTrial::Early),
+                "revocation" => Some(executor::PipeTrial::Revoke),
+                "sortie" if matches!(reader, executor::PipeReader::FirstLine) => Some(executor::PipeTrial::OutputDenied),
+                "admission" => Some(executor::PipeTrial::Admission),
                 _ => None,
             };
             if let Some(trial) = trial {
-                return executor::pipeline(self.fs, &[words[1].text.clone()], true, trial).map(Flow::Status);
+                return executor::pipeline(self.fs, core::slice::from_ref(&words[1].text), reader, true, trial).map(Flow::Status);
             }
         }
         match name.as_str() {

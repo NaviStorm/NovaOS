@@ -2,6 +2,21 @@
 //! pas d'octets. Chaque direction peut être installée une seule fois.
 use super::*;
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(u64)]
+pub(super) enum Role {
+    Cat = 2,
+    Head = 3,
+    Wc = 11,
+}
+impl Role {
+    pub(super) fn reader(self) -> bool { self != Self::Cat }
+
+    fn name(self) -> &'static str {
+        match self { Self::Cat => "cat", Self::Head => "head", Self::Wc => "wc" }
+    }
+}
+
 #[derive(Clone, Copy, Default)]
 pub(super) struct Pipe {
     writer: Option<Pid>,
@@ -46,7 +61,8 @@ impl Domain {
         Ok(root)
     }
 
-    pub(super) fn pipe_attach(&mut self, root: Node, child: Pid, reader: bool) -> Res<u64> {
+    pub(super) fn pipe_attach(&mut self, root: Node, child: Pid, role: Role) -> Res<u64> {
+        let reader = role.reader();
         let key = self.install_child(root, child, if reader { RECEIVE } else { SEND })?;
         let pipe = self
             .ends
@@ -66,7 +82,7 @@ impl Domain {
                 && self.lookup(child, key, MANAGE).is_err();
             hal::log(format_args!(
                 "PIPE role={} pid={} isole={isolated}",
-                if reader { "wc" } else { "cat" },
+                role.name(),
                 child.number
             ));
         }
@@ -76,6 +92,10 @@ impl Domain {
     pub(super) fn pipe_close(&mut self, n: Node) {
         let ep = self.ends.get_mut(n.endpoint.slot());
         let Some(pipe) = &mut ep.pipe else { return };
+        if pipe.trace && matches!(n.rights, SEND | RECEIVE) {
+            let role = if n.rights == RECEIVE { "lecteur" } else { "producteur" };
+            hal::log(format_args!("PIPE fermeture {role} lus={} depots={}", pipe.delivered, ep.len));
+        }
         match n.rights {
             SEND => pipe.writer_closed = true,
             RECEIVE => pipe.reader_closed = true,

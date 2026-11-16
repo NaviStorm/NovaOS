@@ -328,6 +328,9 @@ impl Domain {
                 }
                 if kind == 1 && let Some(pipe) = &mut self.ends.get_mut(ep.slot()).pipe
                     && pipe.trace {
+                    if pipe.delivered == 0 {
+                        hal::log(format_args!("PIPE premiere reception octets={}", msg.len));
+                    }
                     pipe.delivered += u64::from(msg.len);
                     for b in &msg.bytes[..msg.len as usize] {
                         pipe.fingerprint = (pipe.fingerprint ^ u64::from(*b)).wrapping_mul(0x100000001b3);
@@ -428,8 +431,14 @@ impl Domain {
                 msg.bytes[..len as usize].copy_from_slice(&buf[32..32 + len as usize]);
                 if flags == 1 {
                     let pending = self.suspend(t, p, n, timeout, now, Operation::Send(msg))?;
-                    if let Some(pipe) = &mut self.ends.get_mut(ep.slot()).pipe && pipe.trace {
-                        if pipe.blocked == 0 { hal::log(format_args!("PIPE attente producteur")); }
+                    let end = self.ends.get_mut(ep.slot());
+                    if let Some(pipe) = &mut end.pipe && pipe.trace {
+                        if pipe.blocked == 0 {
+                            let bytes: u32 = (0..end.len)
+                                .map(|i| end.deposits[(end.head + i) % end.deposits.len()].msg.len)
+                                .sum();
+                            hal::log(format_args!("PIPE attente producteur depots={} octets={bytes}", end.len));
+                        }
                         pipe.blocked = pipe.blocked.saturating_add(1);
                     }
                     return Ok(pending);
@@ -472,7 +481,11 @@ impl Domain {
                 if timeout == 0 {
                     return Err(WOULD_BLOCK);
                 }
-                return self.suspend(t, p, n, timeout, now, op);
+                let pending = self.suspend(t, p, n, timeout, now, op)?;
+                if self.ends.get(ep.slot()).pipe.is_some_and(|p| p.trace && p.delivered == 0) {
+                    hal::log(format_args!("PIPE attente lecteur pid={}", p.number));
+                }
+                return Ok(pending);
             }
             IPC_GIVE => {
                 let buf = input::<48>(space, b, c, 48, false)?;

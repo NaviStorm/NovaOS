@@ -102,11 +102,15 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
         if addr != 0 || len != 0 { return Err(BAD_ARGUMENT); }
         return with(|s| s.ipc.pipe_open(parent, authority & tty::QUALIFY != 0));
     }
-    let (number, stream) = match number {
-        tty::PIPE_CAT => (2, Some(false)),
-        tty::PIPE_WC => (11, Some(true)),
-        ordinary => (ordinary, None),
+    use pipe::Role;
+    let role = match number {
+        tty::PIPE_CAT => Some(Role::Cat),
+        tty::PIPE_WC => Some(Role::Wc),
+        tty::PIPE_HEAD => Some(Role::Head),
+        _ => None,
     };
+    let number = role.map_or(number, |r| r as u64);
+    let stream = role.map(Role::reader);
     let check = |s: &Core, key: u64| -> Res<Option<Node>> {
         let p = s.processes.get(parent);
         if p.pipe_reader_wait.is_some() { return Err(LIMIT); }
@@ -144,8 +148,17 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     with(|s| check(s, pipe))?;
     let word = |i: usize| u64::from_le_bytes(data[i * 8..i * 8 + 8].try_into().unwrap());
     let (input, output, ports) = (word(0), word(1), word(2));
+    let probe = matches!((role, word(3)),
+        (Some(Role::Cat), tty::PIPE_PROBE_WAIT) | (Some(Role::Head), tty::PIPE_PROBE_REVOKE));
+    if probe && authority & tty::QUALIFY == 0 {
+        return Err(DENIED);
+    }
+    let revoke_before_read = role == Some(Role::Head) && word(3) == tty::PIPE_PROBE_REVOKE;
+    // Le banc peut retirer OUTPUT à head pour exercer une vraie erreur console.
+    let denied_output_probe = authority & tty::QUALIFY != 0 && stream == Some(true)
+        && role == Some(Role::Head) && word(3) == DENIED && ports == u64::from(tty::ERROR);
     if word(4) != (data.len() - tty::HEADER) as u64
-        || stream == Some(true) && (input != 0 || ports != u64::from(tty::ERROR | tty::OUTPUT))
+        || stream == Some(true) && (input != 0 || ports != u64::from(tty::ERROR | tty::OUTPUT) && !denied_output_probe)
         || stream == Some(false) && ports != u64::from(tty::ERROR)
         || ports & !u64::from(authority & (tty::INPUT | tty::OUTPUT | tty::ERROR)) != 0
         || (input == 0) != (output == 0)
@@ -194,10 +207,19 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
             })
             .unwrap();
         }
-        if let (Some(root), Some(reader)) = (root, stream) {
-            let key = s.ipc.pipe_attach(root, pid, reader)?;
+        if let (Some(root), Some(role)) = (root, role) {
+            let key = s.ipc.pipe_attach(root, pid, role)?;
+            if authority & tty::QUALIFY != 0 {
+                hal::log(format_args!("PIPE admission image={number} fichiers={} terminal={ports}", u8::from(input != 0)));
+            }
+            if revoke_before_read {
+                // Le contrôleur du parent vient d'être revérifié sous la même garde.
+                // Le premier RECEIVE utilisateur observera nécessairement le retrait.
+                s.ipc.revoke(root);
+                s.flush_ipc();
+            }
             heap::with_pages(|m| {
-                s.processes.get(pid).space.as_ref().unwrap().write_data(m, if reader { 2 } else { 1 }, key);
+                s.processes.get(pid).space.as_ref().unwrap().write_data(m, if role.reader() { 2 } else { 1 }, key);
                 Ok(())
             }).unwrap();
         }
