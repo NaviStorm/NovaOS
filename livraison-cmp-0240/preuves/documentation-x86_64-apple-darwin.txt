@@ -1,0 +1,9 @@
+
+running 5 tests
+test admission_documentaire_stricte ... ok
+test etiquettes_bcp47 ... ok
+test grammaire_des_utilitaires ... ok
+test aiguillage_sans_aucune_interface_metier ... ok
+test catalogue_et_rendu ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

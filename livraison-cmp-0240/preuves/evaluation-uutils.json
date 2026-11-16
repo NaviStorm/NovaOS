@@ -1,0 +1,168 @@
+{
+  "executable": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cmp-uutils-target/release/diffutils",
+  "sha256": "a0a55fa562d1c5f324724c7aa3f334ff42f3a9d68bbe670131cef2fea3103325",
+  "cas": [
+    {
+      "argv": [
+        "-l",
+        "a",
+        "b"
+      ],
+      "resultats": {
+        "uutils": [
+          1,
+          "3320313730203137320a3520333737203230300a",
+          ""
+        ],
+        "GNU": [
+          1,
+          "3320313730203137320a3520333737203230300a",
+          ""
+        ]
+      },
+      "identiques": true
+    },
+    {
+      "argv": [
+        "-c",
+        "a",
+        "b"
+      ],
+      "resultats": {
+        "uutils": [
+          2,
+          "",
+          "756e7265636f676e697a6564206f7074696f6e20272d63270a"
+        ],
+        "GNU": [
+          1,
+          "612062206469666665723a206279746520332c206c696e65203220697320313730207820313732207a0a",
+          ""
+        ]
+      },
+      "identiques": false
+    },
+    {
+      "argv": [
+        "--print-chars",
+        "a",
+        "b"
+      ],
+      "resultats": {
+        "uutils": [
+          2,
+          "",
+          "756e7265636f676e697a6564206f7074696f6e20272d2d7072696e742d6368617273270a"
+        ],
+        "GNU": [
+          1,
+          "612062206469666665723a206279746520332c206c696e65203220697320313730207820313732207a0a",
+          ""
+        ]
+      },
+      "identiques": false
+    },
+    {
+      "argv": [
+        "--verbos",
+        "a",
+        "b"
+      ],
+      "resultats": {
+        "uutils": [
+          2,
+          "",
+          "756e7265636f676e697a6564206f7074696f6e20272d2d766572626f73270a"
+        ],
+        "GNU": [
+          1,
+          "3320313730203137320a3520333737203230300a",
+          ""
+        ]
+      },
+      "identiques": false
+    },
+    {
+      "argv": [
+        "-n",
+        "0x2",
+        "a",
+        "b"
+      ],
+      "resultats": {
+        "uutils": [
+          2,
+          "",
+          "636d703a20696e76616c6964202d2d62797465732076616c75652027307832270a"
+        ],
+        "GNU": [
+          0,
+          "",
+          ""
+        ]
+      },
+      "identiques": false
+    },
+    {
+      "argv": [
+        "-i",
+        "KiB",
+        "a",
+        "b"
+      ],
+      "resultats": {
+        "uutils": [
+          2,
+          "",
+          "636d703a20696e76616c6964202d2d69676e6f72652d696e697469616c2076616c756520274b6942270a"
+        ],
+        "GNU": [
+          0,
+          "",
+          ""
+        ]
+      },
+      "identiques": false
+    },
+    {
+      "argv": [
+        "-n2",
+        "a",
+        "b"
+      ],
+      "resultats": {
+        "uutils": [
+          2,
+          "",
+          "756e7265636f676e697a6564206f7074696f6e20272d6e32270a"
+        ],
+        "GNU": [
+          0,
+          "",
+          ""
+        ]
+      },
+      "identiques": false
+    },
+    {
+      "argv": [
+        "-s",
+        "absent",
+        "b"
+      ],
+      "resultats": {
+        "uutils": [
+          2,
+          "",
+          ""
+        ],
+        "GNU": [
+          2,
+          "",
+          ""
+        ]
+      },
+      "identiques": true
+    }
+  ]
+}

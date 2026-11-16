@@ -1,0 +1,90 @@
+[
+  {
+    "outil": "Nova",
+    "option": "--help",
+    "statut": 0,
+    "stdin_avant": 17,
+    "stdin_apres": 17
+  },
+  {
+    "outil": "Nova",
+    "option": "--version",
+    "statut": 0,
+    "stdin_avant": 17,
+    "stdin_apres": 17
+  },
+  {
+    "outil": "Nova",
+    "option": "--inconnue",
+    "statut": 2,
+    "stdin_avant": 17,
+    "stdin_apres": 17
+  },
+  {
+    "outil": "Nova",
+    "incident": "lecture de stdin ouvert en \u00e9criture seule",
+    "cmp": 2,
+    "stdout": "",
+    "stderr": "636d703a202d3a204261642066696c652064657363726970746f720a"
+  },
+  {
+    "outil": "Nova",
+    "identiques": true,
+    "cmp": 0,
+    "cat": 0,
+    "stderr_cat": "",
+    "octets_source": 8388608
+  },
+  {
+    "outil": "Nova",
+    "identiques": false,
+    "cmp": 1,
+    "cat": -13,
+    "stderr_cat": "",
+    "octets_source": 8388608
+  },
+  {
+    "outil": "GNU",
+    "option": "--help",
+    "statut": 0,
+    "stdin_avant": 17,
+    "stdin_apres": 17
+  },
+  {
+    "outil": "GNU",
+    "option": "--version",
+    "statut": 0,
+    "stdin_avant": 17,
+    "stdin_apres": 17
+  },
+  {
+    "outil": "GNU",
+    "option": "--inconnue",
+    "statut": 2,
+    "stdin_avant": 17,
+    "stdin_apres": 17
+  },
+  {
+    "outil": "GNU",
+    "incident": "lecture de stdin ouvert en \u00e9criture seule",
+    "cmp": 2,
+    "stdout": "",
+    "stderr": "636d703a202d3a204261642066696c652064657363726970746f720a"
+  },
+  {
+    "outil": "GNU",
+    "identiques": true,
+    "cmp": 0,
+    "cat": 0,
+    "stderr_cat": "",
+    "octets_source": 8388608
+  },
+  {
+    "outil": "GNU",
+    "identiques": false,
+    "cmp": 1,
+    "cat": -13,
+    "stderr_cat": "",
+    "octets_source": 8388608
+  }
+]

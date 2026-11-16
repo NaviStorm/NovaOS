@@ -1,0 +1,17 @@
+{
+  "cmp": {
+    "livre": "58199b0810ccfc8385521950aa706983a123e8bb5c158a1394d225631c73b29e",
+    "reconstruit": "58199b0810ccfc8385521950aa706983a123e8bb5c158a1394d225631c73b29e",
+    "identique": true
+  },
+  "cmp-aarch64.elf": {
+    "livre": "36fd71e1ec63a0e97db813926bea65741bb0ec98418ae1e886f358060a3383d4",
+    "reconstruit": "36fd71e1ec63a0e97db813926bea65741bb0ec98418ae1e886f358060a3383d4",
+    "identique": true
+  },
+  "cmp-x86_64.elf": {
+    "livre": "f4a8412e06b62faedc1144077a6c2e301f9cc6d2b7ab12c06c794fbc46ca82e6",
+    "reconstruit": "5d77a5f10b8c655cd65bb48f9f95cb9377eed4dc94ed5d586e229c481bf76f37",
+    "identique": false
+  }
+}

@@ -1,0 +1,656 @@
+python3 scripts/generate_abi.py --check
+. scripts/target.sh && RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$rust_target"
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.01s
+sh scripts/iso.sh
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+BOOTAA64.EFI: OK
+    Finished `release` profile [optimized] target(s) in 0.01s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.JF0BkZhC/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  500g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.JF0BkZhC/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4526 sectors
+Written to medium : 4526 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.JF0BkZhC/novaos.iso' completed successfully.
+
+python3 tests/demarrage.py
+OK — aarch64
+OK — aarch64-abi-test-256
+OK — aarch64-abi-test-256-pan
+OK — aarch64-storage-test
+OK — aarch64-proc-test
+OK — aarch64-proc-boot-fault
+OK — aarch64-mem-test
+OK — aarch64-mem-ro
+OK — aarch64-mem-alias
+OK — aarch64-mem-page-ro
+OK — aarch64-mem-nx
+OK — aarch64-mem-absent
+OK — aarch64-heap-test
+OK — aarch64-heap-oom
+OK — aarch64-heap-corrupt
+OK — aarch64-heap-guard
+OK — aarch64-heap-infallible
+OK — aarch64-heap-reentrant
+OK — aarch64-heap-metadata
+OK — aarch64-sched-test
+OK — aarch64-sched-guard
+OK — aarch64-sched-fpu
+aarch64 : STRESS ticks=15162 switches=15162 A=3780 B=3778 cycles=60 (82.4 s avec amorçage)
+OK — aarch64-sched-stress
+OK — aarch64-sched-endurance-15s
+/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cmp-natif-0240/novaOS/build/endurance-aarch64-15s.json {'architecture': 'aarch64', 'secondes_demandees': 15, 'secondes_reelles': 20.953, 'avant': {'blocs': 3, 'occupes': 10304, 'engages': 12288, 'libres': 61896}, 'bilan': {'periode': 3, 'ticks': 4192, 'preemptions': 4182, 'collectes': 7539, 'attentes': 945, 'mutex': 948, 'A': 1011, 'B': 1011, 'allocations': 11286, 'audits': 12, 'penuries': 1, 'minimum': 61781, 'blocs': 3, 'occupes': 10304, 'engages': 12288, 'libres': 61896}}
+OK — aarch64-ipc-test-256
+python3 tests/elf.py
+ELF restitution OK libres=61896 allocations=1918 pic_cadres=312 creation_cycles=264125 chargement_cycles=198625 collecte_cycles=667500 hz=62500000
+OK — aarch64-elf-test
+python3 tests/cycle_processus.py
+OK — aarch64-proc-lifecycle
+python3 tests/ipc.py races
+OK — aarch64-ipc-races-256
+python3 tests/bloc.py
+OK — aarch64/512 : motif invité et retrait
+OK — aarch64/512 : protections DMA et interruption pendante
+OK — aarch64/512 : baux, descripteurs, panne et relance
+OK — aarch64/512 : panne en vol et quarantaine
+OK — aarch64/512 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière
+OK — aarch64/512 : eio-read
+OK — aarch64/512 : eio-write
+OK — aarch64/512 : eio-flush
+OK — aarch64/512 : droit en écriture refusé
+OK — aarch64/512 : profil de démarrage manuel en lecture seule
+OK — aarch64/512 : Device NovaFS, page complète de 4 Kio entre deux VM
+OK — aarch64/512 : Device NovaFS, refus du support RO transmis au client
+OK — aarch64/4096 : motif invité et retrait
+OK — aarch64/4096 : protections DMA et interruption pendante
+OK — aarch64/4096 : baux, descripteurs, panne et relance
+OK — aarch64/4096 : panne en vol et quarantaine
+OK — aarch64/4096 : WRITE + FLUSH, arrêt, nouvelle VM, READ et image entière
+OK — aarch64/4096 : eio-read
+OK — aarch64/4096 : eio-write
+OK — aarch64/4096 : eio-flush
+OK — aarch64/4096 : droit en écriture refusé
+OK — aarch64/4096 : profil de démarrage manuel en lecture seule
+OK — aarch64/4096 : Device NovaFS, page complète de 4 Kio entre deux VM
+OK — aarch64/4096 : Device NovaFS, refus du support RO transmis au client
+NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+    Finished `release` profile [optimized] target(s) in 0.02s
+python3 tests/cli.py
+FS=0a90d91e84237ca53886a67fa7fb30c6 LV=e0d0afe26866a9200488ad057f0daf8f
+Sauvetage en lecture seule, génération 40, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.UL2eBBsj/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.UL2eBBsj/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.UL2eBBsj/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 43, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.v2pHpbBi/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.v2pHpbBi/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.v2pHpbBi/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 43, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.cErDHgG1/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.cErDHgG1/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.cErDHgG1/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 44, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.is1h1UMw/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.is1h1UMw/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.is1h1UMw/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 44, fraîcheur indéterminée
+OK — aarch64/512 : terminal, ELF isolés, révocation, faute, remontages G43/G44
+FS=21fb1aa4bae6b7a270b28de26e5ded68 LV=a81c8e622f2a3911d8bec3743a583e21
+Sauvetage en lecture seule, génération 40, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.1H4Qwis9/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.1H4Qwis9/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.1H4Qwis9/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 43, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.01s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.7npS5oJp/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.7npS5oJp/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.7npS5oJp/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 43, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.SoiWU8RW/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.SoiWU8RW/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.SoiWU8RW/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 44, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.1PEI1OG7/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.1PEI1OG7/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.1PEI1OG7/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 44, fraîcheur indéterminée
+OK — aarch64/4096 : terminal, ELF isolés, révocation, faute, remontages G43/G44
+NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+    Finished `release` profile [optimized] target(s) in 0.03s
+python3 tests/cli_p9.py
+   Compiling typenum v1.20.1
+   Compiling zeroize v1.9.1
+   Compiling cmov v0.5.4
+   Compiling cfg-if v1.0.5
+   Compiling cpufeatures v0.3.1
+   Compiling bitflags v2.13.2
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling base64ct v1.8.3
+   Compiling libc v0.2.191
+   Compiling zmij v1.0.23
+   Compiling serde_core v1.0.229
+   Compiling getrandom v0.4.3
+   Compiling rustix v1.1.6
+   Compiling serde_json v1.0.154
+   Compiling generic-array v0.14.7
+   Compiling once_cell v1.21.4
+   Compiling fastrand v2.5.0
+   Compiling cpufeatures v0.2.17
+   Compiling ctutils v0.4.8
+   Compiling novafs v0.9.13 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cmp-natif-0240/novaFS)
+   Compiling hybrid-array v0.4.15
+   Compiling errno v0.3.14
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling inout v0.2.6
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.9
+   Compiling digest v0.11.3
+   Compiling universal-hash v0.6.1
+   Compiling cipher v0.5.2
+   Compiling aead v0.6.1
+   Compiling poly1305 v0.9.1
+   Compiling tempfile v3.27.0
+   Compiling blake2 v0.11.0
+   Compiling hmac v0.13.0
+   Compiling sha2 v0.11.1
+   Compiling chacha20 v0.10.2
+   Compiling hkdf v0.13.0
+   Compiling argon2 v0.6.0
+   Compiling chacha20poly1305 v0.11.0
+    Finished `release` profile [optimized] target(s) in 3.15s
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.j0AlmVhF/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.j0AlmVhF/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.j0AlmVhF/novaos.iso' completed successfully.
+
+{"migration_verifiee":true,"pool":null,"sha256":"94834f63bf6ea5ce236ce1314fa0c74c4dd443a6de08f953198727618ab8d5ff","sha256_source":"d5c171a24416d4aa79dc2f40724e9f63347fc5acd40cf70059bac25129ecf97b","unites":0}
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Finished `release` profile [optimized] target(s) in 0.01s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.aDa98mnK/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.aDa98mnK/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.aDa98mnK/novaos.iso' completed successfully.
+
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.kY7MALv0/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.kY7MALv0/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.kY7MALv0/novaos.iso' completed successfully.
+
+OK — aarch64/512 : commandes, dates, contrôle Darwin et remontage
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.px3Xkitu/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.px3Xkitu/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.px3Xkitu/novaos.iso' completed successfully.
+
+{"migration_verifiee":true,"pool":null,"sha256":"b501b7b9ec86cc64a2b834247ea36b88d274b17968e7a626a91222dd7756e183","sha256_source":"9fcfe65baf6a5d6ccb82253bc22231bd76bccd4e26734db52bb23df94ee28e7a","unites":0}
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.EyZT9lms/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  499g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.EyZT9lms/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.EyZT9lms/novaos.iso' completed successfully.
+
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.YauSVxR4/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  499g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.YauSVxR4/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.YauSVxR4/novaos.iso' completed successfully.
+
+OK — aarch64/4096 : commandes, dates, contrôle Darwin et remontage
+NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+    Finished `release` profile [optimized] target(s) in 0.02s
+python3 tests/nsh.py
+{"migration_verifiee":true,"pool":null,"sha256":"546258a909c44e37e995689ca71f44fcf66c2706e2c048922e4937613cfef9a0","sha256_source":"40cadacd50a78f81a90139b1efa27aca0e494c74631f82a5d091ac71aaa6ed1b","unites":0}
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.Z4bPMHcZ/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  499g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.Z4bPMHcZ/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.Z4bPMHcZ/novaos.iso' completed successfully.
+
+Vérification intégrale réussie, génération 736
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.5KP40txM/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  499g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.5KP40txM/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.5KP40txM/novaos.iso' completed successfully.
+
+{'architecture': 'aarch64', 'secteur': 512, 'commandes': 113, 'coupure': 'alpha retiré, beta et témoin intègres'}
+{"migration_verifiee":true,"pool":null,"sha256":"53479e0af994b4ba7625f1e5eb7aa69995856d399827e1c9bec14c72150f5844","sha256_source":"f19239595062b33a4846698c9b0b7c9f15ae7e447794ab1b5633903631990c37","unites":0}
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.FiT4qmSd/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  499g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.FiT4qmSd/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.FiT4qmSd/novaos.iso' completed successfully.
+
+Vérification intégrale réussie, génération 738
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.PIkHUPJy/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.PIkHUPJy/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.PIkHUPJy/novaos.iso' completed successfully.
+
+{'architecture': 'aarch64', 'secteur': 4096, 'commandes': 113, 'coupure': 'alpha retiré, beta et témoin intègres'}
+NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+    Finished `release` profile [optimized] target(s) in 0.02s
+python3 tests/nsh_scripts.py
+{"migration_verifiee":true,"pool":null,"sha256":"87c7891d883c13cd75e80f821fcfca152473c05c469d2f5b2c1c54d2a70d16d1","sha256_source":"886cde9443b44d21cd377ad9a70891eca973c71e521e624c6ff96b23ca0b894c","unites":0}
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.LpjLCkdA/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.LpjLCkdA/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.LpjLCkdA/novaos.iso' completed successfully.
+
+Vérification intégrale réussie, génération 147
+    Finished `release` profile [optimized] target(s) in 0.00s
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.E77KAlqo/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.E77KAlqo/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.E77KAlqo/novaos.iso' completed successfully.
+
+{'architecture': 'aarch64', 'secteur': 512, 'commandes': 31, 'bash': ['A:été blanc $nom $nom', 'oui', 'tour0', 'tour1', 'a0', 'b0', 'break=0', 'continue=0', 'secours', 'statut=1', 'vide'], 'pid_client': 5, 'echantillons_memoire': 40, 'pic_pages_privees_observe': 138, 'reprise': True}
+{"migration_verifiee":true,"pool":null,"sha256":"55b60e7b0cdd237513e289c88c9513a0712730b99074fab5e163975c7057d91b","sha256_source":"efeb2a947096d4a1b836234233c07fe8af29edadb093a2c6f7abbd1bed0f4116","unites":0}
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.XPuk4zuN/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.XPuk4zuN/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.XPuk4zuN/novaos.iso' completed successfully.
+
+Vérification intégrale réussie, génération 147
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.9ymwL5vy/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.9ymwL5vy/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.9ymwL5vy/novaos.iso' completed successfully.
+
+{'architecture': 'aarch64', 'secteur': 4096, 'commandes': 31, 'bash': ['A:été blanc $nom $nom', 'oui', 'tour0', 'tour1', 'a0', 'b0', 'break=0', 'continue=0', 'secours', 'statut=1', 'vide'], 'pid_client': 5, 'echantillons_memoire': 40, 'pic_pages_privees_observe': 138, 'reprise': True}
+NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+    Finished `release` profile [optimized] target(s) in 0.02s
+python3 tests/nsh_terminal.py
+FS=cf1ed5759c0f4620bb6474dabb725f71 LV=0efae11287a931c6861061cecb96c0e2
+{"migration_verifiee": true, "pool": null, "sha256": "7aec9d2af3609dcffe9857d5b49815b0180797b4d5b75828ced6240d142c6338", "sha256_source": "0f85e3e951d2cf111d0bab0309ed8ed1ce44eb564633b79c3754111fbe5906da", "unites": 0}
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.lw8rZsto/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.lw8rZsto/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.lw8rZsto/novaos.iso' completed successfully.
+
+Vérification intégrale réussie, génération 140
+Sauvetage en lecture seule, génération 140, fraîcheur indéterminée
+aarch64/512 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 552 Kio
+FS=a8ee114780c4374834f1dea63d5b2a18 LV=094a9e3b6c4ad3b381911e6db2f9029e
+{"migration_verifiee": true, "pool": null, "sha256": "343e3797a76f03dcb2b45ebe905afd9ba67540a0b7295c353736bc6b601b4f47", "sha256_source": "ae419e83469cd0db395299e988fdc52439fddb1b2d11312945395887cba5eeb2", "unites": 0}
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.zp1pjDUK/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.zp1pjDUK/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.zp1pjDUK/novaos.iso' completed successfully.
+
+Vérification intégrale réussie, génération 142
+Sauvetage en lecture seule, génération 142, fraîcheur indéterminée
+aarch64/4096 — édition, complétion, quatre lecteurs, historique, écran, ps/top, contenu P9 ; nsh 552 Kio
+NOVAFS_TARGET=aarch64-apple-darwin ../novaFS/lab/run build --offline --bin novafs
+    Finished `release` profile [optimized] target(s) in 0.02s
+python3 tests/vi.py
+{"migration_verifiee":true,"pool":null,"sha256":"ada9b3687bc9e9b5ac920175a7caf7bc3cf1365f91c21ab621d4527f4f2f3c4f","sha256_source":"c18d5d8dd02c4a7477cd6070d930c5273f59e4f95a31d81aa6c9fb63ffa87c45","unites":0}
+    Finished `release` profile [optimized] target(s) in 0.02s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.0StKcryX/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.0StKcryX/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.0StKcryX/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.mOB0PEqu/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.mOB0PEqu/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.mOB0PEqu/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+{'architecture': 'aarch64', 'secteur': 512, 'elf_collectes': 16, 'fichiers_relus': 16, 'pic_pages_privees_observe': 105, 'refus_concurrent': True, 'revocation': True, 'refus_source_creuse_binaire_octets': 536870912, 'script_apres_redemarrage': True, 'octets_apres_redemarrage': True}
+{"migration_verifiee":true,"pool":null,"sha256":"e2f811f7eb7f1816addc78b20ccb6246bb6d6e36fecc7153d07e9a9693f8660d","sha256_source":"fca3831455deb78b84bfbf141d69f390264c7c6b097c3842ffd2182ecb404e65","unites":0}
+    Finished `release` profile [optimized] target(s) in 0.01s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.ICTyhXTA/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.ICTyhXTA/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.ICTyhXTA/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 264, fraîcheur indéterminée
+    Finished `release` profile [optimized] target(s) in 0.00s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.Uiw9zVZT/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  498g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.Uiw9zVZT/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4524 sectors
+Written to medium : 4524 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.Uiw9zVZT/novaos.iso' completed successfully.
+
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+Sauvetage en lecture seule, génération 319, fraîcheur indéterminée
+{'architecture': 'aarch64', 'secteur': 4096, 'elf_collectes': 16, 'fichiers_relus': 16, 'pic_pages_privees_observe': 105, 'refus_concurrent': True, 'revocation': True, 'refus_source_creuse_binaire_octets': 536870912, 'script_apres_redemarrage': True, 'octets_apres_redemarrage': True}
