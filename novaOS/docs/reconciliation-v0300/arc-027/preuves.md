@@ -51,3 +51,9 @@ PY
 ```
 
 Les contrôles de publication portent sur la branche de l’étude et sur le périmètre Markdown du diff. Le dépôt principal avec ses changements locaux et les autres worktrees sont conservés.
+
+## Révision documentaire des arbitrages
+
+Le contrôle compare les deux matrices au contenu Git de l’étude `09643693e250795ef6b17238710a29c8ba297a34`, ainsi que les 37 noms historiques aux pages Rust du commit `09b2d96faeb4eb3c98881be99c245975c358abb6`. Il compare chaque affectation de commande avec la liste du lot, puis les 18 listes avec les lignes de charge, de qualification et de calendrier. Il vérifie la structure des tableaux, les cibles des liens locaux et les références internes au calendrier et aux décisions. Les 462 preuves de l’étude sont relues suivant la procédure ci-dessus.
+
+Le script `controle.py` et son relevé `resultats.json` sont conservés sous `OS-worktrees/preuves-arc-027-arbitrages/`, avec une seconde copie dans `OS-worktrees/archives-arc-027-arbitrages/arbitrages.tar.gz` et un manifeste `SHA256SUMS` dans le répertoire de l’archive. Depuis le worktree de cette révision, reproduire le contrôle par `python3 -B ../preuves-arc-027-arbitrages/controle.py`. Le relevé donne notamment les empreintes des documents contrôlés. Cette recette documentaire n’ouvre aucune VM. Les recettes de pipes, de permissions et des utilitaires restent à exécuter sur les futurs binaires.
