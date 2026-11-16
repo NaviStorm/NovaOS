@@ -131,7 +131,19 @@ pub fn command(c: &mut Client, op: nova_cli::command::Operand) -> rt::Result<()>
                 tail_start(c, h, end, o.count)?
             };
         }
-        display(c, h, start, end, lines)?;
+        let pipe = rt::config(1);
+        if program == Program::Cat && pipe != 0 {
+            let mut chunk = [0u8; CHUNK];
+            while start < end {
+                let wanted = (end - start).min(CHUNK as u64) as usize;
+                let n = c.read(h, start, &mut chunk[..wanted])?;
+                if n == 0 || n > wanted { return Err(w::IO); }
+                nova_cli::process::pipe_write(pipe, &chunk[..n])?;
+                start += n as u64;
+            }
+        } else {
+            display(c, h, start, end, lines)?;
+        }
     }
     Ok(())
 }

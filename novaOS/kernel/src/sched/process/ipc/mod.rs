@@ -17,6 +17,7 @@ use pool::{Bits, Pool};
 mod bulk;
 mod probes;
 mod traffic;
+mod pipe;
 #[cfg(feature = "materiel-lab")]
 mod lab_command;
 pub(super) use bulk::transfer;
@@ -120,6 +121,7 @@ struct Endpoint {
     head: usize,
     len: usize,
     deposits: [Deposit; 8],
+    pipe: Option<pipe::Pipe>,
     bulk: Option<bulk::Lane>,
     bits: u64,
     notified: u64,
@@ -395,6 +397,7 @@ impl Domain {
                     rank: 0,
                     msg: Message::EMPTY,
                 }; 8],
+                pipe: None,
                 bulk: None,
                 bits: 0,
                 notified: 0,
@@ -482,6 +485,9 @@ impl Domain {
     fn derive(&mut self, from: Pid, parent_key: u64, to: Pid, mask: u64) -> Res<u64> {
         let parent = self.lookup(from, parent_key, GRANT)?;
         let rights = Self::check_mask(parent, mask)?;
+        self.install_child(parent, to, rights)
+    }
+    fn install_child(&mut self, parent: Node, to: Pid, rights: u32) -> Res<u64> {
         let slot = self.free_local(to)?;
         let key = self.key()?;
         let child = self.reserve_child(parent, rights)?;
@@ -559,6 +565,11 @@ impl Domain {
                 self.complete(i, Err(CLOSED));
                 continue;
             }
+            if matches!(w.op, Operation::Send(_))
+                && self.ends.get(w.ep.slot()).pipe.is_some_and(|pipe| pipe.reader_closed) {
+                self.complete(i, Err(CLOSED));
+                continue;
+            }
             let valid = |entry: Entry| {
                 self.node(entry.node)
                     .is_some_and(|n| n.key == entry.key && n.holder as usize == w.pid.slot)
@@ -570,6 +581,9 @@ impl Domain {
         self.empty_locals();
     }
     fn revoke(&mut self, n: Node) -> u64 {
+        if let Some(pipe) = &mut self.ends.get_mut(n.endpoint.slot()).pipe {
+            pipe.revoked = true;
+        }
         let mut cut = self.descendants(n);
         cut.clear(n.id.slot());
         let mut count = 0;
@@ -592,10 +606,18 @@ impl Domain {
                 self.nodes.remove(i);
             }
         }
+        let trace = self.ends.get(ep.slot()).pipe.filter(|p| p.trace);
         self.release_lane(ep);
         self.ends.remove(ep.slot());
+        if let Some(pipe) = trace {
+            let nodes = self.nodes.ids().filter(|&i| self.nodes.get(i).endpoint == ep).count();
+            let waits = self.waits.ids().filter(|&i| self.waits.get(i).ep == ep && self.waits.get(i).done.is_none()).count();
+            hal::log(format_args!("PIPE retrait noeuds={nodes} attentes={waits} file={} pic={} blocages={} lus={} fnv={:016x}",
+                u8::from(self.ends.has(ep.slot())), pipe.peak, pipe.blocked, pipe.delivered, pipe.fingerprint));
+        }
     }
     fn close(&mut self, n: Node) {
+        self.pipe_close(n);
         if n.id == self.ends.get(n.endpoint.slot()).root {
             self.destroy(n.endpoint);
         } else {
@@ -633,6 +655,7 @@ impl Domain {
         }
         if let Some(t) = self.caps(p).copied() {
             for e in t.entries.into_iter().filter(|e| e.key != 0) {
+                if let Some(n) = self.node(e.node) { self.pipe_close(n); }
                 self.unlink(e.node);
                 self.prune(e.node);
             }

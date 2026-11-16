@@ -1,6 +1,30 @@
 use crate::{command::Program, runtime as rt, tty};
 use alloc::{string::String, vec, vec::Vec};
 pub fn spawn(p: Program, args: &[String], channels: (u64, u64), status: u64) -> rt::Result<u64> {
+    launch(p, args, channels, status, p as u64, None)
+}
+pub fn pipe_spawn(
+    p: Program,
+    args: &[String],
+    channels: (u64, u64),
+    status: u64,
+    pipe: u64,
+) -> rt::Result<u64> {
+    let number = match p {
+        Program::Cat => tty::PIPE_CAT,
+        Program::Wc => tty::PIPE_WC,
+        _ => return Err(rt::BAD_ARGUMENT),
+    };
+    launch(p, args, channels, status, number, Some(pipe))
+}
+fn launch(
+    p: Program,
+    args: &[String],
+    channels: (u64, u64),
+    status: u64,
+    number: u64,
+    pipe: Option<u64>,
+) -> rt::Result<u64> {
     let mut data = vec![0u8; tty::HEADER];
     if args.len() > tty::ARG_COUNT {
         return Err(rt::LIMIT);
@@ -25,7 +49,7 @@ pub fn spawn(p: Program, args: &[String], channels: (u64, u64), status: u64) -> 
                 && crate::options::parse(p, &args.iter().map(String::as_str).collect::<Vec<_>>())?
                     .has(b'i'));
     let streams = tty::ERROR
-        | if status == 0 && p != Program::Probe {
+        | if status == 0 && p != Program::Probe && !(pipe.is_some() && p == Program::Cat) {
             tty::OUTPUT
         } else {
             0
@@ -43,12 +67,24 @@ pub fn spawn(p: Program, args: &[String], channels: (u64, u64), status: u64) -> 
     {
         data[i * 8..i * 8 + 8].copy_from_slice(&v.to_le_bytes());
     }
+    if let Some(key) = pipe {
+        data.extend_from_slice(&key.to_le_bytes());
+    }
     rt::value(rt::call(
         tty::SPAWN,
-        p as u64,
+        number,
         data.as_ptr() as u64,
         data.len() as u64,
     ))
+}
+pub fn pipe_write(key: u64, bytes: &[u8]) -> rt::Result<()> {
+    for part in bytes.chunks(128) {
+        match rt::send_frame(key, 0, part, 0, false) {
+            Err(rt::WOULD_BLOCK) => rt::send_for(key, 0, part, 15000)?,
+            other => other?,
+        }
+    }
+    Ok(())
 }
 pub fn wait(key: u64) -> rt::Result<(bool, u64)> {
     let mut info = rt::WaitInfo {

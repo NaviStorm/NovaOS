@@ -23,6 +23,12 @@ pub const OBSERVE_SESSION: u8 = 128;
 /// PID, vivant (1) ou terminé (0), et nombre de pages privées de 4 Kio.
 pub const SAMPLE_BYTES: usize = 24;
 pub const QUALIFY: u8 = 32;
+// Variantes du numéro de programme de SPAWN. Le sélecteur, les statuts et
+// le descripteur ordinaire restent ceux de v1. Un lancement de flux ajoute
+// la clé de contrôle après le dernier octet des arguments.
+pub const PIPE_OPEN: u64 = 1 << 32;
+pub const PIPE_CAT: u64 = PIPE_OPEN + 1;
+pub const PIPE_WC: u64 = PIPE_OPEN + 2;
 pub const HEADER: usize = 40;
 pub const ARG_MAX: usize = 2560;
 pub const LINE_MAX: usize = 2048;

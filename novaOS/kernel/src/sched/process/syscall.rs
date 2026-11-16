@@ -48,7 +48,8 @@ fn wait(key: u64, out: u64, len: u64) -> Result<u64, u64> {
             threads::status(s)?;
             let pid = caller(s);
             let p = s.processes.get_mut(pid);
-            let right = p.wait_right.filter(|r| r.key() == key).ok_or(DENIED)?;
+            let right = [p.wait_right, p.pipe_reader_wait].into_iter().flatten()
+                .find(|r| r.key() == key).ok_or(DENIED)?;
             if core::mem::replace(&mut p.wait_buffer, WaitBuffer::Idle) == WaitBuffer::Invalidated {
                 return Err(BAD_ADDRESS);
             }
@@ -83,7 +84,12 @@ fn wait(key: u64, out: u64, len: u64) -> Result<u64, u64> {
                     hal::timer::counter() - child.exit_counter
                 ));
             }
-            s.processes.get_mut(pid).wait_right = None;
+            let parent = s.processes.get_mut(pid);
+            if parent.wait_right.is_some_and(|r| r.key() == key) {
+                parent.wait_right = None;
+            } else {
+                parent.pipe_reader_wait = None;
+            }
             s.processes.release_observer(right.target);
             Ok(None)
         })?;
