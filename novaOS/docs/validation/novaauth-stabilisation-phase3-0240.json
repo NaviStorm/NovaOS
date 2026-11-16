@@ -1,0 +1,14 @@
+{
+  "code": "04c43b38ea0d665da28ea47bb7ca6b651cad967f",
+  "candidat_initial": "32e85e8366782c4333899d71fbc86ecc7d5def26",
+  "base": "2e3188dee6eaef859becca3919bd0d53a20674bb",
+  "fichiers": 1422,
+  "octets": 1211034213,
+  "manifeste_sha256": "14e4c9d47de7eb8dedc11ea2b4cdd29500b5ec5e0c45abfa2a042d0326a20eb3",
+  "archive": "qualification-04c43b3.tar.gz",
+  "archive_sha256": "a1d5f665f67991db88aac196f56fc9e48b10771fd420df7e6a8a36f32c7a36a8",
+  "extrait": "novaauth-stabilisation-phase3-0240.tar.gz",
+  "extrait_sha256": "e7bb8f91faf21cdc8261ae7ba580e74bb42cf94da56b924f9679328344acd407",
+  "membres_extrait": 366,
+  "mesures_sha256": "8525e7d5989f393e7515514c333dfe1843f3e1da3ef5cea0f00bf1964ef914ed"
+}
