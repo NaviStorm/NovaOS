@@ -15,7 +15,19 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     };
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
-    let (help, version, topic) = if let Some(p) = Program::named(name, false) {
+    let (help, version, topic) = if name == "tee" {
+        use nova_cli::tee::{Action, parse};
+        let words: alloc::vec::Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        match parse(&words, false) {
+            Ok(Action::Help) => (true, false, &args[..0]),
+            Ok(Action::Version) => (false, true, &args[..0]),
+            Ok(Action::Copy(_)) => return Ok(None),
+            Err(msg) => {
+                console::printable(tty::ERROR, &alloc::format!("tee: {msg}\n"))?;
+                return Ok(Some(1));
+            }
+        }
+    } else if let Some(p) = Program::named(name, false) {
         let parsed = match options::parse(p, args) {
             Ok(o) => o,
             Err(_) => return invalid(options::invalid_option(p, args).unwrap_or(name)),

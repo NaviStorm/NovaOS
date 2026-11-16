@@ -103,3 +103,8 @@ test = false
 name = "vi"
 path = "vi/main.rs"
 test = false
+
+[[bin]]
+name = "tee"
+path = "coreutils/tee/native.rs"
+test = false

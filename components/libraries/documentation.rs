@@ -31,6 +31,21 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "tee",
+        provider: "nova-cli",
+        description: Text("Copy input to standard output and named files.", "Copier l’entrée vers la sortie standard et les fichiers nommés."),
+        syntax: Text::same("tee [OPTION]... [FILE]..."),
+        arguments: Text(
+            "-a, --append: append to existing files. -i, --ignore-interrupts: ignore SIGINT on macOS. -p and --output-error select warn-nopipe. --output-error=MODE: warn reports and continues, exit reports and stops. warn-nopipe and exit-nopipe apply the same rule except that a closed pipe is dropped silently. Without an option, SIGPIPE retains its inherited disposition on macOS.",
+            "-a, --append : ajouter aux fichiers existants. -i, --ignore-interrupts : ignorer SIGINT sur macOS. -p et --output-error sélectionnent warn-nopipe. --output-error=MODE : warn signale et poursuit, exit signale et arrête. warn-nopipe et exit-nopipe appliquent la même règle en abandonnant silencieusement un pipe fermé. Par défaut, macOS conserve le traitement hérité de SIGPIPE."
+        ),
+        examples: Text::same("tee copie.bin\ntee -ai --output-error=warn copie1 copie2"),
+        rights: Text("Pipe input and one selected destination per name. Documentation needs terminal output only.", "Lecture du pipe et une destination déléguée par nom. La documentation utilise la sortie du terminal."),
+        effects: Text("Creates named files. macOS truncates existing files unless appending. P9 accepts only free names.", "Crée les fichiers nommés. macOS tronque les fichiers existants sauf en ajout. P9 accepte seulement les noms libres."),
+        limits: Text("I/O or option error: 1. Native shell admission is pending. NovaOS has no POSIX signals.", "Erreur d’E/S ou d’option : 1. Admission par le shell natif en attente. NovaOS ne fournit pas de signaux POSIX."),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1207,10 +1222,10 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
+                if self.name == "tee" { lang.select("Status and limits: 0 success.", "Codes et limites : 0 succès.") } else { lang.select(
                     "Status, errors and limits: 0 success, 3 invalid argument.",
                     "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                ) },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )

@@ -20,3 +20,6 @@ pub mod options;
 pub mod vi_wire;
 
 pub mod documentation;
+
+#[path = "../coreutils/tee/engine.rs"]
+pub mod tee;
