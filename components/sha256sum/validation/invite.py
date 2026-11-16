@@ -17,6 +17,7 @@ p = argparse.ArgumentParser(description=__doc__)
 p.add_argument("arch", choices=["aarch64","x86_64"])
 p.add_argument("sector", type=int, choices=[512,4096])
 p.add_argument("out",type=Path)
+p.add_argument("--ordinaire",action="store_true",help="ELF livrés et profil nsh ordinaire")
 a=p.parse_args()
 out=a.out.resolve()
 out.mkdir(parents=True,exist_ok=False)
@@ -60,7 +61,7 @@ for altered in (False,True):
         stack.enter_context(client);stack.enter_context(peer)
         channel=stack.enter_context(client.makefile("rwb",buffering=0))
         monitor=SimpleNamespace(stdin=channel,stdout=channel)
-        vm=stack.enter_context(Terminal(a.arch,a.sector,image,"sha256sum",test=True,journal=folder/"session.serial",qmp_bloc=peer.fileno()))
+        vm=stack.enter_context(Terminal(a.arch,a.sector,image,"sha256sum",test=not a.ordinaire,journal=folder/"session.serial",qmp_bloc=peer.fileno()))
         peer.close()
         qmp(monitor,"qmp_capabilities")
         def snapshot():
@@ -74,6 +75,16 @@ for altered in (False,True):
             run(vm,"sha256sum -c SHA256SUMS",1,["fichier.bin: FAILED","notice: OK"])
         else:
             run(vm,"sha256sum fichier.bin",has=[expected+"  fichier.bin"])
+            for option in ("-b","--binary"):
+                run(vm,f"sha256sum {option} fichier.bin",has=[expected+" *fichier.bin"])
+            for option in ("-t","--text"):
+                run(vm,f"sha256sum {option} fichier.bin",has=[expected+"  fichier.bin"])
+            run(vm,"sha256sum --tag fichier.bin",has=["SHA256 (fichier.bin) = "+expected])
+            for option in ("-z","--zero"):
+                run(vm,f"sha256sum {option} fichier.bin",25,has=["(25)"],absent=[expected])
+            run(vm,"sha256sum -zc SHA256SUMS",1)
+            for option in ("--status","--strict","-w","--warn"):
+                run(vm,f"sha256sum {option} --check SHA256SUMS")
             run(vm,"sha256sum -c SHA256SUMS",has=["fichier.bin: OK","notice: OK"])
             run(vm,"sha256sum --quiet -c SHA256SUMS",absent=[": OK",": FAILED"])
             run(vm,"sha256sum -c DROITS",1,["fichier.bin: OK","voisin: FAILED open or read","(5)"])
@@ -81,12 +92,16 @@ for altered in (False,True):
             run(vm,"sha256sum -c CHEMINS",1,["/voisin: FAILED","../voisin: FAILED"])
             run(vm,"SHA256SUM_READ_3=absent")
             run(vm,"sha256sum --ignore-missing -c ABSENTS",has=["notice: OK"],absent=["absent: FAILED"])
-            pipe=run(vm,"cat fichier.bin | sha256sum",has=[expected+"  -","[pipe cat=0]","[pipe sha256sum=0]","admission image=19 fichiers=0","retrait noeuds=0 attentes=0 file=0"])
-            roles=re.findall(r"PIPE role=(?:cat|sha256sum) pid=(\d+) isole=true",pipe)
-            assert len(set(roles))==2 and sorted(re.findall(r"CLI collecte pid=(\d+)",pipe))==sorted(roles)
-            run(vm,"cat notice | head -n 1",has=["livraison\n","[pipe head=0]"])
-            run(vm,"cat notice | wc -l",has=["\n1\n","[pipe wc=0]"])
-            run(vm,"@probe sha256-retrait fichier.bin",1,has=["(5)"],absent=[expected,hashlib.sha256(payload[:4096]).hexdigest()],gate=b"[sha256sum lecture=4096]")
+            pipe=run(vm,"cat fichier.bin | sha256sum",has=[expected+"  -"])
+            if not a.ordinaire:
+                for marker in ("[pipe cat=0]","[pipe sha256sum=0]","admission image=19 fichiers=0","retrait noeuds=0 attentes=0 file=0"):
+                    assert marker in pipe
+                roles=re.findall(r"PIPE role=(?:cat|sha256sum) pid=(\d+) isole=true",pipe)
+                assert len(set(roles))==2 and sorted(re.findall(r"CLI collecte pid=(\d+)",pipe))==sorted(roles)
+                run(vm,"@probe sha256-retrait fichier.bin",1,has=["(5)"],absent=[expected,hashlib.sha256(payload[:4096]).hexdigest()],gate=b"[sha256sum lecture=4096]")
+            run(vm,"cat notice | head -n 1",has=["livraison\n"])
+            run(vm,"cat notice | wc -l",has=["\n1\n"])
+            doc_trace=[] if a.ordinaire else ["[sha256sum fichiers=0 pipe=0]"]
             previous=snapshot()
             for _ in range(15):
                 time.sleep(2)
@@ -94,10 +109,10 @@ for altered in (False,True):
                 if disk_before==previous:break
                 previous=disk_before
             else:raise AssertionError("P9 encore actif avant la fenêtre documentaire")
-            run(vm,"sha256sum --help",has=["[sha256sum fichiers=0 pipe=0]","--ignore-missing"])
+            run(vm,"sha256sum --help",has=[*doc_trace,"--ignore-missing"])
             run(vm,"export LANG=fr-CA")
-            run(vm,"sha256sum --help",has=["[sha256sum fichiers=0 pipe=0]","Calcule ou vérifie"])
-            run(vm,"sha256sum --version",has=["[sha256sum fichiers=0 pipe=0]","sha256sum (NovaOS) 0.24.0"])
+            run(vm,"sha256sum --help",has=[*doc_trace,"Calcule ou vérifie"])
+            run(vm,"sha256sum --version",has=[*doc_trace,"sha256sum (NovaOS) 0.24.0"])
             vm.vm.stdin.write(b"man sha256sum; echo MAN_RC_$?__fin\n")
             frame=vm.until(b"q quitter")
             assert "Calculer ou vérifier".encode() in frame

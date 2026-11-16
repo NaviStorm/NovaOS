@@ -106,6 +106,9 @@ impl Platform for Native<'_> {
         alloc::format!("{} ({e})", console::reason(*e))
     }
     fn write(&mut self, err: bool, bytes: &[u8]) -> rt::Result<()> {
+        if bytes.contains(&0) {
+            return Err(w::UNSUPPORTED);
+        }
         let text = core::str::from_utf8(bytes).map_err(|_| rt::BAD_ARGUMENT)?;
         console::write(if err { tty::ERROR } else { tty::OUTPUT }, text)
     }
@@ -155,7 +158,17 @@ fn execute() -> rt::Result<bool> {
 }
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
-    match execute() {
+    nova_cli::heap_profile::start();
+    let result = execute();
+    if option_env!("NOVA_SHA256_MEMORY") == Some("1")
+        && let Some(bytes) = nova_cli::heap_profile::bytes()
+    {
+        let _ = console::write(
+            tty::ERROR,
+            &alloc::format!("[sha256sum pic_tas_octets={bytes}]\n"),
+        );
+    }
+    match result {
         Ok(ok) => rt::exit(u64::from(!ok)),
         Err(code) => {
             let _ = console::write(

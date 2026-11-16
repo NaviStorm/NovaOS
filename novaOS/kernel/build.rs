@@ -198,6 +198,7 @@ fn main() {
     .unwrap();
 
     println!("cargo::rerun-if-env-changed=NOVA_DOC_TRACE");
+    println!("cargo::rerun-if-env-changed=NOVA_SHA256_MEMORY");
     println!("cargo::rerun-if-env-changed=NOVA_HISTORY_ENTRIES");
     println!("cargo::rerun-if-env-changed=NOVA_MORE_LINES");
     println!("cargo::rerun-if-env-changed=NOVA_MORE_COLUMNS");

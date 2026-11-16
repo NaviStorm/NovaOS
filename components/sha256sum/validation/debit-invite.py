@@ -60,9 +60,11 @@ with Terminal(a.arch,a.sector,image,"sha-debit",test=True,journal=out/"debit.ser
             if expected:assert expected.encode() in raw
             if "|" in cmd:assert b"[pipe sha256sum=0]" in raw and b"[pipe cat=0]" in raw
             pages=int(re.search(rb"CLI spawn image=19 pid=\d+ cycles=\d+ pages=(\d+)",raw)[1])
+            peak=re.search(rb"\\[sha256sum pic_tas_octets=(\\d+)\\]",raw)
             speed=size/seconds/(1<<20)
             speeds.append(speed)
-            report["mesures"].append(dict(commande=cmd,octets=size,secondes=seconds,mio_s=speed,pages_admission=pages))
+            report["mesures"].append(dict(commande=cmd,octets=size,secondes=seconds,mio_s=speed,pages_admission=pages,
+                pic_prive_octets=pages*4096+int(peak[1]) if peak else None))
             save()
         report["resume"].append(dict(commande=cmd,n=len(speeds),mediane_mio_s=median(speeds),min_mio_s=min(speeds),max_mio_s=max(speeds)))
         save()

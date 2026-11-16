@@ -1,0 +1,77 @@
+.Dd November 16, 2026
+.Dt SHA256SUM 1
+.Os NovaOS
+.Sh NAME
+.Nm sha256sum
+.Nd calculer ou vérifier des empreintes SHA-256
+.Sh SYNOPSIS
+.Nm
+.Op Fl b | Fl t
+.Op Fl z
+.Op Fl -tag
+.Op Fl -
+.Op Ar fichier ...
+.Nm
+.Fl c
+.Op Fl -ignore-missing
+.Op Fl -quiet | Fl -status | Fl w
+.Op Fl -strict
+.Op Ar manifeste ...
+.Sh DESCRIPTION
+Sans opérande, ou avec un tiret, lit l'entrée standard.
+En mode vérification, les chemins relatifs sont résolus dans le
+répertoire courant.
+Une empreinte est écrite en 64 chiffres hexadécimaux suivis d'une
+espace,
+du marqueur de mode et du nom.
+.Sh OPTIONS
+.Bl -tag -width "--ignore-missing"
+.It Fl b , Fl -binary
+Employer le marqueur *.
+.It Fl t , Fl -text
+Employer une espace pour le mode texte.
+Les octets sont lus sans conversion.
+.It Fl -tag
+Écrire une ligne de type BSD.
+.It Fl z , Fl -zero
+Terminer par NUL et émettre le nom brut.
+Cette sortie exige un canal binaire.
+.It Fl c , Fl -check
+Relire les fichiers nommés dans chaque manifeste.
+.It Fl -ignore-missing
+Ignorer un fichier absent.
+Chaque manifeste doit contenir au moins une concordance.
+.It Fl -quiet
+Masquer les concordances.
+.It Fl -status
+Supprimer les comptes rendus individuels et les récapitulatifs.
+Une erreur d'ouverture reste diagnostiquée.
+.It Fl -strict
+Échouer également sur les lignes mal formées.
+.It Fl w , Fl -warn
+Signaler chaque ligne mal formée.
+.It Fl -help , Fl -version
+Afficher l'aide ou la version du composant.
+.El
+.Sh STATUT
+Zéro indique que toutes les opérations demandées ont réussi.
+Une différence ou une erreur
+rend un statut non nul.
+.Sh NOVAOS
+.Nm
+lit les fichiers explicitement délégués.
+Chaque variable
+.Ev SHA256SUM_READ_N
+de nsh (N de 1 à 32) désigne un fichier à autoriser pour la
+vérification.
+Le nom est comparé tel qu'il apparaît dans le manifeste.
+La session reste limitée à 32
+handles et 2560 octets d'arguments privés.
+Pour une entrée binaire, utiliser
+.Dl cat fichier.bin | sha256sum
+.Sh EXEMPLES
+.Bd -literal
+sha256sum fichier.bin
+SHA256SUM_READ_1=fichier.bin
+sha256sum -c SHA256SUMS
+.Ed

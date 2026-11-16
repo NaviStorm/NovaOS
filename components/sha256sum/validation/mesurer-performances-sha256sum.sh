@@ -7,6 +7,6 @@ case "${1:---novaOS}" in
     --novaOS) bin="$here/sha256sum"; [ -x "$bin" ] || bin="$here/../target/release/sha256sum"; if [ "$#" -gt 0 ]; then shift; fi ;;
     *) exit 2 ;;
 esac
-: "${TMPDIR:=$here/../../../../tmp/}"
+: "${TMPDIR:=${NOVAOS_TMPDIR:-$(getconf DARWIN_USER_TEMP_DIR)}}"
 export TMPDIR
 exec python3 -B "$here/performances.py" "$bin" "$@"

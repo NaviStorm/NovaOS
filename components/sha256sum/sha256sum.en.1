@@ -1,0 +1,60 @@
+.Dd November 16, 2026
+.Dt SHA256SUM 1
+.Os NovaOS
+.Sh NAME
+.Nm sha256sum
+.Nd compute and verify SHA-256 file digests
+.Sh SYNOPSIS
+.Nm
+.Op Fl b | Fl t
+.Op Fl z
+.Op Fl -tag
+.Op Fl -
+.Op Ar file ...
+.Nm
+.Fl c
+.Op Fl -ignore-missing
+.Op Fl -quiet | Fl -status | Fl w
+.Op Fl -strict
+.Op Ar manifest ...
+.Sh DESCRIPTION
+Read standard input when no file is supplied or its name is a dash.
+Relative manifest paths start at the working directory.
+.Bl -tag -width "--ignore-missing"
+.It Fl b , Fl -binary
+Use the binary marker *.
+.It Fl t , Fl -text
+Use a space for the text marker.
+Both input modes preserve all bytes.
+.It Fl z , Fl -zero
+Emit NUL after each record and use raw filenames.
+.It Fl -tag
+Write a BSD-style checksum record.
+.It Fl c , Fl -check
+Check the files listed in each manifest.
+.It Fl -ignore-missing
+Skip missing files and require at least one match in each manifest.
+.It Fl -quiet
+Omit matching records.
+.It Fl -status
+Suppress per-file results and summaries.
+.It Fl -strict
+Treat malformed lines as failures.
+.It Fl w , Fl -warn
+Report each malformed line.
+.It Fl -help , Fl -version
+Print help or the component version.
+.El
+.Sh EXIT STATUS
+Zero indicates success.
+Differences and errors yield a nonzero exit status.
+.Sh EXAMPLES
+.Bd -literal
+sha256sum file.bin
+SHA256SUM_READ_1=file.bin
+sha256sum -c SHA256SUMS
+cat file.bin | sha256sum
+.Ed
+.Sh NOTES
+In nsh each SHA256SUM_READ_N selects one permitted manifest input.
+Use the same spelling as the trusted release inventory.

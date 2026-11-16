@@ -24,6 +24,9 @@ pub fn execute<'a>(
         .map(|s| core::str::from_utf8(s).unwrap())
         .chain(allowed.filter(|_| opt.check))
     {
+        if path.contains('\0') {
+            return Err(rt::BAD_ARGUMENT);
+        }
         if path != "-" && !names.contains(&path) {
             names.push(path);
         }

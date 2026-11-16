@@ -7,6 +7,7 @@ case "${1:---novaOS}" in
     --novaOS) bin="$here/sha256sum"; [ -x "$bin" ] || bin="$here/../target/release/sha256sum" ;;
     *) exit 2 ;;
 esac
-: "${TMPDIR:=$here/../../../../tmp/}"
+: "${TMPDIR:=${NOVAOS_TMPDIR:-$(getconf DARWIN_USER_TEMP_DIR)}}"
+[ "$#" -le 1 ] || exit 2
 export TMPDIR
 exec python3 -B "$here/options.py" "$bin"
