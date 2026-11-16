@@ -39,10 +39,18 @@ pub fn execute(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::
     }
     // Le service conserve les vues isolées par paire pour cp/mv et par nom pour rm.
     // Valider le répertoire commun et toute l'expansion avant le premier lancement.
-    if let Ok(o) = options::parse(p, &strings)
-        && !o.help
-        && !o.version
-    {
+    let o = match options::parse(p, &strings) {
+        Ok(options) => options,
+        Err(code) => {
+            let arg = options::invalid_option(p, &strings).unwrap_or("");
+            write(tty::ERROR, &alloc::format!("argument invalide, option ou valeur non prise en charge : {arg}\n"))?;
+            if test {
+                write(tty::OUTPUT, &alloc::format!("[statut sortie {code}]\n"))?;
+            }
+            return Ok(code);
+        }
+    };
+    if !o.help && !o.version {
         let transfer = matches!(p, Program::Cp | Program::Mv);
         let removal = matches!(p, Program::Rm | Program::Rmdir);
         if (transfer && o.files.len() > 2) || (removal && o.files.len() > 1) {

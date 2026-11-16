@@ -26,13 +26,47 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
         if name == "nsh" && args.first() == Some(&"-c") {
             return Ok(None);
         }
+        // Les arguments d’une expression complète sont des données, même si un
+        // chemin ou une chaîne porte le nom d’une option documentaire.
+        if name == "[" && args.last() == Some(&"]") {
+            return Ok(None);
+        }
+        if name == "test"
+            && matches!(
+                args,
+                ["-n" | "-z" | "-e" | "-f" | "-d", _]
+                    | [
+                        _,
+                        "=" | "==" | "!=" | "-lt" | "-le" | "-eq" | "-ne" | "-ge" | "-gt",
+                        _
+                    ]
+            )
+        {
+            return Ok(None);
+        }
+        if (name == "echo" || name == "test" && args.len() == 1)
+            && args.first().is_some_and(|word| word.parse::<i64>().is_ok())
+        {
+            return Ok(None);
+        }
+        // Après le premier opérande d’echo, tous les mots sont du texte.
+        let flags = if name == "echo" {
+            &flags[..flags.len().min(1)]
+        } else {
+            flags
+        };
         for &arg in flags {
             let journal_option = name == "journal"
                 && matches!(
                     arg,
                     "--level" | "--boot" | "--limit" | "--service" | "--follow"
                 );
-            if arg.starts_with('-') && !matches!(arg, "--help" | "--version") && !journal_option {
+            let literal_dash = arg == "-" && matches!(name, "echo" | "test");
+            if arg.starts_with('-')
+                && !literal_dash
+                && !matches!(arg, "--help" | "--version")
+                && !journal_option
+            {
                 return invalid(arg);
             }
         }

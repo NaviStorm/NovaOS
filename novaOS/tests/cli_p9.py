@@ -51,7 +51,7 @@ def check(arch, sector, tmp, oracle):
     fs,lv=re.search(rb"FS=(\w+) LV=(\w+)",setup.stderr).groups()
     old_hash=hashlib.sha256(old.read_bytes()).digest()
     # Même service et même CLI sur le volume historique, avant la migration.
-    with Terminal(arch, sector, old, "profil-historique", test=True) as terminal:
+    with Terminal(arch, sector, old, "profil-historique", test=True, historique_p8=True) as terminal:
         terminal.until(b"nsh> ")
         terminal.line("ls -l documents", has=["mtime=inconnue"], status="sortie 0")
         terminal.line("ls -t documents", has=["indisponible"], status="sortie 25")
@@ -157,7 +157,7 @@ def check(arch, sector, tmp, oracle):
             t.until(b"nsh> ")
         for name in ("pwd","ls","cat","head","tail","touch","cp","mv","wc","more","mkdir","rm","rmdir"):
             run(name+" --help",[name])
-            run(name+" --version",["nova-cli 0.20.0" if name in ("ls", "rm") else "NovaOS "])
+            run(name+" --version",["nova-cli 0.20.0"])
         run("alias l='ls -latr --color'",status=None)
         run("l",["inconnue", "documents", b"\x1b[34m"])
         run("l documents",["exemple.txt","renomme"])

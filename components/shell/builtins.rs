@@ -40,6 +40,9 @@ pub fn monitor(interactive: bool) -> rt::Result<()> {
         console::write(tty::OUTPUT, "PID  ROLE  ETAT  MEMOIRE PRIVEE (Kio)\n")?;
         for index in 0..2 {
             let mut sample = [0u64; 3];
+            if option_env!("NOVA_DOC_TRACE") == Some("1") {
+                console::write(tty::ERROR, "DOC-SAMPLE\n")?;
+            }
             let present = rt::value(rt::call(
                 tty::PROCESS_SAMPLE,
                 index,
