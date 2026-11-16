@@ -52,30 +52,64 @@ fn provenances_et_incarnations_independantes() {
             digest: [42; 32],
         };
         r.bind_folder(h, alice, 17, b"acl", [5; 16]).unwrap();
-        let stale = r.grant_attested(alice).unwrap();
+        // Deux clients préparent depuis la même tête, puis remettent leurs demandes au
+        // courtier à écrivain unique. Aucun ordre d'arrivée n'est imposé.
+        let shared_head = r.grant_attested(alice).unwrap();
+        let gate = std::sync::Barrier::new(2);
+        let (tx, rx) = std::sync::mpsc::sync_channel(2);
+        std::thread::scope(|scope| {
+            for (request, mask) in [(6, READ), (7, WRITE)] {
+                let tx = tx.clone();
+                let gate = &gate;
+                scope.spawn(move || {
+                    gate.wait();
+                    tx.send((request, mask, shared_head)).unwrap();
+                });
+            }
+            drop(tx);
+            let mut accepted = None;
+            for (request, mask, grant) in rx {
+                let result = r.set_permission(
+                    grant,
+                    alice,
+                    17,
+                    image.installation,
+                    Origin::Direct,
+                    mask,
+                    [request; 16],
+                );
+                if accepted.is_none() {
+                    assert_eq!(result.unwrap().request, [request; 16]);
+                    accepted = Some(mask);
+                } else {
+                    assert!(matches!(result, Err(Fault::Conflict)));
+                    assert!(r.outcome([request; 16]).unwrap().is_none());
+                }
+            }
+            assert_eq!(
+                Some(
+                    r.stored_permission(
+                        r.grant_attested(alice).unwrap(),
+                        17,
+                        image.installation,
+                        Origin::Direct
+                    )
+                    .unwrap()
+                ),
+                accepted
+            );
+        });
+        // Valeur commune à la suite de la recette, quel que soit le gagnant.
         r.set_permission(
-            stale,
+            r.grant_attested(alice).unwrap(),
             alice,
             17,
             image.installation,
             Origin::Direct,
             READ,
-            [6; 16],
+            [77; 16],
         )
         .unwrap();
-        assert!(matches!(
-            r.set_permission(
-                stale,
-                alice,
-                17,
-                image.installation,
-                Origin::Direct,
-                WRITE,
-                [7; 16]
-            ),
-            Err(Fault::Conflict)
-        ));
-        assert!(r.outcome([7; 16]).unwrap().is_none());
         r.set_permission(
             r.grant_attested(alice).unwrap(),
             alice,
