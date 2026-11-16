@@ -34,7 +34,7 @@ Les identifiants des annexes relient exigence, code, essai, architecture, verdic
 | [FS-01 à FS-04, stockage et récupération](audit-0220-phase3-stockage.md) | 2 | 2 | 0 | 0 |
 | [ABI-01 à ABI-07 et LIV-01 à LIV-04, ABI et distributions](audit-0220-abi-livraisons.md) | 10 | 1 | 0 | 0 |
 | **Sources et contrôles de livraison, 46 lignes** | **35** | **11** | **0** | **0** |
-| Travaux futurs FUT-01 à FUT-10 ci-dessous | 0 | 0 | 0 | 10 |
+| Travaux futurs FUT-01 à FUT-11 ci-dessous | 0 | 0 | 0 | 11 |
 
 - **Configuration.** Le redémarrage après `service disable 9` laisse 10 en attente avec la dépendance 9 explicite, pendant que `nsh` accède à P9. `service enable 9` puis un redémarrage rétablissent la réponse NVFS de 9, puis le service 10. Les traces distinguent l’état de l’instance, la politique et les générations. [Matrice de phase 1](audit-0220-phase1.md)
 - **Journal.** Les événements des deux démarrages sont retrouvés par BootID. Quota, rotation, arrêt du démon et indisponibilité de son stockage laissent la supervision opérationnelle. Avant acquittement, la file est volatile. Après purge ou éviction, l’identifiant d’événement peut sortir de la fenêtre de dédoublonnage. [Matrice de phase 2](audit-0220-phase2.md)
@@ -96,8 +96,11 @@ Les huit exigences figurent dans la feuille de route et ses contrats référenc�
 | FUT-08 | Compilateurs natifs Rust, C et C++ | ARC-022. Compiler, lier et exécuter chacun des témoins depuis nsh sur chaque ISA. Le SDK croisé livré couvre une autre épreuve. REPORTÉ |
 | FUT-09 | Qualification du serveur texte complet | ARC-014/016, S01–S16 sur les candidats QEMU x86_64 et AArch64. Qualification physique distincte. REPORTÉ |
 | FUT-10 | Pile GUI, NovaWM et NovaUI | ARC-015. Report **après** la première stable serveur, sans échéance numérotée. REPORTÉ |
+| FUT-11 | Aide, version du fournisseur et manuel natif pour chaque commande distribuée, y compris les exigences particulières de service | ARC-025/026. L’audit relève la couverture actuelle par commande. La recette complète sur les deux architectures est obligatoire avant la stable v0.30.0. REPORTÉ |
 
 Le statut REPORTÉ porte ici sur la qualification intégrale de chaque engagement futur. Les fonctions de v0.22.0 déjà éprouvées gardent leurs propres verdicts dans les annexes. [Exigences du serveur](reconciliation-v0300/exigences-serveur.md) · [Critères d’acceptation](reconciliation-v0300/acceptation-serveur.md) · [Références matérielles](reconciliation-v0300/contrat-plateforme.md)
+
+**Complément documentaire du 16 novembre.** Le relevé distingue les 34 noms publics de la dernière image UTM, les commandes `service` et `journal` des sources intégrées, et le script de vérification distribué sur P9. La couverture de l’aide, de la version, du manuel et de leurs garanties de sécurité est détaillée par commande. La décision ARC-026 étend le contrat de `service` sans changer les verdicts des trois phases v0.22.0. [Inventaire documentaire](reconciliation-v0300/inventaire-commandes.md) · [Recette v0.30.0](reconciliation-v0300/acceptation-serveur.md#documentation-de-toutes-les-commandes)
 
 ## Décision soumise à la MOA/MOE
 
