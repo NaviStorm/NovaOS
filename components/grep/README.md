@@ -44,6 +44,8 @@ La compilation de la commande complète échoue sur les deux cibles (E0463, `std
 
 Le lanceur lie le rôle de pipe à une image admise. Les rôles présents sont Cat, Wc et Head. L’admission de grep, l’accès aux opérandes et le rôle de lecteur de pipe font l’objet d’une demande séparée. Les lectures P9, le passage natif de stdin à stdout, les contrôles de capacité du futur processus et ses statuts restent à qualifier sur l’ELF exécutable. [Demande de décision MOA/MOE](admission-pipe-MOA-MOE.md)
 
+**Campagne initiale à la base 816843f.**
+
 | Recette en invité | AArch64 | x86_64 |
 |---|---|---|
 | Documentation sur P9, secteurs de 512 octets | 9/9 | 9/9 |
@@ -54,6 +56,22 @@ Le lanceur lie le rôle de pipe à une image admise. Les rôles présents sont C
 Les 36 consultations ont été exécutées avec les images de `fa9a141ba3a0c5e201f8d6f730632233deb225f4`, 2 vCPU et 256 Mio. Le catalogue public de `nsh` fournit `grep --help`, `grep --version` et `man grep` en anglais pour `en-US`, en français pour `fr-CA` et en anglais pour la balise invalide `fr--CA`. Le statut vaut 0 pour chaque consultation. Après stabilisation du disque, l’empreinte du P9 jetable et les compteurs QMP d’octets écrits, d’écritures et de flush restent identiques entre les deux observations.
 
 La suite `nsh-scripts-test` s’arrête sur `**/*.txt` avec capacité révoquée. L’échec est reproduit sur les deux architectures à la base de départ, avant les modifications de grep. La suite générale s’est arrêtée avant les secteurs de 4 096 octets. Au cours de la recette, le lanceur historique `cli-p9-test` a également démarré un invité sur un P8 jetable avant sa phase P9. C’est un écart à la consigne P9 exclusivement. La phase P9 de ce lanceur échoue sur `ls -latr --color /` en AArch64. L’attribution de cet échec reste ouverte. Les journaux sont archivés. Tous les disques utilisés étaient des témoins fictifs isolés.
+
+## Requalification sur NovaOS v0.23.0 publié
+
+La révision publiée de `origin/main` est `e5d7124a53e9b0d6a896b7001f717f655c371367`, arbre `e73ce9e2209449bda3e1e1475ac15053ac3e312e`. La branche ARC-027 a repris cette base au commit `42e413a7cd711549ff168dc58f65b8fbb77a2054`. Son diff par rapport à cette base est limité aux composants utilisateur. Le code du Mach-O et du moteur portable est identique à celui de la campagne macOS archivée. Le changement amont concerne la portée du jeton d’énumération et la validation de la révision d’un fichier en lecture groupée. Ces deux interfaces seront utilisées pour la récursivité et la lecture de gros fichiers. [Rapport de stabilisation publié](../../novaOS/docs/stabilisation-v0.23.x.md)
+
+| Résultat après stabilisation | AArch64 / 512 | AArch64 / 4 096 | x86_64 / 512 | x86_64 / 4 096 |
+|---|---:|---:|---:|---:|
+| Consultations ARC-026, statuts et absence d’écriture P9 | 9/9 | 9/9 | 9/9 | 9/9 |
+| Commandes du banc `nsh-scripts-test` et reprise après redémarrage | 31/31 | 31/31 | 31/31 | 31/31 |
+| Liste paginée, lecture de 8 193 octets, pipe existant | 3/3 | 3/3 | 3/3 | 3/3 |
+
+Les quatre profils passent le glob `**/*.txt` qui échouait à la base initiale. Le témoin `ls -latr --color /` rend 0, retrouve les 18 noms contrôlés et ordonne les deux dates UTC à 200000123 et 800000001 nanosecondes dans la même seconde. `cat grand` rend exactement 8 193 octets de contenu sans LF final. Le pipe admis `cat commun.nsh | wc -l` rend 26 et le statut 0. Les traces détaillent les neuf consultations documentaires par profil, soit trois commandes pour chacune des trois balises. Ces témoins couvrent les dépendances de grep avec des clients admis. La recherche dans un processus grep sur P9 attend encore son portage et son admission.
+
+Le premier essai de lecture sans LF a révélé une erreur du banc. Celui-ci attendait un marqueur précédé d’un saut de ligne alors que l’octet 8 194 appartenait déjà au marqueur. Le banc corrigé vérifie les 8 193 octets attendus et le statut, puis le scénario a été rejoué dans les quatre profils. Les observations, consoles, empreintes du disque, manifestes des VM et contrôles de réception figurent dans la seconde archive. Les VM de cette requalification ont toutes monté des P9 jetables. [Banc ciblé](validation/services_p9.py) · [Preuves v0.23.0](validation/arc027-v0230.tar.xz) · [SHA-256](validation/arc027-v0230.sha256)
+
+La demande séparée d’admission du lecteur de pipe a été transmise à la coordination MOA/MOE le 16 novembre 2026, avec le dossier publié à la révision `42e413a7cd71`. La décision d’intégration reste ouverte.
 
 ## Reproduction
 
@@ -78,7 +96,7 @@ do
 done
 ```
 
-Pour les invités, utiliser le générateur P9 et le profil documentaire du dépôt dans le worktree isolé. Les quatre répertoires de résultat doivent être neufs. Le test refuse un répertoire de résultat existant.
+Pour les invités, utiliser le générateur P9 et le profil documentaire du dépôt dans le worktree isolé. Les répertoires de résultat doivent être neufs. Le test refuse un répertoire de résultat existant.
 
 ```sh
 cd ../..
@@ -90,7 +108,8 @@ do
     make -C novaOS ARCH="$arch" kernel || exit 1
     for secteur in 512 4096
     do
-        python3 -B components/grep/validation/documentation_p9.py "$arch" "$secteur" "$preuves/$arch-$secteur" || exit 1
+        python3 -B components/grep/validation/documentation_p9.py "$arch" "$secteur" "$preuves/doc-$arch-$secteur" || exit 1
+        python3 -B components/grep/validation/services_p9.py "$arch" "$secteur" "$preuves/lecture-$arch-$secteur" || exit 1
     done
 done
 ```
