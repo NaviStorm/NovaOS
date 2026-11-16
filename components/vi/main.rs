@@ -45,8 +45,7 @@ fn session() -> rt::Result<()> {
     let op = operand(Program::Vi, &args)?;
     if let Operand::Info(help) = op {
         let page = nova_cli::documentation::lookup("vi").ok_or(rt::BAD_ARGUMENT)?;
-        let text = if help { page.render(&[], false).ok_or(rt::BAD_ARGUMENT)? } else { page.version() };
-        return console::write(tty::OUTPUT, &text);
+        return console::document(page, &args, help);
     }
     let Operand::Edit(name) = op else {
         return Err(rt::BAD_ARGUMENT);

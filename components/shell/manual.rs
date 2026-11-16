@@ -55,19 +55,29 @@ fn read_search(input: &mut Input, n: usize, width: usize) -> rt::Result<String> 
     }
 }
 
-pub fn open(args: &[&str]) -> rt::Result<u64> {
+pub fn open(args: &[&str], lang: documentation::Language) -> rt::Result<u64> {
     let Some((name, path)) = args.split_first() else {
-        console::write(tty::ERROR, "usage : man commande [sous-commande...]\n")?;
+        console::write(
+            tty::ERROR,
+            lang.select(
+                "usage: man command [subcommand...]\n",
+                "usage : man commande [sous-commande...]\n",
+            ),
+        )?;
         return Ok(rt::BAD_ARGUMENT);
     };
-    let Some(text) = documentation::lookup(name).and_then(|p| p.render(path, true)) else {
-        console::write(tty::ERROR, "man : page absente\n")?;
+    let Some(text) = documentation::lookup(name).and_then(|p| p.render(path, true, lang)) else {
+        console::write(
+            tty::ERROR,
+            lang.select("man: page not found\n", "man : page absente\n"),
+        )?;
         return Ok(protocol::NOT_FOUND);
     };
     let mut input = Input::default();
     let mut top: usize = 0;
     let mut query = String::new();
     let mut message = "";
+    let mut occurrence = None;
     loop {
         let (rows, cols) = input.geometry(false)?;
         let width = usize::from(cols.saturating_sub(1).max(1));
@@ -79,9 +89,10 @@ pub fn open(args: &[&str]) -> rt::Result<u64> {
             row(n, body.get(top + n).copied().unwrap_or(""))?;
         }
         let status = alloc::format!(
-            "man {name} {}/{}  q quitter  / chercher  {message}",
+            "man {name} {}/{}  {}  {message}",
             top + 1,
-            body.len()
+            body.len(),
+            lang.select("q quit  / search", "q quitter  / chercher")
         );
         row(height, lines(&status, width)[0])?;
         let Some(mut key) = input.event()? else {
@@ -115,17 +126,28 @@ pub fn open(args: &[&str]) -> rt::Result<u64> {
             b'/' | b'n' => {
                 if key == b'/' {
                     query = read_search(&mut input, height, width)?;
+                    occurrence = None;
                 }
                 if !query.is_empty() {
-                    let matches = (1..=body.len()).map(|i| (top + i) % body.len());
-                    if let Some(index) = matches
-                        .into_iter()
-                        .find(|&i| body[i].contains(query.as_str()))
+                    let offset =
+                        occurrence.unwrap_or(body[top].as_ptr() as usize - text.as_ptr() as usize);
+                    let start = text[offset..]
+                        .chars()
+                        .next()
+                        .map_or(offset, |c| offset + c.len_utf8());
+                    if let Some(index) = text[start..]
+                        .find(&query)
+                        .map(|i| start + i)
+                        .or_else(|| text.find(&query))
                     {
-                        top = index;
-                        message = "trouvé";
+                        occurrence = Some(index);
+                        let address = text.as_ptr() as usize + index;
+                        top = body
+                            .partition_point(|line| line.as_ptr() as usize <= address)
+                            .saturating_sub(1);
+                        message = lang.select("found", "trouvé");
                     } else {
-                        message = "introuvable";
+                        message = lang.select("not found", "introuvable");
                     }
                 }
             }

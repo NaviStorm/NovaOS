@@ -9,7 +9,7 @@ fn invalid(option: &str) -> rt::Result<Option<u64>> {
     Ok(Some(rt::BAD_ARGUMENT))
 }
 
-pub fn answer(name: &str, args: &[&str]) -> rt::Result<Option<u64>> {
+pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::Result<Option<u64>> {
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
@@ -52,12 +52,12 @@ pub fn answer(name: &str, args: &[&str]) -> rt::Result<Option<u64>> {
         )
     };
     let text = if help {
-        let Some(text) = page.render(topic, false) else {
+        let Some(text) = page.render(topic, false, lang) else {
             return invalid("sous-commande inconnue");
         };
         text
     } else if version {
-        page.version()
+        page.version(lang)
     } else {
         return Ok(None);
     };

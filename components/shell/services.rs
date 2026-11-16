@@ -27,6 +27,15 @@ fn exchange(message: wire::Frame) -> rt::Result<wire::Frame> {
         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
         .map_err(|_| rt::LIMIT)?;
     let tag = prev + 1;
+    if option_env!("NOVA_DOC_TRACE") == Some("1") {
+        let marker = match op {
+            wire::STOP => "DOC-IPC SEND STOP",
+            wire::QUERY => "DOC-IPC SEND QUERY",
+            _ => "DOC-IPC SEND OTHER",
+        };
+        console::write(tty::ERROR, marker)?;
+        console::write(tty::ERROR, "\n")?;
+    }
     rt::send_for(tx, tag, &wire::encode(&message), 15000)?;
     // Une réponse perdue après la remise d'une mutation laisse son résultat inconnu.
     // Une lecture ultérieure peut rencontrer l'acquittement tardif sur la même paire.

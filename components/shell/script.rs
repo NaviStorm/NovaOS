@@ -226,16 +226,27 @@ impl<'a> Engine<'a> {
         let name = f
             .aliases
             .expand(name, &mut words, |s| f.word(s, &self.pid))?;
-        if nova_cli::documentation::lookup(&name).is_some() {
+        let page = nova_cli::documentation::lookup(&name);
+        let probe = self.test && option_env!("NOVA_DOC_TRACE") == Some("1") && name == "@probe";
+        if page.is_some() || probe {
+            let language = nova_cli::documentation::Language::from_tag(
+                f.vars.get("LANG").map(|(tag, _)| tag.as_str()),
+            );
             let literal: Vec<_> = words.iter().map(|w| w.text.as_str()).collect();
-            if name == "man" && !literal.iter().any(|a| matches!(*a, "--help" | "--version") || a.starts_with('-')) {
-                return super::manual::open(&literal).map(Flow::Status);
+            if probe && let ["documentation", app, option @ ("--help" | "--version")] = literal.as_slice()
+                && let Some(program @ (Program::Rm | Program::Ls | Program::Vi)) = Program::named(app, false)
+            {
+                return executor::document(program, *option == "--help", language).map(Flow::Status);
             }
-            if let Some(code) = super::doc_options::answer(&name, &literal)? {
+            if let Some(code) = super::doc_options::answer(&name, &literal, language)? {
+                if self.test && Program::named(&name, false).is_some() {
+                    console::write(tty::OUTPUT, &alloc::format!("[statut sortie {code}]\n"))?;
+                }
                 return Ok(Flow::Status(code));
             }
             if name == "man" {
-                return super::manual::open(literal.strip_prefix(&["--"]).unwrap_or(&literal)).map(Flow::Status);
+                return super::manual::open(literal.strip_prefix(&["--"]).unwrap_or(&literal), language)
+                    .map(Flow::Status);
             }
         }
         match name.as_str() {

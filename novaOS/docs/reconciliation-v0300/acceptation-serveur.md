@@ -128,3 +128,15 @@ La publication exige **32 résultats favorables** pour le parcours S01 à S16 et
 | Avant fusion | Comparer le candidat et les profils à ceux des preuves existantes. Documenter quelles preuves restent applicables et rejouer les scénarios dont le chemin, le contrat, les paramètres ou le modèle de panne changent. Motiver chaque campagne longue et consigner ses résultats individuels. |
 
 Les rapports historiques d’installation, de SMP et de stockage restent des preuves pour leurs révisions et profils. La validation documentaire actuelle fixe le travail à fournir pour la stable. [Installation](../installer-v0.15.0.md) · [SMP](../fusion-smp-v0.17.0.md) · [NovaFS et récupération](../../../novaFS/docs/novafs-recovery.md)
+
+## Résultats intermédiaires de v0.23.0, phase 1
+
+| Partie de la recette | QEMU AArch64 | QEMU x86_64 | Portée |
+|---|---|---|---|
+| DOC, huit pilotes | Aide et version 0, pages lues | Aide et version 0, pages lues | 8 des 37 noms publics des sources. Page absente 20. |
+| DOC-05 à DOC-08, scénarios ciblés | Réussis | Réussis | Zéro STOP, témoin cd, refus et suppression rm relus hors invité. |
+| SVC, présentation et sélection | Réussies | Réussies | Catalogue installé 1, 2, 9, 10, 16. Noms/ID, état et autostart, 14 aides, manuel. |
+| Langue et absence d’écriture P9 | 13 locales ou absences, compteurs et SHA-256 | 13 locales ou absences, compteurs et SHA-256 | Aide locale, manuel, versions et ELF rm privé sans canaux métier. |
+| Consultation sur terminal étroit | Réussie | Réussie | 48 × 12, déplacement, restitution à nsh puis à vi. |
+
+Les colonnes des recettes complètes ci-dessus concernent le futur candidat stable. Les sondes de supervision 3 à 8 et l’ensemble des scénarios de mutations de service n’ont pas été requalifiés dans cette phase. Le périmètre, les codes et les preuves de stockage sont consignés dans le [rapport de qualification](../documentation-v0.23.0-phase1.md).

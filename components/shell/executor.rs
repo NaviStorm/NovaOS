@@ -7,6 +7,17 @@ use nova_cli::{
     options, process, protocol as w, runtime as rt, tty,
 };
 
+/// Le seul état transmis est la langue du document. Les deux canaux métier sont nuls.
+pub fn document(p: Program, help: bool, lang: nova_cli::documentation::Language) -> rt::Result<u64> {
+    let argv = [
+        String::from(if help { "--help" } else { "--version" }),
+        String::from("--"),
+        String::from(lang.select("nsh-doc=en", "nsh-doc=fr")),
+    ];
+    let key = process::spawn(p, &argv, (0, 0), 0)?;
+    let (fault, status) = process::wait(key)?;
+    Ok(if fault { 128 } else { status })
+}
 pub fn execute(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Result<u64> {
     let strings: Vec<_> = args.iter().map(String::as_str).collect();
     if p == Program::Vi

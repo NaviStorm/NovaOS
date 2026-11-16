@@ -13,6 +13,9 @@ pub fn cd(fs: &mut Client, args: &[String]) -> rt::Result<()> {
             return Err(rt::BAD_ARGUMENT);
         }
     };
+    if option_env!("NOVA_DOC_TRACE") == Some("1") {
+        nova_cli::console::write(nova_cli::tty::ERROR, "DOC-CD RESOLVE\n")?;
+    }
     let path = super::paths::resolve(fs, path)?;
     let dir = fs.directory(0, path.as_bytes(), w::DIR_ALL)?;
     let changed = fs.simple(w::CHDIR, dir);
