@@ -1,0 +1,14 @@
+Paquet	Version	Licence déclarée	Notices livrées
+aho-corasick	1.1.4	Unlicense OR MIT	aho-corasick-1.1.4-COPYING, aho-corasick-1.1.4-LICENSE-MIT, aho-corasick-1.1.4-UNLICENSE
+libm	0.2.16	MIT	libm-0.2.16-LICENSE.txt
+memchr	2.7.6	Unlicense OR MIT	memchr-2.7.6-COPYING, memchr-2.7.6-LICENSE-MIT, memchr-2.7.6-UNLICENSE
+no_std_io2	0.9.4	Apache-2.0 OR MIT	no_std_io2-0.9.4-LICENSE-APACHE, no_std_io2-0.9.4-LICENSE-MIT
+proc-macro2	1.0.104	MIT OR Apache-2.0	proc-macro2-1.0.104-LICENSE-APACHE, proc-macro2-1.0.104-LICENSE-MIT
+quote	1.0.42	MIT OR Apache-2.0	quote-1.0.42-LICENSE-APACHE, quote-1.0.42-LICENSE-MIT
+regex	1.12.4	MIT OR Apache-2.0	regex-1.12.4-LICENSE-APACHE, regex-1.12.4-LICENSE-MIT
+regex-automata	0.4.13	MIT OR Apache-2.0	regex-automata-0.4.13-LICENSE-APACHE, regex-automata-0.4.13-LICENSE-MIT
+regex-syntax	0.8.11	MIT OR Apache-2.0	regex-syntax-0.8.11-LICENSE-APACHE, regex-syntax-0.8.11-LICENSE-MIT
+syn	2.0.112	MIT OR Apache-2.0	syn-2.0.112-LICENSE-APACHE, syn-2.0.112-LICENSE-MIT
+thiserror	2.0.18	MIT OR Apache-2.0	thiserror-2.0.18-LICENSE-APACHE, thiserror-2.0.18-LICENSE-MIT
+thiserror-impl	2.0.18	MIT OR Apache-2.0	thiserror-impl-2.0.18-LICENSE-APACHE, thiserror-impl-2.0.18-LICENSE-MIT
+unicode-ident	1.0.22	(MIT OR Apache-2.0) AND Unicode-3.0	unicode-ident-1.0.22-LICENSE-APACHE, unicode-ident-1.0.22-LICENSE-MIT, unicode-ident-1.0.22-LICENSE-UNICODE

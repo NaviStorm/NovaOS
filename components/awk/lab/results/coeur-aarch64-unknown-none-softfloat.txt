@@ -1,0 +1,4 @@
+   Compiling nova-awk v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/awk-natif-0240/components/awk)
+    Finished `release` profile [optimized] target(s) in 2.08s
+warning: the following packages contain code that will be rejected by a future version of Rust: memchr v2.7.6
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`

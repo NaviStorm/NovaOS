@@ -1,0 +1,5055 @@
+{
+ "executables": {
+  "/opt/homebrew/Cellar/gawk/5.4.1/bin/gawk": "0ccfca873093cc01c380dd05106383ef474031b24ae6807027cf4d31a676d9a5",
+  "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/awk-natif-0240/components/awk/artifacts/darwin-arm64/awk": "574e46d9198abc886169e964a4bb2666a1cbcb413be985a324d32012395fcbde"
+ },
+ "cas": [
+  {
+   "option": "f file prog",
+   "forme": [
+    "-fprog"
+   ],
+   "args": [
+    "-fprog",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "f file prog",
+   "forme": [
+    "--file=prog"
+   ],
+   "args": [
+    "--file=prog",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "f file prog",
+   "forme": [
+    "-f",
+    "prog"
+   ],
+   "args": [
+    "-f",
+    "prog",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "f file prog",
+   "forme": [
+    "--file",
+    "prog"
+   ],
+   "args": [
+    "--file",
+    "prog",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "F field-separator :",
+   "forme": [
+    "-F:"
+   ],
+   "args": [
+    "-F:",
+    "{print $2}",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
+     "prefix": "620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
+     "prefix": "620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "F field-separator :",
+   "forme": [
+    "--field-separator=:"
+   ],
+   "args": [
+    "--field-separator=:",
+    "{print $2}",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
+     "prefix": "620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
+     "prefix": "620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "F field-separator :",
+   "forme": [
+    "-F",
+    ":"
+   ],
+   "args": [
+    "-F",
+    ":",
+    "{print $2}",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
+     "prefix": "620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
+     "prefix": "620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "F field-separator :",
+   "forme": [
+    "--field-separator",
+    ":"
+   ],
+   "args": [
+    "--field-separator",
+    ":",
+    "{print $2}",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
+     "prefix": "620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
+     "prefix": "620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "v assign x=2",
+   "forme": [
+    "-vx=2"
+   ],
+   "args": [
+    "-vx=2",
+    "BEGIN{print x}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "v assign x=2",
+   "forme": [
+    "--assign=x=2"
+   ],
+   "args": [
+    "--assign=x=2",
+    "BEGIN{print x}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "v assign x=2",
+   "forme": [
+    "-v",
+    "x=2"
+   ],
+   "args": [
+    "-v",
+    "x=2",
+    "BEGIN{print x}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "v assign x=2",
+   "forme": [
+    "--assign",
+    "x=2"
+   ],
+   "args": [
+    "--assign",
+    "x=2",
+    "BEGIN{print x}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "b characters-as-bytes",
+   "forme": [
+    "-b"
+   ],
+   "args": [
+    "-b",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "b characters-as-bytes",
+   "forme": [
+    "--characters-as-bytes"
+   ],
+   "args": [
+    "--characters-as-bytes",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "c traditional",
+   "forme": [
+    "-c"
+   ],
+   "args": [
+    "-c",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "0d504cedecf48343031375684c3ddeb89c0eb12d25c4c4b31e67218a09e6c329",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d630a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "c traditional",
+   "forme": [
+    "--traditional"
+   ],
+   "args": [
+    "--traditional",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 38,
+     "sha256": "2b7b211a160fe989c29b5e5766134811318b361ca35f3c93d06d1e3cabd9a58d",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d747261646974696f6e616c0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "C copyright",
+   "forme": [
+    "-C"
+   ],
+   "args": [
+    "-C",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 666,
+     "sha256": "57d9f758ef8d93e38caa2666c341059d34a0e114ff86e671c2f39e3df6257722",
+     "prefix": "436f707972696768742028432920313938392c20313939312d32303236204672656520536f66747761726520466f756e646174696f6e2e0a0a546869732070726f6772616d206973206672656520736f6674776172653b20796f752063616e2072656469737472696275746520697420616e642f6f72206d6f646966790a697420756e64657220746865207465726d73206f662074686520474e552047656e65"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 1072,
+     "sha256": "dc51ca6634394df53bd15a4cd589d13cc2fd5b6b9ed3dfe2b7a44cfeec2977bd",
+     "prefix": "4d4954204c6963656e73650a0a436f70797269676874202863292032303236204a6f7365706820522e205175696e6e0a0a5065726d697373696f6e20697320686572656279206772616e7465642c2066726565206f66206368617267652c20746f20616e7920706572736f6e206f627461696e696e67206120636f70790a6f66207468697320736f66747761726520616e64206173736f63696174656420646f"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stdout"
+   ]
+  },
+  {
+   "option": "C copyright",
+   "forme": [
+    "--copyright"
+   ],
+   "args": [
+    "--copyright",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 666,
+     "sha256": "57d9f758ef8d93e38caa2666c341059d34a0e114ff86e671c2f39e3df6257722",
+     "prefix": "436f707972696768742028432920313938392c20313939312d32303236204672656520536f66747761726520466f756e646174696f6e2e0a0a546869732070726f6772616d206973206672656520736f6674776172653b20796f752063616e2072656469737472696275746520697420616e642f6f72206d6f646966790a697420756e64657220746865207465726d73206f662074686520474e552047656e65"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 1072,
+     "sha256": "dc51ca6634394df53bd15a4cd589d13cc2fd5b6b9ed3dfe2b7a44cfeec2977bd",
+     "prefix": "4d4954204c6963656e73650a0a436f70797269676874202863292032303236204a6f7365706820522e205175696e6e0a0a5065726d697373696f6e20697320686572656279206772616e7465642c2066726565206f66206368617267652c20746f20616e7920706572736f6e206f627461696e696e67206120636f70790a6f66207468697320736f66747761726520616e64206173736f63696174656420646f"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stdout"
+   ]
+  },
+  {
+   "option": "d dump-variables ?dump",
+   "forme": [
+    "-ddump"
+   ],
+   "args": [
+    "-ddump",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "dump": "d868e6997264c4b2f85a5c85e3b1bfc0e1a2a6c64e23d95e8f261fefa012e794",
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 36,
+     "sha256": "7e131c3ab835e20d4d017166808de7922e03afa728f1b38e3346cd2d1d24573a",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d6464756d700a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "d dump-variables ?dump",
+   "forme": [
+    "--dump-variables=dump"
+   ],
+   "args": [
+    "--dump-variables=dump",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "dump": "d868e6997264c4b2f85a5c85e3b1bfc0e1a2a6c64e23d95e8f261fefa012e794",
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 51,
+     "sha256": "16b3e3ff676b9783aba4ab78ca936ce8685ac879855b251e033be77077796c63",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d2d64756d702d7661726961626c65733d64756d700a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "d dump-variables ?dump",
+   "forme": [
+    "-d"
+   ],
+   "args": [
+    "-d",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "awkvars.out": "d868e6997264c4b2f85a5c85e3b1bfc0e1a2a6c64e23d95e8f261fefa012e794",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "4ea5579567b659cc0e2856abd5ebf758deb6fe22206030dd3f9380f8942a259e",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d640a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "d dump-variables ?dump",
+   "forme": [
+    "--dump-variables"
+   ],
+   "args": [
+    "--dump-variables",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "awkvars.out": "d868e6997264c4b2f85a5c85e3b1bfc0e1a2a6c64e23d95e8f261fefa012e794",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 41,
+     "sha256": "23131e3a717526507e2ae6e1ac72d64ba5a328d3d0147f386a5ab6116aab8948",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d64756d702d7661726961626c65730a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "D debug ?commands",
+   "forme": [
+    "-Dcommands"
+   ],
+   "args": [
+    "-Dcommands",
+    "-f",
+    "prog"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 40,
+     "sha256": "07cf1237bf30fa3623c8aec94bc9d63c767e3c4bf8cfacf9e935e903196ac04f",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d44636f6d6d616e64730a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "D debug ?commands",
+   "forme": [
+    "--debug=commands"
+   ],
+   "args": [
+    "--debug=commands",
+    "-f",
+    "prog"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 46,
+     "sha256": "c702cf59320a99b2089d3e96d27ee731b58eada083919a22286b4d922654d247",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d2d64656275673d636f6d6d616e64730a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "D debug ?commands",
+   "forme": [
+    "-D"
+   ],
+   "args": [
+    "-D",
+    "-f",
+    "prog"
+   ],
+   "gawk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "f922253f55f7040e16b76a26bd799bf2cc0e436afbb36b2d03ec6415737ee3e5",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d440a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "option": "D debug ?commands",
+   "forme": [
+    "--debug"
+   ],
+   "args": [
+    "--debug",
+    "-f",
+    "prog"
+   ],
+   "gawk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 32,
+     "sha256": "7d62394228eaff967c0529bc6a160de83f3246488abed87df66d57b63ff3a4b3",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d64656275670a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "option": "e source BEGIN{print(7)}",
+   "forme": [
+    "-eBEGIN{print(7)}"
+   ],
+   "args": [
+    "-eBEGIN{print(7)}",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "e source BEGIN{print(7)}",
+   "forme": [
+    "--source=BEGIN{print(7)}"
+   ],
+   "args": [
+    "--source=BEGIN{print(7)}",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "e source BEGIN{print(7)}",
+   "forme": [
+    "-e",
+    "BEGIN{print(7)}"
+   ],
+   "args": [
+    "-e",
+    "BEGIN{print(7)}",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "e source BEGIN{print(7)}",
+   "forme": [
+    "--source",
+    "BEGIN{print(7)}"
+   ],
+   "args": [
+    "--source",
+    "BEGIN{print(7)}",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "E exec prog",
+   "forme": [
+    "-Eprog"
+   ],
+   "args": [
+    "-Eprog",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "E exec prog",
+   "forme": [
+    "--exec=prog"
+   ],
+   "args": [
+    "--exec=prog",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "E exec prog",
+   "forme": [
+    "-E",
+    "prog"
+   ],
+   "args": [
+    "-E",
+    "prog",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "E exec prog",
+   "forme": [
+    "--exec",
+    "prog"
+   ],
+   "args": [
+    "--exec",
+    "prog",
+    "in"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "g gen-pot",
+   "forme": [
+    "-g"
+   ],
+   "args": [
+    "-g",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "c5f1a549374704c5f9dd4c8be16886195e7037e12c2948a3c26f212be488429b",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d670a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "g gen-pot",
+   "forme": [
+    "--gen-pot"
+   ],
+   "args": [
+    "--gen-pot",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 34,
+     "sha256": "11eb5caed7fa9b4212ef0cc848b550d86f042e8e9a654dc1c2c52ccec506940b",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d67656e2d706f740a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "h help",
+   "forme": [
+    "-h"
+   ],
+   "args": [
+    "-h",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 593,
+     "sha256": "9f6e57ac844445cfbe65b202659253193212de57942bc650dd5213371df3f50c",
+     "prefix": "55736167653a2061776b205b6f7074696f6e735d205b2d2d5d20277061747465726e207b20616374696f6e207d27205b66696c65202e2e2e5d0a2020202020202061776b205b6f7074696f6e735d202d662070726f6772616d205b66696c65202e2e2e5d0a2d462c202d2d6669656c642d736570617261746f7220534550202020205365742046530a2d762c202d2d61737369676e204e414d453d56414c5545"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stdout"
+   ]
+  },
+  {
+   "option": "h help",
+   "forme": [
+    "--help"
+   ],
+   "args": [
+    "--help",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 593,
+     "sha256": "9f6e57ac844445cfbe65b202659253193212de57942bc650dd5213371df3f50c",
+     "prefix": "55736167653a2061776b205b6f7074696f6e735d205b2d2d5d20277061747465726e207b20616374696f6e207d27205b66696c65202e2e2e5d0a2020202020202061776b205b6f7074696f6e735d202d662070726f6772616d205b66696c65202e2e2e5d0a2d462c202d2d6669656c642d736570617261746f7220534550202020205365742046530a2d762c202d2d61737369676e204e414d453d56414c5545"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stdout"
+   ]
+  },
+  {
+   "option": "i include inc",
+   "forme": [
+    "-iinc"
+   ],
+   "args": [
+    "-iinc",
+    "BEGIN{print inc()}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "i include inc",
+   "forme": [
+    "--include=inc"
+   ],
+   "args": [
+    "--include=inc",
+    "BEGIN{print inc()}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "i include inc",
+   "forme": [
+    "-i",
+    "inc"
+   ],
+   "args": [
+    "-i",
+    "inc",
+    "BEGIN{print inc()}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "i include inc",
+   "forme": [
+    "--include",
+    "inc"
+   ],
+   "args": [
+    "--include",
+    "inc",
+    "BEGIN{print inc()}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "I trace",
+   "forme": [
+    "-I"
+   ],
+   "args": [
+    "-I",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 68,
+     "sha256": "70daf646f4f5979c3293db7c80c4f24f812f8d1bebefea7c4c7010010a71afd8",
+     "prefix": "2b204f705f72756c650a2b204f705f707573685f690a2b204f705f4b5f7072696e740a2b204f705f6e6f5f6f700a2b204f705f6174657869740a2b204f705f73746f700a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "f9336b8e0cb9bb1c7106b56936ed982c90bac11c60a3c6a3a9765efaa4ad7a3c",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d490a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "I trace",
+   "forme": [
+    "--trace"
+   ],
+   "args": [
+    "--trace",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 68,
+     "sha256": "70daf646f4f5979c3293db7c80c4f24f812f8d1bebefea7c4c7010010a71afd8",
+     "prefix": "2b204f705f72756c650a2b204f705f707573685f690a2b204f705f4b5f7072696e740a2b204f705f6e6f5f6f700a2b204f705f6174657869740a2b204f705f73746f700a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 32,
+     "sha256": "9a9f2b89925125be3c51f4b6e05c8c1b9aac51cb6954da7d531cce682acc7bba",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d74726163650a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "k csv",
+   "forme": [
+    "-k"
+   ],
+   "args": [
+    "-k",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "78526b561562bec41bacaa184e3ca8dac30326a2e7d0db0277b546870f00e595",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d6b0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "k csv",
+   "forme": [
+    "--csv"
+   ],
+   "args": [
+    "--csv",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 30,
+     "sha256": "0b5c9bdbd541865d2ed0eeb3a45634d726ae23131322e59d718c831579eec840",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6373760a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "l load module-inexistant-arc027",
+   "forme": [
+    "-lmodule-inexistant-arc027"
+   ],
+   "args": [
+    "-lmodule-inexistant-arc027",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 106,
+     "sha256": "dc8ce7b0d88ee71f34c5ec6994b70160d8ff05c54e5ddb0daf301646e7c51190",
+     "prefix": "6761776b3a20666174616c3a2063616e6e6f74206f70656e20736861726564206c69627261727920606d6f64756c652d696e6578697374616e742d6172633032372720666f722072656164696e673a204e6f20737563682066696c65206f72206469726563746f72790a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 56,
+     "sha256": "bb43868087cc05f96cc7a546a9f6ff39c9e31692efc6bd300ee2b09ecee8f326",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d6c6d6f64756c652d696e6578697374616e742d6172633032370a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "option": "l load module-inexistant-arc027",
+   "forme": [
+    "--load=module-inexistant-arc027"
+   ],
+   "args": [
+    "--load=module-inexistant-arc027",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 106,
+     "sha256": "dc8ce7b0d88ee71f34c5ec6994b70160d8ff05c54e5ddb0daf301646e7c51190",
+     "prefix": "6761776b3a20666174616c3a2063616e6e6f74206f70656e20736861726564206c69627261727920606d6f64756c652d696e6578697374616e742d6172633032372720666f722072656164696e673a204e6f20737563682066696c65206f72206469726563746f72790a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 61,
+     "sha256": "c828b19ebf07f6d7014c8b4b45d51430b8be6cc98050214113fa41d1d530fbaf",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d2d6c6f61643d6d6f64756c652d696e6578697374616e742d6172633032370a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "option": "l load module-inexistant-arc027",
+   "forme": [
+    "-l",
+    "module-inexistant-arc027"
+   ],
+   "args": [
+    "-l",
+    "module-inexistant-arc027",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 106,
+     "sha256": "dc8ce7b0d88ee71f34c5ec6994b70160d8ff05c54e5ddb0daf301646e7c51190",
+     "prefix": "6761776b3a20666174616c3a2063616e6e6f74206f70656e20736861726564206c69627261727920606d6f64756c652d696e6578697374616e742d6172633032372720666f722072656164696e673a204e6f20737563682066696c65206f72206469726563746f72790a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "ef41241c49b166012fed3e3478e45c3451badbdc681831aa7dfb27b5200ea095",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d6c0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "option": "l load module-inexistant-arc027",
+   "forme": [
+    "--load",
+    "module-inexistant-arc027"
+   ],
+   "args": [
+    "--load",
+    "module-inexistant-arc027",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 106,
+     "sha256": "dc8ce7b0d88ee71f34c5ec6994b70160d8ff05c54e5ddb0daf301646e7c51190",
+     "prefix": "6761776b3a20666174616c3a2063616e6e6f74206f70656e20736861726564206c69627261727920606d6f64756c652d696e6578697374616e742d6172633032372720666f722072656164696e673a204e6f20737563682066696c65206f72206469726563746f72790a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 31,
+     "sha256": "829cb9ab5deb69156f43a2e9a8427b3da485520f3789667d44fd1413e1b2e87b",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6c6f61640a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "option": "L lint ?invalid",
+   "forme": [
+    "-Linvalid"
+   ],
+   "args": [
+    "-Linvalid",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 39,
+     "sha256": "57b502e6984be07e067149dc844b8d5a924e6fcab639ae9baf8f4039d798bc83",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d4c696e76616c69640a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "L lint ?invalid",
+   "forme": [
+    "--lint=invalid"
+   ],
+   "args": [
+    "--lint=invalid",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 44,
+     "sha256": "e3b893eb49df47b66965fa6ca8339c6fcf3f2d02e3064b064b656cc075e4309a",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d2d6c696e743d696e76616c69640a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "L lint ?invalid",
+   "forme": [
+    "-L"
+   ],
+   "args": [
+    "-L",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "125babaa21bb4aeeffddeb8d5e9a8a62d576fab0f0c3448f751556f4c9cbf7a7",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d4c0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "L lint ?invalid",
+   "forme": [
+    "--lint"
+   ],
+   "args": [
+    "--lint",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 31,
+     "sha256": "97d931f7707b302fdbcf090a9b8abcc436b80638a72c578ea33c6fbd27ec25ab",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6c696e740a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "M bignum",
+   "forme": [
+    "-M"
+   ],
+   "args": [
+    "-M",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "be0521b11098100fb0a17aa2b194ce51ed9d5fdd1debef1880382e526d58e963",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d4d0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "M bignum",
+   "forme": [
+    "--bignum"
+   ],
+   "args": [
+    "--bignum",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 33,
+     "sha256": "a8ca1995652a7aac13bcf21e261a2c34b920f613ad3e164639d121f5ee57a3ec",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6269676e756d0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "N use-lc-numeric",
+   "forme": [
+    "-N"
+   ],
+   "args": [
+    "-N",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "7bf0ca9e5a1fc1673c3d65187ce5dc51d0b05bdf4d80abc6f1c35585784cba45",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d4e0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "N use-lc-numeric",
+   "forme": [
+    "--use-lc-numeric"
+   ],
+   "args": [
+    "--use-lc-numeric",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 41,
+     "sha256": "10a903fcd2d9d7bf8aa9a20ecd82f4219b38b26ae44ed91d51371bb467c51256",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d7573652d6c632d6e756d657269630a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "n non-decimal-data",
+   "forme": [
+    "-n"
+   ],
+   "args": [
+    "-n",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "60c6894f465ffaa8f56bc2284e895cf1858ef5b6398609d931d79a7fcbc2ce4b",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d6e0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "n non-decimal-data",
+   "forme": [
+    "--non-decimal-data"
+   ],
+   "args": [
+    "--non-decimal-data",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 43,
+     "sha256": "79e03d1cb1dd9ec32d09c3f2c60f7e964b9c01e8cdb070f370a67e7ba8ad081c",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6e6f6e2d646563696d616c2d646174610a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "o pretty-print ?pretty",
+   "forme": [
+    "-opretty"
+   ],
+   "args": [
+    "-opretty",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f",
+     "pretty": "b3e483419e8c7ea7340e25d433c7765cdb71c75156ba1b4ea13455798556611c"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 38,
+     "sha256": "c7181213681c0c1f2ced7c323c4b15fd0454bcb080432eaec57b19af4f2dcd61",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d6f7072657474790a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "o pretty-print ?pretty",
+   "forme": [
+    "--pretty-print=pretty"
+   ],
+   "args": [
+    "--pretty-print=pretty",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f",
+     "pretty": "b3e483419e8c7ea7340e25d433c7765cdb71c75156ba1b4ea13455798556611c"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 51,
+     "sha256": "86c6cada732a651fe3eca2c0d7c643754ac8b1e98e90ebdd5322b5b9540ad3b8",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d2d7072657474792d7072696e743d7072657474790a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "o pretty-print ?pretty",
+   "forme": [
+    "-o"
+   ],
+   "args": [
+    "-o",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "awkprof.out": "b3e483419e8c7ea7340e25d433c7765cdb71c75156ba1b4ea13455798556611c",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "1d3e2c1f90edc88d57244cffea7ba88594f8a8aaa155b1f58a98c2392b13f583",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d6f0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "o pretty-print ?pretty",
+   "forme": [
+    "--pretty-print"
+   ],
+   "args": [
+    "--pretty-print",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "awkprof.out": "b3e483419e8c7ea7340e25d433c7765cdb71c75156ba1b4ea13455798556611c",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 39,
+     "sha256": "91e51a9880e376f7bc1aadf84943db46f2b500fa7c2b2642afbf43c77d1f3eb1",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d7072657474792d7072696e740a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "O optimize",
+   "forme": [
+    "-O"
+   ],
+   "args": [
+    "-O",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "7123f065f34dea57fd69c2054f2c73000ad47dc106a981045396ce4dec3a5eaa",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d4f0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "O optimize",
+   "forme": [
+    "--optimize"
+   ],
+   "args": [
+    "--optimize",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 35,
+     "sha256": "2a460f30c357b740ac81490d3bcd32604bf3e236ab8c7002abd0f6e69b0cf074",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6f7074696d697a650a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "p profile ?profile",
+   "forme": [
+    "-pprofile"
+   ],
+   "args": [
+    "-pprofile",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "profile": "5b1b26371df985f1092f4aacacfe9774a663b915053428da1acd0602735e5c74",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 39,
+     "sha256": "94b9701386c976a3b25634070c154e6e2ca84ef859c061c926924b9a3b4fc4bf",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d7070726f66696c650a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "p profile ?profile",
+   "forme": [
+    "--profile=profile"
+   ],
+   "args": [
+    "--profile=profile",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "profile": "5b1b26371df985f1092f4aacacfe9774a663b915053428da1acd0602735e5c74",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 47,
+     "sha256": "2cb6fc8bfe84063afd94747537d8b911ac631a044772c45c1266c8c507d23b7a",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d2d70726f66696c653d70726f66696c650a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "p profile ?profile",
+   "forme": [
+    "-p"
+   ],
+   "args": [
+    "-p",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "awkprof.out": "5b1b26371df985f1092f4aacacfe9774a663b915053428da1acd0602735e5c74",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "52a828797b3b0743ebbce3384eb9db275739d7912c10efdaaa64f80618193b68",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d700a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "p profile ?profile",
+   "forme": [
+    "--profile"
+   ],
+   "args": [
+    "--profile",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "awkprof.out": "5b1b26371df985f1092f4aacacfe9774a663b915053428da1acd0602735e5c74",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 34,
+     "sha256": "3a89a29e088c4e52a05bd4ee35ec19dec605f05c4464e49a58b77b90c66fe8e4",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d70726f66696c650a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr",
+    "files"
+   ]
+  },
+  {
+   "option": "P posix",
+   "forme": [
+    "-P"
+   ],
+   "args": [
+    "-P",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "98ef44751b8eb819dc2ab102ba6ee18d75e855614b15ecac0b16d4519f8070a3",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d500a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "P posix",
+   "forme": [
+    "--posix"
+   ],
+   "args": [
+    "--posix",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 32,
+     "sha256": "cdd63eb9583e2f7d133f573241cb75b3590fdce3c44b972d4b0a339f20068a0e",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d706f7369780a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "r re-interval",
+   "forme": [
+    "-r"
+   ],
+   "args": [
+    "-r",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "e2c347642295c690f89afb07daa48b48509b94fda37a708ffb883c95093417cf",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d720a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "r re-interval",
+   "forme": [
+    "--re-interval"
+   ],
+   "args": [
+    "--re-interval",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 38,
+     "sha256": "2b15f23f3dd079f9cab13ad44e309394db61da2210fc64f5f3b6d11a92d35684",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d72652d696e74657276616c0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "s no-optimize",
+   "forme": [
+    "-s"
+   ],
+   "args": [
+    "-s",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "b946cd875dcca7fe53578c253d113d6ebb818425da5fa81e965f42af54b8e62a",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d730a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "s no-optimize",
+   "forme": [
+    "--no-optimize"
+   ],
+   "args": [
+    "--no-optimize",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 38,
+     "sha256": "2af96dfe04010216eb99a872e03fa1e6def5a2f72c388bbe1167d928f0af8ed4",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6e6f2d6f7074696d697a650a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "S sandbox",
+   "forme": [
+    "-S"
+   ],
+   "args": [
+    "-S",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "S sandbox",
+   "forme": [
+    "--sandbox"
+   ],
+   "args": [
+    "--sandbox",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "t lint-old",
+   "forme": [
+    "-t"
+   ],
+   "args": [
+    "-t",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "b765b8c01c15b1a22734de71301dd84cd9c89bdeeb5929d7870158dbcbdfe025",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d740a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "t lint-old",
+   "forme": [
+    "--lint-old"
+   ],
+   "args": [
+    "--lint-old",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 35,
+     "sha256": "b43c29f1c3dfe0c199c4f93dac0d36332ff49876b9974bf97c8b317e2bd2ff07",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6c696e742d6f6c640a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "V version",
+   "forme": [
+    "-V"
+   ],
+   "args": [
+    "-V",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 736,
+     "sha256": "23e9e85a12a47502bdfe87b507330eb45ed6ffa65b5d7a90e9ee0ced1c2a0bdd",
+     "prefix": "474e552041776b20352e342e312c2041504920342e312c20504d412041766f6e20382d67312c2028474e55204d50465220342e322e322c20474e55204d5020362e332e30290a436f707972696768742028432920313938392c20313939312d32303236204672656520536f66747761726520466f756e646174696f6e2e0a0a546869732070726f6772616d206973206672656520736f6674776172653b20796f"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 44,
+     "sha256": "9499a946d75071a2e401f0eb260eb9cd931c7658fcd6d88fb549e08917e244b9",
+     "prefix": "4e6f76614f532061776b20302e312e30202844617277696e20646576656c6f706d656e74206275696c64290a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stdout"
+   ]
+  },
+  {
+   "option": "V version",
+   "forme": [
+    "--version"
+   ],
+   "args": [
+    "--version",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 736,
+     "sha256": "23e9e85a12a47502bdfe87b507330eb45ed6ffa65b5d7a90e9ee0ced1c2a0bdd",
+     "prefix": "474e552041776b20352e342e312c2041504920342e312c20504d412041766f6e20382d67312c2028474e55204d50465220342e322e322c20474e55204d5020362e332e30290a436f707972696768742028432920313938392c20313939312d32303236204672656520536f66747761726520466f756e646174696f6e2e0a0a546869732070726f6772616d206973206672656520736f6674776172653b20796f"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 44,
+     "sha256": "9499a946d75071a2e401f0eb260eb9cd931c7658fcd6d88fb549e08917e244b9",
+     "prefix": "4e6f76614f532061776b20302e312e30202844617277696e20646576656c6f706d656e74206275696c64290a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stdout"
+   ]
+  },
+  {
+   "option": "T persist ?memory",
+   "forme": [
+    "-Tmemory"
+   ],
+   "args": [
+    "-Tmemory",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 38,
+     "sha256": "9e22ea649248a7b46c5cbf69e40ff69b1ed7ffa1e80751aa79e87f88ef668701",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d546d656d6f72790a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "T persist ?memory",
+   "forme": [
+    "--persist=memory"
+   ],
+   "args": [
+    "--persist=memory",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 75,
+     "sha256": "ac0179099c98727c7278175a5acd3aab66be57fca6aa0c9704843f0ee4a592be",
+     "prefix": "6761776b3a20666174616c3a2055736520604741574b5f504552534953545f46494c453d6d656d6f7279206761776b202e2e2e2720696e7374656164206f66202d2d706572736973742e0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 46,
+     "sha256": "9ddaa1552d2d5a4c07a89575c5a0fa2ad219045883894922740e48f36897838f",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d2d706572736973743d6d656d6f72790a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "option": "T persist ?memory",
+   "forme": [
+    "-T"
+   ],
+   "args": [
+    "-T",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "852d1bed1ec875658304130a9517713ffa2a1143a8514f432562d3d261d042d7",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d540a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "T persist ?memory",
+   "forme": [
+    "--persist"
+   ],
+   "args": [
+    "--persist",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 79,
+     "sha256": "0a5d6287c22587ecf7530698bfcd6ba7f0ed999f532935f715f430d6d4a55e14",
+     "prefix": "6761776b3a20666174616c3a2055736520604741574b5f504552534953545f46494c453d2f736f6d652f66696c65206761776b202e2e2e2720696e7374656164206f66202d2d706572736973742e0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 34,
+     "sha256": "5824212506c0748565b6bf006156b790c3ca51c04a7110a9d1e7b52c3e801673",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d706572736973740a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "option": "Y parsedebug",
+   "forme": [
+    "-Y"
+   ],
+   "args": [
+    "-Y",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "ee00b4ce105871c9504cfa4250b555f667b081580921ab0eb95eeb0863baf983",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d590a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "Y parsedebug",
+   "forme": [
+    "--parsedebug"
+   ],
+   "args": [
+    "--parsedebug",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 37,
+     "sha256": "532d9b3105fa5f3758425415c600a2c57509ef76602c731e6134fb769ab92849",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d706172736564656275670a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "Z locale C",
+   "forme": [
+    "-ZC"
+   ],
+   "args": [
+    "-ZC",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 33,
+     "sha256": "5075b22e78a36caeef01bd27e5a8c95f5aa986024ec2fba63f87dfbf0d9c5bd2",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d5a430a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "Z locale C",
+   "forme": [
+    "--locale=C"
+   ],
+   "args": [
+    "--locale=C",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 40,
+     "sha256": "c9c4faec54d9c5e3e370719ed6eef8fe0f0d7f85bba602d71a4275bf8865daa4",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d2d6c6f63616c653d430a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "Z locale C",
+   "forme": [
+    "-Z",
+    "C"
+   ],
+   "args": [
+    "-Z",
+    "C",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "7c582fe1cf2f4a5957f80efa71b93bc63bfa65600ab5d880310095859a3feaaf",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d5a0a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "Z locale C",
+   "forme": [
+    "--locale",
+    "C"
+   ],
+   "args": [
+    "--locale",
+    "C",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 33,
+     "sha256": "378d8131a0978125762e85ddb9ae2d88e225fd42c54b694959f4d695c2d9502e",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d6c6f63616c650a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stderr"
+   ]
+  },
+  {
+   "option": "syntaxe",
+   "forme": [
+    "--"
+   ],
+   "args": [
+    "--",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "option": "syntaxe",
+   "forme": [
+    "-G"
+   ],
+   "args": [
+    "-G",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "ff6ef1878aa30adc86436d3727a34a155ab11f668712f63d47b264bad1825a4f",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d470a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "syntaxe",
+   "forme": [
+    "-W",
+    "version"
+   ],
+   "args": [
+    "-W",
+    "version",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 736,
+     "sha256": "23e9e85a12a47502bdfe87b507330eb45ed6ffa65b5d7a90e9ee0ced1c2a0bdd",
+     "prefix": "474e552041776b20352e342e312c2041504920342e312c20504d412041766f6e20382d67312c2028474e55204d50465220342e322e322c20474e55204d5020362e332e30290a436f707972696768742028432920313938392c20313939312d32303236204672656520536f66747761726520466f756e646174696f6e2e0a0a546869732070726f6772616d206973206672656520736f6674776172653b20796f"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "49ca6634a8ec6f4681f19189c083e9682359d303a4dc307e839d97ce16c3f781",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d570a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "syntaxe",
+   "forme": [
+    "-bh"
+   ],
+   "args": [
+    "-bh",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 1778,
+     "sha256": "0d0018942ad24641ba11ab0d3c28a637efc341327095cb65074e96ecaa0ea70e",
+     "prefix": "55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d202d662070726f6766696c65205b2d2d5d2066696c65202e2e2e0a55736167653a206761776b205b504f534958206f7220474e55207374796c65206f7074696f6e735d205b2d2d5d202770726f6772616d272066696c65202e2e2e0a504f534958206f7074696f6e733a0909474e55206c6f6e67206f7074"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 33,
+     "sha256": "5028c05c4095567ea975266b35aeec7584767147b0e1b86c4f8d1871ebf26fda",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e20666f726d202d62680a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  },
+  {
+   "option": "syntaxe",
+   "forme": [
+    "--vers"
+   ],
+   "args": [
+    "--vers",
+    "BEGIN{print 7}"
+   ],
+   "gawk": {
+    "status": 0,
+    "stdout": {
+     "size": 736,
+     "sha256": "23e9e85a12a47502bdfe87b507330eb45ed6ffa65b5d7a90e9ee0ced1c2a0bdd",
+     "prefix": "474e552041776b20352e342e312c2041504920342e312c20504d412041766f6e20382d67312c2028474e55204d50465220342e322e322c20474e55204d5020362e332e30290a436f707972696768742028432920313938392c20313939312d32303236204672656520536f66747761726520466f756e646174696f6e2e0a0a546869732070726f6772616d206973206672656520736f6674776172653b20796f"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "awk": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 31,
+     "sha256": "114eed6c38fe8d49e9ceb543c0dd5675569ed6ad72ebb40478f9a166e3107437",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d2d766572730a"
+    },
+    "files": {
+     "in": "c467ccce5a16dc728ec6a5d89263821f0a9bd359d42e604105338262f3cc5725",
+     "prog": "23d0bbe65b00300ff5432b2e7d78fa566756966047b560c3c83db78461ea803d",
+     "inc.awk": "363d2afb2962025bcda77bf7f83c6d9b44c7f02aeb38bd51111b4dd5ea298b0a",
+     "commands": "1f003d83acd4f26af35646e4e96decddef3f0e54e28081e489154a1b13a6bf3f"
+    }
+   },
+   "differences": [
+    "status",
+    "stdout",
+    "stderr"
+   ]
+  }
+ ]
+}

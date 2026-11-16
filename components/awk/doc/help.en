@@ -1,0 +1,11 @@
+Usage: awk [options] [--] 'pattern { action }' [file ...]
+       awk [options] -f program [file ...]
+-F, --field-separator SEP    Set FS
+-v, --assign NAME=VALUE      Set a variable before BEGIN
+-e, --source PROGRAM         Add AWK source
+-f, --file FILE              Add source from a file
+-i, --include FILE          Include a source once (AWKPATH)
+-E, --exec FILE              Read program and end option processing
+-b, --characters-as-bytes    Process input bytes
+-S, --sandbox                Deny redirected input, output and external commands
+-h, --help   -V, --version   -C, --copyright

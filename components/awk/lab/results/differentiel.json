@@ -1,0 +1,7143 @@
+{
+ "seed": 27,
+ "binaries": {
+  "/opt/homebrew/Cellar/gawk/5.4.1/bin/gawk": "0ccfca873093cc01c380dd05106383ef474031b24ae6807027cf4d31a676d9a5",
+  "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/awk-natif-0240/components/awk/artifacts/darwin-arm64/awk": "574e46d9198abc886169e964a4bb2666a1cbcb413be985a324d32012395fcbde"
+ },
+ "cases": [
+  {
+   "name": "champ",
+   "args": [
+    "{print $1}",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 17,
+     "sha256": "e95e9bf120a98ef0f8b759119af84542de7bb8495fb7c3da2cf3c168ecacb953",
+     "prefix": "616c7068610a626574610a616c7068610a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 17,
+     "sha256": "e95e9bf120a98ef0f8b759119af84542de7bb8495fb7c3da2cf3c168ecacb953",
+     "prefix": "616c7068610a626574610a616c7068610a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "comptes",
+   "args": [
+    "-F:",
+    "{print $1}",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "b72cf6d7918130f75347ff0f8b6e9fde004ee6d7fc26af90a349707207f72750",
+     "prefix": "610a630a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "bd56340fa351acf2fc5a26e3ab06e6a64535d0f76c95cc8b03ade77c6b862adb"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "b72cf6d7918130f75347ff0f8b6e9fde004ee6d7fc26af90a349707207f72750",
+     "prefix": "610a630a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "bd56340fa351acf2fc5a26e3ab06e6a64535d0f76c95cc8b03ade77c6b862adb"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "addition",
+   "args": [
+    "BEGIN{print 2+3}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+     "prefix": "350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+     "prefix": "350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "somme",
+   "args": [
+    "{s+=$1} END{print s}",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "7de1555df0c2700329e815b93b32c571c3ea54dc967b89e81ab73b9972b72d1d",
+     "prefix": "340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "f168d89bcaae38a4eb2620076d5d149bbfca03f52e328f3d73551600d958f2c5"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "7de1555df0c2700329e815b93b32c571c3ea54dc967b89e81ab73b9972b72d1d",
+     "prefix": "340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "f168d89bcaae38a4eb2620076d5d149bbfca03f52e328f3d73551600d958f2c5"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "intervalle",
+   "args": [
+    "NR>=10 && NR<=20 {print}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "ece1e999515b861c3710328cb1313857863e3faf563d4d1db0d9410c235af4ed",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 66,
+     "sha256": "bec8c04eef432d58a8168ceb8385eea21f3f71f3abb5868cf65d4b37905c2f2a",
+     "prefix": "6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 66,
+     "sha256": "bec8c04eef432d58a8168ceb8385eea21f3f71f3abb5868cf65d4b37905c2f2a",
+     "prefix": "6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a6c69676e650a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "filtre",
+   "args": [
+    "/erreur/ {print NR,$0}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "baf67996386df57a965465be7843b8957f7be2b61bb43cac64ae4aae0ac660d2",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 16,
+     "sha256": "ef5e68ccdc945dc28beaa70dad2e38122d49ab48ceddc6a8c0fd5cafff9aa388",
+     "prefix": "322065727265757220616c657274650a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 16,
+     "sha256": "ef5e68ccdc945dc28beaa70dad2e38122d49ab48ceddc6a8c0fd5cafff9aa388",
+     "prefix": "322065727265757220616c657274650a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "tableau",
+   "args": [
+    "{a[$1]++} END{for(k in a) print k,a[k]}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "a137759217d1f2cbe418985976708e97991914964af65601c9f963b3deded118",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "48151f5780c6608c541851b3e18201235107578e69f2e3e56023fe1bf42ae479",
+     "prefix": "7820320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "48151f5780c6608c541851b3e18201235107578e69f2e3e56023fe1bf42ae479",
+     "prefix": "7820320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "stdin",
+   "args": [
+    "{print $1}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 17,
+     "sha256": "e95e9bf120a98ef0f8b759119af84542de7bb8495fb7c3da2cf3c168ecacb953",
+     "prefix": "616c7068610a626574610a616c7068610a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 17,
+     "sha256": "e95e9bf120a98ef0f8b759119af84542de7bb8495fb7c3da2cf3c168ecacb953",
+     "prefix": "616c7068610a626574610a616c7068610a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "vide",
+   "args": [
+    "END{print NR,NF}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "0ccdb5a77ba5bf7687f2565a8ed97dfb9c1af45503c496fb646312239fab5101",
+     "prefix": "3020300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "0ccdb5a77ba5bf7687f2565a8ed97dfb9c1af45503c496fb646312239fab5101",
+     "prefix": "3020300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "fin-sans-lf",
+   "args": [
+    "{print NR,length($0)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "b7ea1f3c2d566646713b53bd09d64591fe6d4c8b5341a5f27e4523b1bae289c8",
+     "prefix": "3120330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "b7ea1f3c2d566646713b53bd09d64591fe6d4c8b5341a5f27e4523b1bae289c8",
+     "prefix": "3120330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "longue",
+   "args": [
+    "{print length($0), substr($0,length($0),1)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "235d78ad64c46fc95590f17458e552b29aa2481725d6c5f1feb04e509e00dbb8",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 10,
+     "sha256": "6f0043b855d05eca0d72d1092453a4bf3fa998731b8324b70d827ad904295ccc",
+     "prefix": "31303438353737207a0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 10,
+     "sha256": "6f0043b855d05eca0d72d1092453a4bf3fa998731b8324b70d827ad904295ccc",
+     "prefix": "31303438353737207a0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "frontiere",
+   "args": [
+    "BEGIN{RS=\":\"} {print length($0)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "46f72992296ab5c17ce74fbfdde8de2c2e2f7b1dacb04b408dfa9701c08ac667",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 7,
+     "sha256": "b76ede33842045b0fb4883f9efb13d58fdd8cf2cd1794a3a40a2f5fc9b86d9c0",
+     "prefix": "383139320a310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 7,
+     "sha256": "b76ede33842045b0fb4883f9efb13d58fdd8cf2cd1794a3a40a2f5fc9b86d9c0",
+     "prefix": "383139320a310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "paragraphe",
+   "args": [
+    "BEGIN{RS=\"\"}{print \"[\" $0 \"]\"}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "6bebe31d674cf2276c08c4c74df40ccace999af402c4313305cddfb8194fa620",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 15,
+     "sha256": "aa60e1a3895a08792152149f72604f99676162ebeab5baa7e38a38e29401aea7",
+     "prefix": "5b6162630a20200a785d0a5b7a5d0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 15,
+     "sha256": "aa60e1a3895a08792152149f72604f99676162ebeab5baa7e38a38e29401aea7",
+     "prefix": "5b6162630a20200a785d0a5b7a5d0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "recursion",
+   "args": [
+    "function f(n){if(n==0)return 1;return n*f(n-1)} BEGIN{print f(6)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "140154083d726867f5e43282aeaf021f9300ec6287d4d2c874493ee655a766e7",
+     "prefix": "3732300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "140154083d726867f5e43282aeaf021f9300ec6287d4d2c874493ee655a766e7",
+     "prefix": "3732300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "plage",
+   "args": [
+    "/beta/,/alpha/"
+   ],
+   "locale": "C",
+   "stdin_sha256": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 15,
+     "sha256": "f6cc5f0b83b8576a83f4f0e5876b97a869a65dae4e46968e809961486f242dcf",
+     "prefix": "6265746120330a616c70686120310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 15,
+     "sha256": "f6cc5f0b83b8576a83f4f0e5876b97a869a65dae4e46968e809961486f242dcf",
+     "prefix": "6265746120330a616c70686120310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "env",
+   "args": [
+    "BEGIN{print ENVIRON[\"AWK_TEST\"],ARGV[1],ARGC} {print FILENAME, FNR,NR}",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 29,
+     "sha256": "700ff5d84a03d5fd09d85595dcb94ffe6e442b072bbca6cc00488574d8cc0ce1",
+     "prefix": "343220696e20320a696e203120310a696e203220320a696e203320330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 29,
+     "sha256": "700ff5d84a03d5fd09d85595dcb94ffe6e442b072bbca6cc00488574d8cc0ce1",
+     "prefix": "343220696e20320a696e203120310a696e203220320a696e203320330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "format",
+   "args": [
+    "BEGIN{OFS=\":\";ORS=\"!\";print sprintf(\"%.2f\",1.5),substr(\"abc\",2)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 8,
+     "sha256": "a24bca8ada04e9770f616f2a643790ba3b41f00abf41ae7f9087017508ced8c6",
+     "prefix": "312e35303a626321"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 8,
+     "sha256": "a24bca8ada04e9770f616f2a643790ba3b41f00abf41ae7f9087017508ced8c6",
+     "prefix": "312e35303a626321"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "phases",
+   "args": [
+    "BEGINFILE{print FILENAME} {print} ENDFILE{print FNR}",
+    "in",
+    "empty"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 36,
+     "sha256": "3c8e86a0faa9e14c4808d3b3a497539d3a4f172b39ca4a845606d9456b8585ae",
+     "prefix": "696e0a616c70686120320a6265746120330a616c70686120310a330a656d7074790a300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "empty": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 36,
+     "sha256": "3c8e86a0faa9e14c4808d3b3a497539d3a4f172b39ca4a845606d9456b8585ae",
+     "prefix": "696e0a616c70686120320a6265746120330a616c70686120310a330a656d7074790a300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "empty": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "largeurs",
+   "args": [
+    "BEGIN{FIELDWIDTHS=\"2 1\"}{print $1,$2}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "72be0aa10eb226762322b185b3dbceb6c21baec9e58d528c8a07b16f9e4c7e1d",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "33bf4a129f1aec6ff31a5069432df71e0d8da0aa261131878db21b8ca4195618",
+     "prefix": "616120620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "33bf4a129f1aec6ff31a5069432df71e0d8da0aa261131878db21b8ca4195618",
+     "prefix": "616120620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "fpat",
+   "args": [
+    "BEGIN{FPAT=\"[0-9]+\"}{print NF,$2}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "bbd2194205b697ef3a4b2a31c3dd2187925217b3dd93c5e23b69d12172d61ba9",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "fcfdd41f7bf9b7affb8c95463141118fcfa4041204033d545af0f0b9f933716a",
+     "prefix": "322033340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "fcfdd41f7bf9b7affb8c95463141118fcfa4041204033d545af0f0b9f933716a",
+     "prefix": "322033340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "patsplit",
+   "args": [
+    "BEGIN{print patsplit(\"a12b34\",a,/[0-9]+/),a[2]}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "fcfdd41f7bf9b7affb8c95463141118fcfa4041204033d545af0f0b9f933716a",
+     "prefix": "322033340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "fcfdd41f7bf9b7affb8c95463141118fcfa4041204033d545af0f0b9f933716a",
+     "prefix": "322033340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "sous-tableau",
+   "args": [
+    "BEGIN{a[1][2]=3; print a[1][2]}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+     "prefix": "330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+     "prefix": "330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "fixe-multi",
+   "args": [
+    "BEGIN{a[1,2]=3;print a[1,2]}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+     "prefix": "330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+     "prefix": "330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "regex-longue",
+   "args": [
+    "BEGIN{match(\"ab\",/a|ab/);print RSTART,RLENGTH}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "f251ddc12234e0da8d3b778bd0f7463fb477f16f47757f5617dc8b4ff4d4f14a",
+     "prefix": "3120320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "f251ddc12234e0da8d3b778bd0f7463fb477f16f47757f5617dc8b4ff4d4f14a",
+     "prefix": "3120320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "rs-regex",
+   "args": [
+    "BEGIN{RS=\":+\"}{print $0}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "78f0be89237d77f7a70e94e0ce7a43935e8931af91b392a1e1917a7c7a6c00a4",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+     "prefix": "610a620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+     "prefix": "610a620a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gensub",
+   "args": [
+    "BEGIN{print gensub(/a/,\"A\",\"g\",\"aba\")}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "f919ced641e116a3babfa8a9121b8deaf8b69079002a0671c882bf1b04174fb7",
+     "prefix": "4162410a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "f919ced641e116a3babfa8a9121b8deaf8b69079002a0671c882bf1b04174fb7",
+     "prefix": "4162410a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "ignorecase",
+   "args": [
+    "BEGIN{IGNORECASE=1}/abc/{print}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "8470d56547eea6236d7c81a644ce74670ca0bbda998e13c629ef6bb3f0d60b69",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "8470d56547eea6236d7c81a644ce74670ca0bbda998e13c629ef6bb3f0d60b69",
+     "prefix": "4142430a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "8470d56547eea6236d7c81a644ce74670ca0bbda998e13c629ef6bb3f0d60b69",
+     "prefix": "4142430a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "octets",
+   "args": [
+    "-b",
+    "{print length($0),$0}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "c412afa71666a0f30bfb9a622e8a3f22b73a9c73f660e3cf78469d6c5c462a42",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "3dbf19f4e4c5341a6517aef0c54e8ba29b214d56088783428d800b34733e94aa",
+     "prefix": "332000fffe0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "3dbf19f4e4c5341a6517aef0c54e8ba29b214d56088783428d800b34733e94aa",
+     "prefix": "332000fffe0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "crlf",
+   "args": [
+    "{print length($0)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "b35e09fa2ced9ebcad9d16336fb961146fe34bfbebc562679da85f8a314c9dca",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "boucles",
+   "args": [
+    "BEGIN{for(i=0;i<3;i++){if(i==1)continue; print i}; do{i--}while(i>0);print i}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "04ed82dae8b902d411accf765f4ded9af83a46b71ffb1fce5f02c611908e6bcd",
+     "prefix": "300a320a300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "04ed82dae8b902d411accf765f4ded9af83a46b71ffb1fce5f02c611908e6bcd",
+     "prefix": "300a320a300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "next",
+   "args": [
+    "{if(NR==1)next; print NR}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "fcb9cc30b0f3e4715d032f3a0ce158e4d6bea8c618bda0f5d1f167300a087b8a",
+     "prefix": "320a330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "fcb9cc30b0f3e4715d032f3a0ce158e4d6bea8c618bda0f5d1f167300a087b8a",
+     "prefix": "320a330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "nextfile",
+   "args": [
+    "{print FILENAME;nextfile}",
+    "in",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "2add124c8f765f6f4b70babc5c0e9be7a3f464ad041440c60a8b5a9053c20b50",
+     "prefix": "696e0a696e0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "2add124c8f765f6f4b70babc5c0e9be7a3f464ad041440c60a8b5a9053c20b50",
+     "prefix": "696e0a696e0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "exit-end",
+   "args": [
+    "BEGIN{exit 4} END{print \"fin\"}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 4,
+    "stdout": {
+     "size": 4,
+     "sha256": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+     "prefix": "66696e0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 4,
+    "stdout": {
+     "size": 4,
+     "sha256": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+     "prefix": "66696e0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "fichier-prog",
+   "args": [
+    "-f",
+    "script",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "e276bf5020690365b8bdd80561653a99a6dd4a9e65a7c6c894dbd12de4e982fd",
+     "prefix": "320a330a310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f",
+     "script": "131c115fd112e4dce916b6cbb484229c6d8365e29893f95d9b3d2b71433d45b3"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "e276bf5020690365b8bdd80561653a99a6dd4a9e65a7c6c894dbd12de4e982fd",
+     "prefix": "320a330a310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f",
+     "script": "131c115fd112e4dce916b6cbb484229c6d8365e29893f95d9b3d2b71433d45b3"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "sources",
+   "args": [
+    "-e",
+    "BEGIN{print 1}",
+    "-e",
+    "END{print 2}",
+    "--",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "a6e2b7a040683432de03a18fd8a1939a2fdf82585b364bfc874bdd4095c4cae1",
+     "prefix": "310a320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "a6e2b7a040683432de03a18fd8a1939a2fdf82585b364bfc874bdd4095c4cae1",
+     "prefix": "310a320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "affectation",
+   "args": [
+    "{print x,$1}",
+    "x=4",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 23,
+     "sha256": "0fbf9f35978765dad8cc13287df20c0fb561306d12a27d3e17b610e8fd2f33de",
+     "prefix": "3420616c7068610a3420626574610a3420616c7068610a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 23,
+     "sha256": "0fbf9f35978765dad8cc13287df20c0fb561306d12a27d3e17b610e8fd2f33de",
+     "prefix": "3420616c7068610a3420626574610a3420616c7068610a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "getline-fichier",
+   "args": [
+    "BEGIN{r=(getline a < \"in\");print r,a,close(\"in\")}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 12,
+     "sha256": "5ab00f42ed8c828322aa76d938bf3bc19172fc1256df2707e5aabee313490094",
+     "prefix": "3120616c706861203220300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 12,
+     "sha256": "5ab00f42ed8c828322aa76d938bf3bc19172fc1256df2707e5aabee313490094",
+     "prefix": "3120616c706861203220300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "getline-begin",
+   "args": [
+    "BEGIN{print (getline),NR,$0} {print $0}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 27,
+     "sha256": "354360085fda8fe1e8ea75e79dc05b3997bd0214b56889a5ffed3d3dfae854be",
+     "prefix": "31203120616c70686120320a6265746120330a616c70686120310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 27,
+     "sha256": "354360085fda8fe1e8ea75e79dc05b3997bd0214b56889a5ffed3d3dfae854be",
+     "prefix": "31203120616c70686120320a6265746120330a616c70686120310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "redirect",
+   "args": [
+    "BEGIN{print \"a\">\"out\";close(\"out\");printf \"b\">>\"out\";print close(\"out\")}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "out": "7e18f737311b2dc3b2f269dd78396b0351f14fb66efa879f768cb23181883c78"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "out": "7e18f737311b2dc3b2f269dd78396b0351f14fb66efa879f768cb23181883c78"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "pipe-lecture",
+   "args": [
+    "BEGIN{c=\"printf ok\";c | getline a;print a,close(c)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "25d6659a6e3c06f8f2cd7fbe969261bd692b81b9691bc1f999fc131f392bf594",
+     "prefix": "6f6b20300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "25d6659a6e3c06f8f2cd7fbe969261bd692b81b9691bc1f999fc131f392bf594",
+     "prefix": "6f6b20300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "pipe-sortie",
+   "args": [
+    "BEGIN{c=\"cat > out\";print \"ok\" | c;print close(c)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "out": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "out": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "system",
+   "args": [
+    "BEGIN{print system(\"true\")}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "invalide",
+   "args": [
+    "BEGIN {"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 91,
+     "sha256": "af191ea1e73d1c99ef8b4bb8452beae4912e83e91634f881a0b7810e05baa5cd",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b0a6761776b3a20636d642e206c696e653a313a20202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620737472696e670a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "refus-sandbox",
+   "args": [
+    "-S",
+    "BEGIN{print \"a\">\"out\"}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 66,
+     "sha256": "47b3213d9b024d202eb3142cff06e1399ede2bf256f6b5a9b6d62c9af27bfb62",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20666174616c3a207265646972656374696f6e206e6f7420616c6c6f77656420696e2073616e64626f78206d6f64650a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 69,
+     "sha256": "444ecd67b15413f46238f21f8cbb052bb3240c0ad30303deba666bf43558be81",
+     "prefix": "61776b3a2072756e74696d65206572726f723a207265646972656374696f6e206f7220636f6d6d616e6420666f7262696464656e20696e2073616e64626f78206d6f64650a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "refus-system",
+   "args": [
+    "-S",
+    "BEGIN{system(\"touch out\")}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 72,
+     "sha256": "c4e9bae7f1f4423683f36aadfa5f3c84d0a32688f90bbdd0fbb7abfac58150aa",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20666174616c3a202773797374656d272066756e6374696f6e206e6f7420616c6c6f77656420696e2073616e64626f78206d6f64650a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 69,
+     "sha256": "444ecd67b15413f46238f21f8cbb052bb3240c0ad30303deba666bf43558be81",
+     "prefix": "61776b3a2072756e74696d65206572726f723a207265646972656374696f6e206f7220636f6d6d616e6420666f7262696464656e20696e2073616e64626f78206d6f64650a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "refus-pipe",
+   "args": [
+    "-S",
+    "BEGIN{print \"x\" | \"cat > out\"}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 66,
+     "sha256": "47b3213d9b024d202eb3142cff06e1399ede2bf256f6b5a9b6d62c9af27bfb62",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20666174616c3a207265646972656374696f6e206e6f7420616c6c6f77656420696e2073616e64626f78206d6f64650a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 69,
+     "sha256": "444ecd67b15413f46238f21f8cbb052bb3240c0ad30303deba666bf43558be81",
+     "prefix": "61776b3a2072756e74696d65206572726f723a207265646972656374696f6e206f7220636f6d6d616e6420666f7262696464656e20696e2073616e64626f78206d6f64650a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "refus-getline",
+   "args": [
+    "-S",
+    "BEGIN{getline x < \"in\"}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 66,
+     "sha256": "47b3213d9b024d202eb3142cff06e1399ede2bf256f6b5a9b6d62c9af27bfb62",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20666174616c3a207265646972656374696f6e206e6f7420616c6c6f77656420696e2073616e64626f78206d6f64650a"
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "observed": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 69,
+     "sha256": "444ecd67b15413f46238f21f8cbb052bb3240c0ad30303deba666bf43558be81",
+     "prefix": "61776b3a2072756e74696d65206572726f723a207265646972656374696f6e206f7220636f6d6d616e6420666f7262696464656e20696e2073616e64626f78206d6f64650a"
+    },
+    "files": {
+     "in": "5cf18ce51edc5b445755f268a66a0e53da3a6b248ad73c07105e28f8df352b5f"
+    }
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "chargement",
+   "args": [
+    "-l",
+    "extension-inexistante",
+    "BEGIN{}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 103,
+     "sha256": "66cc5d537604577c604bed50373351442b6b3202da6ef36cddffa547951997ac",
+     "prefix": "6761776b3a20666174616c3a2063616e6e6f74206f70656e20736861726564206c6962726172792060657874656e73696f6e2d696e6578697374616e74652720666f722072656164696e673a204e6f20737563682066696c65206f72206469726563746f72790a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 27,
+     "sha256": "ef41241c49b166012fed3e3478e45c3451badbdc681831aa7dfb27b5200ea095",
+     "prefix": "61776b3a20756e737570706f72746564206f7074696f6e202d6c0a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "booleen",
+   "args": [
+    "{print ($1 ? \"vrai\":\"faux\"), (\"0\" ? 1:0)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "db4801dbec728f0dff2317b1ad3e406a528a201113aefb910008711914b7f6c4",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 21,
+     "sha256": "182b05d5d2b09c77300496abcc4ae50f516b490f4b353a69417cdb504d066867",
+     "prefix": "6661757820310a6661757820310a7672616920310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 21,
+     "sha256": "182b05d5d2b09c77300496abcc4ae50f516b490f4b353a69417cdb504d066867",
+     "prefix": "6661757820310a6661757820310a7672616920310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "compteurs-modifiables",
+   "args": [
+    "{print NR,FNR; NR=20;FNR=-2}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "7e18f737311b2dc3b2f269dd78396b0351f14fb66efa879f768cb23181883c78",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 10,
+     "sha256": "6d56e2b3fc4ae126927194949e89c3616423396bbc53d54024ae10a4424cf3ec",
+     "prefix": "3120310a3231202d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 10,
+     "sha256": "6d56e2b3fc4ae126927194949e89c3616423396bbc53d54024ae10a4424cf3ec",
+     "prefix": "3120310a3231202d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "champs-vides",
+   "args": [
+    "BEGIN{FS=\"\"}{print NF,$1,$2}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "3b2fc206fd92be3e70843a6d6d466b1f400383418b3c16f2f0af89981f1337f3",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "a28b53fb63d809a8921b025ef2655a83dd6468c3377eaf5e75190f7a36e17f5c",
+     "prefix": "32207820790a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 6,
+     "sha256": "a28b53fb63d809a8921b025ef2655a83dd6468c3377eaf5e75190f7a36e17f5c",
+     "prefix": "32207820790a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "champs-blancs",
+   "args": [
+    "{print NF,length($1)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "adde3032a26a9ea2c1dba01d034e752c4ab49d2cff87a27401f58d096d37808a",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "337b794ce718a09a620090d53541c3b4640a64133bbee2188444810cd3169f81",
+     "prefix": "3220330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "337b794ce718a09a620090d53541c3b4640a64133bbee2188444810cd3169f81",
+     "prefix": "3220330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "split-imbrique",
+   "args": [
+    "BEGIN{a[1]=8; print split(\"un deux\",a[2]),a[1],a[2][2]}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 9,
+     "sha256": "ba9fd5decc01023d5fec7b2b81af50d9458ebef7492e81baed2446147375f805",
+     "prefix": "32203820646575780a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 9,
+     "sha256": "ba9fd5decc01023d5fec7b2b81af50d9458ebef7492e81baed2446147375f805",
+     "prefix": "32203820646575780a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "split-vide",
+   "args": [
+    "BEGIN{print split(\"\",a,\":\")}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "casse-octets",
+   "args": [
+    "{print toupper($0)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "d170587422af4a8f483a86046554fa6aa66a7bdf627701f53b9145528915979a",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ebe3e6be05013f5764aee77d5f796311b0ab066c9c11cc64cce6c1143cf21e3e",
+     "prefix": "58e90a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ebe3e6be05013f5764aee77d5f796311b0ab066c9c11cc64cce6c1143cf21e3e",
+     "prefix": "58e90a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "source-incluse",
+   "args": [
+    "-i",
+    "./lib.awk",
+    "-i",
+    "./lib.awk",
+    "BEGIN{print f()}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "lib.awk": "6d6b5a0aeae9ff5d381461580549e85cfb41f174905d632b7a8fb993c3f82061"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+     "prefix": "370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "lib.awk": "6d6b5a0aeae9ff5d381461580549e85cfb41f174905d632b7a8fb993c3f82061"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "fichier-admis-sandbox",
+   "args": [
+    "-S",
+    "{print}",
+    "in"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22",
+     "prefix": "6f6b0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22"
+    }
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22",
+     "prefix": "6f6b0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {
+     "in": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22"
+    }
+   },
+   "differences": []
+  },
+  {
+   "name": "ere-invalide",
+   "args": [
+    "BEGIN{FS=\"[(\"}{print NF}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7",
+   "oracle": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 61,
+     "sha256": "fe08546a816746edb421176cf8ef308d157bb3526c7b38833ed9636d8c4b0de0",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20666174616c3a20696e76616c6964207265676578703a20756e62616c616e636564205b3a202f5b282f0a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 2,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 82,
+     "sha256": "61b5a75651117112d27430633c2ccb58ac6f71ad14584fa3fbfc21558d75b070",
+     "prefix": "61776b3a207265676578206572726f723a207265676578207061727365206572726f723a0a202020205b280a202020205e0a6572726f723a20756e636c6f7365642063686172616374657220636c6173730a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "fin-apres-ligne-longue",
+   "args": [
+    "{print NR,length($0)}"
+   ],
+   "locale": "C",
+   "stdin_sha256": "836bcf866a984166d4d92c89bc4a82e26ac5391a09f6333e158c128e34af3620",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 14,
+     "sha256": "5afec2c015c75c6b506554a891a82eebe7157999fe94ba303d5e7599e0a73123",
+     "prefix": "3120323039373135320a3220310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 14,
+     "sha256": "5afec2c015c75c6b506554a891a82eebe7157999fe94ba303d5e7599e0a73123",
+     "prefix": "3120323039373135320a3220310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "utf8",
+   "args": [
+    "{print length($0),substr($0,2,1)}"
+   ],
+   "locale": "en_US.UTF-8",
+   "stdin_sha256": "c854f650b497f920372c095eb0b72b42610183ab16d80b0595b91d091f7c7c81",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "e2804d1c8fc5cfa5e53a3994ca58b358ccfe9e9e38ebc8e4be4ee3b85bb4861a",
+     "prefix": "3220cebb0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 5,
+     "sha256": "e2804d1c8fc5cfa5e53a3994ca58b358ccfe9e9e38ebc8e4be4ee3b85bb4861a",
+     "prefix": "3220cebb0a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "separateur-entre-blocs",
+   "args": [
+    "BEGIN{RS=\"\u00a7\"}{print length($0)}"
+   ],
+   "locale": "en_US.UTF-8",
+   "stdin_sha256": "a4e9313da5e3a521bdb7e2bb14ba9544f971efa894c58e935ab8a4832175ed74",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 7,
+     "sha256": "c0181ace21fa9d8e3c590b0f874148f55b4517553ed4271f0c16ef76e84b3903",
+     "prefix": "383139310a310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 7,
+     "sha256": "c0181ace21fa9d8e3c590b0f874148f55b4517553ed4271f0c16ef76e84b3903",
+     "prefix": "383139310a310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-000",
+   "args": [
+    "BEGIN { print ((((4*3)+(1*8))*((4*6)-(3-7)))+(((9+9)<(6+7))*((0<4)-(9*9))))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 227,
+     "sha256": "eaae652b3f33f478ce8ffa7cc3be3c91e45c118c0806f08c99ea735166e64393",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e742028282828342a33292b28312a3829292a2828342a36292d28332d372929292b282828392b39293c28362b3729292a2828303c34292d28392a39292929290a6761776b3a20636d642e206c696e653a313a2020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-001",
+   "args": [
+    "BEGIN { print ((8-1)<(4+8)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-002",
+   "args": [
+    "BEGIN { print (2<2) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-003",
+   "args": [
+    "BEGIN { print (((8+2)+(7-5))!=((9<1)*(7<5))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-004",
+   "args": [
+    "BEGIN { print (5-4) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-005",
+   "args": [
+    "BEGIN { print ((7*8)+(8-2)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "606b7d0891b4db74edb21c241c302f298bf6ca4a6158deca6b58c15c950ab5f2",
+     "prefix": "36320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "606b7d0891b4db74edb21c241c302f298bf6ca4a6158deca6b58c15c950ab5f2",
+     "prefix": "36320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-006",
+   "args": [
+    "BEGIN { print ((7!=1)*(5+6)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+     "prefix": "31310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+     "prefix": "31310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-007",
+   "args": [
+    "BEGIN { print (((1*4)!=(1*7))<((4!=1)!=(0*3))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-008",
+   "args": [
+    "BEGIN { print ((((8!=1)+(9+5))-((4!=1)+(8<6)))<(((0-5)+(9-3))<((3*6)+(5+2))))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 231,
+     "sha256": "053eb7d6360196476cd5bc29c8a46f16b1f97e32aab96fafc70c1233efe7c640",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e74202828282838213d31292b28392b3529292d282834213d31292b28383c362929293c282828302d35292b28392d3329293c2828332a36292b28352b32292929290a6761776b3a20636d642e206c696e653a313a202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-009",
+   "args": [
+    "BEGIN { print (1*3) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+     "prefix": "330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+     "prefix": "330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-010",
+   "args": [
+    "BEGIN { print ((7!=7)+(3!=5)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-011",
+   "args": [
+    "BEGIN { print (((0<2)*(8<3))<((4-8)-(5!=0))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-012",
+   "args": [
+    "BEGIN { print ((1<9)!=(9+3)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-013",
+   "args": [
+    "BEGIN { print ((((5*0)-(1<1))*((3-8)+(2<0)))!=(((9!=7)!=(0-4))!=((3+8)!=(8<5)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-014",
+   "args": [
+    "BEGIN { print (((8-6)-(2+5))-((8-5)<(7*1))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "d7b906a85360766ca93a7f2a3391ddc205bb248d2ec6e045769e67889fc1ebd5",
+     "prefix": "2d360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "d7b906a85360766ca93a7f2a3391ddc205bb248d2ec6e045769e67889fc1ebd5",
+     "prefix": "2d360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-015",
+   "args": [
+    "BEGIN { print ((9+9)+(2+9)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "3840bc236ee03aacbb1ef7d5108ddfa347c59f10b68d4174affbb53140f31273",
+     "prefix": "32390a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "3840bc236ee03aacbb1ef7d5108ddfa347c59f10b68d4174affbb53140f31273",
+     "prefix": "32390a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-016",
+   "args": [
+    "BEGIN { print ((((8+7)+(2*9))<((5!=8)<(5!=1)))<(((5*7)*(7-9))-((8!=8)-(3*1))))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 233,
+     "sha256": "3246d4fd8f9806b3cc250455b7e4ea74c80a34eae9aec9f70fbd7a2622335843",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e742028282828382b37292b28322a3929293c282835213d38293c2835213d312929293c282828352a37292a28372d3929292d282838213d38292d28332a31292929290a6761776b3a20636d642e206c696e653a313a2020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-017",
+   "args": [
+    "BEGIN { print (((4-6)<(4<4))+((2+8)<(8+0))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-018",
+   "args": [
+    "BEGIN { print ((((3*1)+(2-4))!=((9<9)*(4!=0)))-(((0<1)+(3!=5))-((1+3)+(8*7)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "be4ba010e48e7d5c7c60457e7f40538407a26f4ead94b392beff67a3a5546b8a",
+     "prefix": "35390a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "be4ba010e48e7d5c7c60457e7f40538407a26f4ead94b392beff67a3a5546b8a",
+     "prefix": "35390a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-019",
+   "args": [
+    "BEGIN { print (((0<1)!=(0*4))+((1-9)-(2+8))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "b0dc90bf062eb249fdd6c4441ab3ab2ba0917845a5b442958a9f9d644a10a3bd",
+     "prefix": "2d31370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "b0dc90bf062eb249fdd6c4441ab3ab2ba0917845a5b442958a9f9d644a10a3bd",
+     "prefix": "2d31370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-020",
+   "args": [
+    "BEGIN { print (((7+5)!=(1<2))*((7*4)-(9*4))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "09e8d43a32ca23eaf5331194b916831487c49c657d2f786a9dd98c2a7b0cd309",
+     "prefix": "2d380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "09e8d43a32ca23eaf5331194b916831487c49c657d2f786a9dd98c2a7b0cd309",
+     "prefix": "2d380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-021",
+   "args": [
+    "BEGIN { print ((6!=7)!=(2+6)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-022",
+   "args": [
+    "BEGIN { print ((((6!=6)*(6<2))+((1-6)-(2*7)))!=(((6*2)*(5+1))+((7-6)+(8!=0)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-023",
+   "args": [
+    "BEGIN { print (2*8) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "e6c21e8d260fe71882debdb339d2402a2ca7648529bc2303f48649bce0380017",
+     "prefix": "31360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "e6c21e8d260fe71882debdb339d2402a2ca7648529bc2303f48649bce0380017",
+     "prefix": "31360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-024",
+   "args": [
+    "BEGIN { print ((((0*7)+(7!=6))!=((6!=6)*(5!=3)))+(((4+9)<(0<2))!=((6+3)!=(6!=0))))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 241,
+     "sha256": "6639ed542ccab7ba02e8f1a6b7eb172ee5db5b988c96958276b6c098bd95198e",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e742028282828302a37292b2837213d362929213d282836213d36292a2835213d332929292b282828342b39293c28303c322929213d2828362b3329213d2836213d30292929290a6761776b3a20636d642e206c696e653a313a20202020202020202020202020202020202020202020202020202020202020202020202020202020"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-025",
+   "args": [
+    "BEGIN { print (((3!=2)-(8<3))+((7!=7)<(3+9))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-026",
+   "args": [
+    "BEGIN { print ((((2-7)*(3*7))!=((8<0)<(6<9)))-(((1*4)!=(9-0))+((1*7)<(8!=7)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-027",
+   "args": [
+    "BEGIN { print ((((3<2)*(1<4))<((7+8)+(8<0)))<(((1*2)-(4!=7))!=((9!=7)<(6<9)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-028",
+   "args": [
+    "BEGIN { print (7-7) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-029",
+   "args": [
+    "BEGIN { print (6-9) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "0f90e0b3538d04df294950dcec75952d7e07f1bb044e73e795c410d677b3c268",
+     "prefix": "2d330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "0f90e0b3538d04df294950dcec75952d7e07f1bb044e73e795c410d677b3c268",
+     "prefix": "2d330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-030",
+   "args": [
+    "BEGIN { print (9<8) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-031",
+   "args": [
+    "BEGIN { print (((1!=4)!=(4!=7))*((3<1)*(3-6))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-032",
+   "args": [
+    "BEGIN { print ((1<0)-(0*7))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 131,
+     "sha256": "3135ca9cbd9685a56398f79ab3a48873f8bd4ff95ac8c14523bc8cbca9ad0708",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e74202828313c30292d28302a3729290a6761776b3a20636d642e206c696e653a313a202020202020202020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620737472696e670a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-033",
+   "args": [
+    "BEGIN { print (0<2) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-034",
+   "args": [
+    "BEGIN { print (7<0) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-035",
+   "args": [
+    "BEGIN { print (3<5) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-036",
+   "args": [
+    "BEGIN { print ((((8<7)!=(0!=6))+((4!=6)+(7*3)))-(((5+8)<(1*1))+((6<7)-(2-1)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "076320a2a08267b4c026d06573bba408ea68841e73cdc20e62cce59de165ece3",
+     "prefix": "32330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "076320a2a08267b4c026d06573bba408ea68841e73cdc20e62cce59de165ece3",
+     "prefix": "32330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-037",
+   "args": [
+    "BEGIN { print ((0-9)-(4!=9)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "553764c84ee5ed5460452af78623f892b5391217bbf211b125a145bfeef9b2c7",
+     "prefix": "2d31300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "553764c84ee5ed5460452af78623f892b5391217bbf211b125a145bfeef9b2c7",
+     "prefix": "2d31300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-038",
+   "args": [
+    "BEGIN { print ((3*1)+(1*2)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+     "prefix": "350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+     "prefix": "350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-039",
+   "args": [
+    "BEGIN { print (1-2) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-040",
+   "args": [
+    "BEGIN { print ((4!=0)*(1-1))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 133,
+     "sha256": "28fe47ac6d1508e9fbb66c8f24d79bd697c150fae27c137991b1d8013685a25d",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e7420282834213d30292a28312d3129290a6761776b3a20636d642e206c696e653a313a20202020202020202020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620737472696e670a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-041",
+   "args": [
+    "BEGIN { print (8-3) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+     "prefix": "350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+     "prefix": "350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-042",
+   "args": [
+    "BEGIN { print (4+1) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+     "prefix": "350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+     "prefix": "350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-043",
+   "args": [
+    "BEGIN { print (5*6) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "f4ccd05b3271c386ee55d9876c7450012a3b361e5065c09dc22075e38b3cc35c",
+     "prefix": "33300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "f4ccd05b3271c386ee55d9876c7450012a3b361e5065c09dc22075e38b3cc35c",
+     "prefix": "33300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-044",
+   "args": [
+    "BEGIN { print ((((2<5)<(6*6))<((3<9)+(0<4)))-(((9-2)!=(1<2))+((5*0)<(4+8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-045",
+   "args": [
+    "BEGIN { print ((((3!=8)<(3!=4))-((7-9)-(8!=8)))-(((3<2)!=(2!=1))<((9-6)-(5<8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-046",
+   "args": [
+    "BEGIN { print ((0+0)!=(4+2)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-047",
+   "args": [
+    "BEGIN { print ((((6-4)!=(3*4))*((1<5)!=(9!=3)))!=(((7<1)-(6-7))+((8+2)<(6!=8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-048",
+   "args": [
+    "BEGIN { print ((((0+0)!=(8-6))!=((3*3)!=(3-9)))-(((2+3)!=(1+5))<((8+7)<(8*9))))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 235,
+     "sha256": "a6ae0f8ae21b59eee3882f1ef8bff311cdb60d1de64fd878876ce5a100cba5ef",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e742028282828302b3029213d28382d362929213d2828332a3329213d28332d392929292d282828322b3329213d28312b3529293c2828382b37293c28382a39292929290a6761776b3a20636d642e206c696e653a313a20202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-049",
+   "args": [
+    "BEGIN { print ((2-0)!=(6<8)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-050",
+   "args": [
+    "BEGIN { print ((((3!=3)!=(3!=9))-((7-1)*(9-4)))<(((1-7)+(6!=6))*((1<9)!=(9<2)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-051",
+   "args": [
+    "BEGIN { print ((((9-3)-(5*3))*((7-0)*(8-8)))!=(((5<1)<(8+2))<((4*6)<(0+8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-052",
+   "args": [
+    "BEGIN { print (((5+3)+(5-4))+((9<7)<(1+2))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+     "prefix": "31300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+     "prefix": "31300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-053",
+   "args": [
+    "BEGIN { print ((((2!=8)<(3!=1))!=((3!=0)+(0-6)))-(((8*0)-(9+6))+((1!=4)-(4<8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "e6c21e8d260fe71882debdb339d2402a2ca7648529bc2303f48649bce0380017",
+     "prefix": "31360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "e6c21e8d260fe71882debdb339d2402a2ca7648529bc2303f48649bce0380017",
+     "prefix": "31360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-054",
+   "args": [
+    "BEGIN { print ((7-3)-(7+5)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "09e8d43a32ca23eaf5331194b916831487c49c657d2f786a9dd98c2a7b0cd309",
+     "prefix": "2d380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "09e8d43a32ca23eaf5331194b916831487c49c657d2f786a9dd98c2a7b0cd309",
+     "prefix": "2d380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-055",
+   "args": [
+    "BEGIN { print ((((8+5)!=(0!=3))<((3*9)*(0-5)))-(((3*1)-(1+1))-((2*0)-(3*4)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "2451e722f881c88d56d145dd4d7953045b2798fb9a0beee6319b8ebbfdd47873",
+     "prefix": "2d31330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "2451e722f881c88d56d145dd4d7953045b2798fb9a0beee6319b8ebbfdd47873",
+     "prefix": "2d31330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-056",
+   "args": [
+    "BEGIN { print ((((9-2)+(1<5))!=((7!=0)-(1*5)))!=(((8!=2)-(0!=0))<((3+1)!=(1+1))))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 239,
+     "sha256": "2b13bdd4f174bd938b79ab458fbbe7f49cdf077dde78e47601430dd5f3da3adc",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e742028282828392d32292b28313c352929213d282837213d30292d28312a35292929213d28282838213d32292d2830213d3029293c2828332b3129213d28312b31292929290a6761776b3a20636d642e206c696e653a313a2020202020202020202020202020202020202020202020202020202020202020202020202020202020"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-057",
+   "args": [
+    "BEGIN { print (4*6) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "68ca3fba3b7e864770cb61aeb306d4bd4354b68ab4dd38450860c5d823e42a53",
+     "prefix": "32340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "68ca3fba3b7e864770cb61aeb306d4bd4354b68ab4dd38450860c5d823e42a53",
+     "prefix": "32340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-058",
+   "args": [
+    "BEGIN { print ((2<6)!=(2*9)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-059",
+   "args": [
+    "BEGIN { print (7<2) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-060",
+   "args": [
+    "BEGIN { print (((5<2)<(8<3))-((7<3)<(2!=5))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-061",
+   "args": [
+    "BEGIN { print ((((5*3)<(4<1))<((4+7)+(1*5)))*(((9-5)-(5+1))!=((7+4)-(0+8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-062",
+   "args": [
+    "BEGIN { print (2-3) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-063",
+   "args": [
+    "BEGIN { print ((((4*0)-(7-8))*((4+5)<(2!=1)))+(((6!=6)!=(7<7))-((2<2)<(3+8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-064",
+   "args": [
+    "BEGIN { print ((6<2)*(9+9))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 131,
+     "sha256": "5a81246745eeb51acddb18044f94975528d51a6a3bf9cacbb0561289512f91cc",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e74202828363c32292a28392b3929290a6761776b3a20636d642e206c696e653a313a202020202020202020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620737472696e670a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-065",
+   "args": [
+    "BEGIN { print ((((2<4)+(7*5))-((1<0)<(6-2)))*(((2<8)-(2-8))-((1*0)<(8*6)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "a140341c279ed1655dd731454a9833e2a7ed1cdc280b5696ba1f093eaa2e883d",
+     "prefix": "3231300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "a140341c279ed1655dd731454a9833e2a7ed1cdc280b5696ba1f093eaa2e883d",
+     "prefix": "3231300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-066",
+   "args": [
+    "BEGIN { print (((8+3)-(0-8))<((8<3)-(1+2))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-067",
+   "args": [
+    "BEGIN { print (((5*1)-(6<2))*((7-7)+(0*0))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-068",
+   "args": [
+    "BEGIN { print ((7*3)-(4-1)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+     "prefix": "31380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+     "prefix": "31380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-069",
+   "args": [
+    "BEGIN { print ((((8!=5)<(9<6))*((5*6)-(6*7)))-(((6*7)+(9*2))<((3!=1)-(2<2)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-070",
+   "args": [
+    "BEGIN { print ((0-9)-(2<3)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "553764c84ee5ed5460452af78623f892b5391217bbf211b125a145bfeef9b2c7",
+     "prefix": "2d31300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "553764c84ee5ed5460452af78623f892b5391217bbf211b125a145bfeef9b2c7",
+     "prefix": "2d31300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-071",
+   "args": [
+    "BEGIN { print (6*3) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+     "prefix": "31380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+     "prefix": "31380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-072",
+   "args": [
+    "BEGIN { print (((4-1)*(1+2))!=((6!=1)-(9*8)))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 167,
+     "sha256": "ccb3c08edbc6d6dc1513136bf1b458aa6eb358e308e50266b7455908a425e304",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e7420282828342d31292a28312b322929213d282836213d31292d28392a382929290a6761776b3a20636d642e206c696e653a313a202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-073",
+   "args": [
+    "BEGIN { print ((6!=1)<(9*4)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-074",
+   "args": [
+    "BEGIN { print (((8<6)!=(0<5))<((7-7)<(0+5))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-075",
+   "args": [
+    "BEGIN { print (((3!=7)<(6<7))-((9<5)*(3-1))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-076",
+   "args": [
+    "BEGIN { print ((((2*6)*(5<9))!=((7*4)<(0*6)))-(((7*0)*(3<6))-((7*6)-(9-9)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "0e55092af0746630c98d1b2e0d960617c33f8ea7b55739fd18cb7cd5342a28ca",
+     "prefix": "34330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "0e55092af0746630c98d1b2e0d960617c33f8ea7b55739fd18cb7cd5342a28ca",
+     "prefix": "34330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-077",
+   "args": [
+    "BEGIN { print (0!=4) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-078",
+   "args": [
+    "BEGIN { print ((7+7)*(3!=9)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "9a92adbc0cee38ef658c71ce1b1bf8c65668f166bfb213644c895ccb1ad07a25",
+     "prefix": "31340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "9a92adbc0cee38ef658c71ce1b1bf8c65668f166bfb213644c895ccb1ad07a25",
+     "prefix": "31340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-079",
+   "args": [
+    "BEGIN { print (((1-5)+(6+1))*((5-0)-(5+5))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "0e55cbbc9d11449b186092d82905aa6974858df7a0b7d706ae51c4716c9461ef",
+     "prefix": "2d31350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "0e55cbbc9d11449b186092d82905aa6974858df7a0b7d706ae51c4716c9461ef",
+     "prefix": "2d31350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-080",
+   "args": [
+    "BEGIN { print ((((8!=7)-(9*8))*((1+3)*(0*4)))!=(((6-9)!=(7-0))+((3*0)<(6!=3))))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 235,
+     "sha256": "a53ff3f1f5986e2f382f0dc7a60fd115fbddab3a378b43a6e6181df1ca1fdf38",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e74202828282838213d37292d28392a3829292a2828312b33292a28302a34292929213d282828362d3929213d28372d3029292b2828332a30293c2836213d33292929290a6761776b3a20636d642e206c696e653a313a20202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-081",
+   "args": [
+    "BEGIN { print ((9*5)-(8+3)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ea243e5457028e97f9bc93b37a72f8e80ea61ae081911bb037765590ee6aa435",
+     "prefix": "33340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ea243e5457028e97f9bc93b37a72f8e80ea61ae081911bb037765590ee6aa435",
+     "prefix": "33340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-082",
+   "args": [
+    "BEGIN { print ((5!=4)+(6-6)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-083",
+   "args": [
+    "BEGIN { print ((((2-3)!=(4<5))*((5+1)<(6!=0)))-(((1-5)!=(7!=0))-((8<0)!=(4!=0)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-084",
+   "args": [
+    "BEGIN { print ((7-6)+(8<8)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-085",
+   "args": [
+    "BEGIN { print (4*8) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "2115cdb6bfcfb008eb2bab2bb79347cb064a48e4e7c4115ccbe4469c787bb6c4",
+     "prefix": "33320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "2115cdb6bfcfb008eb2bab2bb79347cb064a48e4e7c4115ccbe4469c787bb6c4",
+     "prefix": "33320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-086",
+   "args": [
+    "BEGIN { print (((7!=7)!=(5-9))+((3*6)*(2*2))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+     "prefix": "37330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+     "prefix": "37330a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-087",
+   "args": [
+    "BEGIN { print ((((8+5)+(0-5))!=((8-6)<(7*6)))+(((1<6)!=(0-6))+((0*9)*(7*7)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-088",
+   "args": [
+    "BEGIN { print ((2*0)!=(9<3))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 133,
+     "sha256": "806dadc6330732f4e411cd546726fbefa0c01a9320b474d066be3dcbb114207d",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e74202828322a3029213d28393c3329290a6761776b3a20636d642e206c696e653a313a20202020202020202020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620737472696e670a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-089",
+   "args": [
+    "BEGIN { print ((((4+9)-(5+4))!=((6<7)<(9!=7)))+(((1-8)+(9*6))<((5!=3)!=(1+2)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-090",
+   "args": [
+    "BEGIN { print (4<5) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-091",
+   "args": [
+    "BEGIN { print (1-9) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "09e8d43a32ca23eaf5331194b916831487c49c657d2f786a9dd98c2a7b0cd309",
+     "prefix": "2d380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "09e8d43a32ca23eaf5331194b916831487c49c657d2f786a9dd98c2a7b0cd309",
+     "prefix": "2d380a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-092",
+   "args": [
+    "BEGIN { print ((((9<7)*(1-4))<((9*5)-(8<1)))-(((0!=3)!=(0!=3))!=((5-8)!=(1+7)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-093",
+   "args": [
+    "BEGIN { print ((7-9)*(6+0)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "dc9eee73793d61ce685b4b629d7c94155dc77744eb2e3d9b44d7a2336d7a068a",
+     "prefix": "2d31320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "dc9eee73793d61ce685b4b629d7c94155dc77744eb2e3d9b44d7a2336d7a068a",
+     "prefix": "2d31320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-094",
+   "args": [
+    "BEGIN { print ((((2*7)!=(9<4))<((1!=8)-(0+4)))!=(((6+6)-(5!=7))<((9+6)<(2+7)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-095",
+   "args": [
+    "BEGIN { print (((5-9)+(4-3))!=((8-1)<(8*4))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-096",
+   "args": [
+    "BEGIN { print (((2-6)+(1-8))*((9<9)!=(9+8)))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 165,
+     "sha256": "a89eecff31e65f691e0945b39d306149efc336ff6188c5e3a9d066b5dfce4225",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e7420282828322d36292b28312d3829292a2828393c3929213d28392b382929290a6761776b3a20636d642e206c696e653a313a2020202020202020202020202020202020202020202020202020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f66207374"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-097",
+   "args": [
+    "BEGIN { print (((8+6)+(8<5))-((0-3)*(1<7))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "54183f4323f377b737433a1e98229ead0fdc686f93bab057ecb612daa94002b5",
+     "prefix": "31370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "54183f4323f377b737433a1e98229ead0fdc686f93bab057ecb612daa94002b5",
+     "prefix": "31370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-098",
+   "args": [
+    "BEGIN { print (0<5) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-099",
+   "args": [
+    "BEGIN { print ((((8!=1)<(8-6))+((5+6)*(1<2)))*(((7*4)-(0!=0))-((1*9)+(5+4)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "97b912eb4a61df5f806ca6239dde3e1a4f51ad20aced1642cbb83dc510a5fa6b",
+     "prefix": "3132300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "97b912eb4a61df5f806ca6239dde3e1a4f51ad20aced1642cbb83dc510a5fa6b",
+     "prefix": "3132300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-100",
+   "args": [
+    "BEGIN { print ((2+1)*(3+9)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+     "prefix": "33360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+     "prefix": "33360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-101",
+   "args": [
+    "BEGIN { print (((3-6)-(7+4))+((4!=5)+(6*5))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "54183f4323f377b737433a1e98229ead0fdc686f93bab057ecb612daa94002b5",
+     "prefix": "31370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "54183f4323f377b737433a1e98229ead0fdc686f93bab057ecb612daa94002b5",
+     "prefix": "31370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-102",
+   "args": [
+    "BEGIN { print (6<4) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-103",
+   "args": [
+    "BEGIN { print ((((3<3)<(3-0))*((7*1)*(0*0)))+(((9-3)*(7-8))!=((4!=9)!=(7+1)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-104",
+   "args": [
+    "BEGIN { print (((2*0)*(1!=9))!=((9*8)*(9<1)))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 167,
+     "sha256": "0e9021fc3cf6c93daf357e5f3d15ac81a4ab97a9662c50af01d7b0e0fc408006",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e7420282828322a30292a2831213d392929213d2828392a38292a28393c312929290a6761776b3a20636d642e206c696e653a313a202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-105",
+   "args": [
+    "BEGIN { print ((((9-8)-(5!=7))!=((0!=0)+(7*7)))+(((6*3)+(6-2))<((7-8)+(3<8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-106",
+   "args": [
+    "BEGIN { print ((2+7)!=(7!=7)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-107",
+   "args": [
+    "BEGIN { print ((((2<9)<(7+4))!=((7*1)!=(2!=9)))-(((9!=4)<(0+0))*((9-8)-(7-2)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-108",
+   "args": [
+    "BEGIN { print (((7<0)+(4<3))-((9!=0)+(7<9))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "4b883e04ed1a2af32c21811a12f2ccc766a1d73040b533ae4bcdfad8aca74293",
+     "prefix": "2d320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "4b883e04ed1a2af32c21811a12f2ccc766a1d73040b533ae4bcdfad8aca74293",
+     "prefix": "2d320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-109",
+   "args": [
+    "BEGIN { print ((((0-2)<(2+2))!=((1+4)+(5-1)))!=(((5+6)-(6!=6))+((3+7)-(0!=9)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-110",
+   "args": [
+    "BEGIN { print (((6+9)+(4+3))+((7!=9)-(7+2))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "9a92adbc0cee38ef658c71ce1b1bf8c65668f166bfb213644c895ccb1ad07a25",
+     "prefix": "31340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "9a92adbc0cee38ef658c71ce1b1bf8c65668f166bfb213644c895ccb1ad07a25",
+     "prefix": "31340a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-111",
+   "args": [
+    "BEGIN { print (((4+9)+(5+6))-((2-8)+(3-4))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "32c2643e0dc65524c9f1f6f9f00937322fd68d59986bc381d9ff2285d23e353d",
+     "prefix": "33310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "32c2643e0dc65524c9f1f6f9f00937322fd68d59986bc381d9ff2285d23e353d",
+     "prefix": "33310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-112",
+   "args": [
+    "BEGIN { print ((8*8)*(5*8))"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 131,
+     "sha256": "51cffa463837a8c354fa265574022ddc0538e12790d8fcf44eaf6d204cf23b19",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e74202828382a38292a28352a3829290a6761776b3a20636d642e206c696e653a313a202020202020202020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620737472696e670a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-113",
+   "args": [
+    "BEGIN { print ((((8+6)+(4-1))-((2!=7)<(6*5)))*(((6+9)+(4+4))-((8-9)*(1*8)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "ef73453a27cf6aa972f7aa1b0745f920a129c6ab5288cb005cb7c4e083d1d604",
+     "prefix": "3439360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 4,
+     "sha256": "ef73453a27cf6aa972f7aa1b0745f920a129c6ab5288cb005cb7c4e083d1d604",
+     "prefix": "3439360a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-114",
+   "args": [
+    "BEGIN { print (((7<6)<(6*6))<((5<1)-(6*7))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-115",
+   "args": [
+    "BEGIN { print (2-7) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "0b2f06dddfa807ee574a78468d3a05904873b97f44377eb93481e091c257b800",
+     "prefix": "2d350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "0b2f06dddfa807ee574a78468d3a05904873b97f44377eb93481e091c257b800",
+     "prefix": "2d350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-116",
+   "args": [
+    "BEGIN { print (0-7) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "71f24bf62be4ee171b9cf3b871966bb02bab0739dc01597afab02242a8378c03",
+     "prefix": "2d370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "71f24bf62be4ee171b9cf3b871966bb02bab0739dc01597afab02242a8378c03",
+     "prefix": "2d370a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-117",
+   "args": [
+    "BEGIN { print ((0*6)!=(3-4)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-118",
+   "args": [
+    "BEGIN { print (8<1) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-119",
+   "args": [
+    "BEGIN { print ((((5+9)*(3+0))*((4*5)<(7*6)))!=(((6<2)-(5<6))<((1-1)-(9*3)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-120",
+   "args": [
+    "BEGIN { print (1!=5)"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 117,
+     "sha256": "865bc58b45076f0a72ff185dac993e9ca39b8f4c6a54715f4c1c14bf8a6686e1",
+     "prefix": "6761776b3a20636d642e206c696e653a313a20424547494e207b207072696e74202831213d35290a6761776b3a20636d642e206c696e653a313a2020202020202020202020202020202020202020205e20756e6578706563746564206e65776c696e65206f7220656e64206f6620737472696e670a"
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 1,
+    "stdout": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "stderr": {
+     "size": 76,
+     "sha256": "b1240df649f7f66a4d28c84e3dcd053a885d679126a53a3a91c8bfd289ec133f",
+     "prefix": "61776b3a20706172736572206572726f72206174206c696e6520322c20636f6c756d6e20313a20657870656374656420526967687442726163652c20666f756e6420536f6d6528456f66290a"
+    },
+    "files": {}
+   },
+   "differences": [
+    "stderr"
+   ]
+  },
+  {
+   "name": "gen-121",
+   "args": [
+    "BEGIN { print (3-8) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "0b2f06dddfa807ee574a78468d3a05904873b97f44377eb93481e091c257b800",
+     "prefix": "2d350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "0b2f06dddfa807ee574a78468d3a05904873b97f44377eb93481e091c257b800",
+     "prefix": "2d350a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-122",
+   "args": [
+    "BEGIN { print ((8-9)*(5+4)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "cfeb3721a817579ed0f8bf7235b8b586be2d1f6426e5f7e4c3d3d62a3015f8d7",
+     "prefix": "2d390a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "cfeb3721a817579ed0f8bf7235b8b586be2d1f6426e5f7e4c3d3d62a3015f8d7",
+     "prefix": "2d390a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-123",
+   "args": [
+    "BEGIN { print ((((7*3)-(8*1))-((2<3)*(5!=3)))!=(((6<8)-(4+7))-((1+2)*(0+7)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+     "prefix": "310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-124",
+   "args": [
+    "BEGIN { print ((3!=4)*(7!=7)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-125",
+   "args": [
+    "BEGIN { print ((1!=5)*(0-1)) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 3,
+     "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+     "prefix": "2d310a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-126",
+   "args": [
+    "BEGIN { print (3<3) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+     "prefix": "300a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  },
+  {
+   "name": "gen-127",
+   "args": [
+    "BEGIN { print ((((8-3)!=(0-5))*((3<6)*(5!=8)))+(((4+3)!=(4!=9))!=((7+7)+(5!=9)))) }"
+   ],
+   "locale": "C",
+   "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "oracle": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "observed": {
+    "status": 0,
+    "stdout": {
+     "size": 2,
+     "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+     "prefix": "320a"
+    },
+    "stderr": {
+     "size": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "prefix": ""
+    },
+    "files": {}
+   },
+   "differences": []
+  }
+ ]
+}

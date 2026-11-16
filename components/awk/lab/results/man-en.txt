@@ -1,0 +1,87 @@
+AWK(1)			    General Commands Manual			AWK(1)
+
+NAME
+     awk – scan records and process fields
+
+SYNOPSIS
+     awk [-bS] [-F fs] [-v var=value] [-i library] program [file ...]
+     awk [options] -f script [file ...]
+
+DESCRIPTION
+     Each pattern selects records on which its action runs. Input defaults to
+     standard input. A missing final newline still terminates a record.
+
+     BEGIN and END run before and after input. BEGINFILE and ENDFILE run for
+     each file. Use next to skip a record and nextfile to advance to another
+     file. Patterns include regular expressions and inclusive ranges.
+
+OPTIONS
+     -F fs, --field-separator=fs
+	     Set the input field separator.
+
+     -v var=value, --assign=var=value
+	     Assign a value before BEGIN. Operand assignments occur between
+	     files.
+
+     -f file, --file=file
+	     Read program source. A dash reads standard input.
+
+     -e text, --source=text
+	     Append program text in argument order.
+
+     -i file, --include=file
+	     Include a program file once. AWKPATH supplies search directories.
+
+     -E file, --exec=file
+	     Read program and stop interpreting options and assignment
+	     operands.
+
+     -b, --characters-as-bytes
+	     Process input as octets.
+
+     -S, --sandbox
+	     Deny system(), redirected getline, output redirection and shell
+	     pipes. Named input operands remain available.
+
+     -h, --help
+	     Display localized help.
+
+     -V, --version
+	     Display localized version information.
+
+     -C, --copyright
+	     Display the upstream MIT notice.
+
+     A double dash ends option processing. Unsupported command-line options
+     produce a diagnostic. Dynamic library loading is unavailable.
+
+LANGUAGE
+     $0 is the record, $1 through $NF are its fields. FS and RS select field
+     and record separators. OFS and ORS control print. NR and FNR count
+     records. FILENAME, ARGC, ARGV and ENVIRON expose invocation state.
+     Additional variables include SUBSEP, CONVFMT, OFMT, IGNORECASE,
+     FIELDWIDTHS, FPAT and selected PROCINFO keys.
+
+     Programs may use associative and nested arrays, functions, recursion, if,
+     for, while, do, break, continue and return. Built-in operations include
+     print, printf, sprintf, split, patsplit, sub, gsub, gensub, match, index,
+     substr, length, tolower, toupper and mathematical functions. Call close()
+     to release a redirected stream and collect a child.
+
+SYSTEM ACCESS
+     The Darwin adapter operates with the calling account. The portable host
+     interface denies file redirection, process creation and time access until
+     the adapter supplies them. Native NovaOS delegation and revocation are
+     described in the separate admission proposal.
+
+EXAMPLES
+	   awk -F: '{print $1}' comptes.txt
+	   cat journal.txt | awk '/erreur/ {print NR, $0}'
+	   awk '{s += $1} END {print s}' nombres.txt
+
+EXIT STATUS
+     Normal completion returns zero. An explicit exit supplies the program
+     status. Syntax diagnostics return one and runtime, I/O and unsupported-
+     option errors return two.
+
+NovaOS			       November 16, 2026			AWK(1)

@@ -1,0 +1,11 @@
+Usage : awk [options] [--] 'motif { action }' [fichier ...]
+        awk [options] -f programme [fichier ...]
+-F, --field-separator SEP    Définir FS
+-v, --assign NOM=VALEUR      Affecter une variable avant BEGIN
+-e, --source PROGRAMME       Ajouter du code AWK
+-f, --file FICHIER           Ajouter le programme contenu dans un fichier
+-i, --include FICHIER       Inclure une source une seule fois (AWKPATH)
+-E, --exec FICHIER           Lire le programme et terminer les options
+-b, --characters-as-bytes    Traiter les octets en entrée
+-S, --sandbox                Refuser les redirections et commandes externes
+-h, --help   -V, --version   -C, --copyright

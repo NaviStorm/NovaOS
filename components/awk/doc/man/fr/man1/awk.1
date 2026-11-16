@@ -1,0 +1,63 @@
+.Dd November 16, 2026
+.Dt AWK 1
+.Os NovaOS
+.Sh NAME
+.Nm awk
+.Nd lire des enregistrements et traiter leurs champs
+.Sh SYNOPSIS
+.Nm
+.Op Fl bS
+.Op Fl F Ar fs
+.Op Fl v Ar var=value
+.Op Fl i Ar library
+.Ar program
+.Op Ar file ...
+.Nm
+.Op Ar options
+.Fl f Ar script
+.Op Ar file ...
+.Sh DESCRIPTION
+Chaque motif sélectionne les enregistrements auxquels son action s’applique. L’entrée standard est utilisée par défaut. Le dernier enregistrement peut se terminer sans saut de ligne.
+.Pp
+BEGIN et END encadrent la lecture. BEGINFILE et ENDFILE encadrent chaque fichier. next passe à l’enregistrement suivant et nextfile au fichier suivant. Les motifs comprennent expressions régulières et plages inclusives.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl F Ar fs , Fl \-field-separator Ns = Ns Ar fs
+Définir le séparateur de champs.
+.It Fl v Ar var=value , Fl \-assign Ns = Ns Ar var=value
+Affecter une valeur avant BEGIN. Les affectations parmi les opérandes interviennent entre fichiers.
+.It Fl f Ar file , Fl \-file Ns = Ns Ar file
+Lire le programme dans un fichier. Un tiret désigne l’entrée standard.
+.It Fl e Ar text , Fl \-source Ns = Ns Ar text
+Ajouter du code dans l’ordre des arguments.
+.It Fl i Ar file , Fl \-include Ns = Ns Ar file
+Inclure un fichier programme une fois. AWKPATH fournit les répertoires de recherche.
+.It Fl E Ar file , Fl \-exec Ns = Ns Ar file
+Lire le programme et arrêter le traitement des options et des opérandes d’affectation.
+.It Fl b , Fl \-characters-as-bytes
+Traiter l’entrée par octets.
+.It Fl S , Fl \-sandbox
+Refuser system(), getline redirigé, redirections de sortie et pipes shell. Les fichiers nommés en entrée restent accessibles.
+.It Fl h , Fl \-help
+Afficher l’aide localisée.
+.It Fl V , Fl \-version
+Afficher la version localisée.
+.It Fl C , Fl \-copyright
+Afficher la notice MIT du moteur amont.
+.El
+.Pp
+Un double tiret termine les options. Une option non prise en charge produit un diagnostic. Le chargement de bibliothèque dynamique est indisponible.
+.Sh LANGAGE
+$0 désigne l’enregistrement, $1 à $NF ses champs. FS et RS règlent les séparateurs de champs et d’enregistrements. OFS et ORS règlent print. NR et FNR comptent les enregistrements. FILENAME, ARGC, ARGV et ENVIRON décrivent l’appel. Le moteur expose aussi SUBSEP, CONVFMT, OFMT, IGNORECASE, FIELDWIDTHS, FPAT et certaines clés PROCINFO.
+.Pp
+Les programmes peuvent utiliser des tableaux associatifs et imbriqués, fonctions, récursivité, if, for, while, do, break, continue et return. Les opérations incluent print, printf, sprintf, split, patsplit, sub, gsub, gensub, match, index, substr, length, tolower, toupper et des fonctions numériques. close() libère un flux redirigé et collecte son processus.
+.Sh ACCÈS SYSTÈME
+L’adaptateur Darwin utilise les droits du processus appelant. Le cœur refuse les redirections, la création de processus et l’accès à l’horloge jusqu’à leur fourniture par un adaptateur. La délégation et la révocation natives NovaOS font l’objet du dossier d’admission.
+.Sh EXEMPLES
+.Bd -literal -offset indent
+awk -F: '{print $1}' comptes.txt
+cat journal.txt | awk '/erreur/ {print NR, $0}'
+awk '{s += $1} END {print s}' nombres.txt
+.Ed
+.Sh EXIT STATUS
+Une fin normale renvoie zéro. exit fixe le statut du programme. Une erreur de syntaxe renvoie un et une erreur d’exécution, d’E/S ou d’option renvoie deux.

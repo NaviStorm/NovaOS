@@ -1,0 +1,213 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (target/debug/build/nova-awk/5a505cd3e67450bd/out/awk_rs-5a505cd3e67450bd)
+
+running 181 tests
+test error::tests::test_parser_error ... ok
+test error::tests::test_lexer_error ... ok
+test error::tests::test_io_error ... ok
+test error::tests::test_runtime_error ... ok
+test error::tests::test_runtime_error_with_location ... ok
+test error::tests::test_regex_error ... ok
+test interpreter::tests::test_arithmetic ... ok
+test interpreter::tests::test_array_in ... ok
+test interpreter::tests::test_begin_end_run_once_over_multiple_inputs ... ok
+test interpreter::tests::test_begin_print ... ok
+test interpreter::tests::test_array_access ... ok
+test interpreter::tests::test_break ... ok
+test error::tests::test_source_location ... ok
+test interpreter::tests::test_builtin_index ... ok
+test interpreter::tests::test_bare_getline_sets_record ... ok
+test interpreter::tests::test_builtin_length ... ok
+test interpreter::tests::test_builtin_gsub ... ok
+test interpreter::tests::test_bare_getline_returns_zero_at_eof ... ok
+test interpreter::tests::test_builtin_math ... ok
+test interpreter::tests::test_builtin_match ... ok
+test interpreter::tests::test_builtin_split ... ok
+test interpreter::tests::test_builtin_sprintf ... ok
+test interpreter::tests::test_builtin_sub ... ok
+test interpreter::tests::test_builtin_substr ... ok
+test interpreter::tests::test_builtin_tolower ... ok
+test interpreter::tests::test_builtin_toupper ... ok
+test interpreter::tests::test_compound_assign ... ok
+test interpreter::tests::test_compound_pattern_and ... ok
+test interpreter::tests::test_concatenation ... ok
+test interpreter::tests::test_continue ... ok
+test interpreter::tests::test_delete ... ok
+test interpreter::tests::test_do_while ... ok
+test interpreter::tests::test_exit ... ok
+test interpreter::tests::test_exit_in_end ... ok
+test interpreter::tests::test_field_modify ... ok
+test interpreter::tests::test_fieldwidths ... ok
+test interpreter::tests::test_filename_and_fnr_track_each_input ... ok
+test interpreter::tests::test_for_in_loop ... ok
+test interpreter::tests::test_for_loop ... ok
+test interpreter::tests::test_fs_change ... ok
+test interpreter::tests::test_getline_in_begin_without_input_is_eof ... ok
+test interpreter::tests::test_getline_var ... ok
+test interpreter::tests::test_getline_var_updates_nr_but_not_record ... ok
+test interpreter::tests::test_if_statement ... ok
+test interpreter::tests::test_logical_or_in_expr ... ok
+test interpreter::tests::test_negated_pattern ... ok
+test interpreter::tests::test_next ... ok
+test interpreter::tests::test_nf_access ... ok
+test interpreter::tests::test_paragraph_mode ... ok
+test interpreter::tests::test_ofs ... ok
+test interpreter::tests::test_pattern_match ... ok
+test interpreter::tests::test_post_increment ... ok
+test interpreter::tests::test_pre_increment ... ok
+test interpreter::tests::test_print_field ... ok
+test interpreter::tests::test_print_multiple_fields ... ok
+test interpreter::tests::test_printf ... ok
+test interpreter::tests::test_special_variables ... ok
+test interpreter::tests::test_range_pattern ... ok
+test interpreter::tests::test_recursion ... ok
+test interpreter::tests::test_unary_ops ... ok
+test interpreter::tests::test_ternary ... ok
+test interpreter::tests::test_variable ... ok
+test interpreter::tests::test_user_function ... ok
+test lexer::tests::test_all_assignment_types ... ok
+test interpreter::tests::test_while_loop ... ok
+test lexer::tests::test_assignment_operators ... ok
+test lexer::tests::test_caret ... ok
+test lexer::tests::test_colon ... ok
+test lexer::tests::test_comment_at_end ... ok
+test lexer::tests::test_comments ... ok
+test lexer::tests::test_comparison_operators ... ok
+test lexer::tests::test_decimal_starting_with_dot ... ok
+test lexer::tests::test_delimiters ... ok
+test lexer::tests::test_double_pipe ... ok
+test lexer::tests::test_eof_token ... ok
+test lexer::tests::test_exponent ... ok
+test lexer::tests::test_hex_escape ... ok
+test lexer::tests::test_identifier_with_underscore ... ok
+test lexer::tests::test_increment_decrement ... ok
+test lexer::tests::test_invalid_hex_escape ... ok
+test lexer::tests::test_keywords ... ok
+test lexer::tests::test_line_continuation ... ok
+test lexer::tests::test_line_tracking ... ok
+test lexer::tests::test_logical_operators ... ok
+test lexer::tests::test_more_keywords ... ok
+test lexer::tests::test_multiple_newlines ... ok
+test lexer::tests::test_number_exponent_variations ... ok
+test lexer::tests::test_number_leading_dot ... ok
+test lexer::tests::test_number_with_exponent ... ok
+test lexer::tests::test_numbers ... ok
+test lexer::tests::test_octal_escape ... ok
+test lexer::tests::test_regex_after_operators ... ok
+test lexer::tests::test_regex_match_operators ... ok
+test lexer::tests::test_regex_vs_division ... ok
+test lexer::tests::test_regex_after_comma ... ok
+test lexer::tests::test_regex_with_escapes ... ok
+test lexer::tests::test_regex_with_escapes_complete ... ok
+test lexer::tests::test_simple_tokens ... ok
+test lexer::tests::test_single_ampersand_error ... ok
+test lexer::tests::test_single_pipe ... ok
+test lexer::tests::test_special_operators ... ok
+test lexer::tests::test_string_escapes ... ok
+test lexer::tests::test_string_unknown_escape ... ok
+test lexer::tests::test_string_with_all_escapes ... ok
+test lexer::tests::test_string_with_newline_error ... ok
+test lexer::tests::test_strings ... ok
+test interpreter::tests::test_fpat ... ok
+test lexer::tests::test_unexpected_character_error ... ok
+test lexer::tests::test_unterminated_regex_error ... ok
+test lexer::tests::test_unterminated_string_error ... ok
+test parser::tests::test_arithmetic ... ok
+test parser::tests::test_array_in ... ok
+test parser::tests::test_array_multi_index ... ok
+test parser::tests::test_begin_end ... ok
+test parser::tests::test_beginfile_endfile ... ok
+test parser::tests::test_block_statement ... ok
+test parser::tests::test_break_continue ... ok
+test parser::tests::test_comparison_ops ... ok
+test parser::tests::test_compound_assign ... ok
+test parser::tests::test_concatenation ... ok
+test parser::tests::test_delete ... ok
+test parser::tests::test_delete_array ... ok
+test parser::tests::test_do_while ... ok
+test parser::tests::test_empty_statement ... ok
+test parser::tests::test_exit ... ok
+test parser::tests::test_exponentiation ... ok
+test parser::tests::test_expression_pattern ... ok
+test parser::tests::test_field_access ... ok
+test parser::tests::test_field_binary_precedence ... ok
+test parser::tests::test_field_post_increment_precedence ... ok
+test parser::tests::test_field_pre_increment_operand ... ok
+test parser::tests::test_field_unary_operand ... ok
+test parser::tests::test_for_in_loop ... ok
+test parser::tests::test_for_loop ... ok
+test parser::tests::test_function_call ... ok
+test parser::tests::test_function_def ... ok
+test parser::tests::test_getline ... ok
+test parser::tests::test_if_else ... ok
+test parser::tests::test_logical_and_or ... ok
+test parser::tests::test_multiple_rules ... ok
+test parser::tests::test_nested_field_dollar ... ok
+test parser::tests::test_next_nextfile ... ok
+test parser::tests::test_not_operator ... ok
+test parser::tests::test_output_append ... ok
+test parser::tests::test_output_pipe ... ok
+test parser::tests::test_output_redirect ... ok
+test parser::tests::test_parenthesized_expression ... ok
+test parser::tests::test_pipe_getline ... ok
+test parser::tests::test_post_increment ... ok
+test parser::tests::test_pre_increment ... ok
+test parser::tests::test_printf ... ok
+test parser::tests::test_range_pattern ... ok
+test parser::tests::test_regex_match ... ok
+test parser::tests::test_regex_pattern ... ok
+test parser::tests::test_return ... ok
+test parser::tests::test_simple_print ... ok
+test parser::tests::test_ternary ... ok
+test parser::tests::test_unary_ops ... ok
+test parser::tests::test_while_loop ... ok
+test value::tests::test_comparison ... ok
+test value::tests::test_comparison_number_vs_string ... ok
+test value::tests::test_comparison_uninitialized ... ok
+test value::tests::test_format_number_float ... ok
+test value::tests::test_format_number_inf ... ok
+test value::tests::test_format_number_integer ... ok
+test value::tests::test_format_number_nan ... ok
+test value::tests::test_from_number ... ok
+test value::tests::test_is_truthy_numeric_string ... ok
+test value::tests::test_itoa_fast ... ok
+test value::tests::test_leading_number ... ok
+test value::tests::test_number ... ok
+test value::tests::test_numeric_string ... ok
+test value::tests::test_numeric_string_whitespace ... ok
+test value::tests::test_numeric_string_with_exponent ... ok
+test value::tests::test_numeric_string_with_sign ... ok
+test value::tests::test_parse_leading_exponent ... ok
+test value::tests::test_parse_leading_with_sign ... ok
+test value::tests::test_string ... ok
+test value::tests::test_to_number_uninitialized ... ok
+test value::tests::test_to_string_val_uninitialized ... ok
+test value::tests::test_uninitialized ... ok
+
+test result: ok. 181 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/build/nova-awk/25dd1d988f6e48c3/out/awk-25dd1d988f6e48c3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stream.rs (target/debug/build/nova-awk/cefe4558c98b1509/out/stream-cefe4558c98b1509)
+
+running 2 tests
+test partial_record_is_not_emitted_after_io_error ... ok
+test allocation_failure_is_reported_before_record_output ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests awk_rs
+
+running 4 tests
+test src/lib.rs - (line 8) ... ok
+test src/value.rs - value::Value (line 14) ... ok
+test src/lib.rs - (line 30) ... ok
+test src/lib.rs - (line 53) ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+all doctests ran in 0.42s; merged doctests compilation took 0.21s

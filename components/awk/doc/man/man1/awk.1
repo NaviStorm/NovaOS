@@ -1,0 +1,63 @@
+.Dd November 16, 2026
+.Dt AWK 1
+.Os NovaOS
+.Sh NAME
+.Nm awk
+.Nd scan records and process fields
+.Sh SYNOPSIS
+.Nm
+.Op Fl bS
+.Op Fl F Ar fs
+.Op Fl v Ar var=value
+.Op Fl i Ar library
+.Ar program
+.Op Ar file ...
+.Nm
+.Op Ar options
+.Fl f Ar script
+.Op Ar file ...
+.Sh DESCRIPTION
+Each pattern selects records on which its action runs. Input defaults to standard input. A missing final newline still terminates a record.
+.Pp
+BEGIN and END run before and after input. BEGINFILE and ENDFILE run for each file. Use next to skip a record and nextfile to advance to another file. Patterns include regular expressions and inclusive ranges.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl F Ar fs , Fl \-field-separator Ns = Ns Ar fs
+Set the input field separator.
+.It Fl v Ar var=value , Fl \-assign Ns = Ns Ar var=value
+Assign a value before BEGIN. Operand assignments occur between files.
+.It Fl f Ar file , Fl \-file Ns = Ns Ar file
+Read program source. A dash reads standard input.
+.It Fl e Ar text , Fl \-source Ns = Ns Ar text
+Append program text in argument order.
+.It Fl i Ar file , Fl \-include Ns = Ns Ar file
+Include a program file once. AWKPATH supplies search directories.
+.It Fl E Ar file , Fl \-exec Ns = Ns Ar file
+Read program and stop interpreting options and assignment operands.
+.It Fl b , Fl \-characters-as-bytes
+Process input as octets.
+.It Fl S , Fl \-sandbox
+Deny system(), redirected getline, output redirection and shell pipes. Named input operands remain available.
+.It Fl h , Fl \-help
+Display localized help.
+.It Fl V , Fl \-version
+Display localized version information.
+.It Fl C , Fl \-copyright
+Display the upstream MIT notice.
+.El
+.Pp
+A double dash ends option processing. Unsupported command-line options produce a diagnostic. Dynamic library loading is unavailable.
+.Sh LANGUAGE
+$0 is the record, $1 through $NF are its fields. FS and RS select field and record separators. OFS and ORS control print. NR and FNR count records. FILENAME, ARGC, ARGV and ENVIRON expose invocation state. Additional variables include SUBSEP, CONVFMT, OFMT, IGNORECASE, FIELDWIDTHS, FPAT and selected PROCINFO keys.
+.Pp
+Programs may use associative and nested arrays, functions, recursion, if, for, while, do, break, continue and return. Built-in operations include print, printf, sprintf, split, patsplit, sub, gsub, gensub, match, index, substr, length, tolower, toupper and mathematical functions. Call close() to release a redirected stream and collect a child.
+.Sh SYSTEM ACCESS
+The Darwin adapter operates with the calling account. The portable host interface denies file redirection, process creation and time access until the adapter supplies them. Native NovaOS delegation and revocation are described in the separate admission proposal.
+.Sh EXAMPLES
+.Bd -literal -offset indent
+awk -F: '{print $1}' comptes.txt
+cat journal.txt | awk '/erreur/ {print NR, $0}'
+awk '{s += $1} END {print s}' nombres.txt
+.Ed
+.Sh EXIT STATUS
+Normal completion returns zero. An explicit exit supplies the program status. Syntax diagnostics return one and runtime, I/O and unsupported-option errors return two.
