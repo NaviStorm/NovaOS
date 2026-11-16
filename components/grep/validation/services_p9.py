@@ -42,7 +42,7 @@ def main(arch, sector, out):
         result = vm.until(b"finlecture=")
         assert vm.until(b"\r\n").strip() == b"0"
         vm.until(b"nsh> ")
-        assert result.count(b"#") == 8193, result[-400:]
+        assert result == b"#" * 8193 + b"finlecture=", result[-400:]
         results["cat grand"] = {"octets_attendus_et_lus": 8193, "octet": "23"}
         result = sortie(vm, "cat commun.nsh | wc -l")
         count = COMMUN.count("\n")
