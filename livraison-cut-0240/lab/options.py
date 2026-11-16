@@ -1,6 +1,7 @@
 """Différentiel en octets avec GNU Coreutils 9.12, options, fichiers et diagnostics."""
 import argparse
 import gzip
+import hashlib
 import json
 import os
 import random
@@ -10,8 +11,11 @@ from pathlib import Path
 
 BASE=Path(__file__).resolve().parents[1]
 GNU=Path("/opt/homebrew/bin/gcut")
-NOVA=BASE/"bin/cut-darwin-arm64"
-VERSION = (BASE.parent / "components/cut/VERSION").read_bytes().strip()
+NOVA = Path(os.environ.get("CUT_NOVA_BIN", BASE / "bin/cut-darwin-arm64")).resolve()
+def component_version():
+    if "CUT_NOVA_VERSION" in os.environ:
+        return os.environ["CUT_NOVA_VERSION"].encode("ascii")
+    return (BASE.parent / "components/cut/VERSION").read_bytes().strip()
 FLAGS=["--bytes","--characters","--fields","--delimiter","--no-partial","--only-delimited",
        "--whitespace-delimited","--output-delimiter","--complement","--zero-terminated","--help","--version"]
 TAB=b"A\t\tC\tD\tE\tF\tG\tH\tI\t\nalone\n\tX\tY\nsans fin"
@@ -52,6 +56,16 @@ def execute(exe,args,src,folder,env):
         return dict(stdout=p.stdout.hex(),stderr=p.stderr.hex(),rc=p.returncode,stdin_offset=f.tell())
 
 def run(o,folder):
+    version_attendue = component_version() if o.novaOS else b"9.12"
+    identite = b"cut (NovaOS) " if o.novaOS else b"cut (GNU coreutils) "
+    tools = {"GNU": GNU}
+    if o.novaOS:
+        tools["Nova"] = NOVA
+    for name, exe in tools.items():
+        version = subprocess.check_output([exe, "--version"], env=dict(os.environ, LC_ALL="C")).splitlines()[0]
+        if name == "GNU" and version != b"cut (GNU coreutils) 9.12":
+            raise SystemExit(f"Référence GNU 9.12 attendue, obtenu {version!r}")
+        print(f"{version.decode()} — {exe} — SHA-256 {hashlib.sha256(exe.read_bytes()).hexdigest()}")
     (folder/"a").write_bytes(b"x\tA");(folder/"b").write_bytes(b"y\tB\n")
     (folder/"-fichier").write_bytes(TAB);(folder/"repertoire").mkdir()
     src=folder/"stdin";failed=0;count=0
@@ -64,6 +78,27 @@ def run(o,folder):
                 print("Écart",obj["args"],obj["locale"],"cas",count)
                 failed+=1
             log.write(json.dumps(obj,ensure_ascii=True)+"\n")
+        # Une sortie indépendante de GNU rend visible toute perte de TAB ou de LF.
+        tsv = b"A\tB\tC\nD\tE\tF\n"
+        projected = b"A\tC\nD\tF\n"
+        (folder / "donnees.tsv").write_bytes(tsv)
+        env = dict(os.environ, LC_ALL="C", LANGUAGE="C")
+        for args, source, expected in [
+            (["-b1"], "stdin", b"A\nD\n"),
+            (["-c1"], "stdin", b"A\nD\n"),
+            (["-f1"], "stdin", b"A\nD\n"),
+            (["-f1,3", "donnees.tsv"], "fichier", projected),
+            (["-f1,3"], "stdin", projected),
+        ]:
+            row = dict(args=args, locale="C", entree=source, tsv=tsv.hex(),
+                       attendu=expected.hex(), mesures={}, ok=True)
+            for name, exe in tools.items():
+                proc = subprocess.run(["cut", *args], executable=exe, cwd=folder,
+                                      env=env, input=tsv if source == "stdin" else b"",
+                                      capture_output=True)
+                row["mesures"][name] = dict(stdout=proc.stdout.hex(), stderr=proc.stderr.hex(), rc=proc.returncode)
+                row["ok"] &= (proc.stdout, proc.stderr, proc.returncode) == (expected, b"", 0)
+            record(row)
         for locale in ["C","en_US.UTF-8"]:
             env=dict(os.environ,LC_ALL=locale,LANG="en-US",LANGUAGE="C")
             env.pop("POSIXLY_CORRECT",None)
@@ -85,7 +120,10 @@ def run(o,folder):
                 result=execute(exe,[opt],src,folder,dict(os.environ,LC_ALL="C",LANG=tag))
                 raw=bytes.fromhex(result["stdout"])
                 version=opt.startswith("--v")
-                ok=(VERSION if o.novaOS else b"9.12") in raw if version else all(v.encode() in raw for v in FLAGS)
+                if version:
+                    ok = raw.splitlines()[:1] == [identite + version_attendue]
+                else:
+                    ok = all(v.encode() in raw for v in FLAGS)
                 if not version and o.novaOS:ok &= (b"Syntaxe" in raw)==(tag in ["fr","FR-ca","fr-Latn-FR"])
                 record(dict(args=[opt],locale=tag,result=result,ok=bool(ok and result["rc"]==0 and not result["stderr"] and result["stdin_offset"]==0)))
         for name,exe in [("GNU",GNU)]+([("Nova",NOVA)] if o.novaOS else []):
@@ -94,14 +132,15 @@ def run(o,folder):
             try:
                 p=subprocess.run([exe,"-f1",src],stdout=wr,stderr=subprocess.PIPE)
             finally:os.close(wr)
-            record(dict(args=["-f1","<sortie fermée>"],outil=name,locale="C",rc=p.returncode,stderr=p.stderr.hex(),ok=p.returncode==-13))
+            record(dict(args=["-f1","<sortie fermée>"],outil=name,locale="C",rc=p.returncode,stderr=p.stderr.hex(),ok=p.returncode==-13 and not p.stderr))
     print(f"{count-failed}/{count} cas conformes")
     return bool(failed)
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    g=p.add_mutually_exclusive_group(required=True);g.add_argument("--macOS",action="store_true",help="référence GNU");g.add_argument("--novaOS",action="store_true",help="comparer le Mach-O à GNU")
+    g=p.add_mutually_exclusive_group();g.add_argument("--macOS",action="store_true",help="référence GNU");g.add_argument("--novaOS",action="store_true",help="comparer le Mach-O à GNU (par défaut)")
     p.add_argument("--large",action="store_true",help="900 cas générés par locale")
     p.add_argument("--jsonl",type=Path,help="journal brut, gzip si suffixe .gz")
     o=p.parse_args()
+    o.novaOS = not o.macOS
     with tempfile.TemporaryDirectory(dir=os.environ["TMPDIR"],prefix="cut-options-") as d:raise SystemExit(run(o,Path(d)))
 if __name__=="__main__":main()

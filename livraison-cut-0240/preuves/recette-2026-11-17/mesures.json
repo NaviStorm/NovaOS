@@ -1,0 +1,395 @@
+{
+  "graine": 27027,
+  "cache": "Cache de fichiers macOS, un échauffement par outil, sans purge",
+  "destination": "/dev/null",
+  "plateforme": "Darwin MacBookThierry 27.2.0 Darwin Kernel Version 27.2.0: Wed Oct 14 23:44:56 PDT 2026; root:xnu-13432.41.4~25/RELEASE_ARM64_T6041 arm64",
+  "materiel": "hw.model: Mac16,5\nhw.memsize: 137438953472\nhw.logicalcpu: 16",
+  "libre": 521875288064,
+  "binaires": {
+    "Nova": {
+      "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cut-bancs-v0300/livraison-cut-0240/bin/cut-darwin-arm64",
+      "sha256": "5e88e6f2522096e9d2ef2e894effbf0265a250091299ad1443da2f799a588e94",
+      "version": "cut (NovaOS) 0.24.0"
+    },
+    "GNU": {
+      "path": "/opt/homebrew/bin/gcut",
+      "sha256": "d84adc05e56f93e57fabbfdd555d443d3d5475947d3374ac0a68f461c7ef8335",
+      "version": "cut (GNU coreutils) 9.12"
+    }
+  },
+  "essais": [
+    {
+      "taille": "10000 lignes",
+      "entree": "fichier",
+      "arguments": [
+        "-f1,3,8,9"
+      ],
+      "locale": "C",
+      "octets": 231759,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-f5gby1cg/10000.tsv",
+      "sha256": "07cf5f170a064b202a16ce9b4c60cd82d2c2c88904697268b10a6458a89d29a9",
+      "attendu": "e012ebb1f2a92625bb72ec9853bfb699232422fd428c8486805bbec786197c1f",
+      "outils": {
+        "Nova": {
+          "sortie": "e012ebb1f2a92625bb72ec9853bfb699232422fd428c8486805bbec786197c1f",
+          "echauffement": {
+            "s": 0.003810084,
+            "rss_octets": 2179072
+          },
+          "passages": [
+            {
+              "s": 0.00311075,
+              "rss_octets": 2179072
+            },
+            {
+              "s": 0.003444417,
+              "rss_octets": 2179072
+            },
+            {
+              "s": 0.003133417,
+              "rss_octets": 2179072
+            }
+          ],
+          "mediane_s": 0.003133417,
+          "debit_mio_s": 70.53724604672665,
+          "pic_rss_octets": 2179072
+        },
+        "GNU": {
+          "sortie": "e012ebb1f2a92625bb72ec9853bfb699232422fd428c8486805bbec786197c1f",
+          "echauffement": {
+            "s": 0.003522709,
+            "rss_octets": 2244608
+          },
+          "passages": [
+            {
+              "s": 0.003579584,
+              "rss_octets": 2244608
+            },
+            {
+              "s": 0.00353325,
+              "rss_octets": 2244608
+            },
+            {
+              "s": 0.003386042,
+              "rss_octets": 2244608
+            }
+          ],
+          "mediane_s": 0.00353325,
+          "debit_mio_s": 62.55504306120317,
+          "pic_rss_octets": 2244608
+        }
+      }
+    },
+    {
+      "taille": "10000 lignes",
+      "entree": "stdin",
+      "arguments": [
+        "-f1,3,8,9"
+      ],
+      "locale": "C",
+      "octets": 231759,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-f5gby1cg/10000.tsv",
+      "sha256": "07cf5f170a064b202a16ce9b4c60cd82d2c2c88904697268b10a6458a89d29a9",
+      "attendu": "e012ebb1f2a92625bb72ec9853bfb699232422fd428c8486805bbec786197c1f",
+      "outils": {
+        "Nova": {
+          "sortie": "e012ebb1f2a92625bb72ec9853bfb699232422fd428c8486805bbec786197c1f",
+          "echauffement": {
+            "s": 0.003343416,
+            "rss_octets": 2179072
+          },
+          "passages": [
+            {
+              "s": 0.003021708,
+              "rss_octets": 2179072
+            },
+            {
+              "s": 0.003132958,
+              "rss_octets": 2179072
+            },
+            {
+              "s": 0.003404042,
+              "rss_octets": 2179072
+            }
+          ],
+          "mediane_s": 0.003132958,
+          "debit_mio_s": 70.54758024078079,
+          "pic_rss_octets": 2179072
+        },
+        "GNU": {
+          "sortie": "e012ebb1f2a92625bb72ec9853bfb699232422fd428c8486805bbec786197c1f",
+          "echauffement": {
+            "s": 0.003692,
+            "rss_octets": 2244608
+          },
+          "passages": [
+            {
+              "s": 0.0033515,
+              "rss_octets": 2244608
+            },
+            {
+              "s": 0.003773208,
+              "rss_octets": 2244608
+            },
+            {
+              "s": 0.003506083,
+              "rss_octets": 2244608
+            }
+          ],
+          "mediane_s": 0.003506083,
+          "debit_mio_s": 63.03975287977954,
+          "pic_rss_octets": 2244608
+        }
+      }
+    },
+    {
+      "taille": "10000 lignes",
+      "entree": "fichier",
+      "arguments": [
+        "--complement",
+        "-f2,7"
+      ],
+      "locale": "C",
+      "octets": 231759,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-f5gby1cg/10000.tsv",
+      "sha256": "07cf5f170a064b202a16ce9b4c60cd82d2c2c88904697268b10a6458a89d29a9",
+      "attendu": "1211183dc3ce836b32d3b9ee34bc09f625e8da41d35e469a08466e497059fc10",
+      "outils": {
+        "Nova": {
+          "sortie": "1211183dc3ce836b32d3b9ee34bc09f625e8da41d35e469a08466e497059fc10",
+          "echauffement": {
+            "s": 0.003306917,
+            "rss_octets": 2195456
+          },
+          "passages": [
+            {
+              "s": 0.003134167,
+              "rss_octets": 2195456
+            },
+            {
+              "s": 0.00333725,
+              "rss_octets": 2195456
+            },
+            {
+              "s": 0.003482583,
+              "rss_octets": 2195456
+            }
+          ],
+          "mediane_s": 0.00333725,
+          "debit_mio_s": 66.22896273758217,
+          "pic_rss_octets": 2195456
+        },
+        "GNU": {
+          "sortie": "1211183dc3ce836b32d3b9ee34bc09f625e8da41d35e469a08466e497059fc10",
+          "echauffement": {
+            "s": 0.003669958,
+            "rss_octets": 2244608
+          },
+          "passages": [
+            {
+              "s": 0.00370025,
+              "rss_octets": 2244608
+            },
+            {
+              "s": 0.003832583,
+              "rss_octets": 2244608
+            },
+            {
+              "s": 0.003650208,
+              "rss_octets": 2244608
+            }
+          ],
+          "mediane_s": 0.00370025,
+          "debit_mio_s": 59.731803498681465,
+          "pic_rss_octets": 2244608
+        }
+      }
+    },
+    {
+      "taille": "10000 lignes",
+      "entree": "fichier",
+      "arguments": [
+        "-c1,3,5"
+      ],
+      "locale": "en_US.UTF-8",
+      "octets": 129296,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-f5gby1cg/utf8",
+      "sha256": "4db23f83bfce7d56b4c13282de42484ed0aa10494f70168c1607c3ba0f796e36",
+      "attendu": "0d32d440fbf260cb224a438df41686e59ee0e5676c6b8e6581f28cd863358d3f",
+      "outils": {
+        "Nova": {
+          "sortie": "0d32d440fbf260cb224a438df41686e59ee0e5676c6b8e6581f28cd863358d3f",
+          "echauffement": {
+            "s": 0.003228333,
+            "rss_octets": 2326528
+          },
+          "passages": [
+            {
+              "s": 0.003143208,
+              "rss_octets": 2326528
+            },
+            {
+              "s": 0.003290875,
+              "rss_octets": 2326528
+            },
+            {
+              "s": 0.002993875,
+              "rss_octets": 2326528
+            }
+          ],
+          "mediane_s": 0.003143208,
+          "debit_mio_s": 39.22943515480442,
+          "pic_rss_octets": 2326528
+        },
+        "GNU": {
+          "sortie": "0d32d440fbf260cb224a438df41686e59ee0e5676c6b8e6581f28cd863358d3f",
+          "echauffement": {
+            "s": 0.003046083,
+            "rss_octets": 2260992
+          },
+          "passages": [
+            {
+              "s": 0.003499958,
+              "rss_octets": 2260992
+            },
+            {
+              "s": 0.003363875,
+              "rss_octets": 2260992
+            },
+            {
+              "s": 0.00345,
+              "rss_octets": 2260992
+            }
+          ],
+          "mediane_s": 0.00345,
+          "debit_mio_s": 35.74094910552536,
+          "pic_rss_octets": 2260992
+        }
+      }
+    },
+    {
+      "taille": "1 Mio/ligne",
+      "entree": "fichier",
+      "arguments": [
+        "-sf1"
+      ],
+      "locale": "C",
+      "octets": 1048581,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-f5gby1cg/tardif",
+      "sha256": "9cd124fe1b8cc3c0a9246fb0af3152c940e2fda62221d0f2194ae0ae3013ac06",
+      "attendu": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+      "outils": {
+        "Nova": {
+          "sortie": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+          "echauffement": {
+            "s": 0.00349725,
+            "rss_octets": 4341760
+          },
+          "passages": [
+            {
+              "s": 0.00300525,
+              "rss_octets": 4341760
+            },
+            {
+              "s": 0.003098459,
+              "rss_octets": 4325376
+            },
+            {
+              "s": 0.003469417,
+              "rss_octets": 4341760
+            }
+          ],
+          "mediane_s": 0.003098459,
+          "debit_mio_s": 322.7426176598051,
+          "pic_rss_octets": 4341760
+        },
+        "GNU": {
+          "sortie": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+          "echauffement": {
+            "s": 0.002811167,
+            "rss_octets": 3260416
+          },
+          "passages": [
+            {
+              "s": 0.002565625,
+              "rss_octets": 3260416
+            },
+            {
+              "s": 0.002659,
+              "rss_octets": 3260416
+            },
+            {
+              "s": 0.0027505,
+              "rss_octets": 3260416
+            }
+          ],
+          "mediane_s": 0.002659,
+          "debit_mio_s": 376.0830268415126,
+          "pic_rss_octets": 3260416
+        }
+      }
+    },
+    {
+      "taille": "1 Mio/ligne",
+      "entree": "fichier",
+      "arguments": [
+        "-sf2"
+      ],
+      "locale": "C",
+      "octets": 1048581,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-f5gby1cg/tardif",
+      "sha256": "9cd124fe1b8cc3c0a9246fb0af3152c940e2fda62221d0f2194ae0ae3013ac06",
+      "attendu": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+      "outils": {
+        "Nova": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "echauffement": {
+            "s": 0.002959792,
+            "rss_octets": 2162688
+          },
+          "passages": [
+            {
+              "s": 0.003015625,
+              "rss_octets": 2162688
+            },
+            {
+              "s": 0.002975084,
+              "rss_octets": 2162688
+            },
+            {
+              "s": 0.003182417,
+              "rss_octets": 2162688
+            }
+          ],
+          "mediane_s": 0.003015625,
+          "debit_mio_s": 331.60779883824483,
+          "pic_rss_octets": 2162688
+        },
+        "GNU": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "echauffement": {
+            "s": 0.00256175,
+            "rss_octets": 2211840
+          },
+          "passages": [
+            {
+              "s": 0.002610208,
+              "rss_octets": 2211840
+            },
+            {
+              "s": 0.002464,
+              "rss_octets": 2211840
+            },
+            {
+              "s": 0.002554167,
+              "rss_octets": 2211840
+            }
+          ],
+          "mediane_s": 0.002554167,
+          "debit_mio_s": 391.51894467808177,
+          "pic_rss_octets": 2211840
+        }
+      }
+    }
+  ]
+}

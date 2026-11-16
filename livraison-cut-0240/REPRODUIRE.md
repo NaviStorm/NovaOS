@@ -1,5 +1,29 @@
 # Reconstruire et rejouer
 
+## Recette fonctionnelle et performance sur Mac ARM64
+
+Dans le dossier `livraison-cut-0240`, chaque commande conserve le différentiel brut et les mesures dans un répertoire neuf. Les deux bancs utilisent par défaut le Mach-O Nova et `/opt/homebrew/bin/gcut` 9.12. Pour une future livraison, définir `CUT_NOVA_BIN` avec le chemin du Mach-O à tester et `CUT_NOVA_VERSION` avec la version attendue de ce **composant**. Chaque banc relève les identités réellement exécutées.
+
+**Rapide** — 90 combinaisons générées par locale en plus des cas fixes, TSV de 10 000 lignes, ligne longue de 1 Mio.
+
+```sh
+p=$(mktemp -d ../../tmp/cut-rapide.XXXXXXXX) && ./tester-options-cut.sh --jsonl "$p/options.jsonl.gz" && ./mesurer-performances-cut.sh --json "$p/mesures.json"
+```
+
+**Complète** — 900 combinaisons générées par locale, TSV de 1, 10 et 65 millions de lignes, lignes longues de 1, 16 et 64 Mio.
+
+```sh
+p=$(mktemp -d ../../tmp/cut-complet.XXXXXXXX) && ./tester-options-cut.sh --large --jsonl "$p/options.jsonl.gz" && ./mesurer-performances-cut.sh --large --json "$p/mesures.json"
+```
+
+La suite commence par les trois modes simples, puis vérifie les huit octets de la projection sur fichier et sur stdin alimenté par un pipe Darwin. Sur l’entrée de 12 octets `41 09 42 09 43 0a 44 09 45 09 46 0a`, les deux programmes doivent rendre exactement `41 09 43 0a 44 09 46 0a`, stderr vide et le statut 0. Les cas différentiels suivants couvrent les plages, les délimiteurs, les combinaisons, les limites et les erreurs. La comparaison conserve stdout, stderr et le statut séparément. Le préfixe d’invocation des diagnostics peut différer. L’aide localisée, le nom et la version du composant sont comparés aux attentes de chaque produit. La numérotation de la matrice SDK historique se rapporte à sa capture d’origine.
+
+Pour la performance, la projection de champs lit exactement le même TSV par opérande de fichier puis via le descripteur stdin redirigé depuis ce fichier. Chaque mesure inclut le lancement du processus et écrit vers `/dev/null`. Génération, calcul des oracles et contrôle des sorties précèdent le chronométrage. Le JSON donne la taille en octets, l’empreinte des entrées et sorties, la locale, l’échauffement, les trois passages alternés, la médiane, le débit en Mio/s et le pic RSS en octets pour chaque outil.
+
+Le 17 novembre 2026, le Mach-O Nova 0.24.0 a réussi 383/383 cas sur Mac ARM64. Sur les 10 000 lignes, les médianes Nova/GNU sont de 3,133/3,533 ms par fichier et 3,133/3,506 ms via stdin. Le profil court inclut également le complément, la sélection UTF-8 et le premier délimiteur tardif. Les nouvelles mesures stdin aux trois grandes tailles restent à exécuter. Les campagnes archivées à `008d62b` et leurs sondes SDK restent disponibles. La qualification via le vrai `nsh` relève du lanceur commun. [Sorties fonctionnelles](preuves/recette-2026-11-17/options.jsonl.gz) · [Tableau court](preuves/recette-2026-11-17/tableau.txt) · [Mesures brutes](preuves/recette-2026-11-17/mesures.json)
+
+## Reconstruction et essais historiques
+
 Depuis la racine du worktree CUT sur Darwin ARM64, utiliser le toolchain Rust stable avec les cibles `aarch64-apple-darwin`, `aarch64-unknown-none-softfloat` et `x86_64-unknown-none`. Les essais utilisent Python 3.11+, Git, Perl et GNU Coreutils 9.12. Les invités utilisent l’outillage QEMU, xorriso et le chargeur de démarrage de NovaOS. Les mesures lourdes sont explicites. Exécuter les profils séquentiellement et utiliser des répertoires neufs.
 
 ```sh
