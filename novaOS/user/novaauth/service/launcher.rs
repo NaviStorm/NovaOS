@@ -103,9 +103,6 @@ pub(super) fn launch() -> rt::Result<()> {
     {
         return Err(rt::REFUSED);
     }
-    // Son attribution confirmée, le provisionneur peut être collecté.
-    rt::send_for(provisioner[2], 2, &[0], 5000)?;
-    collect(provisioner[0], false)?;
     rt::send_for(client[2], 2, &live.payload[..32], 5000)?;
     let root = &receipt.payload[24..32];
     rt::send_for(client[2], 8, root, 5000)?;
@@ -119,6 +116,10 @@ pub(super) fn launch() -> rt::Result<()> {
     {
         return Err(rt::REFUSED);
     }
+    // Le dernier contrôle VFS est acquitté. Jusqu'ici le provisionneur possède
+    // les racines des canaux du dossier des deux clients.
+    rt::send_for(provisioner[2], 2, &[0], 5000)?;
+    collect(provisioner[0], false)?;
     rt::send_for(client[2], 9, &[1], 5000)?;
     let withdrawn = rt::receive_for(client[1], 5000)?;
     if withdrawn.kind != 1 || withdrawn.tag != 3 || withdrawn.len != 1 || withdrawn.payload[0] != 1
