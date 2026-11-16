@@ -23,7 +23,15 @@ impl Language {
 }
 
 // RFC 5646 §2.1. Aucun tag grandfathered n'a « fr » comme langue principale.
-// Cette décision dépend de la syntaxe, indépendamment des enregistrements IANA.
+#[path = "documentation_iana.rs"]
+mod registry;
+
+fn registered(codes: &str, subtag: &str) -> bool {
+    codes
+        .split_ascii_whitespace()
+        .any(|code| code.eq_ignore_ascii_case(subtag))
+}
+
 fn french_tag(tag: &str) -> bool {
     let mut parts = tag.split('-').peekable();
     if !parts.next().is_some_and(|s| s.eq_ignore_ascii_case("fr")) {
@@ -32,19 +40,26 @@ fn french_tag(tag: &str) -> bool {
     let alpha = |s: &str| s.bytes().all(|b| b.is_ascii_alphabetic());
     let digit = |s: &str| s.bytes().all(|b| b.is_ascii_digit());
     let alnum = |s: &str| s.bytes().all(|b| b.is_ascii_alphanumeric());
-    for _ in 0..3 {
-        if parts.next_if(|s| s.len() == 3 && alpha(s)).is_none() {
-            break;
-        }
+    // Le registre ne définit aucun extlang de préfixe fr.
+    if let Some(script) = parts.next_if(|s| s.len() == 4 && alpha(s))
+        && !registered(registry::SCRIPT, script)
+    {
+        return false;
     }
-    parts.next_if(|s| s.len() == 4 && alpha(s));
-    parts.next_if(|s| (s.len() == 2 && alpha(s)) || (s.len() == 3 && digit(s)));
+    if let Some(region) =
+        parts.next_if(|s| (s.len() == 2 && alpha(s)) || (s.len() == 3 && digit(s)))
+        && !registered(registry::REGION, region)
+    {
+        return false;
+    }
     let mut variants: alloc::vec::Vec<&str> = alloc::vec::Vec::new();
     while let Some(v) = parts.next_if(|s| {
         alnum(s)
             && ((5..=8).contains(&s.len()) || (s.len() == 4 && s.as_bytes()[0].is_ascii_digit()))
     }) {
-        if variants.iter().any(|old| old.eq_ignore_ascii_case(v)) {
+        if !registered(registry::VARIANT, v)
+            || variants.iter().any(|old| old.eq_ignore_ascii_case(v))
+        {
             return false;
         }
         variants.push(v);

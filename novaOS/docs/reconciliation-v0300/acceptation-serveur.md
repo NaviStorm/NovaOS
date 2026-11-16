@@ -136,7 +136,7 @@ Les rapports historiques d’installation, de SMP et de stockage restent des pre
 | DOC, huit pilotes | Aide et version 0, pages lues | Aide et version 0, pages lues | 8 des 37 noms publics des sources. Page absente 20. |
 | DOC-05 à DOC-08, scénarios ciblés | Réussis | Réussis | Zéro STOP, témoin cd, refus et suppression rm relus hors invité. |
 | SVC, présentation et sélection | Réussies | Réussies | Catalogue installé 1, 2, 9, 10, 16. Noms/ID, état et autostart, 14 aides, manuel. |
-| Langue et absence d’écriture P9 | 13 locales ou absences, compteurs et SHA-256 | 13 locales ou absences, compteurs et SHA-256 | Aide locale, manuel, versions et ELF rm privé sans canaux métier. |
+| Langue et absence d’écriture P9 | 16 cas, compteurs et SHA-256 | 16 cas, compteurs et SHA-256 | Aide locale, man rm et man man, versions et ELF rm privé sans canaux métier. [Correction IANA](../cloture-documentation-v0.23.0-phase1.md). |
 | Consultation sur terminal étroit | Réussie | Réussie | 48 × 12, déplacement, restitution à nsh puis à vi. |
 
 Les colonnes des recettes complètes ci-dessus concernent le futur candidat stable. Les sondes de supervision 3 à 8 et l’ensemble des scénarios de mutations de service n’ont pas été requalifiés dans cette phase. Le périmètre, les codes et les preuves de stockage sont consignés dans le [rapport de qualification](../documentation-v0.23.0-phase1.md).

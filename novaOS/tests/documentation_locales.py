@@ -15,7 +15,8 @@ from cli import Terminal
 from journalisation import arret, attend, sortie
 from session_cli import fixture_p9
 
-CASES = [(None, False), ("fr", True), ("FR", True), ("fr-FR", True), ("fr-CA", True),
+CASES = [(None, False), ("fr", True), ("FR", True), ("fr-FR", True),
+         ("fr-zzzz", True), ("fr-zzzzz", False), ("fr-CA", True), ("fr-Zzzz", True),
          ("fr-BE", True), ("fr-CH", True), ("en-US", False), ("de-DE", False),
          ("es-ES", False), ("frr", False), ("fr--CA", False), ("zz", False)]
 
@@ -78,12 +79,16 @@ def run(arch, out):
             assert "DOC-ELF" not in rm
             assert ("Arrêter l’instance" if french else "Stop the current instance") in stop
             assert "DOC-IPC SEND" not in stop
-            vm.vm.stdin.write(b"man rm; echo pagercode=$?\n")
-            frame = vm.until(b"q quitter" if french else b"q quit  / search")
-            assert expected.encode() in frame
-            vm.vm.stdin.write(b"q")
-            vm.until(b"pagercode=0")
-            vm.until(b"nsh> ")
+            frames = {}
+            for page, description in (("rm", expected), ("man", "Consulter le manuel natif" if french
+                                                         else "Read native manual pages")):
+                vm.vm.stdin.write(f"man {page}; echo pagercode=$?\n".encode())
+                frame = vm.until(b"q quitter" if french else b"q quit  / search")
+                assert description.encode() in frame
+                frames[page] = frame.decode()
+                vm.vm.stdin.write(b"q")
+                vm.until(b"pagercode=0")
+                vm.until(b"nsh> ")
             public = snapshot()
             assert public == before, (tag, before, public)
             pilots = ("nsh", "service", "journal", "ls", "rm", "cd", "vi", "man")
@@ -108,7 +113,7 @@ def run(arch, out):
             cases.append(dict(avant=before, apres_aide=public, avant_elf=before_elf, apres=after,
                               aides=public_help, versions=public_versions, elf=child, elf_version=child_version,
                               locale=tag, langue="fr" if french else "en", service_stop_help=stop,
-                              rm_help=rm, man_rm=frame.decode(), codes=[0, 0, 0]))
+                              rm_help=rm, man_rm=frames["rm"], man_man=frames["man"], codes=[0, 0, 0, 0]))
         # Témoin positif hors fenêtre de consultation : le compteur mesure bien notre disque.
         baseline = snapshot()
         native("touch preuve-compteur")
