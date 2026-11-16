@@ -1,0 +1,3619 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling thiserror v2.0.21
+    Checking utf8parse v0.2.2
+    Checking rustc-hash v2.1.3
+    Checking memchr v2.8.3
+    Checking is_terminal_polyfill v1.70.2
+    Checking colorchoice v1.0.5
+    Checking anstyle-query v1.1.5
+    Checking anstyle v1.0.14
+    Checking strsim v0.11.1
+    Checking clap_lex v1.1.1
+    Checking smallvec v1.16.1
+    Checking self_cell v1.3.0
+   Compiling cfg_aliases v0.2.2
+error[E0463]: can't find crate for `std`
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustc-hash-2.1.3/src/lib.rs:25:1
+   |
+25 | extern crate std;
+   | ^^^^^^^^^^^^^^^^^ can't find crate
+   |
+   = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+
+For more information about this error, try `rustc --explain E0463`.
+error: could not compile `rustc-hash` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error[E0463]: can't find crate for `std`
+  |
+  = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+  = note: `std` is required by `clap_lex` because it does not declare `#![no_std]`
+
+error: cannot resolve a prelude import
+
+error[E0463]: can't find crate for `std`
+ --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:1:5
+  |
+1 | use std::ffi::OsStr;
+  |     ^^^ can't find crate
+  |
+  = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+
+error[E0463]: can't find crate for `std`
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.8.3/src/lib.rs:198:1
+    |
+198 | extern crate std;
+    | ^^^^^^^^^^^^^^^^^ can't find crate
+    |
+    = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:398:3
+    |
+398 | #[derive(Clone, Debug)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+120 + use core::derive;
+    |
+
+error: cannot find macro `debug_assert` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:352:17
+    |
+352 |                 debug_assert!(self.is_stdio());
+    |                 ^^^^^^^^^^^^
+    |
+help: consider importing this macro
+    |
+120 + use core::debug_assert;
+    |
+
+error: cannot find macro `debug_assert` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:328:13
+    |
+328 |             debug_assert!(self.is_escape());
+    |             ^^^^^^^^^^^^
+    |
+help: consider importing this macro
+    |
+120 + use core::debug_assert;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:287:3
+    |
+287 | #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+120 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:275:3
+    |
+275 | #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+120 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:128:3
+    |
+128 | #[derive(Default, Clone, Debug, PartialEq, Eq)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+120 + use core::derive;
+    |
+
+error[E0463]: can't find crate for `std`
+  |
+  = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+  = note: `std` is required by `anstyle_query` because it does not declare `#![no_std]`
+
+error[E0463]: can't find crate for `std`
+  |
+  = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+  = note: `std` is required by `anstyle` because it does not declare `#![no_std]`
+
+error: cannot find macro `debug_assert_ne` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:259:17
+    |
+259 |                 debug_assert_ne!(haystack, second);
+    |                 ^^^^^^^^^^^^^^^
+    |
+help: consider importing this macro
+    |
+  1 + use core::debug_assert_ne;
+    |
+
+error: cannot find macro `assert_ne` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:216:9
+    |
+216 |         assert_ne!(needle, "");
+    |         ^^^^^^^^^
+    |
+help: consider importing this macro
+    |
+  1 + use core::assert_ne;
+    |
+
+error[E0463]: can't find crate for `std`
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.5/src/lib.rs:24:17
+   |
+24 |     let value = std::env::var_os("CLICOLOR")?;
+   |                 ^^^ can't find crate
+   |
+   = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+
+error: cannot find attribute `derive` in this scope
+ --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:3:3
+  |
+3 | #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+  |   ^^^^^^
+  |
+help: consider importing this attribute macro
+  |
+1 + use core::derive;
+  |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:136:3
+    |
+136 | #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: could not compile `memchr` (lib) due to 1 previous error
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:212:28
+    |
+212 |             Self::Black => escape!("3", "0"),
+    |                            ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0463]: can't find crate for `std`
+  |
+  = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+  = note: `std` is required by `is_terminal_polyfill` because it does not declare `#![no_std]`
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:213:26
+    |
+213 |             Self::Red => escape!("3", "1"),
+    |                          ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:214:28
+    |
+214 |             Self::Green => escape!("3", "2"),
+    |                            ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:215:29
+    |
+215 |             Self::Yellow => escape!("3", "3"),
+    |                             ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0463]: can't find crate for `std`
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/is_terminal_polyfill-1.70.2/src/lib.rs:43:5
+   |
+43 |     std::fs::File,
+   |     ^^^ can't find crate
+   |
+   = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:216:27
+    |
+216 |             Self::Blue => escape!("3", "4"),
+    |                           ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.5/src/windows.rs:63:43
+   |
+63 |     pub(crate) fn enable_ansi_colors() -> Option<bool> {
+   |                                           ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+62 +     use core::option::Option;
+   |
+
+error[E0425]: cannot find value `None` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.5/src/windows.rs:64:9
+   |
+64 |         None
+   |         ^^^^ not found in this scope
+   |
+help: consider importing this unit variant
+   |
+62 +     use core::option::Option::None;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.5/src/windows.rs:71:32
+   |
+71 | pub fn enable_ansi_colors() -> Option<bool> {
+   |                                ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 3 + use core::option::Option;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.5/src/lib.rs:23:22
+   |
+23 | pub fn clicolor() -> Option<bool> {
+   |                      ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 8 + use core::option::Option;
+   |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.5/src/lib.rs:25:5
+   |
+25 |     Some(value != "0")
+   |     ^^^^ not found in this scope
+   |
+help: consider importing this tuple variant
+   |
+ 8 + use core::option::Option::Some;
+   |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.5/src/lib.rs:62:13
+   |
+62 |             Some(k) => {
+   |             ^^^^ not found in this scope
+   |
+help: consider importing this tuple variant
+   |
+ 8 + use core::option::Option::Some;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.5/src/lib.rs:137:19
+    |
+137 | fn non_empty(var: Option<&std::ffi::OsStr>) -> bool {
+    |                   ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  8 + use core::option::Option;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:217:30
+    |
+217 |             Self::Magenta => escape!("3", "5"),
+    |                              ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:218:27
+    |
+218 |             Self::Cyan => escape!("3", "6"),
+    |                           ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:219:28
+    |
+219 |             Self::White => escape!("3", "7"),
+    |                            ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:220:34
+    |
+220 |             Self::BrightBlack => escape!("9", "0"),
+    |                                  ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:221:32
+    |
+221 |             Self::BrightRed => escape!("9", "1"),
+    |                                ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:222:34
+    |
+222 |             Self::BrightGreen => escape!("9", "2"),
+    |                                  ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+Some errors have detailed explanations: E0425, E0463, E0531.
+For more information about an error, try `rustc --explain E0425`.
+error: could not compile `is_terminal_polyfill` (lib) due to 3 previous errors
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:223:35
+    |
+223 |             Self::BrightYellow => escape!("9", "3"),
+    |                                   ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0463]: can't find crate for `std`
+  |
+  = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+  = note: `std` is required by `strsim` because it does not declare `#![no_std]`
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:224:33
+    |
+224 |             Self::BrightBlue => escape!("9", "4"),
+    |                                 ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:625:18
+    |
+625 |     let mut r1 = vec![max_val; size];
+    |                  ^^^
+
+error: cannot find macro `vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:624:18
+    |
+624 |     let mut fr = vec![max_val; size];
+    |                  ^^^
+
+error: cannot find macro `vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:547:13
+    |
+547 |             vec![GrowingHashmapMapElemChar::<ValueType>::default(); new_size as usize],
+    |             ^^^
+
+error: cannot find macro `vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:504:25
+    |
+504 |         self.map = Some(vec![GrowingHashmapMapElemChar::default(); 8]);
+    |                         ^^^
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:427:3
+    |
+427 | #[derive(Default, Clone)]
+    |   ^^^^^^
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:416:3
+    |
+416 | #[derive(Clone, Copy, PartialEq, Eq)]
+    |   ^^^^^^
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:225:36
+    |
+225 |             Self::BrightMagenta => escape!("9", "5"),
+    |                                    ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:368:25
+    |
+368 |     let mut distances = vec![0; (a_len + 2) * (b_len + 2)];
+    |                         ^^^
+
+error: cannot find macro `vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:306:42
+    |
+306 |     let mut curr_distances: Vec<usize> = vec![0; b_len + 1];
+    |                                          ^^^
+
+error: cannot find macro `vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:109:28
+    |
+109 |     let mut flags_memory = vec![false; a_len + b_len];
+    |                            ^^^
+
+error: cannot find macro `write` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:43:9
+   |
+43 |         write!(fmt, "{}", text)
+   |         ^^^^^
+
+error: could not compile `anstyle-query` (lib) due to 10 previous errors
+error: cannot find attribute `derive` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:32:3
+   |
+32 | #[derive(Debug, PartialEq)]
+   |   ^^^^^^
+
+error[E0416]: identifier `None` is bound more than once in the same pattern
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:68:20
+   |
+68 |             (None, None) => return Ok(count),
+   |                    ^^^^ used in a pattern more than once
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:226:33
+    |
+226 |             Self::BrightCyan => escape!("9", "6"),
+    |                                 ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:227:34
+    |
+227 |             Self::BrightWhite => escape!("9", "7"),
+    |                                  ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0425]: cannot find type `Result` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:38:43
+   |
+38 |     fn fmt(&self, fmt: &mut Formatter) -> Result<(), fmt::Error> {
+   |                                           ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `Result` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:49:26
+   |
+49 | pub type HammingResult = Result<usize, StrSimError>;
+   |                          ^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:55:12
+   |
+55 |     Iter1: IntoIterator<Item = Elem1>,
+   |            ^^^^^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:56:12
+   |
+56 |     Iter2: IntoIterator<Item = Elem2>,
+   |            ^^^^^^^^^^^^ not found in this scope
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:245:28
+    |
+245 |             Self::Black => escape!("4", "0"),
+    |                            ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0405]: cannot find trait `PartialEq` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:57:12
+   |
+57 |     Elem1: PartialEq<Elem2>,
+   |            ^^^^^^^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:63:14
+   |
+63 |             (Some(x), Some(y)) => {
+   |              ^^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:63:23
+   |
+63 |             (Some(x), Some(y)) => {
+   |                       ^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:92:16
+   |
+92 |     &'a Iter1: IntoIterator<Item = Elem1>,
+   |                ^^^^^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:93:16
+   |
+93 |     &'b Iter2: IntoIterator<Item = Elem2>,
+   |                ^^^^^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `PartialEq` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:94:12
+   |
+94 |     Elem1: PartialEq<Elem2>,
+   |            ^^^^^^^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:140:28
+    |
+140 |                     if let Some((b_flag, ch2)) = b_iter.next() {
+    |                            ^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:168:14
+    |
+168 | impl<'a, 'b> IntoIterator for &'a StringWrapper<'b> {
+    |              ^^^^^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:193:16
+    |
+193 |     &'a Iter1: IntoIterator<Item = Elem1>,
+    |                ^^^^^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:194:16
+    |
+194 |     &'b Iter2: IntoIterator<Item = Elem2>,
+    |                ^^^^^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `PartialEq` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:195:12
+    |
+195 |     Elem1: PartialEq<Elem2>,
+    |            ^^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:235:16
+    |
+235 |     &'a Iter1: IntoIterator<Item = Elem1>,
+    |                ^^^^^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:236:16
+    |
+236 |     &'b Iter2: IntoIterator<Item = Elem2>,
+    |                ^^^^^^^^^^^^ not found in this scope
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:246:26
+    |
+246 |             Self::Red => escape!("4", "1"),
+    |                          ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0405]: cannot find trait `PartialEq` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:237:12
+    |
+237 |     Elem1: PartialEq<Elem2>,
+    |            ^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `Vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:241:20
+    |
+241 |     let mut cache: Vec<usize> = (1..b_len + 1).collect();
+    |                    ^^^ not found in this scope
+
+error[E0425]: cannot find type `Vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:304:33
+    |
+304 |     let mut prev_two_distances: Vec<usize> = (0..b_len + 1).collect();
+    |                                 ^^^ not found in this scope
+
+error[E0425]: cannot find type `Vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:305:29
+    |
+305 |     let mut prev_distances: Vec<usize> = (0..b_len + 1).collect();
+    |                             ^^^ not found in this scope
+
+error[E0425]: cannot find type `Vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:306:29
+    |
+306 |     let mut curr_distances: Vec<usize> = vec![0; b_len + 1];
+    |                             ^^^ not found in this scope
+
+error[E0405]: cannot find trait `Eq` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:355:11
+    |
+355 |     Elem: Eq + Hash + Clone,
+    |           ^^ not found in this scope
+
+error[E0405]: cannot find trait `Clone` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:355:23
+    |
+355 |     Elem: Eq + Hash + Clone,
+    |                       ^^^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:389:17
+    |
+389 |                 Some(&value) => value,
+    |                 ^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:421:6
+    |
+421 | impl Default for RowId {
+    |      ^^^^^^^ not found in this scope
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:247:28
+    |
+247 |             Self::Green => escape!("4", "2"),
+    |                            ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:444:10
+    |
+444 |     map: Option<Vec<GrowingHashmapMapElemChar<ValueType>>>,
+    |          ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `Vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:444:17
+    |
+444 |     map: Option<Vec<GrowingHashmapMapElemChar<ValueType>>>,
+    |                 ^^^ not found in this scope
+
+error[E0405]: cannot find trait `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:447:17
+    |
+447 | impl<ValueType> Default for GrowingHashmapChar<ValueType>
+    |                 ^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:449:16
+    |
+449 |     ValueType: Default + Clone + Eq,
+    |                ^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Clone` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:449:26
+    |
+449 |     ValueType: Default + Clone + Eq,
+    |                          ^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Eq` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:449:34
+    |
+449 |     ValueType: Default + Clone + Eq,
+    |                                  ^^ not found in this scope
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:456:18
+    |
+456 |             map: None,
+    |                  ^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:463:16
+    |
+463 |     ValueType: Default + Clone + Eq + Copy,
+    |                ^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Clone` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:463:26
+    |
+463 |     ValueType: Default + Clone + Eq + Copy,
+    |                          ^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Eq` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:463:34
+    |
+463 |     ValueType: Default + Clone + Eq + Copy,
+    |                                  ^^ not found in this scope
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:463:39
+    |
+463 |     ValueType: Default + Clone + Eq + Copy,
+    |                                       ^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:574:16
+    |
+574 |     ValueType: Default + Clone + Copy + Eq,
+    |                ^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Clone` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:574:26
+    |
+574 |     ValueType: Default + Clone + Copy + Eq,
+    |                          ^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:574:34
+    |
+574 |     ValueType: Default + Clone + Copy + Eq,
+    |                                  ^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Eq` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:574:41
+    |
+574 |     ValueType: Default + Clone + Copy + Eq,
+    |                                         ^^ not found in this scope
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:248:29
+    |
+248 |             Self::Yellow => escape!("4", "3"),
+    |                             ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0405]: cannot find trait `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:597:17
+    |
+597 | impl<ValueType> Default for HybridGrowingHashmapChar<ValueType>
+    |                 ^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:599:16
+    |
+599 |     ValueType: Default + Clone + Copy + Eq,
+    |                ^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Clone` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:599:26
+    |
+599 |     ValueType: Default + Clone + Copy + Eq,
+    |                          ^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:599:34
+    |
+599 |     ValueType: Default + Clone + Copy + Eq,
+    |                                  ^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Eq` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:599:41
+    |
+599 |     ValueType: Default + Clone + Copy + Eq,
+    |                                         ^^ not found in this scope
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:611:12
+    |
+611 |     Iter1: Iterator<Item = char> + Clone,
+    |            ^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Clone` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:611:36
+    |
+611 |     Iter1: Iterator<Item = char> + Clone,
+    |                                    ^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:612:12
+    |
+612 |     Iter2: Iterator<Item = char> + Clone,
+    |            ^^^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Clone` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:612:36
+    |
+612 |     Iter2: Iterator<Item = char> + Clone,
+    |                                    ^^^^^ not found in this scope
+
+error[E0425]: cannot find type `Vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:626:16
+    |
+626 |     let mut r: Vec<isize> = (max_val..max_val + 1)
+    |                ^^^ not found in this scope
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:705:29
+    |
+705 | fn bigrams(s: &str) -> impl Iterator<Item = (char, char)> + '_ {
+    |                             ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `String` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:725:12
+    |
+725 |     let a: String = a.chars().filter(|&x| !char::is_whitespace(x)).collect();
+    |            ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `String` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:726:12
+    |
+726 |     let b: String = b.chars().filter(|&x| !char::is_whitespace(x)).collect();
+    |            ^^^^^^ not found in this scope
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:249:27
+    |
+249 |             Self::Blue => escape!("4", "4"),
+    |                           ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:250:30
+    |
+250 |             Self::Magenta => escape!("4", "5"),
+    |                              ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:251:27
+    |
+251 |             Self::Cyan => escape!("4", "6"),
+    |                           ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:252:28
+    |
+252 |             Self::White => escape!("4", "7"),
+    |                            ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:253:34
+    |
+253 |             Self::BrightBlack => escape!("10", "0"),
+    |                                  ------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:254:32
+    |
+254 |             Self::BrightRed => escape!("10", "1"),
+    |                                ------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:255:34
+    |
+255 |             Self::BrightGreen => escape!("10", "2"),
+    |                                  ------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:256:35
+    |
+256 |             Self::BrightYellow => escape!("10", "3"),
+    |                                   ------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:257:33
+    |
+257 |             Self::BrightBlue => escape!("10", "4"),
+    |                                 ------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:258:36
+    |
+258 |             Self::BrightMagenta => escape!("10", "5"),
+    |                                    ------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:259:33
+    |
+259 |             Self::BrightCyan => escape!("10", "6"),
+    |                                 ------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:260:34
+    |
+260 |             Self::BrightWhite => escape!("10", "7"),
+    |                                  ------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:350:3
+    |
+350 | #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:475:3
+    |
+475 | #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:570:3
+    |
+570 | #[derive(Copy, Clone, Default, Debug)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:634:3
+    |
+634 | #[derive(Copy, Clone, Default, Debug)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+ --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:8:3
+  |
+8 | #[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+  |   ^^^^^^
+  |
+help: consider importing this attribute macro
+  |
+1 + use core::derive;
+  |
+
+error[E0223]: ambiguous associated type
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:172:27
+    |
+172 |     fn into_iter(self) -> Self::IntoIter {
+    |                           ^^^^^^^^^^^^^^
+    |
+help: use fully-qualified syntax
+    |
+172 -     fn into_iter(self) -> Self::IntoIter {
+172 +     fn into_iter(self) -> <&'a StringWrapper<'b> as core::iter::IntoIterator>::IntoIter {
+    |
+
+error: cannot find macro `write` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:193:9
+    |
+193 |         write!(f, "Effects(")?;
+    |         ^^^^^
+    |
+help: consider importing this macro
+    |
+  1 + use core::write;
+    |
+
+error: cannot find macro `write` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:196:17
+    |
+196 |                 write!(f, " | ")?;
+    |                 ^^^^^
+    |
+help: consider importing this macro
+    |
+  1 + use core::write;
+    |
+
+error: cannot find macro `write` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:198:13
+    |
+198 |             write!(f, "{}", METADATA[index].name)?;
+    |             ^^^^^
+    |
+help: consider importing this macro
+    |
+  1 + use core::write;
+    |
+
+error: cannot find macro `write` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:200:9
+    |
+200 |         write!(f, ")")?;
+    |         ^^^^^
+    |
+help: consider importing this macro
+    |
+  1 + use core::write;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:271:17
+    |
+271 |         escape: escape!("1"),
+    |                 ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:275:17
+    |
+275 |         escape: escape!("2"),
+    |                 ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error[E0433]: cannot find type `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:468:29
+    |
+468 |             .map_or_else(|| Default::default(), |map| map[self.lookup(key)].value)
+    |                             ^^^^^^^ use of undeclared type `Default`
+
+error[E0433]: cannot find type `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:482:16
+    |
+482 |             == Default::default()
+    |                ^^^^^^^ use of undeclared type `Default`
+
+error[E0433]: cannot find type `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:518:28
+    |
+518 |         if map[i].value == Default::default() || map[i].key == key {
+    |                            ^^^^^^^ use of undeclared type `Default`
+
+error[E0433]: cannot find type `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:526:32
+    |
+526 |             if map[i].value == Default::default() || map[i].key == key {
+    |                                ^^^^^^^ use of undeclared type `Default`
+
+error[E0433]: cannot find type `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:551:30
+    |
+551 |             if elem.value != Default::default() {
+    |                              ^^^^^^^ use of undeclared type `Default`
+
+error[E0433]: cannot find type `Default` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:604:30
+    |
+604 |             extended_ascii: [Default::default(); 256],
+    |                              ^^^^^^^ use of undeclared type `Default`
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:68:36
+   |
+68 |             (None, None) => return Ok(count),
+   |                                    ^^ not found in this scope
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Err` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:69:25
+   |
+69 |             _ => return Err(StrSimError::DifferentLengthArgs),
+   |                         ^^^ not found in this scope
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/src/lib.rs:504:20
+    |
+504 |         self.map = Some(vec![GrowingHashmapMapElemChar::default(); 8]);
+    |                    ^^^^ not found in this scope
+
+Some errors have detailed explanations: E0223, E0405, E0416, E0425, E0433, E0463, E0531.
+For more information about an error, try `rustc --explain E0223`.
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:279:17
+    |
+279 |         escape: escape!("3"),
+    |                 ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:283:17
+    |
+283 |         escape: escape!("4"),
+    |                 ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:287:17
+    |
+287 |         escape: escape!("21"),
+    |                 ------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:291:17
+    |
+291 |         escape: escape!("4:3"),
+    |                 -------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:295:17
+    |
+295 |         escape: escape!("4:4"),
+    |                 -------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:299:17
+    |
+299 |         escape: escape!("4:5"),
+    |                 -------------- in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: could not compile `strsim` (lib) due to 78 previous errors
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:303:17
+    |
+303 |         escape: escape!("5"),
+    |                 ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:307:17
+    |
+307 |         escape: escape!("7"),
+    |                 ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:311:17
+    |
+311 |         escape: escape!("8"),
+    |                 ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find macro `concat` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/macros.rs:3:9
+    |
+  3 |         concat!("\x1B[", $($inner),*, "m")
+    |         ^^^^^^
+    |
+   ::: /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:315:17
+    |
+315 |         escape: escape!("9"),
+    |                 ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `escape` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider importing this macro
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:1:1
+    |
+  1 + use core::concat;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:319:3
+    |
+319 | #[derive(Copy, Clone, Default, Debug)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:333:3
+    |
+333 | #[derive(Clone, Debug, PartialEq, Eq)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:357:3
+    |
+357 | #[derive(Clone, Debug, PartialEq, Eq)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: cannot find attribute `derive` in this scope
+ --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/reset.rs:3:3
+  |
+3 | #[derive(Copy, Clone, Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+  |   ^^^^^^
+  |
+help: consider importing this attribute macro
+  |
+1 + use core::derive;
+  |
+
+error: cannot find attribute `derive` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:17:3
+   |
+17 | #[derive(Copy, Clone, Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+   |   ^^^^^^
+   |
+help: consider importing this attribute macro
+   |
+ 1 + use core::derive;
+   |
+
+error: cannot find attribute `derive` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:422:3
+    |
+422 | #[derive(Copy, Clone, Default, Debug)]
+    |   ^^^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::derive;
+    |
+
+error: cannot find attribute `test` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:431:3
+    |
+431 | #[test]
+    |   ^^^^
+    |
+help: consider importing this attribute macro
+    |
+  1 + use core::prelude::rust_2024::test;
+    |
+
+error: cannot find macro `dbg` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:435:5
+    |
+435 |     dbg!(size_of::<Style>());
+    |     ^^^
+
+error: cannot find macro `dbg` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:436:5
+    |
+436 |     dbg!(size_of::<StyleDisplay>());
+    |     ^^^
+
+error[E0463]: can't find crate for `std`
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:46:53
+   |
+46 |     pub(crate) fn write_fg_to(self, write: &mut dyn std::io::Write) -> std::io::Result<()> {
+   |                                                     ^^^ can't find crate
+   |
+   = note: the `aarch64-unknown-none-softfloat` target may not support the standard library
+
+error[E0425]: cannot find type `Result` in this scope
+ --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:9:26
+  |
+9 |     fn try_str(&self) -> Result<&str, std::str::Utf8Error>;
+  |                          ^^^^^^ not found in this scope
+  |
+help: consider importing one of these items
+  |
+1 + use core::fmt::Result;
+  |
+1 + use core::result::Result;
+  |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:49:37
+   |
+49 |     fn find(&self, needle: &str) -> Option<usize>;
+   |                                     ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 1 + use core::option::Option;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:66:45
+   |
+66 |     fn strip_prefix(&self, prefix: &str) -> Option<&OsStr>;
+   |                                             ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 1 + use core::option::Option;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:182:46
+    |
+182 |     fn split_once(&self, needle: &'_ str) -> Option<(&OsStr, &OsStr)>;
+    |                                              ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Result` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:186:26
+    |
+186 |     fn try_str(&self) -> Result<&str, std::str::Utf8Error> {
+    |                          ^^^^^^ not found in this scope
+    |
+help: consider importing one of these items
+    |
+  1 + use core::fmt::Result;
+    |
+  1 + use core::result::Result;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:195:37
+    |
+195 |     fn find(&self, needle: &str) -> Option<usize> {
+    |                                     ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:201:45
+    |
+201 |     fn strip_prefix(&self, prefix: &str) -> Option<&OsStr> {
+    |                                             ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:218:23
+    |
+218 |             haystack: Some(self),
+    |                       ^^^^
+    |
+help: try calling `Some` as a method
+    |
+218 -             haystack: Some(self),
+218 +             haystack: self.Some(),
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:223:46
+    |
+223 |     fn split_once(&self, needle: &'_ str) -> Option<(&OsStr, &OsStr)> {
+    |                                              ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:233:13
+    |
+233 |             Some((
+    |             ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:248:15
+    |
+248 |     haystack: Option<&'s OsStr>,
+    |               ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:252:10
+    |
+252 | impl<'s> Iterator for Split<'s, '_> {
+    |          ^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::iter::Iterator;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:255:27
+    |
+255 |     fn next(&mut self) -> Option<Self::Item> {
+    |                           ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:257:16
+    |
+257 |         if let Some((first, second)) = haystack.split_once(self.needle) {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:261:29
+    |
+261 |             self.haystack = Some(second);
+    |                             ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:262:13
+    |
+262 |             Some(first)
+    |             ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:264:29
+    |
+264 |             self.haystack = None;
+    |                             ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+  1 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/ext.rs:265:13
+    |
+265 |             Some(haystack)
+    |             ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find type `Vec` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:130:12
+    |
+130 |     items: Vec<OsString>,
+    |            ^^^ not found in this scope
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:170:27
+    |
+170 |     pub fn new(iter: impl IntoIterator<Item = impl Into<OsString>>) -> Self {
+    |                           ^^^^^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::iter::IntoIterator;
+    |
+
+error[E0405]: cannot find trait `Into` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:170:52
+    |
+170 |     pub fn new(iter: impl IntoIterator<Item = impl Into<OsString>>) -> Self {
+    |                                                    ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::convert::Into;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:193:58
+    |
+193 |     pub fn next<'s>(&'s self, cursor: &mut ArgCursor) -> Option<ParsedArg<'s>> {
+    |                                                          ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:198:61
+    |
+198 |     pub fn next_os<'s>(&'s self, cursor: &mut ArgCursor) -> Option<&'s OsStr> {
+    |                                                             ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:205:54
+    |
+205 |     pub fn peek<'s>(&'s self, cursor: &ArgCursor) -> Option<ParsedArg<'s>> {
+    |                                                      ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:210:57
+    |
+210 |     pub fn peek_os<'s>(&'s self, cursor: &ArgCursor) -> Option<&'s OsStr> {
+    |                                                         ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:227:68
+    |
+227 |     pub fn remaining<'s>(&'s self, cursor: &mut ArgCursor) -> impl Iterator<Item = &'s OsStr> {
+    |                                                                    ^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::iter::Iterator;
+    |
+
+error[E0405]: cannot find trait `IntoIterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:248:28
+    |
+248 |         insert_items: impl IntoIterator<Item = impl Into<OsString>>,
+    |                            ^^^^^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::iter::IntoIterator;
+    |
+
+error[E0405]: cannot find trait `Into` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:248:53
+    |
+248 |         insert_items: impl IntoIterator<Item = impl Into<OsString>>,
+    |                                                     ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::convert::Into;
+    |
+
+error[E0433]: cannot find type `Into` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:252:42
+    |
+252 |             insert_items.into_iter().map(Into::into),
+    |                                          ^^^^ use of undeclared type `Into`
+    |
+help: consider importing this trait
+    |
+120 + use core::convert::Into;
+    |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:262:12
+    |
+262 | impl<I, T> From<I> for RawArgs
+    |            ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:264:8
+    |
+264 |     I: Iterator<Item = T>,
+    |        ^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::iter::Iterator;
+    |
+
+error[E0405]: cannot find trait `Into` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:265:8
+    |
+265 |     T: Into<OsString>,
+    |        ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::convert::Into;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:319:27
+    |
+319 |             .and_then(|s| Some(is_number(s.strip_prefix('-')?)))
+    |                           ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:324:30
+    |
+324 |     pub fn to_long(&self) -> Option<(Result<&'s str, &'s OsStr>, Option<&'s OsStr>)> {
+    |                              ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Result` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:324:38
+    |
+324 |     pub fn to_long(&self) -> Option<(Result<&'s str, &'s OsStr>, Option<&'s OsStr>)> {
+    |                                      ^^^^^^ not found in this scope
+    |
+help: consider importing one of these items
+    |
+120 + use core::fmt::Result;
+    |
+120 + use core::result::Result;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:324:66
+    |
+324 |     pub fn to_long(&self) -> Option<(Result<&'s str, &'s OsStr>, Option<&'s OsStr>)> {
+    |                                                                  ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:329:20
+    |
+329 |             return None;
+    |                    ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:332:36
+    |
+332 |         let (flag, value) = if let Some((p0, p1)) = remainder.split_once("=") {
+    |                                    ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:333:18
+    |
+333 |             (p0, Some(p1))
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:335:25
+    |
+335 |             (remainder, None)
+    |                         ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:338:9
+    |
+338 |         Some((flag, value))
+    |         ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:347:31
+    |
+347 |     pub fn to_short(&self) -> Option<ShortFlags<'s>> {
+    |                               ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:348:16
+    |
+348 |         if let Some(remainder_os) = self.inner.strip_prefix("-") {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:350:17
+    |
+350 |                 None
+    |                 ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:353:17
+    |
+353 |                 None
+    |                 ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:355:17
+    |
+355 |                 Some(ShortFlags::new(remainder_os))
+    |                 ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:358:13
+    |
+358 |             None
+    |             ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find type `Result` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:385:31
+    |
+385 |     pub fn to_value(&self) -> Result<&'s str, &'s OsStr> {
+    |                               ^^^^^^ not found in this scope
+    |
+help: consider importing one of these items
+    |
+120 + use core::fmt::Result;
+    |
+120 + use core::result::Result;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:402:21
+    |
+402 |     invalid_suffix: Option<&'s OsStr>,
+    |                     ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Result` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:417:47
+    |
+417 |     pub fn advance_by(&mut self, n: usize) -> Result<(), usize> {
+    |                                               ^^^^^^ not found in this scope
+    |
+help: consider importing one of these items
+    |
+120 + use core::fmt::Result;
+    |
+120 + use core::result::Result;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:421:9
+    |
+421 |         Ok(())
+    |         ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::result::Result::Ok;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:439:36
+    |
+439 |     pub fn next_flag(&mut self) -> Option<Result<char, &'s OsStr>> {
+    |                                    ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Result` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:439:43
+    |
+439 |     pub fn next_flag(&mut self) -> Option<Result<char, &'s OsStr>> {
+    |                                           ^^^^^^ not found in this scope
+    |
+help: consider importing one of these items
+    |
+120 + use core::fmt::Result;
+    |
+120 + use core::result::Result;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:440:16
+    |
+440 |         if let Some((_, flag)) = self.utf8_prefix.next() {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:441:20
+    |
+441 |             return Some(Ok(flag));
+    |                    ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:441:25
+    |
+441 |             return Some(Ok(flag));
+    |                         ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::result::Result::Ok;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:444:16
+    |
+444 |         if let Some(suffix) = self.invalid_suffix {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:445:35
+    |
+445 |             self.invalid_suffix = None;
+    |                                   ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:446:20
+    |
+446 |             return Some(Err(suffix));
+    |                    ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Err` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:446:25
+    |
+446 |             return Some(Err(suffix));
+    |                         ^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::result::Result::Err;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:449:9
+    |
+449 |         None
+    |         ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:453:40
+    |
+453 |     pub fn next_value_os(&mut self) -> Option<&'s OsStr> {
+    |                                        ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:454:16
+    |
+454 |         if let Some((index, _)) = self.utf8_prefix.next() {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:456:35
+    |
+456 |             self.invalid_suffix = None;
+    |                                   ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:459:20
+    |
+459 |             return Some(remainder);
+    |                    ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:462:16
+    |
+462 |         if let Some(suffix) = self.invalid_suffix {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:463:35
+    |
+463 |             self.invalid_suffix = None;
+    |                                   ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:464:20
+    |
+464 |             return Some(suffix);
+    |                    ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:467:9
+    |
+467 |         None
+    |         ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:471:10
+    |
+471 | impl<'s> Iterator for ShortFlags<'s> {
+    |          ^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+120 + use core::iter::Iterator;
+    |
+
+error[E0425]: cannot find type `Result` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:472:17
+    |
+472 |     type Item = Result<char, &'s OsStr>;
+    |                 ^^^^^^ not found in this scope
+    |
+help: consider importing one of these items
+    |
+120 + use core::fmt::Result;
+    |
+120 + use core::result::Result;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:474:27
+    |
+474 |     fn next(&mut self) -> Option<Self::Item> {
+    |                           ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:479:44
+    |
+479 | fn split_nonutf8_once(b: &OsStr) -> (&str, Option<&OsStr>) {
+    |                                            ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+120 + use core::option::Option;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:481:9
+    |
+481 |         Ok(s) => (s, None),
+    |         ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::result::Result::Ok;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:481:22
+    |
+481 |         Ok(s) => (s, None),
+    |                      ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Err` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:482:9
+    |
+482 |         Err(err) => {
+    |         ^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::result::Result::Err;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:487:21
+    |
+487 |             (valid, Some(after_valid))
+    |                     ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:498:29
+    |
+498 |     let mut position_of_e = None;
+    |                             ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+120 + use core::option::Option::None;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:510:80
+    |
+510 |             b'e' | b'E' if position_of_e.is_none() && i > 0 => position_of_e = Some(i),
+    |                                                                                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-1.1.1/src/lib.rs:519:9
+    |
+519 |         Some(i) => i != arg.len() - 1,
+    |         ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+120 + use core::option::Option::Some;
+    |
+
+Some errors have detailed explanations: E0405, E0425, E0433, E0463, E0531.
+For more information about an error, try `rustc --explain E0405`.
+error: could not compile `clap_lex` (lib) due to 91 previous errors
+error[E0405]: cannot find trait `Into` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:22:38
+   |
+22 |     pub fn on(self, background: impl Into<Color>) -> crate::Style {
+   |                                      ^^^^ not found in this scope
+   |
+help: consider importing this trait
+   |
+ 1 + use core::convert::Into;
+   |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:24:23
+   |
+24 |             .fg_color(Some(self))
+   |                       ^^^^
+   |
+help: try calling `Some` as a method
+   |
+24 -             .fg_color(Some(self))
+24 +             .fg_color(self.Some())
+   |
+help: consider importing this tuple variant
+   |
+ 1 + use core::option::Option::Some;
+   |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:25:23
+   |
+25 |             .bg_color(Some(background.into()))
+   |                       ^^^^ not found in this scope
+   |
+help: consider importing this tuple variant
+   |
+ 1 + use core::option::Option::Some;
+   |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:31:38
+   |
+31 |         crate::Style::new().fg_color(Some(self))
+   |                                      ^^^^
+   |
+help: try calling `Some` as a method
+   |
+31 -         crate::Style::new().fg_color(Some(self))
+31 +         crate::Style::new().fg_color(self.Some())
+   |
+help: consider importing this tuple variant
+   |
+ 1 + use core::option::Option::Some;
+   |
+
+error[E0405]: cannot find trait `Copy` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:36:57
+   |
+36 |     pub fn render_fg(self) -> impl core::fmt::Display + Copy {
+   |                                                         ^^^^ not found in this scope
+   |
+help: consider importing this trait
+   |
+ 1 + use core::marker::Copy;
+   |
+
+error[E0405]: cannot find trait `Copy` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:57:57
+   |
+57 |     pub fn render_bg(self) -> impl core::fmt::Display + Copy {
+   |                                                         ^^^^ not found in this scope
+   |
+help: consider importing this trait
+   |
+ 1 + use core::marker::Copy;
+   |
+
+error[E0405]: cannot find trait `Copy` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:77:71
+   |
+77 |     pub(crate) fn render_underline(self) -> impl core::fmt::Display + Copy {
+   |                                                                       ^^^^ not found in this scope
+   |
+help: consider importing this trait
+   |
+ 1 + use core::marker::Copy;
+   |
+
+error[E0405]: cannot find trait `From` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:97:6
+   |
+97 | impl From<AnsiColor> for Color {
+   |      ^^^^ not found in this scope
+   |
+help: consider importing this trait
+   |
+ 1 + use core::convert::From;
+   |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:104:6
+    |
+104 | impl From<Ansi256Color> for Color {
+    |      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:111:6
+    |
+111 | impl From<RgbColor> for Color {
+    |      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:118:6
+    |
+118 | impl From<u8> for Color {
+    |      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:125:6
+    |
+125 | impl From<(u8, u8, u8)> for Color {
+    |      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `Into` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:191:38
+    |
+191 |     pub fn on(self, background: impl Into<Color>) -> crate::Style {
+    |                                      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::Into;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:193:23
+    |
+193 |             .fg_color(Some(self.into()))
+    |                       ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:194:23
+    |
+194 |             .bg_color(Some(background.into()))
+    |                       ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:200:38
+    |
+200 |         crate::Style::new().fg_color(Some(Color::Ansi(self)))
+    |                                      ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:205:57
+    |
+205 |     pub fn render_fg(self) -> impl core::fmt::Display + Copy {
+    |                                                         ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:238:57
+    |
+238 |     pub fn render_bg(self) -> impl core::fmt::Display + Copy {
+    |                                                         ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0405]: cannot find trait `Into` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:357:38
+    |
+357 |     pub fn on(self, background: impl Into<Color>) -> crate::Style {
+    |                                      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::Into;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:359:23
+    |
+359 |             .fg_color(Some(self.into()))
+    |                       ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:360:23
+    |
+360 |             .bg_color(Some(background.into()))
+    |                       ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:366:38
+    |
+366 |         crate::Style::new().fg_color(Some(Color::Ansi256(self)))
+    |                                      ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:377:37
+    |
+377 |     pub const fn into_ansi(self) -> Option<AnsiColor> {
+    |                                     ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:379:18
+    |
+379 |             0 => Some(AnsiColor::Black),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:380:18
+    |
+380 |             1 => Some(AnsiColor::Red),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:381:18
+    |
+381 |             2 => Some(AnsiColor::Green),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:382:18
+    |
+382 |             3 => Some(AnsiColor::Yellow),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:383:18
+    |
+383 |             4 => Some(AnsiColor::Blue),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:384:18
+    |
+384 |             5 => Some(AnsiColor::Magenta),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:385:18
+    |
+385 |             6 => Some(AnsiColor::Cyan),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:386:18
+    |
+386 |             7 => Some(AnsiColor::White),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:387:18
+    |
+387 |             8 => Some(AnsiColor::BrightBlack),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:388:18
+    |
+388 |             9 => Some(AnsiColor::BrightRed),
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:389:19
+    |
+389 |             10 => Some(AnsiColor::BrightGreen),
+    |                   ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:390:19
+    |
+390 |             11 => Some(AnsiColor::BrightYellow),
+    |                   ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:391:19
+    |
+391 |             12 => Some(AnsiColor::BrightBlue),
+    |                   ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:392:19
+    |
+392 |             13 => Some(AnsiColor::BrightMagenta),
+    |                   ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:393:19
+    |
+393 |             14 => Some(AnsiColor::BrightCyan),
+    |                   ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:394:19
+    |
+394 |             15 => Some(AnsiColor::BrightWhite),
+    |                   ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:395:18
+    |
+395 |             _ => None,
+    |                  ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+  1 + use core::option::Option::None;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:424:57
+    |
+424 |     pub fn render_fg(self) -> impl core::fmt::Display + Copy {
+    |                                                         ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:438:57
+    |
+438 |     pub fn render_bg(self) -> impl core::fmt::Display + Copy {
+    |                                                         ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:459:6
+    |
+459 | impl From<u8> for Ansi256Color {
+    |      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:466:6
+    |
+466 | impl From<AnsiColor> for Ansi256Color {
+    |      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `Into` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:481:38
+    |
+481 |     pub fn on(self, background: impl Into<Color>) -> crate::Style {
+    |                                      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::Into;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:483:23
+    |
+483 |             .fg_color(Some(self.into()))
+    |                       ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:484:23
+    |
+484 |             .bg_color(Some(background.into()))
+    |                       ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:490:38
+    |
+490 |         crate::Style::new().fg_color(Some(Color::Rgb(self)))
+    |                                      ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:513:57
+    |
+513 |     pub fn render_fg(self) -> impl core::fmt::Display + Copy {
+    |                                                         ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:531:57
+    |
+531 |     pub fn render_bg(self) -> impl core::fmt::Display + Copy {
+    |                                                         ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/color.rs:560:6
+    |
+560 | impl From<(u8, u8, u8)> for RgbColor {
+    |      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:168:54
+    |
+168 |     pub fn render(self) -> impl core::fmt::Display + Copy {
+    |                                                      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:178:9
+    |
+178 |         Ok(())
+    |         ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::result::Result::Ok;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:201:9
+    |
+201 |         Ok(())
+    |         ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::result::Result::Ok;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:328:9
+    |
+328 |         Ok(())
+    |         ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::result::Result::Ok;
+    |
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:339:6
+    |
+339 | impl Iterator for EffectIter {
+    |      ^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::iter::Iterator;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:342:27
+    |
+342 |     fn next(&mut self) -> Option<Self::Item> {
+    |                           ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:349:24
+    |
+349 |                 return Some(effect);
+    |                        ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:353:9
+    |
+353 |         None
+    |         ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+  1 + use core::option::Option::None;
+    |
+
+error[E0405]: cannot find trait `Iterator` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:363:6
+    |
+363 | impl Iterator for EffectIndexIter {
+    |      ^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::iter::Iterator;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:366:27
+    |
+366 |     fn next(&mut self) -> Option<Self::Item> {
+    |                           ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:373:24
+    |
+373 |                 return Some(index);
+    |                        ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find value `None` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/effect.rs:377:9
+    |
+377 |         None
+    |         ^^^^ not found in this scope
+    |
+help: consider importing this unit variant
+    |
+  1 + use core::option::Option::None;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/reset.rs:11:54
+   |
+11 |     pub fn render(self) -> impl core::fmt::Display + Copy {
+   |                                                      ^^^^ not found in this scope
+   |
+help: consider importing this trait
+   |
+ 1 + use core::marker::Copy;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:19:9
+   |
+19 |     fg: Option<crate::Color>,
+   |         ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 1 + use core::option::Option;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:20:9
+   |
+20 |     bg: Option<crate::Color>,
+   |         ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 1 + use core::option::Option;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:21:16
+   |
+21 |     underline: Option<crate::Color>,
+   |                ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 1 + use core::option::Option;
+   |
+
+error[E0425]: cannot find value `None` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:37:17
+   |
+37 |             fg: None,
+   |                 ^^^^ not found in this scope
+   |
+help: consider importing this unit variant
+   |
+ 1 + use core::option::Option::None;
+   |
+
+error[E0425]: cannot find value `None` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:38:17
+   |
+38 |             bg: None,
+   |                 ^^^^ not found in this scope
+   |
+help: consider importing this unit variant
+   |
+ 1 + use core::option::Option::None;
+   |
+
+error[E0425]: cannot find value `None` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:39:24
+   |
+39 |             underline: None,
+   |                        ^^^^ not found in this scope
+   |
+help: consider importing this unit variant
+   |
+ 1 + use core::option::Option::None;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:53:41
+   |
+53 |     pub const fn fg_color(mut self, fg: Option<crate::Color>) -> Self {
+   |                                         ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 1 + use core::option::Option;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:67:41
+   |
+67 |     pub const fn bg_color(mut self, bg: Option<crate::Color>) -> Self {
+   |                                         ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 1 + use core::option::Option;
+   |
+
+error[E0425]: cannot find type `Option` in this scope
+  --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:81:55
+   |
+81 |     pub const fn underline_color(mut self, underline: Option<crate::Color>) -> Self {
+   |                                                       ^^^^^^ not found in this scope
+   |
+help: consider importing this enum
+   |
+ 1 + use core::option::Option;
+   |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:104:54
+    |
+104 |     pub fn render(self) -> impl core::fmt::Display + Copy {
+    |                                                      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:113:16
+    |
+113 |         if let Some(fg) = self.fg {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:117:16
+    |
+117 |         if let Some(bg) = self.bg {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:121:16
+    |
+121 |         if let Some(underline) = self.underline {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:125:9
+    |
+125 |         Ok(())
+    |         ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::result::Result::Ok;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:134:16
+    |
+134 |         if let Some(fg) = self.fg {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:138:16
+    |
+138 |         if let Some(bg) = self.bg {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0531]: cannot find tuple struct or tuple variant `Some` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:142:16
+    |
+142 |         if let Some(underline) = self.underline {
+    |                ^^^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::option::Option::Some;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:146:9
+    |
+146 |         Ok(())
+    |         ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::result::Result::Ok;
+    |
+
+error[E0405]: cannot find trait `Copy` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:153:60
+    |
+153 |     pub fn render_reset(self) -> impl core::fmt::Display + Copy {
+    |                                                            ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::marker::Copy;
+    |
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Ok` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:170:13
+    |
+170 |             Ok(())
+    |             ^^ not found in this scope
+    |
+help: consider importing this tuple variant
+    |
+  1 + use core::result::Result::Ok;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:294:40
+    |
+294 |     pub const fn get_fg_color(self) -> Option<crate::Color> {
+    |                                        ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:301:40
+    |
+301 |     pub const fn get_bg_color(self) -> Option<crate::Color> {
+    |                                        ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0425]: cannot find type `Option` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:307:47
+    |
+307 |     pub const fn get_underline_color(self) -> Option<crate::Color> {
+    |                                               ^^^^^^ not found in this scope
+    |
+help: consider importing this enum
+    |
+  1 + use core::option::Option;
+    |
+
+error[E0405]: cannot find trait `From` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:332:6
+    |
+332 | impl From<crate::Effects> for Style {
+    |      ^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::convert::From;
+    |
+
+error[E0405]: cannot find trait `PartialEq` in this scope
+   --> /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.14/src/style.rs:403:6
+    |
+403 | impl PartialEq<crate::Effects> for Style {
+    |      ^^^^^^^^^ not found in this scope
+    |
+help: consider importing this trait
+    |
+  1 + use core::cmp::PartialEq;
+    |
+
+Some errors have detailed explanations: E0405, E0425, E0463, E0531.
+error: could not compile `anstyle` (lib) due to 156 previous errors

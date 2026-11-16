@@ -1,0 +1,10 @@
+usage: options.py [-h] (--macOS | --novaOS) [--large] [--rapport RAPPORT]
+
+Comparer arguments, stdin, stdout, stderr et statut, sans décodage du flux.
+
+options:
+  -h, --help         show this help message and exit
+  --macOS            référence GNU seule
+  --novaOS           comparer le Mach-O au GNU
+  --large            1500 cas générés par locale
+  --rapport RAPPORT  preuves JSONL gzip, entrées et sorties hexadécimales

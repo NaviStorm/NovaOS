@@ -1,0 +1,885 @@
+{
+  "host": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "ram": 137438953472,
+  "cache": "échauffé, sans purge",
+  "destination": "/dev/null",
+  "locale": "C",
+  "rows": [
+    {
+      "size": "1 M lignes",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 8000000,
+      "output": 8000000,
+      "sha256_output": "5996560a8b4d066f5bf4c2a45ee8dae92a6ad89bf28d85ee80ebc11efe92f47e",
+      "input_sha256": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "pattern": "614230587a39210a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 531609358336,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.0051912500000000006,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.00498375,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.0048013330000000005,
+            "rss_bytes": 2211840
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.008161542,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008185083000000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.007747042000000001,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "1 M lignes",
+      "mode": "Suppression",
+      "args": [
+        "-d",
+        "X"
+      ],
+      "input": 8000000,
+      "output": 7000000,
+      "sha256_output": "8dd5e047c82bf085f7651111cf48dbfea63d29238ddc9f7bd579f64e5a6d165d",
+      "input_sha256": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "pattern": "614230587a39210a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 531609358336,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.011153333000000001,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.01080325,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.010926083000000001,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.008255584,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008372458000000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008154416000000001,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "1 M lignes",
+      "mode": "Compression",
+      "args": [
+        "-s",
+        "aX"
+      ],
+      "input": 8000000,
+      "output": 8000000,
+      "sha256_output": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "input_sha256": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "pattern": "614230587a39210a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 531609358336,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.009790708,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.010125042,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.009578042,
+            "rss_bytes": 2211840
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.049436042000000006,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.045438125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.046736167,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "1 M lignes",
+      "mode": "Suppr. + compr.",
+      "args": [
+        "-ds",
+        "X",
+        "a"
+      ],
+      "input": 8000000,
+      "output": 7000000,
+      "sha256_output": "8dd5e047c82bf085f7651111cf48dbfea63d29238ddc9f7bd579f64e5a6d165d",
+      "input_sha256": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "pattern": "614230587a39210a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 531609358336,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.011766959,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.011361000000000001,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.011105916,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.028734209,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.028778708,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.029685958000000002,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "10 M lignes",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 80000000,
+      "output": 80000000,
+      "sha256_output": "9cbb042b843fc29e70a9149f8f7a60823b8a0ddb386c3f44ff6b7161c9e8c889",
+      "input_sha256": "af5561a700ee84ce03b1e94d42a0cbe3777b90fdecb973421faa0c796eafb0dc",
+      "pattern": "616161585858580a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 531605245952,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.024462708000000003,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.024116292,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.02448925,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.056135000000000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.055615208000000006,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.056420917,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "10 M lignes",
+      "mode": "Suppression",
+      "args": [
+        "-d",
+        "X"
+      ],
+      "input": 80000000,
+      "output": 40000000,
+      "sha256_output": "eede3991b65f92db8cdcde0b27519da3883e3902b54ec3405014acb2e0c023ce",
+      "input_sha256": "af5561a700ee84ce03b1e94d42a0cbe3777b90fdecb973421faa0c796eafb0dc",
+      "pattern": "616161585858580a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 531605245952,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.049208167000000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.049679334000000006,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.048720709,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.067398083,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.06491258300000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.066434833,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "10 M lignes",
+      "mode": "Compression",
+      "args": [
+        "-s",
+        "aX"
+      ],
+      "input": 80000000,
+      "output": 30000000,
+      "sha256_output": "819d0dea151623cf586df0fa20f464691ca212b923653b1158c13b3294b077f9",
+      "input_sha256": "af5561a700ee84ce03b1e94d42a0cbe3777b90fdecb973421faa0c796eafb0dc",
+      "pattern": "616161585858580a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 531605245952,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.048335209000000004,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.047684459000000005,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.048538958,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.42786733400000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.43185225000000005,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.42458283300000005,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "10 M lignes",
+      "mode": "Suppr. + compr.",
+      "args": [
+        "-ds",
+        "X",
+        "a"
+      ],
+      "input": 80000000,
+      "output": 20000000,
+      "sha256_output": "dcdcfef582ffe48eac454404ad1f4bd71c8577d6d630be3a0b74cdfbc330d795",
+      "input_sha256": "af5561a700ee84ce03b1e94d42a0cbe3777b90fdecb973421faa0c796eafb0dc",
+      "pattern": "616161585858580a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 531605245952,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.039823458,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.040266667,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.038996042,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.259122834,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.257505708,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.25215633400000004,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "65 M lignes",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 521048576,
+      "output": 521048576,
+      "sha256_output": "50de09cf94795b951054fbd341dbe3b2a5ff6d6f4706013d698acb042d823e6c",
+      "input_sha256": "911968a90fb9d942b39c47a5b294ad9502c1dd0de0447140b2dbed57204c0578",
+      "pattern": "616158615858580a",
+      "repeats": 65000000,
+      "prefix_a": 1048576,
+      "free": 531552219136,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.139019,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.139945083,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.138592042,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.345224625,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.34712820800000005,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.34665212500000003,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "65 M lignes",
+      "mode": "Suppression",
+      "args": [
+        "-d",
+        "X"
+      ],
+      "input": 521048576,
+      "output": 261048576,
+      "sha256_output": "8d0634397aa88dc3554dddc74ac973701476fa471c20b79968d42eed2ec05684",
+      "input_sha256": "911968a90fb9d942b39c47a5b294ad9502c1dd0de0447140b2dbed57204c0578",
+      "pattern": "616158615858580a",
+      "repeats": 65000000,
+      "prefix_a": 1048576,
+      "free": 531552219136,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.30358725000000003,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.31064545800000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.306053417,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.421437875,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.40423095800000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.409850833,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "65 M lignes",
+      "mode": "Compression",
+      "args": [
+        "-s",
+        "aX"
+      ],
+      "input": 521048576,
+      "output": 325000000,
+      "sha256_output": "3eef4016e54c45f0f53513b3f7e96094d135d0b2bbed437eb84a272c175c122e",
+      "input_sha256": "911968a90fb9d942b39c47a5b294ad9502c1dd0de0447140b2dbed57204c0578",
+      "pattern": "616158615858580a",
+      "repeats": 65000000,
+      "prefix_a": 1048576,
+      "free": 531552219136,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.33692420900000003,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.33835037500000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.338258542,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 5.3075615,
+            "rss_bytes": 1933312
+          },
+          {
+            "seconds": 5.397947,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 5.407663916000001,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "65 M lignes",
+      "mode": "Suppr. + compr.",
+      "args": [
+        "-ds",
+        "X",
+        "a"
+      ],
+      "input": 521048576,
+      "output": 130000000,
+      "sha256_output": "ff23fce618b9d97524bb1e2fc3a4a167cf1e5f0db8198d8b60a12a88e16c3915",
+      "input_sha256": "911968a90fb9d942b39c47a5b294ad9502c1dd0de0447140b2dbed57204c0578",
+      "pattern": "616158615858580a",
+      "repeats": 65000000,
+      "prefix_a": 1048576,
+      "free": 531552219136,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.23298454200000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.24368025000000001,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.23467775000000002,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 1.6697886670000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 1.642044375,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 1.6444740830000002,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "32 Mio binaire",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 33554432,
+      "output": 33554432,
+      "sha256_output": "1e137f270fa2c8f441739b9b3f93dd638188674e37af555a9d9a11c4b2b8a695",
+      "input_sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "pattern": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "repeats": 131072,
+      "prefix_a": 0,
+      "free": 531522719744,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.012398500000000002,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.012439917,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.012380209000000001,
+            "rss_bytes": 2195456
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.025014667,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.025415167000000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.025070709,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "32 Mio binaire",
+      "mode": "Suppression",
+      "args": [
+        "-d",
+        "X"
+      ],
+      "input": 33554432,
+      "output": 33423360,
+      "sha256_output": "5d287989a93abd09ca4b3ce1a1aa413e45daff68b0e01377c6c1f92f4edfbb2d",
+      "input_sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "pattern": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "repeats": 131072,
+      "prefix_a": 0,
+      "free": 531522719744,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.032963917,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.036840500000000005,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.038587,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.027967958,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.030714625000000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.028181792,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "32 Mio binaire",
+      "mode": "Compression",
+      "args": [
+        "-s",
+        "aX"
+      ],
+      "input": 33554432,
+      "output": 33554432,
+      "sha256_output": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "input_sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "pattern": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "repeats": 131072,
+      "prefix_a": 0,
+      "free": 531522719744,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.032988334,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.031774916,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.032114208000000005,
+            "rss_bytes": 2195456
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.028109417,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026104125000000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026659042,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    },
+    {
+      "size": "32 Mio binaire",
+      "mode": "Suppr. + compr.",
+      "args": [
+        "-ds",
+        "X",
+        "a"
+      ],
+      "input": 33554432,
+      "output": 33423360,
+      "sha256_output": "5d287989a93abd09ca4b3ce1a1aa413e45daff68b0e01377c6c1f92f4edfbb2d",
+      "input_sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "pattern": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "repeats": 131072,
+      "prefix_a": 0,
+      "free": 531522719744,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.034867792,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.034743041,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.034785209000000004,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.035383334,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.035049958,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.035229458000000005,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ]
+    }
+  ],
+  "versions": {
+    "Nova": "tr (nova-cli) — nova-cli 0.20.0",
+    "GNU": "tr (GNU coreutils) 9.12"
+  },
+  "sha256": {
+    "Nova": "30c43ada0b43d245ab93a3456df3b81695df8859e3cbd9c4afbd47f195222e24",
+    "GNU": "075bd855ba66facf7309fcc0eb6f06ca98195e58c3fbe949b3cd65fe1568c77f"
+  }
+}

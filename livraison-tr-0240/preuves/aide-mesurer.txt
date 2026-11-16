@@ -1,0 +1,12 @@
+usage: mesures.py [-h] (--macOS | --novaOS | --comparer) [--large]
+                  [--rapport RAPPORT]
+
+Débit sur les octets lus. Un échauffement et trois passages en ordre alterné.
+
+options:
+  -h, --help         show this help message and exit
+  --macOS            GNU
+  --novaOS           Mach-O Nova
+  --comparer         GNU et Nova alternés
+  --large            activer 10 M, 65 M et le binaire de 32 Mio
+  --rapport RAPPORT  nouveau fichier JSON

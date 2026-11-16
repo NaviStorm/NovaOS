@@ -1,0 +1,514 @@
+{
+  "aarch64/512": {
+    "moteur_sdk": 3652,
+    "production_pipe": "refus avant création des enfants",
+    "nsh": [
+      [
+        "fr-CA",
+        "--help",
+        0
+      ],
+      [
+        "fr-CA",
+        "--he",
+        0
+      ],
+      [
+        "fr-CA",
+        "-ds --help",
+        0
+      ],
+      [
+        "fr-CA",
+        "--version",
+        0
+      ],
+      [
+        "fr-CA",
+        "--ver",
+        0
+      ],
+      [
+        "fr-CA",
+        "--inconnue",
+        1
+      ],
+      [
+        "fr-CA",
+        "man tr",
+        0
+      ],
+      [
+        "en-US",
+        "--help",
+        0
+      ],
+      [
+        "en-US",
+        "--he",
+        0
+      ],
+      [
+        "en-US",
+        "-ds --help",
+        0
+      ],
+      [
+        "en-US",
+        "--version",
+        0
+      ],
+      [
+        "en-US",
+        "--ver",
+        0
+      ],
+      [
+        "en-US",
+        "--inconnue",
+        1
+      ],
+      [
+        "en-US",
+        "man tr",
+        0
+      ],
+      [
+        "fr--CA",
+        "--help",
+        0
+      ],
+      [
+        "fr--CA",
+        "--he",
+        0
+      ],
+      [
+        "fr--CA",
+        "-ds --help",
+        0
+      ],
+      [
+        "fr--CA",
+        "--version",
+        0
+      ],
+      [
+        "fr--CA",
+        "--ver",
+        0
+      ],
+      [
+        "fr--CA",
+        "--inconnue",
+        1
+      ],
+      [
+        "fr--CA",
+        "man tr",
+        0
+      ],
+      [
+        "nsh",
+        "cat entree | tr '[:lower:]' '[:upper:]'",
+        3
+      ],
+      [
+        "nsh",
+        "cat entree | tr -s ' '",
+        3
+      ],
+      [
+        "nsh",
+        "cat entree | tr --inconnue",
+        3
+      ]
+    ],
+    "sha_noyau": "c6a1981400b17de8416c2617befba479fc592edef9ca4c8ac24821a3e7a77bc8",
+    "sha_iso": "e2cc8f98ed4d8574031f0aae5d657280847ce8749f57b6c5c9ded0b18c831396"
+  },
+  "aarch64/4096": {
+    "moteur_sdk": 3652,
+    "production_pipe": "refus avant création des enfants",
+    "nsh": [
+      [
+        "fr-CA",
+        "--help",
+        0
+      ],
+      [
+        "fr-CA",
+        "--he",
+        0
+      ],
+      [
+        "fr-CA",
+        "-ds --help",
+        0
+      ],
+      [
+        "fr-CA",
+        "--version",
+        0
+      ],
+      [
+        "fr-CA",
+        "--ver",
+        0
+      ],
+      [
+        "fr-CA",
+        "--inconnue",
+        1
+      ],
+      [
+        "fr-CA",
+        "man tr",
+        0
+      ],
+      [
+        "en-US",
+        "--help",
+        0
+      ],
+      [
+        "en-US",
+        "--he",
+        0
+      ],
+      [
+        "en-US",
+        "-ds --help",
+        0
+      ],
+      [
+        "en-US",
+        "--version",
+        0
+      ],
+      [
+        "en-US",
+        "--ver",
+        0
+      ],
+      [
+        "en-US",
+        "--inconnue",
+        1
+      ],
+      [
+        "en-US",
+        "man tr",
+        0
+      ],
+      [
+        "fr--CA",
+        "--help",
+        0
+      ],
+      [
+        "fr--CA",
+        "--he",
+        0
+      ],
+      [
+        "fr--CA",
+        "-ds --help",
+        0
+      ],
+      [
+        "fr--CA",
+        "--version",
+        0
+      ],
+      [
+        "fr--CA",
+        "--ver",
+        0
+      ],
+      [
+        "fr--CA",
+        "--inconnue",
+        1
+      ],
+      [
+        "fr--CA",
+        "man tr",
+        0
+      ],
+      [
+        "nsh",
+        "cat entree | tr '[:lower:]' '[:upper:]'",
+        3
+      ],
+      [
+        "nsh",
+        "cat entree | tr -s ' '",
+        3
+      ],
+      [
+        "nsh",
+        "cat entree | tr --inconnue",
+        3
+      ]
+    ],
+    "sha_noyau": "c6a1981400b17de8416c2617befba479fc592edef9ca4c8ac24821a3e7a77bc8",
+    "sha_iso": "f37dd3982d5ac289e08bf1d3128da4d54858d20ca31974de5d4343084766d810"
+  },
+  "x86_64/512": {
+    "moteur_sdk": 3652,
+    "production_pipe": "refus avant création des enfants",
+    "nsh": [
+      [
+        "fr-CA",
+        "--help",
+        0
+      ],
+      [
+        "fr-CA",
+        "--he",
+        0
+      ],
+      [
+        "fr-CA",
+        "-ds --help",
+        0
+      ],
+      [
+        "fr-CA",
+        "--version",
+        0
+      ],
+      [
+        "fr-CA",
+        "--ver",
+        0
+      ],
+      [
+        "fr-CA",
+        "--inconnue",
+        1
+      ],
+      [
+        "fr-CA",
+        "man tr",
+        0
+      ],
+      [
+        "en-US",
+        "--help",
+        0
+      ],
+      [
+        "en-US",
+        "--he",
+        0
+      ],
+      [
+        "en-US",
+        "-ds --help",
+        0
+      ],
+      [
+        "en-US",
+        "--version",
+        0
+      ],
+      [
+        "en-US",
+        "--ver",
+        0
+      ],
+      [
+        "en-US",
+        "--inconnue",
+        1
+      ],
+      [
+        "en-US",
+        "man tr",
+        0
+      ],
+      [
+        "fr--CA",
+        "--help",
+        0
+      ],
+      [
+        "fr--CA",
+        "--he",
+        0
+      ],
+      [
+        "fr--CA",
+        "-ds --help",
+        0
+      ],
+      [
+        "fr--CA",
+        "--version",
+        0
+      ],
+      [
+        "fr--CA",
+        "--ver",
+        0
+      ],
+      [
+        "fr--CA",
+        "--inconnue",
+        1
+      ],
+      [
+        "fr--CA",
+        "man tr",
+        0
+      ],
+      [
+        "nsh",
+        "cat entree | tr '[:lower:]' '[:upper:]'",
+        3
+      ],
+      [
+        "nsh",
+        "cat entree | tr -s ' '",
+        3
+      ],
+      [
+        "nsh",
+        "cat entree | tr --inconnue",
+        3
+      ]
+    ],
+    "sha_noyau": "c994093c4bba88a141680a51c2b2839d18cd609a1c265be539718532b6666543",
+    "sha_iso": "41211fc4322c3eaa0bc7d9b97f9a7c15d3e2f4334d3ede11426116c7c3ab9010"
+  },
+  "x86_64/4096": {
+    "moteur_sdk": 3652,
+    "production_pipe": "refus avant création des enfants",
+    "nsh": [
+      [
+        "fr-CA",
+        "--help",
+        0
+      ],
+      [
+        "fr-CA",
+        "--he",
+        0
+      ],
+      [
+        "fr-CA",
+        "-ds --help",
+        0
+      ],
+      [
+        "fr-CA",
+        "--version",
+        0
+      ],
+      [
+        "fr-CA",
+        "--ver",
+        0
+      ],
+      [
+        "fr-CA",
+        "--inconnue",
+        1
+      ],
+      [
+        "fr-CA",
+        "man tr",
+        0
+      ],
+      [
+        "en-US",
+        "--help",
+        0
+      ],
+      [
+        "en-US",
+        "--he",
+        0
+      ],
+      [
+        "en-US",
+        "-ds --help",
+        0
+      ],
+      [
+        "en-US",
+        "--version",
+        0
+      ],
+      [
+        "en-US",
+        "--ver",
+        0
+      ],
+      [
+        "en-US",
+        "--inconnue",
+        1
+      ],
+      [
+        "en-US",
+        "man tr",
+        0
+      ],
+      [
+        "fr--CA",
+        "--help",
+        0
+      ],
+      [
+        "fr--CA",
+        "--he",
+        0
+      ],
+      [
+        "fr--CA",
+        "-ds --help",
+        0
+      ],
+      [
+        "fr--CA",
+        "--version",
+        0
+      ],
+      [
+        "fr--CA",
+        "--ver",
+        0
+      ],
+      [
+        "fr--CA",
+        "--inconnue",
+        1
+      ],
+      [
+        "fr--CA",
+        "man tr",
+        0
+      ],
+      [
+        "nsh",
+        "cat entree | tr '[:lower:]' '[:upper:]'",
+        3
+      ],
+      [
+        "nsh",
+        "cat entree | tr -s ' '",
+        3
+      ],
+      [
+        "nsh",
+        "cat entree | tr --inconnue",
+        3
+      ]
+    ],
+    "sha_noyau": "c994093c4bba88a141680a51c2b2839d18cd609a1c265be539718532b6666543",
+    "sha_iso": "aef51b02b2c0199a6001aa671ccf0e0c05519a2a1137c34a479a2c171da520ea"
+  }
+}
