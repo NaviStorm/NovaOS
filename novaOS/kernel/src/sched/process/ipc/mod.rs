@@ -18,6 +18,8 @@ mod bulk;
 mod probes;
 mod traffic;
 mod pipe;
+mod pipe_admission;
+pub(super) use pipe_admission::PendingReader;
 #[cfg(feature = "materiel-lab")]
 mod lab_command;
 pub(super) use bulk::transfer;

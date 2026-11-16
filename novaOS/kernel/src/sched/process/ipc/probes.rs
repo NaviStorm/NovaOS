@@ -7,6 +7,7 @@ pub(crate) mod multicore;
 mod contract;
 mod limits;
 mod pipe;
+mod admission;
 mod perf;
 mod races;
 pub(super) static PAUSED: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
@@ -233,6 +234,9 @@ pub(crate) fn run(scenario: &[u8]) {
     #[cfg(feature = "ipc-smp-lab")]
     if scenario.starts_with(b"ipc-smp-") {
         multicore::run(scenario);
+    }
+    if scenario == b"ipc-test" {
+        admission::run();
     }
     if scenario == b"ipc-perf" {
         perf::run();

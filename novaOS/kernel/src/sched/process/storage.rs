@@ -423,6 +423,31 @@ pub(crate) fn elf_test() {
     }
     user::check_elf_headers(MEDIA);
     let initial = heap::audit(true);
+    // L'image et ses en-têtes peuvent disparaître ou être remplacés dès que
+    // le chargeur rend la main. L'espace possède code, données et plan de retrait.
+    let mut source = MEDIA.to_vec();
+    let mut config = [0; 16];
+    config[8..].copy_from_slice(&101u64.to_le_bytes());
+    let installed = heap::with_pages(|m| UserSpace::installed(m, &source, &config)).unwrap();
+    source.fill(0);
+    drop(source);
+    let loaded = {
+        let _guard = Guard::new();
+        publish_image(installed, None, iw::SAMPLE, None).unwrap()
+    };
+    assert_eq!(wait(loaded), Outcome::Exit(0));
+    assert_eq!(heap::audit(true), initial);
+    heap::with_pages(|m| {
+        let before = m.free_pages();
+        for budget in [0, 1, 2, 5, 9] {
+            let mut held = m.hold_for_probe(budget)?;
+            assert!(matches!(UserSpace::installed(m, MEDIA, &config), Err(crate::memory::Error::Exhausted)));
+            assert_eq!(m.free_pages(), budget as u64);
+            held.restore_to(m, before);
+        }
+        Ok(())
+    }).unwrap();
+    hal::log(format_args!("ELF image transitoire executee et cadres rendus OK"));
     // Épuisement réel pendant le chargement, puis après une première page de tas.
     heap::with_pages(|m| {
         let before = m.free_pages();

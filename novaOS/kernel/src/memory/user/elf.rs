@@ -1,8 +1,49 @@
 //! Exécutables ELF64 statiques fournis par le lanceur. Les en-têtes restent immuables.
-use super::{Access, DATA, Error, PAGE, Result};
+use super::{Access, DATA, Error, KernelFrame, Memory, PAGE, Result};
 
 pub(super) const HEAP: u64 = 1 << 46;
 pub(crate) const STACK_TOP: u64 = HEAP - 2 * PAGE;
+/// Les images du catalogue restent empruntées. Une image installée conserve
+/// seulement sa table de programmes validée dans un cadre privé du noyau.
+pub(super) enum Layout {
+    Embedded(Elf<'static>),
+    Installed { frame: KernelFrame, size: usize, entry: u64, stack: u64 },
+}
+
+impl Layout {
+    pub fn installed(m: &mut Memory, elf: Elf<'_>) -> Result<Self> {
+        if elf.headers.len() > PAGE as usize {
+            return Err(Error::Geometry);
+        }
+        let frame = m.take_kernel_frame()?;
+        // Sûreté : le cadre neuf est exclusivement au noyau ; la taille a été
+        // contrôlée et les octets sont immuables pendant toute la copie.
+        unsafe {
+            core::ptr::copy_nonoverlapping(elf.headers.as_ptr(), frame.alias() as *mut u8, elf.headers.len());
+        }
+        Ok(Self::Installed { frame, size: elf.headers.len(), entry: elf.entry, stack: elf.stack })
+    }
+
+    pub fn view(&self) -> Elf<'_> {
+        match self {
+            Self::Embedded(elf) => *elf,
+            Self::Installed { frame, size, entry, stack } => Elf {
+                // Sûreté : l'emprunt est limité à la durée de vie du propriétaire.
+                // Aucun mapping utilisateur ni dépôt DMA ne référence ce cadre.
+                headers: unsafe { core::slice::from_raw_parts(frame.alias() as *const u8, *size) },
+                entry: *entry,
+                stack: *stack,
+            },
+        }
+    }
+
+    pub fn release(self, m: &mut Memory) {
+        if let Self::Installed { frame, .. } = self {
+            m.release_kernel_frame(frame);
+        }
+    }
+}
+
 #[derive(Clone, Copy)]
 pub(super) struct Elf<'a> {
     headers: &'a [u8],

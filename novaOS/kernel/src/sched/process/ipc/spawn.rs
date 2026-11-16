@@ -113,7 +113,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     let stream = role.map(Role::reader);
     let check = |s: &Core, key: u64| -> Res<Option<Node>> {
         let p = s.processes.get(parent);
-        if p.pipe_reader_wait.is_some() { return Err(LIMIT); }
+        if p.pipe_reader_wait.is_some() || p.pending_reader.is_some() { return Err(LIMIT); }
         if stream == Some(true) {
             let writer = p.wait_right.ok_or(DENIED)?.target;
             return s.ipc.pipe_check(parent, key, Some(writer)).map(Some);
