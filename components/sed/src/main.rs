@@ -6,7 +6,7 @@ mod engine;
 mod fixtures;
 #[cfg(not(target_os = "none"))]
 mod host;
-#[cfg(not(target_os="none"))]
+#[cfg(not(target_os = "none"))]
 #[path = "../../libraries/documentation_locale.rs"]
 mod locale;
 #[cfg(target_os = "none")]

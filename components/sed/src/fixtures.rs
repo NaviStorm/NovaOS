@@ -64,6 +64,28 @@ pub fn check() -> Result<(), String> {
             return Err("expected compile-time rejection".into());
         }
     }
+    type Vector = (
+        &'static str,
+        &'static [&'static [u8]],
+        &'static [u8],
+        &'static [u8],
+        i32,
+    );
+    let vectors: &[Vector] = include!("guest_vectors.in");
+    for &(name, args, input, output, code) in vectors {
+        let arguments: Vec<_> = args.iter().map(|arg| arg.to_vec()).collect();
+        let opts = crate::options::Options::parse(&arguments)?;
+        let script = &opts.scripts[0].1;
+        let mut io = Memory {
+            input,
+            output: Vec::new(),
+        };
+        let mut program =
+            Program::compile(script, opts.flags(script) | 32, opts.width.unwrap_or(70))?;
+        if program.run(&mut io)?.unwrap_or(0) != code || io.output != output {
+            return Err(alloc::format!("vecteur GNU {name}"));
+        }
+    }
     Ok(())
 }
 #[cfg(test)]

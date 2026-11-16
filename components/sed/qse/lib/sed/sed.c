@@ -910,11 +910,13 @@ static QSE_INLINE void* compile_rex_address (qse_sed_t* sed, qse_char_t rxend)
 
 	/* handle a modifer after having handled an empty regex.
 	 * so a modifier is naturally disallowed for an empty regex. */
-	PEEPNXTSC (sed, peeped, QSE_NULL);
-	if (peeped == QSE_T('I'))
+	for (;;)
 	{
-		ignorecase = 1;
-		NXTSC (sed, peeped, QSE_NULL); /* consume the character peeped */
+		PEEPNXTSC (sed, peeped, QSE_NULL);
+		if (peeped == QSE_T('I')) ignorecase |= 1;
+		else if (peeped == QSE_T('M')) ignorecase |= 2;
+		else break;
+		NXTSC (sed, peeped, QSE_NULL);
 	}
 
 	return build_rex (sed, QSE_STR_XSTR(&sed->tmp.rex), ignorecase, &sed->src.loc);

@@ -10,6 +10,19 @@ use core::{
 // QSE fait passer chaque allocation par ces trois fonctions, y compris en cas d'échec.
 const HEADER: usize = 16;
 fn layout(n: usize) -> Option<Layout> {
+    #[cfg(all(feature = "fault-tests", not(target_os = "none")))]
+    {
+        static MAX: std::sync::OnceLock<usize> = std::sync::OnceLock::new();
+        let limit = MAX.get_or_init(|| {
+            std::env::var("NOVA_SED_TEST_MAX_BLOCK")
+                .ok()
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(usize::MAX)
+        });
+        if n > *limit {
+            return None;
+        }
+    }
     Layout::from_size_align(n.checked_add(HEADER)?, HEADER).ok()
 }
 #[unsafe(no_mangle)]

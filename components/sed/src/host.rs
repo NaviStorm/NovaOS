@@ -8,7 +8,10 @@ use std::{
     ffi::OsStr,
     fs::{self, File},
     io::{self, BufReader, BufWriter, Read, Write},
-    os::unix::ffi::OsStrExt,
+    os::{
+        fd::AsRawFd,
+        unix::{ffi::OsStrExt, fs::MetadataExt},
+    },
     path::{Path, PathBuf},
     process::Command,
 };
@@ -58,6 +61,17 @@ impl<'a> Host<'a> {
             separator: if opts.zero { 0 } else { b'\n' },
             boundary: false,
         }
+    }
+}
+impl Host<'_> {
+    fn finish(&mut self) -> Result<(), String> {
+        self.output.flush().map_err(fail)?;
+        for stream in self.named.values_mut() {
+            if let Named::Output(output) = stream {
+                output.flush().map_err(fail)?;
+            }
+        }
+        Ok(())
     }
 }
 impl Streams for Host<'_> {
@@ -169,7 +183,7 @@ fn render(
 ) -> Result<(Option<i32>, bool), String> {
     let mut host = Host::new(files, out, opts);
     let status = program.run(&mut host)?;
-    host.output.flush().map_err(fail)?;
+    host.finish()?;
     Ok((status, host.missing))
 }
 
@@ -202,33 +216,82 @@ fn edit(
     } else {
         path(file).to_owned()
     };
-    let metadata = fs::metadata(&dest).map_err(fail)?;
-    // Le droit de créer un voisin n'autorise pas à remplacer un original protégé.
-    fs::OpenOptions::new()
+    if !fs::metadata(&dest).map_err(fail)?.is_file() {
+        return Err("in-place editing requires a regular file".into());
+    }
+    // Cette ouverture vérifie les droits sur l'original et fixe l'objet à lire.
+    let original = fs::OpenOptions::new()
+        .read(true)
         .write(true)
         .open(&dest)
         .map_err(fail)?;
-    if !metadata.is_file() {
-        return Err("in-place editing requires a regular file".into());
-    }
+    let metadata = original.metadata().map_err(fail)?;
+    let directory_entry = fs::symlink_metadata(&dest).map_err(fail)?;
     let parent = dest
         .parent()
         .filter(|p| !p.as_os_str().is_empty())
         .unwrap_or(Path::new("."));
     let mut candidate = tempfile::NamedTempFile::new_in(parent).map_err(fail)?;
-    let result = render(
-        program,
-        opts,
-        &[file.to_vec()],
-        &mut BufWriter::new(candidate.as_file_mut()),
-    )?;
-    if result.1 {
-        return Ok(result);
+    let status = {
+        let mut writer = BufWriter::new(candidate.as_file_mut());
+        let mut io = Host::new(&[], &mut writer, opts);
+        io.pending.clear();
+        io.name = file.to_vec();
+        io.input = Some(Box::new(original.try_clone().map_err(fail)?));
+        let status = program.run(&mut io)?;
+        io.finish()?;
+        status
+    };
+    let result = (status, false);
+    #[cfg(all(feature = "fault-tests", target_os = "macos"))]
+    if std::env::var_os("NOVA_SED_TEST_EIO").is_some() {
+        return Err(fail(io::Error::from_raw_os_error(5)));
+    }
+    let new_metadata = candidate.as_file().metadata().map_err(fail)?;
+    if (metadata.uid(), metadata.gid()) != (new_metadata.uid(), new_metadata.gid()) {
+        unsafe extern "C" {
+            fn fchown(fd: i32, uid: u32, gid: u32) -> i32;
+        }
+        if unsafe {
+            fchown(
+                candidate.as_file().as_raw_fd(),
+                metadata.uid(),
+                metadata.gid(),
+            )
+        } != 0
+        {
+            return Err(fail(io::Error::last_os_error()));
+        }
     }
     candidate
         .as_file()
         .set_permissions(metadata.permissions())
         .map_err(fail)?;
+    #[cfg(target_os = "macos")]
+    {
+        unsafe extern "C" {
+            fn fcopyfile(src: i32, dst: i32, state: *mut core::ffi::c_void, flags: u32) -> i32;
+        }
+        // copyfile.h : COPYFILE_ACL | COPYFILE_XATTR, sans recopier les données.
+        if unsafe {
+            fcopyfile(
+                original.as_raw_fd(),
+                candidate.as_file().as_raw_fd(),
+                core::ptr::null_mut(),
+                1 | 4,
+            )
+        } != 0
+        {
+            return Err(fail(io::Error::last_os_error()));
+        }
+    }
+    let current = fs::symlink_metadata(&dest).map_err(fail)?;
+    let content = original.metadata().map_err(fail)?;
+    if (directory_entry.dev(), directory_entry.ino()) != (current.dev(), current.ino())
+        || (metadata.ctime(), metadata.ctime_nsec()) != (content.ctime(), content.ctime_nsec())
+    {
+        return Err("input changed during in-place editing".into());
+    }
     candidate.as_file().sync_all().map_err(fail)?;
     if !suffix.is_empty() {
         let backup = backup_name(&dest, suffix);
@@ -242,6 +305,15 @@ fn edit(
             fs::hard_link(&dest, &link).map_err(fail)?;
             fs::rename(link, backup).map_err(fail)?;
         }
+    }
+    #[cfg(all(feature = "fault-tests", target_os = "macos"))]
+    if std::env::var_os("NOVA_SED_TEST_PAUSE_PUBLICATION").is_some() {
+        unsafe extern "C" {
+            fn raise(signal: i32) -> i32;
+        }
+        unsafe {
+            raise(17);
+        } // SIGSTOP sur Darwin, après la sauvegarde et avant le renommage.
     }
     candidate.persist(&dest).map_err(fail)?;
     Ok(result)
