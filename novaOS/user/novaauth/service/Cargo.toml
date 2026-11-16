@@ -7,6 +7,21 @@ publish = false
 
 [workspace]
 
+[features]
+guest = []
+
+[[bin]]
+name = "auth-verifier"
+path = "src/bin/verifier.rs"
+required-features = ["guest"]
+test = false
+
+[[bin]]
+name = "auth-client"
+path = "src/bin/client.rs"
+required-features = ["guest"]
+test = false
+
 [dependencies]
 zeroize = { version = "1", default-features = false }
 ed25519-dalek = { version = "=2.2.0", default-features = false, features = ["zeroize"] }

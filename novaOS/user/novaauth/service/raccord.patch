@@ -1,0 +1,137 @@
+diff --git a/novaOS/kernel/Cargo.toml b/novaOS/kernel/Cargo.toml
+index 6aa1730f8f642fead202d9d4e1a666fc9dbe92af..768cd6689ead28cb88f42a1996566528b7d72691 100644
+--- a/novaOS/kernel/Cargo.toml
++++ b/novaOS/kernel/Cargo.toml
+@@ -14,0 +15 @@ novaauth-lab = []
++novaauth-sessions-lab = []
+diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
+index 66ac5c9c06ef6c832101f43922c02eda52a0171e..1a5accd803cd9a6220c0afccc9decf5f44053365 100644
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -95,0 +96,3 @@ fn main() {
++        if name == "service_manager" && env::var_os("CARGO_FEATURE_NOVAAUTH_SESSIONS_LAB").is_some() {
++            rust.args(["--cfg", "novaauth_sessions_lab"]);
++        }
+@@ -189,0 +193,14 @@ fn main() {
++    if env::var_os("CARGO_FEATURE_NOVAAUTH_SESSIONS_LAB").is_some() {
++        cargo_service.args(["--features", "novaauth-sessions-lab"]);
++        let guest_flags = format!("{flags}\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
++        let built = Command::new(env::var_os("CARGO").unwrap())
++            .args(["build","--release","--locked","--offline","--features","guest","--bins","--target",&target])
++            .current_dir(user.join("novaauth/service"))
++            .env("CARGO_TARGET_DIR",&work)
++            .env("CARGO_ENCODED_RUSTFLAGS",&guest_flags)
++            .status().expect("compilation des deux ELF NovaAuth");
++        assert!(built.success(), "liaison des ELF NovaAuth");
++        for name in ["auth-verifier","auth-client"] {
++            std::fs::copy(work.join(&target).join("release").join(name),out.join(format!("{name}.elf"))).unwrap();
++        }
++    }
+diff --git a/novaOS/kernel/src/main.rs b/novaOS/kernel/src/main.rs
+index 09a892af036b46df33df6e2fb4a765f38a359e67..8aa973dfb056396fabb2cc6fef9bd5ab0b38de5e 100644
+--- a/novaOS/kernel/src/main.rs
++++ b/novaOS/kernel/src/main.rs
+@@ -245,0 +246,5 @@ fn main_thread() {
++        #[cfg(feature = "novaauth-sessions-lab")]
++        b"novaauth-sessions" => {
++            AUTH_SESSIONS_LAB.store(true, core::sync::atomic::Ordering::Release);
++            Some(41)
++        },
+@@ -390,0 +396,3 @@ fn panic(info: &PanicInfo<'_>) -> ! {
++
++#[cfg(feature = "novaauth-sessions-lab")]
++static AUTH_SESSIONS_LAB: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
+diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
+index 2702ba93f1f29477dea7bfadac094e79af820a15..d0fa1f80830c48fe7089c060b290fd8cb85dc513 100644
+--- a/novaOS/kernel/src/sched/process/ipc/service.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service.rs
+@@ -4,0 +5,2 @@ use super::*;
++#[cfg(feature = "novaauth-sessions-lab")]
++mod auth_lab;
+@@ -165,0 +168,2 @@ pub(in crate::sched::process) fn launch_session(
++        #[cfg(feature = "novaauth-sessions-lab")]
++        if auth_lab::enabled() { config(s, owner, 19, &[1]); config(s,group[1].0,13,&[0x4e4133]); }
+@@ -239,0 +244,2 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
++        #[cfg(feature = "novaauth-sessions-lab")]
++        auth_lab::AUTH | auth_lab::CLIENT | auth_lab::SECOND if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
+@@ -248 +254,4 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
+-    let maximum = service_caps::maximum(id).ok_or(DENIED)?;
++    let maximum = service_caps::maximum(id);
++    #[cfg(feature = "novaauth-sessions-lab")]
++    let maximum = maximum.or_else(|| (auth_lab::enabled() && auth_lab::elf(id).is_some()).then_some(0));
++    let maximum = maximum.ok_or(DENIED)?;
+@@ -293,0 +303,2 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
++        #[cfg(feature = "novaauth-sessions-lab")]
++        if auth_lab::enabled() && auth_lab::elf(id).is_some() { auth_lab::connect(s,m,target,id)?; }
+@@ -493,0 +505,6 @@ pub(in crate::sched::process) fn process(op: u64, address: u64, size: u64) -> Re
++    #[cfg(feature = "novaauth-sessions-lab")]
++    if auth_lab::enabled() && op == wire::NOW && (address,size)==(0,0) && with(|s|
++        s.processes.manager.is_some_and(|m| s.processes.get(pid).service_owner == Some(m.manager)
++            && s.processes.get(pid).service_id == auth_lab::AUTH)) {
++        return Ok(ticks().saturating_mul(1000) / u64::from(HZ));
++    }
+diff --git a/novaOS/scripts/iso.sh b/novaOS/scripts/iso.sh
+index b22dd1aba53bcf933492aa08edda6760c477a843..39642aa91f736c48c5c23e8806ae9d84cf8ceedf 100644
+--- a/novaOS/scripts/iso.sh
++++ b/novaOS/scripts/iso.sh
+@@ -27 +27 @@ if [ "$#" -ne 0 ]; then
+-        cache-pression|cache-propriete-invalide|cache-test|cache-reprise|cache-coupure|cache-restaure|cache-reinstalle|cache-actualise|cache-reprise-purge|journal-admin|services-config-race|services-config-admin|services-admin|services-test|services-perte|instances-reboot|tmp-test|tmp-coupure|tmp-reprise|tmp-attentes|cli-p8|cli-p8-test) ;;
++        novaauth-sessions|cache-pression|cache-propriete-invalide|cache-test|cache-reprise|cache-coupure|cache-restaure|cache-reinstalle|cache-actualise|cache-reprise-purge|journal-admin|services-config-race|services-config-admin|services-admin|services-test|services-perte|instances-reboot|tmp-test|tmp-coupure|tmp-reprise|tmp-attentes|cli-p8|cli-p8-test) ;;
+diff --git a/novaOS/user/novafs/Cargo.toml b/novaOS/user/novafs/Cargo.toml
+index 10e80d5ed4b686db1c4c0b0ab436a3d28ad6a859..1d2ab37d595f2656b392d211b177eb2433363ee0 100644
+--- a/novaOS/user/novafs/Cargo.toml
++++ b/novaOS/user/novafs/Cargo.toml
+@@ -15,0 +16 @@ novaauth-lab = ["dep:novaos-identity"]
++novaauth-sessions-lab = ["dep:novaos-identity"]
+diff --git a/novaOS/user/novafs/device.rs b/novaOS/user/novafs/device.rs
+index 8f92611eb98ccd187341736321fbe1cb9ada48c9..67f1bd92fbd8688f76b06b75dbc71fbb623d7d9c 100644
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -6,0 +7,3 @@ use novafs::{Device, Error, Result, geometry::Geometry};
++#[cfg(feature="novaauth-sessions-lab")]
++mod authority;
++
+@@ -91,0 +95,2 @@ impl Device for &IpcDevice<'_> {
++        #[cfg(feature="novaauth-sessions-lab")]
++        if crate::runtime::config(13)==0x4e4133 && self.count==authority::VOLUME+12 {return authority::VOLUME;}
+@@ -94,0 +100,2 @@ impl Device for &IpcDevice<'_> {
++        #[cfg(feature="novaauth-sessions-lab")]
++        if block>=self.blocks(){return Err(Error::Unavailable);}
+@@ -117,0 +125,2 @@ impl Device for &IpcDevice<'_> {
++        #[cfg(feature="novaauth-sessions-lab")]
++        if block>=self.blocks(){return Err(Error::Unavailable);}
+diff --git a/novaOS/user/novafs/files.rs b/novaOS/user/novafs/files.rs
+index 417eb60489133df75cc0e7748b3c5a7879bb2f3d..bdba35611f8edabb26dff938a600fa9c302a470f 100644
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -627,0 +628,2 @@ impl Session<'_, '_> {
++#[cfg(feature="novaauth-sessions-lab")]
++mod auth_registry;
+@@ -644,0 +647,2 @@ impl Session<'_, '_> {
++        #[cfg(feature="novaauth-sessions-lab")]
++        self.serve_auth()?;
+diff --git a/novaOS/user/novafs/files/configuration.rs b/novaOS/user/novafs/files/configuration.rs
+index b73fee47172ba10ddcfc203120ad901c267843de..069ae0f1a2f238f40d4c4855c8c3b3ecd57d26e0 100644
+--- a/novaOS/user/novafs/files/configuration.rs
++++ b/novaOS/user/novafs/files/configuration.rs
+@@ -131,0 +132,7 @@ impl Session<'_, '_> {
++            #[cfg(feature="novaauth-sessions-lab")]
++            if &msg.payload[..8]==b"NA3ENROL" {
++                let status=self.enroll_auth(&msg.payload).err().unwrap_or(rt::OK);
++                put(&mut a,16,status);
++                rt::send_for(tx,msg.tag,&a,5000)?;
++                return Ok(true);
++            }
+diff --git a/novaOS/user/service_manager.rs b/novaOS/user/service_manager.rs
+index a0d1a418459039752807ad959380fa641a711300..8e66b5f6657b531333f2f20965439606f4837731 100644
+--- a/novaOS/user/service_manager.rs
++++ b/novaOS/user/service_manager.rs
+@@ -485,0 +486,3 @@ impl Manager<'_> {
++#[cfg(novaauth_sessions_lab)]
++#[path = "novaauth/service/launcher.rs"]
++mod auth_lab;
+@@ -486,0 +490,4 @@ fn supervise() -> rt::Result<()> {
++    #[cfg(novaauth_sessions_lab)]
++    if rt::config(19) == 1 {
++        auth_lab::launch()?;
++    }
