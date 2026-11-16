@@ -13,6 +13,13 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "grep" && !matches!(args, ["--help" | "--version" | "-V"]) {
+        return Ok(None);
+    }
+    if name == "grep" && args == ["-V"] {
+        console::write(tty::OUTPUT, &page.version(lang))?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {
