@@ -232,7 +232,13 @@ impl<'a> Engine<'a> {
             let language = nova_cli::documentation::Language::from_tag(
                 f.vars.get("LANG").map(|(tag, _)| tag.as_str()),
             );
-            let literal: Vec<_> = words.iter().map(|w| w.text.as_str()).collect();
+            let expand_operand = Program::named(&name, false).is_some() || name == "echo";
+            // Un motif actif peut produire un fichier ou un compte numérique.
+            // Vérifier les options explicites avant toute résolution sur NovaFS.
+            // execute valide ensuite les vrais arguments développés.
+            let literal: Vec<_> = words.iter().map(|word| {
+                if expand_operand && glob::has_pattern(word) { "0" } else { word.text.as_str() }
+            }).collect();
             if probe && let ["documentation", app, option @ ("--help" | "--version")] = literal.as_slice()
                 && let Some(program) = Program::named(app, false)
                 && nova_cli::documentation::lookup(app).is_some()

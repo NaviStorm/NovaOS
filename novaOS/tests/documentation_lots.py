@@ -126,6 +126,17 @@ def run(arch, lot, out):
                                   ("wc -c -- --inconnue", "7 --inconnue"), ("pwd -P", "/")]:
                 assert expected in command(cmd)
             command("pwd -- --inconnue", 3)
+            # Dans un répertoire sélectionné sans entrées du système.
+            command("mkdir motifs")
+            command("cd motifs")
+            command("cp -- /documents/exemple.txt -nom")
+            assert "NovaOS" in command("cat -n*")
+            assert "-nom" in command("echo -n*")
+            command("cat '-n*'", 3)
+            command("cat -z*", 3)
+            command("rm --inconnue -n*", 3)
+            assert "NovaOS" in command("cat -- -nom")
+            command("cd /")
         if lot == 2:
             command("mkdir -- --rep")
             command("touch -- --rep/--note")

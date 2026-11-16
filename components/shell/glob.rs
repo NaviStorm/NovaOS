@@ -125,6 +125,10 @@ struct Budget {
     entries: usize,
 }
 
+pub fn has_pattern(word: &Word) -> bool {
+    word.active.iter().any(|&i| matches!(word.text.as_bytes()[i], b'*' | b'?' | b'['))
+}
+
 fn expand(
     fs: &mut Client,
     word: &Word,
@@ -132,11 +136,7 @@ fn expand(
     room: usize,
 ) -> rt::Result<Vec<String>> {
     let s = &word.text;
-    if !word
-        .active
-        .iter()
-        .any(|&i| matches!(s.as_bytes()[i], b'*' | b'?' | b'['))
-    {
+    if !has_pattern(word) {
         return Ok(vec![s.clone()]);
     }
     if s.len() > w::PATH_MAX || s.contains("//") {
