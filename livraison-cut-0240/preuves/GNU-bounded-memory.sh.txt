@@ -1,0 +1,3 @@
+bounded-memory.sh: skipped test: failed to determine memory limit
+/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tr-amont.sS9ATTaY/source/tests/init.sh: line 109: 1: Bad file descriptor
+bounded-memory.sh statut=77

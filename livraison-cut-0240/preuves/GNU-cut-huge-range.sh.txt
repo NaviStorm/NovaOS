@@ -1,0 +1,3 @@
+cut-huge-range.sh: skipped test: shell lacks ulimit, or ASAN enabled
+/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tr-amont.sS9ATTaY/source/tests/init.sh: line 109: 1: Bad file descriptor
+cut-huge-range.sh statut=77

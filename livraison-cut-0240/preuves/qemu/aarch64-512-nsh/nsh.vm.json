@@ -1,0 +1,31 @@
+{
+  "debut_utc": "2026-11-16T18:23:19.801+00:00",
+  "architecture": "aarch64",
+  "octets_secteur": 512,
+  "vcpu": 2,
+  "ram_mio": 256,
+  "iso_sha256": "e9765a1322c8af1b2777e044a0ba816bec4fcc828d9ad4627fdb59f391093f51",
+  "elf_sha256": "c136063e1e6096089fa164ae3a73f91bfc2477eff580481b704b14e0c36ef0e7",
+  "lanceur": {
+    "revision_git": "b9ddb9ef0623cf3e55d33532dc7e74292c1ed9d7"
+  },
+  "construction": null,
+  "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cut-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-machine",
+    "msi=off",
+    "-device",
+    "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-catalogue-final-aarch64-512/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=off",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=512,physical_block_size=512"
+  ]
+}

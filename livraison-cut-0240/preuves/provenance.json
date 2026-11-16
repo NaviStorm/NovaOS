@@ -1,0 +1,34 @@
+{
+  "base_git": "2e3188dee6eaef859becca3919bd0d53a20674bb",
+  "source_git": "b9ddb9ef0623cf3e55d33532dc7e74292c1ed9d7",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "gnu": "c0f8514d989184921d9b12a4d103a7b23abc5af8",
+  "uutils": "4735bbe40d764a523c5ece37d47465b32452d1a2",
+  "abi": "",
+  "selecteurs": 48,
+  "binaires": {
+    "cut-aarch64.elf": {
+      "sha256": "e0761fd0c32ead8b45123213396a4c05c51abd45fc64903253f47ec6f5330576",
+      "type": "ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, not stripped"
+    },
+    "cut-darwin-arm64": {
+      "sha256": "5e88e6f2522096e9d2ef2e894effbf0265a250091299ad1443da2f799a588e94",
+      "type": "Mach-O 64-bit executable arm64"
+    },
+    "cut-x86_64.elf": {
+      "sha256": "2a28ef1be85c7b348e9e17ac59f56dc683635b362a1e3b65674e3b92d53cc53e",
+      "type": "ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped"
+    },
+    "gcut": {
+      "sha256": "d84adc05e56f93e57fabbfdd555d443d3d5475947d3374ac0a68f461c7ef8335",
+      "type": "Mach-O 64-bit executable arm64"
+    }
+  },
+  "librairies_macho": [
+    "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)"
+  ],
+  "qemu": {
+    "aarch64": "QEMU emulator version 11.1.3",
+    "x86_64": "QEMU emulator version 11.1.3"
+  }
+}

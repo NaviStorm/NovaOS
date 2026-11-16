@@ -1,0 +1,49 @@
+Extract sections from each line of files.
+
+Usage: cut OPTION... [FILE]...
+
+Options:
+  -b, --bytes <LIST>
+          extract bytes listed in LIST
+  -c, --characters <LIST>
+          extract characters listed in LIST
+  -d, --delimiter <DELIM>
+          use DELIM as field separator (default: Tab)
+  -w, --whitespace-delimited[=<trimmed>]
+          use any run of blanks (Space/Tab, plus Unicode spaces in a UTF-8 locale) as delimiter;
+          ignore leading and trailing blanks with 'trimmed' [possible values: trimmed]
+  -f, --fields <LIST>
+          extract fields listed in LIST
+  -F <LIST>
+          like -f, but merge adjacent delimiters; the delimiter defaults to whitespace and the
+          output delimiter to a space
+      --complement
+          invert selection: print all columns except the specified ones
+  -s, --only-delimited
+          suppress lines that do not contain the delimiter
+  -z, --zero-terminated
+          use NULL (\0) instead of newline as line terminator
+  -O, --output-delimiter <NEW_DELIM>
+          replace input delimiter with NEW_DELIM in output
+  -n, --no-partial
+          with -b, do not output partial multi-byte characters
+  -h, --help
+          Print help
+  -V, --version
+          Print version
+
+If no FILE is specified, reads from stdin. Use '-' as a FILE argument to include stdin.
+
+LIST is a comma-separated list of numbers or ranges:
+
+  N           only column N
+  N-          columns N through the end of the line
+  N-M         columns N through M
+  -M          columns 1 through M
+
+Examples:
+
+  cut -f 2,5-7 file.txt             extract fields 2, 5, 6, and 7
+  cut -f 3- file.txt                extract field 3 to the end of the line
+  cut --complement -f 4-6 file.txt  extract all fields except 4, 5, and 6
+  cut -d',' -f1 file.csv            extract first field from a CSV

@@ -1,0 +1,23 @@
+{
+  "source_git": "b9ddb9ef0623cf3e55d33532dc7e74292c1ed9d7",
+  "fichiers_relus": 993,
+  "source_sha256": "263cb5f48b9a101ece322c291eefa3a5463922854c97f54ac45f3e9d3f2e252c",
+  "cargo": "cache initialement vide, sources vendoris\u00e9es, hors ligne",
+  "binaires": [
+    {
+      "nom": "cut-aarch64.elf",
+      "livraison": "e0761fd0c32ead8b45123213396a4c05c51abd45fc64903253f47ec6f5330576",
+      "reconstruction": "1ba1d5b3e63640af18e40889211998d404109992f8efe395f03cad8a1ddb1bc8"
+    },
+    {
+      "nom": "cut-darwin-arm64",
+      "livraison": "5e88e6f2522096e9d2ef2e894effbf0265a250091299ad1443da2f799a588e94",
+      "reconstruction": "5d31f63757d7930bb5defad72392afad98525fc9d7564c865519e28922164720"
+    },
+    {
+      "nom": "cut-x86_64.elf",
+      "livraison": "2a28ef1be85c7b348e9e17ac59f56dc683635b362a1e3b65674e3b92d53cc53e",
+      "reconstruction": "e3d8325845bcac81015f7fcdf002188294ec3bb1a16ec1c8c294c9e68863c9cd"
+    }
+  ]
+}

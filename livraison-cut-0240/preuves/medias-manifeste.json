@@ -1,0 +1,165 @@
+{
+  "archive_sha256": "c06e73af5c594db56ca8db3aeafa7172117e1555ec1be1b799badd16ee7bd7c9",
+  "membres_relus": {
+    "aarch64-512/nsh/demarre.elf": {
+      "octets": 5483040,
+      "sha256": "c136063e1e6096089fa164ae3a73f91bfc2477eff580481b704b14e0c36ef0e7"
+    },
+    "aarch64-512/nsh/genese.raw": {
+      "octets": 2097152,
+      "sha256": "128875abcd9dd1be9e3a475ab1a54011c5d2c9c4c966ed1573c3cc16f9eb6c9a"
+    },
+    "aarch64-512/nsh/nsh.iso": {
+      "octets": 9273344,
+      "sha256": "e9765a1322c8af1b2777e044a0ba816bec4fcc828d9ad4627fdb59f391093f51"
+    },
+    "aarch64-512/nsh/session.raw": {
+      "octets": 2097152,
+      "sha256": "1ce18316c7e1f9b85f64c6a712baa51b4b066ea9a3037624a65fb947b71fc588"
+    },
+    "aarch64-512/sdk/demarre.elf": {
+      "octets": 5910800,
+      "sha256": "698ab24a2c6c752824807b4c09b0db36e39f3abd1d8c38a409571f5deecb6c03"
+    },
+    "aarch64-512/sdk/genese.raw": {
+      "octets": 2097152,
+      "sha256": "8a877c3c0b72c1eb4e40d70a9650b913cc0a6995ad7aa81213f5c0fca1a70ded"
+    },
+    "aarch64-512/sdk/session.raw": {
+      "octets": 2097152,
+      "sha256": "0fd1002dd18a0100b560e5b89591cf246c281648613a9901dbe455225efe3d3c"
+    },
+    "aarch64-512/sdk/sonde.iso": {
+      "octets": 9701376,
+      "sha256": "63ae7fe85a6193816830f891a606d197a8496110522ad05a7eb8b43b4343ea19"
+    },
+    "aarch64-512/sdk/vecteurs.bin": {
+      "octets": 303672,
+      "sha256": "93a62f7b2168e721bcfde5824bd050f4efdc35f00599d97cfab400b8dab4611c"
+    },
+    "aarch64-512/sdk/sonde.elf": {
+      "octets": 364840,
+      "sha256": "72e4113eec1e501e7b45159716a410523245aff1b62aab961a72ffc16b86be88"
+    },
+    "aarch64-4096/nsh/demarre.elf": {
+      "octets": 5483040,
+      "sha256": "c136063e1e6096089fa164ae3a73f91bfc2477eff580481b704b14e0c36ef0e7"
+    },
+    "aarch64-4096/nsh/genese.raw": {
+      "octets": 2097152,
+      "sha256": "a11b36a97b94b9c6d7030887c27cc2a95506c09824f74a16f8a52b2af737649c"
+    },
+    "aarch64-4096/nsh/nsh.iso": {
+      "octets": 9273344,
+      "sha256": "6e56673f86f04a2f9b14aafc4ce2af184474404a0f26cc2df49c30048dc5cfdc"
+    },
+    "aarch64-4096/nsh/session.raw": {
+      "octets": 2097152,
+      "sha256": "69b2624729499fbedb835cee242eb199761a465385b3c08b0de5aed19abf19c7"
+    },
+    "aarch64-4096/sdk/demarre.elf": {
+      "octets": 5910800,
+      "sha256": "698ab24a2c6c752824807b4c09b0db36e39f3abd1d8c38a409571f5deecb6c03"
+    },
+    "aarch64-4096/sdk/genese.raw": {
+      "octets": 2097152,
+      "sha256": "eed6be4edd96c24bf57427344bc1909ee3d6f552e08e995a5c50e6279c761cb8"
+    },
+    "aarch64-4096/sdk/session.raw": {
+      "octets": 2097152,
+      "sha256": "067219c377e5c40ab95a9a3af2dd8f25e96f4b2bac28972437b0b97d2459e978"
+    },
+    "aarch64-4096/sdk/sonde.iso": {
+      "octets": 9701376,
+      "sha256": "b8a3b64dc393ede4411909ed1ab9e614db09f57a8f9c7e266585e10a6e2b713d"
+    },
+    "aarch64-4096/sdk/vecteurs.bin": {
+      "octets": 303672,
+      "sha256": "93a62f7b2168e721bcfde5824bd050f4efdc35f00599d97cfab400b8dab4611c"
+    },
+    "aarch64-4096/sdk/sonde.elf": {
+      "octets": 364840,
+      "sha256": "72e4113eec1e501e7b45159716a410523245aff1b62aab961a72ffc16b86be88"
+    },
+    "x86_64-512/nsh/demarre.elf": {
+      "octets": 5468328,
+      "sha256": "05bea14cd38fe1ac6576aeeba877087d5e84601ee484cf3b78e3678c730b0499"
+    },
+    "x86_64-512/nsh/genese.raw": {
+      "octets": 2097152,
+      "sha256": "a84458cc2b3f9c339da4522b0885414a6dc97df053861c0906d8ca504904093f"
+    },
+    "x86_64-512/nsh/nsh.iso": {
+      "octets": 9279488,
+      "sha256": "5e24695618594368e00723da1658d709d56d47e349afc5c29888e88d3e06cbc0"
+    },
+    "x86_64-512/nsh/session.raw": {
+      "octets": 2097152,
+      "sha256": "02303348c04075c3733cf86afdb08a5bf913c526defdb0f3318adf2274fb3e16"
+    },
+    "x86_64-512/sdk/demarre.elf": {
+      "octets": 5981848,
+      "sha256": "7a70f61a91ac0ba96191f3a047400d3158c51875a45741816be2a1b311503db8"
+    },
+    "x86_64-512/sdk/genese.raw": {
+      "octets": 2097152,
+      "sha256": "4423d95f0ede4662ad60a053894b292109449ce01bef6a392c69d2d09030e495"
+    },
+    "x86_64-512/sdk/session.raw": {
+      "octets": 2097152,
+      "sha256": "fb7fbda43ee3f48cce8167374a48dd361e61684de990a7cb1532f11c9e2348bb"
+    },
+    "x86_64-512/sdk/sonde.iso": {
+      "octets": 9791488,
+      "sha256": "5de6c96f66eed57b55f5a97c1010fb73a045914af5c6543c905dd6e0b10ba9e2"
+    },
+    "x86_64-512/sdk/vecteurs.bin": {
+      "octets": 303672,
+      "sha256": "93a62f7b2168e721bcfde5824bd050f4efdc35f00599d97cfab400b8dab4611c"
+    },
+    "x86_64-512/sdk/sonde.elf": {
+      "octets": 365064,
+      "sha256": "a62145aac6dfcf14a0ad2dbe4aad2af3734a196458da080336f6f46bde4bdd84"
+    },
+    "x86_64-4096/nsh/demarre.elf": {
+      "octets": 5468328,
+      "sha256": "05bea14cd38fe1ac6576aeeba877087d5e84601ee484cf3b78e3678c730b0499"
+    },
+    "x86_64-4096/nsh/genese.raw": {
+      "octets": 2097152,
+      "sha256": "e2cf42fde3f5caf1f1a742531ec3c307195eed7b8d63dfa4641bc9ef26fcc1b7"
+    },
+    "x86_64-4096/nsh/nsh.iso": {
+      "octets": 9279488,
+      "sha256": "1fbc37b61138c599698c466ec5f41a32a29a8d1caf8d71a91202ba9e29890a91"
+    },
+    "x86_64-4096/nsh/session.raw": {
+      "octets": 2097152,
+      "sha256": "871a98e062aa7b21482285bc76845cf9cdd1ef1291c6e6b8d6368637c42213d3"
+    },
+    "x86_64-4096/sdk/demarre.elf": {
+      "octets": 5981848,
+      "sha256": "7a70f61a91ac0ba96191f3a047400d3158c51875a45741816be2a1b311503db8"
+    },
+    "x86_64-4096/sdk/genese.raw": {
+      "octets": 2097152,
+      "sha256": "8ea7889080f7cc562ebb5b825633b466a62869a012fd61bd2b2d932e07ade77c"
+    },
+    "x86_64-4096/sdk/session.raw": {
+      "octets": 2097152,
+      "sha256": "c59468518e2c95cc521d4965387498b6748eec92d22f02fe170d2ef9e0cb3f7d"
+    },
+    "x86_64-4096/sdk/sonde.iso": {
+      "octets": 9791488,
+      "sha256": "8721e69777e94ca6eab2eeee36471dac910c53eb59c2bbd816195d3cbdca7f6b"
+    },
+    "x86_64-4096/sdk/vecteurs.bin": {
+      "octets": 303672,
+      "sha256": "93a62f7b2168e721bcfde5824bd050f4efdc35f00599d97cfab400b8dab4611c"
+    },
+    "x86_64-4096/sdk/sonde.elf": {
+      "octets": 365064,
+      "sha256": "a62145aac6dfcf14a0ad2dbe4aad2af3734a196458da080336f6f46bde4bdd84"
+    }
+  }
+}
