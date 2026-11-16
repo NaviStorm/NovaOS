@@ -64,7 +64,8 @@ def normal(b):
     assert before_gen == old
     s = b.run("namespace-write")
     succes(s)
-    for marque in ["NOMS seconde session RO cwd=/public", "NOMS mutations et refus OK", "NOMS lecture par identite OK"]:
+    for marque in ["NOMS seconde session RO cwd=/public", "NOMS revisions locales et invalidations confirmees",
+                   "NOMS mutations et refus OK", "NOMS lecture par identite OK"]:
         assert marque in s, s[-1500:]
     gen, fs, lv, slot = generation(b)
     assert gen > old and hote(b,"nouveau") == (gen,oid)

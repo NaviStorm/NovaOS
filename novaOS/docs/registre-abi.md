@@ -73,13 +73,13 @@ Le courtier tmp sérialise les opérations internes CREATE, REMOVE et IO dans un
 
 | Protocole | Opcode | Opération | Trame | Traitement ou transport | SDK Rust |
 |---|---|---|---|---|---|
-| fichiers | 1 | MOUNT | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L240) | — |
-| fichiers | 2 | INFO | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L240) | — |
-| fichiers | 3 | OPEN | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L240) | — |
-| fichiers | 4 | READ | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L240) | [File::read](../libs/nova-system/src/files.rs#L62), [Session::read_view](../libs/nova-system/src/files.rs#L23) |
-| fichiers | 5 | WRITE | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L240) | [File::write](../libs/nova-system/src/files.rs#L67) |
-| fichiers | 6 | SYNC | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L240) | [File::sync](../libs/nova-system/src/files.rs#L72) |
-| fichiers | 7 | CLOSE | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L240) | [File::close](../libs/nova-system/src/files.rs#L75) |
+| fichiers | 1 | MOUNT | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L241) | — |
+| fichiers | 2 | INFO | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L241) | — |
+| fichiers | 3 | OPEN | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L241) | — |
+| fichiers | 4 | READ | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L241) | [File::read](../libs/nova-system/src/files.rs#L62), [Session::read_view](../libs/nova-system/src/files.rs#L23) |
+| fichiers | 5 | WRITE | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L241) | [File::write](../libs/nova-system/src/files.rs#L67) |
+| fichiers | 6 | SYNC | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L241) | [File::sync](../libs/nova-system/src/files.rs#L72) |
+| fichiers | 7 | CLOSE | [files.rs](../abi/files.rs) | [dispatch](../user/novafs/files.rs#L241) | [File::close](../libs/nova-system/src/files.rs#L75) |
 | fichiers | 8 | PATH_FRAGMENT | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | — |
 | fichiers | 9 | DIR_OPEN | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | [Session::directory](../libs/nova-system/src/files.rs#L48) |
 | fichiers | 10 | LOOKUP_AT | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | — |
@@ -93,14 +93,14 @@ Le courtier tmp sérialise les opérations internes CREATE, REMOVE et IO dans un
 | fichiers | 18 | DIR_CLOSE | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | [Directory::close](../libs/nova-system/src/files.rs#L104) |
 | fichiers | 19 | CHDIR | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | — |
 | fichiers | 20 | GETCWD | [files.rs](../abi/files.rs) | [directory_request](../user/novafs/files/namespace.rs#L105) | — |
-| fichiers | 21 | DELEGATE | [files.rs](../abi/files.rs) | [serve](../user/novafs/files.rs#L689) | — |
-| fichiers | 22 | STAGE | [files.rs](../abi/files.rs) | [serve](../user/novafs/files.rs#L689) | — |
+| fichiers | 21 | DELEGATE | [files.rs](../abi/files.rs) | [serve](../user/novafs/files.rs#L698) | — |
+| fichiers | 22 | STAGE | [files.rs](../abi/files.rs) | [serve](../user/novafs/files.rs#L698) | — |
 | fichiers | 23 | CREATE_NEW | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
 | fichiers | 24 | MOVE_SELECTED | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
 | fichiers | 25 | TOUCH_SELECTED | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
 | fichiers | 26 | PUBLISH_COPY | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
 | fichiers | 27 | COPY_RANGE | [files.rs](../abi/files.rs) | [execute](../user/novafs/files/selected.rs#L187) | — |
-| fichiers | 28 | READ_PAGE | [files.rs](../abi/files.rs) | [read_page](../user/novafs/files.rs#L643) | — |
+| fichiers | 28 | READ_PAGE | [files.rs](../abi/files.rs) | [read_page](../user/novafs/files.rs#L652) | — |
 | bloc | 1 | INFO | [block.rs](../abi/block.rs) | [driver](../user/storage/disk.rs#L11) | — |
 | bloc | 2 | READ | [block.rs](../abi/block.rs) | [driver](../user/storage/disk.rs#L11) | — |
 | bloc | 3 | WRITE | [block.rs](../abi/block.rs) | [driver](../user/storage/disk.rs#L11) | — |

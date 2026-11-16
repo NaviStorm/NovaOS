@@ -24,6 +24,69 @@ fn tree(c: &mut Client, root: u64, first: &[u8], rights: u8) -> rt::Result<u64> 
     }
     Ok(cur)
 }
+// Deux sessions sur le même volume. Les rendez-vous ordonnent les mutations
+// entre START et CONTINUE sans interposer une requête du lecteur lui-même.
+fn wait_step(channel: u64, tag: u64) -> rt::Result<()> {
+    let m = rt::receive_for(channel, 15000)?;
+    ensure(m.kind == 1 && m.tag == tag && m.len == 1 && m.payload[0] == 1)
+}
+
+fn signal(channel: u64, tag: u64) -> rt::Result<()> {
+    rt::send_for(channel, tag, &[1], 15000)
+}
+
+fn window_reader(c: &mut Client, channel: u64) -> rt::Result<()> {
+    wait_step(channel, 3)?;
+    let h = c.open_at(0, b"fenetre", w::READABLE)?;
+    for (step, changed) in [(4, false), (6, true)] {
+        let mut q = w::frame(w::READ, c.session, h);
+        q[2] = w::START;
+        w::size(&mut q, w::FRAGMENT);
+        w::set(&mut q, 32, 2 * w::FRAGMENT as u64);
+        ensure(body(&c.request(q)?) == [42; w::FRAGMENT])?;
+        signal(channel, step)?;
+        wait_step(channel, step + 1)?;
+        q[2] = w::CONTINUE;
+        w::set(&mut q, 24, w::FRAGMENT as u64);
+        let answer = c.request(q);
+        if changed {
+            require_error(answer, rt::REVOKED)?;
+        } else {
+            ensure(body(&answer?) == [42; w::FRAGMENT])?;
+        }
+    }
+    c.close(h)?;
+    signal(channel, 8)
+}
+
+fn window_writer(c: &mut Client, root: u64, channel: u64) -> rt::Result<()> {
+    let h = c.open_at(root, b"public/fenetre", w::WRITABLE | w::CREATE)?;
+    c.write(h, 0, &[42; 2 * w::FRAGMENT])?;
+    c.sync(h)?;
+    signal(channel, 3)?;
+    wait_step(channel, 4)?;
+    let first = c.readdir_fragment(root, b"", 0, 0)?;
+    let token = w::word(&first, 24);
+    let other = c.open_at(root, b"public/temoin", w::CREATE | w::WRITABLE)?;
+    c.close(other)?;
+    let next = c.readdir_fragment(root, body(&first), 0, token)?;
+    ensure(body(&next) == b"public")?;
+    signal(channel, 5)?;
+    wait_step(channel, 6)?;
+    c.write(h, w::FRAGMENT as u64, &[43])?;
+    c.sync(h)?;
+    signal(channel, 7)?;
+    wait_step(channel, 8)?;
+    c.close(h)?;
+    c.at(w::UNLINK_AT, root, b"public/fenetre", 0)?;
+    c.at(w::UNLINK_AT, root, b"public/temoin", 0)?;
+    // Une mutation du répertoire énuméré doit toujours invalider son curseur.
+    c.at(w::MKDIR_AT, root, b"temporaire", 0)?;
+    require_error(c.readdir_fragment(root, body(&first), 0, token), rt::REVOKED)?;
+    c.at(w::RMDIR, root, b"temporaire", 0)?;
+    log(b"NOMS revisions locales et invalidations confirmees");
+    Ok(())
+}
 pub fn probe(mut c: Client, mode: u64) -> rt::Result<()> {
     c.mount()?;
     let rw = !matches!(mode, 30 | 37 | 38) && rt::config(2) == 0;
@@ -65,6 +128,9 @@ pub fn probe(mut c: Client, mode: u64) -> rt::Result<()> {
         require_error(c.simple(w::STAT, foreign), rt::REVOKED)?;
         ensure(body(&c.cwd_fragment(0, 0)?) == b"/public")?;
         rt::send_for(channel, 2, &ro.to_le_bytes(), 15000)?;
+        if mode == 29 {
+            window_reader(&mut c, channel)?;
+        }
         c.close(ro)?;
         directory_close(&mut c, pubdir)?;
         log(b"NOMS seconde session RO cwd=/public");
@@ -111,6 +177,7 @@ pub fn probe(mut c: Client, mode: u64) -> rt::Result<()> {
             rt::REVOKED,
         )?;
         if rw {
+            window_writer(&mut c, root, channel)?;
             log(b"NOMS avant rename");
             c.rename(root, old, root, &long)?;
             exact(&mut c, file, b"Nova")?;
