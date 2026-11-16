@@ -37,14 +37,26 @@ pub fn run(p: Program, command: impl FnOnce(&mut Client, Operand<'_>) -> rt::Res
         {
             return Ok(());
         }
-        if prep != 0 {
+        if p == Program::Cat && rt::config(1) != 0 && prep == tty::PIPE_PROBE_WAIT {
+            // Le shell possède déjà l'extrémité racine des réponses fichier.
+            // Aucun appel fichier n'est en vol avant ce rendez-vous du banc.
+            let msg = rt::receive_for(rt::config(0), 15_000)?;
+            if (msg.kind, msg.tag, msg.len, msg.payload[0]) != (1, tty::PIPE_PROBE_WAIT, 1, b'+') {
+                return Err(rt::BAD_ARGUMENT);
+            }
+        } else if prep != 0 {
             return Err(prep);
         }
         let mut c = Client::scoped()?;
         command(&mut c, op)
     })();
     if let Err(e) = r {
-        let _ = console::write(tty::ERROR, &alloc::format!("{}\n", console::reason(e)));
+        let reason = if p == Program::Cat && rt::config(1) != 0 && e == rt::CLOSED {
+            "cat : canal fermé"
+        } else {
+            console::reason(e)
+        };
+        let _ = console::write(tty::ERROR, &alloc::format!("{reason}\n"));
         rt::exit(e)
     }
     rt::exit(0)

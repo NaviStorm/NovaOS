@@ -13,6 +13,7 @@ pub fn pipe_spawn(
     let number = match p {
         Program::Cat => tty::PIPE_CAT,
         Program::Wc => tty::PIPE_WC,
+        Program::Head => tty::PIPE_HEAD,
         _ => return Err(rt::BAD_ARGUMENT),
     };
     launch(p, args, channels, status, number, Some(pipe))
@@ -49,7 +50,8 @@ fn launch(
                 && crate::options::parse(p, &args.iter().map(String::as_str).collect::<Vec<_>>())?
                     .has(b'i'));
     let streams = tty::ERROR
-        | if status == 0 && p != Program::Probe && !(pipe.is_some() && p == Program::Cat) {
+        | if (status == 0 || p == Program::Head && pipe.is_some() && status == tty::PIPE_PROBE_REVOKE)
+            && p != Program::Probe && !(pipe.is_some() && p == Program::Cat) {
             tty::OUTPUT
         } else {
             0
@@ -77,14 +79,38 @@ fn launch(
         data.len() as u64,
     ))
 }
-pub fn pipe_write(key: u64, bytes: &[u8]) -> rt::Result<()> {
-    for part in bytes.chunks(128) {
-        match rt::send_frame(key, 0, part, 0, false) {
-            Err(rt::WOULD_BLOCK) => rt::send_for(key, 0, part, 15000)?,
-            other => other?,
-        }
+pub const PIPE_FRAME: usize = 128;
+const PIPE_TIMEOUT: u64 = 15_000;
+
+/// Zéro désigne uniquement EOF. Une révocation ou une échéance reste une erreur.
+pub fn pipe_read(key: u64, dest: &mut [u8]) -> rt::Result<usize> {
+    if dest.len() < PIPE_FRAME {
+        return Err(rt::BAD_ARGUMENT);
     }
-    Ok(())
+    let frame = rt::receive_for(key, PIPE_TIMEOUT)?;
+    match (frame.kind, frame.tag, frame.len, frame.handle, frame.aux) {
+        (2, 0, 0, 0, 1) => Ok(0),
+        (1, 0, 1..=128, 0, 0) => {
+            let len = frame.len as usize;
+            dest[..len].copy_from_slice(&frame.payload[..len]);
+            Ok(len)
+        }
+        _ => Err(rt::BAD_ARGUMENT),
+    }
+}
+
+/// En cas d'erreur, le préfixe admis reste acquis et ne doit pas être rejoué.
+pub fn pipe_write(key: u64, bytes: &[u8]) -> Result<usize, (usize, u64)> {
+    let mut admitted = 0;
+    for part in bytes.chunks(PIPE_FRAME) {
+        let result = match rt::send_frame(key, 0, part, 0, false) {
+            Err(rt::WOULD_BLOCK) => rt::send_for(key, 0, part, PIPE_TIMEOUT),
+            other => other,
+        };
+        result.map_err(|code| (admitted, code))?;
+        admitted += part.len();
+    }
+    Ok(admitted)
 }
 pub fn wait(key: u64) -> rt::Result<(bool, u64)> {
     let mut info = rt::WaitInfo {

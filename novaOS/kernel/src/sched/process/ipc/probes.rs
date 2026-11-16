@@ -6,6 +6,7 @@ mod bulk;
 pub(crate) mod multicore;
 mod contract;
 mod limits;
+mod pipe;
 mod perf;
 mod races;
 pub(super) static PAUSED: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
@@ -277,6 +278,7 @@ pub(crate) fn run(scenario: &[u8]) {
         ("T04/T11", races::stale_and_move),
         ("T12", contract::foreign_death),
         ("T13", limits::quotas),
+        ("pipe", pipe::lifecycle),
         ("T16", contract::epoch),
         ("T18", races::composed),
         ("T14", limits::saturation),

@@ -10,15 +10,27 @@ pub fn scan(
     h: u64,
     mut start: u64,
     end: u64,
+    visit: impl FnMut(Result<&str, u8>) -> rt::Result<bool>,
+) -> rt::Result<()> {
+    scan_chunks::<{ CHUNK + 3 }>(|buf| {
+        let limit = (end - start).min(buf.len() as u64) as usize;
+        if limit == 0 { return Ok((0, true)); }
+        let n = c.read(h, start, &mut buf[..limit])?;
+        if n > limit { return Err(w::IO); }
+        start += n as u64;
+        Ok((n, n < limit || start == end))
+    }, visit)
+}
+
+// Trois octets suffisent pour garder un scalaire UTF-8 coupé entre deux lectures.
+pub fn scan_chunks<const N: usize>(
+    mut read: impl FnMut(&mut [u8]) -> rt::Result<(usize, bool)>,
     mut visit: impl FnMut(Result<&str, u8>) -> rt::Result<bool>,
 ) -> rt::Result<()> {
-    let mut buf = [0u8; CHUNK + 3];
+    let mut buf = [0u8; N];
     let mut carry = 0;
-    while start < end || carry != 0 {
-        let limit = (end - start).min(CHUNK as u64) as usize;
-        let n = c.read(h, start, &mut buf[carry..carry + limit])?;
-        start += n as u64;
-        let eof = n < limit || start == end;
+    loop {
+        let (n, eof) = read(&mut buf[carry..carry + N - 3])?;
         let len = carry + n;
         let mut pos = 0;
         while pos < len {
@@ -133,12 +145,14 @@ pub fn command(c: &mut Client, op: nova_cli::command::Operand) -> rt::Result<()>
         }
         let pipe = rt::config(1);
         if program == Program::Cat && pipe != 0 {
-            let mut chunk = [0u8; CHUNK];
+            // Une lecture pleine remplit uniquement des trames entières.
+            const FRAME: usize = nova_cli::process::PIPE_FRAME;
+            let mut chunk = [0u8; (CHUNK / FRAME) * FRAME];
             while start < end {
-                let wanted = (end - start).min(CHUNK as u64) as usize;
+                let wanted = (end - start).min(chunk.len() as u64) as usize;
                 let n = c.read(h, start, &mut chunk[..wanted])?;
                 if n == 0 || n > wanted { return Err(w::IO); }
-                nova_cli::process::pipe_write(pipe, &chunk[..n])?;
+                nova_cli::process::pipe_write(pipe, &chunk[..n]).map_err(|(_, code)| code)?;
                 start += n as u64;
             }
         } else {

@@ -55,8 +55,8 @@ pub static PAGES: &[Page] = &[
             "Les modifications dépendent des commandes exécutées.",
         ),
         limits: Text(
-            "Returns the last command's status. Invalid syntax: 3. The first native pipeline connects cat to wc -l.",
-            "Code de la dernière commande. Syntaxe invalide : 3. Le premier pipe natif relie cat à wc -l.",
+            "Returns the last command's status. Invalid syntax: 3. Native pipelines connect cat to wc -l or head -n 1.",
+            "Code de la dernière commande. Syntaxe invalide : 3. Les pipes natifs relient cat à wc -l ou head -n 1.",
         ),
         topics: &[],
     },
@@ -442,8 +442,8 @@ pub static PAGES: &[Page] = &[
             "Lecture de chaque fichier sélectionné.",
         ),
         effects: Text(
-            "Escapes unsafe bytes on the console. Sends the original bytes to wc -l through the pipe.",
-            "Échappe les octets de contrôle sur la console. Transmet les octets originaux à wc -l par le pipe.",
+            "Escapes unsafe bytes on the console. Sends the original bytes to wc -l or head -n 1. An interrupted pipe write returns 11 (CLOSED).",
+            "Échappe les octets de contrôle sur la console. Transmet les octets originaux à wc -l ou head -n 1. Une écriture interrompue par la fermeture du lecteur retourne 11 (CLOSED).",
         ),
         limits: Text(
             "An inaccessible or absent file stops the command (5 or 20).",
@@ -459,17 +459,17 @@ pub static PAGES: &[Page] = &[
             "Afficher le début de chaque fichier.",
         ),
         syntax: Text(
-            "head [-qv] [-n N | -c N] [--] file...",
-            "head [-qv] [-n N | -c N] [--] fichier...",
+            "head [-qv] [-n N | -c N] [--] file... ; cat file | head -n 1",
+            "head [-qv] [-n N | -c N] [--] fichier... ; cat fichier | head -n 1",
         ),
         arguments: Text(
             "-n/--lines N counts lines (default 10), -c/--bytes N counts bytes. -q/--quiet/--silent hides headers, -v/--verbose shows them.",
             "-n/--lines N compte les lignes (10 par défaut), -c/--bytes N les octets. -q/--quiet/--silent masque les en-têtes, -v/--verbose les affiche.",
         ),
-        examples: Text::same("head -n 2 /lignes"),
+        examples: Text::same("head -n 2 /lignes ; cat /lignes | head -n 1"),
         rights: Text(
-            "Read access to each selected file.",
-            "Lecture de chaque fichier sélectionné.",
+            "Read access to each selected file, or a receive-only pipe endpoint and terminal output.",
+            "Lecture de chaque fichier sélectionné ou extrémité de réception du pipe et sortie terminal.",
         ),
         effects: Text(
             "Prints the selected portion to the console.",

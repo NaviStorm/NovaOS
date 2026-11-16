@@ -15,22 +15,12 @@ extern "C" fn run() -> ! {
                 return Err(rt::BAD_ARGUMENT);
             }
             let mut count = 0u64;
+            let mut buf = [0; process::PIPE_FRAME];
             loop {
-                let m = rt::receive_for(pipe, 15000)?;
-                match (m.kind, m.tag, m.len, m.aux) {
-                    (2, 0, 0, 1) => break,
-                    (1, 0, 1..=128, 0) => {
-                        count = count
-                            .checked_add(
-                                m.payload[..m.len as usize]
-                                    .iter()
-                                    .filter(|&&b| b == b'\n')
-                                    .count() as u64,
-                            )
-                            .ok_or(rt::LIMIT)?;
-                    }
-                    _ => return Err(rt::BAD_ARGUMENT),
-                }
+                let len = process::pipe_read(pipe, &mut buf)?;
+                if len == 0 { break; }
+                let lines = buf[..len].iter().filter(|&&b| b == b'\n').count();
+                count = count.checked_add(lines as u64).ok_or(rt::LIMIT)?;
             }
             console::write(tty::OUTPUT, &alloc::format!("{count}\n"))
         })();

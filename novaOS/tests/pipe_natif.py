@@ -21,10 +21,10 @@ def host(image, *args, output=subprocess.PIPE):
                               stderr=subprocess.PIPE, check=True).stdout
 
 
-def fixture(out, sector):
+def fixture(out, sector, files=FILES):
     source, image = out / "genese.raw", out / "session.raw"
     script = []
-    for name, data in FILES.items():
+    for name, data in files.items():
         script.append("create /" + name)
         for off in range(0, len(data), 512):
             script.append(f"write /{name} {off} {data[off:off+512].hex()}")
