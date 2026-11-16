@@ -6,7 +6,7 @@ index 768cd6689ead28cb88f42a1996566528b7d72691..3a5f716fe05657741d2c69369c8d85c2
 -novaauth-sessions-lab = []
 +novaauth-sessions-lab = ["dep:sha2"]
 diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
-index 1a5accd803cd9a6220c0afccc9decf5f44053365..daa2a039c4e59c00e229ceeaab2bc7c7a2a8f0bb 100644
+index 1a5accd803cd9a6220c0afccc9decf5f44053365..8d09ef0d9376b077dd8fa9885d8397b43f3290c6 100644
 --- a/novaOS/kernel/build.rs
 +++ b/novaOS/kernel/build.rs
 @@ -194 +194 @@
@@ -17,9 +17,9 @@ index 1a5accd803cd9a6220c0afccc9decf5f44053365..daa2a039c4e59c00e229ceeaab2bc7c7
 +            .args(["build","--release","--locked","--offline","--features","policy-guest","--bins","--target",&target])
 @@ -203 +203 @@
 -        for name in ["auth-verifier","auth-client"] {
-+        for name in ["auth-verifier","auth-client","sign-alice","sign-bob","policy-app"] {
++        for name in ["auth-verifier","auth-client","sign-alice","sign-bob","policy-app","policy-update"] {
 diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
-index 87dcef02b6fe556bec505b50dbe8190f0095072a..f8f5859352ea9477ce019e059adbe2501849b62a 100644
+index 87dcef02b6fe556bec505b50dbe8190f0095072a..58b820c10b1abf7185cab93ac7f93e9e7c60cf8f 100644
 --- a/novaOS/kernel/src/sched/process/ipc/service.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/service.rs
 @@ -6,0 +7,2 @@
@@ -30,11 +30,11 @@ index 87dcef02b6fe556bec505b50dbe8190f0095072a..f8f5859352ea9477ce019e059adbe250
 +        if auth_lab::enabled() { config(s, owner, 19, &[2]); policy_lab::publish_measure(s,owner); config(s,group[1].0,13,&[0x4e4133]); }
 @@ -240 +242,2 @@
 -    if words[1..3] != [0, 0] || words[7..].iter().any(|v| *v != 0) || attempt == 0 {
-+    let policy_app = cfg!(feature="novaauth-sessions-lab") && matches!(id,21|22);
++    let policy_app = cfg!(feature="novaauth-sessions-lab") && matches!(id,21..=23);
 +    if words[1..3] != [0, 0] || (!policy_app && words[7..].iter().any(|v| *v != 0)) || attempt == 0 {
 @@ -245 +248 @@
 -        auth_lab::AUTH | auth_lab::CLIENT | auth_lab::SECOND | auth_lab::PROVISIONER if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
-+        17..=22 if auth_lab::enabled() && argument == 0 => policy_lab::image(id).ok_or(DENIED)?,
++        17..=23 if auth_lab::enabled() && argument == 0 => policy_lab::image(id).ok_or(DENIED)?,
 @@ -256 +259 @@
 -    let maximum = maximum.or_else(|| (auth_lab::enabled() && auth_lab::elf(id).is_some()).then_some(0));
 +    let maximum = maximum.or_else(|| (auth_lab::enabled() && policy_lab::image(id).is_some()).then_some(0));

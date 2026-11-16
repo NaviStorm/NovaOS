@@ -306,16 +306,28 @@ impl Session<'_, '_> {
             self.directory.pending = None;
         }
         #[cfg(feature = "politiques-lab")]
-        if let Some((h, tag, tx)) = self.directory.sleeper.filter(|(h, _, _)| belongs(*h)) {
+        self.directory.wake_cancelled()?;
+        Ok(())
+    }
+}
+#[cfg(feature = "politiques-lab")]
+impl Directory {
+    fn wake_cancelled(&mut self) -> rt::Result<()> {
+        if self.pending.is_none()
+            && let Some((_, tag, tx)) = self.sleeper.take()
+        {
             let mut r = [0; 128];
             r[..8].copy_from_slice(&rt::CANCELLED.to_le_bytes());
             r[120..].copy_from_slice(b"DIRREPLY");
-            rt::send_frame(tx, tag, &r, 0, false)?;
-            self.directory.sleeper = None;
-            let _ = h;
+            match rt::send_frame(tx, tag, &r, 0, false) {
+                Ok(_) | Err(rt::CLOSED | rt::REVOKED) => (),
+                Err(e) => return Err(e),
+            }
         }
         Ok(())
     }
+}
+impl Session<'_, '_> {
     pub(super) fn attest_folder(&mut self, a: &Frame) -> rt::Result<()> {
         let lane = usize::from(a[8]);
         if lane > 1 {

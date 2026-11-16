@@ -6,6 +6,10 @@ pub(super) fn image(id: u64) -> Option<&'static [u8]> {
         18 => Some(include_bytes!(concat!(env!("OUT_DIR"), "/sign-alice.elf"))),
         19 => Some(include_bytes!(concat!(env!("OUT_DIR"), "/sign-bob.elf"))),
         21 | 22 => Some(include_bytes!(concat!(env!("OUT_DIR"), "/policy-app.elf"))),
+        23 => Some(include_bytes!(concat!(
+            env!("OUT_DIR"),
+            "/policy-update.elf"
+        ))),
         _ => auth_lab::elf(id),
     }
 }
@@ -15,6 +19,7 @@ fn measure(bytes: &[u8]) -> [u64; 4] {
 }
 pub(super) fn publish_measure(s: &Core, owner: Pid) {
     config(s, owner, 20, &measure(image(21).unwrap()));
+    config(s, owner, 24, &measure(image(23).unwrap()));
 }
 pub(super) fn verify(elf: &[u8], words: &[u64; 16]) -> Res<()> {
     if words[7..11] != measure(elf) || words[11..13] == [0; 2] || words[13..] != [0; 3] {
@@ -34,7 +39,14 @@ pub(super) fn attach(
     // suit la vérification, le rattachement des endpoints et la publication par start.
     let (tx, rx) = channel(s, target, Some(m.fs), SEND)?;
     let (receive, respond) = channel(s, target, Some(m.fs), RECEIVE)?;
-    let lane = (id - 21) as usize;
+    if let Some(space) = s.processes.get(target).space.as_ref() {
+        let (pages, stack) = space.page_counts();
+        hal::log(format_args!(
+            "NAP memoire pid={} id={id} privees={pages} pile={stack} octets_page=4096",
+            target.number
+        ));
+    }
+    let lane = usize::from(id == 22);
     let mut attestation = [0; 6];
     attestation[..2].copy_from_slice(&install);
     attestation[2..].copy_from_slice(&measure(elf));

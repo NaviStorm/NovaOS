@@ -11,6 +11,40 @@ fn map_policy(e: Fault) -> u64 {
         _ => rt::REFUSED,
     }
 }
+/// Injecté exclusivement dans l'effecteur de qualification.
+struct Cut<A> {
+    authority: A,
+    boundary: u8,
+}
+fn stop_guest(marker: &[u8]) -> ! {
+    rt::call(
+        rt::DEBUG_WRITE,
+        marker.as_ptr() as u64,
+        marker.len() as u64,
+        0,
+    );
+    loop {
+        rt::call(rt::THREAD_YIELD, 0, 0, 0);
+    }
+}
+impl<A: Authority> Authority for Cut<A> {
+    fn current(&self) -> novaos_identity::Result<Head> {
+        self.authority.current()
+    }
+    fn outcome(&self, id: Principal) -> novaos_identity::Result<Option<Head>> {
+        self.authority.outcome(id)
+    }
+    fn decide(&mut self, previous: Head, next: Head) -> novaos_identity::Result<()> {
+        if self.boundary == 1 {
+            stop_guest(b"NAP coupure avant decision");
+        }
+        self.authority.decide(previous, next)?;
+        if self.boundary == 2 {
+            stop_guest(b"NAP coupure apres decision");
+        }
+        Ok(())
+    }
+}
 fn attested_image(lane: usize) -> Image {
     let mut bytes = [0u8; 48];
     for (i, b) in bytes.chunks_exact_mut(8).enumerate() {
@@ -63,11 +97,24 @@ impl Session<'_, '_> {
                 .ok_or(rt::REFUSED)
         };
         let owner = created_user(&authority(1)?);
-        let install = policy::installed(&authority(4)?);
+        let initial = policy::installed(&authority(4)?);
+        let install = reg
+            .outcome([90; 16])
+            .map_err(map_policy)?
+            .as_ref()
+            .map(policy::installed)
+            .unwrap_or(initial);
         // Découverte séparée, accessible exclusivement au lanceur.
         if q[8] == 0 {
+            a[48..64].copy_from_slice(&initial);
             a[24..40].copy_from_slice(&install);
             a[40..48].copy_from_slice(&h.generation.to_le_bytes());
+            return Ok(());
+        }
+        if q[8] == 2 {
+            a[24] = self.directory.leases.iter().flatten().count() as u8;
+            a[25] = u8::from(self.directory.pending.is_some());
+            a[26] = u8::from(self.directory.sleeper.is_some());
             return Ok(());
         }
         if q[8] != 1 || q[16..32] != install {
@@ -98,8 +145,26 @@ impl Session<'_, '_> {
         if q[32..64] != h.digest {
             return Err(rt::REFUSED);
         }
-        let mut reg = Registry::open(self.fs.as_mut().ok_or(rt::CLOSED)?, &mut ledger, [7; 16])
-            .map_err(map_policy)?;
+        let fs = self.fs.as_mut().ok_or(rt::CLOSED)?;
+        let boundary = if q[8] == 13 && q[80..96] == [6; 16] {
+            match fs.lookup_at(object, "injection") {
+                Ok(f) => fs
+                    .inspect_id(f.id, 0, 1)
+                    .map_err(error)?
+                    .first()
+                    .copied()
+                    .ok_or(w::CORRUPT)?,
+                Err(novafs::Error::NotFound) => 0,
+                Err(e) => return Err(error(e)),
+            }
+        } else {
+            0
+        };
+        let mut decision = Cut {
+            authority: ledger,
+            boundary,
+        };
+        let mut reg = Registry::open(fs, &mut decision, [7; 16]).map_err(map_policy)?;
         let subject = reg
             .resolve_verified_factor(q[16..32].try_into().unwrap())
             .map_err(map_policy)?;
@@ -158,6 +223,7 @@ impl Session<'_, '_> {
                     != Some(old)
                 {
                     self.directory.revoke(l.holder, l.key)?;
+                    self.directory.wake_cancelled()?;
                 }
             }
         }

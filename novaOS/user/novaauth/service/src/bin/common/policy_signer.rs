@@ -10,7 +10,11 @@ fn serve() -> rt::Result<()> {
     };
     let mut sid = [0; 32];
     loop {
-        let cmd = rt::receive_for(rt::config(1), 15000)?;
+        let cmd = match rt::receive_for(rt::config(1), 15000) {
+            Ok(v) => v,
+            Err(rt::TIMED_OUT) => continue,
+            Err(e) => return Err(e),
+        };
         check(cmd.kind == 1 && cmd.len == 128)?;
         let op = cmd.payload[0];
         let mut r = [0; 128];

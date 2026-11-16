@@ -50,6 +50,7 @@ impl State {
     fn installation(&self, id: Id) -> Result<&Installation> {
         self.users
             .iter()
+            .filter(|u| u.status == Status::Active)
             .flat_map(|u| &u.installations)
             .find(|i| i.id == id && i.image.is_some())
             .ok_or(Fault::Denied)

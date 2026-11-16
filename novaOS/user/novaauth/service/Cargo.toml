@@ -24,6 +24,12 @@ required-features = ["policy-guest"]
 test = false
 
 [[bin]]
+name = "policy-update"
+path = "src/bin/policy-update.rs"
+required-features = ["policy-guest"]
+test = false
+
+[[bin]]
 name = "policy-app"
 path = "src/bin/policy-app.rs"
 required-features = ["policy-guest"]

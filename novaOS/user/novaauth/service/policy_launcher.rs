@@ -14,6 +14,24 @@ fn check(ok: bool) -> rt::Result<()> {
 fn log(b: &[u8]) {
     rt::call(rt::DEBUG_WRITE, b.as_ptr() as u64, b.len() as u64, 0);
 }
+fn metric(prefix: &[u8], value: u64) {
+    let mut msg = [0; 96];
+    msg[..prefix.len()].copy_from_slice(prefix);
+    let mut n = value;
+    let mut digits = [0; 20];
+    let mut i = digits.len();
+    loop {
+        i -= 1;
+        digits[i] = b'0' + (n % 10) as u8;
+        n /= 10;
+        if n == 0 {
+            break;
+        }
+    }
+    let end = prefix.len() + digits.len() - i;
+    msg[prefix.len()..end].copy_from_slice(&digits[i..]);
+    log(&msg[..end]);
+}
 fn receive(rx: u64, tag: u64, size: u32) -> rt::Result<Bytes> {
     let r = rt::receive_for(rx, 15000)?;
     check(r.kind == 1 && r.tag == tag && r.len == size)?;
@@ -58,6 +76,10 @@ impl Actor {
     }
     fn success(&mut self, op: u8, origin: u8, rights: u8, request: u8) -> rt::Result<Bytes> {
         let r = self.sign(op, origin, rights, request)?;
+        if word(&r) != 0 {
+            metric(b"NAP echec op=", op.into());
+            metric(b"NAP statut=", word(&r));
+        }
         check(word(&r) == 0)?;
         Ok(r)
     }
@@ -91,6 +113,10 @@ impl Actor {
     ) -> rt::Result<u64> {
         let tag = self.submit(app, op, key, rights, request)?;
         let r = receive(app[1], tag, 128)?;
+        if word(&r) != status {
+            metric(b"NAP echec VFS op=", op.into());
+            metric(b"NAP statut=", word(&r));
+        }
         check(word(&r) == status)?;
         Ok(word(&r[8..]))
     }
@@ -118,15 +144,32 @@ fn collect(p: Frame) -> rt::Result<()> {
         }
     }
 }
-pub(super) fn launch() -> rt::Result<()> {
+fn measurement(offset: usize) -> [u8; 32] {
     let mut hash = [0; 32];
     for (i, b) in hash.chunks_exact_mut(8).enumerate() {
         let v = unsafe {
-            (&*(0x401000 as *const core::sync::atomic::AtomicU64).add(20 + i))
+            (&*(0x401000 as *const core::sync::atomic::AtomicU64).add(offset + i))
                 .load(core::sync::atomic::Ordering::Acquire)
         };
         b.copy_from_slice(&v.to_le_bytes());
     }
+    hash
+}
+fn admit(id: u64, installation: &[u8; 16], hash: &[u8; 32]) -> rt::Result<Frame> {
+    check(word(&control(20 + id, 1, installation, hash)?[16..]) == 0)?;
+    start(id, installation, hash)
+}
+fn finish(actors: &[Frame], verifier: Frame) -> rt::Result<()> {
+    for p in actors {
+        rt::send_for(p[2], 10000, &[0; 128], 5000)?;
+        collect(*p)?;
+    }
+    rt::send_for(verifier[2], 1, &[0], 5000)?;
+    collect(verifier)
+}
+pub(super) fn launch() -> rt::Result<()> {
+    let base_hash = measurement(20);
+    let mut hash = base_hash;
     let h = control(1, 0, &[0; 16], &hash)?;
     if word(&h[16..]) != 0 {
         log(b"NAP registre refuse avant lancement");
@@ -134,7 +177,16 @@ pub(super) fn launch() -> rt::Result<()> {
     }
     let id = h[24..40].try_into().unwrap();
     let stage = word(&h[40..]);
-    check(matches!(stage, 5 | 10 | 11))?;
+    check(matches!(stage, 5 | 7 | 8 | 10 | 11))?;
+    if stage == 7 {
+        check(word(&control(10, 1, &id, &base_hash)?[16..]) == rt::DENIED)?;
+        hash = measurement(24);
+        check(hash != base_hash)?;
+    }
+    if stage == 8 {
+        let old = h[48..64].try_into().unwrap();
+        check(old != id && word(&control(11, 1, &old, &hash)?[16..]) == rt::DENIED)?;
+    }
     let mut bad = hash;
     bad[0] ^= 1;
     check(word(&control(2, 1, &id, &bad)?[16..]) == rt::DENIED)?;
@@ -148,6 +200,22 @@ pub(super) fn launch() -> rt::Result<()> {
     let b = bob.success(1, 0, 0, 0)?;
     check(a[16..32] != b[16..32])?;
     log(b"NAP deux titulaires authentifies");
+    if matches!(stage, 7 | 8) {
+        let app = admit(if stage == 7 { 23 } else { 21 }, &id, &hash)?;
+        if stage == 7 {
+            let lease = alice.data(app, 1, 0, 1, 0, 0)?;
+            alice.data(app, 3, lease, 0, 0, 0)?;
+            log(b"NAP mise a jour attestee lecture autorisee");
+        } else {
+            alice.data(app, 1, 0, 1, 0, rt::DENIED)?;
+            log(b"NAP reinstallation meme ELF sans droits");
+        }
+        alice.success(4, 0, 0, 0)?;
+        bob.success(4, 0, 0, 0)?;
+        finish(&[app, alice.p, bob.p], verifier)?;
+        log(b"NAP cycle installation termine");
+        return Ok(());
+    }
     if stage == 5 {
         check(alice.success(12, 0, 0, 0)?[8] == 0)?;
         alice.success(13, 0, 1, 6)?;
@@ -157,11 +225,15 @@ pub(super) fn launch() -> rt::Result<()> {
         alice.success(13, 0, 1, 8)?;
         alice.success(13, 1, 2, 9)?;
         alice.success(14, 1, 0, 10)?;
+        alice.success(4, 0, 0, 0)?;
+        alice.success(1, 0, 0, 0)?;
+        bob.success(4, 0, 0, 0)?;
+        bob.success(1, 0, 0, 0)?;
         log(b"NAP politique modifiee application arretee");
     }
     check(word(&bob.sign(13, 0, 1, 77)?) == rt::DENIED)?;
-    let app_a = start(21, &id, &hash)?;
-    let app_b = start(22, &id, &hash)?;
+    let app_a = admit(21, &id, &hash)?;
+    let app_b = admit(22, &id, &hash)?;
     log(b"NAP meme image admise deux instances");
     let direct = alice.data(app_a, 1, 0, 1, 0, 0)?;
     alice.data(app_a, 3, direct, 0, 0, 0)?;
@@ -173,8 +245,11 @@ pub(super) fn launch() -> rt::Result<()> {
         let child = alice.data(app_a, 2, root, 2, 0, 0)?;
         if stage == 10 {
             let grandchild = alice.data(app_a, 2, child, 2, 0, 0)?;
-            alice.data(app_a, 5, grandchild, 0, 37, 0)?;
+            let blocked = alice.submit(app_a, 11, grandchild, 0, 37)?;
+            let debut = now()?;
             alice.success(15, 1, 0, 11)?;
+            metric(b"NAP retrait ticks=", now()? - debut);
+            check(word(&receive(app_a[1], blocked, 128)?) == rt::CANCELLED)?;
             for key in [root, child, grandchild] {
                 alice.data(app_a, 5, key, 0, 38, rt::REVOKED)?;
             }
@@ -203,12 +278,12 @@ pub(super) fn launch() -> rt::Result<()> {
     if stage != 5 {
         check(alice.data(app_a, 3, direct, 0, 0, 0)? == 1)?;
     }
-    for p in [app_a, app_b, alice.p, bob.p] {
-        rt::send_for(p[2], 10000, &[0; 128], 5000)?;
-        collect(p)?;
-    }
-    rt::send_for(verifier[2], 1, &[0], 5000)?;
-    collect(verifier)?;
+    alice.success(4, 0, 0, 0)?;
+    bob.success(4, 0, 0, 0)?;
+    let counts = control(100, 2, &id, &hash)?;
+    check(word(&counts[16..]) == 0 && counts[24..27] == [0; 3])?;
+    log(b"NAP zero handle preparation attente");
+    finish(&[app_a, app_b, alice.p, bob.p], verifier)?;
     log(b"NAP cinq processus collectes");
     Ok(())
 }
