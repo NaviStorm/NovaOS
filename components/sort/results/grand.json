@@ -1,0 +1,98 @@
+{
+  "ram": 137438953472,
+  "corpus": {
+    "seed": 27,
+    "width": 4096,
+    "rows": 41943040,
+    "size": 171798691840,
+    "allocated": 171811274752,
+    "input_sha256": "2256f4c4d598eefe2b7621ef53b4b53165908a4ed4bd8dbc95425afa4ab52e22",
+    "distribution": "random",
+    "generation_s": 97.22329025000363,
+    "initial_free": 574436589568,
+    "reserve": 17179869184,
+    "path": "../tmp/sort-arc027-grand/input"
+  },
+  "cache": "non purg\u00e9",
+  "results": [
+    {
+      "metrics": null,
+      "command": [
+        "/opt/homebrew/bin/gsort",
+        "-S",
+        "2G",
+        "--parallel=1",
+        "--batch-size=128",
+        "-T",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmprgij71ip/runs",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-grand/input"
+      ],
+      "architecture": "arm64",
+      "os": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+      "elapsed_s": 323.98476387499977,
+      "cpu_user_s": 44.618745,
+      "cpu_system_s": 244.380683,
+      "rss_bytes": 4299980800,
+      "mib_s": 505.70279305854325,
+      "io_in_blocks": 0,
+      "io_out_blocks": 0,
+      "major_faults": 11,
+      "swaps": 0,
+      "sampled_temp_allocated_bytes": 172559360000,
+      "observed_temp_names": 81,
+      "output_sha256": "0175f7b0b711d06b569d0446c2a8f15744dbae66a7e7e9f5225d0cd3ba1d76bb",
+      "output_bytes": 171798691840,
+      "rows": 41943040,
+      "validation_s": 79.15234466699621,
+      "engine": "gnu"
+    },
+    {
+      "metrics": {
+        "runs": 81,
+        "passes": 1,
+        "temp_bytes_written": 171798691840,
+        "workers": 1
+      },
+      "command": [
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/sort-natif-0240/components/sort/artifacts/darwin-arm64/sort",
+        "-S",
+        "2G",
+        "--parallel=1",
+        "--batch-size=128",
+        "-T",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmps00__lxk/runs",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-grand/input"
+      ],
+      "architecture": "arm64",
+      "os": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+      "elapsed_s": 252.32960612500028,
+      "cpu_user_s": 73.914468,
+      "cpu_system_s": 68.020054,
+      "rss_bytes": 2167635968,
+      "mib_s": 649.3094588307491,
+      "io_in_blocks": 0,
+      "io_out_blocks": 0,
+      "major_faults": 21,
+      "swaps": 0,
+      "sampled_temp_allocated_bytes": 171847090176,
+      "observed_temp_names": 81,
+      "output_sha256": "0175f7b0b711d06b569d0446c2a8f15744dbae66a7e7e9f5225d0cd3ba1d76bb",
+      "output_bytes": 171798691840,
+      "rows": 41943040,
+      "validation_s": 86.67192100000102,
+      "engine": "nova"
+    }
+  ],
+  "summary": {
+    "gnu": {
+      "median_s": 323.98476387499977,
+      "min_s": 323.98476387499977,
+      "max_s": 323.98476387499977
+    },
+    "nova": {
+      "median_s": 252.32960612500028,
+      "min_s": 252.32960612500028,
+      "max_s": 252.32960612500028
+    }
+  }
+}

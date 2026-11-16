@@ -1,0 +1,113 @@
+UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)
+ArmTrngLib could not be correctly initialized.
+Error: Image at 0004FDB6000 start failed: 00000001
+Error: Image at 0004FCB2000 start failed: Unsupported
+Error: Image at 0004FC37000 start failed: Not Found
+Error: Image at 0004FB5D000 start failed: Aborted
+Tpm2SubmitCommand - Tcg2 - Not Found
+Tpm2GetCapabilityPcrs fail!
+Tpm2SubmitCommand - Tcg2 - Not Found
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+ConvertPages: failed to find range 140000000 - 140003FFF
+BdsDxe: starting Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+[BootID EFI] QEMU ArmVirt /chosen/rng-seed
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 53845 pages libres.
+NovaOS v0.20.0
+RAM phase=services_admis image=1324 tables=196 kpile=128 upile=194 heap=16 buddy=1 ipc=18 utilisateur=156 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61290 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2049 retenu=2518 dma=16
+DEBUG pid=3 NVFS coeur initialise ELF tas prive
+BLOC chaine novaFS=3 bloc=2 pilote=4 client=5 generation=1
+nsh> echo DEBUT; sort donnees | uniq -c; echo ARCRET_$?__fin
+DEBUT
+     64 00xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 02xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 03xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 04xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 05xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 06xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 07xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 08xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 09xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 10xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 11xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 12xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 13xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 14xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 15xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 16xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 17xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 18xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 19xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 20xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 21xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 22xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 23xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 24xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 25xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 26xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 27xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 28xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 29xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 30xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 31xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 32xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 33xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 34xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 35xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 36xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 37xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 38xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 39xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 40xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 41xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 42xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 43xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 44xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 45xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 46xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 47xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 48xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 49xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 50xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 51xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 52xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 53xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 54xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 55xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 56xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 57xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 58xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 59xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 60xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 61xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 62xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 63xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ARCRET_0__fin
+nsh> exit
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775819 statut=0
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775821 statut=0
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775814 statut=0
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775816 statut=0
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775815 statut=0
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775809 statut=0
+RAM phase=services_draines image=1324 tables=191 kpile=112 upile=130 heap=16 buddy=1 ipc=14 utilisateur=272 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61263 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2076 retenu=2545 dma=16
+SERVICES fin gestionnaire Exit(0)
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775813 statut=0
+PROC pid=4 niveau=EL0 pc=0x400aa8 sortie=0
+PROC pid=3 niveau=EL0 pc=0x102e134 sortie=0
+PROC pid=2 niveau=EL0 pc=0x400574 sortie=0
+BLOC bilan mode=41 service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=52000
+BLOC session terminee ok=true
+SMP diagnostic cpu=0 sp=0xfffff02000022dc0
+SMP diagnostic cpu=1 sp=0xfffff0200023edd0
+SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0

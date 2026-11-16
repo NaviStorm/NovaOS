@@ -1,0 +1,37 @@
+{
+  "debut_utc": "2026-11-16T14:47:06.584+00:00",
+  "architecture": "aarch64",
+  "octets_secteur": 512,
+  "vcpu": 2,
+  "ram_mio": 256,
+  "iso_sha256": "e9ec6971288d3b33eca609f2f1f71a94020f0a46bdac5aa0546677f568f7d548",
+  "elf_sha256": "800cc89896b8b3072ca20eff8ce3891eb33003d7d96932cdf03eec17158d471b",
+  "lanceur": {
+    "revision_git": "ea2d0c3cd5a38671ebdf263c8eeca72b3cabcff2"
+  },
+  "construction": {
+    "revision_git": "ea2d0c3cd5a38671ebdf263c8eeca72b3cabcff2"
+  },
+  "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/sort-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-machine",
+    "msi=off",
+    "-device",
+    "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+    "-drive",
+    "if=none,id=d,file=blkdebug::/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-sort-0240/grand-aarch64-512/volume.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=off",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=512,physical_block_size=512",
+    "-chardev",
+    "socket,id=banc,fd=4",
+    "-mon",
+    "chardev=banc,mode=control"
+  ]
+}

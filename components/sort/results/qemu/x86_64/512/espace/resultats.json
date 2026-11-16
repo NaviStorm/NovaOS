@@ -1,0 +1,18 @@
+{
+  "arch": "x86_64",
+  "secteur": 512,
+  "octets": 262144,
+  "volume": 2097152,
+  "avant": "remplissage=1052672 blocs_disponibles=40\n",
+  "sha256": "32559f8794b16d9ea1c3a54a629b65ce1836c5d274598a2ca31cef5ceec451d8",
+  "statuts": {
+    "sort": 2,
+    "uniq": 0
+  },
+  "diagnostics": [
+    "sort : échec de l’opération (23)",
+    "PIPE retrait noeuds=0 attentes=0 file=0 pic=0 blocages=0 lus=0 fnv=cbf29ce484222325"
+  ],
+  "apres": "blocs_disponibles=37\n",
+  "source_intacte": true
+}

@@ -1,0 +1,18 @@
+{
+  "arch": "x86_64",
+  "secteur": 512,
+  "octets": 262144,
+  "source_sha256": "5465c574b13679a7e7c1060330071345acd56327b7ba01fbe71aa6b566701c61",
+  "armer": "",
+  "fermeture_lecteur": true,
+  "reprendre": "",
+  "statuts": {
+    "sort": 2,
+    "uniq": 0
+  },
+  "diagnostics": [
+    "sort : erreur d’E/S (26)",
+    "PIPE retrait noeuds=0 attentes=0 file=0 pic=3 blocages=0 lus=64 fnv=eb2cfecc16d32535"
+  ],
+  "arret_invite": "false"
+}

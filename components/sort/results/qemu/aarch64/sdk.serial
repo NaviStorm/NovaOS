@@ -1,0 +1,23 @@
+UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)
+ArmTrngLib could not be correctly initialized.
+Error: Image at 0004FDB6000 start failed: 00000001
+Error: Image at 0004FCB2000 start failed: Unsupported
+Error: Image at 0004FC37000 start failed: Not Found
+Error: Image at 0004FB5D000 start failed: Aborted
+Tpm2SubmitCommand - Tcg2 - Not Found
+Tpm2GetCapabilityPcrs fail!
+Tpm2SubmitCommand - Tcg2 - Not Found
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+ConvertPages: failed to find range 140000000 - 140003FFF
+BdsDxe: starting Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+[BootID EFI] QEMU ArmVirt /chosen/rng-seed
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 53847 pages libres.
+NovaOS v0.20.0
+PROC pid=2 niveau=EL0 pc=0x10028cc sortie=0
+SDK exemple admis sortie=0 restitution=OK
+SMP diagnostic cpu=0 sp=0xfffff02000022dc0
+SMP diagnostic cpu=1 sp=0xfffff0200023edd0
+SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0

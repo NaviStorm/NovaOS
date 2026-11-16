@@ -12,7 +12,6 @@ from collections import Counter
 ROOT=Path(__file__).resolve().parents[1]
 REFERENCE=Path("/opt/homebrew/bin/gsort")
 GNU=REFERENCE.resolve().parents[1]/"libexec/gnubin/sort"
-assert GNU.samefile(REFERENCE)
 DEFAULT=b" 10\n2\n01\n-2\n10\n1.01\n1.0100\n-100000000000000000000001\n1000000000000000000000000\n"
 NAMES=[
  ("b","ignore-leading-blanks",b" z\na\n"),
@@ -104,6 +103,8 @@ def main():
     p.add_argument("--work",type=Path,default=Path(os.environ.get("TMPDIR",".")))
     p.add_argument("--output",type=Path)
     opts=p.parse_args()
+    if opts.engine in ("gnu","both") and not (GNU.is_file() and REFERENCE.is_file() and GNU.samefile(REFERENCE)):
+        p.error("GNU sort 9.12 requis sous /opt/homebrew/bin/gsort")
     result=[]
     for name,flags,data,mode in cases():
         locale="en_US.UTF-8" if name=="UTF8-collation" else "C"

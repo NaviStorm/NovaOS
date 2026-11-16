@@ -1,0 +1,4 @@
+results/qemu/**/*.serial -diff -text
+results/qemu/**/*.log -diff -text
+results/gnu-suite-initial.txt -diff -text
+artifacts/*/sort binary

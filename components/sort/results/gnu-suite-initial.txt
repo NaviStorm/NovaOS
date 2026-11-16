@@ -1,0 +1,196 @@
+Use of uninitialized value $ENV{"srcdir"} in string at /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/tests/Coreutils.pm line 37.
+sort: test h7: stderr mismatch, comparing h7.3 (expected) and h7.E (actual)
+--- h7.3	2026-11-16 15:33:01
++++ h7.E	2026-11-16 15:33:01
+@@ -1 +1 @@
+-sort: options '-hn' are incompatible
++sort: incompatible ordering options
+sort: test h7.r: stderr mismatch, comparing h7.r.3 (expected) and h7.r.E (actual)
+--- h7.r.3	2026-11-16 15:33:01
++++ h7.r.E	2026-11-16 15:33:01
+@@ -1 +1 @@
+-sort: options '-hn' are incompatible
++sort: incompatible ordering options
+sort: test h7.p: stderr mismatch, comparing h7.p.3 (expected) and h7.p.E (actual)
+--- h7.p.3	2026-11-16 15:33:01
++++ h7.p.E	2026-11-16 15:33:01
+@@ -1 +1 @@
+-sort: options '-hn' are incompatible
++sort: incompatible ordering options
+sort: test 03d: stderr mismatch, comparing 03d.1 (expected) and 03d.E (actual)
+--- 03d.1	2026-11-16 15:33:02
++++ 03d.E	2026-11-16 15:33:02
+@@ -1 +1 @@
+-sort: -: invalid field specification '0'
++sort: invalid field number
+sort: test 03e: stderr mismatch, comparing 03e.1 (expected) and 03e.E (actual)
+--- 03e.1	2026-11-16 15:33:02
++++ 03e.E	2026-11-16 15:33:02
+@@ -1 +1 @@
+-sort: character offset is zero: invalid field specification '1.0'
++sort: character positions are numbered from 1
+sort: test 03f: stderr mismatch, comparing 03f.1 (expected) and 03f.E (actual)
+--- 03f.1	2026-11-16 15:33:02
++++ 03f.E	2026-11-16 15:33:02
+@@ -1 +1 @@
+-sort: invalid number after ',': invalid count at start of '-k0'
++sort: invalid field number
+sort: test 07d failed: exit status mismatch:  expected 0, got 2
+sort: test 07d.r failed: exit status mismatch:  expected 0, got 2
+sort: test 07d.p failed: exit status mismatch:  expected 0, got 2
+sort: test 07i failed: exit status mismatch:  expected 0, got 2
+sort: test 07i.r failed: exit status mismatch:  expected 0, got 2
+sort: test 07i.p failed: exit status mismatch:  expected 0, got 2
+sort: test 07j failed: exit status mismatch:  expected 0, got 2
+sort: test 07j.r failed: exit status mismatch:  expected 0, got 2
+sort: test 07j.p failed: exit status mismatch:  expected 0, got 2
+sort: test 07k failed: exit status mismatch:  expected 0, got 2
+sort: test 07k.r failed: exit status mismatch:  expected 0, got 2
+sort: test 07k.p failed: exit status mismatch:  expected 0, got 2
+sort: test 07l failed: exit status mismatch:  expected 0, got 2
+sort: test 07l.r failed: exit status mismatch:  expected 0, got 2
+sort: test 07l.p failed: exit status mismatch:  expected 0, got 2
+sort: test 07m failed: exit status mismatch:  expected 0, got 2
+sort: test 07m.r failed: exit status mismatch:  expected 0, got 2
+sort: test 07m.p failed: exit status mismatch:  expected 0, got 2
+sort: test 08a: stderr mismatch, comparing 08a.1 (expected) and 08a.E (actual)
+--- 08a.1	2026-11-16 15:33:03
++++ 08a.E	2026-11-16 15:33:03
+@@ -1 +1 @@
+-sort: invalid number after '.': invalid count at start of ',3'
++sort: invalid character position
+sort: test 08b: stderr mismatch, comparing 08b.1 (expected) and 08b.E (actual)
+--- 08b.1	2026-11-16 15:33:03
++++ 08b.E	2026-11-16 15:33:03
+@@ -1 +1 @@
+-sort: invalid number after ',': invalid count at start of ''
++sort: invalid field number
+sort: test 10b failed: exit status mismatch:  expected 0, got 2
+sort: test 10b.r failed: exit status mismatch:  expected 0, got 2
+sort: test 10b.p failed: exit status mismatch:  expected 0, got 2
+sort: test 10d failed: exit status mismatch:  expected 0, got 2
+sort: test 10d.r failed: exit status mismatch:  expected 0, got 2
+sort: test 10d.p failed: exit status mismatch:  expected 0, got 2
+sort: test 12a failed: exit status mismatch:  expected 0, got 2
+sort: test 12a.r failed: exit status mismatch:  expected 0, got 2
+sort: test 12a.p failed: exit status mismatch:  expected 0, got 2
+sort: test 12b failed: exit status mismatch:  expected 0, got 2
+sort: test 12b.r failed: exit status mismatch:  expected 0, got 2
+sort: test 12b.p failed: exit status mismatch:  expected 0, got 2
+sort: test 12c failed: exit status mismatch:  expected 0, got 2
+sort: test 12c.r failed: exit status mismatch:  expected 0, got 2
+sort: test 12c.p failed: exit status mismatch:  expected 0, got 2
+sort: test 12d failed: exit status mismatch:  expected 0, got 2
+sort: test 12d.r failed: exit status mismatch:  expected 0, got 2
+sort: test 12d.p failed: exit status mismatch:  expected 0, got 2
+sort: test 13a failed: exit status mismatch:  expected 0, got 2
+sort: test 13a.r failed: exit status mismatch:  expected 0, got 2
+sort: test 13a.p failed: exit status mismatch:  expected 0, got 2
+sort: test 13b failed: exit status mismatch:  expected 0, got 2
+sort: test 13b.r failed: exit status mismatch:  expected 0, got 2
+sort: test 13b.p failed: exit status mismatch:  expected 0, got 2
+sort: test 19a failed: exit status mismatch:  expected 0, got 2
+sort: test 19a.r failed: exit status mismatch:  expected 0, got 2
+sort: test 19a.p failed: exit status mismatch:  expected 0, got 2
+sort: test create-empty: stderr mismatch, comparing create-empty.1 (expected) and create-empty.E (actual)
+--- create-empty.1	2026-11-16 15:33:04
++++ create-empty.E	2026-11-16 15:33:04
+@@ -1 +1 @@
+-sort: open failed: no/such/file: No such file or directory
++sort: No such file or directory (os error 2)
+sort: test incompat1 failed: exit status mismatch:  expected 2, got 0
+sort: test incompat2: stderr mismatch, comparing incompat2.1 (expected) and incompat2.E (actual)
+--- incompat2.1	2026-11-16 15:33:04
++++ incompat2.E	2026-11-16 15:33:04
+@@ -1 +1 @@
+-sort: options '-nR' are incompatible
++sort: incompatible ordering options
+sort: test incompat3: stderr mismatch, comparing incompat3.1 (expected) and incompat3.E (actual)
+--- incompat3.1	2026-11-16 15:33:04
++++ incompat3.E	2026-11-16 15:33:04
+@@ -1 +1 @@
+-sort: options '-dfgMnR' are incompatible
++sort: incompatible ordering options
+sort: test incompat4: stderr mismatch, comparing incompat4.1 (expected) and incompat4.E (actual)
+--- incompat4.1	2026-11-16 15:33:04
++++ incompat4.E	2026-11-16 15:33:04
+@@ -1 +1 @@
+-sort: options '-co' are incompatible
++sort: incompatible options or operands
+sort: test incompat5: stderr mismatch, comparing incompat5.1 (expected) and incompat5.E (actual)
+--- incompat5.1	2026-11-16 15:33:04
++++ incompat5.E	2026-11-16 15:33:04
+@@ -1 +1 @@
+-sort: options '-Co' are incompatible
++sort: incompatible options or operands
+sort: test incompat6: stderr mismatch, comparing incompat6.1 (expected) and incompat6.E (actual)
+--- incompat6.1	2026-11-16 15:33:04
++++ incompat6.E	2026-11-16 15:33:04
+@@ -1 +1 @@
+-sort: options '-cC' are incompatible
++sort: incompatible check modes
+sort: test incompat7: stderr mismatch, comparing incompat7.1 (expected) and incompat7.E (actual)
+--- incompat7.1	2026-11-16 15:33:04
++++ incompat7.E	2026-11-16 15:33:04
+@@ -1 +1 @@
+-sort: options '-nR' are incompatible
++sort: incompatible ordering options
+sort: test bigfield1 failed: exit status mismatch:  expected 0, got 2
+sort: test bigfield1.r failed: exit status mismatch:  expected 0, got 2
+sort: test bigfield1.p failed: exit status mismatch:  expected 0, got 2
+sort: test bigfield2 failed: exit status mismatch:  expected 0, got 2
+sort: test bigfield2.r failed: exit status mismatch:  expected 0, got 2
+sort: test bigfield2.p failed: exit status mismatch:  expected 0, got 2
+sort: test output-is-input.r: mismatch, comparing output-is-input.r.2 (expected) and f (actual)
+--- output-is-input.r.2	2026-11-16 15:33:05
++++ f	2026-11-16 15:33:05
+@@ -1 +0,0 @@
+-a
+sort: test zero-2: stdout mismatch, comparing zero-2.2 (expected) and zero-2.O (actual)
+Binary files zero-2.2 and zero-2.O differ
+sort: test zero-2.r: stdout mismatch, comparing zero-2.r.2 (expected) and zero-2.r.O (actual)
+Binary files zero-2.r.2 and zero-2.r.O differ
+sort: test zero-2.p: stdout mismatch, comparing zero-2.p.2 (expected) and zero-2.p.O (actual)
+Binary files zero-2.p.2 and zero-2.p.O differ
+sort: test zero-3: stdout mismatch, comparing zero-3.2 (expected) and zero-3.O (actual)
+Binary files zero-3.2 and zero-3.O differ
+sort: test zero-3.r: stdout mismatch, comparing zero-3.r.2 (expected) and zero-3.r.O (actual)
+Binary files zero-3.r.2 and zero-3.r.O differ
+sort: test zero-3.p: stdout mismatch, comparing zero-3.p.2 (expected) and zero-3.p.O (actual)
+Binary files zero-3.p.2 and zero-3.p.O differ
+sort: test invalid-parallel-1: stderr mismatch, comparing invalid-parallel-1.2 (expected) and invalid-parallel-1.E (actual)
+--- invalid-parallel-1.2	2026-11-16 15:33:05
++++ invalid-parallel-1.E	2026-11-16 15:33:05
+@@ -1 +1 @@
+-sort: invalid --parallel argument '-1'
++sort: invalid number: '-1'
+sort: test invalid-parallel-1.r: stderr mismatch, comparing invalid-parallel-1.r.2 (expected) and invalid-parallel-1.r.E (actual)
+--- invalid-parallel-1.r.2	2026-11-16 15:33:05
++++ invalid-parallel-1.r.E	2026-11-16 15:33:05
+@@ -1 +1 @@
+-sort: invalid --parallel argument '-1'
++sort: invalid number: '-1'
+sort: test invalid-parallel-1.p: stderr mismatch, comparing invalid-parallel-1.p.2 (expected) and invalid-parallel-1.p.E (actual)
+--- invalid-parallel-1.p.2	2026-11-16 15:33:05
++++ invalid-parallel-1.p.E	2026-11-16 15:33:05
+@@ -1 +1 @@
+-sort: invalid --parallel argument '-1'
++sort: invalid number: '-1'
+sort: test invalid-parallel-2: stderr mismatch, comparing invalid-parallel-2.2 (expected) and invalid-parallel-2.E (actual)
+--- invalid-parallel-2.2	2026-11-16 15:33:05
++++ invalid-parallel-2.E	2026-11-16 15:33:05
+@@ -1 +1 @@
+-sort: invalid --parallel argument 'a'
++sort: invalid number: 'a'
+sort: test invalid-parallel-2.r: stderr mismatch, comparing invalid-parallel-2.r.2 (expected) and invalid-parallel-2.r.E (actual)
+--- invalid-parallel-2.r.2	2026-11-16 15:33:05
++++ invalid-parallel-2.r.E	2026-11-16 15:33:05
+@@ -1 +1 @@
+-sort: invalid --parallel argument 'a'
++sort: invalid number: 'a'
+sort: test invalid-parallel-2.p: stderr mismatch, comparing invalid-parallel-2.p.2 (expected) and invalid-parallel-2.p.E (actual)
+--- invalid-parallel-2.p.2	2026-11-16 15:33:05
++++ invalid-parallel-2.p.E	2026-11-16 15:33:05
+@@ -1 +1 @@
+-sort: invalid --parallel argument 'a'
++sort: invalid number: 'a'

@@ -1,0 +1,13 @@
+{
+  "seed": 27,
+  "width": 4096,
+  "rows": 41943040,
+  "size": 171798691840,
+  "allocated": 171811274752,
+  "input_sha256": "2256f4c4d598eefe2b7621ef53b4b53165908a4ed4bd8dbc95425afa4ab52e22",
+  "distribution": "random",
+  "generation_s": 97.22329025000363,
+  "initial_free": 574436589568,
+  "reserve": 17179869184,
+  "path": "../tmp/sort-arc027-grand/input"
+}

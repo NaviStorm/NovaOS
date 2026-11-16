@@ -1,0 +1,12 @@
+{
+  "arch": "aarch64",
+  "secteur": 4096,
+  "lignes": 8192,
+  "octets": 262144,
+  "source_sha256": "32559f8794b16d9ea1c3a54a629b65ce1836c5d274598a2ca31cef5ceec451d8",
+  "initial": 0,
+  "point_arret": 45,
+  "apres_coupure": 11,
+  "apres_reprise": 0,
+  "source_intacte": true
+}

@@ -1,0 +1,31 @@
+qemu-system-aarch64: -mon chardev=banc,mode=control: warning: '-mon' is deprecated, use '-object' with 'monitor-hmp' or 'monitor-qmp' types instead
+UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)
+ArmTrngLib could not be correctly initialized.
+Error: Image at 0004FDB6000 start failed: 00000001
+Error: Image at 0004FCB2000 start failed: Unsupported
+Error: Image at 0004FC37000 start failed: Not Found
+Error: Image at 0004FB5D000 start failed: Aborted
+Tpm2SubmitCommand - Tcg2 - Not Found
+Tpm2GetCapabilityPcrs fail!
+Tpm2SubmitCommand - Tcg2 - Not Found
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+ConvertPages: failed to find range 140000000 - 140003FFF
+BdsDxe: starting Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+[BootID EFI] QEMU ArmVirt /chosen/rng-seed
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 53945 pages libres.
+NovaOS v0.20.0
+RAM phase=services_admis image=1274 tables=196 kpile=128 upile=194 heap=16 buddy=1 ipc=18 utilisateur=154 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61342 cache=0 chargeur=0 restitue=7976 extra_elf=0 video=469 ram_video=469 resident=1997 retenu=2466 dma=16
+BLOC chaine novaFS=3 bloc=2 pilote=4 client=5 generation=1
+DEBUG pid=3 NVFS coeur initialise ELF tas prive
+SERVICES fin gestionnaire Exit(8)
+PROC pid=2 niveau=EL0 pc=0x400574 sortie=11
+PROC pid=4 niveau=EL0 pc=0x400aa8 sortie=5
+PROC pid=3 niveau=EL0 pc=0x102e134 sortie=26
+BLOC bilan mode=41 service=Exit(26) bloc=Exit(11) pilote=Exit(5) client=Exit(8) retrait=Ok(()) cycles_retrait=43500
+BLOC session terminee ok=false
+SMP diagnostic cpu=0 sp=0xfffff02000022dc0
+SMP diagnostic cpu=1 sp=0xfffff0200023edd0
+SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0

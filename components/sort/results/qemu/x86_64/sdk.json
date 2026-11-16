@@ -1,0 +1,7 @@
+{
+  "vcpus": 2,
+  "niveau": "Ring3",
+  "sortie": 0,
+  "restitution": true,
+  "witness_sha256": "a64bf421990391f6e32125109c94f98ca41f399559a5c3541c38b35ca3e44161"
+}

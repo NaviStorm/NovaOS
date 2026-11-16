@@ -1,0 +1,10 @@
+{
+  "avant": {
+    "lots": 3,
+    "source_sha256": "5465c574b13679a7e7c1060330071345acd56327b7ba01fbe71aa6b566701c61"
+  },
+  "apres": {
+    "lots": 0,
+    "source_sha256": "5465c574b13679a7e7c1060330071345acd56327b7ba01fbe71aa6b566701c61"
+  }
+}

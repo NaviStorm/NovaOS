@@ -1,0 +1,7 @@
+{
+  "vcpus": 2,
+  "niveau": "EL0",
+  "sortie": 0,
+  "restitution": true,
+  "witness_sha256": "03a7cd01dd2829a17ab38e9446c4a3d24bc38812fdaf60374bf268ca98f6324e"
+}

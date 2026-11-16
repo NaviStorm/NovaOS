@@ -1,0 +1,95 @@
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+BdsDxe: starting Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 51242 pages libres.
+NovaOS v0.20.0
+RAM phase=bloc_repos image=1336 tables=148 kpile=48 upile=0 heap=32 buddy=2 ipc=0 utilisateur=0 processus=0 meta_octets=20128 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62364 cache=0 chargeur=0 restitue=11213 extra_elf=0 video=469 ram_video=0 resident=1566 retenu=1566 dma=0
+RAM phase=services_admis image=1336 tables=190 kpile=128 upile=194 heap=32 buddy=2 ipc=18 utilisateur=165 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61849 cache=0 chargeur=0 restitue=11213 extra_elf=0 video=469 ram_video=0 resident=2081 retenu=2081 dma=16
+BLOC chaine novaFS=3 bloc=2 pilote=4 client=5 generation=1
+RAM phase=bloc_publie image=1336 tables=190 kpile=128 upile=194 heap=32 buddy=2 ipc=18 utilisateur=165 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61849 cache=0 chargeur=0 restitue=11213 extra_elf=0 video=469 ram_video=0 resident=2081 retenu=2081 dma=16
+DEBUG pid=3 NVFS coeur initialise ELF tas prive
+BLOC parcours i=0 octets=131072 ns=48605525
+BLOC parcours i=1 octets=131072 ns=26565294
+BLOC parcours i=2 octets=131072 ns=23507872
+BLOC parcours i=3 octets=131072 ns=17154659
+BLOC parcours i=4 octets=131072 ns=35508056
+BLOC parcours i=5 octets=131072 ns=31506025
+BLOC parcours i=6 octets=131072 ns=30445186
+ECHANTILLON ech montage-cli cycles=28557000
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=100 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=64 pile=64
+RAM phase=cli_repos image=1336 tables=190 kpile=128 upile=194 heap=32 buddy=2 ipc=18 utilisateur=181 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61833 cache=0 chargeur=0 restitue=11213 extra_elf=0 video=469 ram_video=0 resident=2097 retenu=2097 dma=16
+CLI repos pages=128 libres=61833 buddy=107808
+nsh> sort donnees | uniq -c
+BLOC parcours i=7 octets=131072 ns=67725248
+BLOC parcours i=8 octets=131072 ns=45377699
+BLOC parcours i=9 octets=131072 ns=33944871
+PIPE role=sort pid=13 isole=true
+PIPE admission image=18 fichiers=1 terminal=4
+CLI spawn image=18 pid=13 cycles=25307000 pages=95
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=100 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=80 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=13 privees=31 pile=64
+RAM phase=cli_enfant image=1336 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=34 utilisateur=247 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61308 cache=0 chargeur=0 restitue=11213 extra_elf=0 video=469 ram_video=0 resident=2622 retenu=2622 dma=16
+BLOC parcours i=10 octets=131072 ns=39108210
+PIPE role=uniq pid=15 isole=true
+PIPE admission image=17 fichiers=0 terminal=6
+CLI spawn image=17 pid=15 cycles=66363000 pages=88
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=100 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=80 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=13 privees=47 pile=64
+CLI mem pid=15 privees=24 pile=64
+CLI mem pid=16 privees=5 pile=64
+RAM phase=cli_enfant image=1336 tables=252 kpile=240 upile=642 heap=32 buddy=2 ipc=36 utilisateur=292 processus=12 meta_octets=20128 meta_actifs=6624 tcb_octets=6656 heap_va=65536 libres=61082 cache=0 chargeur=0 restitue=11213 extra_elf=0 video=469 ram_video=0 resident=2848 retenu=2848 dma=16
+PIPE attente lecteur pid=15
+BLOC parcours i=11 octets=131072 ns=46403078
+BLOC parcours i=12 octets=131072 ns=27838891
+BLOC parcours i=13 octets=131072 ns=44280415
+BLOC parcours i=14 octets=131072 ns=39157460
+BLOC parcours i=15 octets=131072 ns=37915382
+BLOC parcours i=16 octets=131072 ns=42994998
+BLOC parcours i=17 octets=131072 ns=198916629
+BLOC parcours i=18 octets=131072 ns=171168357
+BLOC parcours i=19 octets=131072 ns=82447956
+BLOC parcours i=20 octets=131072 ns=143496914
+BLOC parcours i=21 octets=131072 ns=74481323
+BLOC parcours i=22 octets=131072 ns=78170126
+BLOC parcours i=23 octets=131072 ns=118310611
+BLOC parcours i=24 octets=131072 ns=35460777
+BLOC parcours i=25 octets=131072 ns=107783978
+BLOC parcours i=26 octets=131072 ns=33615883
+BLOC parcours i=27 octets=131072 ns=33698622
+BLOC parcours i=28 octets=131072 ns=106843308
+BLOC parcours i=29 octets=131072 ns=33015036
+BLOC parcours i=30 octets=131072 ns=31121877
+BLOC parcours i=31 octets=131072 ns=111204863
+BLOC parcours i=32 octets=131072 ns=32714613
+BLOC parcours i=33 octets=131072 ns=104136544
+BLOC parcours i=34 octets=131072 ns=40998414
+BLOC parcours i=35 octets=131072 ns=32582624
+BLOC parcours i=36 octets=131072 ns=115325094
+BLOC parcours i=37 octets=131072 ns=35274613
+BLOC parcours i=38 octets=131072 ns=67092881
+BLOC parcours i=39 octets=131072 ns=67705548
+BLOC parcours i=40 octets=131072 ns=35094359
+BLOC parcours i=41 octets=131072 ns=100334467
+BLOC parcours i=42 octets=131072 ns=46014005
+BLOC parcours i=43 octets=131072 ns=107033412
+BLOC parcours i=44 octets=131072 ns=61385825
+BLOC parcours i=45 octets=131072 ns=167758307

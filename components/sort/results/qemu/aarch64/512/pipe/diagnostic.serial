@@ -1,0 +1,253 @@
+UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)
+ArmTrngLib could not be correctly initialized.
+Error: Image at 0004FDB6000 start failed: 00000001
+Error: Image at 0004FCB2000 start failed: Unsupported
+Error: Image at 0004FC37000 start failed: Not Found
+Error: Image at 0004FB5D000 start failed: Aborted
+Tpm2SubmitCommand - Tcg2 - Not Found
+Tpm2GetCapabilityPcrs fail!
+Tpm2SubmitCommand - Tcg2 - Not Found
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+ConvertPages: failed to find range 140000000 - 140003FFF
+BdsDxe: starting Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+[BootID EFI] QEMU ArmVirt /chosen/rng-seed
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 53845 pages libres.
+NovaOS v0.20.0
+RAM phase=bloc_repos image=1324 tables=151 kpile=48 upile=0 heap=16 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=20128 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=61799 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=1540 retenu=2009 dma=0
+RAM phase=services_admis image=1324 tables=196 kpile=128 upile=194 heap=20 buddy=2 ipc=18 utilisateur=156 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61285 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2054 retenu=2523 dma=16
+BLOC chaine novaFS=3 bloc=2 pilote=4 client=5 generation=1
+RAM phase=bloc_publie image=1324 tables=196 kpile=128 upile=194 heap=20 buddy=2 ipc=18 utilisateur=156 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61285 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2054 retenu=2523 dma=16
+DEBUG pid=3 NVFS coeur initialise ELF tas prive
+BLOC parcours i=0 octets=131072 ns=23998000
+BLOC parcours i=1 octets=131072 ns=18566000
+BLOC parcours i=2 octets=131072 ns=29000000
+BLOC parcours i=3 octets=131072 ns=45304000
+ECHANTILLON ech montage-cli cycles=1969375
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=95 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=60 pile=64
+RAM phase=cli_repos image=1324 tables=196 kpile=128 upile=194 heap=20 buddy=2 ipc=18 utilisateur=172 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61269 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2070 retenu=2539 dma=16
+CLI repos pages=124 libres=61269 buddy=76064
+nsh> echo DEBUT; sort donnees | uniq -c; echo ARCRET_$?__fin
+DEBUT
+BLOC parcours i=4 octets=131072 ns=71640000
+BLOC parcours i=5 octets=131072 ns=59988000
+BLOC parcours i=6 octets=131072 ns=46690000
+PIPE role=sort pid=13 isole=true
+PIPE admission image=18 fichiers=1 terminal=4
+CLI spawn image=18 pid=13 cycles=2481062 pages=92
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=95 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=76 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=13 privees=28 pile=64
+RAM phase=cli_enfant image=1324 tables=239 kpile=208 upile=514 heap=20 buddy=2 ipc=34 utilisateur=235 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=60747 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2592 retenu=3061 dma=16
+PIPE role=uniq pid=15 isole=true
+PIPE admission image=17 fichiers=0 terminal=6
+CLI spawn image=17 pid=15 cycles=1949500 pages=86
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=95 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=76 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=13 privees=44 pile=64
+CLI mem pid=15 privees=22 pile=64
+CLI mem pid=16 privees=5 pile=64
+RAM phase=cli_enfant image=1324 tables=258 kpile=240 upile=642 heap=20 buddy=2 ipc=36 utilisateur=278 processus=12 meta_octets=20128 meta_actifs=6624 tcb_octets=6656 heap_va=65536 libres=60523 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2816 retenu=3285 dma=16
+PIPE attente lecteur pid=15
+BLOC parcours i=7 octets=131072 ns=42600000
+BLOC parcours i=8 octets=131072 ns=51634992
+BLOC parcours i=9 octets=131072 ns=45424000
+BLOC parcours i=10 octets=131072 ns=47218000
+BLOC parcours i=11 octets=131072 ns=49215008
+BLOC parcours i=12 octets=131072 ns=38200992
+BLOC parcours i=13 octets=131072 ns=97026992
+BLOC parcours i=14 octets=131072 ns=200628000
+BLOC parcours i=15 octets=131072 ns=242298992
+BLOC parcours i=16 octets=131072 ns=62424992
+BLOC parcours i=17 octets=131072 ns=453020992
+BLOC parcours i=18 octets=131072 ns=135476000
+BLOC parcours i=19 octets=131072 ns=103584992
+BLOC parcours i=20 octets=131072 ns=206469008
+BLOC parcours i=21 octets=131072 ns=74536000
+BLOC parcours i=22 octets=131072 ns=207371008
+BLOC parcours i=23 octets=131072 ns=70342992
+BLOC parcours i=24 octets=131072 ns=55363008
+BLOC parcours i=25 octets=131072 ns=58615008
+BLOC parcours i=26 octets=131072 ns=104811008
+BLOC parcours i=27 octets=131072 ns=86608992
+BLOC parcours i=28 octets=131072 ns=83252992
+BLOC parcours i=29 octets=131072 ns=148258000
+BLOC parcours i=30 octets=131072 ns=133532992
+BLOC parcours i=31 octets=131072 ns=169716000
+BLOC parcours i=32 octets=131072 ns=158846992
+BLOC parcours i=33 octets=131072 ns=192794000
+BLOC parcours i=34 octets=131072 ns=266488992
+BLOC parcours i=35 octets=131072 ns=51944000
+PIPE premiere reception octets=31
+     64 00xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+PIPE attente producteur depots=8 octets=128
+     64 01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 02xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 03xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 04xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 05xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 06xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 07xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 08xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 09xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 10xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 11xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 12xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 13xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 14xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 15xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 16xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 17xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 18xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+BLOC parcours i=36 octets=131072 ns=380222000
+     64 19xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 20xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 21xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 22xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 23xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 24xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 25xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 26xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 27xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 28xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 29xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 30xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 31xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 32xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 33xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 34xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 35xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 36xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 37xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 38xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 39xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 40xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 41xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 42xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 43xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 44xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 45xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 46xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 47xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 48xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 49xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 50xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 51xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 52xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 53xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 54xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 55xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 56xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 57xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 58xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 59xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 60xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 61xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     64 62xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+BLOC parcours i=37 octets=131072 ns=816904000
+PIPE fermeture producteur lus=131072 depots=0
+PROC pid=13 niveau=EL0 pc=0x1001dd4 sortie=0
+CLI collecte pid=13 cycles=329687
+     64 63xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+PIPE fermeture lecteur lus=131072 depots=0
+PROC pid=15 niveau=EL0 pc=0x10032e8 sortie=0
+CLI collecte pid=15 cycles=263625
+[pipe sort=0]
+[pipe uniq=0]
+PIPE retrait noeuds=0 attentes=0 file=0 pic=8 blocages=13 lus=131072 fnv=fb17affd392f0aa5
+ARCRET_0__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=191 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=76 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=16 privees=5 pile=64
+RAM phase=cli_repos image=1324 tables=239 kpile=208 upile=514 heap=20 buddy=2 ipc=33 utilisateur=308 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=60675 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2664 retenu=3133 dma=16
+CLI repos pages=140 libres=60675 buddy=77344
+nsh> exit
+BLOC parcours i=38 octets=131072 ns=84620000
+BLOC parcours i=39 octets=131072 ns=47344992
+BLOC parcours i=40 octets=131072 ns=49824000
+BLOC parcours i=41 octets=131072 ns=47148000
+BLOC parcours i=42 octets=131072 ns=42168000
+BLOC parcours i=43 octets=131072 ns=54334992
+BLOC parcours i=44 octets=131072 ns=54065008
+BLOC parcours i=45 octets=131072 ns=44914000
+BLOC parcours i=46 octets=131072 ns=51745008
+BLOC parcours i=47 octets=131072 ns=51698000
+BLOC parcours i=48 octets=131072 ns=51390992
+BLOC parcours i=49 octets=131072 ns=47249008
+BLOC parcours i=50 octets=131072 ns=41793008
+BLOC parcours i=51 octets=131072 ns=38824000
+BLOC parcours i=52 octets=131072 ns=32333008
+BLOC parcours i=53 octets=131072 ns=36925008
+BLOC parcours i=54 octets=131072 ns=36178000
+BLOC parcours i=55 octets=131072 ns=37464000
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775819 statut=0
+BLOC parcours i=56 octets=131072 ns=35231008
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775821 statut=0
+BLOC parcours i=57 octets=131072 ns=68062000
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775814 statut=0
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775816 statut=0
+BLOC parcours i=58 octets=131072 ns=33870000
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775815 statut=0
+BLOC parcours i=59 octets=131072 ns=53591008
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775809 statut=0
+RAM phase=services_draines image=1324 tables=191 kpile=112 upile=130 heap=20 buddy=2 ipc=14 utilisateur=272 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61258 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=2081 retenu=2550 dma=16
+PROC pid=5 niveau=EL0 pc=0x101f6cc sortie=0
+SERVICES fin gestionnaire Exit(0)
+BLOC parcours i=60 octets=131072 ns=51386000
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775813 statut=0
+PROC pid=4 niveau=EL0 pc=0x400aa8 sortie=0
+PROC pid=3 niveau=EL0 pc=0x102e134 sortie=0
+PROC pid=2 niveau=EL0 pc=0x400574 sortie=0
+BLOC bilan mode=42 service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=102000
+STOCKAGE trafic tours=3932 ns=6377755008
+IPC hist type=irq n=95737 p50=16384 p95=53248 p99=106496 max=21590000
+IPC hist type=depot n=25 p50=7168 p95=20480 p99=44000 max=44000
+IPC hist type=livraison n=9454 p50=61440 p95=212992 p99=720896 max=863128992
+IPC hist type=aller_retour n=3932 p50=589824 p95=2097152 p99=5242880 max=84662000
+IPC hist type=reprise n=10103 p50=49152 p95=147456 p99=360448 max=17037008
+IPC hist type=appel n=13402 p50=122880 p95=917504 p99=2621440 max=84523008
+IPC hist type=commutation n=17 p50=13312 p95=36000 p99=36000 max=36000
+BLOC mesure type=read n=745 p50=196608 p95=1048576 p99=2621440 max=24493008 moyenne=368080
+BLOC mesure type=write n=1213 p50=229376 p95=1441792 p99=3407872 max=61056992 moyenne=500608
+BLOC mesure type=flush n=405 p50=393216 p95=4194304 p99=4718592 max=5698000 moyenne=861232
+BLOC mesure type=validation n=405 p50=9216 p95=20480 p99=147456 max=425008 moyenne=13360
+RAM phase=bloc_collecte image=1324 tables=154 kpile=48 upile=0 heap=16 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=20128 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=61796 cache=0 chargeur=0 restitue=8026 extra_elf=0 video=469 ram_video=469 resident=1543 retenu=2012 dma=0
+BLOC memoire cadres_init=61799 cadres_fin=61796 allocations=1641 pic_cadres=1407 buddy_init=43040 buddy_fin=43040 hz=62500000 retrait_ns=1632000
+BLOC session terminee ok=true
+SMP diagnostic cpu=0 sp=0xfffff02000022dc0
+SMP diagnostic cpu=1 sp=0xfffff0200023ede0
+SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0

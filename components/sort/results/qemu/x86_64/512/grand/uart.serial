@@ -1,0 +1,17 @@
+qemu-system-x86_64: -mon chardev=banc,mode=control: warning: '-mon' is deprecated, use '-object' with 'monitor-hmp' or 'monitor-qmp' types instead
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+BdsDxe: starting Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 51313 pages libres.
+NovaOS v0.20.0
+RAM phase=services_admis image=1300 tables=187 kpile=128 upile=194 heap=32 buddy=2 ipc=18 utilisateur=162 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61891 cache=0 chargeur=0 restitue=11178 extra_elf=0 video=469 ram_video=0 resident=2039 retenu=2039 dma=16
+BLOC chaine novaFS=3 bloc=2 pilote=4 client=5 generation=1
+DEBUG pid=3 NVFS coeur initialise ELF tas prive
+SERVICES fin gestionnaire Exit(8)
+PROC pid=4 niveau=Ring3 pc=0x400b64 sortie=5
+PROC pid=2 niveau=Ring3 pc=0x4005f0 sortie=11
+PROC pid=3 niveau=Ring3 pc=0x1033009 sortie=26
+BLOC bilan mode=41 service=Exit(26) bloc=Exit(11) pilote=Exit(5) client=Exit(8) retrait=Ok(()) cycles_retrait=861000
+BLOC session terminee ok=false
+SMP diagnostic cpu=0 sp=0xfffff02000022d80
+SMP diagnostic cpu=1 sp=0xfffff0200023ee70
+SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0

@@ -678,9 +678,9 @@
     },
     "nova": {
       "status": 0,
-      "stdout_sha256": "a7f3ac1dd541c27935d857844a014a1d9c637c3971a8453028c11caa85da751c",
+      "stdout_sha256": "5388c622c66c12bf5716a51b70eceb7e2494730d0c2ba5f9ded0b98e197166fa",
       "stdout_bytes": 10,
-      "stdout_sample": "630a610a610a620a620a",
+      "stdout_sample": "610a610a620a620a630a",
       "stderr": "",
       "files": {
         "a": "610a630a",
@@ -707,9 +707,9 @@
     "mode": "random",
     "gnu": {
       "status": 0,
-      "stdout_sha256": "6b6c9198273dc09aaf607cf2a6e831d4d6aed3998bbb9a8be9d31089dbd9f68f",
+      "stdout_sha256": "544bc4e0d6d97d5bfa2385eab87044da747f25fe10e716daca54b6029d77607e",
       "stdout_bytes": 10,
-      "stdout_sample": "620a620a630a610a610a",
+      "stdout_sample": "620a620a610a610a630a",
       "stderr": "",
       "files": {
         "a": "610a630a",
@@ -719,9 +719,9 @@
     },
     "nova": {
       "status": 0,
-      "stdout_sha256": "544bc4e0d6d97d5bfa2385eab87044da747f25fe10e716daca54b6029d77607e",
+      "stdout_sha256": "a7f3ac1dd541c27935d857844a014a1d9c637c3971a8453028c11caa85da751c",
       "stdout_bytes": 10,
-      "stdout_sample": "620a620a610a610a630a",
+      "stdout_sample": "630a610a610a620a620a",
       "stderr": "",
       "files": {
         "a": "610a630a",
@@ -1076,9 +1076,9 @@
     "mode": "random",
     "gnu": {
       "status": 0,
-      "stdout_sha256": "891fe532322b41fdec2b120f409255f5a3823f54761590ff29ad416fa439655c",
+      "stdout_sha256": "017665162a243dd12af6566b19b09c8ebe0427a7d2e9207a490f6a23be5f542b",
       "stdout_bytes": 79,
-      "stdout_sample": "30310a31300a312e30310a2031300a2d320a2d3130303030303030303030303030303030303030303030310a313030303030303030303030303030303030303030303030300a320a312e303130300a",
+      "stdout_sample": "2031300a31300a2d3130303030303030303030303030303030303030303030310a312e303130300a320a313030303030303030303030303030303030303030303030300a312e30310a30310a2d320a",
       "stderr": "",
       "files": {
         "a": "610a630a",
@@ -1088,9 +1088,9 @@
     },
     "nova": {
       "status": 0,
-      "stdout_sha256": "f87542121b3141685699e1942a8ecf35b8b08b412896701ac965c6138d2f9154",
+      "stdout_sha256": "d55052349a01171fb2f84264175e181bb87902702ad39f5757b499f3430b213a",
       "stdout_bytes": 79,
-      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a320a2031300a312e30310a31300a313030303030303030303030303030303030303030303030300a312e303130300a30310a",
+      "stdout_sample": "2031300a31300a312e30310a2d3130303030303030303030303030303030303030303030310a320a313030303030303030303030303030303030303030303030300a30310a312e303130300a2d320a",
       "stderr": "",
       "files": {
         "a": "610a630a",

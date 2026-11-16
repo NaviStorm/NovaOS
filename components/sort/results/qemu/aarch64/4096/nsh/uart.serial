@@ -1,0 +1,146 @@
+qemu-system-aarch64: -mon chardev=banc,mode=control: warning: '-mon' is deprecated, use '-object' with 'monitor-hmp' or 'monitor-qmp' types instead
+UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)
+ArmTrngLib could not be correctly initialized.
+Error: Image at 0004FDB6000 start failed: 00000001
+Error: Image at 0004FCB2000 start failed: Unsupported
+Error: Image at 0004FC37000 start failed: Not Found
+Error: Image at 0004FB5D000 start failed: Aborted
+Tpm2SubmitCommand - Tcg2 - Not Found
+Tpm2GetCapabilityPcrs fail!
+Tpm2SubmitCommand - Tcg2 - Not Found
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+ConvertPages: failed to find range 140000000 - 140003FFF
+BdsDxe: starting Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+[BootID EFI] QEMU ArmVirt /chosen/rng-seed
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 53945 pages libres.
+NovaOS v0.20.0
+RAM phase=services_admis image=1274 tables=196 kpile=128 upile=194 heap=16 buddy=1 ipc=18 utilisateur=154 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61342 cache=0 chargeur=0 restitue=7976 extra_elf=0 video=469 ram_video=469 resident=1997 retenu=2466 dma=16
+BLOC chaine novaFS=3 bloc=2 pilote=4 client=5 generation=1
+DEBUG pid=3 NVFS coeur initialise ELF tas prive
+nsh> export LANG=en-US
+nsh> nsh -c 'echo journaldebut; sort --version; echo journalr[Knsh> rt --version; echo journalrcnsh> rt --version; echo journalrc=$?'
+journaldebut
+sort (NovaOS) 0.1.0
+journalrc=0
+nsh> nsh -c 'echo journaldebut; sort --help; echo journalrc=$[Knsh> rt --help; echo journalrc=$?nsh> rt --help; echo journalrc=$?'
+journaldebut
+sort — Sort or merge records.
+Usage: sort [OPTION]... [FILE]...
+Arguments and options: Usage: sort [OPTION]... [FILE]...
+Sort input records. A dash selects standard input.
+
+Ordering options
+  -b, --ignore-leading-blanks        Skip leading blanks in keys
+  -d, --dictionary-order             Compare blanks, letters and digits
+  -f, --ignore-case                  Fold ASCII letters to uppercase
+  -g, --general-numeric-sort         Compare floating point values
+  -i, --ignore-nonprinting           Skip nonprinting bytes
+  -M, --month-sort                   Compare month names
+  -h, --human-numeric-sort           Compare signed numbers with size suffixes
+  -n, --numeric-sort                 Compare decimals at their original precision
+  -R, --random-sort                  Randomize key order, keeping equal keys together
+      --random-source=FILE           Read the random seed from FILE
+  -r, --reverse                      Reverse comparisons
+      --sort=WORD                    Select general-numeric, human-numeric, month, numeric, random or version
+  -V, --version-sort                 Compare version components
+
+Other options
+      --batch-size=N                 Merge at most N inputs at once
+  -c, --check[=diagnose-first]       Report the first out-of-order record
+  -C, --check=quiet, --check=silent  Check order silently
+      --compress-program=PROG        Compress runs and decode with PROG -d
+      --debug                        Mark comparison keys in the output
+      --files0-from=F                Read NUL-separated input names from F
+  -k, --key=KEYDEF                   Compare by F[.C][OPTS][,F[.C][OPTS]]
+  -m, --merge                        Merge ordered inputs
+  -o, --output=FILE                  Write the result to FILE
+  -s, --stable                       Keep input order for matching keys
+  -S, --buffer-size=SIZE             Set the initial run budget
+  -t, --field-separator=SEP          Split fields on SEP
+  -T, --temporary-directory=DIR      Cycle through the specified run directories
+      --parallel=N                   Sort runs with N workers
+  -u, --unique                       Keep the first record for each key
+  -z, --zero-terminated              Separate records with NUL
+      --help                         Display this help
+      --version                      Display the component version
+
+Fields and characters start at 1. -S accepts b, K through Q and %.
+Exit status: 0 success, 1 disorder when checking, 2 error.
+
+--help: help; --version: version.
+Examples:
+sort -n /lignes
+Manual: man sort
+journalrc=0
+nsh> man sort; echo MAN_RC=$?
+[?1049h7[999;999H[6n8[001;001H[Ksort — Sort or merge records.[002;001H[KUsage: sort [OPTION]... [FILE]...[003;001H[KArguments and options: Usage: sort [OPTION]... [FILE]...[004;001H[KSort input records. A dash selects standard input.[005;001H[K[006;001H[KOrdering options[007;001H[K  -b, --ignore-leading-blanks        Skip leading blanks in keys[008;001H[K  -d, --dictionary-order             Compare blanks, letters and digits[009;001H[K  -f, --ignore-case                  Fold ASCII letters to uppercase[010;001H[K  -g, --general-numeric-sort         Compare floating point values[011;001H[K  -i, --ignore-nonprinting           Skip nonprinting bytes[012;001H[K  -M, --month-sort                   Compare month names[013;001H[K  -h, --human-numeric-sort           Compare signed numbers with size suffixes[014;001H[K  -n, --numeric-sort                 Compare decimals at their original precisi[015;001H[Kon[016;001H[K  -R, --random-sort                  Randomize key order, keeping equal keys to[017;001H[Kgether[018;001H[K      --random-source=FILE           Read the random seed from FILE[019;001H[K  -r, --reverse                      Reverse comparisons[020;001H[K      --sort=WORD                    Select general-numeric, human-numeric, mon[021;001H[Kth, numeric, random or version[022;001H[K  -V, --version-sort                 Compare version components[023;001H[K[024;001H[Kman sort 1/57  q quit  / search  [?1049lMAN_RC=0
+nsh> export LANG=fr-CA
+nsh> nsh -c 'echo journaldebut; sort --version; echo journalr[Knsh> rt --version; echo journalrcnsh> rt --version; echo journalrc=$?'
+journaldebut
+sort (NovaOS) 0.1.0
+journalrc=0
+nsh> nsh -c 'echo journaldebut; sort --help; echo journalrc=$[Knsh> rt --help; echo journalrc=$?nsh> rt --help; echo journalrc=$?'
+journaldebut
+sort — Trier ou fusionner des enregistrements.
+Syntaxe : sort [OPTION]... [FICHIER]...
+Arguments et options : Usage : sort [OPTION]... [FICHIER]...
+Trier les entrées. Un tiret désigne l’entrée standard.
+
+Options de classement
+  -b, --ignore-leading-blanks        Ignorer les blancs en début de clé
+  -d, --dictionary-order             Comparer les blancs, lettres et chiffres
+  -f, --ignore-case                  Replier les lettres ASCII en majuscules
+  -g, --general-numeric-sort         Comparer les nombres flottants
+  -i, --ignore-nonprinting           Ignorer les octets non imprimables
+  -M, --month-sort                   Comparer les noms de mois
+  -h, --human-numeric-sort           Comparer les nombres signés avec unité
+  -n, --numeric-sort                 Comparer les décimaux sans perte de précision
+  -R, --random-sort                  Mélanger les clés en regroupant les clés égales
+      --random-source=FILE           Lire la graine dans FICHIER
+  -r, --reverse                      Inverser les comparaisons
+      --sort=WORD                    Choisir general-numeric, human-numeric, month, numeric, random ou version
+  -V, --version-sort                 Comparer les composantes de version
+
+Autres options
+      --batch-size=N                 Fusionner au plus N entrées à la fois
+  -c, --check[=diagnose-first]       Signaler le premier enregistrement en désordre
+  -C, --check=quiet, --check=silent  Vérifier silencieusement
+      --compress-program=PROG        Compresser les lots et les décoder avec PROG -d
+      --debug                        Souligner les clés de comparaison en sortie
+      --files0-from=F                Lire les noms des entrées séparés par NUL dans F
+  -k, --key=KEYDEF                   Comparer selon F[.C][OPTS][,F[.C][OPTS]]
+  -m, --merge                        Fusionner les entrées déjà triées
+  -o, --output=FILE                  Écrire le résultat dans FICHIER
+  -s, --stable                       Préserver l’ordre initial des clés égales
+  -S, --buffer-size=SIZE             Régler le budget de formation des lots
+  -t, --field-separator=SEP          Séparer les champs avec SEP
+  -T, --temporary-directory=DIR      Répartir les lots entre les répertoires spécifiés
+      --parallel=N                   Trier les lots avec N travailleurs
+  -u, --unique                       Conserver le premier enregistrement de chaque clé
+  -z, --zero-terminated              Séparer les enregistrements par NUL
+      --help                         Afficher cette aide
+      --version                      Afficher la version du composant
+
+Les champs et caractères sont numérotés à partir de 1. -S accepte b, K à Q et %.
+Statuts : 0 succès, 1 désordre en contrôle, 2 erreur.
+
+--help : aide ; --version : version.
+Exemples :
+sort -n /lignes
+Manuel : man sort
+journalrc=0
+nsh> man sort; echo MAN_RC=$?
+[?1049h7[999;999H[6n8[001;001H[Ksort — Trier ou fusionner des enregistrements.[002;001H[KSyntaxe : sort [OPTION]... [FICHIER]...[003;001H[KArguments et options : Usage : sort [OPTION]... [FICHIER]...[004;001H[KTrier les entrées. Un tiret désigne l’entrée standard.[005;001H[K[006;001H[KOptions de classement[007;001H[K  -b, --ignore-leading-blanks        Ignorer les blancs en début de clé[008;001H[K  -d, --dictionary-order             Comparer les blancs, lettres et chiffres[009;001H[K  -f, --ignore-case                  Replier les lettres ASCII en majuscules[010;001H[K  -g, --general-numeric-sort         Comparer les nombres flottants[011;001H[K  -i, --ignore-nonprinting           Ignorer les octets non imprimables[012;001H[K  -M, --month-sort                   Comparer les noms de mois[013;001H[K  -h, --human-numeric-sort           Comparer les nombres signés avec unité[014;001H[K  -n, --numeric-sort                 Comparer les décimaux sans perte de précis[015;001H[Kion[016;001H[K  -R, --random-sort                  Mélanger les clés en regroupant les clés é[017;001H[Kgales[018;001H[K      --random-source=FILE           Lire la graine dans FICHIER[019;001H[K  -r, --reverse                      Inverser les comparaisons[020;001H[K      --sort=WORD                    Choisir general-numeric, human-numeric, mo[021;001H[Knth, numeric, random ou version[022;001H[K  -V, --version-sort                 Comparer les composantes de version[023;001H[K[024;001H[Kman sort 1/63  q quitter  / chercher  [?1049lMAN_RC=0
+nsh> nsh -c 'sort /documents/exemple.txt'; echo SORT_RC=$?__f[Knsh> le.txt'; echo SORT_RC=$?__finsh> le.txt'; echo SORT_RC=$?__fin
+commande inconnue
+SORT_RC=127__fin
+nsh> nsh -c 'cat /documents/exemple.txt | sort -n'; echo SORT[Knsh> e.txt | sort -n'; echo SORT_nsh> e.txt | sort -n'; echo SORT_RC=$?__fin
+erreur : argument invalide
+SORT_RC=3__fin
+nsh> nsh -c 'sort /documents/exemple.txt | head -n 1'; echo S[Knsh> le.txt | head -n 1'; echo SOnsh> le.txt | head -n 1'; echo SORT_RC=$?__fin
+erreur : argument invalide
+SORT_RC=3__fin
+nsh> 
