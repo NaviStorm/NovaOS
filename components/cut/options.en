@@ -1,0 +1,15 @@
+  -b, --bytes=LIST                   Byte positions
+  -c, --characters=LIST              Character positions
+  -n, --no-partial                   With -b, keep complete characters
+  -f, --fields=LIST                  Fields separated by TAB
+  -d, --delimiter=CHAR               Input field delimiter (empty means NUL)
+  -s, --only-delimited               Skip records without field delimiters
+  -w, --whitespace-delimited[=trimmed]  Separate fields on runs of blanks
+  -F LIST                            Like -f with -w and space output separator
+      --complement                   Invert selection
+  -O, --output-delimiter=STRING      Output separator (empty means NUL)
+  -z, --zero-terminated              Separate records with NUL
+      --help                         Display help
+      --version                      Display component version
+LIST: N, N-M, N- or -M, counting from one. Separate ranges with commas.
+Use -- before filenames starting with a dash. Read stdin for - or no files.

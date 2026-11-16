@@ -1,0 +1,31 @@
+[package]
+name = "nova-exec-client"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "MIT"
+
+[features]
+guest = []
+
+[[bin]]
+name = "cat"
+path = "src/bin/cat.rs"
+required-features = ["guest"]
+test = false
+
+[[bin]]
+name = "prefixe-temoin"
+path = "src/bin/prefixe-temoin.rs"
+required-features = ["guest"]
+test = false
+
+[workspace]
+
+[target.'cfg(target_os = "none")'.dependencies]
+nova-cli = { path = ".." }
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1

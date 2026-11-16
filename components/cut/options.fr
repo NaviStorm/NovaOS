@@ -1,0 +1,15 @@
+  -b, --bytes=LISTE                  Positions des octets
+  -c, --characters=LISTE             Positions des caractères
+  -n, --no-partial                   Avec -b, conserver les caractères entiers
+  -f, --fields=LISTE                 Champs séparés par TAB
+  -d, --delimiter=CAR                Séparateur de champs (vide pour NUL)
+  -s, --only-delimited               Ignorer les lignes sans séparateur
+  -w, --whitespace-delimited[=trimmed]  Séparer sur les suites de blancs
+  -F LISTE                           Comme -f avec -w et une espace en sortie
+      --complement                   Inverser la sélection
+  -O, --output-delimiter=CHAÎNE      Séparateur de sortie (vide pour NUL)
+  -z, --zero-terminated              Terminer les enregistrements par NUL
+      --help                         Afficher l’aide
+      --version                      Afficher la version du composant
+LISTE accepte N, N-M, N- ou -M, à partir de 1. Séparer les plages par des virgules.
+Utiliser -- avant un nom commençant par un tiret. Un tiret seul ou l’absence de fichier désigne l’entrée standard.
