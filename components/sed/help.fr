@@ -1,0 +1,13 @@
+Usage : sed [OPTIONS] SCRIPT [FICHIER ...]
+        sed [OPTIONS] -e SCRIPT | -f FICHIER_SCRIPT ...
+-n --quiet --silent     Désactiver l’impression implicite.
+-E -r --regexp-extended Employer les expressions régulières étendues.
+-e --expression SCRIPT  Ajouter un script. -f --file FICHIER lit un script.
+-z --null-data          Séparer les enregistrements par NUL.
+-s --separate           Recommencer les numéros et plages à chaque fichier.
+-u --unbuffered         Lire le minimum et vider la sortie.
+-i[SUFFIXE]             Éditer en place sur macOS avec sauvegarde facultative.
+--follow-symlinks       Suivre le lien pour une édition en place.
+--sandbox               Rejeter les scripts ayant des effets externes.
+--help --version        Afficher l’aide ou la version du composant.
+NovaFS P9 ne remplace pas une destination existante. Les données suivent la locale C par octets.

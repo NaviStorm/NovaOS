@@ -1,0 +1,13 @@
+Usage: sed [OPTIONS] SCRIPT [FILE ...]
+       sed [OPTIONS] -e SCRIPT | -f SCRIPTFILE ...
+-n --quiet --silent     Suppress automatic printing.
+-E -r --regexp-extended Use extended regular expressions.
+-e --expression SCRIPT  Add a script. -f --file FILE reads a script.
+-z --null-data          Separate records with NUL.
+-s --separate           Restart numbering and ranges for each file.
+-u --unbuffered         Read minimal input and flush output.
+-i[SUFFIX]              Edit in place on macOS. Optional backup suffix.
+--follow-symlinks       Follow the input link for in-place editing.
+--sandbox               Reject scripts containing external effects.
+--help --version        Show documentation or the component version.
+NovaOS P9 cannot replace an existing destination. Data use byte-oriented C locale rules.
