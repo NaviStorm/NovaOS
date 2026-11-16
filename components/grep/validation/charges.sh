@@ -129,10 +129,33 @@ def measure(exe, args, corpus, out, err, stdin):
                 stderr_octets=err.stat().st_size, stderr_sha256=digest(err),
                 commande=shlex.join(argv) + (" < "+shlex.quote(str(corpus)) if stdin else ""))
 
+# Les largeurs sont exprimées en colonnes de terminal, pour une fenêtre de 80.
+table_row = "{:<15}  {:>11}  {:>7}  {:>7}  {:>9}  {:>7}  {:>8}"
+headings = table_row.format("Cas", "Sélections", "Livré s", "GNU s", "Livré Mio", "GNU Mio", "Tests OK")
+
+def entier(n):
+    return f"{n:,}".replace(",", " ")
+
+def afficher_entete(data):
+    print(f"\n{entier(data['lignes'])} lignes · {entier(data['octets'])} octets")
+    print(headings)
+    print("─" * len(headings), flush=True)
+
+def resumer_cas(name, selected, rows):
+    engines = [[r for r in rows if r["moteur"] == label] for label in ("livré", "GNU")]
+    times = [statistics.median(r["secondes"] for r in runs) for runs in engines]
+    rss = [max(r["rss_octets"] for r in runs) / 1024**2 for runs in engines]
+    passed = sum(r["conforme"] for r in rows)
+    tests = f"{passed}/{len(rows)}"
+    values = [f"{v:.2f}".replace(".", ",") for v in (*times, *rss)]
+    print(table_row.format(name, entier(selected), *values, tests), flush=True)
+    return (name, selected, *times, *rss)
+
 scratch = Path(os.environ["NOVAOS_TMPDIR"])
 scratch.mkdir(exist_ok=True, parents=True)
 proof = Path(tempfile.mkdtemp(prefix="charges-", dir=delivery))
-print(f"Preuves : {proof}", flush=True)
+print("Temps médian de deux passages (s) · pic de mémoire résidente (Mio)", flush=True)
+table_results = []
 report = dict(date=time.strftime("%Y-%m-%dT%H:%M:%S%z"), macos=platform.mac_ver()[0],
               arch=platform.machine(), locale=os.environ["LC_ALL"], graine=270312, profils=period,
               executable=metadata, script_sha256=digest(delivery/"charges.sh"), repetitions=2,
@@ -153,8 +176,9 @@ with tempfile.TemporaryDirectory(prefix="arc027-charge-", dir=scratch) as tmp:
         assert digest(corpus) == data["sha256"]
         report["corpus"].append(data)
         save()
-        print(f"{size:,} lignes, {data['octets']:,} octets vérifiés", flush=True)
+        afficher_entete(data)
         for name, flags, pat in cases:
+            case_rows = []
             for rep, order in enumerate((("livré", "GNU"), ("GNU", "livré")), 1):
                 for label in order:
                     out, err = root/"stdout", root/"stderr"
@@ -165,12 +189,14 @@ with tempfile.TemporaryDirectory(prefix="arc027-charge-", dir=scratch) as tmp:
                     row.update(lignes=size, cas=name, moteur=label, repetition=rep)
                     report["mesures"].append(row)
                     save()
-                    print(f"{name} {label} #{rep} {row['secondes']:.2f} s, "
-                          f"{row['rss_octets']/1024**2:.2f} Mio, conforme={row['conforme']}", flush=True)
+                    case_rows.append(row)
                     if not row["conforme"]:
+                        print(f"Échec : {name}, {label}, passage {rep}", file=sys.stderr, flush=True)
                         tag = f"{size}-{name}-{label}-{rep}"
                         shutil.copyfile(out, proof/(tag+".stdout"))
                         shutil.copyfile(err, proof/(tag+".stderr"))
+            selected = data["attendus"][name]["selections"]
+            table_results.append((size, *resumer_cas(name, selected, case_rows)))
         corpus.unlink()
 correct = sum(r["conforme"] for r in report["mesures"])
 lines = ["# Charge grep sur macOS ARM64", "",
@@ -179,18 +205,13 @@ lines = ["# Charge grep sur macOS ARM64", "",
          "Les lignes ont un identifiant unique et un corps synthétique de période 65 536. Le motif d’extraction lit stdin sur un fichier régulier.", "",
          "| Lignes | Cas | Lignes sélectionnées | Livré (s) | GNU (s) | Livré (Mio RSS) | GNU (Mio RSS) |",
          "|---:|---|---:|---:|---:|---:|---:|"]
-for data in report["corpus"]:
-    for name, _, _ in cases:
-        pair = [[r for r in report["mesures"] if (r["lignes"],r["cas"],r["moteur"]) ==
-                 (data["lignes"],name,label)] for label in ("livré","GNU")]
-        times = [statistics.median(r["secondes"] for r in rs) for rs in pair]
-        rss = [max(r["rss_octets"] for r in rs)/1024**2 for rs in pair]
-        lines.append("| {} | {} | {} | {:.2f} | {:.2f} | {:.2f} | {:.2f} |".format(
-            data["lignes"],name,data["attendus"][name]["selections"],*times,*rss))
+for result in table_results:
+    lines.append("| {} | {} | {} | {:.2f} | {:.2f} | {:.2f} | {:.2f} |".format(*result))
 (proof/"rapport.md").write_text("\n".join(lines)+"\n")
 shutil.copyfile(delivery/"charges.sh", proof/"charges.sh")
 fichiers = sorted(p for p in proof.iterdir() if p.is_file())
 (proof/"SHA256SUMS").write_text("".join(f"{digest(p)}  {p.name}\n" for p in fichiers))
-print("\n".join(lines), flush=True)
+print(f"\nBilan : {correct}/{len(report['mesures'])} exécutions conformes.")
+print(f"Rapport : {proof / 'rapport.md'}", flush=True)
 sys.exit(0 if correct==len(report["mesures"]) else 1)
 PY
