@@ -1,0 +1,506 @@
+[
+  {
+    "seed": 27027,
+    "rows": 2048,
+    "width": 128,
+    "keys": 32,
+    "bytes": 262144,
+    "free_before": 220629454848,
+    "input_sha256": "27d6c806be595cf31929710c23259fc214bd4ded862abe57297a56233f05dc6a",
+    "expected_count_sha256": "5170d4d8cf58c0e9d3c773b8770b6e64e0e6881640ea3d8d813b5a3b0a5a2279",
+    "first_count": 1024,
+    "last_count": 34,
+    "count_sum": 2048,
+    "uniq_sha256": "ae399bba8d437e71699df93dc3b6fe861b48ed19365eeb30f9f7df5bd851d0f6",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "5170d4d8cf58c0e9d3c773b8770b6e64e0e6881640ea3d8d813b5a3b0a5a2279",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.0021279999999999997
+          }
+        ],
+        "seconds": 0.009799125000427011,
+        "mib_s": 25.512481980697856,
+        "lines_s": 208998.25238587684,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "c7f87aa051811b50201e28fddb71a605315535c49764a4a41e1375753d50a94e",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.0024129999999999998
+          }
+        ],
+        "seconds": 0.009021957994264085,
+        "mib_s": 27.710171135682874,
+        "lines_s": 227001.7219435141,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "1b447b51f4c866b4050d491f770c70f0a45f8b7837aabb1eaa929b99f13ff93e",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.00283
+          }
+        ],
+        "seconds": 0.007233917000121437,
+        "mib_s": 34.55942333811726,
+        "lines_s": 283110.7959858566,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 65536,
+    "width": 128,
+    "keys": 32,
+    "bytes": 8388608,
+    "free_before": 220591755264,
+    "input_sha256": "aa053e539c38a211e0510a65f693b18f52900cbb97d5b5f6bcdfb0f267377bad",
+    "expected_count_sha256": "19e30d57201dde79c0da018d0d388e97bbda880668d485d878bf761005ce4165",
+    "first_count": 32768,
+    "last_count": 1092,
+    "count_sum": 65536,
+    "uniq_sha256": "ae399bba8d437e71699df93dc3b6fe861b48ed19365eeb30f9f7df5bd851d0f6",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "19e30d57201dde79c0da018d0d388e97bbda880668d485d878bf761005ce4165",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1916928,
+            "cpu_s": 0.010453
+          }
+        ],
+        "seconds": 0.01689441700000316,
+        "mib_s": 473.5292138224423,
+        "lines_s": 3879151.319633447,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "39fd571c260678e811f69fedcec5804c8439e0daa99bd952ddbe30afcfb60081",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.028276
+          }
+        ],
+        "seconds": 0.03750937499717111,
+        "mib_s": 213.28001334608604,
+        "lines_s": 1747189.8693311368,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "893f5997ca6b9c784e69968724df9f564f4e6882847d086e701fc12be82ae307",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.028599
+          }
+        ],
+        "seconds": 0.038177207999979146,
+        "mib_s": 209.5491110823078,
+        "lines_s": 1716626.3179862655,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 131072,
+    "width": 128,
+    "keys": 1024,
+    "bytes": 16777216,
+    "free_before": 220426452992,
+    "input_sha256": "111fd7a0ae6ef601d86a7bc7ebf071171e2a191f22c7615bc061cf84fcf67afb",
+    "expected_count_sha256": "c6b24a61ba72e2453a335a112747d0b0f67aca848515286cf6b9f03cb2137289",
+    "first_count": 65536,
+    "last_count": 64,
+    "count_sum": 131072,
+    "uniq_sha256": "ae399bba8d437e71699df93dc3b6fe861b48ed19365eeb30f9f7df5bd851d0f6",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "c6b24a61ba72e2453a335a112747d0b0f67aca848515286cf6b9f03cb2137289",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.019835
+          }
+        ],
+        "seconds": 0.024736957995628472,
+        "mib_s": 646.8054804001174,
+        "lines_s": 5298630.495437762,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "edcdc5d43736bea95b8b9fc3b44a47d49a263da16d732b62049e122b83b7e795",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.05893399999999999
+          }
+        ],
+        "seconds": 0.0678272500008461,
+        "mib_s": 235.89339092769364,
+        "lines_s": 1932438.6584796663,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "047f0987e31531489deb7bd8eded127c7b72f3ebf0ee1e5f9bc1b1498c766122",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.056070999999999996
+          }
+        ],
+        "seconds": 0.059512665997317526,
+        "mib_s": 268.85033180535356,
+        "lines_s": 2202421.9181494564,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 131072,
+    "width": 128,
+    "keys": 3,
+    "bytes": 16777216,
+    "free_before": 220038250496,
+    "input_sha256": "db3ec9f602c8146e6958d409d62254fc5fc94bb1682385e3e6b310e4250c9e15",
+    "expected_count_sha256": "79ffa3a2807e44491f0a4d4ab0fa907b0caa5ce481aca7b5de38bf5bec55a98b",
+    "first_count": 65536,
+    "last_count": 65535,
+    "count_sum": 131072,
+    "uniq_sha256": "ae399bba8d437e71699df93dc3b6fe861b48ed19365eeb30f9f7df5bd851d0f6",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "79ffa3a2807e44491f0a4d4ab0fa907b0caa5ce481aca7b5de38bf5bec55a98b",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.019763999999999997
+          }
+        ],
+        "seconds": 0.023567000003822614,
+        "mib_s": 678.9154324863058,
+        "lines_s": 5561675.222927817,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "4f0b3a6083207a0f7129b5f46d8baa6f0c5f9956ef054928245342a730c38287",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.05696
+          }
+        ],
+        "seconds": 0.06192416600242723,
+        "mib_s": 258.38054886961015,
+        "lines_s": 2116653.4563398464,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "79a473b4b0c03840dd89d5700a35c4cc9f3d78327273e2acfaac85ac421450ef",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1900544,
+            "cpu_s": 0.05656599999999999
+          }
+        ],
+        "seconds": 0.06522566700004973,
+        "mib_s": 245.30220595502385,
+        "lines_s": 2009515.6711835554,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 128,
+    "width": 1048576,
+    "keys": 4,
+    "bytes": 134217728,
+    "free_before": 219600830464,
+    "input_sha256": "bee0a4d571b16a1c58ca0045dfd4de437a8993aaf1130eba0172c73abdcb8289",
+    "expected_count_sha256": "54e68663875f999a18de1a4747c93e3e07a6c5265e21af7e25d70f60a6093f33",
+    "first_count": 64,
+    "last_count": 31,
+    "count_sum": 128,
+    "uniq_sha256": "ae399bba8d437e71699df93dc3b6fe861b48ed19365eeb30f9f7df5bd851d0f6",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "54e68663875f999a18de1a4747c93e3e07a6c5265e21af7e25d70f60a6093f33",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 4227072,
+            "cpu_s": 0.131059
+          }
+        ],
+        "seconds": 0.13986120800109347,
+        "mib_s": 915.1930104807851,
+        "lines_s": 915.1930104807851,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "38a6d789055b6baf0764a7ed616a0ae793c740e7d95c7c0e5eb72171fd0b2bdc",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 4227072,
+            "cpu_s": 0.145165
+          }
+        ],
+        "seconds": 0.15807450000284007,
+        "mib_s": 809.744772228919,
+        "lines_s": 809.744772228919,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "b9b923e79ad727c0b57ecf073903e2c08559cb467e214e4edd5946c7f458bd86",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 4227072,
+            "cpu_s": 0.15215
+          }
+        ],
+        "seconds": 0.16527541699906578,
+        "mib_s": 774.4648437385187,
+        "lines_s": 774.4648437385187,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 1048576,
+    "width": 1024,
+    "keys": 2048,
+    "bytes": 1073741824,
+    "free_before": 218289016832,
+    "input_sha256": "4516fea2e2069e2627a9a3d96dd1a3f1762b20a6f980a9bd4c2c21d9a5233d38",
+    "expected_count_sha256": "1bbc7a39393af21669b63252b14845ddffbe9c892d2236e82945ee31ed228a0e",
+    "first_count": 524288,
+    "last_count": 256,
+    "count_sum": 1048576,
+    "uniq_sha256": "ae399bba8d437e71699df93dc3b6fe861b48ed19365eeb30f9f7df5bd851d0f6",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "1bbc7a39393af21669b63252b14845ddffbe9c892d2236e82945ee31ed228a0e",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1933312,
+            "cpu_s": 1.039409
+          }
+        ],
+        "seconds": 1.3733532080004807,
+        "mib_s": 745.6202774600732,
+        "lines_s": 763515.164119115,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "aac50c55352b665cb0a538fd060d0d38c657a54d43d9b27e59cb390c9bba2276",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1916928,
+            "cpu_s": 2.268493
+          }
+        ],
+        "seconds": 2.3873098330004723,
+        "mib_s": 428.93468867968147,
+        "lines_s": 439229.1212079938,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "5506ec1fbb2f3783171dc64b7a42fc374759e12e586198edba6f70c3df57dff0",
+        "commands": [
+          [
+            "/opt/homebrew/bin/guniq",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmppj_qbqb1/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 1916928,
+            "cpu_s": 1.7577409999999998
+          }
+        ],
+        "seconds": 1.8069562920063618,
+        "mib_s": 566.698820845853,
+        "lines_s": 580299.5925461535,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  }
+]

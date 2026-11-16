@@ -1,0 +1,78 @@
+[
+  {
+    "seed": 27027,
+    "rows": 65536,
+    "width": 128,
+    "keys": 32,
+    "bytes": 8388608,
+    "free_before": 213611028480,
+    "input_sha256": "fc00191aaa7d9f09b4937e19bf549422c90a2ef3b5e128f4e6164bdc35f6d250",
+    "expected_count_sha256": "19e30d57201dde79c0da018d0d388e97bbda880668d485d878bf761005ce4165",
+    "first_count": 32768,
+    "last_count": 1092,
+    "count_sum": 65536,
+    "uniq_sha256": "ae399bba8d437e71699df93dc3b6fe861b48ed19365eeb30f9f7df5bd851d0f6",
+    "sort_sha256": "65bf3c540159298eb9eab1d83719587b3d649a154433802ec67568714654099b",
+    "ok": true,
+    "measurements": [
+      {
+        "profile": "GNU",
+        "commands": [
+          [
+            "/opt/homebrew/bin/gsort",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmptndc96rv/gros-fichier.txt"
+          ],
+          [
+            "/opt/homebrew/bin/guniq",
+            "-c"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 13697024,
+            "cpu_s": 0.016403
+          },
+          {
+            "status": 0,
+            "rss_bytes": 1916928,
+            "cpu_s": 0.010459
+          }
+        ],
+        "seconds": 0.025642082997364923,
+        "mib_s": 311.98713461859205,
+        "lines_s": 2555798.606795506,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "profile": "GNU",
+        "commands": [
+          [
+            "/opt/homebrew/bin/gsort",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmptndc96rv/gros-fichier.txt"
+          ],
+          [
+            "/opt/homebrew/bin/guniq",
+            "-c"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 13697024,
+            "cpu_s": 0.016714999999999997
+          },
+          {
+            "status": 0,
+            "rss_bytes": 1916928,
+            "cpu_s": 0.010634999999999999
+          }
+        ],
+        "seconds": 0.024844041996402666,
+        "mib_s": 322.00879394578277,
+        "lines_s": 2637896.0400038525,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  }
+]

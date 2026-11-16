@@ -1,0 +1,506 @@
+[
+  {
+    "seed": 27027,
+    "rows": 2048,
+    "width": 128,
+    "keys": 32,
+    "bytes": 262144,
+    "free_before": 389833719808,
+    "input_sha256": "27d6c806be595cf31929710c23259fc214bd4ded862abe57297a56233f05dc6a",
+    "expected_count_sha256": "5170d4d8cf58c0e9d3c773b8770b6e64e0e6881640ea3d8d813b5a3b0a5a2279",
+    "first_count": 1024,
+    "last_count": 34,
+    "count_sum": 2048,
+    "uniq_sha256": "fc53fc2684c41747213704fdc95de4f38f58d003471f52e056470e235bd97878",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "5170d4d8cf58c0e9d3c773b8770b6e64e0e6881640ea3d8d813b5a3b0a5a2279",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2113536,
+            "cpu_s": 0.0022779999999999996
+          }
+        ],
+        "seconds": 0.01100116599991452,
+        "mib_s": 22.724863891876783,
+        "lines_s": 186162.0850022546,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "c7f87aa051811b50201e28fddb71a605315535c49764a4a41e1375753d50a94e",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2146304,
+            "cpu_s": 0.002438
+          }
+        ],
+        "seconds": 0.00950833300157683,
+        "mib_s": 26.292726596611715,
+        "lines_s": 215390.01627944317,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "1b447b51f4c866b4050d491f770c70f0a45f8b7837aabb1eaa929b99f13ff93e",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2162688,
+            "cpu_s": 0.002264
+          }
+        ],
+        "seconds": 0.009720208996441215,
+        "mib_s": 25.71961159389994,
+        "lines_s": 210695.05817722832,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 65536,
+    "width": 128,
+    "keys": 32,
+    "bytes": 8388608,
+    "free_before": 389832933376,
+    "input_sha256": "aa053e539c38a211e0510a65f693b18f52900cbb97d5b5f6bcdfb0f267377bad",
+    "expected_count_sha256": "19e30d57201dde79c0da018d0d388e97bbda880668d485d878bf761005ce4165",
+    "first_count": 32768,
+    "last_count": 1092,
+    "count_sum": 65536,
+    "uniq_sha256": "fc53fc2684c41747213704fdc95de4f38f58d003471f52e056470e235bd97878",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "19e30d57201dde79c0da018d0d388e97bbda880668d485d878bf761005ce4165",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2113536,
+            "cpu_s": 0.004005
+          }
+        ],
+        "seconds": 0.009636124996177386,
+        "mib_s": 830.2092390015249,
+        "lines_s": 6801074.085900492,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "39fd571c260678e811f69fedcec5804c8439e0daa99bd952ddbe30afcfb60081",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2146304,
+            "cpu_s": 0.005317
+          }
+        ],
+        "seconds": 0.009360000003653113,
+        "mib_s": 854.7008543672737,
+        "lines_s": 7001709.398976706,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "893f5997ca6b9c784e69968724df9f564f4e6882847d086e701fc12be82ae307",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2162688,
+            "cpu_s": 0.0058519999999999996
+          }
+        ],
+        "seconds": 0.007719792003626935,
+        "mib_s": 1036.297350529835,
+        "lines_s": 8489347.895540409,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 131072,
+    "width": 128,
+    "keys": 1024,
+    "bytes": 16777216,
+    "free_before": 389805228032,
+    "input_sha256": "111fd7a0ae6ef601d86a7bc7ebf071171e2a191f22c7615bc061cf84fcf67afb",
+    "expected_count_sha256": "c6b24a61ba72e2453a335a112747d0b0f67aca848515286cf6b9f03cb2137289",
+    "first_count": 65536,
+    "last_count": 64,
+    "count_sum": 131072,
+    "uniq_sha256": "fc53fc2684c41747213704fdc95de4f38f58d003471f52e056470e235bd97878",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "c6b24a61ba72e2453a335a112747d0b0f67aca848515286cf6b9f03cb2137289",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2179072,
+            "cpu_s": 0.005835999999999999
+          }
+        ],
+        "seconds": 0.010199667005508672,
+        "mib_s": 1568.6786628777845,
+        "lines_s": 12850615.60629481,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "edcdc5d43736bea95b8b9fc3b44a47d49a263da16d732b62049e122b83b7e795",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2146304,
+            "cpu_s": 0.008989
+          }
+        ],
+        "seconds": 0.01583470799960196,
+        "mib_s": 1010.4385884730046,
+        "lines_s": 8277512.916770854,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "047f0987e31531489deb7bd8eded127c7b72f3ebf0ee1e5f9bc1b1498c766122",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2162688,
+            "cpu_s": 0.009301
+          }
+        ],
+        "seconds": 0.015553292003460228,
+        "mib_s": 1028.721121961858,
+        "lines_s": 8427283.43111154,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 131072,
+    "width": 128,
+    "keys": 3,
+    "bytes": 16777216,
+    "free_before": 389779861504,
+    "input_sha256": "db3ec9f602c8146e6958d409d62254fc5fc94bb1682385e3e6b310e4250c9e15",
+    "expected_count_sha256": "79ffa3a2807e44491f0a4d4ab0fa907b0caa5ce481aca7b5de38bf5bec55a98b",
+    "first_count": 65536,
+    "last_count": 65535,
+    "count_sum": 131072,
+    "uniq_sha256": "fc53fc2684c41747213704fdc95de4f38f58d003471f52e056470e235bd97878",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "79ffa3a2807e44491f0a4d4ab0fa907b0caa5ce481aca7b5de38bf5bec55a98b",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2113536,
+            "cpu_s": 0.006490999999999999
+          }
+        ],
+        "seconds": 0.01035379200038733,
+        "mib_s": 1545.327547569185,
+        "lines_s": 12659323.269686764,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "4f0b3a6083207a0f7129b5f46d8baa6f0c5f9956ef054928245342a730c38287",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2146304,
+            "cpu_s": 0.009014999999999999
+          }
+        ],
+        "seconds": 0.01470491699728882,
+        "mib_s": 1088.0714255612568,
+        "lines_s": 8913481.118197815,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "79a473b4b0c03840dd89d5700a35c4cc9f3d78327273e2acfaac85ac421450ef",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2162688,
+            "cpu_s": 0.00955
+          }
+        ],
+        "seconds": 0.01602233399898978,
+        "mib_s": 998.6060708139534,
+        "lines_s": 8180580.932107906,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 128,
+    "width": 1048576,
+    "keys": 4,
+    "bytes": 134217728,
+    "free_before": 389779820544,
+    "input_sha256": "bee0a4d571b16a1c58ca0045dfd4de437a8993aaf1130eba0172c73abdcb8289",
+    "expected_count_sha256": "54e68663875f999a18de1a4747c93e3e07a6c5265e21af7e25d70f60a6093f33",
+    "first_count": 64,
+    "last_count": 31,
+    "count_sum": 128,
+    "uniq_sha256": "fc53fc2684c41747213704fdc95de4f38f58d003471f52e056470e235bd97878",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "54e68663875f999a18de1a4747c93e3e07a6c5265e21af7e25d70f60a6093f33",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 4227072,
+            "cpu_s": 0.020046
+          }
+        ],
+        "seconds": 0.02400233399384888,
+        "mib_s": 5332.814718468745,
+        "lines_s": 5332.814718468745,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "38a6d789055b6baf0764a7ed616a0ae793c740e7d95c7c0e5eb72171fd0b2bdc",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 4210688,
+            "cpu_s": 0.037517999999999996
+          }
+        ],
+        "seconds": 0.046263041003840044,
+        "mib_s": 2766.787423018202,
+        "lines_s": 2766.787423018202,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "b9b923e79ad727c0b57ecf073903e2c08559cb467e214e4edd5946c7f458bd86",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 4227072,
+            "cpu_s": 0.034656
+          }
+        ],
+        "seconds": 0.042145416999119334,
+        "mib_s": 3037.1036547740096,
+        "lines_s": 3037.1036547740096,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  },
+  {
+    "seed": 27027,
+    "rows": 1048576,
+    "width": 1024,
+    "keys": 2048,
+    "bytes": 1073741824,
+    "free_before": 389409546240,
+    "input_sha256": "4516fea2e2069e2627a9a3d96dd1a3f1762b20a6f980a9bd4c2c21d9a5233d38",
+    "expected_count_sha256": "1bbc7a39393af21669b63252b14845ddffbe9c892d2236e82945ee31ed228a0e",
+    "first_count": 524288,
+    "last_count": 256,
+    "count_sum": 1048576,
+    "uniq_sha256": "fc53fc2684c41747213704fdc95de4f38f58d003471f52e056470e235bd97878",
+    "sort_sha256": null,
+    "ok": true,
+    "measurements": [
+      {
+        "option": "-c",
+        "output_sha256": "1bbc7a39393af21669b63252b14845ddffbe9c892d2236e82945ee31ed228a0e",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-c",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2179072,
+            "cpu_s": 0.153638
+          }
+        ],
+        "seconds": 0.210411624997505,
+        "mib_s": 4866.651260414639,
+        "lines_s": 4983450.8906645905,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "-D",
+        "output_sha256": "aac50c55352b665cb0a538fd060d0d38c657a54d43d9b27e59cb390c9bba2276",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "-D",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2146304,
+            "cpu_s": 0.31739399999999995
+          }
+        ],
+        "seconds": 0.43128799999976764,
+        "mib_s": 2374.283541393574,
+        "lines_s": 2431266.34638702,
+        "temp_peak_sampled_bytes": 0
+      },
+      {
+        "option": "--group",
+        "output_sha256": "5506ec1fbb2f3783171dc64b7a42fc374759e12e586198edba6f70c3df57dff0",
+        "commands": [
+          [
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/uniq-natif-0240/livraison-uniq-0240/bin/uniq-darwin-arm64",
+            "--group",
+            "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpoqmalb_m/gros-fichier.txt"
+          ]
+        ],
+        "processes": [
+          {
+            "status": 0,
+            "rss_bytes": 2162688,
+            "cpu_s": 0.303318
+          }
+        ],
+        "seconds": 0.39978504199825693,
+        "mib_s": 2561.3764709197517,
+        "lines_s": 2622849.5062218257,
+        "temp_peak_sampled_bytes": 0
+      }
+    ]
+  }
+]
