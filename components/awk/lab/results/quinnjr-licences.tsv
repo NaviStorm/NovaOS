@@ -1,0 +1,13 @@
+paquet	version	expression SPDX déclarée	source
+aho-corasick	1.1.4	Unlicense OR MIT	registry+https://github.com/rust-lang/crates.io-index
+awk-rs	0.2.0	MIT OR Apache-2.0	amont
+memchr	2.7.6	Unlicense OR MIT	registry+https://github.com/rust-lang/crates.io-index
+proc-macro2	1.0.104	MIT OR Apache-2.0	registry+https://github.com/rust-lang/crates.io-index
+quote	1.0.42	MIT OR Apache-2.0	registry+https://github.com/rust-lang/crates.io-index
+regex	1.12.4	MIT OR Apache-2.0	registry+https://github.com/rust-lang/crates.io-index
+regex-automata	0.4.13	MIT OR Apache-2.0	registry+https://github.com/rust-lang/crates.io-index
+regex-syntax	0.8.11	MIT OR Apache-2.0	registry+https://github.com/rust-lang/crates.io-index
+syn	2.0.112	MIT OR Apache-2.0	registry+https://github.com/rust-lang/crates.io-index
+thiserror	2.0.18	MIT OR Apache-2.0	registry+https://github.com/rust-lang/crates.io-index
+thiserror-impl	2.0.18	MIT OR Apache-2.0	registry+https://github.com/rust-lang/crates.io-index
+unicode-ident	1.0.22	(MIT OR Apache-2.0) AND Unicode-3.0	registry+https://github.com/rust-lang/crates.io-index

@@ -1,0 +1,43 @@
+charge	moteur	Mio/s médiane	min	max	RSS max en Mio
+comptage	gawk	263.91	247.7	278.36	6.83
+comptage	a.out	69.02	60.88	70.24	1.94
+comptage	goawk	487.92	479.34	499.04	8.12
+comptage	awk-rs	287.63	282.7	301.93	2.42
+comptage	awk	569.52	543.71	585.61	2.81
+comptage	eawk	165.01	161.53	171.63	2.38
+somme	gawk	225.65	225.06	239.25	6.86
+somme	a.out	67.15	66.87	67.17	1.95
+somme	goawk	399.9	366.64	401.11	9.94
+somme	awk-rs	286.53	280.82	293.72	2.5
+somme	awk	ÉCHEC
+somme	eawk	166.73	166.07	173.8	2.36
+rare	gawk	153.21	153.1	157.14	6.91
+rare	a.out	60.71	60.14	60.71	2.11
+rare	goawk	464.21	429.4	471.73	7.97
+rare	awk-rs	272.26	260.1	275.48	2.84
+rare	awk	408.19	400.64	441.86	2.89
+rare	eawk	6.84	6.82	6.87	2.44
+frequent	gawk	142.47	136.21	142.97	6.88
+frequent	a.out	67.98	67.54	68.22	2.11
+frequent	goawk	439.02	414.3	445.47	8.12
+frequent	awk-rs	257.68	249.43	257.9	2.83
+frequent	awk	360.56	351.9	368.81	2.91
+frequent	eawk	36.67	36.65	36.91	2.44
+cles-fixes	gawk	211.43	210.77	224.36	6.86
+cles-fixes	a.out	66.28	66.07	66.3	2.0
+cles-fixes	goawk	289.86	286.58	295.66	8.78
+cles-fixes	awk-rs	173.68	172.36	178.5	2.56
+cles-fixes	awk	ÉCHEC
+cles-fixes	eawk	123.5	122.47	128.97	2.38
+sortie	gawk	214.99	206.62	217.1	6.84
+sortie	a.out	65.68	65.53	65.9	1.97
+sortie	goawk	312.98	304.55	313.61	8.94
+sortie	awk-rs	62.72	62.48	63.17	2.48
+sortie	awk	70.99	65.42	71.36	2.78
+sortie	eawk	49.12	46.83	50.38	2.38
+cles-croissantes	gawk	133.92	131.65	137.46	12.53
+cles-croissantes	a.out	54.87	54.05	56.72	3.67
+cles-croissantes	goawk	220.18	218.57	223.96	11.8
+cles-croissantes	awk-rs	47.79	47.6	48.02	7.12
+cles-croissantes	awk	ÉCHEC
+cles-croissantes	eawk	41.75	40.18	41.78	6.31
