@@ -2,6 +2,8 @@
 
 Le provisionneur de laboratoire a attribué D à Alice après son authentification, alors que son processus tournait déjà. La révocation a pris effet au retour du VFS dans les quatre configurations QEMU. Le test utilise le service de fichiers de l’invité et un volume P9 jetable. Le code exercé est `719c78083e3d02e2afd26e18f355f716e08fc356` sur la branche `codex/novaauth-0240-phase3`.
 
+Le [complément sur les politiques par installation](novaauth-politiques-v0.24.0-phase3.md) actualise les onze recettes et couvre la réauthentification après redémarrage, le retrait de groupe et la fermeture pendant une écriture.
+
 ## Chaîne d’autorité
 
 Le profil explicite `novaauth-sessions-lab` lance quatre processus isolés. Le vérificateur est le PID 6. Le provisionneur est le PID 7. Les clients de B (administrateur du registre) et de A sont les PID 8 et 9. Les trois derniers exécutent le même ELF de confiance avec des canaux initiaux distincts. Les clés privées restent dans les clients.
