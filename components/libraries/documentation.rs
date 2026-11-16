@@ -31,6 +31,22 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "basename",
+        provider: "nova-basename",
+        description: Text("Print the last component of a path.", "Afficher le dernier composant d’un chemin."),
+        syntax: Text::same("basename NAME [SUFFIX] | basename [OPTION]... NAME..."),
+        arguments: Text(
+            "-a, --multiple: process every name. -s, --suffix=TEXT: remove one matching ending and enable -a. -z, --zero: terminate with NUL on byte output. -- ends options. Options precede names.",
+            "-a, --multiple traite chaque nom. -s, --suffix=TEXTE retire une terminaison et active -a. -z, --zero termine par NUL sur une sortie binaire. -- termine les options. Les options précèdent les noms.",
+        ),
+        examples: Text::same("basename src/main.rs .rs\nbasename -as .rs a/lib.rs b/test.rs"),
+        rights: Text("Output only.", "Sortie uniquement."),
+        effects: Text("Processes argument bytes in memory.", "Traite les arguments en mémoire."),
+        limits: Text("An empty name stays empty. A suffix equal to the whole name is retained. NovaOS console rejects NUL. Darwin usage errors return 1.",
+                     "Un nom vide reste vide. Un suffixe égal au nom entier est conservé. La console NovaOS refuse le NUL. Sur Darwin une syntaxe invalide rend 1."),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1147,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.provider == "nova-basename" {
+            return format!("basename (NovaOS) {}\n", include_str!("../basename/VERSION").trim());
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {

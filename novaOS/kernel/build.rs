@@ -212,6 +212,8 @@ fn main() {
         "Cargo.toml",
         "Cargo.lock",
         "libraries",
+        "basename/src/options.rs",
+        "basename/VERSION",
         "coreutils",
         "shell",
         "vi",

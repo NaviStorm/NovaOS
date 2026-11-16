@@ -1,6 +1,10 @@
 //! Traitement local avant la résolution des chemins et le choix des capacités.
 use nova_cli::{command::Program, console, documentation, options, runtime as rt, tty};
 
+#[allow(dead_code)]
+#[path = "../basename/src/options.rs"]
+mod basename_options;
+
 fn invalid(option: &str) -> rt::Result<Option<u64>> {
     console::printable(
         tty::ERROR,
@@ -13,6 +17,17 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "basename" {
+        let bytes: alloc::vec::Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        let text = match basename_options::parse(&bytes) {
+            Ok(basename_options::Action::Help) => page.render(&[], false, lang).ok_or(rt::BAD_ARGUMENT)?,
+            Ok(basename_options::Action::Version) => page.version(lang),
+            Ok(basename_options::Action::Names { .. }) => return Ok(None),
+            Err(_) => return invalid(name),
+        };
+        console::write(tty::OUTPUT, &text)?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {
