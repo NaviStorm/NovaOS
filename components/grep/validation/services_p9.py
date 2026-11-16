@@ -28,8 +28,13 @@ def main(arch, sector, out):
             assert name in result, (name, result)
         assert "\x1b[34m" in result, result
         results["ls -latr --color /"] = list(names)
-        result = sortie(vm, "cat grand")
-        assert result.count("#") == 8193, result[-400:]
+        # The fixture contains 8193 bytes and no final newline.
+        vm.vm.stdin.write(b"nsh -c 'echo debutlecture; cat grand; echo finlecture=$?'\n")
+        vm.until(b"\r\ndebutlecture\r\n")
+        result = vm.until(b"finlecture=")
+        assert vm.until(b"\r\n").strip() == b"0"
+        vm.until(b"nsh> ")
+        assert result.count(b"#") == 8193, result[-400:]
         results["cat grand"] = {"octets_attendus_et_lus": 8193, "octet": "23"}
         result = sortie(vm, "cat commun.nsh | wc -l")
         count = COMMUN.count("\n")
