@@ -3,6 +3,7 @@
 import argparse
 import os
 import re
+import shlex
 import socket
 import time
 from contextlib import ExitStack
@@ -74,6 +75,20 @@ with ExitStack() as stack:
         vm.until(b"MAN_RC_0__fin")
         vm.until(b"nsh> ")
         rows.append(dict(commande="man cmp",langue=lang,statut_nsh=0))
+    corpus=json.loads((Path(__file__).parent/"preuves/options.json").read_text())["cas"]
+    for case in corpus:
+        rc,out_hex,err_hex=case["mesures"]["Nova"]
+        error=bytes.fromhex(err_hex)
+        if not case["document"] and b"Try 'cmp --help'" not in error:continue
+        if any("\n" in arg for arg in case["args"]):continue
+        argv="cmp"+"".join(" "+shlex.quote(arg) for arg in case["args"])
+        if case["document"]:
+            vm.line("export LANG="+case["lang"])
+            marker=case["document"]
+        else:
+            marker=error.decode().splitlines()[0]
+        command(argv,rc,marker)
+        rows[-1]["id_corpus"]=case["id"]
     after=snapshot()
     (out/"disque-doc.json").write_text(json.dumps([before,after]))
     assert before==after,(before,after)
