@@ -70,7 +70,7 @@ fn catalogue_et_rendu() {
             [
                 "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
-                "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
+                "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "sort", "tail",
                 "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
             ]
         );

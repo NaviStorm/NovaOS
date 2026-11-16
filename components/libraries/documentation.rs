@@ -31,6 +31,36 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "sort",
+        provider: "nova-sort",
+        description: Text(
+            "Sort or merge records.",
+            "Trier ou fusionner des enregistrements.",
+        ),
+        syntax: Text(
+            "sort [OPTION]... [FILE]...",
+            "sort [OPTION]... [FICHIER]...",
+        ),
+        arguments: Text(
+            include_str!("../sort/doc/help.en"),
+            include_str!("../sort/doc/help.fr"),
+        ),
+        examples: Text::same("sort -n /lignes"),
+        rights: Text(
+            "Reads selected inputs. External sorting requires private temporary storage.",
+            "Lit les entrées déléguées. Le tri externe exige le stockage temporaire privé.",
+        ),
+        effects: Text(
+            "Writes sorted records or checks order.",
+            "Écrit les enregistrements triés ou vérifie leur ordre.",
+        ),
+        limits: Text(
+            "Running the ELF from nsh requires catalogue admission.",
+            "L’exécution de l’ELF depuis nsh exige son admission au catalogue.",
+        ),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -518,7 +548,10 @@ pub static PAGES: &[Page] = &[
             "Count lines, words and text units.",
             "Compter les lignes, les mots et les unités de texte.",
         ),
-        syntax: Text("wc [-lwcmL] [--] file...\ncat file | wc -l", "wc [-lwcmL] [--] fichier...\ncat fichier | wc -l"),
+        syntax: Text(
+            "wc [-lwcmL] [--] file...\ncat file | wc -l",
+            "wc [-lwcmL] [--] fichier...\ncat fichier | wc -l",
+        ),
         arguments: Text(
             "-l/--lines counts newlines, -w/--words words, -c/--bytes bytes, -m/--chars Unicode characters, -L/--max-line-length display columns.",
             "-l/--lines compte les sauts de ligne, -w/--words les mots, -c/--bytes les octets, -m/--chars les caractères Unicode, -L/--max-line-length la largeur affichée.",
@@ -1131,6 +1164,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.name == "sort" {
+            return "sort (NovaOS) 0.1.0\n".into();
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
@@ -1207,10 +1243,17 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
-                    "Status, errors and limits: 0 success, 3 invalid argument.",
-                    "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                if self.name == "sort" {
+                    lang.select(
+                        "Exit status: 0 success, 1 disorder, 2 error.",
+                        "Statuts : 0 succès, 1 désordre, 2 erreur.",
+                    )
+                } else {
+                    lang.select(
+                        "Status, errors and limits: 0 success, 3 invalid argument.",
+                        "Codes, erreurs et limites : 0 succès, 3 argument invalide.",
+                    )
+                },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )
