@@ -1,0 +1,1093 @@
+{
+  "fusion": "e5d7124a53e9b0d6a896b7001f717f655c371367",
+  "parents": [
+    "816843fa6f5a8ae35f64ef0c3f96a67652bbc384",
+    "d21852c0349e9d70bf2211259df40077c73a53bf"
+  ],
+  "arbre": "e73ce9e2209449bda3e1e1475ac15053ac3e312e",
+  "abi_v1_selecteurs": 48,
+  "preuve": {
+    "candidat": "d21852c0349e9d70bf2211259df40077c73a53bf",
+    "originaux": 2753,
+    "membres_archives_verifies": 2753,
+    "fichiers_publies_verifies": 1545,
+    "archive_integrale_sha256": "24b565c09430d8fd98de958a1b1b8b48fe21c466541d6e5889b22ac54d12c1d1",
+    "archive_versionnee_sha256": "b018b1f0b9277c68637716ab467b711db3cd744632a4ab5024de8e842ed6b4f7",
+    "correspondance": "exacte"
+  },
+  "commandes": [
+    "nsh",
+    "service",
+    "journal",
+    "ls",
+    "rm",
+    "cd",
+    "vi",
+    "man",
+    "pwd",
+    "cat",
+    "head",
+    "tail",
+    "wc",
+    "more",
+    "mkdir",
+    "rmdir",
+    "touch",
+    "cp",
+    "mv",
+    "help",
+    "history",
+    "clear",
+    "ps",
+    "top",
+    "true",
+    "false",
+    "alias",
+    "unalias",
+    "export",
+    "unset",
+    "echo",
+    "test",
+    "[",
+    "break",
+    "continue",
+    "exit",
+    "return"
+  ],
+  "novafs_git": "3379ccd023e821e912130c7413113fe7546070cc",
+  "distribution_git": "65ca3e806f8b60d9c24de0a7855e64e3de5d7649",
+  "profils": {
+    "aarch64-512": {
+      "nsh_prive_kio": 544,
+      "pic_vi_pages": 104,
+      "pic_cadres_témoin": 1053,
+      "pic_cadres_ligne_longue": 1273,
+      "apres_collecte": {
+        "ipc": 0,
+        "utilisateur": 0,
+        "processus": 0,
+        "libres": 61876,
+        "dma": 0
+      },
+      "latences": {
+        "rm --help": {
+          "mediane_ms": 6.0152915,
+          "max_ms": 7.014333,
+          "effectif": 8
+        },
+        "cat grand | wc -l": {
+          "mediane_ms": 271.599292,
+          "max_ms": 278.639666,
+          "effectif": 8
+        },
+        "cat grand | head -n 1": {
+          "mediane_ms": 76.9221455,
+          "max_ms": 77.464125,
+          "effectif": 8
+        },
+        "man rm": {
+          "mediane_ms": 201.07656250000002,
+          "max_ms": 205.546542,
+          "effectif": 8
+        }
+      },
+      "observations": [
+        {
+          "passage": 0,
+          "commande": "rm --help",
+          "ms": 4.837375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "cat grand | wc -l",
+          "ms": 409.369,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "cat grand | head -n 1",
+          "ms": 75.535875,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "man rm",
+          "ms": 206.08775,
+          "premier_ecran_ms": 205.182666
+        },
+        {
+          "passage": 1,
+          "commande": "rm --help",
+          "ms": 5.967417,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "cat grand | wc -l",
+          "ms": 266.740084,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "cat grand | head -n 1",
+          "ms": 74.982042,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "man rm",
+          "ms": 205.469167,
+          "premier_ecran_ms": 201.728167
+        },
+        {
+          "passage": 2,
+          "commande": "rm --help",
+          "ms": 6.946167,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "cat grand | wc -l",
+          "ms": 277.383,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "cat grand | head -n 1",
+          "ms": 76.830458,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "man rm",
+          "ms": 202.463875,
+          "premier_ecran_ms": 199.368875
+        },
+        {
+          "passage": 3,
+          "commande": "rm --help",
+          "ms": 5.789584,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "cat grand | wc -l",
+          "ms": 276.4585,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "cat grand | head -n 1",
+          "ms": 77.013833,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "man rm",
+          "ms": 208.705417,
+          "premier_ecran_ms": 205.546542
+        },
+        {
+          "passage": 4,
+          "commande": "rm --help",
+          "ms": 6.957666,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "cat grand | wc -l",
+          "ms": 278.639666,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "cat grand | head -n 1",
+          "ms": 77.377334,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "man rm",
+          "ms": 207.245709,
+          "premier_ecran_ms": 204.079542
+        },
+        {
+          "passage": 5,
+          "commande": "rm --help",
+          "ms": 7.014333,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "cat grand | wc -l",
+          "ms": 276.7695,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "cat grand | head -n 1",
+          "ms": 77.464125,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "man rm",
+          "ms": 207.845667,
+          "premier_ecran_ms": 203.78225
+        },
+        {
+          "passage": 6,
+          "commande": "rm --help",
+          "ms": 6.007792,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "cat grand | wc -l",
+          "ms": 265.851625,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "cat grand | head -n 1",
+          "ms": 76.828791,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "man rm",
+          "ms": 200.886417,
+          "premier_ecran_ms": 196.89975
+        },
+        {
+          "passage": 7,
+          "commande": "rm --help",
+          "ms": 5.699375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "cat grand | wc -l",
+          "ms": 258.568583,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "cat grand | head -n 1",
+          "ms": 77.422167,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "man rm",
+          "ms": 201.031167,
+          "premier_ecran_ms": 197.000833
+        },
+        {
+          "passage": 8,
+          "commande": "rm --help",
+          "ms": 6.022791,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "cat grand | wc -l",
+          "ms": 250.420667,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "cat grand | head -n 1",
+          "ms": 76.376125,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "man rm",
+          "ms": 200.572042,
+          "premier_ecran_ms": 200.424958
+        }
+      ],
+      "image_initiale_sha256": "71fa7f03e83c115ae38c04902d71d5a6f9e7531d69b13521c0878b8c050558a5",
+      "iso_sha256": "8b3be50a34ef218df8b6530961f57d6e80e120aa9669b67071abb1d21ff24200",
+      "elf_sha256": "808e282e738fee05e36e67245e57f53288147a42331aa90f2d69eddf471c7467",
+      "trace_sha256": "3eedc9c6ab2c8e4afb5d55e5a6bc25a9e5373c1b6a928b65225b74ecb8bcf160",
+      "serie_memoire_sha256": "1ea26baca2ed15c89e94f0eb6573dfaac6b0863466cc0a975627d13b40ce57c7"
+    },
+    "aarch64-4096": {
+      "nsh_prive_kio": 544,
+      "pic_vi_pages": 104,
+      "pic_cadres_témoin": 764,
+      "pic_cadres_ligne_longue": 1289,
+      "apres_collecte": {
+        "ipc": 0,
+        "utilisateur": 0,
+        "processus": 0,
+        "libres": 61876,
+        "dma": 0
+      },
+      "latences": {
+        "rm --help": {
+          "mediane_ms": 5.9656875,
+          "max_ms": 7.202042,
+          "effectif": 8
+        },
+        "cat grand | wc -l": {
+          "mediane_ms": 266.602625,
+          "max_ms": 275.832208,
+          "effectif": 8
+        },
+        "cat grand | head -n 1": {
+          "mediane_ms": 78.5756045,
+          "max_ms": 81.489791,
+          "effectif": 8
+        },
+        "man rm": {
+          "mediane_ms": 204.403167,
+          "max_ms": 205.913458,
+          "effectif": 8
+        }
+      },
+      "observations": [
+        {
+          "passage": 0,
+          "commande": "rm --help",
+          "ms": 4.525833,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "cat grand | wc -l",
+          "ms": 410.746792,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "cat grand | head -n 1",
+          "ms": 78.364166,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "man rm",
+          "ms": 203.928708,
+          "premier_ecran_ms": 203.646333
+        },
+        {
+          "passage": 1,
+          "commande": "rm --help",
+          "ms": 1.036709,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "cat grand | wc -l",
+          "ms": 250.549875,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "cat grand | head -n 1",
+          "ms": 75.010167,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "man rm",
+          "ms": 206.655875,
+          "premier_ecran_ms": 202.554291
+        },
+        {
+          "passage": 2,
+          "commande": "rm --help",
+          "ms": 7.202042,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "cat grand | wc -l",
+          "ms": 275.618833,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "cat grand | head -n 1",
+          "ms": 77.859209,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "man rm",
+          "ms": 209.235042,
+          "premier_ecran_ms": 205.913458
+        },
+        {
+          "passage": 3,
+          "commande": "rm --help",
+          "ms": 5.977625,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "cat grand | wc -l",
+          "ms": 275.832208,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "cat grand | head -n 1",
+          "ms": 75.635792,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "man rm",
+          "ms": 208.519916,
+          "premier_ecran_ms": 205.308458
+        },
+        {
+          "passage": 4,
+          "commande": "rm --help",
+          "ms": 6.874584,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "cat grand | wc -l",
+          "ms": 267.932875,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "cat grand | head -n 1",
+          "ms": 74.949208,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "man rm",
+          "ms": 206.9565,
+          "premier_ecran_ms": 202.845208
+        },
+        {
+          "passage": 5,
+          "commande": "rm --help",
+          "ms": 5.371542,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "cat grand | wc -l",
+          "ms": 265.272375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "cat grand | head -n 1",
+          "ms": 79.310917,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "man rm",
+          "ms": 210.169166,
+          "premier_ecran_ms": 205.854125
+        },
+        {
+          "passage": 6,
+          "commande": "rm --help",
+          "ms": 5.706084,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "cat grand | wc -l",
+          "ms": 267.997625,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "cat grand | head -n 1",
+          "ms": 79.292,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "man rm",
+          "ms": 209.257,
+          "premier_ecran_ms": 205.174292
+        },
+        {
+          "passage": 7,
+          "commande": "rm --help",
+          "ms": 6.227125,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "cat grand | wc -l",
+          "ms": 263.170209,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "cat grand | head -n 1",
+          "ms": 81.489791,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "man rm",
+          "ms": 203.4475,
+          "premier_ecran_ms": 199.344959
+        },
+        {
+          "passage": 8,
+          "commande": "rm --help",
+          "ms": 5.95375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "cat grand | wc -l",
+          "ms": 264.205542,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "cat grand | head -n 1",
+          "ms": 80.598334,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "man rm",
+          "ms": 203.759208,
+          "premier_ecran_ms": 203.632042
+        }
+      ],
+      "image_initiale_sha256": "7c32facd656218393fa5716c96f2ffa049d309c2097e20945a5f553d677669cf",
+      "iso_sha256": "5d1b9bc63d682e265b327ac542029489557224ea583379cbf63a02680b5c459e",
+      "elf_sha256": "808e282e738fee05e36e67245e57f53288147a42331aa90f2d69eddf471c7467",
+      "trace_sha256": "2af1c67ba8096ca7f4551d7ca4c4b8121bf8da35a4f060b158c9c6d0d77c04be",
+      "serie_memoire_sha256": "42c9a28be2f4fd74791f673c83a8a7f8658e0037ae600e013650abb3e24c67ef"
+    },
+    "x86_64-512": {
+      "nsh_prive_kio": 564,
+      "pic_vi_pages": 104,
+      "pic_cadres_témoin": 1056,
+      "pic_cadres_ligne_longue": 1292,
+      "apres_collecte": {
+        "ipc": 0,
+        "utilisateur": 0,
+        "processus": 0,
+        "libres": 62418,
+        "dma": 9
+      },
+      "latences": {
+        "rm --help": {
+          "mediane_ms": 4.1916045,
+          "max_ms": 5.653042,
+          "effectif": 8
+        },
+        "cat grand | wc -l": {
+          "mediane_ms": 247.603,
+          "max_ms": 298.055666,
+          "effectif": 8
+        },
+        "cat grand | head -n 1": {
+          "mediane_ms": 76.9055835,
+          "max_ms": 79.079459,
+          "effectif": 8
+        },
+        "man rm": {
+          "mediane_ms": 163.4458545,
+          "max_ms": 167.04,
+          "effectif": 8
+        }
+      },
+      "observations": [
+        {
+          "passage": 0,
+          "commande": "rm --help",
+          "ms": 4.135041,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "cat grand | wc -l",
+          "ms": 472.658333,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "cat grand | head -n 1",
+          "ms": 93.8675,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "man rm",
+          "ms": 164.351875,
+          "premier_ecran_ms": 163.996334
+        },
+        {
+          "passage": 1,
+          "commande": "rm --help",
+          "ms": 3.723959,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "cat grand | wc -l",
+          "ms": 298.055666,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "cat grand | head -n 1",
+          "ms": 77.111792,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "man rm",
+          "ms": 167.080125,
+          "premier_ecran_ms": 162.94125
+        },
+        {
+          "passage": 2,
+          "commande": "rm --help",
+          "ms": 4.65925,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "cat grand | wc -l",
+          "ms": 247.914833,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "cat grand | head -n 1",
+          "ms": 76.699375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "man rm",
+          "ms": 163.191792,
+          "premier_ecran_ms": 163.034958
+        },
+        {
+          "passage": 3,
+          "commande": "rm --help",
+          "ms": 3.531875,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "cat grand | wc -l",
+          "ms": 249.272792,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "cat grand | head -n 1",
+          "ms": 78.037292,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "man rm",
+          "ms": 167.36075,
+          "premier_ecran_ms": 163.216292
+        },
+        {
+          "passage": 4,
+          "commande": "rm --help",
+          "ms": 3.495459,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "cat grand | wc -l",
+          "ms": 244.63125,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "cat grand | head -n 1",
+          "ms": 79.079459,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "man rm",
+          "ms": 167.309166,
+          "premier_ecran_ms": 164.436083
+        },
+        {
+          "passage": 5,
+          "commande": "rm --help",
+          "ms": 4.9475,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "cat grand | wc -l",
+          "ms": 257.189458,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "cat grand | head -n 1",
+          "ms": 77.252833,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "man rm",
+          "ms": 167.463875,
+          "premier_ecran_ms": 166.012833
+        },
+        {
+          "passage": 6,
+          "commande": "rm --help",
+          "ms": 5.02375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "cat grand | wc -l",
+          "ms": 247.291167,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "cat grand | head -n 1",
+          "ms": 73.883791,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "man rm",
+          "ms": 165.210166,
+          "premier_ecran_ms": 162.2875
+        },
+        {
+          "passage": 7,
+          "commande": "rm --help",
+          "ms": 5.653042,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "cat grand | wc -l",
+          "ms": 237.497,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "cat grand | head -n 1",
+          "ms": 71.246167,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "man rm",
+          "ms": 167.270834,
+          "premier_ecran_ms": 167.04
+        },
+        {
+          "passage": 8,
+          "commande": "rm --help",
+          "ms": 3.538083,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "cat grand | wc -l",
+          "ms": 239.311334,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "cat grand | head -n 1",
+          "ms": 68.15875,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "man rm",
+          "ms": 163.857959,
+          "premier_ecran_ms": 163.675417
+        }
+      ],
+      "image_initiale_sha256": "937c5baf20b6275ca7f77a0d47655d10dbe7422ea821dadc4b5dcd7e9f835a1e",
+      "iso_sha256": "1d2911a3042f1b424ed4e1af5654ffd8a375f790ba95b89836db2f9468ab6b81",
+      "elf_sha256": "1526bf06973ed5f92a3247244c5d9865233647f73597cc6c49f8d74c718f0048",
+      "trace_sha256": "902a991d8d2d5c16314190fdcf27892d7fd97117b6bf3e6aab12032579b2560a",
+      "serie_memoire_sha256": "0df8b35fbef8c1f24a178cfecad21c3284f37403e5b9b694b9b40a1784b60aa5"
+    },
+    "x86_64-4096": {
+      "nsh_prive_kio": 564,
+      "pic_vi_pages": 104,
+      "pic_cadres_témoin": 1050,
+      "pic_cadres_ligne_longue": 1276,
+      "apres_collecte": {
+        "ipc": 0,
+        "utilisateur": 0,
+        "processus": 0,
+        "libres": 62418,
+        "dma": 9
+      },
+      "latences": {
+        "rm --help": {
+          "mediane_ms": 3.414729,
+          "max_ms": 6.254458,
+          "effectif": 8
+        },
+        "cat grand | wc -l": {
+          "mediane_ms": 227.6202915,
+          "max_ms": 235.489,
+          "effectif": 8
+        },
+        "cat grand | head -n 1": {
+          "mediane_ms": 68.56408350000001,
+          "max_ms": 70.866208,
+          "effectif": 8
+        },
+        "man rm": {
+          "mediane_ms": 163.9715205,
+          "max_ms": 164.988083,
+          "effectif": 8
+        }
+      },
+      "observations": [
+        {
+          "passage": 0,
+          "commande": "rm --help",
+          "ms": 3.7935,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "cat grand | wc -l",
+          "ms": 383.854084,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "cat grand | head -n 1",
+          "ms": 72.483791,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 0,
+          "commande": "man rm",
+          "ms": 166.926084,
+          "premier_ecran_ms": 166.609334
+        },
+        {
+          "passage": 1,
+          "commande": "rm --help",
+          "ms": 2.375333,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "cat grand | wc -l",
+          "ms": 215.707083,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "cat grand | head -n 1",
+          "ms": 69.6805,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 1,
+          "commande": "man rm",
+          "ms": 164.709458,
+          "premier_ecran_ms": 163.237375
+        },
+        {
+          "passage": 2,
+          "commande": "rm --help",
+          "ms": 6.254458,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "cat grand | wc -l",
+          "ms": 218.480042,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "cat grand | head -n 1",
+          "ms": 68.77275,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 2,
+          "commande": "man rm",
+          "ms": 166.669375,
+          "premier_ecran_ms": 164.988083
+        },
+        {
+          "passage": 3,
+          "commande": "rm --help",
+          "ms": 5.622875,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "cat grand | wc -l",
+          "ms": 235.489,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "cat grand | head -n 1",
+          "ms": 67.917375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 3,
+          "commande": "man rm",
+          "ms": 165.884958,
+          "premier_ecran_ms": 164.154958
+        },
+        {
+          "passage": 4,
+          "commande": "rm --help",
+          "ms": 5.748958,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "cat grand | wc -l",
+          "ms": 235.011084,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "cat grand | head -n 1",
+          "ms": 69.185708,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 4,
+          "commande": "man rm",
+          "ms": 164.053167,
+          "premier_ecran_ms": 163.788083
+        },
+        {
+          "passage": 5,
+          "commande": "rm --help",
+          "ms": 3.3225,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "cat grand | wc -l",
+          "ms": 228.916375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "cat grand | head -n 1",
+          "ms": 68.304375,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 5,
+          "commande": "man rm",
+          "ms": 162.548125,
+          "premier_ecran_ms": 162.354292
+        },
+        {
+          "passage": 6,
+          "commande": "rm --help",
+          "ms": 3.255833,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "cat grand | wc -l",
+          "ms": 231.284042,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "cat grand | head -n 1",
+          "ms": 68.355417,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 6,
+          "commande": "man rm",
+          "ms": 164.709583,
+          "premier_ecran_ms": 164.510417
+        },
+        {
+          "passage": 7,
+          "commande": "rm --help",
+          "ms": 1.799042,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "cat grand | wc -l",
+          "ms": 226.324208,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "cat grand | head -n 1",
+          "ms": 67.84475,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 7,
+          "commande": "man rm",
+          "ms": 165.102542,
+          "premier_ecran_ms": 164.967709
+        },
+        {
+          "passage": 8,
+          "commande": "rm --help",
+          "ms": 3.506958,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "cat grand | wc -l",
+          "ms": 218.9055,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "cat grand | head -n 1",
+          "ms": 70.866208,
+          "premier_ecran_ms": null
+        },
+        {
+          "passage": 8,
+          "commande": "man rm",
+          "ms": 163.315417,
+          "premier_ecran_ms": 163.125208
+        }
+      ],
+      "image_initiale_sha256": "1bcccecb41ce00fb7e7dfa82a2b7652b1a4174a805521445705b843bc87c4f16",
+      "iso_sha256": "53e3972839b9ab08bf623d1dcb9b43d3c166acc779e78d9a2acffd632439da75",
+      "elf_sha256": "1526bf06973ed5f92a3247244c5d9865233647f73597cc6c49f8d74c718f0048",
+      "trace_sha256": "6c8abda77a393317b85935db34105753c35e7cc2280b61f096730ea815813732",
+      "serie_memoire_sha256": "d0377716afded9c1f61d1495912ce55538e235b1dddd61b94ee5f2bb25dcf96c"
+    }
+  }
+}
