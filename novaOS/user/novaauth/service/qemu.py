@@ -36,6 +36,8 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert', p
     cut={"avant":b"NAP coupure avant decision","apres":b"NAP coupure apres decision"}.get(policy)
     lifecycle=policy in ("mise-a-jour","reinstallation")
     if lifecycle: completion=b"NAP cycle installation termine"
+    withdrawn = expected == "reponse-retiree"
+    probed = False
     before=authority.read_bytes()
     assert (disk.stat().st_size, authority.stat().st_size) == (512*4096,12*4096)
     descriptor = out / "disque.vmdk"
@@ -56,6 +58,12 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert', p
                 if not chunk:break
                 data.extend(chunk)
                 with (out/'invité.serial').open('ab') as trace:trace.write(chunk)
+                if withdrawn and not probed and b"NA3 canal prive retire avant reponse" in data:
+                    vm.stdin.write(b"ls /; echo NA3_PUBLIC_$?__fin\n")
+                    vm.stdin.flush()
+                    probed = True
+                if withdrawn and (b"NA3_PUBLIC_0__fin" in data or re.search(rb"PROC pid=3 [^\r\n]*sortie=5", data)):
+                    break
                 if cut and cut in data:
                     vm.kill()
                     break
@@ -79,6 +87,8 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert', p
     if refusal:
         ok=(refusal in data and b"NA3 refus collecte" in data and b"NA3 preuve acceptee" not in data and before==authority.read_bytes()
             and b"BLOC session terminee ok=true" in data and b"absents=0x0 muets=0x0" in data)
+    if withdrawn:
+        ok = probed and b"NA3_PUBLIC_0__fin" in data and not re.search(rb"PROC pid=3 [^\r\n]*sortie=[1-9]", data)
     if policy:
         required={
             "attribution":[b"NAP politique modifiee application arretee",b"NAP fermeture session reveil certain ecriture perdue reconciliee"],
@@ -109,7 +119,7 @@ if __name__=="__main__":
     p.add_argument("secteur",type=int,choices=(512,4096))
     for name in ("iso","genese","sortie"):p.add_argument(name,type=Path)
     p.add_argument("--apres",type=Path)
-    p.add_argument("--attendu",choices=("ouvert","initialise","recul","autorite"),default="ouvert")
+    p.add_argument("--attendu",choices=("ouvert","initialise","recul","autorite","reponse-retiree"),default="ouvert")
     a=p.parse_args()
-    if bool(a.apres)!=(a.attendu!="ouvert"):p.error("préciser ensemble le contrôle de reprise et sa source")
+    if bool(a.apres)!=(a.attendu in ("initialise", "recul", "autorite")):p.error("préciser ensemble le contrôle de reprise et sa source")
     qualify(a.architecture,a.secteur,a.iso,a.genese,a.sortie,a.apres,a.attendu)

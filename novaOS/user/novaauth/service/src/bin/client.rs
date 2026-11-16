@@ -42,6 +42,7 @@ fn admin(c: &mut Client, other: [u8; 16]) -> rt::Result<()> {
     marker(b"NA3 client preuve valide");
     let (again, second, _) = c.login()?;
     check(subject == again && session != second)?;
+    rt::send_for(rt::config(0), 10, &[], 5000)?;
 
     check(number(&c.send(&signed)?) == rt::DENIED)?;
     marker(b"NA3 client rejeu refuse");
@@ -59,6 +60,7 @@ fn admin(c: &mut Client, other: [u8; 16]) -> rt::Result<()> {
     q[60] ^= 1;
     check(number(&c.send(&q)?) == rt::DENIED)?;
     marker(b"NA3 signature incorrecte refusee");
+    rt::send_for(rt::config(0), 11, &[], 5000)?;
     let a = c.session(5, session, other)?;
     check(number(&a) == 0)?;
     let alice: [u8; 16] = a[8..24].try_into().unwrap();

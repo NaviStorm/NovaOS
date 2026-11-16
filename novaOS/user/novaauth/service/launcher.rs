@@ -64,6 +64,14 @@ pub(super) fn launch() -> rt::Result<()> {
         return Err(rt::BAD_ARGUMENT);
     }
     rt::send_for(client[2], 1, &other.payload[..16], 5000)?;
+    // Trois étapes bornées sur le canal privé du client. Le temps des contrôles
+    // cryptographiques ne consomme pas le délai de publication sur P9.
+    for tag in [10, 11] {
+        let step = rt::receive_for(client[1], 5000)?;
+        if step.kind != 1 || step.tag != tag || step.len != 0 {
+            return Err(rt::REFUSED);
+        }
+    }
     let published = rt::receive_for(client[1], 5000)?;
     if published.kind != 1 || published.tag != 2 || published.len != 16 {
         return Err(rt::REFUSED);
@@ -95,6 +103,9 @@ pub(super) fn launch() -> rt::Result<()> {
     {
         return Err(rt::REFUSED);
     }
+    // Son attribution confirmée, le provisionneur peut être collecté.
+    rt::send_for(provisioner[2], 2, &[0], 5000)?;
+    collect(provisioner[0], false)?;
     rt::send_for(client[2], 2, &live.payload[..32], 5000)?;
     let root = &receipt.payload[24..32];
     rt::send_for(client[2], 8, root, 5000)?;
@@ -144,8 +155,6 @@ pub(super) fn launch() -> rt::Result<()> {
     collect(second[0], false)?;
     rt::send_for(verifier[2], 1, &[0], 5000)?;
     collect(verifier[0], false)?;
-    rt::send_for(provisioner[2], 2, &[0], 5000)?;
-    collect(provisioner[0], false)?;
     let msg = b"NA3 quatre processus collectes";
     rt::value(rt::call(
         rt::DEBUG_WRITE,

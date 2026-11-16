@@ -3,6 +3,15 @@
 use super::*;
 use novaos_identity::{Authority, Enrollment, Registry, lab::Ledger};
 const DOMAIN: [u8; 16] = [7; 16];
+
+/// Une décision déjà prise reste consultable dans le registre. La disparition du
+/// canal privé empêche la remise de la réponse, sans autoriser une réexécution.
+fn reply(tx: u64, tag: u64, frame: &Frame) -> rt::Result<()> {
+    match rt::send_frame(tx, tag, frame, 0, false) {
+        Ok(()) | Err(rt::DENIED | rt::CLOSED | rt::REVOKED | rt::WOULD_BLOCK) => Ok(()),
+        Err(e) => Err(e),
+    }
+}
 impl Session<'_, '_> {
     pub(super) fn enroll_auth(&mut self, q: &Frame) -> rt::Result<()> {
         if !self.writable
@@ -163,7 +172,7 @@ impl Session<'_, '_> {
                 .err()
                 .unwrap_or(rt::OK);
             a[..8].copy_from_slice(&status.to_le_bytes());
-            return rt::send_frame(tx, msg.tag, &a, 0, false);
+            return reply(tx, msg.tag, &a);
         }
         let status = if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA3DATT1" {
             self.attest_folder(&msg.payload).err().unwrap_or(rt::OK)
@@ -189,9 +198,6 @@ impl Session<'_, '_> {
             rt::BAD_ARGUMENT
         };
         a[..8].copy_from_slice(&status.to_le_bytes());
-        match rt::send_frame(tx, msg.tag, &a, 0, false) {
-            Ok(()) | Err(rt::CLOSED | rt::REVOKED | rt::WOULD_BLOCK) => Ok(()),
-            Err(e) => Err(e),
-        }
+        reply(tx, msg.tag, &a)
     }
 }

@@ -6,7 +6,7 @@ import re
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False):
+def prepare(destination, policies=False, retired_reply=False):
     source = Path(__file__).resolve().parents[4]
     revision = subprocess.check_output(["git","rev-parse","HEAD"],cwd=source,text=True).strip()
     destination.mkdir(parents=True,exist_ok=False)
@@ -19,6 +19,8 @@ def prepare(destination, policies=False):
     apply(destination, "raccord.patch")
     if policies:
         apply(destination, "politiques.patch")
+    if retired_reply:
+        apply(destination, "reponse-retiree.patch")
     print(revision,destination)
 
 def apply(destination,name):
@@ -32,6 +34,8 @@ def apply(destination,name):
 if __name__=="__main__":
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("destination",type=Path)
-    parser.add_argument('--politiques',action='store_true')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--politiques", action="store_true")
+    mode.add_argument("--reponse-retiree", action="store_true")
     args=parser.parse_args()
-    prepare(args.destination.resolve(),args.politiques)
+    prepare(args.destination.resolve(), args.politiques, args.reponse_retiree)
