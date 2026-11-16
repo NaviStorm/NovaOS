@@ -189,7 +189,13 @@ def main():
             assert saved.read() == disk
         state = "services-actifs" if cut else "propre"
         checked = subprocess.check_output([*oracle, state], text=True)
-        assert catalogue == subprocess.check_output([*oracle, "catalogue"])
+        # Le premier démarrage ordinaire publie le journal dans un objet privé.
+        # Valider son format P9 puis retirer exactement sa ligne de la comparaison.
+        journal = subprocess.check_output([*oracle, "objet-journal"])
+        entrees = subprocess.check_output([*oracle, "catalogue"]).splitlines(keepends=True)
+        assert entrees.count(journal) == 1
+        entrees.remove(journal)
+        assert catalogue == b"".join(entrees)
         assert disk == image.read_bytes(), "écriture par la relecture indépendante"
         memory = re.search(rb"cadres_init=(\d+) cadres_fin=(\d+) allocations=(\d+) pic_cadres=(\d+) buddy_init=(\d+) buddy_fin=(\d+)", raw)
         row = dict(profil=scenario, coupure_qemu=cut, qemu=qemu, architecture=opts.arch, vcpus=opts.vcpus,
