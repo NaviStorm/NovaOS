@@ -17,7 +17,8 @@ from journalisation import arret, attend, sortie
 from session_cli import HOST, fixture_p9
 
 LOTS = {1: "pwd cat head tail wc more".split(), 2: "mkdir rmdir touch cp mv".split(),
-        3: "help history clear ps top true false".split()}
+        3: "help history clear ps top true false".split(),
+        4: "alias unalias export unset echo test [ break continue exit return".split()}
 
 
 def reread_transfer(out):
@@ -156,6 +157,46 @@ def run(arch, lot, out):
             records.append(dict(command="top (q)", rc=0))
             command("nsh -c 'history'", 5)
             command("nsh -c 'history --help'")
+        if lot == 4:
+            roster = set(sum(LOTS.values(), [])) | set("nsh service journal ls rm cd vi man".split())
+            assert any(set(line.split()) == roster for line in command("help").splitlines())
+            assert "-12" in command("echo -12")
+            command("false", 1)
+            assert "Manuel : man false" in command("false --help")
+            command("true")
+            assert "Manuel : man exit" in command("exit --help")
+            assert "SESSION-VIVANTE" in command("echo SESSION-VIVANTE")
+            command("nsh -c 'exit 42; echo impossible'", 42)
+            command("nsh -c 'exit'")
+            command("nsh -c 'return 37; echo impossible'", 37)
+            command("return 1", 3)
+            command("exit invalide", 3)
+            command("export TEMOIN=present")
+            command("unset TEMOIN --inconnue", 3)
+            assert "present" in command("echo $TEMOIN")
+            command("export NOUVEAU=x --inconnue", 3)
+            command('test -z "$NOUVEAU"')
+            command("alias salut='echo BONJOUR'")
+            assert "BONJOUR" in command("salut")
+            command("unalias --inconnue", 3)
+            assert "BONJOUR" in command("salut")
+            command("unalias salut")
+            command("salut", 127)
+            command("unset TEMOIN")
+            command('test -z "$TEMOIN"')
+            command("test -3 -lt 2")
+            command("test 2 -lt -3", 1)
+            command("[ --help ]")
+            command("test -- --version")
+            command("test -- -e --inconnue")
+            command("[ -f --inconnue ]")
+            assert "--help" in command("echo -- --help")
+            assert "texte --version" in command("echo texte --version")
+            command("break", 3)
+            command("continue", 3)
+            assert "FIN-BOUCLE" in command("for i in a b; do break --help; continue --help; echo FIN-BOUCLE; break; done")
+            command("nsh -c 'for i in a b; do continue; exit 31; done'")
+            command("nsh -c 'true || exit 32; false && exit 33; exit 7'", 7)
         control = snapshot()
         assert control["wr_operations"] > before["wr_operations"] and control["sha256"] != before["sha256"]
         arret(vm, 2)

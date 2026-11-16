@@ -250,7 +250,9 @@ impl<'a> Engine<'a> {
                     .map(Flow::Status);
             }
         }
-        if matches!(name.as_str(), "help" | "history" | "clear" | "ps" | "top" | "true" | "false")
+        if matches!(name.as_str(), "help" | "history" | "clear" | "ps" | "top" | "true" | "false"
+            | "exit" | "return" | "break" | "continue" | "echo" | "test" | "["
+            | "export" | "unset" | "alias" | "unalias")
             && words.first().is_some_and(|w| w.text == "--")
         {
             words.remove(0);
@@ -265,14 +267,18 @@ impl<'a> Engine<'a> {
                 return Ok(Flow::Status(0));
             }
             "export" | "unset" => {
-                if words.is_empty() {
+                if words.is_empty() || words.iter().any(|word| {
+                    let key = if name == "export" {
+                        word.text.split('=').next().unwrap_or("")
+                    } else {
+                        &word.text
+                    };
+                    !lexer::identifier(key)
+                }) {
                     return Err(rt::BAD_ARGUMENT);
                 }
                 for word in &words {
                     if name == "unset" {
-                        if !lexer::identifier(&word.text) {
-                            return Err(rt::BAD_ARGUMENT);
-                        }
                         f.vars.remove(&word.text);
                     } else if let Some((key, value)) = word.text.split_once('=') {
                         f.set(key, value, true)?

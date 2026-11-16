@@ -409,9 +409,15 @@ pub static PAGES: &[Page] = &[
     Page {
         name: "pwd",
         provider: "nova-cli",
-        description: Text("Display the current directory.", "Afficher le répertoire courant."),
+        description: Text(
+            "Display the current directory.",
+            "Afficher le répertoire courant.",
+        ),
         syntax: Text::same("pwd [-LP]"),
-        arguments: Text("-L/--logical and -P/--physical both display the delegated working directory.", "-L/--logical et -P/--physical affichent le répertoire courant délégué."),
+        arguments: Text(
+            "-L/--logical and -P/--physical both display the delegated working directory.",
+            "-L/--logical et -P/--physical affichent le répertoire courant délégué.",
+        ),
         examples: Text::same("pwd -P"),
         rights: Text("Current directory view.", "Vue du répertoire courant."),
         effects: Text("Prints its path.", "Affiche son chemin."),
@@ -421,61 +427,142 @@ pub static PAGES: &[Page] = &[
     Page {
         name: "cat",
         provider: "nova-cli",
-        description: Text("Display the contents of selected files.", "Afficher le contenu des fichiers sélectionnés."),
+        description: Text(
+            "Display the contents of selected files.",
+            "Afficher le contenu des fichiers sélectionnés.",
+        ),
         syntax: Text("cat [--] file...", "cat [--] fichier..."),
-        arguments: Text("Supply one or more paths in display order.", "Fournir un ou plusieurs chemins dans l’ordre de lecture."),
+        arguments: Text(
+            "Supply one or more paths in display order.",
+            "Fournir un ou plusieurs chemins dans l’ordre de lecture.",
+        ),
         examples: Text::same("cat -- /documents/exemple.txt"),
-        rights: Text("Read access to each selected file.", "Lecture de chaque fichier sélectionné."),
-        effects: Text("Writes printable text to the console and escapes unsafe bytes.", "Affiche le texte sur la console et échappe les octets de contrôle."),
-        limits: Text("An inaccessible or absent file stops the command (5 or 20).", "Un fichier inaccessible ou absent interrompt la commande (5 ou 20)."),
+        rights: Text(
+            "Read access to each selected file.",
+            "Lecture de chaque fichier sélectionné.",
+        ),
+        effects: Text(
+            "Writes printable text to the console and escapes unsafe bytes.",
+            "Affiche le texte sur la console et échappe les octets de contrôle.",
+        ),
+        limits: Text(
+            "An inaccessible or absent file stops the command (5 or 20).",
+            "Un fichier inaccessible ou absent interrompt la commande (5 ou 20).",
+        ),
         topics: &[],
     },
     Page {
         name: "head",
         provider: "nova-cli",
-        description: Text("Display the start of each file.", "Afficher le début de chaque fichier."),
-        syntax: Text("head [-qv] [-n N | -c N] [--] file...", "head [-qv] [-n N | -c N] [--] fichier..."),
-        arguments: Text("-n/--lines N counts lines (default 10), -c/--bytes N counts bytes. -q/--quiet/--silent hides headers, -v/--verbose shows them.", "-n/--lines N compte les lignes (10 par défaut), -c/--bytes N les octets. -q/--quiet/--silent masque les en-têtes, -v/--verbose les affiche."),
+        description: Text(
+            "Display the start of each file.",
+            "Afficher le début de chaque fichier.",
+        ),
+        syntax: Text(
+            "head [-qv] [-n N | -c N] [--] file...",
+            "head [-qv] [-n N | -c N] [--] fichier...",
+        ),
+        arguments: Text(
+            "-n/--lines N counts lines (default 10), -c/--bytes N counts bytes. -q/--quiet/--silent hides headers, -v/--verbose shows them.",
+            "-n/--lines N compte les lignes (10 par défaut), -c/--bytes N les octets. -q/--quiet/--silent masque les en-têtes, -v/--verbose les affiche.",
+        ),
         examples: Text::same("head -n 2 /lignes"),
-        rights: Text("Read access to each selected file.", "Lecture de chaque fichier sélectionné."),
-        effects: Text("Prints the selected portion to the console.", "Affiche la partie sélectionnée sur la console."),
-        limits: Text("An inaccessible or absent file stops the command (5 or 20).", "Un fichier inaccessible ou absent interrompt la commande (5 ou 20)."),
+        rights: Text(
+            "Read access to each selected file.",
+            "Lecture de chaque fichier sélectionné.",
+        ),
+        effects: Text(
+            "Prints the selected portion to the console.",
+            "Affiche la partie sélectionnée sur la console.",
+        ),
+        limits: Text(
+            "An inaccessible or absent file stops the command (5 or 20).",
+            "Un fichier inaccessible ou absent interrompt la commande (5 ou 20).",
+        ),
         topics: &[],
     },
     Page {
         name: "tail",
         provider: "nova-cli",
-        description: Text("Display the end of each file.", "Afficher la fin de chaque fichier."),
-        syntax: Text("tail [-qv] [-n N | -c N] [--] file...", "tail [-qv] [-n N | -c N] [--] fichier..."),
-        arguments: Text("-n/--lines N counts lines (default 10), -c/--bytes N counts bytes. -q/--quiet/--silent hides headers, -v/--verbose shows them.", "-n/--lines N compte les lignes (10 par défaut), -c/--bytes N les octets. -q/--quiet/--silent masque les en-têtes, -v/--verbose les affiche."),
+        description: Text(
+            "Display the end of each file.",
+            "Afficher la fin de chaque fichier.",
+        ),
+        syntax: Text(
+            "tail [-qv] [-n N | -c N] [--] file...",
+            "tail [-qv] [-n N | -c N] [--] fichier...",
+        ),
+        arguments: Text(
+            "-n/--lines N counts lines (default 10), -c/--bytes N counts bytes. -q/--quiet/--silent hides headers, -v/--verbose shows them.",
+            "-n/--lines N compte les lignes (10 par défaut), -c/--bytes N les octets. -q/--quiet/--silent masque les en-têtes, -v/--verbose les affiche.",
+        ),
         examples: Text::same("tail -n 2 /lignes"),
-        rights: Text("Read access to each selected file.", "Lecture de chaque fichier sélectionné."),
-        effects: Text("Prints the selected portion to the console.", "Affiche la partie sélectionnée sur la console."),
-        limits: Text("An inaccessible or absent file stops the command (5 or 20).", "Un fichier inaccessible ou absent interrompt la commande (5 ou 20)."),
+        rights: Text(
+            "Read access to each selected file.",
+            "Lecture de chaque fichier sélectionné.",
+        ),
+        effects: Text(
+            "Prints the selected portion to the console.",
+            "Affiche la partie sélectionnée sur la console.",
+        ),
+        limits: Text(
+            "An inaccessible or absent file stops the command (5 or 20).",
+            "Un fichier inaccessible ou absent interrompt la commande (5 ou 20).",
+        ),
         topics: &[],
     },
     Page {
         name: "wc",
         provider: "nova-cli",
-        description: Text("Count lines, words and text units.", "Compter les lignes, les mots et les unités de texte."),
+        description: Text(
+            "Count lines, words and text units.",
+            "Compter les lignes, les mots et les unités de texte.",
+        ),
         syntax: Text("wc [-lwcmL] [--] file...", "wc [-lwcmL] [--] fichier..."),
-        arguments: Text("-l/--lines counts newlines, -w/--words words, -c/--bytes bytes, -m/--chars Unicode characters, -L/--max-line-length display columns.", "-l/--lines compte les sauts de ligne, -w/--words les mots, -c/--bytes les octets, -m/--chars les caractères Unicode, -L/--max-line-length la largeur affichée."),
+        arguments: Text(
+            "-l/--lines counts newlines, -w/--words words, -c/--bytes bytes, -m/--chars Unicode characters, -L/--max-line-length display columns.",
+            "-l/--lines compte les sauts de ligne, -w/--words les mots, -c/--bytes les octets, -m/--chars les caractères Unicode, -L/--max-line-length la largeur affichée.",
+        ),
         examples: Text::same("wc -lc /lignes"),
-        rights: Text("Read access to each selected file.", "Lecture de chaque fichier sélectionné."),
-        effects: Text("Prints counts per file and totals for multiple files.", "Affiche les comptes par fichier et le total pour plusieurs fichiers."),
-        limits: Text("An inaccessible or absent file stops the command (5 or 20).", "Un fichier inaccessible ou absent interrompt la commande (5 ou 20)."),
+        rights: Text(
+            "Read access to each selected file.",
+            "Lecture de chaque fichier sélectionné.",
+        ),
+        effects: Text(
+            "Prints counts per file and totals for multiple files.",
+            "Affiche les comptes par fichier et le total pour plusieurs fichiers.",
+        ),
+        limits: Text(
+            "An inaccessible or absent file stops the command (5 or 20).",
+            "Un fichier inaccessible ou absent interrompt la commande (5 ou 20).",
+        ),
         topics: &[],
     },
     Page {
         name: "more",
         provider: "nova-cli",
-        description: Text("Page through selected files.", "Parcourir les fichiers page par page."),
+        description: Text(
+            "Page through selected files.",
+            "Parcourir les fichiers page par page.",
+        ),
         syntax: Text("more [--] file...", "more [--] fichier..."),
-        arguments: Text("Space advances a page, Enter one line and q ends paging.", "Espace avance d’une page, Entrée d’une ligne et q quitte la pagination."),
+        arguments: Text(
+            "Space advances a page, Enter one line and q ends paging.",
+            "Espace avance d’une page, Entrée d’une ligne et q quitte la pagination.",
+        ),
         examples: Text::same("more -- /lignes"),
-        rights: Text("Read selected files and receive console input.", "Lecture des fichiers sélectionnés et accès au clavier."),
-        effects: Text("Pauses at a full page.", "Attend une touche en fin de page."),
-        limits: Text("An inaccessible or absent file stops the command (5 or 20).", "Un fichier inaccessible ou absent interrompt la commande (5 ou 20)."),
+        rights: Text(
+            "Read selected files and receive console input.",
+            "Lecture des fichiers sélectionnés et accès au clavier.",
+        ),
+        effects: Text(
+            "Pauses at a full page.",
+            "Attend une touche en fin de page.",
+        ),
+        limits: Text(
+            "An inaccessible or absent file stops the command (5 or 20).",
+            "Un fichier inaccessible ou absent interrompt la commande (5 ou 20).",
+        ),
         topics: &[],
     },
     Page {
@@ -483,83 +570,182 @@ pub static PAGES: &[Page] = &[
         provider: "nova-cli",
         description: Text("Create a directory.", "Créer un répertoire."),
         syntax: Text("mkdir [--] directory", "mkdir [--] répertoire"),
-        arguments: Text("One path under an authorized parent.", "Un chemin sous un répertoire parent autorisé."),
+        arguments: Text(
+            "One path under an authorized parent.",
+            "Un chemin sous un répertoire parent autorisé.",
+        ),
         examples: Text::same("mkdir -- dossier"),
-        rights: Text("Traverse the parent and add the named entry.", "Traverser le parent et y ajouter l’entrée nommée."),
-        effects: Text("Creates the named directory.", "Crée le répertoire désigné."),
-        limits: Text("Existing name: 27. Access denied: 5.", "Nom occupé : 27. Accès refusé : 5."),
+        rights: Text(
+            "Traverse the parent and add the named entry.",
+            "Traverser le parent et y ajouter l’entrée nommée.",
+        ),
+        effects: Text(
+            "Creates the named directory.",
+            "Crée le répertoire désigné.",
+        ),
+        limits: Text(
+            "Existing name: 27. Access denied: 5.",
+            "Nom occupé : 27. Accès refusé : 5.",
+        ),
         topics: &[],
     },
     Page {
         name: "rmdir",
         provider: "nova-cli",
-        description: Text("Remove empty directories.", "Retirer des répertoires vides."),
-        syntax: Text("rmdir [-v] [--] directory...", "rmdir [-v] [--] répertoire..."),
-        arguments: Text("-v/--verbose reports each removal. nsh processes successive names separately.", "-v/--verbose affiche les retraits. nsh traite les noms successivement."),
+        description: Text(
+            "Remove empty directories.",
+            "Retirer des répertoires vides.",
+        ),
+        syntax: Text(
+            "rmdir [-v] [--] directory...",
+            "rmdir [-v] [--] répertoire...",
+        ),
+        arguments: Text(
+            "-v/--verbose reports each removal. nsh processes successive names separately.",
+            "-v/--verbose affiche les retraits. nsh traite les noms successivement.",
+        ),
         examples: Text::same("rmdir -v -- dossier"),
-        rights: Text("Traverse the parent and remove the named empty directory.", "Traverser le parent et retirer le répertoire vide nommé."),
-        effects: Text("An error stops a batch after earlier removals.", "Une erreur interrompt le lot après les retraits précédents."),
-        limits: Text("Nonempty directory: 28. Missing entry: 20.", "Répertoire non vide : 28. Entrée absente : 20."),
+        rights: Text(
+            "Traverse the parent and remove the named empty directory.",
+            "Traverser le parent et retirer le répertoire vide nommé.",
+        ),
+        effects: Text(
+            "An error stops a batch after earlier removals.",
+            "Une erreur interrompt le lot après les retraits précédents.",
+        ),
+        limits: Text(
+            "Nonempty directory: 28. Missing entry: 20.",
+            "Répertoire non vide : 28. Entrée absente : 20.",
+        ),
         topics: &[],
     },
     Page {
         name: "touch",
         provider: "nova-cli",
-        description: Text("Create files or update timestamps.", "Créer des fichiers ou actualiser leurs dates."),
+        description: Text(
+            "Create files or update timestamps.",
+            "Créer des fichiers ou actualiser leurs dates.",
+        ),
         syntax: Text("touch [-amc] [--] file...", "touch [-amc] [--] fichier..."),
-        arguments: Text("-a selects access time, -m modification time, both by default. -c/--no-create leaves absent entries absent.", "-a règle la date d’accès, -m celle de modification, les deux par défaut. -c/--no-create ignore les entrées absentes."),
+        arguments: Text(
+            "-a selects access time, -m modification time, both by default. -c/--no-create leaves absent entries absent.",
+            "-a règle la date d’accès, -m celle de modification, les deux par défaut. -c/--no-create ignore les entrées absentes.",
+        ),
         examples: Text::same("touch -m -- notes"),
-        rights: Text("Timestamp or create authority for the selected names.", "Délégation de datation ou de création pour les noms sélectionnés."),
-        effects: Text("Updates metadata or creates an empty file.", "Modifie les dates ou crée un fichier vide."),
-        limits: Text("Access denied: 5. Earlier names may already be updated.", "Accès refusé : 5. Des noms précédents peuvent déjà avoir été traités."),
+        rights: Text(
+            "Timestamp or create authority for the selected names.",
+            "Délégation de datation ou de création pour les noms sélectionnés.",
+        ),
+        effects: Text(
+            "Updates metadata or creates an empty file.",
+            "Modifie les dates ou crée un fichier vide.",
+        ),
+        limits: Text(
+            "Access denied: 5. Earlier names may already be updated.",
+            "Accès refusé : 5. Des noms précédents peuvent déjà avoir été traités.",
+        ),
         topics: &[],
     },
     Page {
         name: "cp",
         provider: "nova-cli",
-        description: Text("Copy files or trees to an unused name.", "Copier des fichiers ou des arbres vers un nom libre."),
-        syntax: Text("cp [-finvRr] [--] source... destination", "cp [-finvRr] [--] source... destination"),
-        arguments: Text("-f/--force selects noninteractive handling, -i/--interactive asks before replacement, -n/--no-clobber skips existing names, -v/--verbose prints transfers. -r/-R/--recursive copies a tree.", "-f/--force choisit le mode sans question, -i/--interactive demande confirmation, -n/--no-clobber ignore les noms occupés, -v/--verbose affiche les transferts. -r/-R/--recursive copie un arbre."),
+        description: Text(
+            "Copy files or trees to an unused name.",
+            "Copier des fichiers ou des arbres vers un nom libre.",
+        ),
+        syntax: Text(
+            "cp [-finvRr] [--] source... destination",
+            "cp [-finvRr] [--] source... destination",
+        ),
+        arguments: Text(
+            "-f/--force selects noninteractive handling, -i/--interactive asks before replacement, -n/--no-clobber skips existing names, -v/--verbose prints transfers. -r/-R/--recursive copies a tree.",
+            "-f/--force choisit le mode sans question, -i/--interactive demande confirmation, -n/--no-clobber ignore les noms occupés, -v/--verbose affiche les transferts. -r/-R/--recursive copie un arbre.",
+        ),
         examples: Text::same("cp -n -- notes copie"),
-        rights: Text("Read the selected source and create the destination; tree copy needs scoped traversal.", "Lire la source sélectionnée et créer la destination. La récursion exige la traversée déléguée."),
-        effects: Text("Creates an independent copy.", "Crée une copie indépendante."),
-        limits: Text("Replacement is unavailable, including after confirmation (27). Multiple sources require a destination directory. A batch can stop partway.", "Le remplacement reste indisponible, même après confirmation (27). Plusieurs sources exigent un répertoire de destination. Un lot peut s’interrompre en cours de traitement."),
+        rights: Text(
+            "Read the selected source and create the destination; tree copy needs scoped traversal.",
+            "Lire la source sélectionnée et créer la destination. La récursion exige la traversée déléguée.",
+        ),
+        effects: Text(
+            "Creates an independent copy.",
+            "Crée une copie indépendante.",
+        ),
+        limits: Text(
+            "Replacement is unavailable, including after confirmation (27). Multiple sources require a destination directory. A batch can stop partway.",
+            "Le remplacement reste indisponible, même après confirmation (27). Plusieurs sources exigent un répertoire de destination. Un lot peut s’interrompre en cours de traitement.",
+        ),
         topics: &[],
     },
     Page {
         name: "mv",
         provider: "nova-cli",
-        description: Text("Move entries to an unused name.", "Déplacer des entrées vers un nom libre."),
-        syntax: Text("mv [-finv] [--] source... destination", "mv [-finv] [--] source... destination"),
-        arguments: Text("-f/--force selects noninteractive handling, -i/--interactive asks before replacement, -n/--no-clobber skips existing names, -v/--verbose prints transfers.", "-f/--force choisit le mode sans question, -i/--interactive demande confirmation, -n/--no-clobber ignore les noms occupés, -v/--verbose affiche les transferts."),
+        description: Text(
+            "Move entries to an unused name.",
+            "Déplacer des entrées vers un nom libre.",
+        ),
+        syntax: Text(
+            "mv [-finv] [--] source... destination",
+            "mv [-finv] [--] source... destination",
+        ),
+        arguments: Text(
+            "-f/--force selects noninteractive handling, -i/--interactive asks before replacement, -n/--no-clobber skips existing names, -v/--verbose prints transfers.",
+            "-f/--force choisit le mode sans question, -i/--interactive demande confirmation, -n/--no-clobber ignore les noms occupés, -v/--verbose affiche les transferts.",
+        ),
         examples: Text::same("mv -n -- notes copie"),
-        rights: Text("Named move source and destination delegations.", "Délégations de déplacement sur la source et la destination nommées."),
-        effects: Text("Changes the source and destination names.", "Modifie les entrées source et destination."),
-        limits: Text("Replacement is unavailable, including after confirmation (27). Multiple sources require a destination directory. A batch can stop partway.", "Le remplacement reste indisponible, même après confirmation (27). Plusieurs sources exigent un répertoire de destination. Un lot peut s’interrompre en cours de traitement."),
+        rights: Text(
+            "Named move source and destination delegations.",
+            "Délégations de déplacement sur la source et la destination nommées.",
+        ),
+        effects: Text(
+            "Changes the source and destination names.",
+            "Modifie les entrées source et destination.",
+        ),
+        limits: Text(
+            "Replacement is unavailable, including after confirmation (27). Multiple sources require a destination directory. A batch can stop partway.",
+            "Le remplacement reste indisponible, même après confirmation (27). Plusieurs sources exigent un répertoire de destination. Un lot peut s’interrompre en cours de traitement.",
+        ),
         topics: &[],
     },
     Page {
         name: "help",
         provider: "intégrée à nsh",
-        description: Text("List public command names.", "Lister les noms de commandes publiques."),
+        description: Text(
+            "List public command names.",
+            "Lister les noms de commandes publiques.",
+        ),
         syntax: Text::same("help"),
         arguments: Text("Takes no operands.", "Ne prend aucun opérande."),
         examples: Text::same("help"),
         rights: Text("Console output.", "Sortie de la console."),
-        effects: Text("Prints the shell command list.", "Affiche la liste de commandes du shell."),
+        effects: Text(
+            "Prints the shell command list.",
+            "Affiche la liste de commandes du shell.",
+        ),
         limits: Text("Unexpected operand: 3.", "Opérande inattendu : 3."),
         topics: &[],
     },
     Page {
         name: "history",
         provider: "intégrée à nsh",
-        description: Text("Display this session’s command history.", "Afficher l’historique de cette session."),
+        description: Text(
+            "Display this session’s command history.",
+            "Afficher l’historique de cette session.",
+        ),
         syntax: Text::same("history"),
         arguments: Text("Takes no operands.", "Ne prend aucun opérande."),
         examples: Text::same("history"),
-        rights: Text("Interactive shell history and console output.", "Historique du shell interactif et sortie console."),
-        effects: Text("Prints numbered history entries.", "Affiche les entrées numérotées."),
-        limits: Text("A script cannot list interactive history (5).", "Un script ne peut pas consulter l’historique interactif (5)."),
+        rights: Text(
+            "Interactive shell history and console output.",
+            "Historique du shell interactif et sortie console.",
+        ),
+        effects: Text(
+            "Prints numbered history entries.",
+            "Affiche les entrées numérotées.",
+        ),
+        limits: Text(
+            "A script cannot list interactive history (5).",
+            "Un script ne peut pas consulter l’historique interactif (5).",
+        ),
         topics: &[],
     },
     Page {
@@ -569,7 +755,10 @@ pub static PAGES: &[Page] = &[
         syntax: Text::same("clear"),
         arguments: Text("Takes no operands.", "Ne prend aucun opérande."),
         examples: Text::same("clear"),
-        rights: Text("Terminal screen control.", "Contrôle de l’écran du terminal."),
+        rights: Text(
+            "Terminal screen control.",
+            "Contrôle de l’écran du terminal.",
+        ),
         effects: Text("Clears the current display.", "Efface l’affichage courant."),
         limits: Text("Unexpected operand: 3.", "Opérande inattendu : 3."),
         topics: &[],
@@ -577,25 +766,52 @@ pub static PAGES: &[Page] = &[
     Page {
         name: "ps",
         provider: "intégrée à nsh",
-        description: Text("Display processes visible to this session.", "Afficher les processus visibles dans la session."),
+        description: Text(
+            "Display processes visible to this session.",
+            "Afficher les processus visibles dans la session.",
+        ),
         syntax: Text::same("ps"),
         arguments: Text("Takes no operands.", "Ne prend aucun opérande."),
         examples: Text::same("ps"),
-        rights: Text("Session observation capability for nsh and its child.", "Capacité d’observation de la session nsh et de son enfant."),
-        effects: Text("Samples PID, role, state and private memory once.", "Relève une fois le PID, le rôle, l’état et la mémoire privée."),
-        limits: Text("Observation may be denied (5). The scope is the current session.", "L’observation peut être refusée (5). La portée est limitée à la session courante."),
+        rights: Text(
+            "Session observation capability for nsh and its child.",
+            "Capacité d’observation de la session nsh et de son enfant.",
+        ),
+        effects: Text(
+            "Samples PID, role, state and private memory once.",
+            "Relève une fois le PID, le rôle, l’état et la mémoire privée.",
+        ),
+        limits: Text(
+            "Observation may be denied (5). The scope is the current session.",
+            "L’observation peut être refusée (5). La portée est limitée à la session courante.",
+        ),
         topics: &[],
     },
     Page {
         name: "top",
         provider: "intégrée à nsh",
-        description: Text("Monitor the session’s processes.", "Surveiller les processus de la session."),
+        description: Text(
+            "Monitor the session’s processes.",
+            "Surveiller les processus de la session.",
+        ),
         syntax: Text::same("top"),
-        arguments: Text("Press q, Escape or Ctrl+C to leave.", "Appuyer sur q, Échap ou Ctrl+C pour quitter."),
+        arguments: Text(
+            "Press q, Escape or Ctrl+C to leave.",
+            "Appuyer sur q, Échap ou Ctrl+C pour quitter.",
+        ),
         examples: Text::same("top"),
-        rights: Text("Session observation and interactive terminal control.", "Observation de la session et contrôle du terminal interactif."),
-        effects: Text("Refreshes private memory and process state until you quit.", "Actualise la mémoire privée et l’état des processus jusqu’à la sortie."),
-        limits: Text("Observation may be denied (5).", "L’observation peut être refusée (5)."),
+        rights: Text(
+            "Session observation and interactive terminal control.",
+            "Observation de la session et contrôle du terminal interactif.",
+        ),
+        effects: Text(
+            "Refreshes private memory and process state until you quit.",
+            "Actualise la mémoire privée et l’état des processus jusqu’à la sortie.",
+        ),
+        limits: Text(
+            "Observation may be denied (5).",
+            "L’observation peut être refusée (5).",
+        ),
         topics: &[],
     },
     Page {
@@ -606,20 +822,305 @@ pub static PAGES: &[Page] = &[
         arguments: Text("Takes no operands.", "Ne prend aucun opérande."),
         examples: Text::same("true && echo ok"),
         rights: Text("No business capability.", "Aucune capacité métier."),
-        effects: Text("Sets the status used by shell conditionals.", "Détermine le statut utilisé dans les conditions du shell."),
-        limits: Text("Normal invocation returns 0.", "L’invocation ordinaire rend 0."),
+        effects: Text(
+            "Sets the status used by shell conditionals.",
+            "Détermine le statut utilisé dans les conditions du shell.",
+        ),
+        limits: Text(
+            "Normal invocation returns 0.",
+            "L’invocation ordinaire rend 0.",
+        ),
         topics: &[],
     },
     Page {
         name: "false",
         provider: "intégrée à nsh",
-        description: Text("Return a false condition.", "Renvoyer une condition fausse."),
+        description: Text(
+            "Return a false condition.",
+            "Renvoyer une condition fausse.",
+        ),
         syntax: Text::same("false"),
         arguments: Text("Takes no operands.", "Ne prend aucun opérande."),
         examples: Text::same("false || echo ok"),
         rights: Text("No business capability.", "Aucune capacité métier."),
-        effects: Text("Sets the status used by shell conditionals.", "Détermine le statut utilisé dans les conditions du shell."),
-        limits: Text("Normal invocation returns 1; help and version return 0.", "L’invocation ordinaire rend 1, l’aide et la version rendent 0."),
+        effects: Text(
+            "Sets the status used by shell conditionals.",
+            "Détermine le statut utilisé dans les conditions du shell.",
+        ),
+        limits: Text(
+            "Normal invocation returns 1; help and version return 0.",
+            "L’invocation ordinaire rend 1, l’aide et la version rendent 0.",
+        ),
+        topics: &[],
+    },
+    Page {
+        name: "alias",
+        provider: "intégrée à nsh",
+        description: Text(
+            "List or define command aliases.",
+            "Lister ou définir les alias de commandes.",
+        ),
+        syntax: Text("alias [name=value]", "alias [nom=valeur]"),
+        arguments: Text(
+            "Use one definition; quote a value containing spaces.",
+            "Fournir une définition. Protéger une valeur qui contient des espaces.",
+        ),
+        examples: Text::same("alias l='ls -l'"),
+        rights: Text(
+            "No business capability; uses the current shell frame.",
+            "Aucune capacité métier. Utilise le cadre courant du shell.",
+        ),
+        effects: Text(
+            "Lists aliases or records an expansion in this frame.",
+            "Affiche les alias ou enregistre une expansion dans le cadre courant.",
+        ),
+        limits: Text(
+            "Invalid definition: 3. Expansion and recursion are bounded.",
+            "Définition invalide : 3. Les expansions et la récursion sont bornées.",
+        ),
+        topics: &[],
+    },
+    Page {
+        name: "unalias",
+        provider: "intégrée à nsh",
+        description: Text("Remove a shell alias.", "Retirer un alias du shell."),
+        syntax: Text("unalias name", "unalias nom"),
+        arguments: Text(
+            "Supply one existing alias name.",
+            "Fournir le nom d’un alias existant.",
+        ),
+        examples: Text::same("unalias l"),
+        rights: Text(
+            "No business capability; uses the current shell frame.",
+            "Aucune capacité métier. Utilise le cadre courant du shell.",
+        ),
+        effects: Text(
+            "Removes that definition from the current frame.",
+            "Retire la définition du cadre courant.",
+        ),
+        limits: Text("Unknown alias: 20.", "Alias inconnu : 20."),
+        topics: &[],
+    },
+    Page {
+        name: "export",
+        provider: "intégrée à nsh",
+        description: Text(
+            "Export variables to nested shell scripts.",
+            "Exporter des variables vers les scripts nsh imbriqués.",
+        ),
+        syntax: Text("export name[=value]...", "export nom[=valeur]..."),
+        arguments: Text(
+            "Supply identifiers with optional assignments.",
+            "Fournir des identifiants, avec une affectation facultative.",
+        ),
+        examples: Text::same("export LANG=fr-CA"),
+        rights: Text(
+            "No business capability; uses the current shell frame.",
+            "Aucune capacité métier. Utilise le cadre courant du shell.",
+        ),
+        effects: Text(
+            "Marks variables for inheritance by a child shell frame.",
+            "Marque les variables pour la transmission au cadre nsh enfant.",
+        ),
+        limits: Text(
+            "Invalid identifier: 3. Frame budget exceeded: 6.",
+            "Identifiant invalide : 3. Budget du cadre dépassé : 6.",
+        ),
+        topics: &[],
+    },
+    Page {
+        name: "unset",
+        provider: "intégrée à nsh",
+        description: Text("Remove shell variables.", "Retirer des variables du shell."),
+        syntax: Text("unset name...", "unset nom..."),
+        arguments: Text(
+            "Supply one or more identifiers.",
+            "Fournir au moins un identifiant.",
+        ),
+        examples: Text::same("unset LANG"),
+        rights: Text(
+            "No business capability; uses the current shell frame.",
+            "Aucune capacité métier. Utilise le cadre courant du shell.",
+        ),
+        effects: Text(
+            "Removes values and their export flags from this frame.",
+            "Retire les valeurs et leur marque d’export du cadre courant.",
+        ),
+        limits: Text(
+            "Invalid identifier: 3. An absent variable is ignored.",
+            "Identifiant invalide : 3. Une variable absente est ignorée.",
+        ),
+        topics: &[],
+    },
+    Page {
+        name: "echo",
+        provider: "intégrée à nsh",
+        description: Text("Print the words supplied.", "Afficher les mots fournis."),
+        syntax: Text("echo [--] [word...]", "echo [--] [mot...]"),
+        arguments: Text(
+            "A leading -- makes the following words data, including --help.",
+            "Un -- initial rend les mots suivants littéraux pour l’analyse des options, y compris --help.",
+        ),
+        examples: Text::same("echo -- --help"),
+        rights: Text("Terminal output.", "Sortie du terminal."),
+        effects: Text(
+            "Writes words separated by spaces, then a newline.",
+            "Écrit les mots séparés par des espaces, puis un saut de ligne.",
+        ),
+        limits: Text(
+            "Shell expansions still apply. No -n switch.",
+            "Les expansions du shell restent actives. L’option -n est absente.",
+        ),
+        topics: &[],
+    },
+    Page {
+        name: "test",
+        provider: "intégrée à nsh",
+        description: Text(
+            "Evaluate a shell condition.",
+            "Évaluer une condition du shell.",
+        ),
+        syntax: Text::same("test [--] expression"),
+        arguments: Text(
+            "-n/-z test nonempty/empty strings. -e/-f/-d test existence, file or directory. =, == and != compare strings. -lt/-le/-eq/-ne/-ge/-gt compare signed integers.",
+            "-n/-z testent une chaîne non vide/vide. -e/-f/-d testent l’existence, le fichier ou le répertoire. =, == et != comparent les chaînes. -lt/-le/-eq/-ne/-ge/-gt comparent des entiers signés.",
+        ),
+        examples: Text::same("test -3 -lt 2"),
+        rights: Text(
+            "No capability for string or integer comparisons. File predicates require lookup within the session root.",
+            "Les comparaisons de chaînes ou d’entiers sont locales. Les prédicats de fichier exigent une recherche sous la racine de session.",
+        ),
+        effects: Text(
+            "Returns a status; only file predicates inspect the namespace.",
+            "Renvoie un statut. Seuls les prédicats de fichier consultent l’espace de noms.",
+        ),
+        limits: Text(
+            "Conditions return 0 for true, 1 for false; syntax or integer error: 3.",
+            "Une condition vraie rend 0, fausse 1. Syntaxe ou entier invalide : 3.",
+        ),
+        topics: &[],
+    },
+    Page {
+        name: "[",
+        provider: "intégrée à nsh",
+        description: Text(
+            "Evaluate a bracketed condition.",
+            "Évaluer une condition entre crochets.",
+        ),
+        syntax: Text::same("[ expression ]"),
+        arguments: Text(
+            "-n/-z test nonempty/empty strings. -e/-f/-d test existence, file or directory. =, == and != compare strings. -lt/-le/-eq/-ne/-ge/-gt compare signed integers.",
+            "-n/-z testent une chaîne non vide/vide. -e/-f/-d testent l’existence, le fichier ou le répertoire. =, == et != comparent les chaînes. -lt/-le/-eq/-ne/-ge/-gt comparent des entiers signés.",
+        ),
+        examples: Text::same("[ -f /documents/exemple.txt ]"),
+        rights: Text(
+            "No capability for string or integer comparisons. File predicates require lookup within the session root.",
+            "Les comparaisons de chaînes ou d’entiers sont locales. Les prédicats de fichier exigent une recherche sous la racine de session.",
+        ),
+        effects: Text(
+            "Returns a status; only file predicates inspect the namespace.",
+            "Renvoie un statut. Seuls les prédicats de fichier consultent l’espace de noms.",
+        ),
+        limits: Text(
+            "Conditions return 0 for true, 1 for false; syntax or integer error: 3. A final ] closes the expression. [ --help alone opens help.",
+            "Une condition vraie rend 0, fausse 1. Syntaxe ou entier invalide : 3. Un ] final ferme l’expression. [ --help seul affiche l’aide.",
+        ),
+        topics: &[],
+    },
+    Page {
+        name: "break",
+        provider: "intégrée à nsh",
+        description: Text(
+            "Leave the innermost loop.",
+            "Sortir de la boucle la plus interne.",
+        ),
+        syntax: Text::same("break"),
+        arguments: Text("Takes no operands.", "Ne prend aucun opérande."),
+        examples: Text::same("for x in a b; do break; done"),
+        rights: Text(
+            "No business capability; uses the current shell frame.",
+            "Aucune capacité métier. Utilise le cadre courant du shell.",
+        ),
+        effects: Text(
+            "Resumes after the loop.",
+            "Reprend à l’instruction suivant la boucle.",
+        ),
+        limits: Text("Outside a loop: 3.", "Hors d’une boucle : 3."),
+        topics: &[],
+    },
+    Page {
+        name: "continue",
+        provider: "intégrée à nsh",
+        description: Text(
+            "Continue the innermost loop.",
+            "Passer à l’itération suivante de la boucle interne.",
+        ),
+        syntax: Text::same("continue"),
+        arguments: Text("Takes no operands.", "Ne prend aucun opérande."),
+        examples: Text::same("for x in a b; do continue; done"),
+        rights: Text(
+            "No business capability; uses the current shell frame.",
+            "Aucune capacité métier. Utilise le cadre courant du shell.",
+        ),
+        effects: Text(
+            "Skips the remainder of the current iteration.",
+            "Saute la suite de l’itération courante.",
+        ),
+        limits: Text("Outside a loop: 3.", "Hors d’une boucle : 3."),
+        topics: &[],
+    },
+    Page {
+        name: "exit",
+        provider: "intégrée à nsh",
+        description: Text(
+            "Exit the shell or script.",
+            "Quitter le shell ou le script.",
+        ),
+        syntax: Text::same("exit [0..255]"),
+        arguments: Text(
+            "Optional status. A script defaults to its preceding status.",
+            "Statut facultatif. Dans un script, la valeur par défaut est le statut précédent.",
+        ),
+        examples: Text::same("nsh -c 'exit 7'"),
+        rights: Text(
+            "No business capability; uses the current shell frame.",
+            "Aucune capacité métier. Utilise le cadre courant du shell.",
+        ),
+        effects: Text(
+            "Ends the interactive session or the current script invocation.",
+            "Termine la session interactive ou l’invocation du script courant.",
+        ),
+        limits: Text(
+            "At the prompt the default is 0. An invalid status returns 3.",
+            "À l’invite, la valeur par défaut est 0. Un statut invalide donne 3.",
+        ),
+        topics: &[],
+    },
+    Page {
+        name: "return",
+        provider: "intégrée à nsh",
+        description: Text(
+            "Return from the current script.",
+            "Rendre la main à l’appelant du script.",
+        ),
+        syntax: Text::same("return [0..255]"),
+        arguments: Text(
+            "Optional status. A script defaults to its preceding status.",
+            "Statut facultatif. Dans un script, la valeur par défaut est le statut précédent.",
+        ),
+        examples: Text::same("nsh -c 'return 7'"),
+        rights: Text(
+            "No business capability; uses the current shell frame.",
+            "Aucune capacité métier. Utilise le cadre courant du shell.",
+        ),
+        effects: Text(
+            "Stops executing the current script.",
+            "Arrête l’exécution du script courant.",
+        ),
+        limits: Text(
+            "Outside a script: 3. Returns the selected status to the caller.",
+            "Hors script : 3. Transmet le statut choisi à l’appelant.",
+        ),
         topics: &[],
     },
 ];

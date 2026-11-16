@@ -67,7 +67,12 @@ fn catalogue_et_rendu() {
         }
         assert_eq!(
             names.into_iter().collect::<Vec<_>>(),
-            ["cat","cd","clear","cp","false","head","help","history","journal","ls","man","mkdir","more","mv","nsh","ps","pwd","rm","rmdir","service","tail","top","touch","true","vi","wc"]
+            [
+                "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
+                "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
+                "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
+                "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
+            ]
         );
     }
 }
@@ -78,16 +83,20 @@ fn grammaire_des_utilitaires() {
         documentation::Language::English,
         documentation::Language::French,
     ] {
-        for name in ["ls", "rm", "vi"] {
-            let page = documentation::lookup(name).unwrap();
-            let p = command::Program::named(name, false).unwrap();
+        for page in documentation::PAGES {
+            let name = page.name;
+            let Some(p) = command::Program::named(name, false) else {
+                continue;
+            };
             for x in page
                 .arguments
                 .get(lang)
                 .split(|c: char| !(c.is_ascii_alphanumeric() || c == '-'))
                 .filter(|x| x.starts_with("--") && x.len() > 2)
             {
-                let extra = if x == "--width" {
+                let extra = if x == "--width"
+                    || matches!(name, "head" | "tail") && matches!(x, "--lines" | "--bytes")
+                {
                     vec![x, "8"]
                 } else {
                     vec![x]
