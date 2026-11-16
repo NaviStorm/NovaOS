@@ -1,0 +1,57 @@
+[package]
+name = "novaos-auth-session"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[features]
+guest = []
+policy-guest = ["guest"]
+
+[[bin]]
+name = "sign-alice"
+path = "src/bin/sign-alice.rs"
+required-features = ["policy-guest"]
+test = false
+
+[[bin]]
+name = "sign-bob"
+path = "src/bin/sign-bob.rs"
+required-features = ["policy-guest"]
+test = false
+
+[[bin]]
+name = "policy-update"
+path = "src/bin/policy-update.rs"
+required-features = ["policy-guest"]
+test = false
+
+[[bin]]
+name = "policy-app"
+path = "src/bin/policy-app.rs"
+required-features = ["policy-guest"]
+test = false
+
+[[bin]]
+name = "auth-verifier"
+path = "src/bin/verifier.rs"
+required-features = ["guest"]
+test = false
+
+[[bin]]
+name = "auth-client"
+path = "src/bin/client.rs"
+required-features = ["guest"]
+test = false
+
+[dependencies]
+zeroize = { version = "1", default-features = false }
+ed25519-dalek = { version = "=2.2.0", default-features = false, features = ["zeroize"] }
+sha2 = { version = "0.10.9", default-features = false }
+
+[profile.release]
+panic = "abort"
+overflow-checks = true

@@ -1,0 +1,20 @@
+diff --git a/novaOS/user/novafs/files/auth_registry.rs b/novaOS/user/novafs/files/auth_registry.rs
+index 6bfb5e29ab66dac792e1755deb0551eb0ad0def2..688adeaf7367ada52a23edcfd0c1ad6b7e65e4f6 100644
+--- a/novaOS/user/novafs/files/auth_registry.rs
++++ b/novaOS/user/novafs/files/auth_registry.rs
+@@ -190,3 +190,12 @@
+-            self.auth_mutate(&msg.payload, &mut a)
+-                .err()
+-                .unwrap_or(rt::OK)
++            let status = self.auth_mutate(&msg.payload, &mut a).err().unwrap_or(rt::OK);
++            if status == rt::OK && &msg.payload[..8] == b"NA3CREAT" {
++                // Le gestionnaire collecte le vérificateur pendant que le VFS retient
++                // la première réponse. Aucun paquet supplémentaire n'est accepté.
++                match rt::receive_for(rx, 15000) {
++                    Err(rt::CLOSED | rt::DENIED | rt::REVOKED) => (),
++                    _ => return Err(rt::REFUSED),
++                }
++                let label = b"NA3 canal prive retire avant reponse";
++                rt::call(rt::DEBUG_WRITE, label.as_ptr() as u64, label.len() as u64, 0);
++            }
++            status
