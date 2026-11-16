@@ -67,11 +67,23 @@ with tempfile.TemporaryDirectory(dir=os.environ["TMPDIR"]) as td:
             compare(["-c",*flag],sample)
     for flag in ("-b","--binary","-t","--text","--tag","-z","--zero"):compare(["-c",flag])
     for flag in ("--ignore-missing","--strict","--quiet","--status","-w","--warn"):compare([flag])
-    compare(["--tag","--text"])
+    for opts in [["--tag","--text"],["--quiet","-t","--tag"],["--="],["--s"],["--t"],["--text=x"],["-?"],["--bogus"]]:
+        compare(opts)
+    compare(["-c"],good.replace(b"data",b"-"))
     compare(["--status","--strict","--check"],b"nonsense\n")
     Path("ok").write_bytes(good);Path("bad").write_bytes(mismatch)
+    compare(["-c","-","ok"],good)
     for paths in (["ok","bad"],["bad","ok"],["ok","absent"]):compare(["-c",*paths])
     Path("data").write_bytes(bytes([corpus[0]^1])+corpus[1:])
     assert compare(["-c","ok"])[0]==1
     os.chmod("protected",0o600)
+    version=run(candidate,["--version"])
+    assert version[0]==0 and not version[2]
+    if not os.path.samefile(candidate,GNU):
+        assert version[1]==b"sha256sum (NovaOS) 0.24.0\n"
+        for lang, marker in [("C",b"Compute or verify"),("fr-CA","Calcule ou vérifie".encode()),("fr-zzzzz",b"Compute or verify")]:
+            os.environ["LC_ALL"]=lang
+            code,stdout,stderr=run(candidate,["--help"])
+            assert (code,stderr)==(0,b"") and marker in stdout
+            assert all(option.encode() in stdout for option in ["--binary","--text","--check","--tag","--zero","--status","--strict","--warn","--quiet","--ignore-missing","--help","--version"])
 print(f"{count} comparaisons exactes de statut, stdout et stderr ; interopérabilité GNU bidirectionnelle.")

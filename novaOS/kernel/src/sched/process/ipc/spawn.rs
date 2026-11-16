@@ -106,6 +106,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     let role = match number {
         tty::PIPE_CAT => Some(Role::Cat),
         tty::PIPE_WC => Some(Role::Wc),
+        tty::PIPE_SHA256SUM => Some(Role::Sha256sum),
         tty::PIPE_HEAD => Some(Role::Head),
         _ => None,
     };

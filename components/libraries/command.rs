@@ -17,6 +17,7 @@ pub enum Program {
     Tail,
     Rmdir,
     Vi,
+    Sha256sum = crate::tty::SHA256SUM_INDEX,
 }
 impl Program {
     pub fn named(s: &str, test: bool) -> Option<Self> {
@@ -34,6 +35,7 @@ impl Program {
             "mkdir" => Self::Mkdir,
             "rm" => Self::Rm,
             "rmdir" => Self::Rmdir,
+            "sha256sum" => Self::Sha256sum,
             "vi" => Self::Vi,
             "@probe" if test => Self::Probe,
             _ => return None,

@@ -6,15 +6,22 @@ publish = false
 license = "MIT"
 
 [workspace]
+exclude = ["sha256sum"]
 
 [lib]
 path = "libraries/lib.rs"
 test = false
 
 [dependencies]
+nova-sha256sum = { path = "sha256sum" }
 unicode-width = { version = "=0.2.2", default-features = false }
 dlmalloc = "0.2.14"
 spin = { version = "0.9.9", default-features = false, features = ["spin_mutex", "mutex"] }
+
+[[bin]]
+name = "sha256sum"
+path = "coreutils/sha256sum.rs"
+test = false
 
 [profile.release]
 panic = "abort"

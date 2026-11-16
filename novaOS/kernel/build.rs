@@ -207,6 +207,10 @@ fn main() {
         "Cargo.lock",
         "libraries",
         "coreutils",
+        "sha256sum/src",
+        "sha256sum/help.fr",
+        "sha256sum/help.en",
+        "sha256sum/Cargo.toml",
         "shell",
         "vi",
     ] {
@@ -253,6 +257,13 @@ fn main() {
     }
     let sample = out.join("instance_sample.bin");
     catalog.push_str(&format!("(include_bytes!({sample:?}),crate::instance_abi::SAMPLE,false,false),"));
+    // Les indices 15 et 16 demeurent ceux du SDK, 17 et 18 sont réservés à uniq/sort.
+    for _ in 17..installation::SHA256SUM_INDEX {
+        catalog.push_str("(&[],0,true,false),");
+    }
+    let sha = out.join("sha256sum.elf");
+    std::fs::copy(work.join(&target).join("release/sha256sum"), &sha).unwrap();
+    catalog.push_str(&format!("(include_bytes!({sha:?}),{},false,true),", installation::SHA256SUM));
     catalog.push(']');
     std::fs::write(out.join("cli_catalog.rs"), catalog).unwrap();
 }

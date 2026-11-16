@@ -97,11 +97,12 @@ pub fn execute(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::
 pub enum PipeTrial { Normal, Pressure, Early, Revoke, Admission, OutputDenied, ReaderWait, ReaderRevoke }
 
 #[derive(Clone, Copy)]
-pub enum PipeReader { Count, FirstLine }
+pub enum PipeReader { Count, FirstLine, Sha256sum }
 
 impl PipeReader {
     pub fn spec(self) -> (Program, &'static str, &'static [&'static str]) {
         match self {
+            Self::Sha256sum => (Program::Sha256sum, "sha256sum", &[]),
             Self::Count => (Program::Wc, "wc", &["-l"]),
             Self::FirstLine => (Program::Head, "head", &["-n", "1"]),
         }

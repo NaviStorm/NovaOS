@@ -1,9 +1,16 @@
 //! Vérifie les données compilées et le parseur réel hors de la VM.
 extern crate alloc;
 extern crate self as nova_cli;
+#[path = "../../components/sha256sum/src/options.rs"]
+pub mod sha_options;
+mod sha256 {
+    pub use crate::sha_options as options;
+    pub const VERSION: &str = "sha256sum (NovaOS) 0.24.0\n";
+}
 #[path = "../../components/shell/doc_options.rs"]
 mod doc_options;
 pub mod tty {
+    pub const SHA256SUM_INDEX: u64 = 19;
     pub const OUTPUT: u64 = 1;
     pub const ERROR: u64 = 2;
 }
@@ -70,7 +77,7 @@ fn catalogue_et_rendu() {
             [
                 "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
-                "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
+                "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "sha256sum", "tail",
                 "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
             ]
         );
@@ -94,7 +101,9 @@ fn grammaire_des_utilitaires() {
                 .split(|c: char| !(c.is_ascii_alphanumeric() || c == '-'))
                 .filter(|x| x.starts_with("--") && x.len() > 2)
             {
-                let extra = if x == "--width"
+                let extra = if name == "sha256sum" && matches!(x, "--ignore-missing" | "--quiet" | "--status" | "--strict" | "--warn") {
+                    vec!["-c", x]
+                } else if x == "--width"
                     || matches!(name, "head" | "tail") && matches!(x, "--lines" | "--bytes")
                 {
                     vec![x, "8"]

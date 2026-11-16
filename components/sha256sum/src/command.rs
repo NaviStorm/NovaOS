@@ -29,7 +29,7 @@ pub fn run<P: Platform>(io: &mut P, args: &[&[u8]], fr: bool) -> Result<bool, P:
     };
     if let Some(help) = options.doc {
         let text = if !help {
-            concat!("sha256sum (NovaOS) ", env!("CARGO_PKG_VERSION"), "\n")
+            crate::VERSION
         } else if fr {
             include_str!("../help.fr")
         } else {

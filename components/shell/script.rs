@@ -137,6 +137,7 @@ impl<'a> Engine<'a> {
                 let consumer = match right[0] {
                     "head" => executor::PipeReader::FirstLine,
                     "wc" => executor::PipeReader::Count,
+                    "sha256sum" => executor::PipeReader::Sha256sum,
                     _ => return Err(rt::BAD_ARGUMENT),
                 };
                 let (_, reader_name, options) = consumer.spec();
@@ -277,6 +278,19 @@ impl<'a> Engine<'a> {
             {
                 return executor::document(program, *option == "--help", language).map(Flow::Status);
             }
+            if name == "sha256sum" {
+                let bytes: Vec<_> = literal.iter().map(|s| s.as_bytes()).collect();
+                match nova_sha256sum::options::Options::parse(&bytes) {
+                    Ok(opts) if opts.doc.is_some() => {
+                        return executor::document(Program::Sha256sum, opts.doc.unwrap(), language).map(Flow::Status);
+                    }
+                    Err(e) => {
+                        console::printable(tty::ERROR, &alloc::format!("sha256sum: {e}\n"))?;
+                        return Ok(Flow::Status(1));
+                    }
+                    _ => {}
+                }
+            }
             if let Some(code) = super::doc_options::answer(&name, &literal, language)? {
                 if self.test && Program::named(&name, false).is_some() {
                     console::write(tty::OUTPUT, &alloc::format!("[statut sortie {code}]\n"))?;
@@ -296,6 +310,9 @@ impl<'a> Engine<'a> {
             words.remove(0);
         }
         if self.test && name == "@probe" && words.len() == 2 {
+            if words[0].text == "sha256-retrait" && option_env!("NOVA_DOC_TRACE") == Some("1") {
+                return super::sha256sum::execute(self.fs, core::slice::from_ref(&words[1].text), core::iter::empty(), true, true).map(Flow::Status);
+            }
             let probe = words[0].text.as_str();
             let (reader, probe) = match probe.strip_prefix("pipe-head-") {
                 Some(name) => (executor::PipeReader::FirstLine, name),
@@ -433,6 +450,10 @@ impl<'a> Engine<'a> {
                 [path] if !path.starts_with('-') => self.file(f, path, depth, false)?,
                 _ => return Err(rt::BAD_ARGUMENT),
             },
+            "sha256sum" => {
+                let allowed = (1..=32).filter_map(|i| f.vars.get(&alloc::format!("SHA256SUM_READ_{i}")).map(|(v,_)| v.as_str()));
+                super::sha256sum::execute(self.fs, &args, allowed, self.test, false)?
+            }
             _ if let Some(p) = Program::named(&name, self.test) => {
                 executor::execute(self.fs, p, &args, self.test)?
             }

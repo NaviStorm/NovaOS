@@ -452,6 +452,17 @@ pub static PAGES: &[Page] = &[
         topics: &[],
     },
     Page {
+        name: "sha256sum", provider: "nova-sha256sum",
+        description: Text("Compute or verify SHA-256 digests.", "Calculer ou vérifier les empreintes SHA-256."),
+        syntax: Text::same("sha256sum [OPTION]... [FILE]..."),
+        arguments: Text(include_str!("../sha256sum/help.en"), include_str!("../sha256sum/help.fr")),
+        examples: Text::same("SHA256SUM_READ_1=fichier.bin ; sha256sum -c SHA256SUMS"),
+        rights: Text("Each SHA256SUM_READ_N names one allowed input (1 to 32).", "Chaque SHA256SUM_READ_N désigne un fichier autorisé (1 à 32)."),
+        effects: Text("Reports matches and errors.", "Affiche les concordances et les erreurs."),
+        limits: Text("The terminal accepts text output. Use cat FILE | sha256sum for stdin.", "Le terminal accepte une sortie texte. Pour stdin, utiliser cat FICHIER | sha256sum."),
+        topics: &[],
+    },
+    Page {
         name: "head",
         provider: "nova-cli",
         description: Text(
@@ -1131,6 +1142,7 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.name == "sha256sum" { return String::from(crate::sha256::VERSION); }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {

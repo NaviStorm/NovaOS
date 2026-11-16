@@ -24,6 +24,7 @@ mod line_editor;
 mod parser;
 mod paths;
 mod script;
+mod sha256sum;
 mod journal;
 mod services;
 mod vi;

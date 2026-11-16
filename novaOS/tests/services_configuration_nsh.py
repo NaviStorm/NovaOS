@@ -7,7 +7,7 @@ def verifie_console_ordinaire(vm, commande):
         for marque in marques:
             assert marque in texte, (ligne, marque, texte)
 
-    exige("help", "rmdir service tail")
+    exige("help", "rmdir service sha256sum tail")
     exige("service --help", "service list", "enable|disable")
     exige("service list", "service=storage-info id=9", "service=cache id=10")
     exige("service policy storage-info", "restart=failure", "retries=2")

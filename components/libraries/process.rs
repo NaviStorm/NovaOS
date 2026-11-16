@@ -14,6 +14,7 @@ pub fn pipe_spawn(
         Program::Cat => tty::PIPE_CAT,
         Program::Wc => tty::PIPE_WC,
         Program::Head => tty::PIPE_HEAD,
+        Program::Sha256sum => tty::PIPE_SHA256SUM,
         _ => return Err(rt::BAD_ARGUMENT),
     };
     launch(p, args, channels, status, number, Some(pipe))

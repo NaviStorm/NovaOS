@@ -1,5 +1,5 @@
 use crate::{
-    Platform, digest,
+    Platform, digest_stream,
     manifest::{entry, hex, quote},
     options::{Options, Report},
 };
@@ -45,7 +45,11 @@ impl Totals {
             return Ok(());
         };
         self.valid = true;
-        let status = match digest(io, &name) {
+        let opened = match io.open(&name) {
+            Err(e) if opt.ignore && P::missing(&e) => return Ok(()),
+            other => other,
+        };
+        let status = match opened.and_then(|reader| digest_stream(io, reader)) {
             Ok(hash) if hex(&hash).eq_ignore_ascii_case(expected) => {
                 self.matched = true;
                 if opt.report == Report::Quiet {
@@ -57,7 +61,6 @@ impl Totals {
                 self.wrong += 1;
                 b": FAILED\n"
             }
-            Err(e) if opt.ignore && P::missing(&e) => return Ok(()),
             Err(e) => {
                 self.unreadable += 1;
                 io.file_error(&name, &e)?;

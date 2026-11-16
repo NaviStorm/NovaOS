@@ -19,6 +19,9 @@ pub const COMMANDS: &[(&str, u64)] = &[
     ("nsh", 0x4e4f_5641_0000_0010),
 ];
 
+pub const SHA256SUM: u64 = 0x4e4f_5641_0000_0113;
+pub const SHA256SUM_INDEX: usize = 19;
+
 /// Les anciennes applications ne délèguent pas de création de travailleurs.
 /// Un nouveau profil multiprocessus doit être admis explicitement ici.
 pub fn grant(installation: u64, ports: u64, pair: u64) -> Option<bool> {
@@ -29,6 +32,7 @@ pub fn grant(installation: u64, ports: u64, pair: u64) -> Option<bool> {
     match installation {
         wire::SAMPLE if ports == 0 && pair == 0 => Some(true),
         wire::WITNESS if ports == 0 && pair == 0 => Some(false),
+        SHA256SUM if ports & !6 == 0 => Some(false),
         wire::SHELL => None,
         id if COMMANDS.iter().any(|&(_, app)| app == id) => Some(false),
         _ => None,

@@ -30,6 +30,8 @@ pub const PIPE_OPEN: u64 = 1 << 32;
 pub const PIPE_CAT: u64 = PIPE_OPEN + 1;
 pub const PIPE_WC: u64 = PIPE_OPEN + 2;
 pub const PIPE_HEAD: u64 = PIPE_OPEN + 3;
+pub const SHA256SUM_INDEX: u64 = 19;
+pub const PIPE_SHA256SUM: u64 = PIPE_OPEN + 6;
 // Marqueurs du champ de préparation réservés au banc CLI (QUALIFY).
 pub const PIPE_PROBE_WAIT: u64 = u64::MAX;
 pub const PIPE_PROBE_REVOKE: u64 = u64::MAX - 1;

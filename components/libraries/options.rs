@@ -51,6 +51,7 @@ pub fn usage(p: Program) -> &'static str {
         Vi => "vi [--] fichier",
         Pwd => "pwd [-LP]",
         Probe => "@probe scénario",
+        Sha256sum => "sha256sum [OPTION]... [FICHIER]...",
     }
 }
 fn allowed(p: Program) -> &'static [u8] {
@@ -125,6 +126,14 @@ fn parse_with_context<'a>(
         help: false,
         version: false,
     };
+    if p == Program::Sha256sum {
+        let bytes: Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        let parsed = crate::sha256::options::Options::parse(&bytes).map_err(|_| rt::BAD_ARGUMENT)?;
+        o.help = parsed.doc == Some(true);
+        o.version = parsed.doc == Some(false);
+        for name in parsed.paths { o.files.push(core::str::from_utf8(name).map_err(|_| rt::BAD_ARGUMENT)?); }
+        return Ok(o);
+    }
     let mut end = false;
     let mut args = args.iter().copied();
     while let Some(arg) = args.next() {

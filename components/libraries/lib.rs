@@ -1,5 +1,6 @@
 #![no_std]
 extern crate alloc;
+pub use nova_sha256sum as sha256;
 #[path = "../../novaOS/user/heap.rs"]
 mod heap;
 #[path = "../../novaOS/user/storage/runtime.rs"]

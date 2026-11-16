@@ -1,5 +1,6 @@
 #![no_std]
 extern crate alloc;
+pub const VERSION: &str = concat!("sha256sum (NovaOS) ", env!("CARGO_PKG_VERSION"), "\n");
 
 use alloc::vec;
 pub use sha2::{Digest, Sha256};
@@ -13,7 +14,11 @@ pub trait Source {
 }
 
 pub fn digest<S: Source>(io: &mut S, name: &[u8]) -> Result<[u8; 32], S::Error> {
-    let mut reader = io.open(name)?;
+    let reader = io.open(name)?;
+    digest_stream(io, reader)
+}
+
+fn digest_stream<S: Source>(io: &mut S, mut reader: S::Stream) -> Result<[u8; 32], S::Error> {
     let mut buffer = vec![0; S::BUFFER];
     let mut hash = Sha256::new();
     loop {

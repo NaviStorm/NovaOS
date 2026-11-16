@@ -8,12 +8,13 @@ pub(super) enum Role {
     Cat = 2,
     Head = 3,
     Wc = 11,
+    Sha256sum = crate::terminal::SHA256SUM_INDEX,
 }
 impl Role {
     pub(super) fn reader(self) -> bool { self != Self::Cat }
 
     fn name(self) -> &'static str {
-        match self { Self::Cat => "cat", Self::Head => "head", Self::Wc => "wc" }
+        match self { Self::Cat => "cat", Self::Head => "head", Self::Wc => "wc", Self::Sha256sum => "sha256sum" }
     }
 }
 

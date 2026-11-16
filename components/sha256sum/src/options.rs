@@ -23,16 +23,16 @@ pub struct Options<'a> {
 }
 
 const NAMES: &[(&str, u8)] = &[
-    ("binary", b'b'),
     ("check", b'c'),
-    ("tag", b'T'),
-    ("text", b't'),
-    ("zero", b'z'),
     ("ignore-missing", b'i'),
     ("quiet", b'q'),
     ("status", b's'),
-    ("strict", b'S'),
     ("warn", b'w'),
+    ("strict", b'S'),
+    ("tag", b'T'),
+    ("zero", b'z'),
+    ("binary", b'b'),
+    ("text", b't'),
     ("help", b'h'),
     ("version", b'v'),
 ];
@@ -97,8 +97,6 @@ impl<'a> Options<'a> {
             Some("the --tag option is meaningless when verifying checksums")
         } else if opt.check && opt.mode.is_some() {
             Some("the --binary and --text options are meaningless when verifying checksums")
-        } else if opt.tag && opt.mode == Some(b' ') {
-            Some("--tag does not support --text mode")
         } else {
             None
         };
@@ -119,6 +117,9 @@ impl<'a> Options<'a> {
                     ));
                 }
             }
+        }
+        if opt.tag && opt.mode == Some(b' ') {
+            return Err("--tag does not support --text mode".into());
         }
         Ok(opt)
     }
