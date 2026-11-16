@@ -1,0 +1,4445 @@
+[
+  {
+    "case": "-b",
+    "args": [
+      "-b"
+    ],
+    "locale": "C",
+    "stdin_bytes": 5,
+    "stdin_sha256": "a6865067803ba04287292b55a6516c56c9bf7d147b957610c3e8980213ab5d72",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "2a8f4601857a858412220e56cc2f35d0d0e9d62980a87371c6fe9379b987e4fb",
+      "stdout_bytes": 5,
+      "stdout_sample": "610a207a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "2a8f4601857a858412220e56cc2f35d0d0e9d62980a87371c6fe9379b987e4fb",
+      "stdout_bytes": 5,
+      "stdout_sample": "610a207a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--ignore-leading-blanks",
+    "args": [
+      "--ignore-leading-blanks"
+    ],
+    "locale": "C",
+    "stdin_bytes": 5,
+    "stdin_sha256": "a6865067803ba04287292b55a6516c56c9bf7d147b957610c3e8980213ab5d72",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "2a8f4601857a858412220e56cc2f35d0d0e9d62980a87371c6fe9379b987e4fb",
+      "stdout_bytes": 5,
+      "stdout_sample": "610a207a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "2a8f4601857a858412220e56cc2f35d0d0e9d62980a87371c6fe9379b987e4fb",
+      "stdout_bytes": 5,
+      "stdout_sample": "610a207a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-d",
+    "args": [
+      "-d"
+    ],
+    "locale": "C",
+    "stdin_bytes": 11,
+    "stdin_sha256": "cc697ff66bed5ff952e89389199b8b51fdc4c3d64565857ba92e0cc871332253",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "b8d0a8a20dd8a34d1d7f25e62b7aa864df423cf99ac53f91e7295dce26a9887c",
+      "stdout_bytes": 11,
+      "stdout_sample": "41210a413b0a590a2e5a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "b8d0a8a20dd8a34d1d7f25e62b7aa864df423cf99ac53f91e7295dce26a9887c",
+      "stdout_bytes": 11,
+      "stdout_sample": "41210a413b0a590a2e5a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--dictionary-order",
+    "args": [
+      "--dictionary-order"
+    ],
+    "locale": "C",
+    "stdin_bytes": 11,
+    "stdin_sha256": "cc697ff66bed5ff952e89389199b8b51fdc4c3d64565857ba92e0cc871332253",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "b8d0a8a20dd8a34d1d7f25e62b7aa864df423cf99ac53f91e7295dce26a9887c",
+      "stdout_bytes": 11,
+      "stdout_sample": "41210a413b0a590a2e5a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "b8d0a8a20dd8a34d1d7f25e62b7aa864df423cf99ac53f91e7295dce26a9887c",
+      "stdout_bytes": 11,
+      "stdout_sample": "41210a413b0a590a2e5a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-f",
+    "args": [
+      "-f"
+    ],
+    "locale": "C",
+    "stdin_bytes": 8,
+    "stdin_sha256": "44b3c4b7b810924af4a9f406f96627f62fc93d51bb0014cb4c1a9b4e4b9dbdf6",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "b4a8eb56d90483b21018f237bd11cefb7e11d7c5653a57a60e6b0d4f0e741cfa",
+      "stdout_bytes": 8,
+      "stdout_sample": "410a610a620a5a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "b4a8eb56d90483b21018f237bd11cefb7e11d7c5653a57a60e6b0d4f0e741cfa",
+      "stdout_bytes": 8,
+      "stdout_sample": "410a610a620a5a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--ignore-case",
+    "args": [
+      "--ignore-case"
+    ],
+    "locale": "C",
+    "stdin_bytes": 8,
+    "stdin_sha256": "44b3c4b7b810924af4a9f406f96627f62fc93d51bb0014cb4c1a9b4e4b9dbdf6",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "b4a8eb56d90483b21018f237bd11cefb7e11d7c5653a57a60e6b0d4f0e741cfa",
+      "stdout_bytes": 8,
+      "stdout_sample": "410a610a620a5a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "b4a8eb56d90483b21018f237bd11cefb7e11d7c5653a57a60e6b0d4f0e741cfa",
+      "stdout_bytes": 8,
+      "stdout_sample": "410a610a620a5a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-g",
+    "args": [
+      "-g"
+    ],
+    "locale": "C",
+    "stdin_bytes": 28,
+    "stdin_sha256": "66193017efb1ff1012188ecff0e4118950be275ff958845d452c77757d90afd8",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "af5d6ac983232dbeb1fb46e30f3cfa198f9a54b7ada38eb49b374c4add44a046",
+      "stdout_bytes": 28,
+      "stdout_sample": "7878780a4e614e0a2d496e660a2d330a3078312e3470320a3165320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "af5d6ac983232dbeb1fb46e30f3cfa198f9a54b7ada38eb49b374c4add44a046",
+      "stdout_bytes": 28,
+      "stdout_sample": "7878780a4e614e0a2d496e660a2d330a3078312e3470320a3165320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--general-numeric-sort",
+    "args": [
+      "--general-numeric-sort"
+    ],
+    "locale": "C",
+    "stdin_bytes": 28,
+    "stdin_sha256": "66193017efb1ff1012188ecff0e4118950be275ff958845d452c77757d90afd8",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "af5d6ac983232dbeb1fb46e30f3cfa198f9a54b7ada38eb49b374c4add44a046",
+      "stdout_bytes": 28,
+      "stdout_sample": "7878780a4e614e0a2d496e660a2d330a3078312e3470320a3165320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "af5d6ac983232dbeb1fb46e30f3cfa198f9a54b7ada38eb49b374c4add44a046",
+      "stdout_bytes": 28,
+      "stdout_sample": "7878780a4e614e0a2d496e660a2d330a3078312e3470320a3165320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-i",
+    "args": [
+      "-i"
+    ],
+    "locale": "C",
+    "stdin_bytes": 8,
+    "stdin_sha256": "154453f2942f38ae0b77fef3b750d3aa91c954e46e4686ce3bb05871673e6966",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "b1708d14fa7f9efc7569f5d94bd0a004c5bce950958fc1c597cef6150af1591d",
+      "stdout_bytes": 8,
+      "stdout_sample": "7f420a045a0a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "b1708d14fa7f9efc7569f5d94bd0a004c5bce950958fc1c597cef6150af1591d",
+      "stdout_bytes": 8,
+      "stdout_sample": "7f420a045a0a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--ignore-nonprinting",
+    "args": [
+      "--ignore-nonprinting"
+    ],
+    "locale": "C",
+    "stdin_bytes": 8,
+    "stdin_sha256": "154453f2942f38ae0b77fef3b750d3aa91c954e46e4686ce3bb05871673e6966",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "b1708d14fa7f9efc7569f5d94bd0a004c5bce950958fc1c597cef6150af1591d",
+      "stdout_bytes": 8,
+      "stdout_sample": "7f420a045a0a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "b1708d14fa7f9efc7569f5d94bd0a004c5bce950958fc1c597cef6150af1591d",
+      "stdout_bytes": 8,
+      "stdout_sample": "7f420a045a0a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-M",
+    "args": [
+      "-M"
+    ],
+    "locale": "C",
+    "stdin_bytes": 16,
+    "stdin_sha256": "4ec8d6cc633767e15be7a2ab0f512498d9923eacfefb25780b68314d51754a1e",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "6f0003b85d5665d804400e3cdb846303e9fb661dc9e752d6f860de3f0b4b7aeb",
+      "stdout_bytes": 16,
+      "stdout_sample": "3f3f3f0a6a616e0a4e4f560a4465630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "6f0003b85d5665d804400e3cdb846303e9fb661dc9e752d6f860de3f0b4b7aeb",
+      "stdout_bytes": 16,
+      "stdout_sample": "3f3f3f0a6a616e0a4e4f560a4465630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--month-sort",
+    "args": [
+      "--month-sort"
+    ],
+    "locale": "C",
+    "stdin_bytes": 16,
+    "stdin_sha256": "4ec8d6cc633767e15be7a2ab0f512498d9923eacfefb25780b68314d51754a1e",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "6f0003b85d5665d804400e3cdb846303e9fb661dc9e752d6f860de3f0b4b7aeb",
+      "stdout_bytes": 16,
+      "stdout_sample": "3f3f3f0a6a616e0a4e4f560a4465630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "6f0003b85d5665d804400e3cdb846303e9fb661dc9e752d6f860de3f0b4b7aeb",
+      "stdout_bytes": 16,
+      "stdout_sample": "3f3f3f0a6a616e0a4e4f560a4465630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-h",
+    "args": [
+      "-h"
+    ],
+    "locale": "C",
+    "stdin_bytes": 19,
+    "stdin_sha256": "0132c4e10b0a845caf56642d5051d256a9c51b68de125d27462fa16a2b08d5e6",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "1a55c979964ef57503c8fe613d4dbd91365c62a361c1a722df2c9429a70877fb",
+      "stdout_bytes": 19,
+      "stdout_sample": "2d32470a300a334b0a31303030304b0a324d0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "1a55c979964ef57503c8fe613d4dbd91365c62a361c1a722df2c9429a70877fb",
+      "stdout_bytes": 19,
+      "stdout_sample": "2d32470a300a334b0a31303030304b0a324d0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--human-numeric-sort",
+    "args": [
+      "--human-numeric-sort"
+    ],
+    "locale": "C",
+    "stdin_bytes": 19,
+    "stdin_sha256": "0132c4e10b0a845caf56642d5051d256a9c51b68de125d27462fa16a2b08d5e6",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "1a55c979964ef57503c8fe613d4dbd91365c62a361c1a722df2c9429a70877fb",
+      "stdout_bytes": 19,
+      "stdout_sample": "2d32470a300a334b0a31303030304b0a324d0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "1a55c979964ef57503c8fe613d4dbd91365c62a361c1a722df2c9429a70877fb",
+      "stdout_bytes": 19,
+      "stdout_sample": "2d32470a300a334b0a31303030304b0a324d0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-n",
+    "args": [
+      "-n"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--numeric-sort",
+    "args": [
+      "--numeric-sort"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-R",
+    "args": [
+      "-R"
+    ],
+    "locale": "C",
+    "stdin_bytes": 10,
+    "stdin_sha256": "b7223080d1f87294528cb72b5b1164dfd02d0562e7c93f2a7da3809f6f10d9bd",
+    "mode": "random",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "6b6c9198273dc09aaf607cf2a6e831d4d6aed3998bbb9a8be9d31089dbd9f68f",
+      "stdout_bytes": 10,
+      "stdout_sample": "620a620a630a610a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "a7f3ac1dd541c27935d857844a014a1d9c637c3971a8453028c11caa85da751c",
+      "stdout_bytes": 10,
+      "stdout_sample": "630a610a610a620a620a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--random-sort",
+    "args": [
+      "--random-sort"
+    ],
+    "locale": "C",
+    "stdin_bytes": 10,
+    "stdin_sha256": "b7223080d1f87294528cb72b5b1164dfd02d0562e7c93f2a7da3809f6f10d9bd",
+    "mode": "random",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "6b6c9198273dc09aaf607cf2a6e831d4d6aed3998bbb9a8be9d31089dbd9f68f",
+      "stdout_bytes": 10,
+      "stdout_sample": "620a620a630a610a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "544bc4e0d6d97d5bfa2385eab87044da747f25fe10e716daca54b6029d77607e",
+      "stdout_bytes": 10,
+      "stdout_sample": "620a620a610a610a630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-r",
+    "args": [
+      "-r"
+    ],
+    "locale": "C",
+    "stdin_bytes": 5,
+    "stdin_sha256": "68d4821a535335e3e186b9b0867dba878c52bbeb94748a36f6db4f52dc809051",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "c9b229f2c05e42bb33939df423372b9fdfbede6177e9eed7f2b2d50fc70a1712",
+      "stdout_bytes": 6,
+      "stdout_sample": "630a620a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "c9b229f2c05e42bb33939df423372b9fdfbede6177e9eed7f2b2d50fc70a1712",
+      "stdout_bytes": 6,
+      "stdout_sample": "630a620a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--reverse",
+    "args": [
+      "--reverse"
+    ],
+    "locale": "C",
+    "stdin_bytes": 5,
+    "stdin_sha256": "68d4821a535335e3e186b9b0867dba878c52bbeb94748a36f6db4f52dc809051",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "c9b229f2c05e42bb33939df423372b9fdfbede6177e9eed7f2b2d50fc70a1712",
+      "stdout_bytes": 6,
+      "stdout_sample": "630a620a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "c9b229f2c05e42bb33939df423372b9fdfbede6177e9eed7f2b2d50fc70a1712",
+      "stdout_bytes": 6,
+      "stdout_sample": "630a620a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-V",
+    "args": [
+      "-V"
+    ],
+    "locale": "C",
+    "stdin_bytes": 28,
+    "stdin_sha256": "5bad61c3ad3d8dd0097bbee2cb20e7841f43425e934869fbc640ff1f1a00f50e",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "8e537d7ea0aa9bc3391ad74076dc6f672e973748b02d13655cc45992b49eee6f",
+      "stdout_bytes": 28,
+      "stdout_sample": "2e0a2e2e0a76317e72630a76320a76322e7461722e677a0a7631300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "8e537d7ea0aa9bc3391ad74076dc6f672e973748b02d13655cc45992b49eee6f",
+      "stdout_bytes": 28,
+      "stdout_sample": "2e0a2e2e0a76317e72630a76320a76322e7461722e677a0a7631300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--version-sort",
+    "args": [
+      "--version-sort"
+    ],
+    "locale": "C",
+    "stdin_bytes": 28,
+    "stdin_sha256": "5bad61c3ad3d8dd0097bbee2cb20e7841f43425e934869fbc640ff1f1a00f50e",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "8e537d7ea0aa9bc3391ad74076dc6f672e973748b02d13655cc45992b49eee6f",
+      "stdout_bytes": 28,
+      "stdout_sample": "2e0a2e2e0a76317e72630a76320a76322e7461722e677a0a7631300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "8e537d7ea0aa9bc3391ad74076dc6f672e973748b02d13655cc45992b49eee6f",
+      "stdout_bytes": 28,
+      "stdout_sample": "2e0a2e2e0a76317e72630a76320a76322e7461722e677a0a7631300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--sort=general-numeric",
+    "args": [
+      "--sort=general-numeric"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--sort=human-numeric",
+    "args": [
+      "--sort=human-numeric"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--sort=month",
+    "args": [
+      "--sort=month"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--sort=numeric",
+    "args": [
+      "--sort=numeric"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--sort=random",
+    "args": [
+      "--sort=random"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "random",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "891fe532322b41fdec2b120f409255f5a3823f54761590ff29ad416fa439655c",
+      "stdout_bytes": 79,
+      "stdout_sample": "30310a31300a312e30310a2031300a2d320a2d3130303030303030303030303030303030303030303030310a313030303030303030303030303030303030303030303030300a320a312e303130300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "f87542121b3141685699e1942a8ecf35b8b08b412896701ac965c6138d2f9154",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a320a2031300a312e30310a31300a313030303030303030303030303030303030303030303030300a312e303130300a30310a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--sort=version",
+    "args": [
+      "--sort=version"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "028b79e61425476393c7d59cbe086d81ac28a79966de1ac4f8a6b882158e869c",
+      "stdout_bytes": 79,
+      "stdout_sample": "30310a312e30310a312e303130300a320a31300a313030303030303030303030303030303030303030303030300a2031300a2d320a2d3130303030303030303030303030303030303030303030310a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "028b79e61425476393c7d59cbe086d81ac28a79966de1ac4f8a6b882158e869c",
+      "stdout_bytes": 79,
+      "stdout_sample": "30310a312e30310a312e303130300a320a31300a313030303030303030303030303030303030303030303030300a2031300a2d320a2d3130303030303030303030303030303030303030303030310a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "empty",
+    "args": [],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "binary",
+    "args": [],
+    "locale": "C",
+    "stdin_bytes": 6,
+    "stdin_sha256": "c426c5e344dd0e44b92e50d3a467d2813aa258cb4750d866abfcf6af7fea74b7",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "32c9990608c28b2caaa0c707d1836c4f245c5d780e2a18d28eaf8298654bea56",
+      "stdout_bytes": 7,
+      "stdout_sample": "00610a7a0aff0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "32c9990608c28b2caaa0c707d1836c4f245c5d780e2a18d28eaf8298654bea56",
+      "stdout_bytes": 7,
+      "stdout_sample": "00610a7a0aff0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "- operand",
+    "args": [
+      "-",
+      "a"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "f8accc34def6c518de33a5f2c3b6bfd485a1338ce01decf5c159a05270346fb8",
+      "stdout_bytes": 83,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a610a630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "f8accc34def6c518de33a5f2c3b6bfd485a1338ce01decf5c159a05270346fb8",
+      "stdout_bytes": 83,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a610a630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "several",
+    "args": [
+      "a",
+      "b"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--",
+    "args": [
+      "--",
+      "-z"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "179aa587d6add2af8fc379fb9f28e6660c102aca053670fade3dd878b37c3c3a",
+      "stdout_bytes": 4,
+      "stdout_sample": "610a7a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "179aa587d6add2af8fc379fb9f28e6660c102aca053670fade3dd878b37c3c3a",
+      "stdout_bytes": 4,
+      "stdout_sample": "610a7a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "stdin files0",
+    "args": [
+      "--files0-from=-"
+    ],
+    "locale": "C",
+    "stdin_bytes": 4,
+    "stdin_sha256": "8fb20ef63ced4145fc2e983ffe597d1dcff39154c3bf21f0fa9dde6a0c50fdc9",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "files0",
+    "args": [
+      "--files0-from=list"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "files0 empty",
+    "args": [
+      "--files0-from=empty"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: no input from 'empty'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: no input from 'empty'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "files0 extra",
+    "args": [
+      "--files0-from=list",
+      "a"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: extra operand 'a'\nfile operands cannot be combined with --files0-from\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: extra operand 'a'\nfile operands cannot be combined with --files0-from\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "files0 null name",
+    "args": [
+      "--files0-from=-"
+    ],
+    "locale": "C",
+    "stdin_bytes": 3,
+    "stdin_sha256": "ea6fde9e840d240a4f5df3d85b5ad6183060057bd18dff9c453ba4061117f83b",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: invalid zero-length file name\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: invalid zero-length file name\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-o collision",
+    "args": [
+      "-o",
+      "a",
+      "a",
+      "b"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a620a630a640a",
+        "link": "610a620a630a640a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a620a630a640a",
+        "link": "610a620a630a640a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--output",
+    "args": [
+      "--output=out",
+      "a",
+      "b"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a",
+        "out": "610a620a630a640a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a",
+        "out": "610a620a630a640a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-o hardlink merge",
+    "args": [
+      "-m",
+      "--output=link",
+      "a",
+      "b"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a620a630a640a",
+        "link": "610a620a630a640a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a620a630a640a",
+        "link": "610a620a630a640a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "bad output",
+    "args": [
+      "-o",
+      "missing/out",
+      "a"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: open failed: missing/out: No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: open failed: missing/out: No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "missing",
+    "args": [
+      "absent"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: cannot read: absent: No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: cannot read: absent: No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "read error",
+    "args": [
+      "."
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: read failed: .: Is a directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: read failed: .: Is a directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-m",
+    "args": [
+      "-m",
+      "a",
+      "b"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--merge",
+    "args": [
+      "--merge",
+      "a",
+      "b"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "cf2c7f63055d2e84af6e3f01ac1bb7fce598d20cf213fab2b56b8e8047b46ced",
+      "stdout_bytes": 8,
+      "stdout_sample": "610a620a630a640a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "merge unsorted",
+    "args": [
+      "-m"
+    ],
+    "locale": "C",
+    "stdin_bytes": 4,
+    "stdin_sha256": "bea3d76644bf9941cfeec55aeb2b120549972c75404e1c69f00868408a24ea38",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "bea3d76644bf9941cfeec55aeb2b120549972c75404e1c69f00868408a24ea38",
+      "stdout_bytes": 4,
+      "stdout_sample": "7a0a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "bea3d76644bf9941cfeec55aeb2b120549972c75404e1c69f00868408a24ea38",
+      "stdout_bytes": 4,
+      "stdout_sample": "7a0a610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-z",
+    "args": [
+      "-z"
+    ],
+    "locale": "C",
+    "stdin_bytes": 6,
+    "stdin_sha256": "63fed6b39b2a77cf4ccedf65e24c5942d2c1f90e9ed62e9da08ffc508d505d7f",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "52b8a4dc62a47840c1b228d280356fe08f269c7a42bbcbdab3f29f4bf06fc5ee",
+      "stdout_bytes": 6,
+      "stdout_sample": "00580a006100",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "52b8a4dc62a47840c1b228d280356fe08f269c7a42bbcbdab3f29f4bf06fc5ee",
+      "stdout_bytes": 6,
+      "stdout_sample": "00580a006100",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--zero-terminated",
+    "args": [
+      "--zero-terminated"
+    ],
+    "locale": "C",
+    "stdin_bytes": 5,
+    "stdin_sha256": "46ade209c5b077080ecf25e6387ec5d095657a0f52cbcedd59837254b479cae4",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "768d6f53f874112028bad66f81dbbfbd1106e34fe259d3c6c61e901982e46605",
+      "stdout_bytes": 5,
+      "stdout_sample": "0062007a00",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "768d6f53f874112028bad66f81dbbfbd1106e34fe259d3c6c61e901982e46605",
+      "stdout_bytes": 5,
+      "stdout_sample": "0062007a00",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "check good",
+    "args": [
+      "-c"
+    ],
+    "locale": "C",
+    "stdin_bytes": 4,
+    "stdin_sha256": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "check bad",
+    "args": [
+      "-c"
+    ],
+    "locale": "C",
+    "stdin_bytes": 4,
+    "stdin_sha256": "aea8a04c2f293417e499bf5de2def8ebb1ed40264d128a67180ea56fbe4600ff",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: disorder: a\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: disorder: a\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "check quiet",
+    "args": [
+      "-C"
+    ],
+    "locale": "C",
+    "stdin_bytes": 3,
+    "stdin_sha256": "c4a78e5bdf318c857b19a6ae4678d9fc8ab0d9bf2b7dd11b41a06c4c1047d943",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "check unique",
+    "args": [
+      "-cu"
+    ],
+    "locale": "C",
+    "stdin_bytes": 4,
+    "stdin_sha256": "7da0810372718aaba44c608981aa81247cee8c3fc0ece1f7f7dd0e3152b41715",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: disorder: a\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: disorder: a\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-s",
+    "args": [
+      "-s",
+      "-k1,1n"
+    ],
+    "locale": "C",
+    "stdin_bytes": 12,
+    "stdin_sha256": "6af88b73f50a27ad0161454424201335c3be0728eebd7a08a64920c011f66800",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "0cce08b13f90efbab457232a27daa6c8b5917689119cddf9aead458b18051c20",
+      "stdout_bytes": 12,
+      "stdout_sample": "3020780a31207a0a3120610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "0cce08b13f90efbab457232a27daa6c8b5917689119cddf9aead458b18051c20",
+      "stdout_bytes": 12,
+      "stdout_sample": "3020780a31207a0a3120610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--stable",
+    "args": [
+      "--stable",
+      "-k1,1n"
+    ],
+    "locale": "C",
+    "stdin_bytes": 12,
+    "stdin_sha256": "6af88b73f50a27ad0161454424201335c3be0728eebd7a08a64920c011f66800",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "0cce08b13f90efbab457232a27daa6c8b5917689119cddf9aead458b18051c20",
+      "stdout_bytes": 12,
+      "stdout_sample": "3020780a31207a0a3120610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "0cce08b13f90efbab457232a27daa6c8b5917689119cddf9aead458b18051c20",
+      "stdout_bytes": 12,
+      "stdout_sample": "3020780a31207a0a3120610a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "-u",
+    "args": [
+      "-uk1,1n"
+    ],
+    "locale": "C",
+    "stdin_bytes": 12,
+    "stdin_sha256": "6af88b73f50a27ad0161454424201335c3be0728eebd7a08a64920c011f66800",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "0f02bea65fdd2cd30e339b2fe327fff55abc6eb2f45f89d890228f8c63049ee6",
+      "stdout_bytes": 8,
+      "stdout_sample": "3020780a31207a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "0f02bea65fdd2cd30e339b2fe327fff55abc6eb2f45f89d890228f8c63049ee6",
+      "stdout_bytes": 8,
+      "stdout_sample": "3020780a31207a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--unique",
+    "args": [
+      "--unique",
+      "-k1,1n"
+    ],
+    "locale": "C",
+    "stdin_bytes": 12,
+    "stdin_sha256": "6af88b73f50a27ad0161454424201335c3be0728eebd7a08a64920c011f66800",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "0f02bea65fdd2cd30e339b2fe327fff55abc6eb2f45f89d890228f8c63049ee6",
+      "stdout_bytes": 8,
+      "stdout_sample": "3020780a31207a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "0f02bea65fdd2cd30e339b2fe327fff55abc6eb2f45f89d890228f8c63049ee6",
+      "stdout_bytes": 8,
+      "stdout_sample": "3020780a31207a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "key local",
+    "args": [
+      "--key=1.2b,1.3r",
+      "-k2,2n",
+      "-t:"
+    ],
+    "locale": "C",
+    "stdin_bytes": 19,
+    "stdin_sha256": "508feed55a7e2c0fb49fb173314cf7f706fe8b77b523dd5bda1476378ea4f22a",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "ae8502450fb69e65c4ba73300de72e1443ec141ff1aee55e5f4b7d06065a17f4",
+      "stdout_bytes": 19,
+      "stdout_sample": "2020623a320a2020613a390a2020623a31310a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "ae8502450fb69e65c4ba73300de72e1443ec141ff1aee55e5f4b7d06065a17f4",
+      "stdout_bytes": 19,
+      "stdout_sample": "2020623a320a2020613a390a2020623a31310a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "empty fields",
+    "args": [
+      "--field-separator=:",
+      "-k2,2"
+    ],
+    "locale": "C",
+    "stdin_bytes": 11,
+    "stdin_sha256": "0e24dabfd4717a8e8f270e9fb1e110228d2cf4d23bb871909500e43dc953d5c0",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "4e75699da9934d737a42067d2acfc3e846069bb41d0a0c4aba6fc226b1511fc4",
+      "stdout_bytes": 11,
+      "stdout_sample": "613a3a710a7a3a0a3a780a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "4e75699da9934d737a42067d2acfc3e846069bb41d0a0c4aba6fc226b1511fc4",
+      "stdout_bytes": 11,
+      "stdout_sample": "613a3a710a7a3a0a3a780a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--debug",
+    "args": [
+      "--debug",
+      "-k1,1"
+    ],
+    "locale": "C",
+    "stdin_bytes": 8,
+    "stdin_sha256": "930cb35741cb2fe85eb3bd569b1df271a50b051ea1a53fbd0c7adcf4f52fbbbc",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "b5b9fa8303413dc17b3d3d0972406624f41096c18313d71f43ec3beda8175e7c",
+      "stdout_bytes": 20,
+      "stdout_sample": "62207a0a5f0a5f5f5f0a6320610a5f0a5f5f5f0a",
+      "stderr": "sort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "b5b9fa8303413dc17b3d3d0972406624f41096c18313d71f43ec3beda8175e7c",
+      "stdout_bytes": 20,
+      "stdout_sample": "62207a0a5f0a5f5f5f0a6320610a5f0a5f5f5f0a",
+      "stderr": "sort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "16 MiB line",
+    "args": [
+      "-S1M"
+    ],
+    "locale": "C",
+    "stdin_bytes": 16777219,
+    "stdin_sha256": "01f3e44b2990b4a1740fd104a5e7472da0aa3b1d5baa24ef3ec1c97fa84c1ca1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "4c62b85688fb0c6f2cd7e5f9aceb8619c50358e10c777bd7b01de111f53bc8ce",
+      "stdout_bytes": 16777219,
+      "stdout_sample": "610a7878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "4c62b85688fb0c6f2cd7e5f9aceb8619c50358e10c777bd7b01de111f53bc8ce",
+      "stdout_bytes": 16777219,
+      "stdout_sample": "610a7878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "multipass stable",
+    "args": [
+      "-S4K",
+      "--batch-size=2",
+      "-s",
+      "-k1,1"
+    ],
+    "locale": "C",
+    "stdin_bytes": 14400,
+    "stdin_sha256": "257ab4b31e291a0b9e78ca59b367f81d3c2836094d81664449d50f38bc7cfa30",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "39cf9744a3851ca650ec36960598cb0c1482cbe6cb1cad6bb78a2f40371277ef",
+      "stdout_bytes": 14400,
+      "stdout_sample": "302030303030300a302030303030350a302030303031300a302030303031350a302030303032300a302030303032350a302030303033300a302030303033350a302030303034300a302030303034350a302030303035300a302030303035350a302030303036300a302030303036350a302030303037300a302030303037350a302030303038300a302030303038350a302030303039300a302030303039350a302030303130300a302030303130350a302030303131300a302030303131350a302030303132300a302030303132350a302030303133300a302030303133350a302030303134300a302030303134350a302030303135300a302030303135350a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "39cf9744a3851ca650ec36960598cb0c1482cbe6cb1cad6bb78a2f40371277ef",
+      "stdout_bytes": 14400,
+      "stdout_sample": "302030303030300a302030303030350a302030303031300a302030303031350a302030303032300a302030303032350a302030303033300a302030303033350a302030303034300a302030303034350a302030303035300a302030303035350a302030303036300a302030303036350a302030303037300a302030303037350a302030303038300a302030303038350a302030303039300a302030303039350a302030303130300a302030303130350a302030303131300a302030303131350a302030303132300a302030303132350a302030303133300a302030303133350a302030303134300a302030303134350a302030303135300a302030303135350a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "multipass unique",
+    "args": [
+      "-S4K",
+      "--batch-size=2",
+      "-u",
+      "-k1,1"
+    ],
+    "locale": "C",
+    "stdin_bytes": 14400,
+    "stdin_sha256": "257ab4b31e291a0b9e78ca59b367f81d3c2836094d81664449d50f38bc7cfa30",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "04aeb446254711781d169d283490f94a73e328c807d591498eab6d22cee598f7",
+      "stdout_bytes": 40,
+      "stdout_sample": "302030303030300a312030303030310a322030303030320a332030303030330a342030303030340a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "04aeb446254711781d169d283490f94a73e328c807d591498eab6d22cee598f7",
+      "stdout_bytes": 40,
+      "stdout_sample": "302030303030300a312030303030310a322030303030320a332030303030330a342030303030340a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "gzip",
+    "args": [
+      "-S4K",
+      "--compress-program=gzip",
+      "-T",
+      "tmp1",
+      "--temporary-directory=tmp2"
+    ],
+    "locale": "C",
+    "stdin_bytes": 15800,
+    "stdin_sha256": "b775fd7a8863f614fbadd7d1a6c86b1d37b8b6fbfd80418ae0af6fafd8acfaf2",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "5045231bcd52e6b87a811f27242548f75fe759c230ebb435915711b0bdb05032",
+      "stdout_bytes": 15800,
+      "stdout_sample": "2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "5045231bcd52e6b87a811f27242548f75fe759c230ebb435915711b0bdb05032",
+      "stdout_bytes": 15800,
+      "stdout_sample": "2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "compression failure",
+    "args": [
+      "-S4K",
+      "--compress-program=false"
+    ],
+    "locale": "C",
+    "stdin_bytes": 15800,
+    "stdin_sha256": "b775fd7a8863f614fbadd7d1a6c86b1d37b8b6fbfd80418ae0af6fafd8acfaf2",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: 'false' [-d] terminated abnormally\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: 'false' [-d] terminated abnormally\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "directory invalid",
+    "args": [
+      "-T",
+      "absent",
+      "-S4K"
+    ],
+    "locale": "C",
+    "stdin_bytes": 15800,
+    "stdin_sha256": "b775fd7a8863f614fbadd7d1a6c86b1d37b8b6fbfd80418ae0af6fafd8acfaf2",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: cannot create temporary file in 'absent': No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: cannot create temporary file in 'absent': No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "parallel",
+    "args": [
+      "--parallel=2"
+    ],
+    "locale": "C",
+    "stdin_bytes": 1580,
+    "stdin_sha256": "c9d86f1f4d72264b25fdf2b4ca25aae671531470c7e4ad33951e91632d3d7109",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "890f77a42cf6db62e538e2e0648f625d80c9e0fdf8b6b0e309c5dcbe00bfb6ca",
+      "stdout_bytes": 1580,
+      "stdout_sample": "2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d31303030303030303030303030303030303030",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "890f77a42cf6db62e538e2e0648f625d80c9e0fdf8b6b0e309c5dcbe00bfb6ca",
+      "stdout_bytes": 1580,
+      "stdout_sample": "2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2031300a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d31303030303030303030303030303030303030",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--buffer-size",
+    "args": [
+      "--buffer-size=2%"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--random-source",
+    "args": [
+      "-R",
+      "--random-source=seed"
+    ],
+    "locale": "C",
+    "stdin_bytes": 237,
+    "stdin_sha256": "46e09106dbec962a2f3395386691bbfb8a6ca350adaf60d81e45fcf2148132d8",
+    "mode": "random",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "f10d44b1f9f1e18af2edbd305833a1c18ca8a7ac02b1a4262bfaf5f968b4bb4d",
+      "stdout_bytes": 237,
+      "stdout_sample": "312e303130300a312e303130300a312e303130300a2031300a2031300a2031300a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d320a2d320a2d320a31300a31300a31300a30310a30310a30310a312e30310a312e30310a312e30310a313030303030303030303030303030303030303030303030300a313030303030303030303030303030303030303030303030300a313030303030303030303030303030303030303030303030300a320a320a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "f10d44b1f9f1e18af2edbd305833a1c18ca8a7ac02b1a4262bfaf5f968b4bb4d",
+      "stdout_bytes": 237,
+      "stdout_sample": "312e303130300a312e303130300a312e303130300a2031300a2031300a2031300a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d3130303030303030303030303030303030303030303030310a2d320a2d320a2d320a31300a31300a31300a30310a30310a30310a312e30310a312e30310a312e30310a313030303030303030303030303030303030303030303030300a313030303030303030303030303030303030303030303030300a313030303030303030303030303030303030303030303030300a320a320a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "seeded C order",
+    "args": [
+      "-R",
+      "--random-source=seed"
+    ],
+    "locale": "C",
+    "stdin_bytes": 12,
+    "stdin_sha256": "c6b39a37aa42bdd454f15806269ca1d0d417cd4823ec7a3db809908d6214f4dc",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "48de1484db9dc7898b05c54ac8217426d69d72df34f13e60ee74bffbda5b53c4",
+      "stdout_bytes": 12,
+      "stdout_sample": "650a660a640a620a610a630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "48de1484db9dc7898b05c54ac8217426d69d72df34f13e60ee74bffbda5b53c4",
+      "stdout_bytes": 12,
+      "stdout_sample": "650a660a640a620a610a630a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "short seed",
+    "args": [
+      "-R",
+      "--random-source=a"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: 'a': end of file\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: 'a': end of file\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "random absent",
+    "args": [
+      "-R",
+      "--random-source=absent"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: open failed: absent: No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: open failed: absent: No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "legacy -y",
+    "args": [
+      "-y",
+      "10",
+      "-n"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "a5e3aa53ebda6a3b21100b6476c2a33df9679d27b639730c3172544f41a23feb",
+      "stdout_bytes": 79,
+      "stdout_sample": "2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a320a2031300a31300a313030303030303030303030303030303030303030303030300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "legacy -y attached",
+    "args": [
+      "-yanything"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "legacy -y missing",
+    "args": [
+      "-y"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: option requires an argument -- 'y'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: option requires an argument -- 'y'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "invalid check",
+    "args": [
+      "--check=bad"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: invalid argument 'bad' for '--check'\nValid arguments are:\n  - 'quiet', 'silent'\n  - 'diagnose-first'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: invalid argument 'bad' for '--check'\nValid arguments are:\n  - 'quiet', 'silent'\n  - 'diagnose-first'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "invalid sort",
+    "args": [
+      "--sort=bad"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: invalid argument 'bad' for '--sort'\nValid arguments are:\n  - 'general-numeric'\n  - 'human-numeric'\n  - 'month'\n  - 'numeric'\n  - 'random'\n  - 'version'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: invalid argument 'bad' for '--sort'\nValid arguments are:\n  - 'general-numeric'\n  - 'human-numeric'\n  - 'month'\n  - 'numeric'\n  - 'random'\n  - 'version'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--help",
+    "args": [
+      "--help"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "doc",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "1f8bc9d114f204560145f623dd2aab23da40db8e54e9e7f1316358a4b5110dc4",
+      "stdout_bytes": 4156,
+      "stdout_sample": "55736167653a20736f7274205b4f5054494f4e5d2e2e2e205b46494c455d2e2e2e0a20206f723a2020736f7274205b4f5054494f4e5d2e2e2e202d2d66696c6573302d66726f6d3d460a577269746520736f7274656420636f6e636174656e6174696f6e206f6620616c6c2046494c4528732920746f207374616e64617264206f75747075742e0a0a57697468206e6f2046494c452c206f72207768656e2046494c45206973202d2c2072656164207374616e6461726420696e7075742e0a0a4d616e6461746f727920617267756d656e747320746f206c6f6e67206f7074696f6e7320617265206d616e6461746f727920666f722073686f7274206f707469",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "1bb682acdadf5859acee02b6bb75135e828a02dd00ca86bc1ae62769fc025926",
+      "stdout_bytes": 2390,
+      "stdout_sample": "55736167653a20736f7274205b4f5054494f4e5d2e2e2e205b46494c455d2e2e2e0a536f727420696e707574207265636f7264732e204120646173682073656c65637473207374616e6461726420696e7075742e0a0a4f72646572696e67206f7074696f6e730a20202d622c202d2d69676e6f72652d6c656164696e672d626c616e6b732020202020202020536b6970206c656164696e6720626c616e6b7320696e206b6579730a20202d642c202d2d64696374696f6e6172792d6f7264657220202020202020202020202020436f6d7061726520626c616e6b732c206c65747465727320616e64206469676974730a20202d662c202d2d69676e6f72652d63",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--version",
+    "args": [
+      "--version"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "doc",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "f2f9363ca7bd0571926201ee09de60b84a8bd22b98bd62fc81a0d7e071853030",
+      "stdout_bytes": 319,
+      "stdout_sample": "736f72742028474e5520636f72657574696c732920392e31320a436f70797269676874202843292032303236204672656520536f66747761726520466f756e646174696f6e2c20496e632e0a4c6963656e73652047504c76332b3a20474e552047504c2076657273696f6e2033206f72206c61746572203c68747470733a2f2f676e752e6f72672f6c6963656e7365732f67706c2e68746d6c3e2e0a54686973206973206672656520736f6674776172653a20796f7520617265206672656520746f206368616e676520616e64207265646973747269627574652069742e0a5468657265206973204e4f2057415252414e54592c20746f207468652065787465",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "5730f341fbadaee06618a9f9521f6789d66943d7aa884568b232fe4bc0e67f89",
+      "stdout_bytes": 20,
+      "stdout_sample": "736f727420284e6f76614f532920302e312e300a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "check missing",
+    "args": [
+      "-c",
+      "absent"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: open failed: absent: No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: open failed: absent: No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "check with -o",
+    "args": [
+      "-C",
+      "-o",
+      "out"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: options '-Co' are incompatible\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: options '-Co' are incompatible\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "bad batch",
+    "args": [
+      "--batch-size=1"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: invalid --batch-size argument '1'\nsort: minimum --batch-size argument is '2'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: invalid --batch-size argument '1'\nsort: minimum --batch-size argument is '2'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "bad workers",
+    "args": [
+      "--parallel=0"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: number in parallel must be nonzero\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: number in parallel must be nonzero\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "bad budget",
+    "args": [
+      "-S1X"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: invalid suffix in -S argument '1X'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: invalid suffix in -S argument '1X'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "bad key",
+    "args": [
+      "-k0.0"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: field number is zero: invalid field specification '0.0'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: field number is zero: invalid field specification '0.0'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "bad separator",
+    "args": [
+      "-t::"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: multi-character tab '::'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: multi-character tab '::'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "conflict",
+    "args": [
+      "-hn"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: options '-hn' are incompatible\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: options '-hn' are incompatible\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "unknown",
+    "args": [
+      "--bad-option"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: unrecognized option '--bad-option'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: unrecognized option '--bad-option'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "missing arg",
+    "args": [
+      "-k"
+    ],
+    "locale": "C",
+    "stdin_bytes": 0,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: option requires an argument -- 'k'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: option requires an argument -- 'k'\nTry 'sort --help' for more information.\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "UTF8-collation",
+    "args": [],
+    "locale": "en_US.UTF-8",
+    "stdin_bytes": 12,
+    "stdin_sha256": "2411693a96ac273d8f805e7cd2c8198c5f00b43a744c3851796e45decae371bd",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "09e20cc959f463d71f0bdb7c3324c054bfe702536c44c1aedd7a8f7d7a624648",
+      "stdout_bytes": 13,
+      "stdout_sample": "610ac3a90ac3890ac3a80a7a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "09e20cc959f463d71f0bdb7c3324c054bfe702536c44c1aedd7a8f7d7a624648",
+      "stdout_bytes": 13,
+      "stdout_sample": "610ac3a90ac3890ac3a80a7a0a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--check",
+    "args": [
+      "--check"
+    ],
+    "locale": "C",
+    "stdin_bytes": 3,
+    "stdin_sha256": "c4a78e5bdf318c857b19a6ae4678d9fc8ab0d9bf2b7dd11b41a06c4c1047d943",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: disorder: a\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: disorder: a\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--check=diagnose-first",
+    "args": [
+      "--check=diagnose-first"
+    ],
+    "locale": "C",
+    "stdin_bytes": 3,
+    "stdin_sha256": "c4a78e5bdf318c857b19a6ae4678d9fc8ab0d9bf2b7dd11b41a06c4c1047d943",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: disorder: a\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -:2: disorder: a\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--check=quiet",
+    "args": [
+      "--check=quiet"
+    ],
+    "locale": "C",
+    "stdin_bytes": 3,
+    "stdin_sha256": "c4a78e5bdf318c857b19a6ae4678d9fc8ab0d9bf2b7dd11b41a06c4c1047d943",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "--check=silent",
+    "args": [
+      "--check=silent"
+    ],
+    "locale": "C",
+    "stdin_bytes": 3,
+    "stdin_sha256": "c4a78e5bdf318c857b19a6ae4678d9fc8ab0d9bf2b7dd11b41a06c4c1047d943",
+    "mode": "exact",
+    "gnu": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget b",
+    "args": [
+      "-S",
+      "1b"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget K",
+    "args": [
+      "-S",
+      "1K"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget M",
+    "args": [
+      "-S",
+      "1M"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget G",
+    "args": [
+      "-S",
+      "1G"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget T",
+    "args": [
+      "-S",
+      "1T"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget P",
+    "args": [
+      "-S",
+      "1P"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget E",
+    "args": [
+      "-S",
+      "1E"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget Z",
+    "args": [
+      "-S",
+      "1Z"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -S argument '1Z' too large\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -S argument '1Z' too large\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget Y",
+    "args": [
+      "-S",
+      "1Y"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -S argument '1Y' too large\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -S argument '1Y' too large\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget R",
+    "args": [
+      "-S",
+      "1R"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -S argument '1R' too large\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -S argument '1R' too large\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget Q",
+    "args": [
+      "-S",
+      "1Q"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -S argument '1Q' too large\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: -S argument '1Q' too large\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget %",
+    "args": [
+      "-S",
+      "1%"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  },
+  {
+    "case": "budget ",
+    "args": [
+      "-S",
+      "1"
+    ],
+    "locale": "C",
+    "stdin_bytes": 79,
+    "stdin_sha256": "717f2d6fa1626a4f2fedff40fd405242de8c871edbb6c5957dec921060b01ef1",
+    "mode": "exact",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "960b6bd30f0364a0bdbdb96e763c3187317b1ec0bb6873f0b3a1358db62f0795",
+      "stdout_bytes": 79,
+      "stdout_sample": "2031300a2d3130303030303030303030303030303030303030303030310a2d320a30310a312e30310a312e303130300a31300a313030303030303030303030303030303030303030303030300a320a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "equal": {
+      "status": true,
+      "stdout": true,
+      "stderr": true,
+      "files": true,
+      "clean": true
+    }
+  }
+]

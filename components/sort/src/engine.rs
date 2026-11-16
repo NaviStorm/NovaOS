@@ -44,6 +44,8 @@ struct Position {
     blank: bool,
 }
 pub struct Key {
+    #[cfg(not(target_os = "none"))]
+    obsolete: bool,
     start: Position,
     end: Option<Position>,
     flags: Flags,
@@ -130,6 +132,8 @@ impl Key {
             flags,
             local: flags != Flags::default(),
             empty_end: zero,
+            #[cfg(not(target_os = "none"))]
+            obsolete: true,
         })
     }
     pub fn parse(s: &str) -> Result<Self, String> {
@@ -143,6 +147,8 @@ impl Key {
             flags,
             local: flags != Flags::default(),
             empty_end: false,
+            #[cfg(not(target_os = "none"))]
+            obsolete: false,
         })
     }
     fn bounds(&self, line: &[u8], sep: Option<u8>, global: Flags) -> (usize, usize, Flags) {
@@ -254,13 +260,17 @@ impl Order<'_> {
                 }
             }
             _ => {
-                let sign = usize::from(bytes.first() == Some(&b'-'));
-                n = sign;
-                while bytes.get(n).is_some_and(u8::is_ascii_digit) {
-                    n += 1
+                n = usize::from(bytes.first() == Some(&b'-'));
+                let mut digits = 0;
+                while let Some(&c) = bytes.get(n) {
+                    if c.is_ascii_digit() {
+                        digits += 1;
+                    } else if self.options.thousands != Some(c) || digits == 0 {
+                        break;
+                    }
+                    n += 1;
                 }
-                let mut digits = n - sign;
-                if bytes.get(n) == Some(&b'.') {
+                if bytes.get(n) == Some(&self.options.decimal.unwrap_or(b'.')) {
                     n += 1;
                     let first = n;
                     while bytes.get(n).is_some_and(u8::is_ascii_digit) {
@@ -455,3 +465,7 @@ impl Options {
         Ok(())
     }
 }
+
+#[cfg(not(target_os = "none"))]
+#[path = "key_debug.rs"]
+pub mod debug;

@@ -1,0 +1,172 @@
+{
+  "sort-debug-keys": {
+    "gnu": {
+      "status": 0,
+      "log": "sort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: text ordering performed using simple byte comparison\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using ‘fr_FR.UTF-8’ sorting rules\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use ‘,’ as a decimal point in this locale\nsort: text ordering performed using ‘fr_FR.UTF-8’ sorting rules\nsort: numbers use ‘,’ as a decimal point in this locale\nsort: the multi-byte number group separator in this locale is not supported\n"
+    },
+    "nova": {
+      "status": 0,
+      "log": "sort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: text ordering performed using simple byte comparison\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: leading blanks are significant in key 1; consider also specifying 'b'\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using simple byte comparison\nsort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\nsort: text ordering performed using ‘fr_FR.UTF-8’ sorting rules\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use ',' as a decimal point in this locale\nsort: text ordering performed using ‘fr_FR.UTF-8’ sorting rules\nsort: numbers use ',' as a decimal point in this locale\n"
+    }
+  },
+  "sort-debug-warn": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-float": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-month": {
+    "gnu": {
+      "status": 77,
+      "log": "sort-month.sh: skipped test: The locale utility is not present\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    },
+    "nova": {
+      "status": 77,
+      "log": "sort-month.sh: skipped test: The locale utility is not present\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    }
+  },
+  "sort-version": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-unique": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-u-FMR": {
+    "gnu": {
+      "status": 77,
+      "log": "sort-u-FMR.sh: skipped test: requires a working valgrind\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    },
+    "nova": {
+      "status": 77,
+      "log": "sort-u-FMR.sh: skipped test: requires a working valgrind\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    }
+  },
+  "sort-NaN-infloop": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-field-limit": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-discrim": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-buffer-size": {
+    "gnu": {
+      "status": 77,
+      "log": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/tests/sort/sort-buffer-size.sh: line 27: test: : integer expression expected\nsort-buffer-size.sh: skipped test: unable to determine enough memory available\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    },
+    "nova": {
+      "status": 77,
+      "log": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/tests/sort/sort-buffer-size.sh: line 27: test: : integer expression expected\nsort-buffer-size.sh: skipped test: unable to determine enough memory available\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    }
+  },
+  "sort-rand": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-h-thousands-sep": {
+    "gnu": {
+      "status": 77,
+      "log": "sort-h-thousands-sep.sh: skipped test: Multi-byte thousands separators are not supported\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    },
+    "nova": {
+      "status": 77,
+      "log": "sort-h-thousands-sep.sh: skipped test: Multi-byte thousands separators are not supported\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    }
+  },
+  "sort-locale": {
+    "gnu": {
+      "status": 77,
+      "log": "sort-locale.sh: skipped test: Strings 'a_a' 'a b' sort the same in C and en_US.iso8859-1 locales\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    },
+    "nova": {
+      "status": 77,
+      "log": "sort-locale.sh: skipped test: Strings 'a_a' 'a b' sort the same in C and en_US.iso8859-1 locales\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    }
+  },
+  "sort-merge-fdlimit": {
+    "gnu": {
+      "status": 0,
+      "log": "1\n10\n11\n12\n13\n14\n15\n16\n17\n2\n3\n4\n5\n6\n7\n8\n9\n12\n8\n7\n2\n13\n1\n16\n14\n15\n4\n6\n17\n3\n11\n9\n5\n10\n11\n1\n14\n3\n9\n15\n13\n4\n16\n6\n10\n12\n7\n5\n2\n17\n8\nsort: --batch-size argument '20' too large\nsort: maximum --batch-size argument with current rlimit is 16\n"
+    },
+    "nova": {
+      "status": 0,
+      "log": "1\n10\n11\n12\n13\n14\n15\n16\n17\n2\n3\n4\n5\n6\n7\n8\n9\n5\n1\n3\n12\n9\n13\n7\n15\n8\n16\n6\n11\n2\n14\n10\n17\n4\n11\n1\n14\n3\n9\n15\n13\n4\n16\n6\n10\n12\n7\n5\n2\n17\n8\nsort: --batch-size argument '20' too large\nsort: maximum --batch-size argument with current rlimit is 16\n"
+    }
+  },
+  "sort-compress": {
+    "gnu": {
+      "status": 0,
+      "log": ""
+    },
+    "nova": {
+      "status": 0,
+      "log": ""
+    }
+  },
+  "sort-unique-segv": {
+    "gnu": {
+      "status": 77,
+      "log": "grep: : No such file or directory\nsort-unique-segv.sh: skipped test: requires pthreads\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    },
+    "nova": {
+      "status": 77,
+      "log": "grep: : No such file or directory\nsort-unique-segv.sh: skipped test: requires pthreads\n/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmpes88r95s/source/tests/init.sh: line 109: 1: Bad file descriptor\n"
+    }
+  }
+}

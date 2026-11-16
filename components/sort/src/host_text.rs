@@ -81,7 +81,7 @@ pub fn collation_key(input: &[u8]) -> Vec<u8> {
 
 pub fn columns(bytes: &[u8], multibyte: bool) -> usize {
     if !multibyte {
-        return bytes.len();
+        return bytes.iter().filter(|&&b| b != 0).count();
     }
     unsafe extern "C" {
         fn wcwidth(c: libc::wchar_t) -> libc::c_int;

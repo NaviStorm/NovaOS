@@ -75,7 +75,7 @@ fn record(r: &mut dyn BufRead, buf: &mut Vec<u8>, delim: u8) -> io::Result<bool>
 }
 enum Source {
     Input(PathBuf),
-    Run(TempPath),
+    Run(TempPath, bool),
 }
 struct Reader {
     stream: BufReader<Box<dyn Read>>,
@@ -86,9 +86,9 @@ impl Reader {
         let mut child = None;
         let stream = match src {
             Source::Input(p) => input(p)?,
-            Source::Run(p) => {
+            Source::Run(p, compressed) => {
                 let f = File::open(p)?;
-                if let Some(prog) = prog {
+                if let Some(prog) = prog.filter(|_| *compressed) {
                     let mut c = Command::new(native(prog))
                         .arg("-d")
                         .stdin(f)
@@ -130,6 +130,8 @@ impl Drop for Reader {
 
 struct Temp<'a> {
     options: &'a Options,
+    name: &'a str,
+    codec_unavailable: bool,
     count: usize,
     bytes: u64,
     passes: usize,
@@ -147,11 +149,32 @@ impl Temp<'_> {
             NamedTempFile::new_in(native(dir))
                 .map_err(|e| format!("cannot create temporary file in '{dir}': {}", os_error(&e)))?
         };
-        if let Some(prog) = &opt.compressor {
-            let mut child = Command::new(native(prog))
+        let mut codec = None;
+        if let Some(prog) = opt.compressor.as_ref().filter(|_| !self.codec_unavailable) {
+            match Command::new(native(prog))
                 .stdin(Stdio::piped())
                 .stdout(file.reopen()?)
-                .spawn()?;
+                .spawn()
+            {
+                Ok(c) => codec = Some((c, prog)),
+                Err(e)
+                    if matches!(
+                        e.kind(),
+                        io::ErrorKind::NotFound | io::ErrorKind::PermissionDenied
+                    ) =>
+                {
+                    eprintln!(
+                        "{}: could not run compress program '{prog}': {}",
+                        self.name,
+                        os_error(&e)
+                    );
+                    self.codec_unavailable = true;
+                }
+                Err(e) => return Err(e.into()),
+            }
+        }
+        let compressed = codec.is_some();
+        if let Some((mut child, prog)) = codec {
             let mut w = BufWriter::with_capacity(IO, child.stdin.take().unwrap());
             let res = write(&mut w).and_then(|_| Ok(w.flush()?));
             drop(w);
@@ -167,7 +190,7 @@ impl Temp<'_> {
         }
         self.count += 1;
         self.bytes += file.as_file().metadata()?.len();
-        Ok(Source::Run(file.into_temp_path()))
+        Ok(Source::Run(file.into_temp_path(), compressed))
     }
 }
 fn merge_to(group: &[Source], order: &Order<'_>, emit: impl FnMut(&[u8]) -> Res<()>) -> Res<()> {
@@ -249,7 +272,7 @@ pub fn command(name: &str) -> Res<i32> {
     let legacy = env::var("_POSIX2_VERSION")
         .ok()
         .and_then(|v| v.parse::<u32>().ok())
-        .is_some_and(|v| v < 200112);
+        .is_some_and(|v| !(200112..200809).contains(&v));
     let mut o =
         Options::parse_legacy(&args.iter().map(String::as_str).collect::<Vec<_>>(), legacy)?;
     let tag = env::var("LC_ALL")
@@ -269,10 +292,8 @@ pub fn command(name: &str) -> Res<i32> {
         return Ok(0);
     }
     // Set the process locale before creating workers.
-    let locale = unsafe {
-        libc::setlocale(libc::LC_ALL, c"".as_ptr());
-        libc::setlocale(libc::LC_COLLATE, std::ptr::null())
-    };
+    let locale_ok = unsafe { !libc::setlocale(libc::LC_ALL, c"".as_ptr()).is_null() };
+    let locale = unsafe { libc::setlocale(libc::LC_COLLATE, std::ptr::null()) };
     let hard = !locale.is_null()
         && !matches!(
             unsafe { std::ffi::CStr::from_ptr(locale) }.to_bytes(),
@@ -377,6 +398,16 @@ pub fn command(name: &str) -> Res<i32> {
         };
         return Err(format!("--batch-size argument '{argument}' too large\n{name}: maximum --batch-size argument with current rlimit is {limit}").into());
     }
+    // A parent may pass open descriptors through exec. Intermediate merges
+    // also need a descriptor for their output. Count unused slots on small limits.
+    let batch = if fd > 0 && fd <= 65536 {
+        let available = (3..fd as i32)
+            .filter(|&descriptor| unsafe { libc::fcntl(descriptor, libc::F_GETFD) } < 0)
+            .count();
+        batch.min(available.saturating_sub(1).max(2))
+    } else {
+        batch
+    };
     let ram = physical_ram();
     let budget = o.buffer(ram, (ram / 8).clamp(1024 * 1024, 512 * 1024 * 1024))?;
     let workers = o
@@ -396,6 +427,8 @@ pub fn command(name: &str) -> Res<i32> {
     let mut rows = Vec::new();
     let mut temp = Temp {
         options: &o,
+        name,
+        codec_unavailable: false,
         count: 0,
         bytes: 0,
         passes: 0,
@@ -466,29 +499,17 @@ pub fn command(name: &str) -> Res<i32> {
     let mut w = output(&o)?;
     let mut prev: Option<Vec<u8>> = None;
     if o.debug {
+        if !locale_ok {
+            eprintln!("{name}: failed to set locale");
+        }
         if hard {
             let rules = unsafe { std::ffi::CStr::from_ptr(locale) }.to_string_lossy();
             eprintln!("{name}: text ordering performed using ‘{rules}’ sorting rules");
         } else {
             eprintln!("{name}: text ordering performed using simple byte comparison");
         }
-        let mut numeric = false;
-        for i in 0..o.keys.len().max(1) {
-            let (_, _, flags) = order.key(b"", i);
-            let is_numeric = matches!(flags.mode, b'n' | b'h' | b'g');
-            numeric |= is_numeric;
-            if is_numeric && o.keys.get(i).is_some_and(|k| k.spans_fields()) {
-                eprintln!("{name}: key {} is numeric and spans multiple fields", i + 1);
-            }
-            if !o.keys.is_empty() && o.sep.is_none() && !flags.blank && flags.mode == 0 {
-                eprintln!(
-                    "{name}: leading blanks are significant in key {}; consider also specifying 'b'",
-                    i + 1
-                )
-            }
-        }
-        if numeric {
-            eprintln!("{name}: numbers use '.' as a decimal point in this locale");
+        for warning in nova_sort::engine::debug::warnings(&o) {
+            eprintln!("{name}: {warning}");
         }
     }
     let mut emit = |row: &[u8]| -> Res<()> {
