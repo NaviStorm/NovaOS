@@ -140,3 +140,7 @@ Les rapports historiques d’installation, de SMP et de stockage restent des pre
 | Consultation sur terminal étroit | Réussie | Réussie | 48 × 12, déplacement, restitution à nsh puis à vi. |
 
 Les colonnes des recettes complètes ci-dessus concernent le futur candidat stable. Les sondes de supervision 3 à 8 et l’ensemble des scénarios de mutations de service n’ont pas été requalifiés dans cette phase. Le périmètre, les codes et les preuves de stockage sont consignés dans le [rapport de qualification](../documentation-v0.23.0-phase1.md).
+
+## ARC-027 · Administration quotidienne et utilitaires
+
+**À qualifier sur le candidat serveur AArch64 et x86_64.** Appliquer la [matrice des commandes et des écarts](arc-027/README.md) et les [scénarios d’administration](arc-027/administration.md) aux binaires installés. Relier chaque option distribuée à une preuve fonctionnelle/différentielle, aux mesures de ressources, aux refus de droits et aux preuves ARC-026. Tester l’administration distante, la récupération avec politique, le rollback autorisé, le diagnostic P9 sans écriture et le contrôle des applications arrêtées et actives. Les essais de référence réalisés sur hôte pour l’étude ne donnent pas un verdict serveur.

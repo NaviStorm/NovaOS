@@ -50,3 +50,7 @@ La phase 1 a associé bibliothèque Rust et fondations des threads applicatifs, 
 | Charge et moyens de qualification | La MOE doit estimer chaque lot, y compris manuel, fixtures, stockage jetable, deux VM et pair réseau indépendant. Chiffrer tôt les travaux longitudinaux de sécurité et de reprise. | Présenter à la MOA un découpage ou un délai révisé. Une exigence serveur approuvée ne devient pas optionnelle si une tranche déborde. |
 
 La commande native `permissions` reste exigée pour la stable serveur. Son contrat prévoit `list`, `grant` et `revoke`. Son jalon intermédiaire reste à attribuer. Le chantier suivant attend une décision MOA/MOE distincte. [Périmètre et échéances](../cloture-0210/perimetre.md) Les choix détaillés de stockage et de garde des clés reviennent en arbitrage à leur point de dépendance. Aucune écriture sur le SSD professionnel du Tecra ni sur ses partitions Windows/BitLocker n’entre dans ces parcours. [Critères serveur et politique de qualification](acceptation-serveur.md)
+
+## Traçabilité des utilitaires avant la stable
+
+Rattacher les familles ARC-027 aux prérequis déjà proposés : poste texte et flux v0.23.x, identités et politique v0.24.x, transport et administration distante v0.25–0.26.x, SDK v0.27.x, récupération et distribution v0.28, recette v0.29 et décision v0.30. Les affectations fines, les budgets et les dépendances de chaque lot sont présentés pour décision dans le [découpage ARC-027](arc-027/lots.md).

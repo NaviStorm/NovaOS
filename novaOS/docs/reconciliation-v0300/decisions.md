@@ -103,3 +103,7 @@ Le mandat du 16 novembre 2026 autorise le catalogue embarqué, le lecteur natif 
 Le complément MOA/MOE de phase 1 fixe le français pour une étiquette BCP 47 syntaxiquement valide de langue principale `fr` et l’anglais dans tous les autres cas. L’option 2 maintient l’aide publique sans écriture P9 et exige une preuve distincte de la langue reçue par un ELF autonome. [Contrat et qualification](../documentation-v0.23.0-phase1.md)
 
 Le correctif définitif du même mandat précise la politique NovaOS après l’analyse syntaxique. Une écriture, une région ou une variante explicite doit être enregistrée. Le script IANA `Zzzz` conserve le français, la variante inconnue `zzzzz` entraîne le repli anglais. [Recette dans les deux invités](../cloture-documentation-v0.23.0-phase1.md).
+
+## ARC-027 · Utilitaires système de la stable serveur
+
+**Périmètre obligatoire, étude de réalisation soumise à décision**, MOA/MOE du 16 novembre 2026. Administrer le serveur depuis NovaOS, conserver les 37 commandes et appliquer ARC-026 à chaque commande distribuée. Le complément comprend arrêt, redémarrage, sauvegarde/restauration protégée, mise à jour A/B, pare-feu administrable à distance, clés SSH, diagnostic de stockage, journal, scripts et politiques de permissions. La MOA a précisé que la demande « name » désigne `uname`, avec `uname -s` donnant `NovaOS`. La base des contrats, leurs sources et les divergences à arbitrer figurent dans l’[étude ARC-027](arc-027/README.md). Les alias, créneaux intermédiaires et imports de bibliothèques proposés restent soumis à validation.
