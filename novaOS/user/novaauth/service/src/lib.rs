@@ -6,6 +6,7 @@ use ed25519_dalek::{Signature, VerifyingKey};
 use sha2::{Digest, Sha256};
 
 pub mod admission;
+pub mod sessions;
 
 pub type Id = [u8; 16];
 pub type Digest32 = [u8; 32];
