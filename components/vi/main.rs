@@ -44,15 +44,9 @@ fn session() -> rt::Result<()> {
     let args = process::arguments()?;
     let op = operand(Program::Vi, &args)?;
     if let Operand::Info(help) = op {
-        console::write(
-            tty::OUTPUT,
-            if help {
-                nova_cli::options::usage(Program::Vi)
-            } else {
-                concat!("NovaOS ", env!("CARGO_PKG_VERSION"))
-            },
-        )?;
-        return console::write(tty::OUTPUT, "\n");
+        let page = nova_cli::documentation::lookup("vi").ok_or(rt::BAD_ARGUMENT)?;
+        let text = if help { page.render(&[], false).ok_or(rt::BAD_ARGUMENT)? } else { page.version() };
+        return console::write(tty::OUTPUT, &text);
     }
     let Operand::Edit(name) = op else {
         return Err(rt::BAD_ARGUMENT);

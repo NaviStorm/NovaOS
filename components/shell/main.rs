@@ -12,6 +12,7 @@ mod aliases;
 mod builtins;
 mod capabilities;
 mod completion;
+mod doc_options;
 mod executor;
 mod glob;
 mod history;

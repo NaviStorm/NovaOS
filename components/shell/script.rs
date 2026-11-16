@@ -226,6 +226,12 @@ impl<'a> Engine<'a> {
         let name = f
             .aliases
             .expand(name, &mut words, |s| f.word(s, &self.pid))?;
+        if nova_cli::documentation::lookup(&name).is_some() {
+            let literal: Vec<_> = words.iter().map(|w| w.text.as_str()).collect();
+            if let Some(code) = super::doc_options::answer(&name, &literal)? {
+                return Ok(Flow::Status(code));
+            }
+        }
         match name.as_str() {
             "alias" => {
                 f.aliases.define(&words, depth != 0)?;
@@ -335,6 +341,7 @@ impl<'a> Engine<'a> {
             }
             "nsh" => match argv.as_slice() {
                 ["-c", src] => self.script(f, src, depth)?,
+                ["--", path] => self.file(f, path, depth, false)?,
                 [path] if !path.starts_with('-') => self.file(f, path, depth, false)?,
                 _ => return Err(rt::BAD_ARGUMENT),
             },

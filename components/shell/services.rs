@@ -101,15 +101,7 @@ pub fn run(args: &[&str]) -> rt::Result<()> {
     show(&frame)
 }
 
-const HELP: &str = "\
-service list\n\
-service status|dependencies|policy|info <nom>\n\
-service start|stop|restart <nom>\n\
-service enable|disable <nom>\n\
-service capabilities <service>\n\
-service capabilities restrict|restore <service> <capacité>\n\
-Les droits enregistrés prennent effet à la prochaine instance.\n\
-enable et disable enregistrent le choix pour le prochain démarrage.\n";
+
 
 pub(super) fn state(value: u64) -> rt::Result<&'static str> {
     Ok(match value {
@@ -239,22 +231,21 @@ fn capabilities(args: &[&str]) -> rt::Result<()> {
 }
 
 fn admin(args: &[&str]) -> rt::Result<()> {
-    if args == ["--help"] || args == ["help"] {
-        return console::write(tty::OUTPUT, HELP);
-    }
     if args == ["list"] {
         for index in 0..=12 {
             match request(wire::LIST, 0, index) {
                 Err(rt::REFUSED) => return Ok(()),
-                Ok(f) if index < 12 => console::write(
-                    tty::OUTPUT,
-                    &alloc::format!(
-                        "service={} id={} etat={}\n",
-                        wire::service_name(f[2]).unwrap_or("sonde"),
-                        f[2],
-                        state(f[3])?
-                    ),
-                )?,
+                Ok(f) if index < 12 => {
+                    let policy = match request(wire::SETTINGS, f[2], 0) {
+                        Ok(settings) if settings[15] == rt::OK => autostart(settings[10])?,
+                        Ok(_) | Err(rt::REFUSED) => "indisponible",
+                        Err(e) => return Err(e),
+                    };
+                    console::write(tty::OUTPUT, &alloc::format!(
+                        "service={} id={} etat={} autostart={}\n",
+                        wire::service_name(f[2]).unwrap_or("sonde"), f[2], state(f[3])?, policy
+                    ))?;
+                }
                 Ok(_) => return Err(rt::LIMIT),
                 Err(e) => return Err(e),
             }
