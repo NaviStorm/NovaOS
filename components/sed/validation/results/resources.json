@@ -1,0 +1,181 @@
+{
+  "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "binary": "40a9b966f1e118dd6eeccef36234dc5078828c0949d82890fddb2464a42ae831",
+  "probe": "48b6a2f585005fe554e4bf9cfd61755ccc3eca471b6424190fabd14af9809178",
+  "memory": [
+    {
+      "kind": "short",
+      "bytes": 1048576,
+      "args": [
+        "s/^a/Z/"
+      ],
+      "output_sha256": "08021fb8fd57ad291d12cfee7883e644a3898d3b7383b249c014216d40dc23e9",
+      "peak_rss_bytes": 2244608,
+      "time": "        0.01 real         0.00 user         0.00 sys\n             2244608  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 326  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   1  voluntary context switches\n                   9  involuntary context switches\n           198397533  instructions retired\n            43820938  cycles elapsed\n             1409408  peak memory footprint\n"
+    },
+    {
+      "kind": "short",
+      "bytes": 8388608,
+      "args": [
+        "s/^a/Z/"
+      ],
+      "output_sha256": "87d2432647606bdc5700a10e89245a91d529ca6d566a451c3bb3732024ee1a98",
+      "peak_rss_bytes": 2244608,
+      "time": "        0.07 real         0.07 user         0.00 sys\n             2244608  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 326  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  11  involuntary context switches\n          1455760826  instructions retired\n           307127348  cycles elapsed\n             1409408  peak memory footprint\n"
+    },
+    {
+      "kind": "short",
+      "bytes": 33554432,
+      "args": [
+        "s/^a/Z/"
+      ],
+      "output_sha256": "10d5b165534c3978b0ed17a4474150bcdaf48aea86ffa34fa1b0de79b8965d41",
+      "peak_rss_bytes": 2244608,
+      "time": "        0.67 real         0.28 user         0.03 sys\n             2244608  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 326  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                  47  voluntary context switches\n                 166  involuntary context switches\n          5780960804  instructions retired\n          1231879703  cycles elapsed\n             1409408  peak memory footprint\n"
+    },
+    {
+      "kind": "long",
+      "bytes": 1048576,
+      "args": [
+        "s/^a/Z/"
+      ],
+      "output_sha256": "07d40e358861cf050989ce71c49d832a90edd4bc8d1e8d924f343af61f6ae2a5",
+      "peak_rss_bytes": 5488640,
+      "time": "        0.00 real         0.00 user         0.00 sys\n             5488640  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 524  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  14  involuntary context switches\n           160394326  instructions retired\n            35115995  cycles elapsed\n             4669848  peak memory footprint\n"
+    },
+    {
+      "kind": "long",
+      "bytes": 8388608,
+      "args": [
+        "s/^a/Z/"
+      ],
+      "output_sha256": "33db71c9a38459eb544a4b701e7f4c59d5d4cf5c46ea0d6d45251b2e862e3e57",
+      "peak_rss_bytes": 20201472,
+      "time": "        0.06 real         0.05 user         0.00 sys\n            20201472  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1422  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  13  involuntary context switches\n          1148094452  instructions retired\n           231084582  cycles elapsed\n            19382680  peak memory footprint\n"
+    },
+    {
+      "kind": "hold",
+      "bytes": 1048576,
+      "args": [
+        "-n",
+        "1h;1!H;$ {g;p;}"
+      ],
+      "output_sha256": "901d03a53a6381160f467ee4cbda6a6167933068665baad6d3cac34037e67da0",
+      "peak_rss_bytes": 4390912,
+      "time": "        0.01 real         0.00 user         0.00 sys\n             4390912  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 457  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n           165337904  instructions retired\n            41533161  cycles elapsed\n             3588504  peak memory footprint\n"
+    },
+    {
+      "kind": "hold",
+      "bytes": 8388608,
+      "args": [
+        "-n",
+        "1h;1!H;$ {g;p;}"
+      ],
+      "output_sha256": "0a7adb64d6c5893e737d8e87ffdfef403c022b0a45adf903584c06d3737eff10",
+      "peak_rss_bytes": 20185088,
+      "time": "        0.07 real         0.06 user         0.00 sys\n            20185088  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1422  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  16  involuntary context switches\n          1183358050  instructions retired\n           283457025  cycles elapsed\n            19382680  peak memory footprint\n"
+    }
+  ],
+  "faults": {
+    "readonly-GNU": {
+      "code": 0,
+      "stderr": "",
+      "files": {
+        "source": {
+          "bytes": 8,
+          "sha256": "7f8b1dfc466b6249f06cbe55c9174df2578e7754da793fded244ef5cba2a38f1",
+          "mode": "0o444"
+        },
+        "source.bak": {
+          "bytes": 9,
+          "sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+          "mode": "0o444"
+        }
+      }
+    },
+    "readonly-Nova": {
+      "code": 4,
+      "stderr": "sed: Permission denied (os error 13)\n",
+      "files": {
+        "source": {
+          "bytes": 9,
+          "sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+          "mode": "0o444"
+        }
+      }
+    },
+    "acl-deny-write": {
+      "code": 4,
+      "stderr": "sed: Permission denied (os error 13)\n",
+      "files": {
+        "source": {
+          "bytes": 9,
+          "sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+          "mode": "0o640"
+        }
+      }
+    },
+    "metadata": {
+      "acl": "-rw-r-----@ 1 thierry  staff  8 Nov 16 09:42 /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp1p7yh4yy/failures/source\n 0: group:everyone deny execute\n",
+      "xattr": "fixture",
+      "files": {
+        "source": {
+          "bytes": 8,
+          "sha256": "7f8b1dfc466b6249f06cbe55c9174df2578e7754da793fded244ef5cba2a38f1",
+          "mode": "0o640"
+        },
+        "source.bak": {
+          "bytes": 9,
+          "sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+          "mode": "0o640"
+        }
+      }
+    },
+    "EIO-injected-before-sync": {
+      "code": 4,
+      "stderr": "sed: Input/output error (os error 5)\n",
+      "files": {
+        "source": {
+          "bytes": 9,
+          "sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+          "mode": "0o640"
+        }
+      }
+    },
+    "SIGKILL-after-backup-before-rename": {
+      "source": {
+        "bytes": 9,
+        "sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+        "mode": "0o640"
+      },
+      ".tmpxeVsJs": {
+        "bytes": 8,
+        "sha256": "7f8b1dfc466b6249f06cbe55c9174df2578e7754da793fded244ef5cba2a38f1",
+        "mode": "0o640"
+      },
+      "source.bak": {
+        "bytes": 9,
+        "sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+        "mode": "0o640"
+      }
+    },
+    "hold-allocation": {
+      "code": 4,
+      "stderr": "sed: insufficient memory\n",
+      "input_bytes": 400000,
+      "block_limit": 65536,
+      "stdout_bytes": 0
+    }
+  },
+  "full_disk": {
+    "code": 4,
+    "stderr": "sed: No space left on device (os error 28)\n",
+    "original": "6663bc599d2d67bf58eeebc331e223adc74c8fa93a93635c4b0c620b917849af",
+    "after": "6663bc599d2d67bf58eeebc331e223adc74c8fa93a93635c4b0c620b917849af",
+    "directory": [
+      "filler",
+      "input"
+    ]
+  }
+}

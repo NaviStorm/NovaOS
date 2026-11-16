@@ -1,0 +1,102 @@
+[
+  {
+    "tag": "fr",
+    "args": [
+      "--help"
+    ],
+    "stdout": "Usage : sed [OPTIONS] SCRIPT [FICHIER ...]\n        sed [OPTIONS] -e SCRIPT | -f FICHIER_SCRIPT ...\n-n --quiet --silent     Désactiver l’impression implicite.\n-E -r --regexp-extended Employer les expressions régulières étendues.\n-e --expression SCRIPT  Ajouter un script. -f --file FICHIER lit un script.\n-z --null-data          Séparer les enregistrements par NUL.\n-s --separate           Recommencer les numéros et plages à chaque fichier.\n-u --unbuffered         Lire le minimum et vider la sortie.\n-i[SUFFIXE]             Éditer en place sur macOS avec sauvegarde facultative.\n--follow-symlinks       Suivre le lien pour une édition en place.\n--sandbox               Rejeter les scripts ayant des effets externes.\n--help --version        Afficher l’aide ou la version du composant.\nNovaFS P9 ne remplace pas une destination existante. Les données suivent la locale C par octets.\n",
+    "code": 0
+  },
+  {
+    "tag": "fr",
+    "args": [
+      "-i",
+      "--help"
+    ],
+    "stdout": "Usage : sed [OPTIONS] SCRIPT [FICHIER ...]\n        sed [OPTIONS] -e SCRIPT | -f FICHIER_SCRIPT ...\n-n --quiet --silent     Désactiver l’impression implicite.\n-E -r --regexp-extended Employer les expressions régulières étendues.\n-e --expression SCRIPT  Ajouter un script. -f --file FICHIER lit un script.\n-z --null-data          Séparer les enregistrements par NUL.\n-s --separate           Recommencer les numéros et plages à chaque fichier.\n-u --unbuffered         Lire le minimum et vider la sortie.\n-i[SUFFIXE]             Éditer en place sur macOS avec sauvegarde facultative.\n--follow-symlinks       Suivre le lien pour une édition en place.\n--sandbox               Rejeter les scripts ayant des effets externes.\n--help --version        Afficher l’aide ou la version du composant.\nNovaFS P9 ne remplace pas une destination existante. Les données suivent la locale C par octets.\n",
+    "code": 0
+  },
+  {
+    "tag": "fr",
+    "args": [
+      "--version"
+    ],
+    "stdout": "NovaOS sed 0.1.0 (QSE 0.9.1 / TRE)\n",
+    "code": 0
+  },
+  {
+    "tag": "fr-CA",
+    "args": [
+      "--help"
+    ],
+    "stdout": "Usage : sed [OPTIONS] SCRIPT [FICHIER ...]\n        sed [OPTIONS] -e SCRIPT | -f FICHIER_SCRIPT ...\n-n --quiet --silent     Désactiver l’impression implicite.\n-E -r --regexp-extended Employer les expressions régulières étendues.\n-e --expression SCRIPT  Ajouter un script. -f --file FICHIER lit un script.\n-z --null-data          Séparer les enregistrements par NUL.\n-s --separate           Recommencer les numéros et plages à chaque fichier.\n-u --unbuffered         Lire le minimum et vider la sortie.\n-i[SUFFIXE]             Éditer en place sur macOS avec sauvegarde facultative.\n--follow-symlinks       Suivre le lien pour une édition en place.\n--sandbox               Rejeter les scripts ayant des effets externes.\n--help --version        Afficher l’aide ou la version du composant.\nNovaFS P9 ne remplace pas une destination existante. Les données suivent la locale C par octets.\n",
+    "code": 0
+  },
+  {
+    "tag": "fr-CA",
+    "args": [
+      "-i",
+      "--help"
+    ],
+    "stdout": "Usage : sed [OPTIONS] SCRIPT [FICHIER ...]\n        sed [OPTIONS] -e SCRIPT | -f FICHIER_SCRIPT ...\n-n --quiet --silent     Désactiver l’impression implicite.\n-E -r --regexp-extended Employer les expressions régulières étendues.\n-e --expression SCRIPT  Ajouter un script. -f --file FICHIER lit un script.\n-z --null-data          Séparer les enregistrements par NUL.\n-s --separate           Recommencer les numéros et plages à chaque fichier.\n-u --unbuffered         Lire le minimum et vider la sortie.\n-i[SUFFIXE]             Éditer en place sur macOS avec sauvegarde facultative.\n--follow-symlinks       Suivre le lien pour une édition en place.\n--sandbox               Rejeter les scripts ayant des effets externes.\n--help --version        Afficher l’aide ou la version du composant.\nNovaFS P9 ne remplace pas une destination existante. Les données suivent la locale C par octets.\n",
+    "code": 0
+  },
+  {
+    "tag": "fr-CA",
+    "args": [
+      "--version"
+    ],
+    "stdout": "NovaOS sed 0.1.0 (QSE 0.9.1 / TRE)\n",
+    "code": 0
+  },
+  {
+    "tag": "en-US",
+    "args": [
+      "--help"
+    ],
+    "stdout": "Usage: sed [OPTIONS] SCRIPT [FILE ...]\n       sed [OPTIONS] -e SCRIPT | -f SCRIPTFILE ...\n-n --quiet --silent     Suppress automatic printing.\n-E -r --regexp-extended Use extended regular expressions.\n-e --expression SCRIPT  Add a script. -f --file FILE reads a script.\n-z --null-data          Separate records with NUL.\n-s --separate           Restart numbering and ranges for each file.\n-u --unbuffered         Read minimal input and flush output.\n-i[SUFFIX]              Edit in place on macOS. Optional backup suffix.\n--follow-symlinks       Follow the input link for in-place editing.\n--sandbox               Reject scripts containing external effects.\n--help --version        Show documentation or the component version.\nNovaOS P9 cannot replace an existing destination. Data use byte-oriented C locale rules.\n",
+    "code": 0
+  },
+  {
+    "tag": "en-US",
+    "args": [
+      "-i",
+      "--help"
+    ],
+    "stdout": "Usage: sed [OPTIONS] SCRIPT [FILE ...]\n       sed [OPTIONS] -e SCRIPT | -f SCRIPTFILE ...\n-n --quiet --silent     Suppress automatic printing.\n-E -r --regexp-extended Use extended regular expressions.\n-e --expression SCRIPT  Add a script. -f --file FILE reads a script.\n-z --null-data          Separate records with NUL.\n-s --separate           Restart numbering and ranges for each file.\n-u --unbuffered         Read minimal input and flush output.\n-i[SUFFIX]              Edit in place on macOS. Optional backup suffix.\n--follow-symlinks       Follow the input link for in-place editing.\n--sandbox               Reject scripts containing external effects.\n--help --version        Show documentation or the component version.\nNovaOS P9 cannot replace an existing destination. Data use byte-oriented C locale rules.\n",
+    "code": 0
+  },
+  {
+    "tag": "en-US",
+    "args": [
+      "--version"
+    ],
+    "stdout": "NovaOS sed 0.1.0 (QSE 0.9.1 / TRE)\n",
+    "code": 0
+  },
+  {
+    "tag": "fr--CA",
+    "args": [
+      "--help"
+    ],
+    "stdout": "Usage: sed [OPTIONS] SCRIPT [FILE ...]\n       sed [OPTIONS] -e SCRIPT | -f SCRIPTFILE ...\n-n --quiet --silent     Suppress automatic printing.\n-E -r --regexp-extended Use extended regular expressions.\n-e --expression SCRIPT  Add a script. -f --file FILE reads a script.\n-z --null-data          Separate records with NUL.\n-s --separate           Restart numbering and ranges for each file.\n-u --unbuffered         Read minimal input and flush output.\n-i[SUFFIX]              Edit in place on macOS. Optional backup suffix.\n--follow-symlinks       Follow the input link for in-place editing.\n--sandbox               Reject scripts containing external effects.\n--help --version        Show documentation or the component version.\nNovaOS P9 cannot replace an existing destination. Data use byte-oriented C locale rules.\n",
+    "code": 0
+  },
+  {
+    "tag": "fr--CA",
+    "args": [
+      "-i",
+      "--help"
+    ],
+    "stdout": "Usage: sed [OPTIONS] SCRIPT [FILE ...]\n       sed [OPTIONS] -e SCRIPT | -f SCRIPTFILE ...\n-n --quiet --silent     Suppress automatic printing.\n-E -r --regexp-extended Use extended regular expressions.\n-e --expression SCRIPT  Add a script. -f --file FILE reads a script.\n-z --null-data          Separate records with NUL.\n-s --separate           Restart numbering and ranges for each file.\n-u --unbuffered         Read minimal input and flush output.\n-i[SUFFIX]              Edit in place on macOS. Optional backup suffix.\n--follow-symlinks       Follow the input link for in-place editing.\n--sandbox               Reject scripts containing external effects.\n--help --version        Show documentation or the component version.\nNovaOS P9 cannot replace an existing destination. Data use byte-oriented C locale rules.\n",
+    "code": 0
+  },
+  {
+    "tag": "fr--CA",
+    "args": [
+      "--version"
+    ],
+    "stdout": "NovaOS sed 0.1.0 (QSE 0.9.1 / TRE)\n",
+    "code": 0
+  }
+]

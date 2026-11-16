@@ -1,0 +1,9 @@
+   Compiling nova-sed v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/sed-natif-0240/components/sed)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.25s
+     Running unittests src/main.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/arc027-sed-target/aarch64-apple-darwin/debug/deps/sed-744c863712771cd3)
+
+running 2 tests
+test options::tests::script_operands_do_not_request_help ... ok
+test fixtures::portable_cycle ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

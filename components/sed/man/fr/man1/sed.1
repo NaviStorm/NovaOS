@@ -1,0 +1,52 @@
+.Dd 16 novembre 2026
+.Dt SED 1
+.Os NovaOS
+.Sh NOM
+.Nm sed
+.Nd éditer un flux d'enregistrements
+.Sh SYNOPSIS
+.Nm
+.Op Fl nErsuz
+.Op Fl i Ns Op Ar suffixe
+.Op Fl e Ar script
+.Op Fl f Ar fichier_script
+.Op Fl l Ar largeur
+.Op Fl -sandbox
+.Op Fl -follow-symlinks
+.Op Fl -posix
+.Op Ar script
+.Op Ar fichier ...
+.Sh DESCRIPTION
+Les scripts et les fichiers de scripts sont évalués dans leur ordre sur la ligne de commande.
+En l'absence de fichier, le programme lit l'entrée standard.
+Par défaut, il imprime l'espace de travail à la fin de chaque cycle.
+Utiliser
+.Fl n
+pour contrôler l'impression,
+.Fl E
+pour les expressions régulières étendues et
+.Fl z
+pour des enregistrements séparés par NUL.
+Le moteur travaille par octets.
+Un caractère UTF-8 peut couvrir plusieurs correspondances.
+.Fl -sandbox
+rejette avant exécution les scripts à effets externes.
+.Fl -help
+affiche les options et
+.Fl -version
+identifie le composant.
+.Sh FICHIERS
+Sur Darwin,
+.Fl i
+prépare un candidat dans le répertoire de destination et conserve une sauvegarde si un suffixe est demandé.
+Le remplacement exige le droit d'écrire sur l'original.
+La trace GNU de débogage et la compatibilité intégrale POSIX et multioctet sont indisponibles.
+Sur NovaFS P9, le remplacement en place est indisponible.
+Le shell affiche l'aide et le manuel.
+L'exécution sur fichier ou pipe dépend de l'admission de l'ELF au catalogue.
+.Sh STATUT
+La fin normale renvoie 0, une erreur de syntaxe 1, un fichier d'entrée absent 2 et une erreur d'entrée-sortie 4.
+Les commandes q et Q peuvent imposer un statut.
+.Sh EXEMPLES
+.Dl sed -n '1,3p' fichier
+.Dl sed -nE 's/^([a-z])([0-9])$/\e2\e1/p' fichier

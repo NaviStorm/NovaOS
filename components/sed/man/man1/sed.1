@@ -1,0 +1,54 @@
+.Dd November 16, 2026
+.Dt SED 1
+.Os NovaOS
+.Sh NAME
+.Nm sed
+.Nd edit a stream of records
+.Sh SYNOPSIS
+.Nm
+.Op Fl nErsuz
+.Op Fl i Ns Op Ar suffix
+.Op Fl e Ar script
+.Op Fl f Ar script_file
+.Op Fl l Ar width
+.Op Fl -sandbox
+.Op Fl -follow-symlinks
+.Op Fl -posix
+.Op Ar script
+.Op Ar file ...
+.Sh DESCRIPTION
+Scripts and script files are evaluated in command-line order.
+With no input files, the program reads standard input.
+By default, each pattern space is printed at the end of its cycle.
+Use
+.Fl n
+for explicit output,
+.Fl E
+for extended regular expressions and
+.Fl z
+for NUL-delimited input.
+The data locale operates on bytes.
+UTF-8 characters may span multiple matches.
+.Fl -sandbox
+rejects scripts with external effects before they run.
+Use
+.Fl -help
+for other options and
+.Fl -version
+for the component version.
+.Sh FILES
+On Darwin,
+.Fl i
+writes a candidate in the destination directory and optionally keeps a backup.
+An unwritable source is refused.
+GNU debug traces and full POSIX and multibyte compatibility are unavailable.
+On NovaOS P9, in-place replacement is unavailable.
+The shell can display this manual and the help page.
+File and pipe execution require admission of the ELF by the application catalogue.
+.Sh EXIT STATUS
+A completed script normally returns 0.
+A syntax error returns 1, a missing input file returns 2 and an I/O failure returns 4.
+The q and Q commands can return an explicit status.
+.Sh EXAMPLES
+.Dl sed -n '1,3p' file
+.Dl sed -nE 's/^([a-z])([0-9])$/\e2\e1/p' file
