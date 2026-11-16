@@ -12,10 +12,12 @@ path = "main.rs"
 test = false
 
 [features]
+novaauth-lab = ["dep:novaos-identity"]
 installation = []
 nvme-lab = []
 
 [dependencies]
+novaos-identity = { path = "../novaauth", optional = true }
 novafs = { path = "../../../novaFS" }
 zeroize = { version = "1.9.1", default-features = false }
 dlmalloc = "0.2.14"

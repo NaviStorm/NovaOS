@@ -696,6 +696,10 @@ impl Session<'_, '_> {
     }
 }
 pub(crate) fn serve(dev: &IpcDevice<'_>, sector: u32, writable: bool) -> rt::Result<()> {
+    #[cfg(feature = "novaauth-lab")]
+    if writable && rt::config(1) == 41 {
+        return crate::identity_probe::run(dev, sector);
+    }
     let mut s = Session {
         dev,
         sector,
