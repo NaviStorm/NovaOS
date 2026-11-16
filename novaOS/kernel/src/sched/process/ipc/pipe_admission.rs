@@ -7,6 +7,7 @@ use super::*;
 pub(in crate::sched::process) struct PendingReader {
     controller: Reference,
     writer: Pid,
+    request: u64,
 }
 
 /// Référence privée détenue par la préparation du second étage. Son code
@@ -17,10 +18,62 @@ pub(super) struct ReaderAdmission {
 }
 
 /// Le statut WAIT du producteur reste collectable par le parent dans les deux cas.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(super) struct ReaderFailure {
     pub(super) status: u64,
     pub(super) forced: bool,
+}
+
+/// Une seule décision non acquittée par parent. La clé de contrôle originelle
+/// identifie la requête même après fermeture du canal. La consulter ne transfère
+/// ni le droit WAIT ni une autorité de retrait.
+pub(in crate::sched::process) struct ReaderReceipt {
+    request: u64,
+    decision: Result<Pid, ReaderFailure>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(super) enum ReaderOutcome {
+    Pending,
+    Published { pid: u64, wait: Option<u64> },
+    Rejected(ReaderFailure),
+}
+
+pub(super) fn query(s: &Core, parent: Pid, request: u64) -> Res<ReaderOutcome> {
+    let process = s.processes.slots[parent.slot]
+        .as_ref()
+        .filter(|p| p.pid == parent && p.outcome.is_none())
+        .ok_or(DENIED)?;
+    if process
+        .pending_reader
+        .as_ref()
+        .is_some_and(|p| p.request == request)
+    {
+        return Ok(ReaderOutcome::Pending);
+    }
+    let receipt = process
+        .reader_receipt
+        .as_ref()
+        .filter(|r| r.request == request)
+        .ok_or(DENIED)?;
+    Ok(match receipt.decision {
+        Ok(target) => ReaderOutcome::Published {
+            pid: target.number,
+            wait: process
+                .pipe_reader_wait
+                .filter(|right| right.target == target)
+                .map(WaitRight::key),
+        },
+        Err(failure) => ReaderOutcome::Rejected(failure),
+    })
+}
+
+pub(super) fn acknowledge(s: &mut Core, parent: Pid, request: u64) -> Res<()> {
+    if query(s, parent, request)? == ReaderOutcome::Pending {
+        return Err(WOULD_BLOCK);
+    }
+    s.processes.get_mut(parent).reader_receipt = None;
+    Ok(())
 }
 
 impl PendingReader {
@@ -55,6 +108,9 @@ pub(super) fn start_writer(
             .as_ref()
             .filter(|p| p.pid == parent)
             .ok_or(REVOKED)?;
+        if p.reader_receipt.is_some() {
+            return Err(LIMIT);
+        }
         if p.outcome.is_some()
             || p.wait_right.is_some()
             || p.pipe_reader_wait.is_some()
@@ -88,6 +144,7 @@ pub(super) fn start_writer(
         p.pending_reader = Some(PendingReader {
             controller,
             writer: child.0,
+            request: control,
         });
         Ok((wait.key(), ReaderAdmission { parent, controller }))
     });
@@ -152,7 +209,11 @@ impl ReaderAdmission {
                 let wait = WaitRight { target: child.0 };
                 let p = s.processes.get_mut(self.parent);
                 p.pipe_reader_wait = Some(wait);
-                p.pending_reader = None;
+                let request = p.pending_reader.take().unwrap().request;
+                p.reader_receipt = Some(ReaderReceipt {
+                    request,
+                    decision: Ok(wait.target),
+                });
                 Ok(wait.key())
             });
             if result.is_ok() {
@@ -173,7 +234,12 @@ impl ReaderAdmission {
                     .pending_reader
                     .take()
                     .unwrap();
-                pending.abort(s)
+                let request = pending.request;
+                let forced = pending.abort(s);
+                let decision = Err(ReaderFailure { status, forced });
+                s.processes.get_mut(self.parent).reader_receipt =
+                    Some(ReaderReceipt { request, decision });
+                forced
             });
             ReaderFailure { status, forced }
         })

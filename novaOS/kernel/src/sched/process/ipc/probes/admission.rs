@@ -2,6 +2,7 @@
 //! du calcul utilisateur et le parent collecte par le véritable PROCESS_WAIT.
 use super::super::pipe_admission;
 use super::*;
+use pipe_admission::ReaderOutcome;
 
 fn compute(cpu: usize) -> Res<Child> {
     let child = create_image(demo::DEMO, &[0; 24], None, None).map_err(launch_error)?;
@@ -51,6 +52,10 @@ fn blocked_writer(parent: Actor) {
     writer.send(tx, 0, 128, 15000);
     writer.blocked();
     let start = ticks();
+    assert_eq!(
+        with(|s| pipe_admission::acknowledge(s, parent.0, control)),
+        Err(WOULD_BLOCK)
+    );
     let refusal = admission.admit(|| Err(Error::Full)).unwrap_err();
     assert_eq!(
         refusal,
@@ -59,6 +64,11 @@ fn blocked_writer(parent: Actor) {
             forced: true
         }
     );
+    assert_eq!(
+        with(|s| pipe_admission::query(s, parent.0, control)),
+        Ok(ReaderOutcome::Rejected(refusal))
+    );
+    with(|s| pipe_admission::acknowledge(s, parent.0, control)).unwrap();
     assert_eq!(collect(parent, wait), 125);
     assert!(ticks() - start < u64::from(HZ));
     hal::log(format_args!(
@@ -89,6 +99,15 @@ fn natural_125(parent: Actor) {
         }
     );
     assert_eq!(later.call(PROCESS_ID, 0, 0, 0), Ok(later.0.number));
+    assert_eq!(
+        with(|s| pipe_admission::query(s, later.0, control)),
+        Err(DENIED)
+    );
+    assert_eq!(
+        with(|s| pipe_admission::query(s, parent.0, control)),
+        Ok(ReaderOutcome::Rejected(failure))
+    );
+    with(|s| pipe_admission::acknowledge(s, parent.0, control)).unwrap();
     stop(independent, [later]);
     hal::log(format_args!(
         "PIPE admission sortie_normale=125 force=0 slot_recycle=protege OK"
@@ -155,14 +174,31 @@ pub(super) fn run() {
             until(|| with(|s| s.processes.get(pid).outcome.is_some()));
         }
         let start = ticks();
+        assert_eq!(
+            with(|s| pipe_admission::query(s, parent.0, control)),
+            Ok(ReaderOutcome::Pending)
+        );
         let forced = if case == "admis" {
             let read = admission
                 .admit(|| create_image(IMAGE, &[], None, None))
                 .unwrap();
             assert!(with(|s| s.processes.get(parent.0).pending_reader.is_none()));
             let reader = with(|s| s.processes.get(parent.0).pipe_reader_wait.unwrap().target);
+            // Simuler la perte de réponse en retrouvant WAIT depuis la décision.
+            let waited = match with(|s| pipe_admission::query(s, parent.0, control)).unwrap() {
+                ReaderOutcome::Published { pid, wait: Some(k) } if pid == reader.number => k,
+                other => panic!("issue de publication absente {other:?}"),
+            };
+            assert_eq!(read, waited);
             Actor(reader).start(PROCESS_EXIT, 0, 0, 0);
-            assert_eq!(collect(parent, read), 0);
+            assert_eq!(collect(parent, waited), 0);
+            assert_eq!(
+                with(|s| pipe_admission::query(s, parent.0, control)),
+                Ok(ReaderOutcome::Published {
+                    pid: reader.number,
+                    wait: None
+                })
+            );
             parent.call(IPC_CLOSE, control, 0, 0).unwrap();
             release(pid);
             false
@@ -200,6 +236,12 @@ pub(super) fn run() {
             }
             failure.forced
         };
+        assert!(with(|s| s.processes.get(parent.0).reader_receipt.is_some()));
+        with(|s| pipe_admission::acknowledge(s, parent.0, control)).unwrap();
+        assert_eq!(
+            with(|s| pipe_admission::query(s, parent.0, control)),
+            Err(DENIED)
+        );
         let rc = collect(parent, wait);
         assert_eq!(rc, if forced { 125 } else { ordinary });
         let elapsed = ticks() - start;
@@ -211,6 +253,9 @@ pub(super) fn run() {
             u8::from(forced)
         ));
     }
+    hal::log(format_args!(
+        "PIPE admission reponse_perdue QUERY meme_wait apres_collecte=aucun acquittement=unique OK"
+    ));
     blocked_writer(parent);
     natural_125(parent);
     release(witness.0);

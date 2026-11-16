@@ -31,6 +31,7 @@ def qualify(arch, cpus, out):
                     raise RuntimeError(serial[-1300:])
                 if "PIPE admission restitution OK" in serial:
                     assert f"PIPE admission vcpu={cpus} cpu_producteur={cpus - 1}" in serial
+                    assert "PIPE admission reponse_perdue QUERY meme_wait apres_collecte=aucun acquittement=unique OK" in serial
                     assert "PIPE admission sortie_normale=125 force=0 slot_recycle=protege OK" in serial
                     assert "PIPE admission saturation offres=8 attente=1 collecte=125 OK" in serial
                     assert "PIPE admission parent_disparu orphelins=0 reponse_tardive=refusee OK" in serial
