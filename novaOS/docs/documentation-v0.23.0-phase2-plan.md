@@ -1,6 +1,6 @@
 # Extension du catalogue aux 29 commandes restantes
 
-Proposition soumise à la MOA/MOE. Le catalogue public compte 37 noms, dont huit pilotes. Les 29 lignes ci-dessous correspondent au répartiteur du candidat. Le script installé `/verification.nsh` garde son suivi séparé. Aucune des 29 pages n’est encore livrée. Les ELF ont un synopsis court et une version générique du paquet. L’état historique des options des intégrées est détaillé dans l’[inventaire](reconciliation-v0300/inventaire-commandes.md).
+Plan établi en phase 1. Les résultats de réalisation figurent dans le [rapport de phase 2](documentation-v0.23.0-phase2.md). Le catalogue public compte 37 noms, dont huit pilotes. Les 29 lignes ci-dessous correspondent au répartiteur du candidat. Le script installé `/verification.nsh` garde son suivi séparé. À la date de cette proposition, les 29 pages restaient à développer. Les ELF ont un synopsis court et une version générique du paquet. L’état historique des options des intégrées est détaillé dans l’[inventaire](reconciliation-v0300/inventaire-commandes.md).
 
 ## Recette commune à chaque ligne
 
@@ -53,4 +53,4 @@ Sources contrôlées pour la matrice : [noms publics et observation](../../compo
 3. **Observation et terminal, sept intégrées, risque faible à modéré.** Réutiliser le catalogue dans nsh. Sonder explicitement PROCESS_SAMPLE et les opérations d’écran. Vérifier l’accès depuis un script pour l’aide de history.
 4. **Langage et état de session, onze intégrées, risque élevé.** Définir les ambiguïtés de grammaire avant de modifier le répartiteur. Rejouer les scripts, alias, boucles et courts-circuits sur les deux ISA. Conserver la syntaxe métier acceptée.
 
-La couverture des 29 commandes exige une preuve individuelle avant v0.30.0. La publication de cette proposition laisse le développement de phase 2 soumis à arbitrage.
+La couverture des 29 commandes exige une preuve individuelle avant v0.30.0. La MOA/MOE a ensuite autorisé les quatre lots, dont les résultats sont consignés dans le rapport de phase 2.
