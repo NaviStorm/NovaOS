@@ -1,0 +1,196 @@
+#!/bin/sh
+# ARC-027 — banc de charge Darwin ARM64, données synthétiques et oracle GNU.
+set -eu
+case "$#" in
+    0) set -- 10000000 65000000 ;;
+    1) case "$1" in
+        -h|--help) echo "Usage : ./charges.sh [NOMBRE_DE_LIGNES ...]"
+            echo "Par défaut : 10 000 000 puis 65 000 000, deux passages par moteur et motif."
+            exit 0 ;;
+    esac ;;
+esac
+livraison=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+: "${NOVAOS_TMPDIR:=$(dirname -- "$livraison")/tmp}"
+export NOVAOS_TMPDIR TMPDIR="$NOVAOS_TMPDIR/"
+export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+unset GREP_OPTIONS GREP_COLOR GREP_COLORS POSIXLY_CORRECT
+exec python3 -B - "$livraison" "$@" <<'PY'
+import hashlib
+import json
+import locale
+import os
+from pathlib import Path
+import platform
+import random
+import shlex
+import shutil
+import statistics
+import subprocess
+import sys
+import tempfile
+import time
+
+delivery = Path(sys.argv[1])
+if platform.system() != "Darwin" or platform.machine() != "arm64":
+    sys.exit("Le banc mesure le RSS Darwin ARM64 en octets.")
+if not all(s.isascii() and s.isdecimal() and 1 <= int(s) <= 99_999_999 for s in sys.argv[2:]):
+    sys.exit("Choisir des tailles entières comprises entre 1 et 99 999 999.")
+sizes = list(map(int, sys.argv[2:]))
+if len(set(sizes)) != len(sizes):
+    sys.exit("Choisir des tailles distinctes.")
+locale.setlocale(locale.LC_ALL, "")
+executables = {"livré": delivery / "grep", "GNU": Path("/opt/homebrew/bin/ggrep")}
+def digest(path):
+    with path.open("rb") as f:
+        return hashlib.file_digest(f, "sha256").hexdigest()
+
+metadata = {}
+for name, exe in executables.items():
+    version = subprocess.check_output([exe, "--version"], text=True).strip()
+    if name == "GNU" and version.splitlines()[0] != "ggrep (GNU grep) 3.12":
+        sys.exit("GNU grep 3.12 est requis.")
+    probe = subprocess.run([exe, "-Po", "(?<=a)b"], input=b"ab\n", capture_output=True)
+    if (probe.returncode, probe.stdout, probe.stderr) != (0, b"b\n", b""):
+        sys.exit(f"Échec du témoin PCRE2 pour {name}.")
+    metadata[name] = dict(path=str(exe), sha256=digest(exe), version=version, pcre=True)
+
+cases = [
+    ("ere-journal", "-Ec",
+     r"^id=[0-9]{8} (WARN|ERROR) (api|worker)/(fr|be) /(orders|users)/[0-9]{4} (429|5[0-9]{2}) [1-9][0-9]{3}ms [[:alnum:]]{3}:[[:alnum:]]{3} (retry|timeout)$"),
+    ("bre-rappel", "-Gc", r" \([a-f]\{2\}[0-9]\):\1 \(retry\|timeout\|refusé\)$"),
+    ("pcre-extraction", "-nPo",
+     r"^(?=id=\d{8} ERROR (?:api|batch)/)(?=.* (?:429|5\d{2}) )(?=.* (?<tag>[a-f]{2}\d):\k<tag> timeout$)id=\K\d{8}(?= ERROR )"),
+    ("pcre-absence", "-Pc",
+     r"^id=\d{8} (?:INFO|WARN|ERROR) (?:api|batch|worker)/(?:fr|be|ca) /(?:users|orders|jobs)/\d{4} [245]\d{2} \d{1,4}ms (?<tag>[a-f]{2}\d):\k<tag> ok$"),
+]
+# Le modèle des résultats est établi sur les champs, indépendamment des regex.
+rng = random.Random(270312)
+templates = []
+for _ in range(65_536):
+    level = rng.choice(("INFO", "WARN", "ERROR"))
+    service = rng.choice(("api", "worker", "batch"))
+    region = rng.choice(("fr", "be", "ca"))
+    route = rng.choice(("orders", "users", "jobs"))
+    key = rng.randrange(10000)
+    status = rng.choice((200, 204, 400, 404, 429, 500, 503, 507))
+    ms = rng.randrange(1, 10000)
+    action = rng.choice(("ok", "retry", "timeout", "refusé"))
+    a, b, digit = rng.choice("abcdef"), rng.choice("abcdef"), rng.randrange(10)
+    same = rng.randrange(6) == 0 and action != "ok"
+    pair = f"{a}{b}{digit}:{a}{b}{digit if same else (digit+1)%10}"
+    template = f" {level} {service}/{region} /{route}/{key:04d} {status} {ms}ms {pair} {action}\n".encode()
+    error = status == 429 or 500 <= status < 600
+    selected = (level in ("WARN", "ERROR") and service in ("api", "worker") and
+                region in ("fr", "be") and route in ("orders", "users") and
+                error and ms >= 1000 and action in ("retry", "timeout"))
+    extract = level == "ERROR" and service in ("api", "batch") and error and same and action == "timeout"
+    templates.append((template, selected, same and action in ("retry", "timeout", "refusé"), extract))
+bodies = [row[0] for row in templates]
+indices = [[i for i, row in enumerate(templates) if row[k]] for k in (1, 2, 3)]
+period = len(bodies)
+
+def generate(path, size):
+    sha = hashlib.sha256()
+    extracted = hashlib.sha256()
+    counts = [0, 0, 0, 0]
+    extract_bytes = 0
+    with path.open("xb") as f:
+        for start in range(0, size, period):
+            n = min(size - start, period)
+            block = b"".join(b"id=%08d" % (start+i+1) + bodies[i] for i in range(n))
+            assert block.count(b"\n") == n
+            f.write(block)
+            sha.update(block)
+            for k, offsets in enumerate(indices):
+                counts[k] += len(offsets) if n == period else sum(i < n for i in offsets)
+            output = b"".join(b"%d:%08d\n" % (start+i+1, start+i+1) for i in indices[2] if i < n)
+            extracted.update(output)
+            extract_bytes += len(output)
+    expected = {}
+    for (name, _, _), count in zip(cases, counts, strict=True):
+        out = f"{count}\n".encode()
+        extraction = name == "pcre-extraction"
+        expected[name] = dict(selections=count, statut=0 if count else 1,
+                              octets=extract_bytes if extraction else len(out),
+                              sha256=extracted.hexdigest() if extraction else hashlib.sha256(out).hexdigest())
+    return dict(lignes=size, octets=path.stat().st_size, sha256=sha.hexdigest(), attendus=expected)
+
+def measure(exe, args, corpus, out, err, stdin):
+    with corpus.open("rb") as inp, out.open("wb") as dest, err.open("wb") as diag:
+        argv = [str(exe), *args] + ([] if stdin else [str(corpus)])
+        t0 = time.monotonic()
+        proc = subprocess.Popen(argv, stdin=inp if stdin else subprocess.DEVNULL, stdout=dest, stderr=diag)
+        _, wait_status, usage = os.wait4(proc.pid, 0)
+        seconds = time.monotonic() - t0
+        proc.returncode = os.waitstatus_to_exitcode(wait_status)
+    return dict(statut=proc.returncode, secondes=seconds, rss_octets=usage.ru_maxrss,
+                cpu_user_s=usage.ru_utime, cpu_systeme_s=usage.ru_stime,
+                octets=out.stat().st_size, sha256=digest(out),
+                stderr_octets=err.stat().st_size, stderr_sha256=digest(err),
+                commande=shlex.join(argv) + (" < "+shlex.quote(str(corpus)) if stdin else ""))
+
+scratch = Path(os.environ["NOVAOS_TMPDIR"])
+scratch.mkdir(exist_ok=True, parents=True)
+proof = Path(tempfile.mkdtemp(prefix="charges-", dir=delivery))
+print(f"Preuves : {proof}", flush=True)
+report = dict(date=time.strftime("%Y-%m-%dT%H:%M:%S%z"), macos=platform.mac_ver()[0],
+              arch=platform.machine(), locale=os.environ["LC_ALL"], graine=270312, profils=period,
+              executable=metadata, script_sha256=digest(delivery/"charges.sh"), repetitions=2,
+              tailles=sizes, cas=cases, corpus=[], mesures=[])
+def save():
+    tmp = proof/"mesures.part"
+    tmp.write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n")
+    tmp.replace(proof/"mesures.json")
+save()
+with tempfile.TemporaryDirectory(prefix="arc027-charge-", dir=scratch) as tmp:
+    root = Path(tmp)
+    for size in sizes:
+        if shutil.disk_usage(root).free < size * (11+max(map(len,bodies))) + 512*1024**2:
+            sys.exit("Espace disque insuffisant pour ce volume.")
+        corpus = root/"journal"
+        data = generate(corpus, size)
+        # Lecture intégrale pour vérifier le fichier réellement fourni aux processus.
+        assert digest(corpus) == data["sha256"]
+        report["corpus"].append(data)
+        save()
+        print(f"{size:,} lignes, {data['octets']:,} octets vérifiés", flush=True)
+        for name, flags, pat in cases:
+            for rep, order in enumerate((("livré", "GNU"), ("GNU", "livré")), 1):
+                for label in order:
+                    out, err = root/"stdout", root/"stderr"
+                    row = measure(executables[label], [flags, pat], corpus, out, err, name=="pcre-extraction")
+                    expected = data["attendus"][name]
+                    row["conforme"] = (all(row[k] == expected[k] for k in ("statut","octets","sha256"))
+                                       and row["stderr_octets"] == 0)
+                    row.update(lignes=size, cas=name, moteur=label, repetition=rep)
+                    report["mesures"].append(row)
+                    save()
+                    print(f"{name} {label} #{rep} {row['secondes']:.2f} s, "
+                          f"{row['rss_octets']/1024**2:.2f} Mio, conforme={row['conforme']}", flush=True)
+                    if not row["conforme"]:
+                        tag = f"{size}-{name}-{label}-{rep}"
+                        shutil.copyfile(out, proof/(tag+".stdout"))
+                        shutil.copyfile(err, proof/(tag+".stderr"))
+        corpus.unlink()
+correct = sum(r["conforme"] for r in report["mesures"])
+lines = ["# Charge grep sur macOS ARM64", "",
+         f"{correct}/{len(report['mesures'])} exécutions conformes au modèle indépendant.",
+         "Temps médian de deux passages par binaire, RSS maximal observé. Cache système ordinaire, ordre alterné.",
+         "Les lignes ont un identifiant unique et un corps synthétique de période 65 536. Le motif d’extraction lit stdin sur un fichier régulier.", "",
+         "| Lignes | Cas | Lignes sélectionnées | Livré (s) | GNU (s) | Livré (Mio RSS) | GNU (Mio RSS) |",
+         "|---:|---|---:|---:|---:|---:|---:|"]
+for data in report["corpus"]:
+    for name, _, _ in cases:
+        pair = [[r for r in report["mesures"] if (r["lignes"],r["cas"],r["moteur"]) ==
+                 (data["lignes"],name,label)] for label in ("livré","GNU")]
+        times = [statistics.median(r["secondes"] for r in rs) for rs in pair]
+        rss = [max(r["rss_octets"] for r in rs)/1024**2 for rs in pair]
+        lines.append("| {} | {} | {} | {:.2f} | {:.2f} | {:.2f} | {:.2f} |".format(
+            data["lignes"],name,data["attendus"][name]["selections"],*times,*rss))
+(proof/"rapport.md").write_text("\n".join(lines)+"\n")
+shutil.copyfile(delivery/"charges.sh", proof/"charges.sh")
+fichiers = sorted(p for p in proof.iterdir() if p.is_file())
+(proof/"SHA256SUMS").write_text("".join(f"{digest(p)}  {p.name}\n" for p in fichiers))
+print("\n".join(lines), flush=True)
+sys.exit(0 if correct==len(report["mesures"]) else 1)
+PY
