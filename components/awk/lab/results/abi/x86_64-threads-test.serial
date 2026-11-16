@@ -1,0 +1,38 @@
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+BdsDxe: starting Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 51283 pages libres.
+NovaOS v0.20.0
+SMP FPU x86 sauvegarde=xsave64 xcr0_demande=7
+THREADS VM gardes=2 tls=zero recyclage=verifie rollback=verifie cadres=tables_rendus
+DEBUG pid=1 admission absente creation attente TLS refusees ID et yield OK
+PROC pid=1 niveau=Ring3 pc=0x1005aac sortie=0
+DEBUG pid=3 externe somme=432 threads=2 tls=7,11 double-join=refuse
+DEBUG pid=3 tas aligne stable RTC UTC ouverture et vues fichier repertoire refusees
+DEBUG pid=3 cycle annulation delai detachement quota=8 reemploi-tls=0
+DEBUG pid=3 capacite delegation envoi puis revocation racine conservee
+PROC pid=3 niveau=Ring3 pc=0x1005aac sortie=0
+DEBUG pid=5 SDK A annule transfere le handle de B a C collecte unique double join refuse
+DEBUG pid=5 auto-join refuse attenteur unique join annule cible collectee ancien handle refuse
+PROC pid=5 niveau=Ring3 pc=0x1005aac sortie=0
+THREAD slot=3 generations=24,27 attente et join annules
+DEBUG pid=7 IPC reception retiree BAD_ADDRESS puis message=37
+PROC pid=7 niveau=Ring3 pc=0x1005aac sortie=0
+DEBUG pid=9 notifications 1+1+0 concurrence valeur-publiee=29
+PROC pid=9 niveau=Ring3 pc=0x1005aac sortie=0
+PROC pid=13 niveau=Ring3 pc=0x1005aac sortie=0
+DEBUG pid=11 FPU SIMD GPR TLS conserves sur deux threads
+PROC pid=11 niveau=Ring3 pc=0x1005aac sortie=0
+PROC pid=15 niveau=Ring3 pc=0x1005aac sortie=0
+THREAD calcul cpu=0->1 preemptions=5,5 migrations=2 isolation=OK
+PROC pid=17 niveau=Ring3 pc=0x10016ea faute=#PF adresse=0x403fff acces=ecriture cause=absente syndrome=0x6
+THREAD garde adresse=0x403fff faute=confirmee
+PROC pid=19 niveau=Ring3 pc=0x1005aac sortie=33
+THREAD destruction attentes=2 ipc=1 calcul=1 join=1 survivants=0
+PROC pid=21 niveau=Ring3 pc=0x10059ec sortie=71
+THREAD sorties concurrentes=2 dernier=71 survivants=0
+PROC pid=23 niveau=Ring3 pc=0x10059ec sortie=19
+THREAD principal collecte dernier resultat=19
+THREAD restitution avant=62373 apres=62373 blocs=4 tcb=3 OK
+SMP diagnostic cpu=0 sp=0xfffff02000022d80
+SMP diagnostic cpu=1 sp=0xfffff0200023ee80
+SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0

@@ -1,0 +1,76 @@
+--- a/novaOS/abi/terminal.rs
++++ b/novaOS/abi/terminal.rs
+@@ -30,6 +30,7 @@
+ pub const PIPE_CAT: u64 = PIPE_OPEN + 1;
+ pub const PIPE_WC: u64 = PIPE_OPEN + 2;
+ pub const PIPE_HEAD: u64 = PIPE_OPEN + 3;
++pub const PIPE_AWK: u64 = PIPE_OPEN + 4;
+ // Marqueurs du champ de préparation réservés au banc CLI (QUALIFY).
+ pub const PIPE_PROBE_WAIT: u64 = u64::MAX;
+ pub const PIPE_PROBE_REVOKE: u64 = u64::MAX - 1;
+--- a/novaOS/kernel/src/sched/process/ipc/pipe.rs
++++ b/novaOS/kernel/src/sched/process/ipc/pipe.rs
+@@ -8,12 +8,13 @@
+     Cat = 2,
+     Head = 3,
+     Wc = 11,
++    Awk = 17,
+ }
+ impl Role {
+     pub(super) fn reader(self) -> bool { self != Self::Cat }
+
+     fn name(self) -> &'static str {
+-        match self { Self::Cat => "cat", Self::Head => "head", Self::Wc => "wc" }
++        match self { Self::Cat => "cat", Self::Head => "head", Self::Wc => "wc", Self::Awk => "awk" }
+     }
+ }
+
+--- a/novaOS/kernel/src/sched/process/ipc/spawn.rs
++++ b/novaOS/kernel/src/sched/process/ipc/spawn.rs
+@@ -107,10 +107,13 @@
+         tty::PIPE_CAT => Some(Role::Cat),
+         tty::PIPE_WC => Some(Role::Wc),
+         tty::PIPE_HEAD => Some(Role::Head),
++        tty::PIPE_AWK => Some(Role::Awk),
++        n if n == Role::Awk as u64 => return Err(DENIED),
+         _ => None,
+     };
+     let number = role.map_or(number, |r| r as u64);
+     let stream = role.map(Role::reader);
++    let awk_reader = role == Some(Role::Awk);
+     let check = |s: &Core, key: u64| -> Res<Option<Node>> {
+         let p = s.processes.get(parent);
+         if p.pipe_reader_wait.is_some() { return Err(LIMIT); }
+@@ -157,6 +160,7 @@
+     // Le banc peut retirer OUTPUT à head pour exercer une vraie erreur console.
+     let denied_output_probe = authority & tty::QUALIFY != 0 && stream == Some(true)
+         && role == Some(Role::Head) && word(3) == DENIED && ports == u64::from(tty::ERROR);
++    if awk_reader && word(3) != 0 { return Err(BAD_ARGUMENT); }
+     if word(4) != (data.len() - tty::HEADER) as u64
+         || stream == Some(true) && (input != 0 || ports != u64::from(tty::ERROR | tty::OUTPUT) && !denied_output_probe)
+         || stream == Some(false) && ports != u64::from(tty::ERROR)
+@@ -181,7 +185,8 @@
+     let legacy_p8 = with(|s| s.processes.get(parent).legacy_p8_launcher);
+     // L'admission et l'identité sont celles d'un ELF isolé. Aucun chemin de fichier
+     // ni handle métier n’entre dans un lancement documentaire.
+-    let child = if documentation && !workers.workers() {
++    if awk_reader && workers.workers() { return Err(DENIED); }
++    let child = if awk_reader || documentation && !workers.workers() {
+         let child = image.launch(data, false, None)?;
+         workers.bind(with(|s| s.processes.get(child.0).instance));
+         child
+@@ -223,7 +228,13 @@
+                 Ok(())
+             }).unwrap();
+         }
+-        s.processes.get_mut(pid).terminal = ports as u8 | (authority & tty::QUALIFY);
++        let child = s.processes.get_mut(pid);
++        if awk_reader {
++            child.application_threads = false;
++            child.terminal = ports as u8;
++        } else {
++            child.terminal = ports as u8 | (authority & tty::QUALIFY);
++        }
+         let right = WaitRight { target: pid };
+         if stream == Some(true) {
+             s.processes.get_mut(parent).pipe_reader_wait = Some(right);

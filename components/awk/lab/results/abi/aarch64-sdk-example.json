@@ -1,0 +1,15 @@
+{
+  "architecture": "aarch64",
+  "profil": "sdk-example",
+  "elf_sha256": "db2d14ec8a1f8d1ac22acc331ee4d3d90336a90adc8d50ca057c3129e129c3a8",
+  "noyau_sha256": "9ad288a1e30110bdbe8a2a310f4c7656589517d5c3299e5e86c771ad76e4d775",
+  "journal": "serie-aarch64-sdk-example-2cpu.log",
+  "journal_sha256": "fecf7c8bb73454cd8f10b085164e7db965d9b8720836b07e278b2160d1e80511",
+  "qemu": "QEMU emulator version 11.1.3",
+  "resultat": {
+    "vcpus": 2,
+    "niveau": "EL0",
+    "sortie": 0,
+    "restitution": true
+  }
+}

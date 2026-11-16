@@ -1,0 +1,23 @@
+{
+  "architecture": "aarch64",
+  "profil": "threads-test",
+  "elf_sha256": "fa1640df7589a2700f172acc43197c2904e6e2f833fb748048bc15984575cbd9",
+  "noyau_sha256": "5b83fa1187b8e865bc416c6ce9a68d60a4bc6486c80915c48449544aa039fd3b",
+  "journal": "serie-aarch64-threads-test-2cpu-archive.log",
+  "journal_sha256": "b5924500d99ff30a477a09384540a8a0ddf882f6a0c0f1eb9f6af32786f8c9b7",
+  "qemu": "QEMU emulator version 11.1.3",
+  "resultat": {
+    "vcpus": 2,
+    "niveau": "EL0",
+    "cpu_final": 1,
+    "preemptions": [
+      5,
+      5
+    ],
+    "migrations": 2,
+    "cadres_avant": 61844,
+    "cadres_apres": 61844,
+    "blocs": 4,
+    "tcb_apres": 3
+  }
+}

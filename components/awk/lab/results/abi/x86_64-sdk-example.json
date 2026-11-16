@@ -1,0 +1,15 @@
+{
+  "architecture": "x86_64",
+  "profil": "sdk-example",
+  "elf_sha256": "1ad5ebf8b6a0d80b10d2df826500f39052fdc222fac418640b408b9657d78c6e",
+  "noyau_sha256": "88b80ce274616a102358b1b85da26546f32c9010f7c304e870dbe20b97434ac9",
+  "journal": "serie-x86_64-sdk-example-2cpu.log",
+  "journal_sha256": "9f5ef9119e6eb3ca18da90ae9b48813373e469656cfe0b3f106f117b513ff0b5",
+  "qemu": "QEMU emulator version 11.1.3",
+  "resultat": {
+    "vcpus": 2,
+    "niveau": "Ring3",
+    "sortie": 0,
+    "restitution": true
+  }
+}

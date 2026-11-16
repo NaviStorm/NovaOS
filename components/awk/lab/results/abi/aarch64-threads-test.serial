@@ -1,0 +1,51 @@
+UEFI firmware (version edk2-stable202408-prebuilt.qemu.org built at 16:28:50 on Sep 12 2024)
+ArmTrngLib could not be correctly initialized.
+Error: Image at 0004FDB6000 start failed: 00000001
+Error: Image at 0004FCB2000 start failed: Unsupported
+Error: Image at 0004FC37000 start failed: Not Found
+Error: Image at 0004FB5D000 start failed: Aborted
+Tpm2SubmitCommand - Tcg2 - Not Found
+Tpm2GetCapabilityPcrs fail!
+Tpm2SubmitCommand - Tcg2 - Not Found
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+ConvertPages: failed to find range 140000000 - 140003FFF
+BdsDxe: starting Boot0001 "UEFI QEMU QEMU CD-ROM " from PciRoot(0x0)/Pci(0x1,0x0)/Scsi(0x0,0x0)
+[BootID EFI] QEMU ArmVirt /chosen/rng-seed
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+ConvertPages: Incompatible memory types, the pages to allocate have been allocated
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 53937 pages libres.
+NovaOS v0.20.0
+THREADS VM gardes=2 tls=zero recyclage=verifie rollback=verifie cadres=tables_rendus
+DEBUG pid=1 admission absente creation attente TLS refusees ID et yield OK
+PROC pid=1 niveau=EL0 pc=0x10051d4 sortie=0
+DEBUG pid=3 externe somme=432 threads=2 tls=7,11 double-join=refuse
+DEBUG pid=3 tas aligne stable RTC UTC ouverture et vues fichier repertoire refusees
+DEBUG pid=3 cycle annulation delai detachement quota=8 reemploi-tls=0
+DEBUG pid=3 capacite delegation envoi puis revocation racine conservee
+PROC pid=3 niveau=EL0 pc=0x10051d4 sortie=0
+DEBUG pid=5 SDK A annule transfere le handle de B a C collecte unique double join refuse
+DEBUG pid=5 auto-join refuse attenteur unique join annule cible collectee ancien handle refuse
+PROC pid=5 niveau=EL0 pc=0x10051d4 sortie=0
+THREAD slot=3 generations=24,27 attente et join annules
+DEBUG pid=7 IPC reception retiree BAD_ADDRESS puis message=37
+PROC pid=7 niveau=EL0 pc=0x10051d4 sortie=0
+DEBUG pid=9 notifications 1+1+0 concurrence valeur-publiee=29
+PROC pid=9 niveau=EL0 pc=0x10051d4 sortie=0
+PROC pid=13 niveau=EL0 pc=0x10051d4 sortie=0
+DEBUG pid=11 FPU SIMD GPR TLS conserves sur deux threads
+PROC pid=11 niveau=EL0 pc=0x10051d4 sortie=0
+PROC pid=15 niveau=EL0 pc=0x10051d4 sortie=0
+THREAD calcul cpu=0->1 preemptions=5,5 migrations=2 isolation=OK
+PROC pid=17 niveau=EL0 pc=0x100162c faute=ABORT adresse=0x403fff acces=ecriture cause=absente syndrome=0x92000047
+THREAD garde adresse=0x403fff faute=confirmee
+PROC pid=19 niveau=EL0 pc=0x10051d4 sortie=33
+THREAD destruction attentes=2 ipc=1 calcul=1 join=1 survivants=0
+PROC pid=21 niveau=EL0 pc=0x1005110 sortie=73
+THREAD sorties concurrentes=2 dernier=73 survivants=0
+PROC pid=23 niveau=EL0 pc=0x1005110 sortie=19
+THREAD principal collecte dernier resultat=19
+THREAD restitution avant=61844 apres=61844 blocs=4 tcb=3 OK
+SMP diagnostic cpu=0 sp=0xfffff02000022dc0
+SMP diagnostic cpu=1 sp=0xfffff0200023edd0
+SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0
