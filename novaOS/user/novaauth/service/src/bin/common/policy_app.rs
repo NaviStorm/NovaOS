@@ -15,7 +15,7 @@ fn serve() -> rt::Result<()> {
         rt::send_frame(rt::config(9), cmd.tag, &cmd.payload, 0, false)?;
         // Le superviseur peut maintenant solliciter l'attestation sur l'autre canal.
         rt::send_for(rt::config(0), cmd.tag, &[1], 5000)?;
-        let wait = if cmd.payload[0] == 7 { 1000 } else { 15000 };
+        let wait = if cmd.payload[0] == 7 { 2000 } else { 15000 };
         let mut r = [0; 128];
         match rt::receive_for(rt::config(10), wait) {
             Ok(v)

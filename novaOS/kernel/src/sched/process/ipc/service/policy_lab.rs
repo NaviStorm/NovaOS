@@ -37,6 +37,16 @@ pub(super) fn attach(
 ) -> Res<()> {
     // Le processus est créé à partir de ce même slice immuable. Sa première instruction
     // suit la vérification, le rattachement des endpoints et la publication par start.
+    // Les deux versions de l'application d'Alice utilisent la même voie privée.
+    // Lier une seconde instance à la voie remplacerait l'attestation de la première.
+    if s.processes.slots.iter().flatten().any(|p| {
+        p.pid != target
+            && p.service_owner == Some(m.manager)
+            && matches!(p.service_id, 21..=23)
+            && (p.service_id == 22) == (id == 22)
+    }) {
+        return Err(REFUSED);
+    }
     let (tx, rx) = channel(s, target, Some(m.fs), SEND)?;
     let (receive, respond) = channel(s, target, Some(m.fs), RECEIVE)?;
     if let Some(space) = s.processes.get(target).space.as_ref() {

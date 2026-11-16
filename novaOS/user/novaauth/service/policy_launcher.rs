@@ -203,6 +203,7 @@ pub(super) fn launch() -> rt::Result<()> {
     if matches!(stage, 7 | 8) {
         let app = admit(if stage == 7 { 23 } else { 21 }, &id, &hash)?;
         if stage == 7 {
+            check(matches!(start(21, &id, &base_hash), Err(rt::REFUSED)))?;
             let lease = alice.data(app, 1, 0, 1, 0, 0)?;
             alice.data(app, 3, lease, 0, 0, 0)?;
             log(b"NAP mise a jour attestee lecture autorisee");
@@ -238,6 +239,7 @@ pub(super) fn launch() -> rt::Result<()> {
     let direct = alice.data(app_a, 1, 0, 1, 0, 0)?;
     alice.data(app_a, 3, direct, 0, 0, 0)?;
     alice.data(app_a, 4, direct, 0, 0, rt::DENIED)?;
+    bob.data(app_b, 3, direct, 0, 0, rt::REVOKED)?;
     bob.data(app_b, 1, 0, 1, 0, rt::DENIED)?;
     bob.data(app_b, 10, 0, 2, 0, rt::DENIED)?;
     if stage != 11 {
@@ -248,7 +250,7 @@ pub(super) fn launch() -> rt::Result<()> {
             let blocked = alice.submit(app_a, 11, grandchild, 0, 37)?;
             let debut = now()?;
             alice.success(15, 1, 0, 11)?;
-            metric(b"NAP retrait ticks=", now()? - debut);
+            metric(b"NAP retrait ms=", now()? - debut);
             check(word(&receive(app_a[1], blocked, 128)?) == rt::CANCELLED)?;
             for key in [root, child, grandchild] {
                 alice.data(app_a, 5, key, 0, 38, rt::REVOKED)?;
@@ -258,9 +260,20 @@ pub(super) fn launch() -> rt::Result<()> {
             log(b"NAP retrait groupe descendants refuses lecture conservee");
         } else {
             alice.data(app_a, 5, child, 0, 35, 0)?;
-            alice.data(app_a, 7, child, 0, 35, files::UNCERTAIN)?;
-            check(alice.data(app_a, 8, direct, 0, 35, 0)? == 1)?;
-            let waiting = alice.submit(app_a, 11, child, 0, 36)?;
+            let lost = alice.submit(app_a, 7, child, 0, 35)?;
+            check(matches!(
+                rt::receive_for(app_a[1], 0),
+                Err(rt::WOULD_BLOCK | rt::TIMED_OUT)
+            ))?;
+            // Le VFS a publié, mais le client attend encore son résultat.
+            alice.success(4, 0, 0, 0)?;
+            check(word(&receive(app_a[1], lost, 128)?) == files::UNCERTAIN)?;
+            alice.success(1, 0, 0, 0)?;
+            let read = alice.data(app_a, 1, 0, 1, 0, 0)?;
+            check(alice.data(app_a, 8, read, 0, 35, 0)? == 1)?;
+            log(b"NAP fermeture apres publication issue incertaine retrouvee une fois");
+            let write = alice.data(app_a, 10, 0, 2, 0, 0)?;
+            let waiting = alice.submit(app_a, 11, write, 0, 36)?;
             alice.success(4, 0, 0, 0)?;
             let r = receive(app_a[1], waiting, 128)?;
             check(word(&r) == rt::CANCELLED)?;
