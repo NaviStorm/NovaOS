@@ -164,7 +164,7 @@ fn main() {
         );
     } else {
         let h = ledger.current().unwrap();
-        if arg[5] == "recul" {
+        if arg.get(5).is_some_and(|v| v == "recul") {
             assert!(matches!(
                 Registry::open(&mut fs, &mut ledger, dom),
                 Err(Fault::StaleVolume | Fault::StateMismatch)
@@ -180,6 +180,16 @@ fn main() {
         let bob = created_user(&reg.outcome([2; 16]).unwrap().unwrap());
         let group = created_group(&reg.outcome([3; 16]).unwrap().unwrap());
         let installation = installed(&reg.outcome([4; 16]).unwrap().unwrap());
+        if arg[1] == "verify-path" {
+            let bytes = std::fs::read(&arg[4]).unwrap();
+            reg.verify_image(Image {
+                installation,
+                digest: Sha256::digest(bytes).into(),
+            })
+            .unwrap();
+            println!("ELF atteste, installation {:02x?}", installation);
+            return;
+        }
         let d = reg.outcome([5; 16]).unwrap().unwrap();
         assert_eq!(d.domain, dom);
         drop(reg);
