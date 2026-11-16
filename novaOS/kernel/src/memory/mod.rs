@@ -110,6 +110,7 @@ pub struct Memory {
     #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
     witness_pin: Option<user::WitnessPin>,
     dma_frames: u64,
+    staging: user::StagingArena,
     frames: Frames,
     space: AddressSpace,
     cache: u64,
@@ -207,6 +208,7 @@ impl Memory {
             #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
             witness_pin: None,
             dma_frames: 0,
+            staging: user::StagingArena::empty(),
             frames,
             space,
             cache,
@@ -367,10 +369,11 @@ impl Memory {
         let used = self.frames.initial - self.frames.available;
         let counted = self.frames.tables
             + self.dma_frames
+            + self.staging.resident()
             + (r.ipc + r.stacks + r.user + r.user_stacks + r.heap + r.buddy) as u64;
         assert_eq!(used, counted, "cadres sans attribution dans le bilan");
         log(format_args!(
-            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={} dma={}",
+            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={} dma={} elf_preparation={}",
             self.frames.tables,
             r.stacks,
             r.user_stacks,
@@ -387,7 +390,8 @@ impl Memory {
             r.reusable,
             used + image,
             used + image + loader + exec_extra + ram_video,
-            self.dma_frames
+            self.dma_frames,
+            self.staging.resident()
         ));
     }
 }

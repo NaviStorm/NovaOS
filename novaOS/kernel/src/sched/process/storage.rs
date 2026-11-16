@@ -434,6 +434,31 @@ fn reject_changed_image() {
     let view = user::ObjectRevision { volume: [1; 16], object: 1, revision: 7, length: 3 };
     // SHA-256 du contenu « abc », fixé indépendamment de l'image lue.
     let expected = [0xba,0x78,0x16,0xbf,0x8f,0x01,0xcf,0xea,0x41,0x41,0x40,0xde,0x5d,0xae,0x22,0x23,0xb0,0x03,0x61,0xa3,0x96,0x17,0x7a,0x9c,0xb4,0x10,0xff,0x61,0xf2,0x00,0x15,0xad];
+    let reserve = |length| user::ImageStaging::new(user::ObjectRevision { length, ..view }, expected);
+    assert_eq!(reserve(0).err(), Some(crate::memory::Error::Geometry));
+    assert_eq!(reserve((4 << 20) + 1).err(), Some(crate::memory::Error::Geometry));
+    let pages_before = heap::audit(false);
+    let left = reserve(4 << 20).unwrap();
+    let right = reserve(4 << 20).unwrap();
+    assert_eq!(reserve(1).err(), Some(crate::memory::Error::Exhausted));
+    drop(left);
+    drop(reserve(4 << 20).unwrap());
+    drop(right);
+    assert_eq!(heap::audit(false), pages_before);
+    for remaining in [0, 1, 4, 7] {
+        let (mut held, before) = heap::with_pages(|m| {
+            let before = m.free_pages();
+            Ok((m.hold_for_probe(remaining)?, before))
+        }).unwrap();
+        assert_eq!(reserve(9 * 4096).err(), Some(crate::memory::Error::Exhausted));
+        heap::with_pages(|m| {
+            assert_eq!(m.free_pages(), remaining);
+            held.restore_to(m, before);
+            Ok(())
+        }).unwrap();
+    }
+    assert_eq!(heap::audit(false), pages_before);
+    hal::log(format_args!("ELF preparation 8 Mio saturation reprise penurie restitution OK"));
     let stage = || user::ImageStaging::new(view, expected).unwrap();
     let mismatch = crate::memory::Error::Verification;
     let start = stage().append(view, 0, b"a").unwrap();

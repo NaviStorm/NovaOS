@@ -2,6 +2,7 @@
 use super::*;
 mod elf;
 mod sealed;
+pub(super) use sealed::StagingArena;
 pub(crate) use sealed::{ImageStaging, ObjectRevision, SealedImage};
 mod threads;
 #[cfg(feature = "thread-probe")]

@@ -30,6 +30,7 @@ def qualify(arch, cpus, out):
                 if "Panique du noyau" in serial or "Exception noyau" in serial:
                     raise RuntimeError(serial[-1300:])
                 if "PIPE admission restitution OK" in serial:
+                    assert "PIPE admission ELF scelle producteur=temoin octets=" in serial
                     assert f"PIPE admission vcpu={cpus} cpu_producteur={cpus - 1}" in serial
                     assert "PIPE admission reponse_perdue QUERY meme_wait apres_collecte=aucun acquittement=unique OK" in serial
                     assert "PIPE admission sortie_normale=125 force=0 slot_recycle=protege OK" in serial

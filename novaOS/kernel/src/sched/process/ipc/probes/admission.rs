@@ -4,8 +4,16 @@ use super::super::pipe_admission;
 use super::*;
 use pipe_admission::ReaderOutcome;
 
-fn compute(cpu: usize) -> Res<Child> {
-    let child = create_image(demo::DEMO, &[0; 24], None, None).map_err(launch_error)?;
+const COMPUTE_ELF: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/pipe_compute.bin"));
+
+fn compute(cpu: usize, seed: u64) -> Res<Child> {
+    let image = storage::seal_fixture(COMPUTE_ELF);
+    let mut data = [0; 24];
+    data[8..16].copy_from_slice(&seed.to_le_bytes());
+    let space = heap::with_pages(|m| UserSpace::installed(m, &image, &data))
+        .map_err(|e| launch_error(Error::Memory(e)))?;
+    let _guard = Guard::new();
+    let child = publish_image(space, None, iw::SAMPLE, None).map_err(launch_error)?;
     with(|s| {
         s.slots
             .iter_mut()
@@ -117,7 +125,7 @@ fn natural_125(parent: Actor) {
 fn lost_parent() {
     let (parents, [parent]) = group([ALL]);
     let control = with(|s| s.ipc.pipe_open(parent.0, false)).unwrap();
-    let (_, admission) = pipe_admission::start_writer(parent.0, control, || compute(0)).unwrap();
+    let (_, admission) = pipe_admission::start_writer(parent.0, control, || compute(0, 0)).unwrap();
     let pid = with(|s| s.processes.get(parent.0).wait_right.unwrap().target);
     until(|| progress(pid) > 0);
     stop(parents, [parent]);
@@ -151,7 +159,11 @@ pub(super) fn run() {
         "PIPE admission vcpu={} cpu_producteur={last}",
         crate::smp::count()
     ));
-    let witness = demo::spawn_pinned(last, 41);
+    hal::log(format_args!(
+        "PIPE admission ELF scelle producteur=temoin octets={}",
+        COMPUTE_ELF.len()
+    ));
+    let witness = compute(last, 41).unwrap();
     until(|| progress(witness.0) > 0);
 
     for case in [
@@ -163,7 +175,7 @@ pub(super) fn run() {
     ] {
         let control = with(|s| s.ipc.pipe_open(parent.0, false)).unwrap();
         let (wait, admission) =
-            pipe_admission::start_writer(parent.0, control, || compute(last)).unwrap();
+            pipe_admission::start_writer(parent.0, control, || compute(last, 0)).unwrap();
         let pid = with(|s| s.processes.get(parent.0).wait_right.unwrap().target);
         until(|| progress(pid) > 0);
         let ordinary = Actor(pid).memory(|space, m| space.read_data(m, 1));

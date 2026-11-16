@@ -5,14 +5,15 @@ index 329330210a11938e035662a0060572cb9c861758..445e2cd2a620536b6938cd1349f538ab
 @@ -14,0 +15 @@ novaauth-lab = []
 +novaauth-sessions-lab = []
 diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
-index 66ac5c9c06ef6c832101f43922c02eda52a0171e..1a5accd803cd9a6220c0afccc9decf5f44053365 100644
+index 96c01458ed3d6ab8d5a2b8e393203fd67cb77c4f..4fcc399468402982fb230b0901ed40bf05225d40 100644
 --- a/novaOS/kernel/build.rs
 +++ b/novaOS/kernel/build.rs
-@@ -95,0 +96,3 @@ fn main() {
+@@ -96,0 +97,3 @@
 +        if name == "service_manager" && env::var_os("CARGO_FEATURE_NOVAAUTH_SESSIONS_LAB").is_some() {
 +            rust.args(["--cfg", "novaauth_sessions_lab"]);
 +        }
-@@ -189,0 +193,14 @@ fn main() {
+@@ -190,0 +194,14 @@
++    }
 +    if env::var_os("CARGO_FEATURE_NOVAAUTH_SESSIONS_LAB").is_some() {
 +        cargo_service.args(["--features", "novaauth-sessions-lab"]);
 +        let guest_flags = format!("{flags}\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
@@ -26,7 +27,6 @@ index 66ac5c9c06ef6c832101f43922c02eda52a0171e..1a5accd803cd9a6220c0afccc9decf5f
 +        for name in ["auth-verifier","auth-client"] {
 +            std::fs::copy(work.join(&target).join("release").join(name),out.join(format!("{name}.elf"))).unwrap();
 +        }
-+    }
 diff --git a/novaOS/kernel/src/main.rs b/novaOS/kernel/src/main.rs
 index 09a892af036b46df33df6e2fb4a765f38a359e67..8aa973dfb056396fabb2cc6fef9bd5ab0b38de5e 100644
 --- a/novaOS/kernel/src/main.rs
