@@ -1,0 +1,28 @@
+[package]
+name = "nova-cut"
+version = "0.24.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "cut"
+path = "src/main.rs"
+
+[target.'cfg(target_os = "none")'.dependencies]
+nova-cli = { path = ".." }
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+
+[features]
+qualification = []
+
+[[bin]]
+name = "sonde"
+path = "../../livraison-cut-0240/lab/sonde.rs"
+required-features = ["qualification"]

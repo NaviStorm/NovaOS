@@ -31,6 +31,17 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "cut", provider: "nova-cut",
+        description: Text("Select bytes, characters or fields.", "Extraire des octets, des caractères ou des champs."),
+        syntax: Text::same("cut OPTION... [FILE]..."),
+        arguments: Text(include_str!("../cut/options.en"), include_str!("../cut/options.fr")),
+        examples: Text::same("cut -f1,3,8,9 donnees.tsv"),
+        rights: Text("Read selected sources. Documentation uses the terminal only.", "Lecture des sources déléguées. La documentation utilise seulement le terminal."),
+        effects: Text("Writes selected bytes to the output stream.", "Écrit les octets sélectionnés sur le flux de sortie."),
+        limits: Text("Field selections can buffer an undecided field.", "Une sélection peut devoir mémoriser un champ avant de connaître son sort."),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1142,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.provider == "nova-cut" {
+            return format!("cut (NovaOS) {}\n", include_str!("../cut/VERSION").trim());
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
