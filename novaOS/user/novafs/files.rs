@@ -71,6 +71,7 @@ struct ReadWindow {
     start: u64,
     total: usize,
     generation: u64,
+    revision: u64,
     sent: usize,
     bytes: Vec<u8>,
 }
@@ -458,22 +459,30 @@ impl Session<'_, '_> {
                                 }
                                 let bytes =
                                     fs.read_access_id(file.id, offset, total).map_err(error)?;
+                                let revision = fs.stat_id(file.id).map_err(error)?.revision;
                                 if flags == w::IF_REVISION {
-                                    w::set(a, 32, fs.stat_id(file.id).map_err(error)?.revision);
+                                    w::set(a, 32, revision);
                                 }
                                 ReadWindow {
                                     handle,
                                     start: offset,
                                     total,
                                     generation: fs.generation(),
+                                    revision,
                                     sent: 0,
                                     bytes,
                                 }
                             } else {
                                 client.read_window.take().ok_or(rt::REVOKED)?
                             };
-                            if window.handle != handle || window.generation != fs.generation() {
+                            if window.handle != handle {
                                 return Err(rt::REVOKED);
+                            }
+                            if window.generation != fs.generation() {
+                                if fs.stat_id(file.id).map_err(error)?.revision != window.revision {
+                                    return Err(rt::REVOKED);
+                                }
+                                window.generation = fs.generation();
                             }
                             shape(
                                 window.total == total

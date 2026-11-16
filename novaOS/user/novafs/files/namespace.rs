@@ -193,8 +193,9 @@ impl Session<'_, '_> {
         if op == w::READDIR {
             shape(flags == 0)?;
             rights(permitted, w::ENUMERATE)?;
-            let generation = fs.generation();
-            if (total != 0 || offset != 0) && total != generation {
+            // Le curseur appartient au répertoire ouvert. Une publication du journal
+            // ou une écriture dans un autre objet laisse ses noms inchangés.
+            if (total != 0 || offset != 0) && total != fs.stat_id(base).map_err(error)?.revision {
                 return Err(rt::REVOKED);
             }
             let after = if n == 0 && c.paths[0].total == 0 {
@@ -225,7 +226,8 @@ impl Session<'_, '_> {
                 names = fs.inspect_dir(base, Some(&names[0]), 1).map_err(error)?;
             }
             let bytes = names.first().map_or(&[][..], |s| s.as_bytes());
-            w::set(a, 24, fs.generation());
+            // list_access_id peut avoir publié atime sur ce même répertoire.
+            w::set(a, 24, fs.stat_id(base).map_err(error)?.revision);
             return fragment(
                 a,
                 bytes,

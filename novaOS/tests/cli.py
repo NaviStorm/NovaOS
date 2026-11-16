@@ -120,9 +120,9 @@ class Terminal:
         raw = command.encode() if isinstance(command, str) else command
         start = time.monotonic_ns()
         self.vm.stdin.write(raw + b"\n")
-        # Le rafraîchissement de l'éditeur réimprime parfois l'invite avant Entrée.
-        echo = self.until(b"\r\n")
-        out = echo + self.until(b"nsh> ")
+        # Les traces asynchrones peuvent précéder l'écho. Le réaffichage du
+        # curseur utilise CR seul ; seule une nouvelle ligne porte l'invite finale.
+        out = self.until(b"\r\nnsh> ")
         if status is not None:
             has = (*has, f"[statut {status}]")
         for expected in has:
