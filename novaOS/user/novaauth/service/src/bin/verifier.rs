@@ -169,9 +169,20 @@ fn serve() -> rt::Result<()> {
                         .map_err(|_| rt::DENIED)?;
                     a[8..24].copy_from_slice(&subject);
                 }
-                4 => sessions
-                    .close(m.payload[40..72].try_into().unwrap(), route)
-                    .map_err(|_| rt::DENIED)?,
+                4 => {
+                    sessions
+                        .close(m.payload[40..72].try_into().unwrap(), route)
+                        .map_err(|_| rt::DENIED)?;
+                    let mut q = [0; 128];
+                    q[..8].copy_from_slice(b"NA3DCLOS");
+                    q[8] = lane as u8;
+                    q[40..72].copy_from_slice(&m.payload[40..72]);
+                    rt::send_for(rt::config(5), rpc_seq, &q, 5000)?;
+                    let reply = remote(rt::config(6), rpc_seq)?;
+                    if number(&reply.payload) != rt::OK {
+                        return Err(rt::REFUSED);
+                    }
+                }
                 11 => {
                     let current = current.ok_or(rt::DENIED)?;
                     let sid = m.payload[40..72].try_into().unwrap();

@@ -147,12 +147,21 @@ impl Session<'_, '_> {
         }
         let msg = match rt::receive_for(rx, 0) {
             Ok(m) => m,
-            Err(rt::WOULD_BLOCK | rt::REVOKED | rt::CLOSED | rt::DENIED) => return Ok(()),
+            Err(rt::WOULD_BLOCK) => return Ok(()),
+            Err(rt::REVOKED | rt::CLOSED | rt::DENIED) => {
+                self.retire_folder(0, None)?;
+                self.retire_folder(1, None)?;
+                return Ok(());
+            }
             Err(e) => return Err(e),
         };
         let mut a = [0; 128];
         let status = if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA3DATT1" {
             self.attest_folder(&msg.payload).err().unwrap_or(rt::OK)
+        } else if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA3DCLOS" {
+            self.retire_folder(msg.payload[8], Some(&msg.payload[40..72]))
+                .err()
+                .unwrap_or(rt::OK)
         } else if msg.kind == 1
             && msg.len == 128
             && matches!(

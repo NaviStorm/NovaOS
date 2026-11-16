@@ -2,6 +2,9 @@
 #![no_main]
 mod common;
 #[allow(dead_code)]
+#[path = "../../../../../abi/files.rs"]
+mod files;
+#[allow(dead_code)]
 #[path = "../../../../../abi/instances.rs"]
 mod instances;
 #[allow(dead_code)]
@@ -52,17 +55,33 @@ impl Client {
         rt::send_frame(rt::config(9), tag, &data, 0, false)?;
         let mut auth = self.frame(11);
         auth[40..72].copy_from_slice(&session);
-        let result = self
-            .send(&auth)
-            .map_err(|e| if matches!(op, 6 | 7) { 22 } else { e })?;
+        let uncertain = matches!(op, 6 | 7);
+        let result = match self.send(&auth) {
+            Ok(r) => r,
+            Err(_) if uncertain => return Ok((files::UNCERTAIN, 0)),
+            Err(e) => return Err(e),
+        };
         if number(&result) != 0 {
             return Ok((number(&result), 0));
         }
-        let reply = remote(rt::config(10), tag)
-            .map_err(|e| if matches!(op, 6 | 7) { 22 } else { e })?
-            .payload;
-        check(&reply[120..] == b"DIRREPLY")?;
-        Ok((number(&reply), number(&reply[8..])))
+        // Après l'acquittement d'attestation, seule la réponse VFS fait foi.
+        let reply = rt::receive_for(rt::config(10), 250);
+        match reply {
+            Ok(m)
+                if m.kind == 1
+                    && m.len == 128
+                    && m.tag == tag
+                    && &m.payload[120..] == b"DIRREPLY" =>
+            {
+                Ok((number(&m.payload), number(&m.payload[8..])))
+            }
+            _ if uncertain => {
+                marker(b"NA3 reponse VFS manquante issue incertaine");
+                Ok((files::UNCERTAIN, 0))
+            }
+            Err(e) => Err(e),
+            Ok(_) => Err(rt::BAD_ARGUMENT),
+        }
     }
     fn challenge(&mut self) -> rt::Result<[u8; 128]> {
         let mut q = self.frame(1);
@@ -225,8 +244,12 @@ fn ordinary(c: &mut Client, expected: [u8; 16]) -> rt::Result<()> {
     )?;
     check(c.directory(id, 8, ro, 0, cancelled)? == (0, 0))?;
     check(c.directory(id, 5, root, 0, REQUEST)?.0 == 0)?;
-    check(c.directory(id, 7, root, 0, REQUEST)?.0 == 22)?;
+    check(c.directory(id, 7, root, 0, REQUEST)?.0 == files::UNCERTAIN)?;
     check(c.directory(id, 8, ro, 0, REQUEST)? == (0, 1))?;
+    let confirmed = REQUEST + 1;
+    check(c.directory(id, 5, root, 0, confirmed)?.0 == 0)?;
+    check(c.directory(id, 6, root, 0, confirmed)?.0 == 0)?;
+    check(c.directory(id, 8, ro, 0, confirmed)? == (0, 1))?;
     check(c.directory(id, 9, root, 0, 0)?.0 == 0)?;
     check(
         c.directory(id, 3, root, 0, 0)?.0 == rt::REVOKED

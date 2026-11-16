@@ -37,10 +37,14 @@ fn main() {
         assert_eq!(word, id.to_le_bytes());
     }
     assert_eq!(&seal[96..], &[3, 1, 0, 0, 0, 0, 0, 0]);
-    assert_eq!(file.size, 8);
+    assert_eq!(file.size, 16);
     assert_eq!(
         fs.inspect_id(file.id, 0, 8).unwrap(),
         0x4132303236u64.to_le_bytes()
+    );
+    assert_eq!(
+        fs.inspect_id(file.id, 8, 8).unwrap(),
+        0x4132303237u64.to_le_bytes()
     );
     let raw = std::fs::read(dir.join("autorite.raw")).unwrap();
     let entry = &raw[2 * 4096..3 * 4096];
@@ -59,7 +63,7 @@ fn main() {
     assert_eq!(reg.inspect(admin, old).unwrap().status, Status::Deleted);
     assert_ne!(old, created_user(&head));
     println!(
-        "P9/{sector} D={} ACL ancienne identité, sous-dossier protégé, écriture unique de huit octets, génération identités 7",
+        "P9/{sector} D={} ACL ancienne identité, sous-dossier protégé, deux décisions écrites exactement une fois, opération annulée absente, génération identités 7",
         folder.id
     );
 }

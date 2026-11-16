@@ -279,6 +279,22 @@ impl Session<'_, '_> {
             _ => Err(rt::BAD_ARGUMENT),
         }
     }
+    pub(super) fn retire_folder(&mut self, lane: u8, sid: Option<&[u8]>) -> rt::Result<()> {
+        if lane > 1 {
+            return Err(rt::BAD_ARGUMENT);
+        }
+        let rx = port(usize::from(lane), false);
+        let belongs = |h: Holder| h.port == rx && sid.is_none_or(|s| s == h.session);
+        for slot in &mut self.directory.leases {
+            if slot.is_some_and(|l| belongs(l.holder)) {
+                *slot = None;
+            }
+        }
+        if self.directory.pending.is_some_and(|p| belongs(p.holder)) {
+            self.directory.pending = None;
+        }
+        Ok(())
+    }
     pub(super) fn attest_folder(&mut self, a: &Frame) -> rt::Result<()> {
         let lane = usize::from(a[8]);
         if lane > 1 {
@@ -313,7 +329,7 @@ impl Session<'_, '_> {
             // Injection explicite de perte de la réponse après écriture durable.
             // L'appelant ne peut pas déduire l'issue de cette absence.
             if msg.payload[0] == 7 && result.is_ok() {
-                return Err(w::UNCERTAIN);
+                return Ok(()); // Accuser uniquement la réception de l’attestation.
             }
             let mut reply = [0; 128];
             let status = result.as_ref().err().copied().unwrap_or(rt::OK);
