@@ -145,23 +145,24 @@ fn read_error(label: impl std::fmt::Display, err: &std::io::Error) -> Box<dyn UE
     USimpleError::new(2, format!("{label}: {}", strip_errno(err)))
 }
 
+const USAGE: &str =
+    "Usage: grep [OPTION]... PATTERNS [FILE]...\nTry 'grep --help' for more information.";
+
+fn show_document(help: bool) -> UResult<()> {
+    let lang = documentation::Language::from_tag(std::env::var("LANG").ok().as_deref());
+    let page = documentation::lookup("grep").expect("embedded grep documentation");
+    let text = if help {
+        page.render(&[], false, lang).unwrap()
+    } else {
+        page.version(lang)
+    };
+    std::io::Write::write_all(&mut std::io::stdout().lock(), text.as_bytes())
+        .map_err(|e| read_error("(standard output)", &e))
+}
+
 #[uucore::main(no_signals)]
 pub fn uumain(args: impl uucore::Args) -> UResult<()> {
     let args = expand_num_shorthand(args);
-    if let [_, option] = args.as_slice()
-        && (option == "--help" || option == "--version" || option == "-V")
-    {
-        let lang = documentation::Language::from_tag(std::env::var("LANG").ok().as_deref());
-        let page = documentation::lookup("grep").expect("embedded grep documentation");
-        let text = if option == "--help" {
-            page.render(&[], false, lang).unwrap()
-        } else {
-            page.version(lang)
-        };
-        std::io::Write::write_all(&mut std::io::stdout().lock(), text.as_bytes())
-            .map_err(|e| read_error("(standard output)", &e))?;
-        return Ok(());
-    }
     let matches = uu_app().try_get_matches_from(&args).map_err(|error| {
         use clap::error::{ContextKind, ErrorKind};
         if error.kind() == ErrorKind::UnknownArgument
@@ -174,8 +175,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
                 format!("invalid option -- '{}'", option.trim_start_matches('-'))
             };
             eprintln!("{}: {reason}", args[0].to_string_lossy());
-            eprintln!("Usage: grep [OPTION]... PATTERNS [FILE]...");
-            eprintln!("Try 'grep --help' for more information.");
+            eprintln!("{USAGE}");
             return USimpleError::new(2, "");
         }
         if error.exit_code() == 0 {
@@ -185,6 +185,9 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
         USimpleError::new(formatter.print_error(&error, 2), "")
     })?;
 
+    if matches.get_flag("help") || matches.get_flag("version") {
+        return show_document(matches.get_flag("help"));
+    }
     // GNU grep ignores a malformed legacy match color without a warning.
     let grep_color = std::env::var("GREP_COLOR")
         .ok()
@@ -252,9 +255,19 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
     let count = matches.get_flag("count");
     let initial_tab = matches.get_flag("initial_tab");
     let null = matches.get_flag("null");
-    let before_context = matches.get_one::<usize>("before_context").copied();
-    let after_context = matches.get_one::<usize>("after_context").copied();
-    let context = matches.get_one::<usize>("context").copied();
+    let context_value = |id: &str| {
+        matches
+            .get_one::<String>(id)
+            .map(|value| {
+                value.parse::<usize>().map_err(|_| {
+                    USimpleError::new(2, format!("{value}: invalid context length argument"))
+                })
+            })
+            .transpose()
+    };
+    let before_context = context_value("before_context")?;
+    let after_context = context_value("after_context")?;
+    let context = context_value("context")?;
     let group_separator = matches
         .get_one::<String>("group_separator")
         .map_or("--", |s| s.as_str());
@@ -262,6 +275,25 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
     let color = matches
         .get_one::<String>("color")
         .map_or("", |s| s.as_str());
+    if matches.contains_id("color")
+        && !matches!(color, "always" | "never" | "auto" | "yes" | "no" | "tty")
+    {
+        return show_document(true);
+    }
+    if binary_files.is_some_and(|v| !matches!(v, "text" | "binary" | "without-match")) {
+        return Err(USimpleError::new(2, "unknown binary-files type"));
+    }
+    if devices.is_some_and(|v| !matches!(v, "skip" | "read")) {
+        return Err(USimpleError::new(2, "unknown devices method"));
+    }
+    if let Some(value) = directories
+        && !matches!(value, "skip" | "read" | "recurse")
+    {
+        eprintln!(
+            "grep: invalid argument '{value}' for '--directories'\nValid arguments are:\n  - 'read'\n  - 'recurse'\n  - 'skip'\n{USAGE}"
+        );
+        return Err(ExitCode::new(1));
+    }
     #[cfg(windows)]
     let binary = matches.get_flag("binary");
 
@@ -331,10 +363,8 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
         }
     }
     if patterns.is_empty() && !has_explicit_patterns {
-        return Err(USimpleError::new(
-            2,
-            "no PATTERN specified. Try 'grep --help' for more information.".to_string(),
-        ));
+        eprintln!("{USAGE}");
+        return Err(ExitCode::new(2));
     }
 
     // GNU grep's PCRE backend (-P) supports only a single pattern.
@@ -384,8 +414,8 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
         _ => DeviceMode::Default,
     };
     let color = match color {
-        "always" => ColorMode::Always,
-        "auto" => ColorMode::Auto,
+        "always" | "yes" => ColorMode::Always,
+        "auto" | "tty" => ColorMode::Auto,
         // Color output requires an explicit --color option.
         _ => ColorMode::Never,
     };
@@ -689,13 +719,13 @@ pub fn uu_app() -> Command {
                 .short('V')
                 .long("version")
                 .help("display version information and exit")
-                .action(ArgAction::Version),
+                .action(ArgAction::SetTrue),
         )
         .arg(
             Arg::new("help")
                 .long("help")
                 .help("display this help text and exit")
-                .action(ArgAction::Help),
+                .action(ArgAction::SetTrue),
         )
         .arg(
             Arg::new("max_count")
@@ -766,8 +796,7 @@ pub fn uu_app() -> Command {
                 .overrides_with_all(["text", "skip_binary"])
                 .long("binary-files")
                 .value_name("TYPE")
-                .help("assume that binary files are TYPE; TYPE is 'binary', 'text', or 'without-match'")
-                .value_parser(["binary", "text", "without-match"]),
+                .help("assume that binary files are TYPE; TYPE is 'binary', 'text', or 'without-match'"),
         )
         .arg(
             Arg::new("text")
@@ -789,16 +818,14 @@ pub fn uu_app() -> Command {
                 .short('d')
                 .long("directories")
                 .value_name("ACTION")
-                .help("how to handle directories; ACTION is 'read', 'recurse', or 'skip'")
-                .value_parser(["read", "skip", "recurse"]),
+                .help("how to handle directories; ACTION is 'read', 'recurse', or 'skip'"),
         )
         .arg(
             Arg::new("devices")
                 .short('D')
                 .long("devices")
                 .value_name("ACTION")
-                .help("how to handle devices, FIFOs and sockets; ACTION is 'read' or 'skip'")
-                .value_parser(["read", "skip"]),
+                .help("how to handle devices, FIFOs and sockets; ACTION is 'read' or 'skip'"),
         )
         .arg(
             Arg::new("recursive")
@@ -885,7 +912,7 @@ pub fn uu_app() -> Command {
                 .long("before-context")
                 .value_name("NUM")
                 .help("print NUM lines of leading context")
-                .value_parser(clap::value_parser!(usize)),
+                .allow_hyphen_values(true),
         )
         .arg(
             Arg::new("after_context")
@@ -893,7 +920,7 @@ pub fn uu_app() -> Command {
                 .long("after-context")
                 .value_name("NUM")
                 .help("print NUM lines of trailing context")
-                .value_parser(clap::value_parser!(usize)),
+                .allow_hyphen_values(true),
         )
         .arg(
             Arg::new("context")
@@ -901,7 +928,7 @@ pub fn uu_app() -> Command {
                 .long("context")
                 .value_name("NUM")
                 .help("print NUM lines of output context")
-                .value_parser(clap::value_parser!(usize)),
+                .allow_hyphen_values(true),
         )
         .arg(
             Arg::new("group_separator")
@@ -922,7 +949,6 @@ pub fn uu_app() -> Command {
                 .alias("colour")
                 .value_name("WHEN")
                 .help("use markers to highlight the matching strings; WHEN is 'always', 'never', or 'auto'")
-                .value_parser(["always", "never", "auto"])
                 .default_missing_value("auto")
                 .num_args(0..=1)
                 .require_equals(true),
