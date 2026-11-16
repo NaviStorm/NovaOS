@@ -22,7 +22,7 @@ if len(bins)==1 and snapshot.exists():
     expected = {r["id"]: r for r in json.loads(snapshot.read_text())["cas"]}
 rows=[]
 failures=[]
-def case(key,argv,stdin=b"",status=None,locale="C",lang="C",doc=None,regular=False):
+def case(key,argv,stdin=b"",status=None,locale="C",lang="C",doc=None,regular=False, direct=None):
     observed={}
     for name,path in bins.items():
         env={**os.environ,"LC_ALL":locale,"LANG":lang}
@@ -40,7 +40,13 @@ def case(key,argv,stdin=b"",status=None,locale="C",lang="C",doc=None,regular=Fal
     row=dict(id=key,args=argv,stdin=stdin.hex(),locale=locale,lang=lang,
              attendu=status,document=doc,stdin_regulier=regular,mesures=observed)
     bad=[]
-    if doc:
+    if direct:
+        # Les deux sorties et waitpid du véritable enfant sont indépendants de l’oracle.
+        row["attendus_par_cible"]=direct
+        row["arbitrage"]="GNU 3.12 retourne 0. Nova conserve 1 pour toute différence affichée."
+        for name,value in observed.items():
+            if value!=direct[name]:bad.append("sortie ou statut direct "+name)
+    elif doc:
         for name,(rc,out,err) in observed.items():
             data=bytes.fromhex(out)
             if rc!=0 or err or not data:bad.append("document")
@@ -123,7 +129,9 @@ with tempfile.TemporaryDirectory(dir=TMP,prefix="cmp-options-") as tmp:
     # Cas où le statut GNU peut contredire les octets affichés par -l.
     for n in ["grand1","grand2"]:(work/n).write_bytes(bytes(256*1024))
     with (work/"grand2").open("r+b") as f:f.write(b"X")
-    case("verbose-ecart-premier-bloc",["-l","grand1","grand2"],status=1)
+    line=b"     1   0 130\n".hex()
+    case("verbose-ecart-premier-bloc",["-l","grand1","grand2"],status=1,
+         direct={"GNU":[0,line,""],"Nova":[1,line,""]})
     if a.large:
         for n in ["sparse1","sparse2"]:
             with (work/n).open("wb") as f:f.seek(2**32+19);f.write(n[-1].encode())

@@ -21,6 +21,15 @@ with tempfile.TemporaryDirectory(dir=TMP,prefix="cmp-flux-") as folder:
                 result=subprocess.run(["cmp",opt],executable=binary,env=env,stdin=inp,capture_output=True)
                 assert result.returncode==rc and inp.tell()==17
                 observations.append(dict(outil=name,option=opt,statut=rc,stdin_avant=17,stdin_apres=inp.tell()))
+        with (path/"ecriture-seule").open("wb") as fd:
+            fd.write(b"abc")
+            fd.flush()
+            fd.seek(0)
+            child=subprocess.run(["cmp","-","a"],executable=binary,cwd=path,env=env,
+                                 stdin=fd,capture_output=True)
+            assert (child.returncode,child.stdout,child.stderr)==(2,b"",b"cmp: -: Bad file descriptor\n")
+            observations.append(dict(outil=name,incident="lecture de stdin ouvert en écriture seule",
+                                     cmp=child.returncode,stdout=child.stdout.hex(),stderr=child.stderr.hex()))
         for equal in [True,False]:
             (path/"b").write_bytes(data if equal else b"x"+data[1:])
             with subprocess.Popen(["/bin/cat","a"],cwd=path,env=env,stdout=subprocess.PIPE,
