@@ -20,8 +20,7 @@ pub fn run(p: Program, command: impl FnOnce(&mut Client, Operand<'_>) -> rt::Res
             return Ok(());
         }
         if let Operand::Info(help) = op {
-            let pilot = Some(env!("CARGO_BIN_NAME"));
-            if let Some(page) = pilot.and_then(nova_cli::documentation::lookup) {
+            if let Some(page) = nova_cli::documentation::lookup(env!("CARGO_BIN_NAME")) {
                 return console::document(page, &args, help);
             }
             let text = if help {

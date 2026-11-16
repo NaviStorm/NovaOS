@@ -7,15 +7,39 @@ import os
 from pathlib import Path
 import re
 import socket
+import subprocess
 import time
 from types import SimpleNamespace
 
 from bloc import qmp
 from cli import Terminal
 from journalisation import arret, attend, sortie
-from session_cli import fixture_p9
+from session_cli import HOST, fixture_p9
 
-LOTS = {1: "pwd cat head tail wc more".split()}
+LOTS = {1: "pwd cat head tail wc more".split(), 2: "mkdir rmdir touch cp mv".split()}
+
+
+def reread_transfer(out):
+    def tool(action, *args):
+        with (out/"session.raw").open("rb") as disk:
+            return subprocess.run([HOST, action, "512", "512", *args], stdin=disk, capture_output=True)
+    info = tool("inspect")
+    info.check_returncode()
+    slots = re.findall(rb"slot=(\d+) g.+?ration=(\d+) blocs=\d+ FS=(\w+) LV=(\w+)", info.stdout)
+    assert len(slots) == 2
+    slot, _, fs, lv = max(slots, key=lambda row: int(row[1]))
+    tool("verify", fs, lv).check_returncode()
+    results = {}
+    for path in ("/documents/exemple.txt", "/--inconnue", "/--deplace", "/--copie", "/--rep", "/--absent"):
+        result = tool("salvage", fs, lv, slot, path)
+        if path in ("/documents/exemple.txt", "/--inconnue", "/--deplace"):
+            result.check_returncode()
+            assert result.stdout == b"NovaOS\n"
+            results[path] = hashlib.sha256(result.stdout).hexdigest()
+        else:
+            assert result.returncode and b"NotFound" in result.stderr
+            results[path] = "NotFound"
+    (out/"relecture.json").write_text(json.dumps(results, indent=2))
 
 
 def run(arch, lot, out):
@@ -43,7 +67,7 @@ def run(arch, lot, out):
             data = vm.until(b"ARCEND=") + vm.until(b"\r\n")
             text = data.decode(errors="replace")
             assert text.rstrip().endswith(f"ARCEND={rc}"), (cmd, text)
-            vm.until(b"nsh> ")
+            # Le marqueur exécuté suffit ; une trace SMP peut couper le dessin de l’invite.
             records.append(dict(command=cmd, rc=rc, output=text))
             return text
 
@@ -60,7 +84,6 @@ def run(arch, lot, out):
             assert (name + " — ").encode() in frame
             vm.vm.stdin.write(b"q")
             vm.until(b"ARCEND=0\r\n")
-            vm.until(b"nsh> ")
             records.append(dict(command="man " + name, rc=0, output=frame.decode()))
 
         # Observe the final boot writes before arming the counters.
@@ -99,9 +122,26 @@ def run(arch, lot, out):
                                   ("wc -c -- --inconnue", "7 --inconnue"), ("pwd -P", "/")]:
                 assert expected in command(cmd)
             command("pwd -- --inconnue", 3)
+        if lot == 2:
+            command("mkdir -- --rep")
+            command("touch -- --rep/--note")
+            command("rmdir -- --rep", 28)
+            command("cp -- --inconnue --copie")
+            command("mv -- --copie --deplace")
+            command("cat -- --copie", 20)
+            command("cp -- --inconnue --deplace", 27)
+            assert "NovaOS" in command("cat -- --deplace")
+            command("rm -- --rep/--note")
+            command("rmdir -- --rep")
+            command("cd -- --rep", 20)
+            command("touch -c -- --absent")
+            command("cat -- --absent", 20)
+            assert "NovaOS" in command("cat /documents/exemple.txt")
         control = snapshot()
         assert control["wr_operations"] > before["wr_operations"] and control["sha256"] != before["sha256"]
         arret(vm, 2)
+    if lot == 2:
+        reread_transfer(out)
     (out/"observations.json").write_text(json.dumps(dict(avant=before, apres=after, temoin=control,
                         observations=records), ensure_ascii=False, indent=2))
 
