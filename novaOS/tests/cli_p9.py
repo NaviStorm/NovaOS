@@ -155,6 +155,14 @@ def check(arch, sector, tmp, oracle):
                 t.until(b"--More--")
                 t.vm.stdin.write(b"q")
             t.until(b"nsh> ")
+        # L'aide publique ne lance aucun ELF. Exercer les deux retraits réels
+        # avant de vérifier la collecte de chacune des quatorze images.
+        run("mkdir retrait")
+        run("touch retrait/fichier")
+        run("rm retrait/fichier")
+        run("cat retrait/fichier", ["introuvable"], 20)
+        run("rmdir retrait")
+        run("ls -d retrait", ["introuvable"], 20)
         for name in ("pwd","ls","cat","head","tail","touch","cp","mv","wc","more","mkdir","rm","rmdir"):
             run(name+" --help",[name])
             run(name+" --version",["nova-cli 0.20.0"])
