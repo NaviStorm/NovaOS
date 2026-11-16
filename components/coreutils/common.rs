@@ -20,6 +20,10 @@ pub fn run(p: Program, command: impl FnOnce(&mut Client, Operand<'_>) -> rt::Res
             return Ok(());
         }
         if let Operand::Info(help) = op {
+            let pilot = match p { Program::Rm => Some("rm"), Program::Ls => Some("ls"), _ => None };
+            if let Some(page) = pilot.and_then(nova_cli::documentation::lookup) {
+                return console::document(page, &args, help);
+            }
             let text = if help {
                 nova_cli::options::usage(p)
             } else {

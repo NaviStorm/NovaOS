@@ -38,15 +38,7 @@ const CODES: [&str; 18] = [
     "CAP_MISSING",
 ];
 const MAX_DISPLAY: usize = 128;
-const HELP: &str = "\
-journal list | status
-journal show <service|self> [options]
-journal tail <service|self> [options] [--follow]
-journal boot [--service <service>] [options]
-Options : --level TRACE|DEBUG|INFO|WARN|ERROR|CRITICAL, --boot <32 hex>, --limit 1..128
-journal emit <0..255> | rotate | retain <1..8> | purge
-Suivi : q, Échap ou Ctrl+C pour quitter.
-";
+
 static TAG: AtomicU64 = AtomicU64::new(0);
 
 fn request(mut frame: j::Frame) -> rt::Result<j::Frame> {
@@ -317,7 +309,6 @@ fn display(verb: &str, args: &[&str]) -> rt::Result<()> {
 
 fn admin(args: &[&str]) -> rt::Result<()> {
     match args {
-        ["help" | "--help"] => console::write(tty::OUTPUT, HELP),
         ["list"] => list(),
         ["status"] => {
             let f = checked(j::request(j::STATUS))?;

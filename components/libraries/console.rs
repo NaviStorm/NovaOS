@@ -16,6 +16,30 @@ pub fn write(port: u8, mut text: &str) -> rt::Result<()> {
     }
     Ok(())
 }
+/// Exécuté dans l'ELF. La langue provient uniquement de ses arguments privés.
+pub fn document(page: &crate::documentation::Page, args: &[&str], help: bool) -> rt::Result<()> {
+    let language = crate::documentation::child_language(args);
+    if option_env!("NOVA_DOC_TRACE") == Some("1") {
+        let pid = rt::value(rt::call(rt::PROCESS_ID, 0, 0, 0))?;
+        let business = rt::channels() != Err(rt::DENIED) || rt::config(0) != 0;
+        write(
+            tty::ERROR,
+            &alloc::format!(
+                "DOC-ELF {} pid={pid} lang={} business={}\n",
+                page.name,
+                language.select("en", "fr"),
+                u8::from(business)
+            ),
+        )?;
+    }
+    let text = if help {
+        page.render(&[], false, language).ok_or(rt::BAD_ARGUMENT)?
+    } else {
+        page.version(language)
+    };
+    write(tty::OUTPUT, &text)
+}
+
 pub fn edit(action: u64) -> rt::Result<()> {
     rt::value(rt::call(tty::CONSOLE, tty::EDIT.into(), action, 0)).map(|_| ())
 }

@@ -1,8 +1,27 @@
 # Inventaire des commandes et couverture documentaire
 
+## Candidat v0.23.0, phase 1
+
+Les sources comportent 37 noms publics après l’ajout de `man`. L’inventaire historique ci-dessous conserve l’état observé en v0.22.0 et dans l’image UTM v0.17.0. Le script installé `/verification.nsh` est suivi séparément.
+
+| Commande | Fournisseur | Aide | Version | Manuel | Statut sur le profil de phase 1 |
+|---|---|---|---|---|---|
+| nsh | nsh | 0 | nsh 0.20.0, code 0 | Oui | Conforme |
+| service | Intégrée à nsh | 0, 14 aides locales | nsh 0.20.0, code 0 | Oui, y compris restriction | Conforme |
+| journal | Intégrée à nsh | 0, 10 aides locales | nsh 0.20.0, code 0 | Oui | Conforme |
+| ls | ELF nova-cli | 0 | nova-cli 0.20.0, code 0 | Oui | Conforme |
+| rm | ELF nova-cli | 0 | nova-cli 0.20.0, code 0 | Oui | Conforme |
+| cd | Intégrée à nsh | 0 | nsh 0.20.0, code 0 | Oui | Conforme |
+| vi | ELF nova-cli | 0 | nova-cli 0.20.0, code 0 | Oui | Conforme pour la documentation |
+| man | Intégrée à nsh | 0 | nsh 0.20.0, code 0 | Oui | Conforme |
+
+Les contrôles de ce tableau portent sur les deux invités QEMU. Les pages partagent un catalogue bilingue français/anglais. Une locale absente sélectionne l’anglais. Parmi les 29 autres noms, les utilitaires qui disposent déjà d’un synopsis ou d’une sortie de version ont une couverture **partielle**. Chacun des 29 reste **non conforme** au contrat à trois interfaces, car le catalogue ne contient aucune de leurs pages. Leur comportement individuel est **non qualifié** dans cette phase. Les résultats et limites, dont le diagnostic historique de vi, figurent dans le [rapport du candidat](../documentation-v0.23.0-phase1.md).
+
+## État de référence de v0.22.0
+
 L’image UTM AArch64 v0.17.0 contient 34 noms de commandes publiques et un script installé. Les sources intégrées de v0.22.0 ajoutent deux commandes. Aucune des 36 commandes ne réunit actuellement l’aide complète, la version identifiée et une page de manuel native. Le tableau distingue l’image installable et le catalogue des sources. L’inventaire couvre aussi les commandes intégrées, quelle que soit la brièveté de leur syntaxe.
 
-## Périmètre et lecture
+## Périmètre et lecture de l’audit v0.22.0
 
 - **Image distribuée.** L’archive a pour SHA-256 `5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c`. Le rapport d’installation identifie les binaires issus de `b76c863c9302bf6ead53fac3b80b26df0513fe0d`. Sa qualification UTM couvre l’installation et deux démarrages autonomes. [Manifeste de distribution](../validation/fusion-smp-v0.17.0/distribution.json) · [Essai d’installation UTM](../validation/fusion-smp-v0.17.0/installation-utm.json)
 - **Sources intégrées.** La révision de phase 3 est `b83ebb1dd6eb5aeaa2f67bf478112acfd0c72556`. Les composants de commande appartiennent au paquet Cargo `nova-cli`. La colonne « Version du composant » donne la version de ce paquet pour l’image puis pour les sources. Les utilitaires impriment la valeur de construction `CARGO_PKG_VERSION` précédée de « NovaOS ». La valeur numérique correspond au paquet, mais la sortie ne précise ni son nom ni la provenance de la commande. Les intégrées utilisent la version de construction de `nsh`. [Manifeste des binaires](../../../components/Cargo.toml) · [Versions et livrables](../audit-0220-abi-livraisons.md)

@@ -55,7 +55,7 @@ def trial(arch, sector, folder):
             wait("[statut sortie 0]")
             wait("nsh> ")
 
-        t.line("vi --help", has=["vi [--] fichier"])
+        t.line("vi --help", has=["vi [--] file"])
         t.line("vi /../secret", has=["accès refusé"])
         t.line("vi penurie", has=["contrôle interdit"])
         t.line("ls -l penurie", has=["536870912"])

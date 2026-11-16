@@ -60,3 +60,7 @@ Le service accepte au plus 32 vues actives ou en attente de purge, 32 handles pa
 La sélection du profil est explicite au démarrage. Les bancs construisent les volumes de test à l’avance. L’ABI native v1 et le SDK `nova-system` 0.2.0 conservent leurs interfaces existantes. Les portes privées sont additives. La [qualification de phase 2](tmp-prive-phase2-v0.21.0.md) distingue essais invités, injections du moteur et limites du support.
 
 La [phase 3](services-phase3-v0.21.0.md) distingue les fournisseurs de stockage amorcés sans temporaire, les services dont l’admission exige déjà une vue vide et la délégation ultérieure à leurs travailleurs.
+
+## Exception documentaire qualifiée sur la branche v0.23.0 phase 1
+
+La consultation publique depuis nsh lit le catalogue embarqué. Le lanceur du candidat peut aussi exécuter une requête documentaire stricte d'un ELF immuable de ls, rm ou vi sans créer de temporaire. L’admission demeure obligatoire, la mémoire et l'identité du fils sont privées, les deux canaux métier sont nuls et seuls les flux de sortie sont transmis. Un argv d’opération, un chemin, des droits supplémentaires ou une image hors catalogue excluent cette exception. Le lancement applicatif ordinaire conserve son temporaire. [Contrat et contrôle des écritures](documentation-v0.23.0-phase1.md)

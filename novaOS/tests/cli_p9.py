@@ -157,7 +157,7 @@ def check(arch, sector, tmp, oracle):
             t.until(b"nsh> ")
         for name in ("pwd","ls","cat","head","tail","touch","cp","mv","wc","more","mkdir","rm","rmdir"):
             run(name+" --help",[name])
-            run(name+" --version",["NovaOS "])
+            run(name+" --version",["nova-cli 0.20.0" if name in ("ls", "rm") else "NovaOS "])
         run("alias l='ls -latr --color'",status=None)
         run("l",["inconnue", "documents", b"\x1b[34m"])
         run("l documents",["exemple.txt","renomme"])

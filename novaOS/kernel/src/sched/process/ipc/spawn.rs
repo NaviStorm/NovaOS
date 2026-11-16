@@ -2,17 +2,19 @@
 //! interprète seul la sélection d'objet. Un parent ne peut suivre qu'un fils à la fois.
 use super::*;
 use crate::terminal as tty;
-const IMAGES: &[(&[u8], u64, bool)] = include!(concat!(env!("OUT_DIR"), "/cli_catalog.rs"));
+#[path = "document_launch.rs"]
+mod document_launch;
+const IMAGES: &[(&[u8], u64, bool, bool)] = include!(concat!(env!("OUT_DIR"), "/cli_catalog.rs"));
 
 // Seule une entrée de ce catalogue immutable permet d’obtenir ce type.
 #[derive(Clone, Copy)]
 pub(super) struct Application(&'static [u8], u64);
 impl Application {
-    fn entry(index: usize) -> Res<(Self, bool)> {
+    fn entry(index: usize) -> Res<(Self, bool, bool)> {
         IMAGES
             .get(index)
             .filter(|entry| entry.1 != 0)
-            .map(|&(image, app, restricted)| (Self(image, app), restricted))
+            .map(|&(image, app, restricted, docs)| (Self(image, app), restricted, docs))
             .ok_or(BAD_ARGUMENT)
     }
 
@@ -70,7 +72,7 @@ impl Application {
 
 #[cfg(feature = "thread-probe")]
 fn witness() -> Application {
-    let (image, restricted) = Application::entry(15).expect("témoin admis");
+    let (image, restricted, _) = Application::entry(15).expect("témoin admis");
     assert!(restricted && image.0.starts_with(b"\x7fELF"));
     image
 }
@@ -99,7 +101,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     if with(|s| s.processes.get(parent).wait_right.is_some()) {
         return Err(LIMIT);
     }
-    let (image, fixture) = Application::entry(usize::try_from(number).map_err(|_| BAD_ARGUMENT)?)?;
+    let (image, fixture, has_documentation) = Application::entry(usize::try_from(number).map_err(|_| BAD_ARGUMENT)?)?;
     let mut bytes = [0; tty::HEADER + tty::ARG_MAX];
     let n = usize::try_from(len).map_err(|_| BAD_ARGUMENT)?;
     let data = bytes
@@ -131,6 +133,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     if fixture && authority & tty::QUALIFY == 0 {
         return Err(DENIED);
     }
+    let documentation = document_launch::eligible(has_documentation, (input, output), ports, word(3), &data[tty::HEADER..]);
     data[..24].fill(0);
     let start = hal::timer::counter();
     drop(_guard);
@@ -140,7 +143,15 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     // L’appelant ne fournit aucun sélecteur de profil. Le lanceur de boot
     // attribue ce marqueur uniquement au shell du profil P8 explicite.
     let legacy_p8 = with(|s| s.processes.get(parent).legacy_p8_launcher);
-    let child = image.principal_in(data, workers, legacy_p8)?;
+    // L'admission et l'identité sont celles d'un ELF isolé. Aucun chemin de fichier
+    // ni handle métier n’entre dans un lancement documentaire.
+    let child = if documentation && !workers.workers() {
+        let child = image.launch(data, false, None)?;
+        workers.bind(with(|s| s.processes.get(child.0).instance));
+        child
+    } else {
+        image.principal_in(data, workers, legacy_p8)?
+    };
     let setup = with(|s| {
         let pid = child.0;
         if input != 0 {

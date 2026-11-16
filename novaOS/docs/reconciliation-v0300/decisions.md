@@ -95,3 +95,11 @@ Le mandat MOA *Arbitrages architecturaux et préparation de la feuille de route 
 Les valeurs admises sont **Proposé**, **Approuvé**, **Rejeté**, **Implémenté**, **Qualifié** et **Publié**. Pour approuver ou rejeter une proposition, consigner sa révision Git, la date, l’auteur de la décision, son périmètre et le renvoi à l’accord explicite. Une qualification précise le profil, la preuve et ses limites. Une publication identifie le commit, et le manifeste si un binaire a été distribué. L’existence d’un commit documentaire atteste la rédaction du texte.
 
 Conserver l’historique des changements de statut. Pour déplacer un jalon approuvé, inscrire une nouvelle proposition qui cite l’identifiant précédent, le travail déplacé, les conséquences et son successeur éventuel. Appliquer le déplacement à la feuille de route officielle après arbitrage MOA/MOE traçable. Un accord partiel laisse les points restants au statut **Proposé**.
+
+## Application d’ARC-025 et ARC-026 en v0.23.0, phase 1
+
+Le mandat du 16 novembre 2026 autorise le catalogue embarqué, le lecteur natif et huit commandes documentées, lecteur compris. Pour ARC-025, les essais incluent le catalogue réellement installé, les deux formes de l’aide générale, les aides imbriquées et le contrôle instrumenté de l’absence d’envoi STOP. Pour ARC-026, les huit couples aide/version et les pages correspondantes ont été exercés sous QEMU AArch64 et x86_64. L’acceptation de la stable reste universelle et couvre toutes les commandes officiellement distribuées. [Contrat et preuves](../documentation-v0.23.0-phase1.md) · [Inventaire par commande](inventaire-commandes.md)
+
+Le complément MOA/MOE de phase 1 fixe le français pour une étiquette BCP 47 syntaxiquement valide de langue principale `fr` et l’anglais dans tous les autres cas. L’option 2 maintient l’aide publique sans écriture P9 et exige une preuve distincte de la langue reçue par un ELF autonome. [Contrat et qualification](../documentation-v0.23.0-phase1.md)
+
+Le correctif définitif du même mandat précise la politique NovaOS après l’analyse syntaxique. Une écriture, une région ou une variante explicite doit être enregistrée. Le script IANA `Zzzz` conserve le français, la variante inconnue `zzzzz` entraîne le repli anglais. [Recette dans les deux invités](../cloture-documentation-v0.23.0-phase1.md).

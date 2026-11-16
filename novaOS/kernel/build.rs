@@ -197,6 +197,7 @@ fn main() {
     )
     .unwrap();
 
+    println!("cargo::rerun-if-env-changed=NOVA_DOC_TRACE");
     println!("cargo::rerun-if-env-changed=NOVA_HISTORY_ENTRIES");
     println!("cargo::rerun-if-env-changed=NOVA_MORE_LINES");
     println!("cargo::rerun-if-env-changed=NOVA_MORE_COLUMNS");
@@ -228,7 +229,8 @@ fn main() {
         let path = out.join(format!("{name}.elf"));
         std::fs::copy(work.join(&target).join("release").join(name), &path).unwrap();
         if name != "nsh" {
-            catalog.push_str(&format!("(include_bytes!({path:?}),{installation},{}),", name == "probe"));
+            let documentation = matches!(name, "ls" | "rm" | "vi");
+            catalog.push_str(&format!("(include_bytes!({path:?}),{installation},{},{documentation}),", name == "probe"));
         } else {
             // Nom historique de l’image privée du lanceur, même ELF nsh.
             std::fs::copy(&path, out.join("shell.elf")).unwrap();
@@ -244,13 +246,13 @@ fn main() {
         println!("cargo::rerun-if-changed={}", source.display());
         let admitted = out.join("thread-witness.elf");
         std::fs::copy(&source, &admitted).expect("admission du témoin externe");
-        catalog.push_str(&format!("(include_bytes!({admitted:?}),crate::instance_abi::WITNESS,true),"));
+        catalog.push_str(&format!("(include_bytes!({admitted:?}),crate::instance_abi::WITNESS,true,false),"));
     } else {
         // L’indice 15 est réservé au profil SDK.
-        catalog.push_str("(&[],0,true),");
+        catalog.push_str("(&[],0,true,false),");
     }
     let sample = out.join("instance_sample.bin");
-    catalog.push_str(&format!("(include_bytes!({sample:?}),crate::instance_abi::SAMPLE,false),"));
+    catalog.push_str(&format!("(include_bytes!({sample:?}),crate::instance_abi::SAMPLE,false,false),"));
     catalog.push(']');
     std::fs::write(out.join("cli_catalog.rs"), catalog).unwrap();
 }
