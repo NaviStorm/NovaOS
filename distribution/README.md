@@ -10,6 +10,7 @@ L’archive UTM distribuée fournit l’installateur NovaOS v0.17.0 AArch64 pour
 | `images/` | Image de livraison UTM AArch64. |
 | `scripts/` | Assemblage et validation des livraisons. |
 | `sdk/` | SDK Rust natif 0.2.0 et son empreinte. |
+| `cli/` | Livraison de `sha256sum` 0.24.0 sur sa branche dédiée, avec le Mach-O ARM64, les deux ELF NovaOS et les volumes P9 de recette. [Archive](cli/livraison-sha256sum-0240.tar.gz) · [Empreinte](cli/livraison-sha256sum-0240.tar.gz.sha256) · [Qualification](../components/sha256sum/QUALIFICATION.md) |
 
 L’archive source du SDK fournit la crate `nova-system` 0.2.0, un exemple à deux threads, son verrou Cargo, le script de liaison et la documentation pour construire hors du dépôt. Depuis la racine du monorepo, `python3 distribution/scripts/sdk_rust.py` assemble l’archive et son empreinte. L’option `--check` compare son contenu aux sources et vérifie son SHA-256. [Archive du SDK](sdk/nova-system-0.2.0.tar.gz) · [SHA-256](sdk/nova-system-0.2.0.tar.gz.sha256) · [Guide de compilation](../novaOS/docs/sdk-rust-v0.20.0.md) · [Contrat public](../novaOS/docs/contrat-public-rust-v0.20.0.md) · [Manifeste officiel](manifests/novaos-0.20.0-sdk.json)
 
