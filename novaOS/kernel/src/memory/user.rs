@@ -1,6 +1,8 @@
 //! Propriété des mappings privés. Toutes les copies passent par le HHDM du cadre validé.
 use super::*;
 mod elf;
+mod sealed;
+pub(crate) use sealed::{ImageStaging, ObjectRevision, SealedImage};
 mod threads;
 #[cfg(feature = "thread-probe")]
 pub(crate) use threads::test_thread_memory;
@@ -250,8 +252,9 @@ impl UserSpace {
 
     /// Profil d'image installée : uniquement ELF64 statique, table et ensemble
     /// des pages en mémoire bornés avant la première allocation.
-    pub(crate) fn installed(m: &mut Memory, image: &[u8], config: &[u8]) -> Result<Self> {
-        const MAX_PAGES: u64 = 1024;
+    pub(crate) fn installed(m: &mut Memory, sealed: &SealedImage, config: &[u8]) -> Result<Self> {
+        let image = sealed.bytes();
+        const MAX_PAGES: u64 = (sealed::MAX_IMAGE_BYTES as u64) / PAGE;
         if config.len() > PAGE as usize || image.len() > (MAX_PAGES * PAGE) as usize || image.len() < 64 ||
             u16::from_le_bytes([image[56], image[57]]) as usize > PAGE as usize / 56 {
             return Err(Error::Geometry);

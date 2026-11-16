@@ -414,6 +414,42 @@ pub(crate) fn file_perf(mode: u64) -> bool {
     ));
     clean
 }
+/// Le banc fournit les métadonnées attendues par un canal distinct de la copie
+/// modifiable. En exploitation, elles proviennent de l'autorité d'installation.
+pub(in crate::sched::process) fn seal_fixture(bytes: &[u8]) -> user::SealedImage {
+    use sha2::{Digest, Sha256};
+    let view = user::ObjectRevision { volume: [7; 16], object: 2, revision: 3, length: bytes.len() };
+    let expected: [u8; 32] = Sha256::digest(bytes).into();
+    let mut stage = user::ImageStaging::new(view, expected).unwrap();
+    for (index, chunk) in bytes.chunks(crate::memory::PAGE as usize).enumerate() {
+        stage = stage.append(view, index * crate::memory::PAGE as usize, chunk).unwrap();
+    }
+    let sealed = stage.seal().unwrap();
+    assert_eq!(sealed.object(), view);
+    sealed
+}
+
+fn reject_changed_image() {
+    use sha2::{Digest, Sha256};
+    let view = user::ObjectRevision { volume: [1; 16], object: 1, revision: 7, length: 3 };
+    // SHA-256 du contenu « abc », fixé indépendamment de l'image lue.
+    let expected = [0xba,0x78,0x16,0xbf,0x8f,0x01,0xcf,0xea,0x41,0x41,0x40,0xde,0x5d,0xae,0x22,0x23,0xb0,0x03,0x61,0xa3,0x96,0x17,0x7a,0x9c,0xb4,0x10,0xff,0x61,0xf2,0x00,0x15,0xad];
+    let stage = || user::ImageStaging::new(view, expected).unwrap();
+    let mismatch = crate::memory::Error::Verification;
+    let start = stage().append(view, 0, b"a").unwrap();
+    assert_eq!(start.append(user::ObjectRevision { revision: 8, ..view }, 1, b"bc").err(), Some(mismatch));
+    assert_eq!(stage().append(view, 1, b"a").err(), Some(mismatch));
+    assert_eq!(stage().append(view, 0, b"abcd").err(), Some(mismatch));
+    assert_eq!(stage().append(view, 0, b"ab").unwrap().seal().err(), Some(mismatch));
+    assert_eq!(stage().append(view, 0, b"abd").unwrap().seal().err(), Some(mismatch));
+    let mut source = *b"abc";
+    let copied = stage().append(view, 0, &source).unwrap();
+    source.fill(0);
+    assert_ne!(Sha256::digest(source)[..], expected);
+    assert_eq!(copied.seal().unwrap().object(), view);
+    hal::log(format_args!("ELF scellement revision ordre taille empreinte copie-privee OK"));
+}
+
 /// Exerce le même ELF que le vrai service bloc, dans son espace utilisateur privé.
 pub(crate) fn elf_test() {
     fn spawn(mode: u64) -> Child {
@@ -428,7 +464,10 @@ pub(crate) fn elf_test() {
     let mut source = MEDIA.to_vec();
     let mut config = [0; 16];
     config[8..].copy_from_slice(&101u64.to_le_bytes());
-    let installed = heap::with_pages(|m| UserSpace::installed(m, &source, &config)).unwrap();
+    reject_changed_image();
+    let sealed = seal_fixture(&source);
+    let installed = heap::with_pages(|m| UserSpace::installed(m, &sealed, &config)).unwrap();
+    drop(sealed);
     source.fill(0);
     drop(source);
     let loaded = {
@@ -437,16 +476,18 @@ pub(crate) fn elf_test() {
     };
     assert_eq!(wait(loaded), Outcome::Exit(0));
     assert_eq!(heap::audit(true), initial);
+    let sealed = seal_fixture(MEDIA);
     heap::with_pages(|m| {
         let before = m.free_pages();
         for budget in [0, 1, 2, 5, 9] {
             let mut held = m.hold_for_probe(budget)?;
-            assert!(matches!(UserSpace::installed(m, MEDIA, &config), Err(crate::memory::Error::Exhausted)));
+            assert!(matches!(UserSpace::installed(m, &sealed, &config), Err(crate::memory::Error::Exhausted)));
             assert_eq!(m.free_pages(), budget as u64);
             held.restore_to(m, before);
         }
         Ok(())
     }).unwrap();
+    drop(sealed);
     hal::log(format_args!("ELF image transitoire executee et cadres rendus OK"));
     // Épuisement réel pendant le chargement, puis après une première page de tas.
     heap::with_pages(|m| {

@@ -176,7 +176,8 @@ pub(super) fn run() {
             let failure = admission
                 .admit(|| {
                     assert_ne!(case, "retrait-canal");
-                    let space = heap::with_pages(|m| UserSpace::installed(m, b"\x7fELF", &[]))
+                    let seal = storage::seal_fixture(b"\x7fELF");
+                    let space = heap::with_pages(|m| UserSpace::installed(m, &seal, &[]))
                         .map_err(Error::Memory)?;
                     publish_image(space, None, iw::SAMPLE, None)
                 })

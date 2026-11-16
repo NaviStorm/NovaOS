@@ -1,5 +1,5 @@
 diff --git a/novaOS/kernel/Cargo.toml b/novaOS/kernel/Cargo.toml
-index 6aa1730f8f642fead202d9d4e1a666fc9dbe92af..768cd6689ead28cb88f42a1996566528b7d72691 100644
+index 329330210a11938e035662a0060572cb9c861758..445e2cd2a620536b6938cd1349f538abcbeb859d 100644
 --- a/novaOS/kernel/Cargo.toml
 +++ b/novaOS/kernel/Cargo.toml
 @@ -14,0 +15 @@ novaauth-lab = []
