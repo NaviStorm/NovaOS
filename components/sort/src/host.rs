@@ -1,3 +1,4 @@
+use crate::host_text::{argument, collation_key, columns, diagnostic, native};
 use nova_sort::{
     args::Options,
     engine::{Order, merge},
@@ -48,7 +49,11 @@ fn input(path: &Path) -> io::Result<Box<dyn Read>> {
         Ok(Box::new(File::open(path).map_err(|e| {
             io::Error::new(
                 e.kind(),
-                format!("cannot read: {}: {}", path.display(), os_error(&e)),
+                format!(
+                    "cannot read: {}: {}",
+                    diagnostic(path.as_os_str()),
+                    os_error(&e)
+                ),
             )
         })?))
     }
@@ -74,7 +79,7 @@ enum Source {
 }
 struct Reader {
     stream: BufReader<Box<dyn Read>>,
-    child: Option<Child>,
+    child: Option<(Child, String)>,
 }
 impl Reader {
     fn new(src: &Source, prog: Option<&str>) -> Res<Self> {
@@ -84,13 +89,13 @@ impl Reader {
             Source::Run(p) => {
                 let f = File::open(p)?;
                 if let Some(prog) = prog {
-                    let mut c = Command::new(prog)
+                    let mut c = Command::new(native(prog))
                         .arg("-d")
                         .stdin(f)
                         .stdout(Stdio::piped())
                         .spawn()?;
                     let stdout = c.stdout.take().unwrap();
-                    child = Some(c);
+                    child = Some((c, prog.to_owned()));
                     Box::new(stdout) as Box<dyn Read>
                 } else {
                     Box::new(f)
@@ -105,9 +110,9 @@ impl Reader {
     fn next(&mut self, buf: &mut Vec<u8>, d: u8) -> Res<bool> {
         let ok = record(&mut self.stream, buf, d)?;
         if !ok {
-            if let Some(mut child) = self.child.take() {
+            if let Some((mut child, program)) = self.child.take() {
                 if !child.wait()?.success() {
-                    return Err("decompressor failed".into());
+                    return Err(format!("'{program}' [-d] terminated abnormally").into());
                 }
             }
         }
@@ -116,7 +121,7 @@ impl Reader {
 }
 impl Drop for Reader {
     fn drop(&mut self) {
-        if let Some(c) = &mut self.child {
+        if let Some((c, _)) = &mut self.child {
             let _ = c.kill();
             let _ = c.wait();
         }
@@ -136,14 +141,14 @@ impl Temp<'_> {
             NamedTempFile::new()?
         } else {
             let dir = &opt.temps[self.count % opt.temps.len()];
-            fs::metadata(dir).map_err(|e| {
+            fs::metadata(native(dir)).map_err(|e| {
                 format!("cannot create temporary file in '{dir}': {}", os_error(&e))
             })?;
-            NamedTempFile::new_in(dir)
+            NamedTempFile::new_in(native(dir))
                 .map_err(|e| format!("cannot create temporary file in '{dir}': {}", os_error(&e)))?
         };
         if let Some(prog) = &opt.compressor {
-            let mut child = Command::new(prog)
+            let mut child = Command::new(native(prog))
                 .stdin(Stdio::piped())
                 .stdout(file.reopen()?)
                 .spawn()?;
@@ -194,14 +199,15 @@ fn output(o: &Options) -> Res<Box<dyn Write>> {
     Ok(if let Some(path) = &o.output {
         Box::new(BufWriter::with_capacity(
             IO,
-            File::create(path).map_err(|e| format!("open failed: {path}: {}", os_error(&e)))?,
+            File::create(native(path))
+                .map_err(|e| format!("open failed: {path}: {}", os_error(&e)))?,
         ))
     } else {
         Box::new(BufWriter::with_capacity(IO, io::stdout()))
     })
 }
 fn same(path: &Path, target: &str) -> bool {
-    let Ok(target) = fs::metadata(target) else {
+    let Ok(target) = fs::metadata(native(target)) else {
         return false;
     };
     if path == Path::new("-") {
@@ -239,10 +245,7 @@ fn check(path: &Path, order: &Order<'_>, quiet: bool, name: &str) -> Res<i32> {
     Ok(0)
 }
 pub fn command(name: &str) -> Res<i32> {
-    let args = env::args_os()
-        .skip(1)
-        .map(|s| s.into_string().map_err(|_| "non-UTF-8 argument"))
-        .collect::<Result<Vec<_>, _>>()?;
+    let args = env::args_os().skip(1).map(argument).collect::<Vec<_>>();
     let legacy = env::var("_POSIX2_VERSION")
         .ok()
         .and_then(|v| v.parse::<u32>().ok())
@@ -298,7 +301,7 @@ pub fn command(name: &str) -> Res<i32> {
     let mut paths = Vec::new();
     if let Some(list) = &o.list {
         let mut r = BufReader::new(
-            input(Path::new(list))
+            input(Path::new(&native(list)))
                 .map_err(|e| e.to_string().replacen("cannot read:", "open failed:", 1))?,
         );
         let mut buf = Vec::new();
@@ -320,7 +323,7 @@ pub fn command(name: &str) -> Res<i32> {
             return Err(format!("no input from '{list}'").into());
         }
     } else {
-        paths.extend(o.files.iter().map(PathBuf::from));
+        paths.extend(o.files.iter().map(|s| PathBuf::from(native(s))));
         if paths.is_empty() {
             paths.push("-".into())
         }
@@ -328,7 +331,7 @@ pub fn command(name: &str) -> Res<i32> {
     if o.has_random() {
         let mut seed = [0u8; 16];
         let source = o.source.as_deref().unwrap_or("/dev/urandom");
-        File::open(source)
+        File::open(native(source))
             .map_err(|e| format!("open failed: {source}: {}", os_error(&e)))?
             .read_exact(&mut seed)
             .map_err(|e| {
@@ -350,6 +353,7 @@ pub fn command(name: &str) -> Res<i32> {
     let order = Order {
         options: &o,
         collate: hard.then_some(collate),
+        random_key: hard.then_some(collation_key),
         general,
     };
     if let Some(q) = o.check {
@@ -462,18 +466,20 @@ pub fn command(name: &str) -> Res<i32> {
     let mut w = output(&o)?;
     let mut prev: Option<Vec<u8>> = None;
     if o.debug {
-        eprintln!(
-            "{name}: {}",
-            if hard {
-                "using locale collation rules"
-            } else {
-                "text ordering performed using simple byte comparison"
-            }
-        );
+        if hard {
+            let rules = unsafe { std::ffi::CStr::from_ptr(locale) }.to_string_lossy();
+            eprintln!("{name}: text ordering performed using ‘{rules}’ sorting rules");
+        } else {
+            eprintln!("{name}: text ordering performed using simple byte comparison");
+        }
         let mut numeric = false;
         for i in 0..o.keys.len().max(1) {
             let (_, _, flags) = order.key(b"", i);
-            numeric |= matches!(flags.mode, b'n' | b'h' | b'g');
+            let is_numeric = matches!(flags.mode, b'n' | b'h' | b'g');
+            numeric |= is_numeric;
+            if is_numeric && o.keys.get(i).is_some_and(|k| k.spans_fields()) {
+                eprintln!("{name}: key {} is numeric and spans multiple fields", i + 1);
+            }
             if !o.keys.is_empty() && o.sep.is_none() && !flags.blank && flags.mode == 0 {
                 eprintln!(
                     "{name}: leading blanks are significant in key {}; consider also specifying 'b'",
@@ -499,16 +505,16 @@ pub fn command(name: &str) -> Res<i32> {
             raw(&mut w, &line, 10)?;
             for i in 0..o.keys.len().max(1) {
                 let (a, b) = order.annotation(row, i);
-                w.write_all(&vec![b' '; a])?;
+                w.write_all(&vec![b' '; columns(&row[..a], hard)])?;
                 if a == b {
                     w.write_all(b"^ no match for key")?
                 } else {
-                    w.write_all(&vec![b'_'; b - a])?
+                    w.write_all(&vec![b'_'; columns(&row[a..b], hard)])?
                 }
                 w.write_all(b"\n")?
             }
             if (!o.keys.is_empty() || o.flags.has_transform()) && !o.stable && !o.unique {
-                raw(&mut w, &vec![b'_'; row.len()], 10)?
+                raw(&mut w, &vec![b'_'; columns(row, hard)], 10)?
             }
             Ok(())
         } else {

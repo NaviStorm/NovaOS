@@ -165,6 +165,7 @@ fn command() -> rt::Result<u64> {
     let order = Order {
         options: &o,
         collate: None,
+        random_key: None,
         general,
     };
     let d = o.delim();

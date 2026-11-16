@@ -12,6 +12,7 @@ pub fn verify() -> bool {
         let order = Order {
             options: &o,
             collate: None,
+            random_key: None,
             general: super::native::general,
         };
         let d = o.delim();

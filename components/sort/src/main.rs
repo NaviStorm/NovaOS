@@ -7,6 +7,8 @@ const FR: &str = include_str!("../doc/help.fr");
 #[cfg(not(target_os = "none"))]
 mod host;
 #[cfg(not(target_os = "none"))]
+mod host_text;
+#[cfg(not(target_os = "none"))]
 #[path = "../../libraries/documentation_locale.rs"]
 mod locale;
 #[cfg(target_os = "none")]

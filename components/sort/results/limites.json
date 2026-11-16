@@ -1,0 +1,188 @@
+{
+  "debug-cle-numerique": {
+    "args": [
+      "--debug",
+      "-k2n"
+    ],
+    "input_hex": "7820320a",
+    "locale": "C",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "a5338dec2d097327b25e7995d6faea782d06e44d58a0ef467aa470a867dd0d97",
+      "stdout_bytes": 12,
+      "stdout_sample": "7820320a20205f0a5f5f5f0a",
+      "stderr": "sort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "a5338dec2d097327b25e7995d6faea782d06e44d58a0ef467aa470a867dd0d97",
+      "stdout_bytes": 12,
+      "stdout_sample": "7820320a20205f0a5f5f5f0a",
+      "stderr": "sort: text ordering performed using simple byte comparison\nsort: key 1 is numeric and spans multiple fields\nsort: numbers use '.' as a decimal point in this locale\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    }
+  },
+  "debug-largeur-utf8": {
+    "args": [
+      "--debug",
+      "-k1,1"
+    ],
+    "input_hex": "c3a9207a0a",
+    "locale": "en_US.UTF-8",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "3e6d953689cc300f9dcc34b9f4d99f6bb82fa3810714a8861f1411a0147cf8cc",
+      "stdout_bytes": 11,
+      "stdout_sample": "c3a9207a0a5f0a5f5f5f0a",
+      "stderr": "sort: text ordering performed using \u2018en_US.UTF-8\u2019 sorting rules\nsort: leading blanks are significant in key 1; consider also specifying 'b'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "3e6d953689cc300f9dcc34b9f4d99f6bb82fa3810714a8861f1411a0147cf8cc",
+      "stdout_bytes": 11,
+      "stdout_sample": "c3a9207a0a5f0a5f5f5f0a",
+      "stderr": "sort: text ordering performed using \u2018en_US.UTF-8\u2019 sorting rules\nsort: leading blanks are significant in key 1; consider also specifying 'b'\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    }
+  },
+  "argv-non-utf8": {
+    "args": [
+      "\udcff"
+    ],
+    "input_hex": "",
+    "locale": "C",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: cannot read: ''$'\\377': No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: cannot read: ''$'\\377': No such file or directory\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    }
+  },
+  "aleatoire-locale": {
+    "args": [
+      "-R",
+      "--random-source=seed"
+    ],
+    "input_hex": "610a410ac3a80ac3a90a780a",
+    "locale": "en_US.UTF-8",
+    "gnu": {
+      "status": 0,
+      "stdout_sha256": "0c6ee902430835d958d6ba4d73bc8a5dff9b923374b128f228a3fc3629adbefc",
+      "stdout_bytes": 12,
+      "stdout_sample": "610a780a410ac3a80ac3a90a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 0,
+      "stdout_sha256": "0c6ee902430835d958d6ba4d73bc8a5dff9b923374b128f228a3fc3629adbefc",
+      "stdout_bytes": 12,
+      "stdout_sample": "610a780a410ac3a80ac3a90a",
+      "stderr": "",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    }
+  },
+  "check-plusieurs-entrees": {
+    "args": [
+      "-c",
+      "a",
+      "b"
+    ],
+    "input_hex": "",
+    "locale": "C",
+    "gnu": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: extra operand 'b' not allowed with -c\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    },
+    "nova": {
+      "status": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sample": "",
+      "stderr": "sort: extra operand 'b' not allowed with -c\n",
+      "files": {
+        "a": "610a630a",
+        "link": "610a630a"
+      },
+      "leftovers": []
+    }
+  },
+  "decompression-gnu": {
+    "status": 2,
+    "stderr": "sort: '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp9m5kuvor/codec' [-d] terminated abnormally\n",
+    "restes": 0
+  },
+  "simultanes-gnu": {
+    "statuts": [
+      0,
+      0
+    ],
+    "octets": 32000,
+    "restes": 0
+  },
+  "decompression-nova": {
+    "status": 2,
+    "stderr": "sort: '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp9m5kuvor/codec' [-d] terminated abnormally\n",
+    "restes": 0
+  },
+  "simultanes-nova": {
+    "statuts": [
+      0,
+      0
+    ],
+    "octets": 32000,
+    "restes": 0
+  }
+}

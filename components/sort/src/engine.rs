@@ -84,6 +84,10 @@ fn position(s: &str, start: bool, flags: &mut Flags) -> Result<Position, String>
     })
 }
 impl Key {
+    pub fn spans_fields(&self) -> bool {
+        self.end.is_none_or(|end| self.start.field < end.field)
+    }
+
     pub fn legacy(start: &str, end: Option<&str>) -> Option<Self> {
         fn pos(s: &str, start: bool, flags: &mut Flags) -> Option<Position> {
             let n = s
@@ -194,6 +198,7 @@ pub type Collate = fn(&[u8], &[u8]) -> Ordering;
 pub struct Order<'a> {
     pub options: &'a Options,
     pub collate: Option<Collate>,
+    pub random_key: Option<fn(&[u8]) -> Vec<u8>>,
     pub general: fn(&[u8]) -> Option<f64>,
 }
 fn filtered(s: &[u8], f: Flags) -> Cow<'_, [u8]> {
@@ -328,7 +333,13 @@ impl Order<'_> {
                         .chain_update(s)
                         .finalize()
                 };
-                hash(&a).cmp(&hash(&b)).then_with(|| a.cmp(&b))
+                if let Some(key) = self.random_key {
+                    let a = key(&a);
+                    let b = key(&b);
+                    hash(&a).cmp(&hash(&b)).then_with(|| a.cmp(&b))
+                } else {
+                    hash(&a).cmp(&hash(&b)).then_with(|| a.cmp(&b))
+                }
             }
             _ => self.collate.map_or_else(|| a.cmp(&b), |cmp| cmp(&a, &b)),
         }
