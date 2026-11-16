@@ -1,5 +1,8 @@
 //! Le canal d'enrôlement de l'installation neuve appartient au lanceur seul.
 use super::*;
+#[allow(dead_code)]
+#[path = "../../../abi/files.rs"]
+mod files;
 pub(super) fn launch() -> rt::Result<()> {
     fn start(id: u64) -> rt::Result<Frame> {
         let mut w = [0; 16];
@@ -24,8 +27,36 @@ pub(super) fn launch() -> rt::Result<()> {
     if result.kind != 1 || result.tag != 1 || result.len != 128 {
         return Err(rt::REFUSED);
     }
-    if result.payload[16..24] != [0; 8] {
-        return Err(rt::REFUSED);
+    let status = u64::from_le_bytes(result.payload[16..24].try_into().unwrap());
+    if status != rt::OK {
+        let text: &[u8] = match status {
+            rt::DENIED => b"NA3 domaine initialise enrolement refuse",
+            files::CORRUPT => b"NA3 registre divergent activation refusee",
+            files::IO => b"NA3 autorite indisponible activation refusee",
+            _ => b"NA3 admission indeterminee",
+        };
+        rt::value(rt::call(
+            rt::DEBUG_WRITE,
+            text.as_ptr() as u64,
+            text.len() as u64,
+            0,
+        ))?;
+        for child in [client, second, verifier] {
+            let mut cmd = [0; 16];
+            cmd[0] = child[0];
+            syscall(proc::KILL, &mut cmd)?;
+        }
+        for child in [client, second, verifier] {
+            collect(child[0], true)?;
+        }
+        let collected = b"NA3 refus collecte";
+        rt::value(rt::call(
+            rt::DEBUG_WRITE,
+            collected.as_ptr() as u64,
+            collected.len() as u64,
+            0,
+        ))?;
+        return Ok(());
     }
     let other = rt::receive_for(second[1], 5000)?;
     if other.kind != 1 || other.tag != 1 || other.len != 16 {
@@ -58,13 +89,14 @@ pub(super) fn launch() -> rt::Result<()> {
         return Err(rt::REFUSED);
     }
     rt::send_for(second[2], 3, &result.payload[..16], 5000)?;
-    fn collect(handle: u64) -> rt::Result<()> {
+    fn collect(handle: u64, forced: bool) -> rt::Result<()> {
         let end = now()?.checked_add(15_000).ok_or(rt::LIMIT)?;
         loop {
             let mut w = [0; 16];
             w[0] = handle;
             match syscall(proc::POLL, &mut w) {
-                Ok(0) if w[1] == 0 => return Ok(()),
+                Ok(0) if !forced && w[1] == 0 => return Ok(()),
+                Ok(2) if forced && w[1] == 125 => return Ok(()),
                 Err(rt::WOULD_BLOCK) if now()? < end => {
                     rt::call(rt::THREAD_YIELD, 0, 0, 0);
                 }
@@ -72,10 +104,10 @@ pub(super) fn launch() -> rt::Result<()> {
             }
         }
     }
-    collect(client[0])?;
-    collect(second[0])?;
+    collect(client[0], false)?;
+    collect(second[0], false)?;
     rt::send_for(verifier[2], 1, &[0], 5000)?;
-    collect(verifier[0])?;
+    collect(verifier[0], false)?;
     let msg = b"NA3 trois ELF collectes";
     rt::value(rt::call(
         rt::DEBUG_WRITE,

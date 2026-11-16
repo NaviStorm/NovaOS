@@ -14,9 +14,14 @@ impl Session<'_, '_> {
             return Err(rt::REFUSED);
         }
         let mut ledger = Ledger::new(self.dev.identity_authority().map_err(error)?);
+        let head = ledger.current().map_err(|_| w::IO)?;
+        let fs = self.fs.as_mut().ok_or(rt::CLOSED)?;
+        if head.generation != 0 {
+            Registry::open(fs, &mut ledger, DOMAIN).map_err(|_| w::CORRUPT)?;
+            return Err(rt::DENIED);
+        }
         let permit = Enrollment::from_provisioner(&mut ledger).map_err(|_| rt::DENIED)?;
-        let mut reg = Registry::open(self.fs.as_mut().ok_or(rt::CLOSED)?, &mut ledger, DOMAIN)
-            .map_err(|_| rt::REFUSED)?;
+        let mut reg = Registry::open(fs, &mut ledger, DOMAIN).map_err(|_| w::CORRUPT)?;
         reg.enroll(
             &permit,
             [1; 16],

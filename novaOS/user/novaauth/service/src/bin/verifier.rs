@@ -87,6 +87,11 @@ fn serve() -> rt::Result<()> {
             Err(rt::TIMED_OUT | rt::WOULD_BLOCK) => continue,
             r => r?,
         };
+        let proof_start = if m.payload[0] == 2 {
+            Some(now()?)
+        } else {
+            None
+        };
         let mut a = [0; 128];
         let mut charged = None;
         let outcome = (|| -> rt::Result<()> {
@@ -210,6 +215,16 @@ fn serve() -> rt::Result<()> {
                 budget.success(lane, reference);
             }
             marker(b"NA3 preuve acceptee");
+            if let Some(start) = proof_start {
+                // Depuis la remise du message, incluant les deux lectures du registre.
+                let mut elapsed = now()?.saturating_sub(start);
+                let mut line = *b"NA3 verification ms=00000000000000000000";
+                for digit in line[20..].iter_mut().rev() {
+                    *digit = b'0' + (elapsed % 10) as u8;
+                    elapsed /= 10;
+                }
+                marker(&line);
+            }
         }
         if let Some(reference) = charged.filter(|_| status != rt::OK) {
             budget.fail(lane, reference, now()?);

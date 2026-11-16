@@ -14,11 +14,21 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "scripts"))
 from bloc_qemu import command
 
-def qualify(arch, sector, iso, genesis, out):
+def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert'):
     out.mkdir(parents=True, exist_ok=False)
     disk, authority = out / "identites.p9", out / "autorite.raw"
     shutil.copyfile(genesis / "neuf-identites.p9", disk)
     shutil.copyfile(genesis / "neuf-autorite.raw", authority)
+    if recovery:
+        if expected != "recul":
+            shutil.copyfile(recovery/"identites.p9",disk)
+        shutil.copyfile(recovery/"autorite.raw",authority)
+        if expected=="autorite":
+            authority.write_bytes(bytes(12*4096))
+    refusal={"initialise":b"NA3 domaine initialise enrolement refuse",
+             "recul":b"NA3 registre divergent activation refusee",
+             "autorite":b"NA3 autorite indisponible activation refusee"}.get(expected)
+    before=authority.read_bytes()
     assert (disk.stat().st_size, authority.stat().st_size) == (512*4096,12*4096)
     descriptor = out / "disque.vmdk"
     descriptor.write_text('# Disk DescriptorFile\nversion=1\nCID=abcd0033\nparentCID=ffffffff\ncreateType="twoGbMaxExtentFlat"\n' +
@@ -37,7 +47,7 @@ def qualify(arch, sector, iso, genesis, out):
                 chunk=os.read(vm.stdout.fileno(),8192)
                 if not chunk:break
                 data.extend(chunk)
-                if not stopping and b"NA3 trois ELF collectes" in data:
+                if not stopping and (b"NA3 refus collecte" if refusal else b"NA3 trois ELF collectes") in data:
                     vm.stdin.write(b"exit\n")
                     vm.stdin.flush()
                     stopping=True
@@ -54,7 +64,10 @@ def qualify(arch, sector, iso, genesis, out):
     ordinary=re.search(rb"DEBUG pid=(\d+) NA3 session et facteur revoques",data)
     if ordinary:actors["second_client"]=int(ordinary[1])
     ok=(len(set(actors.values()))==3 and all(x in data for x in (b"NA3 client termine",b"NA3 administrateur termine",b"NA3 client rejeu refuse",b"NA3 expiration refusee",b"NA3 signature incorrecte refusee",b"NA3 administration refusee",b"NA3 fermeture independante",b"NA3 desactivation confirmee",b"NA3 renomme et groupe retire",b"NA3 nouveau titulaire distinct",b"NA3 ancien facteur refuse apres recreation",b"NA3 trois ELF collectes",b"BLOC session terminee ok=true",b"absents=0x0 muets=0x0")))
-    (out/"resultats.json").write_text(json.dumps(dict(architecture=arch,secteur=sector,
+    if refusal:
+        ok=(refusal in data and b"NA3 refus collecte" in data and b"NA3 preuve acceptee" not in data and before==authority.read_bytes()
+            and b"BLOC session terminee ok=true" in data and b"absents=0x0 muets=0x0" in data)
+    (out/"resultats.json").write_text(json.dumps(dict(architecture=arch,secteur=sector,scenario=expected,
         processus=actors,seconde_hote=time.monotonic()-start,succes=ok),indent=2)+"\n")
     if not ok:raise RuntimeError(bytes(data[-1600:]))
 if __name__=="__main__":
@@ -62,5 +75,8 @@ if __name__=="__main__":
     p.add_argument("architecture",choices=("aarch64","x86_64"))
     p.add_argument("secteur",type=int,choices=(512,4096))
     for name in ("iso","genese","sortie"):p.add_argument(name,type=Path)
+    p.add_argument("--apres",type=Path)
+    p.add_argument("--attendu",choices=("ouvert","initialise","recul","autorite"),default="ouvert")
     a=p.parse_args()
-    qualify(a.architecture,a.secteur,a.iso,a.genese,a.sortie)
+    if bool(a.apres)!=(a.attendu!="ouvert"):p.error("préciser ensemble le contrôle de reprise et sa source")
+    qualify(a.architecture,a.secteur,a.iso,a.genese,a.sortie,a.apres,a.attendu)

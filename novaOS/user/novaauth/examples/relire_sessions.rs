@@ -22,7 +22,7 @@ fn main() {
             },
             Mode::ReadOnly,
         )?;
-        let mut reg = Registry::open(&mut fs, &mut ledger, [7; 16])?;
+        let reg = Registry::open(&mut fs, &mut ledger, [7; 16])?;
         if args[2] == "refuse" {
             return Ok(());
         }
