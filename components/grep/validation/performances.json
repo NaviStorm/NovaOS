@@ -1,0 +1,369 @@
+{
+ "locale": "C",
+ "oracle": "grep (GNU grep) 3.12\nPackaged by Homebrew\nCopyright (C) 2025 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\nWritten by Mike Haertel and others; see\n<https://git.savannah.gnu.org/cgit/grep.git/tree/AUTHORS>.\n\ngrep -P uses PCRE2 10.49 2026-09-28\n",
+ "pcre2": true,
+ "arch": "arm64",
+ "os": "27.2.1",
+ "mesures": [
+  {
+   "mio": 8,
+   "mode": "-F",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 0,
+   "secondes": 0.0,
+   "rss_octets": 2408448,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2408448  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 342  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n           111570923  instructions retired\n            19622457  cycles elapsed\n             1655168  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-F",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 1,
+   "secondes": 0.0,
+   "rss_octets": 2408448,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2408448  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 342  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n           111575047  instructions retired\n            18612798  cycles elapsed\n             1655168  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-F",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 2,
+   "secondes": 0.0,
+   "rss_octets": 2408448,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2408448  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 342  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  11  involuntary context switches\n           111645182  instructions retired\n            18625868  cycles elapsed\n             1655168  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-F",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 0,
+   "secondes": 0.01,
+   "rss_octets": 3031040,
+   "brut": "real 0.01\nuser 0.00\nsys 0.00\n             3031040  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 378  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n           194542644  instructions retired\n            42687724  cycles elapsed\n             1786264  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-F",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 1,
+   "secondes": 0.01,
+   "rss_octets": 2998272,
+   "brut": "real 0.01\nuser 0.00\nsys 0.00\n             2998272  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 376  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  10  involuntary context switches\n           194246410  instructions retired\n            41153370  cycles elapsed\n             1753496  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-F",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 2,
+   "secondes": 0.01,
+   "rss_octets": 3031040,
+   "brut": "real 0.01\nuser 0.00\nsys 0.00\n             3031040  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 378  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n           194296460  instructions retired\n            40083052  cycles elapsed\n             1786264  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-E",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 0,
+   "secondes": 0.0,
+   "rss_octets": 2457600,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2457600  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 345  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  10  involuntary context switches\n           165494605  instructions retired\n            33081682  cycles elapsed\n             1671552  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-E",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 1,
+   "secondes": 0.0,
+   "rss_octets": 2457600,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2457600  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 345  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  11  involuntary context switches\n           165484801  instructions retired\n            31103451  cycles elapsed\n             1671552  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-E",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 2,
+   "secondes": 0.0,
+   "rss_octets": 2473984,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2473984  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 346  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n           165438718  instructions retired\n            32655888  cycles elapsed\n             1687936  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-E",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 0,
+   "secondes": 0.03,
+   "rss_octets": 3309568,
+   "brut": "real 0.03\nuser 0.03\nsys 0.00\n             3309568  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 395  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  13  involuntary context switches\n           812365200  instructions retired\n           152954357  cycles elapsed\n             1884568  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-E",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 1,
+   "secondes": 0.03,
+   "rss_octets": 3358720,
+   "brut": "real 0.03\nuser 0.03\nsys 0.00\n             3358720  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 398  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  10  involuntary context switches\n           812336619  instructions retired\n           137953149  cycles elapsed\n             1933720  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-E",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 2,
+   "secondes": 0.03,
+   "rss_octets": 3342336,
+   "brut": "real 0.03\nuser 0.03\nsys 0.00\n             3342336  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 397  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n           812332147  instructions retired\n           132108966  cycles elapsed\n             1917336  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-P",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 0,
+   "secondes": 0.0,
+   "rss_octets": 2703360,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2703360  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 360  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n           114083113  instructions retired\n            18761853  cycles elapsed\n             1687936  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-P",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 1,
+   "secondes": 0.0,
+   "rss_octets": 2703360,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2703360  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 360  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n           114075175  instructions retired\n            18309379  cycles elapsed\n             1687936  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-P",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 2,
+   "secondes": 0.0,
+   "rss_octets": 2703360,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             2703360  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 360  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n           114075625  instructions retired\n            19157572  cycles elapsed\n             1687936  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-P",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 0,
+   "secondes": 0.0,
+   "rss_octets": 3375104,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             3375104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 399  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   7  involuntary context switches\n           109894804  instructions retired\n            18924214  cycles elapsed\n             1900952  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-P",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 1,
+   "secondes": 0.0,
+   "rss_octets": 3375104,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             3375104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 399  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n           109893728  instructions retired\n            18282042  cycles elapsed\n             1900952  peak memory footprint\n"
+  },
+  {
+   "mio": 8,
+   "mode": "-P",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 2,
+   "secondes": 0.0,
+   "rss_octets": 3391488,
+   "brut": "real 0.00\nuser 0.00\nsys 0.00\n             3391488  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 400  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  10  involuntary context switches\n           109933978  instructions retired\n            18219245  cycles elapsed\n             1917336  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-F",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 0,
+   "secondes": 0.02,
+   "rss_octets": 2408448,
+   "brut": "real 0.02\nuser 0.02\nsys 0.00\n             2408448  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 342  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  11  involuntary context switches\n           757780029  instructions retired\n           107047001  cycles elapsed\n             1655168  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-F",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 1,
+   "secondes": 0.02,
+   "rss_octets": 2408448,
+   "brut": "real 0.02\nuser 0.02\nsys 0.00\n             2408448  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 342  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n           757751675  instructions retired\n           105935479  cycles elapsed\n             1655168  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-F",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 2,
+   "secondes": 0.02,
+   "rss_octets": 2424832,
+   "brut": "real 0.02\nuser 0.02\nsys 0.00\n             2424832  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 343  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  11  involuntary context switches\n           757781737  instructions retired\n           107239788  cycles elapsed\n             1671552  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-F",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 0,
+   "secondes": 0.07,
+   "rss_octets": 2998272,
+   "brut": "real 0.07\nuser 0.06\nsys 0.00\n             2998272  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 376  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  11  involuntary context switches\n          1425510673  instructions retired\n           289313180  cycles elapsed\n             1753496  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-F",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 1,
+   "secondes": 0.07,
+   "rss_octets": 2998272,
+   "brut": "real 0.07\nuser 0.06\nsys 0.00\n             2998272  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 378  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  20  involuntary context switches\n          1425634223  instructions retired\n           285161925  cycles elapsed\n             1753496  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-F",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 2,
+   "secondes": 0.07,
+   "rss_octets": 2998272,
+   "brut": "real 0.07\nuser 0.07\nsys 0.00\n             2998272  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 376  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  12  involuntary context switches\n          1425930691  instructions retired\n           305222424  cycles elapsed\n             1753496  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-E",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 0,
+   "secondes": 0.05,
+   "rss_octets": 2457600,
+   "brut": "real 0.05\nuser 0.05\nsys 0.00\n             2457600  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 345  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n          1188107647  instructions retired\n           223257099  cycles elapsed\n             1671552  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-E",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 1,
+   "secondes": 0.05,
+   "rss_octets": 2457600,
+   "brut": "real 0.05\nuser 0.04\nsys 0.00\n             2457600  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 345  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n          1187701850  instructions retired\n           207403781  cycles elapsed\n             1671552  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-E",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 2,
+   "secondes": 0.05,
+   "rss_octets": 2457600,
+   "brut": "real 0.05\nuser 0.05\nsys 0.00\n             2457600  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 345  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n          1187670303  instructions retired\n           213056331  cycles elapsed\n             1671552  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-E",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 0,
+   "secondes": 0.27,
+   "rss_octets": 3309568,
+   "brut": "real 0.27\nuser 0.27\nsys 0.00\n             3309568  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 395  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  12  involuntary context switches\n          6369106000  instructions retired\n          1094753650  cycles elapsed\n             1884568  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-E",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 1,
+   "secondes": 0.27,
+   "rss_octets": 3342336,
+   "brut": "real 0.27\nuser 0.26\nsys 0.00\n             3342336  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 397  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  12  involuntary context switches\n          6369105447  instructions retired\n          1073924476  cycles elapsed\n             1917336  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-E",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 2,
+   "secondes": 0.27,
+   "rss_octets": 3358720,
+   "brut": "real 0.27\nuser 0.27\nsys 0.00\n             3358720  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 399  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  25  involuntary context switches\n          6369382059  instructions retired\n          1095145012  cycles elapsed\n             1933720  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-P",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 0,
+   "secondes": 0.02,
+   "rss_octets": 2703360,
+   "brut": "real 0.02\nuser 0.02\nsys 0.00\n             2703360  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 360  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n           775784588  instructions retired\n           110921056  cycles elapsed\n             1687936  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-P",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 1,
+   "secondes": 0.02,
+   "rss_octets": 2719744,
+   "brut": "real 0.02\nuser 0.02\nsys 0.00\n             2719744  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 361  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  10  involuntary context switches\n           775854992  instructions retired\n           107660505  cycles elapsed\n             1704320  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-P",
+   "binaire": "ggrep",
+   "candidat": false,
+   "repetition": 2,
+   "secondes": 0.02,
+   "rss_octets": 2703360,
+   "brut": "real 0.02\nuser 0.02\nsys 0.00\n             2703360  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 360  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  11  involuntary context switches\n           775804882  instructions retired\n           111709118  cycles elapsed\n             1687936  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-P",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 0,
+   "secondes": 0.05,
+   "rss_octets": 3375104,
+   "brut": "real 0.05\nuser 0.04\nsys 0.00\n             3375104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 399  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  13  involuntary context switches\n           749672758  instructions retired\n           209154709  cycles elapsed\n             1900952  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-P",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 1,
+   "secondes": 0.02,
+   "rss_octets": 3375104,
+   "brut": "real 0.02\nuser 0.02\nsys 0.00\n             3375104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 399  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n           749583019  instructions retired\n           108357885  cycles elapsed\n             1900952  peak memory footprint\n"
+  },
+  {
+   "mio": 64,
+   "mode": "-P",
+   "binaire": "grep-darwin-arm64",
+   "candidat": true,
+   "repetition": 2,
+   "secondes": 0.02,
+   "rss_octets": 3358720,
+   "brut": "real 0.02\nuser 0.02\nsys 0.00\n             3358720  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 398  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   7  involuntary context switches\n           749570911  instructions retired\n           107072884  cycles elapsed\n             1884568  peak memory footprint\n"
+  }
+ ]
+}

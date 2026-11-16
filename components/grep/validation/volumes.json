@@ -1,0 +1,237 @@
+{
+ "oracle": "grep (GNU grep) 3.12\nPackaged by Homebrew\nCopyright (C) 2025 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\nWritten by Mike Haertel and others; see\n<https://git.savannah.gnu.org/cgit/grep.git/tree/AUTHORS>.\n\ngrep -P uses PCRE2 10.49 2026-09-28\n",
+ "locale": "C",
+ "pcre": "620a",
+ "mesures": [
+  {
+   "cas": "longue-ERE",
+   "mio": 8,
+   "args": [
+    "-Ec",
+    "x.*Z"
+   ],
+   "gnu": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 39698432,
+    "secondes": 0.01,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 22102016,
+    "secondes": 0.03,
+    "statut": 0
+   },
+   "identique": true
+  },
+  {
+   "cas": "longue-ERE",
+   "mio": 64,
+   "args": [
+    "-Ec",
+    "x.*Z"
+   ],
+   "gnu": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 306593792,
+    "secondes": 0.5,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 80838656,
+    "secondes": 0.28,
+    "statut": 0
+   },
+   "identique": true
+  },
+  {
+   "cas": "longue-BRE",
+   "mio": 16,
+   "args": [
+    "-Gc",
+    "^xx*Z$"
+   ],
+   "gnu": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 67829760,
+    "secondes": 0.04,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 30441472,
+    "secondes": 0.12,
+    "statut": 0
+   },
+   "identique": true
+  },
+  {
+   "cas": "longue-PCRE",
+   "mio": 16,
+   "args": [
+    "-Pc",
+    "(?<=x)Z$"
+   ],
+   "gnu": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 68075520,
+    "secondes": 0.03,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 30523392,
+    "secondes": 0.0,
+    "statut": 0
+   },
+   "identique": true
+  },
+  {
+   "cas": "longue-NUL",
+   "mio": 16,
+   "args": [
+    "-zEc",
+    "x.*Z$"
+   ],
+   "gnu": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 67829760,
+    "secondes": 0.01,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 30457856,
+    "secondes": 0.04,
+    "statut": 0
+   },
+   "identique": true
+  },
+  {
+   "cas": "longue-absente",
+   "mio": 16,
+   "args": [
+    "-Ec",
+    "Y.*Z"
+   ],
+   "gnu": {
+    "octets": 2,
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "rss_octets": 67813376,
+    "secondes": 0.03,
+    "statut": 1
+   },
+   "candidat": {
+    "octets": 2,
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "rss_octets": 30457856,
+    "secondes": 0.0,
+    "statut": 1
+   },
+   "identique": true
+  },
+  {
+   "cas": "longue-F",
+   "mio": 64,
+   "args": [
+    "-Fc",
+    "Z"
+   ],
+   "gnu": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 306561024,
+    "secondes": 0.4,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rss_octets": 3014656,
+    "secondes": 0.06,
+    "statut": 0
+   },
+   "identique": true
+  },
+  {
+   "cas": "longue-fichier-texte",
+   "mio": 16,
+   "args": [
+    "-aFn",
+    "Z"
+   ],
+   "gnu": {
+    "octets": 16777220,
+    "sha256": "cfd43b4f14a7f445a835fcc54a0482782f42a142c23e304155f548e19c9eb4be",
+    "rss_octets": 67780608,
+    "secondes": 0.01,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 16777220,
+    "sha256": "cfd43b4f14a7f445a835fcc54a0482782f42a142c23e304155f548e19c9eb4be",
+    "rss_octets": 30212096,
+    "secondes": 0.02,
+    "statut": 0
+   },
+   "identique": true
+  },
+  {
+   "cas": "contexte-disque",
+   "mio": 32,
+   "args": [
+    "-B2300",
+    "FIN"
+   ],
+   "gnu": {
+    "octets": 9420804,
+    "sha256": "2ce1290f9437fb7bef27834fa2b6ce348b4921188cbb105389c137d594b74162",
+    "rss_octets": 34160640,
+    "secondes": 0.77,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 9420804,
+    "sha256": "2ce1290f9437fb7bef27834fa2b6ce348b4921188cbb105389c137d594b74162",
+    "rss_octets": 11665408,
+    "secondes": 0.11,
+    "statut": 0
+   },
+   "identique": true
+  },
+  {
+   "cas": "contexte-rotation",
+   "mio": 64,
+   "args": [
+    "-B2300",
+    "FIN"
+   ],
+   "gnu": {
+    "octets": 9420804,
+    "sha256": "2ce1290f9437fb7bef27834fa2b6ce348b4921188cbb105389c137d594b74162",
+    "rss_octets": 34160640,
+    "secondes": 1.67,
+    "statut": 0
+   },
+   "candidat": {
+    "octets": 9420804,
+    "sha256": "2ce1290f9437fb7bef27834fa2b6ce348b4921188cbb105389c137d594b74162",
+    "rss_octets": 11665408,
+    "secondes": 0.23,
+    "statut": 0
+   },
+   "identique": true
+  }
+ ]
+}
