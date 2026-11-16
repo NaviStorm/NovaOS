@@ -12,6 +12,7 @@ pub(super) fn launch() -> rt::Result<()> {
         Ok(w)
     }
     let verifier = start(17)?;
+    let provisioner = start(20)?;
     let client = start(18)?;
     let second = start(19)?;
     // Seule la référence publique est remise par l'ELF de confiance.
@@ -41,12 +42,12 @@ pub(super) fn launch() -> rt::Result<()> {
             text.len() as u64,
             0,
         ))?;
-        for child in [client, second, verifier] {
+        for child in [client, second, verifier, provisioner] {
             let mut cmd = [0; 16];
             cmd[0] = child[0];
             syscall(proc::KILL, &mut cmd)?;
         }
-        for child in [client, second, verifier] {
+        for child in [client, second, verifier, provisioner] {
             collect(child[0], true)?;
         }
         let collected = b"NA3 refus collecte";
@@ -76,7 +77,16 @@ pub(super) fn launch() -> rt::Result<()> {
     provision[..8].copy_from_slice(b"NA3DIR01");
     provision[8..24].copy_from_slice(&published.payload[..16]);
     provision[24..56].copy_from_slice(&live.payload[..32]);
-    rt::send_for(rt::config(5), 2, &provision, 5000)?;
+    rt::send_for(provisioner[2], 1, &provision, 5000)?;
+    let approved = rt::receive_for(provisioner[1], 5000)?;
+    if approved.kind != 1
+        || approved.len != 128
+        || approved.tag != 1
+        || approved.payload != provision
+    {
+        return Err(rt::DENIED);
+    }
+    rt::send_for(rt::config(5), 2, &approved.payload, 5000)?;
     let receipt = rt::receive_for(rt::config(6), 5000)?;
     if receipt.kind != 1
         || receipt.len != 128
@@ -127,7 +137,9 @@ pub(super) fn launch() -> rt::Result<()> {
     collect(second[0], false)?;
     rt::send_for(verifier[2], 1, &[0], 5000)?;
     collect(verifier[0], false)?;
-    let msg = b"NA3 trois ELF collectes";
+    rt::send_for(provisioner[2], 2, &[0], 5000)?;
+    collect(provisioner[0], false)?;
+    let msg = b"NA3 quatre processus collectes";
     rt::value(rt::call(
         rt::DEBUG_WRITE,
         msg.as_ptr() as u64,

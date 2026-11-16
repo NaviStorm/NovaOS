@@ -250,6 +250,19 @@ fn ordinary(c: &mut Client, expected: [u8; 16]) -> rt::Result<()> {
     Ok(())
 }
 fn exercise() -> rt::Result<()> {
+    if rt::config(2) == 20 {
+        let selection = from_manager(1, 128)?;
+        check(
+            &selection[..8] == b"NA3DIR01"
+                && selection[8..24] != [0; 16]
+                && selection[24..56] != [0; 32]
+                && selection[56..].iter().all(|&v| v == 0),
+        )?;
+        rt::send_for(rt::config(0), 1, &selection, 5000)?;
+        marker(b"NA3 provisionneur D attribue");
+        check(from_manager(2, 1)?[0] == 0)?;
+        return Ok(());
+    }
     let mut c = Client {
         key: SigningKey::from_bytes(&*random()?),
         seq: 0,

@@ -42,7 +42,7 @@ index 09a892af036b46df33df6e2fb4a765f38a359e67..8aa973dfb056396fabb2cc6fef9bd5ab
 +#[cfg(feature = "novaauth-sessions-lab")]
 +static AUTH_SESSIONS_LAB: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
 diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
-index 2702ba93f1f29477dea7bfadac094e79af820a15..d0fa1f80830c48fe7089c060b290fd8cb85dc513 100644
+index 2702ba93f1f29477dea7bfadac094e79af820a15..87dcef02b6fe556bec505b50dbe8190f0095072a 100644
 --- a/novaOS/kernel/src/sched/process/ipc/service.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/service.rs
 @@ -4,0 +5,2 @@ use super::*;
@@ -53,7 +53,7 @@ index 2702ba93f1f29477dea7bfadac094e79af820a15..d0fa1f80830c48fe7089c060b290fd8c
 +        if auth_lab::enabled() { config(s, owner, 19, &[1]); config(s,group[1].0,13,&[0x4e4133]); }
 @@ -239,0 +244,2 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
 +        #[cfg(feature = "novaauth-sessions-lab")]
-+        auth_lab::AUTH | auth_lab::CLIENT | auth_lab::SECOND if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
++        auth_lab::AUTH | auth_lab::CLIENT | auth_lab::SECOND | auth_lab::PROVISIONER if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
 @@ -248 +254,4 @@ fn start(pid: Pid, m: Session, address: u64, mut words: [u64; 16]) -> Res<u64> {
 -    let maximum = service_caps::maximum(id).ok_or(DENIED)?;
 +    let maximum = service_caps::maximum(id);
