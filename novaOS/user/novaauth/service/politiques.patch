@@ -1,0 +1,96 @@
+diff --git a/novaOS/kernel/Cargo.toml b/novaOS/kernel/Cargo.toml
+index 768cd6689ead28cb88f42a1996566528b7d72691..3a5f716fe05657741d2c69369c8d85c2089f5c14 100644
+--- a/novaOS/kernel/Cargo.toml
++++ b/novaOS/kernel/Cargo.toml
+@@ -15 +15 @@
+-novaauth-sessions-lab = []
++novaauth-sessions-lab = ["dep:sha2"]
+diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
+index 1a5accd803cd9a6220c0afccc9decf5f44053365..daa2a039c4e59c00e229ceeaab2bc7c7a2a8f0bb 100644
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -194 +194 @@
+-        cargo_service.args(["--features", "novaauth-sessions-lab"]);
++        cargo_service.args(["--features", "politiques-lab"]);
+@@ -197 +197 @@
+-            .args(["build","--release","--locked","--offline","--features","guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","policy-guest","--bins","--target",&target])
+@@ -203 +203 @@
+-        for name in ["auth-verifier","auth-client"] {
++        for name in ["auth-verifier","auth-client","sign-alice","sign-bob","policy-app"] {
+diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
+index 87dcef02b6fe556bec505b50dbe8190f0095072a..f8f5859352ea9477ce019e059adbe2501849b62a 100644
+--- a/novaOS/kernel/src/sched/process/ipc/service.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service.rs
+@@ -6,0 +7,2 @@
++#[cfg(feature="novaauth-sessions-lab")]
++mod policy_lab;
+@@ -169 +171 @@
+-        if auth_lab::enabled() { config(s, owner, 19, &[1]); config(s,group[1].0,13,&[0x4e4133]); }
++        if auth_lab::enabled() { config(s, owner, 19, &[2]); policy_lab::publish_measure(s,owner); config(s,group[1].0,13,&[0x4e4133]); }
+@@ -240 +242,2 @@
+-    if words[1..3] != [0, 0] || words[7..].iter().any(|v| *v != 0) || attempt == 0 {
++    let policy_app = cfg!(feature="novaauth-sessions-lab") && matches!(id,21|22);
++    if words[1..3] != [0, 0] || (!policy_app && words[7..].iter().any(|v| *v != 0)) || attempt == 0 {
+@@ -245 +248 @@
+-        auth_lab::AUTH | auth_lab::CLIENT | auth_lab::SECOND | auth_lab::PROVISIONER if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
++        17..=22 if auth_lab::enabled() && argument == 0 => policy_lab::image(id).ok_or(DENIED)?,
+@@ -256 +259 @@
+-    let maximum = maximum.or_else(|| (auth_lab::enabled() && auth_lab::elf(id).is_some()).then_some(0));
++    let maximum = maximum.or_else(|| (auth_lab::enabled() && policy_lab::image(id).is_some()).then_some(0));
+@@ -278,0 +282,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    if policy_app {policy_lab::verify(elf,&words)?;}
+@@ -304,0 +310,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        if auth_lab::enabled() && policy_app { policy_lab::attach(s,m,target,id,words[11..13].try_into().unwrap(),elf)?; }
+diff --git a/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs b/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
+index adad997974ed8b7a50bc3cf95baf92dd79757ffc..910b23995b3f2ccc67b0d0e79c8633b0352322b9 100644
+--- a/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
+@@ -97,17 +97 @@
+-            let provisioner = s
+-                .processes
+-                .slots
+-                .iter()
+-                .flatten()
+-                .find(|p| {
+-                    p.service_id == PROVISIONER
+-                        && p.service_owner == Some(m.manager)
+-                        && p.outcome.is_none()
+-                })
+-                .ok_or(CLOSED)?
+-                .pid;
+-            let (submit, incoming) = conversation(s, provisioner, target, m.fs)?;
+-            let (receive, respond) = (submit, incoming);
+-            let pair = if id == CLIENT { 24 } else { 26 };
+-            config(s, m.fs, pair, &[incoming, respond]);
+-            config(s, target, 9, &[submit, receive]);
++            // Les canaux VFS sont réservés aux instances de l’application mesurée.
+diff --git a/novaOS/user/novafs/Cargo.toml b/novaOS/user/novafs/Cargo.toml
+index 1d2ab37d595f2656b392d211b177eb2433363ee0..a6e1a9549b1a9df276ff556aa837ca5bf1504668 100644
+--- a/novaOS/user/novafs/Cargo.toml
++++ b/novaOS/user/novafs/Cargo.toml
+@@ -16,0 +17 @@
++politiques-lab = ["novaauth-sessions-lab","novaos-identity/politiques-lab"]
+diff --git a/novaOS/user/novafs/files/configuration.rs b/novaOS/user/novafs/files/configuration.rs
+index a1f4e7b1d0e5b5c358552b11b1be4bd8f82d5dc8..562a6b082413d91c5a2c3ec6f3974206b33e4f8d 100644
+--- a/novaOS/user/novafs/files/configuration.rs
++++ b/novaOS/user/novafs/files/configuration.rs
+@@ -132,0 +133,5 @@
++            if &msg.payload[..8]==b"NA4START" && rt::config(13)==0x4e4133 {
++                let status=self.policy_start(&msg.payload,&mut a).err().unwrap_or(rt::OK);
++                put(&mut a,16,status);rt::send_for(tx,msg.tag,&a,5000)?;return Ok(true);
++            }
++            #[cfg(feature="novaauth-sessions-lab")]
+diff --git a/novaOS/user/service_manager.rs b/novaOS/user/service_manager.rs
+index 8e66b5f6657b531333f2f20965439606f4837731..4be41278a2dd20f3e788866e42d00b27f7469156 100644
+--- a/novaOS/user/service_manager.rs
++++ b/novaOS/user/service_manager.rs
+@@ -488,0 +489,3 @@
++#[cfg(novaauth_sessions_lab)]
++#[path="novaauth/service/policy_launcher.rs"]
++mod policy_lab;
+@@ -489,0 +493,2 @@
++    #[cfg(novaauth_sessions_lab)]
++    if rt::config(19)==2 {policy_lab::launch()?;}

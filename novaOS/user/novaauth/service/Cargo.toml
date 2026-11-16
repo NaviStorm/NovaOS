@@ -9,6 +9,25 @@ publish = false
 
 [features]
 guest = []
+policy-guest = ["guest"]
+
+[[bin]]
+name = "sign-alice"
+path = "src/bin/sign-alice.rs"
+required-features = ["policy-guest"]
+test = false
+
+[[bin]]
+name = "sign-bob"
+path = "src/bin/sign-bob.rs"
+required-features = ["policy-guest"]
+test = false
+
+[[bin]]
+name = "policy-app"
+path = "src/bin/policy-app.rs"
+required-features = ["policy-guest"]
+test = false
 
 [[bin]]
 name = "auth-verifier"

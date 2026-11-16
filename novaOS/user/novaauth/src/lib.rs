@@ -8,6 +8,8 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 pub mod lab;
+#[cfg(feature = "politiques-lab")]
+pub mod policy;
 pub type Id = [u8; 16];
 pub type Hash = [u8; 32];
 pub const PATHS: [&str; 3] = [
@@ -109,18 +111,32 @@ pub enum Status {
     Deleted,
 }
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(not(feature = "politiques-lab"), serde(deny_unknown_fields))]
 pub struct User {
     pub id: Id,
     pub name: String,
     pub status: Status,
     pub revision: u64,
     pub admin: bool,
+    #[cfg(feature = "politiques-lab")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    installations: Vec<policy::Installation>,
+    #[cfg(feature = "politiques-lab")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    folders: Vec<(u64, Hash)>,
+    #[cfg(feature = "politiques-lab")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    rules: Vec<policy::Rule>,
 }
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(not(feature = "politiques-lab"), serde(deny_unknown_fields))]
 struct Group {
     id: Id,
     name: String,
     members: Vec<Id>,
+    #[cfg(feature = "politiques-lab")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    admissions: Vec<(Id, u64)>,
 }
 #[derive(Debug, Serialize, Deserialize, Clone)]
 struct Credential {
@@ -217,6 +233,8 @@ impl State {
                     id: gid,
                     name: name.into(),
                     members: Vec::new(),
+                    #[cfg(feature = "politiques-lab")]
+                    admissions: Vec::new(),
                 });
                 if let Change::Enroll {
                     name, credential, ..
@@ -259,6 +277,8 @@ impl State {
                     // Garder la référence non secrète dans la tombe empêche de
                     // rattacher le même facteur à un autre titulaire.
                     for g in &mut self.groups {
+                        #[cfg(feature = "politiques-lab")]
+                        g.admissions.retain(|(u, _)| *u != id);
                         g.members.retain(|v| *v != id);
                     }
                 }
@@ -276,6 +296,8 @@ impl State {
                     return Err(Fault::Conflict);
                 }
                 g.members.push(id);
+                #[cfg(feature = "politiques-lab")]
+                g.admissions.push((id, new));
                 self.users
                     .iter_mut()
                     .find(|u| u.id == id)
@@ -294,6 +316,8 @@ impl State {
                     .position(|v| *v == id)
                     .ok_or(Fault::BadInput)?;
                 g.members.remove(i);
+                #[cfg(feature = "politiques-lab")]
+                g.admissions.retain(|(u, _)| *u != id);
                 self.users
                     .iter_mut()
                     .find(|u| u.id == id)
@@ -324,6 +348,12 @@ impl State {
                 status: Status::Active,
                 revision: new,
                 admin,
+                #[cfg(feature = "politiques-lab")]
+                installations: Vec::new(),
+                #[cfg(feature = "politiques-lab")]
+                folders: Vec::new(),
+                #[cfg(feature = "politiques-lab")]
+                rules: Vec::new(),
             });
             self.credentials.push(Credential {
                 owner: uid,
@@ -517,11 +547,14 @@ impl<'a, D: Device, A: Authority> Registry<'a, D, A> {
         )
     }
     fn publish(&mut self, h: Head, mut s: State, request: Id, change: Change) -> Result<Head> {
+        let generation = h.generation.checked_add(1).ok_or(Fault::Limit)?;
+        s.apply(&h, change, generation, request)?;
+        self.publish_state(h, s, request, generation)
+    }
+    fn publish_state(&mut self, h: Head, s: State, request: Id, generation: u64) -> Result<Head> {
         if request == [0; 16] || self.authority.outcome(request)?.is_some() {
             return Err(Fault::Conflict);
         }
-        let generation = h.generation.checked_add(1).ok_or(Fault::Limit)?;
-        s.apply(&h, change, generation, request)?;
         let parts = [
             serde_json::to_vec(&s.users),
             serde_json::to_vec(&s.groups),

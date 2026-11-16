@@ -203,6 +203,32 @@ fn serve() -> rt::Result<()> {
                         return Err(number(&reply.payload));
                     }
                 }
+                #[cfg(feature = "policy-guest")]
+                12..=17 => {
+                    let current = current.ok_or(rt::DENIED)?;
+                    sessions
+                        .inspect(
+                            m.payload[40..72].try_into().unwrap(),
+                            route,
+                            Some(current),
+                            now()?,
+                        )
+                        .map_err(|_| rt::DENIED)?;
+                    let mut q = [0; 128];
+                    q[..8].copy_from_slice(b"NA4RULE1");
+                    q[8] = op;
+                    q[9] = lane as u8;
+                    q[16..32].copy_from_slice(&reference);
+                    q[32..64].copy_from_slice(&current.head);
+                    q[64..120].copy_from_slice(&m.payload[72..128]);
+                    rpc_seq = rpc_seq.checked_add(1).ok_or(rt::LIMIT)?;
+                    rt::send_for(rt::config(5), rpc_seq, &q, 5000)?;
+                    let msg = remote(rt::config(6), rpc_seq).map_err(|_| files::UNCERTAIN)?;
+                    if number(&msg.payload) != rt::OK {
+                        return Err(number(&msg.payload));
+                    }
+                    a[8..112].copy_from_slice(&msg.payload[8..112]);
+                }
                 5..=10 => {
                     sessions
                         .inspect(

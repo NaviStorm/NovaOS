@@ -156,6 +156,15 @@ impl Session<'_, '_> {
             Err(e) => return Err(e),
         };
         let mut a = [0; 128];
+        #[cfg(feature = "politiques-lab")]
+        if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA4RULE1" {
+            let status = self
+                .policy_change(&msg.payload, &mut a)
+                .err()
+                .unwrap_or(rt::OK);
+            a[..8].copy_from_slice(&status.to_le_bytes());
+            return rt::send_frame(tx, msg.tag, &a, 0, false);
+        }
         let status = if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA3DATT1" {
             self.attest_folder(&msg.payload).err().unwrap_or(rt::OK)
         } else if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA3DCLOS" {

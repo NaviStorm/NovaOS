@@ -5,6 +5,9 @@ edition = "2024"
 license = "MIT"
 publish = false
 
+[features]
+politiques-lab = []
+
 [workspace]
 
 [dependencies]
@@ -12,6 +15,10 @@ novafs = { path = "../../../novaFS" }
 sha2 = { version = "0.10.9", default-features = false }
 serde = { version = "1", default-features = false, features = ["alloc", "derive"] }
 serde_json = { version = "1", default-features = false, features = ["alloc"] }
+
+[[example]]
+name = "policy_volume"
+required-features = ["politiques-lab"]
 
 [profile.release]
 overflow-checks = true

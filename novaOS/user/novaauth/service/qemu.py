@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "scripts"))
 from bloc_qemu import command
 
-def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert'):
+def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert', policy=None):
     out.mkdir(parents=True, exist_ok=False)
     disk, authority = out / "identites.p9", out / "autorite.raw"
     shutil.copyfile(genesis / "neuf-identites.p9", disk)
@@ -28,6 +28,11 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert'):
     refusal={"initialise":b"NA3 domaine initialise enrolement refuse",
              "recul":b"NA3 registre divergent activation refusee",
              "autorite":b"NA3 autorite indisponible activation refusee"}.get(expected)
+    if policy == "recul":
+        refusal=b"NAP registre refuse avant lancement"
+    completion=b"NA3 refus collecte" if refusal else b"NA3 quatre processus collectes"
+    if policy:
+        completion=refusal or b"NAP cinq processus collectes"
     before=authority.read_bytes()
     assert (disk.stat().st_size, authority.stat().st_size) == (512*4096,12*4096)
     descriptor = out / "disque.vmdk"
@@ -48,7 +53,7 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert'):
                 if not chunk:break
                 data.extend(chunk)
                 with (out/'invité.serial').open('ab') as trace:trace.write(chunk)
-                if not stopping and (b"NA3 refus collecte" if refusal else b"NA3 quatre processus collectes") in data:
+                if not stopping and completion in data:
                     vm.stdin.write(b"exit\n")
                     vm.stdin.flush()
                     stopping=True
@@ -68,6 +73,19 @@ def qualify(arch, sector, iso, genesis, out, recovery=None, expected='ouvert'):
     if refusal:
         ok=(refusal in data and b"NA3 refus collecte" in data and b"NA3 preuve acceptee" not in data and before==authority.read_bytes()
             and b"BLOC session terminee ok=true" in data and b"absents=0x0 muets=0x0" in data)
+    if policy:
+        required={
+            "attribution":[b"NAP politique modifiee application arretee",b"NAP fermeture session reveil certain ecriture perdue reconciliee"],
+            "retrait":[b"NAP retrait groupe descendants refuses lecture conservee"],
+            "reprise":[b"NAP retrait persistant apres reauthentification"],
+            "recul":[b"NAP registre refuse avant lancement"],
+        }[policy]
+        if policy!="recul":
+            required += [b"NAP deux titulaires authentifies",b"NAP meme image admise deux instances",b"NAP cinq processus collectes",b"NA3 preuve acceptee"]
+        ok=all(marker in data for marker in required+[b"BLOC session terminee ok=true",b"absents=0x0 muets=0x0"])
+        if policy=="recul":
+            ok=ok and before==authority.read_bytes() and b"NA3 preuve acceptee" not in data
+        expected=policy
     (out/"resultats.json").write_text(json.dumps(dict(architecture=arch,secteur=sector,scenario=expected,
         processus=actors,seconde_hote=time.monotonic()-start,succes=ok),indent=2)+"\n")
     if not ok:raise RuntimeError(bytes(data[-1600:]))

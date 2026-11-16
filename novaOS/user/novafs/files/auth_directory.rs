@@ -5,6 +5,8 @@ use novaos_identity::{Authority, Registry, lab::Ledger};
 
 pub(super) const NAME: &str = "\x1fNovaAuth-D";
 const MAGIC: &[u8; 8] = b"NADIR001";
+#[cfg(feature = "politiques-lab")]
+include!("policy_directory.rs");
 const READ: u8 = 1;
 const WRITE: u8 = 2;
 const ALL: u8 = READ | WRITE;
@@ -23,6 +25,8 @@ struct Lease {
     key: u64,
     parent: u64,
     rights: u8,
+    #[cfg(feature = "politiques-lab")]
+    permission: Option<Permission>,
 }
 #[derive(Clone, Copy)]
 struct PendingWrite {
@@ -33,6 +37,12 @@ struct PendingWrite {
 #[derive(Default)]
 pub(super) struct Directory {
     seal: Option<[u8; 104]>,
+    #[cfg(feature = "politiques-lab")]
+    group: Principal,
+    #[cfg(feature = "politiques-lab")]
+    install: Principal,
+    #[cfg(feature = "politiques-lab")]
+    sleeper: Option<(Holder, u64, u64)>,
     next: u64,
     leases: [Option<Lease>; 12],
     pending: Option<PendingWrite>,
@@ -70,6 +80,8 @@ impl Directory {
             key: self.next,
             parent,
             rights,
+            #[cfg(feature = "politiques-lab")]
+            permission: None,
         });
         Ok(self.next)
     }
@@ -175,7 +187,7 @@ impl Session<'_, '_> {
         self.directory.seal = Some(seal);
         Ok(key)
     }
-    fn folder_op(&mut self, holder: Holder, q: &Frame) -> rt::Result<u64> {
+    fn folder_op(&mut self, holder: Holder, q: &Frame, group_authorized: bool) -> rt::Result<u64> {
         if self.failed.is_some() || self.pending.is_some() || self.temporary.any_pending() {
             return Err(rt::REFUSED);
         }
@@ -189,7 +201,7 @@ impl Session<'_, '_> {
         if policy.id != number(&seal[88..])
             || policy.size != 104
             || fs.inspect_id(policy.id, 0, 104).map_err(error)? != seal
-            || holder.subject != seal[8..24]
+            || (!group_authorized && holder.subject != seal[8..24])
         {
             return Err(rt::DENIED);
         }
@@ -293,6 +305,15 @@ impl Session<'_, '_> {
         if self.directory.pending.is_some_and(|p| belongs(p.holder)) {
             self.directory.pending = None;
         }
+        #[cfg(feature = "politiques-lab")]
+        if let Some((h, tag, tx)) = self.directory.sleeper.filter(|(h, _, _)| belongs(*h)) {
+            let mut r = [0; 128];
+            r[..8].copy_from_slice(&rt::CANCELLED.to_le_bytes());
+            r[120..].copy_from_slice(b"DIRREPLY");
+            rt::send_frame(tx, tag, &r, 0, false)?;
+            self.directory.sleeper = None;
+            let _ = h;
+        }
         Ok(())
     }
     pub(super) fn attest_folder(&mut self, a: &Frame) -> rt::Result<()> {
@@ -325,7 +346,15 @@ impl Session<'_, '_> {
             if ledger.current().map_err(|_| rt::REFUSED)?.digest != a[72..104] {
                 return Err(rt::DENIED);
             }
-            let result = self.folder_op(holder, &msg.payload);
+            #[cfg(not(feature = "politiques-lab"))]
+            let result = self.folder_op(holder, &msg.payload, false);
+            #[cfg(feature = "politiques-lab")]
+            let result = self.policy_operation(lane, holder, &msg.payload);
+            #[cfg(feature = "politiques-lab")]
+            if msg.payload[0] == 11 && result.is_ok() {
+                self.directory.sleeper = Some((holder, tag, tx));
+                return Ok(());
+            }
             // Injection explicite de perte de la réponse après écriture durable.
             // L'appelant ne peut pas déduire l'issue de cette absence.
             if msg.payload[0] == 7 && result.is_ok() {
