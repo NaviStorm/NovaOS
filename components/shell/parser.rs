@@ -10,6 +10,7 @@ pub struct Term<'a> {
 }
 pub enum Command<'a> {
     Simple(Vec<&'a str>),
+    Pipe(Vec<&'a str>, Vec<&'a str>),
     If(Vec<(List<'a>, List<'a>)>, List<'a>),
     While(List<'a>, List<'a>),
     For(&'a str, Vec<&'a str>, List<'a>),
@@ -188,6 +189,18 @@ impl<'a> Parser<'a> {
         let w = self.words(tty::ARG_COUNT + 1)?;
         if w.is_empty() {
             return Err(self.need());
+        }
+        if self.take(Token::Pipe) {
+            self.lines();
+            let reader = self.words(tty::ARG_COUNT + 1)?;
+            if reader.is_empty() {
+                return Err(self.need());
+            }
+            // Valider la forme admise avant l'exécution de toute la liste.
+            if w[0] != "cat" || reader[0] != "wc" {
+                return Err(Error::Invalid);
+            }
+            return Ok(Command::Pipe(w, reader));
         }
         Ok(Command::Simple(w))
     }

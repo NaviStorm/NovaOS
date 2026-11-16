@@ -25,6 +25,7 @@ pub enum Token<'a> {
     Semi,
     And,
     Or,
+    Pipe,
 }
 
 fn parameter(s: &str) -> rt::Result<Option<(&str, usize)>> {
@@ -128,7 +129,8 @@ pub fn tokens(mut s: &str) -> rt::Result<Vec<Token<'_>>> {
             b';' => (Token::Semi, 1),
             b'&' if s.starts_with("&&") => (Token::And, 2),
             b'|' if s.starts_with("||") => (Token::Or, 2),
-            b'&' | b'|' => return Err(rt::BAD_ARGUMENT),
+            b'|' => (Token::Pipe, 1),
+            b'&' => return Err(rt::BAD_ARGUMENT),
             _ => {
                 let n = scan(s, |_, _, _| Ok(()))?;
                 (Token::Name(&s[..n]), n)

@@ -1,5 +1,5 @@
 //! Le catalogue associe un numéro à un ELF immuable. Le service des fichiers
-//! interprète seul la sélection d'objet. Un parent ne peut suivre qu'un fils à la fois.
+//! interprète seul la sélection d'objet. Le second droit WAIT est réservé au lecteur du pipe.
 use super::*;
 use crate::terminal as tty;
 #[path = "document_launch.rs"]
@@ -98,12 +98,30 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     if authority & tty::LAUNCH == 0 {
         return Err(DENIED);
     }
-    if with(|s| s.processes.get(parent).wait_right.is_some()) {
-        return Err(LIMIT);
+    if number == tty::PIPE_OPEN {
+        if addr != 0 || len != 0 { return Err(BAD_ARGUMENT); }
+        return with(|s| s.ipc.pipe_open(parent, authority & tty::QUALIFY != 0));
     }
+    let (number, stream) = match number {
+        tty::PIPE_CAT => (2, Some(false)),
+        tty::PIPE_WC => (11, Some(true)),
+        ordinary => (ordinary, None),
+    };
+    let check = |s: &Core, key: u64| -> Res<Option<Node>> {
+        let p = s.processes.get(parent);
+        if p.pipe_reader_wait.is_some() { return Err(LIMIT); }
+        if stream == Some(true) {
+            let writer = p.wait_right.ok_or(DENIED)?.target;
+            return s.ipc.pipe_check(parent, key, Some(writer)).map(Some);
+        }
+        if p.wait_right.is_some() { return Err(LIMIT); }
+        stream.map(|_| s.ipc.pipe_check(parent, key, None)).transpose()
+    };
     let (image, fixture, has_documentation) = Application::entry(usize::try_from(number).map_err(|_| BAD_ARGUMENT)?)?;
-    let mut bytes = [0; tty::HEADER + tty::ARG_MAX];
+    let mut bytes = [0; tty::HEADER + tty::ARG_MAX + 8];
     let n = usize::try_from(len).map_err(|_| BAD_ARGUMENT)?;
+    let extension = usize::from(stream.is_some()) * 8;
+    if n < tty::HEADER + extension || n > tty::HEADER + tty::ARG_MAX + extension { return Err(BAD_ARGUMENT); }
     let data = bytes
         .get_mut(..n)
         .filter(|b| b.len() >= tty::HEADER)
@@ -121,9 +139,14 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     if !valid {
         return Err(BAD_ADDRESS);
     }
+    let (data, trailer) = data.split_at_mut(n - extension);
+    let pipe = if stream.is_some() { u64::from_le_bytes(trailer.try_into().unwrap()) } else { 0 };
+    with(|s| check(s, pipe))?;
     let word = |i: usize| u64::from_le_bytes(data[i * 8..i * 8 + 8].try_into().unwrap());
     let (input, output, ports) = (word(0), word(1), word(2));
-    if word(4) != (n - tty::HEADER) as u64
+    if word(4) != (data.len() - tty::HEADER) as u64
+        || stream == Some(true) && (input != 0 || ports != u64::from(tty::ERROR | tty::OUTPUT))
+        || stream == Some(false) && ports != u64::from(tty::ERROR)
         || ports & !u64::from(authority & (tty::INPUT | tty::OUTPUT | tty::ERROR)) != 0
         || (input == 0) != (output == 0)
         || (input != 0 && input == output)
@@ -133,7 +156,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     if fixture && authority & tty::QUALIFY == 0 {
         return Err(DENIED);
     }
-    let documentation = document_launch::eligible(has_documentation, (input, output), ports, word(3), &data[tty::HEADER..]);
+    let documentation = stream.is_none() && document_launch::eligible(has_documentation, (input, output), ports, word(3), &data[tty::HEADER..]);
     data[..24].fill(0);
     let start = hal::timer::counter();
     drop(_guard);
@@ -154,6 +177,7 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
     };
     let setup = with(|s| {
         let pid = child.0;
+        let root = check(s, pipe)?;
         if input != 0 {
             let tx = s.ipc.derive(parent, input, pid, SEND.into())?;
             let rx = s.ipc.derive(parent, output, pid, RECEIVE.into())?;
@@ -170,9 +194,20 @@ pub(in crate::sched::process) fn spawn_program(number: u64, addr: u64, len: u64)
             })
             .unwrap();
         }
+        if let (Some(root), Some(reader)) = (root, stream) {
+            let key = s.ipc.pipe_attach(root, pid, reader)?;
+            heap::with_pages(|m| {
+                s.processes.get(pid).space.as_ref().unwrap().write_data(m, if reader { 2 } else { 1 }, key);
+                Ok(())
+            }).unwrap();
+        }
         s.processes.get_mut(pid).terminal = ports as u8 | (authority & tty::QUALIFY);
         let right = WaitRight { target: pid };
-        s.processes.get_mut(parent).wait_right = Some(right);
+        if stream == Some(true) {
+            s.processes.get_mut(parent).pipe_reader_wait = Some(right);
+        } else {
+            s.processes.get_mut(parent).wait_right = Some(right);
+        }
         Ok(right.key())
     });
     match setup {
@@ -254,7 +289,7 @@ pub(in crate::sched::process) fn instance_call(op: u64, a: u64, b: u64, c: u64) 
                 return Err(DENIED);
             }
             with(|s| verify_identity(s, pid, key, a))?;
-            if with(|s| s.processes.get(pid).wait_right.is_some()) {
+            if with(|s| { let p = s.processes.get(pid); p.wait_right.is_some() || p.pipe_reader_wait.is_some() }) {
                 return Err(LIMIT);
             }
             let child = Application(image, app).launch(&b.to_le_bytes(), false, Some(key))?;

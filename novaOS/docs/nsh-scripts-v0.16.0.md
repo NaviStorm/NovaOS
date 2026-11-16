@@ -135,3 +135,5 @@ L’application UTM a installé l’image en secteurs de 512 octets puis démarr
 | DMA/GICv3 / DMA séquentielle, moteur UTM | 11 / 23 | Profil AArch64 |
 
 Les invités de développement tournent sous QEMU 11.1.3. Les exécutables Darwin de NovaFS ont tourné sur macOS 27.2 en ARM64 natif et en x86_64 sous Rosetta. Les relectures croisées P8 et P9 couvrent les deux sens aux deux tailles de secteur. Sur le banc CLI P9, le pic résident échantillonné est de 4 908 Kio sur AArch64 et de 5 084 Kio sur x86_64. Le pic mesuré au remontage est respectivement de 5 028 et 5 204 Kio. La matrice conserve les relevés par géométrie, les empreintes de l’image et les scénarios de refus sans écriture. [Résultats détaillés](validation/nsh-v0.16.0.json)
+
+Le [premier pipe natif de la branche v0.23.x](pipe-natif-v0.23.x.md) étend cette grammaire au parcours `cat fichier | wc -l`.

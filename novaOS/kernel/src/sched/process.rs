@@ -74,6 +74,7 @@ struct Process {
     join_rights: Vec<threads::JoinRight>,
     observed: bool,
     wait_right: Option<WaitRight>,
+    pipe_reader_wait: Option<WaitRight>,
     debug_messages: u8,
     terminal: u8,
     exit_counter: u64,
@@ -318,6 +319,7 @@ fn publish_image(
             join_rights: Vec::new(),
             observed: true,
             wait_right,
+            pipe_reader_wait: None,
             debug_messages: 0,
             terminal: 0,
             exit_counter: 0,
@@ -433,11 +435,11 @@ pub(super) fn detach(pid: Pid) {
             let space = p.space.take().expect("dernier espace");
             let instance = p.instance;
             let orphan = !p.observed;
-            let unused = p.wait_right.take();
+            let unused = [p.wait_right.take(), p.pipe_reader_wait.take()];
             if orphan {
                 s.processes.slots[pid.slot] = None;
             }
-            if let Some(right) = unused {
+            for right in unused.into_iter().flatten() {
                 s.processes.release_observer(right.target);
             }
             s.signal(Wait::Process(pid));

@@ -18,7 +18,8 @@ impl Domain {
         let root = self.lookup(a, ka, MANAGE)?;
         let peer = self.lookup(b, kb, RECEIVE)?;
         let ep = root.endpoint;
-        if a.number == b.number || peer.endpoint != ep || self.ends.get(ep.slot()).bulk.is_some() {
+        let endpoint = self.ends.get(ep.slot());
+        if a.number == b.number || peer.endpoint != ep || endpoint.bulk.is_some() || endpoint.pipe.is_some() {
             return Err(DENIED);
         }
         let slot = self.pages_bulk.vacant()?;

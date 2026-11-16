@@ -55,8 +55,8 @@ pub static PAGES: &[Page] = &[
             "Les modifications dépendent des commandes exécutées.",
         ),
         limits: Text(
-            "Returns the last command's status. Invalid syntax: 3. Pipelines are unsupported.",
-            "Code de la dernière commande. Syntaxe invalide : 3. Pas de pipelines.",
+            "Returns the last command's status. Invalid syntax: 3. The first native pipeline connects cat to wc -l.",
+            "Code de la dernière commande. Syntaxe invalide : 3. Le premier pipe natif relie cat à wc -l.",
         ),
         topics: &[],
     },
@@ -436,14 +436,14 @@ pub static PAGES: &[Page] = &[
             "Supply one or more paths in display order.",
             "Fournir un ou plusieurs chemins dans l’ordre de lecture.",
         ),
-        examples: Text::same("cat -- /documents/exemple.txt"),
+        examples: Text::same("cat -- /documents/exemple.txt ; cat /lignes | wc -l"),
         rights: Text(
             "Read access to each selected file.",
             "Lecture de chaque fichier sélectionné.",
         ),
         effects: Text(
-            "Writes printable text to the console and escapes unsafe bytes.",
-            "Affiche le texte sur la console et échappe les octets de contrôle.",
+            "Escapes unsafe bytes on the console. Sends the original bytes to wc -l through the pipe.",
+            "Échappe les octets de contrôle sur la console. Transmet les octets originaux à wc -l par le pipe.",
         ),
         limits: Text(
             "An inaccessible or absent file stops the command (5 or 20).",
@@ -518,15 +518,15 @@ pub static PAGES: &[Page] = &[
             "Count lines, words and text units.",
             "Compter les lignes, les mots et les unités de texte.",
         ),
-        syntax: Text("wc [-lwcmL] [--] file...", "wc [-lwcmL] [--] fichier..."),
+        syntax: Text("wc [-lwcmL] [--] file...\ncat file | wc -l", "wc [-lwcmL] [--] fichier...\ncat fichier | wc -l"),
         arguments: Text(
             "-l/--lines counts newlines, -w/--words words, -c/--bytes bytes, -m/--chars Unicode characters, -L/--max-line-length display columns.",
             "-l/--lines compte les sauts de ligne, -w/--words les mots, -c/--bytes les octets, -m/--chars les caractères Unicode, -L/--max-line-length la largeur affichée.",
         ),
-        examples: Text::same("wc -lc /lignes"),
+        examples: Text::same("wc -lc /lignes ; cat /lignes | wc -l"),
         rights: Text(
-            "Read access to each selected file.",
-            "Lecture de chaque fichier sélectionné.",
+            "Reads the selected files, or receives a read-only pipe endpoint from nsh.",
+            "Lit les fichiers sélectionnés ou reçoit de nsh une extrémité de pipe en lecture seule.",
         ),
         effects: Text(
             "Prints counts per file and totals for multiple files.",

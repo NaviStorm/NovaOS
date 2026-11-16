@@ -93,6 +93,70 @@ pub fn execute(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::
     launch(fs, p, args, test)
 }
 
+#[derive(Copy, Clone, PartialEq)]
+pub enum PipeTrial { Normal, Pressure, Early, Revoke, Admission }
+
+pub fn pipeline(fs: &mut Client, args: &[String], test: bool, trial: PipeTrial) -> rt::Result<u64> {
+    let words: Vec<_> = args.iter().map(String::as_str).collect();
+    let op = operand(Program::Cat, &words)?;
+    let nova_cli::command::Operand::Batch(_, Program::Cat) = &op else { return Err(rt::BAD_ARGUMENT); };
+    let root = rt::value(rt::call(tty::SPAWN, tty::PIPE_OPEN, 0, 0))?;
+    let mut grant = Grant::new();
+    let prep = grant.select(fs, &op).err().unwrap_or(0);
+    let channels = if prep == 0 { grant.channels } else { (0, 0) };
+    let close = || rt::value(rt::call(rt::IPC_CLOSE, root, 0, 0));
+    let mut closed_early = false;
+    let run = (|| {
+        let writer = process::pipe_spawn(Program::Cat, args, channels, prep, root)?;
+        let reader_args = [String::from(if trial == PipeTrial::Early { "--invalide" } else { "-l" })];
+        // Une clé étrangère refuse le second lancement. Retirer les extrémités
+        // avant d'attendre le producteur, qui peut déjà dormir sur une file pleine.
+        let reader = (|| {
+            if trial != PipeTrial::Normal {
+                // Le banc libère ce verrou de scénario après la trace du SEND bloqué.
+                if rt::value(rt::call(tty::CONSOLE, tty::INPUT.into(), 0, 0))? != u64::from(b'+') {
+                    return Err(rt::BAD_ARGUMENT);
+                }
+            }
+            process::pipe_spawn(Program::Wc, &reader_args, (0, 0), 0,
+                if trial == PipeTrial::Admission { 0 } else { root })
+        })();
+        let cancellation = if reader.is_err() || trial == PipeTrial::Revoke {
+            let result = rt::value(rt::call(rt::IPC_REVOKE, root, 0, 0));
+            if result.is_err() {
+                closed_early = close().is_ok();
+            }
+            result
+        } else {
+            Ok(0)
+        };
+        let produced = process::wait(writer);
+        let consumed = reader.and_then(process::wait);
+        cancellation?;
+        if test && (produced.is_ok() && process::wait(writer) != Err(rt::DENIED)
+            || consumed.is_ok() && reader.is_ok_and(|key| process::wait(key) != Err(rt::DENIED)))
+        {
+            return Err(rt::REFUSED);
+        }
+        let (fault, number) = produced?;
+        let writer_status = if fault { 128 } else { number };
+        if test {
+            write(tty::ERROR, &alloc::format!("[pipe cat={writer_status}]\n"))?;
+        }
+        let (fault, number) = consumed?;
+        let reader_status = if fault { 128 } else { number };
+        if test {
+            write(tty::ERROR, &alloc::format!("[pipe wc={reader_status}]\n"))?;
+        }
+        Ok(reader_status)
+    })();
+    let closed = if closed_early { Ok(0) } else { close() };
+    let released = grant.release(fs);
+    closed?;
+    released?;
+    run
+}
+
 fn launch(fs: &mut Client, p: Program, args: &[String], test: bool) -> rt::Result<u64> {
     let words: Vec<_> = args.iter().map(String::as_str).collect();
     let mut grant = Grant::new();

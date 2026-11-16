@@ -37,6 +37,7 @@ fn input<const N: usize>(
 enum Head {
     Deposit,
     Notification,
+    EndOfStream,
     Offer(usize),
 }
 
@@ -115,7 +116,7 @@ impl Domain {
                 first = Some((w.rank, Head::Offer(i)));
             }
         }
-        first.map(|(_, h)| h)
+        first.map(|(_, h)| h).or_else(|| e.pipe.filter(|p| p.writer_closed && !p.revoked).map(|_| Head::EndOfStream))
     }
     fn first_receiver(&self, ep: Reference) -> Option<usize> {
         self.waits
@@ -262,6 +263,7 @@ impl Domain {
                         let e = self.ends.get(ep.slot());
                         (1u32, e.deposits[e.head].msg, 0, 0)
                     }
+                    Head::EndOfStream => (2, Message::EMPTY, 1, 0),
                     Head::Notification => (2, Message::EMPTY, self.ends.get(ep.slot()).bits, 0),
                     Head::Offer(i) => match self.waits.get(i).op {
                         Operation::Send(msg) => (1, msg, 0, 0),
@@ -324,11 +326,19 @@ impl Domain {
                     }
                     self.install(pid, slot, id, key);
                 }
+                if kind == 1 && let Some(pipe) = &mut self.ends.get_mut(ep.slot()).pipe
+                    && pipe.trace {
+                    pipe.delivered += u64::from(msg.len);
+                    for b in &msg.bytes[..msg.len as usize] {
+                        pipe.fingerprint = (pipe.fingerprint ^ u64::from(*b)).wrapping_mul(0x100000001b3);
+                    }
+                }
                 let admitted = match head {
                     Head::Deposit => {
                         let e = self.ends.get(ep.slot());
                         e.deposits[e.head].admitted
                     }
+                    Head::EndOfStream => metrics::stamp(),
                     Head::Notification => self.ends.get(ep.slot()).notified_at,
                     Head::Offer(i) => self.metrics.admitted[i],
                 };
@@ -339,6 +349,7 @@ impl Domain {
                         e.head = (e.head + 1) % 8;
                         e.len -= 1;
                     }
+                    Head::EndOfStream => (),
                     Head::Notification => self.ends.get_mut(ep.slot()).bits = 0,
                     Head::Offer(i) => self.complete(i, Ok(u64::from(msg.len))),
                 }
@@ -385,6 +396,10 @@ impl Domain {
         };
         let n = self.lookup(p, a, need)?;
         let ep = n.endpoint;
+        if let Some(pipe) = self.ends.get(ep.slot()).pipe {
+            if id == IPC_NOTIFY { return Err(DENIED); }
+            if id == IPC_SEND && pipe.reader_closed { return Err(CLOSED); }
+        }
         let value = match id {
             IPC_DUP => self.derive(p, a, p, b)?,
             IPC_CLOSE => {
@@ -412,7 +427,12 @@ impl Domain {
                 };
                 msg.bytes[..len as usize].copy_from_slice(&buf[32..32 + len as usize]);
                 if flags == 1 {
-                    return self.suspend(t, p, n, timeout, now, Operation::Send(msg));
+                    let pending = self.suspend(t, p, n, timeout, now, Operation::Send(msg))?;
+                    if let Some(pipe) = &mut self.ends.get_mut(ep.slot()).pipe && pipe.trace {
+                        if pipe.blocked == 0 { hal::log(format_args!("PIPE attente producteur")); }
+                        pipe.blocked = pipe.blocked.saturating_add(1);
+                    }
+                    return Ok(pending);
                 }
                 if self.ends.get(ep.slot()).len == 8 {
                     return Err(WOULD_BLOCK);
@@ -425,6 +445,7 @@ impl Domain {
                     admitted: metrics::stamp(),
                 };
                 e.len += 1;
+                if let Some(pipe) = &mut e.pipe && pipe.trace { pipe.peak = pipe.peak.max(e.len); }
                 if self.metrics.includes(p) {
                     self.metrics.sample(1, self.metrics.entry, metrics::stamp());
                 }
