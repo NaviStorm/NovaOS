@@ -102,6 +102,41 @@ fn filename(bytes: &[u8], utf8: bool) -> String {
     out.push(b'\'');
     String::from_utf8(out).unwrap()
 }
+// Darwin utilise un mbstate_t opaque de 128 octets, aligné sur 8 octets.
+// Chaque appel démarre dans l’état initial des codages multioctets de macOS.
+fn system_character(data: &[u8]) -> (usize, bool) {
+    unsafe extern "C" {
+        fn mbrtowc(wide: *mut i32, src: *const u8, len: usize, state: *mut [u64; 16]) -> usize;
+        fn iswblank(wide: i32) -> i32;
+    }
+    let mut wide = 0;
+    let mut state = [0u64; 16];
+    let width = unsafe { mbrtowc(&mut wide, data.as_ptr(), data.len(), &mut state) };
+    if width > data.len() {
+        return (1, false);
+    }
+    (width.max(1), unsafe { iswblank(wide) } != 0)
+}
+fn encoding() -> super::engine::Encoding {
+    use super::engine::Encoding;
+    unsafe extern "C" {
+        fn setlocale(category: i32, name: *const core::ffi::c_char) -> *const core::ffi::c_char;
+        fn nl_langinfo(item: i32) -> *const core::ffi::c_char;
+        fn ___mb_cur_max() -> i32;
+    }
+    // LC_CTYPE=2 et CODESET=0 dans le SDK Darwin. Le processus est mono-thread.
+    unsafe {
+        if setlocale(2, c"".as_ptr()).is_null() || ___mb_cur_max() <= 1 {
+            return Encoding::SingleByte;
+        }
+        let codeset = std::ffi::CStr::from_ptr(nl_langinfo(0)).to_bytes();
+        if codeset.eq_ignore_ascii_case(b"UTF-8") || codeset.eq_ignore_ascii_case(b"UTF8") {
+            Encoding::Utf8
+        } else {
+            Encoding::Platform(system_character)
+        }
+    }
+}
 pub fn main() {
     unsafe extern "C" {
         fn signal(sig: i32, handler: usize) -> usize;
@@ -113,13 +148,9 @@ pub fn main() {
 
     let args: Vec<_> = env::args_os().skip(1).map(|a| a.into_vec()).collect();
     let refs: Vec<_> = args.iter().map(Vec::as_slice).collect();
-    let loc = ["LC_ALL", "LC_CTYPE", "LANG"]
-        .iter()
-        .find_map(|k| env::var(k).ok().filter(|v| !v.is_empty()))
-        .unwrap_or_default()
-        .to_ascii_lowercase();
-    let utf8 = loc.contains("utf-8") || loc.contains("utf8");
-    let action = parse(&refs, utf8, env::var_os("POSIXLY_CORRECT").is_some());
+    let encoding = encoding();
+    let utf8 = matches!(encoding, super::engine::Encoding::Utf8);
+    let action = parse(&refs, encoding, env::var_os("POSIXLY_CORRECT").is_some());
     let cmd = env::args_os().next().unwrap_or_default();
     let name = cmd.to_string_lossy();
     let cfg_files = match action {

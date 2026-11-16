@@ -1,4 +1,4 @@
-use crate::engine::{Config, Mode, unit};
+use crate::engine::{Config, Encoding, Mode};
 use alloc::{format, string::String, vec, vec::Vec};
 
 pub enum Action<'a> {
@@ -142,8 +142,14 @@ fn ranges(
     Ok(gaps)
 }
 
-pub fn parse<'a>(args: &[&'a [u8]], utf8: bool, posix: bool) -> Result<Action<'a>, String> {
-    let mut cfg = Config::new(utf8);
+pub fn parse<'a>(
+    args: &[&'a [u8]],
+    encoding: impl Into<Encoding>,
+    posix: bool,
+) -> Result<Action<'a>, String> {
+    let encoding = encoding.into();
+    let utf8 = matches!(encoding, Encoding::Utf8);
+    let mut cfg = Config::new(encoding);
     let mut list = None;
     let mut complement = false;
     let mut ws = false;
@@ -233,7 +239,7 @@ pub fn parse<'a>(args: &[&'a [u8]], utf8: bool, posix: bool) -> Result<Action<'a
                     shorthand = key == b'F';
                 }
                 b'd' => {
-                    if !v.is_empty() && unit(v, utf8) != v.len() {
+                    if !v.is_empty() && encoding.width(v) != v.len() {
                         return Err("the delimiter must be a single character".into());
                     }
                     custom = true;

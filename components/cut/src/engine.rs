@@ -6,10 +6,40 @@ pub enum Mode {
     Chars,
     Fields,
 }
+#[derive(Clone, Copy)]
+pub enum Encoding {
+    SingleByte,
+    Utf8,
+    #[cfg(not(target_os = "none"))]
+    Platform(fn(&[u8]) -> (usize, bool)),
+}
+impl From<bool> for Encoding {
+    fn from(utf8: bool) -> Self {
+        if utf8 { Self::Utf8 } else { Self::SingleByte }
+    }
+}
+impl Encoding {
+    pub fn width(self, data: &[u8]) -> usize {
+        match self {
+            Self::SingleByte => 1,
+            Self::Utf8 => unit(data, true),
+            #[cfg(not(target_os = "none"))]
+            Self::Platform(decode) => decode(data).0,
+        }
+    }
+    fn byte_search(self, delim: &[u8]) -> bool {
+        match self {
+            Self::SingleByte => true,
+            Self::Utf8 => delim.len() > 1 || !(0x80..=0xf4).contains(&delim[0]),
+            #[cfg(not(target_os = "none"))]
+            Self::Platform(_) => delim.len() == 1 && delim[0] < 0x30,
+        }
+    }
+}
 pub struct Config {
     pub mode: Mode,
     pub ranges: Vec<(u64, u64)>,
-    pub utf8: bool,
+    pub encoding: Encoding,
     pub partial: bool,
     pub delim: Vec<u8>,
     pub output: Option<Vec<u8>>,
@@ -19,11 +49,11 @@ pub struct Config {
     pub trim: bool,
 }
 impl Config {
-    pub fn new(utf8: bool) -> Self {
+    pub fn new(encoding: Encoding) -> Self {
         Self {
             mode: Mode::Fields,
             ranges: vec![],
-            utf8,
+            encoding,
             partial: false,
             delim: vec![9],
             output: None,
@@ -88,7 +118,7 @@ impl<'a> Stream<'a> {
             && !self.cfg.whitespace
             && self.cfg.delim.len() == 1
             && self.cfg.delim[0] != self.cfg.end
-            && !(self.cfg.utf8 && (0x80..=0xf4).contains(&self.cfg.delim[0]))
+            && self.cfg.encoding.byte_search(&self.cfg.delim)
     }
     fn same_delim(&self) -> bool {
         self.cfg.mode == Mode::Fields && !self.cfg.whitespace && self.cfg.delim == [self.cfg.end]
@@ -128,7 +158,8 @@ impl<'a> Stream<'a> {
     }
     fn positions(&mut self, mut data: &[u8], last: bool, out: &mut Vec<u8>) {
         self.started |= !data.is_empty();
-        let decode = self.cfg.utf8 && (self.cfg.partial || self.cfg.mode == Mode::Chars);
+        let decode = !matches!(self.cfg.encoding, Encoding::SingleByte)
+            && (self.cfg.partial || self.cfg.mode == Mode::Chars);
         // Keep at most the prefix of one UTF-8 scalar across a read boundary.
         if !self.carry.is_empty() {
             let mut prefix = core::mem::take(&mut self.carry);
@@ -138,7 +169,7 @@ impl<'a> Stream<'a> {
                 self.carry = prefix;
                 return;
             }
-            let width = unit(&prefix, true);
+            let width = self.cfg.encoding.width(&prefix);
             self.item(&prefix[..width], out);
             let tail = &prefix[width..];
             self.positions(tail, last && n == data.len(), out);
@@ -146,11 +177,15 @@ impl<'a> Stream<'a> {
             return;
         }
         while !data.is_empty() {
-            if decode && !last && data[0] >= 0xc2 && data.len() < 4 {
+            if decode && !last && data[0] >= 0x80 && data.len() < 4 {
                 self.carry.extend_from_slice(data);
                 break;
             }
-            let width = unit(data, decode);
+            let width = if decode {
+                self.cfg.encoding.width(data)
+            } else {
+                1
+            };
             self.item(&data[..width], out);
             data = &data[width..];
         }
@@ -189,11 +224,9 @@ impl<'a> Stream<'a> {
             && self.cfg.ranges.is_empty()
             && !self.same_delim()
             && if self.cfg.whitespace {
-                !self.cfg.utf8 && !self.cfg.trim
+                matches!(self.cfg.encoding, Encoding::SingleByte) && !self.cfg.trim
             } else {
-                !self.cfg.utf8
-                    || self.cfg.delim.len() > 1
-                    || !(0x80..=0xf4).contains(&self.cfg.delim[0])
+                self.cfg.encoding.byte_search(&self.cfg.delim)
             }
     }
     // With an empty field selection the 9.12 byte scanner takes a different
@@ -273,8 +306,12 @@ impl<'a> Stream<'a> {
         self.selected = self.cfg.range(1).is_some()
     }
     fn blank(&self, data: &[u8]) -> bool {
+        #[cfg(not(target_os = "none"))]
+        if let Encoding::Platform(decode) = self.cfg.encoding {
+            return decode(data).1;
+        }
         matches!(data, b" " | b"\t")
-            || self.cfg.utf8
+            || matches!(self.cfg.encoding, Encoding::Utf8)
                 && matches!(
                     core::str::from_utf8(data)
                         .ok()
@@ -295,7 +332,7 @@ impl<'a> Stream<'a> {
             let mut end = 0;
             let mut p = 0;
             while p < row.len() {
-                let n = unit(&row[p..], self.cfg.utf8);
+                let n = self.cfg.encoding.width(&row[p..]);
                 if !self.blank(&row[p..p + n]) {
                     start.get_or_insert(p);
                     end = p + n
@@ -309,7 +346,7 @@ impl<'a> Stream<'a> {
         let mut index = 1;
         let mut printed = false;
         while p < row.len() {
-            let n = unit(&row[p..], self.cfg.utf8);
+            let n = self.cfg.encoding.width(&row[p..]);
             let ch = &row[p..p + n];
             let split = if self.cfg.whitespace {
                 self.blank(ch)
@@ -330,7 +367,7 @@ impl<'a> Stream<'a> {
             p += n;
             if self.cfg.whitespace {
                 while p < row.len() {
-                    let w = unit(&row[p..], self.cfg.utf8);
+                    let w = self.cfg.encoding.width(&row[p..]);
                     if !self.blank(&row[p..p + w]) {
                         break;
                     }
@@ -364,7 +401,7 @@ impl<'a> Stream<'a> {
         if self.cfg.trim && !self.pending.is_empty() {
             let mut rest = self.pending.as_slice();
             while !rest.is_empty() {
-                let n = unit(rest, self.cfg.utf8);
+                let n = self.cfg.encoding.width(rest);
                 if !self.blank(&rest[..n]) {
                     break;
                 }
