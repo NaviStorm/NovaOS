@@ -3,6 +3,7 @@ import argparse
 import gzip
 import itertools
 import json
+import locale as host_locale
 import os
 from pathlib import Path
 import random
@@ -10,13 +11,17 @@ import subprocess
 import sys
 
 DIR = Path(__file__).resolve().parents[1]
-GNU = "/opt/homebrew/bin/gtr"
-NOVA = str(DIR / "bin/tr")
+GNU = os.environ.get("GNU_TR_BIN", "/opt/homebrew/bin/gtr")
+NOVA = os.environ.get("NOVA_TR_BIN", str(DIR / "bin/tr"))
 SEED = 270240
 ALL = bytes(range(256))
 SAMPLE = ALL * 2 + b"aabbaXa   z\x00\x00\xff\xff" + "Été".encode() + b"\xc0\x80\xfe\xe2\x82"
 
+REPRISE_ARGS = ["a-z", "A-Z"]
+REPRISE_INPUT = b"abc-123\n"
+
 def cases(large):
+    yield REPRISE_ARGS, REPRISE_INPUT, 65536
     flags = ["-c","-C","--complement","-d","--delete","-s","--squeeze-repeats","-t","--truncate-set1","-A"]
     for flag in flags:
         args = [flag, "a-d"]
@@ -74,33 +79,51 @@ def run(binary,args,data,locale,size):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    g=p.add_mutually_exclusive_group(required=True)
+    g=p.add_mutually_exclusive_group()
     g.add_argument("--macOS",action="store_true",help="référence GNU seule")
-    g.add_argument("--novaOS",action="store_true",help="comparer le Mach-O au GNU")
+    g.add_argument("--novaOS",action="store_true",help="comparer le Mach-O au GNU (défaut)")
     p.add_argument("--large",action="store_true",help="1500 cas générés par locale")
     p.add_argument("--rapport",type=Path,help="preuves JSONL gzip, entrées et sorties hexadécimales")
     a=p.parse_args()
+    compare = not a.macOS
+    locales = ("C", "en_US.UTF-8")
+    previous = host_locale.setlocale(host_locale.LC_CTYPE)
+    for name in locales:
+        try:
+            host_locale.setlocale(host_locale.LC_CTYPE, name)
+        except host_locale.Error:
+            p.error(f"locale requise indisponible : {name}")
+    host_locale.setlocale(host_locale.LC_CTYPE, previous)
+    reference = subprocess.check_output([GNU, "--version"], env=dict(os.environ, LC_ALL="C")).decode().splitlines()[0]
+    if "(GNU coreutils)" not in reference:
+        p.error(f"référence GNU tr attendue : {reference}")
+    print(f"Référence {reference} ({GNU})")
     out=gzip.open(a.rapport,"xt",encoding="utf8") if a.rapport else None
     failed=0
     count=0
-    for locale in ["C","en_US.UTF-8"]:
+    for locale in locales:
+        help_output = run(GNU, ["--help"], b"", locale, 65536)["stdout"]
+        version_output = run(GNU, ["--version"], b"", locale, 65536)["stdout"]
         for args,data,size in cases(a.large):
             ref=run(GNU,args,data,locale,size)
-            got=run(NOVA,args,data,locale,size) if a.novaOS else ref
-            doc=ref["status"]==0 and any(b in bytes.fromhex(ref["stdout"]) for b in (b"GNU coreutils",b"Translate, squeeze,"))
-            if doc and a.novaOS:
+            got=run(NOVA,args,data,locale,size) if compare else ref
+            doc = ref["status"] == 0 and ref["stdout"] in (help_output, version_output)
+            if doc and compare:
                 output=bytes.fromhex(got["stdout"])
-                ok=not got["stderr"] and got["status"]==0 and (b"nova-cli" in output if b"GNU coreutils)" in bytes.fromhex(ref["stdout"]) else b"--squeeze-repeats" in output)
+                ok=not got["stderr"] and got["status"]==0 and (b"nova-cli" in output if ref["stdout"] == version_output else b"--squeeze-repeats" in output)
             else:
                 # Darwin error() utilise le nom du fichier gtr, getopt utilise argv[0].
                 err = bytes.fromhex(ref["stderr"])
                 actual = bytes.fromhex(got["stderr"])
-                if a.novaOS:
+                if compare:
                     err = b"\n".join(b"tr: " + line[5:] if line.startswith(b"gtr: ") else line for line in err.split(b"\n"))
                 ok = got["status"] == ref["status"] and got["stdout"] == ref["stdout"] and actual == err
+            if args == REPRISE_ARGS and data == REPRISE_INPUT:
+                expected = dict(status=0, stdout=b"ABC-123\n".hex(), stderr="")
+                ok = ok and got == ref == expected
             count+=1
             if out:
-                out.write(json.dumps(dict(id=count,locale=locale,args=args,stdin=data.hex(),chunk=size,gnu=ref,observed=got,documentation=doc,ok=ok,seed=SEED))+"\n")
+                out.write(json.dumps(dict(id=count,reference=reference,locale=locale,args=args,stdin=data.hex(),chunk=size,gnu=ref,observed=got,documentation=doc,ok=ok,seed=SEED))+"\n")
             if not ok:
                 failed+=1
                 if failed<=12: print(locale,args,"GNU",ref["status"],bytes.fromhex(ref["stderr"]),"Nova",got["status"],bytes.fromhex(got["stderr"]),file=sys.stderr)

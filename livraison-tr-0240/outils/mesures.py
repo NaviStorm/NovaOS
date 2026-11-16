@@ -13,13 +13,31 @@ import tempfile
 import time
 
 ROOT=Path(__file__).resolve().parents[1]
-BIN={"Nova":str(ROOT/"bin/tr"),"GNU":"/opt/homebrew/bin/gtr"}
+BIN = {
+    "Nova": os.environ.get("NOVA_TR_BIN", str(ROOT / "bin/tr")),
+    "GNU": os.environ.get("GNU_TR_BIN", "/opt/homebrew/bin/gtr"),
+}
 MODES={"Traduction":["a-z","A-Z"],"Suppression":["-d","X"],"Compression":["-s","aX"],"Suppr. + compr.":["-ds","X","a"]}
 # Motifs fixes, répétés exactement n fois. Le préfixe du dernier texte allonge la première ligne.
 DATA=[("1 M lignes",b"",b"aB0Xz9!\n",1_000_000),
       ("10 M lignes",b"",b"aaaXXXX\n",10_000_000),
       ("65 M lignes",b"a"*(1<<20),b"aaXaXXX\n",65_000_000),
       ("32 Mio binaire",b"",bytes(range(256)),131072)]
+
+LOG_LINE = b"2026-11-17T08:30:00Z info service=tr client=abc-123\n"
+
+def workloads(large):
+    if large:
+        # Conserver les seize premières lignes consommées par le témoin SDK.
+        for dataset in DATA:
+            yield (*dataset, list(MODES))
+        for n in (1_000_000, 10_000_000, 65_000_000):
+            yield (f"{n // 1_000_000} M lignes journal", b"", LOG_LINE, n, ["Traduction"])
+        return
+    yield ("100 000 lignes journal", b"", LOG_LINE, 100_000, ["Traduction"])
+    yield ("4 096 lignes répétées", b"a" * (1 << 20), b"X" * 2048 + b"a" * 128 + b"\n",
+           4096, ["Suppression", "Compression", "Suppr. + compr."])
+    yield ("1 048 576 octets", b"", bytes(range(256)), 4096, list(MODES))
 
 def create(path, prefix, pattern, repeats):
     with path.open("xb") as f:
@@ -49,37 +67,43 @@ def verify(binary,args,path):
     return size,h.hexdigest()
 
 def show(rows):
-    keys=("Taille","Traitement","Nova (s)","GNU (s)","Mio/s Nova","Mio/s GNU")
-    table=[keys]
-    for r in rows:
-        times={k:statistics.median(v["seconds"] for v in s) for k,s in r["samples"].items()}
-        table.append([r["size"],r["mode"],*[f"{times[k]:.4f}" if k in times else "—" for k in BIN],
-                      *[f"{r['input']/2**20/times[k]:.1f}" if k in times else "—" for k in BIN]])
+    table = [("Taille ou lignes", "Traitement", "Nova tr (s)", "GNU tr (s)",
+              "Nova tr (Mio/s lus)", "GNU tr (Mio/s lus)", "Entrée (octets)", "Sortie (octets)")]
+    for row in rows:
+        summaries = row["medians"]
+        times = [f"{summaries[k]['seconds']:.4f}" if k in summaries else "—" for k in BIN]
+        rates = [f"{summaries[k]['input_mib_s']:.1f}" if k in summaries else "—" for k in BIN]
+        table.append([row["size"], row["mode"], *times, *rates, str(row["input"]), str(row["output"])])
     widths=list(map(lambda col:max(map(len,col)),zip(*table)))
     for row in table: print(" | ".join(f"{v:<{w}}" for v,w in zip(row,widths)).rstrip())
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    g=p.add_mutually_exclusive_group(required=True)
-    for flag,helptext in [("macOS","GNU"),("novaOS","Mach-O Nova"),("comparer","GNU et Nova alternés")]:
+    g=p.add_mutually_exclusive_group()
+    for flag,helptext in [("macOS","GNU"),("novaOS","Mach-O Nova"),("comparer","GNU et Nova alternés (défaut)")]:
         g.add_argument("--"+flag,action="store_true",help=helptext)
-    p.add_argument("--large",action="store_true",help="activer 10 M, 65 M et le binaire de 32 Mio")
+    p.add_argument("--large",action="store_true",help="activer les paliers 1, 10 et 65 M de lignes et le binaire de 32 Mio")
     p.add_argument("--rapport",type=Path,help="nouveau fichier JSON")
     a=p.parse_args()
-    selected=list(BIN) if a.comparer else ["GNU" if a.macOS else "Nova"]
+    selected = ["GNU"] if a.macOS else ["Nova"] if a.novaOS else list(BIN)
     os.environ["LC_ALL"]="C"
     tmp=Path(os.environ.get("NOVAOS_TMPDIR",str(ROOT.parents[1]/"tmp")))
     os.environ.update(TMPDIR=str(tmp)+"/",NOVAOS_TMPDIR=str(tmp))
+    tmp.mkdir(parents=True, exist_ok=True)
     rows=[]
-    report=dict(host=platform.platform(),ram=int(subprocess.check_output(["sysctl","-n","hw.memsize"])),
+    tools = {key: value for key, value in BIN.items() if key == "GNU" or key in selected}
+    report=dict(profile="complet" if a.large else "court",cible="Mach-O Darwin",host=platform.platform(),ram=int(subprocess.check_output(["sysctl","-n","hw.memsize"])),
                 cache="échauffé, sans purge",destination="/dev/null",locale="C",rows=rows,
-                versions={k:subprocess.check_output([v,"--version"]).decode().splitlines()[0] for k,v in BIN.items()},
-                sha256={k:hashlib.sha256(Path(v).read_bytes()).hexdigest() for k,v in BIN.items()})
+                versions={k:subprocess.check_output([v,"--version"]).decode().splitlines()[0] for k,v in tools.items()},
+                sha256={k:hashlib.sha256(Path(v).read_bytes()).hexdigest() for k,v in tools.items()})
+    if "(GNU coreutils)" not in report["versions"]["GNU"]:
+        p.error("la référence doit être GNU tr")
+    print("Référence", report["versions"]["GNU"])
     if a.rapport and a.rapport.exists(): p.error("choisir un nouveau rapport")
     with (tmp/"arc027-mesures.lock").open("a") as lock, (tmp/"cut-performances.lock").open("a") as cut, tempfile.TemporaryDirectory(prefix="tr-mesures-",dir=tmp) as work:
         fcntl.flock(lock,fcntl.LOCK_EX)
         fcntl.flock(cut,fcntl.LOCK_EX)
-        for label,prefix,pattern,n in (DATA if a.large else DATA[:1]):
+        for label,prefix,pattern,n,modes in workloads(a.large):
             size=len(prefix)+len(pattern)*n
             free=shutil.disk_usage(work).free
             if size>free: raise RuntimeError(f"{free} octets libres pour {size} requis")
@@ -87,7 +111,8 @@ def main():
             create(path,prefix,pattern,n)
             assert path.stat().st_size==size
             with path.open("rb") as f: digest=hashlib.file_digest(f,"sha256").hexdigest()
-            for mode,args in MODES.items():
+            for mode in modes:
+                args = MODES[mode]
                 expected=verify(BIN["GNU"],args,path)
                 entries={k:[] for k in selected}
                 row=dict(size=label,mode=mode,args=args,input=size,output=expected[0],sha256_output=expected[1],input_sha256=digest,
@@ -99,9 +124,17 @@ def main():
                     for k in (selected if iteration%2==0 else selected[::-1]):
                         entries[k].append(measure(BIN[k],args,path))
                         row["order"].append(k)
+                row["medians"] = {}
+                for tool, samples in entries.items():
+                    seconds = statistics.median(sample["seconds"] for sample in samples)
+                    row["medians"][tool] = dict(seconds=seconds, input_mib_s=size / 2**20 / seconds,
+                                                peak_rss_bytes=max(sample["rss_bytes"] for sample in samples))
                 rows.append(row)
             path.unlink()
     show(rows)
-    if a.rapport: a.rapport.write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
+    if a.rapport:
+        with a.rapport.open("x", encoding="utf-8") as output:
+            json.dump(report, output, indent=2, ensure_ascii=False)
+            output.write("\n")
 
 if __name__=="__main__": main()
