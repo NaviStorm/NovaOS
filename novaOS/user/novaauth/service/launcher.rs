@@ -95,13 +95,20 @@ pub(super) fn launch() -> rt::Result<()> {
     {
         return Err(rt::REFUSED);
     }
-    rt::send_for(second[2], 7, &[1], 5000)?;
+    rt::send_for(client[2], 2, &live.payload[..32], 5000)?;
+    let root = &receipt.payload[24..32];
+    rt::send_for(client[2], 8, root, 5000)?;
+    let refused = rt::receive_for(client[1], 15000)?;
+    if refused.kind != 1 || refused.tag != 8 || refused.len != 1 || refused.payload[0] != 1 {
+        return Err(rt::REFUSED);
+    }
+    rt::send_for(second[2], 7, root, 5000)?;
     let exercised = rt::receive_for(second[1], 15000)?;
     if exercised.tag != 7 || exercised.kind != 1 || exercised.len != 1 || exercised.payload[0] != 1
     {
         return Err(rt::REFUSED);
     }
-    rt::send_for(client[2], 2, &live.payload[..32], 5000)?;
+    rt::send_for(client[2], 9, &[1], 5000)?;
     let withdrawn = rt::receive_for(client[1], 5000)?;
     if withdrawn.kind != 1 || withdrawn.tag != 3 || withdrawn.len != 1 || withdrawn.payload[0] != 1
     {

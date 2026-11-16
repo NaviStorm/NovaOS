@@ -79,8 +79,11 @@ impl Directory {
                 .leases
                 .iter()
                 .flatten()
-                .find(|l| l.key == key && l.holder == holder && rights & !l.rights == 0)
+                .find(|l| l.key == key && l.holder == holder)
                 .ok_or(rt::REVOKED)?;
+            if rights & !l.rights != 0 {
+                return Err(rt::DENIED);
+            }
             if l.parent == 0 {
                 return Ok(());
             }
@@ -114,8 +117,9 @@ impl Directory {
 }
 
 impl Session<'_, '_> {
-    pub(super) fn provision_directory(&mut self, q: &Frame) -> rt::Result<()> {
-        if !self.writable
+    pub(super) fn provision_directory(&mut self, q: &Frame) -> rt::Result<u64> {
+        if rt::config(13) != 0x4e4133
+            || !self.writable
             || self.failed.is_some()
             || self.directory.seal.is_some()
             || q[56..].iter().any(|&v| v != 0)
@@ -167,9 +171,9 @@ impl Session<'_, '_> {
             session: q[24..56].try_into().unwrap(),
             port: port(1, false),
         };
-        self.directory.grant(holder, 0, ALL)?;
+        let key = self.directory.grant(holder, 0, ALL)?;
         self.directory.seal = Some(seal);
-        Ok(())
+        Ok(key)
     }
     fn folder_op(&mut self, holder: Holder, q: &Frame) -> rt::Result<u64> {
         if self.failed.is_some() || self.pending.is_some() || self.temporary.any_pending() {

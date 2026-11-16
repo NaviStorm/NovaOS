@@ -119,13 +119,13 @@ index 417eb60489133df75cc0e7748b3c5a7879bb2f3d..ff2ad01b34724630fd5ee6f125b5105f
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        directory: Default::default(),
 diff --git a/novaOS/user/novafs/files/configuration.rs b/novaOS/user/novafs/files/configuration.rs
-index b73fee47172ba10ddcfc203120ad901c267843de..ad787f547a9b17b0ae3f876dbc8042ea711e15c8 100644
+index b73fee47172ba10ddcfc203120ad901c267843de..a1f4e7b1d0e5b5c358552b11b1be4bd8f82d5dc8 100644
 --- a/novaOS/user/novafs/files/configuration.rs
 +++ b/novaOS/user/novafs/files/configuration.rs
 @@ -131,0 +132,12 @@ impl Session<'_, '_> {
 +            #[cfg(feature="novaauth-sessions-lab")]
 +            if &msg.payload[..8]==b"NA3DIR01" {
-+                let status=self.provision_directory(&msg.payload).err().unwrap_or(rt::OK);
++                let result=self.provision_directory(&msg.payload);put(&mut a,24,result.as_ref().copied().unwrap_or(0));let status=result.err().unwrap_or(rt::OK);
 +                put(&mut a,16,status);rt::send_for(tx,msg.tag,&a,5000)?;return Ok(true);
 +            }
 +            #[cfg(feature="novaauth-sessions-lab")]

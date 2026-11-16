@@ -163,7 +163,8 @@ fn admin(c: &mut Client, other: [u8; 16]) -> rt::Result<()> {
     let other_session = from_manager(2, 32)?[..32].try_into().unwrap();
     check(number(&c.session(3, other_session, [0; 16])?) == rt::DENIED)?;
     check(other_session != session && other_session != second)?;
-    check(c.directory(session, 3, 1, 0, 0)?.0 == rt::DENIED)?;
+    let issued = from_manager(8, 8)?;
+    check(c.directory(session, 3, number(&issued), 0, 0)?.0 == rt::DENIED)?;
     marker(b"NA3 D autre titulaire refuse");
     check(number(&c.session(3, second, [0; 16])?) == 0)?;
     check(number(&c.session(3, session, [0; 16])?) == 0)?;
@@ -172,6 +173,10 @@ fn admin(c: &mut Client, other: [u8; 16]) -> rt::Result<()> {
     check(number(&c.session(3, second, [0; 16])?) == rt::DENIED)?;
     check(number(&c.session(3, session, [0; 16])?) == 0)?;
     marker(b"NA3 fermeture independante");
+    rt::send_for(rt::config(0), 8, &[1], 5000)?;
+    from_manager(9, 1)?;
+    let (same, session, _) = c.login()?;
+    check(same == subject)?;
     check(number(&c.session(8, session, alice)?) == 0)?;
     check(number(&c.session(9, session, alice)?) == 0)?;
     marker(b"NA3 renomme et groupe retire");
@@ -195,19 +200,21 @@ fn ordinary(c: &mut Client, expected: [u8; 16]) -> rt::Result<()> {
     check(c.directory(id, 3, 1, 0, 0)?.0 == rt::DENIED)?;
     marker(b"NA3 D avant attribution refuse");
     rt::send_for(rt::config(0), 2, &id, 5000)?;
-    from_manager(7, 1)?;
+    let granted = from_manager(7, 8)?;
+    let root = number(&granted);
+    check(root != 0)?;
     const REQUEST: u64 = 0x4132303236;
-    let (code, root_entries) = c.directory(id, 3, 1, 0, 0)?;
+    let (code, root_entries) = c.directory(id, 3, root, 0, 0)?;
     check(code == 0 && root_entries == 0)?;
     let (again, second, _) = c.login()?;
-    check(again == subject && c.directory(second, 3, 1, 0, 0)?.0 != 0)?;
-    check(c.directory(id, 4, 1, 0, 0)?.0 == rt::DENIED)?;
-    let (code, parent) = c.directory(id, 2, 1, 3, 0)?;
+    check(again == subject && c.directory(second, 3, root, 0, 0)?.0 == rt::REVOKED)?;
+    check(c.directory(id, 4, root, 0, 0)?.0 == rt::DENIED)?;
+    let (code, parent) = c.directory(id, 2, root, 3, 0)?;
     check(code == 0)?;
     let (code, child) = c.directory(id, 2, parent, 3, 0)?;
     check(code == 0)?;
-    let (code, ro) = c.directory(id, 2, 1, 1, 0)?;
-    check(code == 0 && c.directory(id, 5, ro, 0, REQUEST)?.0 == rt::REVOKED)?;
+    let (code, ro) = c.directory(id, 2, root, 1, 0)?;
+    check(code == 0 && c.directory(id, 5, ro, 0, REQUEST)?.0 == rt::DENIED)?;
     let cancelled = REQUEST - 1;
     check(c.directory(id, 5, child, 0, cancelled)?.0 == 0)?;
     check(c.directory(id, 9, parent, 0, 0)?.0 == 0)?;
@@ -217,15 +224,16 @@ fn ordinary(c: &mut Client, expected: [u8; 16]) -> rt::Result<()> {
             && c.directory(id, 3, child, 0, 0)?.0 == rt::REVOKED,
     )?;
     check(c.directory(id, 8, ro, 0, cancelled)? == (0, 0))?;
-    check(c.directory(id, 5, 1, 0, REQUEST)?.0 == 0)?;
-    check(c.directory(id, 7, 1, 0, REQUEST)?.0 == 22)?;
+    check(c.directory(id, 5, root, 0, REQUEST)?.0 == 0)?;
+    check(c.directory(id, 7, root, 0, REQUEST)?.0 == 22)?;
     check(c.directory(id, 8, ro, 0, REQUEST)? == (0, 1))?;
-    check(c.directory(id, 9, 1, 0, 0)?.0 == 0)?;
+    check(c.directory(id, 9, root, 0, 0)?.0 == 0)?;
     check(
-        c.directory(id, 3, 1, 0, 0)?.0 == rt::REVOKED
+        c.directory(id, 3, root, 0, 0)?.0 == rt::REVOKED
             && c.directory(id, 3, ro, 0, 0)?.0 == rt::REVOKED,
     )?;
     check(c.directory(id, 1, 0, 3, 0)?.0 == rt::DENIED)?;
+    check(number(&c.session(3, id, [0; 16])?) == 0)?;
     marker(b"NA3 D descendants retires temoin actif issue retrouvee");
     rt::send_for(rt::config(0), 7, &[1], 5000)?;
     from_manager(2, 1)?;
