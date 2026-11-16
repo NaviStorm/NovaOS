@@ -20,3 +20,5 @@ pub mod options;
 pub mod vi_wire;
 
 pub mod documentation;
+#[path = "../coreutils/seq/options.rs"]
+pub mod seq_options;

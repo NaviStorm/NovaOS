@@ -31,6 +31,33 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "seq",
+        provider: "nova-cli",
+        description: Text(
+            "Print a sequence of numbers.",
+            "Afficher une suite de nombres.",
+        ),
+        syntax: Text(
+            "seq [OPTION]... [FIRST [STEP]] LAST",
+            "seq [OPTION]... [DÉBUT [PAS]] FIN",
+        ),
+        arguments: Text(
+            "FIRST and STEP default to 1. -s, --separator=TEXT separates values. -w, --equal-width pads with zeros. -f, --format=FORMAT accepts one aAeEfFgG conversion and literal %%. Choose either -w or -f.",
+            "DÉBUT et PAS valent 1 par défaut. -s, --separator=TEXTE sépare les valeurs. -w, --equal-width complète avec des zéros. -f, --format=FORMAT accepte une conversion aAeEfFgG et le littéral %%. Choisir -w ou -f.",
+        ),
+        examples: Text::same("seq 5\nseq -s , 6 -2 0\nseq -f '%.2f' 0 .25 1"),
+        rights: Text("Output and diagnostics.", "Sortie et diagnostics."),
+        effects: Text(
+            "Streams values and ends a nonempty sequence with LF.",
+            "Écrit au fil du calcul et termine toute suite non vide par LF.",
+        ),
+        limits: Text(
+            "seq returns 1 for invalid input or a write failure. STEP must be nonzero.",
+            "seq rend 1 pour un argument invalide ou un échec d’écriture. Le pas doit être non nul.",
+        ),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1207,10 +1234,17 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
-                    "Status, errors and limits: 0 success, 3 invalid argument.",
-                    "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                if self.name == "seq" {
+                    lang.select(
+                        "Status, errors and limits: 0 success.",
+                        "Codes, erreurs et limites : 0 succès.",
+                    )
+                } else {
+                    lang.select(
+                        "Status, errors and limits: 0 success, 3 invalid argument.",
+                        "Codes, erreurs et limites : 0 succès, 3 argument invalide.",
+                    )
+                },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )

@@ -3,6 +3,9 @@ extern crate alloc;
 extern crate self as nova_cli;
 #[path = "../../components/shell/doc_options.rs"]
 mod doc_options;
+#[allow(dead_code)]
+#[path = "../../components/coreutils/seq/options.rs"]
+pub mod seq_options;
 pub mod tty {
     pub const OUTPUT: u64 = 1;
     pub const ERROR: u64 = 2;
@@ -70,7 +73,7 @@ fn catalogue_et_rendu() {
             [
                 "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
-                "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
+                "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "seq", "service", "tail",
                 "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
             ]
         );
@@ -128,7 +131,7 @@ fn aiguillage_sans_aucune_interface_metier() {
             }
             assert_eq!(
                 doc_options::answer(page.name, &["--inconnue"], lang),
-                Ok(Some(3))
+                Ok(Some(if page.name == "seq" { 1 } else { 3 }))
             );
             assert_eq!(
                 doc_options::answer(page.name, &["--", "--inconnue"], lang),

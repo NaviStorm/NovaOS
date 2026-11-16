@@ -13,6 +13,27 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "seq" {
+        use nova_cli::seq_options::{Options, parse};
+        let words: alloc::vec::Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        let text = match parse(&words) {
+            Ok(Options::Help) => page.render(&[], false, lang).ok_or(rt::BAD_ARGUMENT)?,
+            Ok(Options::Version) => page.version(lang),
+            Ok(Options::Numbers { .. }) => return Ok(None),
+            Err(message) => {
+                console::printable(
+                    tty::ERROR,
+                    &alloc::format!(
+                        "seq: {}\n",
+                        alloc::string::String::from_utf8_lossy(&message.0)
+                    ),
+                )?;
+                return Ok(Some(1));
+            }
+        };
+        console::write(tty::OUTPUT, &text)?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {
