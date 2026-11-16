@@ -250,6 +250,11 @@ impl<'a> Engine<'a> {
                     .map(Flow::Status);
             }
         }
+        if matches!(name.as_str(), "help" | "history" | "clear" | "ps" | "top" | "true" | "false")
+            && words.first().is_some_and(|w| w.text == "--")
+        {
+            words.remove(0);
+        }
         match name.as_str() {
             "alias" => {
                 f.aliases.define(&words, depth != 0)?;

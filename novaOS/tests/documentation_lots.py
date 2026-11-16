@@ -16,7 +16,8 @@ from cli import Terminal
 from journalisation import arret, attend, sortie
 from session_cli import HOST, fixture_p9
 
-LOTS = {1: "pwd cat head tail wc more".split(), 2: "mkdir rmdir touch cp mv".split()}
+LOTS = {1: "pwd cat head tail wc more".split(), 2: "mkdir rmdir touch cp mv".split(),
+        3: "help history clear ps top true false".split()}
 
 
 def reread_transfer(out):
@@ -64,9 +65,9 @@ def run(arch, lot, out):
         def command(cmd, rc=0):
             vm.vm.stdin.write(f"echo ARCBEGIN; {cmd}; echo ARCEND=$?\n".encode())
             vm.until(b"\r\nARCBEGIN\r\n")
-            data = vm.until(b"ARCEND=") + vm.until(b"\r\n")
-            text = data.decode(errors="replace")
-            assert text.rstrip().endswith(f"ARCEND={rc}"), (cmd, text)
+            # history contient le texte « ARCEND=$? » des saisies précédentes.
+            # Seule la ligne qui contient le statut développé acquitte la commande.
+            text = vm.until(f"ARCEND={rc}\r\n".encode()).decode(errors="replace")
             # Le marqueur exécuté suffit ; une trace SMP peut couper le dessin de l’invite.
             records.append(dict(command=cmd, rc=rc, output=text))
             return text
@@ -104,6 +105,8 @@ def run(arch, lot, out):
                 assert name + " — " in help_text and "DOC-IPC" not in help_text
                 version = command(name + " --version")
                 assert ("nova-cli" if lot <= 2 else "nsh") + " 0.20.0" in version
+                for result in (help_text, version):
+                    assert "DOC-SAMPLE" not in result and "\x1b[2J" not in result
                 manual(name, french)
                 command(name + " --inconnue", 3)
                 if lot <= 2:
@@ -137,6 +140,22 @@ def run(arch, lot, out):
             command("touch -c -- --absent")
             command("cat -- --absent", 20)
             assert "NovaOS" in command("cat /documents/exemple.txt")
+        if lot == 3:
+            command("false", 1)
+            command("true")
+            assert "SUITE" in command("false || echo SUITE")
+            assert "TRACE" in command("true && echo TRACE")
+            assert "DOC-SAMPLE" in command("ps")
+            assert "service" in command("help")
+            assert "ARCBEGIN" in command("history")
+            command("clear")
+            vm.vm.stdin.write(b"top; echo TOPEND=$?\n")
+            vm.until(b"q pour quitter")
+            vm.vm.stdin.write(b"q")
+            vm.until(b"TOPEND=0\r\n")
+            records.append(dict(command="top (q)", rc=0))
+            command("nsh -c 'history'", 5)
+            command("nsh -c 'history --help'")
         control = snapshot()
         assert control["wr_operations"] > before["wr_operations"] and control["sha256"] != before["sha256"]
         arret(vm, 2)
