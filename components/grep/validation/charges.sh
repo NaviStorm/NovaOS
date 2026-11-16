@@ -129,33 +129,56 @@ def measure(exe, args, corpus, out, err, stdin):
                 stderr_octets=err.stat().st_size, stderr_sha256=digest(err),
                 commande=shlex.join(argv) + (" < "+shlex.quote(str(corpus)) if stdin else ""))
 
-# Les largeurs sont exprimées en colonnes de terminal, pour une fenêtre de 80.
-table_row = "{:<15}  {:>11}  {:>7}  {:>7}  {:>9}  {:>7}  {:>8}"
-headings = table_row.format("Cas", "Sélections", "Livré s", "GNU s", "Livré Mio", "GNU Mio", "Tests OK")
+# Une ligne par traitement, dans le terminal et le rapport Markdown.
+traitements = {
+    "ere-journal": "Filtrage du journal (ERE)",
+    "bre-rappel": "Référence arrière (BRE)",
+    "pcre-extraction": "Extraction des identifiants (PCRE)",
+    "pcre-absence": "Recherche sans résultat (PCRE)",
+}
+colonnes = ("Lignes", "Traitement", "Nova grep", "GNU grep")
+table_row = "{:<11}  {:<34}  {:>10}  {:>10}"
+headings = table_row.format(*colonnes)
 
-def entier(n):
-    return f"{n:,}".replace(",", " ")
-
-def afficher_entete(data):
-    print(f"\n{entier(data['lignes'])} lignes · {entier(data['octets'])} octets")
-    print(headings)
-    print("─" * len(headings), flush=True)
-
-def resumer_cas(name, selected, rows):
-    engines = [[r for r in rows if r["moteur"] == label] for label in ("livré", "GNU")]
-    times = [statistics.median(r["secondes"] for r in runs) for runs in engines]
-    rss = [max(r["rss_octets"] for r in runs) / 1024**2 for runs in engines]
-    passed = sum(r["conforme"] for r in rows)
-    tests = f"{passed}/{len(rows)}"
-    values = [f"{v:.2f}".replace(".", ",") for v in (*times, *rss)]
-    print(table_row.format(name, entier(selected), *values, tests), flush=True)
-    return (name, selected, *times, *rss)
+def resumer_cas(size, name, selected, rows, terminal_style):
+    millions, reste = divmod(size, 1_000_000)
+    if millions and reste == 0:
+        volume = f"{millions} million" + ("s" if millions > 1 else "")
+    else:
+        volume = f"{size:,}".replace(",", " ")
+    cells = []
+    details = []
+    valid = True
+    for label in ("livré", "GNU"):
+        runs = [r for r in rows if r["moteur"] == label]
+        median = statistics.median(r["secondes"] for r in runs)
+        peak = max(r["rss_octets"] for r in runs) / 1024**2
+        correct = all(r["conforme"] for r in runs)
+        cells.append(f"{median:.3f} s".replace(".", ",") if correct else "ÉCHEC")
+        valid = valid and correct
+        details.append((median, peak))
+    terminal = [v.rjust(10) for v in cells]
+    markdown = cells.copy()
+    if valid and cells[0] != cells[1]:
+        best = 0 if details[0][0] < details[1][0] else 1
+        markdown[best] = f"**{cells[best]}**"
+        if terminal_style:
+            terminal[best] = f"\033[1m{terminal[best]}\033[0m"
+    print(table_row.format(volume, traitements[name], *terminal), flush=True)
+    summary = "| " + " | ".join((volume, traitements[name], *markdown)) + " |"
+    count = f"{selected:,}".replace(",", " ")
+    peaks = [f"{peak:.2f}".replace(".", ",") for _, peak in details]
+    memory = f"| {volume} | {traitements[name]} | {count} | {peaks[0]} | {peaks[1]} |"
+    return summary, memory
 
 scratch = Path(os.environ["NOVAOS_TMPDIR"])
 scratch.mkdir(exist_ok=True, parents=True)
 proof = Path(tempfile.mkdtemp(prefix="charges-", dir=delivery))
-print("Temps médian de deux passages (s) · pic de mémoire résidente (Mio)", flush=True)
-table_results = []
+terminal_style = sys.stdout.isatty() and os.environ.get("TERM") != "dumb" and not os.environ.get("NO_COLOR")
+print(headings)
+print("─" * len(headings), flush=True)
+summary_lines = []
+memory_lines = []
 report = dict(date=time.strftime("%Y-%m-%dT%H:%M:%S%z"), macos=platform.mac_ver()[0],
               arch=platform.machine(), locale=os.environ["LC_ALL"], graine=270312, profils=period,
               executable=metadata, script_sha256=digest(delivery/"charges.sh"), repetitions=2,
@@ -176,7 +199,8 @@ with tempfile.TemporaryDirectory(prefix="arc027-charge-", dir=scratch) as tmp:
         assert digest(corpus) == data["sha256"]
         report["corpus"].append(data)
         save()
-        afficher_entete(data)
+        if size != sizes[0]:
+            print("─" * len(headings), flush=True)
         for name, flags, pat in cases:
             case_rows = []
             for rep, order in enumerate((("livré", "GNU"), ("GNU", "livré")), 1):
@@ -196,17 +220,19 @@ with tempfile.TemporaryDirectory(prefix="arc027-charge-", dir=scratch) as tmp:
                         shutil.copyfile(out, proof/(tag+".stdout"))
                         shutil.copyfile(err, proof/(tag+".stderr"))
             selected = data["attendus"][name]["selections"]
-            table_results.append((size, *resumer_cas(name, selected, case_rows)))
+            summary, memory = resumer_cas(size, name, selected, case_rows, terminal_style)
+            summary_lines.append(summary)
+            memory_lines.append(memory)
         corpus.unlink()
 correct = sum(r["conforme"] for r in report["mesures"])
 lines = ["# Charge grep sur macOS ARM64", "",
          f"{correct}/{len(report['mesures'])} exécutions conformes au modèle indépendant.",
          "Temps médian de deux passages par binaire, RSS maximal observé. Cache système ordinaire, ordre alterné.",
          "Les lignes ont un identifiant unique et un corps synthétique de période 65 536. Le motif d’extraction lit stdin sur un fichier régulier.", "",
-         "| Lignes | Cas | Lignes sélectionnées | Livré (s) | GNU (s) | Livré (Mio RSS) | GNU (Mio RSS) |",
-         "|---:|---|---:|---:|---:|---:|---:|"]
-for result in table_results:
-    lines.append("| {} | {} | {} | {:.2f} | {:.2f} | {:.2f} | {:.2f} |".format(*result))
+         "| " + " | ".join(colonnes) + " |", "|---|---|---:|---:|", *summary_lines,
+         "", "## Sélections attendues et mémoire résidente maximale", "",
+         "| Lignes | Traitement | Sélections | Nova grep (Mio) | GNU grep (Mio) |",
+         "|---|---|---:|---:|---:|", *memory_lines]
 (proof/"rapport.md").write_text("\n".join(lines)+"\n")
 shutil.copyfile(delivery/"charges.sh", proof/"charges.sh")
 fichiers = sorted(p for p in proof.iterdir() if p.is_file())
