@@ -1,0 +1,11 @@
+{
+  "code": "719c78083e3d02e2afd26e18f355f716e08fc356",
+  "fichiers": 306,
+  "octets": 287041663,
+  "manifeste_sha256": "4cb380ff4e39075191938d28171bcbade6bb44ccde0a1c400cccae7620bc263b",
+  "archive": "qualification-719c780.tar.gz",
+  "archive_sha256": "602862e7d96fc213922841b790b84fb4f43948ef7157351bb4991b988185bb2a",
+  "selection": "novaauth-dossier-phase3-0240.tar.gz",
+  "selection_sha256": "04a804eac70a836bfbd683c31235e0ce66c2c59877eb819ff9ce4e9fb9a14d71",
+  "membres_selection": 41
+}

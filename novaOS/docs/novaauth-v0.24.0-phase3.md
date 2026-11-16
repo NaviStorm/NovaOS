@@ -55,6 +55,8 @@ Douze démarrages à froid du même candidat couvrent trois états sur chacune d
 
 ## Recettes d'acceptation
 
+Le tableau ci-dessous décrit la campagne `8821247`. La MOE a depuis retenu le provisionneur de laboratoire. Les résultats sur le dossier réel D, les retraits et la perte de réponse figurent dans le [complément de qualification](novaauth-dossier-v0.24.0-phase3.md).
+
 | N° | État et portée des preuves |
 | ---: | --- |
 | 1 | Réussie dans les quatre invités pour trois sessions, deux comptes et les refus cryptographiques. |
@@ -83,4 +85,4 @@ Le lot permissions requiert une autorité initiale sur D, un effecteur vérifian
 
 La copie complète est dans le dossier frère durable `archives-novaauth-phase3-0240`, fichier `qualification-8821247.tar.gz`. Le manifeste recense chaque fichier par chemin relatif. Les octets de chaque membre décompressé ont été relus et comparés au fichier original. L'extrait versionné regroupe les journaux de qualification et le manifeste complet. [Empreintes et nombres de fichiers](validation/novaauth-phase3-0240.json) · [Extrait vérifié](validation/novaauth-phase3-0240.tar.gz)
 
-La branche sert à la poursuite de la qualification. L'acceptation d'ensemble dépend des recettes restées ouvertes et de la décision sur l'autorité du dossier D.
+La branche sert à la poursuite de la qualification. L’acceptation d’ensemble dépend des recettes encore ouvertes. Le complément sur D consigne la décision d’autorité et les résultats postérieurs à cette campagne.
