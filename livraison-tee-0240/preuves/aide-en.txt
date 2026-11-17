@@ -1,0 +1,8 @@
+tee — Copy input to standard output and named files.
+Usage: tee [OPTION]... [FILE]...
+Arguments and options: -a, --append: append to existing files. -i, --ignore-interrupts: ignore SIGINT on macOS. -p and --output-error select warn-nopipe. --output-error=MODE: warn reports and continues, exit reports and stops. warn-nopipe and exit-nopipe apply the same rule except that a closed pipe is dropped silently. Without an option, SIGPIPE retains its inherited disposition on macOS.
+--help: help; --version: version.
+Examples:
+tee copie.bin
+tee -ai --output-error=warn copie1 copie2
+Manual: man tee

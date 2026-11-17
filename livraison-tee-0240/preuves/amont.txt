@@ -1,0 +1,8 @@
+nova append 0
+nova tee 0
+nova short-write 77
+nova write-eagain 77
+gnu append 0
+gnu tee 0
+gnu short-write 77
+gnu write-eagain 77

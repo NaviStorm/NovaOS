@@ -1,0 +1,31 @@
+{
+  "gnu": "c0f8514d989184921d9b12a4d103a7b23abc5af8",
+  "gnulib": "106e9b2384d08a1696fcbd40cbab52237943f208",
+  "uutils": "4735bbe40d764a523c5ece37d47465b32452d1a2",
+  "chemin_gnu": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu",
+  "oracle": "/opt/homebrew/Cellar/coreutils/9.12_1/bin/gtee",
+  "sha256_gtee": "d9420927d43bc432761195ea7ae1ecfbc048ed6c09cef6da366e5bddef8624a9",
+  "fichiers": {
+    "src/tee.c": "260f86ffeddcc84870710137e90e8ddc4590f0ab4233f8f5d27bbee848dc91d7",
+    "src/iopoll.c": "a374a58c85d649ac601e02fcb06123bdb1723a21b2fed3fc5fc523c2bc02e345",
+    "src/iopoll.h": "0899029061b45b71d434d871479b397608c53ba63b78f1ff7bf4cff51368bafa",
+    "gl/lib/fadvise.c": "8168fb24428095b2664b912cca2a07ca2f6ec4ffa2b6383d7b8fc4362f9fc88f",
+    "man/tee.x": "41bb66fc248d136ab5e8d78bcd9094cf79481acde54e7f8ac0eb0f1a347179ba",
+    "doc/coreutils.texi": "e6521c9b2e677dd278820887d7ad94fad8260f2535dd923728462cdcb6148db9",
+    "tests/tee/tee.sh": "a6ee8a7e528d7ef709f8feecef41d0bd62e03a45295363251d1baec88f839315",
+    "tests/tee/append.sh": "258e0c8073d18a466e4cf0c71efc759ce1424112c9c22bcac3a8d37cc5720aa6",
+    "tests/tee/short-write.sh": "7bf7ac7b71ace1f0825903d7b0f61bcf5d73e775d947c2454c2eb6d0825bba14",
+    "tests/tee/write-eagain.sh": "e7bc320ff730d76eab6d254ea52094b5adee09b3f2c0bcfd1e489c8307ba2d62"
+  },
+  "auxiliaires": {
+    "lib/argmatch.c": "8dec6fb10c0aacc9b6cf84f42b7800a7b2b3260d00debcb7eb1670a9da66591a",
+    "lib/closeout.c": "1d034ee9f8e07e295090f04ec3e41d0e37a7c9aac71b11cf6e172eb9d6ea65fc",
+    "tests/init.sh": "c149c694215ea66d67dbb88dda0c08448c60f76309ee03ba5f863efec6fd138e"
+  },
+  "uutils_fichiers": {
+    "LICENSE": "29953405eaa3dcc41c37d1621d55b6a47eee93e05613e439e73295029740b10c",
+    "src/uu/tee/Cargo.toml": "5f7a5e633b97763512e84cba67ca1745d537ff893f23032e00e66e3923ad9cfe",
+    "src/uu/tee/src/tee.rs": "d8f99484e293bd755107659416790b7dfee9a8a42a8e4fcc0f12ca5694ce0deb",
+    "src/uu/tee/src/cli.rs": "e6213ba71b0a8c626fb813c3981ad5c7bfb67f6e2b2e30e66f5883961819d86e"
+  }
+}

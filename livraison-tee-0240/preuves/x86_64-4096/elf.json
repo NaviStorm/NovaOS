@@ -1,0 +1,1135 @@
+{
+  "elf": "352d592a70966d1b4307a163ec840050cca4ea57b937b599214b0d3c901dbb12",
+  "avant": "259b52699e2506ee110ec17d1790fa40549a45cf12f084b45a2ecaa59250097b",
+  "apres": "259b52699e2506ee110ec17d1790fa40549a45cf12f084b45a2ecaa59250097b",
+  "cas": [
+    {
+      "argv": [],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "nouveau"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "avant",
+        "neuf",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--",
+        "--append",
+        "-"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        ""
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-a",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "existant",
+        "--append"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-aiip",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-interrupts",
+        "--append",
+        "avant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--a",
+        "avant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--i",
+        "--out",
+        "avant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error",
+        "exit",
+        "avant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn-n",
+        "avant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit-",
+        "avant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-a",
+        "existant",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "n0",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--help",
+        "--bad"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--version",
+        "--bad"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-h"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "-v"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "-paZ"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "-p=warn"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--bad"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--append=x"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--i=x"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--help=x"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--output-error=non"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--output-error="
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--output-error=ex"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--output-error=w"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--bad",
+        "--help"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--a",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ap",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--app",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--appe",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--appen",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--append",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--i",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ig",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ign",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--igno",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignor",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-i",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-in",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-int",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-inte",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-inter",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-interr",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-interru",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-interrup",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-interrupt",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ignore-interrupts",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--o",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--ou",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--outp",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--outpu",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-e",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-er",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-err",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-erro",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--h",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--he",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--hel",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--help",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--v",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--ve",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--ver",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--vers",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--versi",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--versio",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--version",
+        "existant"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--out=w",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--out=wa",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--out=war",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--out=warn",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=e",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--out=ex",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--out=exi",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--out=exit",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=warn-",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=warn-n",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=warn-no",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=warn-nop",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=warn-nopi",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=warn-nopip",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=warn-nopipe",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=exit-",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=exit-n",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=exit-no",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=exit-nop",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=exit-nopi",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=exit-nopip",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--out=exit-nopipe",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-aip",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=x"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "--=bad"
+      ],
+      "rc": 1
+    },
+    {
+      "argv": [
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-p",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-p",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-p",
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error",
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn",
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn-nopipe",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn-nopipe",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn-nopipe",
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit",
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit-nopipe",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit-nopipe",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit-nopipe",
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit",
+        "-p",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit",
+        "-p",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit",
+        "-p",
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-p",
+        "--output-error=exit",
+        "avant",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-p",
+        "--output-error=exit",
+        "avant",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-p",
+        "--output-error=exit",
+        "nouveau",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-p"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit-nopipe"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "avant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-i",
+        "existant"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "absent/a",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "-p",
+        "absent/a",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error",
+        "absent/a",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn",
+        "absent/a",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=warn-nopipe",
+        "absent/a",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit",
+        "absent/a",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "--output-error=exit-nopipe",
+        "absent/a",
+        "refus",
+        "apres"
+      ],
+      "rc": 5
+    },
+    {
+      "argv": [
+        "existant",
+        "--help"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "existant",
+        "--he"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "existant",
+        "--version"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "existant",
+        "--ver"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--help",
+        "--",
+        "nsh-doc=fr"
+      ],
+      "rc": 0
+    },
+    {
+      "argv": [
+        "--version",
+        "--",
+        "nsh-doc=fr"
+      ],
+      "rc": 0
+    }
+  ]
+}

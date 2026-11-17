@@ -1,0 +1,190 @@
+{
+  "cas": [
+    [
+      "fr-CA",
+      "--help",
+      0
+    ],
+    [
+      "fr-CA",
+      "--he",
+      0
+    ],
+    [
+      "fr-CA",
+      "-aip --help",
+      0
+    ],
+    [
+      "fr-CA",
+      "--version",
+      0
+    ],
+    [
+      "fr-CA",
+      "--ver",
+      0
+    ],
+    [
+      "fr-CA",
+      "man tee",
+      0
+    ],
+    [
+      "en-US",
+      "--help",
+      0
+    ],
+    [
+      "en-US",
+      "--he",
+      0
+    ],
+    [
+      "en-US",
+      "-aip --help",
+      0
+    ],
+    [
+      "en-US",
+      "--version",
+      0
+    ],
+    [
+      "en-US",
+      "--ver",
+      0
+    ],
+    [
+      "en-US",
+      "man tee",
+      0
+    ],
+    [
+      "fr--CA",
+      "--help",
+      0
+    ],
+    [
+      "fr--CA",
+      "--he",
+      0
+    ],
+    [
+      "fr--CA",
+      "-aip --help",
+      0
+    ],
+    [
+      "fr--CA",
+      "--version",
+      0
+    ],
+    [
+      "fr--CA",
+      "--ver",
+      0
+    ],
+    [
+      "fr--CA",
+      "man tee",
+      0
+    ],
+    [
+      "temoin",
+      "entree copie",
+      "TEE-LAB matrices=33 p9=0 stdout=1030 miroir=1030"
+    ],
+    [
+      "temoin",
+      "vide zero",
+      "TEE-LAB matrices=33 p9=0 stdout=0 miroir=0"
+    ],
+    [
+      "temoin",
+      "entree occupe",
+      "TEE-LAB matrices=33 p9=1 stdout=1030 miroir=1030"
+    ]
+  ],
+  "mesures": [
+    {
+      "passage": 0,
+      "sorties": 1,
+      "ns": 464750,
+      "octets_lus": 1030,
+      "octets_ecrits": 1030
+    },
+    {
+      "passage": 0,
+      "sorties": 2,
+      "ns": 70151083,
+      "octets_lus": 1030,
+      "octets_ecrits": 2060
+    },
+    {
+      "passage": 1,
+      "sorties": 2,
+      "ns": 65147584,
+      "octets_lus": 1030,
+      "octets_ecrits": 2060
+    },
+    {
+      "passage": 1,
+      "sorties": 1,
+      "ns": 443375,
+      "octets_lus": 1030,
+      "octets_ecrits": 1030
+    },
+    {
+      "passage": 2,
+      "sorties": 1,
+      "ns": 421667,
+      "octets_lus": 1030,
+      "octets_ecrits": 1030
+    },
+    {
+      "passage": 2,
+      "sorties": 2,
+      "ns": 71533542,
+      "octets_lus": 1030,
+      "octets_ecrits": 2060
+    },
+    {
+      "passage": 3,
+      "sorties": 2,
+      "ns": 67421250,
+      "octets_lus": 1030,
+      "octets_ecrits": 2060
+    },
+    {
+      "passage": 3,
+      "sorties": 1,
+      "ns": 488042,
+      "octets_lus": 1030,
+      "octets_ecrits": 1030
+    }
+  ],
+  "avant": [
+    "251dc0f6918b1e7afc0a6da3b646d4a6ad7062240ff23d537d311451a1bb334e",
+    872448,
+    213,
+    77
+  ],
+  "apres": [
+    "251dc0f6918b1e7afc0a6da3b646d4a6ad7062240ff23d537d311451a1bb334e",
+    872448,
+    213,
+    77
+  ],
+  "admission_nsh": 3,
+  "relecture": {
+    "entree": "8ddc2901d33d87f1487e70ab32be5e337fcc2b90b0017d06f9b86ff0f8160241",
+    "occupe": "0922a34e65fe7e68a06359a5a432ebd4f88db5acdfda5eed152f1fb75d2c8143",
+    "copie": "8ddc2901d33d87f1487e70ab32be5e337fcc2b90b0017d06f9b86ff0f8160241",
+    "zero": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mesure2": "8ddc2901d33d87f1487e70ab32be5e337fcc2b90b0017d06f9b86ff0f8160241"
+  },
+  "noyau_ordinaire": "eb50dbb6db1455981d2467ecd2204a78f922dec5c615e043b9d668d6a9cf4c50",
+  "noyau_labo": "e92152a792b699bc40afa205872c3405a0f84d0a259e65c00087c11a970f091b",
+  "image": "1a92150cdda4e58608d15bd589edf68f48423189eb8bce0c8b6af59a8b9dd094"
+}

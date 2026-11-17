@@ -1,0 +1,5 @@
+Taille ou nombre | Traitement                   | Nova tee (ms) | GNU tee (ms)
+         1 Mio | 1 sortie(s),    1 Mio écrits |         8.020 |        6.721
+         1 Mio | 4 sortie(s),    4 Mio écrits |        19.941 |       17.030
+         8 Mio | 1 sortie(s),    8 Mio écrits |        34.948 |       35.907
+         8 Mio | 4 sortie(s),   32 Mio écrits |       209.324 |       65.938

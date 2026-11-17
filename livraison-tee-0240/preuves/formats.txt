@@ -1,0 +1,3 @@
+livraison-tee-0240/bin/tee:             Mach-O 64-bit executable arm64
+livraison-tee-0240/bin/tee-aarch64.elf: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, stripped
+livraison-tee-0240/bin/tee-x86_64.elf:  ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, stripped
