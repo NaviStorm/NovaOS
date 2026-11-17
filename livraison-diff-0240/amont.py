@@ -2,7 +2,8 @@
 from laboratoire import *
 import re
 import sys
-src=Path(os.environ.get("GNU_DIFF_SRC",TMP/"cmp-0240/diffutils-3.12")).resolve()
+hint=TMP/"diff-gnu-3.12/source-dir"
+src=Path(os.environ.get("GNU_DIFF_SRC",hint.read_text().strip() if hint.is_file() else TMP/"cmp-0240/diffutils-3.12")).resolve()
 tests=re.search(r"TESTS = (.*?)\n\n",(src/"tests/Makefile.am").read_text(),re.S)[1].replace("\\"," ").split()
 out=HERE/"preuves/amont";out.mkdir(parents=True,exist_ok=True)
 for name,binary in [("GNU",oracle()),("Nova",NOVA)]:
@@ -19,3 +20,13 @@ for name,binary in [("GNU",oracle()),("Nova",NOVA)]:
                 rows[t]=[p.returncode,p.stdout.decode(errors="replace"),p.stderr.decode(errors="replace")]
             except subprocess.TimeoutExpired:rows[t]=[124,"","délai 40 s"]
     save(out/(name+".json"),rows);print(name,[(k,v[0]) for k,v in rows.items() if v[0]])
+
+# Le scénario XFAIL décrit un alignement sous-optimal. Comparer aussi les
+# octets effectivement choisis par GNU, y compris en recherche minimale.
+align=[]
+for mode in [[],["-d"],["-H"]]:
+    args=["-u","-La","-Lb",*mode,"large-subopt.in1","large-subopt.in2"]
+    got={k:execute(binary,args,src/"tests") for k,binary in [("GNU",oracle()),("Nova",NOVA)]}
+    align.append(dict(args=args,ok=got["GNU"]==got["Nova"],resultats={k:[v[0],len(v[1])//2,hashlib.sha256(bytes.fromhex(v[1])).hexdigest(),v[2]] for k,v in got.items()}))
+save(out/"alignement.json",align)
+assert all(r["ok"] for r in align)

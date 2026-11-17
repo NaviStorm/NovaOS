@@ -8,6 +8,26 @@ use std::{
     path::Path,
     process::{Command, Stdio},
 };
+// Darwin exécute ce constructeur avant que std n'ignore SIGPIPE. Conserver
+// le choix du parent permet aux consommateurs de fermer le pipe normalement.
+static PIPE_IGNORED: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(true);
+#[used]
+#[unsafe(link_section = "__DATA,__mod_init_func")]
+static PIPE_INIT: extern "C" fn() = {
+    extern "C" fn remember_pipe() {
+        let mut action = core::mem::MaybeUninit::<libc::sigaction>::uninit();
+        // Un pointeur d'action nul interroge uniquement la disposition héritée.
+        unsafe {
+            if libc::sigaction(libc::SIGPIPE, core::ptr::null(), action.as_mut_ptr()) == 0 {
+                PIPE_IGNORED.store(
+                    action.assume_init().sa_sigaction == libc::SIG_IGN,
+                    core::sync::atomic::Ordering::Relaxed,
+                );
+            }
+        }
+    }
+    remember_pipe
+};
 fn path(b: &[u8]) -> &Path {
     Path::new(OsStr::from_bytes(b))
 }
@@ -119,9 +139,21 @@ impl Platform for Host {
         if err {
             io::stderr().lock().write_all(b)
         } else {
-            io::stdout().lock().write_all(b)
+            {
+                let mut output = io::stdout().lock();
+                output.write_all(b).and_then(|()| output.flush())
+            }
         }
-        .map_err(|e| e.to_string())
+        .map_err(|e| {
+            fail(
+                if err {
+                    b"standard error"
+                } else {
+                    b"standard output"
+                },
+                e,
+            )
+        })
     }
     fn paginate(&mut self, title: &[u8], b: &[u8]) -> Result<Vec<u8>, String> {
         let mut child = Command::new("/usr/bin/pr")
@@ -148,6 +180,12 @@ impl Platform for Host {
     }
 }
 pub fn run() -> u8 {
+    if !PIPE_IGNORED.load(core::sync::atomic::Ordering::Relaxed) {
+        // exec remet les gestionnaires personnalisés à leur disposition par défaut.
+        unsafe {
+            libc::signal(libc::SIGPIPE, libc::SIG_DFL);
+        }
+    }
     let args: Vec<_> = env::args_os().collect();
     let argv: Vec<_> = args.iter().skip(1).map(|a| a.as_bytes()).collect();
     let fr =

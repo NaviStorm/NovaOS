@@ -90,7 +90,7 @@ fn normalized(line: &[u8], o: &Options) -> Vec<u8> {
     result
 }
 // Recherche bidirectionnelle de Myers. Les deux fronts sont libérés avant la subdivision.
-fn middle(a: &[usize], b: &[usize]) -> Option<(usize, usize)> {
+fn middle(a: &[usize], b: &[usize], budget: usize) -> Option<(usize, usize)> {
     let (n, m) = (a.len() as isize, b.len() as isize);
     let delta = n - m;
     let max = (n + m + 1) / 2;
@@ -141,6 +141,30 @@ fn middle(a: &[usize], b: &[usize]) -> Option<(usize, usize)> {
                 }
             }
         }
+        if d as usize == budget {
+            // Une fois le budget de recherche atteint, couper sur le front qui
+            // a couvert le plus de lignes. Chaque front emploie ses coordonnées locales.
+            let furthest = |rev: usize| {
+                let mut best = (0, 0);
+                for t in (-d..=d).step_by(2) {
+                    let k = if rev == 0 { -t } else { t };
+                    let x = fronts[rev][(offset + k) as usize].min(n).min(m + k);
+                    let y = x - k;
+                    if x >= 0 && y >= 0 && x + y > best.0 + best.1 {
+                        best = (x, y);
+                    }
+                }
+                best
+            };
+            let left = furthest(0);
+            let right = furthest(1);
+            let cut = if left.0 + left.1 > right.0 + right.1 {
+                left
+            } else {
+                (n - right.0, m - right.1)
+            };
+            return Some((cut.0 as usize, cut.1 as usize));
+        }
     }
     None
 }
@@ -150,6 +174,7 @@ pub(super) fn differences(
     mut i: usize,
     mut j: usize,
     out: &mut Vec<Change>,
+    budget: usize,
 ) {
     let pre = a.iter().zip(b).take_while(|(x, y)| x == y).count();
     i += pre;
@@ -169,12 +194,12 @@ pub(super) fn differences(
     }
     if !a.is_empty()
         && !b.is_empty()
-        && let Some((x, y)) = middle(a, b)
+        && let Some((x, y)) = middle(a, b, budget)
         && (x, y) != (0, 0)
         && (x, y) != (a.len(), b.len())
     {
-        differences(&a[..x], &b[..y], i, j, out);
-        differences(&a[x..], &b[y..], i + x, j + y, out);
+        differences(&a[..x], &b[..y], i, j, out, budget);
+        differences(&a[x..], &b[y..], i + x, j + y, out, budget);
         return;
     }
     if let Some(last) = out.last_mut()
