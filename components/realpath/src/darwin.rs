@@ -94,6 +94,10 @@ fn report(name: &[u8], e: Error) -> io::Result<()> {
     err.write_all(b"\n")
 }
 fn execute() -> io::Result<u8> {
+    // Les diagnostics passent aussi par mbtowc lorsque stdout est redirigée.
+    unsafe {
+        libc::setlocale(libc::LC_CTYPE, c"".as_ptr());
+    }
     let mut arguments = env::args_os();
     let invocation = arguments.next().unwrap_or_default();
     let args: Vec<_> = arguments.collect();
@@ -147,10 +151,6 @@ fn execute() -> io::Result<u8> {
             let mut style = "shell-escape";
             let mut utf8 = false;
             if tty {
-                // Programme mono-thread, l'encodage actif vaut pour toute la sortie.
-                unsafe {
-                    libc::setlocale(libc::LC_CTYPE, c"".as_ptr());
-                }
                 utf8 = unsafe { std::ffi::CStr::from_ptr(libc::nl_langinfo(libc::CODESET)) }
                     .to_bytes()
                     .eq_ignore_ascii_case(b"UTF-8");
@@ -176,11 +176,10 @@ fn execute() -> io::Result<u8> {
                         continue;
                     }
                 };
-                let parent = &resolved;
                 if tty && style != "literal" {
-                    out.write_all(&quoted(parent, style, utf8))?;
+                    out.write_all(&quoted(&resolved, style, utf8))?;
                 } else {
-                    out.write_all(parent)?;
+                    out.write_all(&resolved)?;
                 }
                 out.write_all(if zero { b"\0" } else { b"\n" })?;
             }
