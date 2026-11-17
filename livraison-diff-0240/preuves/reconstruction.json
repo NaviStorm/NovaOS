@@ -1,0 +1,17 @@
+{
+ "diff-aarch64.elf": {
+  "livre": "fde0434d0366bdf6f94688ecb1957a1545bbb1af5c5fa54989a6048f7c4cb122",
+  "reconstruit": "fde0434d0366bdf6f94688ecb1957a1545bbb1af5c5fa54989a6048f7c4cb122",
+  "identique": true
+ },
+ "diff-x86_64.elf": {
+  "livre": "1e9491ffe50ed790ad3fe597929ed6817af8d1ee63e83932d226cb1db632c2cf",
+  "reconstruit": "1e9491ffe50ed790ad3fe597929ed6817af8d1ee63e83932d226cb1db632c2cf",
+  "identique": true
+ },
+ "diff": {
+  "livre": "cf9e91ef08d729fec244ffdd813dd1dfdc5d44d9e97835d68a78e57b1cd84be9",
+  "reconstruit": "cf9e91ef08d729fec244ffdd813dd1dfdc5d44d9e97835d68a78e57b1cd84be9",
+  "identique": true
+ }
+}

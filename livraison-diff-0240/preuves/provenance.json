@@ -1,0 +1,237 @@
+{
+ "nova": {
+  "host": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "gnu": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cmp-0240/gnu/bin/diff",
+  "gnu_sha256": "e14ac0bc8f78c8259d878d283631f215077831587ce896751e65ef9908ddce3e",
+  "nova_sha256": "cf9e91ef08d729fec244ffdd813dd1dfdc5d44d9e97835d68a78e57b1cd84be9",
+  "locale": "C",
+  "tz": "UTC0",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2.1\nBuildVersion:\t\t26B131",
+  "source": "2c30c06b46e6342e1b66bc539fb93a1bcb21b612"
+ },
+ "binaires": {
+  "diff-aarch64.elf": "fde0434d0366bdf6f94688ecb1957a1545bbb1af5c5fa54989a6048f7c4cb122",
+  "diff-x86_64.elf": "1e9491ffe50ed790ad3fe597929ed6817af8d1ee63e83932d226cb1db632c2cf",
+  "diff": "cf9e91ef08d729fec244ffdd813dd1dfdc5d44d9e97835d68a78e57b1cd84be9"
+ },
+ "base": "425e4e7cc5c03e246efb64d3638376906344bf47",
+ "lanceur": "a94b4a6e869122edde227ebdd293aedbcf5dc43f",
+ "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+ "cpu": "Apple M4 Max",
+ "qemu": "QEMU emulator version 11.1.3",
+ "gnu": {
+  "version": "diff (GNU diffutils) 3.12",
+  "depot": "https://git.savannah.gnu.org/git/diffutils.git",
+  "revision": "16681a3cbcea47e82683c713b0dac7d59d85a6fa",
+  "objet_tag": "673328647a5fb6d0be1c3939f92b70e2da0e1a12",
+  "licence": "GPL-3.0-or-later pour les modules GNU de diff",
+  "tar_sha256": "7c8b7f9fc8609141fdea9cece85249d308624391ff61dedaf528fcb337727dfd",
+  "sources": {
+   "src/diff.c": {
+    "git_sha256": "f89740750bda61c5fabc71ea26c6ea3a9e4f8623a1e765680e241ac8c559d13e",
+    "archive_sha256": "f89740750bda61c5fabc71ea26c6ea3a9e4f8623a1e765680e241ac8c559d13e"
+   },
+   "src/analyze.c": {
+    "git_sha256": "e6018af7c95c26d4c5538bfbe209a285f5bc91fd206772a097e28243558cccc2",
+    "archive_sha256": "e6018af7c95c26d4c5538bfbe209a285f5bc91fd206772a097e28243558cccc2"
+   },
+   "src/io.c": {
+    "git_sha256": "10d97f0f8e0402a1d75d01fe6d9d53d50b283a83b4db26d314f9de5a02495ccd",
+    "archive_sha256": "10d97f0f8e0402a1d75d01fe6d9d53d50b283a83b4db26d314f9de5a02495ccd"
+   },
+   "src/dir.c": {
+    "git_sha256": "3c453ffac55bf946e428ac0dd7a72eaa2f403ac92bae5f1a76020599ba9d820b",
+    "archive_sha256": "3c453ffac55bf946e428ac0dd7a72eaa2f403ac92bae5f1a76020599ba9d820b"
+   },
+   "src/context.c": {
+    "git_sha256": "e892aefb7c1045be10251d3e62511cae617053715626da4cdc1f49f4b6c40369",
+    "archive_sha256": "e892aefb7c1045be10251d3e62511cae617053715626da4cdc1f49f4b6c40369"
+   },
+   "src/ed.c": {
+    "git_sha256": "62f0aa23bcd27c8d7d1a242fa421fdfa5da249a2519d613ccdaea482621f861c",
+    "archive_sha256": "62f0aa23bcd27c8d7d1a242fa421fdfa5da249a2519d613ccdaea482621f861c"
+   },
+   "src/ifdef.c": {
+    "git_sha256": "2a9174be9eefbf2770e5cfc511523547fce8290aa81391efa1ef043bf10b0955",
+    "archive_sha256": "2a9174be9eefbf2770e5cfc511523547fce8290aa81391efa1ef043bf10b0955"
+   },
+   "src/normal.c": {
+    "git_sha256": "e691ea40234ca8e74b8e1fe00bdb624fec94b17e44bf471b5933c42458a65fae",
+    "archive_sha256": "e691ea40234ca8e74b8e1fe00bdb624fec94b17e44bf471b5933c42458a65fae"
+   },
+   "src/side.c": {
+    "git_sha256": "ded352d77641b1fb79d3058e2676085cf1c4569029306cc9e1dfdcfc401a103b",
+    "archive_sha256": "ded352d77641b1fb79d3058e2676085cf1c4569029306cc9e1dfdcfc401a103b"
+   },
+   "src/util.c": {
+    "git_sha256": "4608a76369c8e77cf0076da78b628b21523feafc7d3f124abd9697da044157d3",
+    "archive_sha256": "4608a76369c8e77cf0076da78b628b21523feafc7d3f124abd9697da044157d3"
+   },
+   "doc/diffutils.texi": {
+    "git_sha256": "382eda6c07353cccfaa04c976d11c58b54e4905a2e4162850a0f1bbf2589f15d",
+    "archive_sha256": "382eda6c07353cccfaa04c976d11c58b54e4905a2e4162850a0f1bbf2589f15d"
+   },
+   "tests/Makefile.am": {
+    "git_sha256": "5a554d496d8d5de53f07c815ea7e5c5e238ab65d5bcfe3c2079877a0afae7c01",
+    "archive_sha256": "5a554d496d8d5de53f07c815ea7e5c5e238ab65d5bcfe3c2079877a0afae7c01"
+   },
+   "tests/large-subopt": {
+    "git_sha256": "2e06a8f37e579d80ea7768e9dcae2d383a88e50b025f75420cc2cf783462b536",
+    "archive_sha256": "2e06a8f37e579d80ea7768e9dcae2d383a88e50b025f75420cc2cf783462b536"
+   },
+   "tests/colors": {
+    "git_sha256": "bd4f08bcc2a806df2ed7794754a31b262d3abb4d2479b949f67bf850bc89ae71",
+    "archive_sha256": "bd4f08bcc2a806df2ed7794754a31b262d3abb4d2479b949f67bf850bc89ae71"
+   },
+   "tests/ifdef": {
+    "git_sha256": "65a054d379edc7aa88714095de72b039387c1c3ea5b6d90506f6169843fc8804",
+    "archive_sha256": "65a054d379edc7aa88714095de72b039387c1c3ea5b6d90506f6169843fc8804"
+   },
+   "tests/help-version": {
+    "git_sha256": "2c4b14920f3401c047264c0d36b7b4e7d006fd02265a5cb29c5709450f21fb33",
+    "archive_sha256": "2c4b14920f3401c047264c0d36b7b4e7d006fd02265a5cb29c5709450f21fb33"
+   },
+   "lib/diffseq.h": {
+    "archive_sha256": "45b947fb7691d8c0bedbd19e0aa9498c48a2203b8d42346305d74b59796d73dc",
+    "origine": "gnulib embarqué dans la distribution"
+   }
+  },
+  "aide_sha256": "e21811284fd4f831df800a4627e715dcebefc462fdf51e2b9e7476c49f3ca04d",
+  "options_longues": [
+   "binary",
+   "brief",
+   "changed-group-format",
+   "color",
+   "context",
+   "ed",
+   "exclude",
+   "exclude-from",
+   "expand-tabs",
+   "forward-ed",
+   "from-file",
+   "help",
+   "horizon-lines",
+   "ifdef",
+   "ignore-all-space",
+   "ignore-blank-lines",
+   "ignore-case",
+   "ignore-file-name-case",
+   "ignore-matching-lines",
+   "ignore-space-change",
+   "ignore-tab-expansion",
+   "ignore-trailing-space",
+   "inhibit-hunk-merge",
+   "initial-tab",
+   "label",
+   "left-column",
+   "line-format",
+   "minimal",
+   "new-file",
+   "new-group-format",
+   "new-line-format",
+   "no-dereference",
+   "no-ignore-file-name-case",
+   "normal",
+   "old-group-format",
+   "old-line-format",
+   "paginate",
+   "palette",
+   "rcs",
+   "recursive",
+   "report-identical-files",
+   "sdiff-merge-assist",
+   "show-c-function",
+   "show-function-line",
+   "side-by-side",
+   "speed-large-files",
+   "starting-file",
+   "strip-trailing-cr",
+   "suppress-blank-empty",
+   "suppress-common-lines",
+   "tabsize",
+   "text",
+   "to-file",
+   "unchanged-group-format",
+   "unchanged-line-format",
+   "unidirectional-new-file",
+   "unified",
+   "version",
+   "width",
+   "-no-directory",
+   "-presume-output-tty"
+  ],
+  "options_courtes": "0123456789abBcCdDeEfFhHiIlLnNpPqrsStTuUvwWxXyZ"
+ },
+ "uutils": {
+  "depot": "https://github.com/uutils/diffutils",
+  "version": "0.6.0",
+  "revision": "cdbcb882760971ff5684518f1c15ef21d148a315",
+  "licence": "MIT OR Apache-2.0",
+  "archive": "6c4722c9e59022226d1722de9a6ec896b3cfb6f376451756c5edebd1b239fc8c",
+  "sources": {
+   "params.rs": "b650645224673a9bb47578f36ab041095708d6f819367bd0d27b8c5fccb361c4",
+   "diff.rs": "7307ec6bcc7ecf922e88a82e3c07c22601190c96e5d1ffc98f816ca20823f550",
+   "dir_diff.rs": "e7891de3c5e902b9308ad65df77ea0f9376f933627ed65685a30ddef340c9694",
+   "bre.rs": "e4579027223fc6d5e9a80d9edb151dd2fba7c383b586297309c62b4c6204735a",
+   "unified_diff.rs": "f55a74c7d20520eed6748370beabd1878de0f1e6193be42ef10181984ac24fb9",
+   "main.rs": "bb42d98065ea4f8960017de2dbcbf8f1178bd5a00c03661badc56817d9b6bf58"
+  }
+ },
+ "dependances": [
+  {
+   "crate": "cfg-if-1.0.5",
+   "licence": "MIT OR Apache-2.0",
+   "sha256_crate": "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600",
+   "notices": [
+    "LICENSE-APACHE",
+    "LICENSE-MIT"
+   ]
+  },
+  {
+   "crate": "dlmalloc-0.2.14",
+   "licence": "MIT/Apache-2.0",
+   "sha256_crate": "ad5208a115eaba24916f7456929832e310a81518c641f93fee4f89aa93aa3675",
+   "notices": [
+    "LICENSE-APACHE",
+    "LICENSE-MIT"
+   ]
+  },
+  {
+   "crate": "libc-0.2.191",
+   "licence": "MIT OR Apache-2.0",
+   "sha256_crate": "65cd87c9a6d60536580b316ad985726104730a5151c99845f2490428ef91240a",
+   "notices": [
+    "LICENSE-APACHE",
+    "LICENSE-MIT"
+   ]
+  },
+  {
+   "crate": "posix-regex-0.1.4",
+   "licence": "MIT",
+   "sha256_crate": "66df580334caab2f744839ab1be85493d7ec731a92d6cf928008ab0b212bf3bc",
+   "notices": [
+    "LICENSE"
+   ]
+  },
+  {
+   "crate": "spin-0.9.9",
+   "licence": "MIT",
+   "sha256_crate": "3763264f6b73151db08c50ff20d7d8a0b8796e021cdea7ceedad07b80155fa0e",
+   "notices": [
+    "LICENSE"
+   ]
+  },
+  {
+   "crate": "unicode-width-0.2.2",
+   "licence": "MIT OR Apache-2.0",
+   "sha256_crate": "b4ac048d71ede7ee76d585517add45da530660ef4390e49b098733c6e897f254",
+   "notices": [
+    "LICENSE-APACHE",
+    "COPYRIGHT",
+    "LICENSE-MIT"
+   ]
+  }
+ ],
+ "python": "3.15.2 (main, Oct 25 2026, 16:57:51) [Clang 21.0.0 (clang-2100.3.34.2)]"
+}

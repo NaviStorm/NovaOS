@@ -1,0 +1,267 @@
+{
+ "environnement": {
+  "host": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "gnu": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cmp-0240/gnu/bin/diff",
+  "gnu_sha256": "e14ac0bc8f78c8259d878d283631f215077831587ce896751e65ef9908ddce3e",
+  "nova_sha256": "cf9e91ef08d729fec244ffdd813dd1dfdc5d44d9e97835d68a78e57b1cd84be9",
+  "locale": "C",
+  "tz": "UTC0",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2.1\nBuildVersion:\t\t26B131",
+  "source": "2c30c06b46e6342e1b66bc539fb93a1bcb21b612"
+ },
+ "passages": 3,
+ "charges": [
+  {
+   "charge": "égaux",
+   "octets": 303104,
+   "sortie": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "args": [
+    "a",
+    "b"
+   ],
+   "Nova": [
+    {
+     "ns": 3519292,
+     "rss": 2572288,
+     "cpu_user": 0.00074,
+     "cpu_system": 0.000815
+    },
+    {
+     "ns": 2828917,
+     "rss": 2572288,
+     "cpu_user": 0.000785,
+     "cpu_system": 0.000842
+    },
+    {
+     "ns": 2573000,
+     "rss": 2572288,
+     "cpu_user": 0.0007459999999999999,
+     "cpu_system": 0.0007639999999999999
+    }
+   ],
+   "GNU": [
+    {
+     "ns": 2771333,
+     "rss": 2375680,
+     "cpu_user": 0.000627,
+     "cpu_system": 0.0008579999999999999
+    },
+    {
+     "ns": 2823791,
+     "rss": 2375680,
+     "cpu_user": 0.000709,
+     "cpu_system": 0.000833
+    },
+    {
+     "ns": 2647459,
+     "rss": 2375680,
+     "cpu_user": 0.0006979999999999999,
+     "cpu_system": 0.000832
+    }
+   ]
+  },
+  {
+   "charge": "début",
+   "octets": 303108,
+   "sortie": 90,
+   "sha256": "686e45af0251db2ef825df3a07c3f3d1c354dc4005df2b65f47df11b9dd3564f",
+   "args": [
+    "a",
+    "b"
+   ],
+   "Nova": [
+    {
+     "ns": 2875834,
+     "rss": 2801664,
+     "cpu_user": 0.0009149999999999999,
+     "cpu_system": 0.00087
+    },
+    {
+     "ns": 2799750,
+     "rss": 2801664,
+     "cpu_user": 0.0008629999999999999,
+     "cpu_system": 0.000848
+    },
+    {
+     "ns": 2865250,
+     "rss": 2801664,
+     "cpu_user": 0.000868,
+     "cpu_system": 0.000828
+    }
+   ],
+   "GNU": [
+    {
+     "ns": 2797459,
+     "rss": 2375680,
+     "cpu_user": 0.0006839999999999999,
+     "cpu_system": 0.0008539999999999999
+    },
+    {
+     "ns": 2509583,
+     "rss": 2375680,
+     "cpu_user": 0.0006709999999999999,
+     "cpu_system": 0.000784
+    },
+    {
+     "ns": 2719959,
+     "rss": 2375680,
+     "cpu_user": 0.000673,
+     "cpu_system": 0.0008129999999999999
+    }
+   ]
+  },
+  {
+   "charge": "fin",
+   "octets": 303108,
+   "sortie": 96,
+   "sha256": "d80d607a05b7b9f1aa402ab913a2ee109501457930bbf444d3a9491feff795fb",
+   "args": [
+    "a",
+    "b"
+   ],
+   "Nova": [
+    {
+     "ns": 2851375,
+     "rss": 2801664,
+     "cpu_user": 0.000861,
+     "cpu_system": 0.0008399999999999999
+    },
+    {
+     "ns": 2906959,
+     "rss": 2801664,
+     "cpu_user": 0.000851,
+     "cpu_system": 0.000879
+    },
+    {
+     "ns": 3006292,
+     "rss": 2801664,
+     "cpu_user": 0.0008659999999999999,
+     "cpu_system": 0.000832
+    }
+   ],
+   "GNU": [
+    {
+     "ns": 2670125,
+     "rss": 2392064,
+     "cpu_user": 0.0007329999999999999,
+     "cpu_system": 0.000868
+    },
+    {
+     "ns": 2808583,
+     "rss": 2375680,
+     "cpu_user": 0.0007369999999999999,
+     "cpu_system": 0.000883
+    },
+    {
+     "ns": 2758291,
+     "rss": 2375680,
+     "cpu_user": 0.000694,
+     "cpu_system": 0.000855
+    }
+   ]
+  },
+  {
+   "charge": "dispersés",
+   "octets": 303236,
+   "sortie": 3148,
+   "sha256": "bdb6dbdc02db6bc57376909b666a11f3d4e3e47a1ecad1e232394b34ca006723",
+   "args": [
+    "a",
+    "b"
+   ],
+   "Nova": [
+    {
+     "ns": 3500250,
+     "rss": 3555328,
+     "cpu_user": 0.001354,
+     "cpu_system": 0.0008629999999999999
+    },
+    {
+     "ns": 3532375,
+     "rss": 3555328,
+     "cpu_user": 0.001385,
+     "cpu_system": 0.000892
+    },
+    {
+     "ns": 3402875,
+     "rss": 3555328,
+     "cpu_user": 0.0013549999999999999,
+     "cpu_system": 0.00091
+    }
+   ],
+   "GNU": [
+    {
+     "ns": 3332292,
+     "rss": 2801664,
+     "cpu_user": 0.0009639999999999999,
+     "cpu_system": 0.001072
+    },
+    {
+     "ns": 3260792,
+     "rss": 2801664,
+     "cpu_user": 0.0009559999999999999,
+     "cpu_system": 0.0009199999999999999
+    },
+    {
+     "ns": 3110917,
+     "rss": 2801664,
+     "cpu_user": 0.0009939999999999999,
+     "cpu_system": 0.000927
+    }
+   ]
+  },
+  {
+   "charge": "arborescence",
+   "octets": 303108,
+   "sortie": 44,
+   "sha256": "1b7e99307a93333ce5f858cfe3070b529d9892a722a4c5828c40f366489cef37",
+   "args": [
+    "-r",
+    "a",
+    "b"
+   ],
+   "Nova": [
+    {
+     "ns": 3452583,
+     "rss": 2375680,
+     "cpu_user": 0.000857,
+     "cpu_system": 0.0011849999999999999
+    },
+    {
+     "ns": 3095041,
+     "rss": 2375680,
+     "cpu_user": 0.000789,
+     "cpu_system": 0.001018
+    },
+    {
+     "ns": 3108208,
+     "rss": 2375680,
+     "cpu_user": 0.0007999999999999999,
+     "cpu_system": 0.001059
+    }
+   ],
+   "GNU": [
+    {
+     "ns": 2897291,
+     "rss": 2097152,
+     "cpu_user": 0.000664,
+     "cpu_system": 0.000993
+    },
+    {
+     "ns": 3090542,
+     "rss": 2097152,
+     "cpu_user": 0.000699,
+     "cpu_system": 0.001011
+    },
+    {
+     "ns": 2813834,
+     "rss": 2097152,
+     "cpu_user": 0.000659,
+     "cpu_system": 0.000967
+    }
+   ]
+  }
+ ]
+}

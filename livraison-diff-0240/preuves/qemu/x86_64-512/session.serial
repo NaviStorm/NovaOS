@@ -1,0 +1,849 @@
+qemu-system-x86_64: -mon chardev=banc,mode=control: warning: '-mon' is deprecated, use '-object' with 'monitor-hmp' or 'monitor-qmp' types instead
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+BdsDxe: starting Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 51219 pages libres.
+NovaOS v0.20.0
+RAM phase=bloc_repos image=1347 tables=148 kpile=48 upile=0 heap=32 buddy=2 ipc=0 utilisateur=0 processus=0 meta_octets=20128 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62353 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=1577 retenu=1577 dma=0
+RAM phase=services_admis image=1347 tables=187 kpile=128 upile=194 heap=32 buddy=2 ipc=18 utilisateur=163 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61843 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2087 retenu=2087 dma=16
+BLOC chaine novaFS=3 bloc=2 pilote=4 client=5 generation=1
+RAM phase=bloc_publie image=1347 tables=187 kpile=128 upile=194 heap=32 buddy=2 ipc=18 utilisateur=163 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61843 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2087 retenu=2087 dma=16
+DEBUG pid=3 NVFS coeur initialise ELF tas prive
+BLOC parcours i=0 octets=131072 ns=18251604
+BLOC parcours i=1 octets=131072 ns=13756170
+BLOC parcours i=2 octets=131072 ns=21300394
+BLOC parcours i=3 octets=131072 ns=17172138
+ECHANTILLON ech montage-cli cycles=10685000
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=100 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=63 pile=64
+RAM phase=cli_repos image=1347 tables=190 kpile=128 upile=194 heap=32 buddy=2 ipc=18 utilisateur=180 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61823 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2107 retenu=2107 dma=16
+BLOC parcours i=4 octets=131072 ns=16339465
+CLI repos pages=127 libres=61823 buddy=107808
+nsh> @probe diff-corpus; echo DIFFRC_$?__fin
+BLOC parcours i=5 octets=131072 ns=18637844
+BLOC parcours i=6 octets=131072 ns=20865999
+CLI spawn image=6 pid=13 cycles=14736000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=100 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=13 privees=47 pile=64
+RAM phase=cli_enfant image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=262 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61283 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2647 retenu=2647 dma=16
+BLOC parcours i=7 octets=131072 ns=26773969
+BLOC parcours i=8 octets=131072 ns=25515930
+BLOC parcours i=9 octets=131072 ns=22644710
+BLOC parcours i=10 octets=131072 ns=26248281
+BLOC parcours i=11 octets=131072 ns=23770325
+BLOC parcours i=12 octets=131072 ns=22550407
+BLOC parcours i=13 octets=131072 ns=92018465
+DEBUG pid=13 DIFF-VECTEURS total=775 ecarts=0
+PROC pid=13 niveau=Ring3 pc=0x101d381 sortie=0
+CLI collecte pid=13 cycles=2732000
+[statut sortie 0]
+DIFFRC_0__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=116 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=236 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61309 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2621 retenu=2621 dma=16
+CLI repos pages=143 libres=61309 buddy=109088
+nsh> @probe diff-equal; echo DIFFRC_$?__fin
+BLOC parcours i=14 octets=131072 ns=201544145
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775819 statut=0
+CLI spawn image=6 pid=16 cycles=13912000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=116 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=16 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=283 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61172 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2758 retenu=2758 dma=16
+BLOC parcours i=15 octets=131072 ns=35301350
+DEBUG pid=16 DIFF-PIC-TAS 65536
+DEBUG pid=16 DIFF-RESULTAT rc=0 stdout=0 stderr=0
+PROC pid=16 niveau=Ring3 pc=0x101d381 sortie=0
+CLI collecte pid=16 cycles=1839000
+[statut sortie 0]
+DIFFRC_0__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=116 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=236 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61309 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2621 retenu=2621 dma=16
+CLI repos pages=143 libres=61309 buddy=109088
+nsh> @probe diff-equal; echo DIFFRC_$?__fin
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775822 statut=0
+BLOC parcours i=16 octets=131072 ns=33416297
+CLI spawn image=6 pid=18 cycles=16429000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=18 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=18 DIFF-PIC-TAS 65536
+DEBUG pid=18 DIFF-RESULTAT rc=0 stdout=0 stderr=0
+PROC pid=18 niveau=Ring3 pc=0x101d381 sortie=0
+CLI collecte pid=18 cycles=1164000
+[statut sortie 0]
+DIFFRC_0__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-equal; echo DIFFRC_$?__fin
+BLOC parcours i=17 octets=131072 ns=43229808
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775824 statut=0
+BLOC parcours i=18 octets=131072 ns=21564241
+CLI spawn image=6 pid=20 cycles=15232000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=20 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=20 DIFF-PIC-TAS 65536
+DEBUG pid=20 DIFF-RESULTAT rc=0 stdout=0 stderr=0
+PROC pid=20 niveau=Ring3 pc=0x101d381 sortie=0
+CLI collecte pid=20 cycles=1164000
+[statut sortie 0]
+DIFFRC_0__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-equal; echo DIFFRC_$?__fin
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775826 statut=0
+BLOC parcours i=19 octets=131072 ns=39404525
+CLI spawn image=6 pid=22 cycles=15305000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=22 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=22 DIFF-PIC-TAS 65536
+DEBUG pid=22 DIFF-RESULTAT rc=0 stdout=0 stderr=0
+PROC pid=22 niveau=Ring3 pc=0x101d381 sortie=0
+CLI collecte pid=22 cycles=1203000
+[statut sortie 0]
+DIFFRC_0__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-start; echo DIFFRC_$?__fin
+BLOC parcours i=20 octets=131072 ns=35257208
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775828 statut=0
+CLI spawn image=6 pid=24 cycles=15502000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=24 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+BLOC parcours i=21 octets=131072 ns=31476067
+DEBUG pid=24 DIFF-PIC-TAS 65536
+DEBUG pid=24 DIFF-OCTETS 0 3163310a3c20415243303237203030302074657874650a2d2d2d0a3e204d4f4420415243303237203030302074657874650a
+DEBUG pid=24 DIFF-RESULTAT rc=1 stdout=50 stderr=0
+PROC pid=24 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=24 cycles=1175000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-start; echo DIFFRC_$?__fin
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775830 statut=0
+BLOC parcours i=22 octets=131072 ns=38264866
+CLI spawn image=6 pid=26 cycles=18267000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=26 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=26 DIFF-PIC-TAS 65536
+DEBUG pid=26 DIFF-OCTETS 0 3163310a3c20415243303237203030302074657874650a2d2d2d0a3e204d4f4420415243303237203030302074657874650a
+DEBUG pid=26 DIFF-RESULTAT rc=1 stdout=50 stderr=0
+PROC pid=26 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=26 cycles=1306000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-start; echo DIFFRC_$?__fin
+BLOC parcours i=23 octets=131072 ns=38975146
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775832 statut=0
+CLI spawn image=6 pid=28 cycles=18464000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=28 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+BLOC parcours i=24 octets=131072 ns=29088401
+DEBUG pid=28 DIFF-PIC-TAS 65536
+DEBUG pid=28 DIFF-OCTETS 0 3163310a3c20415243303237203030302074657874650a2d2d2d0a3e204d4f4420415243303237203030302074657874650a
+DEBUG pid=28 DIFF-RESULTAT rc=1 stdout=50 stderr=0
+PROC pid=28 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=28 cycles=1121000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-start; echo DIFFRC_$?__fin
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775834 statut=0
+BLOC parcours i=25 octets=131072 ns=27385934
+CLI spawn image=6 pid=30 cycles=18787000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=30 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=30 DIFF-PIC-TAS 65536
+DEBUG pid=30 DIFF-OCTETS 0 3163310a3c20415243303237203030302074657874650a2d2d2d0a3e204d4f4420415243303237203030302074657874650a
+DEBUG pid=30 DIFF-RESULTAT rc=1 stdout=50 stderr=0
+PROC pid=30 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=30 cycles=1148000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-end; echo DIFFRC_$?__fin
+BLOC parcours i=26 octets=131072 ns=37902703
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775836 statut=0
+CLI spawn image=6 pid=32 cycles=18072000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=32 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+BLOC parcours i=27 octets=131072 ns=33643025
+DEBUG pid=32 DIFF-PIC-TAS 65536
+DEBUG pid=32 DIFF-OCTETS 0 313238633132380a3c20415243303237203132372074657874650a2d2d2d0a3e204d4f4420415243303237203132372074657874650a
+DEBUG pid=32 DIFF-RESULTAT rc=1 stdout=54 stderr=0
+PROC pid=32 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=32 cycles=1855000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-end; echo DIFFRC_$?__fin
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775838 statut=0
+BLOC parcours i=28 octets=131072 ns=37719113
+CLI spawn image=6 pid=34 cycles=18112000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=34 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=34 DIFF-PIC-TAS 65536
+DEBUG pid=34 DIFF-OCTETS 0 313238633132380a3c20415243303237203132372074657874650a2d2d2d0a3e204d4f4420415243303237203132372074657874650a
+DEBUG pid=34 DIFF-RESULTAT rc=1 stdout=54 stderr=0
+PROC pid=34 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=34 cycles=1077000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-end; echo DIFFRC_$?__fin
+BLOC parcours i=29 octets=131072 ns=37334879
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775840 statut=0
+CLI spawn image=6 pid=36 cycles=17981000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=36 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=36 DIFF-PIC-TAS 65536
+DEBUG pid=36 DIFF-OCTETS 0 313238633132380a3c20415243303237203132372074657874650a2d2d2d0a3e204d4f4420415243303237203132372074657874650a
+DEBUG pid=36 DIFF-RESULTAT rc=1 stdout=54 stderr=0
+PROC pid=36 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=36 cycles=1376000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> BLOC parcours i=30 octets=131072 ns=45292431
+@probe diff-end; echo DIFFRC_$?__fin
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775842 statut=0
+BLOC parcours i=31 octets=131072 ns=25629294
+CLI spawn image=6 pid=38 cycles=18738000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=38 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=38 DIFF-PIC-TAS 65536
+DEBUG pid=38 DIFF-OCTETS 0 313238633132380a3c20415243303237203132372074657874650a2d2d2d0a3e204d4f4420415243303237203132372074657874650a
+DEBUG pid=38 DIFF-RESULTAT rc=1 stdout=54 stderr=0
+PROC pid=38 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=38 cycles=1784000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-many; echo DIFFRC_$?__fin
+BLOC parcours i=32 octets=131072 ns=38811621
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775844 statut=0
+CLI spawn image=6 pid=40 cycles=17943000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=40 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+BLOC parcours i=33 octets=131072 ns=34513821
+DEBUG pid=40 DIFF-PIC-TAS 65536
+DEBUG pid=40 DIFF-OCTETS 0 3163310a3c20415243303237203030302074657874650a2d2d2d0a3e204d4f4420415243303237203030302074657874650a31386331380a3c20415243303237
+DEBUG pid=40 DIFF-OCTETS 0 203031372074657874650a2d2d2d0a3e204d4f4420415243303237203031372074657874650a33356333350a3c20415243303237203033342074657874650a2d
+DEBUG pid=40 DIFF-OCTETS 0 2d2d0a3e204d4f4420415243303237203033342074657874650a35326335320a3c20415243303237203035312074657874650a2d2d2d0a3e204d4f4420415243
+DEBUG pid=40 DIFF-OCTETS 0 303237203035312074657874650a36396336390a3c20415243303237203036382074657874650a2d2d2d0a3e204d4f4420415243303237203036382074657874
+DEBUG pid=40 DIFF-OCTETS 0 650a38366338360a3c20415243303237203038352074657874650a2d2d2d0a3e204d4f4420415243303237203038352074657874650a313033633130330a3c20
+DEBUG pid=40 DIFF-OCTETS 0 415243303237203130322074657874650a2d2d2d0a3e204d4f4420415243303237203130322074657874650a313230633132300a3c2041524330323720313139
+DEBUG pid=40 DIFF-OCTETS 0 2074657874650a2d2d2d0a3e204d4f4420415243303237203131392074657874650a
+DEBUG pid=40 DIFF-RESULTAT rc=1 stdout=418 stderr=0
+PROC pid=40 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=40 cycles=1112000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-many; echo DIFFRC_$?__fin
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775846 statut=0
+BLOC parcours i=34 octets=131072 ns=27603633
+CLI spawn image=6 pid=42 cycles=18852000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=42 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=42 DIFF-PIC-TAS 65536
+DEBUG pid=42 DIFF-OCTETS 0 3163310a3c20415243303237203030302074657874650a2d2d2d0a3e204d4f4420415243303237203030302074657874650a31386331380a3c20415243303237
+DEBUG pid=42 DIFF-OCTETS 0 203031372074657874650a2d2d2d0a3e204d4f4420415243303237203031372074657874650a33356333350a3c20415243303237203033342074657874650a2d
+DEBUG pid=42 DIFF-OCTETS 0 2d2d0a3e204d4f4420415243303237203033342074657874650a35326335320a3c20415243303237203035312074657874650a2d2d2d0a3e204d4f4420415243
+DEBUG pid=42 DIFF-OCTETS 0 303237203035312074657874650a36396336390a3c20415243303237203036382074657874650a2d2d2d0a3e204d4f4420415243303237203036382074657874
+DEBUG pid=42 DIFF-OCTETS 0 650a38366338360a3c20415243303237203038352074657874650a2d2d2d0a3e204d4f4420415243303237203038352074657874650a313033633130330a3c20
+DEBUG pid=42 DIFF-OCTETS 0 415243303237203130322074657874650a2d2d2d0a3e204d4f4420415243303237203130322074657874650a313230633132300a3c2041524330323720313139
+DEBUG pid=42 DIFF-OCTETS 0 2074657874650a2d2d2d0a3e204d4f4420415243303237203131392074657874650a
+DEBUG pid=42 DIFF-RESULTAT rc=1 stdout=418 stderr=0
+PROC pid=42 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=42 cycles=2018000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-many; echo DIFFRC_$?__fin
+BLOC parcours i=35 octets=131072 ns=40555220
+DEBUG pid=3 TMP retrait confirme
+TMP retrait instance=9223372036854775848 statut=0
+CLI spawn image=6 pid=44 cycles=19235000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=44 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=44 DIFF-PIC-TAS 65536
+DEBUG pid=44 DIFF-OCTETS 0 3163310a3c20415243303237203030302074657874650a2d2d2d0a3e204d4f4420415243303237203030302074657874650a31386331380a3c20415243303237
+DEBUG pid=44 DIFF-OCTETS 0 203031372074657874650a2d2d2d0a3e204d4f4420415243303237203031372074657874650a33356333350a3c20415243303237203033342074657874650a2d
+DEBUG pid=44 DIFF-OCTETS 0 2d2d0a3e204d4f4420415243303237203033342074657874650a35326335320a3c20415243303237203035312074657874650a2d2d2d0a3e204d4f4420415243
+DEBUG pid=44 DIFF-OCTETS 0 303237203035312074657874650a36396336390a3c20415243303237203036382074657874650a2d2d2d0a3e204d4f4420415243303237203036382074657874
+DEBUG pid=44 DIFF-OCTETS 0 650a38366338360a3c20415243303237203038352074657874650a2d2d2d0a3e204d4f4420415243303237203038352074657874650a313033633130330a3c20
+DEBUG pid=44 DIFF-OCTETS 0 415243303237203130322074657874650a2d2d2d0a3e204d4f4420415243303237203130322074657874650a313230633132300a3c2041524330323720313139
+DEBUG pid=44 DIFF-OCTETS 0 2074657874650a2d2d2d0a3e204d4f4420415243303237203131392074657874650a
+DEBUG pid=44 DIFF-RESULTAT rc=1 stdout=418 stderr=0
+PROC pid=44 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=44 cycles=1170000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-many; echo DIFFRC_$?__fin
+BLOC parcours i=36 octets=131072 ns=49339425
+TMP retrait instance=9223372036854775850 statut=0
+BLOC parcours i=37 octets=131072 ns=25129689
+CLI spawn image=6 pid=46 cycles=18954000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=46 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=46 DIFF-PIC-TAS 65536
+DEBUG pid=46 DIFF-OCTETS 0 3163310a3c20415243303237203030302074657874650a2d2d2d0a3e204d4f4420415243303237203030302074657874650a31386331380a3c20415243303237
+DEBUG pid=46 DIFF-OCTETS 0 203031372074657874650a2d2d2d0a3e204d4f4420415243303237203031372074657874650a33356333350a3c20415243303237203033342074657874650a2d
+DEBUG pid=46 DIFF-OCTETS 0 2d2d0a3e204d4f4420415243303237203033342074657874650a35326335320a3c20415243303237203035312074657874650a2d2d2d0a3e204d4f4420415243
+DEBUG pid=46 DIFF-OCTETS 0 303237203035312074657874650a36396336390a3c20415243303237203036382074657874650a2d2d2d0a3e204d4f4420415243303237203036382074657874
+DEBUG pid=46 DIFF-OCTETS 0 650a38366338360a3c20415243303237203038352074657874650a2d2d2d0a3e204d4f4420415243303237203038352074657874650a313033633130330a3c20
+DEBUG pid=46 DIFF-OCTETS 0 415243303237203130322074657874650a2d2d2d0a3e204d4f4420415243303237203130322074657874650a313230633132300a3c2041524330323720313139
+DEBUG pid=46 DIFF-OCTETS 0 2074657874650a2d2d2d0a3e204d4f4420415243303237203131392074657874650a
+DEBUG pid=46 DIFF-RESULTAT rc=1 stdout=418 stderr=0
+PROC pid=46 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=46 cycles=1234000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-tree; echo DIFFRC_$?__fin
+BLOC parcours i=38 octets=131072 ns=40282344
+TMP retrait instance=9223372036854775852 statut=0
+CLI spawn image=6 pid=48 cycles=18534000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=48 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+BLOC parcours i=39 octets=131072 ns=29783633
+BLOC parcours i=40 octets=131072 ns=30825980
+DEBUG pid=48 DIFF-PIC-TAS 65536
+DEBUG pid=48 DIFF-OCTETS 0 64696666202d7220612f706172742f6b20622f706172742f6b0a313238633132380a3c20415243303237203132372074657874650a2d2d2d0a3e204d4f442041
+DEBUG pid=48 DIFF-OCTETS 0 5243303237203132372074657874650a
+DEBUG pid=48 DIFF-RESULTAT rc=1 stdout=80 stderr=0
+PROC pid=48 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=48 cycles=1196000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-tree; echo DIFFRC_$?__fin
+TMP retrait instance=9223372036854775854 statut=0
+BLOC parcours i=41 octets=131072 ns=39129642
+CLI spawn image=6 pid=50 cycles=20218000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=50 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=50 DIFF-PIC-TAS 65536
+DEBUG pid=50 DIFF-OCTETS 0 64696666202d7220612f706172742f6b20622f706172742f6b0a313238633132380a3c20415243303237203132372074657874650a2d2d2d0a3e204d4f442041
+DEBUG pid=50 DIFF-OCTETS 0 5243303237203132372074657874650a
+DEBUG pid=50 DIFF-RESULTAT rc=1 stdout=80 stderr=0
+PROC pid=50 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=50 cycles=1268000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-tree; echo DIFFRC_$?__fin
+BLOC parcours i=42 octets=131072 ns=49475863
+TMP retrait instance=9223372036854775856 statut=0
+CLI spawn image=6 pid=52 cycles=20654000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=52 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+BLOC parcours i=43 octets=131072 ns=31212220
+DEBUG pid=52 DIFF-PIC-TAS 65536
+DEBUG pid=52 DIFF-OCTETS 0 64696666202d7220612f706172742f6b20622f706172742f6b0a313238633132380a3c20415243303237203132372074657874650a2d2d2d0a3e204d4f442041
+DEBUG pid=52 DIFF-OCTETS 0 5243303237203132372074657874650a
+DEBUG pid=52 DIFF-RESULTAT rc=1 stdout=80 stderr=0
+PROC pid=52 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=52 cycles=1471000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> @probe diff-tree; echo DIFFRC_$?__fin
+TMP retrait instance=9223372036854775858 statut=0
+BLOC parcours i=44 octets=131072 ns=53267037
+CLI spawn image=6 pid=54 cycles=20071000 pages=111
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=54 privees=47 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_enfant image=1347 tables=241 kpile=224 upile=578 heap=32 buddy=2 ipc=35 utilisateur=299 processus=11 meta_octets=20128 meta_actifs=6072 tcb_octets=6656 heap_va=65536 libres=61156 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2774 retenu=2774 dma=16
+DEBUG pid=54 DIFF-PIC-TAS 65536
+DEBUG pid=54 DIFF-OCTETS 0 64696666202d7220612f706172742f6b20622f706172742f6b0a313238633132380a3c20415243303237203132372074657874650a2d2d2d0a3e204d4f442041
+DEBUG pid=54 DIFF-OCTETS 0 5243303237203132372074657874650a
+DEBUG pid=54 DIFF-RESULTAT rc=1 stdout=80 stderr=0
+PROC pid=54 niveau=Ring3 pc=0x101d381 sortie=1
+CLI collecte pid=54 cycles=1529000
+[statut sortie 1]
+DIFFRC_1__fin
+CLI mem pid=1 privees=12 pile=64
+CLI mem pid=2 privees=2 pile=1
+CLI mem pid=3 privees=132 pile=64
+CLI mem pid=4 privees=3 pile=1
+CLI mem pid=5 privees=79 pile=64
+CLI mem pid=6 privees=5 pile=64
+CLI mem pid=7 privees=5 pile=64
+CLI mem pid=11 privees=5 pile=64
+CLI mem pid=10 privees=4 pile=64
+CLI mem pid=14 privees=5 pile=64
+RAM phase=cli_repos image=1347 tables=233 kpile=208 upile=514 heap=32 buddy=2 ipc=33 utilisateur=252 processus=10 meta_octets=20128 meta_actifs=5520 tcb_octets=6656 heap_va=65536 libres=61293 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2637 retenu=2637 dma=16
+CLI repos pages=143 libres=61293 buddy=109088
+nsh> exit
+BLOC parcours i=45 octets=131072 ns=47230654
+TMP retrait instance=9223372036854775860 statut=0
+BLOC parcours i=46 octets=131072 ns=39186826
+TMP retrait instance=9223372036854775814 statut=0
+TMP retrait instance=9223372036854775816 statut=0
+BLOC parcours i=47 octets=131072 ns=13423100
+TMP retrait instance=9223372036854775815 statut=0
+BLOC parcours i=48 octets=131072 ns=16537099
+TMP retrait instance=9223372036854775809 statut=0
+RAM phase=services_draines image=1347 tables=185 kpile=112 upile=130 heap=32 buddy=2 ipc=14 utilisateur=216 processus=5 meta_octets=20128 meta_actifs=2760 tcb_octets=6656 heap_va=65536 libres=61876 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=2054 retenu=2054 dma=16
+PROC pid=5 niveau=Ring3 pc=0x1022fc1 sortie=0
+SERVICES fin gestionnaire Exit(0)
+BLOC parcours i=49 octets=131072 ns=20179796
+TMP retrait instance=9223372036854775813 statut=0
+PROC pid=4 niveau=Ring3 pc=0x400b64 sortie=0
+PROC pid=3 niveau=Ring3 pc=0x1033009 sortie=0
+PROC pid=2 niveau=Ring3 pc=0x4005f0 sortie=0
+BLOC bilan mode=42 service=Exit(0) bloc=Exit(0) pilote=Exit(0) client=Exit(0) retrait=Ok(()) cycles_retrait=764000
+STOCKAGE trafic tours=4574 ns=1876900611
+IPC hist type=irq n=57574 p50=12327 p95=18491 p99=20545 max=1327261
+IPC hist type=depot n=25 p50=5136 p95=10272 p99=19061 max=19061
+IPC hist type=livraison n=4751 p50=45201 p95=65747 p99=4207815 max=34573011
+IPC hist type=aller_retour n=4574 p50=147930 p95=394482 p99=2103907 max=46105040
+IPC hist type=reprise n=6920 p50=24655 p95=36982 p99=65747 max=3094937
+IPC hist type=appel n=9540 p50=57528 p95=246551 p99=1577930 max=30488897
+IPC hist type=commutation n=95 p50=6163 p95=13354 p99=19061 max=19061
+BLOC mesure type=read n=579 p50=45201 p95=213678 p99=427356 max=898886 moyenne=60180
+BLOC mesure type=write n=1027 p50=30818 p95=115057 p99=246551 max=830667 moyenne=42661
+BLOC mesure type=flush n=389 p50=65747 p95=147930 p99=262988 max=1046359 moyenne=76713
+BLOC mesure type=validation n=389 p50=2054 p95=4109 p99=7191 max=244785 moyenne=2756
+RAM phase=bloc_collecte image=1347 tables=148 kpile=48 upile=0 heap=32 buddy=2 ipc=0 utilisateur=0 processus=0 meta_octets=20128 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62344 cache=0 chargeur=0 restitue=11225 extra_elf=0 video=469 ram_video=0 resident=1586 retenu=1586 dma=9
+BLOC memoire cadres_init=62353 cadres_fin=62344 allocations=5058 pic_cadres=1232 buddy_init=74784 buddy_fin=74784 hz=996789062 retrait_ns=766461
+BLOC session terminee ok=true
+SMP diagnostic cpu=0 sp=0xfffff02000022d80
+SMP diagnostic cpu=1 sp=0xfffff0200023ee70
+SMP arret motif=normal coordinateur=0 attendus=0x3 en_ligne=0x3 ack=0x3 absents=0x0 muets=0x0
