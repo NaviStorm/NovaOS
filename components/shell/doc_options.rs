@@ -15,7 +15,13 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     };
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
-    let (help, version, topic) = if let Some(p) = Program::named(name, false) {
+    let (help, version, topic) = if name == "env" {
+        match args {
+            ["--help"] => (true, false, &args[..0]),
+            ["--version"] => (false, true, &args[..0]),
+            _ => return Ok(None),
+        }
+    } else if let Some(p) = Program::named(name, false) {
         let parsed = match options::parse(p, args) {
             Ok(o) => o,
             Err(_) => return invalid(options::invalid_option(p, args).unwrap_or(name)),

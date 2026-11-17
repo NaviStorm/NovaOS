@@ -68,7 +68,7 @@ fn catalogue_et_rendu() {
         assert_eq!(
             names.into_iter().collect::<Vec<_>>(),
             [
-                "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
+                "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "env", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
                 "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
                 "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"

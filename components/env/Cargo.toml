@@ -1,0 +1,28 @@
+[package]
+name = "nova-env"
+version = "0.24.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "env"
+path = "src/main.rs"
+
+[[bin]]
+name = "env-witness"
+path = "src/witness.rs"
+
+[target.'cfg(target_os = "none")'.dependencies]
+nova-cli = { path = ".." }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = "0.2"
+
+[profile.release]
+panic = "abort"
+strip = true
+lto = true
+codegen-units = 1

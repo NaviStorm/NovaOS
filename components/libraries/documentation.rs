@@ -31,6 +31,36 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "env",
+        provider: "nova-env",
+        description: Text(
+            "Display an environment or run a command.",
+            "Afficher un environnement ou lancer une commande.",
+        ),
+        syntax: Text::same("env [OPTION]... [-] [NAME=VALUE]... [COMMAND [ARG]...]"),
+        arguments: Text(
+            "-i, --ignore-environment or - clears inherited entries. -u, --unset NAME removes a variable. --env0-from FILE reads NUL entries (- for stdin). -0, --null ends entries with NUL. -S, --split-string STRING splits words. -C, --chdir DIR and -a, --argv0 ARG require a command. --block-signal, --default-signal and --ignore-signal take an optional =SIG,... list. --list-signal-handling and -v, --debug report on stderr. -- ends options.",
+            "-i, --ignore-environment ou - vide l’environnement. -u, --unset NOM retire une variable. --env0-from FICHIER lit des entrées NUL (- pour stdin). -0, --null termine les entrées par NUL. -S, --split-string CHAÎNE découpe des arguments. -C, --chdir RÉP et -a, --argv0 ARG exigent une commande. --block-signal, --default-signal et --ignore-signal acceptent une liste facultative =SIG,... . --list-signal-handling et -v, --debug écrivent sur stderr. -- termine les options.",
+        ),
+        examples: Text::same(
+            "env -i LANG=fr-CA
+env -u ENV_TEST -- commande",
+        ),
+        rights: Text(
+            "Documentation requires output only. Input and child launch require their own rights.",
+            "La documentation demande uniquement la sortie. La lecture et le lancement exigent leurs propres droits.",
+        ),
+        effects: Text(
+            "Changes apply to the child environment. With no command, print entries in order.",
+            "Les changements portent sur l’environnement de l’enfant. Sans commande, afficher les entrées dans leur ordre.",
+        ),
+        limits: Text(
+            "125 on env error, 126 on execution failure, 127 for an absent command, otherwise child status. NovaOS SDK provides text output and arguments only.",
+            "125 pour une erreur de env, 126 pour un échec d’exécution, 127 pour une commande absente, sinon statut de l’enfant. Le profil SDK NovaOS fournit les arguments et une sortie texte.",
+        ),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1161,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.provider == "nova-env" {
+            return format!("env (NovaOS) {}\n", include_str!("../env/VERSION").trim());
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {

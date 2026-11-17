@@ -212,6 +212,7 @@ fn main() {
         "Cargo.toml",
         "Cargo.lock",
         "libraries",
+        "env/VERSION",
         "coreutils",
         "shell",
         "vi",
