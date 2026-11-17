@@ -123,6 +123,7 @@ pub(crate) struct ImageStaging {
 }
 
 pub(crate) struct SealedImage {
+    digest: [u8; 32],
     object: ObjectRevision,
     bytes: PrivatePages,
 }
@@ -170,6 +171,7 @@ impl ImageStaging {
             return Err(Error::Verification);
         }
         Ok(SealedImage {
+            digest: self.expected,
             object: self.object,
             bytes: self.bytes,
         })
@@ -177,6 +179,7 @@ impl ImageStaging {
 }
 
 impl SealedImage {
+    pub(crate) fn digest(&self) -> [u8; 32] { self.digest }
     pub(crate) fn object(&self) -> ObjectRevision {
         self.object
     }

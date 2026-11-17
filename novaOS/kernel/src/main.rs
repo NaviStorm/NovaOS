@@ -262,6 +262,7 @@ fn main_thread() {
         b"cache-propriete-invalide" => Some(86),
         b"cli-p8-test" => Some(73),
         b"cli-p8" => Some(74),
+        b"tmp-contention" => Some(90),
         b"tmp-test" => Some(70),
         b"tmp-reprise" => Some(71),
         b"tmp-coupure" => Some(72),

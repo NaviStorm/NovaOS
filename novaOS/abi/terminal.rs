@@ -26,6 +26,8 @@ pub const QUALIFY: u8 = 32;
 // Variantes du numéro de programme de SPAWN. Le sélecteur, les statuts et
 // le descripteur ordinaire restent ceux de v1. Un lancement de flux ajoute
 // la clé de contrôle après le dernier octet des arguments.
+/// Droit local à usage unique. Seule cette forme accepte un thread secondaire.
+pub const EXEC_TICKET: u64 = 2 << 32;
 pub const PIPE_OPEN: u64 = 1 << 32;
 pub const PIPE_CAT: u64 = PIPE_OPEN + 1;
 pub const PIPE_WC: u64 = PIPE_OPEN + 2;

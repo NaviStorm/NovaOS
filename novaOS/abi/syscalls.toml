@@ -284,10 +284,10 @@ number = 0x10042
 module = "terminal"
 group = "lanceur"
 since = "0.13.0"
-arguments = "indice, *const paquet, longueur"
+arguments = "indice, *const paquet, longueur ou EXEC_TICKET, ticket local, 0"
 result = "droit de suivi"
-rights = "LAUNCH, thread principal et catalogue"
-errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","LIMIT","NO_MEMORY"]
+rights = "Anciennes formes : LAUNCH et thread principal. EXEC_TICKET : ticket de cette instance, principal ou secondaire."
+errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","LIMIT","NO_MEMORY","REVOKED","TIMED_OUT","REFUSED","CLOSED"]
 handler = "kernel/src/sched/process/ipc/spawn.rs#spawn_program"
 
 [call.CONSOLE]

@@ -1,6 +1,9 @@
 //! Conduit des processus invités ordinaires sur une image de qualification.
 use super::*;
 
+/// Produit uniquement par le scénario tmp-contention, après copie des paramètres de boot.
+pub(super) struct TicketBoot(());
+
 fn await_condition(mut predicate: impl FnMut() -> bool) {
     let end = ticks() + 120 * u64::from(HZ);
     while !predicate() {
@@ -35,10 +38,15 @@ fn ready(mode: u64) -> Child {
     child
 }
 
-pub(crate) fn run(scenario: &[u8]) {
+pub(in crate::sched::process) fn run(scenario: &[u8], client: &Child) {
     await_condition(super::super::tmp::ready_shell);
     let boot = crate::boot_id::current().expect("époque qualifiée");
     hal::log(format_args!("TMP démarrage {:032x}", u128::from_be_bytes(boot)));
+    if scenario == b"tmp-contention" {
+        tickets::ticket_race(&TicketBoot(()), client.0);
+        tickets::contention(client);
+        return;
+    }
     if scenario == b"tmp-reprise" {
         let new = ready(4);
         let key = with(|s| s.processes.get(new.0).instance.identity(Some(boot)).unwrap());
@@ -73,3 +81,5 @@ pub(crate) fn run(scenario: &[u8]) {
     assert!(matches!(fault.join(), Outcome::Fault(_)));
     hal::log(format_args!("TMP isolation, thread, enfants, arrêt forcé et faute vérifiés"));
 }
+
+mod tickets;

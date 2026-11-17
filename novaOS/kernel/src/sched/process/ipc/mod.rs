@@ -5,6 +5,7 @@ use crate::abi::*;
 pub(crate) mod lifecycle;
 pub(super) use bulk::features;
 mod spawn;
+pub(super) mod exec;
 pub(super) mod service;
 pub(crate) mod instance_probe;
 pub(crate) mod tmp_probe;

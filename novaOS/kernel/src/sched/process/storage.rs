@@ -272,6 +272,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     // Deux jalons bornés avant l'exécution du gestionnaire et du service P9.
     let start_ms = ticks().saturating_mul(1000) / u64::from(HZ);
     let (mode, probe): (_, Option<&[u8]>) = match mode {
+        90 => (42, Some(b"tmp-contention")),
         70 => (42, Some(b"tmp-test")),
         71 => (42, Some(b"tmp-reprise")),
         72 => (42, Some(b"tmp-coupure")),
@@ -311,7 +312,9 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         (MEDIA, 1),
         (DISK, 0),
         (
-            if matches!(profile, 78..=86) {
+            if probe == Some(b"tmp-contention".as_slice()) {
+                FILE_CLIENT
+            } else if matches!(profile, 78..=86) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/cache_client_test.bin"))
             } else if matches!(profile, 75 | 76 | 88) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/service_control_test.bin"))
@@ -353,7 +356,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         measure("bloc_publie")
     }
     if let Some(scenario) = probe {
-        ipc::tmp_probe::run(scenario);
+        ipc::tmp_probe::run(scenario, &app);
     }
     let ids = [relay.0, service.0, driver.0];
     let a = wait(app);

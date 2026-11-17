@@ -8,6 +8,7 @@ use protocol as w;
 use runtime as rt;
 
 mod fileapi;
+mod contention;
 mod names;
 use fileapi::Client;
 fn log(s: &[u8]) {
@@ -97,6 +98,7 @@ fn nvme_transaction(c: &mut Client, mode: u64) -> rt::Result<()> {
 fn probe() -> rt::Result<()> {
     let mode = rt::config(1);
     let mut c = Client::new()?;
+    if mode == 42 { return contention::run(c); }
     #[cfg(nvme_rw)]
     if matches!(mode, 1000..=1002 | 1015 | 1019) {
         let result = nvme_transaction(&mut c, mode);

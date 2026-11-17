@@ -77,6 +77,7 @@ struct Process {
     pipe_reader_wait: Option<WaitRight>,
     pending_reader: Option<ipc::PendingReader>,
     reader_receipt: Option<ipc::ReaderReceipt>,
+    exec: Vec<ipc::exec::Ticket>,
     debug_messages: u8,
     terminal: u8,
     exit_counter: u64,
@@ -324,6 +325,7 @@ fn publish_image(
             pipe_reader_wait: None,
             pending_reader: None,
             reader_receipt: None,
+            exec: Vec::new(),
             debug_messages: 0,
             terminal: 0,
             exit_counter: 0,
@@ -397,6 +399,7 @@ fn retire_member(s: &mut Core, pid: Pid, result: Outcome, entered: u64) {
     if let Some(pending) = s.processes.get_mut(pid).pending_reader.take() {
         pending.abort(s);
     }
+    ipc::exec::retired(s, pid);
     crate::hardware::block::died(pid.number);
     #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
     vtd::died(pid);

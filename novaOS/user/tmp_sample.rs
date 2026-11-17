@@ -17,9 +17,14 @@ use core::sync::atomic::{AtomicU64, Ordering};
 use rt::call;
 #[path = "tmp_wait.rs"]
 mod wait_probe;
+#[allow(dead_code)]
+#[path = "../abi/terminal.rs"]
+mod terminal;
+#[path = "tmp_ticket.rs"]
+mod ticket_probe;
 
 fn word(i: usize) -> &'static AtomicU64 {
-    assert!(i < 10);
+    assert!(i < 20);
     unsafe { &*((0x401000 as *const AtomicU64).add(i)) }
 }
 
@@ -109,6 +114,7 @@ fn worker(delegated: bool) {
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
     let mode = rt::config(0);
+    if mode == 210 { ticket_probe::run() }
     if matches!(mode, 200 | 201) {
         wait_probe::run(mode)
     }
@@ -128,6 +134,34 @@ extern "C" fn run() -> ! {
     open(own, b"../documents/exemple.txt", fs::READABLE, rt::DENIED);
     open(own, b"/documents/exemple.txt", fs::READABLE, rt::DENIED);
     let h = open(own, b"commun", fs::READABLE | fs::WRITABLE | fs::CREATE, rt::OK);
+    if mode == 212 {
+        let total = 32768;
+        let mut offset = 0;
+        while offset < total {
+            let mut q = fs::frame(fs::WRITE, 1, h);
+            let n = fs::FRAGMENT.min(total-offset);
+            q[2] = if offset == 0 { fs::START } else { fs::CONTINUE };
+            for (i,b) in q[fs::PAYLOAD..][..n].iter_mut().enumerate() {
+                *b = (offset+i) as u8 ^ 0xa5;
+            }
+            fs::size(&mut q,n);
+            fs::set(&mut q,24,offset as u64);
+            fs::set(&mut q,32,total as u64);
+            check(send(own,&mut q),rt::OK,95);
+            offset += n;
+        }
+        check(send(own, &mut fs::frame(fs::SYNC,1,h)),rt::OK,96);
+        let mut q = fs::frame(fs::READ,1,h);
+        fs::set(&mut q,24,(total-1) as u64);
+        fs::size(&mut q,1);
+        check(send(own,&mut q),rt::OK,97);
+        check(q[fs::PAYLOAD] as u64,0xff ^ 0xa5,98);
+        word(1).store(own,Ordering::Release);
+        word(2).store(h,Ordering::Release);
+        word(4).store(1,Ordering::Release);
+        wait_for(1);
+        rt::exit(0)
+    }
     let data = if mode == 1 { b'A' } else { b'B' };
     write(own, h, data);
     read(own, h, data);
@@ -160,6 +194,17 @@ extern "C" fn run() -> ! {
     word(2).store(h, Ordering::Release);
     word(4).store(1, Ordering::Release);
     wait_for(1);
+    if mode == 213 {
+        let old_cap = word(3).load(Ordering::Acquire);
+        let old_handle = word(6).load(Ordering::Acquire);
+        check(send(old_cap, &mut fs::frame(fs::STAT,1,old_handle)),rt::DENIED,99);
+        check(send(own, &mut fs::frame(fs::STAT,1,h)),fs::BUSY,100);
+        word(4).store(2,Ordering::Release);
+        wait_for(2);
+        check(send(own, &mut fs::frame(fs::STAT,1,old_handle)),rt::REVOKED,101);
+        read(own,h,b'B');
+        rt::exit(0)
+    }
     if mode == 3 {
         #[cfg(target_arch = "aarch64")]
         unsafe { core::arch::asm!("brk #0", options(noreturn)) }

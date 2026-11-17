@@ -108,7 +108,7 @@ pub(super) fn start_writer(
             .as_ref()
             .filter(|p| p.pid == parent)
             .ok_or(REVOKED)?;
-        if p.reader_receipt.is_some() {
+        if exec::claiming(p) || p.reader_receipt.is_some() {
             return Err(LIMIT);
         }
         if p.outcome.is_some()
