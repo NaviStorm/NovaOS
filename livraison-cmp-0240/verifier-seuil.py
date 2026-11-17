@@ -1,5 +1,6 @@
 """Recalculer les médianes Mac par charge depuis le JSON brut de mesurer-performances-cmp.sh."""
 import argparse
+from collections import Counter
 from decimal import Decimal
 import hashlib
 import json
@@ -15,8 +16,14 @@ for path in args.campagne:
     report = json.loads(data, parse_float=Decimal)
     assert report["outils"]["GNU"]["version"] == "cmp (GNU diffutils) 3.12", path
     print(f"\n{path} — SHA-256 {hashlib.sha256(data).hexdigest()}")
-    print("| Taille | Traitement | Nova (ms) | GNU 3.12 (ms) | Nova/GNU | ≤ 1,10 |")
-    print("|---|---|---:|---:|---:|---|")
+    trio = "Candidat" in report["outils"]
+    if trio:
+        print()
+        print("| Charge | Nova ms [min–max] | GNU ms [min–max] | Candidat ms [min–max] | Nova/GNU | Candidat/GNU | Nova ≤ 1,10 | Candidat ≤ 1,10 |")
+        print("|---|---:|---:|---:|---:|---:|---|---|")
+    else:
+        print("| Taille | Traitement | Nova (ms) | GNU 3.12 (ms) | Nova/GNU | ≤ 1,10 |")
+        print("|---|---|---:|---:|---:|---|")
     if not report["mesures"]:
         raise ValueError(f"Campagne vide : {path}")
     charges = {"égaux", "début", "milieu", "fin", "EOF", "limite", "deux sauts",
@@ -29,6 +36,26 @@ for path in args.campagne:
         samples = row["mesures"]
         count = report.get("repetitions", 3)
         assert count >= 3 and all(len(samples[name]) == count for name in ("Nova", "GNU")), row
+        if trio:
+            order = row["ordre"]
+            assert len(order) == 3 * count
+            assert all(set(order[t:t+3]) == set(samples) for t in range(0, len(order), 3))
+            medians = {}
+            cells = []
+            for name in ("Nova", "GNU", "Candidat"):
+                ranks = Counter(order.index(name, t, t + 3) - t for t in range(0, len(order), 3))
+                assert max(ranks.values()) - min(ranks[i] for i in range(3)) <= 1
+                ns = [Decimal(m["nanosecondes"]) for m in samples[name]]
+                assert len(ns) == count and min(ns) > 0
+                medians[name] = median(ns)
+                ms = [v / 1_000_000 for v in [medians[name], min(ns), max(ns)]]
+                cells.append(f"{ms[0]:.6f} [{ms[1]:.6f}–{ms[2]:.6f}]")
+            ratios = [medians[name] / medians["GNU"] for name in ("Nova", "Candidat")]
+            passed = [10 * medians[name] <= 11 * medians["GNU"] for name in ("Nova", "Candidat")]
+            ok = ok and all(passed)
+            print("| " + " | ".join([row["traitement"], *cells, *[f"{r:.6f}" for r in ratios],
+                                      *["oui" if v else "NON" for v in passed]]) + " |")
+            continue
         nova, gnu = (median(m["secondes"] for m in samples[name]) for name in ("Nova", "GNU"))
         assert nova > 0 and gnu > 0, row
         passed = nova <= Decimal("1.10") * gnu

@@ -1,0 +1,29 @@
+{
+  "taille": 262144,
+  "position_difference": 1,
+  "commande": "cmp -l grand1 grand2",
+  "fichiers": {
+    "grand1": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+    "grand2": "2c6afa39a4b3a0643a0da0b1ceb30be5cbea7b59d078ab0f3d74f1a4ab0f9337"
+  },
+  "processus": {
+    "Nova": {
+      "sha256": "58199b0810ccfc8385521950aa706983a123e8bb5c158a1394d225631c73b29e",
+      "statut": 1,
+      "stdout": "20202020203120202030203133300a",
+      "stderr": ""
+    },
+    "GNU": {
+      "sha256": "e986a20d14dd933c057b9b80f7445ac9c23821812ff379258ce9304c021e01d8",
+      "statut": 0,
+      "stdout": "20202020203120202030203133300a",
+      "stderr": ""
+    },
+    "Candidat": {
+      "sha256": "65074cef88581276d828adf0926a382e839a101a305c059b5a17607cdc1ba135",
+      "statut": 1,
+      "stdout": "20202020203120202030203133300a",
+      "stderr": ""
+    }
+  }
+}

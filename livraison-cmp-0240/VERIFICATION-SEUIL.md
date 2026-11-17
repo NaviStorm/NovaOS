@@ -8,7 +8,7 @@ Les deux archives vérifiées contiennent 30 et 10 charges. Chaque charge respec
 
 Les fichiers gauche et droite sont écrits séparément avec la graine 270240. Pour une taille N, les modifications se situent aux offsets 0, N/2 et N−1 selon le libellé. « EOF » tronque droite d’un octet. « limite » utilise `-n N/4`, « deux sauts » utilise `-i 17:17`, « sauts distincts » utilise `-i 17:23`. « liste clairsemée » utilise `-l` avec les trois positions modifiées. « même objet » présente deux fois gauche. Les deux fichiers de la charge égale sont des objets distincts.
 
-Les sorties terminal de préparation du banc avaient aussi affiché deux dépassements à 1 Mio. La différence au premier octet a donné 1,387 ms pour Nova et 1,211 ms pour GNU, soit environ 1,145×. Les sauts distincts ont donné 1,565 ms et 1,422 ms, soit environ 1,101× dans un passage interrompu plus loin. Les affichages sont arrondis et leurs échantillons individuels ne figurent pas dans les archives conservées. Ces signaux motivent la vérification au créneau réservé. Aucun gain du candidat n’a été chronométré.
+Les sorties terminal de préparation du banc avaient aussi affiché deux dépassements à 1 Mio. La différence au premier octet a donné 1,387 ms pour Nova et 1,211 ms pour GNU, soit environ 1,145×. Les sauts distincts ont donné 1,565 ms et 1,422 ms, soit environ 1,101× dans un passage interrompu plus loin. Les affichages sont arrondis et leurs échantillons individuels ne figurent pas dans les archives conservées. Ces deux signaux ont motivé les séries A et B décrites ci-dessous.
 
 ## Fonctionnel et QEMU
 
@@ -19,7 +19,7 @@ Les sorties terminal de préparation du banc avaient aussi affiché deux dépass
 
 ## Candidat et contrôles au créneau
 
-Sur Darwin, le programme consultait systématiquement les métadonnées de /dev/null avant la comparaison, y compris lorsque stdout était un fichier ordinaire comme dans le banc. Le candidat évite cette recherche pour les sorties qui ne sont pas des périphériques caractère. Les charges d’arrêt immédiat incluent ce coût fixe. Sa contribution au dépassement demande une mesure. Le candidat ARM64 porte le SHA-256 `65074cef88581276d828adf0926a382e839a101a305c059b5a17607cdc1ba135`. Ses 483 cas fonctionnels, les 12 observations de flux et les 9 contrôles par outil sur fichier, pipe et /dev/null passent. [Binaire et contrôles](preuves/seuil-v0300/)
+Sur Darwin, le programme consultait systématiquement les métadonnées de /dev/null avant la comparaison, y compris lorsque stdout était un fichier ordinaire comme dans le banc. Le candidat évite cette recherche pour les sorties qui ne sont pas des périphériques caractère. Les charges d’arrêt immédiat incluent ce coût fixe. Les séries ci-dessous évaluent le candidat complet. Elles ne quantifient pas isolément le coût de cet appel. Le candidat ARM64 porte le SHA-256 `65074cef88581276d828adf0926a382e839a101a305c059b5a17607cdc1ba135`. Ses 483 cas fonctionnels, les 12 observations de flux et les 9 contrôles par outil sur fichier, pipe et /dev/null passent. [Binaire et contrôles](preuves/seuil-v0300/)
 
 Pour recalculer les rapports déjà archivés, depuis la racine du worktree :
 
@@ -28,16 +28,38 @@ d=livraison-cmp-0240
 python3 -B "$d/verifier-seuil.py" "$d/preuves/performances.json" "$d/preuves/bancs-v0300/performances.json"
 ```
 
-Au créneau Mac, commencer par le Mach-O livré sur les dix charges de 1 Mio, avec onze passages par outil et les temps bruts dans un répertoire neuf. Si le plafond est dépassé, mesurer le candidat face au même GNU, sur la même graine et avec le même protocole. Avant de retenir un candidat modifié, vérifier aussi ses dix charges à 100 Mio et à 1 Gio. Le vérificateur retourne 1 dès que le bilan comporte un dépassement.
+## Confirmation au créneau Mac du 17 novembre
+
+Le Mach-O publié respecte le plafond sur chacune des dix charges de 1 Mio, dans chacune des deux séries. Le candidat satisfait également les vingt contrôles face au même GNU 3.12. La livraison publiée est retenue pour ce critère. Le candidat reste expérimental. Ce résultat clôt le chronométrage Darwin demandé. Le candidat concerne uniquement l’adaptateur macOS. Aucune régression QEMU lourde n’est nécessaire pour cette décision.
+
+| Charge à 1 Mio | Publié/GNU A | Publié/GNU B | Candidat/GNU A | Candidat/GNU B |
+|---|---:|---:|---:|---:|
+| Différence au premier octet | 1,045944 | 1,025883 | 1,057127 | 1,070529 |
+| Sauts distincts `-i 17:23` | 1,057241 | 1,066405 | 1,052043 | 1,066910 |
+
+Les deux séries ont tourné successivement sur Mac16,5 ARM64, macOS 27.2.1, alimentation secteur. Chaque invocation indépendante du banc a recréé deux fichiers distincts avec la graine 270240. Chaque charge a eu un échauffement par outil, puis onze tours séquentiels des trois exécutables, cache chaud et sorties vers des fichiers ordinaires. À chaque tour la série B inverse l’ordre de la série A. Chacun des trois outils occupe chaque rang trois ou quatre fois par charge. Les 660 temps individuels vont de posix_spawn à wait4. Génération des entrées et vérification des flux sont hors chronométrage. Chaque statut est vérifié à la collecte.
+
+La décision compare les médianes entières en nanosecondes par produit croisé, 10 × Nova ≤ 11 × GNU. Les tableaux indiquent la médiane en ms suivie du minimum et du maximum. Les JSON conservent chaque temps, RSS, statut, ordre de passage, empreinte des exécutables et charge système. [Médianes, étendues et décisions par charge](preuves/creneau-1mio/dispersion.md) · [Série A](preuves/creneau-1mio/A.json) · [Série B](preuves/creneau-1mio/B.json)
+
+Une exécution fonctionnelle distincte a relu stdout en entier et collecté séparément stderr et le statut de chacun des trois processus sur le témoin de 256 Kio. Les trois sorties valent `20202020203120202030203133300a`, les trois stderr sont vides. Le publié et le candidat rendent 1, GNU rend 0. [Relevé et empreintes des entrées](preuves/creneau-1mio/temoin-256k.json)
+
+Pour relire les preuves sans relancer les chronométrages :
+
+```sh
+d=livraison-cmp-0240
+python3 -B "$d/verifier-seuil.py" "$d/preuves/creneau-1mio/A.json" "$d/preuves/creneau-1mio/B.json"
+```
+
+Pour reproduire les séries sur un créneau dédié, depuis la racine du worktree :
 
 ```sh
 d=livraison-cmp-0240
 p=$(mktemp -d ../livraisons/cmp-seuil.XXXXXX)
-NOVA_CMP="$PWD/$d/bin/cmp" "$d/mesurer-performances-cmp.sh" --mio 1 --repetitions 11 --json "$p/livre.json"
-python3 -B "$d/verifier-seuil.py" "$p/livre.json"
-# Si nécessaire, sur le même créneau :
 gzip -dc "$d/preuves/seuil-v0300/cmp-candidat-macos-arm64.gz" > "$p/cmp"
 chmod +x "$p/cmp"
-NOVA_CMP="$p/cmp" "$d/mesurer-performances-cmp.sh" --large --repetitions 11 --json "$p/candidat.json"
-python3 -B "$d/verifier-seuil.py" "$p/candidat.json"
+export NOVA_CMP="$PWD/$d/bin/cmp" GNU_CMP="$PWD/$d/reference-gnu/bin/cmp"
+for serie in A B; do
+    "$d/mesurer-performances-cmp.sh" --mio 1 --repetitions 11 --candidat "$p/cmp" --serie "$serie" --json "$p/$serie.json" || break
+done
+python3 -B "$d/verifier-seuil.py" "$p/A.json" "$p/B.json"
 ```

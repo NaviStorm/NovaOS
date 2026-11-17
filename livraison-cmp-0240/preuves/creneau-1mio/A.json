@@ -1,0 +1,2844 @@
+{
+ "graine": 270240,
+ "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+ "ram": 137438953472,
+ "echauffements": 1,
+ "repetitions": 11,
+ "architecture": "arm64",
+ "cache": "lecture après échauffement, cache Darwin non purgé",
+ "libre": 483385675776,
+ "outils": {
+  "Nova": {
+   "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cmp-verification-seuil/livraison-cmp-0240/bin/cmp",
+   "sha256": "58199b0810ccfc8385521950aa706983a123e8bb5c158a1394d225631c73b29e",
+   "version": "cmp (NovaOS) 0.24.0"
+  },
+  "GNU": {
+   "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cmp-verification-seuil/livraison-cmp-0240/reference-gnu/bin/cmp",
+   "sha256": "e986a20d14dd933c057b9b80f7445ac9c23821812ff379258ce9304c021e01d8",
+   "version": "cmp (GNU diffutils) 3.12"
+  },
+  "Candidat": {
+   "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cmp-verification-seuil-cargo/aarch64-apple-darwin/release/cmp",
+   "sha256": "65074cef88581276d828adf0926a382e839a101a305c059b5a17607cdc1ba135",
+   "version": "cmp (NovaOS) 0.24.0"
+  }
+ },
+ "mesures": [
+  {
+   "taille_octets": 1048576,
+   "traitement": "égaux",
+   "premier_ecart": null,
+   "parcours_pour_debit": 1048576,
+   "arguments": [],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1617041,
+      "secondes": 0.001617041,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1801292,
+      "secondes": 0.0018012920000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1739042,
+      "secondes": 0.001739042,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1735791,
+      "secondes": 0.0017357910000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1857833,
+      "secondes": 0.0018578330000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1880833,
+      "secondes": 0.0018808330000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1849334,
+      "secondes": 0.0018493340000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1725583,
+      "secondes": 0.0017255830000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1701959,
+      "secondes": 0.001701959,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1733000,
+      "secondes": 0.0017330000000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1773292,
+      "secondes": 0.001773292,
+      "rss_octets": 2162688,
+      "statut": 0
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1738666,
+      "secondes": 0.001738666,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1695084,
+      "secondes": 0.0016950840000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1779166,
+      "secondes": 0.0017791660000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1756375,
+      "secondes": 0.0017563750000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1785709,
+      "secondes": 0.0017857090000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1868834,
+      "secondes": 0.0018688340000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1837000,
+      "secondes": 0.001837,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1791375,
+      "secondes": 0.0017913750000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1802209,
+      "secondes": 0.0018022090000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1727000,
+      "secondes": 0.001727,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1739750,
+      "secondes": 0.0017397500000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1606375,
+      "secondes": 0.0016063750000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1627333,
+      "secondes": 0.0016273330000000001,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1744625,
+      "secondes": 0.001744625,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1659959,
+      "secondes": 0.0016599590000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1820417,
+      "secondes": 0.0018204170000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1888750,
+      "secondes": 0.00188875,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1808459,
+      "secondes": 0.001808459,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1736208,
+      "secondes": 0.0017362080000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1729250,
+      "secondes": 0.00172925,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1712667,
+      "secondes": 0.0017126670000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1781750,
+      "secondes": 0.0017817500000000001,
+      "rss_octets": 2179072,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 0,
+    "GNU": 0,
+    "Candidat": 0
+   },
+   "stdout_hex": "",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.0017362080000000002,
+     "debit_mio_s": 575.9678563858707,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.001739042,
+     "debit_mio_s": 575.029240236866,
+     "pic_rss_octets": 2162688
+    },
+    "GNU": {
+     "mediane_secondes": 0.0017791660000000002,
+     "debit_mio_s": 562.0611005381172,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "début",
+   "premier_ecart": 1,
+   "parcours_pour_debit": 0,
+   "arguments": [],
+   "differences": [
+    1
+   ],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1473125,
+      "secondes": 0.001473125,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1568250,
+      "secondes": 0.0015682500000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1583000,
+      "secondes": 0.0015830000000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1437041,
+      "secondes": 0.001437041,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1483209,
+      "secondes": 0.001483209,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1427083,
+      "secondes": 0.001427083,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1475500,
+      "secondes": 0.0014755,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1487375,
+      "secondes": 0.0014873750000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1455500,
+      "secondes": 0.0014555000000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1410541,
+      "secondes": 0.0014105410000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1449750,
+      "secondes": 0.00144975,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1469083,
+      "secondes": 0.0014690830000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1445792,
+      "secondes": 0.001445792,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1457042,
+      "secondes": 0.0014570420000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1408417,
+      "secondes": 0.0014084170000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1365167,
+      "secondes": 0.001365167,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1364542,
+      "secondes": 0.001364542,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1408625,
+      "secondes": 0.0014086250000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1400875,
+      "secondes": 0.001400875,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1324625,
+      "secondes": 0.001324625,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1364292,
+      "secondes": 0.001364292,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1420042,
+      "secondes": 0.001420042,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1460750,
+      "secondes": 0.00146075,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1528167,
+      "secondes": 0.0015281670000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1570292,
+      "secondes": 0.001570292,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1488875,
+      "secondes": 0.0014888750000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1457375,
+      "secondes": 0.0014573750000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1403084,
+      "secondes": 0.0014030840000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1474958,
+      "secondes": 0.0014749580000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1466042,
+      "secondes": 0.001466042,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1504334,
+      "secondes": 0.0015043340000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1506208,
+      "secondes": 0.0015062080000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1522792,
+      "secondes": 0.001522792,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1,
+    "Candidat": 1
+   },
+   "stdout_hex": "2f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f676175636865202f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f64726f697465206469666665723a206368617220312c206c696e6520310a",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.0014888750000000002,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.001473125,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.0014084170000000001,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "milieu",
+   "premier_ecart": 524289,
+   "parcours_pour_debit": 0,
+   "arguments": [],
+   "differences": [
+    524289
+   ],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1532875,
+      "secondes": 0.0015328750000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1550167,
+      "secondes": 0.001550167,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1519875,
+      "secondes": 0.0015198750000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1555833,
+      "secondes": 0.0015558330000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1742500,
+      "secondes": 0.0017425000000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1519500,
+      "secondes": 0.0015195,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1509584,
+      "secondes": 0.001509584,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1677333,
+      "secondes": 0.001677333,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1617459,
+      "secondes": 0.0016174590000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 2079167,
+      "secondes": 0.0020791670000000003,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1813834,
+      "secondes": 0.001813834,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1576417,
+      "secondes": 0.001576417,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1531416,
+      "secondes": 0.001531416,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1563208,
+      "secondes": 0.0015632080000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1607416,
+      "secondes": 0.0016074160000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1540041,
+      "secondes": 0.001540041,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1586208,
+      "secondes": 0.0015862080000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1549000,
+      "secondes": 0.001549,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1499667,
+      "secondes": 0.001499667,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1583500,
+      "secondes": 0.0015835,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1798000,
+      "secondes": 0.0017980000000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 2131166,
+      "secondes": 0.0021311660000000003,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1608542,
+      "secondes": 0.0016085420000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1501416,
+      "secondes": 0.001501416,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1544834,
+      "secondes": 0.0015448340000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1616125,
+      "secondes": 0.0016161250000000002,
+      "rss_octets": 2162688,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1593333,
+      "secondes": 0.0015933330000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1542708,
+      "secondes": 0.001542708,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1671459,
+      "secondes": 0.0016714590000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1534291,
+      "secondes": 0.0015342910000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1713375,
+      "secondes": 0.001713375,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1534416,
+      "secondes": 0.001534416,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1788583,
+      "secondes": 0.001788583,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1,
+    "Candidat": 1
+   },
+   "stdout_hex": "2f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f676175636865202f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f64726f697465206469666665723a2063686172203532343238392c206c696e6520323034320a",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.0015933330000000002,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.0015558330000000002,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001576417,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "fin",
+   "premier_ecart": 1048576,
+   "parcours_pour_debit": 1048576,
+   "arguments": [],
+   "differences": [
+    1048576
+   ],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 2035667,
+      "secondes": 0.002035667,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1894250,
+      "secondes": 0.00189425,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1805792,
+      "secondes": 0.001805792,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1913375,
+      "secondes": 0.0019133750000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1791584,
+      "secondes": 0.0017915840000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1768584,
+      "secondes": 0.0017685840000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1711583,
+      "secondes": 0.001711583,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1778333,
+      "secondes": 0.0017783330000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1779042,
+      "secondes": 0.0017790420000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1761542,
+      "secondes": 0.001761542,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1747708,
+      "secondes": 0.0017477080000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1996834,
+      "secondes": 0.0019968340000000003,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1888542,
+      "secondes": 0.0018885420000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1760917,
+      "secondes": 0.001760917,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1978167,
+      "secondes": 0.0019781670000000003,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1971250,
+      "secondes": 0.00197125,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1765750,
+      "secondes": 0.0017657500000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1747291,
+      "secondes": 0.0017472910000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1928000,
+      "secondes": 0.001928,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1761500,
+      "secondes": 0.0017615,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1761542,
+      "secondes": 0.001761542,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1785625,
+      "secondes": 0.001785625,
+      "rss_octets": 1900544,
+      "statut": 1
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1920833,
+      "secondes": 0.001920833,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1969750,
+      "secondes": 0.00196975,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1822041,
+      "secondes": 0.0018220410000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 2043500,
+      "secondes": 0.0020435,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1743000,
+      "secondes": 0.0017430000000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1744708,
+      "secondes": 0.0017447080000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1667666,
+      "secondes": 0.0016676660000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1850042,
+      "secondes": 0.001850042,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1730292,
+      "secondes": 0.001730292,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1753750,
+      "secondes": 0.00175375,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1669250,
+      "secondes": 0.0016692500000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1,
+    "Candidat": 1
+   },
+   "stdout_hex": "2f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f676175636865202f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f64726f697465206469666665723a206368617220313034383537362c206c696e6520343036360a",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.00175375,
+     "debit_mio_s": 570.2066999287241,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.0017790420000000002,
+     "debit_mio_s": 562.1002764409159,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001785625,
+     "debit_mio_s": 560.02800140007,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "EOF",
+   "premier_ecart": 1048576,
+   "parcours_pour_debit": 1048575,
+   "arguments": [],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1771042,
+      "secondes": 0.001771042,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1756875,
+      "secondes": 0.0017568750000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1666375,
+      "secondes": 0.001666375,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1781375,
+      "secondes": 0.0017813750000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1699333,
+      "secondes": 0.0016993330000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1712083,
+      "secondes": 0.001712083,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1617667,
+      "secondes": 0.0016176670000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1697084,
+      "secondes": 0.0016970840000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1619625,
+      "secondes": 0.0016196250000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1679625,
+      "secondes": 0.0016796250000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1611000,
+      "secondes": 0.001611,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1761750,
+      "secondes": 0.00176175,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1757375,
+      "secondes": 0.001757375,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1772084,
+      "secondes": 0.0017720840000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1818541,
+      "secondes": 0.0018185410000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1767000,
+      "secondes": 0.0017670000000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1723708,
+      "secondes": 0.001723708,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1658125,
+      "secondes": 0.001658125,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1755917,
+      "secondes": 0.001755917,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1682625,
+      "secondes": 0.001682625,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1698791,
+      "secondes": 0.001698791,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1683375,
+      "secondes": 0.0016833750000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1717875,
+      "secondes": 0.001717875,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1703416,
+      "secondes": 0.0017034160000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1751750,
+      "secondes": 0.00175175,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1687250,
+      "secondes": 0.0016872500000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1833834,
+      "secondes": 0.0018338340000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1713500,
+      "secondes": 0.0017135000000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1634833,
+      "secondes": 0.001634833,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1653625,
+      "secondes": 0.0016536250000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1635458,
+      "secondes": 0.001635458,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1599667,
+      "secondes": 0.0015996670000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1617834,
+      "secondes": 0.001617834,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1,
+    "Candidat": 1
+   },
+   "stdout_hex": "",
+   "stderr_hex": "636d703a20454f46206f6e20272f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f64726f69746527206166746572206279746520313034383537352c20696e206c696e6520343036360a",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.0016872500000000002,
+     "debit_mio_s": 592.6798318717935,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.0016970840000000002,
+     "debit_mio_s": 589.2454624082741,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001755917,
+     "debit_mio_s": 569.5024573061731,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "limite",
+   "premier_ecart": null,
+   "parcours_pour_debit": 262144,
+   "arguments": [
+    "-n",
+    "262144"
+   ],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1460416,
+      "secondes": 0.0014604160000000002,
+      "rss_octets": 2146304,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1429834,
+      "secondes": 0.001429834,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1497041,
+      "secondes": 0.0014970410000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1437833,
+      "secondes": 0.0014378330000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1435916,
+      "secondes": 0.0014359160000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1475583,
+      "secondes": 0.0014755830000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1439417,
+      "secondes": 0.0014394170000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1495875,
+      "secondes": 0.001495875,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1468250,
+      "secondes": 0.0014682500000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1446750,
+      "secondes": 0.0014467500000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1500042,
+      "secondes": 0.001500042,
+      "rss_octets": 2162688,
+      "statut": 0
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1376458,
+      "secondes": 0.0013764580000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1412458,
+      "secondes": 0.0014124580000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1411666,
+      "secondes": 0.001411666,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1403250,
+      "secondes": 0.00140325,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1408167,
+      "secondes": 0.001408167,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1418000,
+      "secondes": 0.001418,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1379833,
+      "secondes": 0.001379833,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1391417,
+      "secondes": 0.001391417,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1409792,
+      "secondes": 0.001409792,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1423917,
+      "secondes": 0.001423917,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1412833,
+      "secondes": 0.001412833,
+      "rss_octets": 1916928,
+      "statut": 0
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1455542,
+      "secondes": 0.001455542,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1425750,
+      "secondes": 0.0014257500000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1463292,
+      "secondes": 0.0014632920000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1462459,
+      "secondes": 0.0014624590000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1450709,
+      "secondes": 0.0014507090000000001,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1453500,
+      "secondes": 0.0014535000000000001,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1431916,
+      "secondes": 0.001431916,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1473208,
+      "secondes": 0.0014732080000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1444917,
+      "secondes": 0.001444917,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1445125,
+      "secondes": 0.001445125,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1493250,
+      "secondes": 0.00149325,
+      "rss_octets": 2179072,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 0,
+    "GNU": 0,
+    "Candidat": 0
+   },
+   "stdout_hex": "",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.0014535000000000001,
+     "debit_mio_s": 171.9986240110079,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.0014604160000000002,
+     "debit_mio_s": 171.18410096849115,
+     "pic_rss_octets": 2162688
+    },
+    "GNU": {
+     "mediane_secondes": 0.001409792,
+     "debit_mio_s": 177.3311240239695,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "deux sauts",
+   "premier_ecart": null,
+   "parcours_pour_debit": 1048559,
+   "arguments": [
+    "-i",
+    "17:17"
+   ],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1610917,
+      "secondes": 0.0016109170000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1633083,
+      "secondes": 0.001633083,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1644750,
+      "secondes": 0.0016447500000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1659458,
+      "secondes": 0.0016594580000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1627291,
+      "secondes": 0.0016272910000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1618083,
+      "secondes": 0.0016180830000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1612875,
+      "secondes": 0.0016128750000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1652250,
+      "secondes": 0.00165225,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1607458,
+      "secondes": 0.0016074580000000002,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1633083,
+      "secondes": 0.001633083,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1588167,
+      "secondes": 0.0015881670000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1673250,
+      "secondes": 0.00167325,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1710541,
+      "secondes": 0.001710541,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1713667,
+      "secondes": 0.001713667,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1703625,
+      "secondes": 0.001703625,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1672667,
+      "secondes": 0.001672667,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1707250,
+      "secondes": 0.00170725,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1699208,
+      "secondes": 0.001699208,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1692416,
+      "secondes": 0.0016924160000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1673084,
+      "secondes": 0.001673084,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1662292,
+      "secondes": 0.0016622920000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1716708,
+      "secondes": 0.0017167080000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1698209,
+      "secondes": 0.001698209,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1660125,
+      "secondes": 0.0016601250000000001,
+      "rss_octets": 2162688,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1631208,
+      "secondes": 0.001631208,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1667625,
+      "secondes": 0.001667625,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1627667,
+      "secondes": 0.0016276670000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1635458,
+      "secondes": 0.001635458,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1625166,
+      "secondes": 0.0016251660000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1640542,
+      "secondes": 0.001640542,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1633708,
+      "secondes": 0.0016337080000000002,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1624834,
+      "secondes": 0.0016248340000000001,
+      "rss_octets": 2179072,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1584084,
+      "secondes": 0.0015840840000000001,
+      "rss_octets": 2179072,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 0,
+    "GNU": 0,
+    "Candidat": 0
+   },
+   "stdout_hex": "",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.0016337080000000002,
+     "debit_mio_s": 612.0945649630295,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.0016272910000000001,
+     "debit_mio_s": 614.50827635415,
+     "pic_rss_octets": 2162688
+    },
+    "GNU": {
+     "mediane_secondes": 0.001699208,
+     "debit_mio_s": 588.4999291061607,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "sauts distincts",
+   "premier_ecart": 1,
+   "parcours_pour_debit": 0,
+   "arguments": [
+    "-i",
+    "17:23"
+   ],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1443042,
+      "secondes": 0.001443042,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1433500,
+      "secondes": 0.0014335,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1628042,
+      "secondes": 0.0016280420000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1398334,
+      "secondes": 0.001398334,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1416792,
+      "secondes": 0.001416792,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1380709,
+      "secondes": 0.0013807090000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1376708,
+      "secondes": 0.0013767080000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1366209,
+      "secondes": 0.0013662090000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1630833,
+      "secondes": 0.0016308330000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1376167,
+      "secondes": 0.0013761670000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1324042,
+      "secondes": 0.001324042,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1375250,
+      "secondes": 0.0013752500000000002,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1319375,
+      "secondes": 0.001319375,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1439500,
+      "secondes": 0.0014395,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1332500,
+      "secondes": 0.0013325000000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1322625,
+      "secondes": 0.001322625,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1328541,
+      "secondes": 0.0013285410000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1310375,
+      "secondes": 0.0013103750000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1311000,
+      "secondes": 0.001311,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1332917,
+      "secondes": 0.001332917,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1321875,
+      "secondes": 0.0013218750000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1308000,
+      "secondes": 0.0013080000000000001,
+      "rss_octets": 1916928,
+      "statut": 1
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1439500,
+      "secondes": 0.0014395,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1444084,
+      "secondes": 0.001444084,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1391875,
+      "secondes": 0.001391875,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1461834,
+      "secondes": 0.0014618340000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1385041,
+      "secondes": 0.001385041,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1388542,
+      "secondes": 0.001388542,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1349500,
+      "secondes": 0.0013495,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1330750,
+      "secondes": 0.0013307500000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1372083,
+      "secondes": 0.001372083,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1425000,
+      "secondes": 0.001425,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1391458,
+      "secondes": 0.0013914580000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 1,
+    "Candidat": 1
+   },
+   "stdout_hex": "2f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f676175636865202f55736572732f746869657272792f53796e6f6c6f677944726976652f506572736f6e6e656c2f53747564696f50726f6a656374732f4f532d776f726b74726565732f746d702f636d702d6d6573757265732d647a6d6c777a64772f64726f697465206469666665723a206368617220312c206c696e6520310a",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.0013914580000000001,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.001398334,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.001322625,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "liste clairsemée",
+   "premier_ecart": 1,
+   "parcours_pour_debit": 1048576,
+   "arguments": [
+    "-l"
+   ],
+   "differences": [
+    1,
+    524289,
+    1048576
+   ],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1543292,
+      "secondes": 0.0015432920000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1508416,
+      "secondes": 0.001508416,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1711334,
+      "secondes": 0.0017113340000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1527417,
+      "secondes": 0.001527417,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1508375,
+      "secondes": 0.0015083750000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1470459,
+      "secondes": 0.0014704590000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1523375,
+      "secondes": 0.001523375,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1526250,
+      "secondes": 0.00152625,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1481083,
+      "secondes": 0.001481083,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1499500,
+      "secondes": 0.0014995000000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1510875,
+      "secondes": 0.001510875,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1545708,
+      "secondes": 0.001545708,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1555042,
+      "secondes": 0.0015550420000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1614958,
+      "secondes": 0.001614958,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1566917,
+      "secondes": 0.0015669170000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1586125,
+      "secondes": 0.001586125,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1537208,
+      "secondes": 0.0015372080000000002,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1561083,
+      "secondes": 0.001561083,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1544667,
+      "secondes": 0.001544667,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1612708,
+      "secondes": 0.001612708,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1603708,
+      "secondes": 0.0016037080000000001,
+      "rss_octets": 1916928,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1616250,
+      "secondes": 0.00161625,
+      "rss_octets": 1916928,
+      "statut": 0
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1534667,
+      "secondes": 0.0015346670000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1501459,
+      "secondes": 0.0015014590000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1538792,
+      "secondes": 0.0015387920000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1538542,
+      "secondes": 0.0015385420000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1513500,
+      "secondes": 0.0015135,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1517208,
+      "secondes": 0.0015172080000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1526333,
+      "secondes": 0.0015263330000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1644750,
+      "secondes": 0.0016447500000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1533333,
+      "secondes": 0.001533333,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1508125,
+      "secondes": 0.0015081250000000001,
+      "rss_octets": 2179072,
+      "statut": 1
+     },
+     {
+      "nanosecondes": 1574500,
+      "secondes": 0.0015745000000000002,
+      "rss_octets": 2179072,
+      "statut": 1
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 1,
+    "GNU": 0,
+    "Candidat": 1
+   },
+   "stdout_hex": "2020202020203120313232203132330a2035323432383920203137202031360a3130343835373620333631203336300a",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.001533333,
+     "debit_mio_s": 652.1740548204467,
+     "pic_rss_octets": 2179072
+    },
+    "Nova": {
+     "mediane_secondes": 0.001510875,
+     "debit_mio_s": 661.8681227765368,
+     "pic_rss_octets": 2179072
+    },
+    "GNU": {
+     "mediane_secondes": 0.0015669170000000001,
+     "debit_mio_s": 638.1958967833011,
+     "pic_rss_octets": 1916928
+    }
+   }
+  },
+  {
+   "taille_octets": 1048576,
+   "traitement": "même objet",
+   "premier_ecart": null,
+   "parcours_pour_debit": 0,
+   "arguments": [],
+   "differences": [],
+   "mesures": {
+    "Nova": [
+     {
+      "nanosecondes": 1346625,
+      "secondes": 0.0013466250000000002,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1333084,
+      "secondes": 0.001333084,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1372875,
+      "secondes": 0.0013728750000000002,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1519250,
+      "secondes": 0.0015192500000000002,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1437167,
+      "secondes": 0.001437167,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1497625,
+      "secondes": 0.001497625,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1435708,
+      "secondes": 0.0014357080000000002,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1373708,
+      "secondes": 0.0013737080000000002,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1352833,
+      "secondes": 0.0013528330000000001,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1334375,
+      "secondes": 0.001334375,
+      "rss_octets": 1998848,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1375125,
+      "secondes": 0.001375125,
+      "rss_octets": 1998848,
+      "statut": 0
+     }
+    ],
+    "GNU": [
+     {
+      "nanosecondes": 1288000,
+      "secondes": 0.001288,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1265667,
+      "secondes": 0.001265667,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1735625,
+      "secondes": 0.0017356250000000002,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1347083,
+      "secondes": 0.001347083,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1423667,
+      "secondes": 0.001423667,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1491625,
+      "secondes": 0.0014916250000000001,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1379417,
+      "secondes": 0.0013794170000000002,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1319250,
+      "secondes": 0.0013192500000000001,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1311500,
+      "secondes": 0.0013115000000000002,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1309541,
+      "secondes": 0.001309541,
+      "rss_octets": 1900544,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1316083,
+      "secondes": 0.001316083,
+      "rss_octets": 1900544,
+      "statut": 0
+     }
+    ],
+    "Candidat": [
+     {
+      "nanosecondes": 1384958,
+      "secondes": 0.0013849580000000002,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1351000,
+      "secondes": 0.001351,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1328625,
+      "secondes": 0.0013286250000000002,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1508834,
+      "secondes": 0.0015088340000000001,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1401292,
+      "secondes": 0.0014012920000000002,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1527041,
+      "secondes": 0.001527041,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1410541,
+      "secondes": 0.0014105410000000002,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1387209,
+      "secondes": 0.0013872090000000001,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1376084,
+      "secondes": 0.001376084,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1347166,
+      "secondes": 0.0013471660000000001,
+      "rss_octets": 2015232,
+      "statut": 0
+     },
+     {
+      "nanosecondes": 1377833,
+      "secondes": 0.0013778330000000002,
+      "rss_octets": 2015232,
+      "statut": 0
+     }
+    ]
+   },
+   "ordre": [
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Candidat",
+    "Nova",
+    "Candidat",
+    "Nova",
+    "GNU",
+    "Candidat",
+    "GNU",
+    "Nova",
+    "GNU",
+    "Nova",
+    "Candidat"
+   ],
+   "statuts_attendus": {
+    "Nova": 0,
+    "GNU": 0,
+    "Candidat": 0
+   },
+   "stdout_hex": "",
+   "stderr_hex": "",
+   "echauffement_ordre": [
+    "Nova",
+    "Candidat",
+    "GNU"
+   ],
+   "synthese": {
+    "Candidat": {
+     "mediane_secondes": 0.0013849580000000002,
+     "debit_mio_s": null,
+     "pic_rss_octets": 2015232
+    },
+    "Nova": {
+     "mediane_secondes": 0.0013737080000000002,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1998848
+    },
+    "GNU": {
+     "mediane_secondes": 0.0013192500000000001,
+     "debit_mio_s": null,
+     "pic_rss_octets": 1900544
+    }
+   }
+  }
+ ],
+ "serie": "A",
+ "debut_unix_ns": 1794890110423431000,
+ "charge_initiale": [
+  4.84619140625,
+  5.05322265625,
+  4.94287109375
+ ],
+ "modele": "Mac16,5",
+ "fin_unix_ns": 1794890111034635000,
+ "charge_finale": [
+  4.9384765625,
+  5.06884765625,
+  4.94873046875
+ ]
+}
