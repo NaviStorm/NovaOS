@@ -34,18 +34,9 @@ fn errno(error: io::Error) -> String {
         .to_string_lossy()
         .into_owned()
 }
-fn quote_name(s: &str) -> String {
-    if !s.is_empty()
-        && s.bytes()
-            .all(|b| b.is_ascii_alphanumeric() || b"_./-".contains(&b))
-    {
-        s.into()
-    } else {
-        format!("'{s}'")
-    }
-}
-fn name(path: Option<&[u8]>, default: &str) -> String {
-    String::from_utf8_lossy(path.unwrap_or(default.as_bytes())).into_owned()
+use args::quote::file as quote_file;
+fn name(path: Option<&[u8]>, default: &str) -> Vec<u8> {
+    path.unwrap_or(default.as_bytes()).to_vec()
 }
 fn open(path: Option<&[u8]>, input: bool, c: &Config) -> Result<File> {
     let flags = if input { &c.inf } else { &c.outf };
@@ -73,13 +64,7 @@ fn open(path: Option<&[u8]>, input: bool, c: &Config) -> Result<File> {
         }
         return options
             .open(std::ffi::OsStr::from_bytes(path))
-            .map_err(|e| {
-                format!(
-                    "failed to open '{}': {}",
-                    String::from_utf8_lossy(path),
-                    errno(e)
-                )
-            });
+            .map_err(|e| format!("failed to open {}: {}", quote_file(path, true), errno(e)));
     }
     let fd = unsafe { libc::dup(if input { 0 } else { 1 }) };
     if fd < 0 {
@@ -108,8 +93,8 @@ fn open(path: Option<&[u8]>, input: bool, c: &Config) -> Result<File> {
 struct Host {
     input: File,
     output: File,
-    src: String,
-    dst: String,
+    src: Vec<u8>,
+    dst: Vec<u8>,
     sparse: bool,
     hole: bool,
     written: usize,
@@ -192,7 +177,7 @@ impl Host {
             if unsafe { libc::fsync(self.output.as_raw_fd()) } < 0 {
                 return Err(format!(
                     "fsync failed for {}: {}",
-                    quote_name(&self.dst),
+                    quote_file(&self.dst, false),
                     errno(io::Error::last_os_error())
                 ));
             }
@@ -210,7 +195,7 @@ impl Host {
                         .unwrap_or_else(|| "Operation not supported".into());
                     return Err(format!(
                         "failed to discard cache for: {}: {cause}",
-                        quote_name(label)
+                        quote_file(label, false)
                     ));
                 }
             }
@@ -223,7 +208,15 @@ impl Io for Host {
         loop {
             match self.input.read(buf) {
                 Err(e) if e.kind() == io::ErrorKind::Interrupted => self.interrupt(),
-                r => return r.map_err(|e| format!("error reading '{}': {}", self.src, errno(e))),
+                r => {
+                    return r.map_err(|e| {
+                        format!(
+                            "error reading {}: {}",
+                            quote_file(&self.src, true),
+                            errno(e)
+                        )
+                    });
+                }
             }
         }
     }
@@ -245,13 +238,19 @@ impl Io for Host {
             match self.output.write(&data[self.written..]) {
                 Ok(0) => {
                     return Err(format!(
-                        "error writing '{}': No space left on device",
-                        self.dst
+                        "error writing {}: No space left on device",
+                        quote_file(&self.dst, true)
                     ));
                 }
                 Ok(n) => self.written += n,
                 Err(e) if e.kind() == io::ErrorKind::Interrupted => self.interrupt(),
-                Err(e) => return Err(format!("error writing '{}': {}", self.dst, errno(e))),
+                Err(e) => {
+                    return Err(format!(
+                        "error writing {}: {}",
+                        quote_file(&self.dst, true),
+                        errno(e)
+                    ));
+                }
             }
         }
         Ok(())
@@ -284,7 +283,7 @@ impl Io for Host {
         if msg == "skip" {
             eprintln!(
                 "dd: {}: cannot skip to specified offset",
-                quote_name(&self.src)
+                quote_file(&self.src, false)
             )
         } else if msg.ends_with('\n') {
             eprint!("{msg}")
@@ -340,7 +339,7 @@ fn transfer(c: &Config) -> Result<()> {
             }
             h.output
                 .seek(SeekFrom::Current(c.seek as i64))
-                .map_err(|e| format!("'{}': cannot seek: {}", h.dst, errno(e)))?;
+                .map_err(|e| format!("{}: cannot seek: {}", quote_file(&h.dst, false), errno(e)))?;
         }
         engine::copy(c, &mut h, &mut s)
     })();

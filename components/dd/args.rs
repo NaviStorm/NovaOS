@@ -1,5 +1,7 @@
 #[path = "doc_flag.rs"]
 mod doc_flag;
+#[path = "quote.rs"]
+pub mod quote;
 use alloc::{
     format,
     string::{String, ToString},
@@ -68,7 +70,12 @@ impl Config<'_> {
 }
 pub struct Error(pub String, pub bool);
 fn invalid(key: &str, raw: &[u8], usage: bool) -> Error {
-    Error(format!("{key} '{}'", String::from_utf8_lossy(raw)), usage)
+    let quoted = if matches!(key, "invalid number:" | "unrecognized operand") {
+        quote::file(raw, true)
+    } else {
+        quote::symbol(raw)
+    };
+    Error(format!("{key} {quoted}"), usage)
 }
 fn number(raw: &[u8], min: u64, max: u64) -> Result<(u64, usize), Error> {
     let bad = || invalid("invalid number:", raw, false);
