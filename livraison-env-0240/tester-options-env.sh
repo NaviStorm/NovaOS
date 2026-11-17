@@ -15,5 +15,6 @@ if [ "${1:-}" = --novaos ]; then
     exec "$here/tester-invite-env.sh" "$2" "$3" --mode "$mode"
 fi
 [ "$#" -le 1 ] || { usage >&2; exit 2; }
-export TMPDIR="$(dirname "$(dirname "$here")")/tmp/" PYTHONDONTWRITEBYTECODE=1
+root=$(dirname "$here")
+. "$here/lab/environnement.sh"
 exec python3 -B "$here/lab/options.py" "$mode" "${1:-$TMPDIR/env-arc027/resultats-$mode}"

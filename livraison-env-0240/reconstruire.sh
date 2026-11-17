@@ -2,7 +2,7 @@
 set -eu
 here=$(CDPATH='' cd "$(dirname "$0")" && pwd -P)
 root=$(dirname "$here")
-export NOVAOS_TMPDIR="$(dirname "$root")/tmp" TMPDIR="$(dirname "$root")/tmp/"
+. "$here/lab/environnement.sh"
 export RUSTC="$(rustup which --toolchain stable rustc)"
 export CARGO_TARGET_DIR="$TMPDIR/env-arc027/cargo"
 mkdir -p "$CARGO_TARGET_DIR" "$here/bin"
