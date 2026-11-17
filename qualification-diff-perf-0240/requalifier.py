@@ -51,9 +51,12 @@ def fichiers_p9(vecteurs):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--resultats", type=Path, default=QUALIFICATION, help="racine des nouvelles preuves")
     p.add_argument("phase",choices=["darwin","invite","synthese"])
     p.add_argument("arguments",nargs=argparse.REMAINDER)
     args=p.parse_args()
+    resultats=args.resultats.resolve()
+    resultats.mkdir(parents=True,exist_ok=True)
     tmp=Path(os.environ["NOVAOS_TMPDIR"])
     env={**os.environ,"GNU_DIFF":str(tmp/"cmp-0240/gnu/bin/diff"),"GNU_DIFF_SRC":str(tmp/"cmp-0240/diffutils-3.12")}
     with tempfile.TemporaryDirectory(dir=tmp,prefix="diff-banc-prive-") as td:
@@ -67,7 +70,7 @@ def main():
         shutil.copy2(QUALIFICATION/"bin/diff",work/"bin/diff")
         proofs=work/"preuves"
         if args.phase=="darwin":
-            destination=QUALIFICATION/"preuves-darwin"
+            destination=resultats/"preuves-darwin"
             if destination.exists():raise FileExistsError(destination)
             driver=work/"campagne.py"
             shutil.copyfile(__file__,work/"extension.py")
@@ -81,9 +84,9 @@ def main():
         else:
             proofs.mkdir()
             if args.phase=="invite":
-                shutil.copyfile(QUALIFICATION/"preuves-darwin/vecteurs.bin",proofs/"vecteurs.bin")
+                shutil.copyfile(resultats/"preuves-darwin/vecteurs.bin",proofs/"vecteurs.bin")
             else:
-                shutil.copytree(QUALIFICATION/"preuves-darwin/complet",proofs/"complet")
+                shutil.copytree(resultats/"preuves-darwin/complet",proofs/"complet")
             script=work/(args.phase+".py")
             if args.phase=="invite":
                 shutil.copyfile(__file__,work/"extension.py")
@@ -92,7 +95,7 @@ def main():
                                   "invite.inputs=lambda: fichiers_p9(invite.HERE/'preuves/vecteurs.bin')\ninvite.main()\n")
             subprocess.run([sys.executable,"-B",script,*args.arguments],env=env,check=True)
             if args.phase=="synthese":
-                destination=QUALIFICATION/"preuves-invites"
+                destination=resultats/"preuves-invites"
                 destination.mkdir(exist_ok=False)
                 for name in ("MATRICE.md","QEMU.md"):
                     shutil.copyfile(proofs/name,destination/name)

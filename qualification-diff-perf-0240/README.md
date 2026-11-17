@@ -65,12 +65,15 @@ La commande de production attend toujours le raccord du lanceur à la session au
 
 ## Reproduire et contrôler les preuves
 
-Depuis la racine, utiliser le guide de la [livraison initiale](../livraison-diff-0240/README.md) pour les outils et l’oracle GNU. Les binaires nouveaux sont dans qualification-diff-perf-0240/bin. Le banc conserve la livraison historique comme référence. Pour un nouveau rejeu complet, travailler dans une extraction de travail distincte et réserver des noms neufs aux résultats ; requalifier.py refuse de remplacer un dossier de qualification déjà présent. Les résultats versionnés restent disponibles dans l’archive et dans Git.
+Depuis la racine, utiliser le guide de la [livraison initiale](../livraison-diff-0240/README.md) pour les outils et l’oracle GNU. Les binaires nouveaux sont dans qualification-diff-perf-0240/bin. Le banc conserve la livraison historique comme référence. Pour un nouveau rejeu complet, donner des dossiers neufs aux preuves et aux machines. Le banc refuse de remplacer des preuves déjà présentes. Les résultats versionnés restent disponibles dans l’archive et dans Git.
 
 ~~~sh
 q=qualification-diff-perf-0240
 "$q/reconstruire-candidat.sh" "$NOVAOS_TMPDIR/diff-reconstruction-neuve"
 python3 -B "$q/tester-fenetres.py" "$q/bin/diff" "$NOVAOS_TMPDIR/cmp-0240/gnu/bin/diff" "$NOVAOS_TMPDIR/diff-temoins-neufs.json"
+resultats=$(mktemp -d "$NOVAOS_TMPDIR/diff-preuves-XXXXXX")
+python3 -B "$q/requalifier.py" --resultats "$resultats" darwin
+"$q/rejouer-qemu.sh" "$resultats/machines" "$resultats"
 python3 -B novaOS/scripts/generate_abi.py --check
 (cd "$q" && shasum -a 256 -c SHA256SUMS)
 ~~~
