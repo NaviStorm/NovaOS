@@ -1,0 +1,76 @@
+{
+  "Nova": {
+    "EAGAIN ": {
+      "rc": 1,
+      "stdout": "",
+      "stderr": "ZGQ6IGVycm9yIHJlYWRpbmcgJ3N0YW5kYXJkIGlucHV0JzogUmVzb3VyY2UgdGVtcG9yYXJpbHkgdW5hdmFpbGFibGUK"
+    },
+    "EAGAIN conv=noerror,sync": {
+      "rc": 0,
+      "stdout": "AAAAAA==",
+      "stderr": ""
+    },
+    "\u00e9criture partielle": {
+      "rc": 1,
+      "stdout": "",
+      "stderr": "ZGQ6IGVycm9yIHdyaXRpbmcgJ2xpbWl0ZSc6IEZpbGUgdG9vIGxhcmdlCjIrMCByZWNvcmRzIGluCjErMSByZWNvcmRzIG91dAo="
+    },
+    "SIGINFO puis SIGINT": {
+      "rc": -2,
+      "stdout": "QQ==",
+      "stderr": "MSswIHJlY29yZHMgaW4KMSswIHJlY29yZHMgb3V0CjErMCByZWNvcmRzIGluCjErMCByZWNvcmRzIG91dAo="
+    },
+    "status=progress": {
+      "rc": 0,
+      "stdout": "WFk=",
+      "stderr": "DTEgYnl0ZSBjb3BpZWQsIDEuMTA4ODIwIHMsIDEgQi9zCjIrMCByZWNvcmRzIGluCjIrMCByZWNvcmRzIG91dAoyIGJ5dGVzIGNvcGllZCwgMS4xMDg5MTYgcywgMiBCL3MK"
+    },
+    "sparse": {
+      "octets": 4194304,
+      "blocs512": 0,
+      "rc": 0
+    },
+    "notrunc": {
+      "octets": 4194304,
+      "blocs512": 8192,
+      "rc": 0
+    }
+  },
+  "GNU": {
+    "EAGAIN ": {
+      "rc": 1,
+      "stdout": "",
+      "stderr": "Z2RkOiBlcnJvciByZWFkaW5nICdzdGFuZGFyZCBpbnB1dCc6IFJlc291cmNlIHRlbXBvcmFyaWx5IHVuYXZhaWxhYmxlCg=="
+    },
+    "EAGAIN conv=noerror,sync": {
+      "rc": 0,
+      "stdout": "AAAAAA==",
+      "stderr": ""
+    },
+    "\u00e9criture partielle": {
+      "rc": 1,
+      "stdout": "",
+      "stderr": "Z2RkOiBlcnJvciB3cml0aW5nICdsaW1pdGUnOiBGaWxlIHRvbyBsYXJnZQoyKzAgcmVjb3JkcyBpbgoxKzEgcmVjb3JkcyBvdXQK"
+    },
+    "SIGINFO puis SIGINT": {
+      "rc": -2,
+      "stdout": "QQ==",
+      "stderr": "MSswIHJlY29yZHMgaW4KMSswIHJlY29yZHMgb3V0CjErMCByZWNvcmRzIGluCjErMCByZWNvcmRzIG91dAo="
+    },
+    "status=progress": {
+      "rc": 0,
+      "stdout": "WFk=",
+      "stderr": "DTEgYnl0ZSBjb3BpZWQsIDEgcywgMC4wIGtCL3MKMiswIHJlY29yZHMgaW4KMiswIHJlY29yZHMgb3V0CjIgYnl0ZXMgY29waWVkLCAxLjEwOTI4IHMsIDAuMCBrQi9zCg=="
+    },
+    "sparse": {
+      "octets": 4194304,
+      "blocs512": 0,
+      "rc": 0
+    },
+    "notrunc": {
+      "octets": 4194304,
+      "blocs512": 8192,
+      "rc": 0
+    }
+  }
+}

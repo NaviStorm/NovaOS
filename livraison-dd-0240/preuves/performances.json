@@ -1,0 +1,959 @@
+{
+  "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "processeur": "Apple M4 Max",
+  "oracle": "dd (coreutils) 9.12",
+  "passes": 5,
+  "binaires": {
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/dd-natif-0240/livraison-dd-0240/bin/dd": "adf31d5611bd83ccfe82b637724ba88b9b488bbcbf34f5fa2cbd5ca656eeaaab",
+    "/opt/homebrew/Cellar/coreutils/9.12_1/bin/gdd": "671ffc25cb5e37284a0cd40bd43a60bf8004b7435c7792d8c189eb034b0b9196"
+  },
+  "brut": [
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 0,
+      "ns": 161893084,
+      "rss": 2129920,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 0,
+      "ns": 156217666,
+      "rss": 1916928,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 1,
+      "ns": 154501500,
+      "rss": 1933312,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 1,
+      "ns": 153103125,
+      "rss": 2129920,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 2,
+      "ns": 152446667,
+      "rss": 2129920,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 2,
+      "ns": 152629750,
+      "rss": 1916928,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 3,
+      "ns": 151893834,
+      "rss": 1933312,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 3,
+      "ns": 158165709,
+      "rss": 2129920,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 4,
+      "ns": 145552584,
+      "rss": 2129920,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 4,
+      "ns": 150061958,
+      "rss": 1916928,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 5,
+      "ns": 146330166,
+      "rss": 1933312,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 5,
+      "ns": 147194625,
+      "rss": 2129920,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 0,
+      "ns": 11857417,
+      "rss": 2211840,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 0,
+      "ns": 13243500,
+      "rss": 1982464,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 1,
+      "ns": 11042167,
+      "rss": 1982464,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 1,
+      "ns": 12260000,
+      "rss": 2211840,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 2,
+      "ns": 13692458,
+      "rss": 2211840,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 2,
+      "ns": 11265917,
+      "rss": 1982464,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 3,
+      "ns": 12494916,
+      "rss": 1982464,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 3,
+      "ns": 14902375,
+      "rss": 2211840,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 4,
+      "ns": 12582208,
+      "rss": 2211840,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 4,
+      "ns": 16541208,
+      "rss": 1982464,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 5,
+      "ns": 12836583,
+      "rss": 1982464,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 5,
+      "ns": 11177041,
+      "rss": 2211840,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 0,
+      "ns": 13347625,
+      "rss": 3194880,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 0,
+      "ns": 10432500,
+      "rss": 2965504,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 1,
+      "ns": 13850708,
+      "rss": 2965504,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 1,
+      "ns": 13330125,
+      "rss": 3194880,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 2,
+      "ns": 11385000,
+      "rss": 3194880,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 2,
+      "ns": 17391000,
+      "rss": 2965504,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 3,
+      "ns": 11847708,
+      "rss": 2965504,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 3,
+      "ns": 11222125,
+      "rss": 3194880,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 4,
+      "ns": 10311042,
+      "rss": 3194880,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 4,
+      "ns": 13408291,
+      "rss": 2965504,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 5,
+      "ns": 10728375,
+      "rss": 2965504,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 5,
+      "ns": 10712583,
+      "rss": 3194880,
+      "sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 0,
+      "ns": 140735625,
+      "rss": 2129920,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 0,
+      "ns": 142606042,
+      "rss": 1933312,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 1,
+      "ns": 137956542,
+      "rss": 1933312,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 1,
+      "ns": 143350875,
+      "rss": 2129920,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 2,
+      "ns": 141682000,
+      "rss": 2129920,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 2,
+      "ns": 141941667,
+      "rss": 1933312,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 3,
+      "ns": 190126667,
+      "rss": 1933312,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 3,
+      "ns": 169059625,
+      "rss": 2129920,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 4,
+      "ns": 175229666,
+      "rss": 2129920,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 4,
+      "ns": 140993125,
+      "rss": 1916928,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 5,
+      "ns": 146973750,
+      "rss": 1933312,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 5,
+      "ns": 140551709,
+      "rss": 2129920,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 0,
+      "ns": 7844250,
+      "rss": 2211840,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 0,
+      "ns": 7996625,
+      "rss": 1982464,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 1,
+      "ns": 8452417,
+      "rss": 1982464,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 1,
+      "ns": 8243709,
+      "rss": 2195456,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 2,
+      "ns": 8169125,
+      "rss": 2211840,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 2,
+      "ns": 8234625,
+      "rss": 1982464,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 3,
+      "ns": 8056042,
+      "rss": 1982464,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 3,
+      "ns": 8395000,
+      "rss": 2211840,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 4,
+      "ns": 8646417,
+      "rss": 2211840,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 4,
+      "ns": 8018000,
+      "rss": 1982464,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 5,
+      "ns": 8037584,
+      "rss": 1982464,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 5,
+      "ns": 7942708,
+      "rss": 2211840,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 0,
+      "ns": 6499250,
+      "rss": 3194880,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 0,
+      "ns": 6381292,
+      "rss": 2965504,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 1,
+      "ns": 6653000,
+      "rss": 2965504,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 1,
+      "ns": 6700792,
+      "rss": 3194880,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 2,
+      "ns": 6381750,
+      "rss": 3194880,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 2,
+      "ns": 6508792,
+      "rss": 2965504,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 3,
+      "ns": 6567625,
+      "rss": 2965504,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 3,
+      "ns": 6418041,
+      "rss": 3194880,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 4,
+      "ns": 6577375,
+      "rss": 3194880,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 4,
+      "ns": 6467958,
+      "rss": 2965504,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "GNU",
+      "passage": 5,
+      "ns": 6279792,
+      "rss": 2965504,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "outil": "Nova",
+      "passage": 5,
+      "ns": 6512750,
+      "rss": 3194880,
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "Nova",
+      "passage": 0,
+      "ns": 21335083,
+      "rss": 107003904,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "GNU",
+      "passage": 0,
+      "ns": 19940875,
+      "rss": 106774528,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "GNU",
+      "passage": 1,
+      "ns": 25445125,
+      "rss": 106774528,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "Nova",
+      "passage": 1,
+      "ns": 21415041,
+      "rss": 107003904,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "Nova",
+      "passage": 2,
+      "ns": 21443125,
+      "rss": 107003904,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "GNU",
+      "passage": 2,
+      "ns": 19771500,
+      "rss": 106774528,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "GNU",
+      "passage": 3,
+      "ns": 19845042,
+      "rss": 106774528,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "Nova",
+      "passage": 3,
+      "ns": 21943334,
+      "rss": 107003904,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "Nova",
+      "passage": 4,
+      "ns": 21388500,
+      "rss": 107003904,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "GNU",
+      "passage": 4,
+      "ns": 19421208,
+      "rss": 106774528,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "GNU",
+      "passage": 5,
+      "ns": 19237500,
+      "rss": 106774528,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "outil": "Nova",
+      "passage": 5,
+      "ns": 22213750,
+      "rss": 107003904,
+      "sha256": "20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e"
+    }
+  ],
+  "mediane": [
+    {
+      "source": "fichier",
+      "bs": 512,
+      "octets": 33554432,
+      "Nova": {
+        "ms": 152.446667,
+        "MiBs": 209.90947607926384,
+        "MiB": 2.03125
+      },
+      "GNU": {
+        "ms": 151.893834,
+        "MiBs": 210.67346288724266,
+        "MiB": 1.84375
+      }
+    },
+    {
+      "source": "fichier",
+      "bs": 65536,
+      "octets": 33554432,
+      "Nova": {
+        "ms": 12.582208,
+        "MiBs": 2543.2738037711665,
+        "MiB": 2.109375
+      },
+      "GNU": {
+        "ms": 12.494916,
+        "MiBs": 2561.0416268504728,
+        "MiB": 1.890625
+      }
+    },
+    {
+      "source": "fichier",
+      "bs": 1048576,
+      "octets": 33554432,
+      "Nova": {
+        "ms": 11.222125,
+        "MiBs": 2851.5098521893137,
+        "MiB": 3.046875
+      },
+      "GNU": {
+        "ms": 13.408291,
+        "MiBs": 2386.5830477575405,
+        "MiB": 2.828125
+      }
+    },
+    {
+      "source": "zero",
+      "bs": 512,
+      "octets": 33554432,
+      "Nova": {
+        "ms": 143.350875,
+        "MiBs": 223.22849441972363,
+        "MiB": 2.03125
+      },
+      "GNU": {
+        "ms": 141.941667,
+        "MiBs": 225.4447244162632,
+        "MiB": 1.84375
+      }
+    },
+    {
+      "source": "zero",
+      "bs": 65536,
+      "octets": 33554432,
+      "Nova": {
+        "ms": 8.243709,
+        "MiBs": 3881.747887995561,
+        "MiB": 2.109375
+      },
+      "GNU": {
+        "ms": 8.056042,
+        "MiBs": 3972.1739285867675,
+        "MiB": 1.890625
+      }
+    },
+    {
+      "source": "zero",
+      "bs": 1048576,
+      "octets": 33554432,
+      "Nova": {
+        "ms": 6.51275,
+        "MiBs": 4913.439023453994,
+        "MiB": 3.046875
+      },
+      "GNU": {
+        "ms": 6.508792,
+        "MiBs": 4916.426888430296,
+        "MiB": 2.828125
+      }
+    },
+    {
+      "source": "zero",
+      "bs": 104857600,
+      "octets": 104857600,
+      "Nova": {
+        "ms": 21.443125,
+        "MiBs": 4663.499373342272,
+        "MiB": 102.046875
+      },
+      "GNU": {
+        "ms": 19.7715,
+        "MiBs": 5057.785195862732,
+        "MiB": 101.828125
+      }
+    }
+  ]
+}

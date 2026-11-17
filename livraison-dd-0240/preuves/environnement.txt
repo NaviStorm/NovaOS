@@ -1,0 +1,35 @@
+ProductName:		macOS
+ProductVersion:		27.2.1
+BuildVersion:		26B131
+arm64
+Apple M4 Max
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+binary: rustc
+commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+commit-date: 2026-10-13
+host: aarch64-apple-darwin
+release: 1.99.1
+LLVM version: 23.1.1
+cargo 1.99.1 (5f94df478 2026-08-27)
+Python 3.15.2
+livraison-dd-0240/bin/dd:             Mach-O 64-bit executable arm64
+livraison-dd-0240/bin/dd-aarch64.elf: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, not stripped
+livraison-dd-0240/bin/dd-x86_64.elf:  ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped
+/opt/homebrew/bin/gdd:                Mach-O 64-bit executable arm64
+dd (coreutils) 9.12
+Copyright (C) 2026 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Paul Rubin, David MacKenzie, and Stuart Kemp.
+QEMU emulator version 11.1.3
+Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
+QEMU emulator version 11.1.3
+Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
+35eba5f687b495dd16fff7171e30efc11cc3b0c2
+425e4e7cc5c03e246efb64d3638376906344bf47
+671ffc25cb5e37284a0cd40bd43a60bf8004b7435c7792d8c189eb034b0b9196  /opt/homebrew/bin/gdd
+adf31d5611bd83ccfe82b637724ba88b9b488bbcbf34f5fa2cbd5ca656eeaaab  livraison-dd-0240/bin/dd
+f9d4c0798b18da3f941a3de306fcd4c31299f7edcda4ad1cd849fb105dc5b0b8  livraison-dd-0240/bin/dd-aarch64.elf
+1cffd7a449ba6e5e87d3ad24a68c42adbb387bfce65aeaed49d07f2aa31a4a59  livraison-dd-0240/bin/dd-x86_64.elf
