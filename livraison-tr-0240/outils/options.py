@@ -72,6 +72,13 @@ def cases(large):
     for flag in [b"-\xff", b"--d\xe9", b"--=\xff", "-é".encode()]:
         yield [os.fsdecode(flag)], SAMPLE, 7
 
+    # Les chemins directs -d et -s doivent aussi conserver les octets hors ensemble.
+    boundaries = b"X" * 129 + b"aa" + b"bb" + b"\0" * 257 + ALL
+    for chunk in (1, 128, 129):
+        for args in (["-d", "X"], ["-cd", "X"], ["-s", r"X\000"],
+                     ["-Cs", "X"], ["-s", ""]):
+            yield args, boundaries, chunk
+
 def run(binary,args,data,locale,size):
     env=dict(os.environ,LC_ALL=locale,LANG="en",LANGUAGE="C",NOVA_TR_READ_SIZE=str(size))
     p=subprocess.run(["tr",*args],executable=binary,input=data,capture_output=True,env=env)

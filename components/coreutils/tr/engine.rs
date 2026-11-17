@@ -26,6 +26,7 @@ pub struct Filter {
     squeeze: [bool; 256],
     deleting: bool,
     squeezing: bool,
+    squeeze_only: bool,
     previous: Option<u8>,
 }
 
@@ -36,6 +37,29 @@ impl Filter {
                 *b = self.map[*b as usize];
             }
             return data.len();
+        }
+        if !self.squeezing {
+            let mut end = 0;
+            for i in 0..data.len() {
+                let byte = data[i];
+                data[end] = byte;
+                end += usize::from(!self.delete[byte as usize]);
+            }
+            return end;
+        }
+        if self.squeeze_only {
+            let Some(&first) = data.first() else { return 0 };
+            let mut previous = first;
+            let mut end =
+                usize::from(self.previous != Some(first) || !self.squeeze[first as usize]);
+            for i in 1..data.len() {
+                let byte = data[i];
+                data[end] = byte;
+                end += usize::from(byte != previous || !self.squeeze[byte as usize]);
+                previous = byte;
+            }
+            self.previous = Some(previous);
+            return end;
         }
         let mut end = 0;
         for offset in 0..data.len() {
@@ -201,6 +225,7 @@ pub fn prepare(
         previous: None,
         deleting: opt.delete,
         squeezing: opt.squeeze,
+        squeeze_only: opt.squeeze && !opt.delete && !translating,
     };
     if translating {
         if dst.iter().any(|r| r.group == Group::Equivalent) {
