@@ -1,0 +1,10 @@
+Taille ou nombre | Traitement | Nova dirname | GNU dirname
+-----------------|------------|--------------|------------
+1 × 8 o | LF | 1.400 ms | 1.391 ms
+1 × 8 o | NUL | 1.365 ms | 1.288 ms
+32 × 32 o | LF | 1.359 ms | 1.295 ms
+32 × 32 o | NUL | 1.394 ms | 1.346 ms
+256 × 128 o | LF | 1.417 ms | 1.428 ms
+256 × 128 o | NUL | 1.425 ms | 1.407 ms
+512 × 512 o | LF | 1.575 ms | 1.596 ms
+512 × 512 o | NUL | 1.558 ms | 1.587 ms

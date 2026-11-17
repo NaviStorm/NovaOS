@@ -1,0 +1,146 @@
+c0f8514d989184921d9b12a4d103a7b23abc5af8
+160000 commit 106e9b2384d08a1696fcbd40cbab52237943f208	gnulib
+df99bd11cf34046e58f6ad7304e59af9443bd81cddee193bc98fc4333a547251  src/dirname.c
+ce678ccbfac92850cef8ffd0c85f3f528f1bc7b359660babce564b4e6b6baee4  src/system.h
+e6521c9b2e677dd278820887d7ad94fad8260f2535dd923728462cdcb6148db9  doc/coreutils.texi
+755e62e787507b96d7d17d28a86fc713e2ec1338d1b96787f4eb7d34aa938e07  man/dirname.x
+19a37bbf6214835b1d2f1fb6e127d004edb1730c660cdf834c0ddc6f9aba88b5  tests/misc/dirname.pl
+4a2408764f3915881911a9346950a48357973b88d9e0a88bab34ae276f45e0ff  tests/misc/tty-quoting.sh
+lib/dirname-lgpl.c f20b6ac3d163f94eefc71436e5e5b8919256cc8fb7f1a30e06678c47a4d98c71  -
+lib/basename-lgpl.c 074674b1b6649507f07bdf9e6fe17a073c30102ffbc80588171ebccb140f3d3f  -
+lib/quotearg.c 7587a14c8dc8f701ad12705e722acd099e55644f5b56676304a6db50d119df55  -
+lib/closeout.c 1d034ee9f8e07e295090f04ec3e41d0e37a7c9aac71b11cf6e172eb9d6ea65fc  -
+4735bbe40d764a523c5ece37d47465b32452d1a2
+eba73593e227ac3a6e82172e408086d95422e7472d8cfb5b190cd3b8120f8ea2  src/uu/dirname/src/dirname.rs
+fbd42f95e37981056d7ab440a9a72eb204ab55eba0bc0282a3a7528449cfb5f4  src/uu/dirname/Cargo.toml
+29953405eaa3dcc41c37d1621d55b6a47eee93e05613e439e73295029740b10c  LICENSE
+dirname (GNU coreutils) 9.12
+Copyright (C) 2026 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by David MacKenzie and Jim Meyering.
+Usage: /opt/homebrew/bin/gdirname [OPTION] NAME...
+Output each NAME with its last non-slash component and trailing slashes
+removed; if NAME contains no /'s, output '.' (meaning the current directory).
+
+  -z, --zero
+         end each output line with NUL, not newline
+      --help
+         display this help and exit
+      --version
+         output version information and exit
+
+Examples:
+  /opt/homebrew/bin/gdirname /usr/bin/          -> "/usr"
+  /opt/homebrew/bin/gdirname dir1/str dir2/str  -> "dir1" followed by "dir2"
+  /opt/homebrew/bin/gdirname stdio.h            -> "."
+
+Report bugs to: <bug-coreutils@gnu.org>.
+GNU coreutils home page: <https://www.gnu.org/software/coreutils/>
+General help using GNU software: <https://www.gnu.org/gethelp/>
+Full documentation <https://www.gnu.org/software/coreutils/dirname>
+or available locally via: info '(coreutils) dirname invocation'
+09b4c0921042a00f22d785cb6b93cac0495aea81568cadf9fe6eba69dc732806  /opt/homebrew/bin/gdirname
+Darwin 27.2.0 arm64
+ProductName:		macOS
+ProductVersion:		27.2.1
+BuildVersion:		26B131
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+binary: rustc
+commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+commit-date: 2026-10-13
+host: aarch64-apple-darwin
+release: 1.99.1
+LLVM version: 23.1.1
+QEMU emulator version 11.1.3
+Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
+QEMU emulator version 11.1.3
+Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
+1048576
+livraison-dirname-0240/bin/dirname:             Mach-O 64-bit executable arm64
+livraison-dirname-0240/bin/dirname-aarch64.elf: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, stripped
+livraison-dirname-0240/bin/dirname-x86_64.elf:  ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, stripped
+
+File: livraison-dirname-0240/bin/dirname-aarch64.elf
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           AArch64
+  Version:                           0x1
+  Entry point address:               0x1000000
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          74696 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         4
+  Size of section headers:           64 (bytes)
+  Number of section headers:         6
+  Section header string table index: 5
+
+Elf file type is EXEC (Executable file)
+Entry point 0x1000000
+There are 4 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  LOAD           0x001000 0x0000000001000000 0x0000000001000000 0x0062a4 0x0062a4 R E 0x1000
+  LOAD           0x008000 0x0000000001007000 0x0000000001007000 0x009524 0x009524 R   0x1000
+  LOAD           0x012000 0x0000000001011000 0x0000000001011000 0x000398 0x000398 RW  0x1000
+  GNU_STACK      0x012398 0x0000000001011398 0x0000000001011398 0x000000 0x040000 RW  0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .text
+   01     .rodata
+   02     .data
+   03     .stack_reserve
+   None   .shstrtab
+
+File: livraison-dirname-0240/bin/dirname-x86_64.elf
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x1000000
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          74696 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         4
+  Size of section headers:           64 (bytes)
+  Number of section headers:         6
+  Section header string table index: 5
+
+Elf file type is EXEC (Executable file)
+Entry point 0x1000000
+There are 4 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  LOAD           0x001000 0x0000000001000000 0x0000000001000000 0x006a05 0x006a05 R E 0x1000
+  LOAD           0x008000 0x0000000001007000 0x0000000001007000 0x0096f0 0x0096f0 R   0x1000
+  LOAD           0x012000 0x0000000001011000 0x0000000001011000 0x000398 0x000398 RW  0x1000
+  GNU_STACK      0x012398 0x0000000001011398 0x0000000001011398 0x000000 0x040000 RW  0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .text
+   01     .rodata
+   02     .data
+   03     .stack_reserve
+   None   .shstrtab
