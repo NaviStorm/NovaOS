@@ -1,5 +1,7 @@
 # Reconstruire et rejouer
 
+La [qualification QEMU du candidat](preuves/qemu-candidat/RAPPORT.md) fournit les quatre exécutions de la sonde du prévol, leurs images et le vérificateur des empreintes.
+
 La [campagne du créneau Darwin](preuves/creneau/RECETTE.md) contient les comparaisons publié, candidat et GNU, le contrôle indépendant par charge et le prévol des régressions invitées.
 
 ## Recette fonctionnelle et performance sur Mac ARM64

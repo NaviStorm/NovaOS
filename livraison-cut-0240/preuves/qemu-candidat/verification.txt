@@ -1,0 +1,4 @@
+aarch64-512 : 1 954 vecteurs, 3 champs longs, 3 traitements × 4 passages, sortie 0
+aarch64-4096 : 1 954 vecteurs, 3 champs longs, 3 traitements × 4 passages, sortie 0
+x86_64-512 : 1 954 vecteurs, 3 champs longs, 3 traitements × 4 passages, sortie 0
+x86_64-4096 : 1 954 vecteurs, 3 champs longs, 3 traitements × 4 passages, sortie 0
