@@ -22,7 +22,7 @@ with (DEST / "dependances.tsv").open("w") as table:
     for pkg in sorted(packages.values(), key=lambda p: p["name"]):
         folder = Path(pkg["manifest_path"]).parent
         files = [p for p in sorted(folder.iterdir()) if p.is_file()
-                 and p.name.upper().startswith(("LICENSE", "LICENCE", "NOTICE", "COPYING", "UNLICENSE"))]
+                 and p.name.upper().startswith(("LICENSE", "LICENCE", "NOTICE", "COPYING", "COPYRIGHT", "UNLICENSE"))]
         if not files and pkg["name"].startswith("nova-"):
             files = [ROOT / "components/LICENSE"]
         assert files, pkg["name"]

@@ -225,5 +225,7 @@ def main():
         print(name,len(result["cas"]),"écarts",len(failed),[r["id"] for r in failed[:10]],flush=True)
         failures.extend(failed)
     if failures: raise SystemExit(1)
+    # Tous les médias et journaux sont déjà relus depuis leur archive durable.
+    shutil.rmtree(work)
 if __name__=="__main__":
     main()

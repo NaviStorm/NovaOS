@@ -8,6 +8,7 @@ mkdir -p "$out"
 out=$(cd "$out" && pwd)
 test "$(git -C "$src" rev-parse HEAD)" = c0f8514d989184921d9b12a4d103a7b23abc5af8
 work=$(mktemp -d "$TMPDIR/date-amont.XXXXXXXX")
+trap 'cd / && rm -rf -- "$work"' EXIT
 mkdir -p "$work/tests" "$work/src"
 git -C "$src/gnulib" show 106e9b2384d08a1696fcbd40cbab52237943f208:tests/init.sh > "$work/tests/init.sh"
 cp "$src/init.cfg" "$work/"
