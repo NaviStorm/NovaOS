@@ -18,11 +18,14 @@ fn read_handle(c: &mut Client, h: u64) -> rt::Result<Vec<u8>> {
         return Err(rt::LIMIT);
     }
     let mut out = vec![0; len];
-    let rev = w::word(&st, w::PAYLOAD + 8);
-    for (i, part) in out.chunks_mut(w::READ_WINDOW).enumerate() {
-        if c.read_version(h, (i * w::READ_WINDOW) as u64, part, rev)? != rev {
+    for (i, part) in out.chunks_mut(4096).enumerate() {
+        if c.read(h, (i * 4096) as u64, part)? != part.len() {
             return Err(rt::REVOKED);
         }
+    }
+    let after = c.simple(w::STAT, h)?;
+    if st[w::PAYLOAD..w::PAYLOAD + 24] != after[w::PAYLOAD..w::PAYLOAD + 24] {
+        return Err(rt::REVOKED);
     }
     Ok(out)
 }
