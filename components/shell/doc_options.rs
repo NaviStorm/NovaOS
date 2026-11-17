@@ -1,6 +1,10 @@
 //! Traitement local avant la résolution des chemins et le choix des capacités.
 use nova_cli::{command::Program, console, documentation, options, runtime as rt, tty};
 
+#[path = "../mktemp/src/options.rs"]
+#[allow(dead_code)]
+mod mktemp;
+
 fn invalid(option: &str) -> rt::Result<Option<u64>> {
     console::printable(
         tty::ERROR,
@@ -13,6 +17,26 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "mktemp" {
+        let bytes: alloc::vec::Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        let text = match mktemp::parse(&bytes, false) {
+            Ok(mktemp::Action::Help) => page.render(&[], false, lang).ok_or(rt::BAD_ARGUMENT)?,
+            Ok(mktemp::Action::Version) => page.version(lang),
+            Ok(mktemp::Action::Create(_)) => return Ok(None),
+            Err(reason) => {
+                let reason = alloc::string::String::from_utf8_lossy(&reason);
+                console::printable(
+                    tty::ERROR,
+                    &alloc::format!(
+                        "mktemp: {reason}\nTry 'mktemp --help' for more information.\n"
+                    ),
+                )?;
+                return Ok(Some(1));
+            }
+        };
+        console::write(tty::OUTPUT, &text)?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

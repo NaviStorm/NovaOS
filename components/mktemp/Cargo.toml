@@ -1,0 +1,38 @@
+[package]
+name = "nova-mktemp"
+version = "0.24.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "mktemp"
+path = "src/main.rs"
+
+[target.'cfg(target_os = "none")'.dependencies]
+sha2 = { version = "=0.10.9", default-features = false, features = ["force-soft"] }
+nova-cli = { path = ".." }
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+strip = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = "0.2"
+
+[features]
+qualification = []
+
+[[bin]]
+name = "sonde"
+path = "../../livraison-mktemp-0240/lab/sonde.rs"
+required-features = ["qualification"]
+
+[[bin]]
+name = "demandeur"
+path = "../../livraison-mktemp-0240/lab/demandeur.rs"
+required-features = ["qualification"]
