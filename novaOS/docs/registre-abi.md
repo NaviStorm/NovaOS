@@ -33,7 +33,7 @@ Les noms qualifiés correspondent aux constantes Rust. Le lien noyau mène au tr
 | 0x1003b | native::IPC_FEATURES | IPC / 0.16.6 / active | capacité, direction, 1 → masque de fonctions | SEND ou RECEIVE selon la direction | DENIED, BAD_ARGUMENT | [features](../kernel/src/sched/process/ipc/bulk.rs#L47) | — |
 | 0x10040 | block::PORTAL | pilote bloc / 0.10.0 / active | bail, *mut trame bloc, 128 → 128 | pilote titulaire, thread principal | DENIED, BAD_ARGUMENT, BAD_ADDRESS, REVOKED, CLOSED, REFUSED | [device](../kernel/src/sched/process/syscall.rs#L244) | — |
 | 0x10041 | native::HEAP_RESIZE | mémoire / 0.11.0 / active | ancienne borne, nouvelle borne, 0 → borne exclusive du tas | tas du processus, zéro/zéro consulte la borne | BAD_ARGUMENT, NO_MEMORY | [call](../kernel/src/sched/process/syscall.rs#L105) | [memory::heap_end](../libs/nova-system/src/lib.rs#L67), [memory::resize_heap](../libs/nova-system/src/lib.rs#L76) |
-| 0x10042 | terminal::SPAWN | lanceur / 0.13.0 / active | indice, *const paquet, longueur ou EXEC_TICKET, ticket local, 0 → droit de suivi | Anciennes formes : LAUNCH et thread principal. EXEC_TICKET : ticket de cette instance, principal ou secondaire. | DENIED, BAD_ARGUMENT, BAD_ADDRESS, LIMIT, NO_MEMORY, REVOKED, TIMED_OUT, REFUSED, CLOSED | [spawn_program](../kernel/src/sched/process/ipc/spawn.rs#L93) | — |
+| 0x10042 | terminal::SPAWN | lanceur / 0.13.0 / active | indice, *const paquet, longueur → droit de suivi | LAUNCH, thread principal et catalogue | DENIED, BAD_ARGUMENT, BAD_ADDRESS, LIMIT, NO_MEMORY | [spawn_program](../kernel/src/sched/process/ipc/spawn.rs#L93) | — |
 | 0x10043 | terminal::CONSOLE | terminal / 0.13.0 / active | opération, adresse ou sous-opération, taille ou arguments → selon le port | droits terminal de la session, thread principal | DENIED, BAD_ARGUMENT, BAD_ADDRESS, TIMED_OUT, REFUSED | [console_io](../kernel/src/sched/process/syscall.rs#L396) | — |
 | 0x10044 | native::CLOCK_UTC | horloge / 0.14.0 / active | 0, 0, 0 → secondes UTC depuis 1970 | aucun droit additionnel | REFUSED, BAD_ARGUMENT | [call](../kernel/src/sched/process/syscall.rs#L105) | [clock::utc_seconds](../libs/nova-system/src/lib.rs#L61) |
 | 0x10045 | terminal::PROCESS_SAMPLE | observation / 0.16.3 / active | indice, *mut sortie, 24 → 0 absent ou 1 présent | OBSERVE_SESSION, thread principal | DENIED, BAD_ARGUMENT, BAD_ADDRESS | [sample_process](../kernel/src/sched/process/syscall.rs#L352) | — |
@@ -62,6 +62,26 @@ Les noms qualifiés correspondent aux constantes Rust. Le lien noyau mène au tr
 | 0x1007c | cache::CONTROL | cache applicatif / 0.21.0 phase 4 / active | opération, zéro (NEXT : endpoint, COMPLETE : ticket), *mut trame de 224 octets → NEXT remet un ticket à usage unique. OPEN retourne dans la trame un bail propre à l’instance et à la génération. Les autres opérations retournent zéro ou le statut du serveur. Une écriture remise sans confirmation reçoit files::UNCERTAIN. | identités attestées par le lanceur, vue du cache de l’instance ; purges étendues réservées à une autorité explicite ; RECOVER au service supervisé et NEXT/COMPLETE à l’unique serveur P9 | BAD_ARGUMENT, BAD_ADDRESS, DENIED, REVOKED, CLOSED, REFUSED, CANCELLED, TIMED_OUT, WOULD_BLOCK, LIMIT, NO_MEMORY, files::UNCERTAIN, files::NOT_FOUND, files::CORRUPT, files::FULL, files::BUSY, files::UNSUPPORTED, files::IO | [control](../kernel/src/sched/process/cache.rs#L446) | — |
 
 Les pointeurs sont des adresses virtuelles de l’appelant, transmises sur 64 bits. Sur x86_64, SYSCALL détruit RCX et R11. Sur AArch64, x2 à x30 et SP_EL0 sont préservés. [Contrat des registres](abi.md).
+
+### SPAWN — formes historiques
+
+`SPAWN(indice, *const paquet, longueur)` utilise le sélecteur `0x10042`.
+
+Le thread principal doit détenir LAUNCH. Un indice du catalogue désigne un ELF et le noyau vérifie le paquet et les délégations demandées. Le succès rend le droit de suivi de cet enfant. PIPE_OPEN avec deux zéros crée un contrôleur de pipe. PIPE_CAT, PIPE_WC et PIPE_HEAD ajoutent la clé de contrôle après le paquet. Toutes ces formes restent refusées depuis un thread secondaire.
+
+Statuts caractéristiques — DENIED, BAD_ARGUMENT, BAD_ADDRESS, LIMIT, NO_MEMORY. [Traitement historique](../kernel/src/sched/process/ipc/spawn.rs#L93).
+
+### SPAWN — variante EXEC_TICKET
+
+`SPAWN(EXEC_TICKET, ticket_local, 0)` utilise le même sélecteur et rend un droit WAIT unique sur l’enfant publié.
+
+Le discriminant EXEC_TICKET vaut 0x0000000200000000. Le thread principal ou secondaire appartient au processus titulaire. Le ticket est prêt, son émetteur est vivant et l’échéance est valide. La place pour le droit de suivi est libre et aucune admission de lecteur de pipe n’est en cours.
+
+Le noyau vérifie l’instance et le ticket local. À l’émission, il lie session, titulaire, installation, révision d’objet et empreinte de l’ELF scellé. Le reçu porte SEND et RECEIVE. Aucun droit général de lancement ou d’arrêt n’est transmis à l’enfant.
+
+Une seule revendication peut publier un enfant après préparation du tmp. Une deuxième consommation pendant la revendication ou après publication rend REFUSED. Une clé étrangère rend DENIED, un ticket révoqué REVOKED et un ticket expiré TIMED_OUT. Les erreurs de préparation sont propagées. Après perte de réponse, NXQUERY1 restitue le PID et le même WAIT tant qu’il reste à collecter. Après collecte, le PID reste consultable et WAIT vaut zéro. PROCESS_WAIT reste réservé au thread principal.
+
+Statuts caractéristiques — DENIED, REFUSED, REVOKED, TIMED_OUT, LIMIT, NO_MEMORY, BAD_ARGUMENT, CLOSED, CANCELLED. [Consommation du ticket](../kernel/src/sched/process/ipc/exec.rs#L222).
 
 Plages préservées par le registre : 0x1002a…0x1002b, 0x1002e…0x1003a. [Historique des sondes](es-v0.16.6-integration-interfaces.md).
 
