@@ -7,7 +7,12 @@ export NOVAOS_TMPDIR="${NOVAOS_TMPDIR:-$(dirname "$(dirname "$here")")/tmp}"
 export TMPDIR="$NOVAOS_TMPDIR/"
 work=$(mktemp -d "$TMPDIR/stat-amont.XXXXXXXX")
 mkdir -p "$work/source/tests"
-cp "${GNU_INIT:-$GNU_SOURCE/tests/init.sh}" "$work/source/tests/init.sh"
+if [ -n "${GNU_INIT:-}" ] || [ -f "$GNU_SOURCE/tests/init.sh" ]; then
+  cp "${GNU_INIT:-$GNU_SOURCE/tests/init.sh}" "$work/source/tests/init.sh"
+else
+  revision=$(git -C "$GNU_SOURCE" rev-parse HEAD:gnulib)
+  git -C "$GNU_SOURCE/gnulib" show "$revision:tests/init.sh" > "$work/source/tests/init.sh"
+fi
 cp "$GNU_SOURCE/init.cfg" "$work/source/init.cfg"
 export srcdir="$work/source" LC_ALL=C TZ=UTC built_programs=stat AWK=awk
 unset QUOTING_STYLE

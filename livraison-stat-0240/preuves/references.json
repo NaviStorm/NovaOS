@@ -59,6 +59,8 @@
   "/opt/homebrew/bin/gstat": "4356cbc906bc8f6a8b2e0e9dd3e98e947514aee1bedaee662363074cea7541ac",
   "livraison-stat-0240/bin/stat-aarch64.elf": "19a67c198aecf8ea910cb18970792c7e65fba783aa25f0a928db2d2778cb33cb",
   "livraison-stat-0240/bin/stat-darwin-arm64": "57e14f2baee40324e7c40b9fc604d2e6f76e56821b237d033068d350478ed410",
-  "livraison-stat-0240/bin/stat-x86_64.elf": "dadd46954881bb52f279058129bd1ec6bb741fc30887de63cb79a62d278e7afd"
- }
+  "livraison-stat-0240/bin/stat-x86_64.elf": "dadd46954881bb52f279058129bd1ec6bb741fc30887de63cb79a62d278e7afd",
+  "gnulib/tests/init.sh": "c149c694215ea66d67dbb88dda0c08448c60f76309ee03ba5f863efec6fd138e"
+ },
+ "gnulib": "106e9b2384d08a1696fcbd40cbab52237943f208"
 }
