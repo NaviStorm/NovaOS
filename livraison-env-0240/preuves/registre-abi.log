@@ -1,0 +1,14 @@
+test_entetes_c_cpp (__main__.Registre.test_entetes_c_cpp) ... ok
+test_exports_tmp (__main__.Registre.test_exports_tmp) ... ok
+test_extension_services (__main__.Registre.test_extension_services) ... ok
+test_invalides (__main__.Registre.test_invalides) ... ok
+test_portes_et_dispatch (__main__.Registre.test_portes_et_dispatch) ... ok
+test_regeneration (__main__.Registre.test_regeneration) ... ok
+test_selecteurs_litteraux (__main__.Registre.test_selecteurs_litteraux) ... ok
+test_signatures_historiques (__main__.Registre.test_signatures_historiques) ... ok
+test_statut_tmp_call (__main__.Registre.test_statut_tmp_call) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.830s
+
+OK

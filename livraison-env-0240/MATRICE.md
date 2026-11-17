@@ -1,0 +1,28 @@
+# Compatibilité de env 0.24.0
+
+La référence hôte est GNU Coreutils 9.12, révision Homebrew 1 sur macOS ARM64. Les 156 cas du banc complet enregistrent les arguments, y compris les octets non UTF-8, l’environnement synthétique transmis, stdout, stderr et le statut des deux programmes. Les consultations documentaires emploient l’oracle bilingue ARC-026. Les 199 cas Perl GNU sont comptés séparément. [Banc différentiel](preuves/options.json) · [Recette GNU](preuves/amont.json)
+
+| Option ou opérande | Valeurs et combinaisons vérifiées sur macOS | ELF env sous NovaOS |
+|---|---|---|
+| Aucun argument | Affiche les entrées héritées dans leur ordre | 125, bloc de démarrage sans vecteur d’environnement |
+| `-i`, `--ignore-environment`, `-` | Vide, affectations, combinaison avec `-u`, `-0`, fichier et enfant | Vide et affectations vérifiés, y compris `-- -` |
+| `NOM=VALEUR` | Valeur vide, nom vide, doublons, non-UTF-8, remplacement en place, priorité aux affectations sur l’import et les retraits | Après `-i`, ordre et remplacement vérifiés sur console UTF-8 |
+| `-u NOM`, `-uNOM`, `--unset=NOM` | Nom présent, absent, vide ou contenant `=`, puis réaffectation. Avec `-i` sans import, GNU ignore le retrait | Grammaire et forme ignorée avec base vide vérifiées. Retirer une variable héritée exige le vecteur de démarrage |
+| `-0`, `--null` | Terminaison NUL par entrée, y compris la dernière. Octets arbitraires. Pipe aller-retour vérifié. Avec commande, 125 | Vide sans octet, statut 0. Si la sortie contient un NUL, refus explicite 125. Le témoin vérifie les octets du moteur en mémoire |
+| `--env0-from=FICHIER`, `--env0-from -` | Entrée standard, fichier, doublons, entrées sans égal, non terminé par NUL, accès refusé, absence, dernière source retenue. Après `-i`, reproduction brute. Sinon fusion par nom | Moteur sur tampon fictif. L’ELF rend 125 sur fichier ou stdin sans délégation appropriée |
+| `-S CHAÎNE`, `-SCHAÎNE`, `--split-string` | Guillemets, chaînes vides, espaces, commentaires, échappements, expansion de `${NOM}` sur l’environnement initial, options imbriquées, erreurs 125 et véritable shebang Darwin | Découpage, guillemets et affectations vérifiés. L’expansion d’une variable héritée exige le vecteur absent. Le témoin exerce cette expansion avec une entrée synthétique |
+| `-C RÉP`, `--chdir=RÉP` | Cwd du témoin, échec d’accès/répertoire absent et commande obligatoire | Grammaire et refus. Cwd d’un enfant ouvert |
+| `-a NOM`, `--argv0=NOM` | Valeur vide, alias distinct du programme, combiné avec cwd et locale, commande obligatoire | Grammaire et refus. argv[0] d’un enfant ouvert |
+| `--block-signal[=LISTE]` | Liste absente, vide, numérique, noms avec/sans SIG, casse, virgules, signal invalide. Lecture du masque dans l’enfant | Grammaire vérifiée. Effet dans un enfant ouvert |
+| `--default-signal[=LISTE]` | Rétablissement du comportement par défaut et déblocage. Combinaison après blocage et ignorance | Grammaire vérifiée. Effet dans un enfant ouvert |
+| `--ignore-signal[=LISTE]` | Tous, aucun, USR1, nom inconnu, zéro, KILL explicite. Lecture du traitement effectif dans l’enfant | Grammaire vérifiée. Effet dans un enfant ouvert |
+| `--list-signal-handling` | Liste sur stderr lors d’un lancement. Blocage seul, ignorance et combinaison | Accepté sans commande. État des signaux d’un enfant ouvert |
+| `-v`, `--debug` | Traces de découpage, affectation, retrait, signaux, nom et arguments sur stderr | Trace « clearing environment » vérifiée sur le droit ERROR |
+| `--`, préfixes longs, options groupées | Fin d’options, valeurs consommées, préfixes non ambigus, ambigus ou inconnus, argument obligatoire absent, argument interdit. La première affectation ou commande termine l’analyse d’options | Délimiteur, groupe, erreur 125 et flux ERROR vérifiés |
+| `--help`, `--version`, `man env` | Aide et version Nova en anglais/français selon le registre IANA. Les textes GNU ont un contenu propre | Aide et version de l’ELF de recette. Aide, version et manuel dans le vrai nsh, quatre locales, disque contrôlé |
+| `COMMANDE [ARG...]` | Recherche dans le PATH modifié, transmission exacte des arguments et de la locale. Statut 125 pour l’utilitaire, 126 pour l’exécution refusée, 127 pour l’absence, sinon statut de l’enfant | Lancement public et propagation 126/127/statut enfant ouverts. Le témoin lancé indépendamment par le SDK retourne 23 |
+| Flux et droits | Fichier, pipe brut NUL, lecteur fermé, PTY, styles de citation, refus de lecture/exécution | Sortie texte déléguée, refus natif 5 sans droit de sortie. Pipe métier depuis nsh indisponible |
+
+**Entrée ordinaire.** Le catalogue documentaire de `nsh` répond à `env --help`, `env --version` et `man env`. L’admission d’un ELF métier installé par son nom, le transfert de l’environnement exporté, le cwd, les flux binaires et le lancement délégué d’un second programme restent à raccorder. Les variantes documentaires qui demandent l’interprétation de `-S` ou de dispositions de signaux dépendent de l’ELF. La base conserve l’ABI v1 à 48 sélecteurs, le format P9 et les rôles de pipe existants.
+
+**Bornes.** L’adaptateur SDK reçoit jusqu’à 32 arguments UTF-8 dans une trame de 2 560 octets. Le moteur limite à 1 024 les réinterprétations de `-S` par invocation. Les diagnostics de système Darwin et les noms/numéros de signaux sont qualifiés sur la plateforme indiquée. Le mode français ARC-026 concerne la documentation. Le transport UART ajoute CR avant LF. Les preuves conservent le journal brut et les octets texte après cette conversion. [Interface terminal](../novaOS/abi/terminal.rs) · [Adaptateur ELF](../components/env/src/guest.rs)

@@ -1,0 +1,14 @@
+{
+ "GNU": {
+  "statut": 0,
+  "binaire": "188a5a14ec168c98bb0d385a253199b609e15cb5c5770391aa2da3834fdcccea",
+  "suite": "da65ba2424d1623d2b48c038989ddb172cdd305008b4772e09bcd3577390e49e",
+  "revision": "c0f8514d989184921d9b12a4d103a7b23abc5af8"
+ },
+ "Nova": {
+  "statut": 0,
+  "binaire": "73c2aebbf5b56b9c50e760d7c86df5d12bfccfde8c729cc9f496d2f7b7e4dd4f",
+  "suite": "da65ba2424d1623d2b48c038989ddb172cdd305008b4772e09bcd3577390e49e",
+  "revision": "c0f8514d989184921d9b12a4d103a7b23abc5af8"
+ }
+}
