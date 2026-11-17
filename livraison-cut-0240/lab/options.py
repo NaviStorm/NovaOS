@@ -44,6 +44,11 @@ def corpus(large):
     for args in (["-f1,3"], ["-sf1"], ["-sf2"], ["-f2"]):
         yield args, mixed
     yield ["-z", "-d:", "-sf1"], long_field + b":fin\0" + long_field
+    # L’adaptateur peut restituer directement ces blocs complets de 256 Kio.
+    block = b"q" * 262144
+    for args in (["-f1,3"], ["-sf1"], ["-sf2"], ["-f2"]):
+        yield args, block + b"\n" + b"a\tb\n" + block + b"\tfin\n" + block
+    yield ["-z", "-d:", "-f1,3"], b"a:b:" + block * 2 + b"\0" + block
     rng=random.Random(27027)
     for _ in range(900 if large else 90):
         data=b"".join(rng.choice([b"x",b" ",b"\t",b"\n",b"\0",b"\xff","é".encode(),"😀".encode(),b":"]) for _ in range(rng.randrange(90)))

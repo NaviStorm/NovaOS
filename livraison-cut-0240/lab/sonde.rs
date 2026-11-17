@@ -62,6 +62,39 @@ fn vectors() {
     }
     log(&format!("CUT MATRICE {cnt} OK"));
 }
+// Contrôle des tranches de 1 Kio utilisées par l’adaptateur invité.
+fn long_fields() {
+    let block = [b'x'; 1024];
+    for (flag, restores_plain, selects_first) in [
+        (&b"-f1,3"[..], true, true),
+        (&b"-sf1"[..], false, true),
+        (&b"-sf2"[..], false, false),
+    ] {
+        let Ok(args::Action::Run(cfg, _)) = args::parse(&[flag], false, false) else {
+            rt::exit(2)
+        };
+        let mut stream = engine::Stream::new(&cfg);
+        let mut output = Vec::new();
+        let mut expected = Vec::new();
+        for _ in 0..4 {
+            stream.feed(&block, &mut output);
+        }
+        stream.feed(b"\tfin\n", &mut output);
+        if selects_first {
+            expected.extend_from_slice(&block.repeat(4));
+        } else {
+            expected.extend_from_slice(b"fin");
+        }
+        expected.push(b'\n');
+        stream.feed(&block, &mut output);
+        stream.finish(&mut output);
+        if restores_plain {
+            expected.extend_from_slice(&block);
+            expected.push(b'\n');
+        }
+        assert_eq!(output, expected);
+    }
+}
 fn bench(id: usize, argv: &[&[u8]], data: &[u8], expected: &[u8]) {
     let Ok(args::Action::Run(cfg, _)) = args::parse(argv, true, false) else {
         rt::exit(2)
@@ -93,6 +126,7 @@ fn bench(id: usize, argv: &[&[u8]], data: &[u8], expected: &[u8]) {
 }
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
+    long_fields();
     vectors();
     let row = b"2\t10\t2\t10\t2\t10\t77\t2\t10\n";
     bench(0, &[b"-f1,3,8,9"], row, b"2\t2\t2\t10\n");

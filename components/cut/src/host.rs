@@ -6,7 +6,8 @@ use std::{
     env,
     ffi::OsStr,
     fs::File,
-    io::{self, Read, Write},
+    io::{self, IsTerminal, Read, Write},
+    os::fd::AsFd,
     os::unix::ffi::{OsStrExt, OsStringExt},
     path::Path,
 };
@@ -16,7 +17,7 @@ mod documentation;
 fn process<R: Read, W: Write>(mut input: R, output: &mut W, cfg: &Config) -> io::Result<()> {
     let mut buf = vec![
         0;
-        if cfg.mode == super::engine::Mode::Fields && cfg.ranges.is_empty() {
+        if cfg.mode == super::engine::Mode::Fields {
             262144
         } else {
             65536
@@ -29,13 +30,12 @@ fn process<R: Read, W: Write>(mut input: R, output: &mut W, cfg: &Config) -> io:
             Err(e) if e.kind() == io::ErrorKind::Interrupted => continue,
             r => r?,
         };
-        result.clear();
         if n == 0 {
+            result.clear();
             stream.finish(&mut result);
             return output.write_all(&result);
         }
-        stream.feed(&buf[..n], &mut result);
-        output.write_all(&result)?;
+        output.write_all(stream.output_chunk(&buf[..n], &mut result))?;
     }
 }
 fn filename(bytes: &[u8], utf8: bool) -> String {
@@ -124,6 +124,13 @@ fn encoding() -> super::engine::Encoding {
         fn nl_langinfo(item: i32) -> *const core::ffi::c_char;
         fn ___mb_cur_max() -> i32;
     }
+    // Le processus démarre en locale C. Une sélection explicite n’exige aucun chargement.
+    if matches!(
+        env::var_os("LC_ALL").as_deref().map(OsStrExt::as_bytes),
+        Some(b"C" | b"POSIX")
+    ) {
+        return Encoding::SingleByte;
+    }
     // LC_CTYPE=2 et CODESET=0 dans le SDK Darwin. Le processus est mono-thread.
     unsafe {
         if setlocale(2, c"".as_ptr()).is_null() || ___mb_cur_max() <= 1 {
@@ -178,7 +185,19 @@ pub fn main() {
         }
     };
     let (cfg, files) = cfg_files;
-    let mut output = io::BufWriter::new(io::stdout().lock());
+    // Sur un flux redirigé, LineWriter chercherait un LF dans chaque bloc déjà filtré.
+    let stdout = io::stdout();
+    let mut redirected = if stdout.is_terminal() {
+        None
+    } else {
+        stdout.as_fd().try_clone_to_owned().ok().map(File::from)
+    };
+    let mut console = stdout.lock();
+    let sink: &mut dyn Write = match &mut redirected {
+        Some(file) => file,
+        None => &mut console,
+    };
+    let mut output = io::BufWriter::new(sink);
     let mut failed = false;
     for f in files {
         let path = Path::new(OsStr::from_bytes(f));

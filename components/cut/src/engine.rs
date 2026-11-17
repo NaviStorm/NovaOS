@@ -266,6 +266,22 @@ impl<'a> Stream<'a> {
             }
         }
     }
+    fn field_only(&self, data: &[u8]) -> bool {
+        self.plain() && !data.contains(&self.cfg.end) && !data.contains(&self.cfg.delim[0])
+    }
+
+    // L’appelant écrit ce bloc avant de réutiliser le tampon de lecture.
+    #[cfg(not(target_os = "none"))]
+    pub fn output_chunk<'b>(&mut self, data: &'b [u8], out: &'b mut Vec<u8>) -> &'b [u8] {
+        out.clear();
+        if self.selected && !self.deferred() && self.field_only(data) {
+            self.started |= !data.is_empty();
+            return data;
+        }
+        self.feed(data, out);
+        out
+    }
+
     pub fn feed(&mut self, data: &[u8], out: &mut Vec<u8>) {
         if self.empty_byte_search() {
             self.empty_block(data, out);
@@ -281,7 +297,7 @@ impl<'a> Stream<'a> {
             return;
         }
         // Entire read buffers in a long field have neither separator.
-        if self.plain() && !data.contains(&self.cfg.end) && !data.contains(&self.cfg.delim[0]) {
+        if self.field_only(data) {
             self.started |= !data.is_empty();
             self.field_fragment(data, out);
             return;
