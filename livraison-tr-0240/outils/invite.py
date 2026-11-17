@@ -16,6 +16,7 @@ from types import SimpleNamespace
 
 ROOT=Path(__file__).resolve().parents[2]
 DELIVERY=ROOT/"livraison-tr-0240"
+BIN=Path(os.environ.get("NOVA_TR_BIN_DIR", DELIVERY/"bin")).resolve()
 OS=ROOT/"novaOS"
 sys.path.insert(0,str(OS/"tests"))
 from cli import Terminal
@@ -94,14 +95,21 @@ def doc(arch,sector,out,kernel,image):
             rows.append([tag,"man tr",0])
         after=state()
         assert after==before,(before,after)
-        for line in ["cat entree | tr '[:lower:]' '[:upper:]'", "cat entree | tr -s ' '","cat entree | tr --inconnue"]:
+        for line in [
+            "cat entree | tr '[:lower:]' '[:upper:]'",
+            "cat entree | tr -s ' '",
+            "cat entree | tr --inconnue",
+            "cat donnees.txt | tr 'a-z' 'A-Z'",
+        ]:
             # La validation syntaxique du script interne rend son statut au shell extérieur.
             inner=line.replace("'",'"')
             vm.vm.stdin.write(f"nsh -c '{inner}'; echo lancement=$?\n".encode())
             vm.until(b"lancement=3"); vm.until(b"nsh> ")
             rows.append(["nsh",line,3])
         assert "259" in sortie(vm,"cat entree | wc -l")
-    info=check_iso(out/"nsh.iso",kernel,out,archive_apps(kernel),DELIVERY/f"bin/tr-{arch}.elf")
+        assert "abc-123" in sortie(vm,"cat donnees.txt")
+        rows.extend([["nsh", "cat entree | wc -l", 0], ["nsh", "cat donnees.txt", 0]])
+    info=check_iso(out/"nsh.iso",kernel,out,archive_apps(kernel),BIN/f"tr-{arch}.elf")
     jsonfile(out/"resultats.json",dict(cases=rows,ram=ram,avant=before,apres=after,media=info))
     return ram
 
@@ -110,7 +118,7 @@ def sdk(arch,sector,out,kernel,elf,image,ram,group,source,expected_cases):
     iso=out/"sdk.iso"
     os.environ.update(NOVA_KERNEL_ELF=str(kernel),NOVA_ISO=str(iso))
     cmd(["sh",OS/"scripts/iso.sh","sdk-example",iso])
-    info=check_iso(iso,kernel,out,archive_apps(kernel,[elf]),DELIVERY/f"bin/tr-{arch}.elf")
+    info=check_iso(iso,kernel,out,archive_apps(kernel,[elf]),BIN/f"tr-{arch}.elf")
     shutil.copyfile(elf,out/"temoin.elf")
     opts=["-display","none","-monitor","none","-serial","stdio"]
     argv=command(arch,sector,image,readonly=True,controls=opts)
@@ -170,7 +178,7 @@ def main():
     cache=tmp/("tr-0240-"+a.arch);cache.mkdir(exist_ok=True)
     cmd(["make","-C","novaOS","ARCH="+a.arch,"kernel"])
     cmd(["novaFS/lab/run","build","--offline","--bin","novafs"],env=dict(os.environ,NOVAFS_TARGET="aarch64-apple-darwin"))
-    image,_,_=fixture(out,a.sector,{"entree":b"ab  C"+b" "*4096+b"Z\n"*259})
+    image,_,_=fixture(out,a.sector,{"entree":b"ab  C"+b" "*4096+b"Z\n"*259, "donnees.txt":b"abc-123\n"})
     kernel=OS/"target"/target/"release/novaos"
     ram=doc(a.arch,a.sector,out/"nsh",kernel,image)
     vectors=cache/"vecteurs.bin"

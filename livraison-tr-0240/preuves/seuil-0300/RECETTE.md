@@ -43,23 +43,45 @@ python3 -B outils/confirmer_seuil.py "$r"
 
 ## NovaOS QEMU
 
-Les quatre profils publiés, AArch64 et x86_64 avec P9/512 et P9/4096, ont chacun passé 3 652 cas dans la sonde SDK. Les 64 mesures disponibles portent sur le moteur Nova en mémoire avec un passage par charge et par profil. Aucune mesure GNU comparable en invité n’existe dans ces rapports. Les 22 régressions du système appartiennent à la livraison publiée. Le candidat devra rejouer les contrôles du moteur sur les quatre profils. [Résultats dans les invités](../couverture-qemu.json) · [Mesures de la sonde](../tableau-qemu.txt)
+Les quatre profils publiés, AArch64 et x86_64 avec P9/512 et P9/4096, ont chacun passé 3 652 cas dans la sonde SDK. Les 64 mesures disponibles portent sur le moteur Nova en mémoire avec un passage par charge et par profil. Aucune mesure GNU comparable en invité n’existe dans ces rapports. Les 22 régressions du système appartiennent à la livraison publiée. Le rejeu du candidat figure ci-dessous. [Résultats dans les invités](../couverture-qemu.json) · [Mesures de la sonde](../tableau-qemu.txt)
 
 Le vrai nsh de la livraison rend 3 avant le lancement des deux processus. Le scénario `cat donnees.txt | tr 'a-z' 'A-Z'` est à qualifier avec le lanceur commun. L’attendu est `ABC-123` suivi de LF, stderr vide, deux PID distincts, cat=0 et tr=0, restitution du pipe et droit de lecture du fichier réservé à cat.
 
 
-### Fenêtre QEMU à réserver
+### Qualification du candidat · 17 novembre 2026
 
-La préparation à sec a sérialisé les 3 684 comparaisons GNU du candidat. Pour chaque architecture et chaque géométrie, le banc démarre le nsh ordinaire sur un volume jetable puis la sonde SDK sur son ISO privée. Le contrôle de la sonde vérifie le nombre de cas du fichier de référence, le succès du moteur et la restitution du processus. Il consigne aussi l’empreinte du fichier. Le chemin ordinaire conserve le témoin de refus. Les régressions système non affectées sont reprises au dossier de `61c8211`. Les quatre relectures du moteur restent en attente d’une fenêtre dédiée.
+**3 684 comparaisons réussies dans chacun des quatre invités, soit 14 736 exécutions et huit démarrages QEMU.** Le code candidat est `47caae68d9193cae276a066b0b808c1173a59595`. La base du banc est `1f6bd01196942030414d32344d2201bef6b6255c`. Les empreintes des sources de traduction, de contraction et des adaptateurs sont comparées au Git du candidat. Le moteur et son adaptateur de lecture figurent dans les dépendances de construction du véritable ELF et de l’ELF de sonde. La sonde confronte les sorties et diagnostics bruts aux octets GNU archivés, ainsi que le statut ou l’action documentaire. Elle exerce également trame entièrement supprimée, EOF, révocation de lecture et fermeture.
+
+| Invité QEMU TCG · 2 vCPU · 256 Mio | Secteurs P9 | Cas du moteur | Niveau du témoin | Statut et restitution | Contrôles du vrai nsh |
+|---|---:|---:|---|---|---:|
+| aarch64 | 512 | 3 684 | EL0 | 0 · OK | 27 |
+| aarch64 | 4096 | 3 684 | EL0 | 0 · OK | 27 |
+| x86_64 | 512 | 3 684 | Ring3 | 0 · OK | 27 |
+| x86_64 | 4096 | 3 684 | Ring3 | 0 · OK | 27 |
+
+La matrice compte 1 842 cas en C et autant en en_US.UTF-8. Les 27 contrôles du shell par profil comprennent 21 demandes de documentation ou d’option inconnue, 4 refus de pipeline et 2 témoins positifs. Le vrai nsh lit le fichier `donnees.txt` avec cat et retourne 0. Il refuse `cat donnees.txt | tr 'a-z' 'A-Z'` avec le statut 3 avant de créer les deux enfants. Les contrôles documentaires conservent le SHA du volume et les compteurs d’écriture et de flush. Le pipeline de production reste à qualifier avec le lanceur commun.
+
+| Architecture | SHA-256 ELF de production reconstruit | SHA-256 ELF de la sonde exécutée |
+|---|---|---|
+| aarch64 | `78bbd8c60fa3402793f69bd50d1318bb1b84f28ab5ee6e5bef353a0c24211286` | `4f5817dbaebe2ed281f350280692a196d97498e770cc9ff554ff6de580893666` |
+| x86_64 | `b25c675e02b4bf9d3c6dddfa5b107f0c5ad5d0d1b8a1df081af498ef10687cb9` | `0f95bc18c3d1b22bdbfd4f4cb322b386e0e7e4ed79987d23463eb089a63166ed` |
+
+Les deux ELF de production sont des exécutables statiques ELF64 dont le point d’entrée appartient à un segment exécutable. Leurs octets diffèrent de ceux publiés à `61c8211`. Le noyau de chaque ISO a été extrait et identifié. La sonde est présente dans l’ISO SDK et sort avec le PID 2. Les deux images de chaque profil excluent l’ELF de production du candidat. Le PID observé est celui du témoin SDK. Les 22 régressions système et les anciennes campagnes QEMU restent rattachées à leur livraison d’origine. Aucun nouveau chronométrage Darwin ou QEMU durant cette qualification fonctionnelle.
+
+[Résultats, SHA des huit images et des noyaux extraits](creneau-qemu/resultats.json) · [Sessions AArch64](creneau-qemu/aarch64.tar.xz) · [Sessions x86_64](creneau-qemu/x86_64.tar.xz) · [ELF de production AArch64](creneau-qemu/elf-production/tr-aarch64.elf) · [ELF de production x86_64](creneau-qemu/elf-production/tr-x86_64.elf)
+
+Pour reproduire depuis `livraison-tr-0240`, créer un sous-répertoire propre dans la racine temporaire OS. Chaque architecture dispose de son cache et chaque géométrie de son volume P9, de son ISO ordinaire et de son ISO SDK. Les deux archives conservées incluent chacune 33 fichiers et un manifeste SHA-256 interne. Elles contiennent les volumes, les configurations, les traces UART, les sorties de construction et les ELF de sonde.
 
 ~~~sh
 set -e
-export NOVAOS_TMPDIR="$(cd ../.. && pwd)/tmp"
-export TMPDIR="$NOVAOS_TMPDIR/"
-q=$(mktemp -d "$NOVAOS_TMPDIR/tr-3684.XXXXXX")
+q=$(mktemp -d "$(cd ../.. && pwd)/tmp/tr-qualification-3684.XXXXXX")
+export NOVAOS_TMPDIR="$q" TMPDIR="$q/" NOVA_TR_BIN_DIR="$q/elf-production"
 for isa in aarch64 x86_64; do
+  ./reconstruire.sh "$isa"
   for secteur in 512 4096; do
     python3 -B outils/invite.py "$isa" "$secteur" "$q/$isa-$secteur" --matrice preuves/seuil-0300/fonctionnel-candidat.jsonl.gz
   done
 done
 ~~~
+
+La livraison qualifiée est disponible localement sur `codex/tr-bancs-0300`. La branche distante historique `origin/codex/tr-natif-0240` pointe sur `61c8211`. La publication de la branche de recette couvrirait les bancs et le correctif du moteur, le Mach-O candidat et les deux ELF reconstruits, les preuves Darwin et QEMU, le rapport et son manifeste SHA-256.

@@ -1,0 +1,701 @@
+{
+  "code": "47caae68d9193cae276a066b0b808c1173a59595",
+  "base_banc": "1f6bd01196942030414d32344d2201bef6b6255c",
+  "source_sha256": {
+    "components/coreutils/tr/engine.rs": "f0089d3827eff44525c5a58970b3f2e1dc480dc7db1186e65477f559fc3a81d6",
+    "components/coreutils/tr/sets.rs": "22ee84f89cc8428a041fe844910f580d39d7c8b413f97635869131e0b6ba981e",
+    "components/coreutils/tr/tables.rs": "c382b94c74c1e8f0183f39ffec396e7cceb30bec3272761db4d53b41cf3dc676",
+    "components/coreutils/tr/native_stream.rs": "f00160f3f6c123e9f443c0b2b6b0d6ce7eb456531dd612abebc0c4aa09b72756",
+    "components/coreutils/tr/native.rs": "f322c8f6ad29e4f93ca8a03398e3d653218fd929c4d55ba1a00860ddefdc2e78",
+    "livraison-tr-0240/outils/temoin.rs": "a69925194537ebf27a19db109cf0f424d9c5773a91d531ef693bd2ce62f1e76a"
+  },
+  "matrice_sha256": "1f8b17ca3fd172fd324714c1030f38586daa585c46739aca00df7e0593f36cf8",
+  "elf_production": {
+    "aarch64": {
+      "candidat": "78bbd8c60fa3402793f69bd50d1318bb1b84f28ab5ee6e5bef353a0c24211286",
+      "livraison_61c8211": "19fef766414c1f5106a1dacef0348bd9680da62f36aaf8ebadfec86197934fa1",
+      "entree": "0x1000000",
+      "machine": 183
+    },
+    "x86_64": {
+      "candidat": "b25c675e02b4bf9d3c6dddfa5b107f0c5ad5d0d1b8a1df081af498ef10687cb9",
+      "livraison_61c8211": "4c7850e0b81908e2f012ee7a457dc5751dec1089ae21965faefb774d19044744",
+      "entree": "0x1000000",
+      "machine": 62
+    }
+  },
+  "profils": {
+    "aarch64-512": {
+      "cas_sdk": 3684,
+      "pid_sdk": 2,
+      "niveau": "EL0",
+      "statut_sdk": 0,
+      "restitution": "OK",
+      "machine": {
+        "vcpu": 2,
+        "ram_octets": 268435456,
+        "secteur": 512
+      },
+      "elf_sonde_sha256": "4f5817dbaebe2ed281f350280692a196d97498e770cc9ff554ff6de580893666",
+      "cas_nsh": [
+        [
+          "fr-CA",
+          "--help",
+          0
+        ],
+        [
+          "fr-CA",
+          "--he",
+          0
+        ],
+        [
+          "fr-CA",
+          "-ds --help",
+          0
+        ],
+        [
+          "fr-CA",
+          "--version",
+          0
+        ],
+        [
+          "fr-CA",
+          "--ver",
+          0
+        ],
+        [
+          "fr-CA",
+          "--inconnue",
+          1
+        ],
+        [
+          "fr-CA",
+          "man tr",
+          0
+        ],
+        [
+          "en-US",
+          "--help",
+          0
+        ],
+        [
+          "en-US",
+          "--he",
+          0
+        ],
+        [
+          "en-US",
+          "-ds --help",
+          0
+        ],
+        [
+          "en-US",
+          "--version",
+          0
+        ],
+        [
+          "en-US",
+          "--ver",
+          0
+        ],
+        [
+          "en-US",
+          "--inconnue",
+          1
+        ],
+        [
+          "en-US",
+          "man tr",
+          0
+        ],
+        [
+          "fr--CA",
+          "--help",
+          0
+        ],
+        [
+          "fr--CA",
+          "--he",
+          0
+        ],
+        [
+          "fr--CA",
+          "-ds --help",
+          0
+        ],
+        [
+          "fr--CA",
+          "--version",
+          0
+        ],
+        [
+          "fr--CA",
+          "--ver",
+          0
+        ],
+        [
+          "fr--CA",
+          "--inconnue",
+          1
+        ],
+        [
+          "fr--CA",
+          "man tr",
+          0
+        ],
+        [
+          "nsh",
+          "cat entree | tr '[:lower:]' '[:upper:]'",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | tr -s ' '",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | tr --inconnue",
+          3
+        ],
+        [
+          "nsh",
+          "cat donnees.txt | tr 'a-z' 'A-Z'",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | wc -l",
+          0
+        ],
+        [
+          "nsh",
+          "cat donnees.txt",
+          0
+        ]
+      ],
+      "etat_documentaire_avant": [
+        "29f1f1a54ec3925a5a451c8212481c15c4b14bb85d133330c4c94b1e1a6fe890",
+        872448,
+        213,
+        77
+      ],
+      "etat_documentaire_apres": [
+        "29f1f1a54ec3925a5a451c8212481c15c4b14bb85d133330c4c94b1e1a6fe890",
+        872448,
+        213,
+        77
+      ],
+      "iso_sdk_sha256": "2fb42823cb4dedf46147e1d2aab0e5c298500b74c7c9d523cf72480be2a69c36",
+      "noyau_sdk_sha256": "a3ebe2808b366766752e6d1c69e7528c5a2020e417bd5f2076f1e40c0e8c03ac",
+      "iso_nsh_sha256": "2171ce8a2bac23de1ee57af89db01490e71e1b896b6ab28ff5e4676e8bade243",
+      "noyau_nsh_sha256": "1e7f40d8760c2079b01902684af548799fb2dafc50e11ab07e63a74a3a71a854",
+      "volume_sha256": "152c6050fd02157507458170f173d5af161e807010b4a075cbabc82939c492ce",
+      "archive_sha256": "90286b315f5cc9e1bcf1d8dba0d4ecad7e4f8c90b4e643d5c90cda14090b1b44"
+    },
+    "aarch64-4096": {
+      "cas_sdk": 3684,
+      "pid_sdk": 2,
+      "niveau": "EL0",
+      "statut_sdk": 0,
+      "restitution": "OK",
+      "machine": {
+        "vcpu": 2,
+        "ram_octets": 268435456,
+        "secteur": 4096
+      },
+      "elf_sonde_sha256": "4f5817dbaebe2ed281f350280692a196d97498e770cc9ff554ff6de580893666",
+      "cas_nsh": [
+        [
+          "fr-CA",
+          "--help",
+          0
+        ],
+        [
+          "fr-CA",
+          "--he",
+          0
+        ],
+        [
+          "fr-CA",
+          "-ds --help",
+          0
+        ],
+        [
+          "fr-CA",
+          "--version",
+          0
+        ],
+        [
+          "fr-CA",
+          "--ver",
+          0
+        ],
+        [
+          "fr-CA",
+          "--inconnue",
+          1
+        ],
+        [
+          "fr-CA",
+          "man tr",
+          0
+        ],
+        [
+          "en-US",
+          "--help",
+          0
+        ],
+        [
+          "en-US",
+          "--he",
+          0
+        ],
+        [
+          "en-US",
+          "-ds --help",
+          0
+        ],
+        [
+          "en-US",
+          "--version",
+          0
+        ],
+        [
+          "en-US",
+          "--ver",
+          0
+        ],
+        [
+          "en-US",
+          "--inconnue",
+          1
+        ],
+        [
+          "en-US",
+          "man tr",
+          0
+        ],
+        [
+          "fr--CA",
+          "--help",
+          0
+        ],
+        [
+          "fr--CA",
+          "--he",
+          0
+        ],
+        [
+          "fr--CA",
+          "-ds --help",
+          0
+        ],
+        [
+          "fr--CA",
+          "--version",
+          0
+        ],
+        [
+          "fr--CA",
+          "--ver",
+          0
+        ],
+        [
+          "fr--CA",
+          "--inconnue",
+          1
+        ],
+        [
+          "fr--CA",
+          "man tr",
+          0
+        ],
+        [
+          "nsh",
+          "cat entree | tr '[:lower:]' '[:upper:]'",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | tr -s ' '",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | tr --inconnue",
+          3
+        ],
+        [
+          "nsh",
+          "cat donnees.txt | tr 'a-z' 'A-Z'",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | wc -l",
+          0
+        ],
+        [
+          "nsh",
+          "cat donnees.txt",
+          0
+        ]
+      ],
+      "etat_documentaire_avant": [
+        "a9cdc7c46c98f353561607fae83bcd37eaaaa082b1e2fece75d4d99d73493499",
+        872448,
+        213,
+        77
+      ],
+      "etat_documentaire_apres": [
+        "a9cdc7c46c98f353561607fae83bcd37eaaaa082b1e2fece75d4d99d73493499",
+        872448,
+        213,
+        77
+      ],
+      "iso_sdk_sha256": "0811625db0c56e892f1ca3bba639f68cab9ea23e85bf57098d30ea2a0755574f",
+      "noyau_sdk_sha256": "a3ebe2808b366766752e6d1c69e7528c5a2020e417bd5f2076f1e40c0e8c03ac",
+      "iso_nsh_sha256": "1239cef98f40dc95424cf0e1c0b81a72fa803f5e4ab7fcb95d22ddab1d439fc6",
+      "noyau_nsh_sha256": "1e7f40d8760c2079b01902684af548799fb2dafc50e11ab07e63a74a3a71a854",
+      "volume_sha256": "2cd5916ed4624150ba0a213db87bf4cc9aee45474599f98af40202922950bc63",
+      "archive_sha256": "90286b315f5cc9e1bcf1d8dba0d4ecad7e4f8c90b4e643d5c90cda14090b1b44"
+    },
+    "x86_64-512": {
+      "cas_sdk": 3684,
+      "pid_sdk": 2,
+      "niveau": "Ring3",
+      "statut_sdk": 0,
+      "restitution": "OK",
+      "machine": {
+        "vcpu": 2,
+        "ram_octets": 268435456,
+        "secteur": 512
+      },
+      "elf_sonde_sha256": "0f95bc18c3d1b22bdbfd4f4cb322b386e0e7e4ed79987d23463eb089a63166ed",
+      "cas_nsh": [
+        [
+          "fr-CA",
+          "--help",
+          0
+        ],
+        [
+          "fr-CA",
+          "--he",
+          0
+        ],
+        [
+          "fr-CA",
+          "-ds --help",
+          0
+        ],
+        [
+          "fr-CA",
+          "--version",
+          0
+        ],
+        [
+          "fr-CA",
+          "--ver",
+          0
+        ],
+        [
+          "fr-CA",
+          "--inconnue",
+          1
+        ],
+        [
+          "fr-CA",
+          "man tr",
+          0
+        ],
+        [
+          "en-US",
+          "--help",
+          0
+        ],
+        [
+          "en-US",
+          "--he",
+          0
+        ],
+        [
+          "en-US",
+          "-ds --help",
+          0
+        ],
+        [
+          "en-US",
+          "--version",
+          0
+        ],
+        [
+          "en-US",
+          "--ver",
+          0
+        ],
+        [
+          "en-US",
+          "--inconnue",
+          1
+        ],
+        [
+          "en-US",
+          "man tr",
+          0
+        ],
+        [
+          "fr--CA",
+          "--help",
+          0
+        ],
+        [
+          "fr--CA",
+          "--he",
+          0
+        ],
+        [
+          "fr--CA",
+          "-ds --help",
+          0
+        ],
+        [
+          "fr--CA",
+          "--version",
+          0
+        ],
+        [
+          "fr--CA",
+          "--ver",
+          0
+        ],
+        [
+          "fr--CA",
+          "--inconnue",
+          1
+        ],
+        [
+          "fr--CA",
+          "man tr",
+          0
+        ],
+        [
+          "nsh",
+          "cat entree | tr '[:lower:]' '[:upper:]'",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | tr -s ' '",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | tr --inconnue",
+          3
+        ],
+        [
+          "nsh",
+          "cat donnees.txt | tr 'a-z' 'A-Z'",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | wc -l",
+          0
+        ],
+        [
+          "nsh",
+          "cat donnees.txt",
+          0
+        ]
+      ],
+      "etat_documentaire_avant": [
+        "6c46fd91a38c1094f6b22650f3af5818913a0a1d4545587352eb8642b32b4c46",
+        872448,
+        213,
+        77
+      ],
+      "etat_documentaire_apres": [
+        "6c46fd91a38c1094f6b22650f3af5818913a0a1d4545587352eb8642b32b4c46",
+        872448,
+        213,
+        77
+      ],
+      "iso_sdk_sha256": "d2cb471b7ba7ebd7e834a094816197a3991e8122089d6c4351d496545841da88",
+      "noyau_sdk_sha256": "c675beff21fa076c64b5966803bb21de06f1c597045e555df219c334a13e9f41",
+      "iso_nsh_sha256": "87060c667aeb71efec8b84eb0aefe9de50f39c45fc07c8e9571866b1be704aa3",
+      "noyau_nsh_sha256": "df20e4ca8d0a07e1766ed3dbc793291d4532c2b9f13258a0967c152f3e435e0c",
+      "volume_sha256": "32cd2a4ac40f85fdaec273c1c1d3219c8314a018cc6f76d62ba67f33e19d1b68",
+      "archive_sha256": "d182599d2a3e6d7ef5ed7c6906253fe891cb56b67da6cbcc84523f6e155f885c"
+    },
+    "x86_64-4096": {
+      "cas_sdk": 3684,
+      "pid_sdk": 2,
+      "niveau": "Ring3",
+      "statut_sdk": 0,
+      "restitution": "OK",
+      "machine": {
+        "vcpu": 2,
+        "ram_octets": 268435456,
+        "secteur": 4096
+      },
+      "elf_sonde_sha256": "0f95bc18c3d1b22bdbfd4f4cb322b386e0e7e4ed79987d23463eb089a63166ed",
+      "cas_nsh": [
+        [
+          "fr-CA",
+          "--help",
+          0
+        ],
+        [
+          "fr-CA",
+          "--he",
+          0
+        ],
+        [
+          "fr-CA",
+          "-ds --help",
+          0
+        ],
+        [
+          "fr-CA",
+          "--version",
+          0
+        ],
+        [
+          "fr-CA",
+          "--ver",
+          0
+        ],
+        [
+          "fr-CA",
+          "--inconnue",
+          1
+        ],
+        [
+          "fr-CA",
+          "man tr",
+          0
+        ],
+        [
+          "en-US",
+          "--help",
+          0
+        ],
+        [
+          "en-US",
+          "--he",
+          0
+        ],
+        [
+          "en-US",
+          "-ds --help",
+          0
+        ],
+        [
+          "en-US",
+          "--version",
+          0
+        ],
+        [
+          "en-US",
+          "--ver",
+          0
+        ],
+        [
+          "en-US",
+          "--inconnue",
+          1
+        ],
+        [
+          "en-US",
+          "man tr",
+          0
+        ],
+        [
+          "fr--CA",
+          "--help",
+          0
+        ],
+        [
+          "fr--CA",
+          "--he",
+          0
+        ],
+        [
+          "fr--CA",
+          "-ds --help",
+          0
+        ],
+        [
+          "fr--CA",
+          "--version",
+          0
+        ],
+        [
+          "fr--CA",
+          "--ver",
+          0
+        ],
+        [
+          "fr--CA",
+          "--inconnue",
+          1
+        ],
+        [
+          "fr--CA",
+          "man tr",
+          0
+        ],
+        [
+          "nsh",
+          "cat entree | tr '[:lower:]' '[:upper:]'",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | tr -s ' '",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | tr --inconnue",
+          3
+        ],
+        [
+          "nsh",
+          "cat donnees.txt | tr 'a-z' 'A-Z'",
+          3
+        ],
+        [
+          "nsh",
+          "cat entree | wc -l",
+          0
+        ],
+        [
+          "nsh",
+          "cat donnees.txt",
+          0
+        ]
+      ],
+      "etat_documentaire_avant": [
+        "4fdd487ec20645bd79758bb6b222fe01cb9b1efebcbb0afa18acfba679ba4e8a",
+        872448,
+        213,
+        77
+      ],
+      "etat_documentaire_apres": [
+        "4fdd487ec20645bd79758bb6b222fe01cb9b1efebcbb0afa18acfba679ba4e8a",
+        872448,
+        213,
+        77
+      ],
+      "iso_sdk_sha256": "36ba9f8edc6bbe359170663fd0f2086214cc41fcc4056eccf7755cdc73b99c4a",
+      "noyau_sdk_sha256": "c675beff21fa076c64b5966803bb21de06f1c597045e555df219c334a13e9f41",
+      "iso_nsh_sha256": "501b9c87dd28f548ec45a184d7191b21af351cf08c52d4e129a79575518a65b9",
+      "noyau_nsh_sha256": "df20e4ca8d0a07e1766ed3dbc793291d4532c2b9f13258a0967c152f3e435e0c",
+      "volume_sha256": "9f014f419cbbe59e1ea71782c8662b6e9ed04d39296b5eb1a6cf43591b7411e7",
+      "archive_sha256": "d182599d2a3e6d7ef5ed7c6906253fe891cb56b67da6cbcc84523f6e155f885c"
+    }
+  }
+}
