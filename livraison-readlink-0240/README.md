@@ -22,7 +22,17 @@ NovaFS P9 définit File et Directory. LOOKUP_AT, STAT, DIR_OPEN et GETCWD du pro
 
 Sur cette base, le lanceur ordinaire ne distribue pas readlink. Une branche parallèle du lanceur a poursuivi ses essais de tickets, dont f8966d38fa5ef021e4b2354780e0a0c4dd69f946. Elle ne fournit pas de primitive de lecture de lien à readlink. Les travaux de ce lot portent sur la commande, le catalogue documentaire et le banc. Les 48 sélecteurs ABI v1, les services de stockage et le format P9 restent ceux de la base.
 
-Le contrôleur SDK de test utilise une copie du noyau avec attribution du seul port console nécessaire. Il vérifie le contenu des sorties série et les statuts, la restitution des instances et le SHA du disque en lecture seule. Dans le noyau ordinaire, nsh fournit localement --help, --version et man readlink. Les contrôles comparent le SHA du volume stabilisé avant et après consultation. Les essais utilisent des volumes P9 jetables. L’ELF de sonde est un exécutable distinct qui appelle le moteur avec un espace de noms synthétique. [Contrôleur](lab/controleur.rs) · [Sonde](lab/sonde.rs)
+Le contrôleur SDK de test utilise une copie du noyau avec attribution du seul port console nécessaire. Il vérifie le contenu des sorties série et les statuts, la restitution des instances et le SHA du disque en lecture seule. Dans le noyau ordinaire, nsh fournit localement --help, --version et man readlink. Les contrôles comparent le SHA du volume stabilisé, les opérations d’écriture, les octets écrits et les FLUSH du périphérique QEMU avant et après consultation. Les essais utilisent des volumes P9 jetables. L’ELF de sonde est un exécutable distinct qui appelle le moteur avec un espace de noms synthétique. [Contrôleur](lab/controleur.rs) · [Sonde](lab/sonde.rs)
+
+## Résultats de qualification
+
+Les 551 essais Darwin du mode complet et les 16 exécutions des huit suites amont ont réussi. Les cinq tests du catalogue ARC-026 et la vérification du registre ABI ont réussi. Le correctif de sortie fermée diffère la détection de l’erreur jusqu’à la première écriture. Auparavant, la duplication de stdout au démarrage produisait un diagnostic superflu lorsqu’aucun opérande n’émettait de données.
+
+Le [tableau QEMU](preuves/qemu/tableau.md) donne les temps, débits et mesures de tas du moteur synthétique. Chaque répertoire par ISA et secteur contient également les statuts et les octets de l’ELF et du terminal. Les essais couvrent 26 appels à l’ELF par profil. Les essais métier ordinaires restent bloqués sur les quatre profils. La documentation du terminal a été consultée avec fr-CA, fr-Zzzz, fr-zzzzz et en-GB.
+
+Les régressions exécutent tests/nsh.py, tests/nsh_scripts.py et tests/cli_p9.py sur les deux ISA et les deux géométries. Le premier passage de cli_p9.py sur AArch64 a réussi en 512, puis le banc a cherché le noyau au chemin standard novaOS/target en 4096. La compilation dédiée utilisait le TMPDIR de readlink. Le rejeu en 4096 avec les mêmes octets au chemin attendu a réussi. Les campagnes globales noyau, DMA, installateur et récupération NovaFS portent sur des composants extérieurs à ce changement. Les démarrages sont des invités QEMU TCG, sans essai UTM ni exécution Darwin sous Rosetta.
+
+L’[archive de qualification](qualification.tar.xz) inclut les binaires, les journaux bruts, les mesures, les images P9 et les ISO de la recette. L’[empreinte de l’archive](qualification.sha256) complète le manifeste SHA256SUMS interne, relu après extraction.
 
 ## Rejouer depuis ce répertoire
 

@@ -1,0 +1,119 @@
+{
+ "architecture": "aarch64",
+ "secteur": 4096,
+ "controles": 13,
+ "mesures": [
+  {
+   "charge": 0,
+   "passage": 0,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 832500
+  },
+  {
+   "charge": 0,
+   "passage": 1,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 602541
+  },
+  {
+   "charge": 0,
+   "passage": 2,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 810625
+  },
+  {
+   "charge": 1,
+   "passage": 0,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 7233042
+  },
+  {
+   "charge": 1,
+   "passage": 1,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 7333000
+  },
+  {
+   "charge": 1,
+   "passage": 2,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 7184708
+  },
+  {
+   "charge": 2,
+   "passage": 0,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 22674709
+  },
+  {
+   "charge": 2,
+   "passage": 1,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 22283791
+  },
+  {
+   "charge": 2,
+   "passage": 2,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 22368792
+  },
+  {
+   "charge": 3,
+   "passage": 0,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 2962250
+  },
+  {
+   "charge": 3,
+   "passage": 1,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 2960000
+  },
+  {
+   "charge": 3,
+   "passage": 2,
+   "croissance_tas_octets": 65536,
+   "chemins": 4000,
+   "ns": 3061000
+  }
+ ],
+ "medianes_ns": {
+  "0": 810625,
+  "1": 7233042,
+  "2": 22368792,
+  "3": 2962250
+ },
+ "disque": "e6b9f1dc95ccda75c4c36baece751bec98febd3b78682b7142f5a51858efdf81",
+ "iso": "8be6257c1215ec95b9c91469fb3ccf328ec1ccfb660fbd0b3a52c8517910a68a",
+ "noyau": "80ab7b73825d4f4f43307d9d11dbf2ddf82469323a43ffca5c4156a94c835647",
+ "sonde": "b6c15c086d1555fbeb3977a225c5555e8db6c2be8e80c35e6d33eee693ee4524",
+ "commande": [
+  "sh",
+  "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/readlink-natif-0240/novaOS/scripts/qemu.sh",
+  "-display",
+  "none",
+  "-monitor",
+  "none",
+  "-serial",
+  "stdio",
+  "-machine",
+  "msi=off",
+  "-device",
+  "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+  "-drive",
+  "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/readlink-arc027/recette.FW6nCsvi/aarch64/4096/moteur/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+  "-device",
+  "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=4096,physical_block_size=4096"
+ ]
+}
