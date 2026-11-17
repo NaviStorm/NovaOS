@@ -1,6 +1,6 @@
 # NovaAuth v0.24.0 — Raccord de stockage du registre isolé
 
-**Proposition à arbitrer le 17 novembre 2026.** Retenir un registre en processus isolé et une interface transactionnelle privée dans NovaFS (option B). NovaFS reste seul écrivain P9. Le registre décide quelles modifications de politique sont autorisées. Le signataire prouve l’identité du serveur. L’autorité indépendante décide quelle génération peut être activée. Les essais ci-dessous sont à réaliser.
+**Option B approuvée par la MOA/MOE.** Retenir un registre en processus isolé et une interface transactionnelle privée dans NovaFS (option B). NovaFS reste seul écrivain P9. Le registre décide quelles modifications de politique sont autorisées. Le signataire prouve l’identité du serveur. L’autorité indépendante décide quelle génération peut être activée. Les essais ci-dessous sont à réaliser.
 
 ## Ce que fait la révision examinée
 
@@ -17,7 +17,7 @@ Le code prépare trois écritures P9 successives dans l’emplacement de la gén
 | Reprise et coût | Trois handles applicatifs à invalider ensemble, plus la coordination et le suivi des fragments de chaque objet. Possibilité de partager une paire IPC pour ces handles. | Une paire IPC, un contexte borné et une intention de publication. Le registre perd l’accès à toute la vue dès le retrait de la conversation. |
 | Changement requis | Introduire des capacités d’objet spécialisées et une opération commune de finalisation. | Introduire dans le seul profil de qualification un adaptateur privé au-dessus du moteur P9 existant. Aucun second montage, allocateur de blocs ou journal de volume. |
 
-**Option B proposée.** Aucun chemin libre, handle de répertoire, numéro de bloc ou identifiant d’objet arbitraire ne traverse cette interface. Les trois objets sont ceux du répertoire `/system/identity/`. Au provisionnement explicite, NovaFS lie leurs identifiants et types au domaine, au système de fichiers, au volume logique et à la référence de récupération. À chaque remontage, vérifier ces liaisons contre la tête authentifiée. Un renommage, une substitution ou une base manquante bloque l’ouverture. Refuser aussi les accès par les voies génériques de liste, lecture, écriture, alias, renommage, suppression ou délégation qui pourraient exposer ou remplacer ces objets. La qualification doit inclure ces voies avec un client réel.
+**Périmètre approuvé.** Aucun chemin libre, handle de répertoire, numéro de bloc ou identifiant d’objet arbitraire ne traverse cette interface. Les trois objets sont ceux du répertoire `/system/identity/`. Au provisionnement explicite, NovaFS lie leurs identifiants et types au domaine, au système de fichiers, au volume logique et à la référence de récupération. À chaque remontage, vérifier ces liaisons contre la tête authentifiée. Un renommage, une substitution ou une base manquante bloque l’ouverture. Refuser aussi les accès par les voies génériques de liste, lecture, écriture, alias, renommage, suppression ou délégation qui pourraient exposer ou remplacer ces objets. La qualification doit inclure ces voies avec un client réel.
 
 ## Opérations privées proposées
 
@@ -58,4 +58,4 @@ Exécuter chaque ligne sur QEMU AArch64 et x86_64, P9/512 et P9/4096. Statut de 
 | Signataire et ressources | Faire tomber registre, stockage, transport puis signataire. Vérifier isolation de la clé dans les artefacts et les droits réels des processus, absence de signature pour NovaFS ou le courtier, réveils bornés et bilan après drainage. |
 | Régressions | Rejouer NovaAuth, IPC, les consommateurs des politiques déjà qualifiés, les neuf contrôles ABI et les quatre ELF historiques. Comparer les artefacts ordinaires et la lecture des volumes P9 existants. |
 
-**Arbitrages demandés.** Valider le principe de B et la responsabilité de chaque acteur. Avant le code, résoudre le routage des appels de dossier, le transport privé et son budget. Un nouveau sélecteur, une modification du noyau ordinaire ou un dépassement de quota impose une décision distincte.
+**Suite de la décision.** Le stockage transactionnel limité au triplet est approuvé. Une extension ABI, une modification du noyau ordinaire ou un dépassement de quota requiert un arbitrage distinct. Le nouveau contrat décrit le routage des dossiers, le budget des conversations privées, les limites mesurées du banc et le choix du transport restant à arbitrer. [Contrat du transport hors P9](novaauth-transport-autorite-v0.24.0.md)

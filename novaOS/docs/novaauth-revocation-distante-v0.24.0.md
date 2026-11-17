@@ -1,6 +1,6 @@
 # NovaAuth v0.24.0 — Révocation locale et autorité distante
 
-**Contrat proposé pour revue MOA/MOE, 17 novembre 2026.** Une fermeture locale prend effet immédiatement sur le serveur. Pour affirmer qu’aucune signature antérieure ne pourra encore être admise à distance, il faut également disposer d’une décision durable de l’autorité. Pendant une partition réseau, une opération déjà signée peut encore gagner cette course. Le client doit pouvoir observer cette distinction.
+**Ordre durable des admissions et des retraits approuvé sous conditions par la MOA/MOE.** Une fermeture locale prend effet immédiatement sur le serveur. Pour affirmer qu’aucune signature antérieure ne pourra encore être admise à distance, il faut également disposer d’une décision durable de l’autorité. Pendant une partition réseau, une opération déjà signée peut encore gagner cette course. Le client doit pouvoir observer cette distinction.
 
 ## Portées et enregistrements
 
@@ -68,4 +68,4 @@ Une rotation du serveur conserve domaine, tête et reçus. Sérialiser retrait d
 
 Conserver pour chaque essai les SHA du commit, des images et des volumes, le modèle de panne, les décisions ordonnées de l’autorité, les reçus, les événements locaux, les compteurs avant/après drainage et le nombre d’exécutions par identifiant. Archiver les résultats favorables et défavorables avec copies SHA-256 relues. Exclure clés privées, facteurs et capacités réutilisables. Rejouer aussi les régressions NovaAuth, IPC, ABI v1 et ELF historiques. Une coupure de QEMU ne qualifie ni la persistance physique de l’autorité ni la garde d’une clé de production.
 
-**Décision demandée.** Approuver ou amender le commit commun d’admission et de publication, la barrière locale, la procédure de reprise et la frontière d’acquittement distant. Le risque résiduel à accepter est précis : une ancienne signature déjà remise peut être admise entre la fermeture locale et le retrait durable distant. Si ce risque est inacceptable, la disponibilité des mutations pendant une partition doit être revue avec la MOA/MOE avant toute implémentation.
+**Réserve acceptée pour la conception.** Une demande déjà signée et transmise peut encore être admise entre la fermeture locale et le retrait durable distant. La qualification devra exercer les deux ordres et établir la reprise sur reçu frais. Le support physique des enveloppes reste soumis à arbitrage. [Contrat du transport et recette](novaauth-transport-autorite-v0.24.0.md)
