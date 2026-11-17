@@ -31,6 +31,21 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "printf",
+        provider: "nova-printf",
+        description: Text("Print formatted bytes.", "Écrire des octets formatés."),
+        syntax: Text::same("printf [--] FORMAT [ARGUMENT ...]"),
+        arguments: Text(
+            "FORMAT repeats until the arguments run out. Use -- before a literal --help or --version. See printf --help for conversions, flags and escape sequences.",
+            "FORMAT se répète jusqu’au dernier argument. Placer -- avant un format littéral --help ou --version. printf --help détaille conversions, drapeaux et échappements.",
+        ),
+        examples: Text::same(r"printf '%2$s %1$04d\n' 7 Nova"),
+        rights: Text("Output and error ports.", "Ports de sortie et de diagnostic."),
+        effects: Text("Writes to the selected output. No file access.", "Écrit sur la sortie choisie. Aucun accès fichier."),
+        limits: Text("0 on success, 1 on error.", "0 en cas de succès, 1 sur erreur."),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1146,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.provider == "nova-printf" {
+            return format!("printf (NovaOS) {}\n", include_str!("../printf/VERSION").trim());
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
@@ -1148,6 +1166,9 @@ impl Page {
     }
 
     pub fn render(&self, path: &[&str], manual: bool, lang: Language) -> Option<String> {
+        if self.provider == "nova-printf" && !manual && path.is_empty() {
+            return Some(String::from(lang.select(include_str!("../printf/help.en"),include_str!("../printf/help.fr"))));
+        }
         let mut text = String::new();
         if path.is_empty() {
             writeln!(
@@ -1207,10 +1228,10 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
+                if self.provider == "nova-printf" { lang.select("Status:", "Statut :") } else { lang.select(
                     "Status, errors and limits: 0 success, 3 invalid argument.",
                     "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                ) },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )

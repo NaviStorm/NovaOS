@@ -13,6 +13,11 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    // Les deux options documentaires de printf sont des formats littéraux dès
+    // qu’un autre opérande les accompagne.
+    if name == "printf" && !matches!(args, ["--help"] | ["--version"]) {
+        return Ok(None);
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

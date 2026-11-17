@@ -1,0 +1,10 @@
+Syntaxe : printf [--] FORMAT [ARGUMENT ...]
+          printf --help | --version
+Écrit des octets sans saut de ligne implicite. Répète FORMAT jusqu’au dernier argument.
+%s chaîne, %c premier octet, %b échappements, %q citation pour le shell, %% pour cent.
+%d %i signés, %o %u %x %X non signés, %a %A %e %E %f %F %g %G en binaire64.
+Drapeaux : - + espace # 0 ' (groupement). Largeur et .précision acceptent * ou *N$.
+%N$ sélectionne un argument. Une valeur absente vaut zéro ou une chaîne vide.
+Échappements : \" \\ \a \b \c (arrêt) \e \f \n \r \t \v, \NNN, \xHH, \uHHHH, \UHHHHHHHH.
+Dans %b, \0NNN produit aussi un octet. Statut 0 en cas de succès, 1 sur erreur.
+Manuel : man printf

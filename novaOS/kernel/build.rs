@@ -213,6 +213,9 @@ fn main() {
         "Cargo.lock",
         "libraries",
         "coreutils",
+        "printf/help.en",
+        "printf/help.fr",
+        "printf/VERSION",
         "shell",
         "vi",
     ] {

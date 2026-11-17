@@ -1,0 +1,10 @@
+Usage: printf [--] FORMAT [ARGUMENT ...]
+       printf --help | --version
+Write bytes without an implicit newline. Repeat FORMAT until the arguments run out.
+%s string, %c first byte, %b interpreted escapes, %q shell quoting, %% percent.
+%d %i signed, %o %u %x %X unsigned, %a %A %e %E %f %F %g %G binary64.
+Flags: - + space # 0 ' (grouping). Width and .precision accept * or *N$.
+Select an argument with %N$. Missing values default to zero or empty.
+Escapes: \" \\ \a \b \c (stop) \e \f \n \r \t \v, \NNN, \xHH, \uHHHH, \UHHHHHHHH.
+In %b, \0NNN also produces one byte. Status 0 on success, 1 on error.
+Manual: man printf
