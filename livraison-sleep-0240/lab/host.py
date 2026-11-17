@@ -320,6 +320,11 @@ def main():
         ) as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
             rows = performance(a.complet)
+            from cpu import during_wait
+
+            info["cpu_pendant_attente"] = during_wait(
+                [("Nova", NOVA), ("GNU", GNU)], 7 if a.complet else 3
+            )
     else:
         rows = options(a.complet)
         info["flux"] = {

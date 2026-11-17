@@ -1141,5 +1141,137 @@
     10.55322265625,
     12.40185546875,
     10.66650390625
-  ]
+  ],
+  "cpu_pendant_attente": {
+    "Nova": [
+      {
+        "fenetre_ns": 110084416,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 107769250,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 110086000,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 108675708,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 100820459,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 110049000,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 110046041,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      }
+    ],
+    "GNU": [
+      {
+        "fenetre_ns": 106562459,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 100379792,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 104344125,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 110050500,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 100283875,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 110061792,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      },
+      {
+        "fenetre_ns": 104216333,
+        "utilisateur_ns": 0,
+        "systeme_ns": 0,
+        "utilisateur_p_ns": 0,
+        "systeme_p_ns": 0,
+        "instructions": 0,
+        "cycles": 0
+      }
+    ]
+  }
 }
