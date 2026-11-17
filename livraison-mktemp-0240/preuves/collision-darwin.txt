@@ -1,0 +1,69 @@
+   Compiling libc v0.2.191
+   Compiling nova-mktemp v0.24.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/mktemp-natif-0240/components/mktemp)
+warning: function `document` is never used
+  --> src/main.rs:21:4
+   |
+21 | fn document(help: bool, lang: documentation::Language) -> String {
+   |    ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `quiet` is never read
+ --> src/options.rs:7:9
+  |
+4 | pub struct Options<'a> {
+  |            ------- field in this struct
+...
+7 |     pub quiet: bool,
+  |         ^^^^^
+
+warning: enum `Action` is never used
+  --> src/options.rs:14:10
+   |
+14 | pub enum Action<'a> {
+   |          ^^^^^^
+
+warning: function `parse` is never used
+  --> src/options.rs:20:8
+   |
+20 | pub fn parse<'a>(args: &[&'a [u8]], posix: bool) -> Result<Action<'a>, Vec<u8>> {
+   |        ^^^^^
+
+warning: function `reason` is never used
+  --> src/darwin.rs:15:4
+   |
+15 | fn reason(e: io::Error) -> Vec<u8> {
+   |    ^^^^^^
+
+warning: function `write` is never used
+  --> src/darwin.rs:20:4
+   |
+20 | fn write(fd: i32, mut bytes: &[u8]) -> io::Result<()> {
+   |    ^^^^^
+
+warning: function `emit` is never used
+  --> src/darwin.rs:41:4
+   |
+41 | fn emit(bytes: &[u8]) -> io::Result<()> {
+   |    ^^^^
+
+warning: function `letters` is never used
+  --> src/darwin.rs:74:4
+   |
+74 | fn letters(out: &mut [u8]) {
+   |    ^^^^^^^
+
+warning: function `run` is never used
+  --> src/darwin.rs:80:8
+   |
+80 | pub fn run() -> i32 {
+   |        ^^^
+
+warning: `nova-mktemp` (bin "mktemp" test) generated 9 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.83s
+     Running unittests src/main.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp//mktemp-arc027/cargo/debug/deps/mktemp-0184371875cda784)
+
+running 1 test
+test darwin::tests::collision_reelle_ne_modifie_ni_fichier_ni_lien ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

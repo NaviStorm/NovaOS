@@ -1,0 +1,38 @@
+
+Elf file type is EXEC (Executable file)
+Entry point 0x1000000
+There are 4 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  LOAD           0x001000 0x0000000001000000 0x0000000001000000 0x00b0b0 0x00b0b0 R E 0x1000
+  LOAD           0x00d000 0x000000000100c000 0x000000000100c000 0x00a5cc 0x00a5cc R   0x1000
+  LOAD           0x018000 0x0000000001017000 0x0000000001017000 0x000398 0x000398 RW  0x1000
+  GNU_STACK      0x018398 0x0000000001017398 0x0000000001017398 0x000000 0x040000 RW  0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .text
+   01     .rodata
+   02     .data
+   03     .stack_reserve
+   None   .shstrtab
+
+Elf file type is EXEC (Executable file)
+Entry point 0x1000000
+There are 4 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  LOAD           0x001000 0x0000000001000000 0x0000000001000000 0x00cd85 0x00cd85 R E 0x1000
+  LOAD           0x00e000 0x000000000100d000 0x000000000100d000 0x00aa40 0x00aa40 R   0x1000
+  LOAD           0x019000 0x0000000001018000 0x0000000001018000 0x000398 0x000398 RW  0x1000
+  GNU_STACK      0x019398 0x0000000001018398 0x0000000001018398 0x000000 0x040000 RW  0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .text
+   01     .rodata
+   02     .data
+   03     .stack_reserve
+   None   .shstrtab
