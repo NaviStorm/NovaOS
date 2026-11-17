@@ -9,7 +9,7 @@ macOS)
     export CARGO_PKG_VERSION=$(awk '/^version = /{gsub(/"/,"",$3);print $3;exit}' components/Cargo.toml)
     src=components/coreutils/tee
     rustup run stable rustc --edition 2024 --target aarch64-apple-darwin --crate-type staticlib -C panic=abort -C opt-level=3 "$src/host.rs" -o "${TMPDIR}libtee.a"
-    cc -arch arm64 -O2 -Wall -Wextra -Werror "$src/darwin.c" "${TMPDIR}libtee.a" -o livraison-tee-0240/bin/tee
+    cc -arch arm64 -O2 -Wall -Wextra -Werror -Wl,-dead_strip "$src/darwin.c" "${TMPDIR}libtee.a" -o livraison-tee-0240/bin/tee
     ;;
 aarch64|x86_64)
     NOVA_ARCH=$1

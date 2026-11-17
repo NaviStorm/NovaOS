@@ -1,0 +1,40 @@
+[
+  {
+    "binaire": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tee-natif-0240/livraison-tee-0240/bin/tee",
+    "sha256": "69a07d7215851c4e52f2c1e4d78421dce1953205caf8fb63b32e9002156dfb85",
+    "ecritures_stdout": [
+      1024,
+      1024,
+      1024,
+      7
+    ],
+    "deux_fichiers_alias_octets": 6158,
+    "premiere_lecture": 1024,
+    "statut_quota": 1,
+    "ecritures_avant_arret": [
+      1537,
+      1024,
+      1024,
+      1024
+    ]
+  },
+  {
+    "binaire": "/opt/homebrew/Cellar/coreutils/9.12_1/bin/gtee",
+    "sha256": "d9420927d43bc432761195ea7ae1ecfbc048ed6c09cef6da366e5bddef8624a9",
+    "ecritures_stdout": [
+      1024,
+      1024,
+      1024,
+      7
+    ],
+    "deux_fichiers_alias_octets": 6158,
+    "premiere_lecture": 1024,
+    "statut_quota": 1,
+    "ecritures_avant_arret": [
+      1537,
+      1024,
+      1024,
+      1024
+    ]
+  }
+]

@@ -1,0 +1,3 @@
+timeout: failed to run command 'strace': No such file or directory
+write-eagain.sh: skipped test: No functional strace found
+write-eagain.sh: skipped test: No functional strace found

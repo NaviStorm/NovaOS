@@ -2,13 +2,15 @@
 
 **17 novembre 2026.** Mach-O Darwin ARM64 et ELF statiques NovaOS AArch64 et x86_64. Les 191 comparaisons hôtes avec GNU tee 9.12 réussissent. Les quatre profils QEMU ont exécuté les ELF exacts, le témoin du moteur avec une destination P9 et les consultations documentaires du vrai shell. Le raccord métier de `cat entree | tee sortie` reste ouvert.
 
+La liaison Darwin élimine désormais le code inutilisé. Sur chacune des six charges de 1 à 32 Mio, le Mach-O livré respecte la limite de 1,10 × la médiane GNU dans deux campagnes indépendantes. Les fichiers de `preuves/` et l’archive décrivent la livraison initiale. [Rapport de performance et mesures brutes du binaire corrigé](performance-darwin/README.md)
+
 | Référence | Valeur |
 |---|---|
 | Base vérifiée sur `origin/main` au départ | `425e4e7cc5c03e246efb64d3638376906344bf47` |
-| Sources, binaires et bancs | `18818d4d8a8b345d467a46d00daa9cab343ef306` |
+| Sources, binaires et bancs de la livraison initiale | `18818d4d8a8b345d467a46d00daa9cab343ef306` |
 | Branche | `codex/tee-natif-0240` |
 | Version affichée | `nova-cli 0.20.0`, issue de `components/Cargo.toml` |
-| [Mach-O ARM64](bin/tee) | `69a07d7215851c4e52f2c1e4d78421dce1953205caf8fb63b32e9002156dfb85` |
+| [Mach-O ARM64](bin/tee) | `fc23a98542fe39e98ab7aae9ff61dbaa5421abd74fa501e94d2234ac7e566bc9` |
 | [ELF AArch64](bin/tee-aarch64.elf) | `ddaf701f1e995e084178172b83ec031b1ad4a196f5ad6808604295d210add2d9` |
 | [ELF x86_64](bin/tee-x86_64.elf) | `352d592a70966d1b4307a163ec840050cca4ea57b937b599214b0d3c901dbb12` |
 
@@ -39,7 +41,7 @@ Sur nom occupé, CREATE_NEW renvoie EXISTS. L’ajout atomique à l’extrémit�
 
 Le main de départ limite le pipeline aux lecteurs wc et head. Le travail parallèle de lancement générique à `0bd8d679ea3b1fade9789557f506e9b66be099cd` qualifie le retrait du producteur et distingue encore le raccord au shell. La branche tee conserve le lanceur, les rôles, l’ABI v1 et le format P9. Pour la réception de bout en bout, le lanceur générique devra admettre l’ELF livré, lui remettre RECEIVE et les seules destinations nommées, puis exposer une sortie binaire sélectionnée lorsqu’elle existe. Rejouer alors les tests d’ordre, révocation, lecteur fermé, sorties multiples et restitution depuis le vrai nsh. [Parseur du shell](../components/shell/parser.rs) · [Admission sur la base](../novaOS/kernel/src/sched/process/ipc/spawn.rs)
 
-## Profil court de performance
+## Profil court de la livraison initiale
 
 Médianes Darwin en millisecondes, trois passages après échauffement, ordre alterné. Le chronométrage inclut le démarrage et la terminaison du programme. Les deux exécutables utilisent le même corpus binaire et les mêmes chemins. Les SHA-256 de toutes les destinations sont vérifiés après chaque mesure. Les fichiers sont en cache et aucune persistance par fsync n’est demandée.
 

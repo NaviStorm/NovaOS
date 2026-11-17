@@ -1,0 +1,5970 @@
+{
+ "machine": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+ "graine": 271,
+ "tours": 24,
+ "executables": {
+  "Ancien": {
+   "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tee-natif-0240/livraison-tee-0240/bin/tee",
+   "sha256": "69a07d7215851c4e52f2c1e4d78421dce1953205caf8fb63b32e9002156dfb85"
+  },
+  "GNU": {
+   "path": "/opt/homebrew/bin/gtee",
+   "sha256": "d9420927d43bc432761195ea7ae1ecfbc048ed6c09cef6da366e5bddef8624a9"
+  }
+ },
+ "charge": [
+  {
+   "heure": "2026-11-17T05:06:08.852302+01:00",
+   "charge": [
+    2.74560546875,
+    2.9501953125,
+    2.81005859375
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:09.979199+01:00",
+   "charge": [
+    2.74560546875,
+    2.9501953125,
+    2.81005859375
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:10.892274+01:00",
+   "charge": [
+    2.74560546875,
+    2.9501953125,
+    2.81005859375
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:11.814687+01:00",
+   "charge": [
+    2.74560546875,
+    2.9501953125,
+    2.81005859375
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:12.734340+01:00",
+   "charge": [
+    2.685546875,
+    2.93408203125,
+    2.80517578125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:13.650316+01:00",
+   "charge": [
+    2.685546875,
+    2.93408203125,
+    2.80517578125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:14.565978+01:00",
+   "charge": [
+    2.685546875,
+    2.93408203125,
+    2.80517578125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:15.483282+01:00",
+   "charge": [
+    2.685546875,
+    2.93408203125,
+    2.80517578125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:16.411862+01:00",
+   "charge": [
+    2.685546875,
+    2.93408203125,
+    2.80517578125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:17.335282+01:00",
+   "charge": [
+    2.63037109375,
+    2.91845703125,
+    2.80029296875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:18.257068+01:00",
+   "charge": [
+    2.63037109375,
+    2.91845703125,
+    2.80029296875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:19.172000+01:00",
+   "charge": [
+    2.63037109375,
+    2.91845703125,
+    2.80029296875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:20.096422+01:00",
+   "charge": [
+    2.63037109375,
+    2.91845703125,
+    2.80029296875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:21.011838+01:00",
+   "charge": [
+    2.63037109375,
+    2.91845703125,
+    2.80029296875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:21.950059+01:00",
+   "charge": [
+    2.63037109375,
+    2.91845703125,
+    2.80029296875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:22.896192+01:00",
+   "charge": [
+    2.81982421875,
+    2.95263671875,
+    2.81298828125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:23.846357+01:00",
+   "charge": [
+    2.81982421875,
+    2.95263671875,
+    2.81298828125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:24.777094+01:00",
+   "charge": [
+    2.81982421875,
+    2.95263671875,
+    2.81298828125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:25.710556+01:00",
+   "charge": [
+    2.81982421875,
+    2.95263671875,
+    2.81298828125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:26.656158+01:00",
+   "charge": [
+    2.81982421875,
+    2.95263671875,
+    2.81298828125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:27.595744+01:00",
+   "charge": [
+    2.75390625,
+    2.9365234375,
+    2.80810546875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:28.526034+01:00",
+   "charge": [
+    2.75390625,
+    2.9365234375,
+    2.80810546875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:29.477017+01:00",
+   "charge": [
+    2.75390625,
+    2.9365234375,
+    2.80810546875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:30.416004+01:00",
+   "charge": [
+    2.75390625,
+    2.9365234375,
+    2.80810546875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:31.359048+01:00",
+   "charge": [
+    2.75390625,
+    2.9365234375,
+    2.80810546875
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:32.293534+01:00",
+   "charge": [
+    2.7734375,
+    2.9375,
+    2.80908203125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  },
+  {
+   "heure": "2026-11-17T05:06:33.239138+01:00",
+   "charge": [
+    2.7734375,
+    2.9375,
+    2.80908203125
+   ],
+   "processus": {
+    "Python": 1
+   }
+  }
+ ],
+ "mesures": [
+  {
+   "tour": -2,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 78497458,
+   "user_s": 0.004803,
+   "system_s": 0.071601,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 407.6565129026216
+  },
+  {
+   "tour": -2,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 76608000,
+   "user_s": 0.0042239999999999995,
+   "system_s": 0.071175,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 417.7109440267335
+  },
+  {
+   "tour": -2,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 74019958,
+   "user_s": 0.00361,
+   "system_s": 0.066853,
+   "rss_octets": 2195456,
+   "involontaires": 24,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 432.3158356831275
+  },
+  {
+   "tour": -2,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 74030459,
+   "user_s": 0.003168,
+   "system_s": 0.069104,
+   "rss_octets": 2064384,
+   "involontaires": 67,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 432.2545129701276
+  },
+  {
+   "tour": -2,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 284424542,
+   "user_s": 0.012496,
+   "system_s": 0.26514299999999996,
+   "rss_octets": 2195456,
+   "involontaires": 87,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 450.03148849229757
+  },
+  {
+   "tour": -2,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 282543250,
+   "user_s": 0.010270999999999999,
+   "system_s": 0.265474,
+   "rss_octets": 2064384,
+   "involontaires": 77,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 453.02798775054794
+  },
+  {
+   "tour": -2,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 18105375,
+   "user_s": 0.002041,
+   "system_s": 0.014669999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 441.8577356171855
+  },
+  {
+   "tour": -2,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17216500,
+   "user_s": 0.001547,
+   "system_s": 0.014445999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 464.6705195597247
+  },
+  {
+   "tour": -2,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 4737917,
+   "user_s": 0.001125,
+   "system_s": 0.002516,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 211.06321617706683
+  },
+  {
+   "tour": -2,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4354917,
+   "user_s": 0.000696,
+   "system_s": 0.002614,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 229.62550147339203
+  },
+  {
+   "tour": -2,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 11313167,
+   "user_s": 0.001395,
+   "system_s": 0.00889,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 353.57031324650296
+  },
+  {
+   "tour": -2,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 11075209,
+   "user_s": 0.000941,
+   "system_s": 0.008889,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 361.16699919613256
+  },
+  {
+   "tour": -1,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4610417,
+   "user_s": 0.0007869999999999999,
+   "system_s": 0.002741,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 216.90011988069625
+  },
+  {
+   "tour": -1,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 4873250,
+   "user_s": 0.001152,
+   "system_s": 0.00268,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 205.20186733699276
+  },
+  {
+   "tour": -1,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 16931708,
+   "user_s": 0.001392,
+   "system_s": 0.01445,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 472.48629612558875
+  },
+  {
+   "tour": -1,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 17708667,
+   "user_s": 0.0019,
+   "system_s": 0.014542,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 451.7561937327073
+  },
+  {
+   "tour": -1,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 214121542,
+   "user_s": 0.009994,
+   "system_s": 0.198103,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 597.7913235838737
+  },
+  {
+   "tour": -1,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 217349958,
+   "user_s": 0.011687,
+   "system_s": 0.199353,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 588.912007059141
+  },
+  {
+   "tour": -1,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 63269958,
+   "user_s": 0.004012,
+   "system_s": 0.057844,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 505.7692625621784
+  },
+  {
+   "tour": -1,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 62436917,
+   "user_s": 0.0046619999999999995,
+   "system_s": 0.056402999999999995,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 512.5172980594157
+  },
+  {
+   "tour": -1,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 54141084,
+   "user_s": 0.002927,
+   "system_s": 0.049883,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 591.0483801912795
+  },
+  {
+   "tour": -1,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 55812375,
+   "user_s": 0.00375,
+   "system_s": 0.050595,
+   "rss_octets": 2195456,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 573.3495483752483
+  },
+  {
+   "tour": -1,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9077084,
+   "user_s": 0.000927,
+   "system_s": 0.007061,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 440.6701535427016
+  },
+  {
+   "tour": -1,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 9418917,
+   "user_s": 0.001291,
+   "system_s": 0.006888999999999999,
+   "rss_octets": 2195456,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 424.677274467967
+  },
+  {
+   "tour": 0,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 213437417,
+   "user_s": 0.00987,
+   "system_s": 0.197424,
+   "rss_octets": 2064384,
+   "involontaires": 24,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 599.7074074411236
+  },
+  {
+   "tour": 0,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 218406959,
+   "user_s": 0.011127,
+   "system_s": 0.201089,
+   "rss_octets": 2195456,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 586.0619120657232
+  },
+  {
+   "tour": 0,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 54997375,
+   "user_s": 0.0030729999999999998,
+   "system_s": 0.050233,
+   "rss_octets": 2064384,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 581.8459517386057
+  },
+  {
+   "tour": 0,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 55963250,
+   "user_s": 0.003365,
+   "system_s": 0.050988,
+   "rss_octets": 2195456,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 571.8038176839265
+  },
+  {
+   "tour": 0,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5619333,
+   "user_s": 0.00129,
+   "system_s": 0.002999,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 177.95706358744002
+  },
+  {
+   "tour": 0,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4831875,
+   "user_s": 0.00077,
+   "system_s": 0.0028799999999999997,
+   "rss_octets": 2064384,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 206.9589962488682
+  },
+  {
+   "tour": 0,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 9746542,
+   "user_s": 0.0013599999999999999,
+   "system_s": 0.007142,
+   "rss_octets": 2195456,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 410.40196615373947
+  },
+  {
+   "tour": 0,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9454416,
+   "user_s": 0.0009419999999999999,
+   "system_s": 0.007359,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 423.0827160556506
+  },
+  {
+   "tour": 0,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 19073541,
+   "user_s": 0.001931,
+   "system_s": 0.015702,
+   "rss_octets": 2113536,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 419.4291977562006
+  },
+  {
+   "tour": 0,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17213875,
+   "user_s": 0.001518,
+   "system_s": 0.014461,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 464.7413786843462
+  },
+  {
+   "tour": 0,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 62332625,
+   "user_s": 0.004632,
+   "system_s": 0.056574,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 513.3748177619666
+  },
+  {
+   "tour": 0,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 63580542,
+   "user_s": 0.0041719999999999995,
+   "system_s": 0.057776999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 23,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 503.29863498175274
+  },
+  {
+   "tour": 1,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 55437625,
+   "user_s": 0.003508,
+   "system_s": 0.050672999999999996,
+   "rss_octets": 2195456,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 577.2253050162232
+  },
+  {
+   "tour": 1,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 55799458,
+   "user_s": 0.0030429999999999997,
+   "system_s": 0.051372,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 573.4822728923281
+  },
+  {
+   "tour": 1,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4685041,
+   "user_s": 0.000765,
+   "system_s": 0.0026669999999999997,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 213.44530389381865
+  },
+  {
+   "tour": 1,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 4672875,
+   "user_s": 0.00107,
+   "system_s": 0.002567,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 214.00101650482839
+  },
+  {
+   "tour": 1,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 8941667,
+   "user_s": 0.000828,
+   "system_s": 0.007233,
+   "rss_octets": 2064384,
+   "involontaires": 4,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 447.34387894337823
+  },
+  {
+   "tour": 1,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 10155584,
+   "user_s": 0.0012929999999999999,
+   "system_s": 0.007434,
+   "rss_octets": 2195456,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 393.87198215287276
+  },
+  {
+   "tour": 1,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 63429708,
+   "user_s": 0.004118999999999999,
+   "system_s": 0.057941,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 504.49546449118134
+  },
+  {
+   "tour": 1,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 62607125,
+   "user_s": 0.004554,
+   "system_s": 0.056642,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 511.1239335778476
+  },
+  {
+   "tour": 1,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 216292250,
+   "user_s": 0.011418,
+   "system_s": 0.198477,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 591.791892682239
+  },
+  {
+   "tour": 1,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 216026000,
+   "user_s": 0.009996,
+   "system_s": 0.199651,
+   "rss_octets": 2064384,
+   "involontaires": 20,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 592.5212705877996
+  },
+  {
+   "tour": 1,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 17491542,
+   "user_s": 0.0015019999999999999,
+   "system_s": 0.014775,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 457.36390765319607
+  },
+  {
+   "tour": 1,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 18030750,
+   "user_s": 0.001936,
+   "system_s": 0.015028999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 443.686480041041
+  },
+  {
+   "tour": 2,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 218899083,
+   "user_s": 0.011301,
+   "system_s": 0.200963,
+   "rss_octets": 2195456,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 584.7443408431272
+  },
+  {
+   "tour": 2,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 214267041,
+   "user_s": 0.009923999999999999,
+   "system_s": 0.197684,
+   "rss_octets": 2064384,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 597.3853906910489
+  },
+  {
+   "tour": 2,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 9944125,
+   "user_s": 0.001408,
+   "system_s": 0.007271,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 402.24755823161917
+  },
+  {
+   "tour": 2,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9149875,
+   "user_s": 0.0009419999999999999,
+   "system_s": 0.007084999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 437.1644421371877
+  },
+  {
+   "tour": 2,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 62690250,
+   "user_s": 0.0047989999999999994,
+   "system_s": 0.056693999999999994,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 510.44620176183696
+  },
+  {
+   "tour": 2,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 62001625,
+   "user_s": 0.004124,
+   "system_s": 0.056535999999999996,
+   "rss_octets": 2064384,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 516.1155050371664
+  },
+  {
+   "tour": 2,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 4916083,
+   "user_s": 0.0011949999999999999,
+   "system_s": 0.002636,
+   "rss_octets": 2113536,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 203.41397816106848
+  },
+  {
+   "tour": 2,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4101416,
+   "user_s": 0.00069,
+   "system_s": 0.002434,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 243.8182325323742
+  },
+  {
+   "tour": 2,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 55033084,
+   "user_s": 0.003479,
+   "system_s": 0.050303999999999995,
+   "rss_octets": 2195456,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 581.4684127097075
+  },
+  {
+   "tour": 2,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 55844042,
+   "user_s": 0.003032,
+   "system_s": 0.051553999999999996,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 573.0244239842094
+  },
+  {
+   "tour": 2,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 17221000,
+   "user_s": 0.0014789999999999998,
+   "system_s": 0.01441,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 464.54909703269266
+  },
+  {
+   "tour": 2,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 17850250,
+   "user_s": 0.0018729999999999999,
+   "system_s": 0.014773999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 448.1729947759835
+  },
+  {
+   "tour": 3,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 214498750,
+   "user_s": 0.009707,
+   "system_s": 0.198478,
+   "rss_octets": 2064384,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 596.7400742428568
+  },
+  {
+   "tour": 3,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 217732083,
+   "user_s": 0.011583999999999999,
+   "system_s": 0.199617,
+   "rss_octets": 2195456,
+   "involontaires": 20,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 587.878452437347
+  },
+  {
+   "tour": 3,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 18525000,
+   "user_s": 0.002128,
+   "system_s": 0.014988999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 431.84885290148446
+  },
+  {
+   "tour": 3,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17753167,
+   "user_s": 0.0014919999999999998,
+   "system_s": 0.014796,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 450.6238239070246
+  },
+  {
+   "tour": 3,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 54369584,
+   "user_s": 0.0028209999999999997,
+   "system_s": 0.050249999999999996,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 588.5643708438159
+  },
+  {
+   "tour": 3,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 55281375,
+   "user_s": 0.003606,
+   "system_s": 0.050371,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 578.8568030371893
+  },
+  {
+   "tour": 3,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4555875,
+   "user_s": 0.0007859999999999999,
+   "system_s": 0.002613,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 219.4968035777979
+  },
+  {
+   "tour": 3,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 4344459,
+   "user_s": 0.001052,
+   "system_s": 0.002404,
+   "rss_octets": 2113536,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 230.17825694752787
+  },
+  {
+   "tour": 3,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9402000,
+   "user_s": 0.000837,
+   "system_s": 0.007346,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 425.44139544777704
+  },
+  {
+   "tour": 3,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 10060666,
+   "user_s": 0.001431,
+   "system_s": 0.007408,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 397.58799268358575
+  },
+  {
+   "tour": 3,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 60676583,
+   "user_s": 0.0040939999999999995,
+   "system_s": 0.05522,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 527.386322990535
+  },
+  {
+   "tour": 3,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 63495666,
+   "user_s": 0.004736,
+   "system_s": 0.057443999999999995,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 503.97140491447084
+  },
+  {
+   "tour": 4,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 219536083,
+   "user_s": 0.011774999999999999,
+   "system_s": 0.20130199999999998,
+   "rss_octets": 2195456,
+   "involontaires": 17,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 583.0476623744809
+  },
+  {
+   "tour": 4,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 212828834,
+   "user_s": 0.009706,
+   "system_s": 0.196657,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 601.4222678117007
+  },
+  {
+   "tour": 4,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5036042,
+   "user_s": 0.001144,
+   "system_s": 0.002644,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 198.5686378310586
+  },
+  {
+   "tour": 4,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4217000,
+   "user_s": 0.000676,
+   "system_s": 0.002485,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 237.13540431586435
+  },
+  {
+   "tour": 4,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 17151250,
+   "user_s": 0.00149,
+   "system_s": 0.014457999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 466.43830624590043
+  },
+  {
+   "tour": 4,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 18384125,
+   "user_s": 0.001918,
+   "system_s": 0.01486,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 435.1580507639064
+  },
+  {
+   "tour": 4,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 55171375,
+   "user_s": 0.00295,
+   "system_s": 0.051106,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 580.0109205181129
+  },
+  {
+   "tour": 4,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 55584042,
+   "user_s": 0.003591,
+   "system_s": 0.050551,
+   "rss_octets": 2195456,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 575.7048039075676
+  },
+  {
+   "tour": 4,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9666792,
+   "user_s": 0.000983,
+   "system_s": 0.007428,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 413.78773847621835
+  },
+  {
+   "tour": 4,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 10413709,
+   "user_s": 0.001517,
+   "system_s": 0.007311,
+   "rss_octets": 2195456,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 384.109062390739
+  },
+  {
+   "tour": 4,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 61981166,
+   "user_s": 0.004043,
+   "system_s": 0.056686,
+   "rss_octets": 2064384,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 516.2858665808255
+  },
+  {
+   "tour": 4,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 62953292,
+   "user_s": 0.005020999999999999,
+   "system_s": 0.056320999999999996,
+   "rss_octets": 2113536,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 508.31336985522535
+  },
+  {
+   "tour": 5,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 56667875,
+   "user_s": 0.003642,
+   "system_s": 0.051536,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 564.6938410872121
+  },
+  {
+   "tour": 5,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 56057792,
+   "user_s": 0.0030789999999999997,
+   "system_s": 0.051481,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 570.8394651005876
+  },
+  {
+   "tour": 5,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 17915541,
+   "user_s": 0.002026,
+   "system_s": 0.014483999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 446.53968306064553
+  },
+  {
+   "tour": 5,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17838084,
+   "user_s": 0.001549,
+   "system_s": 0.014971,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 448.4786594793477
+  },
+  {
+   "tour": 5,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 219565916,
+   "user_s": 0.00985,
+   "system_s": 0.203405,
+   "rss_octets": 2064384,
+   "involontaires": 16,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 582.9684421511033
+  },
+  {
+   "tour": 5,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 221276583,
+   "user_s": 0.012036,
+   "system_s": 0.202322,
+   "rss_octets": 2195456,
+   "involontaires": 17,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 578.4615717787001
+  },
+  {
+   "tour": 5,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 9929250,
+   "user_s": 0.001402,
+   "system_s": 0.0072429999999999994,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 402.85016491678624
+  },
+  {
+   "tour": 5,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9319416,
+   "user_s": 0.0009519999999999999,
+   "system_s": 0.007136999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 429.2114441505777
+  },
+  {
+   "tour": 5,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 62855417,
+   "user_s": 0.004582,
+   "system_s": 0.056976,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 509.1048874912404
+  },
+  {
+   "tour": 5,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 61662000,
+   "user_s": 0.004086,
+   "system_s": 0.056332999999999994,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 518.9581914307029
+  },
+  {
+   "tour": 5,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4682084,
+   "user_s": 0.0007779999999999999,
+   "system_s": 0.0026409999999999997,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 213.58010663627564
+  },
+  {
+   "tour": 5,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 4823083,
+   "user_s": 0.001162,
+   "system_s": 0.0026179999999999997,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 207.33626188892043
+  },
+  {
+   "tour": 6,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 56576875,
+   "user_s": 0.003395,
+   "system_s": 0.051895,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 565.6021121703876
+  },
+  {
+   "tour": 6,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 55984542,
+   "user_s": 0.003052,
+   "system_s": 0.051618,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 571.5863496748799
+  },
+  {
+   "tour": 6,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 221248708,
+   "user_s": 0.011146999999999999,
+   "system_s": 0.203307,
+   "rss_octets": 2195456,
+   "involontaires": 25,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 578.5344518260418
+  },
+  {
+   "tour": 6,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 215319041,
+   "user_s": 0.010032,
+   "system_s": 0.19880599999999998,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 594.466701159049
+  },
+  {
+   "tour": 6,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 9897958,
+   "user_s": 0.001364,
+   "system_s": 0.007324,
+   "rss_octets": 2195456,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 404.12375966840835
+  },
+  {
+   "tour": 6,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9120750,
+   "user_s": 0.0008799999999999999,
+   "system_s": 0.007091,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 438.56042540361267
+  },
+  {
+   "tour": 6,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 62046292,
+   "user_s": 0.004066,
+   "system_s": 0.056873999999999994,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 515.74395452995
+  },
+  {
+   "tour": 6,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 63753917,
+   "user_s": 0.0050149999999999995,
+   "system_s": 0.057419,
+   "rss_octets": 2113536,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 501.92994416327394
+  },
+  {
+   "tour": 6,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 17662750,
+   "user_s": 0.0015149999999999999,
+   "system_s": 0.014856999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 452.9306025392422
+  },
+  {
+   "tour": 6,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 18256208,
+   "user_s": 0.002009,
+   "system_s": 0.014955,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 438.2071019348596
+  },
+  {
+   "tour": 6,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4623667,
+   "user_s": 0.0007379999999999999,
+   "system_s": 0.002621,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 216.27855120189236
+  },
+  {
+   "tour": 6,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 5096250,
+   "user_s": 0.001072,
+   "system_s": 0.002888,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 196.22271277900418
+  },
+  {
+   "tour": 7,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9328666,
+   "user_s": 0.0009029999999999999,
+   "system_s": 0.0073409999999999994,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 428.785852125052
+  },
+  {
+   "tour": 7,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 9911458,
+   "user_s": 0.001367,
+   "system_s": 0.007404,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 403.57331888002756
+  },
+  {
+   "tour": 7,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 55482334,
+   "user_s": 0.0029189999999999997,
+   "system_s": 0.051417,
+   "rss_octets": 2064384,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 576.7601629736773
+  },
+  {
+   "tour": 7,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 55996292,
+   "user_s": 0.0034909999999999997,
+   "system_s": 0.051107,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 571.4664106687636
+  },
+  {
+   "tour": 7,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5067250,
+   "user_s": 0.001169,
+   "system_s": 0.002706,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 197.34570033055405
+  },
+  {
+   "tour": 7,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4176875,
+   "user_s": 0.000672,
+   "system_s": 0.002547,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 239.41343707915607
+  },
+  {
+   "tour": 7,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 216038958,
+   "user_s": 0.009799,
+   "system_s": 0.19997099999999998,
+   "rss_octets": 2064384,
+   "involontaires": 16,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 592.4857312077945
+  },
+  {
+   "tour": 7,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 218892125,
+   "user_s": 0.011301,
+   "system_s": 0.201315,
+   "rss_octets": 2195456,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 584.762928314575
+  },
+  {
+   "tour": 7,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 62956166,
+   "user_s": 0.004928,
+   "system_s": 0.05662,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 508.2901649379348
+  },
+  {
+   "tour": 7,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 62632708,
+   "user_s": 0.004262,
+   "system_s": 0.057055999999999996,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 510.9151595361325
+  },
+  {
+   "tour": 7,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 17980125,
+   "user_s": 0.002049,
+   "system_s": 0.014534,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 444.9357276437177
+  },
+  {
+   "tour": 7,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17392834,
+   "user_s": 0.001487,
+   "system_s": 0.014619,
+   "rss_octets": 2048000,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 459.9595442582848
+  },
+  {
+   "tour": 8,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 9743042,
+   "user_s": 0.0013449999999999998,
+   "system_s": 0.0072759999999999995,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 410.54939514783985
+  },
+  {
+   "tour": 8,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 8851958,
+   "user_s": 0.0008399999999999999,
+   "system_s": 0.007039999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 451.8774264405683
+  },
+  {
+   "tour": 8,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 217008625,
+   "user_s": 0.010027999999999999,
+   "system_s": 0.20069199999999998,
+   "rss_octets": 2064384,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 589.8383071179775
+  },
+  {
+   "tour": 8,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 216694041,
+   "user_s": 0.010785,
+   "system_s": 0.199483,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 590.6946005958696
+  },
+  {
+   "tour": 8,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 55941334,
+   "user_s": 0.0036899999999999997,
+   "system_s": 0.050842,
+   "rss_octets": 2195456,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 572.0278318711528
+  },
+  {
+   "tour": 8,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 55139959,
+   "user_s": 0.00296,
+   "system_s": 0.050842,
+   "rss_octets": 2048000,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 580.3413818280134
+  },
+  {
+   "tour": 8,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5058667,
+   "user_s": 0.001165,
+   "system_s": 0.002727,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 197.68053520818825
+  },
+  {
+   "tour": 8,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4201834,
+   "user_s": 0.000687,
+   "system_s": 0.002434,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 237.99131522092495
+  },
+  {
+   "tour": 8,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 16840875,
+   "user_s": 0.001444,
+   "system_s": 0.014326,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 475.03469980033697
+  },
+  {
+   "tour": 8,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 17704167,
+   "user_s": 0.001913,
+   "system_s": 0.014596,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 451.8710199694795
+  },
+  {
+   "tour": 8,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 62743208,
+   "user_s": 0.004435,
+   "system_s": 0.056873999999999994,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 510.0153629377701
+  },
+  {
+   "tour": 8,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 63541834,
+   "user_s": 0.004383,
+   "system_s": 0.057874999999999996,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 503.6052311615683
+  },
+  {
+   "tour": 9,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9219834,
+   "user_s": 0.000923,
+   "system_s": 0.007182,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 433.847290526055
+  },
+  {
+   "tour": 9,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 9428667,
+   "user_s": 0.0013,
+   "system_s": 0.007128,
+   "rss_octets": 2195456,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 424.23812401053084
+  },
+  {
+   "tour": 9,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4077541,
+   "user_s": 0.000695,
+   "system_s": 0.002474,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 245.24584792648315
+  },
+  {
+   "tour": 9,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 4556041,
+   "user_s": 0.001045,
+   "system_s": 0.002423,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 219.48880618062918
+  },
+  {
+   "tour": 9,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 61756167,
+   "user_s": 0.0040219999999999995,
+   "system_s": 0.056582999999999994,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 518.1668739253199
+  },
+  {
+   "tour": 9,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 63850416,
+   "user_s": 0.005055,
+   "system_s": 0.057263999999999995,
+   "rss_octets": 2113536,
+   "involontaires": 16,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 501.17136276762864
+  },
+  {
+   "tour": 9,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 17936209,
+   "user_s": 0.001984,
+   "system_s": 0.014636999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 446.0251327356857
+  },
+  {
+   "tour": 9,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17315500,
+   "user_s": 0.001419,
+   "system_s": 0.014813999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 462.0138026623545
+  },
+  {
+   "tour": 9,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 221943833,
+   "user_s": 0.011012,
+   "system_s": 0.20471499999999998,
+   "rss_octets": 2195456,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 576.7224899643866
+  },
+  {
+   "tour": 9,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 217867417,
+   "user_s": 0.009939,
+   "system_s": 0.20152299999999998,
+   "rss_octets": 2064384,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 587.5132764804385
+  },
+  {
+   "tour": 9,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 54726542,
+   "user_s": 0.002891,
+   "system_s": 0.050431,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 584.7254153204125
+  },
+  {
+   "tour": 9,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 56387625,
+   "user_s": 0.0037819999999999998,
+   "system_s": 0.051251,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 567.5004045657181
+  },
+  {
+   "tour": 10,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 18048833,
+   "user_s": 0.0020269999999999997,
+   "system_s": 0.014920999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 443.2419536487484
+  },
+  {
+   "tour": 10,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17252541,
+   "user_s": 0.001459,
+   "system_s": 0.014693,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 463.69981094379085
+  },
+  {
+   "tour": 10,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 217157792,
+   "user_s": 0.010898999999999999,
+   "system_s": 0.19988,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 589.4331436193642
+  },
+  {
+   "tour": 10,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 216050791,
+   "user_s": 0.009854,
+   "system_s": 0.200114,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 592.4532810435302
+  },
+  {
+   "tour": 10,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 54840250,
+   "user_s": 0.002963,
+   "system_s": 0.050509,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 583.5130219136491
+  },
+  {
+   "tour": 10,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 56075250,
+   "user_s": 0.003682,
+   "system_s": 0.051182,
+   "rss_octets": 2195456,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 570.6617447091186
+  },
+  {
+   "tour": 10,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5283500,
+   "user_s": 0.001192,
+   "system_s": 0.002794,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 189.26847733509985
+  },
+  {
+   "tour": 10,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4147875,
+   "user_s": 0.000692,
+   "system_s": 0.002427,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 241.0873037398668
+  },
+  {
+   "tour": 10,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9061500,
+   "user_s": 0.000864,
+   "system_s": 0.007018,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 441.42801964354686
+  },
+  {
+   "tour": 10,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 9384000,
+   "user_s": 0.001259,
+   "system_s": 0.007061,
+   "rss_octets": 2195456,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 426.25745950554136
+  },
+  {
+   "tour": 10,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 62208292,
+   "user_s": 0.004085,
+   "system_s": 0.056943999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 514.4008776193373
+  },
+  {
+   "tour": 10,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 63247958,
+   "user_s": 0.004876,
+   "system_s": 0.057037,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 505.94518798535756
+  },
+  {
+   "tour": 11,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 17328958,
+   "user_s": 0.001491,
+   "system_s": 0.014714999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 461.6549939125018
+  },
+  {
+   "tour": 11,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 17883875,
+   "user_s": 0.001865,
+   "system_s": 0.01487,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 447.3303464713324
+  },
+  {
+   "tour": 11,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 55182542,
+   "user_s": 0.003391,
+   "system_s": 0.050582999999999996,
+   "rss_octets": 2195456,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 579.8935467670192
+  },
+  {
+   "tour": 11,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 55367167,
+   "user_s": 0.002869,
+   "system_s": 0.051372,
+   "rss_octets": 2064384,
+   "involontaires": 5,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 577.9598584121163
+  },
+  {
+   "tour": 11,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 218037209,
+   "user_s": 0.009946,
+   "system_s": 0.202074,
+   "rss_octets": 2064384,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 587.055762578579
+  },
+  {
+   "tour": 11,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 221811417,
+   "user_s": 0.011866999999999999,
+   "system_s": 0.203694,
+   "rss_octets": 2195456,
+   "involontaires": 50,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 577.0667792091153
+  },
+  {
+   "tour": 11,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 10363666,
+   "user_s": 0.001418,
+   "system_s": 0.007587999999999999,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 385.9638085596352
+  },
+  {
+   "tour": 11,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9781875,
+   "user_s": 0.0009469999999999999,
+   "system_s": 0.0075439999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 408.91955785572804
+  },
+  {
+   "tour": 11,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 65120584,
+   "user_s": 0.005157999999999999,
+   "system_s": 0.058345999999999995,
+   "rss_octets": 2113536,
+   "involontaires": 18,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 491.39608453142864
+  },
+  {
+   "tour": 11,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 63945750,
+   "user_s": 0.00418,
+   "system_s": 0.05853,
+   "rss_octets": 2064384,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 500.4241876903469
+  },
+  {
+   "tour": 11,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 5428875,
+   "user_s": 0.000864,
+   "system_s": 0.003276,
+   "rss_octets": 2064384,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 184.20022564527642
+  },
+  {
+   "tour": 11,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 5024959,
+   "user_s": 0.001184,
+   "system_s": 0.002696,
+   "rss_octets": 2113536,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 199.0065988598116
+  },
+  {
+   "tour": 12,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 63204291,
+   "user_s": 0.004142,
+   "system_s": 0.057741999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 15,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 506.2947387543672
+  },
+  {
+   "tour": 12,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 66050250,
+   "user_s": 0.004843999999999999,
+   "system_s": 0.059726999999999995,
+   "rss_octets": 2113536,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 484.4796196834985
+  },
+  {
+   "tour": 12,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 10139125,
+   "user_s": 0.0013679999999999999,
+   "system_s": 0.007515,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 394.51136069434
+  },
+  {
+   "tour": 12,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9817250,
+   "user_s": 0.000972,
+   "system_s": 0.007496999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 407.4460770582393
+  },
+  {
+   "tour": 12,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 221407875,
+   "user_s": 0.009949999999999999,
+   "system_s": 0.20486,
+   "rss_octets": 2064384,
+   "involontaires": 102,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 578.118551564618
+  },
+  {
+   "tour": 12,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 219809542,
+   "user_s": 0.010882,
+   "system_s": 0.20249699999999998,
+   "rss_octets": 2195456,
+   "involontaires": 47,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 582.3223088286131
+  },
+  {
+   "tour": 12,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 55492833,
+   "user_s": 0.0028799999999999997,
+   "system_s": 0.051087,
+   "rss_octets": 2064384,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 576.651042486874
+  },
+  {
+   "tour": 12,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 57542958,
+   "user_s": 0.003822,
+   "system_s": 0.052247999999999996,
+   "rss_octets": 2195456,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 556.1062745505715
+  },
+  {
+   "tour": 12,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 5540541,
+   "user_s": 0.000949,
+   "system_s": 0.0031349999999999998,
+   "rss_octets": 2064384,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 180.48778991076864
+  },
+  {
+   "tour": 12,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 6097625,
+   "user_s": 0.0013109999999999999,
+   "system_s": 0.003554,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 163.9982780180808
+  },
+  {
+   "tour": 12,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 19532583,
+   "user_s": 0.001697,
+   "system_s": 0.016427,
+   "rss_octets": 2064384,
+   "involontaires": 25,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 409.5720468716298
+  },
+  {
+   "tour": 12,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 18949375,
+   "user_s": 0.002124,
+   "system_s": 0.015397,
+   "rss_octets": 2113536,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 422.17751245093837
+  },
+  {
+   "tour": 13,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 229489708,
+   "user_s": 0.012187,
+   "system_s": 0.209983,
+   "rss_octets": 2195456,
+   "involontaires": 159,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 557.7592176813437
+  },
+  {
+   "tour": 13,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 223484041,
+   "user_s": 0.010031,
+   "system_s": 0.20715499999999998,
+   "rss_octets": 2064384,
+   "involontaires": 45,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 572.7478321371502
+  },
+  {
+   "tour": 13,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 64565375,
+   "user_s": 0.004968,
+   "system_s": 0.05805,
+   "rss_octets": 2113536,
+   "involontaires": 33,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 495.6216857719792
+  },
+  {
+   "tour": 13,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 63914083,
+   "user_s": 0.004181,
+   "system_s": 0.058226,
+   "rss_octets": 2064384,
+   "involontaires": 26,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 500.67212886399386
+  },
+  {
+   "tour": 13,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5288625,
+   "user_s": 0.0012,
+   "system_s": 0.0027719999999999997,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 189.08506464345646
+  },
+  {
+   "tour": 13,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4746208,
+   "user_s": 0.0007599999999999999,
+   "system_s": 0.002807,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 210.69451654879012
+  },
+  {
+   "tour": 13,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 57294584,
+   "user_s": 0.003797,
+   "system_s": 0.052080999999999995,
+   "rss_octets": 2195456,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 558.5170144528844
+  },
+  {
+   "tour": 13,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 54905459,
+   "user_s": 0.003005,
+   "system_s": 0.05062,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 582.8200070233454
+  },
+  {
+   "tour": 13,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9170417,
+   "user_s": 0.0009209999999999999,
+   "system_s": 0.0070929999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 436.1851811100847
+  },
+  {
+   "tour": 13,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 9535125,
+   "user_s": 0.001227,
+   "system_s": 0.007135,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 419.501579685636
+  },
+  {
+   "tour": 13,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 18063333,
+   "user_s": 0.001874,
+   "system_s": 0.015002999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 442.8861495273325
+  },
+  {
+   "tour": 13,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17427208,
+   "user_s": 0.0015329999999999999,
+   "system_s": 0.014655999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 459.05230487867016
+  },
+  {
+   "tour": 14,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4633709,
+   "user_s": 0.00081,
+   "system_s": 0.0027819999999999998,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 215.80984045394305
+  },
+  {
+   "tour": 14,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 4551334,
+   "user_s": 0.001053,
+   "system_s": 0.002473,
+   "rss_octets": 2113536,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 219.71580200442332
+  },
+  {
+   "tour": 14,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 54812916,
+   "user_s": 0.0029389999999999998,
+   "system_s": 0.050587,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 583.8040070701584
+  },
+  {
+   "tour": 14,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 56913333,
+   "user_s": 0.003532,
+   "system_s": 0.051993,
+   "rss_octets": 2195456,
+   "involontaires": 18,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 562.2584078848448
+  },
+  {
+   "tour": 14,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 18092625,
+   "user_s": 0.001537,
+   "system_s": 0.015167,
+   "rss_octets": 2064384,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 442.169115869035
+  },
+  {
+   "tour": 14,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 18151417,
+   "user_s": 0.0019459999999999998,
+   "system_s": 0.014855,
+   "rss_octets": 2113536,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 440.73694081294036
+  },
+  {
+   "tour": 14,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 64807083,
+   "user_s": 0.004888,
+   "system_s": 0.058419,
+   "rss_octets": 2113536,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 493.7731883411571
+  },
+  {
+   "tour": 14,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 63505375,
+   "user_s": 0.004169,
+   "system_s": 0.057866999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 503.8943553990509
+  },
+  {
+   "tour": 14,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 220680084,
+   "user_s": 0.010797,
+   "system_s": 0.20354999999999998,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 580.0251553284709
+  },
+  {
+   "tour": 14,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 216743792,
+   "user_s": 0.009946,
+   "system_s": 0.200453,
+   "rss_octets": 2064384,
+   "involontaires": 34,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 590.5590135656573
+  },
+  {
+   "tour": 14,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9588250,
+   "user_s": 0.000976,
+   "system_s": 0.007233,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 417.1772742679843
+  },
+  {
+   "tour": 14,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 9654708,
+   "user_s": 0.00125,
+   "system_s": 0.007181,
+   "rss_octets": 2195456,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 414.3056423871131
+  },
+  {
+   "tour": 15,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 4922458,
+   "user_s": 0.001194,
+   "system_s": 0.0026349999999999998,
+   "rss_octets": 2113536,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 203.1505398319295
+  },
+  {
+   "tour": 15,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4258958,
+   "user_s": 0.000703,
+   "system_s": 0.002495,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 234.79921614629683
+  },
+  {
+   "tour": 15,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 17961750,
+   "user_s": 0.0020629999999999997,
+   "system_s": 0.014816,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 445.3909001071722
+  },
+  {
+   "tour": 15,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17241500,
+   "user_s": 0.0014169999999999999,
+   "system_s": 0.014780999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 463.99675202273585
+  },
+  {
+   "tour": 15,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 56581167,
+   "user_s": 0.003577,
+   "system_s": 0.05171,
+   "rss_octets": 2195456,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 565.5592080665285
+  },
+  {
+   "tour": 15,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 56551333,
+   "user_s": 0.0030559999999999997,
+   "system_s": 0.052009,
+   "rss_octets": 2064384,
+   "involontaires": 22,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 565.8575722697818
+  },
+  {
+   "tour": 15,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 217247458,
+   "user_s": 0.009949,
+   "system_s": 0.201406,
+   "rss_octets": 2064384,
+   "involontaires": 24,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 589.1898629258069
+  },
+  {
+   "tour": 15,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 222562125,
+   "user_s": 0.011996,
+   "system_s": 0.20415,
+   "rss_octets": 2195456,
+   "involontaires": 58,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 575.1203175293191
+  },
+  {
+   "tour": 15,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 62678625,
+   "user_s": 0.004299,
+   "system_s": 0.056971,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 510.540874181589
+  },
+  {
+   "tour": 15,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 64440583,
+   "user_s": 0.005143,
+   "system_s": 0.057788,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 496.58147878643496
+  },
+  {
+   "tour": 15,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 10129083,
+   "user_s": 0.0014089999999999999,
+   "system_s": 0.007378999999999999,
+   "rss_octets": 2195456,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 394.9024803133709
+  },
+  {
+   "tour": 15,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9831083,
+   "user_s": 0.000995,
+   "system_s": 0.0075049999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 406.87277281658595
+  },
+  {
+   "tour": 16,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 220768500,
+   "user_s": 0.009942999999999999,
+   "system_s": 0.20457699999999998,
+   "rss_octets": 2064384,
+   "involontaires": 18,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 579.7928599415225
+  },
+  {
+   "tour": 16,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 222264167,
+   "user_s": 0.010914,
+   "system_s": 0.205167,
+   "rss_octets": 2195456,
+   "involontaires": 46,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 575.8912996533535
+  },
+  {
+   "tour": 16,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 65538084,
+   "user_s": 0.005136,
+   "system_s": 0.058728999999999996,
+   "rss_octets": 2113536,
+   "involontaires": 44,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 488.2657234837686
+  },
+  {
+   "tour": 16,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 63256042,
+   "user_s": 0.004239,
+   "system_s": 0.057536,
+   "rss_octets": 2064384,
+   "involontaires": 16,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 505.8805291674746
+  },
+  {
+   "tour": 16,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5367042,
+   "user_s": 0.001287,
+   "system_s": 0.00293,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 186.32237273343492
+  },
+  {
+   "tour": 16,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4663084,
+   "user_s": 0.0008049999999999999,
+   "system_s": 0.002665,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 214.45035088366413
+  },
+  {
+   "tour": 16,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 10486917,
+   "user_s": 0.001547,
+   "system_s": 0.007534,
+   "rss_octets": 2195456,
+   "involontaires": 20,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 381.42763979156126
+  },
+  {
+   "tour": 16,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 10940125,
+   "user_s": 0.001021,
+   "system_s": 0.008171,
+   "rss_octets": 2064384,
+   "involontaires": 25,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 365.6265353458027
+  },
+  {
+   "tour": 16,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 19506458,
+   "user_s": 0.002042,
+   "system_s": 0.016115,
+   "rss_octets": 2113536,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 410.120586730815
+  },
+  {
+   "tour": 16,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 18186417,
+   "user_s": 0.00156,
+   "system_s": 0.015262,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 439.8887367423721
+  },
+  {
+   "tour": 16,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 57903666,
+   "user_s": 0.003874,
+   "system_s": 0.052346,
+   "rss_octets": 2195456,
+   "involontaires": 18,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 552.6420382433126
+  },
+  {
+   "tour": 16,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 56895500,
+   "user_s": 0.0029779999999999997,
+   "system_s": 0.052516,
+   "rss_octets": 2064384,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 562.4346389433259
+  },
+  {
+   "tour": 17,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 17830291,
+   "user_s": 0.001534,
+   "system_s": 0.014933,
+   "rss_octets": 2064384,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 448.6746739018449
+  },
+  {
+   "tour": 17,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 18948000,
+   "user_s": 0.00215,
+   "system_s": 0.015352999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 422.2081486172683
+  },
+  {
+   "tour": 17,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 5122000,
+   "user_s": 0.00082,
+   "system_s": 0.002868,
+   "rss_octets": 2064384,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 195.2362358453729
+  },
+  {
+   "tour": 17,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 5815541,
+   "user_s": 0.001341,
+   "system_s": 0.0029549999999999997,
+   "rss_octets": 2113536,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 171.95304787637127
+  },
+  {
+   "tour": 17,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 63792833,
+   "user_s": 0.004214,
+   "system_s": 0.057952,
+   "rss_octets": 2064384,
+   "involontaires": 29,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 501.62374823516615
+  },
+  {
+   "tour": 17,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 65204875,
+   "user_s": 0.004912,
+   "system_s": 0.058955,
+   "rss_octets": 2113536,
+   "involontaires": 15,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 490.7608518534849
+  },
+  {
+   "tour": 17,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 55407083,
+   "user_s": 0.002972,
+   "system_s": 0.051018999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 577.5434884381118
+  },
+  {
+   "tour": 17,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 56814709,
+   "user_s": 0.003891,
+   "system_s": 0.051574999999999996,
+   "rss_octets": 2195456,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 563.2344257892793
+  },
+  {
+   "tour": 17,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 221063208,
+   "user_s": 0.011157,
+   "system_s": 0.20363499999999998,
+   "rss_octets": 2195456,
+   "involontaires": 40,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 579.0199154261799
+  },
+  {
+   "tour": 17,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 217235666,
+   "user_s": 0.010485,
+   "system_s": 0.20049599999999998,
+   "rss_octets": 2064384,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 589.2218453667732
+  },
+  {
+   "tour": 17,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9707500,
+   "user_s": 0.00098,
+   "system_s": 0.0075109999999999994,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 412.05253669842904
+  },
+  {
+   "tour": 17,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 10412250,
+   "user_s": 0.001395,
+   "system_s": 0.0074529999999999996,
+   "rss_octets": 2195456,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 384.1628850632668
+  },
+  {
+   "tour": 18,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 56934500,
+   "user_s": 0.003518,
+   "system_s": 0.052121,
+   "rss_octets": 2195456,
+   "involontaires": 14,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 562.0493725245677
+  },
+  {
+   "tour": 18,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 56317000,
+   "user_s": 0.003002,
+   "system_s": 0.051779,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 568.2120851607863
+  },
+  {
+   "tour": 18,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 18216417,
+   "user_s": 0.002013,
+   "system_s": 0.015005999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 439.1642988849015
+  },
+  {
+   "tour": 18,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 17002458,
+   "user_s": 0.001482,
+   "system_s": 0.014358,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 470.5202036082077
+  },
+  {
+   "tour": 18,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 63923542,
+   "user_s": 0.004953,
+   "system_s": 0.057671,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 500.59804258030636
+  },
+  {
+   "tour": 18,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 63261833,
+   "user_s": 0.004223,
+   "system_s": 0.057689,
+   "rss_octets": 2064384,
+   "involontaires": 13,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 505.8342207694172
+  },
+  {
+   "tour": 18,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 217937709,
+   "user_s": 0.010085,
+   "system_s": 0.201535,
+   "rss_octets": 2064384,
+   "involontaires": 23,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 587.3237843387626
+  },
+  {
+   "tour": 18,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 217548667,
+   "user_s": 0.01086,
+   "system_s": 0.200351,
+   "rss_octets": 2195456,
+   "involontaires": 18,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 588.3740947031406
+  },
+  {
+   "tour": 18,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 10327375,
+   "user_s": 0.001524,
+   "system_s": 0.007526,
+   "rss_octets": 2195456,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 387.3201079654801
+  },
+  {
+   "tour": 18,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9799250,
+   "user_s": 0.0009809999999999999,
+   "system_s": 0.007684,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 408.19450468148074
+  },
+  {
+   "tour": 18,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4843417,
+   "user_s": 0.0008169999999999999,
+   "system_s": 0.002851,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 206.4658070944542
+  },
+  {
+   "tour": 18,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 5111833,
+   "user_s": 0.001144,
+   "system_s": 0.002727,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 195.62454407254697
+  },
+  {
+   "tour": 19,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9782209,
+   "user_s": 0.000931,
+   "system_s": 0.0076,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 408.9055958628567
+  },
+  {
+   "tour": 19,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 10166875,
+   "user_s": 0.00139,
+   "system_s": 0.007521,
+   "rss_octets": 2179072,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 393.4345607671974
+  },
+  {
+   "tour": 19,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 4929542,
+   "user_s": 0.001171,
+   "system_s": 0.002557,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 202.85860227988726
+  },
+  {
+   "tour": 19,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4406625,
+   "user_s": 0.000669,
+   "system_s": 0.0025139999999999997,
+   "rss_octets": 2064384,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 226.9310413298159
+  },
+  {
+   "tour": 19,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 63507042,
+   "user_s": 0.0042179999999999995,
+   "system_s": 0.058059,
+   "rss_octets": 2064384,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 503.88112864711917
+  },
+  {
+   "tour": 19,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 64264167,
+   "user_s": 0.004928999999999999,
+   "system_s": 0.057912,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 497.9446788752432
+  },
+  {
+   "tour": 19,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 18043500,
+   "user_s": 0.001522,
+   "system_s": 0.015184999999999999,
+   "rss_octets": 2048000,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 443.37295979161473
+  },
+  {
+   "tour": 19,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 17847333,
+   "user_s": 0.0019349999999999999,
+   "system_s": 0.014752999999999999,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 448.2462449711674
+  },
+  {
+   "tour": 19,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 227440333,
+   "user_s": 0.011368,
+   "system_s": 0.210025,
+   "rss_octets": 2195456,
+   "involontaires": 41,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 562.7849656727332
+  },
+  {
+   "tour": 19,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 220394959,
+   "user_s": 0.010249,
+   "system_s": 0.20365799999999998,
+   "rss_octets": 2064384,
+   "involontaires": 29,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 580.7755339812468
+  },
+  {
+   "tour": 19,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 57029875,
+   "user_s": 0.00316,
+   "system_s": 0.052324999999999997,
+   "rss_octets": 2064384,
+   "involontaires": 25,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 561.1094185284467
+  },
+  {
+   "tour": 19,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 58244834,
+   "user_s": 0.003852,
+   "system_s": 0.053005,
+   "rss_octets": 2195456,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 549.4049480851812
+  },
+  {
+   "tour": 20,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5224458,
+   "user_s": 0.0011819999999999999,
+   "system_s": 0.0028569999999999997,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 191.40741489356407
+  },
+  {
+   "tour": 20,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 5090084,
+   "user_s": 0.000767,
+   "system_s": 0.002941,
+   "rss_octets": 2064384,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 196.4604120482098
+  },
+  {
+   "tour": 20,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 220361291,
+   "user_s": 0.009996999999999999,
+   "system_s": 0.204139,
+   "rss_octets": 2064384,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 580.8642680351695
+  },
+  {
+   "tour": 20,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 221425958,
+   "user_s": 0.010844999999999999,
+   "system_s": 0.20419199999999998,
+   "rss_octets": 2195456,
+   "involontaires": 45,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 578.0713388626278
+  },
+  {
+   "tour": 20,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9633458,
+   "user_s": 0.0009699999999999999,
+   "system_s": 0.007349,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 415.21954006546764
+  },
+  {
+   "tour": 20,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 9644125,
+   "user_s": 0.0013759999999999998,
+   "system_s": 0.007153,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 414.7602815185411
+  },
+  {
+   "tour": 20,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 63486917,
+   "user_s": 0.004102,
+   "system_s": 0.058157999999999994,
+   "rss_octets": 2064384,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 504.0408561656884
+  },
+  {
+   "tour": 20,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 64810875,
+   "user_s": 0.004732999999999999,
+   "system_s": 0.058737,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 493.74429831413323
+  },
+  {
+   "tour": 20,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 17809625,
+   "user_s": 0.0015819999999999999,
+   "system_s": 0.014953,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 449.1953087164946
+  },
+  {
+   "tour": 20,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 19229709,
+   "user_s": 0.002054,
+   "system_s": 0.015754999999999998,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 416.0229361765173
+  },
+  {
+   "tour": 20,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 56411792,
+   "user_s": 0.0030949999999999997,
+   "system_s": 0.051649999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 28,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 567.2572854980391
+  },
+  {
+   "tour": 20,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 56985417,
+   "user_s": 0.003636,
+   "system_s": 0.051986,
+   "rss_octets": 2179072,
+   "involontaires": 17,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 561.5471761836892
+  },
+  {
+   "tour": 21,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 65164917,
+   "user_s": 0.005026,
+   "system_s": 0.058608,
+   "rss_octets": 2113536,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 491.0617779195514
+  },
+  {
+   "tour": 21,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 62605542,
+   "user_s": 0.0040409999999999995,
+   "system_s": 0.057162,
+   "rss_octets": 2048000,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 511.1368575005708
+  },
+  {
+   "tour": 21,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 58459625,
+   "user_s": 0.003555,
+   "system_s": 0.053337999999999997,
+   "rss_octets": 2195456,
+   "involontaires": 28,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 547.3863371514956
+  },
+  {
+   "tour": 21,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 56577750,
+   "user_s": 0.002928,
+   "system_s": 0.052121,
+   "rss_octets": 2064384,
+   "involontaires": 12,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 565.5933648828383
+  },
+  {
+   "tour": 21,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 18957125,
+   "user_s": 0.002128,
+   "system_s": 0.015562,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 422.00491899483706
+  },
+  {
+   "tour": 21,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 18237000,
+   "user_s": 0.00153,
+   "system_s": 0.015325,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 438.6686406755497
+  },
+  {
+   "tour": 21,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 5193125,
+   "user_s": 0.000824,
+   "system_s": 0.002949,
+   "rss_octets": 2064384,
+   "involontaires": 14,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 192.56228186304008
+  },
+  {
+   "tour": 21,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 5736291,
+   "user_s": 0.001246,
+   "system_s": 0.0031279999999999997,
+   "rss_octets": 2113536,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 174.32867335356593
+  },
+  {
+   "tour": 21,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 10677916,
+   "user_s": 0.001426,
+   "system_s": 0.00792,
+   "rss_octets": 2195456,
+   "involontaires": 11,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 374.60493227330124
+  },
+  {
+   "tour": 21,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 10979792,
+   "user_s": 0.0009889999999999999,
+   "system_s": 0.008513999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 24,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 364.3056261903686
+  },
+  {
+   "tour": 21,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 222759583,
+   "user_s": 0.011843999999999999,
+   "system_s": 0.20444199999999998,
+   "rss_octets": 2195456,
+   "involontaires": 21,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 574.6105207963152
+  },
+  {
+   "tour": 21,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 217872458,
+   "user_s": 0.009771,
+   "system_s": 0.201957,
+   "rss_octets": 2064384,
+   "involontaires": 22,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 587.4996829567141
+  },
+  {
+   "tour": 22,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 4621709,
+   "user_s": 0.000743,
+   "system_s": 0.0026939999999999998,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 216.3701782176247
+  },
+  {
+   "tour": 22,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 5142791,
+   "user_s": 0.001189,
+   "system_s": 0.0026969999999999997,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 194.4469452482125
+  },
+  {
+   "tour": 22,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 17897667,
+   "user_s": 0.001473,
+   "system_s": 0.015227999999999998,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 446.9856322614562
+  },
+  {
+   "tour": 22,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 18699625,
+   "user_s": 0.002002,
+   "system_s": 0.015396,
+   "rss_octets": 2113536,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 427.81606583019715
+  },
+  {
+   "tour": 22,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 57660375,
+   "user_s": 0.003727,
+   "system_s": 0.052669999999999995,
+   "rss_octets": 2195456,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 554.9738446897024
+  },
+  {
+   "tour": 22,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 57336875,
+   "user_s": 0.003071,
+   "system_s": 0.052488,
+   "rss_octets": 2064384,
+   "involontaires": 19,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 558.1050589171454
+  },
+  {
+   "tour": 22,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 218106083,
+   "user_s": 0.010001,
+   "system_s": 0.20211199999999999,
+   "rss_octets": 2064384,
+   "involontaires": 17,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 586.8703808687445
+  },
+  {
+   "tour": 22,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 221576875,
+   "user_s": 0.010879999999999999,
+   "system_s": 0.204653,
+   "rss_octets": 2195456,
+   "involontaires": 42,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 577.6776118897786
+  },
+  {
+   "tour": 22,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 9559875,
+   "user_s": 0.000959,
+   "system_s": 0.007284,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 418.4155127551354
+  },
+  {
+   "tour": 22,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 10567792,
+   "user_s": 0.001366,
+   "system_s": 0.007951999999999999,
+   "rss_octets": 2195456,
+   "involontaires": 9,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 378.5085853317325
+  },
+  {
+   "tour": 22,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 63520125,
+   "user_s": 0.004941999999999999,
+   "system_s": 0.057236999999999996,
+   "rss_octets": 2113536,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 503.7773461560411
+  },
+  {
+   "tour": 22,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 62256750,
+   "user_s": 0.004123,
+   "system_s": 0.056783999999999994,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 514.0004899067169
+  },
+  {
+   "tour": 23,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 55883459,
+   "user_s": 0.0028929999999999997,
+   "system_s": 0.051725,
+   "rss_octets": 2064384,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 572.6202452858188
+  },
+  {
+   "tour": 23,
+   "mio": 8,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 58184500,
+   "user_s": 0.0037489999999999997,
+   "system_s": 0.052832,
+   "rss_octets": 2195456,
+   "involontaires": 25,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6",
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 549.9746496059947
+  },
+  {
+   "tour": 23,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 18735459,
+   "user_s": 0.0019379999999999998,
+   "system_s": 0.015391,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 426.99781200983654
+  },
+  {
+   "tour": 23,
+   "mio": 8,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 18477250,
+   "user_s": 0.001529,
+   "system_s": 0.015342999999999999,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "b98f42e50a8da93fa44c768a5c50f839077edef7e600fb65dcc5326398b0b2b6"
+   ],
+   "debit_total_Mio_s": 432.9648621954025
+  },
+  {
+   "tour": 23,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 0,
+   "ns": 64286917,
+   "user_s": 0.004202,
+   "system_s": 0.058740999999999995,
+   "rss_octets": 2064384,
+   "involontaires": 14,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 497.7684650828721
+  },
+  {
+   "tour": 23,
+   "mio": 32,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 1,
+   "ns": 66582291,
+   "user_s": 0.004861,
+   "system_s": 0.060224999999999994,
+   "rss_octets": 2113536,
+   "involontaires": 10,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 480.6082746536913
+  },
+  {
+   "tour": 23,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 10599542,
+   "user_s": 0.001375,
+   "system_s": 0.007932999999999999,
+   "rss_octets": 2179072,
+   "involontaires": 7,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 377.37479600533686
+  },
+  {
+   "tour": 23,
+   "mio": 1,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 9114083,
+   "user_s": 0.0008489999999999999,
+   "system_s": 0.007181,
+   "rss_octets": 2064384,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f",
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 438.88123467824465
+  },
+  {
+   "tour": 23,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 220244542,
+   "user_s": 0.011531,
+   "system_s": 0.20266199999999998,
+   "rss_octets": 2195456,
+   "involontaires": 8,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 581.1721772428758
+  },
+  {
+   "tour": 23,
+   "mio": 32,
+   "sorties": 4,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 223205083,
+   "user_s": 0.010216,
+   "system_s": 0.20671799999999999,
+   "rss_octets": 2064384,
+   "involontaires": 42,
+   "sha256_sorties": [
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094",
+    "fe7659ea0b8ecf6d125913b1bca7a5020c87bc98dc8ac1d8aecd40be1d085094"
+   ],
+   "debit_total_Mio_s": 573.4636428508217
+  },
+  {
+   "tour": 23,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "Ancien",
+   "position": 0,
+   "ns": 5028709,
+   "user_s": 0.0011949999999999999,
+   "system_s": 0.002702,
+   "rss_octets": 2113536,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 198.85819601014893
+  },
+  {
+   "tour": 23,
+   "mio": 1,
+   "sorties": 1,
+   "outil": "GNU",
+   "position": 1,
+   "ns": 4053917,
+   "user_s": 0.000672,
+   "system_s": 0.002482,
+   "rss_octets": 2064384,
+   "involontaires": 6,
+   "sha256_sorties": [
+    "9b978e08116441bb0143a5f7164c6e71d250ce58f2734456e32621d42c03261f"
+   ],
+   "debit_total_Mio_s": 246.67500592636702
+  }
+ ],
+ "resume": [
+  {
+   "mio": 1,
+   "sorties": 1,
+   "outils": {
+    "Ancien": {
+     "n": 24,
+     "mediane_ns": 5062958.5,
+     "q1_ns": 4920864.25,
+     "q3_ns": 5284781.25,
+     "min_ns": 4344459,
+     "max_ns": 6097625,
+     "rss_max_octets": 2113536,
+     "debit_sorties_Mio_s": 197.51297586184046,
+     "rapport_exact": "10125917/9257376",
+     "rapport": 1.0938215105446727,
+     "conforme": true
+    },
+    "GNU": {
+     "n": 24,
+     "mediane_ns": 4628688.0,
+     "q1_ns": 4213208.5,
+     "q3_ns": 4834760.5,
+     "min_ns": 4053917,
+     "max_ns": 5540541,
+     "rss_max_octets": 2064384,
+     "debit_sorties_Mio_s": 216.0439416093718,
+     "rapport_exact": "1",
+     "rapport": 1.0,
+     "conforme": true
+    }
+   }
+  },
+  {
+   "mio": 1,
+   "sorties": 4,
+   "outils": {
+    "Ancien": {
+     "n": 24,
+     "mediane_ns": 10094874.5,
+     "q1_ns": 9745667.0,
+     "q3_ns": 10375812.0,
+     "min_ns": 9384000,
+     "max_ns": 10677916,
+     "rss_max_octets": 2195456,
+     "debit_sorties_Mio_s": 396.2406863007559,
+     "rapport_exact": "20189749/19014291",
+     "rapport": 1.0618197123416278,
+     "conforme": true
+    },
+    "GNU": {
+     "n": 24,
+     "mediane_ns": 9507145.5,
+     "q1_ns": 9165281.5,
+     "q3_ns": 9781958.5,
+     "min_ns": 8851958,
+     "max_ns": 10979792,
+     "rss_max_octets": 2064384,
+     "debit_sorties_Mio_s": 420.7361715459177,
+     "rapport_exact": "1",
+     "rapport": 1.0,
+     "conforme": true
+    }
+   }
+  },
+  {
+   "mio": 8,
+   "sorties": 1,
+   "outils": {
+    "Ancien": {
+     "n": 24,
+     "mediane_ns": 18183917.0,
+     "q1_ns": 17955364.75,
+     "q3_ns": 18788594.25,
+     "min_ns": 17704167,
+     "max_ns": 19506458,
+     "rss_max_octets": 2113536,
+     "debit_sorties_Mio_s": 439.94921446242853,
+     "rapport_exact": "18183917/17577146",
+     "rapport": 1.0345204505896464,
+     "conforme": true
+    },
+    "GNU": {
+     "n": 24,
+     "mediane_ns": 17577146.0,
+     "q1_ns": 17249780.75,
+     "q3_ns": 17934125.25,
+     "min_ns": 16840875,
+     "max_ns": 19532583,
+     "rss_max_octets": 2064384,
+     "debit_sorties_Mio_s": 455.13645958223253,
+     "rapport_exact": "1",
+     "rapport": 1.0,
+     "conforme": true
+    }
+   }
+  },
+  {
+   "mio": 8,
+   "sorties": 4,
+   "outils": {
+    "Ancien": {
+     "n": 24,
+     "mediane_ns": 56624521.0,
+     "q1_ns": 55957771.0,
+     "q3_ns": 57356677.5,
+     "min_ns": 55033084,
+     "max_ns": 58459625,
+     "rss_max_octets": 2195456,
+     "debit_sorties_Mio_s": 565.12619329707,
+     "rapport_exact": "113249042/111292291",
+     "rapport": 1.0175820893111096,
+     "conforme": true
+    },
+    "GNU": {
+     "n": 24,
+     "mediane_ns": 55646145.5,
+     "q1_ns": 55104313.0,
+     "q3_ns": 56340698.0,
+     "min_ns": 54369584,
+     "max_ns": 57336875,
+     "rss_max_octets": 2064384,
+     "debit_sorties_Mio_s": 575.0622924996665,
+     "rapport_exact": "1",
+     "rapport": 1.0,
+     "conforme": true
+    }
+   }
+  },
+  {
+   "mio": 32,
+   "sorties": 1,
+   "outils": {
+    "Ancien": {
+     "n": 24,
+     "mediane_ns": 63886979.0,
+     "q1_ns": 62955447.5,
+     "q3_ns": 64888302.25,
+     "min_ns": 62332625,
+     "max_ns": 66582291,
+     "rss_max_octets": 2113536,
+     "debit_sorties_Mio_s": 500.8845386162335,
+     "rapport_exact": "127773958/126460333",
+     "rapport": 1.0103876446379434,
+     "conforme": true
+    },
+    "GNU": {
+     "n": 24,
+     "mediane_ns": 63230166.5,
+     "q1_ns": 62167792.0,
+     "q3_ns": 63515740.0,
+     "min_ns": 60676583,
+     "max_ns": 64286917,
+     "rss_max_octets": 2064384,
+     "debit_sorties_Mio_s": 506.08754920801925,
+     "rapport_exact": "1",
+     "rapport": 1.0,
+     "conforme": true
+    }
+   }
+  },
+  {
+   "mio": 32,
+   "sorties": 4,
+   "outils": {
+    "Ancien": {
+     "n": 24,
+     "mediane_ns": 220871646.0,
+     "q1_ns": 218770833.5,
+     "q3_ns": 221844521.0,
+     "min_ns": 216292250,
+     "max_ns": 229489708,
+     "rss_max_octets": 2195456,
+     "debit_sorties_Mio_s": 579.5220994549929,
+     "rapport_exact": "441743292/435114875",
+     "rapport": 1.0152337173028156,
+     "conforme": true
+    },
+    "GNU": {
+     "n": 24,
+     "mediane_ns": 217557437.5,
+     "q1_ns": 216035718.5,
+     "q3_ns": 219764759.75,
+     "min_ns": 212828834,
+     "max_ns": 223484041,
+     "rss_max_octets": 2064384,
+     "debit_sorties_Mio_s": 588.3503752888246,
+     "rapport_exact": "1",
+     "rapport": 1.0,
+     "conforme": true
+    }
+   }
+  }
+ ]
+}
