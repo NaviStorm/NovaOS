@@ -26,7 +26,7 @@ def main(profiles, out):
     raw = json.load(gzip.open(HERE / "preuves/options.json.gz"))["rows"]
     results = {k: read(profiles / k / "resultats.json") for k in PROFILES}
     with (out / "matrice-macos.tsv").open("w") as f:
-        w = csv.writer(f, delimiter="\t")
+        w = csv.writer(f, delimiter="\t", lineterminator="\n")
         w.writerow(
             [
                 "id",
@@ -66,7 +66,7 @@ def main(profiles, out):
             )
     exact = {p: read(profiles / p / "cas-elf.json") for p in PROFILES}
     with (out / "matrice-elf.tsv").open("w") as f:
-        w = csv.writer(f, delimiter="\t")
+        w = csv.writer(f, delimiter="\t", lineterminator="\n")
         w.writerow(
             [
                 "id",
