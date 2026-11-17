@@ -13,6 +13,7 @@ import statistics
 import subprocess as sp
 import time
 from pathlib import Path
+from flux import measure as verify_streams
 
 HERE = Path(__file__).resolve().parents[1]
 NOVA = HERE / "bin/sleep"
@@ -321,6 +322,9 @@ def main():
             rows = performance(a.complet)
     else:
         rows = options(a.complet)
+        info["flux"] = {
+            label: verify_streams(exe) for label, exe in (("GNU", GNU), ("Nova", NOVA))
+        }
     info.update(cas=rows, charge_apres=os.getloadavg())
     dest = a.out or Path(os.environ["TMPDIR"]) / ("sleep-" + a.action + ".json")
     dest.write_text(json.dumps(info, ensure_ascii=False, indent=2) + "\n")
