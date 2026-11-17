@@ -1,6 +1,9 @@
 #![no_std]
 #![no_main]
 mod common;
+#[cfg(feature="vue-guest")]
+#[path="common/no_heap.rs"]
+mod no_heap;
 #[cfg(feature = "shell-guest")]
 #[path = "common/shell_verifier.rs"]
 mod shell_verifier;

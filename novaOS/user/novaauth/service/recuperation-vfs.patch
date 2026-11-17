@@ -1,0 +1,202 @@
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -96,6 +96,7 @@
+         }
+         if name == "service_manager" && env::var_os("CARGO_FEATURE_NOVAAUTH_SESSIONS_LAB").is_some() {
+             rust.args(["--cfg", "novaauth_sessions_lab"]);
++            println!("cargo::rerun-if-env-changed=NOVA_VFS_OBJECTS");
+         }
+         if name == "journal_service" && env::var_os("CARGO_FEATURE_JOURNAL_PANNES_LAB").is_some() {
+             rust.args(["--cfg", "journal_pannes"]);
+@@ -193,10 +194,10 @@
+         cargo_service.args(["--features", "novaauth-lab"]);
+     }
+     if env::var_os("CARGO_FEATURE_NOVAAUTH_SESSIONS_LAB").is_some() {
+-        for name in ["NOVA_RELAY_FAULT","NOVA_PACKAGE_CUT","NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC"] {
++        for name in ["NOVA_RELAY_FAULT","NOVA_PACKAGE_CUT","NOVA_LAB_ALICE","NOVA_LAB_BOB","NOVA_VFS_OBJECTS","NOVA_PACKAGE_PUBLIC"] {
+             println!("cargo::rerun-if-env-changed={name}");
+         }
+-        for key in ["NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC","NOVA_QEMU_SERVER_SEED","NOVA_QEMU_SERVER_PUB","NOVA_GUEST_CERT","NOVA_AUTHORITY_CERT","NOVA_FIXTURE_CA","NOVA_AUTHORITY_PUB","NOVA_DECISION_PUB"] {
++        for key in ["NOVA_LAB_ALICE","NOVA_LAB_BOB","NOVA_VFS_OBJECTS","NOVA_PACKAGE_PUBLIC","NOVA_QEMU_SERVER_SEED","NOVA_QEMU_SERVER_PUB","NOVA_GUEST_CERT","NOVA_AUTHORITY_CERT","NOVA_FIXTURE_CA","NOVA_AUTHORITY_PUB","NOVA_DECISION_PUB"] {
+             if let Some(path)=env::var_os(key) {
+                 println!("cargo::rerun-if-env-changed={key}");
+                 println!("cargo::rerun-if-changed={}",std::path::Path::new(&path).display());
+@@ -205,13 +206,13 @@
+         cargo_service.args(["--features", "novaauth-sessions-lab"]);
+         let guest_flags = format!("{flags}\x1f--cfg\x1fchacha20_force_soft\x1f--cfg\x1fpoly1305_force_soft\x1f--cfg\x1faes_force_soft\x1f--cfg\x1fpolyval_force_soft\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
+         let built = Command::new(env::var_os("CARGO").unwrap())
+-            .args(["build","--release","--locked","--offline","--features","vue-guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","vfs-guest","--bins","--target",&target])
+             .current_dir(user.join("novaauth/service"))
+             .env("CARGO_TARGET_DIR",&work)
+             .env("CARGO_ENCODED_RUSTFLAGS",&guest_flags)
+             .status().expect("compilation des deux ELF NovaAuth");
+         assert!(built.success(), "liaison des ELF NovaAuth");
+-        for name in ["auth-verifier","auth-client","shell-signer","exec-relay","registre-incarnation","signataire-incarnation"] {
++        for name in ["auth-verifier","auth-client","shell-signer","exec-relay","recovery-alice","recovery-bob","registre-incarnation","signataire-incarnation"] {
+             std::fs::copy(work.join(&target).join("release").join(name),out.join(format!("{name}.elf"))).unwrap();
+         }
+     }
+--- a/novaOS/kernel/src/sched/process/ipc/service.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service.rs
+@@ -248,7 +248,9 @@
+         #[cfg(feature = "novaauth-sessions-lab")]
+         auth_lab::AUTH if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
+         #[cfg(feature="novaauth-sessions-lab")]
+-        auth_lab::CLIENT if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/shell-signer.elf")).as_slice(),
++        auth_lab::CLIENT if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/recovery-alice.elf")).as_slice(),
++        auth_lab::SECOND if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/recovery-bob.elf")).as_slice(),
++        auth_lab::PROVISIONER if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
+         #[cfg(feature="novaauth-sessions-lab")]
+         shell_auth_lab::RELAY if auth_lab::enabled() && argument==0 => include_bytes!(concat!(env!("OUT_DIR"),"/exec-relay.elf")).as_slice(),
+         22 if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/registre-incarnation.elf")),
+@@ -311,7 +313,7 @@
+             tmp::new_lease(s, target)?;
+         }
+         #[cfg(feature = "novaauth-sessions-lab")]
+-        if auth_lab::enabled() { match id { auth_lab::AUTH => auth_lab::connect(s,m,target,id)?, auth_lab::CLIENT => shell_auth_lab::connect(s,m,target)?, shell_auth_lab::RELAY => shell_auth_lab::connect_relay(s,m,target)?, _ => () } }
++        if auth_lab::enabled() { match id { auth_lab::AUTH => auth_lab::connect(s,m,target,id)?, auth_lab::CLIENT | auth_lab::SECOND | auth_lab::PROVISIONER => auth_lab::connect(s,m,target,id)?, shell_auth_lab::RELAY => shell_auth_lab::connect_relay(s,m,target)?, _ => () } }
+         if auth_lab::enabled() && matches!(id, 22 | 23) {
+             let other_id = if id == 22 { auth_lab::AUTH } else { 22 };
+             let peer = s.processes.slots.iter().flatten()
+--- a/novaOS/user/service_manager.rs
++++ b/novaOS/user/service_manager.rs
+@@ -488,7 +488,7 @@
+ }
+
+ #[cfg(novaauth_sessions_lab)]
+-#[path = "novaauth/service/shell_launcher.rs"]
++#[path = "novaauth/service/recovery_vfs_launcher.rs"]
+ mod auth_lab;
+ fn supervise() -> rt::Result<()> {
+     #[cfg(novaauth_sessions_lab)]
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -9,6 +9,8 @@
+
+ #[path="../novaauth/service/triplet_effecteur.rs"]
+ mod triplet_effecteur;
++#[path="../novaauth/service/recuperation_vfs.rs"]
++mod recuperation_vfs;
+
+ struct Civil(AtomicI64);
+
+--- a/novaOS/user/novafs/files/auth_registry.rs
++++ b/novaOS/user/novafs/files/auth_registry.rs
+@@ -181,8 +181,8 @@
+             a[..8].copy_from_slice(&status.to_le_bytes());
+             return reply(tx, msg.tag, &a);
+         }
+-        let status = if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA3DATT1" {
+-            self.attest_folder(&msg.payload).err().unwrap_or(rt::OK)
++        let status = if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA5READ1" {
++            recuperation_vfs::read(self, &msg.payload).err().unwrap_or(rt::OK)
+         } else if msg.kind == 1 && msg.len == 128 && &msg.payload[..8] == b"NA3DCLOS" {
+             self.retire_folder(msg.payload[8], Some(&msg.payload[40..72]))
+                 .err()
+--- a/novaOS/user/novaauth/service/src/bin/verifier.rs
++++ b/novaOS/user/novaauth/service/src/bin/verifier.rs
+@@ -1,6 +1,8 @@
+ #![no_std]
+ #![no_main]
+ mod common;
++#[path="common/recovery_folder.rs"]
++mod recovery_folder;
+ #[cfg(feature="vue-guest")]
+ #[path="common/no_heap.rs"]
+ mod no_heap;
+@@ -68,6 +70,7 @@
+     let mut next = 0usize;
+     let mut dead = [0u64; 2];
+     let mut rpc_seq = 0u64;
++    let mut mutation_pending: [Option<([u8;16],[u8;32],[u8;16])>;2]=[None;2];
+     marker(b"NA3 verifier pret");
+     loop {
+         let lane = next;
+@@ -95,6 +98,7 @@
+                 verifier.disconnect(route);
+                 dead[lane] = rx;
+                 last[lane] = 0;
++                mutation_pending[lane]=None;
+                 continue;
+             }
+             Err(rt::TIMED_OUT | rt::WOULD_BLOCK) => continue,
+@@ -129,7 +133,7 @@
+             }
+             let op = m.payload[0];
+             rpc_seq = rpc_seq.checked_add(1).ok_or(rt::LIMIT)?;
+-            let current = if op == 4 {
++            let current = if op == 4 || op == 13 {
+                 None
+             } else {
+                 binding(rpc_seq, reference).ok()
+@@ -199,18 +203,24 @@
+                     }
+                 }
+                 11 => {
+-                    let current = current.ok_or(rt::DENIED)?;
+                     let sid = m.payload[40..72].try_into().unwrap();
+                     let subject = sessions
+-                        .inspect(sid, route, Some(current), now()?)
+-                        .map_err(|_| rt::DENIED)?;
++                        .inspect(sid, route, current, now()?).ok();
+                     let mut q = [0; 128];
+-                    q[..8].copy_from_slice(b"NA3DATT1");
++                    q[..8].copy_from_slice(b"NA5READ1");
+                     q[8] = lane as u8;
+                     q[16..24].copy_from_slice(&m.tag.to_le_bytes());
+-                    q[24..40].copy_from_slice(&subject);
++                    q[24..40].copy_from_slice(&subject.unwrap_or([0;16]));
+                     q[40..72].copy_from_slice(&sid);
+-                    q[72..104].copy_from_slice(&current.head);
++                    let object=number(&m.payload[72..80]);
++                    if m.payload[80..]!=[0;48] {return Err(rt::BAD_ARGUMENT);}
++                    rpc_seq = rpc_seq.checked_add(1).ok_or(rt::LIMIT)?;
++                    let seal=match (subject,current) {
++                        (Some(_),Some(live))=>recovery_folder::attest(rpc_seq,reference,live.head,object).unwrap_or([0;32]),
++                        _=>[0;32],
++                    };
++                    q[72..104].copy_from_slice(&seal);
++                    q[104..112].copy_from_slice(&object.to_le_bytes());
+                     rpc_seq = rpc_seq.checked_add(1).ok_or(rt::LIMIT)?;
+                     rt::send_for(rt::config(5), rpc_seq, &q, 5000)?;
+                     let reply = remote(rt::config(6), rpc_seq).map_err(|_| files::UNCERTAIN)?;
+@@ -216,8 +227,25 @@
+                         return Err(number(&reply.payload));
+                     }
+                 }
++                12|13 => {
++                    let session=m.payload[40..72].try_into().unwrap();
++                    let operation=m.payload[88..104].try_into().unwrap();
++                    if m.payload[80..88]!=[0;8] || m.payload[104..]!=[0;24] || operation==[0;16] {
++                        return Err(rt::BAD_ARGUMENT);
++                    }
++                    let object=number(&m.payload[72..80]);
++                    if op==12 {
++                        sessions.inspect(session,route,current,now()?).map_err(|_|rt::DENIED)?;
++                        if mutation_pending[lane].is_some() {return Err(rt::DENIED);}
++                        mutation_pending[lane]=Some((reference,session,operation));
++                    } else if object!=0 || mutation_pending[lane]!=Some((reference,session,operation)) {
++                        return Err(rt::DENIED);
++                    }
++                    rpc_seq=rpc_seq.checked_add(1).ok_or(rt::LIMIT)?;
++                    recovery_folder::mutate(rpc_seq,reference,object,operation,op==13)?;
++                }
+                 #[cfg(feature = "policy-guest")]
+-                12..=17 => {
++                14..=17 => {
+                     let current = current.ok_or(rt::DENIED)?;
+                     sessions
+                         .inspect(
+@@ -316,9 +344,9 @@
+ }
+ #[unsafe(no_mangle)]
+ extern "C" fn run() -> ! {
+-    #[cfg(feature = "shell-guest")]
++    #[cfg(all(feature = "shell-guest",not(feature="vfs-guest")))]
+     let result = shell_verifier::serve();
+-    #[cfg(not(feature = "shell-guest"))]
++    #[cfg(any(not(feature = "shell-guest"),feature="vfs-guest"))]
+     let result = serve();
+     rt::exit(result.err().unwrap_or(0))
+ }

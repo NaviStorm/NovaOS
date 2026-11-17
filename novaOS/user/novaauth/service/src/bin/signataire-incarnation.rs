@@ -4,8 +4,23 @@
 #[path = "common/canal.rs"]
 mod canal;
 mod common;
+#[cfg(feature="vfs-guest")]
+#[path="common/mutation_bridge.rs"]
+mod mutation_bridge;
+#[cfg(feature="recuperation-guest")]
+#[path="common/no_heap.rs"]
+mod no_heap;
+#[cfg(feature="recuperation-guest")]
+#[path="common/recovery_rpc.rs"]
+mod recovery_rpc;
+#[cfg(feature="recuperation-guest")]
+#[path="common/recovery_bridge.rs"]
+mod recovery_bridge;
 #[path = "common/incarnation.rs"]
 mod incarnation;
+#[cfg(feature="tete-guest")]
+#[path="common/tete.rs"]
+mod tete;
 #[allow(dead_code)]
 #[path = "../../../../storage/runtime.rs"]
 mod runtime;
@@ -59,6 +74,8 @@ fn serve() -> rt::Result<()> {
     let key = SigningKey::from_bytes(include_bytes!(env!("NOVA_QEMU_SERVER_SEED")));
     // Une preuve de reprise au plus pour cette instance du signataire de qualification.
     let mut issued = false;
+    #[cfg(feature="vue-guest")]
+    let mut recovery_done=false;
     #[cfg(feature = "horloge-guest")]
     let mut exchange_done = false;
     loop {
@@ -69,8 +86,42 @@ fn serve() -> rt::Result<()> {
             },
             other => other?,
         };
+        #[cfg(feature="recuperation-guest")]
+        if issued && recovery_bridge::is_request(&m) && {
+            #[cfg(feature="vue-guest")] { !recovery_done }
+            #[cfg(not(feature="vue-guest"))] { true }
+        } {
+            recovery_bridge::serve(&key,port,&id,m)?;
+            #[cfg(feature="vue-guest")]
+            { recovery_done=true;continue; }
+            #[cfg(not(feature="vue-guest"))]
+            return Ok(());
+        }
+        #[cfg(feature="vfs-guest")]
+        if issued && recovery_done && recovery_bridge::is_request(&m) {
+            mutation_bridge::serve(&key,port,&id,m)?;
+            continue;
+        }
         let b = &m.payload;
         let mut result = [0u8; 128];
+        #[cfg(feature="tete-guest")]
+        if m.tag == tete::CURRENT && m.len == 128 && m.kind == 1 && issued &&
+            b[..32] == id && b[32..64] != [0;32] && b[64..] == [0;64] {
+            let mut req = [0; 104];
+            req[..8].copy_from_slice(b"NACURR01");
+            req[8..24].copy_from_slice(&incarnation::SERVER);
+            req[24..40].copy_from_slice(&incarnation::DOMAIN);
+            req[40..72].copy_from_slice(&id);
+            req[72..].copy_from_slice(&b[32..64]);
+            let mut answer = [0;176];
+            if canal::transfer(&key, &req, &mut answer).is_ok() {
+                rt::send_for(port,tete::CURRENT,&answer[..112],2000)?;
+                rt::send_for(port,tete::PROOF,&answer[112..],2000)?;
+            } else {
+                rt::send_for(port,tete::CURRENT,&rt::REFUSED.to_le_bytes(),2000)?;
+            }
+            continue;
+        }
         let allowed = !issued
             && m.len == 128
             && m.kind == 1

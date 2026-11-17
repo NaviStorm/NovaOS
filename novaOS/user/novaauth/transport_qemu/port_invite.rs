@@ -130,6 +130,12 @@ impl Port {
         }
     }
     pub(crate) fn poll(&mut self, dev: &IpcDevice<'_>, sector: usize, port: u64) -> rt::Result<()> {
+        self.poll_mode(dev,sector,port,false)
+    }
+    pub(crate) fn poll_reusable(&mut self, dev: &IpcDevice<'_>, sector: usize, port: u64) -> rt::Result<()> {
+        self.poll_mode(dev,sector,port,true)
+    }
+    fn poll_mode(&mut self, dev: &IpcDevice<'_>, sector: usize, port:u64,reusable:bool)->rt::Result<()> {
         if port == 0 {
             return Ok(());
         }
@@ -142,6 +148,14 @@ impl Port {
             }
             Err(e) => return Err(e),
         };
+        // Réouverture explicite sur la même capacité vivante, après fermeture
+        // acquittée. TLS refait son authentification complète, sans reprise.
+        if reusable && self.closed_clean && msg.tag==IPC_TAG && msg.kind==1 &&
+            msg.len==128 && msg.payload[0]==1 && msg.payload[1]==16 &&
+            msg.payload[2..32]==[0;30] && msg.payload[32..48]!=[0;16] &&
+            msg.payload[48..]==[0;80] {
+            *self=Self::default();
+        }
         let mut a = [0; 128];
         let status =
             if msg.tag == CLOSE_TAG && msg.kind == 1 && msg.len == 128 && msg.payload == [0; 128] {

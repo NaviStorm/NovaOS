@@ -1,6 +1,9 @@
 #![no_std]
 #![no_main]
 mod common;
+#[cfg(feature="vue-guest")]
+#[path="common/no_heap.rs"]
+mod no_heap;
 #[allow(dead_code)]
 #[path = "../../../../../abi/files.rs"]
 mod files;

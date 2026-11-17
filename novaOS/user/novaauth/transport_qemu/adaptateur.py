@@ -17,7 +17,7 @@ def lire(sock, taille):
     return data
 
 
-def servir(disk, listener, relais, secteur, observer=None):
+def servir(disk, listener, relais, secteur, observer=None, reopen=None):
     """Le processus natif possède les deux pages et tout l’état de leur liaison."""
     executable = Path(os.environ["NOVA_ADAPTATEUR"]).resolve(strict=True)
     fcntl.flock(disk, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -25,7 +25,11 @@ def servir(disk, listener, relais, secteur, observer=None):
         client, _ = listener.accept()
         with client:
             fds = disk, client.fileno(), relais.fileno()
-            with subprocess.Popen([executable, *map(str, fds), str(secteur)],
+            command=[executable,*map(str,fds),str(secteur)]
+            if reopen is not None:
+                command+=["--reopen-listener",str(reopen.fileno())]
+                fds+= (reopen.fileno(),)
+            with subprocess.Popen(command,
                                   pass_fds=fds, stdout=subprocess.PIPE, text=True) as child:
                 for line in child.stdout:
                     if observer is not None:

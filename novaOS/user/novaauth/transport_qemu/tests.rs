@@ -177,3 +177,42 @@ fn coupure_et_refus_des_substitutions() {
         assert!(link.state.closed);
     }
 }
+
+#[test]
+fn reouverture_explicite_vide_sans_reprise_ancienne_route() {
+    use std::sync::atomic::{AtomicUsize,Ordering};
+    static NEXT:AtomicUsize=AtomicUsize::new(0);
+    for size in [512,PAGE] {
+        let path=std::path::PathBuf::from(std::env::var_os("NOVAOS_TMPDIR").expect("TMPDIR OS"))
+            .join(format!("transport-reprise-{}-{}",std::process::id(),NEXT.fetch_add(1,Ordering::Relaxed)));
+        let listener=UnixListener::bind(&path).unwrap();listener.set_nonblocking(true).unwrap();
+        let mut control=Reopener {listener,previous:[0;16]};
+        let (mut link,mut old)=route();
+        let opening=sector(size,1,0,OPEN,&[]);
+        control.open(&mut link,&opening).unwrap();link.emit(&opening);
+        link.emit(&sector(size,2,0,DATA,b"ancien"));
+        link.emit(&sector(size,3,0,CLOSE,&[]));
+        assert!(link.state.closed);
+        let mut bytes=[0;32];while old.read(&mut bytes).unwrap()!=0 {}
+        // Sans pair nouveau : aucun changement d'état ni attente.
+        let mut fresh=opening.clone();fresh[8..24].fill(0xbc);
+        control.open(&mut link,&fresh).unwrap();assert!(link.state.closed);
+        let mut remote=UnixStream::connect(&path).unwrap();
+        remote.set_nonblocking(true).unwrap();
+        // Un OPEN ancien ne consomme même pas la connexion en attente.
+        control.open(&mut link,&opening).unwrap();assert!(link.state.closed);
+        control.open(&mut link,&fresh).unwrap();
+        assert!(!link.state.closed);
+        assert!(link.tx.iter().chain(link.rx.iter()).all(|&b|b==0));
+        link.emit(&fresh);
+        assert_eq!(decode_sector(link.receive(size)).unwrap().kind,EMPTY);
+        let mut data=sector(size,2,0,DATA,b"neuf");data[8..24].fill(0xbc);
+        link.emit(&data);assert_eq!(remote.read(&mut bytes).unwrap(),4);
+        assert_eq!(&bytes[..4],b"neuf");
+        // Une cellule de l'ancienne route ferme le nouveau transport.
+        link.emit(&sector(size,3,0,DATA,b"rejeu"));assert!(link.state.closed);
+        drop(control);std::fs::remove_file(path).unwrap();
+    }
+    assert_eq!(META,56);
+    assert!(EXTRA+size_of::<Reopener>()<=256);
+}

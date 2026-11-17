@@ -2,6 +2,9 @@
 #![no_std]
 #![no_main]
 mod common;
+#[cfg(feature="vue-guest")]
+#[path="common/no_heap.rs"]
+mod no_heap;
 #[path = "../../../../storage/runtime.rs"]
 mod runtime;
 use common::*;

@@ -153,7 +153,7 @@ fn clock() -> Result<u64, ErrorKind> {
     rt::value(rt::call(instances::SERVICE_PROCESS, process::NOW, 0, 0))
         .map_err(|_| ErrorKind::PermissionDenied)
 }
-fn guard(until: u64) -> Result<u64, ErrorKind> {
+pub(super) fn guard(until: u64) -> Result<u64, ErrorKind> {
     let now = clock()?;
     until
         .checked_sub(now)
@@ -282,6 +282,31 @@ impl Write for Wire {
     }
 }
 pub fn probe(key: &SigningKey, id: &[u8; 32]) -> Result<(), TlsError> {
+    let mut reply = [0; 32];
+    transfer(key, id, &mut reply)?;
+    if reply != *id { return Err(TlsError::InvalidApplicationData); }
+    Ok(())
+}
+pub trait Channel: Read<Error = TlsError> + Write<Error = TlsError> {}
+impl<T: Read<Error = TlsError> + Write<Error = TlsError>> Channel for T {}
+
+pub(super) fn transfer(key: &SigningKey, request: &[u8], reply: &mut [u8]) -> Result<(), TlsError> {
+    dialogue(key, |tls, _until| {
+        if tls.write(request)? != request.len() { return Err(TlsError::IoError); }
+        tls.flush()?;
+        let mut pos=0;
+        while pos<reply.len() {
+            let n=tls.read(&mut reply[pos..])?;
+            if n==0 {return Err(TlsError::ConnectionClosed);}
+            pos+=n;
+        }
+        Ok(())
+    })
+}
+
+/// Le dialogue entier, handshake inclus, reste limité à dix secondes. Il ne
+/// renouvelle ni le délai, ni la session, et ne réémet aucune mutation.
+pub(super) fn dialogue(key: &SigningKey, operation: impl FnOnce(&mut dyn Channel,u64)->Result<(),TlsError>) -> Result<(), TlsError> {
     permissions().map_err(TlsError::Io)?;
     common::marker(b"NAUTH TLS avant");
     let start = clock().map_err(TlsError::Io)?;
@@ -327,22 +352,7 @@ pub fn probe(key: &SigningKey, id: &[u8; 32]) -> Result<(), TlsError> {
     if !p.check.verified || !p.signed.get() {
         return Err(TlsError::InvalidCertificate);
     }
-    if tls.write(id)? != id.len() {
-        return Err(TlsError::IoError);
-    }
-    tls.flush()?;
-    let mut reply = [0; 32];
-    let mut pos = 0;
-    while pos < reply.len() {
-        let n = tls.read(&mut reply[pos..])?;
-        if n == 0 {
-            return Err(TlsError::ConnectionClosed);
-        }
-        pos += n;
-    }
+    operation(&mut tls,until)?;
     guard(until).map_err(TlsError::Io)?;
-    if reply != *id {
-        return Err(TlsError::InvalidApplicationData);
-    }
     Ok(())
 }

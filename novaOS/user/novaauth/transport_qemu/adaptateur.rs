@@ -5,7 +5,7 @@ use std::fs::File;
 use std::io::{self, ErrorKind, Read, Write};
 use std::net::Shutdown;
 use std::os::fd::{FromRawFd, RawFd};
-use std::os::unix::{fs::FileExt, net::UnixStream};
+use std::os::unix::{fs::FileExt, net::{UnixStream,UnixListener}};
 
 const VOLUME: u64 = 512 * PAGE as u64;
 const MAX_IO: usize = 128 * 1024;
@@ -147,7 +147,35 @@ impl Drop for Link {
     }
 }
 
-fn serve(disk: File, mut peer: UnixStream, relay: UnixStream, sector: usize) -> io::Result<()> {
+/// Contrôle hôte explicitement sélectionné pour les consultations successives.
+/// Ni les octets de clé ni les décisions NovaAuth ne passent par cette structure.
+struct Reopener { listener:UnixListener, previous:[u8;16] }
+const _: () = assert!(EXTRA + size_of::<Reopener>() <= 256);
+impl Reopener {
+    fn open(&mut self,link:&mut Link,data:&[u8])->io::Result<()> {
+        let Ok(cell)=decode_sector(data) else {return Ok(());};
+        if cell.kind!=OPEN || cell.sequence!=1 || cell.ack!=0 ||
+            cell.size!=0 || cell.link==[0;16] {return Ok(());}
+        if !link.state.closed {
+            if link.state.tx==0 {self.previous=cell.link;}
+            return Ok(());
+        }
+        if cell.link==self.previous {return Ok(());}
+        // accept non bloquant : une panne du relais ne bloque jamais P9.
+        let (stream,_)=match self.listener.accept() {
+            Ok(pair)=>pair,
+            Err(e) if matches!(e.kind(),ErrorKind::WouldBlock|ErrorKind::Interrupted)=>return Ok(()),
+            Err(e)=>return Err(e),
+        };
+        stream.set_nonblocking(true)?;
+        link.relay=stream; // l'ancien socket a déjà subi shutdown, puis est fermé
+        link.tx.fill(0);link.rx.fill(0);link.state=State::default();
+        self.previous=cell.link;
+        Ok(())
+    }
+}
+fn serve(disk: File, mut peer: UnixStream, relay: UnixStream, sector: usize,
+         mut reopen:Option<Reopener>) -> io::Result<()> {
     let info = disk.metadata()?;
     if !info.is_file() || info.len() != VOLUME || !matches!(sector, 512 | 4096) {
         return Err(ErrorKind::InvalidInput.into());
@@ -205,6 +233,7 @@ fn serve(disk: File, mut peer: UnixStream, relay: UnixStream, sector: usize) -> 
                 0
             }
         } else if cmd == 1 && offset == VOLUME && n == sector {
+            if let Some(r)=reopen.as_mut() {r.open(&mut link,&scratch[..n])?;}
             link.emit(&scratch[..n]);
             0
         } else if cmd == 0 && offset == VOLUME + PAGE as u64 && n == sector {
@@ -233,9 +262,11 @@ fn main() -> io::Result<()> {
             size_of::<State>(),
             size_of::<Link>()
         );
+        println!("{{\"reouverture_optionnelle\":{},\"supplement_avec_reouverture\":{},\"plafond\":256}}",
+            size_of::<Reopener>(), EXTRA+size_of::<Reopener>());
         return Ok(());
     }
-    if args.len() != 4 {
+    if args.len() != 4 && !(args.len()==6 && args[4]=="--reopen-listener") {
         return Err(ErrorKind::InvalidInput.into());
     }
     let fd = |v: &str| {
@@ -249,6 +280,13 @@ fn main() -> io::Result<()> {
         return Err(ErrorKind::InvalidInput.into());
     }
     let sector = args[3].parse().map_err(|_| ErrorKind::InvalidInput)?;
+    let extra=if args.len()==6 {Some(fd(&args[5])?)} else {None};
+    if extra.is_some_and(|e|[disk,client,relay].contains(&e)) {return Err(ErrorKind::InvalidInput.into());}
+    let reopen=if let Some(extra)=extra {
+        let listener=unsafe {UnixListener::from_raw_fd(extra)};
+        listener.set_nonblocking(true)?;
+        Some(Reopener {listener,previous:[0;16]})
+    } else {None};
     drop(args);
     // Les trois descripteurs ouverts et distincts sont hérités du banc par pass_fds.
     unsafe {
@@ -257,6 +295,7 @@ fn main() -> io::Result<()> {
             UnixStream::from_raw_fd(client),
             UnixStream::from_raw_fd(relay),
             sector,
+            reopen,
         )
     }
 }

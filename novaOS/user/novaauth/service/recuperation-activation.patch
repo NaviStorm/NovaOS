@@ -1,0 +1,5 @@
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -208 +208 @@
+-            .args(["build","--release","--locked","--offline","--features","triplet-guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","activation-guest","--bins","--target",&target])

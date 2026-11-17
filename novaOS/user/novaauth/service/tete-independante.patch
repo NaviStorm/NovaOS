@@ -1,0 +1,8 @@
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -199 +199 @@
+-        for key in ["NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC","NOVA_QEMU_SERVER_SEED","NOVA_QEMU_SERVER_PUB","NOVA_GUEST_CERT","NOVA_AUTHORITY_CERT","NOVA_FIXTURE_CA","NOVA_AUTHORITY_PUB"] {
++        for key in ["NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC","NOVA_QEMU_SERVER_SEED","NOVA_QEMU_SERVER_PUB","NOVA_GUEST_CERT","NOVA_AUTHORITY_CERT","NOVA_FIXTURE_CA","NOVA_AUTHORITY_PUB","NOVA_DECISION_PUB"] {
+@@ -208 +208 @@
+-            .args(["build","--release","--locked","--offline","--features","horloge-guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","tete-guest","--bins","--target",&target])

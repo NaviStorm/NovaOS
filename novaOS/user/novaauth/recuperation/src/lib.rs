@@ -551,6 +551,7 @@ mod key_proof;
 pub use key_proof::{open_key_proof, seal_key_proof};
 
 pub mod framing;
+pub mod activation;
 
 // Les primitives reçoivent explicitement leur CryptoRng. Les helpers implicites
 // de dépendances ne doivent jamais trouver une source de substitution.

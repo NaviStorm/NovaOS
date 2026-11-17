@@ -227,6 +227,17 @@ class Recovery:
                 HEAD_OBSERVED + fixed(fresh, 32) + state.packet()
             )
 
+    def observe_peer(self, server, domain, fresh, peer_public):
+        # Une route retirée peut découvrir sa mise en quarantaine. Cette lecture
+        # ne fournit aucune admission, signature de mutation ni donnée privée.
+        with transaction(self.path) as db:
+            state = self._current(db, server, domain)
+            stored = db.execute("SELECT server_key FROM scope WHERE server=? AND domain=?",
+                                (server, domain)).fetchone()
+            if stored != (fixed(peer_public, 32),):
+                raise Refus("certificat hors portée")
+            return state, self.key.sign(HEAD_OBSERVED + fixed(fresh, 32) + state.packet())
+
     def publish(self, state, op, next_head, proof):
         packet = state.mutation(op, next_head)
         with transaction(self.path) as db:

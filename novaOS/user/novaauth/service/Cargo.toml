@@ -10,6 +10,12 @@ publish = false
 [features]
 guest = []
 incarnation-guest = ["shell-guest"]
+tete-guest = ["horloge-guest"]
+vfs-guest = ["vue-guest"]
+vue-guest = ["activation-guest", "dep:novaos-identity", "dep:dlmalloc", "dep:spin"]
+activation-guest = ["triplet-guest"]
+triplet-guest = ["recuperation-guest"]
+recuperation-guest = ["tete-guest", "dep:novaos-recovery"]
 horloge-guest = ["incarnation-guest", "dep:embedded-tls", "dep:embedded-io", "dep:rand_core", "dep:signature"]
 policy-guest = ["guest"]
 shell-guest = ["guest"]
@@ -63,6 +69,10 @@ required-features = ["guest"]
 test = false
 
 [dependencies]
+novaos-identity = { path = "..", optional = true, features = ["recuperation-lab"] }
+dlmalloc = { version = "=0.2.14", default-features = false, optional = true }
+spin = { version = "=0.9.9", default-features = false, features = ["mutex", "spin_mutex"], optional = true }
+novaos-recovery = { path = "../recuperation", optional = true }
 embedded-tls = { version = "=0.19.0", default-features = false, optional = true }
 embedded-io = { version = "0.7", default-features = false, optional = true }
 rand_core = { version = "0.6", default-features = false, optional = true }
@@ -85,4 +95,16 @@ test = false
 name = "signataire-incarnation"
 path = "src/bin/signataire-incarnation.rs"
 required-features = ["incarnation-guest"]
+test = false
+
+[[bin]]
+name = "recovery-alice"
+path = "src/bin/recovery-alice.rs"
+required-features = ["vfs-guest"]
+test = false
+
+[[bin]]
+name = "recovery-bob"
+path = "src/bin/recovery-bob.rs"
+required-features = ["vfs-guest"]
 test = false

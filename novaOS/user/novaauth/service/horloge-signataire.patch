@@ -26,7 +26,7 @@
 --- a/novaOS/kernel/src/sched/process/syscall.rs
 +++ b/novaOS/kernel/src/sched/process/syscall.rs
 @@ -32,0 +33,11 @@
-+    if matches!(msg, "NAUTH TLS avant" | "NAUTH TLS actif" | "NAUTH TLS apres") {
++    if matches!(msg, "NAUTH TLS avant" | "NAUTH TLS actif" | "NAUTH TLS apres" | "NAUTH capture avant" | "NAUTH capture apres") {
 +        with(|s| {
 +            let who=caller(s);
 +            let process=s.processes.get(who);

@@ -16,10 +16,16 @@ import argparse
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("arch", choices=("aarch64", "x86_64"))
 parser.add_argument("sector", type=int, choices=(512, 4096))
-parser.add_argument("mode", choices=("nominal", "lent"))
+parser.add_argument("mode", choices=("nominal", "lent", "route-retiree", "ancien-recu", "decision-alteree"))
 for name in ("iso", "genese", "cles", "sortie"):
     parser.add_argument(name, type=Path)
+parser.add_argument("--base-externe", type=Path)
+parser.add_argument("--cle-decision", type=Path)
 args = parser.parse_args()
+audit_tete = args.mode not in ("nominal", "lent")
+if audit_tete and (not args.base_externe or not args.cle_decision):
+    parser.error("base externe et clé de décision nécessaires")
+
 arch, sector, mode = args.arch, args.sector, args.mode
 out, iso, keys, seed = (
     x.resolve() for x in (args.sortie, args.iso, args.cles, args.genese)
@@ -90,6 +96,22 @@ with (
                 ):
                     raise ValueError("pair TLS")
                 observed.update(tls=conn.version(), certificat_epingle=True)
+                if audit_tete:
+                    from lecture_tete import respond
+                    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+                    req = bytes(lire(conn, 104))
+                    key = Ed25519PrivateKey.from_private_bytes(args.cle_decision.read_bytes())
+                    if mode == "ancien-recu":
+                        # Réponse correctement signée pour une consultation antérieure.
+                        req = req[:-32] + bytes([1])*32
+                    answer = respond(conn, req, args.base_externe, key)
+                    if mode == "decision-alteree":
+                        answer = answer[:-1] + bytes([answer[-1] ^ 1])
+                    observed.update(generation=int.from_bytes(answer[72:80],"big"),
+                                    tete=answer[80:112].hex(), instance=req[40:72].hex())
+                    conn.sendall(answer)
+                    conn.recv(1)
+                    return
                 ident = bytes(lire(conn, 32))
                 if not observed.get("fragment_2048"):
                     raise ValueError("négociation des 2048 octets absente")
@@ -121,14 +143,14 @@ with (
     workers = [threading.Thread(target=host), threading.Thread(target=adapter)]
     for worker in workers:
         worker.start()
-    args = command(
+    vm_args = command(
         arch,
         sector,
         disk,
         controls=["-display", "none", "-monitor", "none", "-serial", "stdio"],
     )
-    i = args.index("-drive") + 1
-    args[i] = (
+    i = vm_args.index("-drive") + 1
+    vm_args[i] = (
         "if=none,id=d,format=raw,file.driver=nbd,file.server.type=unix,file.server.path=port.sock,cache=none,werror=report,rerror=report"
     )
 
@@ -142,7 +164,7 @@ with (
     with (
         (out / "invite.serial").open("xb") as raw,
         subprocess.Popen(
-            args,
+            vm_args,
             cwd=tmp,
             env=env,
             stdin=subprocess.PIPE,
@@ -153,10 +175,14 @@ with (
     ):
         try:
             t = Serial(vm, raw)
-            m = t.expect(rb"NAUTH canal (authentifie|refuse)", 65)
-            observed["invite"] = m[1].decode()
-            acknowledgement = t.expect(rb"NAUTH registre canal (confirme|refuse)", 15)
-            observed["registre"] = acknowledgement[1].decode()
+            if audit_tete:
+                reply = t.expect(rb"NAUTH registre tete (courante|route retiree|non verifiable)", 65)
+                observed["registre"] = reply[1].decode()
+            else:
+                m = t.expect(rb"NAUTH canal (authentifie|refuse)", 65)
+                observed["invite"] = m[1].decode()
+                acknowledgement = t.expect(rb"NAUTH registre canal (confirme|refuse)", 15)
+                observed["registre"] = acknowledgement[1].decode()
             if b"NAUTH transport ferme" not in t.data:
                 raise ValueError("fermeture non confirmee")
             snapshots = re.findall(
@@ -193,22 +219,26 @@ start, limit, end = (int(v, 16) for v in times.groups())
 success = (
     observed.get("tls") == "TLSv1.3"
     and observed.get("certificat_epingle")
-    and observed.get("registre") == ("refuse" if mode == "lent" else "confirme")
+
     and observed.get("fragment_2048")
     and observed.get("drainage")
     and limit - start == 10000
     and b"NOW autorise gestion et arguments refuses 8/8" in raw
 )
-if mode == "lent":
+if audit_tete:
+    success = (success and "tete" in observed and start <= end < limit
+               and observed.get("registre") == ("route retiree" if mode == "route-retiree" else "non verifiable")
+               and (b"NAUTH tete signature et portee verifiees" in raw) == (mode == "route-retiree"))
+elif mode == "lent":
     success = (
         success
-        and observed.get("invite") == "refuse"
+        and observed.get("registre") == "refuse" and observed.get("invite") == "refuse"
         and end >= limit
         and b"NAUTH diagnostic Io(TimedOut)" in raw
     )
 else:
     success = (
-        success and observed.get("invite") == "authentifie" and start <= end < limit
+        success and observed.get("registre") == "confirme" and observed.get("invite") == "authentifie" and start <= end < limit
     )
 observed.update(debut_ms=start, echeance_ms=limit, fin_ms=end, succes=bool(success))
 (out / "resultat.json").write_text(json.dumps(observed, indent=2) + "\n")

@@ -1,0 +1,49 @@
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -205,7 +205,7 @@
+         cargo_service.args(["--features", "novaauth-sessions-lab"]);
+         let guest_flags = format!("{flags}\x1f--cfg\x1fchacha20_force_soft\x1f--cfg\x1fpoly1305_force_soft\x1f--cfg\x1faes_force_soft\x1f--cfg\x1fpolyval_force_soft\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
+         let built = Command::new(env::var_os("CARGO").unwrap())
+-            .args(["build","--release","--locked","--offline","--features","activation-guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","vue-guest","--bins","--target",&target])
+             .current_dir(user.join("novaauth/service"))
+             .env("CARGO_TARGET_DIR",&work)
+             .env("CARGO_ENCODED_RUSTFLAGS",&guest_flags)
+--- a/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
+@@ -61,6 +61,8 @@
+     let (own_key, peer_key) = conversation(s, owner, owner, peer)?;
+     if service == 22 {
+         config(s, owner, 10, &identity(s, owner)?);
++        config(s, owner, 14, &[own_key]);
++        config(s, peer, 21, &[peer_key]);
+     } else if service == 23 {
+         config(s, owner, 10, &identity(s, peer)?);
+         config(s, owner, 8, &[own_key]);
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -823,7 +823,7 @@
+                 pending.grant.serve(&mut s,client)?;
+             }
+         }
+-        transport.poll(dev, sector as usize, exec_files_lab::config(465))?;
++        transport.poll_reusable(dev, sector as usize, exec_files_lab::config(465))?;
+         triplet_effecteur::poll(&mut s, &mut triplet, &mut triplet_sequence)?;
+         let tmp_busy = s.serve_private(ports[i].0)?;
+         let timeout = if tmp_busy { 0 } else if pair { 1 } else if rt::config(14) != 0 || rt::config(16) != 0 { 8 } else { 15000 };
+--- a/novaOS/user/novaauth/service/src/bin/verifier.rs
++++ b/novaOS/user/novaauth/service/src/bin/verifier.rs
+@@ -34,6 +34,13 @@
+     let mut q = [0; 128];
+     q[..8].copy_from_slice(b"NA3CHECK");
+     q[8..24].copy_from_slice(&reference);
++    #[cfg(feature="vue-guest")]
++    let a = {
++        let port=unsafe {(&*(0x401000 as *const core::sync::atomic::AtomicU64).add(21)).load(core::sync::atomic::Ordering::Acquire)};
++        if port==0 {return Err(rt::DENIED);}
++        rpc(port,port,tag,&q)?
++    };
++    #[cfg(not(feature="vue-guest"))]
+     let a = rpc(rt::config(5), rt::config(6), tag, &q)?;
+     if number(&a) != rt::OK {
+         return Err(rt::DENIED);
