@@ -24,6 +24,10 @@ Le banc rejoue sur chaque ISA avec P9/512 et P9/4096. Il crée un volume fictif 
 
 Les mesures invitées couvrent le chargement, la préparation, l’exécution et la collecte de **env** pour une et trente affectations. La préparation est également chronométrée séparément. Les compteurs sont divisés par la fréquence de la minuterie invitée. Le tableau présente la médiane de cinq appels après un échauffement. Les pages initiales proviennent de `UserSpace::page_counts()` avant la première instruction de l’enfant. Le pic du tas en cours d’exécution reste inconnu. Le statut et l’audit des ressources sont contrôlés après collecte. Le coût d’un enfant lancé *par env*, le transport public des variables exportées et le pipe binaire de bout en bout restent ouverts jusqu’au raccord du lanceur. GNU Coreutils ne fournit aucun ELF pour l’ABI NovaOS. [Mesures invitées](preuves/performances-qemu.md) · [Résultats par cellule](preuves/matrice-cibles.json)
 
+## Régressions
+
+Les trois bancs `nsh`, `nsh_scripts` et `nsh_terminal` passent sur chaque ISA et chaque géométrie avec le noyau ordinaire contrôlé par empreinte. Chaque cellule exerce 113 commandes du banc shell, 31 commandes du banc de scripts et le scénario interactif du terminal. Les cinq contrôles du catalogue passent sur Darwin ARM64 et x86_64 sous Rosetta. Le registre ABI passe ses neuf contrôles et la vérification de ses fichiers générés. La campagne porte sur l’utilitaire et le routage documentaire. Les suites de panne DMA, d’installation, de reprise du moteur NovaFS et de l’éditeur sont hors du périmètre modifié. [Résultats](preuves/regressions.json) · [Archive des traces](preuves/regressions.tar.gz)
+
 ## Référence et licences
 
 Le tag GNU 9.12 correspond à `c0f8514d989184921d9b12a4d103a7b23abc5af8`. Le parseur, `-S`, l’import brut et l’appel de lancement ont été étudiés dans `src/env.c`, avec `src/operand2sig.c`, `src/printenv.h`, `src/system.h`, le chapitre *env invocation* de `doc/coreutils.texi` et les six fichiers de `tests/env/`. Le sous-module gnulib épinglé à `106e9b2384d08a1696fcbd40cbab52237943f208` fournit notamment `argz.c`, `read-file.c`, `execvp.c`, `putenv.c` et `unsetenv.c`. La révision Homebrew 1 applique le correctif GNU `782a1e5` qui réserve la mise entre guillemets au terminal. Le banc utilise explicitement `/opt/homebrew/opt/coreutils/libexec/gnubin/env`, lien vers `genv`. [Source GNU épinglée](https://github.com/coreutils/coreutils/blob/c0f8514d989184921d9b12a4d103a7b23abc5af8/src/env.c) · [Correctif de l’oracle](https://github.com/coreutils/coreutils/commit/782a1e5bc2090212273bb731dceee2cc2a071e54)
@@ -45,6 +49,8 @@ TMPDIR="$(cd ../../tmp && pwd)/" python3 -B lab/amont.py ../../tmp/sort-arc027-g
 ./reconstruire.sh x86_64
 ./tester-options-env.sh --complet --novaos aarch64 ../novaOS/build/env-arm
 ./tester-options-env.sh --complet --novaos x86_64 ../novaOS/build/env-x86
+TMPDIR="$(cd ../../tmp && pwd)/" NOVAOS_TMPDIR="$(cd ../../tmp && pwd)" python3 -B lab/regressions.py aarch64 ../novaOS/build/env-arm ../novaOS/build/env-reg-arm
+TMPDIR="$(cd ../../tmp && pwd)/" NOVAOS_TMPDIR="$(cd ../../tmp && pwd)" python3 -B lab/regressions.py x86_64 ../novaOS/build/env-x86 ../novaOS/build/env-reg-x86
 python3 -B lab/archiver.py ../novaOS/build/env-arm ../novaOS/build/env-x86 ../novaOS/build/env-archives
 shasum -a 256 -c SHA256SUMS
 ```

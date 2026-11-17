@@ -1,0 +1,138 @@
+[
+ {
+  "arch": "aarch64",
+  "secteur": 512,
+  "nsh": {
+   "architecture": "aarch64",
+   "secteur": 512,
+   "commandes": 113,
+   "coupure": "alpha retiré, beta et témoin intègres"
+  },
+  "scripts": {
+   "architecture": "aarch64",
+   "secteur": 512,
+   "commandes": 31,
+   "bash": [
+    "A:été blanc $nom $nom",
+    "oui",
+    "tour0",
+    "tour1",
+    "a0",
+    "b0",
+    "break=0",
+    "continue=0",
+    "secours",
+    "statut=1",
+    "vide"
+   ],
+   "pid_client": 5,
+   "echantillons_memoire": 40,
+   "pic_pages_privees_observe": 137,
+   "reprise": true
+  },
+  "terminal": "réussi",
+  "kernel": "c1f8d61285e5349b65b13a5a1c4265e61567fff15fc9b56237173c0421687832"
+ },
+ {
+  "arch": "aarch64",
+  "secteur": 4096,
+  "nsh": {
+   "architecture": "aarch64",
+   "secteur": 4096,
+   "commandes": 113,
+   "coupure": "alpha retiré, beta et témoin intègres"
+  },
+  "scripts": {
+   "architecture": "aarch64",
+   "secteur": 4096,
+   "commandes": 31,
+   "bash": [
+    "A:été blanc $nom $nom",
+    "oui",
+    "tour0",
+    "tour1",
+    "a0",
+    "b0",
+    "break=0",
+    "continue=0",
+    "secours",
+    "statut=1",
+    "vide"
+   ],
+   "pid_client": 5,
+   "echantillons_memoire": 40,
+   "pic_pages_privees_observe": 137,
+   "reprise": true
+  },
+  "terminal": "réussi",
+  "kernel": "c1f8d61285e5349b65b13a5a1c4265e61567fff15fc9b56237173c0421687832"
+ },
+ {
+  "arch": "x86_64",
+  "secteur": 512,
+  "nsh": {
+   "architecture": "x86_64",
+   "secteur": 512,
+   "commandes": 113,
+   "coupure": "alpha retiré, beta et témoin intègres"
+  },
+  "scripts": {
+   "architecture": "x86_64",
+   "secteur": 512,
+   "commandes": 31,
+   "bash": [
+    "A:été blanc $nom $nom",
+    "oui",
+    "tour0",
+    "tour1",
+    "a0",
+    "b0",
+    "break=0",
+    "continue=0",
+    "secours",
+    "statut=1",
+    "vide"
+   ],
+   "pid_client": 5,
+   "echantillons_memoire": 40,
+   "pic_pages_privees_observe": 142,
+   "reprise": true
+  },
+  "terminal": "réussi",
+  "kernel": "3846425efb19bf6c98495a355387b8a9f112ac0c125ab380748e39b1865c8540"
+ },
+ {
+  "arch": "x86_64",
+  "secteur": 4096,
+  "nsh": {
+   "architecture": "x86_64",
+   "secteur": 4096,
+   "commandes": 113,
+   "coupure": "alpha retiré, beta et témoin intègres"
+  },
+  "scripts": {
+   "architecture": "x86_64",
+   "secteur": 4096,
+   "commandes": 31,
+   "bash": [
+    "A:été blanc $nom $nom",
+    "oui",
+    "tour0",
+    "tour1",
+    "a0",
+    "b0",
+    "break=0",
+    "continue=0",
+    "secours",
+    "statut=1",
+    "vide"
+   ],
+   "pid_client": 5,
+   "echantillons_memoire": 40,
+   "pic_pages_privees_observe": 142,
+   "reprise": true
+  },
+  "terminal": "réussi",
+  "kernel": "3846425efb19bf6c98495a355387b8a9f112ac0c125ab380748e39b1865c8540"
+ }
+]
