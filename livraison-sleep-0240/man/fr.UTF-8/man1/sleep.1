@@ -1,0 +1,24 @@
+.Dd 17 novembre 2026
+.Dt SLEEP 1
+.Os NovaOS
+.Sh NOM
+.Nm sleep
+.Nd attendre la somme des durées
+.Sh SYNTAXE
+.Nm
+.Op Fl Fl
+.Ar durée ...
+.Nm
+.Fl Fl help | Fl Fl version
+.Sh DESCRIPTION
+Une durée est un nombre décimal ou hexadécimal positif ou nul.
+Les suffixes s, m, h et d désignent les secondes, minutes, heures et jours.
+L’unité par défaut est la seconde. La valeur inf attend indéfiniment.
+La première option reconnue prend effet immédiatement.
+.Sh EXEMPLES
+.Dl sleep .025 1e-3s
+.Sh STATUT
+Zéro en cas de succès, un en cas de saisie invalide ou d’erreur pendant l’attente.
+.Sh DROITS
+La documentation utilise uniquement la sortie. Sous NovaOS une attente positive
+utilise un canal IPC privé. La commande préserve l’entrée et les fichiers.

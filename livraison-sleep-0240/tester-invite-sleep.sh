@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+here=$(CDPATH= cd "$(dirname "$0")" && pwd)
+export NOVAOS_TMPDIR="${NOVAOS_TMPDIR:-$(dirname "$(dirname "$here")")/tmp}"
+export TMPDIR="$NOVAOS_TMPDIR/" PYTHONDONTWRITEBYTECODE=1
+exec python3 "$here/lab/invite.py" "$@"
