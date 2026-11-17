@@ -1,21 +1,14 @@
-diff --git a/novaOS/kernel/Cargo.toml b/novaOS/kernel/Cargo.toml
-index 768cd6689ead28cb88f42a1996566528b7d72691..3a5f716fe05657741d2c69369c8d85c2089f5c14 100644
---- a/novaOS/kernel/Cargo.toml
-+++ b/novaOS/kernel/Cargo.toml
-@@ -15 +15 @@
--novaauth-sessions-lab = []
-+novaauth-sessions-lab = ["dep:sha2"]
 diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
-index 1a5accd803cd9a6220c0afccc9decf5f44053365..8d09ef0d9376b077dd8fa9885d8397b43f3290c6 100644
+index 4fcc399468402982fb230b0901ed40bf05225d40..5dc17fa79facbe360c16ded3a357798b866dd9c6 100644
 --- a/novaOS/kernel/build.rs
 +++ b/novaOS/kernel/build.rs
-@@ -194 +194 @@
+@@ -196 +196 @@
 -        cargo_service.args(["--features", "novaauth-sessions-lab"]);
 +        cargo_service.args(["--features", "politiques-lab"]);
-@@ -197 +197 @@
+@@ -199 +199 @@
 -            .args(["build","--release","--locked","--offline","--features","guest","--bins","--target",&target])
 +            .args(["build","--release","--locked","--offline","--features","policy-guest","--bins","--target",&target])
-@@ -203 +203 @@
+@@ -205 +205 @@
 -        for name in ["auth-verifier","auth-client"] {
 +        for name in ["auth-verifier","auth-client","sign-alice","sign-bob","policy-app","policy-update"] {
 diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs

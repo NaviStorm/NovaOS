@@ -1,0 +1,31 @@
+--- a/components/shell/selection_vfs_lab.rs
++++ b/components/shell/selection_vfs_lab.rs
+@@ -0,0 +1,2 @@
++#[path = "../../novaOS/user/novaauth/service/sonde_selection_smp.rs"]
++mod sonde_selection_smp;
+@@ -140 +142 @@
+-        super::capabilities::Grant::new().select_private(fs, &selection, key)?;
++        if *mode != "collision" { super::capabilities::Grant::new().select_private(fs, &selection, key)?; }
+@@ -159 +161 @@
+-                producer = Some(admit(key, &argv)?);
++                producer = Some(if *mode == "collision" { sonde_selection_smp::presenter(fs, key, &argv)? } else { admit(key, &argv)? });
+--- a/novaOS/user/novafs/files/selection_pipe_lab.rs
++++ b/novaOS/user/novafs/files/selection_pipe_lab.rs
+@@ -93,0 +94,9 @@
++    // Le stockage confirme la sélection mais ne possède pas le droit de lancer.
++    let argv = b"\x01\x0a\x00lignes.tsv";
++    let other = rt::call(rt::IPC_NOTIFY, key, argv.as_ptr() as u64, argv.len() as u64);
++    let duplicate = rt::call(rt::IPC_NOTIFY, super::exec_files_lab::config(19), 0x4e585656414c, key);
++    if !matches!(other.status, rt::DENIED | rt::REVOKED) || duplicate.status != rt::REVOKED {
++        return Err(rt::REFUSED);
++    }
++    let marker = b"NXVPIPE VFS instance et double validation refusees";
++    rt::call(rt::DEBUG_WRITE, marker.as_ptr() as u64, marker.len() as u64, 0);
+--- a/novaOS/user/storage/fileapi.rs
++++ b/novaOS/user/storage/fileapi.rs
+@@ -14,0 +15,5 @@
++    /// Réserve le tag sur le même client que les appels précédents et suivants.
++    pub fn transaction_sonde(&mut self) -> rt::Result<(u64, u64, u64)> {
++        self.tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
++        Ok((self.tx, self.rx, self.tag))
++    }

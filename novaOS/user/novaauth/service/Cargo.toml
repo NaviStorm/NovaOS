@@ -10,6 +10,19 @@ publish = false
 [features]
 guest = []
 policy-guest = ["guest"]
+shell-guest = ["guest"]
+
+[[bin]]
+name = "exec-relay"
+path = "src/bin/exec-relay.rs"
+required-features = ["shell-guest"]
+test = false
+
+[[bin]]
+name = "shell-signer"
+path = "src/bin/shell-signer.rs"
+required-features = ["shell-guest"]
+test = false
 
 [[bin]]
 name = "sign-alice"

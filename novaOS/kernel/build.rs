@@ -24,6 +24,7 @@ fn main() {
     let nvme_lab = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NVME_LAB").is_some();
     for name in [
         "demo",
+        "pipe_compute",
         "instance_manager",
         "instance_sample",
         "service_manager",
@@ -64,7 +65,7 @@ fn main() {
         if name.starts_with("nvme_") && !nvme_lab {
             continue;
         }
-        let file_client = matches!(name, "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
+        let file_client = matches!(name, "pipe_compute" | "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
         let linker = format!(
             "link-arg=-T{}",
             user.join(if file_client {
@@ -124,6 +125,7 @@ fn main() {
             rust.args(["-C", "link-arg=--oformat=binary"]);
         }
         let source = match name {
+            "pipe_compute" => "demo",
             "nvme_rw_driver" => "nvme_driver",
             "storage/managed" => {
                 rust.args(["--cfg", "service_managed"]);

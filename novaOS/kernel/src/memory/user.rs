@@ -1,6 +1,9 @@
 //! Propriété des mappings privés. Toutes les copies passent par le HHDM du cadre validé.
 use super::*;
 mod elf;
+mod sealed;
+pub(super) use sealed::StagingArena;
+pub(crate) use sealed::{ImageStaging, ObjectRevision, SealedImage};
 mod threads;
 #[cfg(feature = "thread-probe")]
 pub(crate) use threads::test_thread_memory;
@@ -8,7 +11,7 @@ pub(crate) use threads::{MAX_SECONDARY_THREADS, MAX_THREAD_STACK_PAGES, ThreadMe
 #[cfg(feature = "materiel-lab")]
 mod mmio_lab;
 pub(crate) use elf::STACK_TOP as ELF_TOP;
-use elf::{Elf, HEAP};
+use elf::{Elf, Layout, HEAP};
 
 pub const CODE: u64 = 0x400000;
 pub const DATA: u64 = 0x401000;
@@ -38,7 +41,7 @@ pub(crate) struct UserSpace {
     tables: AddressSpace,
     mapped: [u64; 4],
     len: usize,
-    elf: Option<Elf<'static>>,
+    elf: Option<Layout>,
     loaded: usize,
     stack_extra: usize,
     heap_pages: usize,
@@ -245,11 +248,43 @@ impl UserSpace {
         if elf.is_some() && private_ro.is_some() {
             return Err(Error::Geometry);
         }
+        Self::load(m, image, config, private_ro, elf, elf.map(Layout::Embedded))
+    }
+
+    /// Profil d'image installée : uniquement ELF64 statique, table et ensemble
+    /// des pages en mémoire bornés avant la première allocation.
+    pub(crate) fn installed(m: &mut Memory, sealed: &SealedImage, config: &[u8]) -> Result<Self> {
+        let image = sealed.bytes();
+        const MAX_PAGES: u64 = (sealed::MAX_IMAGE_BYTES as u64) / PAGE;
+        if config.len() > PAGE as usize || image.len() > (MAX_PAGES * PAGE) as usize || image.len() < 64 ||
+            u16::from_le_bytes([image[56], image[57]]) as usize > PAGE as usize / 56 {
+            return Err(Error::Geometry);
+        }
+        let elf = Elf::parse(image)?;
+        let pages = elf.segments().try_fold((ELF_TOP - elf.stack) / PAGE + 1, |count, segment| {
+            count.checked_add((segment.end.next_multiple_of(PAGE) - (segment.start & !(PAGE - 1))) / PAGE)
+        });
+        if pages.is_none_or(|total| total > MAX_PAGES) {
+            return Err(Error::Geometry);
+        }
+        let layout = Layout::installed(m, elf)?;
+        Self::load(m, image, config, None, Some(elf), Some(layout))
+    }
+
+    fn load(m: &mut Memory, image: &[u8], config: &[u8], private_ro: Option<&[u8]>,
+            elf: Option<Elf<'_>>, layout: Option<Layout>) -> Result<Self> {
+        let tables = match AddressSpace::user(&mut m.frames, &m.space) {
+            Ok(tables) => tables,
+            Err(error) => {
+                if let Some(layout) = layout { layout.release(m); }
+                return Err(error);
+            }
+        };
         let mut s = Self {
-            tables: AddressSpace::user(&mut m.frames, &m.space)?,
+            tables,
             mapped: [0; 4],
             len: 0,
-            elf,
+            elf: layout,
             loaded: 0,
             stack_extra: 0,
             heap_pages: 0,
@@ -313,20 +348,24 @@ impl UserSpace {
         )
     }
 
+    fn elf_view(&self) -> Option<Elf<'_>> {
+        self.elf.as_ref().map(Layout::view)
+    }
+
     pub fn entry(&self) -> u64 {
-        self.elf.map_or(CODE, |e| e.entry)
+        self.elf_view().map_or(CODE, |e| e.entry)
     }
     pub fn stack_top(&self) -> u64 {
         if self.elf.is_some() { ELF_TOP } else { TOP }
     }
     pub fn stack_bottom(&self) -> u64 {
-        self.elf.map_or(STACK, |e| e.stack)
+        self.elf_view().map_or(STACK, |e| e.stack)
     }
     pub fn executable(&self, pc: u64) -> bool {
         if cfg!(target_arch = "aarch64") && pc % 4 != 0 {
             return false;
         }
-        self.elf.map_or_else(
+        self.elf_view().map_or_else(
             || (CODE..CODE + PAGE).contains(&pc),
             |e| {
                 e.segments()
@@ -338,7 +377,7 @@ impl UserSpace {
         self.mapped[..self.len].contains(&page)
             || (self.main_stack && (self.stack_bottom()..self.stack_top() - PAGE).contains(&page))
             || (HEAP..self.heap_end()).contains(&page)
-            || self.elf.is_some_and(|e| {
+            || self.elf_view().is_some_and(|e| {
                 e.segments()
                     .any(|s| (s.start & !(PAGE - 1)) <= page && page < s.end)
             })
@@ -568,7 +607,7 @@ impl UserSpace {
             }
         }
         self.release_threads(m);
-        if let Some(e) = self.elf {
+        if let Some(e) = self.elf_view() {
             for va in e.segments().flat_map(|s| s.pages()).take(self.loaded) {
                 Self::release_page(&self.tables, m, va)
             }
@@ -587,6 +626,7 @@ impl UserSpace {
             if paging::SHARED_UPPER { 256 } else { 512 }
         ));
         m.frames.release_table(self.tables.root);
+        if let Some(layout) = self.elf { layout.release(m); }
     }
 }
 

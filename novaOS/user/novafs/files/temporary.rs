@@ -12,11 +12,18 @@ struct Private {
     pending: Option<Pending>,
 }
 
+struct Retired {
+    owner: [u8; 32],
+    root: u64,
+    // Une issue ambiguë exige une récupération après vérification des marqueurs P9.
+    failure: Option<u64>,
+}
+
 pub(super) struct Views {
     pub enabled: bool,
     store: Option<(tmp_store::Store, [u8; 16])>,
     open: Vec<Private>,
-    retired: Vec<([u8; 32], u64)>,
+    retired: Vec<Retired>,
 }
 
 impl Views {
@@ -54,7 +61,7 @@ impl Session<'_, '_> {
             return Err(rt::REFUSED);
         }
         if self.temporary.find(&owner).is_some()
-            || self.temporary.retired.iter().any(|(id, _)| *id == owner)
+            || self.temporary.retired.iter().any(|r| r.owner == owner)
         {
             return Err(w::EXISTS);
         }
@@ -67,6 +74,10 @@ impl Session<'_, '_> {
         self.temporary
             .open
             .try_reserve(1)
+            .map_err(|_| rt::NO_MEMORY)?;
+        // Réserver la place du retrait avant la première mutation sur disque.
+        // Toutes les vues ouvertes peuvent se terminer pendant le même WRITE.
+        self.temporary.retired.try_reserve(self.temporary.open.len() + 1)
             .map_err(|_| rt::NO_MEMORY)?;
         self.clock.sample()?;
         let fs = self.fs.as_mut().ok_or(rt::CLOSED)?;
@@ -102,24 +113,35 @@ impl Session<'_, '_> {
 
     fn retire_tmp(&mut self, owner: [u8; 32]) -> rt::Result<()> {
         let Some(i) = self.temporary.find(&owner) else {
-            return Ok(());
+            return match self.temporary.retired.iter().find(|r| r.owner == owner) {
+                Some(Retired { failure: Some(e), .. }) => Err(*e),
+                _ => Ok(()),
+            };
         };
-        // Les handles et les fragments non publiés deviennent inaccessibles
-        // avant la première E/S de nettoyage. Aucun réemploi de cette vue.
         let entry = self.temporary.open.swap_remove(i);
         let root = entry.root;
         drop(entry);
+        self.temporary.retired.push(Retired { owner, root, failure: None });
         if self.pending.is_some() {
-            // Le WRITE historique peut réserver tous les blocs restants jusqu'à SYNC.
-            // Les handles sont déjà révoqués. Différer seulement le retrait physique.
-            self.temporary.retired.try_reserve(1).map_err(|_| {
-                log(b"TMP retrait en quarantaine");
-                rt::NO_MEMORY
-            })?;
-            self.temporary.retired.push((owner, root));
-            return Ok(());
+            log(b"TMP retrait physique differe ecrivain P9");
+            Ok(())
+        } else {
+            self.drain_one_tmp(self.temporary.retired.len() - 1)
         }
-        self.purge_tmp(owner, root)
+    }
+
+    fn drain_one_tmp(&mut self, index: usize) -> rt::Result<()> {
+        let r = &self.temporary.retired[index];
+        match self.purge_tmp(r.owner, r.root) {
+            Ok(()) => {
+                self.temporary.retired.swap_remove(index);
+                Ok(())
+            }
+            Err(e) => {
+                self.temporary.retired[index].failure = Some(e);
+                Err(e)
+            }
+        }
     }
 
     fn purge_tmp(&mut self, owner: [u8; 32], root: u64) -> rt::Result<()> {
@@ -185,10 +207,10 @@ impl Session<'_, '_> {
             return Ok(false);
         }
         while self.pending.is_none() {
-            let Some((owner, root)) = self.temporary.retired.pop() else {
+            let Some(i) = self.temporary.retired.iter().position(|r| r.failure.is_none()) else {
                 break;
             };
-            if let Err(e @ (w::UNCERTAIN | w::IO | w::CORRUPT)) = self.purge_tmp(owner, root) {
+            if let Err(e @ (w::UNCERTAIN | w::IO | w::CORRUPT)) = self.drain_one_tmp(i) {
                 self.failed = Some(e);
             }
         }
@@ -239,7 +261,7 @@ impl Session<'_, '_> {
         if self.pending.is_some() {
             return Err(w::BUSY);
         }
-        while !self.temporary.open.is_empty() || !self.temporary.retired.is_empty() {
+        while !self.temporary.open.is_empty() || self.temporary.retired.iter().any(|r| r.failure.is_none()) {
             let more = self.serve_tmp(rx)?;
             if !more && !self.temporary.open.is_empty() {
                 match rt::receive_for(rx, 15000) {
@@ -247,6 +269,9 @@ impl Session<'_, '_> {
                     Err(e) => return Err(e),
                 }
             }
+        }
+        if let Some(error) = self.temporary.retired.iter().find_map(|r| r.failure) {
+            return Err(error);
         }
         rt::value(rt::call(rt::IPC_CLOSE, rx, 0, 0))?;
         self.close_volume()

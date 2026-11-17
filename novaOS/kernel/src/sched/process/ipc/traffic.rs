@@ -602,7 +602,14 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
             {
                 s.ipc.metrics.round = entry;
             }
-            let r = s.ipc.step(p, tid, space, id, args, ticks());
+            let r = if !resuming
+                && matches!(id, IPC_SEND | IPC_NOTIFY | IPC_CLOSE)
+                && exec::is_port(s, p, args[0])
+            {
+                ticket_request(s, p, id, args).map(Some)
+            } else {
+                s.ipc.step(p, tid, space, id, args, ticks())
+            };
             s.flush_ipc();
             let cookie = if r == Ok(None) {
                 s.ipc.waits.get(tid.slot).cookie
@@ -627,4 +634,63 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
         drop(irq);
         probes::after_wake(pid);
     }
+}
+
+/// Consultation synchrone du reçu sur une capacité IPC locale non transmissible.
+/// La réponse emprunte la file bornée et le chemin RECEIVE ordinaires.
+fn ticket_request(s: &mut Core, owner: Pid, id: u64, [key, address, size]: [u64; 3]) -> Res<u64> {
+    if id == IPC_CLOSE {
+        // Une admission en vol garde son reçu interrogeable après un retour perdu.
+        if exec::claiming(s.processes.get(owner)) {
+            return Err(WOULD_BLOCK);
+        }
+        let root = s.ipc.lookup(owner, key, 0)?;
+        s.processes.get_mut(owner).exec.clear();
+        s.ipc.close(root);
+        return Ok(0);
+    }
+    if id != IPC_SEND {
+        return Err(DENIED);
+    }
+    let root = s.ipc.lookup(owner, key, SEND)?;
+    let space = s.processes.get(owner).space.as_ref().ok_or(CANCELLED)?;
+    let q = input::<160>(space, address, size, 160, false)?;
+    let flags = dword(&q, 28);
+    let timeout = word(&q, 8);
+    if flags > 1
+        || timeout > 15000
+        || (flags == 0) != (timeout == 0)
+        || dword(&q, 24) != 8
+        || &q[32..40] != b"NXQUERY1"
+    {
+        return Err(BAD_ARGUMENT);
+    }
+    let ep = root.endpoint;
+    if s.ipc.ends.get(ep.slot()).len == 8 {
+        return Err(WOULD_BLOCK);
+    }
+    let (status, pid, wait) = match exec::outcome(s, owner, key) {
+        Ok((pid, wait)) => (OK, pid.number, wait.unwrap_or(0)),
+        Err(e) => (e, 0, 0),
+    };
+    let rank = s.ipc.next_rank(ep)?;
+    let mut msg = Message {
+        tag: word(&q, 16),
+        len: 32,
+        ..Message::EMPTY
+    };
+    msg.bytes[..8].copy_from_slice(b"NXREPLY1");
+    for (i, v) in [status, pid, wait].into_iter().enumerate() {
+        msg.bytes[8 + i * 8..16 + i * 8].copy_from_slice(&v.to_le_bytes());
+    }
+    let end = s.ipc.ends.get_mut(ep.slot());
+    let at = (end.head + end.len) % end.deposits.len();
+    end.deposits[at] = Deposit {
+        rank,
+        msg,
+        admitted: metrics::stamp(),
+    };
+    end.len += 1;
+    s.ipc.signal_heads();
+    Ok(8)
 }

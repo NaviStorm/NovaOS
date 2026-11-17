@@ -62,6 +62,15 @@ def validate(registry, template):
             require(isinstance(spec[key], str) and spec[key].strip(), f"{name}.{key}")
         require(isinstance(spec["errors"], list) and set(spec["errors"]) <= constants,
                 f"statuts inconnus pour {name}")
+    for name, contract in registry.get("historical", {}).items():
+        require(name in calls and isinstance(contract.get("description"), str)
+                and contract["description"].strip(), f"contrat historique de {name}")
+    for name, variant in registry.get("variant", {}).items():
+        require(variant.get("call") in calls, f"appel inconnu pour la variante {name}")
+        for key in ("arguments", "result", "preconditions", "rights", "effects", "handler"):
+            require(isinstance(variant.get(key), str) and variant[key].strip(), f"{name}.{key}")
+        require(isinstance(variant.get("errors"), list) and set(variant["errors"]) <= constants,
+                f"statuts inconnus pour la variante {name}")
     return dict(sorted(calls.items(), key=lambda item: item[1]["number"]))
 
 
@@ -154,6 +163,21 @@ def document(registry, calls):
     out.extend(["", "Les pointeurs sont des adresses virtuelles de l’appelant, transmises sur 64 bits. "
                 "Sur x86_64, SYSCALL détruit RCX et R11. Sur AArch64, x2 à x30 et SP_EL0 sont préservés. "
                 + link("docs/abi.md", "Contrat des registres") + "."])
+    for call, contract in registry.get("historical", {}).items():
+        base = calls[call]
+        out.extend(["", f"### {call} — formes historiques", "",
+                    f"`{call}({base['arguments']})` utilise le sélecteur `{base['number']:#x}`.",
+                    "", contract["description"], "",
+                    "Statuts caractéristiques — " + ", ".join(base["errors"]) + ". "
+                    + link(base["handler"], "Traitement historique") + "."])
+    for name, variant in registry.get("variant", {}).items():
+        call = variant["call"]
+        out.extend(["", f"### {call} — variante {name}", "",
+                    f"`{call}({variant['arguments']})` utilise le même sélecteur et rend un "
+                    f"{variant['result']}.", "", variant["preconditions"], "", variant["rights"],
+                    "", variant["effects"], "",
+                    "Statuts caractéristiques — " + ", ".join(variant["errors"]) + ". "
+                    + link(variant["handler"], "Consommation du ticket") + "."])
     reserved = ", ".join(f"{a:#x}…{b:#x}" for a, b in registry["reserved"])
     out.extend(["", f"Plages préservées par le registre : {reserved}. "
                 + link(registry["reservation_source"], "Historique des sondes") + ".",

@@ -234,6 +234,14 @@ pub(super) fn install(s: &mut Core, server: Pid, shell: Pid) -> Result<()> {
     Ok(())
 }
 
+pub(super) fn removal_acknowledged(key: Instance) -> bool {
+    with(|s| !s.processes.temporary.leases.iter().any(|lease| lease.instance == key))
+}
+
+pub(super) fn inaccessible(s: &Core, pid: Pid, cap: u64) -> bool {
+    authority(s, pid, cap).is_err()
+}
+
 pub(crate) fn ready_shell() -> bool {
     with(|s| {
         s.processes.slots.iter().flatten().any(|p| {

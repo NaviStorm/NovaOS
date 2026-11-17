@@ -290,6 +290,19 @@ rights = "LAUNCH, thread principal et catalogue"
 errors = ["DENIED","BAD_ARGUMENT","BAD_ADDRESS","LIMIT","NO_MEMORY"]
 handler = "kernel/src/sched/process/ipc/spawn.rs#spawn_program"
 
+[historical.SPAWN]
+description = "Le thread principal doit détenir LAUNCH. Un indice du catalogue désigne un ELF et le noyau vérifie le paquet et les délégations demandées. Le succès rend le droit de suivi de cet enfant. PIPE_OPEN avec deux zéros crée un contrôleur de pipe. PIPE_CAT, PIPE_WC et PIPE_HEAD ajoutent la clé de contrôle après le paquet. Toutes ces formes restent refusées depuis un thread secondaire."
+
+[variant.EXEC_TICKET]
+call = "SPAWN"
+arguments = "EXEC_TICKET, ticket_local, 0"
+result = "droit WAIT unique sur l’enfant publié"
+preconditions = "Le discriminant EXEC_TICKET vaut 0x0000000200000000. Le thread principal ou secondaire appartient au processus titulaire. Le ticket est prêt, son émetteur est vivant et l’échéance est valide. La place pour le droit de suivi est libre et aucune admission de lecteur de pipe n’est en cours."
+rights = "Le noyau vérifie l’instance et le ticket local. À l’émission, il lie session, titulaire, installation, révision d’objet et empreinte de l’ELF scellé. Le reçu porte SEND et RECEIVE. Aucun droit général de lancement ou d’arrêt n’est transmis à l’enfant."
+errors = ["DENIED","REFUSED","REVOKED","TIMED_OUT","LIMIT","NO_MEMORY","BAD_ARGUMENT","CLOSED","CANCELLED"]
+effects = "Une seule revendication peut publier un enfant après préparation du tmp. Une deuxième consommation pendant la revendication ou après publication rend REFUSED. Une clé étrangère rend DENIED, un ticket révoqué REVOKED et un ticket expiré TIMED_OUT. Les erreurs de préparation sont propagées. Après perte de réponse, NXQUERY1 restitue le PID et le même WAIT tant qu’il reste à collecter. Après collecte, le PID reste consultable et WAIT vaut zéro. PROCESS_WAIT reste réservé au thread principal."
+handler = "kernel/src/sched/process/ipc/exec.rs#consume"
+
 [call.CONSOLE]
 number = 0x10043
 module = "terminal"

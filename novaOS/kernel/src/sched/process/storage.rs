@@ -272,6 +272,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
     // Deux jalons bornés avant l'exécution du gestionnaire et du service P9.
     let start_ms = ticks().saturating_mul(1000) / u64::from(HZ);
     let (mode, probe): (_, Option<&[u8]>) = match mode {
+        90 => (42, Some(b"tmp-contention")),
         70 => (42, Some(b"tmp-test")),
         71 => (42, Some(b"tmp-reprise")),
         72 => (42, Some(b"tmp-coupure")),
@@ -311,7 +312,9 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         (MEDIA, 1),
         (DISK, 0),
         (
-            if matches!(profile, 78..=86) {
+            if probe == Some(b"tmp-contention".as_slice()) {
+                FILE_CLIENT
+            } else if matches!(profile, 78..=86) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/cache_client_test.bin"))
             } else if matches!(profile, 75 | 76 | 88) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/service_control_test.bin"))
@@ -353,7 +356,7 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         measure("bloc_publie")
     }
     if let Some(scenario) = probe {
-        ipc::tmp_probe::run(scenario);
+        ipc::tmp_probe::run(scenario, &app);
     }
     let ids = [relay.0, service.0, driver.0];
     let a = wait(app);
@@ -414,6 +417,67 @@ pub(crate) fn file_perf(mode: u64) -> bool {
     ));
     clean
 }
+/// Le banc fournit les métadonnées attendues par un canal distinct de la copie
+/// modifiable. En exploitation, elles proviennent de l'autorité d'installation.
+pub(in crate::sched::process) fn seal_fixture(bytes: &[u8]) -> user::SealedImage {
+    use sha2::{Digest, Sha256};
+    let view = user::ObjectRevision { volume: [7; 16], object: 2, revision: 3, length: bytes.len() };
+    let expected: [u8; 32] = Sha256::digest(bytes).into();
+    let mut stage = user::ImageStaging::new(view, expected).unwrap();
+    for (index, chunk) in bytes.chunks(crate::memory::PAGE as usize).enumerate() {
+        stage = stage.append(view, index * crate::memory::PAGE as usize, chunk).unwrap();
+    }
+    let sealed = stage.seal().unwrap();
+    assert_eq!(sealed.object(), view);
+    sealed
+}
+
+fn reject_changed_image() {
+    use sha2::{Digest, Sha256};
+    let view = user::ObjectRevision { volume: [1; 16], object: 1, revision: 7, length: 3 };
+    // SHA-256 du contenu « abc », fixé indépendamment de l'image lue.
+    let expected = [0xba,0x78,0x16,0xbf,0x8f,0x01,0xcf,0xea,0x41,0x41,0x40,0xde,0x5d,0xae,0x22,0x23,0xb0,0x03,0x61,0xa3,0x96,0x17,0x7a,0x9c,0xb4,0x10,0xff,0x61,0xf2,0x00,0x15,0xad];
+    let reserve = |length| user::ImageStaging::new(user::ObjectRevision { length, ..view }, expected);
+    assert_eq!(reserve(0).err(), Some(crate::memory::Error::Geometry));
+    assert_eq!(reserve((4 << 20) + 1).err(), Some(crate::memory::Error::Geometry));
+    let pages_before = heap::audit(false);
+    let left = reserve(4 << 20).unwrap();
+    let right = reserve(4 << 20).unwrap();
+    assert_eq!(reserve(1).err(), Some(crate::memory::Error::Exhausted));
+    drop(left);
+    drop(reserve(4 << 20).unwrap());
+    drop(right);
+    assert_eq!(heap::audit(false), pages_before);
+    for remaining in [0, 1, 4, 7] {
+        let (mut held, before) = heap::with_pages(|m| {
+            let before = m.free_pages();
+            Ok((m.hold_for_probe(remaining)?, before))
+        }).unwrap();
+        assert_eq!(reserve(9 * 4096).err(), Some(crate::memory::Error::Exhausted));
+        heap::with_pages(|m| {
+            assert_eq!(m.free_pages(), remaining);
+            held.restore_to(m, before);
+            Ok(())
+        }).unwrap();
+    }
+    assert_eq!(heap::audit(false), pages_before);
+    hal::log(format_args!("ELF preparation 8 Mio saturation reprise penurie restitution OK"));
+    let stage = || user::ImageStaging::new(view, expected).unwrap();
+    let mismatch = crate::memory::Error::Verification;
+    let start = stage().append(view, 0, b"a").unwrap();
+    assert_eq!(start.append(user::ObjectRevision { revision: 8, ..view }, 1, b"bc").err(), Some(mismatch));
+    assert_eq!(stage().append(view, 1, b"a").err(), Some(mismatch));
+    assert_eq!(stage().append(view, 0, b"abcd").err(), Some(mismatch));
+    assert_eq!(stage().append(view, 0, b"ab").unwrap().seal().err(), Some(mismatch));
+    assert_eq!(stage().append(view, 0, b"abd").unwrap().seal().err(), Some(mismatch));
+    let mut source = *b"abc";
+    let copied = stage().append(view, 0, &source).unwrap();
+    source.fill(0);
+    assert_ne!(Sha256::digest(source)[..], expected);
+    assert_eq!(copied.seal().unwrap().object(), view);
+    hal::log(format_args!("ELF scellement revision ordre taille empreinte copie-privee OK"));
+}
+
 /// Exerce le même ELF que le vrai service bloc, dans son espace utilisateur privé.
 pub(crate) fn elf_test() {
     fn spawn(mode: u64) -> Child {
@@ -423,6 +487,36 @@ pub(crate) fn elf_test() {
     }
     user::check_elf_headers(MEDIA);
     let initial = heap::audit(true);
+    // L'image et ses en-têtes peuvent disparaître ou être remplacés dès que
+    // le chargeur rend la main. L'espace possède code, données et plan de retrait.
+    let mut source = MEDIA.to_vec();
+    let mut config = [0; 16];
+    config[8..].copy_from_slice(&101u64.to_le_bytes());
+    reject_changed_image();
+    let sealed = seal_fixture(&source);
+    let installed = heap::with_pages(|m| UserSpace::installed(m, &sealed, &config)).unwrap();
+    drop(sealed);
+    source.fill(0);
+    drop(source);
+    let loaded = {
+        let _guard = Guard::new();
+        publish_image(installed, None, iw::SAMPLE, None).unwrap()
+    };
+    assert_eq!(wait(loaded), Outcome::Exit(0));
+    assert_eq!(heap::audit(true), initial);
+    let sealed = seal_fixture(MEDIA);
+    heap::with_pages(|m| {
+        let before = m.free_pages();
+        for budget in [0, 1, 2, 5, 9] {
+            let mut held = m.hold_for_probe(budget)?;
+            assert!(matches!(UserSpace::installed(m, &sealed, &config), Err(crate::memory::Error::Exhausted)));
+            assert_eq!(m.free_pages(), budget as u64);
+            held.restore_to(m, before);
+        }
+        Ok(())
+    }).unwrap();
+    drop(sealed);
+    hal::log(format_args!("ELF image transitoire executee et cadres rendus OK"));
     // Épuisement réel pendant le chargement, puis après une première page de tas.
     heap::with_pages(|m| {
         let before = m.free_pages();

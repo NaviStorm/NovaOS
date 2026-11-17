@@ -131,6 +131,8 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     context::enable();
     let [a, b, c] = args;
     let result = match id {
+        crate::terminal::SPAWN if a == crate::terminal::EXEC_TICKET && c == 0 =>
+            ipc::exec::consume(b),
         // Les baux matériels, le terminal et le droit de suivi d’un enfant ont
         // un titulaire d’exécution unique. Les appels IPC publics gardent la
         // résolution ordinaire du handle et des droits dans la table du PID.

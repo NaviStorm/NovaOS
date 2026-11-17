@@ -52,7 +52,7 @@ impl UserSpace {
                 // DATA+PAGE est aussi la seconde page du banc copyin/copyout.
                 exclude(DATA, DATA + 2 * PAGE);
                 exclude(self.stack_bottom() - PAGE, self.stack_top() + PAGE);
-                if let Some(elf) = self.elf {
+                if let Some(elf) = self.elf.as_ref().map(Layout::view) {
                     for seg in elf.segments() {
                         exclude(seg.start & !(PAGE - 1), seg.end.next_multiple_of(PAGE));
                     }

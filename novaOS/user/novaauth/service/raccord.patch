@@ -1,18 +1,19 @@
 diff --git a/novaOS/kernel/Cargo.toml b/novaOS/kernel/Cargo.toml
-index 6aa1730f8f642fead202d9d4e1a666fc9dbe92af..768cd6689ead28cb88f42a1996566528b7d72691 100644
+index 329330210a11938e035662a0060572cb9c861758..445e2cd2a620536b6938cd1349f538abcbeb859d 100644
 --- a/novaOS/kernel/Cargo.toml
 +++ b/novaOS/kernel/Cargo.toml
 @@ -14,0 +15 @@ novaauth-lab = []
 +novaauth-sessions-lab = []
 diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
-index 66ac5c9c06ef6c832101f43922c02eda52a0171e..1a5accd803cd9a6220c0afccc9decf5f44053365 100644
+index 96c01458ed3d6ab8d5a2b8e393203fd67cb77c4f..4fcc399468402982fb230b0901ed40bf05225d40 100644
 --- a/novaOS/kernel/build.rs
 +++ b/novaOS/kernel/build.rs
-@@ -95,0 +96,3 @@ fn main() {
+@@ -96,0 +97,3 @@
 +        if name == "service_manager" && env::var_os("CARGO_FEATURE_NOVAAUTH_SESSIONS_LAB").is_some() {
 +            rust.args(["--cfg", "novaauth_sessions_lab"]);
 +        }
-@@ -189,0 +193,14 @@ fn main() {
+@@ -190,0 +194,14 @@
++    }
 +    if env::var_os("CARGO_FEATURE_NOVAAUTH_SESSIONS_LAB").is_some() {
 +        cargo_service.args(["--features", "novaauth-sessions-lab"]);
 +        let guest_flags = format!("{flags}\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
@@ -26,9 +27,8 @@ index 66ac5c9c06ef6c832101f43922c02eda52a0171e..1a5accd803cd9a6220c0afccc9decf5f
 +        for name in ["auth-verifier","auth-client"] {
 +            std::fs::copy(work.join(&target).join("release").join(name),out.join(format!("{name}.elf"))).unwrap();
 +        }
-+    }
 diff --git a/novaOS/kernel/src/main.rs b/novaOS/kernel/src/main.rs
-index 09a892af036b46df33df6e2fb4a765f38a359e67..8aa973dfb056396fabb2cc6fef9bd5ab0b38de5e 100644
+index 84a90ea12da01c295b99c0ee26443e0b053b2a1b..030b48491e85baf2362c9bf7b87c41f0f2a082de 100644
 --- a/novaOS/kernel/src/main.rs
 +++ b/novaOS/kernel/src/main.rs
 @@ -245,0 +246,5 @@ fn main_thread() {
@@ -37,7 +37,7 @@ index 09a892af036b46df33df6e2fb4a765f38a359e67..8aa973dfb056396fabb2cc6fef9bd5ab
 +            AUTH_SESSIONS_LAB.store(true, core::sync::atomic::Ordering::Release);
 +            Some(41)
 +        },
-@@ -390,0 +396,3 @@ fn panic(info: &PanicInfo<'_>) -> ! {
+@@ -391,0 +397,3 @@ fn panic(info: &PanicInfo<'_>) -> ! {
 +
 +#[cfg(feature = "novaauth-sessions-lab")]
 +static AUTH_SESSIONS_LAB: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
@@ -71,12 +71,12 @@ index 2702ba93f1f29477dea7bfadac094e79af820a15..87dcef02b6fe556bec505b50dbe8190f
 +        return Ok(ticks().saturating_mul(1000) / u64::from(HZ));
 +    }
 diff --git a/novaOS/scripts/iso.sh b/novaOS/scripts/iso.sh
-index b22dd1aba53bcf933492aa08edda6760c477a843..39642aa91f736c48c5c23e8806ae9d84cf8ceedf 100644
+index f4516dc984698bc3961fa3b47169c76ed1472a6e..5eb06ca6f15d92d7553374b9e92da42851c12275 100644
 --- a/novaOS/scripts/iso.sh
 +++ b/novaOS/scripts/iso.sh
 @@ -27 +27 @@ if [ "$#" -ne 0 ]; then
--        cache-pression|cache-propriete-invalide|cache-test|cache-reprise|cache-coupure|cache-restaure|cache-reinstalle|cache-actualise|cache-reprise-purge|journal-admin|services-config-race|services-config-admin|services-admin|services-test|services-perte|instances-reboot|tmp-test|tmp-coupure|tmp-reprise|tmp-attentes|cli-p8|cli-p8-test) ;;
-+        novaauth-sessions|cache-pression|cache-propriete-invalide|cache-test|cache-reprise|cache-coupure|cache-restaure|cache-reinstalle|cache-actualise|cache-reprise-purge|journal-admin|services-config-race|services-config-admin|services-admin|services-test|services-perte|instances-reboot|tmp-test|tmp-coupure|tmp-reprise|tmp-attentes|cli-p8|cli-p8-test) ;;
+-        cache-pression|cache-propriete-invalide|cache-test|cache-reprise|cache-coupure|cache-restaure|cache-reinstalle|cache-actualise|cache-reprise-purge|journal-admin|services-config-race|services-config-admin|services-admin|services-test|services-perte|instances-reboot|tmp-test|tmp-contention|tmp-coupure|tmp-reprise|tmp-attentes|cli-p8|cli-p8-test) ;;
++        novaauth-sessions|cache-pression|cache-propriete-invalide|cache-test|cache-reprise|cache-coupure|cache-restaure|cache-reinstalle|cache-actualise|cache-reprise-purge|journal-admin|services-config-race|services-config-admin|services-admin|services-test|services-perte|instances-reboot|tmp-test|tmp-contention|tmp-coupure|tmp-reprise|tmp-attentes|cli-p8|cli-p8-test) ;;
 diff --git a/novaOS/user/novafs/Cargo.toml b/novaOS/user/novafs/Cargo.toml
 index 10e80d5ed4b686db1c4c0b0ab436a3d28ad6a859..1d2ab37d595f2656b392d211b177eb2433363ee0 100644
 --- a/novaOS/user/novafs/Cargo.toml

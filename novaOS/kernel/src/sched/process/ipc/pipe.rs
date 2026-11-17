@@ -62,7 +62,10 @@ impl Domain {
     }
 
     pub(super) fn pipe_attach(&mut self, root: Node, child: Pid, role: Role) -> Res<u64> {
-        let reader = role.reader();
+        self.attach_stream(root, child, role.reader(), role.name())
+    }
+
+    pub(super) fn attach_stream(&mut self, root: Node, child: Pid, reader: bool, label: &str) -> Res<u64> {
         let key = self.install_child(root, child, if reader { RECEIVE } else { SEND })?;
         let pipe = self
             .ends
@@ -82,7 +85,7 @@ impl Domain {
                 && self.lookup(child, key, MANAGE).is_err();
             hal::log(format_args!(
                 "PIPE role={} pid={} isole={isolated}",
-                role.name(),
+                label,
                 child.number
             ));
         }
