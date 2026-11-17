@@ -1,0 +1,38 @@
+.Dd November 17, 2026
+.Dt SEQ 1
+.Os NovaOS
+.Sh NAME
+.Nm seq
+.Nd print a sequence of numbers
+.Sh SYNOPSIS
+.Nm
+.Op Fl w
+.Op Fl s Ar text
+.Op Fl f Ar format
+.Oo Ar first Op Ar step Oc
+.Ar last
+.Sh DESCRIPTION
+The first value and the step default to 1.
+A negative step counts down. An empty range produces no bytes.
+A nonempty range ends with a newline.
+.Bl -tag -width Ds
+.It Fl f Ar format , Fl Fl format Ns = Ns Ar format
+Use one floating-point conversion from aAeEfFgG. Use %% for a literal percent sign.
+.It Fl s Ar text , Fl Fl separator Ns = Ns Ar text
+Write the separator between adjacent values. An empty separator joins their digits.
+.It Fl w , Fl Fl equal-width
+Pad values with leading zeros. This option is incompatible with an explicit format.
+.It Fl Fl help , Fl Fl version
+Print help or the component version, then exit successfully.
+.El
+.Sh EXAMPLES
+.Bd -literal
+seq 5
+seq -s , 6 -2 0
+seq -f '%.2f' 0 .25 1
+.Ed
+.Sh EXIT STATUS
+0 on success, 1 for invalid input or a write failure.
+The step must be nonzero. NaN is invalid.
+.Sh VERSION
+seq (nova-cli) 0.20.0.

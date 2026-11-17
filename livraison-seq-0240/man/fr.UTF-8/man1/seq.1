@@ -1,0 +1,38 @@
+.Dd 17 novembre 2026
+.Dt SEQ 1
+.Os NovaOS
+.Sh NOM
+.Nm seq
+.Nd afficher une suite de nombres
+.Sh SYNTAXE
+.Nm
+.Op Fl w
+.Op Fl s Ar texte
+.Op Fl f Ar format
+.Oo Ar début Op Ar pas Oc
+.Ar fin
+.Sh DESCRIPTION
+Le début et le pas valent 1 par défaut.
+Un pas négatif permet de descendre. Une plage vide produit zéro octet.
+Une suite non vide se termine par un saut de ligne.
+.Bl -tag -width Ds
+.It Fl f Ar format , Fl Fl format Ns = Ns Ar format
+Employer une conversion flottante parmi aAeEfFgG. Écrire %% pour un signe pour cent littéral.
+.It Fl s Ar texte , Fl Fl separator Ns = Ns Ar texte
+Insérer le séparateur entre deux valeurs. Un séparateur vide juxtapose leurs chiffres.
+.It Fl w , Fl Fl equal-width
+Compléter les valeurs avec des zéros en tête. Cette option est incompatible avec un format explicite.
+.It Fl Fl help , Fl Fl version
+Afficher l’aide ou la version du composant et terminer avec succès.
+.El
+.Sh EXEMPLES
+.Bd -literal
+seq 5
+seq -s , 6 -2 0
+seq -f '%.2f' 0 .25 1
+.Ed
+.Sh STATUT
+0 en cas de succès, 1 pour un argument invalide ou un échec d’écriture.
+Le pas doit être non nul. NaN est invalide.
+.Sh VERSION
+seq (nova-cli) 0.20.0.

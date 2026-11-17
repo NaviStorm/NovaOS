@@ -1,0 +1,236 @@
+{
+  "profil": "court",
+  "plateforme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "destination": "/dev/null",
+  "echauffements": 1,
+  "passages": 5,
+  "loadavant": [
+    19.29931640625,
+    16.05419921875,
+    11.234375
+  ],
+  "machines": {
+    "Nova": "774faf53af2a78eef57605c5d28963300d976a587afcb011227cdc7a49ee1790",
+    "GNU": "9c1006d0b9cab9e6ceb3963e977f62b3f64dd5d464af7abe970052637288f2c7"
+  },
+  "mesures": [
+    {
+      "valeurs": 10000,
+      "validation": {
+        "octets": 48894,
+        "sha256": "8060aa0ac20a3e5db2b67325c98a0122f2d09a612574458225dcb9a086f87cc3"
+      },
+      "Nova": [
+        {
+          "secondes": 0.002808333,
+          "rss_octets": 2162688,
+          "valeurs_par_seconde": 3560831.283184722,
+          "octets_par_seconde": 17410328.47600338
+        },
+        {
+          "secondes": 0.00310575,
+          "rss_octets": 2146304,
+          "valeurs_par_seconde": 3219834.178539805,
+          "octets_par_seconde": 15743057.232552523
+        },
+        {
+          "secondes": 0.003069625,
+          "rss_octets": 2146304,
+          "valeurs_par_seconde": 3257726.9210408437,
+          "octets_par_seconde": 15928330.007737102
+        },
+        {
+          "secondes": 0.002873458,
+          "rss_octets": 2162688,
+          "valeurs_par_seconde": 3480127.4283459163,
+          "octets_par_seconde": 17015735.04815452
+        },
+        {
+          "secondes": 0.002849417,
+          "rss_octets": 2162688,
+          "valeurs_par_seconde": 3509489.8359910115,
+          "octets_par_seconde": 17159299.604094453
+        }
+      ],
+      "GNU": [
+        {
+          "secondes": 0.002549459,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 3922400.791697376,
+          "octets_par_seconde": 19178186.43092515
+        },
+        {
+          "secondes": 0.002812208,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 3555924.739564072,
+          "octets_par_seconde": 17386338.421624575
+        },
+        {
+          "secondes": 0.002826625,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 3537787.9980542166,
+          "octets_par_seconde": 17297660.637686286
+        },
+        {
+          "secondes": 0.002806417,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 3563262.337706763,
+          "octets_par_seconde": 17422214.873983447
+        },
+        {
+          "secondes": 0.00285825,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 3498644.2753433045,
+          "octets_par_seconde": 17106271.31986355
+        }
+      ]
+    },
+    {
+      "valeurs": 100000,
+      "validation": {
+        "octets": 588895,
+        "sha256": "b2bc7d3f8b652d2ec96865b68ad8f80e22cca174abe1aed7889e242a747d590f"
+      },
+      "Nova": [
+        {
+          "secondes": 0.00339675,
+          "rss_octets": 2244608,
+          "valeurs_par_seconde": 29439905.792301465,
+          "octets_par_seconde": 173370133.2155737
+        },
+        {
+          "secondes": 0.002920667,
+          "rss_octets": 2228224,
+          "valeurs_par_seconde": 34238754.36672513,
+          "octets_par_seconde": 201630312.52792597
+        },
+        {
+          "secondes": 0.003251416,
+          "rss_octets": 2228224,
+          "valeurs_par_seconde": 30755830.690382283,
+          "octets_par_seconde": 181119549.14412674
+        },
+        {
+          "secondes": 0.003671875,
+          "rss_octets": 2244608,
+          "valeurs_par_seconde": 27234042.55319149,
+          "octets_par_seconde": 160379914.89361703
+        },
+        {
+          "secondes": 0.003422292,
+          "rss_octets": 2244608,
+          "valeurs_par_seconde": 29220183.432623517,
+          "octets_par_seconde": 172076199.22554827
+        }
+      ],
+      "GNU": [
+        {
+          "secondes": 0.0035285,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 28340654.669122856,
+          "octets_par_seconde": 166896698.31373104
+        },
+        {
+          "secondes": 0.003531541,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 28316250.61127706,
+          "octets_par_seconde": 166752984.03728005
+        },
+        {
+          "secondes": 0.003729417,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 26813842.485299982,
+          "octets_par_seconde": 157905377.70380732
+        },
+        {
+          "secondes": 0.003567791,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 28028547.636338565,
+          "octets_par_seconde": 165058715.603016
+        },
+        {
+          "secondes": 0.003351083,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 29841099.13123608,
+          "octets_par_seconde": 175732740.7288927
+        }
+      ]
+    },
+    {
+      "valeurs": 1000000,
+      "validation": {
+        "octets": 6888896,
+        "sha256": "90433fcbd9e16297e6a7c1dacb1056394743194776e52f78ebf0a44b80b6b14f"
+      },
+      "Nova": [
+        {
+          "secondes": 0.00789925,
+          "rss_octets": 2228224,
+          "valeurs_par_seconde": 126594296.92692344,
+          "octets_par_seconde": 872094945.7226952
+        },
+        {
+          "secondes": 0.008693084,
+          "rss_octets": 2228224,
+          "valeurs_par_seconde": 115033974.13392071,
+          "octets_par_seconde": 792457084.2752699
+        },
+        {
+          "secondes": 0.008345458,
+          "rss_octets": 2228224,
+          "valeurs_par_seconde": 119825658.45996709,
+          "octets_par_seconde": 825466499.2622334
+        },
+        {
+          "secondes": 0.008208209,
+          "rss_octets": 2211840,
+          "valeurs_par_seconde": 121829256.54061686,
+          "octets_par_seconde": 839269078.0656292
+        },
+        {
+          "secondes": 0.008556292,
+          "rss_octets": 2211840,
+          "valeurs_par_seconde": 116873056.69324984,
+          "octets_par_seconde": 805126332.761902
+        }
+      ],
+      "GNU": [
+        {
+          "secondes": 0.012642583,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 79097760.32318711,
+          "octets_par_seconde": 544896244.6993624
+        },
+        {
+          "secondes": 0.012194167,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 82006421.59484941,
+          "octets_par_seconde": 564933709.6990716
+        },
+        {
+          "secondes": 0.0120935,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 82689047.83561417,
+          "octets_par_seconde": 569636250.8785712
+        },
+        {
+          "secondes": 0.012307209,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 81253190.71123275,
+          "octets_par_seconde": 559744780.4778484
+        },
+        {
+          "secondes": 0.012641625,
+          "rss_octets": 1884160,
+          "valeurs_par_seconde": 79103754.46194614,
+          "octets_par_seconde": 544937537.697883
+        }
+      ]
+    }
+  ],
+  "loadapres": [
+    19.29931640625,
+    16.05419921875,
+    11.234375
+  ]
+}

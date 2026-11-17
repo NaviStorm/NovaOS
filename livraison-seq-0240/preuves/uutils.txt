@@ -1,0 +1,55 @@
+4735bbe40d764a523c5ece37d47465b32452d1a2
+29953405eaa3dcc41c37d1621d55b6a47eee93e05613e439e73295029740b10c  LICENSE
+63d2e6c12a1a17d51b107a36c08d02f643ac009f058c099050f866cf5ac90ff5  src/uu/seq/Cargo.toml
+9f7e95c9c608c683c6005d8bb3c62cd96ca1e78c73b50d8ecbcaf24e19f3af39  src/uu/seq/src/seq.rs
+255339fda07b376edf3b048d6b1f5a65ac802880366e8a245f11c5ed0c6442d1  src/uu/seq/src/number.rs
+a218b199de88b0726a3dafae945a1de79711f5f9ccbef6505888b824845c79fb  src/uu/seq/src/numberparse.rs
+# spell-checker:ignore extendedbigdecimal
+
+[package]
+name = "uu_seq"
+description = "seq ~ (uutils) display a sequence of numbers"
+repository = "https://github.com/uutils/coreutils/tree/main/src/uu/seq"
+version.workspace = true
+license.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+readme.workspace = true
+
+[lib]
+path = "src/seq.rs"
+doctest = false
+
+[dependencies]
+bigdecimal = { workspace = true }
+clap = { workspace = true }
+fluent = { workspace = true }
+num-bigint = { workspace = true }
+num-traits = { workspace = true }
+thiserror = { workspace = true }
+uucore = { workspace = true, features = [
+  "extendedbigdecimal",
+  "fast-inc",
+  "format",
+  "parser",
+  "quoting-style",
+  "signals",
+] }
+
+[[bin]]
+name = "seq"
+path = "src/main.rs"
+
+[dev-dependencies]
+divan = { workspace = true }
+uucore = { workspace = true, features = ["benchmark"] }
+
+[lints]
+workspace = true
+
+[[bench]]
+name = "seq_bench"
+harness = false
