@@ -180,7 +180,9 @@ pub fn verify<'a>(
     })
 }
 
-use super::{Authority, Device, Fault, Grant, Head, Kind, Registry, Status};
+use super::{
+    Authority, Device, Fault, Grant, Head, Kind, Registry, State, Status, policy::InstallChange,
+};
 use alloc::{format, string::String};
 use serde::{Deserialize, Serialize};
 
@@ -200,6 +202,10 @@ pub(super) struct Release {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 struct Entry {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    principal: Option<Id>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    application: Option<u64>,
     name: String,
     digest: Hash,
     start: u64,
@@ -216,6 +222,10 @@ pub enum Action {
 pub struct Loaded {
     pub installation: Id,
     pub manifest: Hash,
+    pub principal: Option<Id>,
+    pub application: Option<u64>,
+    pub volume: Id,
+    pub generation: u64,
     pub object: u64,
     pub revision: u64,
     pub offset: u64,
@@ -229,6 +239,69 @@ fn map_verify(error: Error) -> Fault {
         Error::Signature | Error::Digest => Fault::Denied,
         Error::Architecture | Error::Format => Fault::BadInput,
     }
+}
+
+// L'identité de politique appartient à l'exécutable. Deux membres d'un même
+// paquet, même identiques octet pour octet, ne partagent pas leurs capacités.
+fn member_request(request: Id, name: &str) -> Id {
+    let mut h = Sha256::new();
+    h.update(b"NovaOS/package/member/1");
+    h.update(request);
+    h.update(name.as_bytes());
+    h.finalize()[..16].try_into().unwrap()
+}
+
+fn member_policy(
+    state: &mut State,
+    head: &Head,
+    owner: Id,
+    request: Id,
+    previous: &[Entry],
+    next: &mut [Entry],
+) -> super::Result<()> {
+    let generation = head.generation.checked_add(1).ok_or(Fault::Limit)?;
+    for entry in previous {
+        if let Some(id) = entry.principal
+            && !next.iter().any(|e| e.name == entry.name)
+        {
+            state.change_install(
+                head,
+                owner,
+                InstallChange::Remove(id),
+                generation,
+                member_request(request, &entry.name),
+            )?;
+        }
+    }
+    for (index, entry) in next.iter_mut().enumerate() {
+        let operation = member_request(request, &entry.name);
+        let prior = previous
+            .iter()
+            .find(|e| e.name == entry.name)
+            .and_then(|e| e.principal);
+        // Une génération décidée contient au plus huit nouveaux membres. Le
+        // numéro INFO ne tronque pas leur identifiant cryptographique de politique.
+        let number = generation
+            .checked_mul(8)
+            .and_then(|n| n.checked_add(index as u64))
+            .filter(|n| *n < (1u64 << 63))
+            .ok_or(Fault::Limit)?;
+        entry.application = Some(
+            previous
+                .iter()
+                .find(|e| e.name == entry.name)
+                .and_then(|e| e.application)
+                .unwrap_or(number | (1u64 << 63)),
+        );
+        let change = match prior {
+            Some(id) => InstallChange::Update(id, entry.digest),
+            None => InstallChange::New(entry.digest),
+        };
+        state.change_install(head, owner, change, generation, operation)?;
+        entry.principal =
+            Some(prior.unwrap_or_else(|| super::identity(head, generation, operation, 3)));
+    }
+    Ok(())
 }
 
 impl<D: Device, A: Authority> Registry<'_, D, A> {
@@ -248,11 +321,12 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         if holder.head != head || request == [0; 16] || self.authority.outcome(request)?.is_some() {
             return Err(Fault::Conflict);
         }
-        let owner = state
+        let user = state
             .users
-            .iter_mut()
-            .find(|u| u.id == holder.owner && u.status == Status::Active && u.admin)
+            .iter()
+            .position(|u| u.id == holder.owner && u.status == Status::Active && u.admin)
             .ok_or(Fault::Denied)?;
+        let owner = &mut state.users[user];
         let next = head.generation.checked_add(1).ok_or(Fault::Limit)?;
         let incarnation = super::identity(&head, next, request, 4);
         let signer: Hash = Sha256::digest(key.as_bytes()).into();
@@ -302,6 +376,8 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         let mut offset = 0;
         for m in &verified.members {
             entries.push(Entry {
+                principal: None,
+                application: None,
                 name: m.name.into(),
                 digest: m.sha256,
                 start: offset,
@@ -309,6 +385,17 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
             });
             offset += m.image.len() as u64;
         }
+        let prior = previous
+            .map(|i| owner.packages[i].entries.clone())
+            .unwrap_or_default();
+        member_policy(
+            &mut state,
+            &head,
+            holder.owner,
+            request,
+            &prior,
+            &mut entries,
+        )?;
         // Nom inaccessible aux chemins du protocole public (caractère de contrôle).
         // Un échec de préparation ne remplace ni ne supprime l'objet publié.
         let leaf = format!("\u{1f}NX{:032x}", u128::from_le_bytes(incarnation));
@@ -336,6 +423,7 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
             entries,
             active: true,
         };
+        let owner = &mut state.users[user];
         if let Some(slot) = previous {
             owner.packages[slot] = release;
         } else {
@@ -349,17 +437,20 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         if holder.head != head {
             return Err(Fault::Conflict);
         }
-        let owner = state
+        let user = state
             .users
-            .iter_mut()
-            .find(|u| u.id == holder.owner && u.status == Status::Active && u.admin)
+            .iter()
+            .position(|u| u.id == holder.owner && u.status == Status::Active && u.admin)
             .ok_or(Fault::Denied)?;
+        let owner = &mut state.users[user];
         let p = owner
             .packages
             .iter_mut()
             .find(|p| p.id == id && p.active)
             .ok_or(Fault::Denied)?;
         p.active = false;
+        let prior = p.entries.clone();
+        member_policy(&mut state, &head, holder.owner, request, &prior, &mut [])?;
         self.publish_state(
             head,
             state,
@@ -424,6 +515,10 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         }
         Ok(Loaded {
             installation: p.id,
+            principal: entry.principal,
+            application: entry.application,
+            volume: head.volume[0],
+            generation: head.generation,
             manifest: p.manifest,
             object: p.object,
             revision: p.revision,

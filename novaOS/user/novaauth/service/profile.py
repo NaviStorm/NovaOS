@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path
 import hashlib
 import re
+import runpy
 import subprocess
 import tarfile
 
@@ -19,11 +20,27 @@ def prepare(destination, policies=False, retired_reply=False, shell=False):
     apply(destination, "raccord.patch")
     if shell:
         apply(destination, "lancement.patch")
+        refresh_documentation_links(destination)
     if policies:
         apply(destination, "politiques.patch")
     if retired_reply:
         apply(destination, "reponse-retiree.patch")
     print(revision,destination)
+
+def refresh_documentation_links(destination):
+    """Les lignes des gestionnaires changent dans la copie instrumentée."""
+    generator = runpy.run_path(str(destination / "novaOS/scripts/generate_abi.py"))
+    for path, content in generator["outputs"]().items():
+        previous = path.read_text()
+        if content == previous:
+            continue
+        line_anchor = r"#L[0-9]+(?=\))"
+        if path != destination / "novaOS/docs/registre-abi.md" or (
+            re.sub(line_anchor, "#L", content) != re.sub(line_anchor, "#L", previous)
+        ):
+            raise ValueError(f"Le profil change le contrat ABI : {path}")
+        path.write_text(content)
+
 
 def apply(destination,name):
     patch=destination/"novaOS/user/novaauth/service"/name

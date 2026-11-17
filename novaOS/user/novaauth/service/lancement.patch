@@ -14,7 +14,7 @@ index 11af6976d17142037a03b9a965da24fb42426327..af15a46fd17947d6e587f0a1045e56c3
 @@ -99,0 +103 @@
 +    login.close()?;
 diff --git a/components/shell/script.rs b/components/shell/script.rs
-index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..37f6c94d0bb7aca1ef977c13ca768e59fcc087a8 100644
+index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..a52bb112190b378aedc5e0f3130e28cb9dd744d9 100644
 --- a/components/shell/script.rs
 +++ b/components/shell/script.rs
 @@ -72,0 +73 @@
@@ -23,33 +23,156 @@ index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..37f6c94d0bb7aca1ef977c13ca768e59
 +        login: &'a mut super::session_auth_lab::Login,
 @@ -85,0 +88 @@
 +            login,
-@@ -356,0 +360 @@
+@@ -356,0 +360,3 @@
 +            "install" => self.login.install(&argv)?,
++            "relay-test" => self.login.exercise_relay(&argv)?,
++            "ticket-test" => self.login.ticket_probe(&argv)?,
 diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
-index 4fcc399468402982fb230b0901ed40bf05225d40..15d2073deb89ff349b493a36f9d28039c9e69638 100644
+index 4fcc399468402982fb230b0901ed40bf05225d40..db5da094ad9a8a45ee1db88f83446db3b58559f6 100644
 --- a/novaOS/kernel/build.rs
 +++ b/novaOS/kernel/build.rs
-@@ -199 +199 @@
+@@ -195,0 +196,8 @@
++        for name in ["NOVA_RELAY_FAULT","NOVA_PACKAGE_CUT","NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC"] {
++            println!("cargo::rerun-if-env-changed={name}");
++        }
++        for key in ["NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC"] {
++            if let Some(path)=env::var_os(key) {
++                println!("cargo::rerun-if-changed={}",std::path::Path::new(&path).display());
++            }
++        }
+@@ -199 +207 @@
 -            .args(["build","--release","--locked","--offline","--features","guest","--bins","--target",&target])
 +            .args(["build","--release","--locked","--offline","--features","shell-guest","--bins","--target",&target])
-@@ -205 +205 @@
+@@ -205 +213 @@
 -        for name in ["auth-verifier","auth-client"] {
-+        for name in ["auth-verifier","auth-client","shell-signer"] {
++        for name in ["auth-verifier","auth-client","shell-signer","exec-relay"] {
+diff --git a/novaOS/kernel/src/sched/process.rs b/novaOS/kernel/src/sched/process.rs
+index cf354040a94b67a6e875f8a8c5b95dbb29ba8fdb..c45c29b5a83c60af3ceeaa4668b2a8a7f4f72b8a 100644
+--- a/novaOS/kernel/src/sched/process.rs
++++ b/novaOS/kernel/src/sched/process.rs
+@@ -79,0 +80,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    session_origin: Option<(Pid,[u8;32])>,
+@@ -94,0 +97,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    relay: Option<ipc::session_relay::Route>,
+@@ -108,0 +113,2 @@
++            #[cfg(feature="novaauth-sessions-lab")]
++            relay: None,
+@@ -327,0 +334,2 @@
++            #[cfg(feature="novaauth-sessions-lab")]
++            session_origin: None,
+@@ -401,0 +410,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    ipc::session_relay::retired(s,pid);
+diff --git a/novaOS/kernel/src/sched/process/ipc/exec.rs b/novaOS/kernel/src/sched/process/ipc/exec.rs
+index 0670f66eba73116397f8ac1c082588e3bb6b3ac0..116f1859206a1412f8e5cf5c98b4844b4d07a071 100644
+--- a/novaOS/kernel/src/sched/process/ipc/exec.rs
++++ b/novaOS/kernel/src/sched/process/ipc/exec.rs
+@@ -2,0 +3,2 @@
++#[cfg(feature="novaauth-sessions-lab")]
++include!("exec_delivery_lab.rs");
+@@ -59,0 +62,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    relayed: Option<bool>,
+@@ -119 +123,2 @@
+-    if config.len() > crate::terminal::ARG_MAX + crate::terminal::HEADER {
++    let header=if config.starts_with(b"NXEXEC01"){64}else{crate::terminal::HEADER};
++    if config.len() > crate::terminal::ARG_MAX + header {
+@@ -143,0 +149,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        relayed: None,
+@@ -224,0 +232,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        super::session_relay::expire(s);
+@@ -225,0 +235,4 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        if t.relayed==Some(false) {return Err(DENIED);}
++        #[cfg(feature="novaauth-sessions-lab")]
++        if t.relayed==Some(true) && !super::session_relay::owns_session(s,owner,t.binding.session) {return Err(REVOKED);}
+@@ -260,0 +274,2 @@
++                #[cfg(feature="novaauth-sessions-lab")]
++                super::session_relay::expire(s);
+@@ -268,0 +284,7 @@
++                #[cfg(feature="novaauth-sessions-lab")]
++                {
++                    let id=p.exec[0].binding.session;
++                    if super::session_relay::owns_session(s,owner,id) {
++                        s.processes.get_mut(child.0).session_origin=Some((owner,id));
++                    }
++                }
+diff --git a/novaOS/kernel/src/sched/process/ipc/mod.rs b/novaOS/kernel/src/sched/process/ipc/mod.rs
+index 7daccb55336a31e54c1397f34be848b4cb374fdb..62890a6bf2cac99e21f30ed906ea80dbb04e1878 100644
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -8,0 +9,2 @@
++#[cfg(feature="novaauth-sessions-lab")]
++pub(super) mod session_relay;
+diff --git a/novaOS/kernel/src/sched/process/ipc/pipe.rs b/novaOS/kernel/src/sched/process/ipc/pipe.rs
+index acf0456d80ab86fc75ca6778824f19ac7da3f49e..32d392ea06876736dca83b0874b37d83e7610e6c 100644
+--- a/novaOS/kernel/src/sched/process/ipc/pipe.rs
++++ b/novaOS/kernel/src/sched/process/ipc/pipe.rs
+@@ -94,0 +95,19 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    pub(super) fn relay_direction(&self, shell:Pid, root:Node, direction:u32)->Res<()> {
++        let owner=self.lookup(shell,root.key,MANAGE)?;
++        let end=self.ends.get(root.endpoint.slot());
++        let p=end.pipe.ok_or(DENIED)?;
++        if owner.id!=root.id || root.id!=end.root || end.owner!=shell.number {return Err(DENIED);}
++        if p.revoked {return Err(REVOKED);}
++        match direction {
++            SEND if p.writer.is_none() && !p.writer_closed && !p.reader_closed=>Ok(()),
++            RECEIVE if p.reader.is_none() && !p.reader_closed=>Ok(()),
++            _=>Err(REFUSED)
++        }
++    }
++    #[cfg(feature="novaauth-sessions-lab")]
++    pub(super) fn relay_attached(&mut self,root:Node,recipient:Pid,direction:u32) {
++        let p=self.ends.get_mut(root.endpoint.slot()).pipe.as_mut().unwrap();
++        if direction==SEND {p.writer=Some(recipient);} else {p.reader=Some(recipient);}
++    }
++
 diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
-index 87dcef02b6fe556bec505b50dbe8190f0095072a..5689fb8e53e99b615dde5bc5391aefeff1a31d83 100644
+index 87dcef02b6fe556bec505b50dbe8190f0095072a..f446725f5824bb98841f677864a4ef382d4aee60 100644
 --- a/novaOS/kernel/src/sched/process/ipc/service.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/service.rs
-@@ -6,0 +7,2 @@
+@@ -6,0 +7,4 @@
 +#[cfg(feature="novaauth-sessions-lab")]
 +mod shell_auth_lab;
-@@ -245 +247,3 @@
++#[cfg(feature="novaauth-sessions-lab")]
++pub(super) const RELAY_ID: u64 = shell_auth_lab::RELAY;
+@@ -245 +249,5 @@
 -        auth_lab::AUTH | auth_lab::CLIENT | auth_lab::SECOND | auth_lab::PROVISIONER if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
 +        auth_lab::AUTH if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        auth_lab::CLIENT if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/shell-signer.elf")).as_slice(),
-@@ -304 +308 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        shell_auth_lab::RELAY if auth_lab::enabled() && argument==0 => include_bytes!(concat!(env!("OUT_DIR"),"/exec-relay.elf")).as_slice(),
+@@ -256 +264 @@
+-    let maximum = maximum.or_else(|| (auth_lab::enabled() && auth_lab::elf(id).is_some()).then_some(0));
++    let maximum = maximum.or_else(|| (auth_lab::enabled() && (id==shell_auth_lab::RELAY || auth_lab::elf(id).is_some())).then_some(0));
+@@ -304 +312 @@
 -        if auth_lab::enabled() && auth_lab::elf(id).is_some() { auth_lab::connect(s,m,target,id)?; }
-+        if auth_lab::enabled() { match id { auth_lab::AUTH => auth_lab::connect(s,m,target,id)?, auth_lab::CLIENT => shell_auth_lab::connect(s,m,target)?, _ => () } }
++        if auth_lab::enabled() { match id { auth_lab::AUTH => auth_lab::connect(s,m,target,id)?, auth_lab::CLIENT => shell_auth_lab::connect(s,m,target)?, shell_auth_lab::RELAY => shell_auth_lab::connect_relay(s,m,target)?, _ => () } }
+diff --git a/novaOS/kernel/src/sched/process/ipc/traffic.rs b/novaOS/kernel/src/sched/process/ipc/traffic.rs
+index afafd56c714ab569f1a8bc5c09d9fd369128f3ac..7ea6b4106cdc951ac03169e7be452c6f3a2622de 100644
+--- a/novaOS/kernel/src/sched/process/ipc/traffic.rs
++++ b/novaOS/kernel/src/sched/process/ipc/traffic.rs
+@@ -3 +3 @@
+-fn dword(buf: &[u8], i: usize) -> u32 {
++pub(super) fn dword(buf: &[u8], i: usize) -> u32 {
+@@ -6 +6 @@
+-fn word(buf: &[u8], i: usize) -> u64 {
++pub(super) fn word(buf: &[u8], i: usize) -> u64 {
+@@ -9 +9 @@
+-fn input<const N: usize>(
++pub(super) fn input<const N: usize>(
+@@ -591,0 +592,5 @@
++            #[cfg(feature="novaauth-sessions-lab")]
++            {
++                session_relay::expire(s);
++                if !s.ipc.waits.has(tid.slot) && let Some(r)=session_relay::intercept(s,p,id,args) {return (r.map(Some),0,p.number);}
++            }
 diff --git a/novaOS/user/novafs/Cargo.lock b/novaOS/user/novafs/Cargo.lock
 index 544533f390233d31cdc66ba531d6cc5c80df938e..1cc732a8d5716079070703b941872b769122a198 100644
 --- a/novaOS/user/novafs/Cargo.lock
@@ -165,25 +288,30 @@ index 1d2ab37d595f2656b392d211b177eb2433363ee0..f883333f10242d751f7229377e99aa71
 -novaauth-sessions-lab = ["dep:novaos-identity"]
 +novaauth-sessions-lab = ["dep:novaos-identity", "novaos-identity/distribution-lab"]
 diff --git a/novaOS/user/novafs/files.rs b/novaOS/user/novafs/files.rs
-index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..4a5421f3655f10e11c4a68d295fa5326d5937e9e 100644
+index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..32a32d865c3c611a4449289e7a7624b26a02a487 100644
 --- a/novaOS/user/novafs/files.rs
 +++ b/novaOS/user/novafs/files.rs
-@@ -142,0 +143,2 @@
+@@ -142,0 +143,4 @@
 +    #[cfg(feature="novaauth-sessions-lab")]
 +    upload: Option<package_lab::Upload>,
-@@ -632,0 +635,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    executable_request: Option<[u8;128]>,
+@@ -632,0 +637,2 @@
 +mod package_lab;
 +#[cfg(feature="novaauth-sessions-lab")]
-@@ -722,0 +727,2 @@
+@@ -722,0 +729,4 @@
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        upload: None,
++        #[cfg(feature="novaauth-sessions-lab")]
++        executable_request: None,
 diff --git a/novaOS/user/novafs/files/auth_registry.rs b/novaOS/user/novafs/files/auth_registry.rs
-index 6bfb5e29ab66dac792e1755deb0551eb0ad0def2..62b3b1396708b045cf1e1006f9d83a55dfa546eb 100644
+index 6bfb5e29ab66dac792e1755deb0551eb0ad0def2..1852892ec17c03345ad3e336b9ef347a8a85a1e4 100644
 --- a/novaOS/user/novafs/files/auth_registry.rs
 +++ b/novaOS/user/novafs/files/auth_registry.rs
-@@ -160,0 +161 @@
+@@ -160,0 +161,2 @@
 +                self.upload = None;
-@@ -167,0 +169,5 @@
++                self.executable_request=None;
+@@ -167,0 +170,5 @@
 +        if msg.kind == 1 && msg.len == 128 && &msg.payload[..4] == b"NXPK" {
 +            let status = self.package_request(&msg.payload,&mut a).err().unwrap_or(rt::OK);
 +            a[..8].copy_from_slice(&status.to_le_bytes());
@@ -197,9 +325,23 @@ index 29e0200156df412aa21249c387a4979b73d86c9f..7b13e7b0fba062a4d6ebd5bb0be01912
 -                && names.first().is_some_and(|n| { #[cfg(feature="novaauth-sessions-lab")] { n == auth_directory::NAME } #[cfg(not(feature="novaauth-sessions-lab"))] { false } } || tmp_store::hidden_root_name(n) || cache_store::hidden(n) || config_store::hidden(n) || journal_store::hidden(n))
 +                && names.first().is_some_and(|n| { #[cfg(feature="novaauth-sessions-lab")] { n == auth_directory::NAME || n.starts_with("\x1fNX") } #[cfg(not(feature="novaauth-sessions-lab"))] { false } } || tmp_store::hidden_root_name(n) || cache_store::hidden(n) || config_store::hidden(n) || journal_store::hidden(n))
 diff --git a/novaOS/user/service_manager.rs b/novaOS/user/service_manager.rs
-index 8e66b5f6657b531333f2f20965439606f4837731..3c13f03dcd56ef208333d553fd2d793b9da340ab 100644
+index 8e66b5f6657b531333f2f20965439606f4837731..739c6a964aad78f5fecae1725045b0da894fafc6 100644
 --- a/novaOS/user/service_manager.rs
 +++ b/novaOS/user/service_manager.rs
-@@ -487 +487 @@
+@@ -96,0 +97,2 @@
++    #[cfg(novaauth_sessions_lab)]
++    relay_wait: u64,
+@@ -426,0 +429,2 @@
++        #[cfg(novaauth_sessions_lab)]
++        auth_lab::poll(&mut self.relay_wait)?;
+@@ -487 +491 @@
 -#[path = "novaauth/service/launcher.rs"]
 +#[path = "novaauth/service/shell_launcher.rs"]
+@@ -491,3 +495 @@
+-    if rt::config(19) == 1 {
+-        auth_lab::launch()?;
+-    }
++    let relay_wait=if rt::config(19)==1 {auth_lab::launch()?} else {0};
+@@ -520,0 +523,2 @@
++        #[cfg(novaauth_sessions_lab)]
++        relay_wait,

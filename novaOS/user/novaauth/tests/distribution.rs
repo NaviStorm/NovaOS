@@ -122,6 +122,61 @@ fn installation_retrait_reinstallation_et_relecture_p9() {
             .unwrap();
         assert_eq!(reg.outcome([2; 16]).unwrap(), Some(h));
         let grant = reg.grant_attested(holder).unwrap();
+        use novaos_identity::policy::{Image, Origin, READ};
+        let alpha = reg.load_package(grant, &key, m, "alpha").unwrap();
+        let beta = reg.load_package(grant, &key, m, "beta").unwrap();
+        assert_ne!(alpha.application, beta.application);
+        assert_eq!(alpha.application.unwrap() >> 63, 1);
+        let original = Image {
+            installation: alpha.principal.unwrap(),
+            digest: alpha.digest,
+        };
+        let sibling = Image {
+            installation: beta.principal.unwrap(),
+            digest: beta.digest,
+        };
+        assert_ne!(original.installation, sibling.installation);
+        reg.bind_folder(
+            reg.outcome([2; 16]).unwrap().unwrap(),
+            holder,
+            10,
+            b"acl du dossier temoin",
+            [10; 16],
+        )
+        .unwrap();
+        let grant = reg.grant_attested(holder).unwrap();
+        reg.set_permission(
+            grant,
+            holder,
+            10,
+            original.installation,
+            Origin::Direct,
+            READ,
+            [11; 16],
+        )
+        .unwrap();
+        assert_eq!(
+            reg.permission(holder, original, holder, 10, Origin::Direct)
+                .unwrap()
+                .rights,
+            READ
+        );
+        assert!(
+            reg.permission(holder, sibling, holder, 10, Origin::Direct)
+                .is_err()
+        );
+        let grant = reg.grant_attested(holder).unwrap();
+        reg.set_permission(
+            grant,
+            holder,
+            10,
+            original.installation,
+            Origin::Direct,
+            0,
+            [12; 16],
+        )
+        .unwrap();
+        let grant = reg.grant_attested(holder).unwrap();
         let old = reg
             .load_package(grant, &key, m, "beta")
             .unwrap()
@@ -134,6 +189,19 @@ fn installation_retrait_reinstallation_et_relecture_p9() {
             .unwrap();
         let grant = reg.grant_attested(holder).unwrap();
         assert!(reg.load_package(grant, &key, m, "beta").is_err());
+        let updated = reg.load_package(grant, &key, m, "alpha").unwrap();
+        assert_eq!(updated.principal, Some(original.installation));
+        assert_eq!(updated.application, alpha.application);
+        let current = Image {
+            installation: updated.principal.unwrap(),
+            digest: updated.digest,
+        };
+        assert!(
+            reg.permission(holder, current, holder, 10, Origin::Direct)
+                .is_err()
+        );
+        assert!(reg.verify_image(original).is_err());
+        assert!(reg.verify_image(sibling).is_err());
         assert_eq!(
             reg.load_package(grant, &key, m, "alpha")
                 .unwrap()
@@ -150,6 +218,23 @@ fn installation_retrait_reinstallation_et_relecture_p9() {
         reg.publish_package(grant, [5; 16], Action::Install, &key, m, &v1)
             .unwrap();
         let grant = reg.grant_attested(holder).unwrap();
+        let new = reg.load_package(grant, &key, m, "alpha").unwrap();
+        assert_ne!(new.principal, Some(original.installation));
+        assert_ne!(new.application, alpha.application);
+        assert!(
+            reg.permission(
+                holder,
+                Image {
+                    installation: new.principal.unwrap(),
+                    digest: new.digest
+                },
+                holder,
+                10,
+                Origin::Direct
+            )
+            .is_err()
+        );
+        assert!(reg.verify_image(original).is_err());
         assert_ne!(
             reg.load_package(grant, &key, m, "alpha")
                 .unwrap()

@@ -57,3 +57,30 @@ pub(super) fn connect(s: &mut Core, m: Session, signer: Pid) -> Res<()> {
     ));
     Ok(())
 }
+
+pub(super) const RELAY: u64 = 21;
+
+/// Les deux racines de transport sont comptées au courtier, avec des pairs
+/// fixes. Aucun pair ne peut les dupliquer, en changer les droits ou la cible.
+pub(super) fn connect_relay(s: &mut Core, m: Session, relay: Pid) -> Res<()> {
+    let issuer = s
+        .processes
+        .slots
+        .iter()
+        .flatten()
+        .find(|p| {
+            p.service_owner == Some(m.manager)
+                && p.service_id == auth_lab::AUTH
+                && p.outcome.is_none()
+                && p.space.is_some()
+        })
+        .ok_or(CLOSED)?
+        .pid;
+    let (rx, send) = channel(s, relay, Some(issuer), RECEIVE)?;
+    let (tx, receive) = channel(s, relay, Some(issuer), SEND)?;
+    super::super::session_relay::register(s, m.client, issuer, relay, m.fs, send, tx)?;
+    config(s, relay, 5, &[rx, tx]);
+    config(s, issuer, 20, &[receive]);
+    config(s, issuer, 19, &[send]);
+    Ok(())
+}

@@ -20,12 +20,12 @@ def digest(path):
         return hashlib.file_digest(src, "sha256").hexdigest()
 
 
-def run(arch, sector, iso, genesis, output, package=None, denial=False):
+def prepare_vm(arch, sector, iso, genesis, output, prefix):
     output.mkdir(parents=True, exist_ok=False)
     disks = []
     for filename in ("identites.p9", "autorite.raw"):
         destination = output / filename
-        shutil.copyfile(genesis / ("neuf-" + filename), destination)
+        shutil.copyfile(genesis / (prefix + filename), destination)
         disks.append(destination)
     disk, authority = disks
     if (disk.stat().st_size, authority.stat().st_size) != (512 * 4096, 12 * 4096):
@@ -40,6 +40,11 @@ def run(arch, sector, iso, genesis, output, package=None, denial=False):
     argv[i] = argv[i].replace("format=raw","format=vmdk")
     environment = {**os.environ, "NOVA_ISO":str(iso.resolve()), "NOVA_ARCH":arch,
                    "NOVA_ARM_CPU":"max", "NOVA_VCPUS":"2"}
+    return argv, environment, disk, authority
+
+
+def run(arch, sector, iso, genesis, output, package=None, denial=False):
+    argv, environment, disk, authority = prepare_vm(arch, sector, iso, genesis, output, "neuf-")
     results = dict(architecture=arch, secteur=sector, iso_sha256=digest(iso),
                    autorite_initiale=digest(authority), p9_initial=digest(disk))
     raw = bytearray()
