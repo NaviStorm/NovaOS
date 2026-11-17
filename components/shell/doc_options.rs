@@ -1,6 +1,10 @@
 //! Traitement local avant la résolution des chemins et le choix des capacités.
 use nova_cli::{command::Program, console, documentation, options, runtime as rt, tty};
 
+#[allow(dead_code)]
+#[path = "../stat/src/options.rs"]
+mod stat_options;
+
 fn invalid(option: &str) -> rt::Result<Option<u64>> {
     console::printable(
         tty::ERROR,
@@ -13,6 +17,22 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "stat" {
+        let bytes: alloc::vec::Vec<_> = args.iter().map(|a| a.as_bytes()).collect();
+        let parsed = match stat_options::parse(&bytes, false) {
+            Ok(o) => o,
+            Err(_) => return invalid(name),
+        };
+        match parsed.doc {
+            Some(true) => console::write(
+                tty::OUTPUT,
+                &page.render(&[], false, lang).ok_or(rt::BAD_ARGUMENT)?,
+            )?,
+            Some(false) => console::write(tty::OUTPUT, &page.version(lang))?,
+            None => return Ok(None),
+        }
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

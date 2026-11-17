@@ -31,6 +31,35 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "stat",
+        provider: "nova-stat",
+        description: Text(
+            "Display file or file system status.",
+            "Afficher les métadonnées d’un fichier ou de son volume.",
+        ),
+        syntax: Text::same(
+            "stat [-Lft] [-c FORMAT | --printf=FORMAT] [--cached=MODE] [--] FILE...",
+        ),
+        arguments: Text(
+            "Use -L/--dereference to follow links, -f/--file-system for volume fields, -t/--terse for one line. -c/--format appends a newline. --printf interprets escapes. Cache modes are always, never and default.",
+            "Suivre les liens avec -L/--dereference, interroger le volume avec -f/--file-system, résumer avec -t/--terse. -c/--format ajoute un saut de ligne. --printf interprète les échappements. Modes de cache disponibles : always, never et default.",
+        ),
+        examples: Text::same("stat -c '%n %s %y' -- notes"),
+        rights: Text(
+            "One delegated metadata handle per operand.",
+            "Un handle de métadonnées délégué par opérande.",
+        ),
+        effects: Text(
+            "Reads metadata. Documentation requires no object handle.",
+            "Lit les métadonnées. La documentation est accessible sans handle objet.",
+        ),
+        limits: Text(
+            "P9 exports object ID, type, size and four timestamps. Other fields display ?. Volume queries require an unavailable interface (25).",
+            "P9 expose l’identifiant, le type, la taille et quatre dates. Les autres champs affichent ?. Les requêtes de volume nécessitent une interface indisponible (25).",
+        ),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1160,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.name == "stat" {
+            return String::from("stat (NovaOS) 0.24.0\n");
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
