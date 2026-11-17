@@ -5,7 +5,7 @@ use std::{
     io::{self, BufWriter, IsTerminal, Write},
     os::{
         fd::{FromRawFd, OwnedFd},
-        unix::ffi::OsStrExt,
+        unix::ffi::{OsStrExt, OsStringExt},
     },
 };
 
@@ -55,18 +55,44 @@ fn errno(e: io::Error) -> Error {
         n => Error::System(n),
     }
 }
-struct Darwin;
+struct Darwin {
+    name: Vec<u8>,
+    target: Vec<u8>,
+}
+
 impl Namespace for Darwin {
     fn cwd(&mut self) -> Result<Vec<u8>, Error> {
         env::current_dir()
-            .map(|s| s.as_os_str().as_bytes().to_vec())
+            .map(|s| s.into_os_string().into_vec())
             .map_err(errno)
     }
     fn link(&mut self, path: &[u8]) -> Result<Option<Vec<u8>>, Error> {
-        match std::fs::read_link(OsStr::from_bytes(path)) {
-            Ok(s) => Ok(Some(s.as_os_str().as_bytes().to_vec())),
-            Err(e) if e.raw_os_error() == Some(libc::EINVAL) => Ok(None),
-            Err(e) => Err(errno(e)),
+        // L'opérande, getcwd et readlink fournissent des noms Unix sans NUL.
+        self.name.clear();
+        self.name.extend_from_slice(path);
+        self.name.push(0);
+        loop {
+            // Les deux tampons vivent pendant l'appel et ne se recouvrent pas.
+            let count = unsafe {
+                libc::readlink(
+                    self.name.as_ptr().cast(),
+                    self.target.as_mut_ptr().cast(),
+                    self.target.len(),
+                )
+            };
+            if count < 0 {
+                let error = io::Error::last_os_error();
+                return if error.raw_os_error() == Some(libc::EINVAL) {
+                    Ok(None)
+                } else {
+                    Err(errno(error))
+                };
+            }
+            let count = count as usize;
+            if count < self.target.len() {
+                return Ok(Some(self.target[..count].to_vec()));
+            }
+            self.target.resize(self.target.len() * 2, 0);
         }
     }
     fn check(&mut self, path: &[u8], directory: bool) -> Result<(), Error> {
@@ -139,7 +165,10 @@ fn execute() -> io::Result<u8> {
         }
         options::Action::Paths(opt) => {
             let zero = opt.zero;
-            let mut fs = Darwin;
+            let mut fs = Darwin {
+                name: Vec::new(),
+                target: vec![0; 256],
+            };
             let relative = match Relative::new(&mut fs, &opt) {
                 Ok(v) => v,
                 Err((p, e)) => {

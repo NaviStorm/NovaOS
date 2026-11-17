@@ -1,5 +1,5 @@
 use crate::options::{Existence, Links, Settings};
-use alloc::{collections::VecDeque, vec::Vec};
+use alloc::{borrow::Cow, collections::VecDeque, vec::Vec};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Error {
@@ -36,37 +36,39 @@ fn pass(
     };
 
     let mut slash = name.ends_with(b"/");
-    // A link may reappear later in a valid operand. Only recursive expansion cycles.
-    enum Marker {
-        End(Vec<u8>),
-        Name(Vec<u8>),
+    // Les composantes de l’opérande restent empruntées, les cibles lues sont possédées.
+    path.reserve(name.len());
+    enum Marker<'a> {
+        End,
+        Name(Cow<'a, [u8]>),
     }
-    let mut queue: VecDeque<_> = parts(name).map(|s| Marker::Name(s.to_vec())).collect();
+    let mut queue: VecDeque<_> = parts(name)
+        .map(|s| Marker::Name(Cow::Borrowed(s)))
+        .collect();
     let mut active = Vec::new();
     // GNU 9.12 conserve la composante répétée après vingt expansions en mode -m.
     let mut grace = if mode == Existence::Missing { 20 } else { 0 };
     while let Some(item) = queue.pop_front() {
         let part = match item {
             Marker::Name(v) => v,
-            Marker::End(v) => {
-                debug_assert_eq!(active.last(), Some(&v));
+            Marker::End => {
                 active.pop();
                 continue;
             }
         };
-        if part == b"." {
+        if part.as_ref() == b"." {
             continue;
         }
-        if part == b".." {
+        if part.as_ref() == b".." {
             parent(&mut path);
             continue;
         }
         if path.len() > 1 {
             path.push(b'/')
         }
-        path.extend(&part);
+        path.extend_from_slice(&part);
         let mut tail = queue.iter().filter_map(|m| match m {
-            Marker::Name(v) => Some(v.as_slice()),
+            Marker::Name(v) => Some(v.as_ref()),
             _ => None,
         });
         let next = tail.next();
@@ -87,7 +89,7 @@ fn pass(
                     return Err(Error::Loop);
                 }
                 if grace == 0 {
-                    queue.push_front(Marker::End(path.clone()));
+                    queue.push_front(Marker::End);
                     active.push(path.clone());
                 } else {
                     grace -= 1
@@ -96,7 +98,7 @@ fn pass(
                     slash |= dest.ends_with(b"/")
                 }
                 for p in dest.rsplit(|&c| c == b'/').filter(|s| !s.is_empty()) {
-                    queue.push_front(Marker::Name(p.to_vec()))
+                    queue.push_front(Marker::Name(Cow::Owned(p.to_vec())))
                 }
                 if dest.starts_with(b"/") {
                     path.truncate(1)
