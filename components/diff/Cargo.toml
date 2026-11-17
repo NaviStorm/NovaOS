@@ -1,0 +1,32 @@
+[package]
+name = "nova-diff"
+version = "0.24.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "diff"
+path = "src/main.rs"
+
+[dependencies]
+posix-regex = { version = "=0.1.4", features = ["no_std"] }
+unicode-width = { version = "=0.2.2", default-features = false }
+
+[target.'cfg(target_os = "none")'.dependencies]
+nova-cli = { path = ".." }
+
+[target.'cfg(target_vendor = "apple")'.dependencies]
+libc = "=0.2.191"
+
+[features]
+temoin = []
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+opt-level = "s"
+strip = true

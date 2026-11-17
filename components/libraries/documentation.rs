@@ -31,6 +31,30 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "diff",
+        provider: "nova-diff",
+        description: Text(
+            "Compare files and directories.",
+            "Comparer des fichiers et des répertoires.",
+        ),
+        syntax: Text::same("diff [OPTION]... FILE1 FILE2"),
+        arguments: Text(
+            include_str!("../diff/diff.en"),
+            include_str!("../diff/diff.fr"),
+        ),
+        examples: Text::same("diff -u a b"),
+        rights: Text(
+            "Read the selected inputs.",
+            "Lecture des entrées sélectionnées.",
+        ),
+        effects: Text("Writes to output streams.", "Écrit sur les flux de sortie."),
+        limits: Text(
+            "0 equal, 1 different, 2 trouble.",
+            "0 identiques, 1 différents, 2 erreur.",
+        ),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -518,7 +542,10 @@ pub static PAGES: &[Page] = &[
             "Count lines, words and text units.",
             "Compter les lignes, les mots et les unités de texte.",
         ),
-        syntax: Text("wc [-lwcmL] [--] file...\ncat file | wc -l", "wc [-lwcmL] [--] fichier...\ncat fichier | wc -l"),
+        syntax: Text(
+            "wc [-lwcmL] [--] file...\ncat file | wc -l",
+            "wc [-lwcmL] [--] fichier...\ncat fichier | wc -l",
+        ),
         arguments: Text(
             "-l/--lines counts newlines, -w/--words words, -c/--bytes bytes, -m/--chars Unicode characters, -L/--max-line-length display columns.",
             "-l/--lines compte les sauts de ligne, -w/--words les mots, -c/--bytes les octets, -m/--chars les caractères Unicode, -L/--max-line-length la largeur affichée.",
@@ -1131,6 +1158,13 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.provider == "nova-diff" {
+            return format!(
+                "diff (NovaOS) {}\n{}\n",
+                include_str!("../diff/VERSION").trim(),
+                lang.select("Native NovaOS version.", "Version native de NovaOS.")
+            );
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
@@ -1148,6 +1182,9 @@ impl Page {
     }
 
     pub fn render(&self, path: &[&str], manual: bool, lang: Language) -> Option<String> {
+        if self.provider == "nova-diff" && path.is_empty() {
+            return Some(String::from(self.arguments.get(lang)));
+        }
         let mut text = String::new();
         if path.is_empty() {
             writeln!(

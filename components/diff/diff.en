@@ -1,0 +1,10 @@
+diff — Compare two files or directories line by line.
+Usage: diff [OPTION]... FILE1 FILE2
+Use - for standard input. Use -- to end option processing.
+Normal output lists insertions, deletions and replacements. -u and -c include context.
+-y compares columns, -e/-f produce editor commands, -n emits RCS changes, -D NAME merges inputs.
+-q reports differences, -s reports equality. -r descends into directories. -N treats missing files as empty.
+-i folds case. -E, -Z, -b, -w and -B ignore selected whitespace differences. -I RE ignores matching changes.
+Examples: diff -u old new | diff -qr olddir newdir | diff --label old --label new -u - file
+Status 0 means identical, 1 different and 2 trouble. Comparison requires read access.
+Help, version and manual require no file access or temporary storage.

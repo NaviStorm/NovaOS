@@ -13,6 +13,15 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if page.provider == "nova-diff" {
+        let text = match args {
+            ["--help"] => page.arguments.get(lang).into(),
+            ["-v" | "--version"] => page.version(lang),
+            _ => return Ok(None),
+        };
+        console::write(tty::OUTPUT, &text)?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

@@ -1,0 +1,10 @@
+diff — Comparer deux fichiers ou répertoires ligne par ligne.
+Syntaxe : diff [OPTION]... FICHIER1 FICHIER2
+Utiliser - pour lire l’entrée standard et -- pour terminer les options.
+Le format normal indique les ajouts, suppressions et remplacements. -u et -c ajoutent le contexte.
+-y juxtapose les lignes, -e/-f produisent un script éditeur, -n un script RCS et -D NOM fusionne les entrées.
+-q signale les différences, -s les égalités. -r parcourt les répertoires. -N assimile un fichier absent à un fichier vide.
+-i ignore la casse. -E, -Z, -b, -w et -B filtrent certains espaces. -I MOTIF ignore les changements correspondants.
+Exemples : diff -u ancien nouveau | diff -qr avant après | diff --label avant --label après -u - fichier
+Statuts : 0 identiques, 1 différents, 2 erreur. La comparaison demande la lecture des entrées.
+L’aide, la version et le manuel ne demandent aucun accès fichier ni espace temporaire.
