@@ -1,0 +1,24 @@
+[package]
+name = "nova-dd"
+version = "0.24.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "dd"
+path = "main.rs"
+
+[target.'cfg(target_os = "none")'.dependencies]
+nova-cli = { path = ".." }
+nova-exec-client = { path = "../exec-client" }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = "=0.2.191"
+
+[profile.release]
+panic = "abort"
+overflow-checks = true
+opt-level = 3

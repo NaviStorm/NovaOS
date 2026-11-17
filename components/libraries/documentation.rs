@@ -31,6 +31,30 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "dd",
+        provider: "nova-dd",
+        description: Text(
+            "Copy and convert blocks of bytes.",
+            "Copier et convertir des blocs d’octets.",
+        ),
+        syntax: Text::same("dd [--] [if=…] [of=…] [bs=N] [count=N] […]"),
+        arguments: Text(include_str!("../dd/help.en"), include_str!("../dd/help.fr")),
+        examples: Text::same("dd bs=4 count=2 status=none"),
+        rights: Text(
+            "A readable input and a writable output. Documentation needs neither.",
+            "Un flux lisible et un flux inscriptible. La documentation exige uniquement la sortie de présentation.",
+        ),
+        effects: Text(
+            "Darwin creates or truncates the destination by default. NovaOS requires delegated streams.",
+            "Darwin crée ou tronque la destination par défaut. NovaOS exige des flux délégués.",
+        ),
+        limits: Text(
+            "dd returns 1 on an operand or I/O error.",
+            "dd rend 1 pour une erreur d’opérande ou d’E/S.",
+        ),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
@@ -1131,6 +1155,9 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.name == "dd" {
+            return format!("dd (nova-dd) {}\n", include_str!("../dd/VERSION").trim());
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
@@ -1207,10 +1234,14 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
-                    "Status, errors and limits: 0 success, 3 invalid argument.",
-                    "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                if self.name == "dd" {
+                    lang.select("Exit status:", "Code de retour :")
+                } else {
+                    lang.select(
+                        "Status, errors and limits: 0 success, 3 invalid argument.",
+                        "Codes, erreurs et limites : 0 succès, 3 argument invalide.",
+                    )
+                },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )

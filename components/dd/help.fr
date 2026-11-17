@@ -1,0 +1,7 @@
+if=FICHIER et of=FICHIER sélectionnent l’entrée et la sortie. Par défaut, dd utilise les flux standard.
+ibs=N et obs=N fixent les tailles de bloc (512 par défaut). bs=N remplace les deux.
+count=N limite la lecture. skip=N (iseek=N) et seek=N (oseek=N) décalent l’entrée et la sortie. Ajouter B pour compter les octets.
+Unités : c, w, b, kB, K, KiB, MB, M, MiB et suivantes jusqu’à Q. Multiplier les facteurs avec x. 100M vaut 104857600, 100m est invalide.
+conv=LISTE : ascii, ebcdic, ibm, block, unblock, lcase, ucase, sparse, swab, sync, excl, nocreat, notrunc, noerror, fdatasync, fsync. cbs=N fixe la largeur des enregistrements.
+iflag=LISTE et oflag=LISTE : append, directory, dsync, sync, nonblock, noctty, nofollow, nocache. fullblock, count_bytes et skip_bytes concernent l’entrée, seek_bytes la sortie.
+status=none masque les statistiques, noxfer conserve les compteurs, progress indique périodiquement le volume transféré.

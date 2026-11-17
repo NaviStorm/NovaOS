@@ -1,0 +1,7 @@
+if=FILE and of=FILE select input and output. Default: stdin and stdout.
+ibs=N and obs=N set block sizes (default 512). bs=N overrides both.
+count=N limits input. skip=N (iseek=N) and seek=N (oseek=N) offset input and output. Append B to count bytes.
+Sizes: c, w, b, kB, K, KiB, MB, M, MiB and larger through Q. Multiply factors with x. 100M = 104857600; 100m is invalid.
+conv=LIST: ascii, ebcdic, ibm, block, unblock, lcase, ucase, sparse, swab, sync, excl, nocreat, notrunc, noerror, fdatasync, fsync. Set cbs=N for fixed records.
+iflag=LIST and oflag=LIST: append, directory, dsync, sync, nonblock, noctty, nofollow, nocache. fullblock, count_bytes and skip_bytes apply to input, seek_bytes to output.
+status=none hides statistics, noxfer retains record counts, progress periodically reports transferred bytes.
