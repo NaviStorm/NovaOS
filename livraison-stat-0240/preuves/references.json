@@ -1,0 +1,64 @@
+{
+ "base": "425e4e7cc5c03e246efb64d3638376906344bf47",
+ "code": "c8a076ed2121b4c1d8b3a6c0b35d233ca28724fe",
+ "gnu": "c0f8514d989184921d9b12a4d103a7b23abc5af8",
+ "uutils": "4735bbe40d764a523c5ece37d47465b32452d1a2",
+ "licences": [
+  [
+   "cfg-if-1.0.5",
+   "MIT OR Apache-2.0"
+  ],
+  [
+   "dlmalloc-0.2.14",
+   "MIT/Apache-2.0"
+  ],
+  [
+   "libc-0.2.191",
+   "MIT OR Apache-2.0"
+  ],
+  [
+   "spin-0.9.9",
+   "MIT"
+  ],
+  [
+   "unicode-width-0.2.2",
+   "MIT OR Apache-2.0"
+  ],
+  [
+   "windows-link-0.2.1",
+   "MIT OR Apache-2.0"
+  ],
+  [
+   "windows-sys-0.61.2",
+   "MIT OR Apache-2.0"
+  ]
+ ],
+ "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2.1\nBuildVersion:\t\t26B131",
+ "cpu": "Apple M4 Max",
+ "ram": "137438953472",
+ "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+ "oracle": "stat (GNU coreutils) 9.12\nCopyright (C) 2026 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\nWritten by Michael Meskes.",
+ "emulateurs": {
+  "aarch64": "QEMU emulator version 11.1.3\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers",
+  "x86_64": "QEMU emulator version 11.1.3\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers"
+ },
+ "sha256": {
+  "../tmp/sort-arc027-gnu/src/stat.c": "cc91507f7081464b540cf2fbec9c77efe97c3d6b204b676623e101f103854254",
+  "../tmp/sort-arc027-gnu/src/find-mount-point.c": "7b8bad99cea1dbb7c2bb4c319015f09c0e31cf35d89037526c03157ad49415df",
+  "../tmp/sort-arc027-gnu/doc/coreutils.texi": "e6521c9b2e677dd278820887d7ad94fad8260f2535dd923728462cdcb6148db9",
+  "../tmp/sort-arc027-gnu/COPYING": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+  "../tmp/sort-arc027-gnu/tests/stat/stat-birthtime.sh": "41659c1612572d110d87b6f2313d65a2bb53bdf69021f37473a20969e1a440df",
+  "../tmp/sort-arc027-gnu/tests/stat/stat-fmt.sh": "5ae0cd0387fcbe0ffe295bf3e36a79f8188c9227066f549218637deb9a135003",
+  "../tmp/sort-arc027-gnu/tests/stat/stat-hyphen.sh": "ced16b2ce7a27813694a3438178707de48c6ceafa7be14c3def24d58f401fde8",
+  "../tmp/sort-arc027-gnu/tests/stat/stat-mount.sh": "a175ffeafdb50d8aca784d95b5fd4cdda895f996f03ac8a756057206659ee7fb",
+  "../tmp/sort-arc027-gnu/tests/stat/stat-nanoseconds.sh": "08edc7ee95c6e3ac7ce634f0adf054994eb96ca6de0a9fafb39746028cd40145",
+  "../tmp/sort-arc027-gnu/tests/stat/stat-printf.pl": "e73ace4af48f54c4fa607c053fa92e7c0ab2a0097575882771fef9d1b4744cb4",
+  "../tmp/sort-arc027-gnu/tests/stat/stat-slash.sh": "63e50ee474e630c045c171323abf83bb199e810564dac0019964699d723810af",
+  "../tmp/sort-arc027-uutils/src/uu/stat/src/stat.rs": "3a3c3c8248dbf4957b7cb34562422c891717da43ae5cdb941bd6b45f05e1bdf4",
+  "../tmp/sort-arc027-uutils/src/uu/stat/Cargo.toml": "a57bf7a573ac1f113de150692db756b390d9489f78670b5a92ddf2da508bcf2e",
+  "/opt/homebrew/bin/gstat": "4356cbc906bc8f6a8b2e0e9dd3e98e947514aee1bedaee662363074cea7541ac",
+  "livraison-stat-0240/bin/stat-aarch64.elf": "19a67c198aecf8ea910cb18970792c7e65fba783aa25f0a928db2d2778cb33cb",
+  "livraison-stat-0240/bin/stat-darwin-arm64": "57e14f2baee40324e7c40b9fc604d2e6f76e56821b237d033068d350478ed410",
+  "livraison-stat-0240/bin/stat-x86_64.elf": "dadd46954881bb52f279058129bd1ec6bb741fc30887de63cb79a62d278e7afd"
+ }
+}

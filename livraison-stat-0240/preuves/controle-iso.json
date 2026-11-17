@@ -1,0 +1,58 @@
+[
+ {
+  "iso": "livraison-stat-0240/preuves/QEMU-aarch64/4096/terminal.iso.gz",
+  "sha256": "829c732bf5c61ca38d8bba2f7eced46aa2741bcfb0aa1628db60b0eb58820ddc",
+  "noyau": "48b2911818c458547400f0a37d95118386bb14c3819cfff5e99d354b1cc2b1f1",
+  "stat": "19a67c198aecf8ea910cb18970792c7e65fba783aa25f0a928db2d2778cb33cb",
+  "stat_incorpore": true
+ },
+ {
+  "iso": "livraison-stat-0240/preuves/QEMU-aarch64/512/terminal.iso.gz",
+  "sha256": "226a1fa37c2ea1e81c8b68fb050e0b5d897ea8ea1920ab4e5184ed25dc2c73ca",
+  "noyau": "48b2911818c458547400f0a37d95118386bb14c3819cfff5e99d354b1cc2b1f1",
+  "stat": "19a67c198aecf8ea910cb18970792c7e65fba783aa25f0a928db2d2778cb33cb",
+  "stat_incorpore": true
+ },
+ {
+  "iso": "livraison-stat-0240/preuves/QEMU-x86_64/4096/terminal.iso.gz",
+  "sha256": "716dd874ca1af0dd80712221f473c3daee9ecc98c7cdffb1eb0784614f87db70",
+  "noyau": "b00f9a10e11ec1748e4e08c79ccb51b6cf41e68fc54de88b9c303c8acae9842a",
+  "stat": "dadd46954881bb52f279058129bd1ec6bb741fc30887de63cb79a62d278e7afd",
+  "stat_incorpore": true
+ },
+ {
+  "iso": "livraison-stat-0240/preuves/QEMU-x86_64/512/terminal.iso.gz",
+  "sha256": "56ed0718dfb31c354980c97b14d8b3dfc34dc94749841f83b54fc54ef8cf9da6",
+  "noyau": "b00f9a10e11ec1748e4e08c79ccb51b6cf41e68fc54de88b9c303c8acae9842a",
+  "stat": "dadd46954881bb52f279058129bd1ec6bb741fc30887de63cb79a62d278e7afd",
+  "stat_incorpore": true
+ },
+ {
+  "iso": "livraison-stat-0240/preuves/nsh-aarch64/4096/ordinaire.iso.gz",
+  "sha256": "8812fee72ff941f7d51d924ee9bbf6b218292d7bab056bb86c80e42bb2c268e3",
+  "noyau": "f3c72cc4edb31320920d8d66b9cce621c0afb93842c2086b88f3eb0de3a14809",
+  "stat": "19a67c198aecf8ea910cb18970792c7e65fba783aa25f0a928db2d2778cb33cb",
+  "stat_incorpore": false
+ },
+ {
+  "iso": "livraison-stat-0240/preuves/nsh-aarch64/512/ordinaire.iso.gz",
+  "sha256": "26287de5eb9ba0829c2f9955b1e77b6923385d4920fdca672b244ff73dd786e6",
+  "noyau": "f3c72cc4edb31320920d8d66b9cce621c0afb93842c2086b88f3eb0de3a14809",
+  "stat": "19a67c198aecf8ea910cb18970792c7e65fba783aa25f0a928db2d2778cb33cb",
+  "stat_incorpore": false
+ },
+ {
+  "iso": "livraison-stat-0240/preuves/nsh-x86_64/4096/ordinaire.iso.gz",
+  "sha256": "3ab796cdf2d15ef64466f86fef3f886116455d8192d71769d37e7b24fc75f841",
+  "noyau": "c598fb6341d4e88465affba7519c0ece46dc67deb267b09f559f64c9e369028f",
+  "stat": "dadd46954881bb52f279058129bd1ec6bb741fc30887de63cb79a62d278e7afd",
+  "stat_incorpore": false
+ },
+ {
+  "iso": "livraison-stat-0240/preuves/nsh-x86_64/512/ordinaire.iso.gz",
+  "sha256": "3364e09095c96f1ad592f9d5764c37c24af23543b8c9cda9f1e6ef35a0e55dc7",
+  "noyau": "c598fb6341d4e88465affba7519c0ece46dc67deb267b09f559f64c9e369028f",
+  "stat": "dadd46954881bb52f279058129bd1ec6bb741fc30887de63cb79a62d278e7afd",
+  "stat_incorpore": false
+ }
+]

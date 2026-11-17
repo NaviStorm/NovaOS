@@ -1,0 +1,22 @@
+GNU stat-birthtime.sh 0
+GNU stat-fmt.sh 0
+stat: using '-' to denote standard input does not work in file system mode
+GNU stat-hyphen.sh 0
+/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/tests/stat/stat-mount.sh: line 30: unshare: command not found
+GNU stat-mount.sh 0
+-rw-r--r-- 1 thierry staff 0 1970-01-01 18:43:33.023456789 +0000 k
+GNU stat-nanoseconds.sh 0
+GNU stat-printf.pl 0
+stat: cannot stat 'link1/': Not a directory
+GNU stat-slash.sh 0
+Nova stat-birthtime.sh 0
+Nova stat-fmt.sh 0
+stat: using '-' to denote standard input does not work in file system mode
+Nova stat-hyphen.sh 0
+/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/tests/stat/stat-mount.sh: line 30: unshare: command not found
+Nova stat-mount.sh 0
+-rw-r--r-- 1 thierry staff 0 1970-01-01 18:43:33.023456789 +0000 k
+Nova stat-nanoseconds.sh 0
+Nova stat-printf.pl 0
+stat: cannot stat 'link1/': Not a directory
+Nova stat-slash.sh 0

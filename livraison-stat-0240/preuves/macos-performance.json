@@ -1,0 +1,442 @@
+{
+ "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+ "machine": "arm64",
+ "oracle": "/opt/homebrew/opt/coreutils/libexec/gnubin/stat",
+ "gnu": "stat (GNU coreutils) 9.12",
+ "locale": "C",
+ "tz": "UTC",
+ "resultats": [
+  {
+   "paire": 0,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 7.343167,
+   "rss": 2801664
+  },
+  {
+   "paire": 0,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "second",
+   "n": 2048,
+   "ms": 7.336,
+   "rss": 2228224
+  },
+  {
+   "paire": 0,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.438458,
+   "rss": 2801664
+  },
+  {
+   "paire": 0,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.863292,
+   "rss": 2244608
+  },
+  {
+   "paire": 1,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 7.205875,
+   "rss": 2244608
+  },
+  {
+   "paire": 1,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "second",
+   "n": 2048,
+   "ms": 6.211208,
+   "rss": 2801664
+  },
+  {
+   "paire": 1,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.28475,
+   "rss": 2244608
+  },
+  {
+   "paire": 1,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.135375,
+   "rss": 2801664
+  },
+  {
+   "paire": 2,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 14.306209,
+   "rss": 2785280
+  },
+  {
+   "paire": 2,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "second",
+   "n": 2048,
+   "ms": 12.459041,
+   "rss": 2244608
+  },
+  {
+   "paire": 2,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 9.81075,
+   "rss": 2785280
+  },
+  {
+   "paire": 2,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 8.74575,
+   "rss": 2244608
+  },
+  {
+   "paire": 3,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 7.064166,
+   "rss": 2244608
+  },
+  {
+   "paire": 3,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "second",
+   "n": 2048,
+   "ms": 6.041084,
+   "rss": 2801664
+  },
+  {
+   "paire": 3,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.265291,
+   "rss": 2244608
+  },
+  {
+   "paire": 3,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.247542,
+   "rss": 2801664
+  },
+  {
+   "paire": 4,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 6.320375,
+   "rss": 2801664
+  },
+  {
+   "paire": 4,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "second",
+   "n": 2048,
+   "ms": 6.124375,
+   "rss": 2244608
+  },
+  {
+   "paire": 4,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.213458,
+   "rss": 2801664
+  },
+  {
+   "paire": 4,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.942917,
+   "rss": 2244608
+  },
+  {
+   "paire": 5,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 6.99775,
+   "rss": 2244608
+  },
+  {
+   "paire": 5,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "second",
+   "n": 2048,
+   "ms": 5.618583,
+   "rss": 2801664
+  },
+  {
+   "paire": 5,
+   "programme": "GNU",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.155375,
+   "rss": 2244608
+  },
+  {
+   "paire": 5,
+   "programme": "Nova",
+   "charge": "distincts",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.103042,
+   "rss": 2801664
+  },
+  {
+   "paire": 0,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 5.030416,
+   "rss": 2801664
+  },
+  {
+   "paire": 0,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "second",
+   "n": 2048,
+   "ms": 5.0055,
+   "rss": 2244608
+  },
+  {
+   "paire": 0,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 4.948208,
+   "rss": 2801664
+  },
+  {
+   "paire": 0,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 4.683708,
+   "rss": 2244608
+  },
+  {
+   "paire": 1,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 5.083583,
+   "rss": 2244608
+  },
+  {
+   "paire": 1,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "second",
+   "n": 2048,
+   "ms": 4.7185,
+   "rss": 2801664
+  },
+  {
+   "paire": 1,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 6.54525,
+   "rss": 2244608
+  },
+  {
+   "paire": 1,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 4.537666,
+   "rss": 2801664
+  },
+  {
+   "paire": 2,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 4.851583,
+   "rss": 2801664
+  },
+  {
+   "paire": 2,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "second",
+   "n": 2048,
+   "ms": 5.057875,
+   "rss": 2244608
+  },
+  {
+   "paire": 2,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 5.62,
+   "rss": 2801664
+  },
+  {
+   "paire": 2,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 5.379542,
+   "rss": 2244608
+  },
+  {
+   "paire": 3,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 5.034583,
+   "rss": 2244608
+  },
+  {
+   "paire": 3,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "second",
+   "n": 2048,
+   "ms": 4.597583,
+   "rss": 2801664
+  },
+  {
+   "paire": 3,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 5.093041,
+   "rss": 2244608
+  },
+  {
+   "paire": 3,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 5.4765,
+   "rss": 2801664
+  },
+  {
+   "paire": 4,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 4.853041,
+   "rss": 2801664
+  },
+  {
+   "paire": 4,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "second",
+   "n": 2048,
+   "ms": 5.0135,
+   "rss": 2244608
+  },
+  {
+   "paire": 4,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 4.747459,
+   "rss": 2801664
+  },
+  {
+   "paire": 4,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 5.256542,
+   "rss": 2244608
+  },
+  {
+   "paire": 5,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "premier",
+   "n": 2048,
+   "ms": 5.413792,
+   "rss": 2244608
+  },
+  {
+   "paire": 5,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "second",
+   "n": 2048,
+   "ms": 4.732417,
+   "rss": 2801664
+  },
+  {
+   "paire": 5,
+   "programme": "GNU",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 4.912792,
+   "rss": 2244608
+  },
+  {
+   "paire": 5,
+   "programme": "Nova",
+   "charge": "répété",
+   "phase": "chaud",
+   "n": 2048,
+   "ms": 4.766583,
+   "rss": 2801664
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+
+running 5 tests
+test secondes_negatives_et_lien ... ok
+test premieres_erreurs_et_avertissements ... ok
+test formats_octets_et_numeriques ... ok
+test volume_et_champ_inconnu ... ok
+test selection_et_precedence ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
