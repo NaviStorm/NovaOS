@@ -26,6 +26,7 @@ ROOT=HERE.parent
 OS=ROOT/"novaOS"
 sys.path.insert(0,str(OS/"tests"))
 from cli import Terminal
+from cli_p9 import programme_oracle
 from bloc import qmp
 from bloc_qemu import command
 from journalisation import attend, sortie
@@ -201,12 +202,16 @@ def main():
     vectors=list(rows(a.vecteurs)) if a.profil=="sdk" else []
     kernel=prepare(work,a.arch,vectors) if a.profil=="sdk" else prepare_lot(work,a.arch) if a.profil=="lot" else None
     if a.profil=="lot":
+        # Cet argument demande au banc partagé un oracle Darwin ARM64.
+        oracle=programme_oracle("x86_64",work)
         lock=(tmp/"arc027-mesures.lock").open("a")
         fcntl.flock(lock,fcntl.LOCK_EX)
     failures=[]
     for sector in (512,4096):
         cell=work/str(sector);cell.mkdir()
         image,_,_=fixture(cell,sector,FILES if a.profil=="lot" else {"temoin":b"ARC-027\n"})
+        if a.profil=="lot":
+            sp.run([oracle,"initialiser",image,str(sector)],check=True)
         shutil.copyfile(image,cell/"p9-initial.raw")
         result=sdk(a.arch,sector,cell,image,kernel,vectors) if a.profil=="sdk" else lot(a.arch,sector,cell,image,kernel) if a.profil=="lot" else shell(a.arch,sector,cell,image)
         name=f"{a.profil}-{a.arch}-{sector}"

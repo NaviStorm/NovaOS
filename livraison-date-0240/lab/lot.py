@@ -35,8 +35,8 @@ def prepare_lot(work,arch):
     p.write_text(s.replace(key,'''    let selected_args;
     let args = if p == Program::Cat && args.len() == 1 {
         let path = &args[0];
-        let flag = if path=="/reference-neuve" {"--reference"} else if path=="/reference" {"-r"} else if path=="/entree" {"--file"} else {"-f"};
-        let fmt = if path == "/entree" {"+@%s"} else if path == "/reference-neuve" {"+%s.%N"} else {"+%s"};
+        let flag = if path=="/reference-neuve" || path=="/alpha" {"--reference"} else if path=="/reference" {"-r"} else if path=="/entree" {"--file"} else {"-f"};
+        let fmt = if path == "/entree" {"+@%s"} else if path == "/reference-neuve" || path == "/alpha" {"+%s.%N"} else {"+%s"};
         selected_args = vec![flag.into(), path.clone(), fmt.into()];
         &selected_args[..]
     } else if p == Program::Wc && pipe.is_some() {
@@ -110,7 +110,9 @@ def lot(arch,sector,work,image,kernel):
         fresh=sortie(vm,"cat /reference-neuve",0)
         match=re.search(r"(?m)^(\d+)\.(\d{9})\s*$",fresh)
         assert match and before<=int(match[1])<=int(time.time())+2,fresh
+        exact=sortie(vm,"cat /alpha",0)
+        assert "978307200.800000001" in exact.splitlines(),exact
         flux=sortie(vm,"cat /entree | wc -l")
         assert "0\r\n1\r\n" in flux,flux
-        result.extend([dict(cas="mtime",sortie=stamp),dict(cas="mtime-connue",sortie=fresh,intervalle=[before,int(time.time())+2]),dict(cas="pipe",sortie=flux)])
+        result.extend([dict(cas="mtime",sortie=stamp),dict(cas="mtime-connue",sortie=fresh,intervalle=[before,int(time.time())+2]),dict(cas="mtime-ns",sortie=exact,attendu="978307200.800000001"),dict(cas="pipe",sortie=flux)])
     return dict(media=iso_check(work/"lot.iso",kernel,work),elf=sha(HERE/f"bin/date-{arch}.elf"),cas=result)
