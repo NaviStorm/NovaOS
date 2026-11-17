@@ -1,0 +1,20 @@
+paquet	version	licence déclarée	dépôt
+cfg-if	1.0.5	MIT OR Apache-2.0	https://github.com/rust-lang/cfg-if
+dlmalloc	0.2.14	MIT/Apache-2.0	https://github.com/alexcrichton/dlmalloc-rs
+jiff	0.2.45	Unlicense OR MIT	https://github.com/BurntSushi/jiff
+jiff-core	0.1.7	Unlicense OR MIT	https://github.com/BurntSushi/jiff
+jiff-static	0.2.45	Unlicense OR MIT	https://github.com/BurntSushi/jiff
+jiff-tzdb	0.1.10	Unlicense OR MIT	https://github.com/BurntSushi/jiff
+libc	0.2.191	MIT OR Apache-2.0	https://github.com/rust-lang/libc
+log	0.4.35	MIT OR Apache-2.0	https://github.com/rust-lang/log
+nova-cli	0.20.0	MIT	monorepo
+nova-date	0.20.0	MIT	monorepo
+parse_datetime	0.17.0	MIT	monorepo
+proc-macro2	1.0.107	MIT OR Apache-2.0	https://github.com/dtolnay/proc-macro2
+quote	1.0.47	MIT OR Apache-2.0	https://github.com/dtolnay/quote
+serde_core	1.0.229	MIT OR Apache-2.0	https://github.com/serde-rs/serde
+spin	0.9.9	MIT	https://github.com/mvdnes/spin-rs.git
+syn	2.0.119	MIT OR Apache-2.0	https://github.com/dtolnay/syn
+unicode-ident	1.0.27	(MIT OR Apache-2.0) AND Unicode-3.0	https://github.com/dtolnay/unicode-ident
+unicode-width	0.2.2	MIT OR Apache-2.0	https://github.com/unicode-rs/unicode-width
+winnow	1.0.4	MIT	https://github.com/winnow-rs/winnow

@@ -30,7 +30,8 @@ with (DEST / "dependances.tsv").open("w") as table:
         for path in files:
             texts.setdefault(path.read_bytes(), []).append(f'{pkg["name"]} {pkg["version"]} / {path.name}')
 with (DEST / "NOTICES.txt").open("wb") as output:
-    for content, titles in texts.items():
-        output.write(("\n".join(titles) + "\n\n").encode() + content + b"\n\n")
+    for index, (content, titles) in enumerate(texts.items()):
+        if index: output.write(b"\n")
+        output.write(("\n".join(titles) + "\n\n").encode() + content.rstrip(b"\n") + b"\n")
 sysroot = Path(sp.check_output(["rustup","run","stable","rustc","--print","sysroot"],text=True).strip())
 (DEST/"Rust-COPYRIGHT-library.html.gz").write_bytes(gzip.compress((sysroot/"share/doc/rust/COPYRIGHT-library.html").read_bytes(),mtime=0))
