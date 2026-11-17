@@ -142,6 +142,10 @@ pub fn localized(code: char, z: &Zoned) -> Option<String> {
     tm.tm_wday = z.weekday().to_sunday_zero_offset().into();
     tm.tm_yday = i32::from(z.date().day_of_year()) - 1;
     tm.tm_gmtoff = z.offset().seconds().into();
+    let info = z.time_zone().to_offset_info(z.timestamp());
+    let zone_name = std::ffi::CString::new(info.abbreviation()).ok()?;
+    tm.tm_zone = zone_name.as_ptr().cast_mut();
+    tm.tm_isdst = i32::from(info.dst().is_dst());
     let format = [b'%', if code == 'P' { b'p' } else { code as u8 }, 0];
     let mut buf = [0u8; 1024];
     let n = unsafe {

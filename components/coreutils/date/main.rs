@@ -24,3 +24,5 @@ use nova_cli::documentation;
 fn main() {
     platform::main()
 }
+#[cfg(all(test, target_os = "macos"))]
+mod tests;
