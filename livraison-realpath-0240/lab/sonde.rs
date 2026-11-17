@@ -98,7 +98,7 @@ fn vectors() {
     assert!(data.is_empty());
     log(&format!("REALPATH MATRICE {count} OK"))
 }
-fn bench(n: usize, name: &[u8], reps: usize, expected: &[u8]) {
+fn bench(n: usize, name: &[u8], reps: usize, expected: &[u8], heap_base: u64) {
     let mut args = alloc::vec![b"-m".as_slice()];
     args.extend(core::iter::repeat_n(name, n));
     log(&format!("REALPATH DEBUT {n} {} {reps} 0", name.len()));
@@ -114,14 +114,16 @@ fn bench(n: usize, name: &[u8], reps: usize, expected: &[u8]) {
                 assert_eq!(core::hint::black_box(&p), expected);
             }
         }
-        log(&format!("REALPATH FIN {n} {pass}"));
+        let end = rt::value(rt::call(rt::HEAP_RESIZE, 0, 0, 0)).unwrap();
+        log(&format!("REALPATH FIN {n} {pass} {}", end - heap_base));
     }
 }
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
+    let heap_base = rt::value(rt::call(rt::HEAP_RESIZE, 0, 0, 0)).unwrap();
     vectors();
-    bench(1, b"/tree/file", 500, b"/tree/file");
-    bench(32, b"/alias/../file", 100, b"/tree/file");
-    bench(4, b"/a/b/c/d/e/f/g/h", 250, b"/a/b/c/d/e/f/g/h");
+    bench(1, b"/tree/file", 500, b"/tree/file", heap_base);
+    bench(32, b"/alias/../file", 100, b"/tree/file", heap_base);
+    bench(4, b"/a/b/c/d/e/f/g/h", 250, b"/a/b/c/d/e/f/g/h", heap_base);
     rt::exit(0)
 }

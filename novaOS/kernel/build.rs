@@ -213,6 +213,9 @@ fn main() {
         "Cargo.lock",
         "libraries",
         "coreutils",
+        "realpath/src/options.rs",
+        "realpath/src/page.rs",
+        "realpath/VERSION",
         "shell",
         "vi",
     ] {

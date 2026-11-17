@@ -43,6 +43,8 @@ fn pass(
     }
     let mut queue: VecDeque<_> = parts(name).map(|s| Marker::Name(s.to_vec())).collect();
     let mut active = Vec::new();
+    // GNU 9.12 conserve la composante répétée après vingt expansions en mode -m.
+    let mut grace = if mode == Existence::Missing { 20 } else { 0 };
     while let Some(item) = queue.pop_front() {
         let part = match item {
             Marker::Name(v) => v,
@@ -84,8 +86,12 @@ fn pass(
                     }
                     return Err(Error::Loop);
                 }
-                queue.push_front(Marker::End(path.clone()));
-                active.push(path.clone());
+                if grace == 0 {
+                    queue.push_front(Marker::End(path.clone()));
+                    active.push(path.clone());
+                } else {
+                    grace -= 1
+                }
                 if last {
                     slash |= dest.ends_with(b"/")
                 }
