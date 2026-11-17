@@ -22,6 +22,8 @@ def vectors(out, report):
     for row in json.loads(report.read_text()):
         assert row["ok"]
         env=row["env"]
+        if "ARGV0_TEST" in env:
+            continue  # Le bloc argv v1 omet le nom d’invocation.
         if any(enc in env.get("LC_ALL","") for enc in ("8859","SJIS")):
             continue  # Le runtime invité reçoit uniquement du texte UTF-8.
         tty=row["mode"]=="pty"

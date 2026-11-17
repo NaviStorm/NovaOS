@@ -46,12 +46,29 @@ fn streams() -> io::Result<BufWriter<File>> {
 }
 
 fn execute() -> io::Result<u8> {
-    let args: Vec<_> = env::args_os().skip(1).collect();
+    let mut arguments = env::args_os();
+    let invocation = arguments.next().unwrap_or_default();
+    let args: Vec<_> = arguments.collect();
     let bytes: Vec<_> = args.iter().map(|a| a.as_bytes()).collect();
     let action = match options::parse(&bytes, env::var_os("POSIXLY_CORRECT").is_some()) {
         Ok(action) => action,
         Err(reason) => {
-            io::stderr().write_all(&diagnostic(&reason))?;
+            let invoked = invocation.as_bytes();
+            let prefix = if reason == b"missing operand" {
+                b"dirname"
+            } else {
+                invoked
+            };
+            let message = [
+                prefix,
+                b": ",
+                &reason,
+                b"\nTry '",
+                invoked,
+                b" --help' for more information.\n",
+            ]
+            .concat();
+            io::stderr().write_all(&message)?;
             return Ok(1);
         }
     };

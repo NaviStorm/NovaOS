@@ -18,6 +18,7 @@ STYLES = "literal shell shell-always shell-escape shell-escape-always c c-maybe 
 
 def invoke(binary, args, env, device):
     env = {"LC_ALL":"C", **env}
+    invocation=env.pop("ARGV0_TEST","dirname")
     kw = dict(executable=binary,env=env,stderr=subprocess.PIPE)
     if device == "pty":
         master,slave = pty.openpty()
@@ -36,7 +37,7 @@ def invoke(binary, args, env, device):
             with ThreadPoolExecutor(max_workers=1) as reader:
                 pending=reader.submit(drain)
                 try:
-                    p=subprocess.run(["dirname",*args],stdout=slave,timeout=10,**kw)
+                    p=subprocess.run([invocation,*args],stdout=slave,timeout=10,**kw)
                 finally:
                     os.write(slave,marker)
                 out=pending.result()
@@ -48,19 +49,19 @@ def invoke(binary, args, env, device):
         read,write = os.pipe()
         os.close(read)
         try:
-            p = subprocess.run(["dirname",*args],stdout=write,restore_signals=device=="EPIPE",**kw)
+            p = subprocess.run([invocation,*args],stdout=write,restore_signals=device=="EPIPE",**kw)
         finally:
             os.close(write)
         out = b""
     elif device == "ferme":
-        p = subprocess.run(["dirname",*args],preexec_fn=lambda: os.close(1),**kw)
+        p = subprocess.run([invocation,*args],preexec_fn=lambda: os.close(1),**kw)
         out = b""
     elif device == "EBADF":
         with open(os.devnull,"rb") as fd:
-            p = subprocess.run(["dirname",*args],stdout=fd,**kw)
+            p = subprocess.run([invocation,*args],stdout=fd,**kw)
         out = b""
     else:
-        p = subprocess.run(["dirname",*args],stdout=subprocess.PIPE,**kw)
+        p = subprocess.run([invocation,*args],stdout=subprocess.PIPE,**kw)
         out = p.stdout
     return p.returncode,out,p.stderr
 
@@ -78,6 +79,8 @@ def cases():
             yield "prefixe-"+name[:n],[b"a/b",b"-zz",("--"+name[:n]).encode(),b"--invalid"],{},"flux",name
     yield "priorite-version",[b"--version",b"--help"],{},"flux","version"
     yield "priorite-aide",[b"--help",b"--version"],{},"flux","help"
+    yield "invocation-option",[b"--bad"],{"ARGV0_TEST":"/un/chemin/alias"},"flux",None
+    yield "invocation-manquant",[],{"ARGV0_TEST":"/un/chemin/alias"},"flux",None
     for tag in ["fr","Fr-Latn-CA","fr-x-demo","fr--CA","frr","en-US","C"]:
         for name in ["help","version"]:
             yield name+"-"+tag,[("--"+name).encode()],{"LC_ALL":tag},"flux",name

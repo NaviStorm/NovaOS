@@ -22,6 +22,7 @@ fn document(help: bool, lang: Language) -> Vec<u8> {
     }
 }
 
+#[cfg(target_os = "none")]
 fn diagnostic(reason: &[u8]) -> Vec<u8> {
     [
         b"dirname: ".as_slice(),
