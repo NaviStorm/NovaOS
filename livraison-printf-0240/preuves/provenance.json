@@ -1,0 +1,68 @@
+{
+  "date_utc": "2026-11-17T00:19:18.457279+00:00",
+  "base": "425e4e7cc5c03e246efb64d3638376906344bf47",
+  "commit_qualification": "bc41a369fb6251aeaf358f1aff6747550d1b070a",
+  "gnu": {
+    "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu",
+    "tag": "v9.12",
+    "commit": "c0f8514d989184921d9b12a4d103a7b23abc5af8",
+    "fichiers": {
+      "src/printf.c": "fb8fe4b3edd06f3c816f4818e0ccd89de5fa6f24afd38f29afe3433e98dd5d50",
+      "gl/lib/cl-strtod.c": "f15b00e61960d30da7362bb4b1ea3579f30f3f6e6f5f94db84757d8c87f8514e",
+      "gl/lib/cl-strtold.c": "ee41aa028b21b4fbb2dd43e2573d089333d76b978374c0cc12c3284edbe3558f",
+      "doc/coreutils.texi": "e6521c9b2e677dd278820887d7ad94fad8260f2535dd923728462cdcb6148db9",
+      "man/printf.x": "3363702c45ad36ece763c7540aafed07fd00e9677d9e2d55a03cbad178c45bee",
+      "tests/printf/printf-cov.pl": "5f0340a71ff2413cdd2564656bfe5a7752046a68943162a2f02724c83d96ee1f",
+      "tests/printf/printf-hex.sh": "a3ca41bd02383156d3e3e862f2c5b77e7c1cf2fbba1fb8640780d728a18e2d9b",
+      "tests/printf/printf-indexed.sh": "f7cc3098e869493d9952dc36aa83f19545089c203bb227bccd248f5a23b26a32",
+      "tests/printf/printf-mb.sh": "6514215146d39e01b58a38c15aa8dcb007dbb1850fad6780ea2d32d1e164f18b",
+      "tests/printf/printf-quote.sh": "a195fcdebe3a9b192f0b0e5b14ce9ebc2e22e237ee634f28dcd08ee997593dfe",
+      "tests/printf/printf-surprise.sh": "ec08312c62a3c678113cf48981e4f9671356db9b948b15d62477c2739dab730c",
+      "tests/printf/printf.sh": "711cfc2e9598de82312d9cb70a1437045823e331c8e2639db5db6c5dcb9164b5"
+    },
+    "gitlink_gnulib": "106e9b2384d08a1696fcbd40cbab52237943f208",
+    "gnulib_directement_dans_git": {
+      "lib/quotearg.c": "7587a14c8dc8f701ad12705e722acd099e55644f5b56676304a6db50d119df55",
+      "lib/unicodeio.c": "7bbb95ee906f6efc3a5b33453931f6ac56c953ab891ec822bc04de0a7dea679a",
+      "lib/closeout.c": "1d034ee9f8e07e295090f04ec3e41d0e37a7c9aac71b11cf6e172eb9d6ea65fc",
+      "lib/xprintf.c": "c2c5a8ef8e6d70c5f1ddb150eeac370465c2c527fddcdb514fe319481754e53b",
+      "tests/init.sh": "c149c694215ea66d67dbb88dda0c08448c60f76309ee03ba5f863efec6fd138e"
+    },
+    "executable": "/opt/homebrew/bin/gprintf",
+    "chemin_physique": "/opt/homebrew/Cellar/coreutils/9.12_1/bin/gprintf",
+    "sha256": "772f2ba2bd1ce63e621c472171e87edd843d7782a218cb09f4c63cdb80277c68",
+    "version": "printf (GNU coreutils) 9.12\nCopyright (C) 2026 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\nWritten by David MacKenzie.\n",
+    "checkout_gnulib_local": "574314bcd1bbc8b0fdeb7c61f5cc911a2e4a97a3"
+  },
+  "uutils": {
+    "commit": "4735bbe40d764a523c5ece37d47465b32452d1a2",
+    "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-uutils",
+    "fichiers": {
+      "src/uu/printf/Cargo.toml": "20c4cc79cb20bb04774829e56b8eb1deb3003d3ceb5584f7cee655fcb8e78f53",
+      "src/uu/printf/src/printf.rs": "21dbc1096db03f4bd8ad0c644bfa47103d1c804277117c9c1fd31e40921b43c2",
+      "src/uucore/src/lib/features/format/num_format.rs": "b981954eb9c2072c5719c0d18d66f89c0a8ea6c767d000f17615b1e2765a5d8b",
+      "LICENSE": "29953405eaa3dcc41c37d1621d55b6a47eee93e05613e439e73295029740b10c"
+    }
+  },
+  "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2.1\nBuildVersion:\t\t26B131",
+  "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "qemu": "QEMU emulator version 11.1.3\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers",
+  "binaires": {
+    "printf": {
+      "taille": 430608,
+      "sha256": "5b5136beb5e1507e6489a20fd87793bd6443f0b9bb449b3722d013fd378ccdb7",
+      "format": "Mach-O 64-bit executable arm64"
+    },
+    "printf-aarch64.elf": {
+      "taille": 91464,
+      "sha256": "76d872b69ff7b57f6b5116a14c5dd0becf0368acef1414a392e796e35c2ac844",
+      "format": "ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, stripped"
+    },
+    "printf-x86_64.elf": {
+      "taille": 95560,
+      "sha256": "f472ba377470ed36914d27f3125c01260244c7723263de7df6df5e740c4695d2",
+      "format": "ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, stripped"
+    }
+  }
+}

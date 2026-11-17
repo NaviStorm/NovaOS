@@ -1,0 +1,1114 @@
+{
+  "aarch64-P9-512": {
+    "architecture": "aarch64",
+    "secteur": 512,
+    "genese": "b3b2090a032c08291073bd2947528c6a24511e0d5630464b4c4c5f003c404e6f",
+    "iso_sdk": "e8efcc0f4ea86b734437dee601af057a543c2810d559522d80ca646eb52d1c41",
+    "sonde": "b2a92eccc67ff1a1b78c52880210f5967656c11c29300cb089aebf553dc6e16b",
+    "noyau_sdk": "a5a3c1aa54871b3fccb6fe02d0a4b2b35556ca83137be6981740c6a3d6db53d3",
+    "vecteurs": "10e00a00d053eb35a1d12eee4bb7c4b8db438521b9db591fefa7f24749e56f9b",
+    "elf": "76d872b69ff7b57f6b5116a14c5dd0becf0368acef1414a392e796e35c2ac844",
+    "performance_moteur": {
+      "court": {
+        "brut": [
+          [
+            0,
+            698063,
+            62500000,
+            128
+          ],
+          [
+            1,
+            400188,
+            62500000,
+            128
+          ],
+          [
+            2,
+            400125,
+            62500000,
+            128
+          ],
+          [
+            3,
+            486875,
+            62500000,
+            128
+          ],
+          [
+            4,
+            345000,
+            62500000,
+            128
+          ],
+          [
+            5,
+            483000,
+            62500000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 50023.5,
+        "octets_par_appel": 1,
+        "octets_par_seconde": 19990.604415924514
+      },
+      "texte": {
+        "brut": [
+          [
+            0,
+            525563,
+            62500000,
+            128
+          ],
+          [
+            1,
+            823813,
+            62500000,
+            128
+          ],
+          [
+            2,
+            583063,
+            62500000,
+            128
+          ],
+          [
+            3,
+            544875,
+            62500000,
+            128
+          ],
+          [
+            4,
+            609375,
+            62500000,
+            128
+          ],
+          [
+            5,
+            607563,
+            62500000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 75945.375,
+        "octets_par_appel": 1470,
+        "octets_par_seconde": 19356017.400664624
+      },
+      "binaire": {
+        "brut": [
+          [
+            0,
+            616563,
+            62500000,
+            128
+          ],
+          [
+            1,
+            617938,
+            62500000,
+            128
+          ],
+          [
+            2,
+            592438,
+            62500000,
+            128
+          ],
+          [
+            3,
+            616250,
+            62500000,
+            128
+          ],
+          [
+            4,
+            617437,
+            62500000,
+            128
+          ],
+          [
+            5,
+            618875,
+            62500000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 77179.625,
+        "octets_par_appel": 540,
+        "octets_par_seconde": 6996665.246818704
+      },
+      "décimal": {
+        "brut": [
+          [
+            0,
+            1953563,
+            62500000,
+            128
+          ],
+          [
+            1,
+            2313375,
+            62500000,
+            128
+          ],
+          [
+            2,
+            2128938,
+            62500000,
+            128
+          ],
+          [
+            3,
+            2361812,
+            62500000,
+            128
+          ],
+          [
+            4,
+            2298562,
+            62500000,
+            128
+          ],
+          [
+            5,
+            2353125,
+            62500000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 289171.875,
+        "octets_par_appel": 330,
+        "octets_par_seconde": 1141189.8200680823
+      }
+    },
+    "commande_qemu": [
+      "sh",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/printf-natif-0240/novaOS/scripts/qemu.sh",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-machine",
+      "msi=off",
+      "-device",
+      "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+      "-drive",
+      "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/printf-0240/p9-aarch64/512/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+      "-device",
+      "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=512,physical_block_size=512"
+    ],
+    "cas_moteur": 1674,
+    "cas_elf": 13,
+    "serie_sdk": "d04a13f6d7e21fde0a77f53395749d1e10c58b7f7415af639d6f06c7c45b111c",
+    "shell": [
+      {
+        "commande": "true",
+        "statut": 0
+      },
+      {
+        "commande": "export LANG=fr-CA",
+        "statut": 0
+      },
+      {
+        "commande": "printf --help",
+        "statut": 0
+      },
+      {
+        "commande": "printf --version",
+        "statut": 0
+      },
+      {
+        "commande": "man printf",
+        "langue": "fr-CA",
+        "statut": 0
+      },
+      {
+        "commande": "export LANG=fr-zzzzz",
+        "statut": 0
+      },
+      {
+        "commande": "printf --help",
+        "statut": 0
+      },
+      {
+        "commande": "printf --version",
+        "statut": 0
+      },
+      {
+        "commande": "man printf",
+        "langue": "fr-zzzzz",
+        "statut": 0
+      },
+      {
+        "commande": "printf %s Nova",
+        "statut": 127
+      },
+      {
+        "commande": "printf --help x",
+        "statut": 127
+      },
+      {
+        "commande": "printf %s --version",
+        "statut": 127
+      },
+      {
+        "commande": "/system/bin/printf %d 7",
+        "statut": 127
+      }
+    ],
+    "compteurs_avant": {
+      "wr_bytes": 872448,
+      "wr_operations": 213,
+      "flush_operations": 77,
+      "failed_wr_operations": 0,
+      "failed_flush_operations": 0
+    },
+    "compteurs_apres": {
+      "wr_bytes": 872448,
+      "wr_operations": 213,
+      "flush_operations": 77,
+      "failed_wr_operations": 0,
+      "failed_flush_operations": 0
+    },
+    "p9_avant_documentation": "c3ca7ae3fc0d58ef47465c6f67dea1ba28e2c0cf0b564d9e156412dcdf5dec0b",
+    "p9_apres_documentation": "c3ca7ae3fc0d58ef47465c6f67dea1ba28e2c0cf0b564d9e156412dcdf5dec0b",
+    "serie_shell": "7f89de1376502f7fb93eec5fbbfabd5bb33a528faf9725fc5448ac9be06e57db",
+    "iso_shell": "aa519de1dc9e1a4d35028c0a5a99782f2b89ed9f024c9f7ed6c5b56f539c5671"
+  },
+  "aarch64-P9-4096": {
+    "architecture": "aarch64",
+    "secteur": 4096,
+    "genese": "93cd190208bd3e067db5361df84d38140c46bf6235be091b6b602fb1fde495b6",
+    "iso_sdk": "e8efcc0f4ea86b734437dee601af057a543c2810d559522d80ca646eb52d1c41",
+    "sonde": "b2a92eccc67ff1a1b78c52880210f5967656c11c29300cb089aebf553dc6e16b",
+    "noyau_sdk": "a5a3c1aa54871b3fccb6fe02d0a4b2b35556ca83137be6981740c6a3d6db53d3",
+    "vecteurs": "10e00a00d053eb35a1d12eee4bb7c4b8db438521b9db591fefa7f24749e56f9b",
+    "elf": "76d872b69ff7b57f6b5116a14c5dd0becf0368acef1414a392e796e35c2ac844",
+    "performance_moteur": {
+      "court": {
+        "brut": [
+          [
+            0,
+            730875,
+            62500000,
+            128
+          ],
+          [
+            1,
+            550187,
+            62500000,
+            128
+          ],
+          [
+            2,
+            592500,
+            62500000,
+            128
+          ],
+          [
+            3,
+            637875,
+            62500000,
+            128
+          ],
+          [
+            4,
+            573438,
+            62500000,
+            128
+          ],
+          [
+            5,
+            467875,
+            62500000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 71679.75,
+        "octets_par_appel": 1,
+        "octets_par_seconde": 13950.941514165437
+      },
+      "texte": {
+        "brut": [
+          [
+            0,
+            614813,
+            62500000,
+            128
+          ],
+          [
+            1,
+            814688,
+            62500000,
+            128
+          ],
+          [
+            2,
+            545438,
+            62500000,
+            128
+          ],
+          [
+            3,
+            615188,
+            62500000,
+            128
+          ],
+          [
+            4,
+            589375,
+            62500000,
+            128
+          ],
+          [
+            5,
+            701688,
+            62500000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 76898.5,
+        "octets_par_appel": 1470,
+        "octets_par_seconde": 19116107.59637704
+      },
+      "binaire": {
+        "brut": [
+          [
+            0,
+            639375,
+            62500000,
+            128
+          ],
+          [
+            1,
+            714375,
+            62500000,
+            128
+          ],
+          [
+            2,
+            618375,
+            62500000,
+            128
+          ],
+          [
+            3,
+            618437,
+            62500000,
+            128
+          ],
+          [
+            4,
+            617875,
+            62500000,
+            128
+          ],
+          [
+            5,
+            607750,
+            62500000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 77296.875,
+        "octets_par_appel": 540,
+        "octets_par_seconde": 6986052.1528198905
+      },
+      "décimal": {
+        "brut": [
+          [
+            0,
+            1956750,
+            62500000,
+            128
+          ],
+          [
+            1,
+            2312625,
+            62500000,
+            128
+          ],
+          [
+            2,
+            2266188,
+            62500000,
+            128
+          ],
+          [
+            3,
+            2221812,
+            62500000,
+            128
+          ],
+          [
+            4,
+            2219313,
+            62500000,
+            128
+          ],
+          [
+            5,
+            2260250,
+            62500000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 282531.25,
+        "octets_par_appel": 330,
+        "octets_par_seconde": 1168012.388010176
+      }
+    },
+    "commande_qemu": [
+      "sh",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/printf-natif-0240/novaOS/scripts/qemu.sh",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-machine",
+      "msi=off",
+      "-device",
+      "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+      "-drive",
+      "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/printf-0240/p9-aarch64/4096/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+      "-device",
+      "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=4096,physical_block_size=4096"
+    ],
+    "cas_moteur": 1674,
+    "cas_elf": 13,
+    "serie_sdk": "345296d0f0cec7d49a5a2735f30c96cf0faafad523e5c3ad70975fa273c15756",
+    "shell": [
+      {
+        "commande": "true",
+        "statut": 0
+      },
+      {
+        "commande": "export LANG=fr-CA",
+        "statut": 0
+      },
+      {
+        "commande": "printf --help",
+        "statut": 0
+      },
+      {
+        "commande": "printf --version",
+        "statut": 0
+      },
+      {
+        "commande": "man printf",
+        "langue": "fr-CA",
+        "statut": 0
+      },
+      {
+        "commande": "export LANG=fr-zzzzz",
+        "statut": 0
+      },
+      {
+        "commande": "printf --help",
+        "statut": 0
+      },
+      {
+        "commande": "printf --version",
+        "statut": 0
+      },
+      {
+        "commande": "man printf",
+        "langue": "fr-zzzzz",
+        "statut": 0
+      },
+      {
+        "commande": "printf %s Nova",
+        "statut": 127
+      },
+      {
+        "commande": "printf --help x",
+        "statut": 127
+      },
+      {
+        "commande": "printf %s --version",
+        "statut": 127
+      },
+      {
+        "commande": "/system/bin/printf %d 7",
+        "statut": 127
+      }
+    ],
+    "compteurs_avant": {
+      "wr_bytes": 872448,
+      "wr_operations": 213,
+      "flush_operations": 77,
+      "failed_wr_operations": 0,
+      "failed_flush_operations": 0
+    },
+    "compteurs_apres": {
+      "wr_bytes": 872448,
+      "wr_operations": 213,
+      "flush_operations": 77,
+      "failed_wr_operations": 0,
+      "failed_flush_operations": 0
+    },
+    "p9_avant_documentation": "a2438a593030b180200fcfff656b98eb0f4812b0b0078fb485ae76ed281bf393",
+    "p9_apres_documentation": "a2438a593030b180200fcfff656b98eb0f4812b0b0078fb485ae76ed281bf393",
+    "serie_shell": "d2e9ab35b36396cf686b6c60b097ace78042b1431f0286ea6ef3a574da1ce58d",
+    "iso_shell": "24def8d56a8618110fd9dab8ce67a9d067b038db8efac991fcced3beda2e889a"
+  },
+  "x86_64-P9-512": {
+    "architecture": "x86_64",
+    "secteur": 512,
+    "genese": "af4c8009c6e2156e8fc41b01bf0fee3c856e063f508bda89a1cc59d466077193",
+    "iso_sdk": "b362f1c3d512a25a7e954f1bfe12d5778872744d5c647a3e528e55ce9a48a523",
+    "sonde": "47061bbb3317547cd54721f8f58f4a21ee5bd4a892684ec7d12362c4fb5e5813",
+    "noyau_sdk": "db927a95b33a1656ad0ed7b4111ad7395a4d53e758a6fe7e7aae363d240a8417",
+    "vecteurs": "10e00a00d053eb35a1d12eee4bb7c4b8db438521b9db591fefa7f24749e56f9b",
+    "elf": "f472ba377470ed36914d27f3125c01260244c7723263de7df6df5e740c4695d2",
+    "performance_moteur": {
+      "court": {
+        "brut": [
+          [
+            0,
+            20787000,
+            1003125000,
+            128
+          ],
+          [
+            1,
+            8197000,
+            1003125000,
+            128
+          ],
+          [
+            2,
+            7148000,
+            1003125000,
+            128
+          ],
+          [
+            3,
+            7917000,
+            1003125000,
+            128
+          ],
+          [
+            4,
+            4798000,
+            1003125000,
+            128
+          ],
+          [
+            5,
+            7020000,
+            1003125000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 55669.781931464175,
+        "octets_par_appel": 1,
+        "octets_par_seconde": 17963.06659205372
+      },
+      "texte": {
+        "brut": [
+          [
+            0,
+            6961000,
+            1003125000,
+            128
+          ],
+          [
+            1,
+            8259000,
+            1003125000,
+            128
+          ],
+          [
+            2,
+            8729000,
+            1003125000,
+            128
+          ],
+          [
+            3,
+            7021000,
+            1003125000,
+            128
+          ],
+          [
+            4,
+            12160000,
+            1003125000,
+            128
+          ],
+          [
+            5,
+            8429000,
+            1003125000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 65646.41744548286,
+        "octets_par_appel": 1470,
+        "octets_par_seconde": 22392691.897022188
+      },
+      "binaire": {
+        "brut": [
+          [
+            0,
+            14644000,
+            1003125000,
+            128
+          ],
+          [
+            1,
+            11761000,
+            1003125000,
+            128
+          ],
+          [
+            2,
+            8477000,
+            1003125000,
+            128
+          ],
+          [
+            3,
+            11759000,
+            1003125000,
+            128
+          ],
+          [
+            4,
+            11664000,
+            1003125000,
+            128
+          ],
+          [
+            5,
+            11625000,
+            1003125000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 90841.1214953271,
+        "octets_par_appel": 540,
+        "octets_par_seconde": 5944444.444444445
+      },
+      "décimal": {
+        "brut": [
+          [
+            0,
+            35131000,
+            1003125000,
+            128
+          ],
+          [
+            1,
+            36010000,
+            1003125000,
+            128
+          ],
+          [
+            2,
+            36851000,
+            1003125000,
+            128
+          ],
+          [
+            3,
+            39681000,
+            1003125000,
+            128
+          ],
+          [
+            4,
+            36023000,
+            1003125000,
+            128
+          ],
+          [
+            5,
+            38969000,
+            1003125000,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 287001.55763239873,
+        "octets_par_appel": 330,
+        "octets_par_seconde": 1149819.5435673387
+      }
+    },
+    "commande_qemu": [
+      "sh",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/printf-natif-0240/novaOS/scripts/qemu.sh",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-device",
+      "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off",
+      "-drive",
+      "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/printf-0240/p9-x86_64/512/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+      "-device",
+      "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=2,logical_block_size=512,physical_block_size=512"
+    ],
+    "cas_moteur": 1674,
+    "cas_elf": 13,
+    "serie_sdk": "587edf62b65ac53827712fde693363f834e897fc07e0cbc8d9e4fe5a06a015ed",
+    "shell": [
+      {
+        "commande": "true",
+        "statut": 0
+      },
+      {
+        "commande": "export LANG=fr-CA",
+        "statut": 0
+      },
+      {
+        "commande": "printf --help",
+        "statut": 0
+      },
+      {
+        "commande": "printf --version",
+        "statut": 0
+      },
+      {
+        "commande": "man printf",
+        "langue": "fr-CA",
+        "statut": 0
+      },
+      {
+        "commande": "export LANG=fr-zzzzz",
+        "statut": 0
+      },
+      {
+        "commande": "printf --help",
+        "statut": 0
+      },
+      {
+        "commande": "printf --version",
+        "statut": 0
+      },
+      {
+        "commande": "man printf",
+        "langue": "fr-zzzzz",
+        "statut": 0
+      },
+      {
+        "commande": "printf %s Nova",
+        "statut": 127
+      },
+      {
+        "commande": "printf --help x",
+        "statut": 127
+      },
+      {
+        "commande": "printf %s --version",
+        "statut": 127
+      },
+      {
+        "commande": "/system/bin/printf %d 7",
+        "statut": 127
+      }
+    ],
+    "compteurs_avant": {
+      "wr_bytes": 872448,
+      "wr_operations": 213,
+      "flush_operations": 77,
+      "failed_wr_operations": 0,
+      "failed_flush_operations": 0
+    },
+    "compteurs_apres": {
+      "wr_bytes": 872448,
+      "wr_operations": 213,
+      "flush_operations": 77,
+      "failed_wr_operations": 0,
+      "failed_flush_operations": 0
+    },
+    "p9_avant_documentation": "c083462f28a5676ec0d0a0661d618866e9f4baac9e49d1bed8e204f05b403f53",
+    "p9_apres_documentation": "c083462f28a5676ec0d0a0661d618866e9f4baac9e49d1bed8e204f05b403f53",
+    "serie_shell": "6072dd48b7046262a9b569942e9843d0b581b69b444066b9de99786664467915",
+    "iso_shell": "92f9c33740ac8e225bccf51daea9e38e2f48770ad6ce031c08998b43d7ad6c35"
+  },
+  "x86_64-P9-4096": {
+    "architecture": "x86_64",
+    "secteur": 4096,
+    "genese": "92c6863fdf6b755eaacf3fed71c0ec4c7d5d342e151b719e06214f7c8dfcf9b6",
+    "iso_sdk": "b362f1c3d512a25a7e954f1bfe12d5778872744d5c647a3e528e55ce9a48a523",
+    "sonde": "47061bbb3317547cd54721f8f58f4a21ee5bd4a892684ec7d12362c4fb5e5813",
+    "noyau_sdk": "db927a95b33a1656ad0ed7b4111ad7395a4d53e758a6fe7e7aae363d240a8417",
+    "vecteurs": "10e00a00d053eb35a1d12eee4bb7c4b8db438521b9db591fefa7f24749e56f9b",
+    "elf": "f472ba377470ed36914d27f3125c01260244c7723263de7df6df5e740c4695d2",
+    "performance_moteur": {
+      "court": {
+        "brut": [
+          [
+            0,
+            18739000,
+            998058593,
+            128
+          ],
+          [
+            1,
+            6707000,
+            998058593,
+            128
+          ],
+          [
+            2,
+            8471000,
+            998058593,
+            128
+          ],
+          [
+            3,
+            7569000,
+            998058593,
+            128
+          ],
+          [
+            4,
+            7453000,
+            998058593,
+            128
+          ],
+          [
+            5,
+            8699000,
+            998058593,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 59247.836664835966,
+        "octets_par_appel": 1,
+        "octets_par_seconde": 16878.253389351303
+      },
+      "texte": {
+        "brut": [
+          [
+            0,
+            10810000,
+            998058593,
+            128
+          ],
+          [
+            1,
+            11272000,
+            998058593,
+            128
+          ],
+          [
+            2,
+            8424000,
+            998058593,
+            128
+          ],
+          [
+            3,
+            7032000,
+            998058593,
+            128
+          ],
+          [
+            4,
+            8902000,
+            998058593,
+            128
+          ],
+          [
+            5,
+            10883000,
+            998058593,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 69682.15642626103,
+        "octets_par_appel": 1470,
+        "octets_par_seconde": 21095788.009310268
+      },
+      "binaire": {
+        "brut": [
+          [
+            0,
+            8669000,
+            998058593,
+            128
+          ],
+          [
+            1,
+            10710000,
+            998058593,
+            128
+          ],
+          [
+            2,
+            9256000,
+            998058593,
+            128
+          ],
+          [
+            3,
+            12062000,
+            998058593,
+            128
+          ],
+          [
+            4,
+            11194000,
+            998058593,
+            128
+          ],
+          [
+            5,
+            11983000,
+            998058593,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 87623.23736638576,
+        "octets_par_appel": 540,
+        "octets_par_seconde": 6162748.789365732
+      },
+      "décimal": {
+        "brut": [
+          [
+            0,
+            36283000,
+            998058593,
+            128
+          ],
+          [
+            1,
+            38973000,
+            998058593,
+            128
+          ],
+          [
+            2,
+            34945000,
+            998058593,
+            128
+          ],
+          [
+            3,
+            37704000,
+            998058593,
+            128
+          ],
+          [
+            4,
+            35199000,
+            998058593,
+            128
+          ],
+          [
+            5,
+            35793000,
+            998058593,
+            128
+          ]
+        ],
+        "mediane_ns_par_appel": 280176.74960291636,
+        "octets_par_appel": 330,
+        "octets_par_seconde": 1177827.9263632554
+      }
+    },
+    "commande_qemu": [
+      "sh",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/printf-natif-0240/novaOS/scripts/qemu.sh",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-device",
+      "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off",
+      "-drive",
+      "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/printf-0240/p9-x86_64/4096/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+      "-device",
+      "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=2,logical_block_size=4096,physical_block_size=4096"
+    ],
+    "cas_moteur": 1674,
+    "cas_elf": 13,
+    "serie_sdk": "762d9a19f2d6dcc65ae8214a50c474e5c012ace70064f767e1869450dc4f30d3",
+    "shell": [
+      {
+        "commande": "true",
+        "statut": 0
+      },
+      {
+        "commande": "export LANG=fr-CA",
+        "statut": 0
+      },
+      {
+        "commande": "printf --help",
+        "statut": 0
+      },
+      {
+        "commande": "printf --version",
+        "statut": 0
+      },
+      {
+        "commande": "man printf",
+        "langue": "fr-CA",
+        "statut": 0
+      },
+      {
+        "commande": "export LANG=fr-zzzzz",
+        "statut": 0
+      },
+      {
+        "commande": "printf --help",
+        "statut": 0
+      },
+      {
+        "commande": "printf --version",
+        "statut": 0
+      },
+      {
+        "commande": "man printf",
+        "langue": "fr-zzzzz",
+        "statut": 0
+      },
+      {
+        "commande": "printf %s Nova",
+        "statut": 127
+      },
+      {
+        "commande": "printf --help x",
+        "statut": 127
+      },
+      {
+        "commande": "printf %s --version",
+        "statut": 127
+      },
+      {
+        "commande": "/system/bin/printf %d 7",
+        "statut": 127
+      }
+    ],
+    "compteurs_avant": {
+      "wr_bytes": 872448,
+      "wr_operations": 213,
+      "flush_operations": 77,
+      "failed_wr_operations": 0,
+      "failed_flush_operations": 0
+    },
+    "compteurs_apres": {
+      "wr_bytes": 872448,
+      "wr_operations": 213,
+      "flush_operations": 77,
+      "failed_wr_operations": 0,
+      "failed_flush_operations": 0
+    },
+    "p9_avant_documentation": "841c5582bd76cc8c57c6a329d15d3e3ed7604be154fdfc2bf0bbc555289d8159",
+    "p9_apres_documentation": "841c5582bd76cc8c57c6a329d15d3e3ed7604be154fdfc2bf0bbc555289d8159",
+    "serie_shell": "c9727372f05d8d5f2ac23ec8996d416864b2b50bc442ca195a9d55a4e3e9ec11",
+    "iso_shell": "e0ed876bb09fe796565ad0f2f8c2a97b11cf4e1fe32f828c4c813c900b650939"
+  }
+}

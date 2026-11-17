@@ -1,0 +1,446 @@
+{
+  "machine": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "profil": "court",
+  "charge_avant": {
+    "moyennes": [
+      3.23974609375,
+      6.03662109375,
+      8.35791015625
+    ],
+    "processus": {}
+  },
+  "charge_apres": {
+    "moyennes": [
+      3.23974609375,
+      6.03662109375,
+      8.35791015625
+    ],
+    "processus": {}
+  },
+  "destination": "/dev/null",
+  "echauffements": 3,
+  "passages": 7,
+  "conditions": "Mesure par processus sur le Mac partagé ; lancement inclus.",
+  "cas": [
+    {
+      "traitement": "appel court",
+      "args": [
+        "%s",
+        "x"
+      ],
+      "sortie_sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+      "octets": 1,
+      "brut": {
+        "Nova": [
+          {
+            "ns": 2069333,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2178458,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2215958,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2180417,
+            "rss_octets": 1982464
+          },
+          {
+            "ns": 2216875,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2195125,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2294916,
+            "rss_octets": 1998848
+          }
+        ],
+        "GNU": [
+          {
+            "ns": 2030333,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2030791,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2151875,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2195417,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2314708,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2081041,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2192708,
+            "rss_octets": 1949696
+          }
+        ]
+      },
+      "resume": {
+        "Nova": {
+          "mediane_ns": 2195125,
+          "octets_par_s": 455.55492284038496,
+          "pic_rss_octets": 1998848
+        },
+        "GNU": {
+          "mediane_ns": 2151875,
+          "octets_par_s": 464.71100784199825,
+          "pic_rss_octets": 1949696
+        }
+      }
+    },
+    {
+      "traitement": "texte",
+      "args": [
+        "%s\n",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
+      ],
+      "sortie_sha256": "b9b7d7181f44b3817567d0ffee26e457d870495565769c034a310420e2ca0043",
+      "octets": 1470,
+      "brut": {
+        "Nova": [
+          {
+            "ns": 2185666,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2162167,
+            "rss_octets": 1982464
+          },
+          {
+            "ns": 2191542,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2187791,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2338000,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2159875,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2097042,
+            "rss_octets": 1998848
+          }
+        ],
+        "GNU": [
+          {
+            "ns": 2297458,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2166708,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2057417,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2177833,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2107416,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2186000,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2143292,
+            "rss_octets": 1949696
+          }
+        ]
+      },
+      "resume": {
+        "Nova": {
+          "mediane_ns": 2185666,
+          "octets_par_s": 672563.877554942,
+          "pic_rss_octets": 1998848
+        },
+        "GNU": {
+          "mediane_ns": 2166708,
+          "octets_par_s": 678448.5957498658,
+          "pic_rss_octets": 1949696
+        }
+      }
+    },
+    {
+      "traitement": "binaire",
+      "args": [
+        "%b",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA",
+        "\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA\\0\\xffA"
+      ],
+      "sortie_sha256": "fb2fdd02e1649a5ea94471227ad71b39234e24b6f325cafc9c13d579ecb125a7",
+      "octets": 540,
+      "brut": {
+        "Nova": [
+          {
+            "ns": 2198000,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2154667,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2082583,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2068125,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2022041,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 2041916,
+            "rss_octets": 1998848
+          },
+          {
+            "ns": 1985708,
+            "rss_octets": 1998848
+          }
+        ],
+        "GNU": [
+          {
+            "ns": 2175083,
+            "rss_octets": 1933312
+          },
+          {
+            "ns": 2219208,
+            "rss_octets": 1933312
+          },
+          {
+            "ns": 2094125,
+            "rss_octets": 1933312
+          },
+          {
+            "ns": 2170834,
+            "rss_octets": 1933312
+          },
+          {
+            "ns": 2108333,
+            "rss_octets": 1933312
+          },
+          {
+            "ns": 2129792,
+            "rss_octets": 1933312
+          },
+          {
+            "ns": 1996917,
+            "rss_octets": 1933312
+          }
+        ]
+      },
+      "resume": {
+        "Nova": {
+          "mediane_ns": 2068125,
+          "octets_par_s": 261106.07434270173,
+          "pic_rss_octets": 1998848
+        },
+        "GNU": {
+          "mediane_ns": 2129792,
+          "octets_par_s": 253545.88617104394,
+          "pic_rss_octets": 1933312
+        }
+      }
+    },
+    {
+      "traitement": "décimal",
+      "args": [
+        "%+.9g\n",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125",
+        "98765.125"
+      ],
+      "sortie_sha256": "b1f0e089f7c352fc2dde67e014034d7dbf16b616e1fcf8ba890ae0aec1278793",
+      "octets": 330,
+      "brut": {
+        "Nova": [
+          {
+            "ns": 2040667,
+            "rss_octets": 2031616
+          },
+          {
+            "ns": 2234875,
+            "rss_octets": 2031616
+          },
+          {
+            "ns": 2166042,
+            "rss_octets": 2031616
+          },
+          {
+            "ns": 2150875,
+            "rss_octets": 2031616
+          },
+          {
+            "ns": 2021750,
+            "rss_octets": 2031616
+          },
+          {
+            "ns": 2352166,
+            "rss_octets": 2048000
+          },
+          {
+            "ns": 2671041,
+            "rss_octets": 2031616
+          }
+        ],
+        "GNU": [
+          {
+            "ns": 2085042,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2198333,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2139083,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2176667,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2191167,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2116041,
+            "rss_octets": 1949696
+          },
+          {
+            "ns": 2325291,
+            "rss_octets": 1949696
+          }
+        ]
+      },
+      "resume": {
+        "Nova": {
+          "mediane_ns": 2166042,
+          "octets_par_s": 152351.61645065053,
+          "pic_rss_octets": 2048000
+        },
+        "GNU": {
+          "mediane_ns": 2176667,
+          "octets_par_s": 151607.94002941193,
+          "pic_rss_octets": 1949696
+        }
+      }
+    }
+  ]
+}

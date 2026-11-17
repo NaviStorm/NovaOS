@@ -1,0 +1,6 @@
+Taille ou nombre | Traitement   | Nova printf | GNU printf
+-----------------|--------------|-------------|-----------
+           1 arg. | appel court  |    2.195 ms |   2.152 ms
+          30 arg. | texte        |    2.186 ms |   2.167 ms
+          30 arg. | binaire      |    2.068 ms |   2.130 ms
+          30 arg. | décimal      |    2.166 ms |   2.177 ms
