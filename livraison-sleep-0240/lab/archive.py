@@ -46,6 +46,33 @@ def verify_media():
                 assert digest(archive.extractfile("p9-initial.raw")) == proof["p9"]
 
 
+def verify_logs():
+    proofs = HERE / "preuves"
+    expected = [
+        entry.split("  ", 1)
+        for entry in (proofs / "journaux.sha256").read_text().splitlines()
+    ]
+    with tarfile.open(proofs / "journaux.tar.gz", "r:gz") as tar:
+        assert tar.getnames() == [name for _, name in expected]
+        for h, name in expected:
+            assert digest(tar.extractfile(name)) == h, name
+
+
+def collect_logs():
+    proofs = HERE / "preuves"
+    source = proofs / "journaux"
+    if source.is_dir():
+        files = sorted(path for path in source.iterdir() if path.is_file())
+        statuses = (source / "regressions.tsv").read_text()
+        (proofs / "regressions.tsv").write_text(statuses)
+        manifest = "".join(f"{sha(path)}  {path.name}\n" for path in files)
+        with tarfile.open(proofs / "journaux.tar.gz", "w:gz") as tar:
+            for path in files:
+                tar.add(path, arcname=path.name, recursive=False)
+        (proofs / "journaux.sha256").write_text(manifest)
+    verify_logs()
+
+
 def make():
     # Un chemin relatif au worktree permet de superposer ce paquet à sa base.
     files = {
@@ -95,6 +122,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--creer", action="store_true")
     if parser.parse_args().creer:
+        collect_logs()
         make()
     verify()
     verify_media()
+    verify_logs()

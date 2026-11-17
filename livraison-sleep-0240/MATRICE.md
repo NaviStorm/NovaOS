@@ -1,0 +1,20 @@
+# Compatibilité de sleep
+
+Le [tableau exhaustif](preuves/matrice.tsv) donne les arguments et les deux flux en hexadécimal, le statut et le temps monotone par invocation. Une chaîne hexadécimale vide désigne zéro octet. Les colonnes de [la session ordinaire](preuves/nsh.tsv) proviennent du vrai terminal. Les sorties UART complètes figurent dans les journaux série compressés par profil.
+
+| Famille | Comportement exercé | Oracle |
+|---|---|---|
+| Aide | `--h`, `--he`, `--hel`, `--help`. Chaque préfixe seul, avant et après un opérande invalide, avec valeur attachée et après `--`. | GNU pour la sélection et le statut. Texte Nova ARC-026 pour le contenu. |
+| Version | `--v`, `--ve`, `--ver`, `--vers`, `--versi`, `--versio`, `--version`. Mêmes croisements. | GNU pour la sélection et le statut. Identité du paquet Nova. |
+| Priorité | La première option rencontrée gagne. `--v --h` affiche la version. `bad --h` donne l’aide. Une option inconnue avant l’aide échoue. | GNU en locale C. Avec POSIXLY_CORRECT sur Darwin la recherche s’arrête au premier opérande. |
+| Fin d’options | `--` seul réussit. Sans aucun argument, statut 1. Après `--`, les mots sont des durées, même `--help`. `-- -0` réussit, `-- -1` échoue. | GNU, stdout et stderr séparés. |
+| Refus | Options courtes `-h` et `-v`, préfixe inconnu, ambiguïté de `--=x`, argument attaché à une option documentaire. | Code 1 et diagnostic de getopt. |
+| Nombres | Par défaut secondes, unités s/m/h/d, fractions, exposants, hexadécimal, somme, zéros, valeur sous-normale, durée infinie, débordement. Le d final de `0x0.01d` est hexadécimal. | GNU 9.12, perception externe des durées, complétée par deux tests numériques à bornes exactes. |
+| Entrées rejetées | NaN, valeur négative, suffixe majuscule ou multiple, valeur vide, espace final, mauvais exposant. Toutes les durées invalides sont signalées avant toute attente. | GNU 9.12, les deux flux en octets et le statut. |
+| Locale | Sur Darwin, virgule de fr_FR.UTF-8 et point de C, dont hexadécimal. Guillemets typographiques en UTF-8. Sur NovaOS le runtime livre argv UTF-8, avec nombres en locale C. | Darwin comparé à GNU dans la même locale. Un argv non UTF-8 est refusé par le runtime NovaOS avec le statut 3. |
+| Droits et flux | Durée sans port de console, aide avec sortie refusée, offset stdin inchangé après succès, consultation et erreur, retour avant EOF avec les octets témoins encore dans le tube, reprise après SIGSTOP/SIGCONT, tube de sortie sans lecteur, durée longue interrompue et collectée. | Terminal NovaOS et descripteurs Darwin ont des diagnostics propres. Sur Darwin la mort par signal est représentée par un statut négatif dans le JSON. |
+| Documentation | `man sleep`, aide, version, langues anglaise, française et étiquette invalide. Les consultations `nsh` laissent l’empreinte du P9 et les compteurs d’écriture et FLUSH identiques. | Catalogue ARC-026 et registre IANA du projet. FR pour une étiquette BCP 47 valide de langue principale fr. EN pour les autres, y compris la chaîne POSIX fr_FR.UTF-8. |
+
+Les appels hôtes donnent le même argv[0] `sleep` aux deux exécutables. Sur macOS, GNU imprime aussi le nom physique `gsleep:` pour certaines erreurs. La comparaison remplace uniquement ce préfixe du programme. Les résultats bruts conservent les octets reçus. Les textes documentaires GNU et Nova sont vérifiés selon leur éditeur.
+
+Les mesures du contrôleur SDK couvrent le véritable ELF et sa collecte. Le profil accorde les ports de terminal indiqués et remet zéro canal métier. L’interruption supervisée rend 125, avec vérification de l’état bloqué, des slots, des pages IPC et de l’audit mémoire après la collecte de chaque enfant. La VM de recette exerce une image P9 en lecture seule. La session nsh utilise une autre copie P9 jetable montée en écriture. La présence de l’ELF dans le noyau instrumenté relève du catalogue SDK de test. Le lanceur ordinaire de la base ne résout pas sleep. Les pipelines de nsh suivent les rôles déjà livrés. Le SDK de cette révision ne transmet ni LC_NUMERIC ni POSIXLY_CORRECT à une commande externe. Ces limites empêchent de déclarer une compatibilité GNU complète depuis nsh.

@@ -1,0 +1,305 @@
+profil	langue ou parcours	commande ou arguments	statut
+nsh-aarch64-4096	en-US	--help	0
+nsh-aarch64-4096	en-US	0 --h	0
+nsh-aarch64-4096	en-US	--version	0
+nsh-aarch64-4096	en-US	--v	0
+nsh-aarch64-4096	en-US	man sleep	0
+nsh-aarch64-4096	fr-CA	--help	0
+nsh-aarch64-4096	fr-CA	0 --h	0
+nsh-aarch64-4096	fr-CA	--version	0
+nsh-aarch64-4096	fr-CA	--v	0
+nsh-aarch64-4096	fr-CA	man sleep	0
+nsh-aarch64-4096	fr--CA	--help	0
+nsh-aarch64-4096	fr--CA	0 --h	0
+nsh-aarch64-4096	fr--CA	--version	0
+nsh-aarch64-4096	fr--CA	--v	0
+nsh-aarch64-4096	fr--CA	man sleep	0
+nsh-aarch64-4096	en	sleep --h	0
+nsh-aarch64-4096	en	sleep x --h	0
+nsh-aarch64-4096	en	sleep --h -x	0
+nsh-aarch64-4096	en	sleep --h=x	1
+nsh-aarch64-4096	en	sleep -x --h	1
+nsh-aarch64-4096	en	sleep --he	0
+nsh-aarch64-4096	en	sleep x --he	0
+nsh-aarch64-4096	en	sleep --he -x	0
+nsh-aarch64-4096	en	sleep --he=x	1
+nsh-aarch64-4096	en	sleep -x --he	1
+nsh-aarch64-4096	en	sleep --hel	0
+nsh-aarch64-4096	en	sleep x --hel	0
+nsh-aarch64-4096	en	sleep --hel -x	0
+nsh-aarch64-4096	en	sleep --hel=x	1
+nsh-aarch64-4096	en	sleep -x --hel	1
+nsh-aarch64-4096	en	sleep --help	0
+nsh-aarch64-4096	en	sleep x --help	0
+nsh-aarch64-4096	en	sleep --help -x	0
+nsh-aarch64-4096	en	sleep --help=x	1
+nsh-aarch64-4096	en	sleep -x --help	1
+nsh-aarch64-4096	en	sleep --v	0
+nsh-aarch64-4096	en	sleep x --v	0
+nsh-aarch64-4096	en	sleep --v -x	0
+nsh-aarch64-4096	en	sleep --v=x	1
+nsh-aarch64-4096	en	sleep -x --v	1
+nsh-aarch64-4096	en	sleep --ve	0
+nsh-aarch64-4096	en	sleep x --ve	0
+nsh-aarch64-4096	en	sleep --ve -x	0
+nsh-aarch64-4096	en	sleep --ve=x	1
+nsh-aarch64-4096	en	sleep -x --ve	1
+nsh-aarch64-4096	en	sleep --ver	0
+nsh-aarch64-4096	en	sleep x --ver	0
+nsh-aarch64-4096	en	sleep --ver -x	0
+nsh-aarch64-4096	en	sleep --ver=x	1
+nsh-aarch64-4096	en	sleep -x --ver	1
+nsh-aarch64-4096	en	sleep --vers	0
+nsh-aarch64-4096	en	sleep x --vers	0
+nsh-aarch64-4096	en	sleep --vers -x	0
+nsh-aarch64-4096	en	sleep --vers=x	1
+nsh-aarch64-4096	en	sleep -x --vers	1
+nsh-aarch64-4096	en	sleep --versi	0
+nsh-aarch64-4096	en	sleep x --versi	0
+nsh-aarch64-4096	en	sleep --versi -x	0
+nsh-aarch64-4096	en	sleep --versi=x	1
+nsh-aarch64-4096	en	sleep -x --versi	1
+nsh-aarch64-4096	en	sleep --versio	0
+nsh-aarch64-4096	en	sleep x --versio	0
+nsh-aarch64-4096	en	sleep --versio -x	0
+nsh-aarch64-4096	en	sleep --versio=x	1
+nsh-aarch64-4096	en	sleep -x --versio	1
+nsh-aarch64-4096	en	sleep --version	0
+nsh-aarch64-4096	en	sleep x --version	0
+nsh-aarch64-4096	en	sleep --version -x	0
+nsh-aarch64-4096	en	sleep --version=x	1
+nsh-aarch64-4096	en	sleep -x --version	1
+nsh-aarch64-4096	nsh	sleep 0	127
+nsh-aarch64-4096	nsh	sleep .002 0s	127
+nsh-aarch64-4096	nsh	/system/bin/sleep 0	127
+nsh-aarch64-4096	nsh	sleep -- --help	127
+nsh-aarch64-4096	nsh	sleep --	127
+nsh-aarch64-4096	nsh	sleep 0 | head -n 1	3
+nsh-aarch64-512	en-US	--help	0
+nsh-aarch64-512	en-US	0 --h	0
+nsh-aarch64-512	en-US	--version	0
+nsh-aarch64-512	en-US	--v	0
+nsh-aarch64-512	en-US	man sleep	0
+nsh-aarch64-512	fr-CA	--help	0
+nsh-aarch64-512	fr-CA	0 --h	0
+nsh-aarch64-512	fr-CA	--version	0
+nsh-aarch64-512	fr-CA	--v	0
+nsh-aarch64-512	fr-CA	man sleep	0
+nsh-aarch64-512	fr--CA	--help	0
+nsh-aarch64-512	fr--CA	0 --h	0
+nsh-aarch64-512	fr--CA	--version	0
+nsh-aarch64-512	fr--CA	--v	0
+nsh-aarch64-512	fr--CA	man sleep	0
+nsh-aarch64-512	en	sleep --h	0
+nsh-aarch64-512	en	sleep x --h	0
+nsh-aarch64-512	en	sleep --h -x	0
+nsh-aarch64-512	en	sleep --h=x	1
+nsh-aarch64-512	en	sleep -x --h	1
+nsh-aarch64-512	en	sleep --he	0
+nsh-aarch64-512	en	sleep x --he	0
+nsh-aarch64-512	en	sleep --he -x	0
+nsh-aarch64-512	en	sleep --he=x	1
+nsh-aarch64-512	en	sleep -x --he	1
+nsh-aarch64-512	en	sleep --hel	0
+nsh-aarch64-512	en	sleep x --hel	0
+nsh-aarch64-512	en	sleep --hel -x	0
+nsh-aarch64-512	en	sleep --hel=x	1
+nsh-aarch64-512	en	sleep -x --hel	1
+nsh-aarch64-512	en	sleep --help	0
+nsh-aarch64-512	en	sleep x --help	0
+nsh-aarch64-512	en	sleep --help -x	0
+nsh-aarch64-512	en	sleep --help=x	1
+nsh-aarch64-512	en	sleep -x --help	1
+nsh-aarch64-512	en	sleep --v	0
+nsh-aarch64-512	en	sleep x --v	0
+nsh-aarch64-512	en	sleep --v -x	0
+nsh-aarch64-512	en	sleep --v=x	1
+nsh-aarch64-512	en	sleep -x --v	1
+nsh-aarch64-512	en	sleep --ve	0
+nsh-aarch64-512	en	sleep x --ve	0
+nsh-aarch64-512	en	sleep --ve -x	0
+nsh-aarch64-512	en	sleep --ve=x	1
+nsh-aarch64-512	en	sleep -x --ve	1
+nsh-aarch64-512	en	sleep --ver	0
+nsh-aarch64-512	en	sleep x --ver	0
+nsh-aarch64-512	en	sleep --ver -x	0
+nsh-aarch64-512	en	sleep --ver=x	1
+nsh-aarch64-512	en	sleep -x --ver	1
+nsh-aarch64-512	en	sleep --vers	0
+nsh-aarch64-512	en	sleep x --vers	0
+nsh-aarch64-512	en	sleep --vers -x	0
+nsh-aarch64-512	en	sleep --vers=x	1
+nsh-aarch64-512	en	sleep -x --vers	1
+nsh-aarch64-512	en	sleep --versi	0
+nsh-aarch64-512	en	sleep x --versi	0
+nsh-aarch64-512	en	sleep --versi -x	0
+nsh-aarch64-512	en	sleep --versi=x	1
+nsh-aarch64-512	en	sleep -x --versi	1
+nsh-aarch64-512	en	sleep --versio	0
+nsh-aarch64-512	en	sleep x --versio	0
+nsh-aarch64-512	en	sleep --versio -x	0
+nsh-aarch64-512	en	sleep --versio=x	1
+nsh-aarch64-512	en	sleep -x --versio	1
+nsh-aarch64-512	en	sleep --version	0
+nsh-aarch64-512	en	sleep x --version	0
+nsh-aarch64-512	en	sleep --version -x	0
+nsh-aarch64-512	en	sleep --version=x	1
+nsh-aarch64-512	en	sleep -x --version	1
+nsh-aarch64-512	nsh	sleep 0	127
+nsh-aarch64-512	nsh	sleep .002 0s	127
+nsh-aarch64-512	nsh	/system/bin/sleep 0	127
+nsh-aarch64-512	nsh	sleep -- --help	127
+nsh-aarch64-512	nsh	sleep --	127
+nsh-aarch64-512	nsh	sleep 0 | head -n 1	3
+nsh-x86_64-4096	en-US	--help	0
+nsh-x86_64-4096	en-US	0 --h	0
+nsh-x86_64-4096	en-US	--version	0
+nsh-x86_64-4096	en-US	--v	0
+nsh-x86_64-4096	en-US	man sleep	0
+nsh-x86_64-4096	fr-CA	--help	0
+nsh-x86_64-4096	fr-CA	0 --h	0
+nsh-x86_64-4096	fr-CA	--version	0
+nsh-x86_64-4096	fr-CA	--v	0
+nsh-x86_64-4096	fr-CA	man sleep	0
+nsh-x86_64-4096	fr--CA	--help	0
+nsh-x86_64-4096	fr--CA	0 --h	0
+nsh-x86_64-4096	fr--CA	--version	0
+nsh-x86_64-4096	fr--CA	--v	0
+nsh-x86_64-4096	fr--CA	man sleep	0
+nsh-x86_64-4096	en	sleep --h	0
+nsh-x86_64-4096	en	sleep x --h	0
+nsh-x86_64-4096	en	sleep --h -x	0
+nsh-x86_64-4096	en	sleep --h=x	1
+nsh-x86_64-4096	en	sleep -x --h	1
+nsh-x86_64-4096	en	sleep --he	0
+nsh-x86_64-4096	en	sleep x --he	0
+nsh-x86_64-4096	en	sleep --he -x	0
+nsh-x86_64-4096	en	sleep --he=x	1
+nsh-x86_64-4096	en	sleep -x --he	1
+nsh-x86_64-4096	en	sleep --hel	0
+nsh-x86_64-4096	en	sleep x --hel	0
+nsh-x86_64-4096	en	sleep --hel -x	0
+nsh-x86_64-4096	en	sleep --hel=x	1
+nsh-x86_64-4096	en	sleep -x --hel	1
+nsh-x86_64-4096	en	sleep --help	0
+nsh-x86_64-4096	en	sleep x --help	0
+nsh-x86_64-4096	en	sleep --help -x	0
+nsh-x86_64-4096	en	sleep --help=x	1
+nsh-x86_64-4096	en	sleep -x --help	1
+nsh-x86_64-4096	en	sleep --v	0
+nsh-x86_64-4096	en	sleep x --v	0
+nsh-x86_64-4096	en	sleep --v -x	0
+nsh-x86_64-4096	en	sleep --v=x	1
+nsh-x86_64-4096	en	sleep -x --v	1
+nsh-x86_64-4096	en	sleep --ve	0
+nsh-x86_64-4096	en	sleep x --ve	0
+nsh-x86_64-4096	en	sleep --ve -x	0
+nsh-x86_64-4096	en	sleep --ve=x	1
+nsh-x86_64-4096	en	sleep -x --ve	1
+nsh-x86_64-4096	en	sleep --ver	0
+nsh-x86_64-4096	en	sleep x --ver	0
+nsh-x86_64-4096	en	sleep --ver -x	0
+nsh-x86_64-4096	en	sleep --ver=x	1
+nsh-x86_64-4096	en	sleep -x --ver	1
+nsh-x86_64-4096	en	sleep --vers	0
+nsh-x86_64-4096	en	sleep x --vers	0
+nsh-x86_64-4096	en	sleep --vers -x	0
+nsh-x86_64-4096	en	sleep --vers=x	1
+nsh-x86_64-4096	en	sleep -x --vers	1
+nsh-x86_64-4096	en	sleep --versi	0
+nsh-x86_64-4096	en	sleep x --versi	0
+nsh-x86_64-4096	en	sleep --versi -x	0
+nsh-x86_64-4096	en	sleep --versi=x	1
+nsh-x86_64-4096	en	sleep -x --versi	1
+nsh-x86_64-4096	en	sleep --versio	0
+nsh-x86_64-4096	en	sleep x --versio	0
+nsh-x86_64-4096	en	sleep --versio -x	0
+nsh-x86_64-4096	en	sleep --versio=x	1
+nsh-x86_64-4096	en	sleep -x --versio	1
+nsh-x86_64-4096	en	sleep --version	0
+nsh-x86_64-4096	en	sleep x --version	0
+nsh-x86_64-4096	en	sleep --version -x	0
+nsh-x86_64-4096	en	sleep --version=x	1
+nsh-x86_64-4096	en	sleep -x --version	1
+nsh-x86_64-4096	nsh	sleep 0	127
+nsh-x86_64-4096	nsh	sleep .002 0s	127
+nsh-x86_64-4096	nsh	/system/bin/sleep 0	127
+nsh-x86_64-4096	nsh	sleep -- --help	127
+nsh-x86_64-4096	nsh	sleep --	127
+nsh-x86_64-4096	nsh	sleep 0 | head -n 1	3
+nsh-x86_64-512	en-US	--help	0
+nsh-x86_64-512	en-US	0 --h	0
+nsh-x86_64-512	en-US	--version	0
+nsh-x86_64-512	en-US	--v	0
+nsh-x86_64-512	en-US	man sleep	0
+nsh-x86_64-512	fr-CA	--help	0
+nsh-x86_64-512	fr-CA	0 --h	0
+nsh-x86_64-512	fr-CA	--version	0
+nsh-x86_64-512	fr-CA	--v	0
+nsh-x86_64-512	fr-CA	man sleep	0
+nsh-x86_64-512	fr--CA	--help	0
+nsh-x86_64-512	fr--CA	0 --h	0
+nsh-x86_64-512	fr--CA	--version	0
+nsh-x86_64-512	fr--CA	--v	0
+nsh-x86_64-512	fr--CA	man sleep	0
+nsh-x86_64-512	en	sleep --h	0
+nsh-x86_64-512	en	sleep x --h	0
+nsh-x86_64-512	en	sleep --h -x	0
+nsh-x86_64-512	en	sleep --h=x	1
+nsh-x86_64-512	en	sleep -x --h	1
+nsh-x86_64-512	en	sleep --he	0
+nsh-x86_64-512	en	sleep x --he	0
+nsh-x86_64-512	en	sleep --he -x	0
+nsh-x86_64-512	en	sleep --he=x	1
+nsh-x86_64-512	en	sleep -x --he	1
+nsh-x86_64-512	en	sleep --hel	0
+nsh-x86_64-512	en	sleep x --hel	0
+nsh-x86_64-512	en	sleep --hel -x	0
+nsh-x86_64-512	en	sleep --hel=x	1
+nsh-x86_64-512	en	sleep -x --hel	1
+nsh-x86_64-512	en	sleep --help	0
+nsh-x86_64-512	en	sleep x --help	0
+nsh-x86_64-512	en	sleep --help -x	0
+nsh-x86_64-512	en	sleep --help=x	1
+nsh-x86_64-512	en	sleep -x --help	1
+nsh-x86_64-512	en	sleep --v	0
+nsh-x86_64-512	en	sleep x --v	0
+nsh-x86_64-512	en	sleep --v -x	0
+nsh-x86_64-512	en	sleep --v=x	1
+nsh-x86_64-512	en	sleep -x --v	1
+nsh-x86_64-512	en	sleep --ve	0
+nsh-x86_64-512	en	sleep x --ve	0
+nsh-x86_64-512	en	sleep --ve -x	0
+nsh-x86_64-512	en	sleep --ve=x	1
+nsh-x86_64-512	en	sleep -x --ve	1
+nsh-x86_64-512	en	sleep --ver	0
+nsh-x86_64-512	en	sleep x --ver	0
+nsh-x86_64-512	en	sleep --ver -x	0
+nsh-x86_64-512	en	sleep --ver=x	1
+nsh-x86_64-512	en	sleep -x --ver	1
+nsh-x86_64-512	en	sleep --vers	0
+nsh-x86_64-512	en	sleep x --vers	0
+nsh-x86_64-512	en	sleep --vers -x	0
+nsh-x86_64-512	en	sleep --vers=x	1
+nsh-x86_64-512	en	sleep -x --vers	1
+nsh-x86_64-512	en	sleep --versi	0
+nsh-x86_64-512	en	sleep x --versi	0
+nsh-x86_64-512	en	sleep --versi -x	0
+nsh-x86_64-512	en	sleep --versi=x	1
+nsh-x86_64-512	en	sleep -x --versi	1
+nsh-x86_64-512	en	sleep --versio	0
+nsh-x86_64-512	en	sleep x --versio	0
+nsh-x86_64-512	en	sleep --versio -x	0
+nsh-x86_64-512	en	sleep --versio=x	1
+nsh-x86_64-512	en	sleep -x --versio	1
+nsh-x86_64-512	en	sleep --version	0
+nsh-x86_64-512	en	sleep x --version	0
+nsh-x86_64-512	en	sleep --version -x	0
+nsh-x86_64-512	en	sleep --version=x	1
+nsh-x86_64-512	en	sleep -x --version	1
+nsh-x86_64-512	nsh	sleep 0	127
+nsh-x86_64-512	nsh	sleep .002 0s	127
+nsh-x86_64-512	nsh	/system/bin/sleep 0	127
+nsh-x86_64-512	nsh	sleep -- --help	127
+nsh-x86_64-512	nsh	sleep --	127
+nsh-x86_64-512	nsh	sleep 0 | head -n 1	3
