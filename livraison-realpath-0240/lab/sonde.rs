@@ -50,42 +50,58 @@ fn blob<'a>(data: &mut &'a [u8]) -> &'a [u8] {
     *data = rest;
     v
 }
+fn diagnostic(err: &mut Vec<u8>, name: &[u8], e: Error) {
+    let reason = match e {
+        Error::Missing => "No such file or directory",
+        Error::Loop => "Too many levels of symbolic links",
+        Error::System(13) => "Permission denied",
+        Error::NotDirectory => "Not a directory",
+        _ => "unexpected",
+    };
+    err.extend(b"realpath: ");
+    err.extend_from_slice(if name.is_empty() { b"''" } else { name });
+    err.extend(format!(": {reason}\n").bytes());
+}
 fn vectors() {
     let mut data = include_bytes!(env!("REALPATH_VECTEURS")).as_slice();
     let count = number(&mut data);
     for i in 0..count {
         let argc = number(&mut data);
         let names: Vec<_> = (0..argc).map(|_| blob(&mut data)).collect();
-        let Ok(options::Action::Paths(opt)) = options::parse(&names, false) else {
-            rt::exit(2)
-        };
-        let mut fs = Fixture;
-        let rel = Relative::new(&mut fs, &opt).unwrap();
         let (mut out, mut err, mut status) = (Vec::new(), Vec::new(), 0);
-        for name in &opt.names {
-            match path::resolve(&mut fs, name, &opt) {
-                Ok(p) => {
-                    out.extend(rel.display(p));
-                    out.push(if opt.zero { 0 } else { 10 })
-                }
-                Err(e) => {
-                    status = 1;
-                    let reason = match e {
-                        Error::Missing => "No such file or directory",
-                        Error::Loop => "Too many levels of symbolic links",
-                        Error::System(13) => "Permission denied",
-                        Error::NotDirectory => "Not a directory",
-                        _ => "unexpected",
-                    };
-                    err.extend(b"realpath: ");
-                    if name.is_empty() {
-                        err.extend(b"''")
-                    } else {
-                        err.extend_from_slice(name)
+        match options::parse(&names, false) {
+            Err(reason) => {
+                status = 1;
+                err.extend(b"realpath: ");
+                err.extend(reason);
+                err.extend(b"\nTry 'realpath --help' for more information.\n");
+            }
+            Ok(options::Action::Paths(opt)) => {
+                let mut fs = Fixture;
+                match Relative::new(&mut fs, &opt) {
+                    Err((name, e)) => {
+                        status = 1;
+                        diagnostic(&mut err, name, e);
                     }
-                    err.extend(format!(": {reason}\n").bytes())
+                    Ok(rel) => {
+                        for name in &opt.names {
+                            match path::resolve(&mut fs, name, &opt) {
+                                Ok(p) => {
+                                    out.extend(rel.display(p));
+                                    out.push(if opt.zero { 0 } else { 10 })
+                                }
+                                Err(e) => {
+                                    status = 1;
+                                    if !opt.quiet {
+                                        diagnostic(&mut err, name, e)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+            _ => rt::exit(2),
         }
         let rc = number(&mut data);
         let stdout = blob(&mut data);
