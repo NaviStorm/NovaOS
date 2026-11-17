@@ -1,4 +1,8 @@
 """Recette P9, ELF de livraison dans le profil SDK, puis documentation du véritable nsh."""
+from contextlib import ExitStack
+from types import SimpleNamespace
+import socket
+import fcntl
 import argparse
 import json
 import os
@@ -19,6 +23,7 @@ def sha(path):
 ROOT=BASE.parent
 sys.path.insert(0,str(ROOT/"novaOS/tests"))
 from cli import Terminal
+from bloc import qmp
 from journalisation import arret
 from pipe_natif import fixture
 from bloc_qemu import command
@@ -119,7 +124,20 @@ def shell_session(arch,sector,image,env,directory):
     serial=directory/"nsh.serial"
     (ROOT/"novaOS/build").mkdir(exist_ok=True)
     checks=[]
-    with Terminal(arch,sector,image,"readlink",journal=serial) as vm:
+    with ExitStack() as stack:
+        client,peer = socket.socketpair()
+        stack.enter_context(client)
+        stack.enter_context(peer)
+        client.settimeout(20)
+        channel=stack.enter_context(client.makefile("rwb",buffering=0))
+        monitor=SimpleNamespace(stdin=channel,stdout=channel)
+        vm=stack.enter_context(Terminal(arch,sector,image,"readlink",journal=serial,qmp_bloc=peer.fileno()))
+        peer.close()
+        qmp(monitor,"qmp_capabilities")
+        def snapshot():
+            stats,=[d["stats"] for d in qmp(monitor,"query-blockstats") if d["device"]=="d"]
+            return dict(sha256=sha(image),operations=stats["wr_operations"],octets=stats["wr_bytes"],
+                        flush=stats["flush_operations"])
         vm.until(b"nsh> ")
         def invoke(cmd,manual=False):
             vm.vm.stdin.write(cmd.encode()+b"\n")
@@ -137,25 +155,25 @@ def shell_session(arch,sector,image,env,directory):
             return raw,rc
         # Le journal de démarrage peut encore écrire après la première invite.
         for _ in range(15):
-            before=sha(image)
+            before=snapshot()
             time.sleep(2)
-            if sha(image)==before: break
+            if snapshot()==before: break
         else: raise TimeoutError("P9 actif au repos")
         for locale in ["fr-CA","fr-Zzzz","fr-zzzzz","en-GB"]:
             assert invoke("export LANG="+locale)[1]==0
             time.sleep(.3)
-            before=sha(image)
+            before=snapshot()
             for cmd in ["readlink --help","readlink --version","man readlink"]:
                 raw,rc=invoke(cmd,cmd.startswith("man "))
                 assert rc==0
                 if cmd.endswith("--version"): assert b"readlink (nova-readlink) 0.24.0" in raw
                 else: assert (b"Afficher" if locale in ("fr-CA","fr-Zzzz") else b"Print a link target") in raw,(cmd,raw[-1300:])
-            after=sha(image)
+            after=snapshot()
             assert before==after
             checks.append(dict(locale=locale,p9_avant=before,p9_apres=after))
         assert invoke("readlink /temoin")[1]==127
         assert invoke("readlink -m /absent")[1]==127
-        invoke("readlink /temoin | wc")
+        assert invoke("readlink /temoin | wc")[1]==3
         assert invoke("readlink --erreur")[1]==1
         arret(vm,1)
     return dict(iso=sha(serial.with_suffix(".iso")),commandes=checks)
@@ -189,8 +207,11 @@ def main():
             cell=out/str(sector)
             cell.mkdir()
             image,_,_=fixture(cell,sector,{"temoin":b"P9"})
-            sdk=sdk_session(arch,sector,image,dict(env,NOVA_KERNEL_ELF=str(kernels["sdk"])),rows,cell)
-            shell=shell_session(arch,sector,image,dict(env,NOVA_KERNEL_ELF=str(kernels["nsh"])),cell)
+            shutil.copyfile(image,cell/"sdk-lecture-seule.raw")
+            with (Path(os.environ["NOVAOS_TMPDIR"])/"arc027-mesures.lock").open("a") as lock:
+                fcntl.flock(lock,fcntl.LOCK_EX)
+                sdk=sdk_session(arch,sector,cell/"sdk-lecture-seule.raw",dict(env,NOVA_KERNEL_ELF=str(kernels["sdk"])),rows,cell)
+                shell=shell_session(arch,sector,image,dict(env,NOVA_KERNEL_ELF=str(kernels["nsh"])),cell)
             # Vérifier les noyaux réellement embarqués dans les deux ISO.
             for label,profile in [("sdk","sdk"),("nsh","nsh")]:
                 extracted=Path(work)/f"{label}-{sector}.elf"
