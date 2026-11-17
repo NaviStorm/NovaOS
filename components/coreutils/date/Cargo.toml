@@ -1,0 +1,33 @@
+[package]
+name = "nova-date"
+version = "0.20.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+members = ["vendor/parse_datetime"]
+
+[[bin]]
+name = "date"
+path = "main.rs"
+
+[dependencies]
+parse_datetime = { path = "vendor/parse_datetime" }
+jiff = { version = "=0.2.45", default-features = false, features = ["alloc"] }
+
+[target.'cfg(target_os = "none")'.dependencies]
+jiff = { version = "=0.2.45", default-features = false, features = ["tzdb-bundle-always"] }
+
+nova-cli = { path = "../.." }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = "0.2"
+jiff = { version = "=0.2.45", features = ["tz-system"] }
+
+[profile.release]
+panic = "abort"
+lto = true
+opt-level = "s"
+codegen-units = 1
+strip = true

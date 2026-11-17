@@ -9,10 +9,27 @@ fn invalid(option: &str) -> rt::Result<Option<u64>> {
     Ok(Some(rt::BAD_ARGUMENT))
 }
 
+#[path = "../coreutils/date/options.rs"]
+#[allow(dead_code)]
+mod date_options;
+
 pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::Result<Option<u64>> {
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "date" {
+        let text = match date_options::parse(args) {
+            Ok(date_options::Action::Help) => page.render(&[], false, lang).ok_or(rt::BAD_ARGUMENT)?,
+            Ok(date_options::Action::Version) => page.version(lang),
+            Ok(date_options::Action::Run(_)) => return Ok(None),
+            Err(message) => {
+                console::printable(tty::ERROR, &alloc::format!("date: {message}\n"))?;
+                return Ok(Some(1));
+            }
+        };
+        console::write(tty::OUTPUT, &text)?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

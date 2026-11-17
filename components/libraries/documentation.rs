@@ -31,6 +31,33 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "date",
+        provider: "nova-cli",
+        description: Text(
+            "Display or set civil time.",
+            "Afficher ou régler l’heure civile.",
+        ),
+        syntax: Text::same("date [OPTION]... [+FORMAT] | date MMDDhhmm[[CC]YY][.ss]"),
+        arguments: Text(
+            "-d, --date STRING; -f, --file FILE (- for stdin); -r, --reference FILE; -s, --set STRING; --resolution; --debug. -u, --utc, --uct, --universal select UTC. -I, --iso-8601[=date|hours|minutes|seconds|ns], -R, --rfc-email, --rfc-822, --rfc-2822, --rfc-3339=date|seconds|ns. --help, --version, --.",
+            "-d, --date CHAÎNE ; -f, --file FICHIER (- pour l’entrée standard) ; -r, --reference FICHIER ; -s, --set CHAÎNE ; --resolution ; --debug. -u, --utc, --uct, --universal sélectionnent UTC. -I, --iso-8601[=date|hours|minutes|seconds|ns], -R, --rfc-email, --rfc-822, --rfc-2822, --rfc-3339=date|seconds|ns. --help, --version, --.",
+        ),
+        examples: Text::same("date -u -d @0 +%F ; date -Ins -d 2024-02-29"),
+        rights: Text(
+            "Reading a file requires a file grant. Setting civil time requires a distinct clock grant.",
+            "Un fichier exige une délégation de lecture. Le réglage exige un droit distinct sur l’horloge civile.",
+        ),
+        effects: Text(
+            "Writes one line per date. Setting time changes the selected clock if permitted.",
+            "Écrit une ligne par date. Le réglage modifie l’horloge sélectionnée si le droit est accordé.",
+        ),
+        limits: Text(
+            "Success 0, error 1. NovaOS v1 reads UTC in whole seconds. File timestamps can be unknown.",
+            "Succès 0, erreur 1. NovaOS v1 lit UTC à la seconde. Un horodatage de fichier peut être inconnu.",
+        ),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(

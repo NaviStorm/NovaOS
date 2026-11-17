@@ -68,7 +68,7 @@ fn catalogue_et_rendu() {
         assert_eq!(
             names.into_iter().collect::<Vec<_>>(),
             [
-                "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
+                "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "date", "echo", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
                 "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
                 "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
@@ -128,7 +128,7 @@ fn aiguillage_sans_aucune_interface_metier() {
             }
             assert_eq!(
                 doc_options::answer(page.name, &["--inconnue"], lang),
-                Ok(Some(3))
+                Ok(Some(if page.name=="date"{1}else{3}))
             );
             assert_eq!(
                 doc_options::answer(page.name, &["--", "--inconnue"], lang),

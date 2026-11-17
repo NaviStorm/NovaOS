@@ -1,0 +1,10 @@
+[package]
+name = "parse_datetime"
+version = "0.17.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+winnow = { version = "1", default-features = false, features = ["alloc", "ascii", "parser", "binary"] }
+jiff = { version = "=0.2.45", default-features = false, features = ["alloc"] }
