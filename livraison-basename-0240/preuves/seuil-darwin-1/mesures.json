@@ -1,0 +1,3411 @@
+{
+ "machine": "arm64",
+ "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+ "locale": "C",
+ "version_gnu": "basename (GNU coreutils) 9.12",
+ "commit": "36f37751dc43928925ef221de572d6226e140fae",
+ "seuil": "11/10",
+ "passages": 15,
+ "lancements": 16,
+ "echauffement": 4,
+ "debut": {
+  "date": "2026-11-17T05:30:36.805491+01:00",
+  "charge": [
+   4.11865234375,
+   5.04833984375,
+   4.9306640625
+  ],
+  "processus": [
+   "Python"
+  ]
+ },
+ "generations_avant": {
+  "Nova": {
+   "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/basename-natif-0240/livraison-basename-0240/bin/basename-darwin-arm64",
+   "sha256": "b3abfa30c610a14c025cf338fd6c31e070b5de53b89b405eff87a89eac861cc6",
+   "device": 16777232,
+   "inode": 139636651,
+   "taille": 351712,
+   "mtime_ns": 1794873279999223090,
+   "ctime_ns": 1794873279999344257
+  },
+  "GNU": {
+   "chemin": "/opt/homebrew/Cellar/coreutils/9.12_1/bin/gbasename",
+   "sha256": "062f6e4cbbc4088f898b274f7208e3020b3a7112420d215922b3ce9beea79de4",
+   "device": 16777232,
+   "inode": 123883595,
+   "taille": 93544,
+   "mtime_ns": 1789399775000000000,
+   "ctime_ns": 1794238773228409272
+  }
+ },
+ "cellules": [
+  {
+   "n": 1,
+   "option": "-a",
+   "argv_sha256": "3f43d5706cb6147331358d10e104c64d3b77176b36bb872fe2a68d3701738229",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "8377985996c51cb00c9c308247b7decd3e16106c24eab7807871ba0df6b22df8",
+     "octets": 19,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "8377985996c51cb00c9c308247b7decd3e16106c24eab7807871ba0df6b22df8",
+     "octets": 19,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "8377985996c51cb00c9c308247b7decd3e16106c24eab7807871ba0df6b22df8",
+     "octets": 19,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "8377985996c51cb00c9c308247b7decd3e16106c24eab7807871ba0df6b22df8",
+     "octets": 19,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 21170875,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19535750,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18923083,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19762083,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19612334,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19351083,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19005917,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19554416,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19233917,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18781208,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19111750,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20672000,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20832791,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19331334,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18847083,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19586000,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19646250,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19442209,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18950917,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19805791,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19802958,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19085542,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18895292,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19741125,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19251958,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19207834,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19409667,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19840333,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19909709,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 20312709,
+      "rss_max_octets": 1900544
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.2021198125,
+     "max_ms": 1.3231796875,
+     "mad_ms": 0.0093593125
+    },
+    "GNU": {
+     "min_ms": 1.1738255,
+     "max_ms": 1.2695443125,
+     "mad_ms": 0.013724
+    }
+   },
+   "medianes_ns": {
+    "Nova": "19762083/16",
+    "GNU": "9555875/8"
+   },
+   "rapport_exact": "19762083/19111750",
+   "conforme": true
+  },
+  {
+   "n": 1,
+   "option": "-az",
+   "argv_sha256": "7cffcfbbd5446df3095711b6882b8e77db0b0b50a1bcc6170eb6075193eecac5",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "3a1888091afc74c2c2dbd2fbbcc5e1c91ba8c5a025e6e8fa0b6ac2f946aa5a30",
+     "octets": 19,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "3a1888091afc74c2c2dbd2fbbcc5e1c91ba8c5a025e6e8fa0b6ac2f946aa5a30",
+     "octets": 19,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "3a1888091afc74c2c2dbd2fbbcc5e1c91ba8c5a025e6e8fa0b6ac2f946aa5a30",
+     "octets": 19,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "3a1888091afc74c2c2dbd2fbbcc5e1c91ba8c5a025e6e8fa0b6ac2f946aa5a30",
+     "octets": 19,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 21445208,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 21189459,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20422250,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19676208,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19337500,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19936333,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19675042,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18983250,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19116959,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19954791,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20215875,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19723917,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19518041,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20588708,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20288334,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19649875,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19638792,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20034750,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19779791,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19175625,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18923333,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19734375,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19658166,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19107500,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18982917,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19421166,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19474417,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19021250,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18903209,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19323541,
+      "rss_max_octets": 1966080
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.2077213125,
+     "max_ms": 1.3243411875,
+     "mad_ms": 0.017471375
+    },
+    "GNU": {
+     "min_ms": 1.1814505625,
+     "max_ms": 1.3403255,
+     "mad_ms": 0.01576825
+    }
+   },
+   "medianes_ns": {
+    "Nova": "19936333/16",
+    "GNU": "19175625/16"
+   },
+   "rapport_exact": "19936333/19175625",
+   "conforme": true
+  },
+  {
+   "n": 1,
+   "option": "-s.txt",
+   "argv_sha256": "d94420df4538386447f57fb06cbae6a8964c644add4e89b81c3079b4bf58cab7",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "c6c5c3fd40a18d5e28f5d43087cd119d0963190c45a7a0a36c9c800552aae4a2",
+     "octets": 15,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "c6c5c3fd40a18d5e28f5d43087cd119d0963190c45a7a0a36c9c800552aae4a2",
+     "octets": 15,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "c6c5c3fd40a18d5e28f5d43087cd119d0963190c45a7a0a36c9c800552aae4a2",
+     "octets": 15,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "c6c5c3fd40a18d5e28f5d43087cd119d0963190c45a7a0a36c9c800552aae4a2",
+     "octets": 15,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19799333,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18900584,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19250375,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19598084,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20191250,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19178209,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18947833,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19388917,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19308708,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18771083,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18944625,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19563833,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19377375,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19153583,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18930291,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19574959,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19962375,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18667667,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19151959,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19897291,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19558625,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18906083,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18993000,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19580125,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19450250,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19047583,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19257208,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19552875,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20428375,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18927583,
+      "rss_max_octets": 1900544
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.20679425,
+     "max_ms": 1.2767734375,
+     "mad_ms": 0.011627625
+    },
+    "GNU": {
+     "min_ms": 1.1667291875,
+     "max_ms": 1.2035755,
+     "mad_ms": 0.006234375
+    }
+   },
+   "medianes_ns": {
+    "Nova": "19574959/16",
+    "GNU": "18947833/16"
+   },
+   "rapport_exact": "19574959/18947833",
+   "conforme": true
+  },
+  {
+   "n": 1,
+   "option": "-zs.txt",
+   "argv_sha256": "e37cb6885f4c5943117971164b6ee1e86061c26742a18fc941df69c2ad5d01ee",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "2815d6db583181342861b35123ad440097081203ced35b48974246a48a223849",
+     "octets": 15,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "2815d6db583181342861b35123ad440097081203ced35b48974246a48a223849",
+     "octets": 15,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "2815d6db583181342861b35123ad440097081203ced35b48974246a48a223849",
+     "octets": 15,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "2815d6db583181342861b35123ad440097081203ced35b48974246a48a223849",
+     "octets": 15,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18803167,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19362667,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19606917,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18755292,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18577667,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19277042,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19514584,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18984875,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18655875,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19431459,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19119916,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19187083,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18740542,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19595000,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19440209,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19005167,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18833625,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19711791,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19413333,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18801375,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19347666,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19626792,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19308875,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18975083,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18546500,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 21434791,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19632250,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19044209,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18859333,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19464667,
+      "rss_max_octets": 1966080
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.19499475,
+     "max_ms": 1.3396744375,
+     "mad_ms": 0.008890625
+    },
+    "GNU": {
+     "min_ms": 1.15915625,
+     "max_ms": 1.209229125,
+     "mad_ms": 0.009453125
+    }
+   },
+   "medianes_ns": {
+    "Nova": "19464667/16",
+    "GNU": "18833625/16"
+   },
+   "rapport_exact": "19464667/18833625",
+   "conforme": true
+  },
+  {
+   "n": 30,
+   "option": "-a",
+   "argv_sha256": "c39ec39a1375100da997667ebd6be6def5dbf39c36115c6d44c7fed30245e9c2",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "521eecee482d0aae033cef8c06ebdf2ae0f6bd5d112218c79e6d2b70dc1c2211",
+     "octets": 570,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "521eecee482d0aae033cef8c06ebdf2ae0f6bd5d112218c79e6d2b70dc1c2211",
+     "octets": 570,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "521eecee482d0aae033cef8c06ebdf2ae0f6bd5d112218c79e6d2b70dc1c2211",
+     "octets": 570,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "521eecee482d0aae033cef8c06ebdf2ae0f6bd5d112218c79e6d2b70dc1c2211",
+     "octets": 570,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19682208,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18836042,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19192458,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19488958,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19300167,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18518083,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18692583,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19615958,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19104333,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19336167,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19294791,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20122334,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19918125,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19265583,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19033083,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19553667,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20759917,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 22988625,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20587500,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19716292,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19433125,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19339583,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18673500,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19495625,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 18964209,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18577375,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18943500,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19097000,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19209334,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18969917,
+      "rss_max_octets": 1900544
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.1852630625,
+     "max_ms": 1.2974948125,
+     "mad_ms": 0.0137916875
+    },
+    "GNU": {
+     "min_ms": 1.1573801875,
+     "max_ms": 1.4367890625,
+     "mad_ms": 0.01894275
+    }
+   },
+   "medianes_ns": {
+    "Nova": "19495625/16",
+    "GNU": "19033083/16"
+   },
+   "rapport_exact": "19495625/19033083",
+   "conforme": true
+  },
+  {
+   "n": 30,
+   "option": "-az",
+   "argv_sha256": "01bb0c3a781e5977b5ed2ac44f92e89c3d149dd3961d4a38ff832b97c0e89a9e",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "715e05dfd3b297822dba46f153ca9d0f29bdbcce2d0cbca74801047f25cfafc7",
+     "octets": 570,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "715e05dfd3b297822dba46f153ca9d0f29bdbcce2d0cbca74801047f25cfafc7",
+     "octets": 570,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "715e05dfd3b297822dba46f153ca9d0f29bdbcce2d0cbca74801047f25cfafc7",
+     "octets": 570,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "715e05dfd3b297822dba46f153ca9d0f29bdbcce2d0cbca74801047f25cfafc7",
+     "octets": 570,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18840708,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19323417,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19894334,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19037583,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19020208,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 21307792,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 21001416,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 20776625,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20160250,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20584292,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20316584,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 20654750,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19636917,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20484208,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19754041,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19945125,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19313334,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19852542,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19178416,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19008416,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20020500,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20437625,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20118584,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19679458,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19861750,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20174583,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 21323500,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 20052958,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19550625,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20743791,
+      "rss_max_octets": 1966080
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.198651,
+     "max_ms": 1.33271875,
+     "mad_ms": 0.0267004375
+    },
+    "GNU": {
+     "min_ms": 1.17754425,
+     "max_ms": 1.2985390625,
+     "mad_ms": 0.02334375
+    }
+   },
+   "medianes_ns": {
+    "Nova": "2539573/2",
+    "GNU": "9839729/8"
+   },
+   "rapport_exact": "10158292/9839729",
+   "conforme": true
+  },
+  {
+   "n": 30,
+   "option": "-s.txt",
+   "argv_sha256": "93a0ae6b1e9aaf80801885c1079ea0057b3c66f4a25d20c2a6c24507312c05b9",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "3ce2e5962142a76ac3d6bf71c73c5e29cdd086e58e4179d64510b6ec54d125e6",
+     "octets": 450,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "3ce2e5962142a76ac3d6bf71c73c5e29cdd086e58e4179d64510b6ec54d125e6",
+     "octets": 450,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "3ce2e5962142a76ac3d6bf71c73c5e29cdd086e58e4179d64510b6ec54d125e6",
+     "octets": 450,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "3ce2e5962142a76ac3d6bf71c73c5e29cdd086e58e4179d64510b6ec54d125e6",
+     "octets": 450,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20492042,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19481958,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19471791,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20271917,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20468750,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 20159750,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19513084,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20054708,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20029000,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19545417,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19354833,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19191708,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19206416,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18767833,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18795958,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19560000,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19332084,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18917542,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19238875,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19160333,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 21725459,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 21279125,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19281375,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19899875,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19242166,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18712542,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18549958,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19015541,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19610375,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 18739000,
+      "rss_max_octets": 1900544
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.1884713125,
+     "max_ms": 1.3578411875,
+     "mad_ms": 0.0261666875
+    },
+    "GNU": {
+     "min_ms": 1.159372375,
+     "max_ms": 1.3299453125,
+     "mad_ms": 0.0227395625
+    }
+   },
+   "medianes_ns": {
+    "Nova": "19610375/16",
+    "GNU": "19281375/16"
+   },
+   "rapport_exact": "156883/154251",
+   "conforme": true
+  },
+  {
+   "n": 30,
+   "option": "-zs.txt",
+   "argv_sha256": "9cb7b3979e1af34ed3e306de1ed901cfc4cf90f813e10cc2b9580c3485bf1367",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "d301e0a2ed5aa8c3420bdd1320d3697ab9574526cfd744bceb4cc9043ae9b87e",
+     "octets": 450,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "d301e0a2ed5aa8c3420bdd1320d3697ab9574526cfd744bceb4cc9043ae9b87e",
+     "octets": 450,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "d301e0a2ed5aa8c3420bdd1320d3697ab9574526cfd744bceb4cc9043ae9b87e",
+     "octets": 450,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "d301e0a2ed5aa8c3420bdd1320d3697ab9574526cfd744bceb4cc9043ae9b87e",
+     "octets": 450,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20050416,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 20125625,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19947542,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19399417,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19329458,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19497917,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19397625,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19003708,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18815041,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19631500,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19506167,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19138709,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 18868209,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19355167,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19590417,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19409917,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19050458,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19601292,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19492916,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19153875,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19000541,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19679291,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19934083,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19114709,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19260000,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19929250,
+      "rss_max_octets": 1966080
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20059625,
+      "rss_max_octets": 1966080
+     },
+     "GNU": {
+      "ns": 19214292,
+      "rss_max_octets": 1900544
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19327917,
+      "rss_max_octets": 1900544
+     },
+     "Nova": {
+      "ns": 19688083,
+      "rss_max_octets": 1966080
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.2096979375,
+     "max_ms": 1.2578515625,
+     "mad_ms": 0.0086615
+    },
+    "GNU": {
+     "min_ms": 1.1759400625,
+     "max_ms": 1.253151,
+     "mad_ms": 0.009583375
+    }
+   },
+   "medianes_ns": {
+    "Nova": "4907875/4",
+    "GNU": "19153875/16"
+   },
+   "rapport_exact": "157052/153231",
+   "conforme": true
+  },
+  {
+   "n": 512,
+   "option": "-a",
+   "argv_sha256": "40fb4b02d06475456d47f1dc5d7a65fe2550b45921b8c3193cbdf40730e2fe63",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "db083da9363c2fadfc71af3b85d8381ba18f96db15697d4fd4a59682053d493e",
+     "octets": 9728,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "db083da9363c2fadfc71af3b85d8381ba18f96db15697d4fd4a59682053d493e",
+     "octets": 9728,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "db083da9363c2fadfc71af3b85d8381ba18f96db15697d4fd4a59682053d493e",
+     "octets": 9728,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "db083da9363c2fadfc71af3b85d8381ba18f96db15697d4fd4a59682053d493e",
+     "octets": 9728,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20576917,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20773416,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20243083,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20291542,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20232750,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20210042,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20087292,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20334333,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20149375,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20396917,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20431542,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20442209,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20126917,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20353666,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20352542,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20384666,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20564792,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20212416,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19714125,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20197000,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20046875,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20040958,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20031750,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20303458,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19942041,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20241792,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20108750,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20242292,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20169084,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20360833,
+      "rss_max_octets": 1933312
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.2463775625,
+     "max_ms": 1.2860573125,
+     "mad_ms": 0.0058073125
+    },
+    "GNU": {
+     "min_ms": 1.2321328125,
+     "max_ms": 1.2983385,
+     "mad_ms": 0.008315125
+    }
+   },
+   "medianes_ns": {
+    "Nova": "5060573/4",
+    "GNU": "1265112"
+   },
+   "rapport_exact": "5060573/5060448",
+   "conforme": true
+  },
+  {
+   "n": 512,
+   "option": "-az",
+   "argv_sha256": "7543f278a4a68dc356b7cae50777e74d8811a31b0ac428d969f0c9c77d544467",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "e69bae3b5f75441d2001015a97ae18cc53537669bb372dc34ab0514fb66001f1",
+     "octets": 9728,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "e69bae3b5f75441d2001015a97ae18cc53537669bb372dc34ab0514fb66001f1",
+     "octets": 9728,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "e69bae3b5f75441d2001015a97ae18cc53537669bb372dc34ab0514fb66001f1",
+     "octets": 9728,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "e69bae3b5f75441d2001015a97ae18cc53537669bb372dc34ab0514fb66001f1",
+     "octets": 9728,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20344334,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20206417,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20186125,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 19888625,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20298959,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20308750,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20054292,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20166750,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 22011459,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 21241583,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 21286917,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 21268292,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 21542875,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 22534000,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 21649958,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 21088916,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20504542,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20468959,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20242375,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20514916,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20046125,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20322375,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20108375,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20175583,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20081916,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20161334,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20328750,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 19926916,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19927708,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20371292,
+      "rss_max_octets": 2015232
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.25339325,
+     "max_ms": 1.408375,
+     "mad_ms": 0.0091615
+    },
+    "GNU": {
+     "min_ms": 1.2430390625,
+     "max_ms": 1.3757161875,
+     "mad_ms": 0.015802125
+    }
+   },
+   "medianes_ns": {
+    "Nova": "20322375/16",
+    "GNU": "20298959/16"
+   },
+   "rapport_exact": "20322375/20298959",
+   "conforme": true
+  },
+  {
+   "n": 512,
+   "option": "-s.txt",
+   "argv_sha256": "ac41e97d90e7dbe7605eaa63814f1f58fa003d414a200e63a2772187e0243b9e",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "33290549e961aa45292cc93520f392fe8b9d201d62a2a0cbbc5a2ed839eac8eb",
+     "octets": 7680,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "33290549e961aa45292cc93520f392fe8b9d201d62a2a0cbbc5a2ed839eac8eb",
+     "octets": 7680,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "33290549e961aa45292cc93520f392fe8b9d201d62a2a0cbbc5a2ed839eac8eb",
+     "octets": 7680,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "33290549e961aa45292cc93520f392fe8b9d201d62a2a0cbbc5a2ed839eac8eb",
+     "octets": 7680,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20767375,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20904625,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20412833,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20525875,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20141167,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20316000,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20053583,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20075542,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20018583,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20318333,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20218084,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20494041,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20357708,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20556792,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 21017542,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20488959,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19835042,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20083667,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20267625,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 22752959,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 23105708,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 23139542,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 22315625,
+      "rss_max_octets": 1949696
+     },
+     "Nova": {
+      "ns": 21933750,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 22272042,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 22203750,
+      "rss_max_octets": 1949696
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 23018958,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 23135375,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 24592709,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 24337792,
+      "rss_max_octets": 1933312
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.239690125,
+     "max_ms": 1.5370443125,
+     "mad_ms": 0.03170575
+    },
+    "GNU": {
+     "min_ms": 1.2533489375,
+     "max_ms": 1.521112,
+     "mad_ms": 0.028796875
+    }
+   },
+   "medianes_ns": {
+    "Nova": "20525875/16",
+    "GNU": "2569599/2"
+   },
+   "rapport_exact": "20525875/20556792",
+   "conforme": true
+  },
+  {
+   "n": 512,
+   "option": "-zs.txt",
+   "argv_sha256": "ee1de7b981615332ca45b9f981090e6e19b422c44bf181d07fb0d1f4bc5988b1",
+   "avant": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "98920c8e433f5ee26c618fb4b5bb292401aabf0e863bbde9e67f7ee82fa80dd3",
+     "octets": 7680,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "98920c8e433f5ee26c618fb4b5bb292401aabf0e863bbde9e67f7ee82fa80dd3",
+     "octets": 7680,
+     "stderr_hex": ""
+    }
+   },
+   "apres": {
+    "Nova": {
+     "statut": 0,
+     "stdout_sha256": "98920c8e433f5ee26c618fb4b5bb292401aabf0e863bbde9e67f7ee82fa80dd3",
+     "octets": 7680,
+     "stderr_hex": ""
+    },
+    "GNU": {
+     "statut": 0,
+     "stdout_sha256": "98920c8e433f5ee26c618fb4b5bb292401aabf0e863bbde9e67f7ee82fa80dd3",
+     "octets": 7680,
+     "stderr_hex": ""
+    }
+   },
+   "echantillons": [
+    {
+     "passage": 1,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 28463875,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 22419750,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 2,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 21396875,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 21233208,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 3,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 21251416,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 24007250,
+      "rss_max_octets": 2031616
+     }
+    },
+    {
+     "passage": 4,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20833083,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 21068750,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 5,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 21446333,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 21130625,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 6,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20818708,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 21144125,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 7,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20672542,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20779667,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 8,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20480750,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20490958,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 9,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20093041,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20092625,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 10,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19931291,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 19867041,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 11,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 19877333,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20239333,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 12,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 19958042,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20120375,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 13,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20238125,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20418250,
+      "rss_max_octets": 2015232
+     }
+    },
+    {
+     "passage": 14,
+     "ordre": [
+      "Nova",
+      "GNU"
+     ],
+     "Nova": {
+      "ns": 20661125,
+      "rss_max_octets": 2015232
+     },
+     "GNU": {
+      "ns": 20469250,
+      "rss_max_octets": 1933312
+     }
+    },
+    {
+     "passage": 15,
+     "ordre": [
+      "GNU",
+      "Nova"
+     ],
+     "GNU": {
+      "ns": 20190500,
+      "rss_max_octets": 1933312
+     },
+     "Nova": {
+      "ns": 20688458,
+      "rss_max_octets": 2015232
+     }
+    }
+   ],
+   "dispersion": {
+    "Nova": {
+     "min_ms": 1.2457056875,
+     "max_ms": 1.500453125,
+     "mad_ms": 0.0276354375
+    },
+    "GNU": {
+     "min_ms": 1.2416900625,
+     "max_ms": 1.7789921875,
+     "mad_ms": 0.036112
+    }
+   },
+   "medianes_ns": {
+    "Nova": "10344229/8",
+    "GNU": "10245479/8"
+   },
+   "rapport_exact": "10344229/10245479",
+   "conforme": true
+  }
+ ],
+ "fin": {
+  "date": "2026-11-17T05:30:44.304184+01:00",
+  "charge": [
+   4.50927734375,
+   5.11376953125,
+   4.9541015625
+  ],
+  "processus": [
+   "Python"
+  ]
+ },
+ "generations_apres": {
+  "Nova": {
+   "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/basename-natif-0240/livraison-basename-0240/bin/basename-darwin-arm64",
+   "sha256": "b3abfa30c610a14c025cf338fd6c31e070b5de53b89b405eff87a89eac861cc6",
+   "device": 16777232,
+   "inode": 139636651,
+   "taille": 351712,
+   "mtime_ns": 1794873279999223090,
+   "ctime_ns": 1794873279999344257
+  },
+  "GNU": {
+   "chemin": "/opt/homebrew/Cellar/coreutils/9.12_1/bin/gbasename",
+   "sha256": "062f6e4cbbc4088f898b274f7208e3020b3a7112420d215922b3ce9beea79de4",
+   "device": 16777232,
+   "inode": 123883595,
+   "taille": 93544,
+   "mtime_ns": 1789399775000000000,
+   "ctime_ns": 1794238773228409272
+  }
+ }
+}
