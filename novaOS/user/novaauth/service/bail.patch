@@ -1,5 +1,5 @@
 diff --git a/novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs b/novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs
-index caa52e1cfab1b2465aea4122ed8c178253bc8003..57bcdd0aab4cd265dd948f9c2f5d5379c93b991e 100644
+index a33f3f1a15c1017a1f73932b3d7a08e58e46b882..6de93355345effe214c84f16b0c1e7a2ce33f561 100644
 --- a/novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs
 +++ b/novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs
 @@ -4,0 +5,11 @@
@@ -14,23 +14,41 @@ index caa52e1cfab1b2465aea4122ed8c178253bc8003..57bcdd0aab4cd265dd948f9c2f5d5379
 +    }
 +}
 +
-@@ -5,0 +17 @@
-+    checked: Option<(u64, bool)> ,
-@@ -20,0 +33 @@
+@@ -5,0 +17,2 @@
++    checked: Option<(u64, bool)>,
++    race_close: bool,
+@@ -23,0 +37,2 @@
 +            checked: None,
-@@ -95,0 +109 @@
-+        self.checked = Some((session_start, true));
-@@ -308,3 +322,4 @@
--        self.sessions
--            .inspect(id, self.route, Some(current), now()?)
--            .map_err(|_| rt::DENIED)?;
-+        let tick = now()?;
-+        let result = self.sessions.inspect(id, self.route, Some(current), tick);
-+        self.checked = Some((tick, result.is_ok()));
-+        result.map_err(|_| rt::DENIED)?;
-@@ -400,0 +416 @@
++            race_close: false,
+@@ -307,0 +323,4 @@
++        if self.live.is_none_or(|(active, _)| active != id) {
++            self.checked = Some((now()?, false));
++            return Err(rt::DENIED);
++        }
+@@ -315,0 +335 @@
++        self.checked = Some((tick, inspected.is_ok()));
+@@ -398,0 +419,10 @@
++        if core::mem::take(&mut self.race_close) {
++            let before = now()?;
++            let left = self.relay_deadline.checked_sub(before).ok_or(rt::TIMED_OUT)?;
++            if left > 15_000 { return Err(rt::BAD_ARGUMENT); }
++            // La route est déjà en retrait. Laisser l'expiration réelle du noyau
++            // retirer les feuilles pendant que cette fermeture est en vol.
++            if rt::receive_for(rt::config(18), left / 4 + 2).err() != Some(rt::TIMED_OUT)
++                || now()? < self.relay_deadline { return Err(rt::REFUSED); }
++            marker(b"NXBAIL expiration pendant fermeture");
++        }
+@@ -445,0 +476 @@
 +        login.checked = None;
-@@ -447,0 +464,14 @@
+@@ -466,0 +498,7 @@
++                }
++                b"NXBRACE1" => {
++                    let sid = m.payload[8..40].try_into().unwrap();
++                    login.inspect(sid)?;
++                    login.race_close = true;
++                    reply[8..16].copy_from_slice(&login.relay_deadline.to_le_bytes());
++                    reply[16..24].copy_from_slice(&now()?.to_le_bytes());
+@@ -492,0 +531,14 @@
 +        // Le quota DEBUG_WRITE reste inchangé. NXPKDATA peut produire des centaines de trames.
 +        let op = &m.payload[..8];
 +        if matches!(op, b"NSHOPEN1" | b"NSHEXEND" | b"NSHEXRD1" | b"NXPKBEG1" | b"NXPKEND1" | b"NSHCLOS1")
@@ -46,32 +64,23 @@ index caa52e1cfab1b2465aea4122ed8c178253bc8003..57bcdd0aab4cd265dd948f9c2f5d5379
 +            }
 +        }
 diff --git a/components/shell/session_auth_lab.rs b/components/shell/session_auth_lab.rs
-index 2ab1901c763240e06c22cc1c9ff0eff5c82bcda3..058e2ddf81bb71ee8e13b201038e7ba0fc25cd57 100644
+index 51bbf96f4eb303c4a390706511f265cfb8877a73..9037b253b4abec2411261e76cea9ab6fa0d32677 100644
 --- a/components/shell/session_auth_lab.rs
 +++ b/components/shell/session_auth_lab.rs
-@@ -26,0 +27,25 @@
-+            ["attendre-bail", path] => {
-+                let read = fs.open_at(0, path.as_bytes(), 0x80 | w::READABLE)?;
-+                let mut one = [0];
-+                let check = (|| {
-+                    if fs.read(read, 0, &mut one)? != 1 { return Err(rt::REFUSED); }
-+                    // Voie de réponse privée au repos. IPC attend en ticks (250 Hz).
-+                    if rt::receive_for(rt::config(17), 15000).err() != Some(rt::TIMED_OUT) {
-+                        return Err(rt::REFUSED);
-+                    }
-+                    let access = fs.read(read, 0, &mut one);
-+                    super::console::write(super::tty::OUTPUT,
-+                        &alloc::format!("NXBAIL ancien handle lecture={}\n", access.err().unwrap_or(0)))?;
-+                    Ok(())
-+                })();
-+                let _ = fs.close(read);
-+                check?;
-+            }
-+            ["reauthentifier"] => {
-+                // Deux demandes explicites sur la même route du shell, après la tentative expirée.
-+                let closed = self.close();
-+                let opened = self.authenticate();
-+                super::console::write(super::tty::OUTPUT, &alloc::format!(
-+                    "NXBAIL reauth fermeture={} ouverture={}\n", closed.err().unwrap_or(0), opened.err().unwrap_or(0)))?;
-+                opened?;
-+            }
+@@ -2,0 +3,3 @@
++
++#[path = "bail_client_lab.rs"]
++mod bail;
+@@ -8,0 +12,2 @@
++    held: Option<bail::Held>,
++    lose_commit_reply: bool,
+@@ -27,0 +33,4 @@
++            ["attendre-bail", path] => self.await_expiry(fs, path)?,
++            ["course-fermeture"] => self.close_race()?,
++            ["anciens-droits"] => self.old_grants(fs)?,
++            ["perdre-accuse"] => self.lose_commit_reply = true,
+@@ -119,0 +129,4 @@
++        }
++        if op == b"NXPKEND1" && core::mem::take(&mut self.lose_commit_reply) {
++            // Accusé volontairement perdu à la frontière client, avant son interprétation.
++            return Err(nova_cli::protocol::UNCERTAIN);

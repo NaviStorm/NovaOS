@@ -1,0 +1,131 @@
+diff --git a/novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs b/novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs
+index caa52e1cfab1b2465aea4122ed8c178253bc8003..a33f3f1a15c1017a1f73932b3d7a08e58e46b882 100644
+--- a/novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs
++++ b/novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs
+@@ -13,0 +14,3 @@
++    // Une seule route du lanceur. Aucun nouveau bail avant acquittement du nettoyage.
++    retiring: Option<[u8; 32]>,
++    last_closed: Option<[u8; 32]>,
+@@ -31,0 +35,2 @@
++            retiring: None,
++            last_closed: None,
+@@ -52,0 +58 @@
++        self.maintain()?;
+@@ -308,3 +314,6 @@
+-        self.sessions
+-            .inspect(id, self.route, Some(current), now()?)
+-            .map_err(|_| rt::DENIED)?;
++        let tick = now()?;
++        let inspected = self.sessions.inspect(id, self.route, Some(current), tick);
++        if inspected.is_err() {
++            self.close(id)?;
++            return Err(rt::DENIED);
++        }
+@@ -316 +325,7 @@
+-            b"NXPKDATA" => q.copy_from_slice(msg),
++            b"NXPKDATA" => {
++                // Les fragments portent un ID de mutation, aucun ID de session.
++                // Seule la session courante peut continuer son transfert.
++                self.maintain()?;
++                self.live.ok_or(rt::DENIED)?;
++                q.copy_from_slice(msg);
++            }
+@@ -357,0 +373,12 @@
++    fn maintain(&mut self) -> rt::Result<()> {
++        if let Some(id) = self.retiring {
++            self.close(id)?;
++        }
++        if let Some((id, _)) = self.live {
++            if now()? >= self.relay_deadline {
++                self.close(id)?;
++            }
++        }
++        Ok(())
++    }
++
+@@ -359,3 +386,13 @@
+-        self.sessions
+-            .close(id, self.route)
+-            .map_err(|_| rt::DENIED)?;
++        if self.last_closed == Some(id) {
++            return Ok(());
++        }
++        if self.retiring != Some(id) {
++            if self.live.map(|(active, _)| active) != Some(id) {
++                return Err(rt::DENIED);
++            }
++            // inspect peut avoir déjà purgé la table volatile. Cette route privée
++            // n'a qu'un seul bail. La retirer est idempotent, même après expiration.
++            self.live = None;
++            self.retiring = Some(id);
++            self.sessions.disconnect(self.route);
++        }
+@@ -370 +407,3 @@
+-        self.live = None;
++        // NXRSTOP1 abandonne les admissions et les délégations de cet ID.
++        // NXPKDROP abandonne seulement les préparations volatiles. Les reçus
++        // durables des mutations restent consultables par identifiant.
+@@ -377,0 +417,2 @@
++        self.retiring = None;
++        self.last_closed = Some(id);
+@@ -398 +439,5 @@
+-            Err(rt::TIMED_OUT) => continue,
++            Err(rt::TIMED_OUT) => {
++                // Un échec de nettoyage laisse retiring en place et ferme l'admission.
++                let _ = login.maintain();
++                continue;
++            }
+@@ -449 +494,6 @@
+-        rt::send_for(rt::config(16), m.tag, &reply, 5000)?;
++        match rt::send_for(rt::config(16), m.tag, &reply, 5000) {
++            // Le retrait est acquis. Un accusé perdu ne remet pas le bail en service
++            // et une seconde fermeture du même ID retrouve le résultat sans mutation.
++            Err(rt::TIMED_OUT | rt::REVOKED | rt::CLOSED) if &m.payload[..8] == b"NSHCLOS1" && result.is_ok() => (),
++            outcome => outcome?,
++        }
+diff --git a/components/shell/session_auth_lab.rs b/components/shell/session_auth_lab.rs
+index 2ab1901c763240e06c22cc1c9ff0eff5c82bcda3..51bbf96f4eb303c4a390706511f265cfb8877a73 100644
+--- a/components/shell/session_auth_lab.rs
++++ b/components/shell/session_auth_lab.rs
+@@ -8,0 +9 @@
++    explicit_login_required: bool,
+@@ -688,0 +690,14 @@
++    pub(super) fn reauthenticate(&mut self) -> rt::Result<()> {
++        let previous = self.session;
++        let route = self.identity;
++        self.explicit_login_required = true;
++        self.close()?;
++        self.establish()?;
++        if previous.is_some() && (previous == self.session || self.identity != route) {
++            self.close()?;
++            return Err(rt::DENIED);
++        }
++        self.explicit_login_required = false;
++        Ok(())
++    }
++
+@@ -689,0 +705,7 @@
++        if self.explicit_login_required {
++            return Err(rt::DENIED);
++        }
++        self.establish()
++    }
++
++    fn establish(&mut self) -> rt::Result<()> {
+@@ -708 +730 @@
+-        if let Some(id) = self.session.take() {
++        if let Some(id) = self.session {
+@@ -709,0 +732 @@
++            self.session = None;
+diff --git a/components/shell/main.rs b/components/shell/main.rs
+index e234a363a30c028382c227d519e75a1b364ec5fa..e180998bb9a5c9b59728601a6a70039ea08e3a4a 100644
+--- a/components/shell/main.rs
++++ b/components/shell/main.rs
+@@ -58,0 +59,7 @@
++            // Action interactive explicite, isolée de toute liste ou transaction en cours.
++            if source.trim() == "session reauthentifier" {
++                login.reauthenticate()?;
++                frame.status = 0;
++                console::write(tty::OUTPUT, "NovaAuth : nouvelle session authentifiée\n")?;
++                return Ok(script::Flow::Status(0));
++            }

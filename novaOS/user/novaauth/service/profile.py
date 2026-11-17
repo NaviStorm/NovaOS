@@ -25,6 +25,7 @@ def prepare(destination, policies=False, retired_reply=False, shell=False, selec
     if shell:
         apply(destination, "lancement.patch")
         runpy.run_path(str(destination / "novaOS/user/novaauth/service/limine_hhdm_qemu.py"))["install"](destination)
+        apply(destination, "session-expiration.patch")
         if bail:
             apply(destination, "bail.patch")
         if selection_smp:

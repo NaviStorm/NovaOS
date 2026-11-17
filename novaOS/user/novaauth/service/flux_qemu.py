@@ -78,16 +78,27 @@ def run(a):
             return out
         try:
             term.expect(rb"nsh> ")
-            if a.group=="chaud":
+            if a.group in ("chaud","chaud-baux"):
                 record["empreintes_avant"]=composants(a.iso)
                 record["processus_systeme"]=identites(term.data)
                 marker=term.offset
                 command("temoin",127)
                 blob=a.package.read_bytes()
                 command("install --hex "+str(len(blob)),0,blob)
+                if a.group == "chaud-baux":
+                    streams("temoin",0,(b"A\tB\tC\nD\tE\tF\n",b""))
+                    record["tests"][-1]["bail"] = "initial"
+                    term.submit("session reauthentifier")
+                    term.expect("NovaAuth : nouvelle session authentifiée".encode())
+                    term.expect(rb"nsh> ")
+                    record["reauthentification_explicite"] = True
                 streams("temoin | cut -f1,3",0,(RAW,b""),pipe=True)
                 streams("/system/bin/temoin",0,(b"A\tB\tC\nD\tE\tF\n",b""))
-                streams("temoin",0,(b"A\tB\tC\nD\tE\tF\n",b""))
+                if a.group == "chaud":
+                    streams("temoin",0,(b"A\tB\tC\nD\tE\tF\n",b""))
+                else:
+                    for test in record["tests"][-2:]:
+                        test["bail"] = "nouveau"
                 record["empreintes_apres"]=composants(a.iso)
                 if record["empreintes_avant"]!=record["empreintes_apres"] or digest(a.iso)!=record["iso"]:
                     raise ValueError("composants modifiés en cours de session")
@@ -219,6 +230,6 @@ if __name__=="__main__":
     p.add_argument("arch",choices=["aarch64","x86_64"])
     p.add_argument("sector",type=int,choices=[512,4096])
     for name in ["iso","genesis","package","output"]:p.add_argument(name,type=Path)
-    p.add_argument("group",choices=["chaud","cut","pipe","argv","redirect","redirpipe","droits","binaire","auteurs","syntaxe","historiques","diagnostic","selection","selection-refus"])
+    p.add_argument("group",choices=["chaud","chaud-baux","cut","pipe","argv","redirect","redirpipe","droits","binaire","auteurs","syntaxe","historiques","diagnostic","selection","selection-refus"])
     p.add_argument("command",nargs="*")
     raise SystemExit(0 if run(p.parse_args()) else 1)

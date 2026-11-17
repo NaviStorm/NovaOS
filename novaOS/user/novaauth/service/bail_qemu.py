@@ -40,21 +40,16 @@ def run(a):
     with trace.open("xb") as out, subprocess.Popen(argv, env=env, stdin=subprocess.PIPE,
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0) as vm:
         term = Serial(vm, out)
-        def step(label, line, payload=None, watch=(), timeout=55, drain=False):
+        def step(label, line, payload=None, watch=(), timeout=55):
             begin = term.offset
             row = dict(etape=label, commande=line, envoi_hote_ms=ms(), observations=[])
             r["etapes"].append(row)
-            suffix = "; echo NXB_$?__FIN" + ("; exit 0" if drain else "")
-            term.submit(line + suffix, payload)
+            term.submit(line + "; echo NXB_$?__FIN", payload)
             for pattern in watch:
                 matched = term.expect(pattern, timeout)
                 row["observations"].append(dict(ligne=matched[0].decode(), reception_hote_ms=ms()))
             status = term.expect(rb"NXB_(\d+)__FIN\r?\n", timeout)
-            if drain:
-                term.expect(rb"absents=0x0 muets=0x0")
-                require(b"BLOC session terminee ok=true" in term.data, "drainage stockage")
-            else:
-                term.expect(rb"nsh> ")
+            term.expect(rb"nsh> ")
             data = bytes(term.data[begin:term.offset])
             row.update(statut=int(status[1]), invite_ms=ms(), decisions=decisions(data))
             return data, row
@@ -73,8 +68,11 @@ def run(a):
             require(opening["valide"] and 0 < r["creation_bail_ms"] <= opening["decision_ms"] <
                     opening["echeance_ms"], "bail initial")
             blob = a.paquet.read_bytes()
+            if a.perte_reponse:
+                _, armed = step("injection", "redir-test perdre-accuse")
+                require(armed["statut"] == 0, "armement de la perte de réponse")
             _, row = step("installation", f"install --hex {len(blob)}", blob)
-            require(row["statut"] == 0, "installation")
+            require(row["statut"] == (22 if a.perte_reponse else 0), "installation")
             data, row = step("admission_valide", "temoin", watch=[
                 rb"NXBAIL op=NSHEXEND[^\r\n]*\r?\n", rb"PROC pid=\d+ [^\r\n]*sortie=0\r?\n"])
             grants = one(row["decisions"], "NSHEXEND")
@@ -84,44 +82,68 @@ def run(a):
                     and frames[1][1:] == (b"2",b"0",b"") and row["statut"] == 0, "flux ou statut")
             require(grants["valide"] and grants["retour"] == 0 and 0 < grants["decision_ms"] <
                     grants["echeance_ms"] == opening["echeance_ms"], "admission hors bail")
-            row.update(pid=int(frames[0][0]), stdout=TSV.hex(), stderr="")
+            yes_pid = int(frames[0][0])
+            row.update(pid=yes_pid, stdout=TSV.hex(), stderr="")
             r["controles"]["installation_et_admission"] = True
-            line = ("redir-test attendre-bail /travail/donnees.tsv; echo NXATT_$?__FIN; "
-                    "temoin; echo NXEXP_$?__FIN; redir-test reauthentifier && temoin")
-            data, row = step("expiration_et_nouvelle_authentification", line, timeout=160, drain=a.drainage)
+            expired = "redir-test attendre-bail /travail/donnees.tsv; echo NXATT_$?__FIN; temoin"
+            data, row = step("admission_expiree", expired, timeout=160)
             refusal = one(row["decisions"], "NSHEXBG1")
-            require(b"NXATT_0__FIN\r\n" in data and b"NXEXP_126__FIN\r\n" in data
-                    and not refusal["valide"] and refusal["retour"] == 5 and
+            require(b"NXATT_0__FIN\r\n" in data and row["statut"] == 126 and
+                    not refusal["valide"] and refusal["retour"] == 5 and
                     refusal["decision_ms"] >= refusal["echeance_ms"] == opening["echeance_ms"],
                     "refus avant ticket ou identité du bail")
-            end = data.index(b"NXEXP_126__FIN\r\n")
-            negative = data[data.index(b"NXATT_0__FIN\r\n"):end]
-            require(b"NXFLUX pid=" not in negative and b"NSHEXEND" not in negative
-                    and b"BUDGET create" not in negative and b"PROC pid=" not in negative,
-                    "émission ou flux après refus")
-            r["controles"]["refus_avant_creation"] = True
-            read = re.search(rb"NXBAIL ancien handle lecture=(\d+)", data)
-            auth = re.search(rb"NXBAIL reauth fermeture=(\d+) ouverture=(\d+)", data)
-            require(read and auth, "sondes de retrait et réauthentification absentes")
-            row.update(ancienne_lecture=int(read[1]), fermeture=int(auth[1]), ouverture=int(auth[2]))
-            r["controles"]["ancien_handle_inutilisable"] = int(read[1]) in (5, 10, 11)
-            r["controles"]["nouveau_bail"] = int(auth[2]) == 0 and row["statut"] == 0 and any(
-                item["op"] == "NSHOPEN1" and item["valide"] and item["echeance_ms"] > opening["echeance_ms"]
-                for item in row["decisions"])
+            negative = data.split(b"NXATT_0__FIN\r\n", 1)[1]
+            require(all(x not in negative for x in (b"NXFLUX pid=", b"NSHEXEND", b"PROC pid=", b"BUDGET create")),
+                    "émission ou processus après refus")
+            require(b"NXBAIL ancien handle lecture=10" in data, "ancien handle")
+            r["controles"].update(refus_avant_creation=True, ancien_handle_inutilisable=True)
+
+            # Une nouvelle ligne interactive, dans le même shell après le refus.
+            begin = term.offset
+            term.submit("session reauthentifier")
+            term.expect("NovaAuth : nouvelle session authentifiée".encode())
+            term.expect(rb"nsh> ")
+            auth = decisions(bytes(term.data[begin:term.offset]))
+            close = one(auth, "NSHCLOS1")
+            new = one(auth, "NSHOPEN1")
+            require(close["retour"] == 0 and new["retour"] == 0 and new["valide"] and
+                    new["echeance_ms"] - 60_000 >= refusal["decision_ms"], "nouveau bail")
+            r["etapes"].append(dict(etape="authentification_explicite", decisions=auth))
+            r["controles"]["nouveau_bail"] = True
+            data, row = step("delegations_anciennes", "redir-test anciens-droits")
+            old = re.search(rb"NXBAIL anciens lecture=(\d+) ticket=(\d+) flux=(\d+) enfant=(\d+) statut=(\d+) faute=0 doubles=2 route=identique session=distincte", data)
+            require(row["statut"] == 0 and old, "délégations ou route")
+            row["anciens"] = [int(x) for x in old.groups()]
+            require(row["anciens"][4] == 10 and row["anciens"][3] != yes_pid,
+                    "le descendant bloqué doit sortir avec REVOKED")
+            require(re.search(fr"PROC pid={row['anciens'][3]} [^\r\n]*sortie=10".encode(), term.data),
+                    "sortie réelle du descendant")
+            r["controles"]["double_fermeture_et_descendant"] = True
+            data, row = step("admission_nouveau_bail", "temoin")
+            accepted = one(row["decisions"], "NSHEXEND")
+            frames = re.findall(rb"NXFLUX pid=(\d+) fd=(\d+) octets=(\d+) prefixe=([0-9a-f]*)",data)
+            require(row["statut"] == 0 and accepted["valide"] and accepted["retour"] == 0 and
+                    accepted["decision_ms"] < accepted["echeance_ms"] == new["echeance_ms"] and
+                    len(frames) == 2 and frames[0][0] == frames[1][0] and
+                    frames[0][1:] == (b"1",b"12",TSV.hex().encode()) and
+                    frames[1][1:] == (b"2",b"0",b""), "admission du nouveau bail")
+            row.update(pid=int(frames[0][0]), stdout=TSV.hex(), stderr="")
+            if a.perte_reponse:
+                data, row = step("relecture_explicite_du_recu", "install --receipt")
+                generation = re.search(rb"NXPK generation (\d+)",data)
+                require(row["statut"] == 0 and generation and int(generation[1]) > 0, "reçu durable")
+                row["generation"] = int(generation[1])
+                writes = [v for v in decisions(term.data) if v["op"] in ("NXPKBEG1","NXPKEND1")]
+                require([v["op"] for v in writes] == ["NXPKBEG1","NXPKEND1"], "mutation répétée")
+                r["controles"]["uncertain_sans_rejeu"] = True
             tail = term.data[marker:]
             r["composants_apres"] = composants(a.iso)
             require(r["composants_avant"] == r["composants_apres"] and
                     not any(x in tail for x in (b"NXLOGIN route", b"NXRELAY branche")), "redémarrage")
-            if a.drainage:
-                r["sortie_dans_liste_deja_admise"] = True
-            if r["controles"]["nouveau_bail"]:
-                require(re.findall(rb"fd=1 octets=12 prefixe=([a-f0-9]+)",data[end:]) ==
-                        [TSV.hex().encode()] and b"fd=2 octets=0 prefixe=\r\n" in data[end:], "relance")
-                if not a.drainage:
-                    term.send(b"exit\n")
-                    term.expect(rb"absents=0x0 muets=0x0")
-                require(b"BLOC session terminee ok=true" in term.data, "drainage")
-                r["controles"]["drainage"] = True
+            term.send(b"exit\n")
+            term.expect(rb"absents=0x0 muets=0x0")
+            require(b"BLOC session terminee ok=true" in term.data, "drainage")
+            r["controles"]["drainage"] = True
             r["succes"] = all(r["controles"].values())
         except (ValueError, TimeoutError, OSError, EOFError) as e:
             r["erreur"] = str(e)
@@ -138,7 +160,7 @@ def run(a):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--drainage", action="store_true", help="terminer explicitement le shell dans la liste déjà admise et mesurer la restitution")
+    p.add_argument("--perte-reponse", action="store_true", help="perdre l’accusé côté client puis consulter explicitement le reçu durable")
     p.add_argument("arch", choices=("aarch64","x86_64"))
     p.add_argument("secteur", type=int, choices=(512,4096))
     for name in ("iso","genese","paquet","sortie"):
