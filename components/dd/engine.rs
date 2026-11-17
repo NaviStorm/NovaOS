@@ -27,8 +27,15 @@ impl Stats {
 pub trait Io {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize>;
     fn write(&mut self, data: &[u8]) -> Result<()>;
+    // Octets déjà admis si la dernière écriture a échoué au milieu d’un bloc.
+    fn written_before_error(&self) -> usize {
+        0
+    }
     fn input_seek(&mut self, _bytes: u64) -> Result<Option<bool>> {
         Ok(None)
+    }
+    fn after_read_error(&mut self, bytes: u64) -> Result<bool> {
+        Ok(self.input_seek(bytes)? == Some(true))
     }
     fn report(&mut self, _stats: &Stats) {}
     fn warning(&mut self, _message: &str) {}
@@ -58,7 +65,14 @@ fn read_block(io: &mut impl Io, buf: &mut [u8], full: bool) -> Result<usize> {
     Ok(total)
 }
 fn output(io: &mut impl Io, s: &mut Stats, data: &[u8], obs: usize) -> Result<()> {
-    io.write(data)?;
+    if let Err(err) = io.write(data) {
+        let prefix = io.written_before_error();
+        if prefix > 0 {
+            s.bytes += prefix as u64;
+            s.output[1] += 1
+        }
+        return Err(err);
+    }
     s.output[usize::from(data.len() != obs)] += 1;
     s.bytes += data.len() as u64;
     Ok(())
@@ -240,12 +254,12 @@ pub fn copy(c: &Config, io: &mut impl Io, stats: &mut Stats) -> Result<()> {
                     out.io.warning(&error);
                     out.io.warning(&out.stats.records())
                 }
-                // Seul un repositionnement confirmé autorise une nouvelle tentative au bloc suivant.
-                if out.io.input_seek(c.ibs as u64)? != Some(true) {
+                let partial = if previous < c.ibs { previous } else { 0 };
+                if !out.io.after_read_error((c.ibs - partial) as u64)? {
                     failure = Err(error);
                     break;
                 }
-                if !c.has("sync") {
+                if !c.has("sync") || partial != 0 {
                     continue;
                 }
                 0

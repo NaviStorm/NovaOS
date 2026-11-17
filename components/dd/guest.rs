@@ -16,6 +16,7 @@ struct Streams<'a> {
     start: usize,
     end: usize,
     pipe: bool,
+    eof: bool,
     progress: Option<u64>,
 }
 fn reason(code: u64) -> alloc::string::String {
@@ -26,8 +27,12 @@ impl Io for Streams<'_> {
         if !self.pipe {
             return (self.read)(out).map_err(reason);
         }
+        if self.eof {
+            return Ok(0);
+        }
         if self.start == self.end {
             self.end = (self.read)(&mut self.frame).map_err(reason)?;
+            self.eof = self.end == 0;
             self.start = 0
         }
         let n = out.len().min(self.end - self.start);
@@ -90,6 +95,7 @@ fn run_copy(launch: &Launch, c: &Config) -> rt::Result<()> {
             start: 0,
             end: 0,
             pipe: c.input.is_none(),
+            eof: false,
             progress: if c.status == "progress" { start } else { None },
         };
         engine::copy(c, &mut streams, &mut s).map_err(|msg| {

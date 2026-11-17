@@ -1,3 +1,5 @@
+#[path = "doc_flag.rs"]
+mod doc_flag;
 use alloc::{
     format,
     string::{String, ToString},
@@ -162,16 +164,18 @@ pub fn parse<'a>(argv: &[&'a [u8]], posix: bool) -> Result<Action<'a>, Error> {
             if let Some(long) = word.strip_prefix(b"--") {
                 let mut pieces = long.splitn(2, |b| *b == b'=');
                 let prefix = pieces.next().unwrap();
-                for (name, doc) in [("help", true), ("version", false)] {
-                    if !prefix.is_empty() && name.as_bytes().starts_with(prefix) {
-                        if pieces.next().is_some() {
-                            return Err(Error(
-                                format!("option '--{name}' doesn't allow an argument"),
-                                true,
-                            ));
-                        }
-                        return Ok(if doc { Action::Help } else { Action::Version });
+                if let Some(name) = doc_flag::name(prefix) {
+                    if pieces.next().is_some() {
+                        return Err(Error(
+                            format!("option '--{name}' doesn't allow an argument"),
+                            true,
+                        ));
                     }
+                    return Ok(if name == "help" {
+                        Action::Help
+                    } else {
+                        Action::Version
+                    });
                 }
                 return Err(invalid("unrecognized option", word, true));
             }

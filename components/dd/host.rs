@@ -112,6 +112,7 @@ struct Host {
     dst: String,
     sparse: bool,
     hole: bool,
+    written: usize,
     start: Instant,
     next: Duration,
     status: &'static str,
@@ -228,6 +229,7 @@ impl Io for Host {
     }
     fn write(&mut self, data: &[u8]) -> Result<()> {
         self.hole = false;
+        self.written = 0;
         if self.sparse && data.iter().all(|b| *b == 0) {
             if self
                 .output
@@ -239,21 +241,32 @@ impl Io for Host {
             }
             self.sparse = false
         }
-        let mut offset = 0;
-        while offset < data.len() {
-            match self.output.write(&data[offset..]) {
+        while self.written < data.len() {
+            match self.output.write(&data[self.written..]) {
                 Ok(0) => {
                     return Err(format!(
                         "error writing '{}': No space left on device",
                         self.dst
                     ));
                 }
-                Ok(n) => offset += n,
+                Ok(n) => self.written += n,
                 Err(e) if e.kind() == io::ErrorKind::Interrupted => self.interrupt(),
                 Err(e) => return Err(format!("error writing '{}': {}", self.dst, errno(e))),
             }
         }
         Ok(())
+    }
+    fn after_read_error(&mut self, bytes: u64) -> Result<bool> {
+        match self.input.seek(SeekFrom::Current(
+            i64::try_from(bytes).map_err(|_| "skip offset overflow")?,
+        )) {
+            Ok(_) => Ok(!self.input.metadata().map_err(errno)?.is_dir()),
+            Err(e) if e.raw_os_error() == Some(libc::ESPIPE) => Ok(true),
+            Err(e) => Err(errno(e)),
+        }
+    }
+    fn written_before_error(&self) -> usize {
+        self.written
     }
     fn input_seek(&mut self, n: u64) -> Result<Option<bool>> {
         let offset = i64::try_from(n).map_err(|_| "skip offset overflow")?;
@@ -308,6 +321,7 @@ fn transfer(c: &Config) -> Result<()> {
         dst: name(c.output, "standard output"),
         sparse: c.has("sparse"),
         hole: false,
+        written: 0,
         start: Instant::now(),
         next: Duration::from_secs(1),
         status: c.status,

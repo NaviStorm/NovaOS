@@ -213,6 +213,10 @@ fn main() {
         "Cargo.lock",
         "libraries",
         "coreutils",
+        "dd/doc_flag.rs",
+        "dd/help.en",
+        "dd/help.fr",
+        "dd/VERSION",
         "shell",
         "vi",
     ] {

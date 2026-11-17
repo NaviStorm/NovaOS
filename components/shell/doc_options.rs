@@ -1,4 +1,6 @@
 //! Traitement local avant la résolution des chemins et le choix des capacités.
+#[path = "../dd/doc_flag.rs"]
+mod dd_flag;
 use nova_cli::{command::Program, console, documentation, options, runtime as rt, tty};
 
 fn invalid(option: &str) -> rt::Result<Option<u64>> {
@@ -15,7 +17,26 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     };
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
-    let (help, version, topic) = if let Some(p) = Program::named(name, false) {
+    let (help, version, topic) = if name == "dd" {
+        let mut selected = None;
+        for word in flags {
+            if !word.starts_with('-') || *word == "-" {
+                continue;
+            }
+            selected = word
+                .strip_prefix("--")
+                .and_then(|s| dd_flag::name(s.as_bytes()));
+            if selected.is_none() {
+                return invalid(word);
+            }
+            break;
+        }
+        (
+            selected == Some("help"),
+            selected == Some("version"),
+            &args[..0],
+        )
+    } else if let Some(p) = Program::named(name, false) {
         let parsed = match options::parse(p, args) {
             Ok(o) => o,
             Err(_) => return invalid(options::invalid_option(p, args).unwrap_or(name)),
