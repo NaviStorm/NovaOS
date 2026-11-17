@@ -44,6 +44,18 @@ Une seconde passe a rejoué onze cas d’admission par cellule sur une copie des
 
 Les quatre sessions ordinaires ont testé les consultations en français et le repli en anglais, avec contrôle du SHA-256, des écritures et des FLUSH du disque. Elles ont constaté le statut 127 pour le lancement métier et le statut 3 pour son usage comme producteur d’un pipe. Le passage en production requiert le raccord générique des métadonnées par opérande et des flux autorisés. Le mandat conserve le contrat ABI v1, les capacités et le format P9. [Exemple de trace du système ordinaire](preuves/nsh-aarch64/512/nsh.json)
 
+## Régressions du système ordinaire
+
+Les onze cibles ci-dessous ont terminé avec succès sur AArch64 et sur x86_64. Elles couvrent notamment le démarrage, les ELF, le cycle des processus, les courses IPC, le bloc, les commandes, le shell et vi. Les tests CLI P9 et nsh ont exercé les deux géométries. [Journal AArch64](preuves/regression-aarch64.log.gz) · [Journal x86_64](preuves/regression-x86_64.log.gz)
+
+```sh
+for arch in aarch64 x86_64; do
+    make -C novaOS ARCH="$arch" test elf-test lifecycle-test ipc-races block-test cli-test cli-p9-test nsh-test nsh-scripts-test nsh-terminal-test vi-test
+done
+```
+
+Le manifeste couvre le contenu de livraison, les sources de stat et les fichiers de raccord modifiés. Depuis la racine du dépôt ou de son archive extraite, vérifier les octets avec `shasum -a 256 -c livraison-stat-0240/SHA256SUMS`. [Manifeste](SHA256SUMS)
+
 ## Sources et licences
 
 GNU Coreutils v9.12 au commit `c0f8514d989184921d9b12a4d103a7b23abc5af8` fournit l’oracle de comportement. Le binaire Homebrew provient de la formule 9.12_1. Les références consultées comprennent le parseur, la sélection des formats, les conversions, les règles de citation, la recherche du point de montage, le chapitre du manuel et les sept tests de tests/stat. GNU utilise GPL-3.0-or-later. Le code livré de la commande est en Rust sous licence MIT. [Source officielle](https://github.com/coreutils/coreutils/blob/c0f8514d989184921d9b12a4d103a7b23abc5af8/src/stat.c) · [Manuel de la révision](https://github.com/coreutils/coreutils/blob/c0f8514d989184921d9b12a4d103a7b23abc5af8/doc/coreutils.texi)
