@@ -9,6 +9,9 @@ pub(super) struct Admission {
     session: [u8; 32],
     argv: Vec<u8>,
     argv_len: usize,
+    scope: [u64; 3],
+    role: u8,
+    control: u64,
     binding: Option<exec::Binding>,
     staging: Option<user::ImageStaging>,
     sealed: Option<user::SealedImage>,
@@ -22,6 +25,9 @@ pub(super) fn operation(s: &mut Core, r: &mut Route, p: Pid, q: &[u8]) -> Res<u6
     if r.down || lease.limit <= time_ms() {
         return Err(REVOKED);
     }
+    if &q[..8] == b"NXLDTAKE" && p == r.issuer {
+        return pipeline::take(s, r, q);
+    }
     let request: [u8; 16] = q[8..24].try_into().unwrap();
     if request == [0; 16] {
         return Err(BAD_ARGUMENT);
@@ -30,7 +36,9 @@ pub(super) fn operation(s: &mut Core, r: &mut Route, p: Pid, q: &[u8]) -> Res<u6
         if q[24..56] != lease.id
             || q[56..72] == [0; 16]
             || q[72..104] == [0; 32]
-            || q[112..] != [0; 16]
+            || !matches!(q[112], 0 | 1 | 2 | 3 | 5 | 7)
+            || q[113..120] != [0; 7]
+            || (q[112] & 3 >= 2) != (word(q, 120) != 0)
         {
             return Err(DENIED);
         }
@@ -50,6 +58,9 @@ pub(super) fn operation(s: &mut Core, r: &mut Route, p: Pid, q: &[u8]) -> Res<u6
             session: lease.id,
             argv,
             argv_len: len,
+            scope: [0; 3],
+            role: q[112],
+            control: word(q, 120),
             binding: None,
             staging: None,
             sealed: None,
@@ -111,9 +122,10 @@ pub(super) fn operation(s: &mut Core, r: &mut Route, p: Pid, q: &[u8]) -> Res<u6
         }
         b"NXLDSIZE" if p == r.storage => {
             let b = a.binding.as_mut().ok_or(DENIED)?;
-            if b.epoch != 0 || word(q, 64) == 0 || q[72..].iter().any(|v| *v != 0) {
+            if b.epoch != 0 || word(q, 64) == 0 || q[96..].iter().any(|v| *v != 0) {
                 return Err(BAD_ARGUMENT);
             }
+            a.scope = [word(q, 72), word(q, 80), word(q, 88)];
             b.epoch = word(q, 64);
             b.object.length = usize::try_from(word(q, 24)).map_err(|_| LIMIT)?;
             b.digest = q[32..64].try_into().unwrap();
@@ -165,8 +177,23 @@ pub(super) fn operation(s: &mut Core, r: &mut Route, p: Pid, q: &[u8]) -> Res<u6
             }
             let until = time_ms().saturating_add(ttl).min(lease.limit);
             let deadline = until.saturating_mul(u64::from(HZ)) / 1000;
+            if a.role == 2 {
+                return pipeline::prepare(
+                    s,
+                    r,
+                    a.control,
+                    a.head,
+                    binding,
+                    sealed,
+                    config,
+                    lease.limit,
+                );
+            }
+            if a.role & 3 == 3 {
+                pipeline::writer(s, r, a.control, a.head, binding)?;
+            }
             return exec::issue_authenticated(
-                s, r.issuer, r.shell, binding, sealed, config, deadline,
+                s, r.issuer, r.shell, binding, sealed, config, deadline, a.role, a.control, a.scope,
             );
         }
         _ => return Err(DENIED),

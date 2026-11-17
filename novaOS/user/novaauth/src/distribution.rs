@@ -468,6 +468,17 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         machine: Machine,
         leaf: &str,
     ) -> super::Result<Loaded> {
+        self.visible_package(holder, key, machine, leaf)?
+            .ok_or(Fault::Denied)
+    }
+
+    pub fn visible_package(
+        &self,
+        holder: Grant,
+        key: &VerifyingKey,
+        machine: Machine,
+        leaf: &str,
+    ) -> super::Result<Option<Loaded>> {
         name(leaf.as_bytes()).map_err(map_verify)?;
         let (head, state) = self.view()?;
         if head != holder.head {
@@ -478,12 +489,14 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
             return Err(Fault::Denied);
         }
         let signer: Hash = Sha256::digest(key.as_bytes()).into();
-        let (p, entry) = owner
+        let Some((p, entry)) = owner
             .packages
             .iter()
             .filter(|p| p.active && p.signer == signer && p.machine == machine as u16)
             .find_map(|p| p.entries.iter().find(|e| e.name == leaf).map(|e| (p, e)))
-            .ok_or(Fault::Denied)?;
+        else {
+            return Ok(None);
+        };
         let stat = self.fs.stat_id(p.object)?;
         let end = entry
             .start
@@ -513,7 +526,7 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         if Hash::from(Sha256::digest(&bytes)) != entry.digest {
             return Err(Fault::StateMismatch);
         }
-        Ok(Loaded {
+        Ok(Some(Loaded {
             installation: p.id,
             principal: entry.principal,
             application: entry.application,
@@ -525,6 +538,6 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
             offset: entry.start,
             digest: entry.digest,
             bytes,
-        })
+        }))
     }
 }

@@ -9,7 +9,93 @@ pub(super) struct Login {
     identity: [u8; 32],
 }
 
+#[path = "redirect_lab.rs"]
+mod redirect;
+type Stage = (
+    alloc::string::String,
+    alloc::vec::Vec<alloc::string::String>,
+);
+
 impl Login {
+    pub(super) fn verify_redirect(
+        &mut self,
+        fs: &mut nova_cli::fileapi::Client,
+        argv: &[&str],
+    ) -> rt::Result<u64> {
+        use nova_cli::protocol as w;
+        match argv {
+            ["concurrence", path] => fs.probe_exclusive(path.as_bytes())?,
+            ["retrait", src, out] => {
+                let read = fs.open_at(0, src.as_bytes(), 0x80 | w::READABLE)?;
+                let key = fs.open_at(0, out.as_bytes(), 0x80 | w::WRITABLE | w::CREATE)?;
+                let mut one = [0u8; 1];
+                if fs.read(read, 0, &mut one)? != 1 {
+                    return Err(rt::REFUSED);
+                }
+                if fs.simple(w::STAT, read).err() != Some(rt::DENIED) {
+                    return Err(rt::REFUSED);
+                }
+                let mut malformed = w::frame(w::CLOSE, fs.session, read);
+                malformed[2] = 0xf0;
+                if fs.request(malformed).err() != Some(rt::BAD_ARGUMENT) {
+                    return Err(rt::REFUSED);
+                }
+                fs.write(key, 0, b"avant")?;
+                fs.sync(key)?;
+                fs.write(key, 5, b"en attente")?;
+                self.close()?;
+                if fs.read(read, 0, &mut one) != Err(rt::REVOKED)
+                    || fs.sync(key) != Err(rt::REVOKED)
+                    || fs.write(key, 0, b"interdit") != Err(rt::REVOKED)
+                {
+                    return Err(rt::REFUSED);
+                }
+                self.authenticate()?;
+                let test = fs.open_at(0, out.as_bytes(), 0x80 | w::READABLE)?;
+                let mut bytes = [0; 32];
+                let n = fs.read(test, 0, &mut bytes)?;
+                fs.close(test)?;
+                if &bytes[..n] != b"avant" {
+                    return Err(rt::REFUSED);
+                }
+            }
+            _ => return Err(rt::BAD_ARGUMENT),
+        }
+        Ok(0)
+    }
+    pub(super) fn redirected(
+        &mut self,
+        fs: &mut nova_cli::fileapi::Client,
+        stages: &[Stage],
+        paths: &[Option<alloc::string::String>; 6],
+    ) -> rt::Result<u64> {
+        let mut files = redirect::Files::new(fs);
+        let result = (|| {
+            // Authentifier et résoudre chaque installation avant de créer un fichier.
+            for (name, _) in stages {
+                let mut value = [0; 72];
+                value[..32].copy_from_slice(&self.session.ok_or(rt::DENIED)?);
+                value[32] = name.len() as u8;
+                value[33..33 + name.len()].copy_from_slice(name.as_bytes());
+                self.request(b"NXPKVIEW", &value)?;
+            }
+            files.open(paths)?;
+            match stages {
+                [(name, args)] => {
+                    let argv = args
+                        .iter()
+                        .map(|a| a.as_str())
+                        .collect::<alloc::vec::Vec<_>>();
+                    self.execute_io(name, &argv, Some(&mut files))
+                }
+                [left, right] => self.pipeline_io(left, right, Some(&mut files)),
+                _ => Err(rt::BAD_ARGUMENT),
+            }
+        })();
+        let close = files.close();
+        result.and_then(|status| close.map(|()| status))
+    }
+
     fn request(&mut self, op: &[u8; 8], value: &[u8]) -> rt::Result<[u8; 128]> {
         let (tx, rx) = (rt::config(16), rt::config(17));
         if tx == 0 || rx == 0 {
@@ -33,6 +119,15 @@ impl Login {
         }
         let code = u64::from_le_bytes(r.payload[..8].try_into().unwrap());
         if code != rt::OK {
+            if option_env!("NOVA_DISPLAY_TRACE") == Some("1") && op.starts_with(b"NSHEX") {
+                super::console::write(
+                    super::tty::ERROR,
+                    &alloc::format!(
+                        "NXEXEC etape={} code={code}\n",
+                        core::str::from_utf8(op).unwrap_or("?")
+                    ),
+                )?;
+            }
             return Err(code);
         }
         Ok(r.payload)
@@ -124,7 +219,14 @@ impl Login {
         Ok(0)
     }
 
-    pub(super) fn ticket(&mut self, name: &str, argv: &[&str], ttl: u64) -> rt::Result<u64> {
+    pub(super) fn ticket(
+        &mut self,
+        name: &str,
+        argv: &[&str],
+        ttl: u64,
+        role: u8,
+        control: u64,
+    ) -> rt::Result<u64> {
         let id = self.session.ok_or(rt::DENIED)?;
         if name.is_empty() || name.len() > 63 || argv.len() > super::tty::ARG_COUNT {
             return Err(rt::BAD_ARGUMENT);
@@ -143,6 +245,8 @@ impl Login {
         begin[..32].copy_from_slice(&id);
         begin[32..40].copy_from_slice(&(packed.len() as u64).to_le_bytes());
         begin[40] = name.len() as u8;
+        begin[104..112].copy_from_slice(&control.to_le_bytes());
+        begin[119] = role;
         begin[41..41 + name.len()].copy_from_slice(name.as_bytes());
         self.request(b"NSHEXBG1", &begin)?;
         for (i, part) in packed.chunks(79).enumerate() {
@@ -184,11 +288,269 @@ impl Login {
             u64::from_le_bytes(a.payload[24..32].try_into().unwrap()),
         ))
     }
+    pub(super) fn execute(&mut self, name: &str, argv: &[&str]) -> rt::Result<u64> {
+        self.execute_io(name, argv, None)
+    }
+    fn execute_io(
+        &mut self,
+        name: &str,
+        argv: &[&str],
+        io: Option<&mut redirect::Files>,
+    ) -> rt::Result<u64> {
+        let role = if io.as_ref().is_some_and(|io| io.has_input()) {
+            5
+        } else {
+            1
+        };
+        let key = self.ticket(name, argv, 5000, role, 0)?;
+        let result = (|| {
+            let spawned = rt::call(super::tty::SPAWN, super::tty::EXEC_TICKET, key, 0);
+            let (pid, right) = match Self::receipt(key) {
+                Ok(pair) => pair,
+                Err(_) if spawned.status != rt::OK => return Err(spawned.status),
+                Err(err) => return Err(err),
+            };
+            // Le rendu peut échouer indépendamment du programme. Collecter une fois
+            // l'enfant même en cas d'erreur d'affichage ou de retrait de la session.
+            let rendered = self.drain(&[pid], io);
+            let (fault, code) = nova_cli::process::wait(right)?;
+            rendered?;
+            Ok(if fault { 128 } else { code })
+        })();
+        let _ = rt::call(rt::IPC_CLOSE, key, 0, 0);
+        result
+    }
+
+    pub(super) fn pipeline(
+        &mut self,
+        writer: &(
+            alloc::string::String,
+            alloc::vec::Vec<alloc::string::String>,
+        ),
+        reader: &(
+            alloc::string::String,
+            alloc::vec::Vec<alloc::string::String>,
+        ),
+    ) -> rt::Result<u64> {
+        self.pipeline_io(writer, reader, None)
+    }
+    fn pipeline_io(
+        &mut self,
+        writer: &Stage,
+        reader: &Stage,
+        io: Option<&mut redirect::Files>,
+    ) -> rt::Result<u64> {
+        let role = if io.as_ref().is_some_and(|io| io.has_input()) {
+            7
+        } else {
+            3
+        };
+        let control = rt::value(rt::call(super::tty::SPAWN, super::tty::PIPE_OPEN, 0, 0))?;
+        let mut writer_wait = None;
+        let mut reader_wait = None;
+        let mut ticket = None;
+        let result = (|| {
+            let args = reader
+                .1
+                .iter()
+                .map(|v| v.as_str())
+                .collect::<alloc::vec::Vec<_>>();
+            if self.ticket(&reader.0, &args, 5000, 2, control)? != 0 {
+                return Err(rt::REFUSED);
+            }
+            let args = writer
+                .1
+                .iter()
+                .map(|v| v.as_str())
+                .collect::<alloc::vec::Vec<_>>();
+            let key = self.ticket(&writer.0, &args, 5000, role, control)?;
+            ticket = Some(key);
+            let result = rt::call(super::tty::SPAWN, super::tty::EXEC_TICKET, key, 0);
+            if result.status != rt::OK {
+                return Err(result.status);
+            }
+            writer_wait = Some(result.value);
+            let (producer, confirmed) = Self::receipt(key)?;
+            if confirmed != result.value {
+                return Err(rt::REFUSED);
+            }
+            rt::value(rt::call(rt::IPC_CLOSE, key, 0, 0))?;
+            ticket = None;
+            let mut request = [0u8; 40];
+            request[..32].copy_from_slice(&self.session.ok_or(rt::REVOKED)?);
+            request[32..].copy_from_slice(&control.to_le_bytes());
+            let reply = self.request(b"NSHEXRD1", &request)?;
+            let key = u64::from_le_bytes(reply[8..16].try_into().unwrap());
+            ticket = Some(key);
+            let result = rt::call(super::tty::SPAWN, super::tty::EXEC_TICKET, key, 0);
+            if result.status != rt::OK {
+                return Err(result.status);
+            }
+            reader_wait = Some(result.value);
+            let (consumer, confirmed) = Self::receipt(key)?;
+            if confirmed != result.value || consumer == producer {
+                return Err(rt::REFUSED);
+            }
+            self.drain(&[producer, consumer], io)?;
+            Ok((producer, consumer))
+        })();
+        if let Some(key) = ticket {
+            let _ = rt::call(rt::IPC_CLOSE, key, 0, 0);
+        }
+        // La fermeture du contrôleur rend irrévocablement impossible une admission
+        // en attente. Le retrait borné s'applique exclusivement à cette transaction.
+        let closed = rt::value(rt::call(rt::IPC_CLOSE, control, 0, 0));
+        let w = writer_wait.map(nova_cli::process::wait).transpose();
+        let r = reader_wait.map(nova_cli::process::wait).transpose();
+        let (producer, consumer) = result?;
+        closed?;
+        let status = |(fault, code)| if fault { 128 } else { code };
+        let left = status(w?.ok_or(rt::REFUSED)?);
+        let right = status(r?.ok_or(rt::REFUSED)?);
+        if option_env!("NOVA_DISPLAY_TRACE") == Some("1") {
+            super::console::write(
+                super::tty::OUTPUT,
+                &alloc::format!(
+                    "NXPIPE producteur={producer} statut={left} lecteur={consumer} statut={right}\n"
+                ),
+            )?;
+        }
+        Ok(right)
+    }
+
+    fn drain(&mut self, pids: &[u64], mut files: Option<&mut redirect::Files>) -> rt::Result<()> {
+        use super::stream_display::{Decoder, Display};
+        if pids.is_empty() || pids.len() > 2 {
+            return Err(rt::BAD_ARGUMENT);
+        }
+        let mut channels = [0; 4];
+        for (stage, &pid) in pids.iter().enumerate() {
+            for fd in 0..2 {
+                channels[stage * 2 + fd] = rt::value(rt::call(
+                    rt::IPC_NOTIFY,
+                    rt::config(16),
+                    pid,
+                    0x4e58_4f55_5400 + fd as u64,
+                ))?;
+            }
+        }
+        let mut input = if files.as_ref().is_some_and(|f| f.has_input()) {
+            rt::value(rt::call(
+                rt::IPC_NOTIFY,
+                rt::config(16),
+                pids[0],
+                0x4e58_4f55_5402,
+            ))?
+        } else {
+            0
+        };
+        let mut decoders: [Decoder; 4] = core::array::from_fn(|_| Decoder::default());
+        let mut display = Display::default();
+        let mut failure = None;
+        let mut text = alloc::string::String::with_capacity(1024);
+        // Le témoin brut est activé exclusivement lors de la fabrication d'une ISO
+        // de recette. Les ELF ne peuvent pas l'activer avec leurs arguments.
+        let trace = option_env!("NOVA_DISPLAY_TRACE") == Some("1");
+        let mut samples = [[0u8; 64]; 4];
+        let mut lengths = [0usize; 4];
+        while channels != [0; 4] {
+            if input != 0 {
+                let result = files.as_deref_mut().unwrap().feed(input);
+                if !matches!(result, Ok(true)) {
+                    if let Err(e) = result {
+                        let reader_gone = e == rt::DENIED
+                            && rt::value(rt::call(
+                                rt::IPC_NOTIFY,
+                                rt::config(16),
+                                pids[0],
+                                0x4e58_4f55_5402,
+                            )) == Ok(0);
+                        if !reader_gone {
+                            failure.get_or_insert(e);
+                        }
+                    }
+                    let _ = rt::call(rt::IPC_CLOSE, input, 0, 0);
+                    input = 0;
+                }
+            }
+            for i in 0..pids.len() * 2 {
+                if channels[i] == 0 {
+                    continue;
+                }
+                text.clear();
+                match rt::receive_for(channels[i], 2) {
+                    Ok(m)
+                        if m.kind == 1
+                            && m.tag == 0
+                            && m.handle == 0
+                            && m.aux == 0
+                            && (1..=128).contains(&m.len) =>
+                    {
+                        let raw = &m.payload[..m.len as usize];
+                        if trace {
+                            let start = lengths[i].min(samples[i].len());
+                            let count = raw.len().min(samples[i].len() - start);
+                            samples[i][start..start + count].copy_from_slice(&raw[..count]);
+                            lengths[i] = lengths[i].saturating_add(raw.len());
+                        }
+                        let fd = i / 2 * 3 + i % 2 + 1;
+                        if let Some(f) = files.as_deref_mut().filter(|f| f.has(fd)) {
+                            if failure.is_none()
+                                && let Err(e) = f.write(fd, raw)
+                            {
+                                failure = Some(e);
+                            }
+                        } else {
+                            decoders[i].frame(raw, &mut display, &mut text);
+                        }
+                    }
+                    Err(rt::TIMED_OUT | rt::WOULD_BLOCK) => continue,
+                    Err(rt::DENIED | rt::REVOKED | rt::CLOSED) => {
+                        channels[i] = 0;
+                        decoders[i].finish(&mut display, &mut text);
+                    }
+                    other => {
+                        failure.get_or_insert(other.err().unwrap_or(rt::BAD_ARGUMENT));
+                        channels[i] = 0;
+                    }
+                }
+                if failure.is_none() && !text.is_empty() {
+                    let port = [super::tty::OUTPUT, super::tty::ERROR][i % 2];
+                    if let Err(code) = super::console::write(port, &text) {
+                        failure = Some(code);
+                    }
+                }
+            }
+        }
+        if input != 0 {
+            let _ = rt::call(rt::IPC_CLOSE, input, 0, 0);
+        }
+        self.request(b"NSHLIVE1", &self.session.ok_or(rt::REVOKED)?)?;
+        if trace {
+            for i in 0..pids.len() * 2 {
+                if pids.len() == 2 && i == 0 {
+                    continue;
+                }
+                let pid = pids[i / 2];
+                let n = lengths[i];
+                super::console::write(
+                    super::tty::OUTPUT,
+                    &alloc::format!(
+                        "NXFLUX pid={pid} fd={} octets={n} prefixe={}\n",
+                        i % 2 + 1,
+                        hex(&samples[i][..n.min(64)])
+                    ),
+                )?;
+            }
+        }
+        failure.map_or(Ok(()), Err)
+    }
+
     pub(super) fn ticket_probe(&mut self, args: &[&str]) -> rt::Result<u64> {
         let [mode, name, rest @ ..] = args else {
             return Err(rt::BAD_ARGUMENT);
         };
-        let key = self.ticket(name, rest, 5000)?;
+        let key = self.ticket(name, rest, 5000, 0, 0)?;
         let result = (|| {
             if *mode == "expire" {
                 // Attendre sur la voie de réponse privée inactive. Les délais IPC sont
@@ -363,4 +725,36 @@ fn hex(bytes: &[u8]) -> alloc::string::String {
         write!(result, "{byte:02x}").unwrap();
     }
     result
+}
+
+pub(super) fn installed_name<'a>(
+    name: &'a str,
+    fs: &mut nova_cli::fileapi::Client,
+) -> rt::Result<Option<&'a str>> {
+    // Une redirection ou un pipe ne change pas la priorité des noms internes.
+    // Un chemin explicite continue de désigner l'exécutable installé et attesté.
+    if !name.contains('/')
+        && (nova_cli::documentation::lookup(name).is_some_and(|page| page.provider != "nova-cli")
+            || matches!(name, "install" | "ticket-test" | "redir-test" | "relay-test" | "source" | "."))
+    {
+        return Ok(None);
+    }
+    let leaf = if let Some(leaf) = name.strip_prefix("/system/bin/") {
+        leaf
+    } else if let Some(leaf) = name.strip_prefix("./") {
+        if nova_cli::directory::cwd(fs)? != "/system/bin" {
+            return Ok(None);
+        }
+        leaf
+    } else {
+        name
+    };
+    Ok((!leaf.is_empty()
+        && leaf.len() <= 39
+        && leaf != "."
+        && leaf != ".."
+        && leaf
+            .bytes()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, b'_' | b'-' | b'.')))
+    .then_some(leaf))
 }

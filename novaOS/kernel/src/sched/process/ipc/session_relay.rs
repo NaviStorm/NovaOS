@@ -3,12 +3,19 @@
 use super::traffic::{dword, input, word};
 use super::*;
 
+#[path = "session_display_lab.rs"]
+mod display;
+#[path = "session_pipeline_lab.rs"]
+mod pipeline;
 #[path = "exec_snapshot_lab.rs"]
 mod snapshot;
+pub(super) use display::attach as attach_display;
+pub(super) use pipeline::attach as attach_pipeline;
 
 const MAX_TRANSFERS: usize = 8;
 #[derive(Clone, Copy)]
 struct Lease {
+    sequence: u64,
     id: [u8; 32],
     limit: u64,
 }
@@ -38,6 +45,9 @@ pub(in crate::sched::process) struct Route {
     authorizations: Reference,
     attestations: Reference,
     admission: Option<snapshot::Admission>,
+    reader: Option<pipeline::Reader>,
+    pipe_root: Option<Reference>,
+    captures: [Option<display::Capture>; 2],
     shell_instance: Instance,
     auth_port: u64,
     relay_port: u64,
@@ -121,6 +131,9 @@ pub(super) fn register(
         authorizations,
         attestations,
         admission: None,
+        reader: None,
+        pipe_root: None,
+        captures: [None; 2],
         shell_instance,
         auth_port,
         relay_port,
@@ -164,6 +177,15 @@ fn discard(s: &mut Core, o: Option<Offer>) {
     }
 }
 fn withdraw(s: &mut Core, r: &mut Route) {
+    if live(s, r.storage).is_ok() {
+        service::config(s, r.storage, 72, &[0]);
+    }
+    pipeline::abandon(s, r);
+    if let Some(node) = r.pipe_root.take().and_then(|root| s.ipc.node(root)) {
+        s.ipc.revoke(node);
+        s.ipc.close(node);
+    }
+    display::revoke(s, r);
     r.admission = None;
     discard(s, r.offer.take());
     discard(s, r.staged.take());
@@ -190,13 +212,16 @@ pub(in crate::sched::process) fn retired(s: &mut Core, pid: Pid) {
             let delivered = r.received.len();
             withdraw(s, &mut r);
             let outstanding = live(s, r.shell).map_or(0, |p| p.exec.len());
-            hal::log(format_args!("NXRELAY apres retrait tickets_shell={outstanding}"));
+            hal::log(format_args!(
+                "NXRELAY apres retrait tickets_shell={outstanding}"
+            ));
             r.down = true;
             hal::log(format_args!(
                 "NXRELAY panne en_attente={pending} feuilles_retirees={delivered}"
             ));
             s.processes.relay = Some(r);
         } else {
+            display::retire_input(s, &mut r, pid);
             if r.offer.is_some_and(|o| o.recipient == pid) {
                 discard(s, r.offer.take());
             }
@@ -217,6 +242,7 @@ pub(super) fn expire(s: &mut Core) {
     if r.live.is_some_and(|l| now >= l.limit) {
         withdraw(s, &mut r);
     }
+    pipeline::tick(s, &mut r);
     exec::reap_undelivered(s, r.shell);
     if r.offer.is_some_and(|o| now >= o.deadline) {
         discard(s, r.offer.take());
@@ -381,14 +407,18 @@ fn authorized(s: &mut Core, r: &mut Route, seq: u64, q: &[u8]) -> Res<u64> {
     }
     match &q[..8] {
         b"NXRBIND1" => {
-            if q[80..] != [0; 48]
+            if q[80..96] == [0; 16]
+                || q[96..] != [0; 32]
                 || r.live.is_some()
                 || deadline <= time_ms()
                 || deadline > time_ms().saturating_add(60_000)
             {
                 return Err(DENIED);
             }
+            service::config(s, r.storage, 73, &[word(q, 80), word(q, 88)]);
+            service::config(s, r.storage, 72, &[seq]);
             r.live = Some(Lease {
+                sequence: seq,
                 id,
                 limit: deadline,
             });
@@ -472,6 +502,36 @@ pub(super) fn intercept(s: &mut Core, p: Pid, sys: u64, args: [u64; 3]) -> Optio
         return Some(Err(DENIED));
     }
     let route = s.processes.relay.as_ref()?;
+    if p == route.storage && sys == IPC_NOTIFY && args[2] == 0x4e585246454e43 {
+        let endpoint = route.attestations;
+        return Some((|| {
+            if args[1] != 0 || s.ipc.lookup(p, args[0], SEND)?.endpoint != endpoint {
+                return Err(DENIED);
+            }
+            let mut r = s.processes.relay.take().ok_or(REVOKED)?;
+            exec::registry_fence(s, r.shell);
+            r.admission = None;
+            pipeline::abandon(s, &mut r);
+            s.processes.relay = Some(r);
+            Ok(0)
+        })());
+    }
+    if p == route.storage && sys == IPC_NOTIFY && args[2] == 0x4e585246534944 {
+        return Some((|| {
+            let n = s.ipc.lookup(p, args[0], SEND)?;
+            let lease = route.live.ok_or(REVOKED)?;
+            if n.endpoint != route.attestations
+                || args[1] != lease.sequence
+                || time_ms() >= lease.limit
+            {
+                return Err(REVOKED);
+            }
+            Ok(lease.sequence)
+        })());
+    }
+    if let Some(result) = display::intercept(s, route, p, sys, args) {
+        return Some(result);
+    }
     if sys == IPC_SEND
         && (p == route.issuer || p == route.storage)
         && let Ok(node) = s.ipc.lookup(p, args[0], SEND)
@@ -614,4 +674,24 @@ pub(super) fn owns_session(s: &Core, shell: Pid, id: [u8; 32]) -> bool {
     s.processes.relay.as_ref().is_some_and(|r| {
         r.shell == shell && r.live.is_some_and(|l| l.id == id && time_ms() < l.limit)
     })
+}
+
+pub(in crate::sched::process) fn timer(s: &mut Core) {
+    if s.processes
+        .relay
+        .as_ref()
+        .is_some_and(|r| r.live.is_some_and(|l| time_ms() >= l.limit))
+    {
+        expire(s);
+        return;
+    }
+    if s.processes
+        .relay
+        .as_ref()
+        .is_some_and(|r| r.reader.is_some())
+    {
+        let mut r = s.processes.relay.take().unwrap();
+        pipeline::tick(s, &mut r);
+        s.processes.relay = Some(r);
+    }
 }

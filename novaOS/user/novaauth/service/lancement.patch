@@ -1,20 +1,100 @@
+diff --git a/components/shell/lexer.rs b/components/shell/lexer.rs
+index 9a0179fdb5d258fbf96261d35f6aee163487e428..73dd7a71e5cdb936ff6dc7e0b2a03070d85bc952 100644
+--- a/components/shell/lexer.rs
++++ b/components/shell/lexer.rs
+@@ -28,0 +29 @@
++    Redirect(usize),
+@@ -66 +67 @@
+-        if quote.is_none() && matches!(c, ' ' | '\t' | '\n' | '\r' | ';' | '&' | '|') {
++        if quote.is_none() && matches!(c, ' ' | '\t' | '\n' | '\r' | ';' | '&' | '|' | '<' | '>') {
+@@ -90 +91 @@
+-            if (quote.is_none() && matches!(c, '<' | '>' | '(' | ')'))
++            if (quote.is_none() && matches!(c, '(' | ')'))
+@@ -133 +134,5 @@
+-            b'&' => return Err(rt::BAD_ARGUMENT),
++            b'<' if !s.starts_with("<<") && !s.starts_with("<>") && !s.starts_with("<&") => (Token::Redirect(0), 1),
++            b'>' if !s.starts_with(">>") && !s.starts_with(">&") && !s.starts_with(">|") => (Token::Redirect(1), 1),
++            b'2' if s.starts_with("2>") && !s.starts_with("2>>") && !s.starts_with("2>&") && !s.starts_with("2>|") => (Token::Redirect(2), 2),
++            b'0'..=b'9' if s.trim_start_matches(|c: char| c.is_ascii_digit()).starts_with(['<', '>']) => return Err(rt::BAD_ARGUMENT),
++            b'&' | b'<' | b'>' => return Err(rt::BAD_ARGUMENT),
 diff --git a/components/shell/main.rs b/components/shell/main.rs
-index 11af6976d17142037a03b9a965da24fb42426327..af15a46fd17947d6e587f0a1045e56c3dbd76089 100644
+index 11af6976d17142037a03b9a965da24fb42426327..1c17f8656147a7fbdfb96e66ddeb515774694241 100644
 --- a/components/shell/main.rs
 +++ b/components/shell/main.rs
-@@ -28,0 +29 @@
+@@ -28,0 +29,2 @@
 +mod session_auth_lab;
-@@ -31,0 +33 @@
++mod stream_display;
+@@ -31,0 +34 @@
 +    let mut login = session_auth_lab::Login::default();
-@@ -54,0 +57 @@
+@@ -54,0 +58 @@
 +            login.authenticate()?;
-@@ -77 +80 @@
+@@ -77 +81 @@
 -                script::Engine::new(&mut fs, test, &history)?.list(&mut frame, &program, 0, 0);
 +                script::Engine::new(&mut fs, test, &mut login, &history)?.list(&mut frame, &program, 0, 0);
-@@ -99,0 +103 @@
+@@ -99,0 +104 @@
 +    login.close()?;
+diff --git a/components/shell/parser.rs b/components/shell/parser.rs
+index af8782b5ca948bd3f8e56e71cc7aa1747fa35524..79772c8e9da3bf066ff1182fa9ed4cf737bc76f2 100644
+--- a/components/shell/parser.rs
++++ b/components/shell/parser.rs
+@@ -10,0 +11,4 @@
++pub struct Stage<'a> {
++    pub words: Vec<&'a str>,
++    pub paths: [Option<&'a str>; 3],
++}
+@@ -11,0 +16 @@
++    Redirect(Stage<'a>, Option<Stage<'a>>),
+@@ -121,0 +127,21 @@
++    }
++    fn stage(&mut self) -> Result<Stage<'a>> {
++        let mut words = Vec::new();
++        let mut paths = [None; 3];
++        loop {
++            match self.peek() {
++                Some(Token::Name(s)) => {
++                    if words.len() == tty::ARG_COUNT + 1 { return Err(Error::Limit); }
++                    words.push(s);
++                }
++                Some(Token::Redirect(fd)) => {
++                    self.pos += 1;
++                    let Some(Token::Name(path)) = self.peek() else { return Err(Error::Invalid) };
++                    if paths[fd].replace(path).is_some() { return Err(Error::Invalid); }
++                }
++                _ => break,
++            }
++            self.pos += 1;
++        }
++        if words.is_empty() { return Err(self.need()); }
++        Ok(Stage { words, paths })
+@@ -189,4 +215 @@
+-        let w = self.words(tty::ARG_COUNT + 1)?;
+-        if w.is_empty() {
+-            return Err(self.need());
+-        }
++        let left = self.stage()?;
+@@ -195,6 +218,6 @@
+-            let reader = self.words(tty::ARG_COUNT + 1)?;
+-            if reader.is_empty() {
+-                return Err(self.need());
+-            }
+-            // Valider la forme admise avant l'exécution de toute la liste.
+-            if w[0] != "cat" || !matches!(reader[0], "wc" | "head") {
++            let right = self.stage()?;
++            if left.paths[1].is_some() || right.paths[0].is_some() { return Err(Error::Invalid); }
++            if left.paths != [None; 3] || right.paths != [None; 3] {
++                return Ok(Command::Redirect(left, Some(right)));
++            }
++            if left.words[0] != "cat" && matches!(right.words[0], "wc" | "head") {
+@@ -203,3 +226,4 @@
+-            return Ok(Command::Pipe(w, reader));
+-        }
+-        Ok(Command::Simple(w))
++            return Ok(Command::Pipe(left.words, right.words));
++        }
++        if left.paths != [None; 3] {return Ok(Command::Redirect(left, None));}
++        Ok(Command::Simple(left.words))
 diff --git a/components/shell/script.rs b/components/shell/script.rs
-index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..a52bb112190b378aedc5e0f3130e28cb9dd744d9 100644
+index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..893cabd42fda5cdffece77b5085a88b081411f0f 100644
 --- a/components/shell/script.rs
 +++ b/components/shell/script.rs
 @@ -72,0 +73 @@
@@ -23,10 +103,60 @@ index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..a52bb112190b378aedc5e0f3130e28cb
 +        login: &'a mut super::session_auth_lab::Login,
 @@ -85,0 +88 @@
 +            login,
-@@ -356,0 +360,3 @@
+@@ -135,0 +139,19 @@
++            Command::Redirect(left, right) => {
++                let mut stages = Vec::new();
++                let mut paths: [Option<String>;6] = Default::default();
++                for (i, stage) in core::iter::once(left).chain(right.as_ref()).enumerate() {
++                    let name = f.word(stage.words[0], &self.pid)?.text;
++                    let mut words = self.words(f, &stage.words[1..])?;
++                    let name = f.aliases.expand(name, &mut words, |s| f.word(s, &self.pid))?;
++                    let leaf = crate::session_auth_lab::installed_name(&name, self.fs)?.ok_or(rt::BAD_ARGUMENT)?;
++                    stages.push((String::from(leaf), glob::arguments(self.fs, &words)?));
++                    for (fd, raw) in stage.paths.iter().enumerate() {
++                        if let Some(raw) = raw {
++                            let word = f.word(raw, &self.pid)?;
++                            if word.text.is_empty() || glob::has_pattern(&word) { return Err(rt::BAD_ARGUMENT); }
++                            paths[3*i+fd] = Some(word.text);
++                        }
++                    }
++                }
++                self.login.redirected(self.fs, &stages, &paths).map(Flow::Status)
++            }
+@@ -136,0 +159,13 @@
++                let rname=f.word(right[0],&self.pid)?.text;
++                if !matches!(rname.as_str(),"head"|"wc") {
++                    let mut stages = Vec::new();
++                    for raw in [left,right] {
++                        let name=f.word(raw[0],&self.pid)?.text;
++                        let mut words=self.words(f,&raw[1..])?;
++                        let name=f.aliases.expand(name,&mut words,|s|f.word(s,&self.pid))?;
++                        let leaf=crate::session_auth_lab::installed_name(&name,self.fs)?.ok_or(rt::BAD_ARGUMENT)?;
++                        let args=glob::arguments(self.fs,&words)?;
++                        stages.push((String::from(leaf),args));
++                    }
++                    return self.login.pipeline(&stages[0],&stages[1]).map(Flow::Status);
++                }
+@@ -356,0 +392,4 @@
 +            "install" => self.login.install(&argv)?,
++            "redir-test" => self.login.verify_redirect(self.fs,&argv)?,
 +            "relay-test" => self.login.exercise_relay(&argv)?,
 +            "ticket-test" => self.login.ticket_probe(&argv)?,
+@@ -437,0 +477,14 @@
++            }
++            _ if let Some(leaf) = crate::session_auth_lab::installed_name(&name, self.fs)? => {
++                match self.login.execute(leaf, &argv) {
++                    Ok(code) => code,
++                    Err(w::NOT_FOUND) => {
++                        console::write(tty::ERROR,"commande inconnue\n")?;
++                        127
++                    }
++                    Err(rt::DENIED) => {
++                        console::write(tty::ERROR,"exécutable absent ou accès refusé\n")?;
++                        126
++                    }
++                    Err(err) => return Err(err),
++                }
 diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
 index 4fcc399468402982fb230b0901ed40bf05225d40..db5da094ad9a8a45ee1db88f83446db3b58559f6 100644
 --- a/novaOS/kernel/build.rs
@@ -46,6 +176,13 @@ index 4fcc399468402982fb230b0901ed40bf05225d40..db5da094ad9a8a45ee1db88f83446db3
 @@ -205 +213 @@
 -        for name in ["auth-verifier","auth-client"] {
 +        for name in ["auth-verifier","auth-client","shell-signer","exec-relay"] {
+diff --git a/novaOS/kernel/src/sched/mod.rs b/novaOS/kernel/src/sched/mod.rs
+index 01edf98ce6df0de4f280325ec15bed512949eccf..1f28a6c595292a59377d97c5d261de1d787784d9 100644
+--- a/novaOS/kernel/src/sched/mod.rs
++++ b/novaOS/kernel/src/sched/mod.rs
+@@ -283,0 +284,2 @@
++                    #[cfg(feature="novaauth-sessions-lab")]
++                    process::ipc::expire_pipeline(self);
 diff --git a/novaOS/kernel/src/sched/process.rs b/novaOS/kernel/src/sched/process.rs
 index cf354040a94b67a6e875f8a8c5b95dbb29ba8fdb..c45c29b5a83c60af3ceeaa4668b2a8a7f4f72b8a 100644
 --- a/novaOS/kernel/src/sched/process.rs
@@ -66,34 +203,71 @@ index cf354040a94b67a6e875f8a8c5b95dbb29ba8fdb..c45c29b5a83c60af3ceeaa4668b2a8a7
 +    #[cfg(feature="novaauth-sessions-lab")]
 +    ipc::session_relay::retired(s,pid);
 diff --git a/novaOS/kernel/src/sched/process/ipc/exec.rs b/novaOS/kernel/src/sched/process/ipc/exec.rs
-index 0670f66eba73116397f8ac1c082588e3bb6b3ac0..116f1859206a1412f8e5cf5c98b4844b4d07a071 100644
+index 0670f66eba73116397f8ac1c082588e3bb6b3ac0..6bd29b6fef781588e8ea5466143b035ec44c573d 100644
 --- a/novaOS/kernel/src/sched/process/ipc/exec.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/exec.rs
 @@ -2,0 +3,2 @@
 +#[cfg(feature="novaauth-sessions-lab")]
 +include!("exec_delivery_lab.rs");
-@@ -59,0 +62,2 @@
+@@ -59,0 +62,6 @@
 +    #[cfg(feature="novaauth-sessions-lab")]
 +    relayed: Option<bool>,
-@@ -119 +123,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    flow: (u8,u64),
++    #[cfg(feature="novaauth-sessions-lab")]
++    scope:[u64;3],
+@@ -119 +127,2 @@
 -    if config.len() > crate::terminal::ARG_MAX + crate::terminal::HEADER {
 +    let header=if config.starts_with(b"NXEXEC01"){64}else{crate::terminal::HEADER};
 +    if config.len() > crate::terminal::ARG_MAX + header {
-@@ -143,0 +149,2 @@
+@@ -143,0 +153,6 @@
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        relayed: None,
-@@ -224,0 +232,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        flow: (0,0),
++        #[cfg(feature="novaauth-sessions-lab")]
++        scope:[0;3],
+@@ -199,3 +214 @@
+-            current(s, owner)?
+-                .wait_right
+-                .filter(|w| w.target == child)
++            [current(s,owner)?.wait_right,current(s,owner)?.pipe_reader_wait].into_iter().flatten().find(|w|w.target==child)
+@@ -224,0 +238,2 @@
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        super::session_relay::expire(s);
-@@ -225,0 +235,4 @@
+@@ -225,0 +241,4 @@
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        if t.relayed==Some(false) {return Err(DENIED);}
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        if t.relayed==Some(true) && !super::session_relay::owns_session(s,owner,t.binding.session) {return Err(REVOKED);}
-@@ -260,0 +274,2 @@
+@@ -237 +256,5 @@
+-        if p.wait_right.is_some() || p.pending_reader.is_some() || p.pipe_reader_wait.is_some() {
++        #[cfg(feature="novaauth-sessions-lab")]
++        let reader=p.exec[0].flow.0==2;
++        #[cfg(not(feature="novaauth-sessions-lab"))]
++        let reader=false;
++        if p.pipe_reader_wait.is_some() || (p.pending_reader.is_some()!=reader) || (p.wait_right.is_some() && !reader) {
+@@ -260,0 +284,2 @@
 +                #[cfg(feature="novaauth-sessions-lab")]
 +                super::session_relay::expire(s);
-@@ -268,0 +284,7 @@
+@@ -261,0 +287,10 @@
++                #[cfg(feature="novaauth-sessions-lab")]
++                let (role,control)=ticket(s,owner,key)?.flow;
++                #[cfg(not(feature="novaauth-sessions-lab"))]
++                let role=0;
++                #[cfg(feature="novaauth-sessions-lab")]
++                if role!=0 {
++                    let t=ticket(s,owner,key)?;
++                    super::session_relay::attach_display(s,owner,child.0,t.binding,t.scope,role&3!=3,role&4!=0)?;
++                    if role&3>=2 {super::session_relay::attach_pipeline(s,owner,child.0,role&3,control)?;}
++                }
+@@ -263 +298 @@
+-                if p.wait_right.is_some() {
++                if role!=2 && p.wait_right.is_some() {
+@@ -267 +302 @@
+-                p.wait_right = Some(wait);
++                if role==2 {p.pipe_reader_wait=Some(wait);} else {p.wait_right=Some(wait);}
+@@ -268,0 +304,7 @@
 +                #[cfg(feature="novaauth-sessions-lab")]
 +                {
 +                    let id=p.exec[0].binding.session;
@@ -102,12 +276,14 @@ index 0670f66eba73116397f8ac1c082588e3bb6b3ac0..116f1859206a1412f8e5cf5c98b4844b
 +                    }
 +                }
 diff --git a/novaOS/kernel/src/sched/process/ipc/mod.rs b/novaOS/kernel/src/sched/process/ipc/mod.rs
-index 7daccb55336a31e54c1397f34be848b4cb374fdb..62890a6bf2cac99e21f30ed906ea80dbb04e1878 100644
+index 7daccb55336a31e54c1397f34be848b4cb374fdb..fe081a2c4136ca5074f5054472cc07b14e5d4478 100644
 --- a/novaOS/kernel/src/sched/process/ipc/mod.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
-@@ -8,0 +9,2 @@
+@@ -8,0 +9,4 @@
 +#[cfg(feature="novaauth-sessions-lab")]
 +pub(super) mod session_relay;
++#[cfg(feature="novaauth-sessions-lab")]
++pub(in crate::sched) fn expire_pipeline(s:&mut Core) {session_relay::timer(s);}
 diff --git a/novaOS/kernel/src/sched/process/ipc/pipe.rs b/novaOS/kernel/src/sched/process/ipc/pipe.rs
 index acf0456d80ab86fc75ca6778824f19ac7da3f49e..32d392ea06876736dca83b0874b37d83e7610e6c 100644
 --- a/novaOS/kernel/src/sched/process/ipc/pipe.rs
@@ -132,8 +308,15 @@ index acf0456d80ab86fc75ca6778824f19ac7da3f49e..32d392ea06876736dca83b0874b37d83
 +        if direction==SEND {p.writer=Some(recipient);} else {p.reader=Some(recipient);}
 +    }
 +
+diff --git a/novaOS/kernel/src/sched/process/ipc/pipe_admission.rs b/novaOS/kernel/src/sched/process/ipc/pipe_admission.rs
+index 1244c7b0e4886f2c47396fbe0a1639414e09f376..f5c63a8ca7a3a5881f42cea47324b84f3c9dbd2a 100644
+--- a/novaOS/kernel/src/sched/process/ipc/pipe_admission.rs
++++ b/novaOS/kernel/src/sched/process/ipc/pipe_admission.rs
+@@ -3,0 +4,2 @@
++#[cfg(feature="novaauth-sessions-lab")]
++include!("ticket_pipe_lab.rs");
 diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
-index 87dcef02b6fe556bec505b50dbe8190f0095072a..f446725f5824bb98841f677864a4ef382d4aee60 100644
+index 87dcef02b6fe556bec505b50dbe8190f0095072a..724c3237a4bcbe27225a37ef33263189272a74fe 100644
 --- a/novaOS/kernel/src/sched/process/ipc/service.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/service.rs
 @@ -6,0 +7,4 @@
@@ -141,6 +324,12 @@ index 87dcef02b6fe556bec505b50dbe8190f0095072a..f446725f5824bb98841f677864a4ef38
 +mod shell_auth_lab;
 +#[cfg(feature="novaauth-sessions-lab")]
 +pub(super) const RELAY_ID: u64 = shell_auth_lab::RELAY;
+@@ -55 +59 @@
+-fn config(s: &Core, pid: Pid, offset: usize, words: &[u64]) {
++pub(super) fn config(s: &Core, pid: Pid, offset: usize, words: &[u64]) {
+@@ -68 +72 @@
+-fn channel(s: &mut Core, owner: Pid, peer: Option<Pid>, direction: u32) -> Res<(u64, u64)> {
++pub(super) fn channel(s: &mut Core, owner: Pid, peer: Option<Pid>, direction: u32) -> Res<(u64, u64)> {
 @@ -245 +249,5 @@
 -        auth_lab::AUTH | auth_lab::CLIENT | auth_lab::SECOND | auth_lab::PROVISIONER if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
 +        auth_lab::AUTH if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
@@ -288,22 +477,66 @@ index 1d2ab37d595f2656b392d211b177eb2433363ee0..f883333f10242d751f7229377e99aa71
 -novaauth-sessions-lab = ["dep:novaos-identity"]
 +novaauth-sessions-lab = ["dep:novaos-identity", "novaos-identity/distribution-lab"]
 diff --git a/novaOS/user/novafs/files.rs b/novaOS/user/novafs/files.rs
-index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..32a32d865c3c611a4449289e7a7624b26a02a487 100644
+index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..05829e2b7a570bd46698d23623e79f88765b0b6b 100644
 --- a/novaOS/user/novafs/files.rs
 +++ b/novaOS/user/novafs/files.rs
-@@ -142,0 +143,4 @@
+@@ -99,0 +100,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    redirections: [Option<exec_files_lab::Redirect>;6],
+@@ -116,0 +119,2 @@
++            #[cfg(feature="novaauth-sessions-lab")]
++            redirections: [None;6],
+@@ -123,0 +128,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        if self.redirections.iter().flatten().any(|r|r.key==key) {return Err(rt::DENIED);}
+@@ -142,0 +149,8 @@
 +    #[cfg(feature="novaauth-sessions-lab")]
 +    upload: Option<package_lab::Upload>,
 +    #[cfg(feature="novaauth-sessions-lab")]
 +    executable_request: Option<[u8;128]>,
-@@ -632,0 +637,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    exec_cwd:u64,
++    #[cfg(feature="novaauth-sessions-lab")]
++    exec_open:[exec_files_lab::OpenFile;2],
+@@ -319,0 +334,7 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        {
++            if op==w::OPEN_AT && flags & exec_files_lab::REDIRECT!=0 {
++                return self.open_redirect(client,q,a);
++            }
++            self.check_redirect(client,op,handle)?;
++        }
+@@ -381,0 +403,5 @@
++                #[cfg(feature="novaauth-sessions-lab")]
++                if option_env!("NOVA_ACTOR_TRACE")==Some("1") && path.rsplit('/').next()==Some("donnees.tsv") {
++                    let msg=b"NXVFS volume principal ouverture TSV";
++                    rt::call(rt::DEBUG_WRITE,msg.as_ptr() as u64,msg.len() as u64,0);
++                }
+@@ -621,0 +648,4 @@
++                        #[cfg(feature="novaauth-sessions-lab")]
++                        if let Some(slot)=client.redirections.iter_mut().find(|v|v.is_some_and(|r|r.key==handle)){
++                            *slot=None;
++                        }
+@@ -631,0 +662,4 @@
++#[cfg(feature="novaauth-sessions-lab")]
 +mod package_lab;
 +#[cfg(feature="novaauth-sessions-lab")]
-@@ -722,0 +729,4 @@
++mod exec_files_lab;
+@@ -652,0 +687,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        let _=self.serve_exec_files()?;
+@@ -722,0 +759,8 @@
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        upload: None,
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        executable_request: None,
++        #[cfg(feature="novaauth-sessions-lab")]
++        exec_cwd:0,
++        #[cfg(feature="novaauth-sessions-lab")]
++        exec_open:Default::default(),
+@@ -751,0 +796,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        {s.exec_cwd=clients[0].cwd.0; s.reap_redirects(&mut clients[0]);}
 diff --git a/novaOS/user/novafs/files/auth_registry.rs b/novaOS/user/novafs/files/auth_registry.rs
 index 6bfb5e29ab66dac792e1755deb0551eb0ad0def2..1852892ec17c03345ad3e336b9ef347a8a85a1e4 100644
 --- a/novaOS/user/novafs/files/auth_registry.rs
@@ -318,12 +551,18 @@ index 6bfb5e29ab66dac792e1755deb0551eb0ad0def2..1852892ec17c03345ad3e336b9ef347a
 +            return reply(tx,msg.tag,&a);
 +        }
 diff --git a/novaOS/user/novafs/files/namespace.rs b/novaOS/user/novafs/files/namespace.rs
-index 29e0200156df412aa21249c387a4979b73d86c9f..7b13e7b0fba062a4d6ebd5bb0be01912a9c0bf10 100644
+index 29e0200156df412aa21249c387a4979b73d86c9f..50b087a395e887607f7a5d4c1493627faf1aed00 100644
 --- a/novaOS/user/novafs/files/namespace.rs
 +++ b/novaOS/user/novafs/files/namespace.rs
 @@ -224 +224 @@
 -                && names.first().is_some_and(|n| { #[cfg(feature="novaauth-sessions-lab")] { n == auth_directory::NAME } #[cfg(not(feature="novaauth-sessions-lab"))] { false } } || tmp_store::hidden_root_name(n) || cache_store::hidden(n) || config_store::hidden(n) || journal_store::hidden(n))
 +                && names.first().is_some_and(|n| { #[cfg(feature="novaauth-sessions-lab")] { n == auth_directory::NAME || n.starts_with("\x1fNX") } #[cfg(not(feature="novaauth-sessions-lab"))] { false } } || tmp_store::hidden_root_name(n) || cache_store::hidden(n) || config_store::hidden(n) || journal_store::hidden(n))
+@@ -238,0 +239,5 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        if option_env!("NOVA_ACTOR_TRACE")==Some("1") && op==w::OPEN_AT && name.rsplit('/').next()==Some("donnees.tsv") {
++            let msg=b"NXVFS volume principal ouverture TSV";
++            rt::call(rt::DEBUG_WRITE,msg.as_ptr() as u64,msg.len() as u64,0);
++        }
 diff --git a/novaOS/user/service_manager.rs b/novaOS/user/service_manager.rs
 index 8e66b5f6657b531333f2f20965439606f4837731..739c6a964aad78f5fecae1725045b0da894fafc6 100644
 --- a/novaOS/user/service_manager.rs
@@ -345,3 +584,39 @@ index 8e66b5f6657b531333f2f20965439606f4837731..739c6a964aad78f5fecae1725045b0da
 @@ -520,0 +523,2 @@
 +        #[cfg(novaauth_sessions_lab)]
 +        relay_wait,
+diff --git a/novaOS/user/storage/fileapi.rs b/novaOS/user/storage/fileapi.rs
+index 656a7742a6b889807762274a44066aa70687d7d4..ca07e8c54144a35ba8d15217e05b1dd3480d50ac 100644
+--- a/novaOS/user/storage/fileapi.rs
++++ b/novaOS/user/storage/fileapi.rs
+@@ -70,0 +71,31 @@
++    /// Recette QEMU sur la route authentifiée du shell. Deux dépôts en vol
++    /// visent exactement le même nom avant la collecte du premier résultat.
++    pub fn probe_exclusive(&mut self,path:&[u8])->rt::Result<()> {
++        if self.disconnected || path.is_empty() || path.len()>w::FRAGMENT{return Err(rt::BAD_ARGUMENT);}
++        let mut q=w::frame(w::OPEN_AT,self.session,0);
++        q[2]=0x80|w::CREATE|w::WRITABLE;
++        w::size(&mut q,path.len()); q[w::PAYLOAD..w::PAYLOAD+path.len()].copy_from_slice(path);
++        let first=self.tag.checked_add(1).ok_or(rt::LIMIT)?;
++        self.tag=first.checked_add(1).ok_or(rt::LIMIT)?;
++        for seq in [first,self.tag] {
++            rt::send_frame(self.tx,seq,&q,0,false)?;
++        }
++        let mut winner=None;
++        let mut errors=0;
++        for seq in [first,self.tag] {
++            let m=rt::receive_for(self.rx,15000)?;
++            if m.kind!=1 || m.tag!=seq || m.len!=128 || m.payload[..2]!=q[..2] {return Err(rt::REFUSED);}
++            match u64::from(m.payload[3]) {
++                0 if winner.is_none()=>winner=Some(w::word(&m.payload,16)),
++                w::EXISTS=>errors+=1,
++                e=>return Err(if e==0 {rt::REFUSED} else {e}),
++            }
++        }
++        let key=winner.ok_or(rt::REFUSED)?;
++        self.write(key,0,b"unique")?;
++        self.sync(key)?;
++        self.close(key)?;
++        if errors!=1{return Err(rt::REFUSED);}
++        Ok(())
++    }
++

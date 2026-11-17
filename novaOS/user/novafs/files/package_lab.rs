@@ -63,6 +63,15 @@ impl<A: Authority> Authority for Decision<A> {
         if option_env!("NOVA_PACKAGE_CUT") == Some("avant") {
             stop(b"NXPK interruption avant decision");
         }
+        // La décision et l'émission des attestations sont sérialisées dans P9.
+        // Les admissions concurrentes doivent être invalidées avant la décision.
+        rt::value(rt::call(
+            rt::IPC_NOTIFY,
+            rt::config(19),
+            0,
+            0x4e585246454e43,
+        ))
+        .map_err(|_| Fault::Unavailable)?;
         self.0.decide(old, new)?;
         if option_env!("NOVA_PACKAGE_CUT") == Some("apres") {
             stop(b"NXPK interruption apres decision");
@@ -122,6 +131,11 @@ impl Session<'_, '_> {
         if session == [0; 32] || self.failed.is_some() {
             return Err(rt::DENIED);
         }
+        let scope = if &q[..8] == b"NXPKLOAD" {
+            self.exec_seal()?
+        } else {
+            None
+        };
         let mut ledger = Decision(Ledger::new(self.dev.identity_authority().map_err(error)?));
         let mut reg = Registry::open(self.fs.as_mut().ok_or(rt::CLOSED)?, &mut ledger, DOMAIN)
             .map_err(fault)?;
@@ -140,8 +154,9 @@ impl Session<'_, '_> {
             }
             b"NXPKLOAD" => {
                 let loaded = reg
-                    .load_package(grant, &key, machine(), name)
-                    .map_err(fault)?;
+                    .visible_package(grant, &key, machine(), name)
+                    .map_err(fault)?
+                    .ok_or(w::NOT_FOUND)?;
                 let principal = loaded.principal.ok_or(rt::DENIED)?;
                 let app = loaded.application.ok_or(rt::DENIED)?;
                 let tx = rt::config(19);
@@ -164,6 +179,29 @@ impl Session<'_, '_> {
                 f[24..32].copy_from_slice(&(loaded.bytes.len() as u64).to_le_bytes());
                 f[32..64].copy_from_slice(&loaded.digest);
                 f[64..72].copy_from_slice(&loaded.generation.to_le_bytes());
+                if let Some(seal) = scope {
+                    let image = novaos_identity::policy::Image {
+                        installation: principal,
+                        digest: loaded.digest,
+                    };
+                    let dir = u64::from_le_bytes(seal[24..32].try_into().unwrap());
+                    if seal[8..24] == owner {
+                        reg.verify_folder(owner, dir, &seal).map_err(fault)?;
+                        if reg
+                            .permission(
+                                owner,
+                                image,
+                                owner,
+                                dir,
+                                novaos_identity::policy::Origin::Direct,
+                            )
+                            .is_ok_and(|p| p.rights & novaos_identity::policy::READ != 0)
+                        {
+                            f[72..88].copy_from_slice(&seal[24..40]);
+                            f[88..96].copy_from_slice(&self.exec_cwd.to_le_bytes());
+                        }
+                    }
+                }
                 rt::send_for(tx, 2, &f, 250)?;
                 for (index, chunk) in loaded.bytes.chunks(4096).enumerate() {
                     let mut f = frame(b"NXLDDATA");

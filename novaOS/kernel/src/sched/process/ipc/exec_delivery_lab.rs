@@ -45,6 +45,9 @@ pub(super) fn issue_authenticated(
     image: user::SealedImage,
     config: Vec<u8>,
     deadline: u64,
+    role: u8,
+    control: u64,
+    scope: [u64; 3],
 ) -> Res<u64> {
     let permit = Permit {
         issuer,
@@ -54,6 +57,8 @@ pub(super) fn issue_authenticated(
     };
     let key = issue(s, permit, image, config, deadline)?;
     s.processes.get_mut(owner).exec[0].relayed = Some(false);
+    s.processes.get_mut(owner).exec[0].flow = (role, control);
+    s.processes.get_mut(owner).exec[0].scope = scope;
     Ok(key)
 }
 
@@ -82,6 +87,26 @@ pub(super) fn reap_undelivered(s: &mut Core, owner: Pid) {
         });
     if let Some(key) = expired {
         invalidate(&mut s.processes.get_mut(owner).exec[0], TIMED_OUT);
+        let _ = acknowledge(s, owner, key);
+    }
+}
+
+/// Écarter les décisions de lancement encore en attente à la frontière de
+/// publication du registre. Un reçu déjà publié reste collectable.
+pub(super) fn registry_fence(s: &mut Core, owner: Pid) {
+    if current(s, owner).is_err() {
+        return;
+    }
+    let mut undisclosed = None;
+    for t in &mut s.processes.get_mut(owner).exec {
+        if t.relayed.is_some() && matches!(t.state, State::Ready(..) | State::Claimed) {
+            if t.relayed == Some(false) {
+                undisclosed = Some(t.key);
+            }
+            invalidate(t, REVOKED);
+        }
+    }
+    if let Some(key) = undisclosed {
         let _ = acknowledge(s, owner, key);
     }
 }

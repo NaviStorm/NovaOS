@@ -13,7 +13,11 @@ def prepare(destination, policies=False, retired_reply=False, shell=False):
     destination.mkdir(parents=True,exist_ok=False)
     # Les sources reproductibles viennent du commit désigné. Aucun index de
     # worktree et aucun fichier personnel ou ignoré n'entre dans cette copie.
-    with subprocess.Popen(["git","archive",revision,"novaOS","novaFS","components"],cwd=source,stdout=subprocess.PIPE) as archive:
+    paths=["novaOS","novaFS","components"]
+    if shell:
+        # La suite ABI parcourt également la sonde CUT suivie dans le dépôt.
+        paths.append("livraison-cut-0240")
+    with subprocess.Popen(["git","archive",revision,*paths],cwd=source,stdout=subprocess.PIPE) as archive:
         with tarfile.open(fileobj=archive.stdout,mode="r|") as stream:
             stream.extractall(destination,filter="data")
         if archive.wait()!=0: raise RuntimeError("export Git incomplet")

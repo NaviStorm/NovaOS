@@ -112,6 +112,9 @@ impl Login {
         q[8..40].copy_from_slice(&sid);
         q[40..72].copy_from_slice(&self.route.client);
         q[72..80].copy_from_slice(&deadline.to_le_bytes());
+        if op == b"NXRBIND1" {
+            q[80..96].copy_from_slice(&self.inspect(sid)?);
+        }
         rt::send_for(port, self.relay_seq, &q, 250)
     }
     fn bind_relay(&mut self, sid: [u8; 32]) -> rt::Result<()> {
@@ -153,9 +156,9 @@ impl Login {
     }
     fn admission(&mut self, msg: &[u8; 128], reply: &mut [u8; 128]) -> rt::Result<()> {
         let id: [u8; 32] = msg[8..40].try_into().unwrap();
-        let holder = self.inspect(id)?;
+        let current = self.inspected_binding(id)?;
+        let holder = current.subject;
         self.bind_relay(id)?;
-        let current = self.current(self.live.ok_or(rt::DENIED)?.1)?;
         let port = rt::config(5);
         match &msg[..8] {
             b"NSHEXBG1" => {
@@ -164,7 +167,13 @@ impl Login {
                 }
                 let len = number(&msg[40..48]);
                 let n = msg[48] as usize;
-                if n == 0 || n > 63 || msg[49 + n..].iter().any(|b| *b != 0) {
+                if n == 0
+                    || n > 63
+                    || msg[49 + n..112].iter().any(|b| *b != 0)
+                    || msg[120..127] != [0; 7]
+                    || !matches!(msg[127], 0 | 1 | 2 | 3 | 5 | 7)
+                    || (msg[127] & 3 >= 2) != (number(&msg[112..120]) != 0)
+                {
                     return Err(rt::BAD_ARGUMENT);
                 }
                 let nonce: [u8; 16] = random()?[..16].try_into().unwrap();
@@ -175,6 +184,8 @@ impl Login {
                 q[56..72].copy_from_slice(&holder);
                 q[72..104].copy_from_slice(&current.head);
                 q[104..112].copy_from_slice(&len.to_le_bytes());
+                q[112] = msg[127];
+                q[120..].copy_from_slice(&msg[112..120]);
                 rt::send_for(port, 1, &q, 250)?;
                 self.admission = Some((nonce, id, current.head));
                 let mut f = [0; 128];
@@ -235,18 +246,42 @@ impl Login {
                 };
                 let key = rt::value(rt::call(rt::IPC_SEND, port, (&raw const f) as u64, 160))?;
                 self.admission = None;
-                let mut offer = [0; 128];
-                offer[..8].copy_from_slice(b"NSHROFR1");
-                offer[8..40].copy_from_slice(&id);
-                offer[72..80].copy_from_slice(&self.relay_deadline.to_le_bytes());
-                offer[80..88].copy_from_slice(&1u64.to_le_bytes());
-                offer[88..96].copy_from_slice(&key.to_le_bytes());
-                offer[96..128].copy_from_slice(&self.route.client);
-                self.relay_offer(&offer, reply)?;
+                if key == 0 {
+                    return Ok(());
+                }
+                self.offer_ticket(id, key, reply)?;
+            }
+            b"NSHEXRD1" => {
+                let mut q = [0; 128];
+                q[..8].copy_from_slice(b"NXLDTAKE");
+                q[8..40].copy_from_slice(&id);
+                q[40..72].copy_from_slice(&current.head);
+                q[72..80].copy_from_slice(&msg[40..48]);
+                let f = rt::SendV1 {
+                    version: rt::VERSION,
+                    size: 160,
+                    timeout: 250,
+                    tag: 1,
+                    len: 128,
+                    flags: 1,
+                    payload: q,
+                };
+                let key = rt::value(rt::call(rt::IPC_SEND, port, (&raw const f) as u64, 160))?;
+                self.offer_ticket(id, key, reply)?;
             }
             _ => return Err(rt::BAD_ARGUMENT),
         }
         Ok(())
+    }
+    fn offer_ticket(&mut self, id: [u8; 32], key: u64, reply: &mut [u8; 128]) -> rt::Result<()> {
+        let mut offer = [0; 128];
+        offer[..8].copy_from_slice(b"NSHROFR1");
+        offer[8..40].copy_from_slice(&id);
+        offer[72..80].copy_from_slice(&self.relay_deadline.to_le_bytes());
+        offer[80..88].copy_from_slice(&1u64.to_le_bytes());
+        offer[88..96].copy_from_slice(&key.to_le_bytes());
+        offer[96..128].copy_from_slice(&self.route.client);
+        self.relay_offer(&offer, reply)
     }
 
     fn abort_admission(&mut self) {
@@ -259,6 +294,11 @@ impl Login {
     }
 
     fn inspect(&mut self, id: [u8; 32]) -> rt::Result<[u8; 16]> {
+        self.inspected_binding(id).map(|binding| binding.subject)
+    }
+
+    // L'identité vérifiée et la tête présentée à P9 proviennent de la même lecture.
+    fn inspected_binding(&mut self, id: [u8; 32]) -> rt::Result<Binding> {
         let reference = self
             .live
             .filter(|(active, _)| active == &id)
@@ -267,7 +307,8 @@ impl Login {
         let current = self.current(reference)?;
         self.sessions
             .inspect(id, self.route, Some(current), now()?)
-            .map_err(|_| rt::DENIED)
+            .map_err(|_| rt::DENIED)?;
+        Ok(current)
     }
     fn forward(&mut self, msg: &[u8; 128], reply: &mut [u8; 128]) -> rt::Result<()> {
         let mut q = [0; 128];
@@ -275,8 +316,8 @@ impl Login {
             b"NXPKDATA" => q.copy_from_slice(msg),
             b"NXPKBEG1" | b"NXPKEND1" | b"NXPKVIEW" | b"NXPKHIST" => {
                 let sid: [u8; 32] = msg[8..40].try_into().unwrap();
-                let subject = self.inspect(sid)?;
-                let current = self.current(self.live.ok_or(rt::DENIED)?.1)?;
+                let current = self.inspected_binding(sid)?;
+                let subject = current.subject;
                 q[..8].copy_from_slice(&msg[..8]);
                 q[8..24].copy_from_slice(&subject);
                 q[24..56].copy_from_slice(&sid);
@@ -373,7 +414,7 @@ pub(super) fn serve() -> rt::Result<()> {
                     let owner = login.inspect(m.payload[8..40].try_into().unwrap())?;
                     reply[8..24].copy_from_slice(&owner);
                 }
-                b"NSHEXBG1" | b"NSHEXARG" | b"NSHEXEND" => {
+                b"NSHEXBG1" | b"NSHEXARG" | b"NSHEXEND" | b"NSHEXRD1" => {
                     if let Err(e) = login.admission(&m.payload, &mut reply) {
                         login.abort_admission();
                         return Err(e);

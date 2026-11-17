@@ -24,3 +24,7 @@ required-features = ["politiques-lab"]
 
 [profile.release]
 overflow-checks = true
+
+[[example]]
+name = "exec_volume"
+required-features = ["distribution-lab"]
