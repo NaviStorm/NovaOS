@@ -27,9 +27,10 @@ QEMU emulator version 11.1.3
 Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
 QEMU emulator version 11.1.3
 Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
-35eba5f687b495dd16fff7171e30efc11cc3b0c2
-425e4e7cc5c03e246efb64d3638376906344bf47
+Sources ELF : 35eba5f687b495dd16fff7171e30efc11cc3b0c2
+Sources Mach-O : 022c9fa4221d7179d97206488aa0edbd160a1162
+Base : 425e4e7cc5c03e246efb64d3638376906344bf47
 671ffc25cb5e37284a0cd40bd43a60bf8004b7435c7792d8c189eb034b0b9196  /opt/homebrew/bin/gdd
-adf31d5611bd83ccfe82b637724ba88b9b488bbcbf34f5fa2cbd5ca656eeaaab  livraison-dd-0240/bin/dd
+11da30dc82bd2a3aad490a7389018a0cc36321f04d238f83a147fc2c0b4586ac  livraison-dd-0240/bin/dd
 f9d4c0798b18da3f941a3de306fcd4c31299f7edcda4ad1cd849fb105dc5b0b8  livraison-dd-0240/bin/dd-aarch64.elf
 1cffd7a449ba6e5e87d3ad24a68c42adbb387bfce65aeaed49d07f2aa31a4a59  livraison-dd-0240/bin/dd-x86_64.elf

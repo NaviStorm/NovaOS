@@ -29,6 +29,8 @@ python3 -B "$L/matrice.py" "$preuve"
 python3 -B "$L/regressions.py" "$preuve/regressions"
 ```
 
+Les régressions réservent le banc partagé par architecture. Après une interruption, `regressions.py --reprendre "$preuve/regressions"` reprend les cibles manquantes à partir du relevé et des journaux du même checkout.
+
 L’entrée `--invite` des deux scripts rejoue la même campagne et conserve ses temps bruts avec les contrôles d’intégrité. Chaque profil utilise une nouvelle racine de preuves, un volume P9 de fichiers synthétiques et une copie du système réservée à la construction de recette. Les validations du moteur utilisent la matrice Darwin **archivée** dans le paquet pour que les mêmes vecteurs restent comparables. Le banc interroge GNU installé pour les scénarios SDK et le témoin de conversion P9. Les commandes du lanceur ordinaire, les trames SDK et le moteur sous sélection P9 figurent dans des journaux distincts. La recette écrit uniquement dans ses images de test.
 
 ```sh
@@ -38,3 +40,5 @@ python3 -B "$L/archiver.py" "$L/preuves-dd.tar.xz"
 ```
 
 Le checkout Coreutils doit correspondre au tag v9.12 et son dépôt gnulib doit contenir le gitlink indiqué dans [les références](REFERENCES.md). Le script crée un chemin de recherche isolé où dd désigne successivement le Mach-O Nova et le binaire GNU. Une sortie 77 est conservée avec le motif donné par le test. La vérification d’archive relit et décompresse chaque membre, refuse les doublons, puis compare les SHA-256 au manifeste inclus.
+
+Les suites GNU prises en charge figurent dans [le relevé par programme](preuves/gnu-livraison/resultats.txt). Huit autres scripts du checkout restent hors de ce relevé. Les suites `misc`, `fail-ftruncate-fstat` et `nocache_eof` utilisent strace pour une partie ou la totalité de leurs observations. `nocache_fail` interpose posix_fadvise avec LD_PRELOAD. `skip-seek-past-dev` vise le périphérique bloc réel et `skip-seek-past-file` tente une troncature à OFF_T_MAX. `no-allocate` et `stats` envoient /dev/zero vers une FIFO. Le banc de cette livraison couvre les signaux et les lectures fragmentées avec un producteur synthétique borné, et les sauts avec des fichiers jetables de petite taille.
