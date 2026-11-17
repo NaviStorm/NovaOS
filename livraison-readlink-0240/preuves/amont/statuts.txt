@@ -1,0 +1,16 @@
+nova can-e 0
+nova can-f 0
+nova can-m 0
+nova multi 0
+nova readlink-fp-loop 0
+nova readlink-posix 0
+nova readlink-root 0
+nova rl-1 0
+gnu can-e 0
+gnu can-f 0
+gnu can-m 0
+gnu multi 0
+gnu readlink-fp-loop 0
+gnu readlink-posix 0
+gnu readlink-root 0
+gnu rl-1 0
