@@ -103,6 +103,8 @@ Le serveur devra prendre en charge les usages déclarés de bout en bout sur **Q
 
 La distribution vise une base système immuable et des données utilisateur modifiables. Les garanties de mise à jour signée, de rollback et de restauration avec les droits en vigueur restent à réaliser. Les catalogues de pools et volumes chiffrés natifs restent ouverts. Pour v0.30.0, les compilateurs Rust, C et C++, l’éditeur de liens, les bibliothèques et les outils de construction, dont Cargo, devront s’exécuter sur NovaOS. Depuis `nsh`, chaque programme de référence devra être compilé, lié puis exécuté sur place. NovaWM et NovaUI sont conservés pour l’après-stable, sans numéro attribué. [Plan de livraison proposé](novaOS/docs/reconciliation-v0300/proposition.md)
 
+La qualification du service natif de sauvegarde et de restauration doit précéder la livraison des compilateurs Rust, C et C++. La récupération du registre NovaAuth fait d’abord l’objet d’une proposition 2-sur-2 pour QEMU, soumise à arbitrage. [Contrat de récupération et critères de passage à la production](novaOS/docs/novaauth-recuperation-2-sur-2-v0.24.0.md)
+
 ## Contribuer
 
 Pour signaler un problème, indiquer le commit, l’architecture, la commande de reproduction et le résultat observé. Pour proposer une amélioration, décrire le besoin et le composant concerné. Une contribution au code gagne à inclure un test qui exerce le comportement modifié, les résultats sur les cibles concernées et la mise à jour du contrat documenté.
