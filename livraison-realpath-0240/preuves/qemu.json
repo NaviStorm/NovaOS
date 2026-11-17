@@ -1,0 +1,4898 @@
+{
+ "aarch64/512": {
+  "nsh": {
+   "arch": "aarch64",
+   "secteur": 512,
+   "profil": "nsh P9, QEMU 2 vCPU 256 Mio",
+   "iso": "ec5b582d0c9b837e1eae9d450dfdeb99b7f12e2603e35ca4ac6b710591256703",
+   "noyau": "8ccc8345ccae06b3ec489854d3bc1ca285d89ba34ff1d291de0f44b5b531cab4",
+   "avant": [
+    "657af1e1ac72c038e830ca8fdd2e3c163c750ca5876edbb4563a5edb7fdbf1bf",
+    213,
+    872448,
+    77
+   ],
+   "apres": [
+    "657af1e1ac72c038e830ca8fdd2e3c163c750ca5876edbb4563a5edb7fdbf1bf",
+    213,
+    872448,
+    77
+   ],
+   "commandes": [
+    {
+     "cmd": "export LANG=fr-CA",
+     "status": 0,
+     "serie_hex": "4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --help",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e0d0a53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c74617420706172204e554c2e0d0a2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e0d0a4578656d706c6573203a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75656c203a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -zz --he --bad",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e0d0a53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c74617420706172204e554c2e0d0a2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e0d0a4578656d706c6573203a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75656c203a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --version",
+     "status": 0,
+     "serie_hex": "7265616c7061746820286e6f76612d7265616c706174682920302e32342e300d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "man realpath",
+     "status": 0,
+     "serie_hex": "1b5b3f31303439681b371b5b3939393b393939481b5b366e1b381b5b3030313b303031481b5b4b7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e1b5b3030323b303031481b5b4b53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e1b5b3030333b303031481b5b4b417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d1b5b3030343b303031481b5b4b20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d6973731b5b3030353b303031481b5b4b696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e1b5b3030363b303031481b5b4b742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d1b5b3030373b303031481b5b4b4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e1b5b3030383b303031481b5b4b74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c1b5b3030393b303031481b5b4b74617420706172204e554c2e1b5b3031303b303031481b5b4b2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e1b5b3031313b303031481b5b4b4578656d706c6573203a1b5b3031323b303031481b5b4b7265616c70617468202d6d73202f612f2e2e2f621b5b3031333b303031481b5b4b7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965721b5b3031343b303031481b5b4b43617061636974c3a973203a204c6120646f63756d656e746174696f6e207574696c69736520756e697175656d656e74206c6120736f727469652e204c612072c3a9736f6c7574696f6e20646573206e6f1b5b3031353b303031481b5b4b6d732064c3a970656e64206465206ce28099657370616365206465206e6f6d732064652073657373696f6e2e1b5b3031363b303031481b5b4b45666665747320657420726573736f7572636573203a204c65637475726520646573206dc3a97461646f6e6ec3a9657320c3a0206c612064656d616e64652e20417563756e6520c3a9637269747572652073751b5b3031373b303031481b5b4b72206c6520766f6c756d652e1b5b3031383b303031481b5b4b436f646573206574206c696d69746573203a203020656e206361732064652073756363c3a8732c203120656e206361732064e280996572726575722e204c6120636f6e736f6c6520746578746520763120721b5b3031393b303031481b5b4b6566757365204e554c2e1b5b3032303b303031481b5b4b56657273696f6e3a207265616c7061746820286e6f76612d7265616c706174682920302e32342e301b5b3032313b303031481b5b4b4d616e75656c203a206d616e207265616c706174681b5b3032323b303031481b5b4b1b5b3032333b303031481b5b4b1b5b3032343b303031481b5b4b6d616e207265616c7061746820312f3231202071207175697474657220202f20636865726368657220201b5b3f313034396c4446494e3d300d0a"
+    },
+    {
+     "cmd": "export LANG=fr--CA",
+     "status": 0,
+     "serie_hex": "4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --help",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e0d0a55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e616d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e67207065726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320746865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d71756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e0d0a2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e0d0a4578616d706c65733a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75616c3a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -zz --he --bad",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e0d0a55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e616d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e67207065726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320746865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d71756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e0d0a2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e0d0a4578616d706c65733a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75616c3a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --version",
+     "status": 0,
+     "serie_hex": "7265616c7061746820286e6f76612d7265616c706174682920302e32342e300d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "man realpath",
+     "status": 0,
+     "serie_hex": "1b5b3f31303439681b371b5b3939393b393939481b5b366e1b381b5b3030313b303031481b5b4b7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e1b5b3030323b303031481b5b4b55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e1b5b3030333b303031481b5b4b417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e611b5b3030343b303031481b5b4b6d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672070651b5b3030353b303031481b5b4b726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c1b5b3030363b303031481b5b4b206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320741b5b3030373b303031481b5b4b6865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d711b5b3030383b303031481b5b4b756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e1b5b3030393b303031481b5b4b2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e1b5b3031303b303031481b5b4b4578616d706c65733a1b5b3031313b303031481b5b4b7265616c70617468202d6d73202f612f2e2e2f621b5b3031323b303031481b5b4b7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965721b5b3031333b303031481b5b4b4361706162696c69746965733a20446f63756d656e746174696f6e2075736573206f6e6c7920746865206f75747075742073747265616d2e205265736f6c76696e67206e616d6573207265717569721b5b3031343b303031481b5b4b657320612073657373696f6e206e616d6573706163652e1b5b3031353b303031481b5b4b4566666563747320616e64207265736f75726365733a205265616473206d65746164617461206f6e2064656d616e642e204e6f2066696c6573797374656d207772697465732e1b5b3031363b303031481b5b4b53746174757320616e64206c696d6974733a2030206f6e20737563636573732c2031206f6e206572726f722e20546865207631207465787420636f6e736f6c652063616e6e6f7420656d6974204e551b5b3031373b303031481b5b4b4c2e1b5b3031383b303031481b5b4b56657273696f6e3a207265616c7061746820286e6f76612d7265616c706174682920302e32342e301b5b3031393b303031481b5b4b4d616e75616c3a206d616e207265616c706174681b5b3032303b303031481b5b4b1b5b3032313b303031481b5b4b1b5b3032323b303031481b5b4b1b5b3032333b303031481b5b4b1b5b3032343b303031481b5b4b6d616e207265616c7061746820312f3139202071207175697420202f2073656172636820201b5b3f313034396c4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -x",
+     "status": 1,
+     "serie_hex": "7265616c706174683a20696e76616c6964206f7074696f6e202d2d202778270d0a54727920277265616c70617468202d2d68656c702720666f72206d6f726520696e666f726d6174696f6e2e0d0a4446494e3d310d0a"
+    },
+    {
+     "cmd": "realpath /objet/absent",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "realpath -z a/b",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "nsh -c 'realpath a/b'",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "nsh -c 'realpath / | wc -l'",
+     "status": 3,
+     "serie_hex": "657272657572203a20617267756d656e7420696e76616c6964650d0a4446494e3d330d0a"
+    }
+   ]
+  },
+  "elf": {
+   "arch": "aarch64",
+   "secteur": 512,
+   "elf": "eae2286c73f9253d2f11d7c3d2afd8488920436cf761bd968f96709085d4392d",
+   "iso": "b65f1b29fe36b224da29931adb1e74fad74c29698e124b8d987b507ab23f8f79",
+   "noyau": "1392142746489eb850b57711789f0f1163c0d94b5d875ca4151842a8fafa13ea",
+   "p9": "47afc19728e378cf1553bbb78a90eebdfe1618ce42b7d4340f75f12082804500",
+   "base": "425e4e7cc5c03e246efb64d3638376906344bf47",
+   "cas": [
+    {
+     "cas": "parent",
+     "argv": [
+      "-ms",
+      "/abc/../fin"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       5
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "zero",
+     "argv": [
+      "-ms",
+      "--zero",
+      "/fin"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       5
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "point",
+     "argv": [
+      "simple"
+     ],
+     "ecritures_refusees": [
+      [
+       4,
+       48
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "double-slash",
+     "argv": [
+      "//"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       2
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "help",
+     "argv": [
+      "--help"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       256
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "version",
+     "argv": [
+      "--version"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       32
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "invalide",
+     "argv": [
+      "-h"
+     ],
+     "ecritures_refusees": [
+      [
+       4,
+       76
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "manquant",
+     "argv": [],
+     "ecritures_refusees": [
+      [
+       4,
+       70
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    }
+   ],
+   "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-machine",
+    "msi=off",
+    "-device",
+    "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-aarch64-512/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=512,physical_block_size=512"
+   ]
+  },
+  "moteur": {
+   "architecture": "aarch64",
+   "secteur": 512,
+   "cas": [
+    [
+     "-E",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--relative-to=.",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-q",
+     "--relative-to=.",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--quiet",
+     "--zero",
+     "--relative-to",
+     ".",
+     "--",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-mLs",
+     "--relative-to=tree",
+     "--relative-base=tree",
+     "tree/leaf",
+     "alias/.."
+    ],
+    [
+     "-sm",
+     "--relative-to=tree",
+     "--relative-base=tree/leaf",
+     "tree/file"
+    ],
+    [
+     "-eE",
+     "-sLP",
+     "--relative-base=tree",
+     "tree/file"
+    ],
+    [
+     "--relative-base=",
+     "."
+    ],
+    [
+     "-qe",
+     "--relative-to=tree/file",
+     "."
+    ],
+    [],
+    [
+     "--"
+    ],
+    [
+     "-x"
+    ],
+    [
+     "--rel"
+    ],
+    [
+     "--relative-to"
+    ],
+    [
+     "--zero=x"
+    ],
+    [
+     "--bad"
+    ]
+   ],
+   "mesures": [
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 0,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 884250
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 1,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 767917
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 2,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 742375
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 3,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 765833
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 0,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6810208
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 1,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6655875
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 2,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6609750
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 3,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6457750
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 0,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2722875
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 1,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2784834
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 2,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2761333
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 3,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2782250
+    }
+   ],
+   "medianes": {
+    "1": {
+     "ns_par_appel": 1531.666,
+     "chemins_s": 652883.8532682713
+    },
+    "32": {
+     "ns_par_appel": 66097.5,
+     "chemins_s": 484133.2879458376
+    },
+    "4": {
+     "ns_par_appel": 11129.0,
+     "chemins_s": 359421.3316560338
+    }
+   },
+   "disque": "765041683664af494db3614ea85834404130871f373e06a15c9b3d0d8e9c1278",
+   "iso": "699c6520de1096865fa6fa61d07f7315679c76581f3f0fc41b1fe5c3fb30fce7",
+   "noyau": "d3cf81286bb72f0b7232e55873769b0a11898ff74214ad94cb2e898aca971d39",
+   "sonde": "d0d02cf7f890d4f199b6382a8dd03e2d53ddcb3815730d0a3e299f3e38c0d85f",
+   "vecteurs": "446bfe748fcf1553c93f8235439ccfc11ea5e1e127408ebfa6c36d4008b889d1",
+   "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-machine",
+    "msi=off",
+    "-device",
+    "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/qualif-aarch64-512/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=512,physical_block_size=512"
+   ]
+  }
+ },
+ "aarch64/4096": {
+  "nsh": {
+   "arch": "aarch64",
+   "secteur": 4096,
+   "profil": "nsh P9, QEMU 2 vCPU 256 Mio",
+   "iso": "4f15f15a6b6dcefd3f45c0e75a6811d7548f8c4c6e95d4763e4a063f7b640741",
+   "noyau": "8ccc8345ccae06b3ec489854d3bc1ca285d89ba34ff1d291de0f44b5b531cab4",
+   "avant": [
+    "50ae02e48591842d59f1f7c6bc7fe20635b2a58b501b970e688805f5b7a8f4cb",
+    213,
+    872448,
+    77
+   ],
+   "apres": [
+    "50ae02e48591842d59f1f7c6bc7fe20635b2a58b501b970e688805f5b7a8f4cb",
+    213,
+    872448,
+    77
+   ],
+   "commandes": [
+    {
+     "cmd": "export LANG=fr-CA",
+     "status": 0,
+     "serie_hex": "4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --help",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e0d0a53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c74617420706172204e554c2e0d0a2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e0d0a4578656d706c6573203a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75656c203a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -zz --he --bad",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e0d0a53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c74617420706172204e554c2e0d0a2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e0d0a4578656d706c6573203a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75656c203a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --version",
+     "status": 0,
+     "serie_hex": "7265616c7061746820286e6f76612d7265616c706174682920302e32342e300d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "man realpath",
+     "status": 0,
+     "serie_hex": "1b5b3f31303439681b371b5b3939393b393939481b5b366e1b381b5b3030313b303031481b5b4b7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e1b5b3030323b303031481b5b4b53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e1b5b3030333b303031481b5b4b417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d1b5b3030343b303031481b5b4b20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d6973731b5b3030353b303031481b5b4b696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e1b5b3030363b303031481b5b4b742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d1b5b3030373b303031481b5b4b4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e1b5b3030383b303031481b5b4b74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c1b5b3030393b303031481b5b4b74617420706172204e554c2e1b5b3031303b303031481b5b4b2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e1b5b3031313b303031481b5b4b4578656d706c6573203a1b5b3031323b303031481b5b4b7265616c70617468202d6d73202f612f2e2e2f621b5b3031333b303031481b5b4b7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965721b5b3031343b303031481b5b4b43617061636974c3a973203a204c6120646f63756d656e746174696f6e207574696c69736520756e697175656d656e74206c6120736f727469652e204c612072c3a9736f6c7574696f6e20646573206e6f1b5b3031353b303031481b5b4b6d732064c3a970656e64206465206ce28099657370616365206465206e6f6d732064652073657373696f6e2e1b5b3031363b303031481b5b4b45666665747320657420726573736f7572636573203a204c65637475726520646573206dc3a97461646f6e6ec3a9657320c3a0206c612064656d616e64652e20417563756e6520c3a9637269747572652073751b5b3031373b303031481b5b4b72206c6520766f6c756d652e1b5b3031383b303031481b5b4b436f646573206574206c696d69746573203a203020656e206361732064652073756363c3a8732c203120656e206361732064e280996572726575722e204c6120636f6e736f6c6520746578746520763120721b5b3031393b303031481b5b4b6566757365204e554c2e1b5b3032303b303031481b5b4b56657273696f6e3a207265616c7061746820286e6f76612d7265616c706174682920302e32342e301b5b3032313b303031481b5b4b4d616e75656c203a206d616e207265616c706174681b5b3032323b303031481b5b4b1b5b3032333b303031481b5b4b1b5b3032343b303031481b5b4b6d616e207265616c7061746820312f3231202071207175697474657220202f20636865726368657220201b5b3f313034396c4446494e3d300d0a"
+    },
+    {
+     "cmd": "export LANG=fr--CA",
+     "status": 0,
+     "serie_hex": "4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --help",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e0d0a55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e616d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e67207065726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320746865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d71756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e0d0a2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e0d0a4578616d706c65733a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75616c3a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -zz --he --bad",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e0d0a55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e616d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e67207065726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320746865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d71756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e0d0a2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e0d0a4578616d706c65733a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75616c3a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --version",
+     "status": 0,
+     "serie_hex": "7265616c7061746820286e6f76612d7265616c706174682920302e32342e300d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "man realpath",
+     "status": 0,
+     "serie_hex": "1b5b3f31303439681b371b5b3939393b393939481b5b366e1b381b5b3030313b303031481b5b4b7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e1b5b3030323b303031481b5b4b55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e1b5b3030333b303031481b5b4b417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e611b5b3030343b303031481b5b4b6d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672070651b5b3030353b303031481b5b4b726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c1b5b3030363b303031481b5b4b206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320741b5b3030373b303031481b5b4b6865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d711b5b3030383b303031481b5b4b756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e1b5b3030393b303031481b5b4b2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e1b5b3031303b303031481b5b4b4578616d706c65733a1b5b3031313b303031481b5b4b7265616c70617468202d6d73202f612f2e2e2f621b5b3031323b303031481b5b4b7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965721b5b3031333b303031481b5b4b4361706162696c69746965733a20446f63756d656e746174696f6e2075736573206f6e6c7920746865206f75747075742073747265616d2e205265736f6c76696e67206e616d6573207265717569721b5b3031343b303031481b5b4b657320612073657373696f6e206e616d6573706163652e1b5b3031353b303031481b5b4b4566666563747320616e64207265736f75726365733a205265616473206d65746164617461206f6e2064656d616e642e204e6f2066696c6573797374656d207772697465732e1b5b3031363b303031481b5b4b53746174757320616e64206c696d6974733a2030206f6e20737563636573732c2031206f6e206572726f722e20546865207631207465787420636f6e736f6c652063616e6e6f7420656d6974204e551b5b3031373b303031481b5b4b4c2e1b5b3031383b303031481b5b4b56657273696f6e3a207265616c7061746820286e6f76612d7265616c706174682920302e32342e301b5b3031393b303031481b5b4b4d616e75616c3a206d616e207265616c706174681b5b3032303b303031481b5b4b1b5b3032313b303031481b5b4b1b5b3032323b303031481b5b4b1b5b3032333b303031481b5b4b1b5b3032343b303031481b5b4b6d616e207265616c7061746820312f3139202071207175697420202f2073656172636820201b5b3f313034396c4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -x",
+     "status": 1,
+     "serie_hex": "7265616c706174683a20696e76616c6964206f7074696f6e202d2d202778270d0a54727920277265616c70617468202d2d68656c702720666f72206d6f726520696e666f726d6174696f6e2e0d0a4446494e3d310d0a"
+    },
+    {
+     "cmd": "realpath /objet/absent",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "realpath -z a/b",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "nsh -c 'realpath a/b'",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "nsh -c 'realpath / | wc -l'",
+     "status": 3,
+     "serie_hex": "657272657572203a20617267756d656e7420696e76616c6964650d0a4446494e3d330d0a"
+    }
+   ]
+  },
+  "elf": {
+   "arch": "aarch64",
+   "secteur": 4096,
+   "elf": "eae2286c73f9253d2f11d7c3d2afd8488920436cf761bd968f96709085d4392d",
+   "iso": "ff17fe889dde6ee80f379ba4402dd5ab757c1e87a96fffa33c0924b1ad9cc8e6",
+   "noyau": "1392142746489eb850b57711789f0f1163c0d94b5d875ca4151842a8fafa13ea",
+   "p9": "3b95358946a2838b200aefe38dd58734ac4a2f955bb2423fd089e8ac1ad6affe",
+   "base": "425e4e7cc5c03e246efb64d3638376906344bf47",
+   "cas": [
+    {
+     "cas": "parent",
+     "argv": [
+      "-ms",
+      "/abc/../fin"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       5
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "zero",
+     "argv": [
+      "-ms",
+      "--zero",
+      "/fin"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       5
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "point",
+     "argv": [
+      "simple"
+     ],
+     "ecritures_refusees": [
+      [
+       4,
+       48
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "double-slash",
+     "argv": [
+      "//"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       2
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "help",
+     "argv": [
+      "--help"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       256
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "version",
+     "argv": [
+      "--version"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       32
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "invalide",
+     "argv": [
+      "-h"
+     ],
+     "ecritures_refusees": [
+      [
+       4,
+       76
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "manquant",
+     "argv": [],
+     "ecritures_refusees": [
+      [
+       4,
+       70
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    }
+   ],
+   "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-machine",
+    "msi=off",
+    "-device",
+    "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-aarch64-4096/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=4096,physical_block_size=4096"
+   ]
+  },
+  "moteur": {
+   "architecture": "aarch64",
+   "secteur": 4096,
+   "cas": [
+    [
+     "-E",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--relative-to=.",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-q",
+     "--relative-to=.",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--quiet",
+     "--zero",
+     "--relative-to",
+     ".",
+     "--",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-mLs",
+     "--relative-to=tree",
+     "--relative-base=tree",
+     "tree/leaf",
+     "alias/.."
+    ],
+    [
+     "-sm",
+     "--relative-to=tree",
+     "--relative-base=tree/leaf",
+     "tree/file"
+    ],
+    [
+     "-eE",
+     "-sLP",
+     "--relative-base=tree",
+     "tree/file"
+    ],
+    [
+     "--relative-base=",
+     "."
+    ],
+    [
+     "-qe",
+     "--relative-to=tree/file",
+     "."
+    ],
+    [],
+    [
+     "--"
+    ],
+    [
+     "-x"
+    ],
+    [
+     "--rel"
+    ],
+    [
+     "--relative-to"
+    ],
+    [
+     "--zero=x"
+    ],
+    [
+     "--bad"
+    ]
+   ],
+   "mesures": [
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 0,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 833041
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 1,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 719834
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 2,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 694416
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 3,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 695917
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 0,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6521541
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 1,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6531042
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 2,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6534917
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 3,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6525583
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 0,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2791875
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 1,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2715959
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 2,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2729333
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 3,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2752208
+    }
+   ],
+   "medianes": {
+    "1": {
+     "ns_par_appel": 1391.834,
+     "chemins_s": 718476.4849831229
+    },
+    "32": {
+     "ns_par_appel": 65310.42,
+     "chemins_s": 489967.75705928705
+    },
+    "4": {
+     "ns_par_appel": 10917.332,
+     "chemins_s": 366389.8835356477
+    }
+   },
+   "disque": "c05be79487d9f81c6f95d7b355fa2dea99a169e87c2fb3d4da8f4c1fa4d5cf1b",
+   "iso": "91129e901cf5b065fd7c299b5d01b2a30cd72d1ca6d6a40f0a65eeefbb038bdb",
+   "noyau": "d3cf81286bb72f0b7232e55873769b0a11898ff74214ad94cb2e898aca971d39",
+   "sonde": "d0d02cf7f890d4f199b6382a8dd03e2d53ddcb3815730d0a3e299f3e38c0d85f",
+   "vecteurs": "446bfe748fcf1553c93f8235439ccfc11ea5e1e127408ebfa6c36d4008b889d1",
+   "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-machine",
+    "msi=off",
+    "-device",
+    "virtio-iommu-pci,id=i,addr=5,granule=4k,aw-bits=48,boot-bypass=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/qualif-aarch64-4096/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=0,logical_block_size=4096,physical_block_size=4096"
+   ]
+  }
+ },
+ "x86_64/512": {
+  "nsh": {
+   "arch": "x86_64",
+   "secteur": 512,
+   "profil": "nsh P9, QEMU 2 vCPU 256 Mio",
+   "iso": "9a62212d281698d15d7bdee563e3425db10d7365a901b00a7d0015c38d97f1e7",
+   "noyau": "cd016e491e2cf0d521f1fef2b63ebe38e7fa102c137c3ea2bc5c8b1a6a6e6724",
+   "avant": [
+    "fa2ed873ddb3eb3e0a23602809ed99da22a19b0be92865570d77efb69663008f",
+    213,
+    872448,
+    77
+   ],
+   "apres": [
+    "fa2ed873ddb3eb3e0a23602809ed99da22a19b0be92865570d77efb69663008f",
+    213,
+    872448,
+    77
+   ],
+   "commandes": [
+    {
+     "cmd": "export LANG=fr-CA",
+     "status": 0,
+     "serie_hex": "4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --help",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e0d0a53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c74617420706172204e554c2e0d0a2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e0d0a4578656d706c6573203a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75656c203a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -zz --he --bad",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e0d0a53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c74617420706172204e554c2e0d0a2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e0d0a4578656d706c6573203a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75656c203a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --version",
+     "status": 0,
+     "serie_hex": "7265616c7061746820286e6f76612d7265616c706174682920302e32342e300d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "man realpath",
+     "status": 0,
+     "serie_hex": "1b5b3f31303439681b371b5b3939393b393939481b5b366e1b381b5b3030313b303031481b5b4b7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e1b5b3030323b303031481b5b4b53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e1b5b3030333b303031481b5b4b417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d1b5b3030343b303031481b5b4b20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d6973731b5b3030353b303031481b5b4b696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e1b5b3030363b303031481b5b4b742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d1b5b3030373b303031481b5b4b4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e1b5b3030383b303031481b5b4b74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c1b5b3030393b303031481b5b4b74617420706172204e554c2e1b5b3031303b303031481b5b4b2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e1b5b3031313b303031481b5b4b4578656d706c6573203a1b5b3031323b303031481b5b4b7265616c70617468202d6d73202f612f2e2e2f621b5b3031333b303031481b5b4b7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965721b5b3031343b303031481b5b4b43617061636974c3a973203a204c6120646f63756d656e746174696f6e207574696c69736520756e697175656d656e74206c6120736f727469652e204c612072c3a9736f6c7574696f6e20646573206e6f1b5b3031353b303031481b5b4b6d732064c3a970656e64206465206ce28099657370616365206465206e6f6d732064652073657373696f6e2e1b5b3031363b303031481b5b4b45666665747320657420726573736f7572636573203a204c65637475726520646573206dc3a97461646f6e6ec3a9657320c3a0206c612064656d616e64652e20417563756e6520c3a9637269747572652073751b5b3031373b303031481b5b4b72206c6520766f6c756d652e1b5b3031383b303031481b5b4b436f646573206574206c696d69746573203a203020656e206361732064652073756363c3a8732c203120656e206361732064e280996572726575722e204c6120636f6e736f6c6520746578746520763120721b5b3031393b303031481b5b4b6566757365204e554c2e1b5b3032303b303031481b5b4b56657273696f6e3a207265616c7061746820286e6f76612d7265616c706174682920302e32342e301b5b3032313b303031481b5b4b4d616e75656c203a206d616e207265616c706174681b5b3032323b303031481b5b4b1b5b3032333b303031481b5b4b1b5b3032343b303031481b5b4b6d616e207265616c7061746820312f3231202071207175697474657220202f20636865726368657220201b5b3f313034396c4446494e3d300d0a"
+    },
+    {
+     "cmd": "export LANG=fr--CA",
+     "status": 0,
+     "serie_hex": "4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --help",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e0d0a55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e616d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e67207065726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320746865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d71756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e0d0a2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e0d0a4578616d706c65733a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75616c3a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -zz --he --bad",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e0d0a55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e616d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e67207065726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320746865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d71756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e0d0a2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e0d0a4578616d706c65733a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75616c3a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --version",
+     "status": 0,
+     "serie_hex": "7265616c7061746820286e6f76612d7265616c706174682920302e32342e300d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "man realpath",
+     "status": 0,
+     "serie_hex": "1b5b3f31303439681b371b5b3939393b393939481b5b366e1b381b5b3030313b303031481b5b4b7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e1b5b3030323b303031481b5b4b55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e1b5b3030333b303031481b5b4b417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e611b5b3030343b303031481b5b4b6d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672070651b5b3030353b303031481b5b4b726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c1b5b3030363b303031481b5b4b206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320741b5b3030373b303031481b5b4b6865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d711b5b3030383b303031481b5b4b756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e1b5b3030393b303031481b5b4b2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e1b5b3031303b303031481b5b4b4578616d706c65733a1b5b3031313b303031481b5b4b7265616c70617468202d6d73202f612f2e2e2f621b5b3031323b303031481b5b4b7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965721b5b3031333b303031481b5b4b4361706162696c69746965733a20446f63756d656e746174696f6e2075736573206f6e6c7920746865206f75747075742073747265616d2e205265736f6c76696e67206e616d6573207265717569721b5b3031343b303031481b5b4b657320612073657373696f6e206e616d6573706163652e1b5b3031353b303031481b5b4b4566666563747320616e64207265736f75726365733a205265616473206d65746164617461206f6e2064656d616e642e204e6f2066696c6573797374656d207772697465732e1b5b3031363b303031481b5b4b53746174757320616e64206c696d6974733a2030206f6e20737563636573732c2031206f6e206572726f722e20546865207631207465787420636f6e736f6c652063616e6e6f7420656d6974204e551b5b3031373b303031481b5b4b4c2e1b5b3031383b303031481b5b4b56657273696f6e3a207265616c7061746820286e6f76612d7265616c706174682920302e32342e301b5b3031393b303031481b5b4b4d616e75616c3a206d616e207265616c706174681b5b3032303b303031481b5b4b1b5b3032313b303031481b5b4b1b5b3032323b303031481b5b4b1b5b3032333b303031481b5b4b1b5b3032343b303031481b5b4b6d616e207265616c7061746820312f3139202071207175697420202f2073656172636820201b5b3f313034396c4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -x",
+     "status": 1,
+     "serie_hex": "7265616c706174683a20696e76616c6964206f7074696f6e202d2d202778270d0a54727920277265616c70617468202d2d68656c702720666f72206d6f726520696e666f726d6174696f6e2e0d0a4446494e3d310d0a"
+    },
+    {
+     "cmd": "realpath /objet/absent",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "realpath -z a/b",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "nsh -c 'realpath a/b'",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "nsh -c 'realpath / | wc -l'",
+     "status": 3,
+     "serie_hex": "657272657572203a20617267756d656e7420696e76616c6964650d0a4446494e3d330d0a"
+    }
+   ]
+  },
+  "elf": {
+   "arch": "x86_64",
+   "secteur": 512,
+   "elf": "b17b23acb62d0af83a642995f65a75f387923cdebec5757b4866e884165e4313",
+   "iso": "447aadc35afa82df3964a65c5f91a4690427e04969210907b36a9b108f9dd536",
+   "noyau": "fd42d12ac24f5b273c1bc69f64db5f4cb3868d40eb870a001a68c59ecc545477",
+   "p9": "7d97927591d38a2ea1e3392304eb64423ee1ace7201be796381cff152140764f",
+   "base": "425e4e7cc5c03e246efb64d3638376906344bf47",
+   "cas": [
+    {
+     "cas": "parent",
+     "argv": [
+      "-ms",
+      "/abc/../fin"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       5
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "zero",
+     "argv": [
+      "-ms",
+      "--zero",
+      "/fin"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       5
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "point",
+     "argv": [
+      "simple"
+     ],
+     "ecritures_refusees": [
+      [
+       4,
+       48
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "double-slash",
+     "argv": [
+      "//"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       2
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "help",
+     "argv": [
+      "--help"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       256
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "version",
+     "argv": [
+      "--version"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       32
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "invalide",
+     "argv": [
+      "-h"
+     ],
+     "ecritures_refusees": [
+      [
+       4,
+       76
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "manquant",
+     "argv": [],
+     "ecritures_refusees": [
+      [
+       4,
+       70
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    }
+   ],
+   "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-device",
+    "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-x86_64-512/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=2,logical_block_size=512,physical_block_size=512"
+   ]
+  },
+  "moteur": {
+   "architecture": "x86_64",
+   "secteur": 512,
+   "cas": [
+    [
+     "-E",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--relative-to=.",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-q",
+     "--relative-to=.",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--quiet",
+     "--zero",
+     "--relative-to",
+     ".",
+     "--",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-mLs",
+     "--relative-to=tree",
+     "--relative-base=tree",
+     "tree/leaf",
+     "alias/.."
+    ],
+    [
+     "-sm",
+     "--relative-to=tree",
+     "--relative-base=tree/leaf",
+     "tree/file"
+    ],
+    [
+     "-eE",
+     "-sLP",
+     "--relative-base=tree",
+     "tree/file"
+    ],
+    [
+     "--relative-base=",
+     "."
+    ],
+    [
+     "-qe",
+     "--relative-to=tree/file",
+     "."
+    ],
+    [],
+    [
+     "--"
+    ],
+    [
+     "-x"
+    ],
+    [
+     "--rel"
+    ],
+    [
+     "--relative-to"
+    ],
+    [
+     "--zero=x"
+    ],
+    [
+     "--bad"
+    ]
+   ],
+   "mesures": [
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 0,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 878000
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 1,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 799917
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 2,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 738167
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 3,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 733458
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 0,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6955958
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 1,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 7060209
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 2,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6985916
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 3,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 7004584
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 0,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2963958
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 1,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2939417
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 2,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2916708
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 3,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2973417
+    }
+   ],
+   "medianes": {
+    "1": {
+     "ns_par_appel": 1476.334,
+     "chemins_s": 677353.4985985556
+    },
+    "32": {
+     "ns_par_appel": 70045.84,
+     "chemins_s": 456843.68978942937
+    },
+    "4": {
+     "ns_par_appel": 11757.668,
+     "chemins_s": 340203.51654766913
+    }
+   },
+   "disque": "c4d29ceb939de23404b08943c3225f29b025662d39a21fcb2441ab91ce86f566",
+   "iso": "616f101c7fef9fe94965761cc9604f6ba58b0fcf051b3f73a52caf05089ea173",
+   "noyau": "06a74d750e2964e17bc53c4d76511347615863ec3ebdac01569e8df62edac374",
+   "sonde": "467c72edc0cad93e1af0324a662f59a27ee75afc9143dee34300d4bfc97faff5",
+   "vecteurs": "446bfe748fcf1553c93f8235439ccfc11ea5e1e127408ebfa6c36d4008b889d1",
+   "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-device",
+    "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/qualif-x86_64-512/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=2,logical_block_size=512,physical_block_size=512"
+   ]
+  }
+ },
+ "x86_64/4096": {
+  "nsh": {
+   "arch": "x86_64",
+   "secteur": 4096,
+   "profil": "nsh P9, QEMU 2 vCPU 256 Mio",
+   "iso": "8a8dd8b0adabf5ee35f0b70bccf917321035d93338f902e3ca6d90af55ea3ce9",
+   "noyau": "cd016e491e2cf0d521f1fef2b63ebe38e7fa102c137c3ea2bc5c8b1a6a6e6724",
+   "avant": [
+    "6e014c3d0167ce0a2c3ad8c88821af60417c52ee7050e968ec01a7c00f3c1875",
+    213,
+    872448,
+    77
+   ],
+   "apres": [
+    "6e014c3d0167ce0a2c3ad8c88821af60417c52ee7050e968ec01a7c00f3c1875",
+    213,
+    872448,
+    77
+   ],
+   "commandes": [
+    {
+     "cmd": "export LANG=fr-CA",
+     "status": 0,
+     "serie_hex": "4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --help",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e0d0a53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c74617420706172204e554c2e0d0a2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e0d0a4578656d706c6573203a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75656c203a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -zz --he --bad",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e0d0a53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c74617420706172204e554c2e0d0a2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e0d0a4578656d706c6573203a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75656c203a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --version",
+     "status": 0,
+     "serie_hex": "7265616c7061746820286e6f76612d7265616c706174682920302e32342e300d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "man realpath",
+     "status": 0,
+     "serie_hex": "1b5b3f31303439681b371b5b3939393b393939481b5b366e1b381b5b3030313b303031481b5b4b7265616c7061746820e28094204166666963686572206c6573206368656d696e732072c3a9736f6c75732e1b5b3030323b303031481b5b4b53796e74617865203a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e1b5b3030333b303031481b5b4b417267756d656e7473206574206f7074696f6e73203a205061722064c3a966617574202d45502e202d452f2d2d63616e6f6e6963616c697a65206163636570746520756e206465726e696572206e6f6d1b5b3030343b303031481b5b4b20616273656e742c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e6720657869676520736f6e206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d6973731b5b3030353b303031481b5b4b696e672061636365707465206c657320636f6d706f73616e74657320616273656e7465732e202d502f2d2d706879736963616c2073756974206c6573206c69656e7320696d6dc3a964696174656d656e1b5b3030363b303031481b5b4b742c202d4c2f2d2d6c6f676963616c20617072c3a873202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b73206c657320636f6e73657276652e202d2d72656c61746976652d746f3d1b5b3030373b303031481b5b4b4449522066697865206ce280996f726967696e652c202d2d72656c61746976652d626173653d444952206c696d697465206c6120736f727469652072656c6174697665206175782064657363656e64616e1b5b3030383b303031481b5b4b74732e202d712f2d2d7175696574206d6173717565206c6573206572726575727320646573206f70c3a972616e6465732e202d7a2f2d2d7a65726f207465726d696e65206368617175652072c3a973756c1b5b3030393b303031481b5b4b74617420706172204e554c2e1b5b3031303b303031481b5b4b2d2d68656c70203a2061696465203b202d2d76657273696f6e203a2076657273696f6e2e1b5b3031313b303031481b5b4b4578656d706c6573203a1b5b3031323b303031481b5b4b7265616c70617468202d6d73202f612f2e2e2f621b5b3031333b303031481b5b4b7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965721b5b3031343b303031481b5b4b43617061636974c3a973203a204c6120646f63756d656e746174696f6e207574696c69736520756e697175656d656e74206c6120736f727469652e204c612072c3a9736f6c7574696f6e20646573206e6f1b5b3031353b303031481b5b4b6d732064c3a970656e64206465206ce28099657370616365206465206e6f6d732064652073657373696f6e2e1b5b3031363b303031481b5b4b45666665747320657420726573736f7572636573203a204c65637475726520646573206dc3a97461646f6e6ec3a9657320c3a0206c612064656d616e64652e20417563756e6520c3a9637269747572652073751b5b3031373b303031481b5b4b72206c6520766f6c756d652e1b5b3031383b303031481b5b4b436f646573206574206c696d69746573203a203020656e206361732064652073756363c3a8732c203120656e206361732064e280996572726575722e204c6120636f6e736f6c6520746578746520763120721b5b3031393b303031481b5b4b6566757365204e554c2e1b5b3032303b303031481b5b4b56657273696f6e3a207265616c7061746820286e6f76612d7265616c706174682920302e32342e301b5b3032313b303031481b5b4b4d616e75656c203a206d616e207265616c706174681b5b3032323b303031481b5b4b1b5b3032333b303031481b5b4b1b5b3032343b303031481b5b4b6d616e207265616c7061746820312f3231202071207175697474657220202f20636865726368657220201b5b3f313034396c4446494e3d300d0a"
+    },
+    {
+     "cmd": "export LANG=fr--CA",
+     "status": 0,
+     "serie_hex": "4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --help",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e0d0a55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e616d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e67207065726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320746865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d71756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e0d0a2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e0d0a4578616d706c65733a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75616c3a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -zz --he --bad",
+     "status": 0,
+     "serie_hex": "7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e0d0a55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e0d0a417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e616d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e67207065726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320746865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d71756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e0d0a2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e0d0a4578616d706c65733a0d0a7265616c70617468202d6d73202f612f2e2e2f620d0a7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965720d0a4d616e75616c3a206d616e207265616c706174680d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath --version",
+     "status": 0,
+     "serie_hex": "7265616c7061746820286e6f76612d7265616c706174682920302e32342e300d0a4446494e3d300d0a"
+    },
+    {
+     "cmd": "man realpath",
+     "status": 0,
+     "serie_hex": "1b5b3f31303439681b371b5b3939393b393939481b5b366e1b381b5b3030313b303031481b5b4b7265616c7061746820e28094205072696e74207265736f6c7665642070617468206e616d65732e1b5b3030323b303031481b5b4b55736167653a207265616c70617468205b4f5054494f4e5d2e2e2e205b2d2d5d2046494c452e2e2e1b5b3030333b303031481b5b4b417267756d656e747320616e64206f7074696f6e733a2044656661756c74202d45502e202d452f2d2d63616e6f6e6963616c697a65207065726d6974732061206d697373696e67206c617374206e611b5b3030343b303031481b5b4b6d652c202d652f2d2d63616e6f6e6963616c697a652d6578697374696e67207265717569726573206578697374656e63652c202d6d2f2d2d63616e6f6e6963616c697a652d6d697373696e672070651b5b3030353b303031481b5b4b726d697473206d697373696e6720636f6d706f6e656e74732e202d502f2d2d706879736963616c20666f6c6c6f7773206c696e6b7320696d6d6564696174656c792c202d4c2f2d2d6c6f676963616c1b5b3030363b303031481b5b4b206166746572202e2e2c202d732f2d2d73747269702f2d2d6e6f2d73796d6c696e6b7320707265736572766573207468656d2e202d2d72656c61746976652d746f3d4449522073656c6563747320741b5b3030373b303031481b5b4b6865206f726967696e2c202d2d72656c61746976652d626173653d444952207265737472696374732072656c6174697665206f757470757420746f2064657363656e64616e74732e202d712f2d2d711b5b3030383b303031481b5b4b756965742073757070726573736573206f706572616e64206572726f72732e202d7a2f2d2d7a65726f207465726d696e61746573206561636820726573756c742077697468204e554c2e1b5b3030393b303031481b5b4b2d2d68656c703a2068656c703b202d2d76657273696f6e3a2076657273696f6e2e1b5b3031303b303031481b5b4b4578616d706c65733a1b5b3031313b303031481b5b4b7265616c70617468202d6d73202f612f2e2e2f621b5b3031323b303031481b5b4b7265616c70617468202d2d72656c61746976652d746f3d2e202d2d20666963686965721b5b3031333b303031481b5b4b4361706162696c69746965733a20446f63756d656e746174696f6e2075736573206f6e6c7920746865206f75747075742073747265616d2e205265736f6c76696e67206e616d6573207265717569721b5b3031343b303031481b5b4b657320612073657373696f6e206e616d6573706163652e1b5b3031353b303031481b5b4b4566666563747320616e64207265736f75726365733a205265616473206d65746164617461206f6e2064656d616e642e204e6f2066696c6573797374656d207772697465732e1b5b3031363b303031481b5b4b53746174757320616e64206c696d6974733a2030206f6e20737563636573732c2031206f6e206572726f722e20546865207631207465787420636f6e736f6c652063616e6e6f7420656d6974204e551b5b3031373b303031481b5b4b4c2e1b5b3031383b303031481b5b4b56657273696f6e3a207265616c7061746820286e6f76612d7265616c706174682920302e32342e301b5b3031393b303031481b5b4b4d616e75616c3a206d616e207265616c706174681b5b3032303b303031481b5b4b1b5b3032313b303031481b5b4b1b5b3032323b303031481b5b4b1b5b3032333b303031481b5b4b1b5b3032343b303031481b5b4b6d616e207265616c7061746820312f3139202071207175697420202f2073656172636820201b5b3f313034396c4446494e3d300d0a"
+    },
+    {
+     "cmd": "realpath -x",
+     "status": 1,
+     "serie_hex": "7265616c706174683a20696e76616c6964206f7074696f6e202d2d202778270d0a54727920277265616c70617468202d2d68656c702720666f72206d6f726520696e666f726d6174696f6e2e0d0a4446494e3d310d0a"
+    },
+    {
+     "cmd": "realpath /objet/absent",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "realpath -z a/b",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "nsh -c 'realpath a/b'",
+     "status": 127,
+     "serie_hex": "636f6d6d616e646520696e636f6e6e75650d0a4446494e3d3132370d0a"
+    },
+    {
+     "cmd": "nsh -c 'realpath / | wc -l'",
+     "status": 3,
+     "serie_hex": "657272657572203a20617267756d656e7420696e76616c6964650d0a4446494e3d330d0a"
+    }
+   ]
+  },
+  "elf": {
+   "arch": "x86_64",
+   "secteur": 4096,
+   "elf": "b17b23acb62d0af83a642995f65a75f387923cdebec5757b4866e884165e4313",
+   "iso": "356f53794efb63ca24cd23818c0529da1cae53075b155da1b5522c10c0948369",
+   "noyau": "fd42d12ac24f5b273c1bc69f64db5f4cb3868d40eb870a001a68c59ecc545477",
+   "p9": "1bc46a40c2bce9cd6e323b1706a577cf276a97c54646a9cf1e1695a640f68da1",
+   "base": "425e4e7cc5c03e246efb64d3638376906344bf47",
+   "cas": [
+    {
+     "cas": "parent",
+     "argv": [
+      "-ms",
+      "/abc/../fin"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       5
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "zero",
+     "argv": [
+      "-ms",
+      "--zero",
+      "/fin"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       5
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "point",
+     "argv": [
+      "simple"
+     ],
+     "ecritures_refusees": [
+      [
+       4,
+       48
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "double-slash",
+     "argv": [
+      "//"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       2
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "help",
+     "argv": [
+      "--help"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       256
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "version",
+     "argv": [
+      "--version"
+     ],
+     "ecritures_refusees": [
+      [
+       2,
+       32
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "invalide",
+     "argv": [
+      "-h"
+     ],
+     "ecritures_refusees": [
+      [
+       4,
+       76
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    },
+    {
+     "cas": "manquant",
+     "argv": [],
+     "ecritures_refusees": [
+      [
+       4,
+       70
+      ],
+      [
+       4,
+       25
+      ]
+     ],
+     "statut": 1,
+     "stdout_hex": "",
+     "stderr_hex": ""
+    }
+   ],
+   "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-device",
+    "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-x86_64-4096/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=2,logical_block_size=4096,physical_block_size=4096"
+   ]
+  },
+  "moteur": {
+   "architecture": "x86_64",
+   "secteur": 4096,
+   "cas": [
+    [
+     "-E",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-E",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-e",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-m",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-existing",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-P",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-s",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "-L",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--physical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--strip",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--logical",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--canonicalize-missing",
+     "--no-symlinks",
+     "--relative-to=.",
+     "--relative-base=.",
+     "-z",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--relative-to=.",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-q",
+     "--relative-to=.",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "--quiet",
+     "--zero",
+     "--relative-to",
+     ".",
+     "--",
+     ".",
+     "tree/file",
+     "alias/..",
+     "absolute/..",
+     "broken",
+     "cycle",
+     "missing/x",
+     "secret/child",
+     "",
+     "tree/file/.."
+    ],
+    [
+     "-mLs",
+     "--relative-to=tree",
+     "--relative-base=tree",
+     "tree/leaf",
+     "alias/.."
+    ],
+    [
+     "-sm",
+     "--relative-to=tree",
+     "--relative-base=tree/leaf",
+     "tree/file"
+    ],
+    [
+     "-eE",
+     "-sLP",
+     "--relative-base=tree",
+     "tree/file"
+    ],
+    [
+     "--relative-base=",
+     "."
+    ],
+    [
+     "-qe",
+     "--relative-to=tree/file",
+     "."
+    ],
+    [],
+    [
+     "--"
+    ],
+    [
+     "-x"
+    ],
+    [
+     "--rel"
+    ],
+    [
+     "--relative-to"
+    ],
+    [
+     "--zero=x"
+    ],
+    [
+     "--bad"
+    ]
+   ],
+   "mesures": [
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 0,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 932375
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 1,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 757875
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 2,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 734917
+    },
+    {
+     "n": 1,
+     "octets_par_nom": 10,
+     "passage": 3,
+     "repetitions": 500,
+     "tas_octets": 65536,
+     "ns": 731667
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 0,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6923500
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 1,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6932250
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 2,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6894041
+    },
+    {
+     "n": 32,
+     "octets_par_nom": 14,
+     "passage": 3,
+     "repetitions": 100,
+     "tas_octets": 65536,
+     "ns": 6999667
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 0,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2989209
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 1,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2889208
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 2,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2908542
+    },
+    {
+     "n": 4,
+     "octets_par_nom": 16,
+     "passage": 3,
+     "repetitions": 250,
+     "tas_octets": 65536,
+     "ns": 2939666
+    }
+   ],
+   "medianes": {
+    "1": {
+     "ns_par_appel": 1469.834,
+     "chemins_s": 680348.9373629946
+    },
+    "32": {
+     "ns_par_appel": 69322.5,
+     "chemins_s": 461610.58819286665
+    },
+    "4": {
+     "ns_par_appel": 11634.168,
+     "chemins_s": 343814.87356895657
+    }
+   },
+   "disque": "27a6df1821995a4810edea92e09b32a8850c24d8c06328c9d7bd7185e47969d1",
+   "iso": "a270bdf73000caf903fc15cfc5a64ed9877a965de7ff8634b83afc9f4de433b4",
+   "noyau": "06a74d750e2964e17bc53c4d76511347615863ec3ebdac01569e8df62edac374",
+   "sonde": "467c72edc0cad93e1af0324a662f59a27ee75afc9143dee34300d4bfc97faff5",
+   "vecteurs": "446bfe748fcf1553c93f8235439ccfc11ea5e1e127408ebfa6c36d4008b889d1",
+   "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-device",
+    "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off",
+    "-drive",
+    "if=none,id=d,file=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/qualif-x86_64-4096/session.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=on",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=2,logical_block_size=4096,physical_block_size=4096"
+   ]
+  }
+ }
+}

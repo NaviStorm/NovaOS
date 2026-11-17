@@ -1,0 +1,137 @@
+warning: unexpected `cfg` condition name: `nvme_rw`
+ --> /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/components/libraries/../../novaOS/user/storage/fileapi.rs:6:11
+  |
+6 |     #[cfg(nvme_rw)]
+  |           ^^^^^^^
+  |
+  = help: expected names are: `docsrs`, `feature`, and `test` and 34 more
+  = help: consider using a Cargo feature instead
+  = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+           [lints.rust]
+           unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nvme_rw)'] }
+  = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(nvme_rw)");` to the top of the `build.rs`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unexpected `cfg` condition name: `nvme_rw`
+   --> /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/components/libraries/../../novaOS/user/storage/fileapi.rs:132:11
+    |
+132 |     #[cfg(nvme_rw)]
+    |           ^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nvme_rw)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(nvme_rw)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `nvme_rw`
+   --> /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/components/libraries/../../novaOS/user/storage/fileapi.rs:138:11
+    |
+138 |     #[cfg(nvme_rw)]
+    |           ^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nvme_rw)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(nvme_rw)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `nvme_rw`
+  --> /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/components/libraries/../../novaOS/user/storage/fileapi.rs:24:19
+   |
+24 |             #[cfg(nvme_rw)]
+   |                   ^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nvme_rw)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(nvme_rw)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `nvme_rw`
+  --> /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/components/libraries/../../novaOS/user/storage/fileapi.rs:40:19
+   |
+40 |             #[cfg(nvme_rw)]
+   |                   ^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nvme_rw)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(nvme_rw)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `nvme_rw`
+  --> /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/components/libraries/../../novaOS/user/storage/fileapi.rs:72:15
+   |
+72 |         #[cfg(nvme_rw)]
+   |               ^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nvme_rw)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(nvme_rw)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `nvme_rw`
+   --> /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/components/libraries/../../novaOS/user/storage/fileapi.rs:114:15
+    |
+114 |         #[cfg(nvme_rw)]
+    |               ^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nvme_rw)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(nvme_rw)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: `nova-cli` (lib) generated 7 warnings
+   Compiling nova-realpath v0.24.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/components/realpath)
+    Finished `release` profile [optimized] target(s) in 0.40s
+   Compiling novaos v0.20.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/realpath-natif-0240/novaOS/kernel)
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 5.56s
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+BOOTAA64.EFI: OK
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.8OURFqlt/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  455g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.8OURFqlt/root'
+xorriso : UPDATE :      16 files added in 1 seconds
+xorriso : UPDATE :      16 files added in 1 seconds
+ISO image produced: 4635 sectors
+Written to medium : 4635 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.8OURFqlt/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      17 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/qualif-x86_64-4096/sdk.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4635 data blocks, 9270k data,  455g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5549.7k) in 1 seconds = 4.1xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/qualif-x86_64-4096/noyau-demarre.elf'

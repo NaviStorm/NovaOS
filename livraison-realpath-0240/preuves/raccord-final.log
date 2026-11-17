@@ -1,0 +1,325 @@
+python3 scripts/generate_abi.py --check
+. scripts/target.sh && RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$rust_target"
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.09s
+   Compiling novaos v0.20.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/recette.i5IW4ftS/base-elf/novaOS/kernel)
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 5.98s
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+BOOTAA64.EFI: OK
+    Finished `release` profile [optimized] target(s) in 0.01s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.DJrkcNrT/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  466g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.DJrkcNrT/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4567 sectors
+Written to medium : 4567 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.DJrkcNrT/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      18 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-aarch64-512/elf.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4567 data blocks, 9134k data,  466g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5433.4k) in 1 seconds = 4.0xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-aarch64-512/noyau-demarre.elf'
+    Finished `release` profile [optimized] target(s) in 0.02s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.2d6xiFeC/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  466g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.2d6xiFeC/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4528 sectors
+Written to medium : 4528 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.2d6xiFeC/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      18 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/nsh-final-aarch64-512/nsh.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4528 data blocks, 9056k data,  465g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5354.7k) in 1 seconds = 4.0xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/nsh-final-aarch64-512/noyau-demarre.elf'
+python3 scripts/generate_abi.py --check
+. scripts/target.sh && RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$rust_target"
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.09s
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.01s
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+BOOTAA64.EFI: OK
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Finished `release` profile [optimized] target(s) in 0.06s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.kRzVYJxw/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  464g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.kRzVYJxw/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4567 sectors
+Written to medium : 4567 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.kRzVYJxw/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      18 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-aarch64-4096/elf.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4567 data blocks, 9134k data,  464g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5433.4k) in 1 seconds = 4.0xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-aarch64-4096/noyau-demarre.elf'
+    Finished `release` profile [optimized] target(s) in 0.01s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.plh68JFi/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  464g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.plh68JFi/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 4528 sectors
+Written to medium : 4528 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.plh68JFi/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      18 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/nsh-final-aarch64-4096/nsh.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4528 data blocks, 9056k data,  464g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5354.7k) in 1 seconds = 4.0xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/nsh-final-aarch64-4096/noyau-demarre.elf'
+python3 scripts/generate_abi.py --check
+. scripts/target.sh && RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$rust_target"
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.08s
+   Compiling novaos v0.20.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/recette.i5IW4ftS/base-elf/novaOS/kernel)
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 5.52s
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+BOOTAA64.EFI: OK
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.adAtAmIs/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  460g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.adAtAmIs/root'
+xorriso : UPDATE :      16 files added in 1 seconds
+xorriso : UPDATE :      16 files added in 1 seconds
+ISO image produced: 4574 sectors
+Written to medium : 4574 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.adAtAmIs/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      17 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-x86_64-512/elf.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4574 data blocks, 9148k data,  460g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5426.5k) in 1 seconds = 4.0xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-x86_64-512/noyau-demarre.elf'
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.EkyyHDj9/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  460g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.EkyyHDj9/root'
+xorriso : UPDATE :      16 files added in 1 seconds
+xorriso : UPDATE :      16 files added in 1 seconds
+ISO image produced: 4531 sectors
+Written to medium : 4531 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.EkyyHDj9/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      17 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/nsh-final-x86_64-512/nsh.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4531 data blocks, 9062k data,  459g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5340.2k) in 1 seconds = 3.9xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/nsh-final-x86_64-512/noyau-demarre.elf'
+python3 scripts/generate_abi.py --check
+. scripts/target.sh && RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --locked --target "$rust_target"
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.09s
+warning: constant `CAPABILITY_NAMES` is never used
+ --> kernel/src/sched/../../../abi/service_caps.rs:9:11
+  |
+9 | pub const CAPABILITY_NAMES: &[(u64, &str)] = &[
+  |           ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `novaos` (bin "novaos") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.01s
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+BOOTAA64.EFI: OK
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.2UXJs2kW/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  455g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.2UXJs2kW/root'
+xorriso : UPDATE :      16 files added in 1 seconds
+xorriso : UPDATE :      16 files added in 1 seconds
+ISO image produced: 4574 sectors
+Written to medium : 4574 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.2UXJs2kW/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      17 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-x86_64-4096/elf.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4574 data blocks, 9148k data,  455g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5426.5k) in 1 seconds = 4.0xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/elf-final-x86_64-4096/noyau-demarre.elf'
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.bGr04ymR/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  455g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.bGr04ymR/root'
+xorriso : UPDATE :      16 files added in 1 seconds
+xorriso : UPDATE :      16 files added in 1 seconds
+ISO image produced: 4531 sectors
+Written to medium : 4531 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.bGr04ymR/novaos.iso' completed successfully.
+
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      17 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/nsh-final-x86_64-4096/nsh.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 4531 data blocks, 9062k data,  455g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (5340.2k) in 1 seconds = 3.9xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/realpath-arc027/nsh-final-x86_64-4096/noyau-demarre.elf'
