@@ -1,0 +1,312 @@
+{
+  "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "cpu": "Apple M4 Max",
+  "TZ": "UTC0",
+  "LC_ALL": "C",
+  "repetitions": 5,
+  "charges": [
+    {
+      "charge": "époques",
+      "dates": 65536,
+      "octets": 917504,
+      "entree": "22dd7ae6e17b326fead77439fe7194cd1f4679aceac6bf7ac3690b7a50942eae",
+      "oracle": {
+        "GNU": [
+          0,
+          "fd0dac2c4a8b95f8092c480487df14f64b0aad78f7c8565ad5a71e2b226d7f93",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "Nova": [
+          0,
+          "fd0dac2c4a8b95f8092c480487df14f64b0aad78f7c8565ad5a71e2b226d7f93",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ]
+      },
+      "argv": [
+        "-u",
+        "-f",
+        "dates",
+        "+%s.%N"
+      ],
+      "brut": {
+        "GNU": [
+          {
+            "secondes": 0.088343583,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.087732042,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.088691208,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.0883385,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.088538542,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.08809425,
+            "rss_octets": 2064384,
+            "statut": 0
+          }
+        ],
+        "Nova": [
+          {
+            "secondes": 0.024060291,
+            "rss_octets": 2310144,
+            "statut": 0
+          },
+          {
+            "secondes": 0.023968,
+            "rss_octets": 2310144,
+            "statut": 0
+          },
+          {
+            "secondes": 0.024015292,
+            "rss_octets": 2293760,
+            "statut": 0
+          },
+          {
+            "secondes": 0.023643542,
+            "rss_octets": 2310144,
+            "statut": 0
+          },
+          {
+            "secondes": 0.023890333,
+            "rss_octets": 2310144,
+            "statut": 0
+          },
+          {
+            "secondes": 0.023667875,
+            "rss_octets": 2293760,
+            "statut": 0
+          }
+        ]
+      },
+      "GNU": {
+        "mediane": 0.0883385,
+        "debit": 741873.5885259542,
+        "rss": 2064384
+      },
+      "Nova": {
+        "mediane": 0.023890333,
+        "debit": 2743201.612133242,
+        "rss": 2310144
+      }
+    },
+    {
+      "charge": "calendrier",
+      "dates": 65536,
+      "octets": 1310720,
+      "entree": "e35c6be4e6bc48bda588e5b7cd9bd65bf98d1e8852b5e9596cd9c68022ffad0d",
+      "oracle": {
+        "GNU": [
+          0,
+          "e35c6be4e6bc48bda588e5b7cd9bd65bf98d1e8852b5e9596cd9c68022ffad0d",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "Nova": [
+          0,
+          "e35c6be4e6bc48bda588e5b7cd9bd65bf98d1e8852b5e9596cd9c68022ffad0d",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ]
+      },
+      "argv": [
+        "-u",
+        "-f",
+        "dates",
+        "+%F %T"
+      ],
+      "brut": {
+        "GNU": [
+          {
+            "secondes": 0.105204917,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.103491917,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.102938375,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.103708417,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.103177625,
+            "rss_octets": 2064384,
+            "statut": 0
+          },
+          {
+            "secondes": 0.105226792,
+            "rss_octets": 2064384,
+            "statut": 0
+          }
+        ],
+        "Nova": [
+          {
+            "secondes": 0.028364791,
+            "rss_octets": 2277376,
+            "statut": 0
+          },
+          {
+            "secondes": 0.028562292,
+            "rss_octets": 2260992,
+            "statut": 0
+          },
+          {
+            "secondes": 0.028544375,
+            "rss_octets": 2260992,
+            "statut": 0
+          },
+          {
+            "secondes": 0.029718584,
+            "rss_octets": 2260992,
+            "statut": 0
+          },
+          {
+            "secondes": 0.028409458,
+            "rss_octets": 2260992,
+            "statut": 0
+          },
+          {
+            "secondes": 0.028960834,
+            "rss_octets": 2260992,
+            "statut": 0
+          }
+        ]
+      },
+      "GNU": {
+        "mediane": 0.103491917,
+        "debit": 633247.5221229113,
+        "rss": 2064384
+      },
+      "Nova": {
+        "mediane": 0.028562292,
+        "debit": 2294493.733206005,
+        "rss": 2260992
+      }
+    },
+    {
+      "charge": "invalides",
+      "dates": 65536,
+      "octets": 917504,
+      "entree": "fff93b77dd1c7b0f0749fc411f2800723ed912bf264babfe263c20fc8d29d8d3",
+      "oracle": {
+        "GNU": [
+          1,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "ce9c6410c736d1e56db83f5fd7e5b093c91fd5ddab3847b0f1989cf1fae75ca8"
+        ],
+        "Nova": [
+          1,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "ce9c6410c736d1e56db83f5fd7e5b093c91fd5ddab3847b0f1989cf1fae75ca8"
+        ]
+      },
+      "argv": [
+        "-u",
+        "-f",
+        "dates",
+        "+%F"
+      ],
+      "brut": {
+        "GNU": [
+          {
+            "secondes": 0.224280875,
+            "rss_octets": 1998848,
+            "statut": 1
+          },
+          {
+            "secondes": 0.22401275,
+            "rss_octets": 1998848,
+            "statut": 1
+          },
+          {
+            "secondes": 0.225697792,
+            "rss_octets": 1998848,
+            "statut": 1
+          },
+          {
+            "secondes": 0.222552583,
+            "rss_octets": 1998848,
+            "statut": 1
+          },
+          {
+            "secondes": 0.224310208,
+            "rss_octets": 1998848,
+            "statut": 1
+          },
+          {
+            "secondes": 0.224435375,
+            "rss_octets": 1982464,
+            "statut": 1
+          }
+        ],
+        "Nova": [
+          {
+            "secondes": 0.106094375,
+            "rss_octets": 2342912,
+            "statut": 1
+          },
+          {
+            "secondes": 0.103827542,
+            "rss_octets": 2342912,
+            "statut": 1
+          },
+          {
+            "secondes": 0.105256875,
+            "rss_octets": 2326528,
+            "statut": 1
+          },
+          {
+            "secondes": 0.10283975,
+            "rss_octets": 2326528,
+            "statut": 1
+          },
+          {
+            "secondes": 0.105046125,
+            "rss_octets": 2310144,
+            "statut": 1
+          },
+          {
+            "secondes": 0.104388333,
+            "rss_octets": 2326528,
+            "statut": 1
+          }
+        ]
+      },
+      "GNU": {
+        "mediane": 0.224310208,
+        "debit": 292166.81926486373,
+        "rss": 1998848
+      },
+      "Nova": {
+        "mediane": 0.104388333,
+        "debit": 627809.6231309681,
+        "rss": 2326528
+      }
+    }
+  ],
+  "GNU_SHA256": "9287253f3a643f42d40966e37c30b2cf5cb33f947f56ee5efd6d053db4a8a54f",
+  "Nova_SHA256": "00622a28d5596cdb3fbad1b92af119979fac010564250caa789466b0b19114ef"
+}
