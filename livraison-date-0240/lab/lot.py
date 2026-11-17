@@ -57,10 +57,10 @@ def prepare_lot(work,arch):
     source=gate.read_text()
     anchor="    let [a, b, c] = args;"
     assert source.count(anchor)==1
-    gate.write_text(source.replace(anchor,'''    with(|s| {
+    gate.write_text(source.replace(anchor,'''    let date_sample = with(|s| {
         let pid=caller(s);
         let p=s.processes.get_mut(pid);
-        if p.terminal != (crate::terminal::OUTPUT | crate::terminal::ERROR) {return}
+        if p.terminal != (crate::terminal::OUTPUT | crate::terminal::ERROR) {return None}
         let space=p.space.as_ref().unwrap();
         let pages=space.page_counts();
         p.date_peak=p.date_peak.max(pages.0+pages.1);
@@ -69,10 +69,20 @@ def prepare_lot(work,arch):
         if id==PROCESS_EXIT {
             let argv=heap::with_pages(|m|Ok(space.read_data(m,5))).unwrap().to_le_bytes();
             if argv[..5]==[3,2,0,b'-',b'f'] {
-                hal::log(format_args!("DATEMEM {} {} {} {}",pid.number,p.date_peak,ticks-p.date_start,hal::timer::counter_hz()));
+                return Some((pid.number,p.date_peak,ticks-p.date_start));
             }
         }
+        None
     });
+    if let Some((pid,pages,ticks))=date_sample {
+        // La calibration TSC attend des interruptions PIT sur x86_64.
+        // Effectuer cette opération une fois, hors de la section ordonnanceur.
+        use core::sync::atomic::{AtomicU64,Ordering};
+        static DATE_HZ:AtomicU64=AtomicU64::new(0);
+        let mut hz=DATE_HZ.load(Ordering::Relaxed);
+        if hz==0 {hz=hal::timer::counter_hz();DATE_HZ.store(hz,Ordering::Relaxed)}
+        hal::log(format_args!("DATEMEM {} {} {} {}",pid,pages,ticks,hz));
+    }
 '''+anchor))
     elf=HERE/f"bin/date-{arch}.elf"
     target=work/"cible-lot"
