@@ -1,12 +1,8 @@
 use super::*;
 use std::{
     env,
-    fs::File,
     io::{self, BufWriter, IsTerminal, Write},
-    os::{
-        fd::{FromRawFd, OwnedFd},
-        unix::ffi::OsStrExt,
-    },
+    os::unix::ffi::OsStrExt,
 };
 
 unsafe extern "C" {
@@ -64,15 +60,20 @@ impl resolver::Namespace for Darwin {
     }
 }
 
-fn streams() -> io::Result<BufWriter<File>> {
-    // dup préserve le descripteur public et donne à File un propriétaire unique.
-    let fd = unsafe { libc::dup(1) };
-    if fd < 0 {
-        return Err(io::Error::last_os_error());
+// Un descripteur hérité fermé ne devient une erreur que lors d’une écriture.
+struct Stdout;
+impl Write for Stdout {
+    fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
+        let n = unsafe { libc::write(1, bytes.as_ptr().cast(), bytes.len()) };
+        if n < 0 {
+            Err(io::Error::last_os_error())
+        } else {
+            Ok(n as usize)
+        }
     }
-    Ok(BufWriter::new(File::from(unsafe {
-        OwnedFd::from_raw_fd(fd)
-    })))
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
 }
 
 fn execute() -> io::Result<u8> {
@@ -103,7 +104,7 @@ fn execute() -> io::Result<u8> {
             return Ok(1);
         }
     };
-    let mut out = streams()?;
+    let mut out = BufWriter::new(Stdout);
     match action {
         options::Action::Help | options::Action::Version => {
             let lang = ["LC_ALL", "LC_MESSAGES", "LANG"]

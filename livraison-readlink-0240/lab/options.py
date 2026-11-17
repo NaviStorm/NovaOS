@@ -95,6 +95,8 @@ def cases(full, operands):
         yield [b"-z",b"brut"],{"QUOTING_STYLE":style},"pty",None
     for dev in ["EPIPE","EPIPE-ignore","EBADF","ferme"]:
         yield [b"chaine"],{},dev,None
+        yield [b"inexistant"],{},dev,None
+        yield [b"-v",b"inexistant"],{},dev,None
     for lang in ["fr-CA","fr--CA","fr-Zzzz","en-US"]:
         for doc in LONG[-2:]:
             yield [("--"+doc).encode()],{"LC_ALL":lang},"flux",doc

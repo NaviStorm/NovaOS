@@ -1,6 +1,5 @@
 use alloc::vec::Vec;
 
-#[cfg(not(target_os = "none"))]
 pub const STYLES: [&str; 10] = [
     "literal",
     "shell",
@@ -14,7 +13,6 @@ pub const STYLES: [&str; 10] = [
     "clocale",
 ];
 
-#[cfg(not(target_os = "none"))]
 pub fn style(name: &str) -> Option<&'static str> {
     let mut candidates = STYLES.into_iter().filter(|s| s.starts_with(name));
     let first = candidates.next()?;
@@ -44,26 +42,6 @@ pub fn mark(classes: &mut Vec<ByteClass>, len: usize, visible: bool) {
     } else {
         classes.extend(core::iter::repeat_n(ByteClass::Hidden, len));
     }
-}
-
-/// Regroupe les octets non affichables, y compris les séquences UTF-8 invalides.
-#[cfg(target_os = "none")]
-pub fn quoted(bytes: &[u8], style: &str, utf8: bool, printable: impl Fn(char) -> bool) -> Vec<u8> {
-    if style == "literal" {
-        return bytes.to_vec();
-    }
-    let mut hidden = Vec::with_capacity(bytes.len());
-    for chunk in bytes.utf8_chunks() {
-        for c in chunk.valid().chars() {
-            let visible = (utf8 || c.is_ascii()) && printable(c);
-            mark(&mut hidden, c.len_utf8(), visible);
-        }
-        hidden.extend(core::iter::repeat_n(
-            ByteClass::Hidden,
-            chunk.invalid().len(),
-        ));
-    }
-    render(bytes, style, utf8, &hidden)
 }
 
 pub fn render(bytes: &[u8], style: &str, utf8: bool, hidden: &[ByteClass]) -> Vec<u8> {
