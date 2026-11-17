@@ -1,6 +1,60 @@
 //! Traitement local avant la résolution des chemins et le choix des capacités.
 use nova_cli::{command::Program, console, documentation, options, runtime as rt, tty};
 
+#[path = "../env/src/option_names.rs"]
+mod env_names;
+
+/// Seuls les arguments précédant la commande et les affectations appartiennent à env.
+/// Une chaîne -S doit être interprétée par l’utilitaire avec son environnement.
+fn env_document<'a>(args: &[&'a str]) -> Result<Option<bool>, &'a str> {
+    let mut words = args.iter().copied();
+    while let Some(word) = words.next() {
+        if word == "--" || word == "-" || !word.starts_with('-') {
+            break;
+        }
+        if let Some(raw) = word.strip_prefix("--") {
+            let (name, attached) = raw
+                .split_once('=')
+                .map_or((raw, None), |(k, v)| (k, Some(v)));
+            let mut choices = env_names::matching(name.as_bytes());
+            let Some(&(canonical, id)) = choices.next() else {
+                return Err(word);
+            };
+            if canonical != name.as_bytes() && choices.next().is_some() {
+                return Err(word);
+            }
+            if env_names::required(id) {
+                if attached.or_else(|| words.next()).is_none() {
+                    return Err(word);
+                }
+            } else if attached.is_some() && !b"bdg".contains(&id) {
+                return Err(word);
+            }
+            match id {
+                b'h' | b'V' => return Ok(Some(id == b'h')),
+                b'S' | b'b' | b'd' | b'g' => return Ok(None),
+                _ => (),
+            }
+        } else {
+            for (i, id) in word.bytes().enumerate().skip(1) {
+                if !env_names::short(id) {
+                    return Err(word);
+                }
+                if env_names::required(id) {
+                    if i + 1 == word.len() && words.next().is_none() {
+                        return Err(word);
+                    }
+                    if id == b'S' {
+                        return Ok(None);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    Ok(None)
+}
+
 fn invalid(option: &str) -> rt::Result<Option<u64>> {
     console::printable(
         tty::ERROR,
@@ -16,10 +70,10 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if name == "env" {
-        match args {
-            ["--help"] => (true, false, &args[..0]),
-            ["--version"] => (false, true, &args[..0]),
-            _ => return Ok(None),
+        match env_document(args) {
+            Ok(Some(help)) => (help, !help, &args[..0]),
+            Ok(None) => return Ok(None),
+            Err(arg) => return invalid(arg),
         }
     } else if let Some(p) = Program::named(name, false) {
         let parsed = match options::parse(p, args) {

@@ -10,6 +10,7 @@ mod engine;
 mod guest;
 #[cfg(not(target_os = "none"))]
 mod host;
+mod option_names;
 mod quoting;
 mod signals;
 mod split;

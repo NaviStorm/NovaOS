@@ -213,6 +213,7 @@ fn main() {
         "Cargo.lock",
         "libraries",
         "env/VERSION",
+        "env/src/option_names.rs",
         "coreutils",
         "shell",
         "vi",

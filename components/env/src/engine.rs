@@ -68,31 +68,12 @@ pub struct Plan {
     pub command: Entries,
     pub signals: Signals,
 }
-const OPTIONS: &[(&[u8], u8)] = &[
-    (b"argv0", b'a'),
-    (b"ignore-environment", b'i'),
-    (b"env0-from", b'F'),
-    (b"null", b'0'),
-    (b"unset", b'u'),
-    (b"chdir", b'C'),
-    (b"default-signal", b'd'),
-    (b"ignore-signal", b'g'),
-    (b"block-signal", b'b'),
-    (b"list-signal-handling", b'l'),
-    (b"debug", b'v'),
-    (b"split-string", b'S'),
-    (b"help", b'h'),
-    (b"version", b'V'),
-];
-
 fn ascii_quotes(text: &[u8]) -> Word {
     cat(&[b"'", text, b"'"])
 }
 fn long_option(token: &[u8]) -> Result<(&'static [u8], u8, Option<&[u8]>), Error> {
     let (prefix, arg) = pair(&token[2..]).map_or((&token[2..], None), |(k, v)| (k, Some(v)));
-    let mut matching = OPTIONS
-        .iter()
-        .filter(|(n, _)| !prefix.is_empty() && n.starts_with(prefix));
+    let mut matching = crate::option_names::matching(prefix);
     let &(name, id) = matching
         .next()
         .ok_or_else(|| Error::option(cat(&[b"unrecognized option ", &ascii_quotes(token)])))?;
@@ -102,7 +83,7 @@ fn long_option(token: &[u8]) -> Result<(&'static [u8], u8, Option<&[u8]>), Error
             &ascii_quotes(token),
             b" is ambiguous; possibilities:",
         ]);
-        for &(n, _) in OPTIONS.iter().filter(|(n, _)| n.starts_with(prefix)) {
+        for &(n, _) in crate::option_names::matching(prefix) {
             msg.extend(cat(&[b" '--", n, b"'"]));
         }
         return Err(Error::option(msg));
@@ -135,7 +116,7 @@ pub fn parse(
             } else {
                 let id = token[pos];
                 pos += 1;
-                if !b"aCiSuv0".contains(&id) {
+                if !crate::option_names::short(id) {
                     if id.is_ascii_whitespace() || id == 11 {
                         return Err(Error {
                             shebang: true,
@@ -156,7 +137,7 @@ pub fn parse(
                 };
                 (id, value, alloc::vec![b'-', id])
             };
-            if b"aCFSu".contains(&id) && arg.is_none() {
+            if crate::option_names::required(id) && arg.is_none() {
                 arg = Some(pending.pop_front().ok_or_else(|| {
                     Error::option(if spelling.starts_with(b"--") {
                         cat(&[

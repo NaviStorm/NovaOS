@@ -4,6 +4,8 @@
 #[allow(dead_code)]
 mod engine;
 #[cfg(target_os = "none")]
+mod option_names;
+#[cfg(target_os = "none")]
 #[allow(dead_code)]
 mod quoting;
 #[cfg(target_os = "none")]
