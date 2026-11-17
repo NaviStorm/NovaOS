@@ -7,7 +7,7 @@ import runpy
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False):
+def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False):
     source = Path(__file__).resolve().parents[4]
     revision = subprocess.check_output(["git","rev-parse","HEAD"],cwd=source,text=True).strip()
     destination.mkdir(parents=True,exist_ok=False)
@@ -25,6 +25,8 @@ def prepare(destination, policies=False, retired_reply=False, shell=False, selec
     if shell:
         apply(destination, "lancement.patch")
         runpy.run_path(str(destination / "novaOS/user/novaauth/service/limine_hhdm_qemu.py"))["install"](destination)
+        if bail:
+            apply(destination, "bail.patch")
         if selection_smp:
             apply(destination, "selection-smp.patch")
         refresh_documentation_links(destination)
@@ -65,5 +67,6 @@ if __name__=="__main__":
     mode.add_argument("--reponse-retiree", action="store_true")
     mode.add_argument("--lancement", action="store_true")
     mode.add_argument("--selection-smp", action="store_true", help="profil de lancement avec sonde SMP invitée du raccord privé")
+    mode.add_argument("--bail", action="store_true", help="profil de lancement avec horodatage de la décision NovaAuth et témoin de réauthentification")
     args=parser.parse_args()
-    prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp, args.selection_smp)
+    prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp or args.bail, args.selection_smp, args.bail)
