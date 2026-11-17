@@ -1,0 +1,73 @@
+3e3c11d544e270b1f91e1f9d843e613c0d341219
+https://github.com/coreutils/coreutils.git
+v9.12
+c0f8514d989184921d9b12a4d103a7b23abc5af8
+106e9b2384d08a1696fcbd40cbab52237943f208
+https://github.com/uutils/coreutils.git
+4735bbe40d764a523c5ece37d47465b32452d1a2
+8267cdbc45dfc38cfe9e8f4acc5bb2921e473ba8e378a5bcdbda757f6d525471  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/src/uname.c
+8f5da6f5d1884f11389684e512546bb9a6fa250f5222524ad6e2e21dd7062f8a  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/src/uname-uname.c
+141a58cef51ead7e0f3a248ef303cf1b2329c481b44df4de7f69c88bde2ea10a  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/src/uname.h
+d90d6ebe6e720b1f0bdb5798bec3616fbae75f16880d10a2e7f5be00b196ac1d  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/tests/misc/uname-labeled.sh
+e6521c9b2e677dd278820887d7ad94fad8260f2535dd923728462cdcb6148db9  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/doc/coreutils.texi
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-gnu/COPYING
+d678993ac2c468d6be405c290df2f01a5e510e4901e8044b058caf4b43ef7dcc  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-uutils/src/uu/uname/src/uname.rs
+acc78a50d587e5fff202f33dd8503f5fe15540feb6e23ca3625ba17ee639df19  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-uutils/src/uu/uname/Cargo.toml
+b99f5a2e2c96819b99f6edd3b2c6473e3da4476d5f3274c35b731e065c56bb0d  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-uutils/Cargo.toml
+29953405eaa3dcc41c37d1621d55b6a47eee93e05613e439e73295029740b10c  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/sort-arc027-uutils/LICENSE
+/opt/homebrew/Cellar/coreutils/9.12_1/bin/guname
+uname (GNU coreutils) 9.12
+Copyright (C) 2026 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by David MacKenzie.
+Usage: /opt/homebrew/bin/guname [OPTION]...
+Print certain system information.  With no OPTION, same as -s.
+
+  -a, --all                print all information, in the following order,
+                             except omit -p and -i if unknown
+  -A, --all-labeled        print all information, one labeled field per line,
+                             except omit -p and -i if unknown
+  -s, --kernel-name        print the kernel name
+  -n, --nodename           print the network node hostname
+  -r, --kernel-release     print the kernel release
+  -v, --kernel-version     print the kernel version
+  -m, --machine            print the machine hardware name
+  -p, --processor          print the processor type (non-portable)
+  -i, --hardware-platform  print the hardware platform (non-portable)
+  -o, --operating-system   print the operating system
+      --help
+         display this help and exit
+      --version
+         output version information and exit
+
+Report bugs to: <bug-coreutils@gnu.org>.
+GNU coreutils home page: <https://www.gnu.org/software/coreutils/>
+General help using GNU software: <https://www.gnu.org/gethelp/>
+Full documentation <https://www.gnu.org/software/coreutils/uname>
+or available locally via: info '(coreutils) uname invocation'
+cb52a83fd7a7936fe77d806bba1f5937268a14e9b3383f8e7214289e2bff1b19  /opt/homebrew/bin/guname
+0d5104e52bd5f7c2263e13eeddb59932c34bbad1e9055d3e45963a4a5de3ba5c  livraison-uname-0240/bin/uname
+7127007d1e6706ae0db446e8f43846b854bcb82864dd86d57f3ba5570b72e176  livraison-uname-0240/bin/uname-aarch64.elf
+5caf67da29a567ea59d028c4f402516a0bfcdb834f2600f7978185d459a3f02f  livraison-uname-0240/bin/uname-x86_64.elf
+livraison-uname-0240/bin/uname:             Mach-O 64-bit executable arm64
+livraison-uname-0240/bin/uname-aarch64.elf: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, stripped
+livraison-uname-0240/bin/uname-x86_64.elf:  ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, stripped
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+binary: rustc
+commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+commit-date: 2026-10-13
+host: aarch64-apple-darwin
+release: 1.99.1
+LLVM version: 23.1.1
+cargo 1.99.1 (5f94df478 2026-08-27)
+Python 3.15.2
+QEMU emulator version 11.1.3
+Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
+QEMU emulator version 11.1.3
+Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
+ProductName:		macOS
+ProductVersion:		27.2.1
+BuildVersion:		26B131
