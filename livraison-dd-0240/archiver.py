@@ -48,7 +48,23 @@ def create(archive, profiles):
     inputs = {}
     for profile in PROFILES:
         folder = profiles / profile
-        assert (folder / "resultats.json").is_file(), profile
+        for required in (
+            "resultats.json",
+            "cas-elf.json",
+            "genese.raw",
+            "session.raw",
+            "moteur.iso",
+            "nsh.iso",
+            "sdk.iso",
+            "moteur.serial",
+            "nsh.serial",
+            "sdk.serial",
+            "build.log",
+            "moteur.vm.json",
+            "nsh.vm.json",
+        ):
+            if not (folder / required).is_file():
+                raise FileNotFoundError(folder / required)
         for p in folder.iterdir():
             if p.is_file():
                 inputs[f"qemu/{profile}/{p.name}"] = p
@@ -66,16 +82,18 @@ def create(archive, profiles):
         "construction",
     ):
         path = HERE / "preuves" / name
+        if not path.exists():
+            raise FileNotFoundError(path)
         for p in path.rglob("*") if path.is_dir() else [path]:
             if p.is_file():
-                inputs[str(p.relative_to(HERE))] = p
+                inputs[str(p.relative_to(ROOT))] = p
     for folder in (HERE / "bin", HERE / "licences", ROOT / "components/dd"):
         for p in folder.iterdir():
             if p.is_file():
                 inputs[str(p.relative_to(ROOT))] = p
     for p in HERE.iterdir():
         if p.is_file() and p.suffix in (".rs", ".py", ".sh", ".md"):
-            inputs[p.name] = p
+            inputs[str(p.relative_to(ROOT))] = p
     manifest = {}
     with tarfile.open(archive, "x:xz", preset=5) as tar:
         for name, p in sorted(inputs.items()):

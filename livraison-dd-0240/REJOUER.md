@@ -1,6 +1,6 @@
 # Rejouer dd pour la livraison v0.30.0
 
-Depuis la racine du worktree sur un Mac ARM64, utiliser Rust stable avec les cibles aarch64-apple-darwin, aarch64-unknown-none-softfloat et x86_64-unknown-none. Pour les invités, installer les outils de construction de NovaOS, QEMU, xorriso et les firmwares utilisés par le dépôt. Les scripts utilisent Python 3.11 ou supérieur. L’environnement exact du passage publié figure dans [environnement.txt](preuves/environnement.txt).
+Utiliser le checkout de la branche `codex/dd-natif-0240` ou son intégration dans la livraison à vérifier. L’archive conserve les chemins `livraison-dd-0240/` et `components/dd/` du checkout, ainsi que les résultats des quatre profils sous `qemu/`. Depuis la racine du worktree sur un Mac ARM64, utiliser Rust stable avec les cibles aarch64-apple-darwin, aarch64-unknown-none-softfloat et x86_64-unknown-none. Pour les invités, installer les outils de construction de NovaOS, QEMU, xorriso et les firmwares utilisés par le dépôt. Les scripts utilisent Python 3.11 ou supérieur. L’environnement exact du passage publié figure dans [environnement.txt](preuves/environnement.txt).
 
 ```sh
 export NOVAOS_TMPDIR="$(cd .. && pwd)/tmp"
