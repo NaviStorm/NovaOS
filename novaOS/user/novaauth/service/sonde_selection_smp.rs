@@ -1,59 +1,59 @@
-//! Sonde de concurrence, insérée uniquement dans l'export QEMU instrumenté.
-//! Le membre secondaire possède les mêmes handles locaux que le thread principal.
+//! Sonde interprocessus du profil --selection-smp. Le shell et NovaFS
+//! présentent le raccord sur les portes normales pendant le même échange.
 use super::*;
-use core::sync::atomic::{AtomicU32, Ordering};
+use nova_cli::protocol as w;
 
-static RENDEZ_VOUS: AtomicU32 = AtomicU32::new(0);
-const ARGV: &[u8] = b"\x01\x0a\x00lignes.tsv";
-
-fn attendre(etape: u32) -> bool {
-    for _ in 0..32_768 {
-        if RENDEZ_VOUS.load(Ordering::Acquire) >= etape {
-            return true;
-        }
-        rt::call(rt::THREAD_YIELD, 0, 0, 0);
-    }
-    false
-}
-
-extern "C" fn membre(cle: u64) -> ! {
-    RENDEZ_VOUS.store(1, Ordering::Release);
-    let statut = if attendre(2) {
-        rt::call(rt::IPC_NOTIFY, cle, ARGV.as_ptr() as u64, ARGV.len() as u64).status
-    } else {
-        rt::TIMED_OUT
-    };
-    rt::call(rt::THREAD_EXIT, statut, 0, 0);
+extern "C" fn fin_temoin(_: u64) -> ! {
+    rt::call(rt::THREAD_EXIT, 0, 0, 0);
     rt::exit(125)
 }
 
-pub(super) fn presenter(cle: u64, argv: &[alloc::string::String]) -> rt::Result<u64> {
-    RENDEZ_VOUS.store(0, Ordering::Release);
-    let thread = rt::value(rt::call(
-        rt::THREAD_CREATE,
-        membre as *const () as u64,
-        cle,
-        2,
-    ))?;
-    let pret = attendre(1);
-    RENDEZ_VOUS.store(2, Ordering::Release);
-    let principal = if pret {
-        admit(cle, argv)
-    } else {
-        Err(rt::TIMED_OUT)
+pub(super) fn presenter(
+    fs: &mut nova_cli::fileapi::Client,
+    cle: u64,
+    argv: &[alloc::string::String],
+) -> rt::Result<u64> {
+    // nsh est un titulaire unique. Aucun droit THREAD_CREATE n'est ajouté à la sonde.
+    let thread = rt::call(rt::THREAD_CREATE, fin_temoin as *const () as u64, 0, 2);
+    if thread.status != rt::DENIED {
+        if thread.status == rt::OK {
+            rt::call(rt::THREAD_JOIN, thread.value, 0, 0);
+        }
+        return Err(rt::REFUSED);
+    }
+    if admit(cle, argv) != Err(rt::REFUSED) {
+        return Err(rt::REFUSED);
+    }
+    fs.simple(w::STAGE, 0)?;
+    let path = super::super::paths::resolve(fs, "lignes.tsv")?;
+    fs.at(w::STAGE, 0, path.as_bytes(), w::SELECT_FILE)?;
+    let (tx, rx) = rt::channels()?;
+    let frame = w::frame(0xe8, fs.session, cle);
+    rt::send_for(tx, cle, &frame, 2500)?;
+    // Le service est libre de valider avant ou après ce premier appel.
+    let essai = admit(cle, argv);
+    let ack = rt::receive_for(rx, 2500)?;
+    if ack.kind != 1
+        || ack.tag != cle
+        || ack.len != 128
+        || ack.payload[..2] != frame[..2]
+        || ack.payload[3] != 0
+    {
+        return Err(rt::REFUSED);
+    }
+    let wait = match essai {
+        Ok(wait) => wait,
+        Err(rt::REFUSED) => admit(cle, argv)?,
+        Err(e) => return Err(e),
     };
-    let secondaire = rt::value(rt::call(rt::THREAD_JOIN, thread, 0, 0))?;
     super::super::console::write(
         tty::ERROR,
         &alloc::format!(
-            "NXVPIPE concurrence thread={} secondaire={} principal={}\n",
-            thread,
-            secondaire,
-            principal.as_ref().map_or_else(|e| *e, |_| 0)
+            "NXVPIPE concurrence instance_unique={} premier={} pid={}\n",
+            thread.status,
+            essai.map_or_else(|e| e, |_| 0),
+            wait & !(1u64 << 63)
         ),
     )?;
-    if !matches!(secondaire, rt::DENIED | rt::REVOKED) {
-        return Err(rt::REFUSED);
-    }
-    principal
+    Ok(wait)
 }
