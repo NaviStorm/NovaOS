@@ -24,14 +24,15 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
             Ok(Action::Help) => (true, false, &args[..0]),
             Ok(Action::Version) => (false, true, &args[..0]),
             Ok(Action::Wait(_)) => return Ok(None),
-            Err(_) => {
-                return invalid(
-                    flags
-                        .iter()
-                        .copied()
-                        .find(|s| s.starts_with('-'))
-                        .unwrap_or(name),
-                );
+            Err(error) => {
+                console::printable(
+                    tty::ERROR,
+                    &alloc::format!(
+                        "sleep: {}\nTry 'sleep --help' for more information.\n",
+                        alloc::string::String::from_utf8_lossy(&error)
+                    ),
+                )?;
+                return Ok(Some(1));
             }
         }
     } else if let Some(p) = Program::named(name, false) {

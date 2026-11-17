@@ -128,7 +128,7 @@ fn aiguillage_sans_aucune_interface_metier() {
             }
             assert_eq!(
                 doc_options::answer(page.name, &["--inconnue"], lang),
-                Ok(Some(3))
+                Ok(Some(if page.name == "sleep" { 1 } else { 3 }))
             );
             assert_eq!(
                 doc_options::answer(page.name, &["--", "--inconnue"], lang),
@@ -246,4 +246,13 @@ fn admission_documentaire_stricte() {
     ] {
         assert!(!allowed(&argv(&bad)));
     }
+}
+
+
+#[test]
+fn sleep_option_invalide_apres_operande_litteral() {
+    let lang = documentation::Language::English;
+    console::LOG.with(|log| log.borrow_mut().clear());
+    assert_eq!(doc_options::answer("sleep", &["-", "-X", "--h"], lang), Ok(Some(1)));
+    console::LOG.with(|log| assert_eq!(*log.borrow(), "sleep: invalid option -- 'X'\nTry 'sleep --help' for more information.\n"));
 }
