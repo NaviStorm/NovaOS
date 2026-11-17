@@ -1,0 +1,5 @@
+  Taille ou nombre | Traitement                       | Nova basename  | GNU basename
+                0 | lancement témoin /usr/bin/true   |       0.933 ms |      0.945 ms
+                1 | appel court                      |       1.597 ms |      1.519 ms
+               30 | lot admis par argv NovaOS        |       1.603 ms |      1.588 ms
+              512 | lot Darwin                       |       1.579 ms |      1.623 ms
