@@ -105,7 +105,7 @@ def doc(arch,sector,out,kernel,image):
     jsonfile(out/"resultats.json",dict(cases=rows,ram=ram,avant=before,apres=after,media=info))
     return ram
 
-def sdk(arch,sector,out,kernel,elf,image,ram,group):
+def sdk(arch,sector,out,kernel,elf,image,ram,group,source,expected_cases):
     out.mkdir()
     iso=out/"sdk.iso"
     os.environ.update(NOVA_KERNEL_ELF=str(kernel),NOVA_ISO=str(iso))
@@ -147,7 +147,10 @@ def sdk(arch,sector,out,kernel,elf,image,ram,group):
         finally:
             vm.kill();vm.wait()
     if events: assert max(row["input"] for row in events)>ram
-    jsonfile(out/"matrice.json",dict(cas=matrix or events[0]["matrix"],statut=0,source="differentiel.jsonl.gz",moteur_et_lecture_de_trame=True))
+    observed_cases = [row["matrix"] for row in events] if events else [matrix]
+    assert all(count == expected_cases for count in observed_cases), (observed_cases, expected_cases)
+    jsonfile(out/"matrice.json",dict(cas=expected_cases,statut=0,source=source.name,
+             source_sha256=sha(source),moteur_et_lecture_de_trame=True))
     jsonfile(out/"mesures.json",events)
 
 def main():
@@ -156,6 +159,8 @@ def main():
     p.add_argument("sector",type=int,choices=[512,4096])
     p.add_argument("out",type=Path)
     p.add_argument("--large",action="store_true",help="mesurer aussi le moteur SDK au-delà de 256 Mio")
+    p.add_argument("--matrice", type=Path, default=DELIVERY/"preuves/differentiel.jsonl.gz",
+                   help="comparaisons GNU à rejouer dans le témoin SDK")
     a=p.parse_args()
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     tmp=Path(os.environ.get("NOVAOS_TMPDIR", ROOT.parent/"tmp"))
@@ -169,7 +174,8 @@ def main():
     kernel=OS/"target"/target/"release/novaos"
     ram=doc(a.arch,a.sector,out/"nsh",kernel,image)
     vectors=cache/"vecteurs.bin"
-    generate(DELIVERY/"preuves/differentiel.jsonl.gz",vectors)
+    expected_cases = generate(a.matrice, vectors)
+    assert expected_cases > 0
     report=json.loads((DELIVERY/"preuves/mesures-mac.json").read_text())
     counts=cache/"comptes.rs"
     counts.write_text(str([[r["output"] for r in report["rows"][i:i+4]] for i in range(0,16,4)]))
@@ -180,6 +186,6 @@ def main():
         elf=cache/"temoin"/target/"release/examples/tr-temoin"
         env=dict(os.environ,CARGO_TARGET_DIR=str(cache/f"sdk-{group}"),NOVA_THREAD_PROBE_ELF=str(elf))
         cmd(["rustup","run","stable","cargo","build","--offline","--locked","--release","-p","novaos","--features","thread-probe","--target",target],cwd=OS,env=env)
-        sdk(a.arch,a.sector,out/f"sdk-{group}",cache/f"sdk-{group}"/target/"release/novaos",elf,image,ram,group)
+        sdk(a.arch,a.sector,out/f"sdk-{group}",cache/f"sdk-{group}"/target/"release/novaos",elf,image,ram,group,a.matrice,expected_cases)
 
 if __name__=="__main__":main()

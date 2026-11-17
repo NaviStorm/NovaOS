@@ -1,0 +1,21 @@
+Référence tr (GNU coreutils) 9.12
+Taille ou lignes    | Traitement      | Nova tr (s) | GNU tr (s) | Nova tr (Mio/s lus) | GNU tr (Mio/s lus) | Entrée (octets) | Sortie (octets)
+1 M lignes          | Traduction      | 0.0051      | 0.0085     | 1504.7              | 894.5              | 8000000         | 8000000
+1 M lignes          | Suppression     | 0.0060      | 0.0084     | 1275.5              | 903.7              | 8000000         | 7000000
+1 M lignes          | Compression     | 0.0061      | 0.0456     | 1254.8              | 167.2              | 8000000         | 8000000
+1 M lignes          | Suppr. + compr. | 0.0112      | 0.0288     | 683.2               | 264.9              | 8000000         | 7000000
+10 M lignes         | Traduction      | 0.0246      | 0.0568     | 3096.9              | 1342.1             | 80000000        | 80000000
+10 M lignes         | Suppression     | 0.0323      | 0.0671     | 2361.7              | 1137.8             | 80000000        | 40000000
+10 M lignes         | Compression     | 0.0448      | 0.4316     | 1703.9              | 176.8              | 80000000        | 30000000
+10 M lignes         | Suppr. + compr. | 0.0402      | 0.2568     | 1896.1              | 297.1              | 80000000        | 20000000
+65 M lignes         | Traduction      | 0.1409      | 0.3533     | 3527.2              | 1406.5             | 521048576       | 521048576
+65 M lignes         | Suppression     | 0.1941      | 0.4307     | 2560.7              | 1153.7             | 521048576       | 261048576
+65 M lignes         | Compression     | 0.2162      | 5.5196     | 2298.9              | 90.0               | 521048576       | 325000000
+65 M lignes         | Suppr. + compr. | 0.2529      | 1.6696     | 1964.7              | 297.6              | 521048576       | 130000000
+32 Mio binaire      | Traduction      | 0.0125      | 0.0255     | 2551.1              | 1253.0             | 33554432        | 33554432
+32 Mio binaire      | Suppression     | 0.0164      | 0.0269     | 1951.8              | 1189.1             | 33554432        | 33423360
+32 Mio binaire      | Compression     | 0.0174      | 0.0266     | 1841.9              | 1204.0             | 33554432        | 33554432
+32 Mio binaire      | Suppr. + compr. | 0.0352      | 0.0360     | 908.4               | 890.0              | 33554432        | 33423360
+1 M lignes journal  | Traduction      | 0.0184      | 0.0390     | 2698.4              | 1271.7             | 52000000        | 52000000
+10 M lignes journal | Traduction      | 0.1513      | 0.3563     | 3277.5              | 1391.8             | 520000000       | 520000000
+65 M lignes journal | Traduction      | 0.9493      | 2.2888     | 3395.6              | 1408.3             | 3380000000      | 3380000000

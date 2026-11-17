@@ -1,0 +1,10 @@
+Référence tr (GNU coreutils) 9.12
+Taille ou lignes       | Traitement      | Nova tr (s) | GNU tr (s) | Nova tr (Mio/s lus) | GNU tr (Mio/s lus) | Entrée (octets) | Sortie (octets)
+100 000 lignes journal | Traduction      | 0.0043      | 0.0061     | 1161.3              | 816.0              | 5200000         | 5200000
+4 096 lignes répétées  | Suppression     | 0.0063      | 0.0115     | 1504.8              | 824.5              | 9965568         | 1576960
+4 096 lignes répétées  | Compression     | 0.0072      | 0.0091     | 1320.9              | 1048.3             | 9965568         | 12289
+4 096 lignes répétées  | Suppr. + compr. | 0.0064      | 0.0118     | 1491.2              | 806.0              | 9965568         | 8192
+1 048 576 octets       | Traduction      | 0.0029      | 0.0032     | 341.9               | 310.6              | 1048576         | 1048576
+1 048 576 octets       | Suppression     | 0.0029      | 0.0032     | 349.9               | 313.5              | 1048576         | 1044480
+1 048 576 octets       | Compression     | 0.0028      | 0.0031     | 358.5               | 321.5              | 1048576         | 1048576
+1 048 576 octets       | Suppr. + compr. | 0.0038      | 0.0036     | 261.9               | 279.0              | 1048576         | 1044480

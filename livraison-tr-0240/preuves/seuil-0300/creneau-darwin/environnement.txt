@@ -1,0 +1,18 @@
+Tue Nov 17 04:36:17 UTC 2026
+ProductName:		macOS
+ProductVersion:		27.2.1
+BuildVersion:		26B131
+hw.model: Mac16,5
+hw.memsize: 137438953472
+arm64
+Filesystem   1024-blocks       Used Available Capacity iused      ifree %iused  Mounted on
+/dev/disk3s5  1948455240 1450603260 472051756    76% 9923576 4720517560    0%   /System/Volumes/Data
+Now drawing from 'AC Power'
+ -InternalBattery-0 (id=36241507)	80%; AC attached; not charging present: true
+tr (GNU coreutils) 9.12
+7e22a2d593abcd0770d987a5e052ec53b5ae7fbdf2a0940cb30bdbbf834d7714  /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tr-bancs-0300/livraison-tr-0240/preuves/seuil-0300/tr-candidat
+075bd855ba66facf7309fcc0eb6f06ca98195e58c3fbe949b3cd65fe1568c77f  /opt/homebrew/bin/gtr
+Tue Nov 17 04:36:18 UTC 2026
+Tue Nov 17 04:36:18 UTC 2026
+Tue Nov 17 04:38:30 UTC 2026
+Tue Nov 17 04:38:31 UTC 2026

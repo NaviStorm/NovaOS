@@ -30,5 +30,6 @@ def generate(source,target):
         out.write(struct.pack("<II",len(pool),count))
         for data in pool: out.write(struct.pack("<I",len(data))+data)
         out.write(rows)
+    return count
 
 if __name__=="__main__": generate(Path(sys.argv[1]),Path(sys.argv[2]))

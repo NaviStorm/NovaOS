@@ -1,0 +1,2304 @@
+{
+  "profile": "complet",
+  "cible": "Mach-O Darwin",
+  "host": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "ram": 137438953472,
+  "cache": "échauffé, sans purge",
+  "destination": "/dev/null",
+  "locale": "C",
+  "rows": [
+    {
+      "size": "1 M lignes",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 8000000,
+      "output": 8000000,
+      "sha256_output": "5996560a8b4d066f5bf4c2a45ee8dae92a6ad89bf28d85ee80ebc11efe92f47e",
+      "input_sha256": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "pattern": "614230587a39210a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 483380826112,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.005163916,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.005432417,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.005070375,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.005169792,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.0048850000000000005,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.0050393750000000005,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.004836708,
+            "rss_bytes": 2211840
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.008529084000000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008257542,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008755916,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008608875,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008090625,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.007999042000000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.009197666,
+            "rss_bytes": 1966080
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 8000000,
+          "sha256_output": "5996560a8b4d066f5bf4c2a45ee8dae92a6ad89bf28d85ee80ebc11efe92f47e",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 8000000,
+          "sha256_output": "5996560a8b4d066f5bf4c2a45ee8dae92a6ad89bf28d85ee80ebc11efe92f47e",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.005070375,
+          "input_mib_s": 1504.7002502280402,
+          "peak_rss_bytes": 2211840
+        },
+        "GNU": {
+          "seconds": 0.008529084000000001,
+          "input_mib_s": 894.5151122031392,
+          "peak_rss_bytes": 1966080
+        }
+      }
+    },
+    {
+      "size": "1 M lignes",
+      "mode": "Suppression",
+      "args": [
+        "-d",
+        "X"
+      ],
+      "input": 8000000,
+      "output": 7000000,
+      "sha256_output": "8dd5e047c82bf085f7651111cf48dbfea63d29238ddc9f7bd579f64e5a6d165d",
+      "input_sha256": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "pattern": "614230587a39210a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 483380826112,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.005981625,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.006198416,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.006025417000000001,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.006012042,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.005752083000000001,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.005821583,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.005751583,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.009281584,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008921292,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008711334000000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008302416,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008317042,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.008442125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.0083465,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 7000000,
+          "sha256_output": "8dd5e047c82bf085f7651111cf48dbfea63d29238ddc9f7bd579f64e5a6d165d",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 7000000,
+          "sha256_output": "8dd5e047c82bf085f7651111cf48dbfea63d29238ddc9f7bd579f64e5a6d165d",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.005981625,
+          "input_mib_s": 1275.4718878649196,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 0.008442125,
+          "input_mib_s": 903.7291595717903,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "1 M lignes",
+      "mode": "Compression",
+      "args": [
+        "-s",
+        "aX"
+      ],
+      "input": 8000000,
+      "output": 8000000,
+      "sha256_output": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "input_sha256": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "pattern": "614230587a39210a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 483380826112,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.006614541000000001,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.005906291,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.00647,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.005973958000000001,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.006215667,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.006080042000000001,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.0055211670000000004,
+            "rss_bytes": 2211840
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.045735042000000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.0458905,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.046185459000000005,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.045133958,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.044641084000000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.045623958000000006,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.045556167,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 8000000,
+          "sha256_output": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 8000000,
+          "sha256_output": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.006080042000000001,
+          "input_mib_s": 1254.8259586446934,
+          "peak_rss_bytes": 2211840
+        },
+        "GNU": {
+          "seconds": 0.045623958000000006,
+          "input_mib_s": 167.22342527252894,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "1 M lignes",
+      "mode": "Suppr. + compr.",
+      "args": [
+        "-ds",
+        "X",
+        "a"
+      ],
+      "input": 8000000,
+      "output": 7000000,
+      "sha256_output": "8dd5e047c82bf085f7651111cf48dbfea63d29238ddc9f7bd579f64e5a6d165d",
+      "input_sha256": "82eb6a1e6f03f6f51bf8d271ea5e3e36b5c622621f53a3fc7226da987f1add79",
+      "pattern": "614230587a39210a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 483380826112,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.010549583000000001,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.011166916,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.011177209,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.011462042,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.010886917000000001,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.011231292,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.010996042000000001,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.028973542,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.028861042000000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.028802333000000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.028984875,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.028795042000000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.028587959000000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.027628458,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 7000000,
+          "sha256_output": "8dd5e047c82bf085f7651111cf48dbfea63d29238ddc9f7bd579f64e5a6d165d",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 7000000,
+          "sha256_output": "8dd5e047c82bf085f7651111cf48dbfea63d29238ddc9f7bd579f64e5a6d165d",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.011166916,
+          "input_mib_s": 683.2141059581714,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 0.028802333000000003,
+          "input_mib_s": 264.88807456152944,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "10 M lignes",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 80000000,
+      "output": 80000000,
+      "sha256_output": "9cbb042b843fc29e70a9149f8f7a60823b8a0ddb386c3f44ff6b7161c9e8c889",
+      "input_sha256": "af5561a700ee84ce03b1e94d42a0cbe3777b90fdecb973421faa0c796eafb0dc",
+      "pattern": "616161585858580a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 483380805632,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.024642625,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.024635292000000003,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.024562417000000003,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.024335291000000002,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.024094416,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.024965458000000003,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.025284375,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.05695225,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.05684708300000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.05764525,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.056114042,
+            "rss_bytes": 1933312
+          },
+          {
+            "seconds": 0.055753625,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.057057458000000005,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.055654584,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 80000000,
+          "sha256_output": "9cbb042b843fc29e70a9149f8f7a60823b8a0ddb386c3f44ff6b7161c9e8c889",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 80000000,
+          "sha256_output": "9cbb042b843fc29e70a9149f8f7a60823b8a0ddb386c3f44ff6b7161c9e8c889",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.024635292000000003,
+          "input_mib_s": 3096.936919298541,
+          "peak_rss_bytes": 2244608
+        },
+        "GNU": {
+          "seconds": 0.05684708300000001,
+          "input_mib_s": 1342.0907685360037,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "10 M lignes",
+      "mode": "Suppression",
+      "args": [
+        "-d",
+        "X"
+      ],
+      "input": 80000000,
+      "output": 40000000,
+      "sha256_output": "eede3991b65f92db8cdcde0b27519da3883e3902b54ec3405014acb2e0c023ce",
+      "input_sha256": "af5561a700ee84ce03b1e94d42a0cbe3777b90fdecb973421faa0c796eafb0dc",
+      "pattern": "616161585858580a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 483380805632,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.032744416000000005,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.032161167000000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.032098583,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.031781334,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.0323045,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.032342333,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.032765209000000003,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.06608037500000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.067054166,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.0677075,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.066058792,
+            "rss_bytes": 1933312
+          },
+          {
+            "seconds": 0.06602783400000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.06751204100000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.07280729100000001,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 40000000,
+          "sha256_output": "eede3991b65f92db8cdcde0b27519da3883e3902b54ec3405014acb2e0c023ce",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 40000000,
+          "sha256_output": "eede3991b65f92db8cdcde0b27519da3883e3902b54ec3405014acb2e0c023ce",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.0323045,
+          "input_mib_s": 2361.712619371914,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 0.067054166,
+          "input_mib_s": 1137.7957532496937,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "10 M lignes",
+      "mode": "Compression",
+      "args": [
+        "-s",
+        "aX"
+      ],
+      "input": 80000000,
+      "output": 30000000,
+      "sha256_output": "819d0dea151623cf586df0fa20f464691ca212b923653b1158c13b3294b077f9",
+      "input_sha256": "af5561a700ee84ce03b1e94d42a0cbe3777b90fdecb973421faa0c796eafb0dc",
+      "pattern": "616161585858580a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 483380805632,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.044709041000000005,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.044956209000000004,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.044777375,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.042937167000000005,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.045369208,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.045561459000000006,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.043954208,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.43507116700000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.43000125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.434799333,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.42776475,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.43163125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.431531667,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.43350995800000003,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 30000000,
+          "sha256_output": "819d0dea151623cf586df0fa20f464691ca212b923653b1158c13b3294b077f9",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 30000000,
+          "sha256_output": "819d0dea151623cf586df0fa20f464691ca212b923653b1158c13b3294b077f9",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.044777375,
+          "input_mib_s": 1703.8503331760737,
+          "peak_rss_bytes": 2244608
+        },
+        "GNU": {
+          "seconds": 0.43163125,
+          "input_mib_s": 176.75723273627662,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "10 M lignes",
+      "mode": "Suppr. + compr.",
+      "args": [
+        "-ds",
+        "X",
+        "a"
+      ],
+      "input": 80000000,
+      "output": 20000000,
+      "sha256_output": "dcdcfef582ffe48eac454404ad1f4bd71c8577d6d630be3a0b74cdfbc330d795",
+      "input_sha256": "af5561a700ee84ce03b1e94d42a0cbe3777b90fdecb973421faa0c796eafb0dc",
+      "pattern": "616161585858580a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 483380805632,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.042619750000000005,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.040236917000000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.041667833,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.039480625000000005,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.039508167000000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.0398945,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.042300375,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.260069125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.25699700000000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.25779775,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.25679370900000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.255677209,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.25324304200000003,
+            "rss_bytes": 1933312
+          },
+          {
+            "seconds": 0.256079708,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 20000000,
+          "sha256_output": "dcdcfef582ffe48eac454404ad1f4bd71c8577d6d630be3a0b74cdfbc330d795",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 20000000,
+          "sha256_output": "dcdcfef582ffe48eac454404ad1f4bd71c8577d6d630be3a0b74cdfbc330d795",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.040236917000000004,
+          "input_mib_s": 1896.1180677063303,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 0.25679370900000004,
+          "input_mib_s": 297.1020809255884,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "65 M lignes",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 521048576,
+      "output": 521048576,
+      "sha256_output": "50de09cf94795b951054fbd341dbe3b2a5ff6d6f4706013d698acb042d823e6c",
+      "input_sha256": "911968a90fb9d942b39c47a5b294ad9502c1dd0de0447140b2dbed57204c0578",
+      "pattern": "616158615858580a",
+      "repeats": 65000000,
+      "prefix_a": 1048576,
+      "free": 483378491392,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.143853,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.139435791,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.140878958,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.139039208,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.141107125,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.139012709,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.14267770800000001,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.350644459,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.354829292,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.353306583,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.353405625,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.35310445900000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.351974125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.353404667,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 521048576,
+          "sha256_output": "50de09cf94795b951054fbd341dbe3b2a5ff6d6f4706013d698acb042d823e6c",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 521048576,
+          "sha256_output": "50de09cf94795b951054fbd341dbe3b2a5ff6d6f4706013d698acb042d823e6c",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.140878958,
+          "input_mib_s": 3527.216921431588,
+          "peak_rss_bytes": 2244608
+        },
+        "GNU": {
+          "seconds": 0.353306583,
+          "input_mib_s": 1406.4573615127063,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "65 M lignes",
+      "mode": "Suppression",
+      "args": [
+        "-d",
+        "X"
+      ],
+      "input": 521048576,
+      "output": 261048576,
+      "sha256_output": "8d0634397aa88dc3554dddc74ac973701476fa471c20b79968d42eed2ec05684",
+      "input_sha256": "911968a90fb9d942b39c47a5b294ad9502c1dd0de0447140b2dbed57204c0578",
+      "pattern": "616158615858580a",
+      "repeats": 65000000,
+      "prefix_a": 1048576,
+      "free": 483378491392,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.198362167,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.19320545900000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.19692704200000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.193913791,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.19641770900000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.194054416,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.193915416,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.43866808300000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.435371583,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.42650595900000005,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.425011417,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.43072645800000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.424253125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.431261375,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 261048576,
+          "sha256_output": "8d0634397aa88dc3554dddc74ac973701476fa471c20b79968d42eed2ec05684",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 261048576,
+          "sha256_output": "8d0634397aa88dc3554dddc74ac973701476fa471c20b79968d42eed2ec05684",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.194054416,
+          "input_mib_s": 2560.676818255195,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 0.43072645800000003,
+          "input_mib_s": 1153.6571188093812,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "65 M lignes",
+      "mode": "Compression",
+      "args": [
+        "-s",
+        "aX"
+      ],
+      "input": 521048576,
+      "output": 325000000,
+      "sha256_output": "3eef4016e54c45f0f53513b3f7e96094d135d0b2bbed437eb84a272c175c122e",
+      "input_sha256": "911968a90fb9d942b39c47a5b294ad9502c1dd0de0447140b2dbed57204c0578",
+      "pattern": "616158615858580a",
+      "repeats": 65000000,
+      "prefix_a": 1048576,
+      "free": 483378491392,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.21450316600000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.21615450000000003,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.212540166,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.21679283300000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.22582300000000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.22512595800000001,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.21460762500000002,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 5.405702083,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 5.519647,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 5.528433416,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 5.616005708,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 5.487886125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 5.517756417,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 5.5586540840000005,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 325000000,
+          "sha256_output": "3eef4016e54c45f0f53513b3f7e96094d135d0b2bbed437eb84a272c175c122e",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 325000000,
+          "sha256_output": "3eef4016e54c45f0f53513b3f7e96094d135d0b2bbed437eb84a272c175c122e",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.21615450000000003,
+          "input_mib_s": 2298.8679140672525,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 5.519647,
+          "input_mib_s": 90.02580138390191,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "65 M lignes",
+      "mode": "Suppr. + compr.",
+      "args": [
+        "-ds",
+        "X",
+        "a"
+      ],
+      "input": 521048576,
+      "output": 130000000,
+      "sha256_output": "ff23fce618b9d97524bb1e2fc3a4a167cf1e5f0db8198d8b60a12a88e16c3915",
+      "input_sha256": "911968a90fb9d942b39c47a5b294ad9502c1dd0de0447140b2dbed57204c0578",
+      "pattern": "616158615858580a",
+      "repeats": 65000000,
+      "prefix_a": 1048576,
+      "free": 483378491392,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.303149,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.24755316600000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.255331167,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.26229875,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.24473604100000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.25291625,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.243776916,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 1.6735312080000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 1.6797106670000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 1.6696137500000001,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 1.6700545830000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 1.6559242500000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 1.665213542,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 1.652392375,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 130000000,
+          "sha256_output": "ff23fce618b9d97524bb1e2fc3a4a167cf1e5f0db8198d8b60a12a88e16c3915",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 130000000,
+          "sha256_output": "ff23fce618b9d97524bb1e2fc3a4a167cf1e5f0db8198d8b60a12a88e16c3915",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.25291625,
+          "input_mib_s": 1964.7240718271364,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 1.6696137500000001,
+          "input_mib_s": 297.6201199416631,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "32 Mio binaire",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 33554432,
+      "output": 33554432,
+      "sha256_output": "1e137f270fa2c8f441739b9b3f93dd638188674e37af555a9d9a11c4b2b8a695",
+      "input_sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "pattern": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "repeats": 131072,
+      "prefix_a": 0,
+      "free": 483367313408,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.013040625,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.012721084,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.012395375,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.012488917,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.012253541000000001,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.012828958000000001,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.012543458,
+            "rss_bytes": 2195456
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.025537916,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.025868667,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.0260325,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.025684542,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.025262167000000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.025519333,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.02549525,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 33554432,
+          "sha256_output": "1e137f270fa2c8f441739b9b3f93dd638188674e37af555a9d9a11c4b2b8a695",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 33554432,
+          "sha256_output": "1e137f270fa2c8f441739b9b3f93dd638188674e37af555a9d9a11c4b2b8a695",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.012543458,
+          "input_mib_s": 2551.130637181549,
+          "peak_rss_bytes": 2195456
+        },
+        "GNU": {
+          "seconds": 0.025537916,
+          "input_mib_s": 1253.0388149134799,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "32 Mio binaire",
+      "mode": "Suppression",
+      "args": [
+        "-d",
+        "X"
+      ],
+      "input": 33554432,
+      "output": 33423360,
+      "sha256_output": "5d287989a93abd09ca4b3ce1a1aa413e45daff68b0e01377c6c1f92f4edfbb2d",
+      "input_sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "pattern": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "repeats": 131072,
+      "prefix_a": 0,
+      "free": 483367313408,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.016131333,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.01639525,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.016667042,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.017038875000000002,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.016194041,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.016245208,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.016729042,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.026584709,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.027185834000000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.0272435,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026917125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026579208,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026910166000000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026693750000000002,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 33423360,
+          "sha256_output": "5d287989a93abd09ca4b3ce1a1aa413e45daff68b0e01377c6c1f92f4edfbb2d",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 33423360,
+          "sha256_output": "5d287989a93abd09ca4b3ce1a1aa413e45daff68b0e01377c6c1f92f4edfbb2d",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.01639525,
+          "input_mib_s": 1951.7848157240664,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 0.026910166000000003,
+          "input_mib_s": 1189.141679765186,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "32 Mio binaire",
+      "mode": "Compression",
+      "args": [
+        "-s",
+        "aX"
+      ],
+      "input": 33554432,
+      "output": 33554432,
+      "sha256_output": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "input_sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "pattern": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "repeats": 131072,
+      "prefix_a": 0,
+      "free": 483367313408,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.016357291,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.018532916,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.017373041000000002,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.015668541,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.018489209,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.016063834000000003,
+            "rss_bytes": 2195456
+          },
+          {
+            "seconds": 0.019138666000000002,
+            "rss_bytes": 2195456
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.026944875,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026343667,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.02683475,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026500417000000002,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026577,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.026429666,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.027642833000000002,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 33554432,
+          "sha256_output": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 33554432,
+          "sha256_output": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.017373041000000002,
+          "input_mib_s": 1841.9342934837946,
+          "peak_rss_bytes": 2195456
+        },
+        "GNU": {
+          "seconds": 0.026577,
+          "input_mib_s": 1204.0486134627686,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "32 Mio binaire",
+      "mode": "Suppr. + compr.",
+      "args": [
+        "-ds",
+        "X",
+        "a"
+      ],
+      "input": 33554432,
+      "output": 33423360,
+      "sha256_output": "5d287989a93abd09ca4b3ce1a1aa413e45daff68b0e01377c6c1f92f4edfbb2d",
+      "input_sha256": "e09320c5b00b34bb704802136c599a95b3996332ba84d7c7f21112b6231b6bd0",
+      "pattern": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "repeats": 131072,
+      "prefix_a": 0,
+      "free": 483367313408,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.034904166,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.035171708,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.035191125000000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.035225875000000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.035797708000000004,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.036428625,
+            "rss_bytes": 2260992
+          },
+          {
+            "seconds": 0.035956291,
+            "rss_bytes": 2260992
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.035441959,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.036535125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.035953375,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.036012792,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.034860959000000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.035399834000000005,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.036309792,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 33423360,
+          "sha256_output": "5d287989a93abd09ca4b3ce1a1aa413e45daff68b0e01377c6c1f92f4edfbb2d",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 33423360,
+          "sha256_output": "5d287989a93abd09ca4b3ce1a1aa413e45daff68b0e01377c6c1f92f4edfbb2d",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.035225875000000004,
+          "input_mib_s": 908.423140660097,
+          "peak_rss_bytes": 2260992
+        },
+        "GNU": {
+          "seconds": 0.035953375,
+          "input_mib_s": 890.0416163990167,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "1 M lignes journal",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 52000000,
+      "output": 52000000,
+      "sha256_output": "fc2cc0bac7cc9b68c4f217cdfc7cf66ebbacae8325b524bba89ffbbc2776da2b",
+      "input_sha256": "b1af30b94a7023968d36df470a174c468ff53acfd4f3e996788cfa8592f5279a",
+      "pattern": "323032362d31312d31375430383a33303a30305a20696e666f20736572766963653d747220636c69656e743d6162632d3132330a",
+      "repeats": 1000000,
+      "prefix_a": 0,
+      "free": 483367354368,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.018591833000000002,
+            "rss_bytes": 2211840
+          },
+          {
+            "seconds": 0.01736275,
+            "rss_bytes": 2228224
+          },
+          {
+            "seconds": 0.019057334000000002,
+            "rss_bytes": 2228224
+          },
+          {
+            "seconds": 0.018408959000000003,
+            "rss_bytes": 2228224
+          },
+          {
+            "seconds": 0.017765416000000003,
+            "rss_bytes": 2228224
+          },
+          {
+            "seconds": 0.018377917,
+            "rss_bytes": 2228224
+          },
+          {
+            "seconds": 0.017357792,
+            "rss_bytes": 2228224
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.038857583,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.038995958000000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.03920725,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.039484875,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.038827791,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.039319917,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.038508375000000004,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 52000000,
+          "sha256_output": "fc2cc0bac7cc9b68c4f217cdfc7cf66ebbacae8325b524bba89ffbbc2776da2b",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 52000000,
+          "sha256_output": "fc2cc0bac7cc9b68c4f217cdfc7cf66ebbacae8325b524bba89ffbbc2776da2b",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.018377917,
+          "input_mib_s": 2698.4050724097297,
+          "peak_rss_bytes": 2228224
+        },
+        "GNU": {
+          "seconds": 0.038995958000000004,
+          "input_mib_s": 1271.6975552472643,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "10 M lignes journal",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 520000000,
+      "output": 520000000,
+      "sha256_output": "2b9b1061f5b0ad6b21529fc2ed26e38e47d0a92a7eec7da1b7720b858afe162e",
+      "input_sha256": "0827e8453a1d55defb64967bd04d963391c4ca88bcd5e01d32983619dc0b1d16",
+      "pattern": "323032362d31312d31375430383a33303a30305a20696e666f20736572766963653d747220636c69656e743d6162632d3132330a",
+      "repeats": 10000000,
+      "prefix_a": 0,
+      "free": 483367276544,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.152167667,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.150045125,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.15164312500000002,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.15288637500000002,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.15097695800000002,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.15130875000000002,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.150690334,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 0.355811125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.35632125000000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.35597900000000005,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.358946333,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.355889291,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.35904008400000004,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 0.356943917,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 520000000,
+          "sha256_output": "2b9b1061f5b0ad6b21529fc2ed26e38e47d0a92a7eec7da1b7720b858afe162e",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 520000000,
+          "sha256_output": "2b9b1061f5b0ad6b21529fc2ed26e38e47d0a92a7eec7da1b7720b858afe162e",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.15130875000000002,
+          "input_mib_s": 3277.474994217122,
+          "peak_rss_bytes": 2244608
+        },
+        "GNU": {
+          "seconds": 0.35632125000000003,
+          "input_mib_s": 1391.7515290801487,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    },
+    {
+      "size": "65 M lignes journal",
+      "mode": "Traduction",
+      "args": [
+        "a-z",
+        "A-Z"
+      ],
+      "input": 3380000000,
+      "output": 3380000000,
+      "sha256_output": "a716c68c0d007cadd829d50c017f0208b345779a514b60f1e477bf8e99dfd9c7",
+      "input_sha256": "394c5b939ed42a016f8be06a971deceefe79326de5900256357fc1fd0e1d4f45",
+      "pattern": "323032362d31312d31375430383a33303a30305a20696e666f20736572766963653d747220636c69656e743d6162632d3132330a",
+      "repeats": 65000000,
+      "prefix_a": 0,
+      "free": 483366961152,
+      "samples": {
+        "Nova": [
+          {
+            "seconds": 0.9580211670000001,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.9560397920000001,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.9552609590000001,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.946273208,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.9468844590000001,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.9483527500000001,
+            "rss_bytes": 2244608
+          },
+          {
+            "seconds": 0.949297834,
+            "rss_bytes": 2244608
+          }
+        ],
+        "GNU": [
+          {
+            "seconds": 2.274106875,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 2.28884475,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 2.2826272910000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 2.3337962080000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 2.3509944170000003,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 2.277596125,
+            "rss_bytes": 1949696
+          },
+          {
+            "seconds": 2.29181225,
+            "rss_bytes": 1949696
+          }
+        ]
+      },
+      "order": [
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU",
+        "GNU",
+        "Nova",
+        "Nova",
+        "GNU"
+      ],
+      "verification": {
+        "GNU": {
+          "output": 3380000000,
+          "sha256_output": "a716c68c0d007cadd829d50c017f0208b345779a514b60f1e477bf8e99dfd9c7",
+          "status": 0,
+          "stderr_hex": ""
+        },
+        "Nova": {
+          "output": 3380000000,
+          "sha256_output": "a716c68c0d007cadd829d50c017f0208b345779a514b60f1e477bf8e99dfd9c7",
+          "status": 0,
+          "stderr_hex": ""
+        }
+      },
+      "medians": {
+        "Nova": {
+          "seconds": 0.949297834,
+          "input_mib_s": 3395.582581149263,
+          "peak_rss_bytes": 2244608
+        },
+        "GNU": {
+          "seconds": 2.28884475,
+          "input_mib_s": 1408.3170950992308,
+          "peak_rss_bytes": 1949696
+        }
+      }
+    }
+  ],
+  "passages": 7,
+  "versions": {
+    "Nova": "tr (nova-cli) — nova-cli 0.20.0",
+    "GNU": "tr (GNU coreutils) 9.12"
+  },
+  "sha256": {
+    "Nova": "7e22a2d593abcd0770d987a5e052ec53b5ae7fbdf2a0940cb30bdbbf834d7714",
+    "GNU": "075bd855ba66facf7309fcc0eb6f06ca98195e58c3fbe949b3cd65fe1568c77f"
+  }
+}
