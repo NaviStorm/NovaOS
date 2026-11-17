@@ -60,6 +60,8 @@ La base lance une liste fermée de commandes. L’ELF reçoit des arguments UTF-
 
 ## Performances
 
+Le créneau Darwin réservé du 17 novembre donne les rapports Nova/GNU, la dispersion et les deux verdicts par charge. [Profil court et profil complet du créneau](CRENEAU-DARWIN.md)
+
 Médianes Darwin ARM64 du profil court, lancement du processus inclus. Les deux exécutables reçoivent les mêmes arguments et écrivent vers `/dev/null`. La recette valide préalablement les octets et le statut, effectue trois échauffements par exécutable, puis sept passages en alternant l’ordre. Les charges moyennes du Mac partagé étaient de 3,24 / 6,04 / 8,36 avant et après. Aucun processus QEMU, rustc, cargo ou xorriso détecté à ces deux relevés. [Mesures brutes, débits et pics RSS](preuves/performances.json) · [Tableau terminal](preuves/tableau.txt)
 
 | Taille ou nombre | Traitement | Nova printf | GNU printf |
