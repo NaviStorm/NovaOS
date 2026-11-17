@@ -36,8 +36,8 @@ pub static PAGES: &[Page] = &[
         description: Text("Print formatted bytes.", "Écrire des octets formatés."),
         syntax: Text::same("printf [--] FORMAT [ARGUMENT ...]"),
         arguments: Text(
-            "FORMAT repeats until the arguments run out. Use -- before a literal --help or --version. See printf --help for conversions, flags and escape sequences.",
-            "FORMAT se répète jusqu’au dernier argument. Placer -- avant un format littéral --help ou --version. printf --help détaille conversions, drapeaux et échappements.",
+            "Select an argument with %N$. Missing values default to zero or empty.",
+            "%N$ sélectionne un argument. Une valeur absente vaut zéro ou une chaîne vide.",
         ),
         examples: Text::same(r"printf '%2$s %1$04d\n' 7 Nova"),
         rights: Text("Output and error ports.", "Ports de sortie et de diagnostic."),
@@ -1167,7 +1167,12 @@ impl Page {
 
     pub fn render(&self, path: &[&str], manual: bool, lang: Language) -> Option<String> {
         if self.provider == "nova-printf" && !manual && path.is_empty() {
-            return Some(String::from(lang.select(include_str!("../printf/help.en"),include_str!("../printf/help.fr"))));
+            let help = lang.select(include_str!("../printf/help.en"), include_str!("../printf/help.fr"));
+            return Some(format!(
+                "{} — {}\n{}{} {}\n",
+                self.name, self.description.get(lang), help,
+                lang.select("Example:", "Exemple :"), self.examples.get(lang)
+            ));
         }
         let mut text = String::new();
         if path.is_empty() {
@@ -1228,10 +1233,14 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                if self.provider == "nova-printf" { lang.select("Status:", "Statut :") } else { lang.select(
-                    "Status, errors and limits: 0 success, 3 invalid argument.",
-                    "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ) },
+                if self.provider == "nova-printf" {
+                    lang.select("Status:", "Statut :")
+                } else {
+                    lang.select(
+                        "Status, errors and limits: 0 success, 3 invalid argument.",
+                        "Codes, erreurs et limites : 0 succès, 3 argument invalide."
+                    )
+                },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )

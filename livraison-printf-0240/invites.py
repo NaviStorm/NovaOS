@@ -5,6 +5,9 @@ import hashlib
 import json
 import os
 import re
+import socket
+from contextlib import ExitStack
+from types import SimpleNamespace
 import statistics
 from pathlib import Path
 import shutil
@@ -17,6 +20,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 TMP = ROOT.parent / "tmp/printf-0240"
 sys.path.insert(0, str(ROOT / "novaOS/tests"))
+from bloc import qmp
 from cli import Terminal
 from journalisation import arret
 from session_cli import fixture_p9
@@ -217,7 +221,38 @@ def shell(arch, sector, disk, out):
         assert need in text, (line, need, text[-1000:])
         records.append(dict(commande=line, statut=code))
 
-    with Terminal(arch, sector, disk, "printf", journal=serial) as vm:
+    with ExitStack() as stack:
+        client, peer = socket.socketpair()
+        stack.enter_context(client)
+        stack.enter_context(peer)
+        client.settimeout(15)
+        channel = stack.enter_context(client.makefile("rwb", buffering=0))
+        monitor = SimpleNamespace(stdin=channel, stdout=channel)
+        vm = stack.enter_context(
+            Terminal(
+                arch, sector, disk, "printf", qmp_bloc=peer.fileno(), journal=serial
+            )
+        )
+        peer.close()
+        qmp(monitor, "qmp_capabilities")
+
+        def counters():
+            (stats,) = [
+                b["stats"]
+                for b in qmp(monitor, "query-blockstats")
+                if b["device"] == "d"
+            ]
+            return {
+                k: stats[k]
+                for k in (
+                    "wr_bytes",
+                    "wr_operations",
+                    "flush_operations",
+                    "failed_wr_operations",
+                    "failed_flush_operations",
+                )
+            }
+
         vm.until(b"nsh> ")
         call(vm, "true")
         # The service manager continues its boot transactions after the first
@@ -234,6 +269,7 @@ def shell(arch, sector, disk, out):
             if time.monotonic() > deadline:
                 raise RuntimeError("P9 encore actif au repos")
         shutil.copyfile(disk, out / "avant-documentation.raw")
+        counts_before = counters()
         for lang, fr in [("fr-CA", True), ("fr-zzzzz", False)]:
             call(vm, "export LANG=" + lang)
             call(
@@ -253,6 +289,8 @@ def shell(arch, sector, disk, out):
             records.append(dict(commande="man printf", langue=lang, statut=0))
         shutil.copyfile(disk, out / "apres-documentation.raw")
         after = sha(out / "apres-documentation.raw")
+        counts_after = counters()
+        assert counts_before == counts_after, (counts_before, counts_after)
         assert before == after, (before, after)
         for line in [
             "printf %s Nova",
@@ -264,6 +302,8 @@ def shell(arch, sector, disk, out):
         arret(vm, 2)
     return dict(
         shell=records,
+        compteurs_avant=counts_before,
+        compteurs_apres=counts_after,
         p9_avant_documentation=before,
         p9_apres_documentation=after,
         serie_shell=sha(serial),

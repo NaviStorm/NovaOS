@@ -70,7 +70,7 @@ fn catalogue_et_rendu() {
             [
                 "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
-                "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
+                "more", "mv", "nsh", "printf", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
                 "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
             ]
         );
@@ -128,12 +128,24 @@ fn aiguillage_sans_aucune_interface_metier() {
             }
             assert_eq!(
                 doc_options::answer(page.name, &["--inconnue"], lang),
-                Ok(Some(3))
+                if page.name == "printf" { Ok(None) } else { Ok(Some(3)) }
             );
             assert_eq!(
                 doc_options::answer(page.name, &["--", "--inconnue"], lang),
                 Ok(None)
             );
+        }
+    }
+}
+
+#[test]
+fn printf_options_et_donnees() {
+    for args in [
+        &["--help", "x"][..], &["--version", "--help"], &["%s", "--help"],
+        &["--", "--version"], &["-h"], &["--vers"], &["--help", "--", "nsh-doc=fr"],
+    ] {
+        for lang in [documentation::Language::French, documentation::Language::English] {
+            assert_eq!(doc_options::answer("printf", args, lang), Ok(None));
         }
     }
 }
