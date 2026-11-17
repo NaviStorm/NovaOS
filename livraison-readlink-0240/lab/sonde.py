@@ -1,4 +1,5 @@
 """Sonde SDK dans un invité réel, flux en mémoire et P9 en lecture seule."""
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -37,39 +38,41 @@ def main(arch,sector,out):
     records=[]
     previous=None
     ok=False
-    with (out/"sdk.serial").open("wb",buffering=0) as log,subprocess.Popen(cmd,env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,bufsize=0) as vm:
-        limit=time.monotonic()+150
-        buf=b""
-        try:
-            while time.monotonic()<limit:
-                if not select.select([vm.stdout],[],[],0.5)[0]:
-                    continue
-                block=os.read(vm.stdout.fileno(),65536)
-                stamp=time.perf_counter_ns()
-                if not block:
-                    break
-                log.write(block)
-                lines=(buf+block).split(b"\n")
-                buf=lines.pop()
-                for line in lines:
-                    if b"READLINK MOTEUR 13 OK" in line:
-                        ok=True
-                        previous=stamp
-                    m=re.search(rb"READLINK PERF (\d+) (\d+)",line)
-                    if m:
-                        kind,i=map(int,m.groups())
-                        assert previous is not None and stamp>previous
-                        records.append(dict(charge=kind,passage=i,chemins=4000,ns=stamp-previous))
-                        previous=stamp
-                    if any(marker in line for marker in (b"ASSERT [",b"Panique du noyau",b"panicked at")):
-                        raise AssertionError(line)
-                if b"SDK exemple admis sortie=0 restitution=OK" in b"\n".join(lines):
-                    break
-            else:
-                raise TimeoutError(str(out))
-        finally:
-            vm.kill()
-            vm.wait()
+    with (Path(os.environ["NOVAOS_TMPDIR"])/"arc027-mesures.lock").open("a") as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        with (out/"sdk.serial").open("wb",buffering=0) as log,subprocess.Popen(cmd,env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,bufsize=0) as vm:
+            limit=time.monotonic()+150
+            buf=b""
+            try:
+                while time.monotonic()<limit:
+                    if not select.select([vm.stdout],[],[],0.5)[0]:
+                        continue
+                    block=os.read(vm.stdout.fileno(),65536)
+                    stamp=time.perf_counter_ns()
+                    if not block:
+                        break
+                    log.write(block)
+                    lines=(buf+block).split(b"\n")
+                    buf=lines.pop()
+                    for line in lines:
+                        if b"READLINK MOTEUR 13 OK" in line:
+                            ok=True
+                            previous=stamp
+                        m=re.search(rb"READLINK PERF (\d+) (\d+) (\d+)",line)
+                        if m:
+                            kind,i,heap=map(int,m.groups())
+                            assert previous is not None and stamp>previous
+                            records.append(dict(charge=kind,passage=i,croissance_tas_octets=heap,chemins=4000,ns=stamp-previous))
+                            previous=stamp
+                        if any(marker in line for marker in (b"ASSERT [",b"Panique du noyau",b"panicked at")):
+                            raise AssertionError(line)
+                    if b"SDK exemple admis sortie=0 restitution=OK" in b"\n".join(lines):
+                        break
+                else:
+                    raise TimeoutError(str(out))
+            finally:
+                vm.kill()
+                vm.wait()
     assert ok and len(records)==12 and before==sha(disk)
     assert b"SDK exemple admis sortie=0 restitution=OK" in (out/"sdk.serial").read_bytes()
     medians={k:statistics.median(r["ns"] for r in records if r["charge"]==k) for k in range(4)}

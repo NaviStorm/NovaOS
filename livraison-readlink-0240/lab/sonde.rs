@@ -70,6 +70,9 @@ fn log(s: &str) {
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
     assert!(rt::channels().is_err());
+    // Interrogation seule de la borne du tas système.
+    let heap_end = || rt::value(rt::call(rt::HEAP_RESIZE, 0, 0, 0)).unwrap();
+    let initial = heap_end();
     use Mode::*;
     for (path, mode, expected) in [
         (&b"raw"[..], Raw, Ok(&b"./dir//../file"[..])),
@@ -87,7 +90,7 @@ extern "C" fn run() -> ! {
         (b"", Missing, Err(Error::Missing)),
     ] {
         assert_eq!(
-            resolve(&Tree, path, mode).as_deref().map_err(|e| e),
+            resolve(&Tree, path, mode).as_deref(),
             expected.as_ref().copied()
         );
     }
@@ -108,7 +111,10 @@ extern "C" fn run() -> ! {
                 let name = if id == 0 { &independent[..] } else { path };
                 core::hint::black_box(resolve(&Tree, core::hint::black_box(name), mode).unwrap());
             }
-            log(&format!("READLINK PERF {id} {pass}"));
+            log(&format!(
+                "READLINK PERF {id} {pass} {}",
+                heap_end() - initial
+            ));
         }
     }
     rt::exit(0)
