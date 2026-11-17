@@ -1,0 +1,9 @@
+cut (NovaOS) 0.24.0 / cut (GNU coreutils) 9.12
+ Taille ou lignes | Charge et entrée                               |     Octets |   Nova (s) |    GNU (s) | Nova/GNU | Plafond
+     10000 lignes | -f1,3,8,9 fichier                              |     231759 |   0.003133 |   0.003533 |   0.8868 | OK
+     10000 lignes | -f1,3,8,9 stdin                                |     231759 |   0.003133 |   0.003506 |   0.8936 | OK
+     10000 lignes | --complement -f2,7 fichier                     |     231759 |   0.003337 |   0.003700 |   0.9019 | OK
+     10000 lignes | -c1,3,5 fichier                                |     129296 |   0.003143 |   0.003450 |   0.9111 | OK
+      1 Mio/ligne | -sf1 fichier TAB tardif                        |    1048581 |   0.003098 |   0.002659 |   1.1653 | DÉPASSÉ
+      1 Mio/ligne | -sf2 fichier TAB tardif                        |    1048581 |   0.003016 |   0.002554 |   1.1807 | DÉPASSÉ
+2 dépassements sur 6 charges

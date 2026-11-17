@@ -38,6 +38,12 @@ def corpus(large):
     for n in [65535,262143]:
         d=b"x"*n+"界".encode()+b"b\xff\n"
         for a in [["-b"+str(n+2)],["-c"+str(n+1)],["-nb"+str(n+3)],["-f2","-d","界"]]:yield a,d
+    # Tranches de lecture entières sans séparateur, y compris au dernier EOF.
+    long_field = b"x" * (2 * 65536)
+    mixed = b"a\tb\n" + long_field + b"\tfin\n" + long_field
+    for args in (["-f1,3"], ["-sf1"], ["-sf2"], ["-f2"]):
+        yield args, mixed
+    yield ["-z", "-d:", "-sf1"], long_field + b":fin\0" + long_field
     rng=random.Random(27027)
     for _ in range(900 if large else 90):
         data=b"".join(rng.choice([b"x",b" ",b"\t",b"\n",b"\0",b"\xff","é".encode(),"😀".encode(),b":"]) for _ in range(rng.randrange(90)))

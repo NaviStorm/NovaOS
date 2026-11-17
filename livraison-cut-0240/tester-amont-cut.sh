@@ -6,7 +6,7 @@ export TMPDIR="$NOVAOS_TMPDIR/"
 gnu=${GNU_COREUTILS_SRC:-$NOVAOS_TMPDIR/sort-arc027-gnu}
 case "${1:-}" in
 --macOS) exe=/opt/homebrew/bin/gcut ;;
---novaOS) exe=$base/bin/cut-darwin-arm64 ;;
+--novaOS) exe=${CUT_NOVA_BIN:-$base/bin/cut-darwin-arm64} ;;
 *) echo "Usage : $0 --macOS|--novaOS (GNU_COREUTILS_SRC désigne le checkout v9.12)"; exit 2 ;;
 esac
 [ "$(git -C "$gnu" rev-parse HEAD)" = c0f8514d989184921d9b12a4d103a7b23abc5af8 ]

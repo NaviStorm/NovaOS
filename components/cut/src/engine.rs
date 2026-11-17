@@ -126,6 +126,20 @@ impl<'a> Stream<'a> {
     fn deferred(&self) -> bool {
         self.position == 1 && self.cfg.suppress == self.selected
     }
+    fn field_fragment(&mut self, bytes: &[u8], out: &mut Vec<u8>) {
+        if self.deferred() {
+            self.pending.extend_from_slice(bytes)
+        } else if self.selected {
+            out.extend_from_slice(bytes)
+        }
+    }
+    fn emit_pending(&mut self, out: &mut Vec<u8>) {
+        if out.is_empty() && self.pending.len() > out.capacity() {
+            core::mem::swap(out, &mut self.pending);
+        } else {
+            out.extend_from_slice(&self.pending);
+        }
+    }
     fn plain_part(&mut self, mut data: &[u8], out: &mut Vec<u8>) {
         self.started |= !data.is_empty();
         while !data.is_empty() {
@@ -133,17 +147,13 @@ impl<'a> Stream<'a> {
                 .iter()
                 .position(|b| *b == self.cfg.delim[0])
                 .unwrap_or(data.len());
-            if self.deferred() {
-                self.pending.extend_from_slice(&data[..n])
-            } else if self.selected {
-                out.extend_from_slice(&data[..n])
-            }
+            self.field_fragment(&data[..n], out);
             if n == data.len() {
                 break;
             }
             if self.position == 1 && self.deferred() {
                 if self.selected {
-                    out.extend_from_slice(&self.pending)
+                    self.emit_pending(out)
                 }
                 self.pending.clear();
             }
@@ -270,6 +280,12 @@ impl<'a> Stream<'a> {
             self.pending.extend_from_slice(data);
             return;
         }
+        // Entire read buffers in a long field have neither separator.
+        if self.plain() && !data.contains(&self.cfg.end) && !data.contains(&self.cfg.delim[0]) {
+            self.started |= !data.is_empty();
+            self.field_fragment(data, out);
+            return;
+        }
         let mut parts = data.split(|&b| b == self.cfg.end).peekable();
         while let Some(part) = parts.next() {
             let end = parts.peek().is_some();
@@ -289,7 +305,7 @@ impl<'a> Stream<'a> {
     fn end_record(&mut self, out: &mut Vec<u8>) {
         if self.plain() {
             if self.position == 1 && self.deferred() && !self.cfg.suppress {
-                out.extend_from_slice(&self.pending)
+                self.emit_pending(out)
             }
             if self.position > 1 || !self.cfg.suppress {
                 out.push(self.cfg.end)

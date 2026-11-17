@@ -1,0 +1,18 @@
+cut (NovaOS) 0.24.0 / cut (GNU coreutils) 9.12
+ Taille ou lignes | Charge et entrée                               |     Octets |   Nova (s) |    GNU (s) | Nova/GNU | Plafond
+   1000000 lignes | -f1,3,8,9 fichier                              |   23175529 |   0.064997 |   0.111057 |   0.5853 | OK
+   1000000 lignes | --complement -f2,7 fichier                     |   23175529 |   0.076635 |   0.130507 |   0.5872 | OK
+   1000000 lignes | -c1,3,5 fichier                                |   12929772 |   0.053040 |   0.064949 |   0.8166 | OK
+  10000000 lignes | -f1,3,8,9 fichier                              |  231755463 |   0.614914 |   1.065923 |   0.5769 | OK
+  10000000 lignes | --complement -f2,7 fichier                     |  231755463 |   0.751240 |   1.293982 |   0.5806 | OK
+  10000000 lignes | -c1,3,5 fichier                                |  129297817 |   0.513543 |   0.627578 |   0.8183 | OK
+  65000000 lignes | -f1,3,8,9 fichier                              | 1506410411 |   3.923880 |   6.983290 |   0.5619 | OK
+  65000000 lignes | --complement -f2,7 fichier                     | 1506410411 |   4.833577 |   8.452626 |   0.5718 | OK
+  65000000 lignes | -c1,3,5 fichier                                |  840435827 |   3.302357 |   4.064998 |   0.8124 | OK
+      1 Mio/ligne | -sf1 fichier TAB tardif                        |    1048581 |   0.003868 |   0.003216 |   1.2027 | DÉPASSÉ
+      1 Mio/ligne | -sf2 fichier TAB tardif                        |    1048581 |   0.003290 |   0.002820 |   1.1666 | DÉPASSÉ
+     16 Mio/ligne | -sf1 fichier TAB tardif                        |   16777221 |   0.015216 |   0.006464 |   2.3538 | DÉPASSÉ
+     16 Mio/ligne | -sf2 fichier TAB tardif                        |   16777221 |   0.012620 |   0.005498 |   2.2956 | DÉPASSÉ
+     64 Mio/ligne | -sf1 fichier TAB tardif                        |   67108869 |   0.049461 |   0.017100 |   2.8924 | DÉPASSÉ
+     64 Mio/ligne | -sf2 fichier TAB tardif                        |   67108869 |   0.041590 |   0.012166 |   3.4187 | DÉPASSÉ
+6 dépassements sur 15 charges

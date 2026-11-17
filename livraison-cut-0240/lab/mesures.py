@@ -81,10 +81,10 @@ def suite(folder,options):
     def save():
         if options.json:
             options.json.write_text(json.dumps(meta,indent=2,ensure_ascii=False)+"\n")
-    def case(label,args,src,outputs,loc="C",mode="fichier"):
+    def case(label,args,src,outputs,loc="C",mode="fichier",structure=""):
         expected=hashlib.sha256()
         for part in outputs:expected.update(part)
-        row=dict(taille=label,entree=mode,arguments=args,locale=loc,octets=src.stat().st_size,source=str(src),
+        row=dict(taille=label,entree=mode,structure=structure,arguments=args,locale=loc,octets=src.stat().st_size,source=str(src),
                  sha256=digest(src),attendu=expected.hexdigest(),outils={})
         for k,exe in tools.items():
             argv = [exe, *args] if mode == "stdin" else [exe, *args, src]
@@ -108,10 +108,16 @@ def suite(folder,options):
             result["pic_rss_octets"] = max(p["rss_octets"] for p in result["passages"])
         def seconds(name):
             return f"{med[name]:.6f} s" if name in med else "—"
-        treatment = f"{' '.join(args)} ({mode})"
-        print(f"{label:>17} | {treatment:<31} | {seconds('Nova'):>12} | {seconds('GNU'):>12}", flush=True)
+        detail = " ".join(filter(None, (mode, structure)))
+        ratio = "—"
+        if "Nova" in med and "GNU" in med:
+            row["ratio_nova_gnu"] = med["Nova"] / med["GNU"]
+            row["respecte_plafond"] = med["Nova"] <= 1.10 * med["GNU"]
+            ratio = f'{row["ratio_nova_gnu"]:.4f}'
+        treatment = f"{' '.join(args)} ({detail})"
+        print(f"{label:>17} | {treatment:<31} | {seconds('Nova'):>12} | {seconds('GNU'):>12} | {ratio:>9}", flush=True)
         meta["essais"].append(row);save()
-    print(f"{'Taille ou lignes':>17} | {'Traitement':<31} | {'Nova cut':>12} | {'GNU cut':>12}", flush=True)
+    print(f"{'Taille ou lignes':>17} | {'Traitement':<31} | {'Nova cut':>12} | {'GNU cut':>12} | {'Nova/GNU':>9}", flush=True)
     fields=[list(map(str,(*keys[:6],i,*keys[6:]))) for i,keys in enumerate(itertools.product((2,10),repeat=8))]
     def rows(cols):
         return [("\t".join(row[i] for i in cols)+"\n").encode() for row in fields]
@@ -129,7 +135,37 @@ def suite(folder,options):
         late=folder/"tardif";data=b"x"*(mib*2**20)
         late.write_bytes(data+b"\tfin\n")
         for flag,expect in [("-sf1",data+b"\n"),("-sf2",b"fin\n")]:
-            case(f"{mib} Mio/ligne",[flag],late,[expect])
+            case(f"{mib} Mio/ligne", [flag], late, [expect], structure="TAB tardif")
+        plain = folder / "sans-tab"
+        plain.write_bytes(data + b"\n")
+        for flag, expect in [("-f1,3", data + b"\n"), ("-sf1", b""), ("-sf2", b"")]:
+            case(f"{mib} Mio/ligne", [flag], plain, [expect], structure="sans TAB")
+    if any(row.get("respecte_plafond") is False for row in meta["essais"]):
+        raise SystemExit("Au moins une charge dépasse le plafond Nova/GNU de 1,10.")
+
+def relire(path):
+    data = json.loads(path.read_text())
+    print(data["binaires"]["Nova"]["version"], "/", data["binaires"]["GNU"]["version"])
+    print(f"{'Taille ou lignes':>17} | {'Charge et entrée':<46} | {'Octets':>10} | {'Nova (s)':>10} | {'GNU (s)':>10} | {'Nova/GNU':>8} | Plafond")
+    failures = 0
+    for row in data["essais"]:
+        times = {}
+        for key in ("Nova", "GNU"):
+            tool = row["outils"][key]
+            if len(tool["passages"]) < 3 or tool["sortie"] != row["attendu"]:
+                raise ValueError(f"Preuve incomplète pour {row['arguments']} {key}")
+            times[key] = statistics.median(rep["s"] for rep in tool["passages"])
+        ratio = times["Nova"] / times["GNU"]
+        passed = times["Nova"] <= 1.10 * times["GNU"]
+        failures += not passed
+        size = row["taille"] + (" lignes" if row["taille"].isdigit() else "")
+        shape = row.get("structure", "")
+        if "Mio/ligne" in size and not shape:
+            shape = "TAB tardif"
+        label = " ".join(filter(None, [*row["arguments"], row.get("entree", "fichier"), shape]))
+        print(f"{size:>17} | {label:<46} | {row['octets']:10} | {times['Nova']:10.6f} | {times['GNU']:10.6f} | {ratio:8.4f} | {'OK' if passed else 'DÉPASSÉ'}")
+    print(f"{failures} dépassements sur {len(data['essais'])} charges")
+    return int(failures > 0)
 
 def main():
     p=argparse.ArgumentParser(description=__doc__, epilog="Par défaut, comparer Nova et GNU sur 10 000 lignes et une ligne longue de 1 Mio.")
@@ -138,7 +174,10 @@ def main():
     p.add_argument("--large",action="store_true",help="1, 10 et 65 millions de lignes")
     p.add_argument("--corpus",type=Path,help="Dossier contenant N.tsv ou N, en lecture seule")
     p.add_argument("--json",type=Path,help="Résultats machine, passages individuels et pics RSS")
+    p.add_argument("--relire", type=Path, help="Recalculer les rapports du JSON Nova/GNU, sans chronométrage")
     o=p.parse_args()
+    if o.relire:
+        raise SystemExit(relire(o.relire))
     if not (o.macOS or o.novaOS):
         o.macOS = o.novaOS = True
     o.tools=[k for k,enabled in [("Nova",o.novaOS),("GNU",o.macOS)] if enabled]
