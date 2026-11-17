@@ -1,0 +1,37 @@
+{
+  "debut_utc": "2026-11-17T04:26:09.217+00:00",
+  "architecture": "x86_64",
+  "octets_secteur": 4096,
+  "vcpu": 2,
+  "ram_mio": 256,
+  "iso_sha256": "c702d3d71056744a6135ae53a571d8fd5f89d7a5ca1a79cdaf3aea56b588c1c3",
+  "elf_sha256": "c37d0a9585f1d5f38e1209b088016a1f4f49a3116778bf666c98f87065077495",
+  "lanceur": {
+    "revision_git": "999f6e6cd41dab2b8d11812e00bfd3f557563fba"
+  },
+  "construction": {
+    "revision_git": null,
+    "profil": null,
+    "provenance_sha256": "2de5c11cedce4cc784dcc88c34ffc45cb5e2e5767db84ba71fe437fa28b8a1c0"
+  },
+  "commande": [
+    "sh",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/diff-natif-0240/novaOS/scripts/qemu.sh",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-device",
+    "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off",
+    "-drive",
+    "if=none,id=d,file=blkdebug::/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/diff-perf-qemu-999f6e6-valid/x86_64-4096/volume.raw,format=raw,cache=writeback,werror=report,rerror=report,readonly=off",
+    "-device",
+    "virtio-blk-pci,id=b,addr=6,drive=d,disable-legacy=on,iommu_platform=on,ats=off,num-queues=1,vectors=2,logical_block_size=4096,physical_block_size=4096",
+    "-chardev",
+    "socket,id=banc,fd=4",
+    "-mon",
+    "chardev=banc,mode=control"
+  ]
+}

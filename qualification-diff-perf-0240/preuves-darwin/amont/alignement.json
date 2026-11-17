@@ -1,0 +1,76 @@
+[
+ {
+  "args": [
+   "-u",
+   "-La",
+   "-Lb",
+   "large-subopt.in1",
+   "large-subopt.in2"
+  ],
+  "ok": true,
+  "resultats": {
+   "GNU": [
+    1,
+    43673,
+    "7b768ddeff927c320ecd63f12f4dbfc3ab179bf21dbf42e1901c6b9631fa7b49",
+    ""
+   ],
+   "Nova": [
+    1,
+    43673,
+    "7b768ddeff927c320ecd63f12f4dbfc3ab179bf21dbf42e1901c6b9631fa7b49",
+    ""
+   ]
+  }
+ },
+ {
+  "args": [
+   "-u",
+   "-La",
+   "-Lb",
+   "-d",
+   "large-subopt.in1",
+   "large-subopt.in2"
+  ],
+  "ok": true,
+  "resultats": {
+   "GNU": [
+    1,
+    44502,
+    "08e7ff24cbaeca5252ab89168f6512e44f4d505cb0d6b2e6ef6b3f227091e02c",
+    ""
+   ],
+   "Nova": [
+    1,
+    44502,
+    "08e7ff24cbaeca5252ab89168f6512e44f4d505cb0d6b2e6ef6b3f227091e02c",
+    ""
+   ]
+  }
+ },
+ {
+  "args": [
+   "-u",
+   "-La",
+   "-Lb",
+   "-H",
+   "large-subopt.in1",
+   "large-subopt.in2"
+  ],
+  "ok": true,
+  "resultats": {
+   "GNU": [
+    1,
+    43673,
+    "7b768ddeff927c320ecd63f12f4dbfc3ab179bf21dbf42e1901c6b9631fa7b49",
+    ""
+   ],
+   "Nova": [
+    1,
+    43673,
+    "7b768ddeff927c320ecd63f12f4dbfc3ab179bf21dbf42e1901c6b9631fa7b49",
+    ""
+   ]
+  }
+ }
+]

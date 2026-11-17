@@ -1,0 +1,157 @@
+{
+ "basic": [
+  0,
+  "",
+  ""
+ ],
+ "bignum": [
+  0,
+  "",
+  "diff: invalid tabsize '9223372036854775808'\ndiff: Try 'diff --help' for more information.\n"
+ ],
+ "binary": [
+  0,
+  "",
+  ""
+ ],
+ "brief-vs-stat-zero-kernel-lies": [
+  77,
+  "",
+  "brief-vs-stat-zero-kernel-lies: skipped test: no /proc/cmdline file\nbrief-vs-stat-zero-kernel-lies: skipped test: no /proc/cmdline file\n"
+ ],
+ "bug-64316": [
+  0,
+  "",
+  ""
+ ],
+ "colliding-file-names": [
+  0,
+  "",
+  ""
+ ],
+ "empty-file": [
+  0,
+  "",
+  ""
+ ],
+ "excess-slash": [
+  0,
+  "",
+  ""
+ ],
+ "expand-tabs": [
+  0,
+  "",
+  ""
+ ],
+ "help-version": [
+  0,
+  "",
+  ""
+ ],
+ "ifdef": [
+  0,
+  "",
+  ""
+ ],
+ "invalid-re": [
+  0,
+  "",
+  ""
+ ],
+ "function-line-vs-leading-space": [
+  0,
+  "",
+  ""
+ ],
+ "ignore-case": [
+  0,
+  "",
+  ""
+ ],
+ "ignore-matching-lines": [
+  0,
+  "",
+  ""
+ ],
+ "ignore-tab-expansion": [
+  0,
+  "",
+  ""
+ ],
+ "label-vs-func": [
+  0,
+  "",
+  ""
+ ],
+ "large-subopt": [
+  1,
+  "",
+  ""
+ ],
+ "new-file": [
+  0,
+  "",
+  "diff: b: No such file or directory\n"
+ ],
+ "no-dereference": [
+  0,
+  "",
+  ""
+ ],
+ "no-newline-at-eof": [
+  0,
+  "",
+  ""
+ ],
+ "side-by-side": [
+  0,
+  "",
+  ""
+ ],
+ "side-by-side-seq": [
+  0,
+  "",
+  ""
+ ],
+ "starting-file": [
+  0,
+  "",
+  ""
+ ],
+ "stdin": [
+  0,
+  "",
+  ""
+ ],
+ "strcoll-0-names": [
+  0,
+  "Only in d1: エンドカード1\nOnly in d2: ブックレット1\n",
+  ""
+ ],
+ "filename-quoting": [
+  0,
+  "",
+  ""
+ ],
+ "strip-trailing-cr": [
+  77,
+  "",
+  "strip-trailing-cr: skipped test: requires a working valgrind\nstrip-trailing-cr: skipped test: requires a working valgrind\n"
+ ],
+ "timezone": [
+  0,
+  "",
+  ""
+ ],
+ "colors": [
+  0,
+  "",
+  ""
+ ],
+ "y2038-vs-32bit": [
+  0,
+  "",
+  ""
+ ]
+}

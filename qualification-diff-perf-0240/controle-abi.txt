@@ -1,0 +1,11 @@
+ABI 1 ; 48 sélecteurs
+4d8dd33b0243d45b7229d34abc4fa2c16a381c1a8e9e1204631ee99d2f48687c  qualification-diff-perf-0240/bin/diff-aarch64.elf
+entrée=0x1000000 pile=0x3ffffffbe000
+ReadExecute 0x1000000..0x101c3c4 offset=4096 octets=115652 pages=29
+ReadOnly 0x101d000..0x1022880 offset=122880 octets=22656 pages=6
+ReadWrite 0x1023000..0x1023398 offset=147456 octets=920 pages=1
+2e31f103b55497bd5402b1d63640738f2c4d736fdfea06d40578c5942e109dbe  qualification-diff-perf-0240/bin/diff-x86_64.elf
+entrée=0x1000000 pile=0x3ffffffbe000
+ReadExecute 0x1000000..0x10220f4 offset=4096 octets=139508 pages=35
+ReadOnly 0x1023000..0x1028b20 offset=147456 octets=23328 pages=6
+ReadWrite 0x1029000..0x1029398 offset=172032 octets=920 pages=1

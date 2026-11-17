@@ -1,0 +1,2588 @@
+{
+ "serie": 1,
+ "sha256": {
+  "publie": "cf9e91ef08d729fec244ffdd813dd1dfdc5d44d9e97835d68a78e57b1cd84be9",
+  "candidat": "ffd2a39e421d922d3a6c5a686b654a41fb6fcb70aa28b42bd9e705c80ab55c96",
+  "GNU": "e14ac0bc8f78c8259d878d283631f215077831587ce896751e65ef9908ddce3e"
+ },
+ "plateforme": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2.1\nBuildVersion:\t\t26B131\n",
+ "charges": {
+  "égaux": {
+   "octets": 4849664,
+   "sortie": 0,
+   "signature": [
+    0,
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   ],
+   "fichiers": {
+    "a": "b018209e065b20ba6df2a29223d887af6df39aaf5b5ebe6243337de1e2faa367",
+    "b": "b018209e065b20ba6df2a29223d887af6df39aaf5b5ebe6243337de1e2faa367"
+   },
+   "charge_avant": {
+    "utc": 1794889100.720043,
+    "cpu_total": 359.3,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "passages": {
+    "publie": [
+     {
+      "ns": 3423834,
+      "rss": 7094272,
+      "cpu_user": 0.0008259999999999999,
+      "cpu_system": 0.0012929999999999999
+     },
+     {
+      "ns": 3308834,
+      "rss": 7094272,
+      "cpu_user": 0.0008219999999999999,
+      "cpu_system": 0.001178
+     },
+     {
+      "ns": 3177250,
+      "rss": 7094272,
+      "cpu_user": 0.0008179999999999999,
+      "cpu_system": 0.001184
+     },
+     {
+      "ns": 3319375,
+      "rss": 7094272,
+      "cpu_user": 0.0008439999999999999,
+      "cpu_system": 0.001321
+     },
+     {
+      "ns": 3639083,
+      "rss": 7094272,
+      "cpu_user": 0.0009649999999999999,
+      "cpu_system": 0.001514
+     },
+     {
+      "ns": 3421333,
+      "rss": 7094272,
+      "cpu_user": 0.000852,
+      "cpu_system": 0.0011979999999999998
+     },
+     {
+      "ns": 3358459,
+      "rss": 7094272,
+      "cpu_user": 0.000806,
+      "cpu_system": 0.001343
+     },
+     {
+      "ns": 3061666,
+      "rss": 7094272,
+      "cpu_user": 0.000834,
+      "cpu_system": 0.001171
+     },
+     {
+      "ns": 3050167,
+      "rss": 7094272,
+      "cpu_user": 0.0008049999999999999,
+      "cpu_system": 0.001139
+     },
+     {
+      "ns": 2958750,
+      "rss": 7094272,
+      "cpu_user": 0.000812,
+      "cpu_system": 0.001157
+     },
+     {
+      "ns": 3399125,
+      "rss": 7094272,
+      "cpu_user": 0.000865,
+      "cpu_system": 0.001206
+     },
+     {
+      "ns": 3267000,
+      "rss": 7094272,
+      "cpu_user": 0.0008169999999999999,
+      "cpu_system": 0.001205
+     },
+     {
+      "ns": 3179917,
+      "rss": 7094272,
+      "cpu_user": 0.000801,
+      "cpu_system": 0.0011409999999999999
+     },
+     {
+      "ns": 3043583,
+      "rss": 7094272,
+      "cpu_user": 0.000792,
+      "cpu_system": 0.001168
+     },
+     {
+      "ns": 3218166,
+      "rss": 7094272,
+      "cpu_user": 0.0008349999999999999,
+      "cpu_system": 0.001191
+     },
+     {
+      "ns": 3411000,
+      "rss": 7094272,
+      "cpu_user": 0.00079,
+      "cpu_system": 0.0011769999999999999
+     },
+     {
+      "ns": 3050417,
+      "rss": 7094272,
+      "cpu_user": 0.000788,
+      "cpu_system": 0.001085
+     },
+     {
+      "ns": 3217625,
+      "rss": 7094272,
+      "cpu_user": 0.0008269999999999999,
+      "cpu_system": 0.001178
+     }
+    ],
+    "candidat": [
+     {
+      "ns": 3192167,
+      "rss": 7028736,
+      "cpu_user": 0.000846,
+      "cpu_system": 0.001161
+     },
+     {
+      "ns": 3348167,
+      "rss": 7028736,
+      "cpu_user": 0.000847,
+      "cpu_system": 0.0012159999999999999
+     },
+     {
+      "ns": 3311000,
+      "rss": 7028736,
+      "cpu_user": 0.000874,
+      "cpu_system": 0.00114
+     },
+     {
+      "ns": 3377167,
+      "rss": 7028736,
+      "cpu_user": 0.000793,
+      "cpu_system": 0.001209
+     },
+     {
+      "ns": 3084750,
+      "rss": 7028736,
+      "cpu_user": 0.000807,
+      "cpu_system": 0.0011539999999999999
+     },
+     {
+      "ns": 3072000,
+      "rss": 7028736,
+      "cpu_user": 0.000829,
+      "cpu_system": 0.0011639999999999999
+     },
+     {
+      "ns": 3060834,
+      "rss": 7028736,
+      "cpu_user": 0.000799,
+      "cpu_system": 0.001144
+     },
+     {
+      "ns": 3197250,
+      "rss": 7028736,
+      "cpu_user": 0.000794,
+      "cpu_system": 0.001112
+     },
+     {
+      "ns": 3084417,
+      "rss": 7028736,
+      "cpu_user": 0.000811,
+      "cpu_system": 0.001121
+     },
+     {
+      "ns": 3455083,
+      "rss": 7028736,
+      "cpu_user": 0.00079,
+      "cpu_system": 0.001245
+     },
+     {
+      "ns": 3104542,
+      "rss": 7028736,
+      "cpu_user": 0.0008719999999999999,
+      "cpu_system": 0.0012079999999999999
+     },
+     {
+      "ns": 3174250,
+      "rss": 7028736,
+      "cpu_user": 0.000841,
+      "cpu_system": 0.0011179999999999999
+     },
+     {
+      "ns": 3144041,
+      "rss": 7028736,
+      "cpu_user": 0.000792,
+      "cpu_system": 0.0011899999999999999
+     },
+     {
+      "ns": 2982667,
+      "rss": 7028736,
+      "cpu_user": 0.0007819999999999999,
+      "cpu_system": 0.001107
+     },
+     {
+      "ns": 3213167,
+      "rss": 7028736,
+      "cpu_user": 0.000815,
+      "cpu_system": 0.0012259999999999999
+     },
+     {
+      "ns": 3157791,
+      "rss": 7028736,
+      "cpu_user": 0.000783,
+      "cpu_system": 0.001138
+     },
+     {
+      "ns": 3198708,
+      "rss": 7028736,
+      "cpu_user": 0.000808,
+      "cpu_system": 0.00114
+     },
+     {
+      "ns": 3369917,
+      "rss": 7028736,
+      "cpu_user": 0.000851,
+      "cpu_system": 0.0012
+     }
+    ],
+    "GNU": [
+     {
+      "ns": 3176250,
+      "rss": 6930432,
+      "cpu_user": 0.000776,
+      "cpu_system": 0.001161
+     },
+     {
+      "ns": 3084166,
+      "rss": 6930432,
+      "cpu_user": 0.00075,
+      "cpu_system": 0.001129
+     },
+     {
+      "ns": 3171208,
+      "rss": 6930432,
+      "cpu_user": 0.000744,
+      "cpu_system": 0.0011669999999999999
+     },
+     {
+      "ns": 3163000,
+      "rss": 6930432,
+      "cpu_user": 0.000753,
+      "cpu_system": 0.001129
+     },
+     {
+      "ns": 3076334,
+      "rss": 6930432,
+      "cpu_user": 0.0007779999999999999,
+      "cpu_system": 0.001228
+     },
+     {
+      "ns": 3452417,
+      "rss": 6930432,
+      "cpu_user": 0.000767,
+      "cpu_system": 0.0011979999999999998
+     },
+     {
+      "ns": 3083625,
+      "rss": 6946816,
+      "cpu_user": 0.000722,
+      "cpu_system": 0.0011489999999999998
+     },
+     {
+      "ns": 3269000,
+      "rss": 6930432,
+      "cpu_user": 0.000749,
+      "cpu_system": 0.0013599999999999999
+     },
+     {
+      "ns": 3513583,
+      "rss": 6930432,
+      "cpu_user": 0.000792,
+      "cpu_system": 0.001367
+     },
+     {
+      "ns": 3346416,
+      "rss": 6930432,
+      "cpu_user": 0.000745,
+      "cpu_system": 0.001206
+     },
+     {
+      "ns": 3527292,
+      "rss": 6930432,
+      "cpu_user": 0.000803,
+      "cpu_system": 0.001343
+     },
+     {
+      "ns": 3205209,
+      "rss": 6930432,
+      "cpu_user": 0.0007639999999999999,
+      "cpu_system": 0.0011849999999999999
+     },
+     {
+      "ns": 3045250,
+      "rss": 6930432,
+      "cpu_user": 0.000771,
+      "cpu_system": 0.001143
+     },
+     {
+      "ns": 2832625,
+      "rss": 6914048,
+      "cpu_user": 0.0007239999999999999,
+      "cpu_system": 0.001117
+     },
+     {
+      "ns": 3297375,
+      "rss": 6930432,
+      "cpu_user": 0.0007549999999999999,
+      "cpu_system": 0.001205
+     },
+     {
+      "ns": 3046958,
+      "rss": 6946816,
+      "cpu_user": 0.000727,
+      "cpu_system": 0.00115
+     },
+     {
+      "ns": 3160375,
+      "rss": 6930432,
+      "cpu_user": 0.0007369999999999999,
+      "cpu_system": 0.001169
+     },
+     {
+      "ns": 2979000,
+      "rss": 6946816,
+      "cpu_user": 0.000721,
+      "cpu_system": 0.001098
+     }
+    ]
+   },
+   "ordres": [
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ]
+   ],
+   "charge_apres": {
+    "utc": 1794889100.9459221,
+    "cpu_total": 357.1,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "statistiques": {
+    "publie": {
+     "mediane_ns": 3242583.0,
+     "mad_ns": 162479.5,
+     "q1_ns": 3090562.0,
+     "q3_ns": 3388958.5,
+     "min_ns": 2958750,
+     "max_ns": 3639083,
+     "rss_median": 7094272.0
+    },
+    "candidat": {
+     "mediane_ns": 3183208.5,
+     "mad_ns": 98625.0,
+     "q1_ns": 3089698.0,
+     "q3_ns": 3286541.75,
+     "min_ns": 2982667,
+     "max_ns": 3455083,
+     "rss_median": 7028736.0
+    },
+    "GNU": {
+     "mediane_ns": 3167104.0,
+     "mad_ns": 111021.0,
+     "q1_ns": 3078156.75,
+     "q3_ns": 3290281.25,
+     "min_ns": 2832625,
+     "max_ns": 3527292,
+     "rss_median": 6930432.0
+    }
+   },
+   "ratio": 1.005084929323445,
+   "conforme": true
+  },
+  "arborescence": {
+   "octets": 4849696,
+   "sortie": 368,
+   "signature": [
+    1,
+    "34ab4d02982ee6ec6b154878e0487543ee2cd73eb691f7d1b83bf7086ffdd25c",
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   ],
+   "fichiers": {
+    "a/part-000": "13991c593df531f4550d7415157b8786ba4d1ec72792647d9a2908e35987a30a",
+    "a/part-001": "2b86540b83191d55c7976de591d39a863a52667e34281e9227ac64eebad412ca",
+    "a/part-002": "7b7c52cabcaf2ca5ebe534878df4c63bd6145b8b8ff8918cf8c5bda13d552149",
+    "a/part-003": "4b36706c7c64138357b7e441bfdf8694e8724c3d5750880aa1f7f5b747c05512",
+    "a/part-004": "8433d603c9b7f4408716a6ad40cf924d1fe17209009ecf347488a107c22e7247",
+    "a/part-005": "8bfe153fd4aed2f8e0182cace5353253c667ac9bc0b6859bf40bcd2315e08b77",
+    "a/part-006": "d8c785ec2aef219b8806f7da00f2eb66f495b186134301c1183a0de82901e822",
+    "a/part-007": "7b69a432b5fada58d6a5c5b284f818527cd4f992d6d4577dcecc73e969572ad5",
+    "a/part-008": "e2a64b651f5125bf1c16754582dd03c9ccab244d35655b98a1557788105ef7d1",
+    "a/part-009": "eb4d396df385e494efec6b05023038b037b1134d317cc4fbfc26d18c0ad21a66",
+    "a/part-010": "0f36970322fd8c6fe21f2eb0cc3ea021fa350aad200e383adacd5695db67682b",
+    "a/part-011": "e7a9f57a53b523f3c36dbc8b83618c0ba0262f701b1e95a666f45f87f0fa7ae1",
+    "a/part-012": "a8a9a956c08968cb1d479f6b94c0c55a7c0f062778e720e24b3338e90250d67d",
+    "a/part-013": "efffc0f279c118d8d3c0af7ce624bf22569e4d9b19a0f0f3f6fbcfa964f2f65b",
+    "a/part-014": "83a9c930ef9f350b3b735cd945dd0b2da687d25ca3a2b0265d72975b45c6309e",
+    "a/part-015": "520e5461ca83c1d90c01ab030cbc6c315b1d1a5f1e5c0d6a79df174175f7129a",
+    "a/part-016": "0dbd3e6c04af50cb06e20c03340208c94ae94527758b128af1d79584ed609f76",
+    "a/part-017": "12be019096febae59f4b384e6eab41043b511d1cbe491027ec6fdd80dff139fa",
+    "a/part-018": "bb5401c0c8f2eebc46c3e2be3e1343c0e9e6340480c5f61ccf7f87e86c48eba5",
+    "a/part-019": "54cde2f11277966e3eaf4faa4db071d74f1f686dac7b2b2d87cdab94202c6bb8",
+    "a/part-020": "bab32a6e5fa94dd9e1175bfd6cb113ad96d778f82e6435181a4cbae5ac1c46a1",
+    "a/part-021": "1bae063c476080e95d7640b3f7601a1d6650ae59676684bab0d629aa5e537992",
+    "a/part-022": "eddce7a537f17ba4c2fcfc7a916331fc971d656b05cab37a694ae6de02ac8f2d",
+    "a/part-023": "0880c2a5a19baa51eff1ee11c45316e63eec4f88b6f6c4bb5fd7c99f82cc05d0",
+    "a/part-024": "8382ae700632d3e880aac8a97084b8841ecf3ceb9b0530d68cadab51fd683042",
+    "a/part-025": "813df6d5c7966d8a22ccfae6af9984b50532b65be3fd9b3e9ff219910a9299d1",
+    "a/part-026": "db946f6eb012cf24b312cf0e31131512de40d2736a3e870233c31e42cd648e33",
+    "a/part-027": "ead09036d32f3ed450acc4cff396a314bc4eda8ca7e748d39d0ccf1d63e23e30",
+    "a/part-028": "37df16a5caa31dd6aedd97e3b68a88cdfa98761b668c290fc44a4f77a127a55c",
+    "a/part-029": "189466ac30fae699a0be503931129c5441b974ede46f722294733abaee66aca2",
+    "a/part-030": "e06ab9f69d30551ff33c360a02dcffe0c998b95de78b0a13e2904c17c2fe3100",
+    "a/part-031": "de76ba276ad9901e15c3de1aa7257583e475bfb5323f6abd8e2bcdf7a3edcd97",
+    "a/part-032": "37e8d030621849fd0eb16f2755a235e0cbf98d1c0bfb36313a6bec8a33efbef6",
+    "a/part-033": "017898752eb4f2d0a2c6a589874107428adfa8019a7e8675af01710d5636f9b2",
+    "a/part-034": "5af502270db8fb9aa9e6c604893a62251f6a3dabc1ee5cb33f4a177f756e6618",
+    "a/part-035": "df528f98142df826a36722218522db98b9ec1d5d84b4af82d6d5567a07a9f94b",
+    "a/part-036": "0d75822e5a4fc1aea86b0de2f296feda4212f747a5ec9466d9f5c2278817fb87",
+    "a/part-037": "ddbe074fb9c0bff10da56a632ad8d5f76b9b098418ffe90ff7ffffd837ad36c6",
+    "a/part-038": "5b633753a9ffbe315fde3c10c76165ee6e40803d7a4b7d796772c26d40f1a564",
+    "a/part-039": "7d1617d260522b4d9b2121ea120d705afc9dbdbe0e0b9447c64b5e7f0fbf4a26",
+    "a/part-040": "9df24f03a3bfd7120afc0d286b0058e875f99010e96f45537acf2dcf4b2121fd",
+    "a/part-041": "006799d5746e8cba1dde3bbb4bf919f7151d26aa670eb60b49139e43261a7377",
+    "a/part-042": "0454c737a82865e62c1d40fe247d84925ccb9af3ccc2d82194eaaaa52d91af60",
+    "a/part-043": "76717e216b8bbac52c1c3b2090a130011f326aa662d1521f5f4b22f0b85cdcec",
+    "a/part-044": "497876ff4eb3e58ff3e38e11a3444695d614b29446d5aafd25018dc5598401df",
+    "a/part-045": "d1e045274114d1010e9ed6001a9e84a4d1ebfd7eae40b5a952903b9cadf57b06",
+    "a/part-046": "f169e81b5897b678d099df090aa5233d86d08e71a4e7d1f2516acad7d0926cf8",
+    "a/part-047": "e514d938c9cb888e7096f28664f2c67ec1516c1385b281525a244666e878bcee",
+    "a/part-048": "a56eaf932530a8bc3625da2fdc5dedbcf323d476910b483f9ed8d469186d9503",
+    "a/part-049": "586845dd48dc3edb379cb51072b9e2b3398b160bac88a050e8d3a8ef9104ac2f",
+    "a/part-050": "4f38bba1afcc7d3f01383e7f079dbc8bb391462b9d526f69b96c03adddafee02",
+    "a/part-051": "85de7c0f42dd7ad5900db37f63c541cab4b93212e0922f142edb67ff87434dc2",
+    "a/part-052": "bfabaea78fc8bfa6455975bf2667197c2f692eb346df0bbc9990d3aa493b503e",
+    "a/part-053": "5b206c3c4ca7af925bb343a8fc5bbea10e9c787460d2d52ac8d3f0a0b024c878",
+    "a/part-054": "eaaf81be6813ce5e2ca21d05860edacc1058a43ed80f3265e3ba43b1c379bb3d",
+    "a/part-055": "57e5eff334e0b17a71663708797d1dea7bb776d3c2ee135d09cdcf5800bc11e1",
+    "a/part-056": "ef953685da2f1357e5ac8d65be07f5eb784ce40e00f7e69d2d0c793a982ab544",
+    "a/part-057": "a8fc53c36259ff91a4118be257aebb9d1bc5da8a949eab4d93b7293f4abab418",
+    "a/part-058": "b0bc8868cad875c8a34ea6a58b5b6ff99dd6a2eb6a653fc892ff69d1ccdd2c98",
+    "a/part-059": "1b7669ddd4956febf9a2221d5dd4eeff8aed99f32377c454550ae201a40fa4a0",
+    "a/part-060": "1f34c7ab5cb239e8d8dfc9840f9d62e33e783f6a403a28001d54bafa2237c0e1",
+    "a/part-061": "38b359541fe16d5aa899f2534775def60273d00e88e6a69fc636ae0a25afa2da",
+    "a/part-062": "ab66a28722975ceb2f2406e4ad47aacf00897809532d35aae7fdc11bfc5d041e",
+    "a/part-063": "4efb2acef65d2f5d5447cce7a4a9add992dde9878726f4f71be6011d7cb8e67d",
+    "b/part-000": "99eef0505edcd57d305ab9cd5dddc737bce5db99fc4543f715030b22a3624834",
+    "b/part-001": "2b86540b83191d55c7976de591d39a863a52667e34281e9227ac64eebad412ca",
+    "b/part-002": "7b7c52cabcaf2ca5ebe534878df4c63bd6145b8b8ff8918cf8c5bda13d552149",
+    "b/part-003": "4b36706c7c64138357b7e441bfdf8694e8724c3d5750880aa1f7f5b747c05512",
+    "b/part-004": "8433d603c9b7f4408716a6ad40cf924d1fe17209009ecf347488a107c22e7247",
+    "b/part-005": "8bfe153fd4aed2f8e0182cace5353253c667ac9bc0b6859bf40bcd2315e08b77",
+    "b/part-006": "d8c785ec2aef219b8806f7da00f2eb66f495b186134301c1183a0de82901e822",
+    "b/part-007": "7b69a432b5fada58d6a5c5b284f818527cd4f992d6d4577dcecc73e969572ad5",
+    "b/part-008": "a6c8e4151fa8cd1370ae7f0ac2a275f07f09a81e13ec7011b89fe5ea6745669c",
+    "b/part-009": "eb4d396df385e494efec6b05023038b037b1134d317cc4fbfc26d18c0ad21a66",
+    "b/part-010": "0f36970322fd8c6fe21f2eb0cc3ea021fa350aad200e383adacd5695db67682b",
+    "b/part-011": "e7a9f57a53b523f3c36dbc8b83618c0ba0262f701b1e95a666f45f87f0fa7ae1",
+    "b/part-012": "a8a9a956c08968cb1d479f6b94c0c55a7c0f062778e720e24b3338e90250d67d",
+    "b/part-013": "efffc0f279c118d8d3c0af7ce624bf22569e4d9b19a0f0f3f6fbcfa964f2f65b",
+    "b/part-014": "83a9c930ef9f350b3b735cd945dd0b2da687d25ca3a2b0265d72975b45c6309e",
+    "b/part-015": "520e5461ca83c1d90c01ab030cbc6c315b1d1a5f1e5c0d6a79df174175f7129a",
+    "b/part-016": "f0188835741b53e2ac9360fa7b0f13a97ef2fd397e7ec3777fe51abc0a7568d5",
+    "b/part-017": "12be019096febae59f4b384e6eab41043b511d1cbe491027ec6fdd80dff139fa",
+    "b/part-018": "bb5401c0c8f2eebc46c3e2be3e1343c0e9e6340480c5f61ccf7f87e86c48eba5",
+    "b/part-019": "54cde2f11277966e3eaf4faa4db071d74f1f686dac7b2b2d87cdab94202c6bb8",
+    "b/part-020": "bab32a6e5fa94dd9e1175bfd6cb113ad96d778f82e6435181a4cbae5ac1c46a1",
+    "b/part-021": "1bae063c476080e95d7640b3f7601a1d6650ae59676684bab0d629aa5e537992",
+    "b/part-022": "eddce7a537f17ba4c2fcfc7a916331fc971d656b05cab37a694ae6de02ac8f2d",
+    "b/part-023": "0880c2a5a19baa51eff1ee11c45316e63eec4f88b6f6c4bb5fd7c99f82cc05d0",
+    "b/part-024": "c05ab3a714c0cd3b5ca5da6376d2dc886bb459d125481f9ed693939e09b47f21",
+    "b/part-025": "813df6d5c7966d8a22ccfae6af9984b50532b65be3fd9b3e9ff219910a9299d1",
+    "b/part-026": "db946f6eb012cf24b312cf0e31131512de40d2736a3e870233c31e42cd648e33",
+    "b/part-027": "ead09036d32f3ed450acc4cff396a314bc4eda8ca7e748d39d0ccf1d63e23e30",
+    "b/part-028": "37df16a5caa31dd6aedd97e3b68a88cdfa98761b668c290fc44a4f77a127a55c",
+    "b/part-029": "189466ac30fae699a0be503931129c5441b974ede46f722294733abaee66aca2",
+    "b/part-030": "e06ab9f69d30551ff33c360a02dcffe0c998b95de78b0a13e2904c17c2fe3100",
+    "b/part-031": "de76ba276ad9901e15c3de1aa7257583e475bfb5323f6abd8e2bcdf7a3edcd97",
+    "b/part-032": "eb1c148486283fc2ed8bed6a918cd01371be28e862c3c17a4abfa7657aa35dfd",
+    "b/part-033": "017898752eb4f2d0a2c6a589874107428adfa8019a7e8675af01710d5636f9b2",
+    "b/part-034": "5af502270db8fb9aa9e6c604893a62251f6a3dabc1ee5cb33f4a177f756e6618",
+    "b/part-035": "df528f98142df826a36722218522db98b9ec1d5d84b4af82d6d5567a07a9f94b",
+    "b/part-036": "0d75822e5a4fc1aea86b0de2f296feda4212f747a5ec9466d9f5c2278817fb87",
+    "b/part-037": "ddbe074fb9c0bff10da56a632ad8d5f76b9b098418ffe90ff7ffffd837ad36c6",
+    "b/part-038": "5b633753a9ffbe315fde3c10c76165ee6e40803d7a4b7d796772c26d40f1a564",
+    "b/part-039": "7d1617d260522b4d9b2121ea120d705afc9dbdbe0e0b9447c64b5e7f0fbf4a26",
+    "b/part-040": "a7e6cf6f0ed3e369a59a471133137482ff3be2141d7d8fb4bf46977c0fcac300",
+    "b/part-041": "006799d5746e8cba1dde3bbb4bf919f7151d26aa670eb60b49139e43261a7377",
+    "b/part-042": "0454c737a82865e62c1d40fe247d84925ccb9af3ccc2d82194eaaaa52d91af60",
+    "b/part-043": "76717e216b8bbac52c1c3b2090a130011f326aa662d1521f5f4b22f0b85cdcec",
+    "b/part-044": "497876ff4eb3e58ff3e38e11a3444695d614b29446d5aafd25018dc5598401df",
+    "b/part-045": "d1e045274114d1010e9ed6001a9e84a4d1ebfd7eae40b5a952903b9cadf57b06",
+    "b/part-046": "f169e81b5897b678d099df090aa5233d86d08e71a4e7d1f2516acad7d0926cf8",
+    "b/part-047": "e514d938c9cb888e7096f28664f2c67ec1516c1385b281525a244666e878bcee",
+    "b/part-048": "353b9e422c5fb3a686d59afda856cc23ee9118832022c860df09c36dc7f97041",
+    "b/part-049": "586845dd48dc3edb379cb51072b9e2b3398b160bac88a050e8d3a8ef9104ac2f",
+    "b/part-050": "4f38bba1afcc7d3f01383e7f079dbc8bb391462b9d526f69b96c03adddafee02",
+    "b/part-051": "85de7c0f42dd7ad5900db37f63c541cab4b93212e0922f142edb67ff87434dc2",
+    "b/part-052": "bfabaea78fc8bfa6455975bf2667197c2f692eb346df0bbc9990d3aa493b503e",
+    "b/part-053": "5b206c3c4ca7af925bb343a8fc5bbea10e9c787460d2d52ac8d3f0a0b024c878",
+    "b/part-054": "eaaf81be6813ce5e2ca21d05860edacc1058a43ed80f3265e3ba43b1c379bb3d",
+    "b/part-055": "57e5eff334e0b17a71663708797d1dea7bb776d3c2ee135d09cdcf5800bc11e1",
+    "b/part-056": "91c77f9e59fbc8f67e552df0e19d46c1e086a178cfc418b1a9b8600debe64efb",
+    "b/part-057": "a8fc53c36259ff91a4118be257aebb9d1bc5da8a949eab4d93b7293f4abab418",
+    "b/part-058": "b0bc8868cad875c8a34ea6a58b5b6ff99dd6a2eb6a653fc892ff69d1ccdd2c98",
+    "b/part-059": "1b7669ddd4956febf9a2221d5dd4eeff8aed99f32377c454550ae201a40fa4a0",
+    "b/part-060": "1f34c7ab5cb239e8d8dfc9840f9d62e33e783f6a403a28001d54bafa2237c0e1",
+    "b/part-061": "38b359541fe16d5aa899f2534775def60273d00e88e6a69fc636ae0a25afa2da",
+    "b/part-062": "ab66a28722975ceb2f2406e4ad47aacf00897809532d35aae7fdc11bfc5d041e",
+    "b/part-063": "4efb2acef65d2f5d5447cce7a4a9add992dde9878726f4f71be6011d7cb8e67d"
+   },
+   "charge_avant": {
+    "utc": 1794889101.0164962,
+    "cpu_total": 390.4,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "passages": {
+    "publie": [
+     {
+      "ns": 5164167,
+      "rss": 2670592,
+      "cpu_user": 0.001366,
+      "cpu_system": 0.002557
+     },
+     {
+      "ns": 5157542,
+      "rss": 2719744,
+      "cpu_user": 0.001375,
+      "cpu_system": 0.002577
+     },
+     {
+      "ns": 5097708,
+      "rss": 2719744,
+      "cpu_user": 0.001371,
+      "cpu_system": 0.00251
+     },
+     {
+      "ns": 5494667,
+      "rss": 2670592,
+      "cpu_user": 0.001414,
+      "cpu_system": 0.002719
+     },
+     {
+      "ns": 5148125,
+      "rss": 2703360,
+      "cpu_user": 0.001362,
+      "cpu_system": 0.002617
+     },
+     {
+      "ns": 5196208,
+      "rss": 2670592,
+      "cpu_user": 0.001351,
+      "cpu_system": 0.002595
+     },
+     {
+      "ns": 4974209,
+      "rss": 2703360,
+      "cpu_user": 0.001328,
+      "cpu_system": 0.0025009999999999998
+     },
+     {
+      "ns": 5040000,
+      "rss": 2719744,
+      "cpu_user": 0.001377,
+      "cpu_system": 0.0026249999999999997
+     },
+     {
+      "ns": 5115166,
+      "rss": 2719744,
+      "cpu_user": 0.001325,
+      "cpu_system": 0.002603
+     },
+     {
+      "ns": 5089584,
+      "rss": 2703360,
+      "cpu_user": 0.001361,
+      "cpu_system": 0.002647
+     },
+     {
+      "ns": 5037125,
+      "rss": 2719744,
+      "cpu_user": 0.001333,
+      "cpu_system": 0.00258
+     },
+     {
+      "ns": 5176334,
+      "rss": 2703360,
+      "cpu_user": 0.001344,
+      "cpu_system": 0.002562
+     },
+     {
+      "ns": 5107250,
+      "rss": 2686976,
+      "cpu_user": 0.001334,
+      "cpu_system": 0.002565
+     },
+     {
+      "ns": 5099458,
+      "rss": 2719744,
+      "cpu_user": 0.001382,
+      "cpu_system": 0.002572
+     },
+     {
+      "ns": 5234209,
+      "rss": 2686976,
+      "cpu_user": 0.0013319999999999999,
+      "cpu_system": 0.002633
+     },
+     {
+      "ns": 5107458,
+      "rss": 2703360,
+      "cpu_user": 0.001346,
+      "cpu_system": 0.002545
+     },
+     {
+      "ns": 5035375,
+      "rss": 2719744,
+      "cpu_user": 0.001387,
+      "cpu_system": 0.002597
+     },
+     {
+      "ns": 5097166,
+      "rss": 2703360,
+      "cpu_user": 0.001334,
+      "cpu_system": 0.0025369999999999998
+     }
+    ],
+    "candidat": [
+     {
+      "ns": 4757542,
+      "rss": 2408448,
+      "cpu_user": 0.001095,
+      "cpu_system": 0.002525
+     },
+     {
+      "ns": 5055291,
+      "rss": 2408448,
+      "cpu_user": 0.001153,
+      "cpu_system": 0.00261
+     },
+     {
+      "ns": 4778417,
+      "rss": 2408448,
+      "cpu_user": 0.001078,
+      "cpu_system": 0.0024939999999999997
+     },
+     {
+      "ns": 4839833,
+      "rss": 2408448,
+      "cpu_user": 0.001099,
+      "cpu_system": 0.002529
+     },
+     {
+      "ns": 4920708,
+      "rss": 2408448,
+      "cpu_user": 0.001096,
+      "cpu_system": 0.0025109999999999998
+     },
+     {
+      "ns": 4850834,
+      "rss": 2408448,
+      "cpu_user": 0.001059,
+      "cpu_system": 0.002578
+     },
+     {
+      "ns": 4898875,
+      "rss": 2392064,
+      "cpu_user": 0.001073,
+      "cpu_system": 0.002502
+     },
+     {
+      "ns": 4806625,
+      "rss": 2408448,
+      "cpu_user": 0.001108,
+      "cpu_system": 0.0025369999999999998
+     },
+     {
+      "ns": 4758375,
+      "rss": 2408448,
+      "cpu_user": 0.001073,
+      "cpu_system": 0.002508
+     },
+     {
+      "ns": 4684542,
+      "rss": 2408448,
+      "cpu_user": 0.001052,
+      "cpu_system": 0.002515
+     },
+     {
+      "ns": 4810083,
+      "rss": 2408448,
+      "cpu_user": 0.001053,
+      "cpu_system": 0.002516
+     },
+     {
+      "ns": 4817958,
+      "rss": 2408448,
+      "cpu_user": 0.0010819999999999998,
+      "cpu_system": 0.002526
+     },
+     {
+      "ns": 4891375,
+      "rss": 2408448,
+      "cpu_user": 0.001099,
+      "cpu_system": 0.0025529999999999997
+     },
+     {
+      "ns": 4982042,
+      "rss": 2408448,
+      "cpu_user": 0.001083,
+      "cpu_system": 0.0025759999999999997
+     },
+     {
+      "ns": 4650917,
+      "rss": 2392064,
+      "cpu_user": 0.0010559999999999999,
+      "cpu_system": 0.0025009999999999998
+     },
+     {
+      "ns": 4757709,
+      "rss": 2408448,
+      "cpu_user": 0.001091,
+      "cpu_system": 0.002479
+     },
+     {
+      "ns": 4809750,
+      "rss": 2408448,
+      "cpu_user": 0.001096,
+      "cpu_system": 0.0025559999999999997
+     },
+     {
+      "ns": 4854583,
+      "rss": 2408448,
+      "cpu_user": 0.0010659999999999999,
+      "cpu_system": 0.002496
+     }
+    ],
+    "GNU": [
+     {
+      "ns": 4867959,
+      "rss": 2277376,
+      "cpu_user": 0.001047,
+      "cpu_system": 0.002587
+     },
+     {
+      "ns": 4896583,
+      "rss": 2260992,
+      "cpu_user": 0.001113,
+      "cpu_system": 0.0025299999999999997
+     },
+     {
+      "ns": 4774708,
+      "rss": 2277376,
+      "cpu_user": 0.001034,
+      "cpu_system": 0.0024619999999999998
+     },
+     {
+      "ns": 4936541,
+      "rss": 2277376,
+      "cpu_user": 0.0010509999999999999,
+      "cpu_system": 0.002626
+     },
+     {
+      "ns": 4659583,
+      "rss": 2293760,
+      "cpu_user": 0.001022,
+      "cpu_system": 0.002447
+     },
+     {
+      "ns": 4656959,
+      "rss": 2310144,
+      "cpu_user": 0.001032,
+      "cpu_system": 0.0024579999999999997
+     },
+     {
+      "ns": 4566208,
+      "rss": 2310144,
+      "cpu_user": 0.001011,
+      "cpu_system": 0.002399
+     },
+     {
+      "ns": 4656875,
+      "rss": 2277376,
+      "cpu_user": 0.0010509999999999999,
+      "cpu_system": 0.00248
+     },
+     {
+      "ns": 4648125,
+      "rss": 2293760,
+      "cpu_user": 0.001022,
+      "cpu_system": 0.002397
+     },
+     {
+      "ns": 4747708,
+      "rss": 2293760,
+      "cpu_user": 0.0010789999999999999,
+      "cpu_system": 0.002483
+     },
+     {
+      "ns": 4464833,
+      "rss": 2293760,
+      "cpu_user": 0.001018,
+      "cpu_system": 0.002405
+     },
+     {
+      "ns": 4579458,
+      "rss": 2310144,
+      "cpu_user": 0.001027,
+      "cpu_system": 0.0024089999999999997
+     },
+     {
+      "ns": 4706250,
+      "rss": 2293760,
+      "cpu_user": 0.001037,
+      "cpu_system": 0.0024749999999999998
+     },
+     {
+      "ns": 4819125,
+      "rss": 2293760,
+      "cpu_user": 0.0010299999999999999,
+      "cpu_system": 0.0025009999999999998
+     },
+     {
+      "ns": 4535916,
+      "rss": 2293760,
+      "cpu_user": 0.001021,
+      "cpu_system": 0.0024219999999999997
+     },
+     {
+      "ns": 4681959,
+      "rss": 2293760,
+      "cpu_user": 0.0010379999999999999,
+      "cpu_system": 0.0024449999999999997
+     },
+     {
+      "ns": 4499333,
+      "rss": 2293760,
+      "cpu_user": 0.001015,
+      "cpu_system": 0.0024089999999999997
+     },
+     {
+      "ns": 4650042,
+      "rss": 2293760,
+      "cpu_user": 0.0010559999999999999,
+      "cpu_system": 0.002456
+     }
+    ]
+   },
+   "ordres": [
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ]
+   ],
+   "charge_apres": {
+    "utc": 1794889101.339915,
+    "cpu_total": 361.3,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "statistiques": {
+    "publie": {
+     "mediane_ns": 5107354.0,
+     "mad_ns": 53500.5,
+     "q1_ns": 5091479.5,
+     "q3_ns": 5162510.75,
+     "min_ns": 4974209,
+     "max_ns": 5494667,
+     "rss_median": 2703360.0
+    },
+    "candidat": {
+     "mediane_ns": 4814020.5,
+     "mad_ns": 55978.5,
+     "q1_ns": 4763385.5,
+     "q3_ns": 4882177.0,
+     "min_ns": 4650917,
+     "max_ns": 5055291,
+     "rss_median": 2408448.0
+    },
+    "GNU": {
+     "mediane_ns": 4658271.0,
+     "mad_ns": 90750.0,
+     "q1_ns": 4596624.75,
+     "q3_ns": 4767958.0,
+     "min_ns": 4464833,
+     "max_ns": 4936541,
+     "rss_median": 2293760.0
+    }
+   },
+   "ratio": 1.0334350448911194,
+   "conforme": true
+  },
+  "début": {
+   "octets": 4849668,
+   "sortie": 90,
+   "signature": [
+    1,
+    "686e45af0251db2ef825df3a07c3f3d1c354dc4005df2b65f47df11b9dd3564f",
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   ],
+   "fichiers": {
+    "a": "b018209e065b20ba6df2a29223d887af6df39aaf5b5ebe6243337de1e2faa367",
+    "b": "e8e0601624d6f7d27cbeb1fa966cd360126ddeba8ca349f56339aaf8b71428f6"
+   },
+   "charge_avant": {
+    "utc": 1794889101.3926358,
+    "cpu_total": 354.6,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "passages": {
+    "publie": [
+     {
+      "ns": 5027834,
+      "rss": 9338880,
+      "cpu_user": 0.002431,
+      "cpu_system": 0.0013469999999999999
+     },
+     {
+      "ns": 4531542,
+      "rss": 9338880,
+      "cpu_user": 0.002265,
+      "cpu_system": 0.001241
+     },
+     {
+      "ns": 4770833,
+      "rss": 9338880,
+      "cpu_user": 0.002283,
+      "cpu_system": 0.0012959999999999998
+     },
+     {
+      "ns": 4824500,
+      "rss": 9338880,
+      "cpu_user": 0.002355,
+      "cpu_system": 0.00132
+     },
+     {
+      "ns": 4874500,
+      "rss": 9338880,
+      "cpu_user": 0.002338,
+      "cpu_system": 0.0013109999999999999
+     },
+     {
+      "ns": 4844291,
+      "rss": 9338880,
+      "cpu_user": 0.0023,
+      "cpu_system": 0.001322
+     },
+     {
+      "ns": 4756625,
+      "rss": 9338880,
+      "cpu_user": 0.002307,
+      "cpu_system": 0.00125
+     },
+     {
+      "ns": 4761667,
+      "rss": 9338880,
+      "cpu_user": 0.002287,
+      "cpu_system": 0.001232
+     },
+     {
+      "ns": 5074500,
+      "rss": 9338880,
+      "cpu_user": 0.002303,
+      "cpu_system": 0.00145
+     },
+     {
+      "ns": 4914875,
+      "rss": 9338880,
+      "cpu_user": 0.0023339999999999997,
+      "cpu_system": 0.001346
+     },
+     {
+      "ns": 5231334,
+      "rss": 9338880,
+      "cpu_user": 0.002388,
+      "cpu_system": 0.001367
+     },
+     {
+      "ns": 5010542,
+      "rss": 9322496,
+      "cpu_user": 0.002387,
+      "cpu_system": 0.001323
+     },
+     {
+      "ns": 4900792,
+      "rss": 9338880,
+      "cpu_user": 0.002378,
+      "cpu_system": 0.001264
+     },
+     {
+      "ns": 5059166,
+      "rss": 9338880,
+      "cpu_user": 0.002299,
+      "cpu_system": 0.001452
+     },
+     {
+      "ns": 4870791,
+      "rss": 9338880,
+      "cpu_user": 0.002337,
+      "cpu_system": 0.0013
+     },
+     {
+      "ns": 4922750,
+      "rss": 9338880,
+      "cpu_user": 0.002385,
+      "cpu_system": 0.00138
+     },
+     {
+      "ns": 5013375,
+      "rss": 9338880,
+      "cpu_user": 0.0023899999999999998,
+      "cpu_system": 0.0013369999999999999
+     },
+     {
+      "ns": 4965958,
+      "rss": 9338880,
+      "cpu_user": 0.002337,
+      "cpu_system": 0.0013729999999999999
+     }
+    ],
+    "candidat": [
+     {
+      "ns": 3253375,
+      "rss": 7061504,
+      "cpu_user": 0.0008619999999999999,
+      "cpu_system": 0.0012129999999999999
+     },
+     {
+      "ns": 3166500,
+      "rss": 7061504,
+      "cpu_user": 0.0007909999999999999,
+      "cpu_system": 0.001144
+     },
+     {
+      "ns": 3158000,
+      "rss": 7061504,
+      "cpu_user": 0.000811,
+      "cpu_system": 0.0011409999999999999
+     },
+     {
+      "ns": 3120416,
+      "rss": 7061504,
+      "cpu_user": 0.000843,
+      "cpu_system": 0.001212
+     },
+     {
+      "ns": 3281709,
+      "rss": 7061504,
+      "cpu_user": 0.000859,
+      "cpu_system": 0.001227
+     },
+     {
+      "ns": 3087958,
+      "rss": 7061504,
+      "cpu_user": 0.000829,
+      "cpu_system": 0.001166
+     },
+     {
+      "ns": 3263166,
+      "rss": 7061504,
+      "cpu_user": 0.0008309999999999999,
+      "cpu_system": 0.0012339999999999999
+     },
+     {
+      "ns": 3158792,
+      "rss": 7061504,
+      "cpu_user": 0.0008539999999999999,
+      "cpu_system": 0.001183
+     },
+     {
+      "ns": 3545250,
+      "rss": 7061504,
+      "cpu_user": 0.000865,
+      "cpu_system": 0.0012569999999999999
+     },
+     {
+      "ns": 3346958,
+      "rss": 7061504,
+      "cpu_user": 0.00082,
+      "cpu_system": 0.001217
+     },
+     {
+      "ns": 3664666,
+      "rss": 7061504,
+      "cpu_user": 0.000922,
+      "cpu_system": 0.001348
+     },
+     {
+      "ns": 3562958,
+      "rss": 7061504,
+      "cpu_user": 0.0009029999999999999,
+      "cpu_system": 0.001326
+     },
+     {
+      "ns": 3304709,
+      "rss": 7061504,
+      "cpu_user": 0.000877,
+      "cpu_system": 0.001276
+     },
+     {
+      "ns": 3235000,
+      "rss": 7061504,
+      "cpu_user": 0.000811,
+      "cpu_system": 0.0011669999999999999
+     },
+     {
+      "ns": 2985375,
+      "rss": 7061504,
+      "cpu_user": 0.0008139999999999999,
+      "cpu_system": 0.0011229999999999999
+     },
+     {
+      "ns": 3158875,
+      "rss": 7061504,
+      "cpu_user": 0.00083,
+      "cpu_system": 0.0011719999999999999
+     },
+     {
+      "ns": 3230292,
+      "rss": 7061504,
+      "cpu_user": 0.000869,
+      "cpu_system": 0.001206
+     },
+     {
+      "ns": 3139000,
+      "rss": 7061504,
+      "cpu_user": 0.000825,
+      "cpu_system": 0.0011639999999999999
+     }
+    ],
+    "GNU": [
+     {
+      "ns": 3909666,
+      "rss": 6930432,
+      "cpu_user": 0.0013989999999999999,
+      "cpu_system": 0.0012309999999999999
+     },
+     {
+      "ns": 3592500,
+      "rss": 6963200,
+      "cpu_user": 0.0013189999999999999,
+      "cpu_system": 0.0012079999999999999
+     },
+     {
+      "ns": 3520708,
+      "rss": 6930432,
+      "cpu_user": 0.001285,
+      "cpu_system": 0.001153
+     },
+     {
+      "ns": 3665708,
+      "rss": 6930432,
+      "cpu_user": 0.0013419999999999999,
+      "cpu_system": 0.00115
+     },
+     {
+      "ns": 3662583,
+      "rss": 6930432,
+      "cpu_user": 0.001336,
+      "cpu_system": 0.001176
+     },
+     {
+      "ns": 3654541,
+      "rss": 6914048,
+      "cpu_user": 0.0013369999999999999,
+      "cpu_system": 0.001119
+     },
+     {
+      "ns": 3836125,
+      "rss": 6930432,
+      "cpu_user": 0.001336,
+      "cpu_system": 0.0012159999999999999
+     },
+     {
+      "ns": 3820584,
+      "rss": 6930432,
+      "cpu_user": 0.001364,
+      "cpu_system": 0.001196
+     },
+     {
+      "ns": 3825250,
+      "rss": 6946816,
+      "cpu_user": 0.001385,
+      "cpu_system": 0.001316
+     },
+     {
+      "ns": 3777708,
+      "rss": 6930432,
+      "cpu_user": 0.001344,
+      "cpu_system": 0.001243
+     },
+     {
+      "ns": 3877458,
+      "rss": 6930432,
+      "cpu_user": 0.001341,
+      "cpu_system": 0.001264
+     },
+     {
+      "ns": 3642041,
+      "rss": 6930432,
+      "cpu_user": 0.001333,
+      "cpu_system": 0.00123
+     },
+     {
+      "ns": 3843208,
+      "rss": 6930432,
+      "cpu_user": 0.0013189999999999999,
+      "cpu_system": 0.0011849999999999999
+     },
+     {
+      "ns": 3740042,
+      "rss": 6930432,
+      "cpu_user": 0.001393,
+      "cpu_system": 0.0012339999999999999
+     },
+     {
+      "ns": 3773000,
+      "rss": 6930432,
+      "cpu_user": 0.001343,
+      "cpu_system": 0.0011459999999999999
+     },
+     {
+      "ns": 3884209,
+      "rss": 6930432,
+      "cpu_user": 0.001287,
+      "cpu_system": 0.001286
+     },
+     {
+      "ns": 3935750,
+      "rss": 6963200,
+      "cpu_user": 0.001375,
+      "cpu_system": 0.001277
+     },
+     {
+      "ns": 3909500,
+      "rss": 6946816,
+      "cpu_user": 0.001341,
+      "cpu_system": 0.001193
+     }
+    ]
+   },
+   "ordres": [
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ]
+   ],
+   "charge_apres": {
+    "utc": 1794889101.6648588,
+    "cpu_total": 360.2,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "statistiques": {
+    "publie": {
+     "mediane_ns": 4907833.5,
+     "mad_ns": 104125.0,
+     "q1_ns": 4829447.75,
+     "q3_ns": 5012666.75,
+     "min_ns": 4531542,
+     "max_ns": 5231334,
+     "rss_median": 9338880.0
+    },
+    "candidat": {
+     "mediane_ns": 3232646.0,
+     "mad_ns": 74250.0,
+     "q1_ns": 3158198.0,
+     "q3_ns": 3298959.0,
+     "min_ns": 2985375,
+     "max_ns": 3664666,
+     "rss_median": 7061504.0
+    },
+    "GNU": {
+     "mediane_ns": 3799146.0,
+     "mad_ns": 97708.5,
+     "q1_ns": 3663364.25,
+     "q3_ns": 3868895.5,
+     "min_ns": 3520708,
+     "max_ns": 3935750,
+     "rss_median": 6930432.0
+    }
+   },
+   "ratio": 0.8508875415685525,
+   "conforme": true
+  },
+  "fin": {
+   "octets": 4849668,
+   "sortie": 98,
+   "signature": [
+    1,
+    "d86d00093a0f955d254a480c83cd1a312dfc185399e934cf1af80f6686d2a9c7",
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   ],
+   "fichiers": {
+    "a": "b018209e065b20ba6df2a29223d887af6df39aaf5b5ebe6243337de1e2faa367",
+    "b": "13137f0bd4f3c1fbb03791b1d41d4e16f441f40f1b4b462cf319b57871b2445e"
+   },
+   "charge_avant": {
+    "utc": 1794889101.718333,
+    "cpu_total": 360.2,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "passages": {
+    "publie": [
+     {
+      "ns": 5079791,
+      "rss": 9338880,
+      "cpu_user": 0.002431,
+      "cpu_system": 0.001344
+     },
+     {
+      "ns": 5055875,
+      "rss": 9338880,
+      "cpu_user": 0.002314,
+      "cpu_system": 0.001346
+     },
+     {
+      "ns": 4918375,
+      "rss": 9338880,
+      "cpu_user": 0.0023339999999999997,
+      "cpu_system": 0.001285
+     },
+     {
+      "ns": 5002542,
+      "rss": 9338880,
+      "cpu_user": 0.002326,
+      "cpu_system": 0.001411
+     },
+     {
+      "ns": 5151750,
+      "rss": 9338880,
+      "cpu_user": 0.0023639999999999998,
+      "cpu_system": 0.001436
+     },
+     {
+      "ns": 4925542,
+      "rss": 9338880,
+      "cpu_user": 0.002307,
+      "cpu_system": 0.001317
+     },
+     {
+      "ns": 4838208,
+      "rss": 9338880,
+      "cpu_user": 0.0023309999999999997,
+      "cpu_system": 0.0013089999999999998
+     },
+     {
+      "ns": 5114375,
+      "rss": 9338880,
+      "cpu_user": 0.0023599999999999997,
+      "cpu_system": 0.001406
+     },
+     {
+      "ns": 4923167,
+      "rss": 9338880,
+      "cpu_user": 0.002338,
+      "cpu_system": 0.001341
+     },
+     {
+      "ns": 4995000,
+      "rss": 9338880,
+      "cpu_user": 0.002388,
+      "cpu_system": 0.0012779999999999998
+     },
+     {
+      "ns": 4880042,
+      "rss": 9338880,
+      "cpu_user": 0.002382,
+      "cpu_system": 0.0012469999999999998
+     },
+     {
+      "ns": 4839958,
+      "rss": 9338880,
+      "cpu_user": 0.002382,
+      "cpu_system": 0.001312
+     },
+     {
+      "ns": 4822375,
+      "rss": 9338880,
+      "cpu_user": 0.00229,
+      "cpu_system": 0.001302
+     },
+     {
+      "ns": 4690084,
+      "rss": 9338880,
+      "cpu_user": 0.002294,
+      "cpu_system": 0.0012749999999999999
+     },
+     {
+      "ns": 4889333,
+      "rss": 9338880,
+      "cpu_user": 0.002313,
+      "cpu_system": 0.0013089999999999998
+     },
+     {
+      "ns": 5248000,
+      "rss": 9371648,
+      "cpu_user": 0.00244,
+      "cpu_system": 0.0014579999999999999
+     },
+     {
+      "ns": 4952292,
+      "rss": 9338880,
+      "cpu_user": 0.002302,
+      "cpu_system": 0.0012959999999999998
+     },
+     {
+      "ns": 4987291,
+      "rss": 9338880,
+      "cpu_user": 0.002322,
+      "cpu_system": 0.0013729999999999999
+     }
+    ],
+    "candidat": [
+     {
+      "ns": 3853291,
+      "rss": 7061504,
+      "cpu_user": 0.001485,
+      "cpu_system": 0.0012029999999999999
+     },
+     {
+      "ns": 4031792,
+      "rss": 7061504,
+      "cpu_user": 0.0014889999999999999,
+      "cpu_system": 0.001249
+     },
+     {
+      "ns": 3956500,
+      "rss": 7061504,
+      "cpu_user": 0.001455,
+      "cpu_system": 0.001184
+     },
+     {
+      "ns": 4019834,
+      "rss": 7061504,
+      "cpu_user": 0.0014839999999999999,
+      "cpu_system": 0.0012159999999999999
+     },
+     {
+      "ns": 3932500,
+      "rss": 7061504,
+      "cpu_user": 0.001483,
+      "cpu_system": 0.001222
+     },
+     {
+      "ns": 4259084,
+      "rss": 7061504,
+      "cpu_user": 0.001518,
+      "cpu_system": 0.0013779999999999999
+     },
+     {
+      "ns": 3878000,
+      "rss": 7061504,
+      "cpu_user": 0.001483,
+      "cpu_system": 0.001227
+     },
+     {
+      "ns": 3903334,
+      "rss": 7061504,
+      "cpu_user": 0.001449,
+      "cpu_system": 0.001212
+     },
+     {
+      "ns": 4213375,
+      "rss": 7061504,
+      "cpu_user": 0.001545,
+      "cpu_system": 0.0012879999999999999
+     },
+     {
+      "ns": 3908250,
+      "rss": 7061504,
+      "cpu_user": 0.0014299999999999998,
+      "cpu_system": 0.001161
+     },
+     {
+      "ns": 3942083,
+      "rss": 7061504,
+      "cpu_user": 0.001454,
+      "cpu_system": 0.001289
+     },
+     {
+      "ns": 3675333,
+      "rss": 7061504,
+      "cpu_user": 0.001446,
+      "cpu_system": 0.001175
+     },
+     {
+      "ns": 4044125,
+      "rss": 7061504,
+      "cpu_user": 0.001522,
+      "cpu_system": 0.001286
+     },
+     {
+      "ns": 3941917,
+      "rss": 7061504,
+      "cpu_user": 0.00145,
+      "cpu_system": 0.001158
+     },
+     {
+      "ns": 4440416,
+      "rss": 7061504,
+      "cpu_user": 0.0015,
+      "cpu_system": 0.001392
+     },
+     {
+      "ns": 4183709,
+      "rss": 7061504,
+      "cpu_user": 0.0015639999999999999,
+      "cpu_system": 0.0012799999999999999
+     },
+     {
+      "ns": 4019417,
+      "rss": 7061504,
+      "cpu_user": 0.001462,
+      "cpu_system": 0.001217
+     },
+     {
+      "ns": 3948791,
+      "rss": 7061504,
+      "cpu_user": 0.001421,
+      "cpu_system": 0.001212
+     }
+    ],
+    "GNU": [
+     {
+      "ns": 3751375,
+      "rss": 6930432,
+      "cpu_user": 0.0014269999999999999,
+      "cpu_system": 0.001169
+     },
+     {
+      "ns": 4167750,
+      "rss": 6930432,
+      "cpu_user": 0.001464,
+      "cpu_system": 0.0012749999999999999
+     },
+     {
+      "ns": 3888292,
+      "rss": 6930432,
+      "cpu_user": 0.001465,
+      "cpu_system": 0.001235
+     },
+     {
+      "ns": 4320125,
+      "rss": 6946816,
+      "cpu_user": 0.001529,
+      "cpu_system": 0.0014039999999999999
+     },
+     {
+      "ns": 4198709,
+      "rss": 6930432,
+      "cpu_user": 0.0015099999999999998,
+      "cpu_system": 0.00129
+     },
+     {
+      "ns": 3871167,
+      "rss": 6930432,
+      "cpu_user": 0.001442,
+      "cpu_system": 0.001166
+     },
+     {
+      "ns": 4019792,
+      "rss": 6930432,
+      "cpu_user": 0.001478,
+      "cpu_system": 0.001317
+     },
+     {
+      "ns": 4180458,
+      "rss": 6930432,
+      "cpu_user": 0.0014919999999999998,
+      "cpu_system": 0.001294
+     },
+     {
+      "ns": 4212583,
+      "rss": 6979584,
+      "cpu_user": 0.0014709999999999999,
+      "cpu_system": 0.001321
+     },
+     {
+      "ns": 3836875,
+      "rss": 6946816,
+      "cpu_user": 0.001472,
+      "cpu_system": 0.001191
+     },
+     {
+      "ns": 3950500,
+      "rss": 6930432,
+      "cpu_user": 0.0014449999999999999,
+      "cpu_system": 0.0011899999999999999
+     },
+     {
+      "ns": 4225250,
+      "rss": 6930432,
+      "cpu_user": 0.001503,
+      "cpu_system": 0.001356
+     },
+     {
+      "ns": 4122667,
+      "rss": 6930432,
+      "cpu_user": 0.00147,
+      "cpu_system": 0.0012619999999999999
+     },
+     {
+      "ns": 3993916,
+      "rss": 6930432,
+      "cpu_user": 0.001487,
+      "cpu_system": 0.001202
+     },
+     {
+      "ns": 4269875,
+      "rss": 6930432,
+      "cpu_user": 0.001558,
+      "cpu_system": 0.001467
+     },
+     {
+      "ns": 4285167,
+      "rss": 6946816,
+      "cpu_user": 0.00157,
+      "cpu_system": 0.0013939999999999998
+     },
+     {
+      "ns": 4107042,
+      "rss": 6930432,
+      "cpu_user": 0.001488,
+      "cpu_system": 0.001478
+     },
+     {
+      "ns": 4126375,
+      "rss": 6930432,
+      "cpu_user": 0.0015049999999999998,
+      "cpu_system": 0.0013469999999999999
+     }
+    ]
+   },
+   "ordres": [
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ]
+   ],
+   "charge_apres": {
+    "utc": 1794889102.01153,
+    "cpu_total": 361.9,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "statistiques": {
+    "publie": {
+     "mediane_ns": 4938917.0,
+     "mad_ns": 81292.0,
+     "q1_ns": 4882364.75,
+     "q3_ns": 5042541.75,
+     "min_ns": 4690084,
+     "max_ns": 5248000,
+     "rss_median": 9338880.0
+    },
+    "candidat": {
+     "mediane_ns": 3952645.5,
+     "mad_ns": 70917.0,
+     "q1_ns": 3914312.5,
+     "q3_ns": 4041041.75,
+     "min_ns": 3675333,
+     "max_ns": 4440416,
+     "rss_median": 7061504.0
+    },
+    "GNU": {
+     "mediane_ns": 4124521.0,
+     "mad_ns": 117667.0,
+     "q1_ns": 3961354.0,
+     "q3_ns": 4209114.5,
+     "min_ns": 3751375,
+     "max_ns": 4320125,
+     "rss_median": 6930432.0
+    }
+   },
+   "ratio": 0.9583283731613925,
+   "conforme": true
+  },
+  "dispersés": {
+   "octets": 4851732,
+   "sortie": 50488,
+   "signature": [
+    1,
+    "27374f3b33cb320543eb317300960a7fb42933cbb82e61d12065ecfe6b44a6a3",
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   ],
+   "fichiers": {
+    "a": "b018209e065b20ba6df2a29223d887af6df39aaf5b5ebe6243337de1e2faa367",
+    "b": "dadcc276e93eb16efea095ffdfec8594ee77e5f93ed275cd5199b703eb41d0af"
+   },
+   "charge_avant": {
+    "utc": 1794889102.085551,
+    "cpu_total": 361.9,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "passages": {
+    "publie": [
+     {
+      "ns": 15232250,
+      "rss": 20971520,
+      "cpu_user": 0.011944,
+      "cpu_system": 0.0018479999999999998
+     },
+     {
+      "ns": 15023375,
+      "rss": 20971520,
+      "cpu_user": 0.01177,
+      "cpu_system": 0.0018269999999999998
+     },
+     {
+      "ns": 15434458,
+      "rss": 20955136,
+      "cpu_user": 0.011921,
+      "cpu_system": 0.001956
+     },
+     {
+      "ns": 15285500,
+      "rss": 20971520,
+      "cpu_user": 0.011856,
+      "cpu_system": 0.001918
+     },
+     {
+      "ns": 15114208,
+      "rss": 20725760,
+      "cpu_user": 0.011797,
+      "cpu_system": 0.0018219999999999998
+     },
+     {
+      "ns": 15130375,
+      "rss": 20955136,
+      "cpu_user": 0.011888,
+      "cpu_system": 0.0019279999999999998
+     },
+     {
+      "ns": 15221833,
+      "rss": 20971520,
+      "cpu_user": 0.011996,
+      "cpu_system": 0.001867
+     },
+     {
+      "ns": 15245333,
+      "rss": 20955136,
+      "cpu_user": 0.011843999999999999,
+      "cpu_system": 0.001841
+     },
+     {
+      "ns": 15173416,
+      "rss": 20725760,
+      "cpu_user": 0.011724,
+      "cpu_system": 0.0019219999999999999
+     },
+     {
+      "ns": 15522208,
+      "rss": 20955136,
+      "cpu_user": 0.011974,
+      "cpu_system": 0.001994
+     },
+     {
+      "ns": 15204166,
+      "rss": 20971520,
+      "cpu_user": 0.012164,
+      "cpu_system": 0.0016589999999999999
+     },
+     {
+      "ns": 15269375,
+      "rss": 20725760,
+      "cpu_user": 0.01202,
+      "cpu_system": 0.0017569999999999999
+     },
+     {
+      "ns": 15259292,
+      "rss": 20971520,
+      "cpu_user": 0.011899999999999999,
+      "cpu_system": 0.0019529999999999999
+     },
+     {
+      "ns": 15457458,
+      "rss": 20725760,
+      "cpu_user": 0.011994999999999999,
+      "cpu_system": 0.001896
+     },
+     {
+      "ns": 15356875,
+      "rss": 20971520,
+      "cpu_user": 0.011970999999999999,
+      "cpu_system": 0.001908
+     },
+     {
+      "ns": 15078333,
+      "rss": 20971520,
+      "cpu_user": 0.011958,
+      "cpu_system": 0.001736
+     },
+     {
+      "ns": 15197833,
+      "rss": 20971520,
+      "cpu_user": 0.012055,
+      "cpu_system": 0.001745
+     },
+     {
+      "ns": 15008250,
+      "rss": 20742144,
+      "cpu_user": 0.011819999999999999,
+      "cpu_system": 0.001753
+     }
+    ],
+    "candidat": [
+     {
+      "ns": 5370541,
+      "rss": 9469952,
+      "cpu_user": 0.002673,
+      "cpu_system": 0.001356
+     },
+     {
+      "ns": 5548500,
+      "rss": 9519104,
+      "cpu_user": 0.002809,
+      "cpu_system": 0.0013499999999999999
+     },
+     {
+      "ns": 5851208,
+      "rss": 9519104,
+      "cpu_user": 0.002864,
+      "cpu_system": 0.001452
+     },
+     {
+      "ns": 5550792,
+      "rss": 9519104,
+      "cpu_user": 0.0028599999999999997,
+      "cpu_system": 0.001432
+     },
+     {
+      "ns": 5951791,
+      "rss": 9519104,
+      "cpu_user": 0.002862,
+      "cpu_system": 0.001522
+     },
+     {
+      "ns": 5761792,
+      "rss": 9519104,
+      "cpu_user": 0.002925,
+      "cpu_system": 0.0014269999999999999
+     },
+     {
+      "ns": 5436291,
+      "rss": 9519104,
+      "cpu_user": 0.00279,
+      "cpu_system": 0.001359
+     },
+     {
+      "ns": 5957666,
+      "rss": 9519104,
+      "cpu_user": 0.002853,
+      "cpu_system": 0.001542
+     },
+     {
+      "ns": 5686666,
+      "rss": 9519104,
+      "cpu_user": 0.0029419999999999997,
+      "cpu_system": 0.0014039999999999999
+     },
+     {
+      "ns": 5651042,
+      "rss": 9568256,
+      "cpu_user": 0.00277,
+      "cpu_system": 0.001478
+     },
+     {
+      "ns": 5581625,
+      "rss": 9519104,
+      "cpu_user": 0.002874,
+      "cpu_system": 0.00132
+     },
+     {
+      "ns": 5258292,
+      "rss": 9502720,
+      "cpu_user": 0.00274,
+      "cpu_system": 0.0012649999999999998
+     },
+     {
+      "ns": 5793042,
+      "rss": 9519104,
+      "cpu_user": 0.0028929999999999997,
+      "cpu_system": 0.001395
+     },
+     {
+      "ns": 5785042,
+      "rss": 9519104,
+      "cpu_user": 0.0029779999999999997,
+      "cpu_system": 0.001478
+     },
+     {
+      "ns": 5326250,
+      "rss": 9519104,
+      "cpu_user": 0.002768,
+      "cpu_system": 0.0012879999999999999
+     },
+     {
+      "ns": 5995500,
+      "rss": 9469952,
+      "cpu_user": 0.002891,
+      "cpu_system": 0.001532
+     },
+     {
+      "ns": 5606917,
+      "rss": 9519104,
+      "cpu_user": 0.002819,
+      "cpu_system": 0.001389
+     },
+     {
+      "ns": 5471292,
+      "rss": 9519104,
+      "cpu_user": 0.002776,
+      "cpu_system": 0.00134
+     }
+    ],
+    "GNU": [
+     {
+      "ns": 8095542,
+      "rss": 14958592,
+      "cpu_user": 0.004862,
+      "cpu_system": 0.001702
+     },
+     {
+      "ns": 8073625,
+      "rss": 14958592,
+      "cpu_user": 0.004855,
+      "cpu_system": 0.0017369999999999998
+     },
+     {
+      "ns": 8094334,
+      "rss": 14958592,
+      "cpu_user": 0.004888,
+      "cpu_system": 0.001689
+     },
+     {
+      "ns": 8047667,
+      "rss": 14974976,
+      "cpu_user": 0.0048519999999999995,
+      "cpu_system": 0.001696
+     },
+     {
+      "ns": 7500041,
+      "rss": 14958592,
+      "cpu_user": 0.004798,
+      "cpu_system": 0.001553
+     },
+     {
+      "ns": 8259625,
+      "rss": 14974976,
+      "cpu_user": 0.0048709999999999995,
+      "cpu_system": 0.001869
+     },
+     {
+      "ns": 7937041,
+      "rss": 14974976,
+      "cpu_user": 0.004795,
+      "cpu_system": 0.001709
+     },
+     {
+      "ns": 7865333,
+      "rss": 14974976,
+      "cpu_user": 0.004821,
+      "cpu_system": 0.0016829999999999998
+     },
+     {
+      "ns": 7839709,
+      "rss": 14991360,
+      "cpu_user": 0.004899,
+      "cpu_system": 0.001565
+     },
+     {
+      "ns": 7694833,
+      "rss": 14958592,
+      "cpu_user": 0.004699,
+      "cpu_system": 0.0017079999999999999
+     },
+     {
+      "ns": 7903166,
+      "rss": 14974976,
+      "cpu_user": 0.004872,
+      "cpu_system": 0.001646
+     },
+     {
+      "ns": 7954750,
+      "rss": 14958592,
+      "cpu_user": 0.004887,
+      "cpu_system": 0.001597
+     },
+     {
+      "ns": 7491416,
+      "rss": 14974976,
+      "cpu_user": 0.004802,
+      "cpu_system": 0.00158
+     },
+     {
+      "ns": 7862208,
+      "rss": 14958592,
+      "cpu_user": 0.004861,
+      "cpu_system": 0.001828
+     },
+     {
+      "ns": 7963292,
+      "rss": 14974976,
+      "cpu_user": 0.0048839999999999995,
+      "cpu_system": 0.00173
+     },
+     {
+      "ns": 7503458,
+      "rss": 14974976,
+      "cpu_user": 0.004719999999999999,
+      "cpu_system": 0.0015279999999999998
+     },
+     {
+      "ns": 7986416,
+      "rss": 14958592,
+      "cpu_user": 0.005018,
+      "cpu_system": 0.0016229999999999999
+     },
+     {
+      "ns": 7748959,
+      "rss": 14958592,
+      "cpu_user": 0.0048779999999999995,
+      "cpu_system": 0.001601
+     }
+    ]
+   },
+   "ordres": [
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "GNU",
+     "candidat",
+     "publie"
+    ],
+    [
+     "publie",
+     "candidat",
+     "GNU"
+    ],
+    [
+     "publie",
+     "GNU",
+     "candidat"
+    ],
+    [
+     "GNU",
+     "publie",
+     "candidat"
+    ],
+    [
+     "candidat",
+     "publie",
+     "GNU"
+    ],
+    [
+     "candidat",
+     "GNU",
+     "publie"
+    ]
+   ],
+   "charge_apres": {
+    "utc": 1794889102.6845078,
+    "cpu_total": 369.0,
+    "cpu_logiques": 16,
+    "loadavg": [
+     6.01806640625,
+     5.408203125,
+     4.37890625
+    ],
+    "compilateurs_et_vm_actifs": []
+   },
+   "statistiques": {
+    "publie": {
+     "mediane_ns": 15227041.5,
+     "mad_ns": 77562.5,
+     "q1_ns": 15141135.25,
+     "q3_ns": 15281468.75,
+     "min_ns": 15008250,
+     "max_ns": 15522208,
+     "rss_median": 20963328.0
+    },
+    "candidat": {
+     "mediane_ns": 5628979.5,
+     "mad_ns": 160875.0,
+     "q1_ns": 5490594.0,
+     "q3_ns": 5791042.0,
+     "min_ns": 5258292,
+     "max_ns": 5995500,
+     "rss_median": 9519104.0
+    },
+    "GNU": {
+     "mediane_ns": 7920103.5,
+     "mad_ns": 140542.5,
+     "q1_ns": 7771646.5,
+     "q3_ns": 8032354.25,
+     "min_ns": 7491416,
+     "max_ns": 8259625,
+     "rss_median": 14966784.0
+    }
+   },
+   "ratio": 0.7107204470244612,
+   "conforme": true
+  }
+ },
+ "pire_ratio": 1.0334350448911194
+}

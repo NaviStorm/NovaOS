@@ -1,0 +1,700 @@
+{
+ "binaires": {
+  "publie": "cf9e91ef08d729fec244ffdd813dd1dfdc5d44d9e97835d68a78e57b1cd84be9",
+  "candidat": "ffd2a39e421d922d3a6c5a686b654a41fb6fcb70aa28b42bd9e705c80ab55c96",
+  "GNU": "e14ac0bc8f78c8259d878d283631f215077831587ce896751e65ef9908ddce3e"
+ },
+ "cas": [
+  {
+   "nom": "change-0",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "ajout-0",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "retrait-0",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "change-1",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "ajout-1",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "retrait-1",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "change-255",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "ajout-255",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "retrait-255",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "change-510",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "ajout-510",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "retrait-510",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "change-511",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "ajout-511",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "retrait-511",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "sans-LF-0",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "suffixe-milieu-0",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "sans-LF-511",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "suffixe-milieu-511",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "sans-LF-512",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "suffixe-milieu-512",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "sans-LF-513",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "suffixe-milieu-513",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "sans-LF-8191",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "suffixe-milieu-8191",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "sans-LF-8192",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "suffixe-milieu-8192",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "sans-LF-8193",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "suffixe-milieu-8193",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "sans-LF-11000",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "suffixe-milieu-11000",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "fin-de-fichier",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "fin-de-fichier",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "fin-de-fichier",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "fin-de-fichier",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "fin-de-fichier",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "distincts",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "distincts",
+   "options": [
+    "-i"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "distincts",
+   "options": [
+    "-B"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "distincts",
+   "options": [
+    "-I",
+    "remplacement"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "distincts",
+   "options": [
+    "--horizon-lines=2"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "distincts",
+   "options": [
+    "-d"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "distincts",
+   "options": [
+    "-H"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "distincts",
+   "options": [
+    "-u"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "déplacés",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "déplacés",
+   "options": [
+    "-i"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "déplacés",
+   "options": [
+    "-B"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "déplacés",
+   "options": [
+    "-I",
+    "remplacement"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "déplacés",
+   "options": [
+    "--horizon-lines=2"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "déplacés",
+   "options": [
+    "-d"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "déplacés",
+   "options": [
+    "-H"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "déplacés",
+   "options": [
+    "-u"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "doublons",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "doublons",
+   "options": [
+    "-i"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "doublons",
+   "options": [
+    "-B"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "doublons",
+   "options": [
+    "-I",
+    "remplacement"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "doublons",
+   "options": [
+    "--horizon-lines=2"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "doublons",
+   "options": [
+    "-d"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "doublons",
+   "options": [
+    "-H"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "doublons",
+   "options": [
+    "-u"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "banals",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "banals",
+   "options": [
+    "-i"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "banals",
+   "options": [
+    "-B"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "banals",
+   "options": [
+    "-I",
+    "remplacement"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "banals",
+   "options": [
+    "--horizon-lines=2"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "banals",
+   "options": [
+    "-d"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "banals",
+   "options": [
+    "-H"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "banals",
+   "options": [
+    "-u"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "consécutifs",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "consécutifs",
+   "options": [
+    "-i"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "consécutifs",
+   "options": [
+    "-B"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "consécutifs",
+   "options": [
+    "-I",
+    "remplacement"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "consécutifs",
+   "options": [
+    "--horizon-lines=2"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "consécutifs",
+   "options": [
+    "-d"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "consécutifs",
+   "options": [
+    "-H"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "consécutifs",
+   "options": [
+    "-u"
+   ],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 1,
+   "resultat": null
+  },
+  {
+   "nom": "statut-2",
+   "options": [],
+   "identique_publie": true,
+   "identique_GNU": true,
+   "statut": 2,
+   "resultat": null
+  }
+ ]
+}

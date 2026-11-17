@@ -1,0 +1,55 @@
+[
+ [
+  "diff base diff-equal",
+  127
+ ],
+ [
+  "cat base | diff - diff-equal",
+  "refus syntaxique"
+ ],
+ [
+  "en",
+  "--help",
+  0
+ ],
+ [
+  "en",
+  "--version",
+  0
+ ],
+ [
+  "en",
+  "man diff",
+  0
+ ],
+ [
+  "fr-CA",
+  "--help",
+  0
+ ],
+ [
+  "fr-CA",
+  "--version",
+  0
+ ],
+ [
+  "fr-CA",
+  "man diff",
+  0
+ ],
+ [
+  "fr--CA",
+  "--help",
+  0
+ ],
+ [
+  "fr--CA",
+  "--version",
+  0
+ ],
+ [
+  "fr--CA",
+  "man diff",
+  0
+ ]
+]
