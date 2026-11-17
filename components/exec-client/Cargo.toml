@@ -20,6 +20,12 @@ path = "src/bin/prefixe-temoin.rs"
 required-features = ["guest"]
 test = false
 
+[[bin]]
+name = "temoin"
+path = "src/bin/temoin.rs"
+required-features = ["guest"]
+test = false
+
 [workspace]
 
 [target.'cfg(target_os = "none")'.dependencies]

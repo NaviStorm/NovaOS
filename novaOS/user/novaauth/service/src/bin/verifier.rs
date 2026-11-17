@@ -1,6 +1,9 @@
 #![no_std]
 #![no_main]
 mod common;
+#[cfg(feature = "shell-guest")]
+#[path = "common/shell_verifier.rs"]
+mod shell_verifier;
 #[allow(dead_code)]
 #[path = "../../../../../abi/files.rs"]
 mod files;
@@ -303,5 +306,9 @@ fn serve() -> rt::Result<()> {
 }
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
-    rt::exit(serve().err().unwrap_or(0))
+    #[cfg(feature = "shell-guest")]
+    let result = shell_verifier::serve();
+    #[cfg(not(feature = "shell-guest"))]
+    let result = serve();
+    rt::exit(result.err().unwrap_or(0))
 }

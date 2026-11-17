@@ -1,0 +1,205 @@
+diff --git a/components/shell/main.rs b/components/shell/main.rs
+index 11af6976d17142037a03b9a965da24fb42426327..af15a46fd17947d6e587f0a1045e56c3dbd76089 100644
+--- a/components/shell/main.rs
++++ b/components/shell/main.rs
+@@ -28,0 +29 @@
++mod session_auth_lab;
+@@ -31,0 +33 @@
++    let mut login = session_auth_lab::Login::default();
+@@ -54,0 +57 @@
++            login.authenticate()?;
+@@ -77 +80 @@
+-                script::Engine::new(&mut fs, test, &history)?.list(&mut frame, &program, 0, 0);
++                script::Engine::new(&mut fs, test, &mut login, &history)?.list(&mut frame, &program, 0, 0);
+@@ -99,0 +103 @@
++    login.close()?;
+diff --git a/components/shell/script.rs b/components/shell/script.rs
+index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..37f6c94d0bb7aca1ef977c13ca768e59fcc087a8 100644
+--- a/components/shell/script.rs
++++ b/components/shell/script.rs
+@@ -72,0 +73 @@
++    login: &'a mut super::session_auth_lab::Login,
+@@ -80,0 +82 @@
++        login: &'a mut super::session_auth_lab::Login,
+@@ -85,0 +88 @@
++            login,
+@@ -356,0 +360 @@
++            "install" => self.login.install(&argv)?,
+diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
+index 4fcc399468402982fb230b0901ed40bf05225d40..15d2073deb89ff349b493a36f9d28039c9e69638 100644
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -199 +199 @@
+-            .args(["build","--release","--locked","--offline","--features","guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","shell-guest","--bins","--target",&target])
+@@ -205 +205 @@
+-        for name in ["auth-verifier","auth-client"] {
++        for name in ["auth-verifier","auth-client","shell-signer"] {
+diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
+index 87dcef02b6fe556bec505b50dbe8190f0095072a..5689fb8e53e99b615dde5bc5391aefeff1a31d83 100644
+--- a/novaOS/kernel/src/sched/process/ipc/service.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service.rs
+@@ -6,0 +7,2 @@
++#[cfg(feature="novaauth-sessions-lab")]
++mod shell_auth_lab;
+@@ -245 +247,3 @@
+-        auth_lab::AUTH | auth_lab::CLIENT | auth_lab::SECOND | auth_lab::PROVISIONER if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
++        auth_lab::AUTH if auth_lab::enabled() && argument == 0 => auth_lab::elf(id).ok_or(DENIED)?,
++        #[cfg(feature="novaauth-sessions-lab")]
++        auth_lab::CLIENT if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/shell-signer.elf")).as_slice(),
+@@ -304 +308 @@
+-        if auth_lab::enabled() && auth_lab::elf(id).is_some() { auth_lab::connect(s,m,target,id)?; }
++        if auth_lab::enabled() { match id { auth_lab::AUTH => auth_lab::connect(s,m,target,id)?, auth_lab::CLIENT => shell_auth_lab::connect(s,m,target)?, _ => () } }
+diff --git a/novaOS/user/novafs/Cargo.lock b/novaOS/user/novafs/Cargo.lock
+index 544533f390233d31cdc66ba531d6cc5c80df938e..1cc732a8d5716079070703b941872b769122a198 100644
+--- a/novaOS/user/novafs/Cargo.lock
++++ b/novaOS/user/novafs/Cargo.lock
+@@ -161,0 +162,26 @@
++name = "curve25519-dalek"
++version = "4.1.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "97fb8b7c4503de7d6ae7b42ab72a5a59857b4c937ec27a3d4539dba95b5ab2be"
++dependencies = [
++ "cfg-if",
++ "cpufeatures 0.2.17",
++ "curve25519-dalek-derive",
++ "digest 0.10.7",
++ "fiat-crypto",
++ "rustc_version",
++ "subtle",
++]
++
++[[package]]
++name = "curve25519-dalek-derive"
++version = "0.1.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "f46882e17999c6cc590af592290432be3bce0428cb0d5f8b6715e4dc7b383eb3"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 2.0.119",
++]
++
++[[package]]
+@@ -194,0 +221,21 @@
++name = "ed25519"
++version = "2.2.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "115531babc129696a58c64a4fef0a8bf9e9698629fb97e9e40767d235cfbcd53"
++dependencies = [
++ "signature",
++]
++
++[[package]]
++name = "ed25519-dalek"
++version = "2.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "70e796c081cee67dc755e1a36a0a172b897fab85fc3f6bc48307991f64e4eca9"
++dependencies = [
++ "curve25519-dalek",
++ "ed25519",
++ "sha2 0.10.9",
++ "subtle",
++]
++
++[[package]]
+@@ -208,0 +256,6 @@
++
++[[package]]
++name = "fiat-crypto"
++version = "0.2.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "28dea519a9695b9977216879a3ebfddf92f1c08c05d984f8996aecd6ecdc811d"
+@@ -312,0 +366 @@
++ "ed25519-dalek",
+@@ -369,0 +424,9 @@
++
++[[package]]
++name = "rustc_version"
++version = "0.4.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "cfcb3a22ef46e85b45de6ee7e79d063319ebb6594faafcf1c225ea92ab6e9b92"
++dependencies = [
++ "semver",
++]
+@@ -384,0 +448,6 @@
++name = "semver"
++version = "1.0.28"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "8a7852d02fc848982e0c167ef163aaff9cd91dc640ba85e263cb1ce46fae51cd"
++
++[[package]]
+@@ -411 +480 @@
+- "syn",
++ "syn 3.0.9",
+@@ -449,0 +519,6 @@
++name = "signature"
++version = "2.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "77549399552de45a898a580c1b41d445bf730df867cc44e6c0233bbc4b8329de"
++
++[[package]]
+@@ -453,0 +529,17 @@
++
++[[package]]
++name = "subtle"
++version = "2.6.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
++
++[[package]]
++name = "syn"
++version = "2.0.119"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "872831b642d1a07999a962a351ed35b955ea2cfc8f3862091e2a240a84f17297"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "unicode-ident",
++]
+diff --git a/novaOS/user/novafs/Cargo.toml b/novaOS/user/novafs/Cargo.toml
+index 1d2ab37d595f2656b392d211b177eb2433363ee0..f883333f10242d751f7229377e99aa71e84056af 100644
+--- a/novaOS/user/novafs/Cargo.toml
++++ b/novaOS/user/novafs/Cargo.toml
+@@ -16 +16 @@
+-novaauth-sessions-lab = ["dep:novaos-identity"]
++novaauth-sessions-lab = ["dep:novaos-identity", "novaos-identity/distribution-lab"]
+diff --git a/novaOS/user/novafs/files.rs b/novaOS/user/novafs/files.rs
+index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..4a5421f3655f10e11c4a68d295fa5326d5937e9e 100644
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -142,0 +143,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    upload: Option<package_lab::Upload>,
+@@ -632,0 +635,2 @@
++mod package_lab;
++#[cfg(feature="novaauth-sessions-lab")]
+@@ -722,0 +727,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        upload: None,
+diff --git a/novaOS/user/novafs/files/auth_registry.rs b/novaOS/user/novafs/files/auth_registry.rs
+index 6bfb5e29ab66dac792e1755deb0551eb0ad0def2..62b3b1396708b045cf1e1006f9d83a55dfa546eb 100644
+--- a/novaOS/user/novafs/files/auth_registry.rs
++++ b/novaOS/user/novafs/files/auth_registry.rs
+@@ -160,0 +161 @@
++                self.upload = None;
+@@ -167,0 +169,5 @@
++        if msg.kind == 1 && msg.len == 128 && &msg.payload[..4] == b"NXPK" {
++            let status = self.package_request(&msg.payload,&mut a).err().unwrap_or(rt::OK);
++            a[..8].copy_from_slice(&status.to_le_bytes());
++            return reply(tx,msg.tag,&a);
++        }
+diff --git a/novaOS/user/novafs/files/namespace.rs b/novaOS/user/novafs/files/namespace.rs
+index 29e0200156df412aa21249c387a4979b73d86c9f..7b13e7b0fba062a4d6ebd5bb0be01912a9c0bf10 100644
+--- a/novaOS/user/novafs/files/namespace.rs
++++ b/novaOS/user/novafs/files/namespace.rs
+@@ -224 +224 @@
+-                && names.first().is_some_and(|n| { #[cfg(feature="novaauth-sessions-lab")] { n == auth_directory::NAME } #[cfg(not(feature="novaauth-sessions-lab"))] { false } } || tmp_store::hidden_root_name(n) || cache_store::hidden(n) || config_store::hidden(n) || journal_store::hidden(n))
++                && names.first().is_some_and(|n| { #[cfg(feature="novaauth-sessions-lab")] { n == auth_directory::NAME || n.starts_with("\x1fNX") } #[cfg(not(feature="novaauth-sessions-lab"))] { false } } || tmp_store::hidden_root_name(n) || cache_store::hidden(n) || config_store::hidden(n) || journal_store::hidden(n))
+diff --git a/novaOS/user/service_manager.rs b/novaOS/user/service_manager.rs
+index 8e66b5f6657b531333f2f20965439606f4837731..3c13f03dcd56ef208333d553fd2d793b9da340ab 100644
+--- a/novaOS/user/service_manager.rs
++++ b/novaOS/user/service_manager.rs
+@@ -487 +487 @@
+-#[path = "novaauth/service/launcher.rs"]
++#[path = "novaauth/service/shell_launcher.rs"]

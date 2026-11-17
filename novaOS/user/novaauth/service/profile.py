@@ -6,7 +6,7 @@ import re
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False, retired_reply=False):
+def prepare(destination, policies=False, retired_reply=False, shell=False):
     source = Path(__file__).resolve().parents[4]
     revision = subprocess.check_output(["git","rev-parse","HEAD"],cwd=source,text=True).strip()
     destination.mkdir(parents=True,exist_ok=False)
@@ -17,6 +17,8 @@ def prepare(destination, policies=False, retired_reply=False):
             stream.extractall(destination,filter="data")
         if archive.wait()!=0: raise RuntimeError("export Git incomplet")
     apply(destination, "raccord.patch")
+    if shell:
+        apply(destination, "lancement.patch")
     if policies:
         apply(destination, "politiques.patch")
     if retired_reply:
@@ -37,5 +39,6 @@ if __name__=="__main__":
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--politiques", action="store_true")
     mode.add_argument("--reponse-retiree", action="store_true")
+    mode.add_argument("--lancement", action="store_true")
     args=parser.parse_args()
-    prepare(args.destination.resolve(), args.politiques, args.reponse_retiree)
+    prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement)

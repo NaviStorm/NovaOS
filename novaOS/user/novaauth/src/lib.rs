@@ -8,6 +8,8 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 pub mod lab;
+#[cfg(feature = "distribution-lab")]
+pub mod distribution;
 #[cfg(feature = "politiques-lab")]
 pub mod policy;
 pub type Id = [u8; 16];
@@ -121,6 +123,9 @@ pub struct User {
     #[cfg(feature = "politiques-lab")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     installations: Vec<policy::Installation>,
+    #[cfg(feature = "distribution-lab")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    packages: Vec<distribution::Release>,
     #[cfg(feature = "politiques-lab")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     folders: Vec<(u64, Hash)>,
@@ -177,6 +182,9 @@ pub struct Grant {
     owner: Id,
 }
 impl Grant {
+    #[cfg(feature = "distribution-lab")]
+    pub fn generation_digest(&self) -> Hash { self.head.digest }
+
     pub fn subject(&self) -> Id {
         self.owner
     }
@@ -350,6 +358,8 @@ impl State {
                 admin,
                 #[cfg(feature = "politiques-lab")]
                 installations: Vec::new(),
+                #[cfg(feature = "distribution-lab")]
+                packages: Vec::new(),
                 #[cfg(feature = "politiques-lab")]
                 folders: Vec::new(),
                 #[cfg(feature = "politiques-lab")]
