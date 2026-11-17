@@ -1,0 +1,62 @@
+.TH DATE 1 "2026-11-17" "nova-cli 0.20.0" "NovaOS"
+.SH NOM
+date \- Afficher ou régler l’heure civile
+.SH SYNOPSIS
+.B date
+[OPTION]... [+FORMAT]
+.br
+.B date
+MMDDhhmm[[CC]YY][.ss]
+.SH DESCRIPTION
+Lire l’horloge, interpréter une date ou afficher la date de
+modification du fichier sélectionné.
+.SH OPTIONS
+.TP
+.B "\-d STRING, \-\-date=STRING"
+Interpréter CHAÎNE. Un opérande commençant par @ représente
+des secondes depuis l’époque Unix et accepte les valeurs
+négatives et fractionnaires.
+.TP
+.B "\-f FILE, \-\-file=FILE"
+Lire une date par ligne. Un tiret désigne l’entrée standard.
+Le traitement continue après une ligne invalide.
+.TP
+.B "\-r FILE, \-\-reference=FILE"
+Lire la date de modification du FICHIER.
+.TP
+.B "\-s STRING, \-\-set=STRING"
+Demander le réglage de l’horloge. L’ABI native v1 refuse cette
+opération.
+.TP
+.B "\-u, \-\-uct, \-\-utc, \-\-universal"
+Utiliser UTC pour l’entrée et la sortie.
+.TP
+.B "\-I[PREC], \-\-iso\-8601[=PREC]"
+Afficher une date ISO. La précision accolée accepte date,
+hours, minutes, seconds ou ns.
+.TP
+.B "\-R, \-\-rfc\-email, \-\-rfc\-822, \-\-rfc\-2822"
+Produire la date au format des courriels RFC.
+.TP
+.B "\-\-rfc\-3339=PREC"
+Choisir la précision date, seconds ou ns.
+.TP
+.B "\-\-resolution"
+Afficher la résolution de l’horloge.
+.TP
+.B "\-\-debug"
+Expliquer l’analyse sur la sortie d’erreur.
+.TP
+.B "\-\-help, \-\-version"
+Afficher l’aide ou la version puis quitter.
+.SH "Droits et statuts"
+La documentation se consulte sans délégation de fichier ni
+droit sur l’horloge. Lire un fichier sélectionné exige une
+délégation. NovaOS v1 fournit l’heure UTC à la seconde. Le
+succès rend 0. Une erreur d’usage ou d’exécution rend 1.
+.SH Exemples
+.nf
+date \-u \-d @0 '+%F %T %Z'
+date \-Ins \-d 2024\-02\-29
+date \-f \- '+%s.%N'
+.fi

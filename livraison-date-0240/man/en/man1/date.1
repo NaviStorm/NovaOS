@@ -1,0 +1,61 @@
+.TH DATE 1 "2026-11-17" "nova-cli 0.20.0" "NovaOS"
+.SH NAME
+date \- Display or set civil time
+.SH SYNOPSIS
+.B date
+[OPTION]... [+FORMAT]
+.br
+.B date
+MMDDhhmm[[CC]YY][.ss]
+.SH DESCRIPTION
+Read the current clock, parse an input date, or format the
+modification time of a selected file.
+.SH OPTIONS
+.TP
+.B "\-d STRING, \-\-date=STRING"
+Read STRING. An argument starting with @ denotes seconds since
+the Unix epoch. Negative and fractional values are accepted.
+.TP
+.B "\-f FILE, \-\-file=FILE"
+Read one input date per line. A single dash selects standard
+input. Invalid lines are diagnosed while processing continues.
+.TP
+.B "\-r FILE, \-\-reference=FILE"
+Use the modification time of FILE.
+.TP
+.B "\-s STRING, \-\-set=STRING"
+Request a clock change. The native ABI v1 rejects this
+request.
+.TP
+.B "\-u, \-\-uct, \-\-utc, \-\-universal"
+Use UTC for input and output.
+.TP
+.B "\-I[PREC], \-\-iso\-8601[=PREC]"
+Print an ISO date. With an attached precision, print date,
+hours, minutes, seconds or ns.
+.TP
+.B "\-R, \-\-rfc\-email, \-\-rfc\-822, \-\-rfc\-2822"
+Format an RFC email date.
+.TP
+.B "\-\-rfc\-3339=PREC"
+Select date, seconds or ns precision.
+.TP
+.B "\-\-resolution"
+Print the clock resolution.
+.TP
+.B "\-\-debug"
+Describe parsing on standard error.
+.TP
+.B "\-\-help, \-\-version"
+Display help or the version and exit.
+.SH "Access and exit status"
+Documentation uses no file or clock grant. A selected file
+requires a read grant. NovaOS v1 provides a UTC clock in whole
+seconds. Success returns 0. Operational and usage errors
+return 1.
+.SH Examples
+.nf
+date \-u \-d @0 '+%F %T %Z'
+date \-Ins \-d 2024\-02\-29
+date \-f \- '+%s.%N'
+.fi
