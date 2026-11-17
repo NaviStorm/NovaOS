@@ -1,0 +1,2807 @@
+{
+  "archives_verifiees": {
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-lancement-generique-elf/bail-novaauth-d4be5a3.tar.gz",
+    "octets_archive": 78514207,
+    "sha256_archive": "1e5fe7eece79aa6ac9d433e00e8430b4823719ecb1d523817d6b8621b496bd65",
+    "manifeste": "MANIFESTE.sha256",
+    "sha256_manifeste": "78c735321f6cd25b62b8d1c0a27c6e38abac920e48e1b84c72fa964976a6137b",
+    "originaux": 1596,
+    "membres_relus_manifeste_compris": 1597,
+    "extraits": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-lancement-generique-elf/bail-novaauth-n13nye5a/final/synthese.json",
+    "sha256_synthese": "d8d9b93675a7c8a7e0ea81b652aeb7b02d73ef795c0d6e1ac8d70201601d28ee"
+  },
+  "commit_fonctionnel": "d4be5a38dad01d7b7a91d8480aeb0bd55bdfe881",
+  "provenance": {
+    "base": "730bb79c0f58a6f88d75d400a6a54ad384fb3419",
+    "branche": "codex/lancement-generique-elf",
+    "archive_precedente": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-lancement-generique-elf/limine-raccord-a04fcf5.tar.gz",
+    "sha256_archive_precedente": "43eab20a8ac7ab331c8c0c20258180d7366b199618ad0c69fb7f841f3195a70f",
+    "sha256_manifeste_precedent": "abcdb0b04488c724e40179aa8b199280e1d8ea7055683b028bdd01ecb45f39e8",
+    "membres_precedents_relus": 1478,
+    "qemu": {
+      "aarch64": "QEMU emulator version 11.1.3",
+      "x86_64": "QEMU emulator version 11.1.3"
+    },
+    "machines": {
+      "aarch64": {
+        "iso": "6b4c3bd7f2a76d9c273c0e03152709dd1a5b3b396af6c313eb4a46b68b9d0a71",
+        "trace_racines": 1,
+        "display": 1,
+        "acteur": 1,
+        "vcpus": 2
+      },
+      "x86_64": {
+        "iso": "891a7fe3b1b264aa5fbfb368d0695ec0546fe8c28cddd63f205f76a25c810d53",
+        "trace_racines": 1,
+        "display": 1,
+        "acteur": 1,
+        "vcpus": 2
+      }
+    },
+    "macOS": "27.2.1",
+    "sonde": "77fcc3260a3f669d57da10d72f65764f19c99013c94b0f060ac59eae53eedd77"
+  },
+  "avant": {
+    "profils": {
+      "aarch64-4096": {
+        "debut": 2152,
+        "echeance": 62152,
+        "accepte": 22792,
+        "refus": 85588,
+        "statut_expire": 126,
+        "ancien_handle": 10,
+        "fermeture": 5,
+        "ouverture": 12,
+        "trace": "20574dceb1ca37e09e4fec1145d62fba3f9200a3b835951a4acf6c88e18055ff",
+        "pid": 16,
+        "hote_ms": {
+          "preparation": 5971,
+          "authentification": 3330,
+          "installation": 16015,
+          "resolution_admission": 6414,
+          "admission_a_sortie": 23,
+          "sortie_a_invite": 901
+        }
+      },
+      "aarch64-512": {
+        "debut": 2716,
+        "echeance": 62716,
+        "accepte": 27520,
+        "refus": 91512,
+        "statut_expire": 126,
+        "ancien_handle": 10,
+        "fermeture": 5,
+        "ouverture": 12,
+        "trace": "7744da2b5d6cb0ff6148606d9273debfb48ec612c79e8325dac60ce8c82d14b9",
+        "pid": 16,
+        "hote_ms": {
+          "preparation": 5915,
+          "authentification": 4353,
+          "installation": 17116,
+          "resolution_admission": 7979,
+          "admission_a_sortie": 22,
+          "sortie_a_invite": 1149
+        }
+      },
+      "x86_64-4096": {
+        "debut": 2932,
+        "echeance": 62932,
+        "accepte": 25364,
+        "refus": 88860,
+        "statut_expire": 126,
+        "ancien_handle": 10,
+        "fermeture": 5,
+        "ouverture": 12,
+        "trace": "e5c0b10e4d7a6a5860fa69ae335007704df1a81383cc45342c84094cc917c990",
+        "pid": 16,
+        "hote_ms": {
+          "preparation": 2271,
+          "authentification": 3327,
+          "installation": 13012,
+          "resolution_admission": 5907,
+          "admission_a_sortie": 23,
+          "sortie_a_invite": 907
+        }
+      },
+      "x86_64-512": {
+        "debut": 3784,
+        "echeance": 63784,
+        "accepte": 31584,
+        "refus": 96512,
+        "statut_expire": 126,
+        "ancien_handle": 10,
+        "fermeture": 5,
+        "ouverture": 12,
+        "trace": "02252d8a82c226ab61862eb37ebdc5224206ceeb171f7cfd5d30be72af2c469a",
+        "pid": 16,
+        "hote_ms": {
+          "preparation": 2142,
+          "authentification": 4495,
+          "installation": 14871,
+          "resolution_admission": 8121,
+          "admission_a_sortie": 21,
+          "sortie_a_invite": 1233
+        }
+      }
+    },
+    "repetitions": {
+      "frontiere-8100": {
+        "lancement_final": 126,
+        "succes_parcours": false,
+        "fin_observee": false,
+        "dernier_controle": [
+          "NSHEXEND",
+          "276",
+          "64760",
+          "0",
+          "63840",
+          "5"
+        ],
+        "erreur": "('temoin', 126, 0)"
+      },
+      "frontiere-9000": {
+        "lancement_final": 126,
+        "succes_parcours": false,
+        "fin_observee": false,
+        "dernier_controle": [
+          "NSHEXEND",
+          "276",
+          "64436",
+          "0",
+          "63812",
+          "5"
+        ],
+        "erreur": "('temoin', 126, 0)"
+      },
+      "historique-controle": {
+        "lancement_final": 0,
+        "succes_parcours": true,
+        "fin_observee": true,
+        "dernier_controle": null,
+        "erreur": null
+      },
+      "historique-sonde-1": {
+        "lancement_final": 0,
+        "succes_parcours": true,
+        "fin_observee": true,
+        "dernier_controle": [
+          "NSHEXEND",
+          "276",
+          "55676",
+          "1",
+          "62872",
+          "0"
+        ],
+        "erreur": null
+      },
+      "historique-sonde-2": {
+        "lancement_final": 0,
+        "succes_parcours": false,
+        "fin_observee": false,
+        "dernier_controle": [
+          "NSHLIVE1",
+          "278",
+          "64740",
+          "0",
+          "64404",
+          "5"
+        ],
+        "erreur": "b'absents=0x0 muets=0x0'"
+      },
+      "historique-sonde-3": {
+        "lancement_final": 0,
+        "succes_parcours": true,
+        "fin_observee": true,
+        "dernier_controle": [
+          "NSHEXEND",
+          "276",
+          "59976",
+          "1",
+          "63876",
+          "0"
+        ],
+        "erreur": null
+      },
+      "historique-temoin-direct": {
+        "lancement_final": 0,
+        "succes_parcours": true,
+        "fin_observee": true,
+        "dernier_controle": null,
+        "erreur": null
+      }
+    },
+    "matrice": {
+      "aarch64-4096": {
+        "argv": {
+          "succes": true,
+          "erreur": null
+        },
+        "auteurs": {
+          "succes": true,
+          "erreur": null
+        },
+        "binaire": {
+          "succes": true,
+          "erreur": null
+        },
+        "chaud": {
+          "succes": true,
+          "erreur": null
+        },
+        "cut": {
+          "succes": true,
+          "erreur": null
+        },
+        "droits": {
+          "succes": true,
+          "erreur": null
+        },
+        "pipe": {
+          "succes": true,
+          "erreur": null
+        },
+        "redirect": {
+          "succes": true,
+          "erreur": null
+        },
+        "redirpipe": {
+          "succes": true,
+          "erreur": null
+        },
+        "selection": {
+          "succes": true,
+          "erreur": null
+        },
+        "selection-refus": {
+          "succes": true,
+          "erreur": null
+        },
+        "syntaxe": {
+          "succes": true,
+          "erreur": null
+        },
+        "tickets": {
+          "succes": true,
+          "erreur": null
+        }
+      },
+      "aarch64-512": {
+        "argv": {
+          "succes": true,
+          "erreur": null
+        },
+        "auteurs": {
+          "succes": true,
+          "erreur": null
+        },
+        "binaire": {
+          "succes": true,
+          "erreur": null
+        },
+        "chaud": {
+          "succes": true,
+          "erreur": null
+        },
+        "cut": {
+          "succes": true,
+          "erreur": null
+        },
+        "droits": {
+          "succes": true,
+          "erreur": null
+        },
+        "pipe": {
+          "succes": true,
+          "erreur": null
+        },
+        "redirect": {
+          "succes": true,
+          "erreur": null
+        },
+        "redirpipe": {
+          "succes": true,
+          "erreur": null
+        },
+        "selection": {
+          "succes": true,
+          "erreur": null
+        },
+        "selection-refus": {
+          "succes": true,
+          "erreur": null
+        },
+        "syntaxe": {
+          "succes": true,
+          "erreur": null
+        },
+        "tickets": {
+          "succes": true,
+          "erreur": null
+        }
+      },
+      "x86_64-4096": {
+        "argv": {
+          "succes": true,
+          "erreur": null
+        },
+        "auteurs": {
+          "succes": true,
+          "erreur": null
+        },
+        "binaire": {
+          "succes": true,
+          "erreur": null
+        },
+        "chaud": {
+          "succes": true,
+          "erreur": null
+        },
+        "cut": {
+          "succes": true,
+          "erreur": null
+        },
+        "droits": {
+          "succes": true,
+          "erreur": null
+        },
+        "pipe": {
+          "succes": true,
+          "erreur": null
+        },
+        "redirect": {
+          "succes": true,
+          "erreur": null
+        },
+        "redirpipe": {
+          "succes": true,
+          "erreur": null
+        },
+        "selection-refus": {
+          "succes": true,
+          "erreur": null
+        },
+        "selection": {
+          "succes": true,
+          "erreur": null
+        },
+        "syntaxe": {
+          "succes": true,
+          "erreur": null
+        },
+        "tickets": {
+          "succes": true,
+          "erreur": null
+        }
+      },
+      "x86_64-512": {
+        "argv": {
+          "succes": true,
+          "erreur": null
+        },
+        "auteurs": {
+          "succes": true,
+          "erreur": null
+        },
+        "binaire": {
+          "succes": true,
+          "erreur": null
+        },
+        "chaud": {
+          "succes": true,
+          "erreur": null
+        },
+        "cut": {
+          "succes": true,
+          "erreur": null
+        },
+        "droits": {
+          "succes": true,
+          "erreur": null
+        },
+        "pipe": {
+          "succes": true,
+          "erreur": null
+        },
+        "redirect": {
+          "succes": true,
+          "erreur": null
+        },
+        "redirpipe": {
+          "succes": true,
+          "erreur": null
+        },
+        "selection-refus": {
+          "succes": true,
+          "erreur": null
+        },
+        "selection": {
+          "succes": true,
+          "erreur": null
+        },
+        "syntaxe": {
+          "succes": true,
+          "erreur": null
+        },
+        "tickets": {
+          "succes": true,
+          "erreur": null
+        }
+      }
+    },
+    "elf": {
+      "aarch64-sdk-example": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "sortie": 0,
+        "restitution": true
+      },
+      "aarch64-threads-test": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61464,
+        "cadres_apres": 61464,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "x86_64-sdk-example": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "sortie": 0,
+        "restitution": true
+      },
+      "x86_64-threads-test": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "cpu_final": 1,
+        "preemptions": [
+          6,
+          6
+        ],
+        "migrations": 2,
+        "cadres_avant": 61808,
+        "cadres_apres": 61808,
+        "blocs": 4,
+        "tcb_apres": 3
+      }
+    },
+    "drainage": {
+      "drainage-temoin": {
+        "services_admis": {
+          "image": 1662,
+          "tables": 191,
+          "kpile": 128,
+          "upile": 194,
+          "heap": 32,
+          "buddy": 2,
+          "ipc": 18,
+          "utilisateur": 218,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 61469,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 11554,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 2461,
+          "retenu": 2461,
+          "dma": 16,
+          "elf_preparation": 0
+        },
+        "services_draines": {
+          "image": 1662,
+          "tables": 186,
+          "kpile": 112,
+          "upile": 130,
+          "heap": 32,
+          "buddy": 2,
+          "ipc": 16,
+          "utilisateur": 254,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 61520,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 11554,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 2410,
+          "retenu": 2410,
+          "dma": 16,
+          "elf_preparation": 0
+        }
+      },
+      "drainage-x86_64-512": {
+        "services_admis": {
+          "image": 1662,
+          "tables": 191,
+          "kpile": 128,
+          "upile": 194,
+          "heap": 32,
+          "buddy": 2,
+          "ipc": 18,
+          "utilisateur": 218,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 61469,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 11554,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 2461,
+          "retenu": 2461,
+          "dma": 16,
+          "elf_preparation": 0
+        },
+        "services_draines": {
+          "image": 1662,
+          "tables": 186,
+          "kpile": 112,
+          "upile": 130,
+          "heap": 32,
+          "buddy": 2,
+          "ipc": 16,
+          "utilisateur": 254,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 61520,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 11554,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 2410,
+          "retenu": 2410,
+          "dma": 16,
+          "elf_preparation": 0
+        }
+      }
+    },
+    "abi": {
+      "ordinaire": 9,
+      "qualification-avec-historique": 9
+    }
+  },
+  "hote": {
+    "heure_utc": "2026-11-17T11:59:56.872550+00:00",
+    "charge": "{ 12.30 10.57 8.76 }",
+    "hote": "Mac16,5",
+    "arch": "arm64",
+    "memoire_octets": 137438953472,
+    "vcpus_invite": 2,
+    "cpus_logiques_hote": 16,
+    "qemu_actifs": 6,
+    "workers_matrice": 4,
+    "workers_recette_bail": 2,
+    "workers_course": 1,
+    "historique": {
+      "bail_ms": 60000,
+      "defi_ms": 1500
+    },
+    "reference": "d4be5a38dad01d7b7a91d8480aeb0bd55bdfe881"
+  },
+  "essais": {
+    "charge": {
+      "admission-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "a5ab8dde9e03a513cd15516f3dad691c31357c242cc4a61fb6c6e50ed5bae118",
+        "sha256_serie": "4ff2d9a76bc31ac838d247e955ba956b84d6d59ca1f489aaad8f37d5905fa054"
+      },
+      "admission-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "00638a9d5e8ad75c87a4653624f73c3e73b0f6b557b6e8629d29a3396d8bf6fb",
+        "sha256_serie": "bf14722eaafea919357a38a0044a7fb52228757523af4ce4b579a7225ee2860f"
+      },
+      "admission-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "13b5d1e165fd40e83ae0bed4319215f5f256e72209ede607eee9725183b56d35",
+        "sha256_serie": "203d82be6f314896ba0d64331931717b736b95125c85dac522abb75fd5b501a6"
+      },
+      "admission-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "f842d42f5f245919e7ac6a8df504bf4958485be079d367b23bfc290267911c58",
+        "sha256_serie": "29fbcd929e69aa4e7bc48765c2aad91bb05ba51f796003f2fadf6588b674280a"
+      },
+      "course-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "ce248c1830b0dbf1c1320d58568714d48fdf22172622ed8f0c8d859d7f0e34a8",
+        "sha256_serie": "2612e3900c11346c767ab4b80f0775f2094cc4dc6b8edeb3b3b119c35bf5f9d3"
+      },
+      "course-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "da4c318986e0d16736d413db18c36cc234ff25f2c5ebaac6d5b21430f08196e5",
+        "sha256_serie": "6f8650bdc4ac1064e6f429f30b2980a1710bfd227d8bec8c0ca61b79de161831"
+      },
+      "course-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "1f797d1ee1e64cf8cdd6aea2c89b535496ae5a5ef56016c017f364bdf22fe4aa",
+        "sha256_serie": "8aae5fcda93d559e8612daad46e7543e9b634b31d8b64faf414b880e6f6edd24"
+      },
+      "course-x86_64-512": {
+        "succes": false,
+        "sha256_resultat": "f3512d00189b01375f933ff065c876242b46f0b4d29dbcdaf6deebd524fed9f9",
+        "sha256_serie": "19bd0a65614450bb298dc43a02edfb4b38eb6a416d61acba46070cc1feb42a0d",
+        "erreur": "b'NovaAuth : nouvelle session authentifi\\xc3\\xa9e'",
+        "diagnostics": [
+          "DEBUG pid=6 NXBAIL op=NSHLIVE1 tag=6 decision=64460 valide=0 echeance=64424 retour=5 fin=64460",
+          "DEBUG pid=6 NXLOGIN refus defi expire",
+          "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=7 decision=0 valide=0 echeance=64424 retour=5 fin=67544"
+        ]
+      },
+      "incertain-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "a07f524c62cbe6a0b8b810ca65773d2c30b1789a75a8d89d506eddb5ba3393e7",
+        "sha256_serie": "00a3210940720b1feb9b1519e5ede2f4bb1e9050c4bbc05f5976d0791b03521e"
+      },
+      "incertain-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "90543f2f489bb7e34d8fcd9ec6a1d1e3aece3ddd1a53dda7a82f2eda42a17942",
+        "sha256_serie": "1cb2217f644ffd98ba9d026fe8fab195ab7218a4a8a66dbfcfdce56d5d32b45e"
+      },
+      "incertain-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "3754f045dafaad02953245cf336c6488a5cdf389a9dafb3b5e52e9624f8e5d41",
+        "sha256_serie": "04429ff107190b5780f4212a6148ebf17f1967dc73c452158d676105159db4e4"
+      },
+      "incertain-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "ea560d6d9c1ce041938ce8cb3b7fa5ffd1de1572354af5d12af54b2660059f94",
+        "sha256_serie": "17aa885b514178d65900087d3382a2eaad5cecaad54932d5dd6b02ed1e8e096e"
+      },
+      "reg-s1-argv-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "83a8c6ffd0534424931b8b7894d622ef6bd2354411f9651ce0712d18926f691b",
+        "sha256_serie": "50fb339863cf6d1ade03ad01b13549d4801733e1ddd45a91ed0576861bf263be"
+      },
+      "reg-s1-argv-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "14205559ab5fb66b4c698f699ef8feb0e179cb2bedf7a9922d7dcc3ffdc8ac74",
+        "sha256_serie": "128df87e5dd6517fd28c94ad510b8738737e04b5772609417a47fa5cf6d41abd"
+      },
+      "reg-s1-argv-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "088127a3b992105edee29c123367730fa62b2ed08b123cfc6ad46cb0c1c88126",
+        "sha256_serie": "ef5000c95af35a2a9a264ad72b7366fdaabf3e0e2c4ec009cbe5cab211a124fe"
+      },
+      "reg-s1-argv-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "45c04e8b32d80dc0dbb626dc30498dc8d469bd3ddc6d383e0ddca87bb2192ff1",
+        "sha256_serie": "784205847075565ddf675e34f611ef08a0b0656651e25e94c9c6d4d1c486a1a2"
+      },
+      "reg-s1-auteurs-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "6cabf8b8894bd73db9e862183b8b82feb486e0ecb8d89fc2945eaa49b447ba19",
+        "sha256_serie": "9172a5d28cafc4fe4a14d1e93c868214c971ef74f719cfb738251f6723591457"
+      },
+      "reg-s1-auteurs-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "df8317db22b0dd2dcfcc1d08f57df1f3d77c6fc35b5d0d7cefd5219703b10c99",
+        "sha256_serie": "37f7691d8c3ae0ea1f507443a4928133f49184a72911348f44273a7c98317f06"
+      },
+      "reg-s1-auteurs-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "2f446de913216201ece133d4c83966d055822c414a9cad0020fadc0746e28a77",
+        "sha256_serie": "6f1d2bf5569f14339fb5449455e78b63e971d8d735021b7b91b45440e38240c3"
+      },
+      "reg-s1-auteurs-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "6086a3c6fbeb626b5ce0cedd9420835fc596120aeb5aa8c971340bf1f321b0d3",
+        "sha256_serie": "f3f5f40e198dab2492b03bc062e04411570d65e59f1e8253354a34d69a2ce7d9"
+      },
+      "reg-s1-binaire-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "d206cc7f1ca436c98d2f6cdb78f18ddc6200b66ffe899e1aca24acb3b26ff93f",
+        "sha256_serie": "080bc86fde9b335b0a7eb3639daa8221e95e8d272359544542c14f380939ddb2"
+      },
+      "reg-s1-binaire-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "9db3f08e7b14133fb2f31fea6e65603bdaf8bc99d19402cee4ff2b9314753bf2",
+        "sha256_serie": "1932ed8496cef9684ab6cac9d2edc2870dd852965e3751f74887b6273f0cee51"
+      },
+      "reg-s1-binaire-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "3d914dd66b753cf015feef293811260241161be4b7290a6c58e75530549fec82",
+        "sha256_serie": "2c5b83bafe045d28415be5efcc9595383efbb4110e5115494729df0367195738"
+      },
+      "reg-s1-binaire-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "1a7809aede52f02ce8ff51de4f5e70f1baa232c7817c3f44e97c70bd9afc34c6",
+        "sha256_serie": "02099b7a1fe71f59e43aec32866ac160947321cdc09db55cbfe75182fbab815b"
+      },
+      "reg-s1-chaud-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "727df6559bba9fa0fce84668a9306775b19f4d66ff994089688e2758372eb2de",
+        "sha256_serie": "5573174823fa7cdffb0f75fe2c932afc5be96e85de6a922c486b17237f5724b6"
+      },
+      "reg-s1-chaud-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "5e0d9f7e1777de96c1f934a559dc3a78c40be61feab91ed902752ec6841fa184",
+        "sha256_serie": "587f27c3314d4a229a12895c74f76f6701b6b1d13ed4d3864bbe4e378fd5555c"
+      },
+      "reg-s1-chaud-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "f06533e12e1ff4483270e0f62e4e6a64009934263dd84faed7b9fbab2c8327d5",
+        "sha256_serie": "aa67a28f36282831173f411cda7da9c8b0e8d1f41c3d56c7def5d08e81d0a6d7"
+      },
+      "reg-s1-chaud-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "574c764dfeb00c1c1140c977aebcf23cf30d301d7a61bae016fbf80dc47aa663",
+        "sha256_serie": "2ac7e57252e67f463cd977224bec07bff239725ffa422ab7d77bd2bb2e9b67da"
+      },
+      "reg-s1-cut-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "f3acb5cc9165e8d17d4cc0746edc25758751e430a22437b3edfe7af8d6cd4624",
+        "sha256_serie": "9882e4d8cb7f83edb4eebca470838a89c3a59150a80d625557e6935c1b2dd8d8"
+      },
+      "reg-s1-cut-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "15181521dbbd016771c777417d87faa8fbf1bc0c86e5e8eca998d9f57d8cae43",
+        "sha256_serie": "37880414f91da9b15f44273b938629d07baf266a8f15982d16728d31f692f6f5"
+      },
+      "reg-s1-cut-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "2c11fdf7e3b76e74932aa5675569d781f673c6ef46265b721eb56bdb7d2072cd",
+        "sha256_serie": "8dff0d0acf8a2b7126a96e5f138c3011d42fdfecb5703c0ccdfab60c0d33815f"
+      },
+      "reg-s1-cut-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "ba9015ed9401c5c29256797f6582d3ec95009ec5331706075b39c1f939327f03",
+        "sha256_serie": "f0a43e9b0ef6affd8241ce51e3427628c27a6f1c20416f6aab88185bc33ac390"
+      },
+      "reg-s1-droits-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "16fcd4c505e19e08e72f4eaa5d8ee0d3d4a29728c9bea61a1a33914f8ad32b44",
+        "sha256_serie": "dd8459ad3a48d9af59929a0b87b3134943c6ab772286edc6b33d3f3bfeb44ef5"
+      },
+      "reg-s1-droits-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "3e9a2ae4ba5cf3acc4f9d56712e30e29895232e5ab69626b5d0a38eb6a4de8b9",
+        "sha256_serie": "b12c9eac152a27b2f3c557fffb4614aaa1c5d96824876acfa5522637563cc6f9"
+      },
+      "reg-s1-droits-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "5a341c958cb1fd43e4c6bcf2b231d8a5750d21376275a836d58366147e4127a8",
+        "sha256_serie": "96cc433983cce40df06d96bfada94cf337341d05055228f197e10a05cd4fe022"
+      },
+      "reg-s1-droits-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "06e1c3b4561e2fe89f3487a723cd0bdfc134d836cbef442e8acc2abae6a76f1a",
+        "sha256_serie": "2ed95bc820983fad5b0d8aa23ad48e293900ecc6fe120ba3293d94d1f6e344cd"
+      },
+      "reg-s1-pipe-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "2a68bb65fc61b8d14228b088a77cfe8e459428822a1a5609a6e3662757952bfb",
+        "sha256_serie": "607a689e58622b2a7d0a885a04d8c22cc68b0634d6bb82a23995fea319a1d8f0"
+      },
+      "reg-s1-pipe-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "e2f9699a763e3e2997243a846d1f61c6a3c2da5946e9d7dee7ba6b1cf12883eb",
+        "sha256_serie": "6225c09fdca436bcae8b2c2ca0c26d6ba6fa23dececa75b191bf9d17da25d4a1"
+      },
+      "reg-s1-pipe-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "b14a2b11d65ba32e338a97b07db01570f53e48c25be384294ed543182c5a23b5",
+        "sha256_serie": "cf7575fda3080d9baabdc030ab9188445995dd7dedf03025fa553d28bed38443"
+      },
+      "reg-s1-pipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "d49d43260161d86c030faaaea0a4fb3d45817f1fa43b595261d6c714502a4c16",
+        "sha256_serie": "ee3654bd9c2c8b21b84e5f04f69a86368b27aa3556f064c9bcad805ee5a18b1b"
+      },
+      "reg-s1-redirect-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "5b1332883422dc1abf1b6ff02d4830d5f2dd66b251a9dd545d5ff6fba28a767f",
+        "sha256_serie": "eebc772f57e5a3d987434822975756c64663de7bb892c58f22419e90cc3c5e41"
+      },
+      "reg-s1-redirect-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "4d38fe5f808dceb0014e4cc7389711477ca189f5b063936d07cc2f540616f4a2",
+        "sha256_serie": "bdded6cb41b0bf6f3d7e3d86509f15fa3c4c8def5b4d999a6ec12005c5f23506"
+      },
+      "reg-s1-redirect-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "db646d9463b0a6361f32d2cff25a9cba6549fbabcb35dc429c667bf86d755bf7",
+        "sha256_serie": "64ab26d8d4df30724135609c24ed2dd97db4098f100bfec05c36fb852f403671"
+      },
+      "reg-s1-redirect-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "77fa23faf0fcfee4ce71b5f9aca0e58862c5c8a42fbd5a815f436f697e3783fa",
+        "sha256_serie": "db9f48d601371802c4127527eaa22c2e96fb54cc3d8b473e9debe9f62855df29"
+      },
+      "reg-s1-redirpipe-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "4bf25bab01acd2f60ec8f0482c9b5c2339f9d40f3933045f8b8c8b2082924088",
+        "sha256_serie": "37c633009186a6c2038d3c4f436670851931541a0bcce885d69b0384ede3868e"
+      },
+      "reg-s1-redirpipe-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "1ed48e19d598402031c318294bb6ae6cdf9360ffb9b9a84d3f3f95f7892e8b79",
+        "sha256_serie": "6effc5b68d9499b2a8f7df5f755ac7a3c131c2684b002a053d49147038e2f859"
+      },
+      "reg-s1-redirpipe-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "86ec526d4f2ac3a79861abb1b3236b0a2acc617bc9a1ca97862c620ca897d767",
+        "sha256_serie": "c48dcce383929f4639c8aad02ec5756ba36525c1a4bfcc148989fc074f711a04"
+      },
+      "reg-s1-redirpipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "004dab4508268f914791bf31a0c51b122e504172db94d7b1ad24db058f378756",
+        "sha256_serie": "8442f21492f63ba1809125cc904dcc52849c01ea81f61c0c243bdf1bce542dc7"
+      },
+      "reg-s1-selection-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "d680d7132b951bc8ea0a185ec14e3fbda86655ec6e985285ed05fa5ce8b1df90",
+        "sha256_serie": "8ba52136cb7a9c2f815beb9388bd45c4a51f2b8b83077ce729ee1deab95a424d"
+      },
+      "reg-s1-selection-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "1df862091ac8fcae8674227631ea6d14e4947792a2af505f8c57c0a12a2de0f5",
+        "sha256_serie": "cfd654fb85925ea3a1f4e37c0597b54e4d3428bded2e0a829f0c85af078e83fc"
+      },
+      "reg-s1-selection-refus-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "f22442129758ad3be90b53da1d5e9ce8a3d82a71c76a3b538673ee2210f8addd",
+        "sha256_serie": "3150ea0a35fa700481a2146c632b24f408ede7351f51dd339e8b26dab01c71bd"
+      },
+      "reg-s1-selection-refus-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "61347c70d3f4e3aab49ac7f9e5899e873c6cb71238a71267e5dffa0f925a30df",
+        "sha256_serie": "308c12eee14b8325ab5ac730f6ef11b4ab9756e57b88cd8dd5a0887ffee67962"
+      },
+      "reg-s1-selection-refus-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "49989edd12868392708c1bf73e38baf8b0c0567025b80840607d07171ff014d6",
+        "sha256_serie": "7a0531e8733df0f76e9e0852b81a7b46b8932baf3e820298158ae013933a4aca"
+      },
+      "reg-s1-selection-refus-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "60bfb1c16a896aa133abdf4cf2a5ef45874c71f4624cabe7e404ec3dcd614f7e",
+        "sha256_serie": "42abb1f2cc4733e2f6c9f6ee6809abe071acb049e43898260e9a6ab7ee494913"
+      },
+      "reg-s1-selection-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "031f7736fb3a32c90c349b60594570d4c58e13ee3ca7ef71b5b36cefff87a94d",
+        "sha256_serie": "42912fa996354c3c7ab1546672f9b187aaf5e03a98e3819529f05030f3593481"
+      },
+      "reg-s1-selection-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "9a0b3092607abaa92fd701cf0775ee6f755960cb0eca226443eb5ef5abf39017",
+        "sha256_serie": "7ccd2741d066c8df8c8a9316ec446e9b1f6f0a29e311e5bd8d557f7e8509df13"
+      },
+      "reg-s1-syntaxe-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "98515a1f150f4f825f311ebc502b0dcebb85da978ae6e908dc1e58af182662d8",
+        "sha256_serie": "20870a792d2f6c44a26da5a4569ce353ad72a66ea088f6504672f00dd6554c8d"
+      },
+      "reg-s1-syntaxe-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "e3dc439f8008b9980c2309fd81d60e4c6a0fcf6773b21137861725be3366fa39",
+        "sha256_serie": "c78e15bacee5ee5e6cef6619824fa9eeaebc7c17cf811b3aac103b8adfe9f365"
+      },
+      "reg-s1-syntaxe-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "68241609af91ca1c8f54d8eaac553802429caab4dfcfd04063922a6ecf8b6ee5",
+        "sha256_serie": "6300200b84a171ee84265dfd4671718e00ab721157f7d9c9a0052931295af9e1"
+      },
+      "reg-s1-syntaxe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "3e7a868912025864198f21f990ff4a105f9d0c6997de9bc8e3f36385b75c4d5e",
+        "sha256_serie": "599d8818c7e0c0e38bc04adcfb573052a1a7238da84503cb3713de1c9e354191"
+      },
+      "reg-s1-tickets-aarch64-4096": {
+        "succes": true,
+        "sha256_resultat": "cd85f00c060f50f49223b9ced2063e28d4b951935fec665be8e62e9b9252c6be",
+        "sha256_serie": "4471733926d7d5509252a82487c13d6ff8034b4b4f7cdde03119a8dfe6245f63"
+      },
+      "reg-s1-tickets-aarch64-512": {
+        "succes": true,
+        "sha256_resultat": "7f6ddb7fa37fad2b7b17d7fe4f608eeb5c1ffb26d8852a96faa2262c42e2ec4b",
+        "sha256_serie": "c45cc1dee858b28d9b487e695047066f0556fc8f61cc037743e9a27b2b7054d6"
+      },
+      "reg-s1-tickets-x86_64-4096": {
+        "succes": true,
+        "sha256_resultat": "69eb449e4dd7485a93219b8dc512eb63b2b8dd41b6e7dcb37c11f67fd1f28867",
+        "sha256_serie": "ff5a44bde8af2a0816328f2495bbdbdb791a916f8ac0418df96da126d585d71f"
+      },
+      "reg-s1-tickets-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "ad0593c0675da1ffbe3a40b4ac9ed5d01b4e7dfb97fcd7619a56852b499875d1",
+        "sha256_serie": "16bbc08faf97300d73674f84059039557fa2b5def4ed2dcbea97bed59c75e19f"
+      },
+      "reg-s2-argv-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "79888b30eedf567ddc8641c7d4dff6a8fc02a07ceca65fdbd07e7c081fb2b56a",
+        "sha256_serie": "46208ca19cd98d4622edb9ff9ac179afe41aee4779719af60d424b3e4a1bc557"
+      },
+      "reg-s2-auteurs-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "45b3b0e9252ce98327054377d9235e98af50c74af5af74f498f8f312674154ca",
+        "sha256_serie": "36a306459ab811aa15f3f82042279ba2c64ec1a5d8693b5e2073b10b3762691e"
+      },
+      "reg-s2-binaire-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "9c01232c26279ae79d0b26884626c22a63e730641b9ce4fbc3edb3988e0dfe44",
+        "sha256_serie": "5c4cdc6890bf3bde0fcc8457e72be8d516ad0a6002a7d329f353eb3cab92e443"
+      },
+      "reg-s2-chaud-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "52f7ca6f4e6011cca588faa25af2c19cf59e9055ebae8f67af9236d34b538990",
+        "sha256_serie": "f536e0628a35557cc5d6848ed317456f9250dd59f8f05f043dc294e450d8544f"
+      },
+      "reg-s2-cut-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "50afc7078fb90cc51483c416eed2fe3a5a90c7c16983dd3cb04f3c43ef69d277",
+        "sha256_serie": "2dbf77dc021c606c05facc9e5b92209868395d9a32969f69971f63ea7227659b"
+      },
+      "reg-s2-droits-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "cff43bd5642eae8aa01ca8717d2a8aeb179218110277ddacdff4fba1f8d3e74f",
+        "sha256_serie": "07928a79635bbc557df15ab76e9b34d5edc997e5588b0fd47b5b7f69cd6eebd4"
+      },
+      "reg-s2-pipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "cf912c243567fb725e0654bbca7d875e9aa4484f52c62e1bd8f89f616b0c7cbf",
+        "sha256_serie": "6d4173b95458a6198388aebe5f33be734b82f0ae686bad12a9de95f2ec69540f"
+      },
+      "reg-s2-redirect-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "f449c1a3558534fb270148c4096f2da095b872925ed9bff0e5507b9fa2cf0f00",
+        "sha256_serie": "0c391a13cdf31f740153d4dc088e00c1ad9447fac4e06668be852087f4763694"
+      },
+      "reg-s2-redirpipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "67c69e57515d78994d7a3a0fbc5f3fcab6970c2da7e31d758466c309a0cac52c",
+        "sha256_serie": "15901782142a3ad1dd7fbe23bea053db3be278aa5e33751afe5aad2aa82f1f79"
+      },
+      "reg-s2-selection-refus-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "b3fcf36e0fdd042a1b074cb7809236d8107fd58ee85fc480fb333240661c158d",
+        "sha256_serie": "4d9281f7ca3bc6a9fd38e96c2ec45e4cce73f8efebbff349f3c54af689a60346"
+      },
+      "reg-s2-selection-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "825ab1dc878157c78f11e46667f3257f98e5f5fe2a8cb385db67644e0ab3b527",
+        "sha256_serie": "3ec1e258ed786b5de9056fbcc886bf1c8863325b52b8b309a3f7a237281358f4"
+      },
+      "reg-s2-syntaxe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "367866f2ffa19fd7d4f7671b5dd7dd8dd05dea3a1d1c09071afe80207b37e99a",
+        "sha256_serie": "b1219d8746d01482fb7bf023a4686058c6e4afea1d2cebb1cb7a069caa5ff224"
+      },
+      "reg-s2-tickets-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "fd9e45f3a6ff584c6de8a1e7e85374ff44ed1acb1650d1b340ac7ac4870ce2b7",
+        "sha256_serie": "ec2e4ae19753ad056f389a7ad8347f8aaf617141b0a4d703dd88856b55c8cbd7"
+      },
+      "reg-s3-argv-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "72f17ee5cf6a6747c8ed6427779d67f8e37cee55012c9070536700bbc9994be1",
+        "sha256_serie": "9218a81c68f5083213906d18c0f9ac782f665f51843754c88e5777da0fe3563f"
+      },
+      "reg-s3-auteurs-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "1a57561d38ad2c9e05244b3914d371e2b8be94ce17448c30d1145cf2ce2fc009",
+        "sha256_serie": "e634b90c57f5dbdb5763ec82a72774e891c5178debc527bb6e2eea9bee814a4e"
+      },
+      "reg-s3-binaire-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "4d9ce399bd729584bbfa123ddb67e4bd4107012e9f2382d941984bb6f397cc17",
+        "sha256_serie": "1dcc18eba09cc89388e1c733ddf12b934982c74aaf9874b160b429075ebd47aa"
+      },
+      "reg-s3-chaud-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "338fa9cb0ef99ff081d0110ab4d6991345fadd41efe0cf486f481fe1083f9989",
+        "sha256_serie": "d67192ab60e87c86417ab7efc717f0b04ff2d71371e29c8c532cee46b4964bcb"
+      },
+      "reg-s3-cut-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "f07157a75548d1d728f06917cdf65240331b9a2cc0d291b1f72cf7cccad13829",
+        "sha256_serie": "398fdaa9d71e16181afa34d500156e3157a50665b8b0d0004d24ee020dcd388a"
+      },
+      "reg-s3-droits-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "20c21e66433a13b9ac4a059ee16ec05c4b69bf72443aa97e4e43279416d4108d",
+        "sha256_serie": "bc082b3fd07144441f49bd01a487f484017b76b17907a75964c063893d955c71"
+      },
+      "reg-s3-pipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "d5fba445b6d066db2b8f517306f544b225a7882c0c0ae62786751cb63018394b",
+        "sha256_serie": "f1013f36dfa049796dc28bdaf850c835c45ebab94004e8e4b7ceb348ed5d7266"
+      },
+      "reg-s3-redirect-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "2329263063c911f2022ed2a2830dbfa3cdbc67fed6a770ce5416ca85a8caf881",
+        "sha256_serie": "57f9de29e4f978fa690b7ed0abc4b886c306166caba0e242e59348cccfab9664"
+      },
+      "reg-s3-redirpipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "9b0234073c11c3504f1d3384594b78ffd159f1ceee4d314eb88e61cf835065c3",
+        "sha256_serie": "2ecc942e95cfd4d44d13cf8c532833fe4807c7a63d39ae8f5df9d92779648c29"
+      },
+      "reg-s3-selection-refus-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "0e4e463ae3436188079987d5e45c14ef33140f9bcc3981d6587b22cdcceaa1c8",
+        "sha256_serie": "3a24110fdca811358caf60125b7ac5ed1a0c2e347479f865c2da6bd0a0cf31d9"
+      },
+      "reg-s3-selection-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "5292f4422cdb77583b6a3614dcc4cad8ba256543cbe0e0eb66434487278aee26",
+        "sha256_serie": "19cec376569a0791d9875aaf2169c17086cab9578717112057f721d39a4fb590"
+      },
+      "reg-s3-syntaxe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "f5c5be68b4959cf52277e61b2f3ecda597355c6695fb7edd15b1169ccafd8c15",
+        "sha256_serie": "116671e65996b40f538e2f800dd545bbf958cbfdcdb0a4969b1395adaf0df2e4"
+      },
+      "reg-s3-tickets-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "b1a62f673165442613aab65b8534148363d1e79895dc04d3d638d9204aeee4f6",
+        "sha256_serie": "faf20450de4a8e5e7b7da3135dc1b5e84b3199434dc191bce2b8646411e13aa0"
+      },
+      "reg-s4-argv-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "2a7ac5e9983b4249fb670c9487d82beb7142d541ecd1f8a606821f0f2247c38d",
+        "sha256_serie": "1408594024b11ed777763d64315625d862c1c2180f18d16a9df4d9c4fbbf6355"
+      },
+      "reg-s4-auteurs-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "11f3e0bfe39f1161ccabfafd05625afc1d045f2c730b8b0ef2925e61b01ae7c6",
+        "sha256_serie": "92511f2d727d945125e0b021bb91090f77afbc451c3cafb12d6dacbcc1c97283"
+      },
+      "reg-s4-binaire-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "fdae0a4aecc2f04ea3ba82cf92e8dba09be3e6d1862bb5c48e9b83da2db48382",
+        "sha256_serie": "52a58aaec0911016729fd22b9523bd33951c883f47202550558145762dbc7502"
+      },
+      "reg-s4-chaud-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "2ef81b56a990d4d1bbdf793db7b17adf10c63426fc8f6477e0f90c876144085f",
+        "sha256_serie": "75fbf8fffb7a7bab08e963dc2a6c4f0438bf8e29af4752ebdcbe519e167fbefe"
+      },
+      "reg-s4-cut-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "873a3eb0eabd34158461a6f238fb24f1b6ec0e41417d4cfadf53ec739254f0aa",
+        "sha256_serie": "8c75be2c02510208ce6ef08bd565193b11f396d337ec120017dfd61695a312fd"
+      },
+      "reg-s4-droits-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "c816a8cbb7c42d3f15025681a373e8f30c3fe01c59e836a04f7501198f85063e",
+        "sha256_serie": "100eb2c6d73f1fc6b146539e5972dcdb59d5398ed5ea7312d14137dce939f35b"
+      },
+      "reg-s4-pipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "fc3b561f030fd31a5fd6053fc57b82e7e2905f13b8f7ab91cbf5de68405236ed",
+        "sha256_serie": "e92f64861826c34bdaabe02b4c70ac4b93392bc0756353106d066799dfc911e2"
+      },
+      "reg-s4-redirect-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "a4dae2c5d15548ac1134b75938f3575ea88ad5e1348b1a9309069f63b027bb14",
+        "sha256_serie": "5f0258d2d5555f48ec1d56677a605473635eb06f52dc49c06f5cfc4934f8dd49"
+      },
+      "reg-s4-redirpipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "4e297eb8f26882459172b5feb12a72675a5ea293f35f79ef86e12b5970bea727",
+        "sha256_serie": "5876fa015a39a394eefc5ced943e1a8eb7e124da51004ddbf8b14f3c5bb36352"
+      },
+      "reg-s4-selection-refus-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "461df5526927f8215d173451c05ff7bf406b9c89c83b5941e5df292d1570daed",
+        "sha256_serie": "b7cb8b4e3834d6f3688a0d8ae5b80e8db3c566ba43f3d84b1d2cfeacd42870b9"
+      },
+      "reg-s4-selection-x86_64-512": {
+        "succes": false,
+        "sha256_resultat": "08d08132c11d05f0bcfdec504e7215787bc5428176394c88d480a30130652d8b",
+        "sha256_serie": "88acba995183f1e7d0b2cf5e7848e41e37fb45d222c9c337af024ce851013346",
+        "erreur": "b'NXR_(\\\\d+)__FIN\\\\r?\\\\n'",
+        "diagnostics": [
+          "DEBUG pid=6 NXLOGIN refus defi expire",
+          "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=1 decision=0 valide=0 echeance=0 retour=5 fin=3088"
+        ]
+      },
+      "reg-s4-syntaxe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "7dc7acd392ff442becf92eb0a81f6d477e3193bb7dcff49e06b423069d11f21f",
+        "sha256_serie": "b609e4fa7bfa8873d2ba2714a85c1283a1cfa149515013876f71af9de0227190"
+      },
+      "reg-s4-tickets-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "1a2685210942e42ef68d7b8fa7c4cef55221f538ebb68e0f132d19f703862cee",
+        "sha256_serie": "fc2923dca2e16f807de0c0c97e26786a4888f22eb2c8ca76f0c4a15f49dad58b"
+      }
+    },
+    "reference": {
+      "course-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "9e0b546689b1e6fb1b4414f9a6b9e438fc82dda4b5aad1c5262b176492641d9f",
+        "sha256_serie": "7f6993bcbe281d96590daa22223e4d392c80ed14b491971abd0fba252a6f2cc5"
+      },
+      "reg-s1-argv-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "88c96ca79889aab838117647e8bc37404f2dc00e57cfc0cc0c96640c228f0acb",
+        "sha256_serie": "0cbae34fbaf66952945ef953d8f05ac3d0a9253de8d641ae1d64ae609d7fc2d0"
+      },
+      "reg-s1-auteurs-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "d46fe37399b5c919a96ff2c5dcf28bcde79c73089d46ce30b182c4b791ea1bf5",
+        "sha256_serie": "09e321eae6ee75b3c1593915d317d44acc76e950d4b0efe7e9f9987764f28f9d"
+      },
+      "reg-s1-binaire-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "0a02befa0059f30dda1e864700f76bf225dc5e11c4bbf875e9076d1de0e4846a",
+        "sha256_serie": "72e4ccbaf68ef3a13f4f11b48e63119d509cba640e9280f88559d1de6a53e678"
+      },
+      "reg-s1-chaud-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "8ed0db67461342da973e551d58cde29741760fbc08d9fcbca19ae0f51ca2cb88",
+        "sha256_serie": "fdbf29fa88ae906dbe87d6977eac7afc963b970ecbe3aecbc70ff31e35c056ae"
+      },
+      "reg-s1-cut-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "a0ec70b8ea01542c58c354ca1f34ad4623603dfaefe38452d16815adff65208e",
+        "sha256_serie": "8d1afccdced0be979905125366c0ec2c74d4204c3c47e8bf6bf2f35d6e3d2d71"
+      },
+      "reg-s1-droits-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "f8b9c82bfb57fca8f6adcfaddb2c27a303414b490197e63062b2378e4a31cf2c",
+        "sha256_serie": "be18ebcb87958fb0a4aa6e23687e7557a9c6b0d6ef3e149fc778672d4b1e76a5"
+      },
+      "reg-s1-pipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "0a1329152fd35718d1e3305e5907d27e7508802bc28e256e188f088e6c5369b2",
+        "sha256_serie": "d2c55e1c9e673e817618ebfcb2b70350776f84c61d5dc685f013863cead6d110"
+      },
+      "reg-s1-redirect-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "5ac5528bbdd0218453873ca656c188635e10fbb1f1533d5ddd942bc2edc8fa4b",
+        "sha256_serie": "89ca4ffa56de4532a1474d1d25f65008f7f3763ea97fdbc8f01aa0da3f20a0dc"
+      },
+      "reg-s1-redirpipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "4053a30f17506a278120351387f3cc2ffd9fd75b2ef6d962ab14b7e7c490319b",
+        "sha256_serie": "5869e9a7f7eec62e1d274124a47d4a28d85356ef2f91300b1033d0aaf0af1bcb"
+      },
+      "reg-s1-selection-refus-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "effd1d500c5f9e9e6ffbd75d7ea5928c05ea962a3e6058f88740d033938f41a7",
+        "sha256_serie": "5145a764c15b73d9648abfe216df560d2ad5eaca4308eaf9afabefcc86b96eae"
+      },
+      "reg-s1-selection-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "772de6c02b8f2233c18824901689a9dbdfc9b545c5ef9d6faeccc309bbdd0914",
+        "sha256_serie": "36350ff1639a0a69849f18d689d305244f916d33fcb3faca9a3fa0dd613be3ff"
+      },
+      "reg-s1-syntaxe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "85528b52675f3a471dfe1ba23ecb7524afc9d81f3a9938fa2128470ee38690f5",
+        "sha256_serie": "0d0f1fcbda77f319e4560cc2261702f1daec4ba9c35b9382c952c48b8e3c13bc"
+      },
+      "reg-s1-tickets-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "437e55ecddbfb1011772114b62deb46c164efcde361f9154f7f4573dce3d0b44",
+        "sha256_serie": "1a4603d714acde8230e66ac5689daf937275b326a8e21851c5d1fdb3305b9ce1"
+      },
+      "reg-s2-argv-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "0f8ec0af04fa871898f730df62a25f4082f8fce6fbb758fcf9ca160b220b8c09",
+        "sha256_serie": "23fa3b3033ceafa7ccf30cf9cc4ca23587822bfe9b80d1423c55bd0a98e3f617"
+      },
+      "reg-s2-auteurs-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "0a33ff8b8add078ae73f7885d1fc2130bea9d079433da2a92332fea581a3ef14",
+        "sha256_serie": "4310e7e4ab22510ecbefac848cdbf51ea6249f26ca23e8571c4eafb9705026c0"
+      },
+      "reg-s2-binaire-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "6ac617083211b9eaf4c7435dec2b4a51c32feee6d6fe23feb2c510f9b1f7516b",
+        "sha256_serie": "50e46c8a84537160496252a86857e3f2e0dc99ca269124eb1234bca9ca116b12"
+      },
+      "reg-s2-chaud-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "94c80f3bd9969aa4f5e16688cb7c58bd7a00991b3e99ed63d1253e601de1753f",
+        "sha256_serie": "609f290bac1919b7bbd2be9487b607f1e115d692a4962468a01f238c5688b4b5"
+      },
+      "reg-s2-cut-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "a7a03d35283884931c56edfae7646ae8e77f18b5037ff3e0872d1e44b6984502",
+        "sha256_serie": "0c3e6c203146898b5bec65f04a083d1de977ba41e0448844f8454c9c74c53283"
+      },
+      "reg-s2-droits-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "4090f3f53ad01daf9d87e7e108a14ce7e12dd3a04715651f08b25ba7d7ec1a55",
+        "sha256_serie": "b55a424d2ef057f443087f21b8b6601fa38c61fb2b78392253a5bc955098cda0"
+      },
+      "reg-s2-pipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "e57af249a4278c5b82070d17607d452cfa2fdc84a4256547bc3e7d69ef7d438d",
+        "sha256_serie": "5037eec8ba1b6433c7e87e05c8a67d3511b102f5431613ca246223ab16a091ec"
+      },
+      "reg-s2-redirect-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "8247b3ed36322bb7856cbb836c7d87ad2bf4716c8638b278c1a9634c557841c5",
+        "sha256_serie": "7502336dd1f9423e00297d9998877964a7acfbe8136037ed1b2eb9f2dfa880bf"
+      },
+      "reg-s2-redirpipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "d60bcaca7c357eb1f5cd58dda6747f83ef1d3e4ee2085790daeb2b9c0dd457e9",
+        "sha256_serie": "099f157adb114ad952021b2db9a823ddb101446ec167dc0df5b0201cad9152bb"
+      },
+      "reg-s2-selection-refus-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "3b7eb9c8f0be9d4c811dc3d866a2466c97834f898d4f8356e34c813b73fbf040",
+        "sha256_serie": "5e483237a3cd70c33294f7f4c69df12fbeb9df28d30d7707fe66f378050ce75f"
+      },
+      "reg-s2-selection-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "63695f13588c30c3db4ec21b873819cfe19f310cd991b107c9d4494b22b35ece",
+        "sha256_serie": "73c42987956220ee4a97b2c711ba53d1f6f993c17be2db382cef4e76e0bb5a40"
+      },
+      "reg-s2-syntaxe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "ce466d7b23e2812ca06faa2d3cdb8a5c725d08988f8b3f6320d7ea9bb437184c",
+        "sha256_serie": "c13d4c3346461123f3c3c82121a7b1acbd828ad247da16e3306add7cc585ba58"
+      },
+      "reg-s2-tickets-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "7c1f98deea512cef20754bf98cb96f2ff7087bdc351dbe13bcfb7b296435e16b",
+        "sha256_serie": "bc4d58a00e076907da0e36b5920df79ca39214bf23b54e08d157ba0a9b0de4d3"
+      },
+      "reg-s3-argv-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "0ebe5384df89055dee869f33688207eceb015d2ecd76512de5db276da77ea5fb",
+        "sha256_serie": "6182fc88c7921877751b4ac98aa788dc9701c11536d746e59234f26d1d986bbe"
+      },
+      "reg-s3-auteurs-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "132177be041fe8ff54ebe60855815e966db8bfb2b23ddd0823ac9761ae311a66",
+        "sha256_serie": "2f4201d5d06d5b1fdc66f5dce8027a4f92743f4edff8b91d51cd1da8048b2b13"
+      },
+      "reg-s3-binaire-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "e06824c4a41e1397274160d3922dbb16a9705fea65577d8e2bfacecb27a8cb18",
+        "sha256_serie": "00666a2efd8200f12e8d070fcc922324fbf7bc926a5d124ff758e853feceea71"
+      },
+      "reg-s3-chaud-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "858c443f58b3959422c06f70c5ac72b25b16e53d893cb587c689d0fe32de2b3a",
+        "sha256_serie": "abeb63d81548845f381d688c95a987835bbbed1e60be047592b79733afc247b0"
+      },
+      "reg-s3-cut-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "884dcb29040e702ea2fd1a0dfe6da7f5905f5a037b798051276f52407a387d33",
+        "sha256_serie": "b63df59c07d5f631067bdeb59ed727bda6c4382af17de6641dc2b8ccfb215d5b"
+      },
+      "reg-s3-droits-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "e50d67b389680040938ae0438e5c1a44fbf7f0b91d7a25d575249a4f119a7cf4",
+        "sha256_serie": "6ef42f17380504a30730acc6d1a692188a5c69c1e868de6672b420b2cd6b3841"
+      },
+      "reg-s3-pipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "8a26678207a23253ab3bc9626c11bacddde69418e40b6af8a8c59b76889a335f",
+        "sha256_serie": "dfabb32915f5d2ecd6a4bdaf8a46611173f1b59632f8b917158a3ebbec95e80c"
+      },
+      "reg-s3-redirect-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "dd4a35e24c3a79774408a7af84e76fae52f1a0368e51af07f3e54e7fa018b5da",
+        "sha256_serie": "5ff0dcd6515c5275c5b059ae4e8242d798a9b6ffab1f1acf35ec0050dcc9ae2c"
+      },
+      "reg-s3-redirpipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "bc962af6f82a1f54fc12079630881ecc34b57399df52ed20ba7a59a4c60d4e1f",
+        "sha256_serie": "f7022f6712d6ff99a00df0fc3c08daccd406f12ea95af5cd97e4c0376ef53cde"
+      },
+      "reg-s3-selection-refus-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "5dd54b14936c11ed569ad8f58d23eb11673582e36ad30047469412c2104da2a1",
+        "sha256_serie": "bb3f59c69f7560f0fd911160b801b241c0b616f775799967c7b89023ec464315"
+      },
+      "reg-s3-selection-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "57081b25e19c05392ea937051927bf7ef2393267dbba86a4c1f7682bf6975ed8",
+        "sha256_serie": "8b86a382a4109863d8a3d6ea3b1c2f07e7452f30d7e578fa40cb87e44639ee47"
+      },
+      "reg-s3-syntaxe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "5d86cabe58812868de2f386b32a352ff0b099227b0ed96aafd66ffdb35c49a02",
+        "sha256_serie": "e3d43012a5a43d51994e4325032302bf398ca8f35afc9e091336cf5291aeff7e"
+      },
+      "reg-s3-tickets-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "34d57f09dde3aa893629cb3b124f2061b27ab3f24b672ea2ddb90511508f1a75",
+        "sha256_serie": "1d21646a52ee7d79a36ebdf13ef37f1930665f96c847ad418c6dc95ef78ffcaa"
+      },
+      "reg-s4-argv-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "b6953509af0a311f986459ac4c4b4ca1e9d6b84ad8e9fe1b497f779a96d1bda7",
+        "sha256_serie": "bc39f294b935a5a3065c7982d41f0851aabd95fe9d6556d5383a099a73893ed1"
+      },
+      "reg-s4-auteurs-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "c49aa0ef6660ab5ba773e78fd6265561ab33ab02652dac77caf0b5f6f74ef328",
+        "sha256_serie": "508c5b7606859cdd3205ce8a4e57c6193635601a5d2e1c0e807e7b939d6aaa5c"
+      },
+      "reg-s4-binaire-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "5db7eb078a036a7ee6bd6108593eaa204eb00c041c7034c9c1ba9ad8d66ffb60",
+        "sha256_serie": "ac03f8e15fef1b7b9293e4707e482e3de034c5b8d3fc34e6c25b8b5f490fbd7e"
+      },
+      "reg-s4-chaud-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "87d957a0fb102341485ac279fd95433a42a0381939e1bcd24d0d6e0869fcca85",
+        "sha256_serie": "ccf8250308ded8e0b309a3ff99f4d82b64e20cc4c275c59c83f853ccdaefb0a4"
+      },
+      "reg-s4-cut-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "9c1ffe39d728a9b0a2e73db4c787fc9cd9309208d05043738887bf2edabdc5f4",
+        "sha256_serie": "f510076ecc70bde84c594cb0c5a3f2c7146aa7f428bd8adf138bf997e4b53286"
+      },
+      "reg-s4-droits-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "02c91e2e4bbf67a13b04c3a37699c73d7a4679b0ad4a004acc7d45298c82e33f",
+        "sha256_serie": "6189be1ab11f389a3d8cc9b865e686507d12d4e4f7ef317ab9c966cc5cc5169b"
+      },
+      "reg-s4-pipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "20a37f05efaaba6cb33f5fdc1a998750a774b0df712b66d0384dff0650fb606c",
+        "sha256_serie": "00adae769a4d2aa55d9553fad2cc1cf858850ed925d8f6cea114582318ae4aa6"
+      },
+      "reg-s4-redirect-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "51b943b695ab6d550a9394cbc1102c8d437b96b5664e80169b9cf14a8ac266b8",
+        "sha256_serie": "8f8b19fe8e4535355e680ff0be632f21d8664f566e88c62108a1aad04cc74f51"
+      },
+      "reg-s4-redirpipe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "6075b68a4d4937c4d78e671b32da48fd2460f221256627428289db87d388e3d5",
+        "sha256_serie": "1ca2901b5d079e8e7e238984b760e327017be821d3ba7ead0e5e5ca0871e41df"
+      },
+      "reg-s4-selection-refus-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "9021aebdb376e44b5a366550473574cf67bf80c0a73928c8f6ed767853a588ef",
+        "sha256_serie": "d80f96372f5c02ed59871b1d368cae6eb8c354bd8a0b1ae6a392559989cda075"
+      },
+      "reg-s4-selection-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "0be81f43ed1d020107230149cdaa5a9eb4b0e06282e7f158aa82a2b5e5492ac6",
+        "sha256_serie": "4802e2888a1e166e30bc9aac46410d87a8256cc83176dcbfd1335b6ee63a6127"
+      },
+      "reg-s4-syntaxe-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "30dfbb893e9ea9d84da03211fc030109f287d9f9d158aed59dde2d91e78a91f4",
+        "sha256_serie": "d394f3148d1c6a5e5a6205f45233b4a0614d48680d3c8425c2cafb0925b39b02"
+      },
+      "reg-s4-tickets-x86_64-512": {
+        "succes": true,
+        "sha256_resultat": "74a62b2f436d01d2f49069fcf8fa8e98c89b51841c16ce736cf648c24522a451",
+        "sha256_serie": "7d20243f06eef5d9d8694e155e9cdd363074101315fc435810c553f87830abd7"
+      }
+    }
+  },
+  "revision_intermediaire": {
+    "admission-aarch64-4096": {
+      "succes": false,
+      "sha256_resultat": "1dbcfe0ed75f824f51b4aea2c926fb0df960b7b5bbc9fd14a75d165319292a37",
+      "sha256_serie": "c12c0f9ce4a112a956f6234a12b2479aabd8cb5b23bae48569ee4abb73fb7720",
+      "erreur": "délégations ou route",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=3 decision=3804 valide=1 echeance=62000 retour=20 fin=4548",
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=284 decision=90084 valide=0 echeance=62000 retour=5 fin=90084"
+      ]
+    },
+    "admission-aarch64-512": {
+      "succes": false,
+      "sha256_resultat": "52c306d108bd2617dd9cec36a6a27205bf07d79f47311365ad70e2c2a76dbbff",
+      "sha256_serie": "c53475c956d17ff3db6e76fb0213d4e5c4dfae1e05fe137de40855ef9daf8d03",
+      "erreur": "délégations ou route",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=3 decision=6220 valide=1 echeance=63164 retour=20 fin=7492",
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=284 decision=104600 valide=0 echeance=63164 retour=5 fin=104600"
+      ]
+    },
+    "admission-x86_64-4096": {
+      "succes": false,
+      "sha256_resultat": "72eb477a58338cda6b518b93c7bb4a8d70cc1976fa582fba1332a611a9be6377",
+      "sha256_serie": "990c063923260275a2fc0e7e8b1f4816ea0ee5ee8cdad45f07c44b15ca08602e",
+      "erreur": "délégations ou route",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=3 decision=5348 valide=1 echeance=62864 retour=20 fin=6424",
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=271 decision=98756 valide=0 echeance=62864 retour=5 fin=98756"
+      ]
+    },
+    "admission-x86_64-512": {
+      "succes": false,
+      "sha256_resultat": "0536f74a929fb8038f31f6f03ee5be1b6f395008afa53588bdb850f6a61fad9b",
+      "sha256_serie": "af2cf9609e6006f41eba818aefa94a517647a15dd2adefa28fa0ddd0a3189e86",
+      "erreur": "b'NovaAuth : nouvelle session authentifi\\xc3\\xa9e'",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=3 decision=7488 valide=1 echeance=63868 retour=20 fin=9004",
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=271 decision=111064 valide=0 echeance=63868 retour=5 fin=111064",
+        "DEBUG pid=6 NXLOGIN refus defi expire",
+        "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=273 decision=0 valide=0 echeance=63868 retour=5 fin=114460"
+      ]
+    },
+    "incertain-aarch64-4096": {
+      "succes": false,
+      "sha256_resultat": "d261fc23d2146308651058909a258dfa005c3b386cc8dba5f6e89043f94324ed",
+      "sha256_serie": "2c86db083d2dfc08d8a2e9f0b0ef709b29bcba27a083ffe035bdbc78446a7e14",
+      "erreur": "délégations ou route",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=3 decision=4336 valide=1 echeance=62156 retour=20 fin=5196",
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=285 decision=93256 valide=0 echeance=62156 retour=5 fin=93256"
+      ]
+    },
+    "incertain-aarch64-512": {
+      "succes": false,
+      "sha256_resultat": "442302b8ef3f80c1dbefc54850a4e70e0f22b746189bcbc4e3bc17d741a85c56",
+      "sha256_serie": "4cb944a3218ccfea120060f8fcd2e6a35c0c33284f1f2e220ccaf92eaa418f6a",
+      "erreur": "délégations ou route",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=3 decision=5572 valide=1 echeance=62836 retour=20 fin=7196",
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=285 decision=105932 valide=0 echeance=62836 retour=5 fin=105932"
+      ]
+    },
+    "incertain-x86_64-4096": {
+      "succes": false,
+      "sha256_resultat": "80800ff120d1d426632aff259b16f1638b120ce89bcc1b7c6710ebc6b733a18b",
+      "sha256_serie": "b8cd797722f3af5c357e770cf600a15529632f6813f5ecbc58805107536707bb",
+      "erreur": "délégations ou route",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=3 decision=7444 valide=1 echeance=63944 retour=20 fin=8924",
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=272 decision=109680 valide=0 echeance=63944 retour=5 fin=109680"
+      ]
+    },
+    "incertain-x86_64-512": {
+      "succes": false,
+      "sha256_resultat": "e31f5f9e86e40e53abf2e122eaa2effeb87d8f06bf6b8e0a57bda26a0d6cf4fd",
+      "sha256_serie": "0382f1c16338b3d811c29e43ec1430faf7214dbfdefcae12c87c0ec13bac7765",
+      "erreur": "délégations ou route",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=3 decision=9144 valide=1 echeance=64932 retour=20 fin=10872",
+        "DEBUG pid=6 NXBAIL op=NSHEXBG1 tag=272 decision=118276 valide=0 echeance=64932 retour=5 fin=118276"
+      ]
+    },
+    "reg-s1-cut-aarch64-4096": {
+      "succes": true,
+      "sha256_resultat": "5abeb7f026160704b16963e173381402c48d10fd443b71a1343c03921dade62c",
+      "sha256_serie": "2b93fe15084eed28719fa325d72b13f38d2a059bffef627ea2c4ec0b6332dd7a"
+    },
+    "reg-s1-cut-aarch64-512": {
+      "succes": true,
+      "sha256_resultat": "485dbde39b6c14d33c5739252af55d67607b2de7eaa49dc7c625159f7a62a09e",
+      "sha256_serie": "efbe62eecc44161c9fba9c9e6d44542dcb61874f8c8d7d7739e5ee90e57faa6b"
+    },
+    "reg-s1-cut-x86_64-4096": {
+      "succes": true,
+      "sha256_resultat": "3748ba6881d1fdfca6e4480126bfa408793637cc721dc7b3b60660722ad98398",
+      "sha256_serie": "540d7545412ed09c73b8c661b7479d7c18d78e4087006116a1d44ac5e5a44f41"
+    },
+    "reg-s1-cut-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "fde368a741db5b70b21c39fd9d12fc1e6d1031b476190177ff9baae55fa1dba5",
+      "sha256_serie": "9597487fcd7a3df90f08f0091e35d0d822bc5eef1c882a2f927a45a178d56854"
+    },
+    "reg-s1-pipe-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "91cdcf01c4e715ef2e9f68bd0ce92b19b9ccfd374c86d1a3bccb7f96dc2c3bc9",
+      "sha256_serie": "23a389fec885024b119aff8ed9fac9679c83fefaea67ddab5eb368f13f637e9f"
+    },
+    "reg-s1-selection-aarch64-4096": {
+      "succes": true,
+      "sha256_resultat": "76f28a3c52537430b38036abcc9e66564f043cfa568f6f231fe99290b098ffc1",
+      "sha256_serie": "024ce3bf81c19141df0a555e8e258488081aec5b3b30876c3a485ca36320d981"
+    },
+    "reg-s1-selection-aarch64-512": {
+      "succes": true,
+      "sha256_resultat": "ff8fb30fcfd24e3e588895b177b8e98bdff00ee6bade17a319ddd1ea3dffdb8a",
+      "sha256_serie": "d6eaec6b8106024d89e9c2016ed0fce47aba2f0206fc68a84cef984a3674304b"
+    },
+    "reg-s1-selection-refus-aarch64-4096": {
+      "succes": true,
+      "sha256_resultat": "23820c11855ea17f948a01f52824f03c31720c7f2f3c26d4a2a8bd4b325acb9d",
+      "sha256_serie": "c0bb6857442bd01603d972cc4801df5719a98f28240176e8d37fdecb5787cbf8"
+    },
+    "reg-s1-selection-refus-aarch64-512": {
+      "succes": true,
+      "sha256_resultat": "ca79c158127c5c79eedd9df5c7b0ede4fd2f40487d6d4b43fdcab74d9f13bcac",
+      "sha256_serie": "b244b3df4fb40aba24191261ed61ea9d99d9f3f60737b10675feee7ade8adede"
+    },
+    "reg-s1-selection-refus-x86_64-4096": {
+      "succes": true,
+      "sha256_resultat": "3eb4572fc5697a939b8bdf20adb2ec0e3e0d0bc2b6d237208617e862e28d132b",
+      "sha256_serie": "2882c48997f0545c8a69a227bd089121d14aa83b4c062f79d54163b15ef3faf6"
+    },
+    "reg-s1-selection-refus-x86_64-512": {
+      "succes": false,
+      "sha256_resultat": "7dc44f00e7df40db26ca04c45f57cf06721cfa32497437a14eb5c137406324fd",
+      "sha256_serie": "39104b4b7d1cb2e021a18829ec963754586d41009427039343e24e36aed9c1db",
+      "erreur": "b'NXR_(\\\\d+)__FIN\\\\r?\\\\n'",
+      "diagnostics": [
+        "DEBUG pid=6 NXLOGIN refus defi expire",
+        "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=14 decision=0 valide=0 echeance=65044 retour=5 fin=45376"
+      ]
+    },
+    "reg-s1-selection-x86_64-4096": {
+      "succes": true,
+      "sha256_resultat": "13f04e20367e6244a987b791df14c7245a9edc7f04103b8a702a41e6976097cf",
+      "sha256_serie": "6818a7d294af376355b6e57badc598d59546bbaee5a5208571188af85babd0ef"
+    },
+    "reg-s1-selection-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "e3f770dbce01ee7c89c1f2228284e253c3cc1bf24a3ac021b2307e8a49fd4b33",
+      "sha256_serie": "7b830533072008f803fa348c6cca5130d66f7abb28429fc9497bd090ba731cce"
+    },
+    "reg-s2-cut-x86_64-512": {
+      "succes": false,
+      "sha256_resultat": "daeee91591694931753bbdb58d0a318cfda4b7d6559f7c9bfceccb27ec9d995e",
+      "sha256_serie": "1714d42be8294c595eacb59d24f613d2da1d0f900ab40ebe97a8ab68e5405c2d",
+      "erreur": "b'NXR_(\\\\d+)__FIN\\\\r?\\\\n'",
+      "diagnostics": [
+        "DEBUG pid=6 NXLOGIN refus defi expire",
+        "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=1 decision=0 valide=0 echeance=0 retour=5 fin=3576"
+      ]
+    },
+    "reg-s2-selection-refus-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "1c0d3f2fd5a082f6740fa7456840de35280c45a9bd519070f8fcc6f7708df290",
+      "sha256_serie": "b68eb7f7de6b0836c50bf1eb5b968df716a35999ec283ba04d9ce31006d03d32"
+    },
+    "reg-s2-selection-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "7dd21e4f454e9e9cfc8ff7327ea20decf5934514f7e14c64ed76b2f15cdbeec8",
+      "sha256_serie": "f849e96a68ace22070e832c64bc202dd1211bb65a3575b1f16c68860e0379a4a"
+    },
+    "reg-s3-cut-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "b73e3dce43ff01652c0a4bec26f50fb74518daedfba38323c5695a3fa6b54b9d",
+      "sha256_serie": "9aaad5f5753461b3448cdd2af860fb8773f0b8ede916b7aba6af140bb4891cc9"
+    },
+    "reg-s3-selection-refus-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "bb2b9f613cc3d6187b64293a2d9ec6f413074f4a8fbdfdaa001495f9748ffbdd",
+      "sha256_serie": "39ed1574e965c5a1f27985a405242fe90f618899d7a9d8e5a65850c591ce7dc8"
+    },
+    "reg-s3-selection-x86_64-512": {
+      "succes": false,
+      "sha256_resultat": "1e757d6ab9b9cf8a1d17bb5a48ae469467d095b5b8e4751cbf5ac15897c04a34",
+      "sha256_serie": "8dffe337da206d5aa7cbfe1d5b077d0970431eba870639b831f5986018990d96",
+      "erreur": "b'absents=0x0 muets=0x0'",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHLIVE1 tag=15 decision=66872 valide=0 echeance=64692 retour=5 fin=66960"
+      ]
+    },
+    "reg-s4-cut-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "1b0abaa004e2341b97c9dfab0be19a8a5d8de1c478549c608234805c194f1d1c",
+      "sha256_serie": "3504399cb3925286198a2f7665d4c57b5cc15dc1559c5f309ef8f634ef7af511"
+    },
+    "reg-s4-selection-refus-x86_64-512": {
+      "succes": true,
+      "sha256_resultat": "e73dcfe0147920b8c645c3ffd00ce8caa4e90372f3bd7e9dd7ffecbd17e0b242",
+      "sha256_serie": "b9999f0dd7b41761a2b8a9ebfc9f93645cde6ca052f68863860ce1f31af38651"
+    },
+    "reg-s4-selection-x86_64-512": {
+      "succes": false,
+      "sha256_resultat": "4057f6253acec4f73d00b27a93a78be7b9dda316f69b2c7ee8d34ee33d8b4765",
+      "sha256_serie": "0e95de30ee5a670fe0ccdbf90193fd9c9d13b32370368bb8260e57eb4bb2e6d6",
+      "erreur": "b'absents=0x0 muets=0x0'",
+      "diagnostics": [
+        "DEBUG pid=6 NXBAIL op=NSHLIVE1 tag=15 decision=66304 valide=0 echeance=64004 retour=5 fin=66368"
+      ]
+    }
+  },
+  "profils": {
+    "aarch64-512": {
+      "chrono_invite_ms": [
+        3156,
+        28668,
+        63156,
+        103644,
+        106800,
+        138280,
+        166800
+      ],
+      "tags": [
+        1,
+        275,
+        284,
+        286,
+        296
+      ],
+      "acteurs": {
+        "P9": 3,
+        "bloc": 2,
+        "pilote": 4,
+        "nsh": 5,
+        "NovaAuth": 6,
+        "signataire": 7,
+        "courtier": 8
+      },
+      "pid_temoins": [
+        16,
+        18
+      ],
+      "anciens_droits": [
+        10,
+        10,
+        5,
+        17,
+        10
+      ],
+      "stdout": "41094209430a44094509460a",
+      "stderr": "",
+      "statuts": [
+        0,
+        126,
+        0
+      ],
+      "durees_hote_ms": {
+        "preparation": 5982,
+        "authentification_et_premier_echange": 4836,
+        "installation": 18909,
+        "resolution_admission": 7873,
+        "admission_a_sortie_processus": 22,
+        "sortie_a_invite": 1194
+      },
+      "racines_ipc": {
+        "2": {
+          "pic": 4,
+          "fin": 0
+        },
+        "4": {
+          "pic": 3,
+          "fin": 0
+        },
+        "3": {
+          "pic": 4,
+          "fin": 0
+        },
+        "1": {
+          "pic": 4,
+          "fin": 0
+        },
+        "6": {
+          "pic": 4,
+          "fin": 0
+        },
+        "7": {
+          "pic": 4,
+          "fin": 0
+        },
+        "5": {
+          "pic": 4,
+          "fin": 0
+        },
+        "8": {
+          "pic": 4,
+          "fin": 0
+        },
+        "9": {
+          "pic": 2,
+          "fin": 0
+        },
+        "10": {
+          "pic": 2,
+          "fin": 0
+        },
+        "13": {
+          "pic": 2,
+          "fin": 0
+        },
+        "14": {
+          "pic": 4,
+          "fin": 0
+        },
+        "15": {
+          "pic": 2,
+          "fin": 0
+        },
+        "16": {
+          "pic": 2,
+          "fin": 0
+        },
+        "17": {
+          "pic": 4,
+          "fin": 0
+        },
+        "18": {
+          "pic": 2,
+          "fin": 0
+        }
+      },
+      "endpoints_noeuds_handles_shell": [
+        [
+          41,
+          82,
+          8
+        ],
+        [
+          41,
+          82,
+          8
+        ]
+      ],
+      "ram": {
+        "services_admis": {
+          "image": 1604,
+          "tables": 197,
+          "kpile": 128,
+          "upile": 194,
+          "heap": 16,
+          "buddy": 1,
+          "ipc": 18,
+          "utilisateur": 209,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 60956,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 8920,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 2383,
+          "retenu": 2852,
+          "dma": 16,
+          "elf_preparation": 0
+        },
+        "services_draines": {
+          "image": 1604,
+          "tables": 192,
+          "kpile": 112,
+          "upile": 130,
+          "heap": 16,
+          "buddy": 1,
+          "ipc": 16,
+          "utilisateur": 309,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 60943,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 8920,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 2396,
+          "retenu": 2865,
+          "dma": 16,
+          "elf_preparation": 0
+        }
+      },
+      "cinquieme_racine": {
+        "statut": 6,
+        "pid": 5,
+        "avant": "43, 84, 10",
+        "apres": "43, 84, 10"
+      }
+    },
+    "aarch64-4096": {
+      "chrono_invite_ms": [
+        1792,
+        22036,
+        61792,
+        92628,
+        94488,
+        121160,
+        154488
+      ],
+      "tags": [
+        1,
+        275,
+        284,
+        286,
+        296
+      ],
+      "acteurs": {
+        "P9": 3,
+        "bloc": 2,
+        "pilote": 4,
+        "nsh": 5,
+        "NovaAuth": 6,
+        "signataire": 7,
+        "courtier": 8
+      },
+      "pid_temoins": [
+        16,
+        18
+      ],
+      "anciens_droits": [
+        10,
+        10,
+        5,
+        17,
+        10
+      ],
+      "stdout": "41094209430a44094509460a",
+      "stderr": "",
+      "statuts": [
+        0,
+        126,
+        0
+      ],
+      "durees_hote_ms": {
+        "preparation": 5985,
+        "authentification_et_premier_echange": 3330,
+        "installation": 17842,
+        "resolution_admission": 6599,
+        "admission_a_sortie_processus": 24,
+        "sortie_a_invite": 950
+      },
+      "racines_ipc": {
+        "2": {
+          "pic": 4,
+          "fin": 0
+        },
+        "4": {
+          "pic": 3,
+          "fin": 0
+        },
+        "3": {
+          "pic": 4,
+          "fin": 0
+        },
+        "1": {
+          "pic": 4,
+          "fin": 0
+        },
+        "6": {
+          "pic": 4,
+          "fin": 0
+        },
+        "7": {
+          "pic": 4,
+          "fin": 0
+        },
+        "5": {
+          "pic": 4,
+          "fin": 0
+        },
+        "8": {
+          "pic": 4,
+          "fin": 0
+        },
+        "9": {
+          "pic": 2,
+          "fin": 0
+        },
+        "10": {
+          "pic": 2,
+          "fin": 0
+        },
+        "13": {
+          "pic": 2,
+          "fin": 0
+        },
+        "14": {
+          "pic": 4,
+          "fin": 0
+        },
+        "15": {
+          "pic": 2,
+          "fin": 0
+        },
+        "16": {
+          "pic": 2,
+          "fin": 0
+        },
+        "17": {
+          "pic": 4,
+          "fin": 0
+        },
+        "18": {
+          "pic": 2,
+          "fin": 0
+        }
+      },
+      "endpoints_noeuds_handles_shell": [
+        [
+          41,
+          82,
+          8
+        ],
+        [
+          41,
+          82,
+          8
+        ]
+      ],
+      "ram": {
+        "services_admis": {
+          "image": 1604,
+          "tables": 194,
+          "kpile": 128,
+          "upile": 194,
+          "heap": 16,
+          "buddy": 1,
+          "ipc": 18,
+          "utilisateur": 208,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 60960,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 8920,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 2379,
+          "retenu": 2848,
+          "dma": 16,
+          "elf_preparation": 0
+        },
+        "services_draines": {
+          "image": 1604,
+          "tables": 192,
+          "kpile": 112,
+          "upile": 130,
+          "heap": 16,
+          "buddy": 1,
+          "ipc": 16,
+          "utilisateur": 293,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 60959,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 8920,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 469,
+          "resident": 2380,
+          "retenu": 2849,
+          "dma": 16,
+          "elf_preparation": 0
+        }
+      },
+      "cinquieme_racine": {
+        "statut": 6,
+        "pid": 5,
+        "avant": "43, 84, 10",
+        "apres": "43, 84, 10"
+      }
+    },
+    "x86_64-512": {
+      "chrono_invite_ms": [
+        4024,
+        32444,
+        64024,
+        110276,
+        113540,
+        146464,
+        173540
+      ],
+      "tags": [
+        1,
+        262,
+        271,
+        273,
+        283
+      ],
+      "acteurs": {
+        "P9": 3,
+        "bloc": 2,
+        "pilote": 4,
+        "nsh": 5,
+        "NovaAuth": 6,
+        "signataire": 7,
+        "courtier": 8
+      },
+      "pid_temoins": [
+        16,
+        18
+      ],
+      "anciens_droits": [
+        10,
+        10,
+        5,
+        17,
+        10
+      ],
+      "stdout": "41094209430a44094509460a",
+      "stderr": "",
+      "statuts": [
+        0,
+        126,
+        0
+      ],
+      "durees_hote_ms": {
+        "preparation": 2312,
+        "authentification_et_premier_echange": 4791,
+        "installation": 15039,
+        "resolution_admission": 8252,
+        "admission_a_sortie_processus": 23,
+        "sortie_a_invite": 1183
+      },
+      "racines_ipc": {
+        "2": {
+          "pic": 4,
+          "fin": 0
+        },
+        "4": {
+          "pic": 3,
+          "fin": 0
+        },
+        "3": {
+          "pic": 4,
+          "fin": 0
+        },
+        "1": {
+          "pic": 4,
+          "fin": 0
+        },
+        "6": {
+          "pic": 4,
+          "fin": 0
+        },
+        "7": {
+          "pic": 4,
+          "fin": 0
+        },
+        "5": {
+          "pic": 4,
+          "fin": 0
+        },
+        "8": {
+          "pic": 4,
+          "fin": 0
+        },
+        "9": {
+          "pic": 2,
+          "fin": 0
+        },
+        "10": {
+          "pic": 2,
+          "fin": 0
+        },
+        "13": {
+          "pic": 2,
+          "fin": 0
+        },
+        "14": {
+          "pic": 4,
+          "fin": 0
+        },
+        "15": {
+          "pic": 2,
+          "fin": 0
+        },
+        "16": {
+          "pic": 2,
+          "fin": 0
+        },
+        "17": {
+          "pic": 4,
+          "fin": 0
+        },
+        "18": {
+          "pic": 2,
+          "fin": 0
+        }
+      },
+      "endpoints_noeuds_handles_shell": [
+        [
+          41,
+          82,
+          8
+        ],
+        [
+          41,
+          82,
+          8
+        ]
+      ],
+      "ram": {
+        "services_admis": {
+          "image": 1663,
+          "tables": 191,
+          "kpile": 128,
+          "upile": 194,
+          "heap": 32,
+          "buddy": 2,
+          "ipc": 18,
+          "utilisateur": 218,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 61468,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 11555,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 2462,
+          "retenu": 2462,
+          "dma": 16,
+          "elf_preparation": 0
+        },
+        "services_draines": {
+          "image": 1663,
+          "tables": 186,
+          "kpile": 112,
+          "upile": 130,
+          "heap": 32,
+          "buddy": 2,
+          "ipc": 16,
+          "utilisateur": 302,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 61471,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 11555,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 2459,
+          "retenu": 2459,
+          "dma": 16,
+          "elf_preparation": 0
+        }
+      },
+      "cinquieme_racine": {
+        "statut": 6,
+        "pid": 5,
+        "avant": "43, 84, 10",
+        "apres": "43, 84, 10"
+      }
+    },
+    "x86_64-4096": {
+      "chrono_invite_ms": [
+        2924,
+        27340,
+        62924,
+        101984,
+        104672,
+        134092,
+        164672
+      ],
+      "tags": [
+        1,
+        262,
+        271,
+        273,
+        283
+      ],
+      "acteurs": {
+        "P9": 3,
+        "bloc": 2,
+        "pilote": 4,
+        "nsh": 5,
+        "NovaAuth": 6,
+        "signataire": 7,
+        "courtier": 8
+      },
+      "pid_temoins": [
+        16,
+        18
+      ],
+      "anciens_droits": [
+        10,
+        10,
+        5,
+        17,
+        10
+      ],
+      "stdout": "41094209430a44094509460a",
+      "stderr": "",
+      "statuts": [
+        0,
+        126,
+        0
+      ],
+      "durees_hote_ms": {
+        "preparation": 2367,
+        "authentification_et_premier_echange": 3348,
+        "installation": 14174,
+        "resolution_admission": 6259,
+        "admission_a_sortie_processus": 24,
+        "sortie_a_invite": 978
+      },
+      "racines_ipc": {
+        "2": {
+          "pic": 4,
+          "fin": 0
+        },
+        "4": {
+          "pic": 3,
+          "fin": 0
+        },
+        "3": {
+          "pic": 4,
+          "fin": 0
+        },
+        "1": {
+          "pic": 4,
+          "fin": 0
+        },
+        "6": {
+          "pic": 4,
+          "fin": 0
+        },
+        "7": {
+          "pic": 4,
+          "fin": 0
+        },
+        "5": {
+          "pic": 4,
+          "fin": 0
+        },
+        "8": {
+          "pic": 4,
+          "fin": 0
+        },
+        "9": {
+          "pic": 2,
+          "fin": 0
+        },
+        "10": {
+          "pic": 2,
+          "fin": 0
+        },
+        "13": {
+          "pic": 2,
+          "fin": 0
+        },
+        "14": {
+          "pic": 4,
+          "fin": 0
+        },
+        "15": {
+          "pic": 2,
+          "fin": 0
+        },
+        "16": {
+          "pic": 2,
+          "fin": 0
+        },
+        "17": {
+          "pic": 4,
+          "fin": 0
+        },
+        "18": {
+          "pic": 2,
+          "fin": 0
+        }
+      },
+      "endpoints_noeuds_handles_shell": [
+        [
+          41,
+          82,
+          8
+        ],
+        [
+          41,
+          82,
+          8
+        ]
+      ],
+      "ram": {
+        "services_admis": {
+          "image": 1663,
+          "tables": 188,
+          "kpile": 128,
+          "upile": 194,
+          "heap": 32,
+          "buddy": 2,
+          "ipc": 18,
+          "utilisateur": 217,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 61472,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 11667,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 2458,
+          "retenu": 2458,
+          "dma": 16,
+          "elf_preparation": 0
+        },
+        "services_draines": {
+          "image": 1663,
+          "tables": 186,
+          "kpile": 112,
+          "upile": 130,
+          "heap": 32,
+          "buddy": 2,
+          "ipc": 16,
+          "utilisateur": 302,
+          "processus": 5,
+          "meta_octets": 27496,
+          "meta_actifs": 3600,
+          "tcb_octets": 6656,
+          "heap_va": 65536,
+          "libres": 61471,
+          "cache": 0,
+          "chargeur": 0,
+          "restitue": 11667,
+          "extra_elf": 0,
+          "video": 469,
+          "ram_video": 0,
+          "resident": 2459,
+          "retenu": 2459,
+          "dma": 16,
+          "elf_preparation": 0
+        }
+      },
+      "cinquieme_racine": {
+        "statut": 6,
+        "pid": 5,
+        "avant": "43, 84, 10",
+        "apres": "43, 84, 10"
+      }
+    }
+  },
+  "elf": {
+    "aarch64-sdk-example": {
+      "architecture": "aarch64",
+      "profil": "sdk-example",
+      "elf_sha256": "db2d14ec8a1f8d1ac22acc331ee4d3d90336a90adc8d50ca057c3129e129c3a8",
+      "noyau_sha256": "dfb31729e6fad275c8c4da9c69311e8fd72aa1b4edcafa795888bbacfc93dc0b",
+      "journal": "serie-aarch64-sdk-example-2cpu.log",
+      "journal_sha256": "eaa9f04a6f61dce13bbc8901b2ec7237b561162670f9a50f8b271bef9464fc03",
+      "qemu": "QEMU emulator version 11.1.3",
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "sortie": 0,
+        "restitution": true
+      }
+    },
+    "aarch64-threads-test": {
+      "architecture": "aarch64",
+      "profil": "threads-test",
+      "elf_sha256": "fa1640df7589a2700f172acc43197c2904e6e2f833fb748048bc15984575cbd9",
+      "noyau_sha256": "d0338c4acf3cda959a97f7968d2c77d08d0b7608bb45b2c8b4fadc9ad7cd3330",
+      "journal": "serie-aarch64-threads-test-2cpu-archive.log",
+      "journal_sha256": "a8af1340bf8c0b9f93663d116bab0447b365a48f4ed2bf9838dc521f0fecd6e8",
+      "qemu": "QEMU emulator version 11.1.3",
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "cpu_final": 1,
+        "preemptions": [
+          6,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61463,
+        "cadres_apres": 61463,
+        "blocs": 4,
+        "tcb_apres": 3
+      }
+    },
+    "x86_64-sdk-example": {
+      "architecture": "x86_64",
+      "profil": "sdk-example",
+      "elf_sha256": "1ad5ebf8b6a0d80b10d2df826500f39052fdc222fac418640b408b9657d78c6e",
+      "noyau_sha256": "7c7f07154f50c5ba88b231dde673fdeefbcbca62874d60774921ccd0c6bac17e",
+      "journal": "serie-x86_64-sdk-example-2cpu.log",
+      "journal_sha256": "6241273b5b77ca457bcb7609ece127086d6e7781734e73dc1b82aa7ae967ec70",
+      "qemu": "QEMU emulator version 11.1.3",
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "sortie": 0,
+        "restitution": true
+      }
+    },
+    "x86_64-threads-test": {
+      "architecture": "x86_64",
+      "profil": "threads-test",
+      "elf_sha256": "6073a78fb2ffa5c716e75ac942932728faa218d614c3dedf6f30c9f067f6b30c",
+      "noyau_sha256": "abf276cc42ad2070330de1f228fa86a3d0ae42bf2df266d261099b0216c94350",
+      "journal": "serie-x86_64-threads-test-2cpu-archive.log",
+      "journal_sha256": "4cec907eb42e281fda1002e932c9eecd608b3b688233bf52d4a6113d0593b359",
+      "qemu": "QEMU emulator version 11.1.3",
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61807,
+        "cadres_apres": 61807,
+        "blocs": 4,
+        "tcb_apres": 3
+      }
+    }
+  },
+  "abi": {
+    "ordinaire": {
+      "reussis": 9,
+      "sha256": "82c8c28e334edcd130e678afe579194db1362cda7abfcb4f55f771c0f3a55e3a"
+    },
+    "qualification": {
+      "reussis": 9,
+      "sha256": "b56776870b3f7ca917a30d569daa5e3f0daafab2803459dfde24471f18c4f38c"
+    }
+  },
+  "noyaux_ordinaires": {
+    "base": {
+      "x86_64": "af6138c4516189040be0c247d07f0da613e38183f09e6b21af71acfc5360eb83",
+      "aarch64": "f32262b56dda238a58b7988fd0a508db742778cb89125bb582c81795f9a2e054"
+    },
+    "candidat": {
+      "x86_64": "af6138c4516189040be0c247d07f0da613e38183f09e6b21af71acfc5360eb83",
+      "aarch64": "f32262b56dda238a58b7988fd0a508db742778cb89125bb582c81795f9a2e054"
+    }
+  },
+  "isos": {
+    "aarch64": {
+      "sha256": "509bd2a57d6ae7168791777f62cc0c6335609373f1a5b4918b951a5b7310aa0e",
+      "composants": {
+        "noyau": {
+          "offset": 3024896,
+          "taille": 6946112,
+          "sha256": "6d62b3d7274391a651fce11e42c3e0ec63ae8778c62cdc02b46881b9430364d9"
+        },
+        "nsh.elf": {
+          "offset": 7698570,
+          "taille": 263568,
+          "sha256": "62b4f04b9ad5c8e86442fff5abd473d12f24db13ff5a4096a0ef954fb12a0074"
+        },
+        "auth-verifier.elf": {
+          "offset": 8183040,
+          "taille": 113312,
+          "sha256": "ce9f76c45a19384c576ff654a68f7b1bf2b9e5200abc1a39b097318c2ff34dd9"
+        },
+        "exec-relay.elf": {
+          "offset": 8126080,
+          "taille": 9312,
+          "sha256": "0cb3e1936fd8fe9f5473087718cf13f657e04a1b05d2573221becfc6bb025a22"
+        },
+        "shell-signer.elf": {
+          "offset": 8063552,
+          "taille": 62528,
+          "sha256": "5bad8201c0ff5c862f5de9426c4aa6201c085fc2ea98771e7ab4cd01c27798fd"
+        },
+        "storage-media.bin": {
+          "offset": 3993160,
+          "taille": 443800,
+          "sha256": "51c5fc0c935b8c225d319e0bb8ff35846470ad7119ea5561f25a8fb0bafb3c39"
+        },
+        "storage-media.bin#2": {
+          "offset": 6457630,
+          "taille": 443800,
+          "sha256": "51c5fc0c935b8c225d319e0bb8ff35846470ad7119ea5561f25a8fb0bafb3c39"
+        },
+        "storage-media.bin#3": {
+          "offset": 8311176,
+          "taille": 443800,
+          "sha256": "51c5fc0c935b8c225d319e0bb8ff35846470ad7119ea5561f25a8fb0bafb3c39"
+        },
+        "service_manager.bin": {
+          "offset": 8015896,
+          "taille": 47344,
+          "sha256": "fadf7d1eeb91287058e3c6b7c8f1751e30a0397bfd3c18457dfbf554374ef048"
+        },
+        "storage-managed.bin": {
+          "offset": 8152832,
+          "taille": 13088,
+          "sha256": "ce51cce1108ed0b826e3c7879ae37047aac0cc292e839f169f66fdb62f8a0e53"
+        }
+      }
+    },
+    "x86_64": {
+      "sha256": "8517a8112a0109f96885e325e21e87a3ea3aa0e49c9c8b256d49a2f1eed10479",
+      "composants": {
+        "noyau": {
+          "offset": 3024896,
+          "taille": 7059520,
+          "sha256": "c752b7d2011ee66cd3e4c35bdb9489c565bce63b8b577c638dc37ea096d30cf8"
+        },
+        "nsh.elf": {
+          "offset": 8401870,
+          "taille": 279952,
+          "sha256": "1d176ba9af801b43ddbf67c8d090032b47d57790f859a10e8fbc7bab8488d4b4"
+        },
+        "auth-verifier.elf": {
+          "offset": 7006840,
+          "taille": 112736,
+          "sha256": "d33031b9661a655a010d0f845b822c49e6b92ff2a46124ccb2f55d7d6f3a6194"
+        },
+        "exec-relay.elf": {
+          "offset": 6949728,
+          "taille": 9064,
+          "sha256": "c5f1be1b1eb3c3f34263c4bc57d8c37edbdcad092e31b1d1f8fc9a510c74ec37"
+        },
+        "shell-signer.elf": {
+          "offset": 6882848,
+          "taille": 66880,
+          "sha256": "bfd8b5095eb4480c036c40fd70854bfd650596b8cd5aead0496c89119eb5095b"
+        },
+        "storage-media.bin": {
+          "offset": 4109208,
+          "taille": 464296,
+          "sha256": "16527bdac751ae0b4772f8412241bb188e0d653d5c6e9a60155d2990fa794aa3"
+        },
+        "storage-media.bin#2": {
+          "offset": 4578040,
+          "taille": 464296,
+          "sha256": "16527bdac751ae0b4772f8412241bb188e0d653d5c6e9a60155d2990fa794aa3"
+        },
+        "storage-media.bin#3": {
+          "offset": 7136558,
+          "taille": 464296,
+          "sha256": "16527bdac751ae0b4772f8412241bb188e0d653d5c6e9a60155d2990fa794aa3"
+        },
+        "service_manager.bin": {
+          "offset": 6835032,
+          "taille": 47536,
+          "sha256": "638baf2444934b5127148e79298a7f5060184fdf58b7862748b809a617c02b39"
+        },
+        "storage-managed.bin": {
+          "offset": 6976496,
+          "taille": 13136,
+          "sha256": "17e9b292da6040821e714cd141237e9f481c0e9c17991d21dbf58100976e71c2"
+        }
+      }
+    }
+  },
+  "temoins": {
+    "aarch64-512": {
+      "incertain": [
+        "charge",
+        22,
+        11
+      ],
+      "course": [
+        "charge",
+        {
+          "op": "NSHOPEN1",
+          "tag": 1,
+          "decision_ms": 3568,
+          "valide": true,
+          "echeance_ms": 62716,
+          "retour": 0,
+          "fin_ms": 3568
+        },
+        [
+          {
+            "op": "NSHCLOS1",
+            "tag": 4,
+            "decision_ms": 0,
+            "valide": false,
+            "echeance_ms": 62716,
+            "retour": 0,
+            "fin_ms": 62748
+          },
+          {
+            "op": "NSHCLOS1",
+            "tag": 5,
+            "decision_ms": 0,
+            "valide": false,
+            "echeance_ms": 62716,
+            "retour": 0,
+            "fin_ms": 62748
+          }
+        ],
+        {
+          "op": "NSHOPEN1",
+          "tag": 7,
+          "decision_ms": 66924,
+          "valide": true,
+          "echeance_ms": 125904,
+          "retour": 0,
+          "fin_ms": 66924
+        }
+      ]
+    },
+    "aarch64-4096": {
+      "incertain": [
+        "charge",
+        22,
+        11
+      ],
+      "course": [
+        "charge",
+        {
+          "op": "NSHOPEN1",
+          "tag": 1,
+          "decision_ms": 2508,
+          "valide": true,
+          "echeance_ms": 61920,
+          "retour": 0,
+          "fin_ms": 2508
+        },
+        [
+          {
+            "op": "NSHCLOS1",
+            "tag": 4,
+            "decision_ms": 0,
+            "valide": false,
+            "echeance_ms": 61920,
+            "retour": 0,
+            "fin_ms": 61944
+          },
+          {
+            "op": "NSHCLOS1",
+            "tag": 5,
+            "decision_ms": 0,
+            "valide": false,
+            "echeance_ms": 61920,
+            "retour": 0,
+            "fin_ms": 61944
+          }
+        ],
+        {
+          "op": "NSHOPEN1",
+          "tag": 7,
+          "decision_ms": 64576,
+          "valide": true,
+          "echeance_ms": 123880,
+          "retour": 0,
+          "fin_ms": 64576
+        }
+      ]
+    },
+    "x86_64-512": {
+      "incertain": [
+        "charge",
+        22,
+        11
+      ],
+      "course": [
+        "reference",
+        {
+          "op": "NSHOPEN1",
+          "tag": 1,
+          "decision_ms": 4876,
+          "valide": true,
+          "echeance_ms": 63716,
+          "retour": 0,
+          "fin_ms": 4876
+        },
+        [
+          {
+            "op": "NSHCLOS1",
+            "tag": 4,
+            "decision_ms": 0,
+            "valide": false,
+            "echeance_ms": 63716,
+            "retour": 0,
+            "fin_ms": 63752
+          },
+          {
+            "op": "NSHCLOS1",
+            "tag": 5,
+            "decision_ms": 0,
+            "valide": false,
+            "echeance_ms": 63716,
+            "retour": 0,
+            "fin_ms": 63756
+          }
+        ],
+        {
+          "op": "NSHOPEN1",
+          "tag": 7,
+          "decision_ms": 68140,
+          "valide": true,
+          "echeance_ms": 127064,
+          "retour": 0,
+          "fin_ms": 68140
+        }
+      ]
+    },
+    "x86_64-4096": {
+      "incertain": [
+        "charge",
+        22,
+        11
+      ],
+      "course": [
+        "charge",
+        {
+          "op": "NSHOPEN1",
+          "tag": 1,
+          "decision_ms": 4116,
+          "valide": true,
+          "echeance_ms": 63200,
+          "retour": 0,
+          "fin_ms": 4116
+        },
+        [
+          {
+            "op": "NSHCLOS1",
+            "tag": 4,
+            "decision_ms": 0,
+            "valide": false,
+            "echeance_ms": 63200,
+            "retour": 0,
+            "fin_ms": 63212
+          },
+          {
+            "op": "NSHCLOS1",
+            "tag": 5,
+            "decision_ms": 0,
+            "valide": false,
+            "echeance_ms": 63200,
+            "retour": 0,
+            "fin_ms": 63212
+          }
+        ],
+        {
+          "op": "NSHOPEN1",
+          "tag": 7,
+          "decision_ms": 67268,
+          "valide": true,
+          "echeance_ms": 126264,
+          "retour": 0,
+          "fin_ms": 67268
+        }
+      ]
+    }
+  },
+  "hote_reference": {
+    "hote-avant": {
+      "date": "2026-11-17T12:11:36.917783+00:00",
+      "charge": "{ 7.00 8.21 8.40 }",
+      "qemu": 0
+    },
+    "hote-apres": {
+      "date": "2026-11-17T12:31:27.973044+00:00",
+      "charge": "{ 3.88 4.42 5.45 }",
+      "qemu": 0
+    }
+  },
+  "sessions_hote": {
+    "aarch64": {
+      "reussis": 5,
+      "sha256": "08a181f2f51c8a75ab06b0832d9e190a9ebe09d9152cf1281e587c222b85514b"
+    },
+    "x86_64": {
+      "reussis": 5,
+      "sha256": "1798271ecbdf91cd3599ee5e2a93306ad8d389d9116302a3dd9e0737d4dccbc9"
+    }
+  }
+}
