@@ -71,7 +71,7 @@ fn catalogue_et_rendu() {
                 "[", "alias", "break", "cat", "cd", "clear", "continue", "cp", "echo", "exit",
                 "export", "false", "head", "help", "history", "journal", "ls", "man", "mkdir",
                 "more", "mv", "nsh", "ps", "pwd", "return", "rm", "rmdir", "service", "tail",
-                "test", "top", "touch", "true", "unalias", "unset", "vi", "wc"
+                "test", "top", "touch", "true", "unalias", "uname", "unset", "vi", "wc"
             ]
         );
     }
@@ -128,11 +128,11 @@ fn aiguillage_sans_aucune_interface_metier() {
             }
             assert_eq!(
                 doc_options::answer(page.name, &["--inconnue"], lang),
-                Ok(Some(3))
+                Ok(Some(if page.name == "uname" { 1 } else { 3 }))
             );
             assert_eq!(
                 doc_options::answer(page.name, &["--", "--inconnue"], lang),
-                Ok(None)
+                if page.name == "uname" { Ok(Some(1)) } else { Ok(None) }
             );
         }
     }

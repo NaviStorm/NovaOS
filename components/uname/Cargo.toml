@@ -1,0 +1,24 @@
+[package]
+name = "nova-uname"
+version = "0.24.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "uname"
+path = "src/main.rs"
+
+[target.'cfg(target_os = "none")'.dependencies]
+nova-cli = { path = ".." }
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+strip = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = "0.2"
