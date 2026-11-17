@@ -27,14 +27,14 @@ pub(super) fn presenter(
     fs.simple(w::STAGE, 0)?;
     let path = super::super::paths::resolve(fs, "lignes.tsv")?;
     fs.at(w::STAGE, 0, path.as_bytes(), w::SELECT_FILE)?;
-    let (tx, rx) = rt::channels()?;
+    let (tx, rx, tag) = fs.transaction_sonde()?;
     let frame = w::frame(0xe8, fs.session, cle);
-    rt::send_for(tx, cle, &frame, 2500)?;
+    rt::send_for(tx, tag, &frame, 2500)?;
     // Le service est libre de valider avant ou après ce premier appel.
     let essai = admit(cle, argv);
     let ack = rt::receive_for(rx, 2500)?;
     if ack.kind != 1
-        || ack.tag != cle
+        || ack.tag != tag
         || ack.len != 128
         || ack.payload[..2] != frame[..2]
         || ack.payload[3] != 0

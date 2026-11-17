@@ -21,3 +21,11 @@
 +    }
 +    let marker = b"NXVPIPE VFS instance et double validation refusees";
 +    rt::call(rt::DEBUG_WRITE, marker.as_ptr() as u64, marker.len() as u64, 0);
+--- a/novaOS/user/storage/fileapi.rs
++++ b/novaOS/user/storage/fileapi.rs
+@@ -14,0 +15,5 @@
++    /// Réserve le tag sur le même client que les appels précédents et suivants.
++    pub fn transaction_sonde(&mut self) -> rt::Result<(u64, u64, u64)> {
++        self.tag = self.tag.checked_add(1).ok_or(rt::LIMIT)?;
++        Ok((self.tx, self.rx, self.tag))
++    }
