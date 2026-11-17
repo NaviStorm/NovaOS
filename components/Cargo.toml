@@ -103,3 +103,8 @@ test = false
 name = "vi"
 path = "vi/main.rs"
 test = false
+
+[[bin]]
+name = "sleep"
+path = "coreutils/sleep/native.rs"
+test = false

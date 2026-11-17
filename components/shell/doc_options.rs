@@ -9,13 +9,32 @@ fn invalid(option: &str) -> rt::Result<Option<u64>> {
     Ok(Some(rt::BAD_ARGUMENT))
 }
 
+#[path = "../coreutils/sleep/options.rs"]
+mod sleep_options;
+
 pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::Result<Option<u64>> {
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
-    let (help, version, topic) = if let Some(p) = Program::named(name, false) {
+    let (help, version, topic) = if name == "sleep" {
+        use sleep_options::Action;
+        match sleep_options::options(args.iter().map(|s| s.as_bytes()), false) {
+            Ok(Action::Help) => (true, false, &args[..0]),
+            Ok(Action::Version) => (false, true, &args[..0]),
+            Ok(Action::Wait(_)) => return Ok(None),
+            Err(_) => {
+                return invalid(
+                    flags
+                        .iter()
+                        .copied()
+                        .find(|s| s.starts_with('-'))
+                        .unwrap_or(name),
+                );
+            }
+        }
+    } else if let Some(p) = Program::named(name, false) {
         let parsed = match options::parse(p, args) {
             Ok(o) => o,
             Err(_) => return invalid(options::invalid_option(p, args).unwrap_or(name)),

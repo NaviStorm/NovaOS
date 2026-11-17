@@ -31,6 +31,21 @@ pub struct Page {
 }
 pub static PAGES: &[Page] = &[
     Page {
+        name: "sleep",
+        provider: "nova-cli",
+        description: Text("Wait for the sum of the durations.", "Attendre la somme des durées."),
+        syntax: Text::same("sleep [--] NUMBER[s|m|h|d]... | sleep --help | sleep --version"),
+        arguments: Text("Seconds by default. s, m, h and d mean seconds, minutes, hours and days. Fractions, exponents and inf are accepted.",
+                        "Secondes par défaut. s, m, h et d désignent les secondes, minutes, heures et jours. Fractions, exposants et inf sont acceptés."),
+        examples: Text::same("sleep 0.02 1e-3s"),
+        rights: Text("A private IPC endpoint during a positive wait. Documentation uses only output.",
+                     "Un canal IPC privé pendant une attente positive. La documentation utilise uniquement la sortie."),
+        effects: Text("Blocks the caller. Leaves stdin and files untouched.", "Suspend l’appelant. Préserve l’entrée et les fichiers."),
+        limits: Text("Success 0, invalid duration or option 1. Guest timer resolution 4 ms.",
+                     "Succès 0, durée ou option invalide 1. Résolution du minuteur invité de 4 ms."),
+        topics: &[],
+    },
+    Page {
         name: "nsh",
         provider: "shell",
         description: Text(
