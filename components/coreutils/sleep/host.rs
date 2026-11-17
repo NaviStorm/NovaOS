@@ -17,6 +17,7 @@ unsafe extern "C" {
     fn localeconv() -> *const *const c_char;
     fn write(fd: i32, data: *const std::ffi::c_void, len: usize) -> isize;
     fn pause() -> i32;
+    fn strerror(code: i32) -> *const c_char;
 }
 fn output(mut data: &[u8]) -> io::Result<()> {
     while !data.is_empty() {
@@ -72,8 +73,10 @@ unsafe extern "C" fn main(argc: i32, argv: *const *const c_char) -> i32 {
             } else {
                 page.version(language)
             };
-            if output(bytes.as_bytes()).is_err() {
-                let _ = io::stderr().write_all(b"sleep: write error\n");
+            if let Err(error) = output(bytes.as_bytes()) {
+                let reason = unsafe { CStr::from_ptr(strerror(error.raw_os_error().unwrap_or(5))) };
+                let _ = io::stderr()
+                    .write_all(&[&b"sleep: write error: "[..], reason.to_bytes(), b"\n"].concat());
                 return 1;
             }
         }
