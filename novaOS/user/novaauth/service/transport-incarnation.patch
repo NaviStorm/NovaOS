@@ -1,0 +1,35 @@
+--- a/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
+@@ -69 +69,4 @@
+-    conversation(s, owner, owner, fs)?;
++    let (local, remote) = conversation(s, owner, owner, fs)?;
++    // Les feuilles de stockage (22) et de transport opaque (23) sont distinctes.
++    config(s, owner, 9, &[local]);
++    config(s, fs, if service == 22 { 464 } else { 465 }, &[remote]);
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -51,0 +52,10 @@
++    pub(crate) fn authority_cell(&self, sector: &mut [u8], write: bool) -> crate::runtime::Result<()> {
++        if self.failed.get() || self.count != 514 || crate::runtime::config(13) != 0x4e4133 {
++            return Err(crate::runtime::REFUSED);
++        }
++        let size = self.geometry.sector_size() as usize;
++        if sector.len() != size { return Err(crate::runtime::BAD_ARGUMENT); }
++        let page = if write { 512u64 } else { 513u64 };
++        let mut block = self.session.try_borrow_mut().map_err(|_| crate::runtime::WOULD_BLOCK)?;
++        block.transfer(sector, page * (4096 / size) as u64, write)
++    }
+@@ -96 +106 @@
+-        if crate::runtime::config(13)==0x4e4133 && self.count==authority::VOLUME+12 {return authority::VOLUME;}
++        if crate::runtime::config(13)==0x4e4133 && matches!(self.count, 514 | 524) {return authority::VOLUME;}
+--- a/novaOS/user/novafs/main.rs
++++ b/novaOS/user/novafs/main.rs
+@@ -8,0 +9,2 @@
++#[path = "../novaauth/transport_qemu/port_invite.rs"]
++mod transport_autorite;
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -792,0 +793 @@
++    let mut transport = crate::transport_autorite::Port::default();
+@@ -819,0 +821 @@
++        transport.poll(dev, sector as usize, exec_files_lab::config(465))?;

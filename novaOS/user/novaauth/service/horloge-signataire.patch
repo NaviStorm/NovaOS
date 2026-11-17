@@ -1,0 +1,39 @@
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -199 +199 @@
+-        for key in ["NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC","NOVA_QEMU_SERVER_SEED","NOVA_QEMU_SERVER_PUB"] {
++        for key in ["NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC","NOVA_QEMU_SERVER_SEED","NOVA_QEMU_SERVER_PUB","NOVA_GUEST_CERT","NOVA_AUTHORITY_CERT","NOVA_FIXTURE_CA","NOVA_AUTHORITY_PUB"] {
+@@ -206 +206 @@
+-        let guest_flags = format!("{flags}\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
++        let guest_flags = format!("{flags}\x1f--cfg\x1faes_force_soft\x1f--cfg\x1fpolyval_force_soft\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
+@@ -208 +208 @@
+-            .args(["build","--release","--locked","--offline","--features","incarnation-guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","horloge-guest","--bins","--target",&target])
+--- a/novaOS/kernel/src/sched/process/ipc/service.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service.rs
+@@ -532 +532,3 @@
+-            && s.processes.get(pid).service_id == auth_lab::AUTH)) {
++            && (s.processes.get(pid).service_id == auth_lab::AUTH
++                || (s.processes.get(pid).service_id == 23 && s.processes.get(pid).outcome.is_none()
++                    && s.processes.get(pid).space.is_some())))) {
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -376,0 +377,4 @@
++    }
++    pub(super) fn tls_snapshot(&self, p: Pid) -> (usize,usize,usize,usize) {
++        (self.root_count(p.number),self.budget_usage(p).2,
++         self.waits.ids().filter(|&id| self.waits.get(id).pid==p).count(), self.pages())
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -32,0 +33,11 @@
++    if matches!(msg, "NAUTH TLS avant" | "NAUTH TLS actif" | "NAUTH TLS apres") {
++        with(|s| {
++            let who=caller(s);
++            let process=s.processes.get(who);
++            if process.service_id==23 && s.processes.manager.is_some_and(|m| process.service_owner==Some(m.manager)) {
++                let (roots,handles,waits,ipc)=s.ipc.tls_snapshot(who);
++                let (pages,stack)=process.space.as_ref().unwrap().page_counts();
++                hal::log(format_args!("NAUTH mesure {msg} roots={roots} handles={handles} waits={waits} pages={pages} pile={stack} cadres_ipc_globaux={ipc}"));
++            }
++        });
++    }
