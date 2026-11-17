@@ -1,0 +1,20 @@
+Tue Nov 17 04:54:27 UTC 2026
+ProductName:		macOS
+ProductVersion:		27.2.1
+BuildVersion:		26B131
+hw.model: Mac16,5
+hw.memsize: 137438953472
+hw.logicalcpu: 16
+machdep.cpu.brand_string: Apple M4 Max
+vm.loadavg: { 4.75 5.37 5.30 }
+Now drawing from 'AC Power'
+ -InternalBattery-0 (id=36241507)	80%; AC attached; not charging present: true
+Darwin MacBookThierry 27.2.0 Darwin Kernel Version 27.2.0: Wed Oct 14 23:44:56 PDT 2026; root:xnu-13432.41.4~25/RELEASE_ARM64_T6041 arm64
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+binary: rustc
+commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+commit-date: 2026-10-13
+host: aarch64-apple-darwin
+release: 1.99.1
+LLVM version: 23.1.1
+Python 3.15.2

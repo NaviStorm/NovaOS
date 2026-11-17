@@ -1,5 +1,7 @@
 # Reconstruire et rejouer
 
+La [campagne du créneau Darwin](preuves/creneau/RECETTE.md) contient les comparaisons publié, candidat et GNU, le contrôle indépendant par charge et le prévol des régressions invitées.
+
 ## Recette fonctionnelle et performance sur Mac ARM64
 
 Dans le dossier `livraison-cut-0240`, chaque commande conserve le différentiel brut et les mesures dans un répertoire neuf. Les deux bancs utilisent par défaut le Mach-O Nova et `/opt/homebrew/bin/gcut` 9.12. Pour une future livraison, définir `CUT_NOVA_BIN` avec le chemin du Mach-O à tester et `CUT_NOVA_VERSION` avec la version attendue de ce **composant**. Chaque banc relève les identités réellement exécutées.

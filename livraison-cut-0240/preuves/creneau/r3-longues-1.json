@@ -1,0 +1,3704 @@
+{
+  "debut_utc": "2026-11-17T04:50:12.212293+00:00",
+  "serie": 1,
+  "graine": 27027,
+  "cache": "Cache de fichiers macOS, un échauffement par outil, sans purge",
+  "destination": "/dev/null",
+  "plateforme": "Darwin MacBookThierry 27.2.0 Darwin Kernel Version 27.2.0: Wed Oct 14 23:44:56 PDT 2026; root:xnu-13432.41.4~25/RELEASE_ARM64_T6041 arm64",
+  "materiel": "hw.model: Mac16,5\nhw.memsize: 137438953472\nhw.logicalcpu: 16",
+  "libre": 483097534464,
+  "binaires": {
+    "Nova": {
+      "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cut-bancs-v0300/livraison-cut-0240/preuves/creneau/cut-darwin-r3",
+      "sha256": "54796e3f5244ec30c6a82ba0b4a498f27d758c066d2930c835ca48c9494e8923",
+      "version": "cut (NovaOS) 0.24.0"
+    },
+    "GNU": {
+      "path": "/opt/homebrew/bin/gcut",
+      "sha256": "d84adc05e56f93e57fabbfdd555d443d3d5475947d3374ac0a68f461c7ef8335",
+      "version": "cut (GNU coreutils) 9.12"
+    },
+    "Publié": {
+      "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/cut-bancs-v0300/livraison-cut-0240/bin/cut-darwin-arm64",
+      "sha256": "5e88e6f2522096e9d2ef2e894effbf0265a250091299ad1443da2f799a588e94",
+      "version": "cut (NovaOS) 0.24.0"
+    }
+  },
+  "essais": [
+    {
+      "taille": "1 Mio/ligne",
+      "entree": "fichier",
+      "structure": "TAB tardif",
+      "arguments": [
+        "-sf1"
+      ],
+      "locale": "C",
+      "octets": 1048581,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/tardif",
+      "sha256": "9cd124fe1b8cc3c0a9246fb0af3152c940e2fda62221d0f2194ae0ae3013ac06",
+      "attendu": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+      "outils": {
+        "Nova": {
+          "sortie": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.003283833,
+            "rss_octets": 3440640,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.00319625,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.002959542,
+              "rss_octets": 3440640,
+              "statut": 0
+            },
+            {
+              "s": 0.002906958,
+              "rss_octets": 3440640,
+              "statut": 0
+            },
+            {
+              "s": 0.002734708,
+              "rss_octets": 3440640,
+              "statut": 0
+            },
+            {
+              "s": 0.002545792,
+              "rss_octets": 3440640,
+              "statut": 0
+            },
+            {
+              "s": 0.002566834,
+              "rss_octets": 3440640,
+              "statut": 0
+            },
+            {
+              "s": 0.00275825,
+              "rss_octets": 3440640,
+              "statut": 0
+            },
+            {
+              "s": 0.003003417,
+              "rss_octets": 3440640,
+              "statut": 0
+            },
+            {
+              "s": 0.002724,
+              "rss_octets": 3440640,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.00275825,
+          "debit_mio_s": 362.55044625091347,
+          "pic_rss_octets": 3440640
+        },
+        "GNU": {
+          "sortie": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.002819167,
+            "rss_octets": 3260416,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.002874375,
+              "rss_octets": 3260416,
+              "statut": 0
+            },
+            {
+              "s": 0.003180583,
+              "rss_octets": 3260416,
+              "statut": 0
+            },
+            {
+              "s": 0.002672375,
+              "rss_octets": 3260416,
+              "statut": 0
+            },
+            {
+              "s": 0.002633,
+              "rss_octets": 3260416,
+              "statut": 0
+            },
+            {
+              "s": 0.002567458,
+              "rss_octets": 3260416,
+              "statut": 0
+            },
+            {
+              "s": 0.002620917,
+              "rss_octets": 3260416,
+              "statut": 0
+            },
+            {
+              "s": 0.002803166,
+              "rss_octets": 3260416,
+              "statut": 0
+            },
+            {
+              "s": 0.002418083,
+              "rss_octets": 3260416,
+              "statut": 0
+            },
+            {
+              "s": 0.002796375,
+              "rss_octets": 3260416,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002672375,
+          "debit_mio_s": 374.2007646275624,
+          "pic_rss_octets": 3260416
+        },
+        "Publié": {
+          "sortie": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.003587292,
+            "rss_octets": 4341760,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.003837208,
+              "rss_octets": 4341760,
+              "statut": 0
+            },
+            {
+              "s": 0.003543416,
+              "rss_octets": 4325376,
+              "statut": 0
+            },
+            {
+              "s": 0.003219667,
+              "rss_octets": 4341760,
+              "statut": 0
+            },
+            {
+              "s": 0.00324,
+              "rss_octets": 4341760,
+              "statut": 0
+            },
+            {
+              "s": 0.003228792,
+              "rss_octets": 4341760,
+              "statut": 0
+            },
+            {
+              "s": 0.003102542,
+              "rss_octets": 4341760,
+              "statut": 0
+            },
+            {
+              "s": 0.003070709,
+              "rss_octets": 4341760,
+              "statut": 0
+            },
+            {
+              "s": 0.003087041,
+              "rss_octets": 4341760,
+              "statut": 0
+            },
+            {
+              "s": 0.003351875,
+              "rss_octets": 4341760,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.003228792,
+          "debit_mio_s": 309.71483092487284,
+          "pic_rss_octets": 4341760
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 1.0321343374339305,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 1.2082106740259133
+    },
+    {
+      "taille": "1 Mio/ligne",
+      "entree": "fichier",
+      "structure": "TAB tardif",
+      "arguments": [
+        "-sf2"
+      ],
+      "locale": "C",
+      "octets": 1048581,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/tardif",
+      "sha256": "9cd124fe1b8cc3c0a9246fb0af3152c940e2fda62221d0f2194ae0ae3013ac06",
+      "attendu": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+      "outils": {
+        "Nova": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.003313458,
+            "rss_octets": 2392064,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.003529584,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002566709,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002434333,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002669375,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002685125,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002632083,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002625,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002677459,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002607167,
+              "rss_octets": 2392064,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002632083,
+          "debit_mio_s": 379.9290403728082,
+          "pic_rss_octets": 2392064
+        },
+        "GNU": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.003170375,
+            "rss_octets": 2211840,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.003299125,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002651291,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.0026965,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002719083,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002580125,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002569667,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002592,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002549709,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002622875,
+              "rss_octets": 2211840,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002622875,
+          "debit_mio_s": 381.2628388206003,
+          "pic_rss_octets": 2211840
+        },
+        "Publié": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.003448875,
+            "rss_octets": 2162688,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.003224333,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.002938917,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.002936875,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.003139209,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.003270584,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.003053375,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.003086875,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.00314,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.002962875,
+              "rss_octets": 2162688,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.003086875,
+          "debit_mio_s": 323.9537617725311,
+          "pic_rss_octets": 2162688
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 1.0035106514797691,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 1.1769051136634419
+    },
+    {
+      "taille": "1 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-f1,3"
+      ],
+      "locale": "C",
+      "octets": 1048577,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+      "attendu": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+      "outils": {
+        "Nova": {
+          "sortie": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.002683208,
+            "rss_octets": 2392064,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.002573917,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002684125,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002529,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002577084,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002442917,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002581,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002763375,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002615917,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.002538916,
+              "rss_octets": 2392064,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002577084,
+          "debit_mio_s": 388.03583960566147,
+          "pic_rss_octets": 2392064
+        },
+        "GNU": {
+          "sortie": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.002563583,
+            "rss_octets": 2211840,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.002697166,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002711583,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002278083,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.0025415,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002595417,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002476167,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002553542,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002544042,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002540708,
+              "rss_octets": 2211840,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002544042,
+          "debit_mio_s": 393.0756464218423,
+          "pic_rss_octets": 2211840
+        },
+        "Publié": {
+          "sortie": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.003003541,
+            "rss_octets": 2211840,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.003047291,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.003098667,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002944833,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.003119167,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.003017708,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.00314,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.002944208,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.003041875,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.003155958,
+              "rss_octets": 2211840,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.003047291,
+          "debit_mio_s": 328.16063634038113,
+          "pic_rss_octets": 2211840
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 1.012987993122755,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 1.1978147373353114
+    },
+    {
+      "taille": "1 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-sf1"
+      ],
+      "locale": "C",
+      "octets": 1048577,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+      "attendu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outils": {
+        "Nova": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.00293775,
+            "rss_octets": 3407872,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.002627458,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.002729125,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.002620584,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.002730875,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.002818833,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.002402291,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.002746333,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.0027675,
+              "rss_octets": 3424256,
+              "statut": 0
+            },
+            {
+              "s": 0.002847041,
+              "rss_octets": 3424256,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002730875,
+          "debit_mio_s": 366.1833491735493,
+          "pic_rss_octets": 3424256
+        },
+        "GNU": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.002618959,
+            "rss_octets": 3244032,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.002577333,
+              "rss_octets": 3244032,
+              "statut": 0
+            },
+            {
+              "s": 0.002638292,
+              "rss_octets": 3244032,
+              "statut": 0
+            },
+            {
+              "s": 0.002981875,
+              "rss_octets": 3244032,
+              "statut": 0
+            },
+            {
+              "s": 0.002565791,
+              "rss_octets": 3244032,
+              "statut": 0
+            },
+            {
+              "s": 0.002520625,
+              "rss_octets": 3244032,
+              "statut": 0
+            },
+            {
+              "s": 0.002528,
+              "rss_octets": 3244032,
+              "statut": 0
+            },
+            {
+              "s": 0.002682458,
+              "rss_octets": 3244032,
+              "statut": 0
+            },
+            {
+              "s": 0.002789458,
+              "rss_octets": 3244032,
+              "statut": 0
+            },
+            {
+              "s": 0.002663208,
+              "rss_octets": 3244032,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002638292,
+          "debit_mio_s": 379.0334631929735,
+          "pic_rss_octets": 3244032
+        },
+        "Publié": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.003009583,
+            "rss_octets": 3211264,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.003196708,
+              "rss_octets": 3211264,
+              "statut": 0
+            },
+            {
+              "s": 0.003132708,
+              "rss_octets": 3211264,
+              "statut": 0
+            },
+            {
+              "s": 0.003042458,
+              "rss_octets": 3211264,
+              "statut": 0
+            },
+            {
+              "s": 0.003285,
+              "rss_octets": 3211264,
+              "statut": 0
+            },
+            {
+              "s": 0.003220666,
+              "rss_octets": 3211264,
+              "statut": 0
+            },
+            {
+              "s": 0.003132625,
+              "rss_octets": 3211264,
+              "statut": 0
+            },
+            {
+              "s": 0.003169542,
+              "rss_octets": 3211264,
+              "statut": 0
+            },
+            {
+              "s": 0.003251625,
+              "rss_octets": 3211264,
+              "statut": 0
+            },
+            {
+              "s": 0.0031905,
+              "rss_octets": 3211264,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.0031905,
+          "debit_mio_s": 313.43079569795214,
+          "pic_rss_octets": 3211264
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 1.0350920216564352,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 1.209305111033957
+    },
+    {
+      "taille": "1 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-sf2"
+      ],
+      "locale": "C",
+      "octets": 1048577,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4",
+      "attendu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outils": {
+        "Nova": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.002900625,
+            "rss_octets": 2375680,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.002807542,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.002619625,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.002732625,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.002793875,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.002834708,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.002684125,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.002509375,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.002731292,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.002964416,
+              "rss_octets": 2375680,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002732625,
+          "debit_mio_s": 365.94884174532416,
+          "pic_rss_octets": 2375680
+        },
+        "GNU": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.002637291,
+            "rss_octets": 2179072,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.002614709,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.0026845,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.002709709,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.002501959,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.00257275,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.002544791,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.002624209,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.002556333,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.00295525,
+              "rss_octets": 2179072,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.002614709,
+          "debit_mio_s": 382.45210219352,
+          "pic_rss_octets": 2179072
+        },
+        "Publié": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.003168458,
+            "rss_octets": 2146304,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.003007583,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.003150708,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.003281291,
+              "rss_octets": 2129920,
+              "statut": 0
+            },
+            {
+              "s": 0.003012583,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.003071083,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.003208083,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.003169916,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.00303325,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.003038833,
+              "rss_octets": 2146304,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.003071083,
+          "debit_mio_s": 325.6183416971526,
+          "pic_rss_octets": 2146304
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 1.0450971790742296,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 1.1745410292311689
+    },
+    {
+      "taille": "16 Mio/ligne",
+      "entree": "fichier",
+      "structure": "TAB tardif",
+      "arguments": [
+        "-sf1"
+      ],
+      "locale": "C",
+      "octets": 16777221,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/tardif",
+      "sha256": "91215e0f8fc9d40e46379ad96616c4ca6b414593c5fcfd7c2845b2b97f400aee",
+      "attendu": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+      "outils": {
+        "Nova": {
+          "sortie": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.005789916,
+            "rss_octets": 21282816,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.005781875,
+              "rss_octets": 21282816,
+              "statut": 0
+            },
+            {
+              "s": 0.006032834,
+              "rss_octets": 21282816,
+              "statut": 0
+            },
+            {
+              "s": 0.005742292,
+              "rss_octets": 21282816,
+              "statut": 0
+            },
+            {
+              "s": 0.005512125,
+              "rss_octets": 21282816,
+              "statut": 0
+            },
+            {
+              "s": 0.005971875,
+              "rss_octets": 21282816,
+              "statut": 0
+            },
+            {
+              "s": 0.005996583,
+              "rss_octets": 21282816,
+              "statut": 0
+            },
+            {
+              "s": 0.005677375,
+              "rss_octets": 21282816,
+              "statut": 0
+            },
+            {
+              "s": 0.00577575,
+              "rss_octets": 21282816,
+              "statut": 0
+            },
+            {
+              "s": 0.005831584,
+              "rss_octets": 21282816,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.005781875,
+          "debit_mio_s": 2767.269228126098,
+          "pic_rss_octets": 21282816
+        },
+        "GNU": {
+          "sortie": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.006094916,
+            "rss_octets": 20774912,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.005799792,
+              "rss_octets": 20774912,
+              "statut": 0
+            },
+            {
+              "s": 0.006088917,
+              "rss_octets": 20774912,
+              "statut": 0
+            },
+            {
+              "s": 0.0061695,
+              "rss_octets": 20774912,
+              "statut": 0
+            },
+            {
+              "s": 0.005904167,
+              "rss_octets": 20774912,
+              "statut": 0
+            },
+            {
+              "s": 0.006225209,
+              "rss_octets": 20774912,
+              "statut": 0
+            },
+            {
+              "s": 0.005874125,
+              "rss_octets": 20774912,
+              "statut": 0
+            },
+            {
+              "s": 0.006100791,
+              "rss_octets": 20774912,
+              "statut": 0
+            },
+            {
+              "s": 0.006046,
+              "rss_octets": 20774912,
+              "statut": 0
+            },
+            {
+              "s": 0.005735416,
+              "rss_octets": 20774912,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.006046,
+          "debit_mio_s": 2646.378559108763,
+          "pic_rss_octets": 20774912
+        },
+        "Publié": {
+          "sortie": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.014207959,
+            "rss_octets": 37928960,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.014063167,
+              "rss_octets": 37928960,
+              "statut": 0
+            },
+            {
+              "s": 0.014184541,
+              "rss_octets": 37928960,
+              "statut": 0
+            },
+            {
+              "s": 0.014069417,
+              "rss_octets": 37928960,
+              "statut": 0
+            },
+            {
+              "s": 0.014171666,
+              "rss_octets": 37928960,
+              "statut": 0
+            },
+            {
+              "s": 0.014034208,
+              "rss_octets": 37928960,
+              "statut": 0
+            },
+            {
+              "s": 0.014200667,
+              "rss_octets": 37928960,
+              "statut": 0
+            },
+            {
+              "s": 0.014296416,
+              "rss_octets": 37928960,
+              "statut": 0
+            },
+            {
+              "s": 0.013930792,
+              "rss_octets": 37928960,
+              "statut": 0
+            },
+            {
+              "s": 0.014018542,
+              "rss_octets": 37928960,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.014069417,
+          "debit_mio_s": 1137.2187467591289,
+          "pic_rss_octets": 37928960
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.9563140919616274,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 2.3270620244789946
+    },
+    {
+      "taille": "16 Mio/ligne",
+      "entree": "fichier",
+      "structure": "TAB tardif",
+      "arguments": [
+        "-sf2"
+      ],
+      "locale": "C",
+      "octets": 16777221,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/tardif",
+      "sha256": "91215e0f8fc9d40e46379ad96616c4ca6b414593c5fcfd7c2845b2b97f400aee",
+      "attendu": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+      "outils": {
+        "Nova": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.004487542,
+            "rss_octets": 2392064,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.004561042,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004655625,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004697917,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004784208,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004450209,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004508208,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004243625,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004058708,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004152333,
+              "rss_octets": 2392064,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.004508208,
+          "debit_mio_s": 3549.0830876418263,
+          "pic_rss_octets": 2392064
+        },
+        "GNU": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.004611875,
+            "rss_octets": 2211840,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.004799667,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.005152708,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004810959,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004877375,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004639917,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004719542,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004542625,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004535958,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004551958,
+              "rss_octets": 2211840,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.004719542,
+          "debit_mio_s": 3390.16047920997,
+          "pic_rss_octets": 2211840
+        },
+        "Publié": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.012251333,
+            "rss_octets": 2162688,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.0123905,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.01255875,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.012277333,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.01141875,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.011265208,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.011395583,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.011412041,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.0116055,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.010961583,
+              "rss_octets": 2162688,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.01141875,
+          "debit_mio_s": 1401.2045774162304,
+          "pic_rss_octets": 2162688
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.9552215024254471,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 2.419461464692972
+    },
+    {
+      "taille": "16 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-f1,3"
+      ],
+      "locale": "C",
+      "octets": 16777217,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+      "attendu": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+      "outils": {
+        "Nova": {
+          "sortie": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.004135292,
+            "rss_octets": 2392064,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.004575208,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.003929291,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004108292,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004033833,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004468584,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.003952917,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004353083,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.004201833,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.00433375,
+              "rss_octets": 2392064,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.004201833,
+          "debit_mio_s": 3807.8621767391314,
+          "pic_rss_octets": 2392064
+        },
+        "GNU": {
+          "sortie": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.005127166,
+            "rss_octets": 2211840,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.00456175,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004440625,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004410709,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004653125,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004397166,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.00440125,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004366917,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004415209,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.004272541,
+              "rss_octets": 2211840,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.004410709,
+          "debit_mio_s": 3627.5349277574915,
+          "pic_rss_octets": 2211840
+        },
+        "Publié": {
+          "sortie": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.012125,
+            "rss_octets": 2211840,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.011751208,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.012377417,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.012046542,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011777542,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.0120125,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.01204,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011979875,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.012195625,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.012398166,
+              "rss_octets": 2211840,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.01204,
+          "debit_mio_s": 1328.90373369388,
+          "pic_rss_octets": 2211840
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.9526434412245289,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 2.729719870433529
+    },
+    {
+      "taille": "16 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-sf1"
+      ],
+      "locale": "C",
+      "octets": 16777217,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+      "attendu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outils": {
+        "Nova": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.005421042,
+            "rss_octets": 21266432,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.005050291,
+              "rss_octets": 21266432,
+              "statut": 0
+            },
+            {
+              "s": 0.005293708,
+              "rss_octets": 21266432,
+              "statut": 0
+            },
+            {
+              "s": 0.005434083,
+              "rss_octets": 21266432,
+              "statut": 0
+            },
+            {
+              "s": 0.005102875,
+              "rss_octets": 21266432,
+              "statut": 0
+            },
+            {
+              "s": 0.004986458,
+              "rss_octets": 21266432,
+              "statut": 0
+            },
+            {
+              "s": 0.005424166,
+              "rss_octets": 21266432,
+              "statut": 0
+            },
+            {
+              "s": 0.005188917,
+              "rss_octets": 21266432,
+              "statut": 0
+            },
+            {
+              "s": 0.005312416,
+              "rss_octets": 21266432,
+              "statut": 0
+            },
+            {
+              "s": 0.00529275,
+              "rss_octets": 21266432,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.00529275,
+          "debit_mio_s": 3023.003344891468,
+          "pic_rss_octets": 21266432
+        },
+        "GNU": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.005761166,
+            "rss_octets": 20758528,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.005651833,
+              "rss_octets": 20758528,
+              "statut": 0
+            },
+            {
+              "s": 0.00600975,
+              "rss_octets": 20758528,
+              "statut": 0
+            },
+            {
+              "s": 0.005531458,
+              "rss_octets": 20758528,
+              "statut": 0
+            },
+            {
+              "s": 0.005327959,
+              "rss_octets": 20758528,
+              "statut": 0
+            },
+            {
+              "s": 0.005796916,
+              "rss_octets": 20758528,
+              "statut": 0
+            },
+            {
+              "s": 0.005468166,
+              "rss_octets": 20758528,
+              "statut": 0
+            },
+            {
+              "s": 0.005513541,
+              "rss_octets": 20758528,
+              "statut": 0
+            },
+            {
+              "s": 0.005431458,
+              "rss_octets": 20758528,
+              "statut": 0
+            },
+            {
+              "s": 0.005465542,
+              "rss_octets": 20758528,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.005513541,
+          "debit_mio_s": 2901.9464902272994,
+          "pic_rss_octets": 20758528
+        },
+        "Publié": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.012500375,
+            "rss_octets": 21053440,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.012718625,
+              "rss_octets": 21053440,
+              "statut": 0
+            },
+            {
+              "s": 0.012410959,
+              "rss_octets": 21053440,
+              "statut": 0
+            },
+            {
+              "s": 0.012191791,
+              "rss_octets": 21053440,
+              "statut": 0
+            },
+            {
+              "s": 0.012243542,
+              "rss_octets": 21053440,
+              "statut": 0
+            },
+            {
+              "s": 0.011884208,
+              "rss_octets": 21053440,
+              "statut": 0
+            },
+            {
+              "s": 0.012480959,
+              "rss_octets": 21053440,
+              "statut": 0
+            },
+            {
+              "s": 0.011866209,
+              "rss_octets": 21053440,
+              "statut": 0
+            },
+            {
+              "s": 0.012296875,
+              "rss_octets": 21053440,
+              "statut": 0
+            },
+            {
+              "s": 0.012159792,
+              "rss_octets": 21053440,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.012243542,
+          "debit_mio_s": 1306.8114564947232,
+          "pic_rss_octets": 21053440
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.9599547731666455,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 2.2206313510682154
+    },
+    {
+      "taille": "16 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-sf2"
+      ],
+      "locale": "C",
+      "octets": 16777217,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "898431760750e2734eaff98038c870698c1b9bd0e0c1e150bffcd5500024a9db",
+      "attendu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outils": {
+        "Nova": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.004573625,
+            "rss_octets": 2375680,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.004383583,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.0041645,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.003890375,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.003929709,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.004003166,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.003908958,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.003975792,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.004327875,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.004541834,
+              "rss_octets": 2375680,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.004003166,
+          "debit_mio_s": 3996.8367421371777,
+          "pic_rss_octets": 2375680
+        },
+        "GNU": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.004295084,
+            "rss_octets": 2179072,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.004349834,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.00407075,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.004237208,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.004074417,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.004307375,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.004213,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.004255083,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.00453875,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.004475,
+              "rss_octets": 2179072,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.004255083,
+          "debit_mio_s": 3760.2088969061983,
+          "pic_rss_octets": 2179072
+        },
+        "Publié": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.011423792,
+            "rss_octets": 2146304,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.010604416,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.010694334,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.010863125,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.010866917,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.010601083,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.011075792,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.0107035,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.0109085,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.011601417,
+              "rss_octets": 2146304,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.010863125,
+          "debit_mio_s": 1472.8727648512115,
+          "pic_rss_octets": 2146304
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.9407962194862004,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 2.552976052406028
+    },
+    {
+      "taille": "64 Mio/ligne",
+      "entree": "fichier",
+      "structure": "TAB tardif",
+      "arguments": [
+        "-sf1"
+      ],
+      "locale": "C",
+      "octets": 67108869,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/tardif",
+      "sha256": "c4c17f4869331f9b8ade6152495873c73983a31828dd53b8061354315047bbb6",
+      "attendu": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+      "outils": {
+        "Nova": {
+          "sortie": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.013817834,
+            "rss_octets": 71614464,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.013441209,
+              "rss_octets": 71614464,
+              "statut": 0
+            },
+            {
+              "s": 0.013383334,
+              "rss_octets": 71614464,
+              "statut": 0
+            },
+            {
+              "s": 0.013414833,
+              "rss_octets": 71614464,
+              "statut": 0
+            },
+            {
+              "s": 0.013331708,
+              "rss_octets": 71614464,
+              "statut": 0
+            },
+            {
+              "s": 0.013619916,
+              "rss_octets": 71614464,
+              "statut": 0
+            },
+            {
+              "s": 0.013628291,
+              "rss_octets": 71614464,
+              "statut": 0
+            },
+            {
+              "s": 0.013446125,
+              "rss_octets": 71614464,
+              "statut": 0
+            },
+            {
+              "s": 0.013307,
+              "rss_octets": 71614464,
+              "statut": 0
+            },
+            {
+              "s": 0.0135225,
+              "rss_octets": 71614464,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.013441209,
+          "debit_mio_s": 4761.476796348571,
+          "pic_rss_octets": 71614464
+        },
+        "GNU": {
+          "sortie": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.015138042,
+            "rss_octets": 71106560,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.01512875,
+              "rss_octets": 71106560,
+              "statut": 0
+            },
+            {
+              "s": 0.014873291,
+              "rss_octets": 71106560,
+              "statut": 0
+            },
+            {
+              "s": 0.014804959,
+              "rss_octets": 71106560,
+              "statut": 0
+            },
+            {
+              "s": 0.014876416,
+              "rss_octets": 71106560,
+              "statut": 0
+            },
+            {
+              "s": 0.014784209,
+              "rss_octets": 71106560,
+              "statut": 0
+            },
+            {
+              "s": 0.015082708,
+              "rss_octets": 71106560,
+              "statut": 0
+            },
+            {
+              "s": 0.014978666,
+              "rss_octets": 71106560,
+              "statut": 0
+            },
+            {
+              "s": 0.015261416,
+              "rss_octets": 71106560,
+              "statut": 0
+            },
+            {
+              "s": 0.015081875,
+              "rss_octets": 71106560,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.014978666,
+          "debit_mio_s": 4272.743965875972,
+          "pic_rss_octets": 71106560
+        },
+        "Publié": {
+          "sortie": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.046464125,
+            "rss_octets": 138592256,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.045185958,
+              "rss_octets": 138592256,
+              "statut": 0
+            },
+            {
+              "s": 0.045763291,
+              "rss_octets": 138608640,
+              "statut": 0
+            },
+            {
+              "s": 0.045729,
+              "rss_octets": 138592256,
+              "statut": 0
+            },
+            {
+              "s": 0.046076584,
+              "rss_octets": 138592256,
+              "statut": 0
+            },
+            {
+              "s": 0.044735333,
+              "rss_octets": 138592256,
+              "statut": 0
+            },
+            {
+              "s": 0.046237042,
+              "rss_octets": 138592256,
+              "statut": 0
+            },
+            {
+              "s": 0.04493425,
+              "rss_octets": 138592256,
+              "statut": 0
+            },
+            {
+              "s": 0.045009916,
+              "rss_octets": 138592256,
+              "statut": 0
+            },
+            {
+              "s": 0.045588167,
+              "rss_octets": 138592256,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.045588167,
+          "debit_mio_s": 1403.8731754310627,
+          "pic_rss_octets": 138608640
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.8973568807796369,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 3.043539858622924
+    },
+    {
+      "taille": "64 Mio/ligne",
+      "entree": "fichier",
+      "structure": "TAB tardif",
+      "arguments": [
+        "-sf2"
+      ],
+      "locale": "C",
+      "octets": 67108869,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/tardif",
+      "sha256": "c4c17f4869331f9b8ade6152495873c73983a31828dd53b8061354315047bbb6",
+      "attendu": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+      "outils": {
+        "Nova": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.009828792,
+            "rss_octets": 2392064,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.009554541,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.00957675,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009643459,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009455334,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.009588792,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009454333,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009380625,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009780917,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.00948025,
+              "rss_octets": 2392064,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.009554541,
+          "debit_mio_s": 6698.386114871618,
+          "pic_rss_octets": 2392064
+        },
+        "GNU": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.011119084,
+            "rss_octets": 2211840,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.010973875,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.010841583,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.010502292,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011265292,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.010878708,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.010480375,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.010739917,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.010887,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011011166,
+              "rss_octets": 2211840,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.010878708,
+          "debit_mio_s": 5883.051991869952,
+          "pic_rss_octets": 2211840
+        },
+        "Publié": {
+          "sortie": "261be4ee405332f053f288298c2a620c325e2c4df8b752c1273228babee25a6c",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.037086917,
+            "rss_octets": 2162688,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.037645125,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.037418792,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.037252792,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.037541625,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.037581958,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.038157417,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.037848625,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.037667291,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.036948042,
+              "rss_octets": 2162688,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.037581958,
+          "debit_mio_s": 1702.944928211872,
+          "pic_rss_octets": 2162688
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.8782790198983187,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 3.454634318707699
+    },
+    {
+      "taille": "64 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-f1,3"
+      ],
+      "locale": "C",
+      "octets": 67108865,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+      "attendu": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+      "outils": {
+        "Nova": {
+          "sortie": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.009936833,
+            "rss_octets": 2392064,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.009722792,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009631833,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009843,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.0095405,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.00968525,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009369083,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009743667,
+              "rss_octets": 2392064,
+              "statut": 0
+            },
+            {
+              "s": 0.009970666,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.010906291,
+              "rss_octets": 2392064,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.009722792,
+          "debit_mio_s": 6582.471470507065,
+          "pic_rss_octets": 2392064
+        },
+        "GNU": {
+          "sortie": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.01135925,
+            "rss_octets": 2211840,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.010606667,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011245084,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011058708,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011287542,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.0110725,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011004083,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.010791583,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.011535334,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.01180975,
+              "rss_octets": 2211840,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.0110725,
+          "debit_mio_s": 5780.0858842785565,
+          "pic_rss_octets": 2211840
+        },
+        "Publié": {
+          "sortie": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.042247958,
+            "rss_octets": 2195456,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.041181584,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.041219875,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.040926708,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.040876917,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.041548333,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.040680042,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.041877666,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.041807875,
+              "rss_octets": 2211840,
+              "statut": 0
+            },
+            {
+              "s": 0.041495625,
+              "rss_octets": 2195456,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.041219875,
+          "debit_mio_s": 1552.6490789618917,
+          "pic_rss_octets": 2211840
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.8781026868367576,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 3.7227252201399863
+    },
+    {
+      "taille": "64 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-sf1"
+      ],
+      "locale": "C",
+      "octets": 67108865,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+      "attendu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outils": {
+        "Nova": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.013546083,
+            "rss_octets": 71598080,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.013584417,
+              "rss_octets": 71598080,
+              "statut": 0
+            },
+            {
+              "s": 0.013660708,
+              "rss_octets": 71598080,
+              "statut": 0
+            },
+            {
+              "s": 0.013378958,
+              "rss_octets": 71598080,
+              "statut": 0
+            },
+            {
+              "s": 0.013085917,
+              "rss_octets": 71598080,
+              "statut": 0
+            },
+            {
+              "s": 0.013546166,
+              "rss_octets": 71598080,
+              "statut": 0
+            },
+            {
+              "s": 0.013581167,
+              "rss_octets": 71598080,
+              "statut": 0
+            },
+            {
+              "s": 0.015135625,
+              "rss_octets": 71598080,
+              "statut": 0
+            },
+            {
+              "s": 0.013341708,
+              "rss_octets": 71598080,
+              "statut": 0
+            },
+            {
+              "s": 0.013717542,
+              "rss_octets": 71598080,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.013581167,
+          "debit_mio_s": 4712.40806873771,
+          "pic_rss_octets": 71598080
+        },
+        "GNU": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.015601459,
+            "rss_octets": 71090176,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.015330625,
+              "rss_octets": 71090176,
+              "statut": 0
+            },
+            {
+              "s": 0.015243792,
+              "rss_octets": 71090176,
+              "statut": 0
+            },
+            {
+              "s": 0.015381875,
+              "rss_octets": 71090176,
+              "statut": 0
+            },
+            {
+              "s": 0.015157167,
+              "rss_octets": 71090176,
+              "statut": 0
+            },
+            {
+              "s": 0.014715459,
+              "rss_octets": 71090176,
+              "statut": 0
+            },
+            {
+              "s": 0.014974833,
+              "rss_octets": 71090176,
+              "statut": 0
+            },
+            {
+              "s": 0.015560125,
+              "rss_octets": 71090176,
+              "statut": 0
+            },
+            {
+              "s": 0.015207125,
+              "rss_octets": 71090176,
+              "statut": 0
+            },
+            {
+              "s": 0.0152075,
+              "rss_octets": 71090176,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.0152075,
+          "debit_mio_s": 4208.44984078082,
+          "pic_rss_octets": 71090176
+        },
+        "Publié": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.041149625,
+            "rss_octets": 71385088,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.042392792,
+              "rss_octets": 71385088,
+              "statut": 0
+            },
+            {
+              "s": 0.042015,
+              "rss_octets": 71385088,
+              "statut": 0
+            },
+            {
+              "s": 0.042161792,
+              "rss_octets": 71385088,
+              "statut": 0
+            },
+            {
+              "s": 0.042100708,
+              "rss_octets": 71385088,
+              "statut": 0
+            },
+            {
+              "s": 0.041992875,
+              "rss_octets": 71385088,
+              "statut": 0
+            },
+            {
+              "s": 0.043199334,
+              "rss_octets": 71385088,
+              "statut": 0
+            },
+            {
+              "s": 0.041704125,
+              "rss_octets": 71385088,
+              "statut": 0
+            },
+            {
+              "s": 0.041798833,
+              "rss_octets": 71385088,
+              "statut": 0
+            },
+            {
+              "s": 0.042018667,
+              "rss_octets": 71385088,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.042018667,
+          "debit_mio_s": 1523.1325866114294,
+          "pic_rss_octets": 71385088
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.8930571757356567,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 2.763022653296071
+    },
+    {
+      "taille": "64 Mio/ligne",
+      "entree": "fichier",
+      "structure": "sans TAB",
+      "arguments": [
+        "-sf2"
+      ],
+      "locale": "C",
+      "octets": 67108865,
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/cut-mesures-5wepghay/sans-tab",
+      "sha256": "c36e8e594b7a2ac53e5f4a3f6039a9e8b86a8a199d5d7ee0a32da7b98045fb71",
+      "attendu": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outils": {
+        "Nova": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.009357375,
+            "rss_octets": 2375680,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.009563584,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.009181917,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.009263417,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.00937725,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.009484792,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.009362917,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.009234834,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.009818458,
+              "rss_octets": 2375680,
+              "statut": 0
+            },
+            {
+              "s": 0.0092885,
+              "rss_octets": 2375680,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.009362917,
+          "debit_mio_s": 6835.476695315607,
+          "pic_rss_octets": 2375680
+        },
+        "GNU": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.011208458,
+            "rss_octets": 2179072,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.010670958,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.010789833,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.010556333,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.010889,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.010799541,
+              "rss_octets": 2162688,
+              "statut": 0
+            },
+            {
+              "s": 0.01068425,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.01092275,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.010836208,
+              "rss_octets": 2179072,
+              "statut": 0
+            },
+            {
+              "s": 0.010695375,
+              "rss_octets": 2179072,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.010789833,
+          "debit_mio_s": 5931.509871716672,
+          "pic_rss_octets": 2179072
+        },
+        "Publié": {
+          "sortie": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "statut_validation": 0,
+          "stderr_octets": 0,
+          "echauffement": {
+            "s": 0.037027625,
+            "rss_octets": 2146304,
+            "statut": 0
+          },
+          "passages": [
+            {
+              "s": 0.038001375,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.037753833,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.036877041,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.038126834,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.036729417,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.037859416,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.037507125,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.037785042,
+              "rss_octets": 2146304,
+              "statut": 0
+            },
+            {
+              "s": 0.036737792,
+              "rss_octets": 2146304,
+              "statut": 0
+            }
+          ],
+          "mediane_s": 0.037753833,
+          "debit_mio_s": 1695.1921399258802,
+          "pic_rss_octets": 2146304
+        }
+      },
+      "ordre": [
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ],
+        [
+          "Nova",
+          "GNU",
+          "Publié"
+        ],
+        [
+          "GNU",
+          "Publié",
+          "Nova"
+        ],
+        [
+          "Publié",
+          "Nova",
+          "GNU"
+        ]
+      ],
+      "ratio_nova_gnu": 0.867753652906398,
+      "respecte_plafond": true,
+      "ratio_publie_gnu": 3.499019215589342
+    }
+  ]
+}

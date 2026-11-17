@@ -1,0 +1,27 @@
+{
+  "vecteurs": 1954,
+  "sha256_vecteurs": "93a62f7b2168e721bcfde5824bd050f4efdc35f00599d97cfab400b8dab4611c",
+  "binaires": {
+    "aarch64": {
+      "cut": {
+        "format": "ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, not stripped",
+        "sha256": "bb5d5b38b0e5698b5fb78a894948ed02121210e2b6d0a9c8db80683d53a0eec6"
+      },
+      "sonde": {
+        "format": "ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, not stripped",
+        "sha256": "448c7c1529fe1f0102fd6718a4cdac2adc31e586e0111bb2220fe3ff0665c662"
+      }
+    },
+    "x86_64": {
+      "cut": {
+        "format": "ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped",
+        "sha256": "509a7d546db407ee07571e4d071957ea39efe617746205282a1b94ceb4d3fb1e"
+      },
+      "sonde": {
+        "format": "ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped",
+        "sha256": "804b3b953e9654e5720f1f8a8a6daf8ef94ed8db3d119f4bbd98416d929fc591"
+      }
+    }
+  },
+  "demarrages": 0
+}

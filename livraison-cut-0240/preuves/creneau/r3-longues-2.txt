@@ -1,0 +1,16 @@
+ Taille ou lignes | Traitement                      |     Nova cut |      GNU cut |  Nova/GNU
+      1 Mio/ligne | -sf1 (fichier TAB tardif)       |   0.002727 s |   0.002576 s |    1.0589
+      1 Mio/ligne | -sf2 (fichier TAB tardif)       |   0.002622 s |   0.002461 s |    1.0656
+      1 Mio/ligne | -f1,3 (fichier sans TAB)        |   0.002564 s |   0.002452 s |    1.0457
+      1 Mio/ligne | -sf1 (fichier sans TAB)         |   0.002679 s |   0.002618 s |    1.0232
+      1 Mio/ligne | -sf2 (fichier sans TAB)         |   0.002477 s |   0.002490 s |    0.9946
+     16 Mio/ligne | -sf1 (fichier TAB tardif)       |   0.005428 s |   0.005742 s |    0.9454
+     16 Mio/ligne | -sf2 (fichier TAB tardif)       |   0.004191 s |   0.004664 s |    0.8985
+     16 Mio/ligne | -f1,3 (fichier sans TAB)        |   0.003982 s |   0.004248 s |    0.9374
+     16 Mio/ligne | -sf1 (fichier sans TAB)         |   0.005387 s |   0.005579 s |    0.9656
+     16 Mio/ligne | -sf2 (fichier sans TAB)         |   0.004046 s |   0.004476 s |    0.9038
+     64 Mio/ligne | -sf1 (fichier TAB tardif)       |   0.013473 s |   0.014980 s |    0.8994
+     64 Mio/ligne | -sf2 (fichier TAB tardif)       |   0.009474 s |   0.010870 s |    0.8716
+     64 Mio/ligne | -f1,3 (fichier sans TAB)        |   0.009771 s |   0.011272 s |    0.8668
+     64 Mio/ligne | -sf1 (fichier sans TAB)         |   0.013336 s |   0.014913 s |    0.8942
+     64 Mio/ligne | -sf2 (fichier sans TAB)         |   0.009474 s |   0.010922 s |    0.8674

@@ -1,0 +1,19 @@
+ Taille ou lignes | Traitement                      |     Nova cut |      GNU cut |  Nova/GNU
+   1000000 lignes | -f1,3 (fichier)                 |   0.049076 s |   0.046183 s |    1.0626
+   1000000 lignes | -f1,3 (stdin)                   |   0.048846 s |   0.046489 s |    1.0507
+   1000000 lignes | -f1,3,8,9 (fichier)             |   0.063707 s |   0.107119 s |    0.5947
+   1000000 lignes | -f1,3,8,9 (stdin)               |   0.062879 s |   0.105877 s |    0.5939
+   1000000 lignes | --complement -f2,7 (fichier)    |   0.075162 s |   0.130320 s |    0.5767
+   1000000 lignes | -c1,3,5 (fichier)               |   0.052135 s |   0.062968 s |    0.8280
+  10000000 lignes | -f1,3 (fichier)                 |   0.447185 s |   0.429053 s |    1.0423
+  10000000 lignes | -f1,3 (stdin)                   |   0.453475 s |   0.425531 s |    1.0657
+  10000000 lignes | -f1,3,8,9 (fichier)             |   0.599353 s |   1.022993 s |    0.5859
+  10000000 lignes | -f1,3,8,9 (stdin)               |   0.612448 s |   1.034023 s |    0.5923
+  10000000 lignes | --complement -f2,7 (fichier)    |   0.726902 s |   1.239750 s |    0.5863
+  10000000 lignes | -c1,3,5 (fichier)               |   0.484935 s |   0.605343 s |    0.8011
+  65000000 lignes | -f1,3 (fichier)                 |   2.912539 s |   2.791555 s |    1.0433
+  65000000 lignes | -f1,3 (stdin)                   |   2.900776 s |   2.810510 s |    1.0321
+  65000000 lignes | -f1,3,8,9 (fichier)             |   3.836505 s |   6.982947 s |    0.5494
+  65000000 lignes | -f1,3,8,9 (stdin)               |   3.895300 s |   6.913619 s |    0.5634
+  65000000 lignes | --complement -f2,7 (fichier)    |   4.822722 s |   8.407824 s |    0.5736
+  65000000 lignes | -c1,3,5 (fichier)               |   3.111699 s |   3.883064 s |    0.8014
