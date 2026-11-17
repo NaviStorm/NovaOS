@@ -1,6 +1,10 @@
 //! Traitement local avant la résolution des chemins et le choix des capacités.
 use nova_cli::{command::Program, console, documentation, options, runtime as rt, tty};
 
+#[path = "../readlink/src/options.rs"]
+#[allow(dead_code)]
+mod readlink;
+
 fn invalid(option: &str) -> rt::Result<Option<u64>> {
     console::printable(
         tty::ERROR,
@@ -13,6 +17,26 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
     let Some(page) = documentation::lookup(name) else {
         return Ok(None);
     };
+    if name == "readlink" {
+        let bytes: alloc::vec::Vec<_> = args.iter().map(|s| s.as_bytes()).collect();
+        let text = match readlink::parse(&bytes, false) {
+            Ok(readlink::Action::Help) => page.render(&[], false, lang).ok_or(rt::BAD_ARGUMENT)?,
+            Ok(readlink::Action::Version) => page.version(lang),
+            Ok(readlink::Action::Paths { .. }) => return Ok(None),
+            Err(reason) => {
+                let reason = alloc::string::String::from_utf8_lossy(&reason);
+                console::printable(
+                    tty::ERROR,
+                    &alloc::format!(
+                        "readlink: {reason}\nTry 'readlink --help' for more information.\n"
+                    ),
+                )?;
+                return Ok(Some(1));
+            }
+        };
+        console::write(tty::OUTPUT, &text)?;
+        return Ok(Some(0));
+    }
     let end = args.iter().position(|a| *a == "--").unwrap_or(args.len());
     let flags = &args[..end];
     let (help, version, topic) = if let Some(p) = Program::named(name, false) {

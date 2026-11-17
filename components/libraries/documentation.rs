@@ -30,6 +30,7 @@ pub struct Page {
     pub topics: &'static [(Text, Text)],
 }
 pub static PAGES: &[Page] = &[
+    include!("../readlink/src/page.rs"),
     Page {
         name: "nsh",
         provider: "shell",
@@ -1131,6 +1132,12 @@ pub fn lookup(name: &str) -> Option<&'static Page> {
 
 impl Page {
     pub fn version(&self, lang: Language) -> String {
+        if self.provider == "nova-readlink" {
+            return format!(
+                "readlink (nova-readlink) {}\n",
+                include_str!("../readlink/VERSION").trim()
+            );
+        }
         let component = if self.provider == "nova-cli" {
             "nova-cli"
         } else {
@@ -1207,10 +1214,14 @@ impl Page {
                 self.rights.get(lang),
                 lang.select("Effects and resources:", "Effets et ressources :"),
                 self.effects.get(lang),
-                lang.select(
-                    "Status, errors and limits: 0 success, 3 invalid argument.",
-                    "Codes, erreurs et limites : 0 succès, 3 argument invalide."
-                ),
+                if self.provider == "nova-readlink" {
+                    lang.select("Status and limits:", "Codes et limites :")
+                } else {
+                    lang.select(
+                        "Status, errors and limits: 0 success, 3 invalid argument.",
+                        "Codes, erreurs et limites : 0 succès, 3 argument invalide.",
+                    )
+                },
                 self.limits.get(lang),
                 self.version(lang).trim_end()
             )
