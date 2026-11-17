@@ -1,3 +1,43 @@
+diff --git a/components/libraries/console.rs b/components/libraries/console.rs
+index 7f87cb7f9ef76b4ae3ede8c75f00479304a68171..c0752692c48bc56189f4ea8c460807f251a4d629 100644
+--- a/components/libraries/console.rs
++++ b/components/libraries/console.rs
+@@ -2,0 +3,11 @@
++// La page de démarrage contient ces mots après la zone bornée des arguments.
++#[cfg(not(target_os="none"))]
++fn flux_catalogue(_:u8)->Option<u64>{None}
++#[cfg(target_os="none")]
++fn flux_catalogue(port:u8)->Option<u64>{
++    if !matches!(port,tty::OUTPUT|tty::ERROR){return None;}
++    let read=|index:usize|unsafe{
++        (&*(0x401000 as *const core::sync::atomic::AtomicU64).add(index)).load(core::sync::atomic::Ordering::Acquire)
++    };
++    (read(480)==0x4e585652415731).then(||read(if port==tty::OUTPUT{481}else{482}))
++}
+@@ -3,0 +15,4 @@
++    if let Some(key)=flux_catalogue(port){
++        for part in text.as_bytes().chunks(128){rt::send_for(key,0,part,15000)?;}
++        return Ok(());
++    }
+@@ -47,0 +63 @@
++    if flux_catalogue(port).is_some(){return write(port,text);}
+diff --git a/components/shell/capabilities.rs b/components/shell/capabilities.rs
+index c79d600de6d73ac9a0b10afad9762810a2c8169e..3bc923185b6f7e99fffd1a9f8cf48d46ce4e41f3 100644
+--- a/components/shell/capabilities.rs
++++ b/components/shell/capabilities.rs
+@@ -13,0 +14,7 @@
++        self.select_mode(fs,operand,None)
++    }
++    pub(super) fn select_private(&mut self, fs:&mut Client,operand:&Operand,key:u64)->rt::Result<()>{
++        if !matches!(operand,Operand::Batch(..)){return Err(rt::DENIED);}
++        self.select_mode(fs,operand,Some(key))
++    }
++    fn select_mode(&mut self,fs:&mut Client,operand:&Operand,key:Option<u64>)->rt::Result<()> {
+@@ -105,0 +113,4 @@
++        if let Some(key)=key {
++            if scope!=w::GROUP{return Err(rt::DENIED);}
++            return fs.simple(0xe8,key).map(|_|());
++        }
 diff --git a/components/shell/lexer.rs b/components/shell/lexer.rs
 index 9a0179fdb5d258fbf96261d35f6aee163487e428..73dd7a71e5cdb936ff6dc7e0b2a03070d85bc952 100644
 --- a/components/shell/lexer.rs
@@ -18,20 +58,21 @@ index 9a0179fdb5d258fbf96261d35f6aee163487e428..73dd7a71e5cdb936ff6dc7e0b2a03070
 +            b'0'..=b'9' if s.trim_start_matches(|c: char| c.is_ascii_digit()).starts_with(['<', '>']) => return Err(rt::BAD_ARGUMENT),
 +            b'&' | b'<' | b'>' => return Err(rt::BAD_ARGUMENT),
 diff --git a/components/shell/main.rs b/components/shell/main.rs
-index 11af6976d17142037a03b9a965da24fb42426327..1c17f8656147a7fbdfb96e66ddeb515774694241 100644
+index 11af6976d17142037a03b9a965da24fb42426327..e234a363a30c028382c227d519e75a1b364ec5fa 100644
 --- a/components/shell/main.rs
 +++ b/components/shell/main.rs
-@@ -28,0 +29,2 @@
+@@ -28,0 +29,3 @@
 +mod session_auth_lab;
++mod selection_vfs_lab;
 +mod stream_display;
-@@ -31,0 +34 @@
+@@ -31,0 +35 @@
 +    let mut login = session_auth_lab::Login::default();
-@@ -54,0 +58 @@
+@@ -54,0 +59 @@
 +            login.authenticate()?;
-@@ -77 +81 @@
+@@ -77 +82 @@
 -                script::Engine::new(&mut fs, test, &history)?.list(&mut frame, &program, 0, 0);
 +                script::Engine::new(&mut fs, test, &mut login, &history)?.list(&mut frame, &program, 0, 0);
-@@ -99,0 +104 @@
+@@ -99,0 +105 @@
 +    login.close()?;
 diff --git a/components/shell/parser.rs b/components/shell/parser.rs
 index af8782b5ca948bd3f8e56e71cc7aa1747fa35524..79772c8e9da3bf066ff1182fa9ed4cf737bc76f2 100644
@@ -94,7 +135,7 @@ index af8782b5ca948bd3f8e56e71cc7aa1747fa35524..79772c8e9da3bf066ff1182fa9ed4cf7
 +        if left.paths != [None; 3] {return Ok(Command::Redirect(left, None));}
 +        Ok(Command::Simple(left.words))
 diff --git a/components/shell/script.rs b/components/shell/script.rs
-index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..893cabd42fda5cdffece77b5085a88b081411f0f 100644
+index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..185ce835a8478da673aaf4f1ce6cf92f2ea31d08 100644
 --- a/components/shell/script.rs
 +++ b/components/shell/script.rs
 @@ -72,0 +73 @@
@@ -123,7 +164,8 @@ index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..893cabd42fda5cdffece77b5085a88b0
 +                }
 +                self.login.redirected(self.fs, &stages, &paths).map(Flow::Status)
 +            }
-@@ -136,0 +159,13 @@
+@@ -137 +159,14 @@
+-                let consumer = match right[0] {
 +                let rname=f.word(right[0],&self.pid)?.text;
 +                if !matches!(rname.as_str(),"head"|"wc") {
 +                    let mut stages = Vec::new();
@@ -137,12 +179,29 @@ index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..893cabd42fda5cdffece77b5085a88b0
 +                    }
 +                    return self.login.pipeline(&stages[0],&stages[1]).map(Flow::Status);
 +                }
-@@ -356,0 +392,4 @@
++                let consumer = match rname.as_str() {
+@@ -144 +179,2 @@
+-                for (raw, expected) in [(left, "cat"), (right, reader_name)] {
++                let mut names = Vec::new();
++                for raw in [left, right] {
+@@ -148 +184 @@
+-                    if name != expected { return Err(rt::BAD_ARGUMENT); }
++                    names.push(name);
+@@ -154 +190,3 @@
+-                for (name, words) in ["cat", reader_name].into_iter().zip(&stages) {
++                if names[1] != reader_name { return Err(rt::BAD_ARGUMENT); }
++                let producer = Program::named(&names[0], false).ok_or(rt::DENIED)?;
++                for (name, words) in names.iter().zip(&stages) {
+@@ -166 +204 @@
+-                executor::pipeline(self.fs, &args, consumer, self.test, executor::PipeTrial::Normal).map(Flow::Status)
++                crate::selection_vfs_lab::run(self.login,self.fs,producer,&args,consumer).map(Flow::Status)
+@@ -356,0 +395,5 @@
 +            "install" => self.login.install(&argv)?,
++            "raccord-test" => crate::selection_vfs_lab::probe(self.login,self.fs,&argv)?,
 +            "redir-test" => self.login.verify_redirect(self.fs,&argv)?,
 +            "relay-test" => self.login.exercise_relay(&argv)?,
 +            "ticket-test" => self.login.ticket_probe(&argv)?,
-@@ -437,0 +477,14 @@
+@@ -437,0 +481,14 @@
 +            }
 +            _ if let Some(leaf) = crate::session_auth_lab::installed_name(&name, self.fs)? => {
 +                match self.login.execute(leaf, &argv) {
@@ -157,6 +216,24 @@ index 119f251a3ca79ecba15f2ecac2c13ceb094b9fda..893cabd42fda5cdffece77b5085a88b0
 +                    }
 +                    Err(err) => return Err(err),
 +                }
+diff --git a/components/shell/session_auth_lab.rs b/components/shell/session_auth_lab.rs
+index d6e25565fccab516f39fbc3ec42abe957ae64c5f..2ab1901c763240e06c22cc1c9ff0eff5c82bcda3 100644
+--- a/components/shell/session_auth_lab.rs
++++ b/components/shell/session_auth_lab.rs
+@@ -420,0 +421 @@
++    pub(super) fn drain_catalog(&mut self,pid:u64)->rt::Result<()>{self.drain(&[pid],None)}
+@@ -679,0 +681,8 @@
++    pub(super) fn confirm_live(&mut self)->rt::Result<()>{
++        let owner=self.request(b"NSHLIVE1",&self.session.ok_or(rt::REVOKED)?)?;
++        if owner[8..24]==[0;16]{return Err(rt::DENIED);}
++        if option_env!("NOVA_DISPLAY_TRACE")==Some("1"){
++            super::console::write(super::tty::ERROR,&alloc::format!("NXVPIPE NovaAuth reponse tag={}\n",self.tag))?;
++        }
++        Ok(())
++    }
+@@ -738 +747 @@
+-            || matches!(name, "install" | "ticket-test" | "redir-test" | "relay-test" | "source" | "."))
++            || matches!(name, "install" | "ticket-test" | "raccord-test" | "redir-test" | "relay-test" | "source" | "."))
 diff --git a/novaOS/kernel/build.rs b/novaOS/kernel/build.rs
 index 4fcc399468402982fb230b0901ed40bf05225d40..db5da094ad9a8a45ee1db88f83446db3b58559f6 100644
 --- a/novaOS/kernel/build.rs
@@ -276,7 +353,7 @@ index 0670f66eba73116397f8ac1c082588e3bb6b3ac0..6bd29b6fef781588e8ea5466143b035e
 +                    }
 +                }
 diff --git a/novaOS/kernel/src/sched/process/ipc/mod.rs b/novaOS/kernel/src/sched/process/ipc/mod.rs
-index 7daccb55336a31e54c1397f34be848b4cb374fdb..fe081a2c4136ca5074f5054472cc07b14e5d4478 100644
+index 7daccb55336a31e54c1397f34be848b4cb374fdb..88e5e1495c6d4cf266de13ffd08f1c9cde3c99fc 100644
 --- a/novaOS/kernel/src/sched/process/ipc/mod.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
 @@ -8,0 +9,4 @@
@@ -284,6 +361,27 @@ index 7daccb55336a31e54c1397f34be848b4cb374fdb..fe081a2c4136ca5074f5054472cc07b1
 +pub(super) mod session_relay;
 +#[cfg(feature="novaauth-sessions-lab")]
 +pub(in crate::sched) fn expire_pipeline(s:&mut Core) {session_relay::timer(s);}
+@@ -371,0 +376,3 @@
++    fn root_count(&self, owner:u64)->usize {
++        self.ends.ids().filter(|&i|self.ends.get(i).owner==owner).count()
++    }
+@@ -372,0 +380,10 @@
++        if option_env!("NOVA_ROOT_TRACE") != Some("1") {return self.create_root(p);}
++        let usage=|s:&Self| (s.ends.ids().count(),s.nodes.ids().count(),
++            s.caps(p).map_or(0,|l|l.entries.iter().filter(|v|v.key!=0).count()));
++        let before=usage(self);
++        let result=self.create_root(p);
++        hal::log(format_args!("BUDGET create pid={} roots={} err={} before={:?} after={:?}",
++            p.number,self.root_count(p.number),result.err().unwrap_or(0),before,usage(self)));
++        result
++    }
++    fn create_root(&mut self, p: Pid) -> Res<u64> {
+@@ -616,0 +634 @@
++        let owner=self.ends.get(ep.slot()).owner;
+@@ -617,0 +636,3 @@
++        if option_env!("NOVA_ROOT_TRACE")==Some("1") {
++            hal::log(format_args!("BUDGET destroy pid={} roots={}",owner,self.root_count(owner)));
++        }
 diff --git a/novaOS/kernel/src/sched/process/ipc/pipe.rs b/novaOS/kernel/src/sched/process/ipc/pipe.rs
 index acf0456d80ab86fc75ca6778824f19ac7da3f49e..32d392ea06876736dca83b0874b37d83e7610e6c 100644
 --- a/novaOS/kernel/src/sched/process/ipc/pipe.rs
@@ -309,12 +407,28 @@ index acf0456d80ab86fc75ca6778824f19ac7da3f49e..32d392ea06876736dca83b0874b37d83
 +    }
 +
 diff --git a/novaOS/kernel/src/sched/process/ipc/pipe_admission.rs b/novaOS/kernel/src/sched/process/ipc/pipe_admission.rs
-index 1244c7b0e4886f2c47396fbe0a1639414e09f376..f5c63a8ca7a3a5881f42cea47324b84f3c9dbd2a 100644
+index 1244c7b0e4886f2c47396fbe0a1639414e09f376..265cc121112c2da273b9de13cffe530b7df3f758 100644
 --- a/novaOS/kernel/src/sched/process/ipc/pipe_admission.rs
 +++ b/novaOS/kernel/src/sched/process/ipc/pipe_admission.rs
 @@ -3,0 +4,2 @@
 +#[cfg(feature="novaauth-sessions-lab")]
 +include!("ticket_pipe_lab.rs");
+@@ -196,0 +199,8 @@
++        self.admit_status(|| create().map_err(|error| match error {
++                Error::Memory(crate::memory::Error::Exhausted) => NO_MEMORY,
++                Error::Full => LIMIT,
++                _ => REFUSED,
++            }))
++    }
++
++    pub(super) fn admit_status(self, create: impl FnOnce() -> Res<Child>) -> Result<u64, ReaderFailure> {
+@@ -200,5 +210 @@
+-            let child = create().map_err(|error| match error {
+-                Error::Memory(crate::memory::Error::Exhausted) => NO_MEMORY,
+-                Error::Full => LIMIT,
+-                _ => REFUSED,
+-            })?;
++            let child = create()?;
 diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
 index 87dcef02b6fe556bec505b50dbe8190f0095072a..724c3237a4bcbe27225a37ef33263189272a74fe 100644
 --- a/novaOS/kernel/src/sched/process/ipc/service.rs
@@ -343,6 +457,62 @@ index 87dcef02b6fe556bec505b50dbe8190f0095072a..724c3237a4bcbe27225a37ef33263189
 @@ -304 +312 @@
 -        if auth_lab::enabled() && auth_lab::elf(id).is_some() { auth_lab::connect(s,m,target,id)?; }
 +        if auth_lab::enabled() { match id { auth_lab::AUTH => auth_lab::connect(s,m,target,id)?, auth_lab::CLIENT => shell_auth_lab::connect(s,m,target)?, shell_auth_lab::RELAY => shell_auth_lab::connect_relay(s,m,target)?, _ => () } }
+diff --git a/novaOS/kernel/src/sched/process/ipc/session_display_lab.rs b/novaOS/kernel/src/sched/process/ipc/session_display_lab.rs
+index 905243c177aceeb58ddf4d6b56f8dba5c3f53e58..095e8dec8db73cb13999dd6a9f7dd2536e2d03e7 100644
+--- a/novaOS/kernel/src/sched/process/ipc/session_display_lab.rs
++++ b/novaOS/kernel/src/sched/process/ipc/session_display_lab.rs
+@@ -114,0 +115,16 @@
++pub(super) fn attach_catalog_reader(s:&mut Core,shell:Pid,child:Pid,session:[u8;32])->Res<()>{
++    if !owns_session(s,shell,session){return Err(REVOKED);}
++    let r=s.processes.relay.as_ref().ok_or(REVOKED)?;
++    let available=r.captures.iter().position(|entry|entry.is_none_or(|c|{
++        let parent=s.processes.get(shell);
++        ![parent.wait_right,parent.pipe_reader_wait].into_iter().flatten().any(|w|w.target==c.child)
++    })).ok_or(LIMIT)?;
++    let out=service::channel(s,child,Some(shell),SEND)?;
++    let err=service::channel(s,child,Some(shell),SEND)?;
++    let roots=[Some(s.ipc.lookup(child,out.0,SEND)?.id),Some(s.ipc.lookup(child,err.0,SEND)?.id)];
++    service::config(s,child,480,&[0x4e585652415731,out.0,err.0]);
++    let r=s.processes.relay.as_mut().unwrap();
++    r.captures[available]=Some(Capture{child,input:None,writer:0,files:[None;2],roots,reads:[out.1,err.1]});
++    Ok(())
++}
++
+diff --git a/novaOS/kernel/src/sched/process/ipc/session_relay.rs b/novaOS/kernel/src/sched/process/ipc/session_relay.rs
+index c403fde5a906e15ee68a789870dbeb987d242fb3..b4673ef3fe4a08807af82ae95c8d5202103e963e 100644
+--- a/novaOS/kernel/src/sched/process/ipc/session_relay.rs
++++ b/novaOS/kernel/src/sched/process/ipc/session_relay.rs
+@@ -13,0 +14,4 @@
++
++#[path="selection_vfs_lab.rs"]
++mod selection;
++pub(in crate::sched::process) use selection::dispatch as private_launch;
+@@ -49,0 +54 @@
++    bridge: selection::Bridge,
+@@ -135,0 +141 @@
++        bridge: selection::Bridge::default(),
+@@ -179,0 +186 @@
++    selection::remove(s,r);
+@@ -504,0 +512,6 @@
++    if sys==IPC_NOTIFY && selection::handles_notify(s,route,p,args) {
++        let mut r=s.processes.relay.take().unwrap();
++        let result=selection::notify(s,&mut r,p,args);
++        s.processes.relay=Some(r);
++        return Some(result);
++    }
+@@ -679,0 +693,4 @@
++    if let Some(mut r)=s.processes.relay.take() {
++        selection::tick(s,&mut r);
++        s.processes.relay=Some(r);
++    }
+diff --git a/novaOS/kernel/src/sched/process/ipc/spawn.rs b/novaOS/kernel/src/sched/process/ipc/spawn.rs
+index 5efabbd7ee3572ee573b456846ac8e28a9862782..56b4aac99e3e85561e3a9ac71f8e998c6900fe16 100644
+--- a/novaOS/kernel/src/sched/process/ipc/spawn.rs
++++ b/novaOS/kernel/src/sched/process/ipc/spawn.rs
+@@ -13 +13,2 @@
+-    fn entry(index: usize) -> Res<(Self, bool, bool)> {
++    pub(super) fn bytes(self) -> &'static [u8] { self.0 }
++    pub(super) fn entry(index: usize) -> Res<(Self, bool, bool)> {
 diff --git a/novaOS/kernel/src/sched/process/ipc/traffic.rs b/novaOS/kernel/src/sched/process/ipc/traffic.rs
 index afafd56c714ab569f1a8bc5c09d9fd369128f3ac..7ea6b4106cdc951ac03169e7be452c6f3a2622de 100644
 --- a/novaOS/kernel/src/sched/process/ipc/traffic.rs
@@ -362,6 +532,16 @@ index afafd56c714ab569f1a8bc5c09d9fd369128f3ac..7ea6b4106cdc951ac03169e7be452c6f
 +                session_relay::expire(s);
 +                if !s.ipc.waits.has(tid.slot) && let Some(r)=session_relay::intercept(s,p,id,args) {return (r.map(Some),0,p.number);}
 +            }
+diff --git a/novaOS/kernel/src/sched/process/syscall.rs b/novaOS/kernel/src/sched/process/syscall.rs
+index 28490918099a000b28adb7e907ed491523069a3f..71b5cde37651a6ec8243ded952e8a598459c0c3a 100644
+--- a/novaOS/kernel/src/sched/process/syscall.rs
++++ b/novaOS/kernel/src/sched/process/syscall.rs
+@@ -132,0 +133,2 @@
++    #[cfg(feature="novaauth-sessions-lab")]
++    let private = if id == IPC_NOTIFY && !secondary { ipc::session_relay::private_launch(args) } else { None };
+@@ -133,0 +136,2 @@
++        #[cfg(feature="novaauth-sessions-lab")]
++        IPC_NOTIFY if private.is_some() => private.unwrap(),
 diff --git a/novaOS/user/novafs/Cargo.lock b/novaOS/user/novafs/Cargo.lock
 index 544533f390233d31cdc66ba531d6cc5c80df938e..1cc732a8d5716079070703b941872b769122a198 100644
 --- a/novaOS/user/novafs/Cargo.lock
@@ -477,7 +657,7 @@ index 1d2ab37d595f2656b392d211b177eb2433363ee0..f883333f10242d751f7229377e99aa71
 -novaauth-sessions-lab = ["dep:novaos-identity"]
 +novaauth-sessions-lab = ["dep:novaos-identity", "novaos-identity/distribution-lab"]
 diff --git a/novaOS/user/novafs/files.rs b/novaOS/user/novafs/files.rs
-index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..05829e2b7a570bd46698d23623e79f88765b0b6b 100644
+index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..efce39c14b8c0aa239d586ff1aba8cc49cc7ddba 100644
 --- a/novaOS/user/novafs/files.rs
 +++ b/novaOS/user/novafs/files.rs
 @@ -99,0 +100,2 @@
@@ -517,15 +697,16 @@ index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..05829e2b7a570bd46698d23623e79f88
 +                        if let Some(slot)=client.redirections.iter_mut().find(|v|v.is_some_and(|r|r.key==handle)){
 +                            *slot=None;
 +                        }
-@@ -631,0 +662,4 @@
+@@ -631,0 +662,5 @@
 +#[cfg(feature="novaauth-sessions-lab")]
 +mod package_lab;
 +#[cfg(feature="novaauth-sessions-lab")]
 +mod exec_files_lab;
-@@ -652,0 +687,2 @@
++mod selection_pipe_lab;
+@@ -652,0 +688,2 @@
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        let _=self.serve_exec_files()?;
-@@ -722,0 +759,8 @@
+@@ -722,0 +760,8 @@
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        upload: None,
 +        #[cfg(feature="novaauth-sessions-lab")]
@@ -534,9 +715,28 @@ index ff2ad01b34724630fd5ee6f125b5105f8fa8f274..05829e2b7a570bd46698d23623e79f88
 +        exec_cwd:0,
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        exec_open:Default::default(),
-@@ -751,0 +796,2 @@
+@@ -746,0 +792 @@
++    let mut selection:Option<selection_pipe_lab::Pending>=None;
+@@ -751,0 +798,2 @@
 +        #[cfg(feature="novaauth-sessions-lab")]
 +        {s.exec_cwd=clients[0].cwd.0; s.reap_redirects(&mut clients[0]);}
+@@ -760,0 +809,10 @@
++        }
++        if let Some(p)=selection.as_ref() {
++            let base=selection_pipe_lab::BASE;
++            let rx=exec_files_lab::config(base+2); let tx=exec_files_lab::config(base+3);
++            if exec_files_lab::config(base)!=p.key {selection=None;}
++            else if rx!=0 && tx!=0 {
++                let mut pending=selection.take().unwrap();
++                pending.grant.connect(rx,tx);
++                pending.grant.serve(&mut s,client)?;
++            }
+@@ -806 +864,4 @@
+-            if cli && m.payload[1] == w::DELEGATE {
++            if cli && m.payload[1] == selection_pipe_lab::SELECT {
++                if selection.is_some() {Err(rt::WOULD_BLOCK)}
++                else {selection_pipe_lab::prepare(&mut s,client,&m.payload).map(|p|selection=Some(p))}
++            } else if cli && m.payload[1] == w::DELEGATE {
 diff --git a/novaOS/user/novafs/files/auth_registry.rs b/novaOS/user/novafs/files/auth_registry.rs
 index 6bfb5e29ab66dac792e1755deb0551eb0ad0def2..1852892ec17c03345ad3e336b9ef347a8a85a1e4 100644
 --- a/novaOS/user/novafs/files/auth_registry.rs
@@ -550,6 +750,47 @@ index 6bfb5e29ab66dac792e1755deb0551eb0ad0def2..1852892ec17c03345ad3e336b9ef347a
 +            a[..8].copy_from_slice(&status.to_le_bytes());
 +            return reply(tx,msg.tag,&a);
 +        }
+diff --git a/novaOS/user/novafs/files/delegated.rs b/novaOS/user/novafs/files/delegated.rs
+index 65a1c0ecafdaeb6729c7ed35e7fa333de33dfa48..91883b1e952e9db8bffea3ec254412ec325cf51b 100644
+--- a/novaOS/user/novafs/files/delegated.rs
++++ b/novaOS/user/novafs/files/delegated.rs
+@@ -38,0 +39 @@
++    reservation: Option<u64>,
+@@ -52,0 +54,8 @@
++    shape(ports.rx!=0 && ports.tx!=0)?;
++    prepare_inner(session,owner,q,ports,None)
++}
++pub(super) fn selection(s:&Session,c:&mut Client,key:u64)->rt::Result<Grant>{
++    let mut q=w::frame(w::DELEGATE,c.id,0); q[2]=w::GROUP;
++    prepare_inner(s,c,&q,Ports::default(),Some(key))
++}
++fn prepare_inner(session:&Session,owner:&mut Client,q:&Frame,ports:Ports,reservation:Option<u64>)->rt::Result<Grant>{
+@@ -62,3 +71 @@
+-        ports.rx != 0
+-            && ports.tx != 0
+-            && owner.mounted
++        owner.mounted
+@@ -164,0 +172 @@
++        reservation,
+@@ -174,0 +183 @@
++    pub(super) fn connect(&mut self,rx:u64,tx:u64){self.ports=Ports{rx,tx};}
+@@ -326 +335,5 @@
+-                    self.execute(s, owner, &m.payload, &mut a)
++                    let verified=match self.reservation {
++                        Some(key)=>super::selection_pipe_lab::check(s,key,&self.targets),
++                        None=>Ok(()),
++                    };
++                    verified.and_then(|()|self.execute(s, owner, &m.payload, &mut a))
+diff --git a/novaOS/user/novafs/files/exec_files_lab.rs b/novaOS/user/novafs/files/exec_files_lab.rs
+index 29ad632d87d38f8e858c72f43eccf3048bbfbe5b..243f265feb71dfa42641bf8cd2136b854bfff4ed 100644
+--- a/novaOS/user/novafs/files/exec_files_lab.rs
++++ b/novaOS/user/novafs/files/exec_files_lab.rs
+@@ -16 +16 @@
+-fn config(index: usize) -> u64 {
++pub(super) fn config(index: usize) -> u64 {
+@@ -232 +232 @@
+-    fn redirect_authority(&mut self, epoch: u64) -> rt::Result<u64> {
++    pub(super) fn redirect_authority(&mut self, epoch: u64) -> rt::Result<u64> {
 diff --git a/novaOS/user/novafs/files/namespace.rs b/novaOS/user/novafs/files/namespace.rs
 index 29e0200156df412aa21249c387a4979b73d86c9f..50b087a395e887607f7a5d4c1493627faf1aed00 100644
 --- a/novaOS/user/novafs/files/namespace.rs
@@ -563,6 +804,17 @@ index 29e0200156df412aa21249c387a4979b73d86c9f..50b087a395e887607f7a5d4c1493627f
 +            let msg=b"NXVFS volume principal ouverture TSV";
 +            rt::call(rt::DEBUG_WRITE,msg.as_ptr() as u64,msg.len() as u64,0);
 +        }
+diff --git a/novaOS/user/novafs/files/selected.rs b/novaOS/user/novafs/files/selected.rs
+index 1245120a1f4f59fc47189402474f80a1de870946..2208488c35f025f9061b072179a2d3db648765be 100644
+--- a/novaOS/user/novafs/files/selected.rs
++++ b/novaOS/user/novafs/files/selected.rs
+@@ -10,0 +11,6 @@
++}
++
++impl Target {
++    pub(super) fn read_only_file(&self)->Option<u64>{
++        (self.scope==w::SELECT_FILE && self.kind==Kind::File).then_some(self.id)
++    }
 diff --git a/novaOS/user/service_manager.rs b/novaOS/user/service_manager.rs
 index 8e66b5f6657b531333f2f20965439606f4837731..739c6a964aad78f5fecae1725045b0da894fafc6 100644
 --- a/novaOS/user/service_manager.rs

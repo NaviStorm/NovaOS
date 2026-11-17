@@ -96,6 +96,74 @@ fn main() {
         Mode::ReadWrite,
     )
     .unwrap();
+    if argv.get(4).is_some_and(|op| op == "--pipe") {
+        use novaos_identity::policy::{InstallChange, installed};
+        use sha2::{Digest, Sha256};
+        let executable = fs::read(&argv[5]).unwrap();
+        let digest: [u8; 32] = Sha256::digest(&executable).into();
+        let root_id = fs.root_id();
+        let directory = fs
+            .create_at(root_id, "travail", Kind::Directory)
+            .unwrap()
+            .id;
+        let data = fs.create_at(directory, "donnees.tsv", Kind::File).unwrap();
+        fs.prepare_write_id(data.id, 0, b"A\tB\tC\nD\tE\tF\n")
+            .unwrap()
+            .commit()
+            .unwrap();
+        let head = ledger.current().unwrap();
+        let reg = Registry::open(&mut fs, &mut ledger, [7; 16]).unwrap();
+        let owner = created_user(&reg.outcome([1; 16]).unwrap().unwrap());
+        drop(reg);
+        let mut seal = Vec::from(*b"NXScope1");
+        seal.extend_from_slice(&owner);
+        seal.extend_from_slice(&directory.to_le_bytes());
+        seal.extend_from_slice(&data.id.to_le_bytes());
+        let hidden = fs.create_at(root_id, "\u{1f}NXScope", Kind::File).unwrap();
+        fs.prepare_write_id(hidden.id, 0, &seal)
+            .unwrap()
+            .commit()
+            .unwrap();
+        let mut reg = Registry::open(&mut fs, &mut ledger, [7; 16]).unwrap();
+        let head = reg
+            .bind_folder(head, owner, directory, &seal, [159; 16])
+            .unwrap();
+        let registered = reg
+            .provision_install(head, [160; 16], owner, InstallChange::New(digest))
+            .unwrap();
+        let installation = installed(&registered);
+        reg.set_permission(
+            reg.grant_attested(owner).unwrap(),
+            owner,
+            directory,
+            installation,
+            Origin::Direct,
+            READ,
+            [161; 16],
+        )
+        .unwrap();
+        drop(reg);
+        let mut marker = Vec::from(installation);
+        marker.extend_from_slice(&digest);
+        let object = fs
+            .create_at(root_id, "\u{1f}NXPipeImages", Kind::File)
+            .unwrap();
+        fs.prepare_write_id(object.id, 0, &marker)
+            .unwrap()
+            .commit()
+            .unwrap();
+        let file = fs.create_at(directory, "lignes.tsv", Kind::File).unwrap();
+        let mut text = Vec::from(*b"A\tB\tC\n");
+        text.resize(65535, b'x');
+        text.push(b'\n');
+        fs.prepare_write_id(file.id, 0, &text)
+            .unwrap()
+            .commit()
+            .unwrap();
+        fs.unmount().unwrap();
+        println!("installation={installation:02x?} sha256={digest:02x?}");
+        return;
+    }
     let root_id = fs.root_id();
     let directory = fs
         .create_at(root_id, "travail", Kind::Directory)

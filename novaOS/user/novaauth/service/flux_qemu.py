@@ -131,6 +131,39 @@ def run(a):
                 command("cd /travail",0)
                 streams("cat - <donnees.tsv | cut -f1,3 >paire 2>err-paire",0,(RAW,b""),pipe=True)
                 streams("cut -f1,3 absent 2>diagnostic",5,(b"","cut: accès refusé\n".encode()))
+            elif a.group == "selection":
+                command("cd /travail", 0)
+                for line, expected, writer in (
+                    ("cat donnees.tsv | wc -l", b"2\n", 0),
+                    ("cat donnees.tsv | head -n 1", b"A\tB\tC\n", 0),
+                    ("cat lignes.tsv | head -n 1", b"A\tB\tC\n", 11),
+                ):
+                    out = command(line, 0)
+                    live = re.search(rb"NXVPIPE NovaAuth reponse tag=(\d+)", out)
+                    statuses = re.search(rb"NXVPIPE producteur=(\d+) statut=(\d+) lecteur=(\d+) statut=(\d+)", out)
+                    if not live or not statuses or live.end() > statuses.start():
+                        raise ValueError(("réponse NovaAuth ou collecte absente", line))
+                    p, w, r, v = map(int, statuses.groups())
+                    if p == r or w != writer or v != 0:
+                        raise ValueError(("résultats enfants", line, (p, w, r, v)))
+                    frames = re.findall(rb"NXFLUX pid=(\d+) fd=([12]) octets=(\d+) prefixe=([0-9a-f]*)",out)
+                    expected_frames = [(r, 1, len(expected), expected.hex()), (r, 2, 0, "")]
+                    if [(int(i), int(fd), int(sz), raw.decode()) for i, fd, sz, raw in frames] != expected_frames:
+                        raise ValueError(("octets bruts", line, frames))
+                    record["tests"][-1].update(producteur=p, lecteur=r, statut_producteur=w,
+                            statut_lecteur=v, reponse_auth=int(live[1]), stdout=expected.hex(), stderr="")
+            elif a.group == "selection-refus":
+                command("cd /travail", 0)
+                for mode in ("quota", "collision", "partiel", "expire", "revoque"):
+                    out = command("raccord-test " + mode, 0)
+                    if ("NXVPIPE temoin " + mode + " termine").encode() not in out:
+                        raise ValueError(("sonde absente", mode))
+                    if mode == "quota":
+                        refused = re.findall(rb"BUDGET create pid=(\d+) roots=4 err=6 before=(\([^)]*\)) after=(\([^)]*\))",out)
+                        if len(refused) != 1 or refused[0][1] != refused[0][2]:
+                            raise ValueError(("cinquième racine", refused))
+                        record["tests"][-1]["compteurs_refus"] = refused[0][1].decode()
+                command("true", 0)
             elif a.group=="historiques":
                 command("cd /travail",0)
                 wc=command("cat donnees.tsv | wc -l",0).replace(b"\r\n",b"\n")
@@ -186,6 +219,6 @@ if __name__=="__main__":
     p.add_argument("arch",choices=["aarch64","x86_64"])
     p.add_argument("sector",type=int,choices=[512,4096])
     for name in ["iso","genesis","package","output"]:p.add_argument(name,type=Path)
-    p.add_argument("group",choices=["chaud","cut","pipe","argv","redirect","redirpipe","droits","binaire","auteurs","syntaxe","historiques","diagnostic"])
+    p.add_argument("group",choices=["chaud","cut","pipe","argv","redirect","redirpipe","droits","binaire","auteurs","syntaxe","historiques","diagnostic","selection","selection-refus"])
     p.add_argument("command",nargs="*")
     raise SystemExit(0 if run(p.parse_args()) else 1)

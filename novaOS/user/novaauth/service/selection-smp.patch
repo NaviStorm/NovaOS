@@ -1,0 +1,8 @@
+--- a/components/shell/selection_vfs_lab.rs
++++ b/components/shell/selection_vfs_lab.rs
+@@ -0,0 +1,2 @@
++#[path = "../../novaOS/user/novaauth/service/sonde_selection_smp.rs"]
++mod sonde_selection_smp;
+@@ -159 +161 @@
+-                producer = Some(admit(key, &argv)?);
++                producer = Some(if *mode == "collision" { sonde_selection_smp::presenter(key, &argv)? } else { admit(key, &argv)? });
