@@ -7,7 +7,7 @@ use std::{
     ffi::OsStr,
     fs::File,
     io::{self, Read, Seek, SeekFrom, Write},
-    os::unix::{ffi::OsStrExt, fs::MetadataExt},
+    os::unix::{ffi::OsStrExt, fs::{FileTypeExt, MetadataExt}},
 };
 
 struct Host {
@@ -183,8 +183,11 @@ pub fn run() -> u8 {
         .try_clone_to_owned()
         .ok()
         .and_then(|fd| File::from(fd).metadata().ok())
-        .zip(std::fs::metadata("/dev/null").ok())
-        .is_some_and(|(a, b)| a.dev() == b.dev() && a.ino() == b.ino());
+        .is_some_and(|a| {
+            a.file_type().is_char_device()
+                && std::fs::metadata("/dev/null")
+                    .is_ok_and(|b| a.dev() == b.dev() && a.ino() == b.ino())
+        });
     let mut host = Host {
         out: BufWriter::new(io::stdout()),
         null,

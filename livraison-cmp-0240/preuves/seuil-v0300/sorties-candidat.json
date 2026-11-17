@@ -1,0 +1,206 @@
+[
+  {
+    "outil": "Nova",
+    "destination": "fichier",
+    "arguments": [
+      "a",
+      "a"
+    ],
+    "statut": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "Nova",
+    "destination": "fichier",
+    "arguments": [
+      "a",
+      "b"
+    ],
+    "statut": 1,
+    "stdout": "",
+    "stderr": "636d703a20454f46206f6e20276227206166746572206279746520312c20696e206c696e6520310a"
+  },
+  {
+    "outil": "Nova",
+    "destination": "fichier",
+    "arguments": [
+      "-s",
+      "absent",
+      "b"
+    ],
+    "statut": 2,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "Nova",
+    "destination": "pipe",
+    "arguments": [
+      "a",
+      "a"
+    ],
+    "statut": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "Nova",
+    "destination": "pipe",
+    "arguments": [
+      "a",
+      "b"
+    ],
+    "statut": 1,
+    "stdout": "",
+    "stderr": "636d703a20454f46206f6e20276227206166746572206279746520312c20696e206c696e6520310a"
+  },
+  {
+    "outil": "Nova",
+    "destination": "pipe",
+    "arguments": [
+      "-s",
+      "absent",
+      "b"
+    ],
+    "statut": 2,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "Nova",
+    "destination": "null",
+    "arguments": [
+      "a",
+      "a"
+    ],
+    "statut": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "Nova",
+    "destination": "null",
+    "arguments": [
+      "a",
+      "b"
+    ],
+    "statut": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "Nova",
+    "destination": "null",
+    "arguments": [
+      "-s",
+      "absent",
+      "b"
+    ],
+    "statut": 2,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "GNU",
+    "destination": "fichier",
+    "arguments": [
+      "a",
+      "a"
+    ],
+    "statut": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "GNU",
+    "destination": "fichier",
+    "arguments": [
+      "a",
+      "b"
+    ],
+    "statut": 1,
+    "stdout": "",
+    "stderr": "636d703a20454f46206f6e20276227206166746572206279746520312c20696e206c696e6520310a"
+  },
+  {
+    "outil": "GNU",
+    "destination": "fichier",
+    "arguments": [
+      "-s",
+      "absent",
+      "b"
+    ],
+    "statut": 2,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "GNU",
+    "destination": "pipe",
+    "arguments": [
+      "a",
+      "a"
+    ],
+    "statut": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "GNU",
+    "destination": "pipe",
+    "arguments": [
+      "a",
+      "b"
+    ],
+    "statut": 1,
+    "stdout": "",
+    "stderr": "636d703a20454f46206f6e20276227206166746572206279746520312c20696e206c696e6520310a"
+  },
+  {
+    "outil": "GNU",
+    "destination": "pipe",
+    "arguments": [
+      "-s",
+      "absent",
+      "b"
+    ],
+    "statut": 2,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "GNU",
+    "destination": "null",
+    "arguments": [
+      "a",
+      "a"
+    ],
+    "statut": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "GNU",
+    "destination": "null",
+    "arguments": [
+      "a",
+      "b"
+    ],
+    "statut": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "outil": "GNU",
+    "destination": "null",
+    "arguments": [
+      "-s",
+      "absent",
+      "b"
+    ],
+    "statut": 2,
+    "stdout": "",
+    "stderr": ""
+  }
+]

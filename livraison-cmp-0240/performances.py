@@ -14,14 +14,17 @@ from laboratoire import TMP, SEED, digest, parser, tools
 p=parser(__doc__)
 p.add_argument("--large",action="store_true",help="ajouter 100 Mio et 1 Gio au palier de 1 Mio")
 p.add_argument("--mio",type=int,choices=[1,100,1024],help="mesurer uniquement ce palier explicite")
+p.add_argument("--repetitions", type=int, default=3, help="passages mesurés par outil après échauffement")
 a=p.parse_args()
+if a.repetitions < 3:
+    p.error("--repetitions exige au moins trois passages")
 bins=tools(a)
 sizes=[a.mio] if a.mio else ([1,100,1024] if a.large else [1])
 M=1<<20
 env={**os.environ,"LANG":"C","LC_ALL":"C"}
 env.pop("POSIXLY_CORRECT",None)
 report=dict(graine=SEED,systeme=platform.platform(),ram=int(subprocess.check_output(["sysctl","-n","hw.memsize"])),
-    echauffements=1, repetitions=3, architecture=platform.machine(),
+    echauffements=1, repetitions=a.repetitions, architecture=platform.machine(),
     cache="lecture après échauffement, cache Darwin non purgé",libre=shutil.disk_usage(TMP).free,
     outils={name:dict(path=str(path),sha256=digest(path),version=subprocess.check_output([path,"--version"]).decode().splitlines()[0])
             for name,path in bins.items()},mesures=[])
