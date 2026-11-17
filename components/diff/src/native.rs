@@ -15,7 +15,7 @@ impl Platform for Guest<'_> {
     fn utf8(&self) -> bool {
         self.0.utf8
     }
-    fn stat(&mut self, path: &[u8], _: &Options) -> Result<Option<Meta>, String> {
+    fn stat(&mut self, path: &[u8], o: &Options) -> Result<Option<Meta>, String> {
         if path == b"-" {
             return Ok(Some(Meta::file()));
         }
@@ -28,7 +28,18 @@ impl Platform for Guest<'_> {
                     Kind::File
                 },
                 id: Some((0, w::word(&frame, w::PAYLOAD))),
-                stamp: vec![],
+                stamp: if w::length(&frame) == 73 {
+                    let p = w::PAYLOAD + 37;
+                    let sec = i64::from_le_bytes(frame[p..p + 8].try_into().unwrap());
+                    let ns = u32::from_le_bytes(frame[p + 8..p + 12].try_into().unwrap());
+                    if ns < 1_000_000_000 {
+                        calendar::Date::utc(sec).stamp(ns, o.style == "context")
+                    } else {
+                        b"unknown".to_vec()
+                    }
+                } else {
+                    b"unknown".to_vec()
+                },
             })),
             Err(w::NOT_FOUND) => Ok(None),
             Err(e) => Err(error(path, e)),
@@ -65,6 +76,10 @@ impl Platform for Guest<'_> {
         let close = c.simple(w::DIR_CLOSE, dir);
         result.and(close.map(|_| ())).map_err(|e| error(path, e))?;
         Ok(names)
+    }
+    fn paginate(&mut self, title: &[u8], data: &[u8]) -> Result<Vec<u8>, String> {
+        let sec = rt::value(rt::call(rt::CLOCK_UTC, 0, 0, 0)).map_err(|e| error(b"clock", e))?;
+        Ok(calendar::Date::utc(sec as i64).paginate(title, data))
     }
     fn emit(&mut self, err: bool, b: &[u8]) -> Result<(), String> {
         if err {

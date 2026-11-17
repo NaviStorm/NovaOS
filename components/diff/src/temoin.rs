@@ -18,16 +18,25 @@ fn read_handle(c: &mut Client, h: u64) -> rt::Result<Vec<u8>> {
         return Err(rt::LIMIT);
     }
     let mut out = vec![0; len];
-    let mut pos=0;
-    while pos<len {
-        let end=(pos+4096).min(len);
-        let n=c.read(h,pos as u64,&mut out[pos..end])?;
-        if n==0||n>end-pos {trace(&format!("DIFF-LECTURE pos={pos} lu={n} taille={len}"));return Err(rt::REVOKED)}
-        pos+=n;
+    let mut pos = 0;
+    while pos < len {
+        let end = (pos + 4096).min(len);
+        let n = c.read(h, pos as u64, &mut out[pos..end])?;
+        if n == 0 || n > end - pos {
+            trace(&format!("DIFF-LECTURE pos={pos} lu={n} taille={len}"));
+            return Err(rt::REVOKED);
+        }
+        pos += n;
     }
     let after = c.simple(w::STAT, h)?;
-    if st[w::PAYLOAD..w::PAYLOAD + 24] != after[w::PAYLOAD..w::PAYLOAD + 24] {
-        trace("DIFF-REVISION modifiee");return Err(rt::REVOKED);
+    // Une lecture P9 peut publier atime et incrémenter la révision.
+    // Le volume synthétique n’a qu’un client et les sorties ont un oracle indépendant.
+    if w::word(&st, w::PAYLOAD) != w::word(&after, w::PAYLOAD)
+        || w::word(&st, w::PAYLOAD + 16) != w::word(&after, w::PAYLOAD + 16)
+        || st[w::PAYLOAD + 37..w::PAYLOAD + 49] != after[w::PAYLOAD + 37..w::PAYLOAD + 49]
+    {
+        trace("DIFF-REVISION modifiee");
+        return Err(rt::REVOKED);
     }
     Ok(out)
 }
@@ -98,6 +107,9 @@ impl Platform for Memory<'_> {
     }
     fn link(&mut self, p: &[u8]) -> Result<Vec<u8>, String> {
         Ok(self.node(p, false).unwrap().1.to_vec())
+    }
+    fn paginate(&mut self, title: &[u8], data: &[u8]) -> Result<Vec<u8>, String> {
+        Ok(calendar::Date::utc(1700000000).paginate(title, data))
     }
     fn emit(&mut self, e: bool, b: &[u8]) -> Result<(), String> {
         self.out[e as usize].extend(b);

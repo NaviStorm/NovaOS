@@ -98,15 +98,17 @@ def main():
             m=re.search(rb"DIFF-VECTEURS total=(\d+) ecarts=(\d+)",log)
             assert m,log[-2000:];results.append(dict(cas=int(m[1]),ecarts=int(m[2]),statut=rc,divergences=[int(x) for x in re.findall(rb"DIFF-ECART id=(\d+)",log)]))
             for name,(exp,size) in expected.items():
-                raw=[]
+                raw=[];peaks=[]
                 for rep in range(4):
                     rc,log,ns=capture(vm,"@probe diff-"+name);parts=[bytearray(),bytearray()]
                     for side,chunk in re.findall(rb"DIFF-OCTETS ([01]) ([0-9a-f]+)",log):parts[int(side)].extend(bytes.fromhex(chunk.decode()))
                     got=[rc,parts[0].hex(),parts[1].hex()]
                     if got!=exp:raise RuntimeError((name,got,exp,log[-1200:]))
-                    if rep:raw.append(ns)
-                results.append(dict(charge=name,entree=size,statut=exp[0],octets_diff=len(exp[1])//2,stdout_sha256=hashlib.sha256(bytes.fromhex(exp[1])).hexdigest(),ns=raw,mediane_ms=statistics.median(raw)/1e6))
+                    if rep:
+                        raw.append(ns);peaks.append(int(re.search(rb"DIFF-PIC-TAS (\d+)",log)[1]))
+                results.append(dict(charge=name,entree=size,statut=exp[0],octets_diff=len(exp[1])//2,stdout_sha256=hashlib.sha256(bytes.fromhex(exp[1])).hexdigest(),ns=raw,pic_tas_octets=peaks,mediane_mio_s=size/2**20/(statistics.median(raw)/1e9),mediane_ms=statistics.median(raw)/1e6))
         save(out/"resultats.json",results);arret(vm,2)
     if a.profile=="recette":shutil.copy2(a.lab/"probe.elf",out/"diff-recette.elf")
     print(a.arch,a.sector,a.profile,results)
+    if a.profile=="recette" and (results[0]["ecarts"] or results[0]["statut"]):raise SystemExit(1)
 if __name__=="__main__":main()

@@ -19,7 +19,8 @@ def main():
     with (TMP/"cut-performances.lock").open("a+") as lock,tempfile.TemporaryDirectory(dir=TMP,prefix="diff-perf-") as td:
         fcntl.flock(lock,fcntl.LOCK_EX)
         status=subprocess.run(["ps","-A","-o","pcpu=,comm="],capture_output=True,text=True)
-        (dest/"charge-avant.txt").write_text("\n".join(s for s in status.stdout.splitlines() if s.split() and float(s.split()[0])>=5))
+        values=[float(line.split()[0]) for line in status.stdout.splitlines() if line.split()]
+        save(dest/"charge-avant.json",dict(somme_cpu_pourcent=sum(values),processus_au_dessus_de_5=sum(v>=5 for v in values),cpu_logiques=os.cpu_count()))
         d=Path(td);rows=[];summary=[]
         n=65536 if args.complet else 4096
         lines=[f"ARC-027 {i:08d} le témoin ligne {i%37:02d}\n".encode() for i in range(n)]

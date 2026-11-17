@@ -102,7 +102,8 @@ fn middle(a: &[usize], b: &[usize]) -> Option<(usize, usize)> {
     }
     for d in 0..=max {
         for rev in 0..2 {
-            for k in (-d..=d).step_by(2) {
+            for diag in (-d..=d).step_by(2) {
+                let k = if rev == 0 { -diag } else { diag };
                 let i = (offset + k) as usize;
                 let f = &fronts[rev];
                 let mut x = if k == -d || k != d && f[i - 1] < f[i + 1] {
@@ -143,7 +144,7 @@ fn middle(a: &[usize], b: &[usize]) -> Option<(usize, usize)> {
     }
     None
 }
-fn differences(
+pub(super) fn differences(
     mut a: &[usize],
     mut b: &[usize],
     mut i: usize,
@@ -220,10 +221,33 @@ impl<'a> Text<'a> {
                 })
                 .collect::<Vec<_>>()
         };
-        let x = intern(&rows[0]);
-        let y = intern(&rows[1]);
-        let mut changes = vec![];
-        differences(&x, &y, 0, 0, &mut changes);
+        // Conserver une marge de contexte rend les lignes répétées disponibles
+        // pour le placement des blocs, même près du préfixe ou du suffixe commun.
+        let horizon = o
+            .val("horizon-lines")
+            .and_then(|v| txt(v).parse::<usize>().ok())
+            .unwrap_or(0)
+            .max(if matches!(o.style, "context" | "unified") {
+                o.context
+            } else {
+                0
+            });
+        let prefix = rows[0]
+            .iter()
+            .zip(&rows[1])
+            .take_while(|(x, y)| x == y)
+            .count()
+            .saturating_sub(horizon);
+        let tail = rows[0][prefix..]
+            .iter()
+            .rev()
+            .zip(rows[1][prefix..].iter().rev())
+            .take_while(|(x, y)| x == y)
+            .count()
+            .saturating_sub(horizon);
+        let x = intern(&rows[0][prefix..rows[0].len() - tail]);
+        let y = intern(&rows[1][prefix..rows[1].len() - tail]);
+        let changes = alignment::changes(&x, &y, ids.len(), o, prefix);
         Self { rows, changes }
     }
     pub fn ignored(&self, h: &Change, o: &Options) -> bool {

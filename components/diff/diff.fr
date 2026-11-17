@@ -5,6 +5,41 @@ Le format normal indique les ajouts, suppressions et remplacements. -u et -c ajo
 -y juxtapose les lignes, -e/-f produisent un script éditeur, -n un script RCS et -D NOM fusionne les entrées.
 -q signale les différences, -s les égalités. -r parcourt les répertoires. -N assimile un fichier absent à un fichier vide.
 -i ignore la casse. -E, -Z, -b, -w et -B filtrent certains espaces. -I MOTIF ignore les changements correspondants.
-Exemples : diff -u ancien nouveau | diff -qr avant après | diff --label avant --label après -u - fichier
+Exemples : diff -u a b
+           diff -qr avant après
+           diff --label avant --label après -u - fichier
 Statuts : 0 identiques, 1 différents, 2 erreur. La comparaison demande la lecture des entrées.
 L’aide, la version et le manuel ne demandent aucun accès fichier ni espace temporaire.
+
+--normal | -q --brief | -s --report-identical-files
+    Différences normales, résumé des différences ou signalement des fichiers identiques.
+-c -C N --context[=N] | -u -U N --unified[=N]
+    Format contextuel ou unifié. Le contexte par défaut est de trois lignes.
+-e --ed | -f --forward-ed | -n --rcs | -D --ifdef NAME
+    Script ed inverse ou direct, script RCS ou compilation conditionnelle.
+-y --side-by-side | -W --width=N | --left-column | --suppress-common-lines
+    Deux colonnes, largeur (130 par défaut), lignes communes à gauche ou masquées.
+-p --show-c-function | -F --show-function-line=RE | -L --label=TEXT
+    Indiquer la fonction englobante. Donner un ou deux libellés de fichier.
+-t --expand-tabs | -T --initial-tab | --tabsize=N | --suppress-blank-empty | -l --paginate
+    Développer les tabulations, aligner le texte, régler les taquets (8 par défaut), supprimer les préfixes vides ou paginer.
+-r --recursive | -N --new-file | -P --unidirectional-new-file | --no-dereference
+    Parcourir les répertoires, assimiler les absents à des fichiers vides des deux côtés ou à gauche, comparer la cible textuelle des liens.
+-x --exclude=PAT | -X --exclude-from=FILE | -S --starting-file=NAME
+    Exclure les noms correspondants, charger un motif par ligne ou commencer au nom indiqué.
+--ignore-file-name-case | --no-ignore-file-name-case | --from-file=FILE | --to-file=FILE
+    Choisir la casse des noms ou comparer chaque opérande à un fichier fixe à gauche ou à droite.
+-i --ignore-case | -E --ignore-tab-expansion | -Z --ignore-trailing-space
+    Ignorer la casse, le développement des tabulations ou les espaces en fin de ligne.
+-b --ignore-space-change | -w --ignore-all-space | -B --ignore-blank-lines | -I --ignore-matching-lines=RE
+    Ignorer les variations d’espaces, tous les espaces, les changements de lignes vides ou ceux correspondant à une expression de base.
+-a --text | --strip-trailing-cr | --binary
+    Traiter NUL en texte, supprimer CR devant LF ou lire les octets binaires.
+--line-format=FMT | --{old,new,unchanged}-line-format=FMT | --{old,new,changed,unchanged}-group-format=FMT
+    Formater les lignes avec %L ou %l. Les groupes acceptent %<, %>, %= et les champs numériques. %% imprime un signe pour cent.
+-d --minimal | -H --speed-large-files | --horizon-lines=N
+    Chercher un script minimal, accélérer les gros fichiers ou conserver N lignes communes aux extrémités.
+--color[=WHEN] | --palette=PALETTE
+    Choisir never, auto ou always. Régler les couleurs avec des entrées telles que de=31:ad=32.
+--help | -v --version
+    Afficher l’aide ou la version du composant.

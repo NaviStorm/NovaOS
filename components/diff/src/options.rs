@@ -63,9 +63,18 @@ impl<'a> Options<'a> {
         };
         match k {
             "help" | "version" => self.doc = Some(k),
-            "context" | "unified" if !v.is_empty() => self.context = num("context length", 0)?,
+            "context" | "unified" => {
+                self.context = self.context.max(if v.is_empty() {
+                    0
+                } else {
+                    num("context length", 0)?
+                })
+            }
             "width" | "tabsize" => {
                 let n = num(if k == "width" { "width" } else { "tabsize" }, 1)?;
+                if k == "tabsize" && n > isize::MAX as usize - 3 {
+                    return Err(hint(&format!("invalid tabsize '{}'", txt(v)), inv));
+                }
                 let old = if k == "width" { self.width } else { self.tab };
                 if self.has(k) && n != old {
                     return Err(format!("conflicting {k} options"));
@@ -115,7 +124,18 @@ impl<'a> Options<'a> {
         if matches!(k, "from-file" | "to-file" | "starting-file" | "ifdef")
             || k.ends_with("-format")
         {
-            if self.val(k).is_some_and(|old| old != v) {
+            let other_line = if k == "line-format" {
+                [
+                    "old-line-format",
+                    "new-line-format",
+                    "unchanged-line-format",
+                ]
+                .iter()
+                .any(|key| self.val(key).is_some_and(|old| old != v))
+            } else {
+                k.ends_with("-line-format") && self.val("line-format").is_some_and(|old| old != v)
+            };
+            if other_line || self.val(k).is_some_and(|old| old != v) {
                 let name = match k {
                     "starting-file" => "-S".into(),
                     "ifdef" => "-D".into(),
@@ -148,7 +168,7 @@ pub fn parse<'a>(args: &[&'a [u8]], inv: &[u8], posix: bool) -> Result<Options<'
         files: vec![],
         switches: vec![],
         style: "",
-        context: 3,
+        context: 0,
         width: 130,
         tab: 8,
         functions: vec![],
@@ -158,6 +178,8 @@ pub fn parse<'a>(args: &[&'a [u8]], inv: &[u8], posix: bool) -> Result<Options<'
         utf8: false,
     };
     let mut end = false;
+    let mut legacy_context = None;
+    let mut explicit = false;
     let mut it = args.iter().copied();
     while let Some(arg) = it.next() {
         if end || arg == b"-" || !arg.starts_with(b"-") {
@@ -207,10 +229,15 @@ pub fn parse<'a>(args: &[&'a [u8]], inv: &[u8], posix: bool) -> Result<Options<'
             } else {
                 inline.unwrap_or(b"")
             };
+            if matches!(k, "context" | "unified") {
+                explicit = true;
+            }
             o.put(
                 k,
                 if k == "color" && inline.is_none() {
                     b"auto"
+                } else if matches!(k, "context" | "unified") && inline.is_none() {
+                    b"3"
                 } else {
                     val
                 },
@@ -226,14 +253,14 @@ pub fn parse<'a>(args: &[&'a [u8]], inv: &[u8], posix: bool) -> Result<Options<'
                     while j < arg.len() && arg[j].is_ascii_digit() {
                         j += 1
                     }
-                    o.context = txt(&arg[s..j]).parse().unwrap_or(usize::MAX / 4);
+                    legacy_context = Some(txt(&arg[s..j]).parse().unwrap_or(usize::MAX / 4));
                     continue;
                 }
                 if c == b'h' {
                     continue;
                 }
                 if c == b'c' || c == b'u' {
-                    o.put(if c == b'c' { "context" } else { "unified" }, b"", inv)?;
+                    o.put(if c == b'c' { "context" } else { "unified" }, b"3", inv)?;
                     continue;
                 }
                 let Some((k, _, arity)) = specs().find(|(_, s, _)| *s == c && c != b'.') else {
@@ -255,6 +282,7 @@ pub fn parse<'a>(args: &[&'a [u8]], inv: &[u8], posix: bool) -> Result<Options<'
                     o.switches.push(v);
                     v
                 };
+                explicit |= matches!(k, "context" | "unified");
                 o.put(k, val, inv)?;
                 if o.doc.is_some() {
                     break;
@@ -270,6 +298,14 @@ pub fn parse<'a>(args: &[&'a [u8]], inv: &[u8], posix: bool) -> Result<Options<'
             "context"
         } else {
             "normal"
+        }
+    }
+    if o.has("show-c-function") && !o.has("context") && !o.has("unified") {
+        o.context = 3;
+    }
+    if let Some(n) = legacy_context {
+        if !explicit || n > o.context {
+            o.context = n
         }
     }
     if o.has("from-file") && o.has("to-file") {

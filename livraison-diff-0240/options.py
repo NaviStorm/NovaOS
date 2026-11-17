@@ -14,6 +14,10 @@ for k in ("new","old","unchanged"):
 for k in ("new","old","unchanged","changed"):
     VALUES[k+"-group-format"]="%df:%dF:%(n=N?=:+)%<%>%="
 DATA={"a":b"func key\nleft\n\told\n#1\nlast\n","b":b"func key\nright\n\tnew\n#2\nlast\n","-file":b"one\n","white1":b"ABC\t X  \n\n","white2":b"abc      X\n","empty":b"","dot":b".\nX\n.\n","tail":b"last","tail2":b"next","crlf":b"a\r\nb\r\n","lf":b"a\nb\n","bin1":b"a\0\xff\n","bin2":b"a\0\xfe\n","exclude":b"*.bak\npart\n","left/a.bak":b"A\n","right/a.bak":b"B\n","left/m":b"m\n","right/m":b"n\n","left/part/a":b"1\n","right/part/a":b"2\n","left/Only":b"X\n","right/only":b"Y\n","left/unique":b"X\n","right/extra":b"Y\n","protected":b"secret\n"}
+for seed in range(120):
+    generator=random.Random(seed)
+    for side in ("A","B"):
+        DATA[f"rep-{seed}-{side}"]=b"".join(generator.choice([b"x\\n",b"x\\n",b"y\\n",b"z\\n"]) for _ in range(generator.randrange(1,14)))
 STAMP=1700000000000000000
 def setup(d):
     for n,b in DATA.items():
@@ -65,6 +69,12 @@ def suite(full):
             for opt in ["--help","--version"]:add("ARC-026",[opt],env={"LANG":lang})
         for style in styles:
             for flags in [["-t"],["-T"],["--suppress-blank-empty"],["-B","-i"]]:add("combinaison",[style,*flags,"-LA","-LB","white1","white2"])
+        for seed in range(120):
+            add("alignement répété",[f"rep-{seed}-A",f"rep-{seed}-B"])
+        for opt in ["-d","--minimal","-H","--speed-large-files","--horizon-lines=0","--horizon-lines=3"]:
+            for seed in range(10):add(opt,[opt,f"rep-{seed}-A",f"rep-{seed}-B"])
+        for flags in [["--context="],["--unified="],["-u0"],["-U0","-u"],["-U2","-U0"],["--line-format=A","--old-line-format=B"],["--old-line-format=A","--line-format=B"]]:
+            add("priorité",[*flags,"-LA","-LB","a","b"])
         for n in range(40):
             seed=random.Random(n)
             data=b"".join(seed.choice([b"x\n",b"y\n",b"z\n",b"same\n"]) for _ in range(8))

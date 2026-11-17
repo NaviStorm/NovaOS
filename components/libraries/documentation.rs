@@ -34,10 +34,10 @@ pub static PAGES: &[Page] = &[
         name: "diff",
         provider: "nova-diff",
         description: Text(
-            "Compare files and directories.",
-            "Comparer des fichiers et des répertoires.",
+            "Compare two files or directories line by line.",
+            "Comparer deux fichiers ou répertoires ligne par ligne.",
         ),
-        syntax: Text::same("diff [OPTION]... FILE1 FILE2"),
+        syntax: Text("diff [OPTION]... FILE1 FILE2","diff [OPTION]... FICHIER1 FICHIER2"),
         arguments: Text(
             include_str!("../diff/diff.en"),
             include_str!("../diff/diff.fr"),
@@ -1183,7 +1183,11 @@ impl Page {
 
     pub fn render(&self, path: &[&str], manual: bool, lang: Language) -> Option<String> {
         if self.provider == "nova-diff" && path.is_empty() {
-            return Some(String::from(self.arguments.get(lang)));
+            let mut text=String::from(self.arguments.get(lang));
+            if manual{
+                writeln!(text,"{}\n{}\n{}\n{}",self.rights.get(lang),self.effects.get(lang),self.limits.get(lang),self.version(lang).trim_end()).ok()?;
+            }
+            return Some(text);
         }
         let mut text = String::new();
         if path.is_empty() {

@@ -5,6 +5,41 @@ Normal output lists insertions, deletions and replacements. -u and -c include co
 -y compares columns, -e/-f produce editor commands, -n emits RCS changes, -D NAME merges inputs.
 -q reports differences, -s reports equality. -r descends into directories. -N treats missing files as empty.
 -i folds case. -E, -Z, -b, -w and -B ignore selected whitespace differences. -I RE ignores matching changes.
-Examples: diff -u old new | diff -qr olddir newdir | diff --label old --label new -u - file
+Examples: diff -u a b
+          diff -qr olddir newdir
+          diff --label old --label new -u - file
 Status 0 means identical, 1 different and 2 trouble. Comparison requires read access.
 Help, version and manual require no file access or temporary storage.
+
+--normal | -q --brief | -s --report-identical-files
+    Normal output, summary of differences, or report equality.
+-c -C N --context[=N] | -u -U N --unified[=N]
+    Context or unified output. Default context is three lines.
+-e --ed | -f --forward-ed | -n --rcs | -D --ifdef NAME
+    Reverse ed, forward ed, RCS, or conditional compilation.
+-y --side-by-side | -W --width=N | --left-column | --suppress-common-lines
+    Two columns, width (default 130), common lines on the left or omitted.
+-p --show-c-function | -F --show-function-line=RE | -L --label=TEXT
+    Mark the enclosing function. Set one or two file labels.
+-t --expand-tabs | -T --initial-tab | --tabsize=N | --suppress-blank-empty | -l --paginate
+    Expand tabs, align text, set tab stops (default 8), suppress blank prefixes or paginate.
+-r --recursive | -N --new-file | -P --unidirectional-new-file | --no-dereference
+    Descend into directories, compare absent files as empty on both sides or on the left, compare symlink targets.
+-x --exclude=PAT | -X --exclude-from=FILE | -S --starting-file=NAME
+    Skip matching names, load one pattern per line, or start at NAME.
+--ignore-file-name-case | --no-ignore-file-name-case | --from-file=FILE | --to-file=FILE
+    Set case rules for names, or compare each operand to a fixed left or right file.
+-i --ignore-case | -E --ignore-tab-expansion | -Z --ignore-trailing-space
+    Fold case or ignore tab expansion or trailing whitespace.
+-b --ignore-space-change | -w --ignore-all-space | -B --ignore-blank-lines | -I --ignore-matching-lines=RE
+    Ignore changes in spacing, all spaces, blank-only changes or groups matching a basic expression.
+-a --text | --strip-trailing-cr | --binary
+    Treat NUL as text, remove CR before LF, or use byte input.
+--line-format=FMT | --{old,new,unchanged}-line-format=FMT | --{old,new,changed,unchanged}-group-format=FMT
+    Format lines with %L or %l. Groups use %<, %>, %= and numeric fields. %% prints a percent sign.
+-d --minimal | -H --speed-large-files | --horizon-lines=N
+    Select minimal edits, accelerate large inputs, or retain N matching boundary lines.
+--color[=WHEN] | --palette=PALETTE
+    Use never, auto or always. Override colors with entries such as de=31:ad=32.
+--help | -v --version
+    Display documentation or the component version.

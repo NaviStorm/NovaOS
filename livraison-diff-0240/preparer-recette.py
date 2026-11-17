@@ -29,6 +29,22 @@ arm='''
             }
 '''
 edit("components/shell/capabilities.rs",'            Operand::Probe("stat") => {',arm+'            Operand::Probe("stat") => {')
+# Copie de l'allocateur uniquement pour la bibliothèque utilisateur des CLI de recette.
+# Chaque image a ses propres compteurs. Les services conservent leur source et leur allocateur.
+heap=(lab/"novaOS/user/heap.rs").read_text()
+needle="            crate::allocation_probe();"
+assert heap.count(needle)==1
+heap=heap.replace(needle,"""            let first = crate::DIFF_BASE.fetch_min(base, core::sync::atomic::Ordering::Relaxed).min(base);
+            crate::DIFF_PEAK.fetch_max(end-first, core::sync::atomic::Ordering::Relaxed);
+"""+needle)
+(lab/"components/libraries/diff_heap.rs").write_text(heap)
+edit("components/libraries/lib.rs",'../../novaOS/user/heap.rs','diff_heap.rs')
+edit("components/libraries/lib.rs","fn allocation_probe() {}", """fn allocation_probe() {}
+pub static DIFF_BASE: core::sync::atomic::AtomicUsize = core::sync::atomic::AtomicUsize::new(usize::MAX);
+pub static DIFF_PEAK: core::sync::atomic::AtomicUsize = core::sync::atomic::AtomicUsize::new(0);""")
+edit("components/diff/src/temoin.rs",'    for (side, v) in p.out.iter().enumerate() {', """    let peak = nova_cli::DIFF_PEAK.load(core::sync::atomic::Ordering::Relaxed);
+    trace(&format!("DIFF-PIC-TAS {peak}"));
+    for (side, v) in p.out.iter().enumerate() {""")
 env={**ENV,"RUSTC":subprocess.check_output(["rustup","which","--toolchain","stable","rustc"],text=True).strip()}
 subprocess.run(["rustup","run","stable","cargo","generate-lockfile","--offline"],cwd=lab/"components",env=env,check=True)
 subprocess.run(["rustup","run","stable","cargo","build","--locked","--offline","--release","--target",target],cwd=lab/"novaOS",env=env,check=True)

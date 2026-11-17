@@ -15,7 +15,7 @@ ENV = {**os.environ, "LC_ALL":"C", "LANG":"en", "LANGUAGE":"C", "TZ":"UTC0", "TE
 ENV.pop("POSIXLY_CORRECT", None)
 NOVA = HERE / "bin/diff"
 def oracle():
-    candidates = [os.environ.get("GNU_DIFF"), shutil.which("gdiff"), TMP/"cmp-0240/gnu/bin/diff"]
+    candidates = [os.environ.get("GNU_DIFF"), shutil.which("gdiff"), TMP/"diff-gnu-3.12/bin/diff", TMP/"cmp-0240/gnu/bin/diff"]
     for p in filter(None, candidates):
         if Path(p).is_file() and b"(GNU diffutils) 3.12\n" in subprocess.check_output([p,"--version"],env=ENV):
             return Path(p).resolve()
