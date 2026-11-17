@@ -8,6 +8,7 @@ nova reblock 0
 nova sparse 0
 nova not-rewound 0
 nova skip-seek2 0
+nova stderr 0
 nova unblock-sync 0
 nova skip-seek.pl 0
 nova unblock.pl 0
@@ -21,6 +22,7 @@ gnu reblock 0
 gnu sparse 0
 gnu not-rewound 0
 gnu skip-seek2 0
+gnu stderr 0
 gnu unblock-sync 0
 gnu skip-seek.pl 0
 gnu unblock.pl 0

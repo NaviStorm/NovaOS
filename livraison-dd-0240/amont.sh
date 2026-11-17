@@ -5,7 +5,7 @@ up=${1:?checkout de coreutils 9.12}
 out=${2:?répertoire neuf des journaux}
 test "$(git -C "$up" rev-parse HEAD)" = c0f8514d989184921d9b12a4d103a7b23abc5af8
 export NOVAOS_TMPDIR="${NOVAOS_TMPDIR:-$(cd "$root/../.." && pwd)/tmp}"
-export TMPDIR="$NOVAOS_TMPDIR/dd-arc027/" LC_ALL=C AWK=awk built_programs="dd printf" host_os=darwin
+export TMPDIR="$NOVAOS_TMPDIR/dd-arc027/" LC_ALL=C AWK=awk built_programs="dd printf test" host_os=darwin
 mkdir -p "$TMPDIR"
 mkdir "$out"
 dir=$(mktemp -d "${TMPDIR}gnu.XXXXXXXX")
@@ -20,7 +20,7 @@ for tool in nova gnu; do
  mkdir -p "$work/src"
  case $tool in nova) exe="$root/bin/dd";; gnu) exe=/opt/homebrew/bin/gdd;; esac
  ln -s "$exe" "$work/src/dd"
- for test in ascii bytes conv-case direct nocache partial-write reblock sparse not-rewound skip-seek2 unblock-sync; do
+ for test in ascii bytes conv-case direct nocache partial-write reblock sparse not-rewound skip-seek2 stderr unblock-sync; do
    rc=0
    (cd "$work" && PATH="$work/src:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH" abs_top_builddir="$work" sh "$up/tests/dd/$test.sh" 9>&2) >"$out/$tool-$test.log" 2>&1 || rc=$?
    echo "$tool $test $rc" | tee -a "$out/resultats.txt"

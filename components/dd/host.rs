@@ -19,6 +19,27 @@ use std::{
     time::{Duration, Instant},
 };
 type Result<T> = engine::Result<T>;
+static STDERR_CLOSED: AtomicBool = AtomicBool::new(false);
+static STDERR_FAILED: AtomicBool = AtomicBool::new(false);
+
+// Le runtime Rust rouvre les descripteurs fermés sur /dev/null avant main.
+// Conserver l’état hérité pour rendre l’échec d’une écriture de statistiques.
+#[used]
+#[unsafe(link_section = "__DATA,__mod_init_func")]
+static INSPECT_STDERR: extern "C" fn() = {
+    extern "C" fn inspect() {
+        let closed = unsafe { libc::fcntl(libc::STDERR_FILENO, libc::F_GETFD) } == -1;
+        STDERR_CLOSED.store(closed, Ordering::Relaxed);
+    }
+    inspect
+};
+
+fn diagnostic(args: core::fmt::Arguments<'_>) {
+    if STDERR_CLOSED.load(Ordering::Relaxed) || io::stderr().lock().write_fmt(args).is_err() {
+        STDERR_FAILED.store(true, Ordering::Relaxed);
+    }
+}
+
 static INTERRUPTED: AtomicBool = AtomicBool::new(false);
 static INFO: AtomicBool = AtomicBool::new(false);
 extern "C" fn info(sig: i32) {
@@ -157,12 +178,12 @@ impl Host {
             return;
         }
         if self.progress_line {
-            eprintln!();
+            diagnostic(format_args!("\n"));
             self.progress_line = false
         }
-        eprint!("{}", s.records());
+        diagnostic(format_args!("{}", s.records()));
         if self.status != "noxfer" {
-            eprintln!("{}", self.transfer(s))
+            diagnostic(format_args!("{}\n", self.transfer(s)))
         }
     }
     fn finish(&mut self, c: &Config) -> Result<()> {
@@ -281,21 +302,21 @@ impl Io for Host {
     }
     fn warning(&mut self, msg: &str) {
         if msg == "skip" {
-            eprintln!(
-                "dd: {}: cannot skip to specified offset",
+            diagnostic(format_args!(
+                "dd: {}: cannot skip to specified offset\n",
                 quote_file(&self.src, false)
-            )
+            ))
         } else if msg.ends_with('\n') {
-            eprint!("{msg}")
+            diagnostic(format_args!("{msg}"))
         } else {
-            eprintln!("dd: {msg}")
+            diagnostic(format_args!("dd: {msg}\n"))
         }
     }
     fn report(&mut self, s: &Stats) {
         self.last = *s;
         self.interrupt();
         if self.status == "progress" && self.start.elapsed() >= self.next {
-            eprint!("\r{}", self.transfer(s));
+            diagnostic(format_args!("\r{}", self.transfer(s)));
             self.progress_line = true;
             self.next = self.start.elapsed() + Duration::from_secs(1)
         }
@@ -346,7 +367,7 @@ fn transfer(c: &Config) -> Result<()> {
     let finished = h.finish(c);
     let mut failed = false;
     for err in [result, finished].into_iter().filter_map(|r| r.err()) {
-        eprintln!("dd: {err}");
+        diagnostic(format_args!("dd: {err}\n"));
         failed = true
     }
     h.summary(&s);
@@ -357,6 +378,11 @@ fn transfer(c: &Config) -> Result<()> {
     if failed { Err(String::new()) } else { Ok(()) }
 }
 pub fn run() -> i32 {
+    let status = run_command();
+    status.max(i32::from(STDERR_FAILED.load(Ordering::Relaxed)))
+}
+
+fn run_command() -> i32 {
     unsafe {
         libc::setlocale(libc::LC_CTYPE, c"".as_ptr());
         let mut action: libc::sigaction = core::mem::zeroed();
@@ -391,25 +417,27 @@ pub fn run() -> i32 {
         }
         Ok(Action::Run(c)) => {
             for _ in 0..c.warnings {
-                eprintln!("dd: warning: '0x' is a zero multiplier; use '00x' if that is intended")
+                diagnostic(format_args!(
+                    "dd: warning: '0x' is a zero multiplier; use '00x' if that is intended\n"
+                ))
             }
             match transfer(&c) {
                 Ok(()) => 0,
                 Err(e) => {
                     if !e.is_empty() {
-                        eprintln!("dd: {e}")
+                        diagnostic(format_args!("dd: {e}\n"))
                     }
                     1
                 }
             }
         }
         Err(args::Error(e, usage)) => {
-            eprintln!("dd: {e}");
+            diagnostic(format_args!("dd: {e}\n"));
             if usage {
-                eprintln!(
-                    "Try '{} --help' for more information.",
+                diagnostic(format_args!(
+                    "Try '{} --help' for more information.\n",
                     program.to_string_lossy()
-                )
+                ))
             }
             1
         }
