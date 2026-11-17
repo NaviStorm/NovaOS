@@ -24,6 +24,7 @@ def prepare(destination, policies=False, retired_reply=False, shell=False):
     apply(destination, "raccord.patch")
     if shell:
         apply(destination, "lancement.patch")
+        runpy.run_path(str(destination / "novaOS/user/novaauth/service/limine_hhdm_qemu.py"))["install"](destination)
         refresh_documentation_links(destination)
     if policies:
         apply(destination, "politiques.patch")

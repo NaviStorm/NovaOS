@@ -1,0 +1,13 @@
+--- a/common/protos/limine.c
++++ b/common/protos/limine.c
+@@ -197,0 +198,4 @@
++    // Allocating the snapshot can split a region and increase memmap_entries.
++    // The Limine response already enforces MEMMAP_MAX. Capture the length
++    // only after allocation, then copy without further allocations.
++    struct memmap_entry *_memmap = ext_mem_alloc(MEMMAP_MAX * sizeof(*_memmap));
+@@ -199,2 +203,3 @@
+-    struct memmap_entry *_memmap =
+-        ext_mem_alloc(_memmap_entries * sizeof(struct memmap_entry));
++    if (_memmap_entries > MEMMAP_MAX) {
++        panic(false, "limine: Too many memmap entries for HHDM snapshot");
++    }
