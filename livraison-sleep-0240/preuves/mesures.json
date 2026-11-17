@@ -1,0 +1,1145 @@
+{
+  "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "charge_avant": [
+    8.7626953125,
+    11.677734375,
+    9.72119140625
+  ],
+  "oracle": "/opt/homebrew/Cellar/coreutils/9.12_1/bin/gsleep",
+  "version": "sleep (GNU coreutils) 9.12",
+  "tolerance_s": 0.25,
+  "annulation_s": 0.065,
+  "sha256": {
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/sleep-natif-0240/livraison-sleep-0240/bin/sleep": "0ad7f7e566144470c7b441012d4a4ed7bef0781491bdf813ae385c3e7d90a518",
+    "/opt/homebrew/bin/gsleep": "ada1856439a7fa6bc6a1a3848b90bbd461a686f4e226df6ab6b4f9707670bb02"
+  },
+  "cas": [
+    {
+      "duree_s": 0.0,
+      "Nova": [
+        {
+          "ns": 3039584,
+          "retard_ns": 3039584,
+          "cpu_ns": 1548000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2647250,
+          "retard_ns": 2647250,
+          "cpu_ns": 1393000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2995917,
+          "retard_ns": 2995917,
+          "cpu_ns": 1413000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2891333,
+          "retard_ns": 2891333,
+          "cpu_ns": 1485000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2822417,
+          "retard_ns": 2822417,
+          "cpu_ns": 1510000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2597875,
+          "retard_ns": 2597875,
+          "cpu_ns": 1356000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2639250,
+          "retard_ns": 2639250,
+          "cpu_ns": 1356000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2796417,
+          "retard_ns": 2796417,
+          "cpu_ns": 1456000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2652334,
+          "retard_ns": 2652334,
+          "cpu_ns": 1342000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2832417,
+          "retard_ns": 2832417,
+          "cpu_ns": 1445000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2624625,
+          "retard_ns": 2624625,
+          "cpu_ns": 1330000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2602583,
+          "retard_ns": 2602583,
+          "cpu_ns": 1326000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2650792,
+          "retard_ns": 2650792,
+          "cpu_ns": 1328000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2842333,
+          "retard_ns": 2842333,
+          "cpu_ns": 1361000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 2620791,
+          "retard_ns": 2620791,
+          "cpu_ns": 1320000,
+          "rss_octets": 2015232
+        }
+      ],
+      "GNU": [
+        {
+          "ns": 2963500,
+          "retard_ns": 2963500,
+          "cpu_ns": 1522000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2998334,
+          "retard_ns": 2998334,
+          "cpu_ns": 1455000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2824875,
+          "retard_ns": 2824875,
+          "cpu_ns": 1314000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2569875,
+          "retard_ns": 2569875,
+          "cpu_ns": 1239000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2777417,
+          "retard_ns": 2777417,
+          "cpu_ns": 1359000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2617958,
+          "retard_ns": 2617958,
+          "cpu_ns": 1268000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2537083,
+          "retard_ns": 2537083,
+          "cpu_ns": 1274000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2708375,
+          "retard_ns": 2708375,
+          "cpu_ns": 1402000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2672625,
+          "retard_ns": 2672625,
+          "cpu_ns": 1305000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2510959,
+          "retard_ns": 2510959,
+          "cpu_ns": 1290000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2666750,
+          "retard_ns": 2666750,
+          "cpu_ns": 1299000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2731625,
+          "retard_ns": 2731625,
+          "cpu_ns": 1303000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2793250,
+          "retard_ns": 2793250,
+          "cpu_ns": 1357000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2647917,
+          "retard_ns": 2647917,
+          "cpu_ns": 1311000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 2636292,
+          "retard_ns": 2636292,
+          "cpu_ns": 1293000,
+          "rss_octets": 1884160
+        }
+      ]
+    },
+    {
+      "duree_s": 0.001,
+      "Nova": [
+        {
+          "ns": 4404375,
+          "retard_ns": 3404375,
+          "cpu_ns": 1395000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4325083,
+          "retard_ns": 3325083,
+          "cpu_ns": 1455000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4313041,
+          "retard_ns": 3313041,
+          "cpu_ns": 1383000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4361500,
+          "retard_ns": 3361500,
+          "cpu_ns": 1560000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4620583,
+          "retard_ns": 3620583,
+          "cpu_ns": 1544000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4386958,
+          "retard_ns": 3386958,
+          "cpu_ns": 1564000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4152583,
+          "retard_ns": 3152583,
+          "cpu_ns": 1432000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4333083,
+          "retard_ns": 3333083,
+          "cpu_ns": 1456000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4309375,
+          "retard_ns": 3309375,
+          "cpu_ns": 1430000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4497666,
+          "retard_ns": 3497666,
+          "cpu_ns": 1569000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4299000,
+          "retard_ns": 3299000,
+          "cpu_ns": 1577000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4457834,
+          "retard_ns": 3457834,
+          "cpu_ns": 1576000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4445458,
+          "retard_ns": 3445458,
+          "cpu_ns": 1646000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4338708,
+          "retard_ns": 3338708,
+          "cpu_ns": 1552000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 4803125,
+          "retard_ns": 3803125,
+          "cpu_ns": 1544000,
+          "rss_octets": 2015232
+        }
+      ],
+      "GNU": [
+        {
+          "ns": 4283333,
+          "retard_ns": 3283333,
+          "cpu_ns": 1566000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4395209,
+          "retard_ns": 3395209,
+          "cpu_ns": 1448000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4094584,
+          "retard_ns": 3094584,
+          "cpu_ns": 1377000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4483208,
+          "retard_ns": 3483208,
+          "cpu_ns": 1390000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4465750,
+          "retard_ns": 3465750,
+          "cpu_ns": 1439000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4268084,
+          "retard_ns": 3268084,
+          "cpu_ns": 1429000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4361084,
+          "retard_ns": 3361084,
+          "cpu_ns": 1426000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4277000,
+          "retard_ns": 3277000,
+          "cpu_ns": 1396000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4284459,
+          "retard_ns": 3284459,
+          "cpu_ns": 1597000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4365417,
+          "retard_ns": 3365417,
+          "cpu_ns": 1597000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4442375,
+          "retard_ns": 3442375,
+          "cpu_ns": 1421000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4158250,
+          "retard_ns": 3158250,
+          "cpu_ns": 1368000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4255666,
+          "retard_ns": 3255666,
+          "cpu_ns": 1466000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4290542,
+          "retard_ns": 3290542,
+          "cpu_ns": 1492000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 4729375,
+          "retard_ns": 3729375,
+          "cpu_ns": 1557000,
+          "rss_octets": 1884160
+        }
+      ]
+    },
+    {
+      "duree_s": 0.005,
+      "Nova": [
+        {
+          "ns": 10601333,
+          "retard_ns": 5601333,
+          "cpu_ns": 1565000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10623541,
+          "retard_ns": 5623541,
+          "cpu_ns": 1685000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 8707792,
+          "retard_ns": 3707792,
+          "cpu_ns": 1645000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10445875,
+          "retard_ns": 5445875,
+          "cpu_ns": 1551000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10645375,
+          "retard_ns": 5645375,
+          "cpu_ns": 1652000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 9476834,
+          "retard_ns": 4476834,
+          "cpu_ns": 1688000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10283666,
+          "retard_ns": 5283666,
+          "cpu_ns": 1511000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10501875,
+          "retard_ns": 5501875,
+          "cpu_ns": 1738000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 9017959,
+          "retard_ns": 4017959,
+          "cpu_ns": 1542000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10516916,
+          "retard_ns": 5516916,
+          "cpu_ns": 1697000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 9000416,
+          "retard_ns": 4000416,
+          "cpu_ns": 1520000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10606125,
+          "retard_ns": 5606125,
+          "cpu_ns": 1701000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10401583,
+          "retard_ns": 5401583,
+          "cpu_ns": 1487000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10175292,
+          "retard_ns": 5175292,
+          "cpu_ns": 1478000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 10313209,
+          "retard_ns": 5313209,
+          "cpu_ns": 1609000,
+          "rss_octets": 2015232
+        }
+      ],
+      "GNU": [
+        {
+          "ns": 9045833,
+          "retard_ns": 4045833,
+          "cpu_ns": 1746000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 9988250,
+          "retard_ns": 4988250,
+          "cpu_ns": 1786000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10766834,
+          "retard_ns": 5766834,
+          "cpu_ns": 1558000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10623459,
+          "retard_ns": 5623459,
+          "cpu_ns": 1660000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10683625,
+          "retard_ns": 5683625,
+          "cpu_ns": 1542000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10599292,
+          "retard_ns": 5599292,
+          "cpu_ns": 1572000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10400375,
+          "retard_ns": 5400375,
+          "cpu_ns": 1548000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 9335833,
+          "retard_ns": 4335833,
+          "cpu_ns": 1531000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10521375,
+          "retard_ns": 5521375,
+          "cpu_ns": 1573000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10071625,
+          "retard_ns": 5071625,
+          "cpu_ns": 1713000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10217833,
+          "retard_ns": 5217833,
+          "cpu_ns": 1412000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 10302500,
+          "retard_ns": 5302500,
+          "cpu_ns": 1495000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 8789166,
+          "retard_ns": 3789166,
+          "cpu_ns": 1520000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 9415792,
+          "retard_ns": 4415792,
+          "cpu_ns": 1600000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 8504083,
+          "retard_ns": 3504083,
+          "cpu_ns": 1352000,
+          "rss_octets": 1884160
+        }
+      ]
+    },
+    {
+      "duree_s": 0.02,
+      "Nova": [
+        {
+          "ns": 33764750,
+          "retard_ns": 13764750,
+          "cpu_ns": 1889000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 24914958,
+          "retard_ns": 4914958,
+          "cpu_ns": 1643000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 26374041,
+          "retard_ns": 6374041,
+          "cpu_ns": 1674000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 26682209,
+          "retard_ns": 6682209,
+          "cpu_ns": 1788000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 30019708,
+          "retard_ns": 10019708,
+          "cpu_ns": 1807000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 25974958,
+          "retard_ns": 5974958,
+          "cpu_ns": 1740000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 33262125,
+          "retard_ns": 13262125,
+          "cpu_ns": 1741000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 33342208,
+          "retard_ns": 13342208,
+          "cpu_ns": 1815000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 28019084,
+          "retard_ns": 8019084,
+          "cpu_ns": 1701000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 23637875,
+          "retard_ns": 3637875,
+          "cpu_ns": 1886000,
+          "rss_octets": 1998848
+        },
+        {
+          "ns": 33072625,
+          "retard_ns": 13072625,
+          "cpu_ns": 1617000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 28948833,
+          "retard_ns": 8948833,
+          "cpu_ns": 1755000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 26577750,
+          "retard_ns": 6577750,
+          "cpu_ns": 1714000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 29335250,
+          "retard_ns": 9335250,
+          "cpu_ns": 1634000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 26002416,
+          "retard_ns": 6002416,
+          "cpu_ns": 1861000,
+          "rss_octets": 2015232
+        }
+      ],
+      "GNU": [
+        {
+          "ns": 33515750,
+          "retard_ns": 13515750,
+          "cpu_ns": 1759000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 26256917,
+          "retard_ns": 6256917,
+          "cpu_ns": 1737000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 33254583,
+          "retard_ns": 13254583,
+          "cpu_ns": 1701000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 25661833,
+          "retard_ns": 5661833,
+          "cpu_ns": 1661000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 33178250,
+          "retard_ns": 13178250,
+          "cpu_ns": 1625000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 33174583,
+          "retard_ns": 13174583,
+          "cpu_ns": 1571000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 31072041,
+          "retard_ns": 11072041,
+          "cpu_ns": 1642000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 33286459,
+          "retard_ns": 13286459,
+          "cpu_ns": 1574000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 33227000,
+          "retard_ns": 13227000,
+          "cpu_ns": 1670000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 30233958,
+          "retard_ns": 10233958,
+          "cpu_ns": 1774000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 30746417,
+          "retard_ns": 10746417,
+          "cpu_ns": 1596000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 31879708,
+          "retard_ns": 11879708,
+          "cpu_ns": 1774000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 33109042,
+          "retard_ns": 13109042,
+          "cpu_ns": 1625000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 33191709,
+          "retard_ns": 13191709,
+          "cpu_ns": 1832000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 33375584,
+          "retard_ns": 13375584,
+          "cpu_ns": 1817000,
+          "rss_octets": 1884160
+        }
+      ]
+    },
+    {
+      "duree_s": 0.1,
+      "Nova": [
+        {
+          "ns": 105973375,
+          "retard_ns": 5973375,
+          "cpu_ns": 1778000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 112930458,
+          "retard_ns": 12930458,
+          "cpu_ns": 1508000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 111696167,
+          "retard_ns": 11696167,
+          "cpu_ns": 1666000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 104850000,
+          "retard_ns": 4850000,
+          "cpu_ns": 2152000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 107408917,
+          "retard_ns": 7408917,
+          "cpu_ns": 1800000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 112975125,
+          "retard_ns": 12975125,
+          "cpu_ns": 1730000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 111882708,
+          "retard_ns": 11882708,
+          "cpu_ns": 1833000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 108103958,
+          "retard_ns": 8103958,
+          "cpu_ns": 1995000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 112951542,
+          "retard_ns": 12951542,
+          "cpu_ns": 1704000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 106022000,
+          "retard_ns": 6022000,
+          "cpu_ns": 1887000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 111022708,
+          "retard_ns": 11022708,
+          "cpu_ns": 1920000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 113034750,
+          "retard_ns": 13034750,
+          "cpu_ns": 1655000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 108638500,
+          "retard_ns": 8638500,
+          "cpu_ns": 1763000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 103655125,
+          "retard_ns": 3655125,
+          "cpu_ns": 1767000,
+          "rss_octets": 1998848
+        },
+        {
+          "ns": 112821042,
+          "retard_ns": 12821042,
+          "cpu_ns": 1667000,
+          "rss_octets": 2015232
+        }
+      ],
+      "GNU": [
+        {
+          "ns": 112930042,
+          "retard_ns": 12930042,
+          "cpu_ns": 1633000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 113379500,
+          "retard_ns": 13379500,
+          "cpu_ns": 1693000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 107239292,
+          "retard_ns": 7239292,
+          "cpu_ns": 1866000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 113180833,
+          "retard_ns": 13180833,
+          "cpu_ns": 1680000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 104074417,
+          "retard_ns": 4074417,
+          "cpu_ns": 1689000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 103588084,
+          "retard_ns": 3588084,
+          "cpu_ns": 1729000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 106739709,
+          "retard_ns": 6739709,
+          "cpu_ns": 1781000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 104645375,
+          "retard_ns": 4645375,
+          "cpu_ns": 1868000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 107698750,
+          "retard_ns": 7698750,
+          "cpu_ns": 1830000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 104308875,
+          "retard_ns": 4308875,
+          "cpu_ns": 1773000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 106179042,
+          "retard_ns": 6179042,
+          "cpu_ns": 1789000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 112964958,
+          "retard_ns": 12964958,
+          "cpu_ns": 1574000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 112202209,
+          "retard_ns": 12202209,
+          "cpu_ns": 1634000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 108578500,
+          "retard_ns": 8578500,
+          "cpu_ns": 1760000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 108674625,
+          "retard_ns": 8674625,
+          "cpu_ns": 1647000,
+          "rss_octets": 1884160
+        }
+      ]
+    },
+    {
+      "duree_s": 0.25,
+      "Nova": [
+        {
+          "ns": 257983833,
+          "retard_ns": 7983833,
+          "cpu_ns": 1835000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 263663167,
+          "retard_ns": 13663167,
+          "cpu_ns": 1915000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 263788167,
+          "retard_ns": 13788167,
+          "cpu_ns": 1911000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 255185583,
+          "retard_ns": 5185583,
+          "cpu_ns": 1820000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 263782542,
+          "retard_ns": 13782542,
+          "cpu_ns": 1862000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 259258083,
+          "retard_ns": 9258083,
+          "cpu_ns": 1803000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 266147625,
+          "retard_ns": 16147625,
+          "cpu_ns": 4019000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 263686000,
+          "retard_ns": 13686000,
+          "cpu_ns": 1895000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 261147375,
+          "retard_ns": 11147375,
+          "cpu_ns": 1822000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 254479541,
+          "retard_ns": 4479541,
+          "cpu_ns": 1812000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 259170750,
+          "retard_ns": 9170750,
+          "cpu_ns": 1799000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 261606500,
+          "retard_ns": 11606500,
+          "cpu_ns": 1938000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 263593750,
+          "retard_ns": 13593750,
+          "cpu_ns": 1915000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 263429084,
+          "retard_ns": 13429084,
+          "cpu_ns": 1617000,
+          "rss_octets": 2015232
+        },
+        {
+          "ns": 259627833,
+          "retard_ns": 9627833,
+          "cpu_ns": 2886000,
+          "rss_octets": 2015232
+        }
+      ],
+      "GNU": [
+        {
+          "ns": 256057208,
+          "retard_ns": 6057208,
+          "cpu_ns": 1927000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 260428625,
+          "retard_ns": 10428625,
+          "cpu_ns": 1855000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 259105167,
+          "retard_ns": 9105167,
+          "cpu_ns": 1748000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 256603833,
+          "retard_ns": 6603833,
+          "cpu_ns": 1719000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 263562833,
+          "retard_ns": 13562833,
+          "cpu_ns": 1860000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 258987167,
+          "retard_ns": 8987167,
+          "cpu_ns": 1769000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 263709708,
+          "retard_ns": 13709708,
+          "cpu_ns": 2046000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 263243125,
+          "retard_ns": 13243125,
+          "cpu_ns": 1847000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 263625250,
+          "retard_ns": 13625250,
+          "cpu_ns": 1837000,
+          "rss_octets": 1867776
+        },
+        {
+          "ns": 262906458,
+          "retard_ns": 12906458,
+          "cpu_ns": 1447000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 256722292,
+          "retard_ns": 6722292,
+          "cpu_ns": 1744000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 258107417,
+          "retard_ns": 8107417,
+          "cpu_ns": 1787000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 264436625,
+          "retard_ns": 14436625,
+          "cpu_ns": 1921000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 270023750,
+          "retard_ns": 20023750,
+          "cpu_ns": 2276000,
+          "rss_octets": 1884160
+        },
+        {
+          "ns": 263657250,
+          "retard_ns": 13657250,
+          "cpu_ns": 2011000,
+          "rss_octets": 1884160
+        }
+      ]
+    }
+  ],
+  "charge_apres": [
+    10.55322265625,
+    12.40185546875,
+    10.66650390625
+  ]
+}

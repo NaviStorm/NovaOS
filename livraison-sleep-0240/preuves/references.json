@@ -1,0 +1,22 @@
+{
+  "c0f8514d989184921d9b12a4d103a7b23abc5af8": {
+    "src/sleep.c": "8a2ff7cef88a05cbfc5556a411720b58de11fbff78b70841fc4858ec0c65deb2",
+    "gl/lib/cl-strtod.c": "f15b00e61960d30da7362bb4b1ea3579f30f3f6e6f5f94db84757d8c87f8514e",
+    "gl/lib/dtimespec-bound.h": "58f815e56fcf885e28cd6c7dc101f14add03db921bdf0e1b2e72758cc54f6fa5",
+    "doc/coreutils.texi": "e6521c9b2e677dd278820887d7ad94fad8260f2535dd923728462cdcb6148db9",
+    "tests/misc/sleep.sh": "872d43d5ab64ebaebd040f27cabf267b34b1155a7f565bc1af1a2164da56766b",
+    "man/sleep.x": "39386a873843abaa66ee357afa4bfc4092bc8832dcb22bf24b9f084eef7eed89",
+    "COPYING": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "106e9b2384d08a1696fcbd40cbab52237943f208": {
+    "lib/xnanosleep.c": "03f05a2af13afda84db469a19cb90f28c69ef0efc7cf3098e1a965559c7e5704",
+    "lib/dtotimespec.c": "4012510190bbe90f03567e135a56e00c24ee3495ea9ff62400456e9e736e41b6",
+    "lib/long-options.c": "7f8ce0d478843e5f8461f34409eebf4a8b6a12c9cdf9fa45dd207aff3256bc8c",
+    "tests/test-nanosleep.c": "cc3f43667994d50abc8fe3a46d348c3b5cbd4a808e31e26c69e02ae236496071"
+  },
+  "4735bbe40d764a523c5ece37d47465b32452d1a2": {
+    "src/uu/sleep/src/sleep.rs": "56d45014d3e9e7225c0b0ec789dbceb6428912310c0db11ca3fc3338a09743e1",
+    "src/uu/sleep/Cargo.toml": "15e422384e63a8847fb908f28b0c515b1e35ac37632d5618aa30944ca2be2c35",
+    "LICENSE": "29953405eaa3dcc41c37d1621d55b6a47eee93e05613e439e73295029740b10c"
+  }
+}

@@ -1,0 +1,23 @@
+ProductName:		macOS
+ProductVersion:		27.2.1
+BuildVersion:		26B131
+arm64
+Apple M4 Max
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+binary: rustc
+commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+commit-date: 2026-10-13
+host: aarch64-apple-darwin
+release: 1.99.1
+LLVM version: 23.1.1
+QEMU emulator version 11.1.3
+Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
+QEMU emulator version 11.1.3
+Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
+425e4e7cc5c03e246efb64d3638376906344bf47
+livraison-sleep-0240/bin/sleep: Mach-O 64-bit executable arm64
+0ad7f7e566144470c7b441012d4a4ed7bef0781491bdf813ae385c3e7d90a518 livraison-sleep-0240/bin/sleep
+livraison-sleep-0240/bin/sleep-aarch64.elf: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, stripped
+a5af95cfb577db9bdfc668eea3905f291c3954b509fa3365c3d6c76d13716506 livraison-sleep-0240/bin/sleep-aarch64.elf
+livraison-sleep-0240/bin/sleep-x86_64.elf: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, stripped
+8ffb444415bcdfac6ed3c096351c8eb1b4f4ccca3f4e6aefc79e3896493d01de livraison-sleep-0240/bin/sleep-x86_64.elf

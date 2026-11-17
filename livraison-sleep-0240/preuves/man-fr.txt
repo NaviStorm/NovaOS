@@ -1,0 +1,27 @@
+SLEEP(1)		    General Commands Manual		      SLEEP(1)
+
+NOM
+     sleep – attendre la somme des durées
+
+SYNTAXE
+     sleep [--] durée ... sleep --help | --version
+
+DESCRIPTION
+     Une durée est un nombre décimal ou hexadécimal positif ou nul.  Les
+     suffixes s, m, h et d désignent les secondes, minutes, heures et jours.
+     L’unité par défaut est la seconde. La valeur inf attend indéfiniment.  La
+     première option reconnue prend effet immédiatement.
+
+EXEMPLES
+	   sleep .025 1e-3s
+
+STATUT
+     Zéro en cas de succès, un en cas de saisie invalide ou d’erreur pendant
+     l’attente.
+
+DROITS
+     La documentation utilise uniquement la sortie. Sous NovaOS une attente
+     positive utilise un canal IPC privé. La commande préserve l’entrée et les
+     fichiers.
+
+NovaOS			       17 novembre 2026 		      SLEEP(1)
