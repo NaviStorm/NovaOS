@@ -215,12 +215,115 @@ pub(super) fn differences(
         b: j..j + b.len(),
     });
 }
+// Retirer uniquement des lignes entières et identiques. Le format normal
+// utilise le nombre de lignes du préfixe pour numéroter la fenêtre restante.
+fn normal_window<'a>(a: &'a [u8], b: &'a [u8]) -> (&'a [u8], &'a [u8], usize) {
+    const BLOCK: usize = 512;
+    let blocks = a
+        .chunks_exact(BLOCK)
+        .zip(b.chunks_exact(BLOCK))
+        .take_while(|(x, y)| x == y)
+        .count()
+        * BLOCK;
+    let common = blocks
+        + a[blocks..]
+            .iter()
+            .zip(&b[blocks..])
+            .take_while(|(x, y)| x == y)
+            .count();
+    let prefix = a[..common]
+        .iter()
+        .rposition(|&c| c == b'\n')
+        .map_or(0, |i| i + 1);
+    let offset = a[..prefix].iter().filter(|&&c| c == b'\n').count();
+    let (a, b) = (&a[prefix..], &b[prefix..]);
+    let blocks = a
+        .rchunks_exact(BLOCK)
+        .zip(b.rchunks_exact(BLOCK))
+        .take_while(|(x, y)| x == y)
+        .count()
+        * BLOCK;
+    let tail = blocks
+        + a[..a.len() - blocks]
+            .iter()
+            .rev()
+            .zip(b[..b.len() - blocks].iter().rev())
+            .take_while(|(x, y)| x == y)
+            .count();
+    let (mut x, mut y) = (a.len() - tail, b.len() - tail);
+    if (x > 0 && a[x - 1] != b'\n') || (y > 0 && b[y - 1] != b'\n') {
+        let skip = a[x..]
+            .iter()
+            .position(|&c| c == b'\n')
+            .map_or(tail, |i| i + 1);
+        x += skip;
+        y += skip;
+    }
+    (&a[..x], &b[..y], offset)
+}
+
+// Des substitutions isolées dont les textes n'existent pas sur l'autre côté
+// imposent un alignement unique. Les lignes communes peuvent être répétées.
+// En cas de doute sur un seul texte, reprendre le calcul général.
+fn isolated_changes(rows: &[Vec<&[u8]>; 2]) -> Option<Vec<Change>> {
+    let n = rows[0].len();
+    if n < 128 || rows[1].len() != n {
+        return None;
+    }
+    let mut changes = Vec::new();
+    let mut words = Vec::new();
+    for (i, (&left, &right)) in rows[0].iter().zip(&rows[1]).enumerate() {
+        if left == right {
+            continue;
+        }
+        if words.len() > n / 8 || changes.last().is_some_and(|h: &Change| h.a.end == i) {
+            return None;
+        }
+        changes.push(Change {
+            a: i..i + 1,
+            b: i..i + 1,
+        });
+        words.extend([(left, false), (right, true)]);
+    }
+    words.sort_unstable();
+    if words
+        .windows(2)
+        .any(|v| v[0].0 == v[1].0 && v[0].1 != v[1].1)
+    {
+        return None;
+    }
+    let mut gap = 0;
+    let mut start = 0;
+    for stop in changes.iter().map(|h| h.a.start).chain(core::iter::once(n)) {
+        for &line in &rows[0][start..stop] {
+            // Réutiliser l'intervalle lexical du dernier témoin. Les entrées
+            // désordonnées conservent une recherche bornée, même avec doublons.
+            if gap > 0 && line <= words[gap - 1].0 || gap < words.len() && line >= words[gap].0 {
+                match words.binary_search_by(|&(entry, _)| entry.cmp(line)) {
+                    Ok(_) => return None,
+                    Err(index) => gap = index,
+                }
+            }
+        }
+        start = stop + 1;
+    }
+    Some(changes)
+}
 pub struct Text<'a> {
     pub rows: [Vec<&'a [u8]>; 2],
     pub changes: Vec<Change>,
+    pub first_line: usize,
 }
 impl<'a> Text<'a> {
     pub fn new(a: &'a [u8], b: &'a [u8], o: &Options) -> Self {
+        let (a, b, first_line) = if o.style == "normal"
+            && o.val("horizon-lines").is_none()
+            && a.len().max(b.len()) >= 8192
+        {
+            normal_window(a, b)
+        } else {
+            (a, b, 0)
+        };
         let rows = [a, b].map(|data| data.split_inclusive(|c| *c == b'\n').collect::<Vec<_>>());
         let norm = [
             "ignore-all-space",
@@ -231,6 +334,18 @@ impl<'a> Text<'a> {
         ]
         .iter()
         .any(|k| o.has(k));
+        if !norm
+            && o.style == "normal"
+            && !o.has("minimal")
+            && !o.has("speed-large-files")
+            && let Some(changes) = isolated_changes(&rows)
+        {
+            return Self {
+                rows,
+                changes,
+                first_line,
+            };
+        }
         let mut ids = BTreeMap::new();
         let mut intern = |lines: &[&'a [u8]]| {
             lines
@@ -273,7 +388,11 @@ impl<'a> Text<'a> {
         let x = intern(&rows[0][prefix..rows[0].len() - tail]);
         let y = intern(&rows[1][prefix..rows[1].len() - tail]);
         let changes = alignment::changes(&x, &y, ids.len(), o, prefix);
-        Self { rows, changes }
+        Self {
+            rows,
+            changes,
+            first_line,
+        }
     }
     pub fn ignored(&self, h: &Change, o: &Options) -> bool {
         self.rows[0][h.a.clone()]

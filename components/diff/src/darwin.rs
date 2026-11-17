@@ -103,7 +103,11 @@ impl Platform for Host {
                     Kind::Other
                 },
                 id: Some((m.dev(), m.ino())),
-                stamp: stamp(m.mtime(), m.mtime_nsec(), o.style == "context"),
+                stamp: if matches!(o.style, "context" | "unified") {
+                    stamp(m.mtime(), m.mtime_nsec(), o.style == "context")
+                } else {
+                    Vec::new()
+                },
             })),
             Err(e) if e.kind() == io::ErrorKind::NotFound => Ok(None),
             Err(e) => Err(fail(p, e)),

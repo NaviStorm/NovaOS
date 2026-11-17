@@ -132,6 +132,7 @@ fn line(o: &Options, out: &mut Vec<u8>, flag: u8, s: &[u8], unified: bool, color
     }
 }
 fn normal(t: &Text, o: &Options, out: &mut Vec<u8>, h: &Change) {
+    let absolute = |r: &Range<usize>| (r.start + t.first_line)..(r.end + t.first_line);
     let op = if h.a.is_empty() {
         'a'
     } else if h.b.is_empty() {
@@ -143,7 +144,12 @@ fn normal(t: &Text, o: &Options, out: &mut Vec<u8>, h: &Change) {
         o,
         out,
         "ln",
-        format!("{}{op}{}", range(&h.a, ',', false), range(&h.b, ',', false)).as_bytes(),
+        format!(
+            "{}{op}{}",
+            range(&absolute(&h.a), ',', false),
+            range(&absolute(&h.b), ',', false)
+        )
+        .as_bytes(),
     );
     for s in &t.rows[0][h.a.clone()] {
         line(o, out, b'<', s, false, "de")
@@ -376,11 +382,7 @@ fn side(t: &Text, o: &Options, out: &mut Vec<u8>) {
                     (None, _) => b'>',
                     (_, None) => b'<',
                     (Some(l), Some(r)) if l.ends_with(b"\n") != r.ends_with(b"\n") => {
-                        if l.ends_with(b"\n") {
-                            b'/'
-                        } else {
-                            b'\\'
-                        }
+                        if l.ends_with(b"\n") { b'/' } else { b'\\' }
                     }
                     _ => b'|',
                 }
