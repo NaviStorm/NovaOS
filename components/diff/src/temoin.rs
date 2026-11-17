@@ -18,14 +18,16 @@ fn read_handle(c: &mut Client, h: u64) -> rt::Result<Vec<u8>> {
         return Err(rt::LIMIT);
     }
     let mut out = vec![0; len];
-    for (i, part) in out.chunks_mut(4096).enumerate() {
-        if c.read(h, (i * 4096) as u64, part)? != part.len() {
-            return Err(rt::REVOKED);
-        }
+    let mut pos=0;
+    while pos<len {
+        let end=(pos+4096).min(len);
+        let n=c.read(h,pos as u64,&mut out[pos..end])?;
+        if n==0||n>end-pos {trace(&format!("DIFF-LECTURE pos={pos} lu={n} taille={len}"));return Err(rt::REVOKED)}
+        pos+=n;
     }
     let after = c.simple(w::STAT, h)?;
     if st[w::PAYLOAD..w::PAYLOAD + 24] != after[w::PAYLOAD..w::PAYLOAD + 24] {
-        return Err(rt::REVOKED);
+        trace("DIFF-REVISION modifiee");return Err(rt::REVOKED);
     }
     Ok(out)
 }
