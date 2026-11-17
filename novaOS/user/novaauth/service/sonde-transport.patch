@@ -1,0 +1,20 @@
+diff --git a/novaOS/user/novafs/device.rs b/novaOS/user/novafs/device.rs
+index 67f1bd92fbd8688f76b06b75dbc71fbb623d7d9c..2e3ec4cc3d2131632a910d0baa5804e1aea79ef5 100644
+--- a/novaOS/user/novafs/device.rs
++++ b/novaOS/user/novafs/device.rs
+@@ -36,6 +36,15 @@
+         }
+         let count = sectors / ratio;
+         session.sector_size = size as usize;
++        if count == 514 {
++            // Profil de mesure exclusivement. Ne jamais monter les pages de transport.
++            #[path = "../novaauth/transport_qemu/sonde.rs"]
++            mod sonde;
++            let result = sonde::run(session, size as usize);
++            let msg = if result.is_ok() { b"NAUTH transport OK".as_slice() } else { b"NAUTH transport ECHEC".as_slice() };
++            crate::runtime::call(crate::runtime::DEBUG_WRITE, msg.as_ptr() as u64, msg.len() as u64, 0);
++            return Err(Error::Unavailable);
++        }
+         Ok(Self {
+             session: RefCell::new(session),
+             geometry: Geometry::new(count, size)?,

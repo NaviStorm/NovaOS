@@ -124,3 +124,30 @@ Douze démarrages QEMU 11.1.3, deux vCPU, sur copies neuves des instantanés arc
 Le nouveau transport, la signature distante et la survie à une restauration complète avec l’autorité indépendante restent **non vérifiés**. L’archive durable sœur du worktree est `archives-novaauth-autorite-0240/temoins-stockage-471649b.tar.gz`, SHA-256 `1099b1fd46f67c8069f4cec38d9caf5c411463636cd29976d2d91bb908d0e264`. Ses 74 fichiers et le manifeste ont été relus décompressés et comparés aux originaux. SHA-256 du manifeste : `7065a6a1818ea6ea68fd126c81a792bb07650863762f2640db80e34a66b91797`. L’archive comprend les copies de disques de laboratoire, les commandes de rejeu, les sorties série et le relevé des compteurs historiques.
 
 [Relevé par profil, empreintes des entrées et des traces série](validation/novaauth-transport-temoins-0240.json)
+
+## Mesures du 17 novembre 2026 et recette du reçu
+
+La MOA/MOE a autorisé l’expérience des deux pages sur la base `cca11104c2e8cb3daece6e36a153afa8bb98dde7`. L’intégration fonctionnelle est suspendue au contrôle de mémoire hôte.
+
+| Contrôle | Résultat observé | Portée |
+| --- | --- | --- |
+| Dossier témoin | L’octroi de génération 4 permet de lire l’entrée `temoin`. Le retrait acquitté de génération 5 refuse la lecture. | Moteur P9, registre et politique réels dans le test de composant Darwin ARM64, secteurs 512 et 4 096. |
+| Restauration de tous les disques du témoin | Restauration du P9 et du fichier-disque de reçu. L’autorité redémarre sur son propre journal au retrait 5. L’ancien reçu signé retrouve la décision 4. L’ouverture échoue sur la divergence de l’état restauré. | L’autorité est un processus enfant de laboratoire relié par une paire de sockets privée. Les réponses de consultation couvrent un nonce frais. Les deux reçus archivés ont été revérifiés avec la clé publique. |
+| Autorité injoignable | Le banc termine le processus d’autorité et attend sa sortie. La même tentative avec le même reçu rend `Unavailable` avant l’accès au répertoire. Après redémarrage de l’autorité, sa génération est toujours 5. | [Recette du dossier](../user/novaauth/tests/recu_dossier.rs) · [Processus d’autorité du test](../user/novaauth/tests/support/autorite_recu.rs) |
+| Budget IPC | Deux processus témoins, huit endpoints et vingt nœuds supplémentaires. Au terme de l’admission, le service 22 détient sept handles et le 23 en détient six. Chacun a quatre racines. Les deux cinquièmes demandes rendent `LIMIT` avec mêmes compteurs avant/après. Chacun revient à zéro racine à l’arrêt. | Quatre profils QEMU, deux vCPU. Aux points d’installation échantillonnés, maximum de quatre racines et 26 handles pour un acteur, 49 endpoints, 102 nœuds et 12 attentes au niveau global. Le comportement sous trafic cryptographique reste à mesurer. |
+| Échange hors P9 | Aller `616c6c65720009ff`, retour `7265746f7572ff0900`, image P9 de SHA-256 identique avant/après. | Quatre profils QEMU. Échange d’octets publics avec un pair écho. La sonde termine après l’échange. |
+| Mémoire hôte | CPython 3.15.2 ARM64 alloue 8 763 octets pour l’objet de liaison neuf, dont 8 192 utiles. Le supplément de 571 dépasse la borne de 256 de **315 octets**, avant toute charge. | Mesure des allocations conservées par le constructeur avec `tracemalloc`. Sockets, interpréteur et requêtes NBD exclus. [Mesure reproductible](../user/novaauth/transport_qemu/mesure_memoire.py) |
+| Régressions exécutées | Huit tests de composants NovaAuth et neuf contrôles ABI réussis. Le sous-processus de la recette est appelé directement par le test parent. | Pour cette étape, les suites complètes VFS, IPC, ELF et les scénarios de panne du raccord de sécurité restent en attente. |
+
+En x86_64/P9-4096, le firmware lit 262 144 octets en une demande, au-delà de la limite de 131 072 de l’adaptateur expérimental. Le premier adaptateur fermait la connexion. L’écriture TX suivante échouait avant d’atteindre le backend. Le témoin corrigé rend une erreur bornée pour cette lecture et maintient la connexion. Les traces NBD des quatre profils confirment les écritures TX à l’offset 2 097 152 et la lecture RX à l’offset 2 101 248 pour la taille sectorielle demandée. Le support général des grandes E/S P9 reste à vérifier.
+
+Les profils de sondes sont produits par `service/profile.py` avec `--budget-autorite` ou `--transport-autorite`. Les exemples utilisent une destination neuve dans le répertoire temporaire dédié au projet. La mesure mémoire retourne un statut non nul lorsque la borne est dépassée.
+
+```sh
+python3 -B novaOS/user/novaauth/service/profile.py "$NOVAOS_TMPDIR/sonde-autorite" --transport-autorite
+python3 -B novaOS/user/novaauth/transport_qemu/mesure_memoire.py
+```
+
+**Réserve de qualification.** Le test du reçu emploie la politique du registre et un accès au moteur P9. La preuve d’ouverture par l’effecteur VFS de l’invité, avec signataire isolé, TLS mutuellement authentifié et autorité hors snapshot, reste à produire sur les quatre profils. Le transport sectoriel et le test de composant ne qualifient pas cette chaîne. L’arbitrage demandé porte sur le respect des 256 octets avec une représentation native mesurable, ou sur la révision explicite du budget hôte.
+
+**Preuves durables.** Le répertoire `archives-novaauth-autorite-0240/recette-dossier-cca1110/` est frère du worktree via sa racine `OS-worktrees`. Les 28 fichiers de preuve et leur manifeste ont été relus après décompression. Le SHA-256 de `recette-dossier.tar.gz` est `8bb5ff7af1a6e69e6c4457add4978856b1741319176b8f3138845a1aad1964d5`. Celui de `SHA256SUMS` est `e7cdf491555f3f74d64021163d03d346baf2f4941325eca9aafcb8f1f6c65708`. L’archive contient les reçus signés, les clés publiques de vérification, les instantanés P9 fictifs et des relevés sur liste blanche. Les ISO et journaux série originaux restent dans leurs répertoires de preuves durables.

@@ -7,7 +7,9 @@ import runpy
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False):
+def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False):
+    if budget or transport:
+        shell = bail = True
     source = Path(__file__).resolve().parents[4]
     revision = subprocess.check_output(["git","rev-parse","HEAD"],cwd=source,text=True).strip()
     destination.mkdir(parents=True,exist_ok=False)
@@ -30,6 +32,10 @@ def prepare(destination, policies=False, retired_reply=False, shell=False, selec
             apply(destination, "bail.patch")
         if selection_smp:
             apply(destination, "selection-smp.patch")
+        if budget or transport:
+            apply(destination, "budget-autorite.patch")
+        if transport:
+            apply(destination, "sonde-transport.patch")
         refresh_documentation_links(destination)
     if policies:
         apply(destination, "politiques.patch")
@@ -69,5 +75,9 @@ if __name__=="__main__":
     mode.add_argument("--lancement", action="store_true")
     mode.add_argument("--selection-smp", action="store_true", help="profil de lancement avec sonde SMP invitée du raccord privé")
     mode.add_argument("--bail", action="store_true", help="profil de lancement avec horodatage de la décision NovaAuth et témoin de réauthentification")
+    mode.add_argument("--budget-autorite", action="store_true", help="deux processus de mesure des routes privées")
+    mode.add_argument("--transport-autorite", action="store_true", help="sonde de transport hors P9 sur export à 514 pages")
     args=parser.parse_args()
-    prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp or args.bail, args.selection_smp, args.bail)
+    prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp or args.bail,
+            args.selection_smp, args.bail,
+            args.budget_autorite, args.transport_autorite)
