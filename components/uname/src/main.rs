@@ -58,7 +58,13 @@ fn document(action: Action, lang: Language) -> Vec<u8> {
     .into_bytes()
 }
 
-fn diagnostic(error: &Error, utf8: bool, invoked: &[u8], program: &[u8]) -> Vec<u8> {
+fn diagnostic(
+    error: &Error,
+    utf8: bool,
+    printable_len: impl Fn(&[u8]) -> usize,
+    invoked: &[u8],
+    program: &[u8],
+) -> Vec<u8> {
     let prefix = if matches!(error, Error::Operand(_)) {
         program
     } else {
@@ -67,7 +73,7 @@ fn diagnostic(error: &Error, utf8: bool, invoked: &[u8], program: &[u8]) -> Vec<
     [
         prefix,
         b": ",
-        &error.message(utf8),
+        &error.message(utf8, printable_len),
         b"\nTry '",
         invoked,
         b" --help' for more information.\n",
@@ -117,7 +123,11 @@ extern "C" fn run() -> ! {
                 console::printable(
                     tty::ERROR,
                     &alloc::string::String::from_utf8_lossy(&diagnostic(
-                        &e, false, b"uname", b"uname",
+                        &e,
+                        false,
+                        |_| 0,
+                        b"uname",
+                        b"uname",
                     )),
                 )?;
                 return Ok(1);

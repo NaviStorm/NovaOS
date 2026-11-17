@@ -24,7 +24,7 @@ pub fn answer(name: &str, args: &[&str], lang: documentation::Language) -> rt::R
             Ok(uname::Action::Version) => page.version(lang),
             Ok(uname::Action::Fields(_)) => return Ok(None),
             Err(reason) => {
-                let bytes = reason.message(false);
+                let bytes = reason.message(false, |_| 0);
                 let reason = alloc::string::String::from_utf8_lossy(&bytes);
                 console::printable(
                     tty::ERROR,

@@ -54,6 +54,21 @@ fn os_error(program: &[u8], action: &[u8], e: io::Error) -> i32 {
     1
 }
 
+// Un caractère graphique encodé sur plusieurs octets reste indivisible.
+fn printable_len(bytes: &[u8]) -> usize {
+    unsafe extern "C" {
+        fn mbtowc(wc: *mut i32, bytes: *const libc::c_char, len: usize) -> i32;
+        fn iswprint(wc: i32) -> i32;
+    }
+    let mut wc = 0;
+    let n = unsafe { mbtowc(&mut wc, bytes.as_ptr().cast(), bytes.len()) };
+    if n > 0 && unsafe { iswprint(wc) } != 0 {
+        n as usize
+    } else {
+        0
+    }
+}
+
 pub fn run() -> i32 {
     let mut words = env::args_os();
     let invoked = words.next().unwrap_or_default();
@@ -82,7 +97,7 @@ pub fn run() -> i32 {
             let utf8 = unsafe { CStr::from_ptr(libc::nl_langinfo(libc::CODESET)) }
                 .to_bytes()
                 .eq_ignore_ascii_case(b"UTF-8");
-            let _ = io::stderr().write_all(&diagnostic(&e, utf8, invoked, program));
+            let _ = io::stderr().write_all(&diagnostic(&e, utf8, printable_len, invoked, program));
             return 1;
         }
     };

@@ -33,16 +33,14 @@ pub enum Error<'a> {
     Operand(&'a [u8]),
 }
 impl Error<'_> {
-    pub fn message(&self, utf8: bool) -> Vec<u8> {
-        let Self::Operand(arg) = self else {
-            let Self::Option(message) = self else {
-                unreachable!()
-            };
-            return message.clone();
+    pub fn message(&self, utf8: bool, printable_len: impl Fn(&[u8]) -> usize) -> Vec<u8> {
+        let arg = match self {
+            Self::Operand(arg) => *arg,
+            Self::Option(reason) => return reason.clone(),
         };
         let (left, right) = if utf8 { ("‘", "’") } else { ("'", "'") };
         let mut out = format!("extra operand {left}").into_bytes();
-        let mut rest = *arg;
+        let mut rest = arg;
         while let Some((&b, tail)) = rest.split_first() {
             if rest.starts_with(right.as_bytes()) {
                 out.push(b'\\');
@@ -52,14 +50,10 @@ impl Error<'_> {
                 7..=13 => out.extend([b'\\', b"abtnvfr"[(b - 7) as usize]]),
                 32..=126 => out.push(b),
                 _ => {
-                    if utf8
-                        && let Some(s) = rest
-                            .get(..utf8_width(b))
-                            .and_then(|s| core::str::from_utf8(s).ok())
-                        && !s.chars().next().unwrap().is_control()
-                    {
-                        out.extend(s.as_bytes());
-                        rest = &rest[s.len()..];
+                    let n = printable_len(rest);
+                    if n > 0 {
+                        out.extend(&rest[..n]);
+                        rest = &rest[n..];
                         continue;
                     }
                     out.extend(format!("\\{b:03o}").bytes());
@@ -71,15 +65,6 @@ impl Error<'_> {
         out
     }
 }
-fn utf8_width(b: u8) -> usize {
-    match b {
-        0xc2..=0xdf => 2,
-        0xe0..=0xef => 3,
-        0xf0..=0xf4 => 4,
-        _ => 1,
-    }
-}
-
 fn long(arg: &[u8]) -> Result<u8, Error<'_>> {
     let mut parts = arg[2..].splitn(2, |&b| b == b'=');
     let prefix = parts.next().unwrap();
