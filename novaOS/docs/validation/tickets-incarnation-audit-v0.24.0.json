@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-18",
+  "base": "96b4f67cdbaab8048074a6c1a218434801734f67",
+  "niveau": "audit statique, pas qualification deux VM",
+  "sources": [
+    {
+      "chemin": "novaOS/kernel/src/sched/process/ipc/exec.rs",
+      "sha256": "f6cb2fa8131426a0cff404c11ca3cc578f9ad24dae9d70444b05ceff4b1514ad"
+    },
+    {
+      "chemin": "novaOS/kernel/src/sched/process/ipc/exec_delivery_lab.rs",
+      "sha256": "693982a6ff7fca68277f37ee8838d875f25124dbf530b6b09ae34918dfd249d0"
+    },
+    {
+      "chemin": "novaOS/kernel/src/sched/process/ipc/exec_snapshot_lab.rs",
+      "sha256": "2ffe5bcabb34c276bc1e0912a4efd9c411a04cf5f576cd4beb590fe85e5f6f60"
+    },
+    {
+      "chemin": "novaOS/kernel/src/sched/process/ipc/session_relay.rs",
+      "sha256": "7bde076425cd2bd1faaef93dacd2ea4873eee076f7ff92895563f36d9892a74e"
+    },
+    {
+      "chemin": "novaOS/user/novaauth/service/lancement.patch",
+      "sha256": "6028225f8c63c21bf64a131c66247d05006e37627adda1dba07d259f328c3304"
+    },
+    {
+      "chemin": "novaOS/user/novaauth/service/recuperation-vfs.patch",
+      "sha256": "940513d68343dc3dead4a4322494afeca6e433239d4c702551b95cb3453f0796"
+    },
+    {
+      "chemin": "components/shell/bail_client_lab.rs",
+      "sha256": "1c89a33de41d653b9c016702f3259399077ab7c62c95436e7075e9772d252aef"
+    }
+  ],
+  "constats": {
+    "ticket_volatil": true,
+    "expiration_ticket_max_ms": 5000,
+    "consommation_controle_local": true,
+    "consultation_autorite_distante_dans_consume": false
+  },
+  "tests_deux_vm_exec_ticket_executes": false,
+  "fusion_autorisee_par_ce_rapport": false,
+  "qualifications_precedentes_conservees": true
+}
