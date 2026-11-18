@@ -130,3 +130,9 @@ contenant les clés de laboratoire restent hors Git, dans
 relues et comparées aux originaux. Les premiers journaux de compilation ayant
 échoué sur une cible absente et le premier essai hôte sans `NOVA_DETENTEUR` restent
 archivés avec les reprises réussies.
+
+## Diagnostic préalable aux deux VM
+
+Le [diagnostic du raccord de chargement](novaauth-deux-vm-diagnostic-v0.24.0.md)
+conserve le refus invité `cut=26` avant toute admission distante. La qualification
+à deux VM reste non acquise ; le raccord au registre isolé est soumis à arbitrage.

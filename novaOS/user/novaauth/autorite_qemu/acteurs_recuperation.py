@@ -110,6 +110,20 @@ def administrator_worker(port,root):
                 if len(packet)!=272 or packet[8:40]!=server+domain or packet[48:240]!=b"".join(keys):
                     raise Refus("clés d'enrôlement non approuvées")
                 result=key.sign(ENROLL+packet)
+            elif command=="exec-route" and bounds is not None:
+                # Contrôle administratif hors invité, jamais accessible par TLS.
+                from admission_exec import ENROLL as EXEC_ENROLL, WITHDRAW, QUERY
+                kind,server,domain,instance,fresh=args
+                if (server,domain)!=bounds[:2] or len(instance)!=32 or not any(instance):
+                    raise Refus("route EXEC hors mandat")
+                prefix={"enroll":EXEC_ENROLL,"withdraw":WITHDRAW,"query":QUERY}.get(kind)
+                if prefix is None or (kind=="query" and (len(fresh)!=32 or not any(fresh))) or (kind!="query" and fresh):
+                    raise Refus("action EXEC invalide")
+                packet=server+domain+instance+fresh
+                signature=key.sign(prefix+packet)
+                with (root/"exec-route.log").open("ab") as f:
+                    f.write(prefix+packet+signature);f.flush();os.fsync(f.fileno())
+                result=signature
             elif command=="approve" and bounds is not None:
                 c,server_signature,pop=args
                 server,domain,server_key,measurement,manifest,generation,head,keys=bounds

@@ -41,3 +41,7 @@ required-features = ["recuperation-lab"]
 [[example]]
 name = "recovery_inspect"
 required-features = ["recuperation-lab"]
+
+[[example]]
+name = "exec_admission_volume"
+required-features = ["recuperation-lab"]

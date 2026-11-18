@@ -128,7 +128,7 @@ def fixture(args,stack):
                           {digest(manifest):manifest},{digest(manifest):chunks},approve,deliver,retrieve)
     return dispatcher,holders,administrator
 
-def run(args,environment=None,before_mutation=None):
+def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
     out=args.sortie
     out.mkdir(parents=True,exist_ok=False)
     # Une coupure peut précéder la première requête applicative : zéro ligne
@@ -229,7 +229,14 @@ def run(args,environment=None,before_mutation=None):
                         body=bytes(lire(conn,n))
                         start=time.monotonic_ns()
                         try:
-                            if args.vfs and operation in (32,33,34):
+                            if rpc_hook is not None:
+                                rpc_hook("before",operation,body,None,Path(tmp)/"qmp.sock",disk)
+                            if getattr(args,"exec_admission",False) and operation in (40,41,42):
+                                from admission_rpc import request as exec_request
+                                result=exec_request(dispatcher.authority.path,
+                                    Ed25519PrivateKey.from_private_bytes(args.decision.read_bytes()),
+                                    (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body)
+                            elif args.vfs and operation in (32,33,34):
                                 result=capture_store.request(operation,body)
                             elif args.vfs and operation in (30,31):
                                 if operation==30 and before_mutation is not None:
@@ -238,6 +245,8 @@ def run(args,environment=None,before_mutation=None):
                                     Ed25519PrivateKey.from_private_bytes(args.decision.read_bytes()),
                                     (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body)
                             else:result=dispatcher.request(sequence,operation,body)
+                            if rpc_hook is not None:
+                                rpc_hook("after",operation,body,result,Path(tmp)/"qmp.sock",disk)
                             if operation==10 and getattr(args,"tete_rejouee",None) is not None:
                                 result=args.tete_rejouee.read_bytes()
                                 observed["tete_historique_rejouee"]=sha(args.tete_rejouee)
@@ -267,6 +276,8 @@ def run(args,environment=None,before_mutation=None):
         for worker in workers:worker.start()
         vm_args=command(args.arch,args.sector,disk,controls=["-display","none","-monitor","none","-serial","stdio","-qmp","unix:qmp.sock,server=on,wait=off"])
         vm_args[vm_args.index("-drive")+1]="if=none,id=d,format=raw,file.driver=nbd,file.server.type=unix,file.server.path=port.sock,cache=none,werror=report,rerror=report"
+        if getattr(args,"exec_admission",False):
+            vm_args += ["-gdb","unix:gdb.sock,server=on,wait=off"]
         if legacy is not None:
             # Ancien support local restaurable ; jamais utilisé comme décideur.
             vm_args += ["-drive",f"if=none,id=legacy,format=raw,file={legacy},cache=none",
@@ -279,7 +290,10 @@ def run(args,environment=None,before_mutation=None):
                 stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,bufsize=0) as vm:
             try:
                 t=Serial(vm,raw)
-                if getattr(args,"quarantaine",False):
+                if scenario is not None:
+                    observed["scenario_admissions"]=scenario(t,Path(tmp),disk,out)
+                    observed["statut"]="diagnostic terminé ; consulter succes et scenario_admissions"
+                elif getattr(args,"quarantaine",False):
                     t.expect(rb"NARV quarantaine terminee",100)
                     observed["statut"]="quarantaine"
                 elif args.mode not in ("nominal","recu-perdu-1","recu-perdu-2","activation-perdue","publication-perdue","publication-capture-perdues"):
@@ -470,6 +484,13 @@ def run(args,environment=None,before_mutation=None):
         and observed["drainage_registre"] and observed["plafond_respecte"] and observed["cinquieme_racine_refusee"]
         and timely and b"NOW autorise gestion et arguments refuses 8/8" in raw
         and (not args.mode.startswith("recu-perdu") or observed["reconciliation_sans_repetition"]))
+    if scenario is not None:
+        # Recette distincte : ne pas attribuer les contrôles du scénario VFS
+        # historique à un invité exécutant le témoin de tickets dans nsh.
+        observed["portee"]="tickets EXEC_TICKET invités, scénario explicite ; recettes VFS distinctes"
+        observed["succes"]=bool(observed.get("scenario_admissions",{}).get("succes") and
+            observed.get("relais_draine") and observed.get("ancienne_autorite_inchangee",True) and
+            observed.get("tls")=="TLSv1.3" and observed["plafond_respecte"])
     (out/"resultat.json").write_text(json.dumps(observed,indent=2,ensure_ascii=False)+"\n")
     print(json.dumps(observed,ensure_ascii=False))
     return 0 if observed["succes"] else 1
