@@ -31,8 +31,15 @@ pub(super) fn attach(s:&mut Core,owner:Pid,root:u64,head:[u8;32])->Res<Remote> {
 }
 pub(super) fn pending(t:&Ticket)->bool {t.remote.as_ref().is_some_and(|r|!r.gate.detachable())}
 pub(super) fn cancel(t:&mut Ticket) {
-    if let Some(r)=t.remote.as_mut() {let _=r.gate.cancel_before_creation();}
+    if let Some(r)=t.remote.as_mut() {
+        // LIST et la transition request exigent waiting=true. Avant ce point,
+        // invalidate rend le ticket inutilisable sous Core et aucune opération
+        // distante ne peut exister : la porte Dormant est déjà détachable.
+        // Garder Cancelled -> Settled dès que la pompe peut avoir vu le ticket.
+        if r.waiting {let _=r.gate.cancel_before_creation();}
+    }
 }
+#[inline(never)]
 pub(super) fn start(t:&mut Ticket)->Res<()> {
     if let Some(r)=t.remote.as_mut() {r.gate.start().map_err(code)?;}Ok(())
 }
@@ -51,14 +58,21 @@ pub(super) fn failed(t:&mut Ticket) {
 }
 pub(super) fn wait(owner:Pid,key:u64)->Res<()> {
     let required=with(|s| {
-        let t=ticket(s,owner,key)?;validate(s,owner,t)?;
+        resources(s,owner,"consommation");
+        let t=ticket(s,owner,key)?;
+        hal::log(format_args!("NAEXEC attente owner={} ticket={key} maintenant={} echeance={}",owner.number,ticks(),t.deadline));
+        validate(s,owner,t)?;
         let Some(r)=t.remote.as_ref() else {return Ok(false);};
         if r.waiting {return Err(REFUSED);}
         if current(s,r.registry)?.instance!=r.registry_instance {return Err(REVOKED);}
         s.processes.get_mut(owner).exec[0].remote.as_mut().unwrap().waiting=true;
         Ok(true)
-    })?;
-    if !required {return Ok(());}
+    });
+    if let Err(status)=required {
+        with(|s|resources(s,owner,"refus_sans_creation"));
+        return Err(status);
+    }
+    if !required? {return Ok(());}
     loop {
         let ready=with(|s| {
             let t=ticket(s,owner,key)?;
@@ -70,7 +84,7 @@ pub(super) fn wait(owner:Pid,key:u64)->Res<()> {
             match r.gate.phase() {
                 Phase::Admitted=>Ok(true),
                 Phase::Dormant|Phase::Requested=>Ok(false),
-                _=>Err(REVOKED),
+                _=>{hal::log(format_args!("NAEXEC refus owner={} ticket={key} statut={REVOKED} maintenant={} echeance={}",owner.number,ticks(),t.deadline));Err(REVOKED)},
             }
         })?;
         if ready {return Ok(());}
@@ -150,4 +164,13 @@ pub(in crate::sched::process::ipc) fn intercept(s:&mut Core,p:Pid,id:u64,args:[u
         hal::log(format_args!("NAEXEC transition registry={} owner={} kind={} value={value}",p.number,owner.number,data[8]));
         Ok(128)
     })())
+}
+
+pub(in crate::sched::process::ipc) fn resources(s:&Core,owner:Pid,label:&str) {
+    let (endpoints,nodes,handles,waits)=s.ipc.budget_usage(owner);
+    let live=s.processes.slots.iter().flatten().filter(|p|p.outcome.is_none()).count();
+    let threads=s.slots.iter().flatten().filter(|t|t.owner==Some(owner)).count();
+    let joins=s.processes.get(owner).join_rights.len();
+    let free=heap::with_pages(|m|Ok(m.free_pages()));
+    hal::log(format_args!("NAEXEC ressources phase={label} owner={} roots={} handles={handles} endpoints={endpoints} nodes={nodes} waits={waits} processus={live} threads={threads} joins={joins} cadres_ipc={} cadres_libres={free:?}",owner.number,s.ipc.root_count(owner.number),s.ipc.pages()));
 }

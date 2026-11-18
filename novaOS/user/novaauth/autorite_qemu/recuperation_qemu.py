@@ -192,7 +192,7 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
         def host():
             try:
                 stream=right
-                for attempt in range(64 if args.mutation else (32 if args.vfs else (16 if args.vue else 1))):
+                for attempt in range(128 if getattr(args,"exec_admission",False) else (64 if args.mutation else (32 if args.vfs else (16 if args.vue else 1)))):
                     if stop_host.is_set():break
                     if attempt:
                         stream=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
@@ -203,7 +203,12 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
                 if not stop_host.is_set():observed["erreur_tls"]=type(error).__name__+": "+str(error)
         def process_connection(conn):
                     active_connections.append(conn)
-                    conn.settimeout(45);conn.do_handshake()
+                    clock=getattr(args,"pause_transport",None)
+                    if clock is not None:
+                        from horloge_pause_qemu import Stream
+                        conn=Stream(conn,clock)
+                    else:conn.settimeout(45)
+                    conn.do_handshake()
                     if conn.getpeercert(True)!=(args.cles/"serveur.der").read_bytes() or conn.session_reused:
                         raise Refus("pair TLS non épinglé")
                     observed.update(tls=conn.version(),certificat_epingle=True)
@@ -346,6 +351,10 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
                 if vm.poll() is None:vm.terminate()
                 vm.wait(5);raw.write(vm.stdout.read())
         observed["duree_hote_ns"]=time.monotonic_ns()-start
+        if getattr(args,"pause_transport",None) is not None:
+            observed["suspension_qmp_hote_exclue_s"]=args.pause_transport.excluded()
+            observed["delai_tls_hote_actif_s"]=45
+
         # Réveiller les accept/read du relais après arrêt de l'invité. Aucun
         # worker hôte ni socket de test ne doit rester en arrière-plan.
         for channel in [*active_connections,left,right,listener,reopen]:

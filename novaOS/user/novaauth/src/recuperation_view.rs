@@ -3,7 +3,7 @@
 //! bornée et son empreinte est vérifiée avant de rendre la moindre décision.
 use super::*;
 use crate::snapshot_digest::SnapshotDigest;
-pub struct View {head:Head,state:State}
+pub struct View {pub(super) head:Head,pub(super) state:State}
 impl View {
     pub fn read(head:Head,lengths:[u32;3],
                 mut read:impl FnMut(usize,u32,&mut [u8])->Result<usize>)->Result<Self> {

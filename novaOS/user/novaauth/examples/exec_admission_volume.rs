@@ -33,7 +33,17 @@ fn main() {
   let grant=reg.grant_attested(owner).unwrap();let app=reg.load_package(grant,&key,machine,name).unwrap().principal.unwrap();
   reg.set_permission(grant,owner,work,app,Origin::Direct,READ,[id+3;16]).unwrap();
  }
- drop(reg);let triplet=Triplet::capture(&fs,&ledger,domain).unwrap();
+ let mode=a.get(8).map(String::as_str).unwrap_or("nominal");
+ let grant=reg.grant_attested(owner).unwrap();
+ let cut=reg.load_package(grant,&key,machine,"cut").unwrap();
+ if mode=="revoque" {reg.withdraw_package(grant,[160;16],cut.installation).unwrap();}
+ assert!(matches!(mode,"nominal"|"revoque"|"modifie"));
+ drop(reg);
+ if mode=="modifie" {
+  let altered=[cut.bytes[0]^1];
+  fs.prepare_write_id(cut.object,cut.offset,&altered).unwrap().commit().unwrap();
+ }
+ let triplet=Triplet::capture(&fs,&ledger,domain).unwrap();
  save(&root.join("triplet.bin"),&triplet.encode());fs.unmount().unwrap();
  println!("fixture hors ligne : deux installations attestées, génération={}, secteur={sector}",triplet.head().generation);
 }

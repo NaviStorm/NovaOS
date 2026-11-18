@@ -355,3 +355,44 @@ fn installation_interrompue_reprise_par_recu_sans_rejeu() {
         }
     }
 }
+
+#[cfg(feature="recuperation-lab")]
+#[test]
+fn resolution_isolee_lie_titulaire_installation_tete_et_architecture() {
+    use novaos_identity::{recuperation::Triplet,recuperation_view::View};
+    fn view(t:Triplet)->View {
+        View::read(*t.head(),t.parts().each_ref().map(|p|p.len() as u32),|i,o,b| {
+            let p=t.parts()[i];let o=o as usize;let n=b.len().min(p.len()-o);b[..n].copy_from_slice(&p[o..o+n]);Ok(n)
+        }).unwrap()
+    }
+    let signing=SigningKey::from_bytes(&[3;32]);let key=signing.verifying_key();
+    for sector in [512,4096] {for machine in [Machine::Aarch64,Machine::X86_64] {
+        let mut authority=Ledger::new(SimDevice::new(32,sector).unwrap());let domain=[7;16];
+        let mut disk=provision(SimDevice::new(512,sector).unwrap(),Ids{fs:[8;16],lv:[9;16]},domain,[4;16],&mut authority).unwrap();
+        let permit=Enrollment::from_provisioner(&mut authority).unwrap();
+        let mut r=Registry::open(&mut disk,&mut authority,domain).unwrap();
+        let enrolled=r.enroll(&permit,[1;16],"alice",[2;16],"users").unwrap();let owner=created_user(&enrolled);
+        let grant=r.grant_attested(owner).unwrap();
+        r.mutate(grant,[3;16],Change::Create{name:"bob",credential:[4;16],group:created_group(&enrolled)}).unwrap();
+        let image=elf(machine,17);let package=fixture(&signing,machine,1,&[("cut",&image)]);
+        let grant=r.grant_attested(owner).unwrap();r.publish_package(grant,[5;16],Action::Install,&key,machine,&package).unwrap();
+        let grant=r.grant_attested(owner).unwrap();let loaded=r.load_package(grant,&key,machine,"cut").unwrap();drop(r);
+        let v=view(Triplet::capture(&disk,&authority,domain).unwrap());let a=v.resolve_verified_factor([2;16]).unwrap();
+        let b=v.resolve_verified_factor([4;16]).unwrap();let d=v.executable(a,&key,machine,"cut").unwrap();
+        assert_eq!(&d[8..40],&v.head().digest);assert_eq!(&d[40..56],&owner);
+        assert_eq!(&d[56..72],&loaded.principal.unwrap());assert_eq!(&d[152..184],&Sha256::digest(&image)[..]);
+        assert_eq!(u64::from_le_bytes(d[120..128].try_into().unwrap()),loaded.object);
+        assert!(v.executable(b,&key,machine,"cut").is_err());
+        assert!(v.executable(a,&key,machine,"../cut").is_err());
+        assert!(v.executable(a,&SigningKey::from_bytes(&[8;32]).verifying_key(),machine,"cut").is_err());
+        let foreign=if machine==Machine::Aarch64 {Machine::X86_64}else{Machine::Aarch64};
+        assert!(v.executable(a,&key,foreign,"cut").is_err());
+        let mut r=Registry::open(&mut disk,&mut authority,domain).unwrap();let g=r.grant_attested(owner).unwrap();
+        r.withdraw_package(g,[6;16],loaded.installation).unwrap();drop(r);
+        let revoked=view(Triplet::capture(&disk,&authority,domain).unwrap());
+        assert!(revoked.executable(a,&key,machine,"cut").is_err());
+        let a=revoked.resolve_verified_factor([2;16]).unwrap();assert!(revoked.executable(a,&key,machine,"cut").is_err());
+        // L'ancienne vue reste une photographie ; sa fraîcheur n'est jamais implicite.
+        assert_ne!(v.head(),revoked.head());
+    }}
+}

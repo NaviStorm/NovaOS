@@ -9,7 +9,7 @@ def install(root):
         p.write_text(s.replace(old,new))
     base='novaOS/kernel/src/sched/process/ipc/'
     path=base+'exec.rs'
-    edit(path,'use super::*;','use super::*;\n#[path="exec_authority_lab.rs"]\nmod authority;\npub(super) use authority::intercept as authority_intercept;')
+    edit(path,'use super::*;','use super::*;\n#[path="exec_authority_lab.rs"]\nmod authority;\npub(super) use authority::intercept as authority_intercept;\npub(super) use authority::resources as resource_trace;')
     edit(path,'    binding: Binding,\n}\n\nimpl Permit', '    binding: Binding,\n    authority_head: Option<[u8;32]>,\n}\n\nimpl Permit')
     edit(path,'            binding,\n        })','            binding,\n            authority_head: None,\n        })')
     edit(path,'    state: State,\n}', '    state: State,\n    remote: Option<authority::Remote>,\n}')
@@ -55,3 +55,51 @@ def install(root):
         'any(not(feature = "shell-guest"),all(feature="vfs-guest",not(feature="exec-admission-guest")))')
     edit('novaOS/user/service_manager.rs','novaauth/service/recovery_vfs_launcher.rs',
         'novaauth/service/exec_admission_launcher.rs')
+
+    edit('novaOS/user/novafs/files.rs','mod package_lab;', '#[path="../novaauth/service/exec_package_read.rs"]\nmod package_lab;')
+
+    edit('novaOS/kernel/src/sched/process/ipc/traffic.rs','        s.ipc.close(root);\n        return Ok(0);','        s.ipc.close(root);\n        exec::resource_trace(s,owner,"fermeture");\n        return Ok(0);')
+
+    # Admission de trois opérations seulement pour le client nsh désigné par
+    # le superviseur. Les tables de jonction restent privées au PID.
+    edit('novaOS/kernel/src/sched/process/threads.rs',
+        '    if !with(|s| s.processes.get(owner(s)).application_threads) {',
+        '    if !with(|s| s.processes.get(owner(s)).application_threads ||\n        ipc::service::thread_witness(s,owner(s),id)) {')
+    edit('components/shell/session_auth_lab.rs','use super::rt;',
+        'use super::rt;\n#[path="exec_threads_lab.rs"]\nmod exec_threads;')
+    edit('components/shell/session_auth_lab.rs','            if *mode != "recu" {',
+        '            if !matches!(*mode,"recu"|"concurrent") {')
+    edit('components/shell/session_auth_lab.rs',
+        '            let launch = rt::call(super::tty::SPAWN, super::tty::EXEC_TICKET, key, 0);',
+        '            let launch = if *mode=="concurrent" {exec_threads::consume(key)?} else {rt::call(super::tty::SPAWN, super::tty::EXEC_TICKET, key, 0)};')
+
+    edit('novaOS/kernel/src/sched/process/ipc/exec.rs','    let Permit {\n',
+        '    authority::resources(s,permit.owner,"avant_ticket");\n    let Permit {\n')
+
+    edit('novaOS/kernel/src/sched/process/ipc/service.rs',
+        'pub(in crate::sched::process) fn owns_family',
+        'pub(in crate::sched::process) fn thread_witness(s:&Core,p:Pid,id:u64)->bool {\n    auth_lab::enabled() && s.processes.manager.is_some_and(|m|m.client==p) &&\n    s.processes.get(p).outcome.is_none() &&\n    matches!(id,THREAD_CREATE|THREAD_EXIT|THREAD_JOIN)\n}\n\npub(in crate::sched::process) fn owns_family')
+
+    edit('components/shell/session_auth_lab.rs',
+        '        let key = self.ticket(name, rest, 5000, 0, 0)?;',
+        '        let key = self.ticket(name, rest, 5000, if matches!(*mode,"recu"|"concurrent") {1}else{0}, 0)?;')
+    edit('components/shell/session_auth_lab.rs',
+        '            let (fault, code) = nova_cli::process::wait(right)?;\n            if fault || Self::receipt(key)?',
+        '            self.drain(&[pid],None)?;\n            let (fault, code) = nova_cli::process::wait(right)?;\n            if fault || Self::receipt(key)?')
+    for suffix in ['\n\n    pub(super) fn pipeline(', '\n    pub(super) fn exercise_relay(']:
+        edit('components/shell/session_auth_lab.rs',
+            '        let _ = rt::call(rt::IPC_CLOSE, key, 0, 0);\n        result\n    }'+suffix,
+            '        let closed = exec_threads::close_ticket(key);\n        result.and_then(|value|closed.map(|_|value))\n    }'+suffix)
+
+    # Une seule présentation historique avant toute authentification ; le garde
+    # ordinaire et tous les contrôles natifs restent inchangés.
+    edit('components/shell/main.rs','mod session_auth_lab;',
+        'mod session_auth_lab;\nmod exec_reference_lab;')
+    edit('components/shell/main.rs','            let mut source = input_line?;',
+        '            let mut source = input_line?;\n            if let Some(status)=exec_reference_lab::intercept(&source)? {\n                frame.status=status;\n                return Ok(script::Flow::Status(status));\n            }')
+
+    # Raccord ajouté après les transformations historiques, sans changer leurs préimages.
+    edit('novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs','                for request in [&f, &name] {','                #[cfg(feature="exec-admission-guest")]\n                {\n                    let reference=self.live.filter(|(session,_)|*session==id).ok_or(rt::DENIED)?.1;\n                    let rport=unsafe {(&*(0x401000 as *const core::sync::atomic::AtomicU64).add(21)).load(core::sync::atomic::Ordering::Acquire)};\n                    if rport==0 {return Err(rt::DENIED);}\n                    let mut descriptor=[0;240];\n                    for part in 0..2 {\n                        let mut q=[0;128];q[..8].copy_from_slice(b"NXRESOL1");q[8..24].copy_from_slice(&reference);\n                        q[24..56].copy_from_slice(&current.head);q[56]=n as u8;q[57..57+n].copy_from_slice(&msg[49..49+n]);q[120]=part as u8;\n                        self.store_seq=self.store_seq.checked_add(1).ok_or(rt::LIMIT)?;\n                        let a=rpc(rport,rport,self.store_seq,&q)?;if number(&a)!=0 {return Err(number(&a));}\n                        descriptor[part*120..(part+1)*120].copy_from_slice(&a[8..]);\n                    }\n                    if &descriptor[..8]!=b"NXRES001" || descriptor[8..40]!=current.head || descriptor[40..56]!=holder {return Err(rt::DENIED);}\n                    self.store_seq=self.store_seq.checked_add(1).ok_or(rt::LIMIT)?;\n                    let a=rpc(port,rt::config(6),self.store_seq,&f)?;if number(&a)!=0 {return Err(number(&a));}\n                    for (part,chunk) in descriptor.chunks(96).enumerate() {\n                        let mut q=[0;128];q[..8].copy_from_slice(b"NXPKDSC1");q[8..24].copy_from_slice(&nonce);\n                        q[24..32].copy_from_slice(&(part as u64).to_le_bytes());q[32..32+chunk.len()].copy_from_slice(chunk);\n                        self.store_seq=self.store_seq.checked_add(1).ok_or(rt::LIMIT)?;\n                        let a=rpc(port,rt::config(6),self.store_seq,&q)?;if number(&a)!=0 {return Err(number(&a));}\n                    }\n                }\n                #[cfg(not(feature="exec-admission-guest"))]\n                for request in [&f, &name] {')
+
+    # Raccord ajouté après les transformations historiques, sans changer leurs préimages.
+    edit('novaOS/user/novaauth/service/src/bin/common/recovery_view.rs','            let folder=','            #[cfg(feature="exec-admission-guest")]\n            if &m.payload[..8]==b"NXRESOL1" {\n                let n=m.payload[56] as usize;let part=m.payload[120] as usize;\n                if n==0 || n>63 || part>1 || m.payload[57+n..120].iter().any(|b|*b!=0) || m.payload[121..]!=[0;7] {return Err(rt::BAD_ARGUMENT);}\n                let fresh=crate::tete::query(rt::config(8),&crate::incarnation::identity())?;\n                if fresh[72..80]!=state.head().generation.to_be_bytes() || fresh[80..112]!=state.head().digest || m.payload[24..56]!=state.head().digest {return Err(rt::REVOKED);}\n                let grant=state.resolve_verified_factor(m.payload[8..24].try_into().unwrap()).map_err(|_|rt::DENIED)?;\n                let key=novaos_identity::distribution::public_key(include_bytes!(env!("NOVA_PACKAGE_PUBLIC"))).map_err(|_|rt::DENIED)?;\n                #[cfg(target_arch="aarch64")] let machine=novaos_identity::distribution::Machine::Aarch64;\n                #[cfg(target_arch="x86_64")] let machine=novaos_identity::distribution::Machine::X86_64;\n                let leaf=core::str::from_utf8(&m.payload[57..57+n]).map_err(|_|rt::BAD_ARGUMENT)?;\n                let descriptor=state.executable(grant,&key,machine,leaf).map_err(|_|rt::DENIED)?;\n                answer[8..].copy_from_slice(&descriptor[part*120..(part+1)*120]);return Ok(());\n            }\n            let folder=')

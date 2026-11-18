@@ -1,0 +1,262 @@
+{
+  "base_git": "590908252374503e51c44cc14423e34d2acb3031",
+  "branche": "codex/novaauth-autorite-0240",
+  "portee": "Sonde de rejeu native QEMU ; aucune clôture globale NovaAuth ou autorisation de fusion",
+  "recettes_sonde": [
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "preuve": "sonde-rejeu-aarch64-512-1/bilan-deux-vm.json",
+      "sha256": "b419787ee5c91e18cf3744d48cc56e525494e48c468b2d94182ef975b48b6bf2",
+      "succes": true,
+      "reference": 4611686018427388007,
+      "A_statut": 10,
+      "A_maintenant": 5638,
+      "A_echeance": 6423,
+      "B_rejeu_statut": 5,
+      "B_nouveau_lancement": 0,
+      "A_redemarree_statut": 5
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "preuve": "sonde-rejeu-aarch64-4096-1/bilan-deux-vm.json",
+      "sha256": "8f0ce65defc0d4edc225ace08b58c931761c8f2fc26001aaeba5208bd9a046aa",
+      "succes": true,
+      "reference": 4611686018427388007,
+      "A_statut": 10,
+      "A_maintenant": 7393,
+      "A_echeance": 7964,
+      "B_rejeu_statut": 5,
+      "B_nouveau_lancement": 0,
+      "A_redemarree_statut": 5
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "preuve": "sonde-rejeu-x86_64-512-2/bilan-deux-vm.json",
+      "sha256": "55255d4a4743ea2adc8dd078867033c036790790a3446c789a793d3a5b173fce",
+      "succes": true,
+      "reference": 4611686018427388007,
+      "A_statut": 10,
+      "A_maintenant": 5593,
+      "A_echeance": 6391,
+      "B_rejeu_statut": 5,
+      "B_nouveau_lancement": 0,
+      "A_redemarree_statut": 5
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "preuve": "sonde-rejeu-x86_64-4096-2/bilan-deux-vm.json",
+      "sha256": "7ba5d2fc2ce668640aa3a780d4e4f770fab2772353cf9a665b6004c4e7f00c54",
+      "succes": true,
+      "reference": 4611686018427388007,
+      "A_statut": 10,
+      "A_maintenant": 7600,
+      "A_echeance": 8151,
+      "B_rejeu_statut": 5,
+      "B_nouveau_lancement": 0,
+      "A_redemarree_statut": 5
+    }
+  ],
+  "sources_sha256": {
+    "novaOS/kernel/src/sched/process/ipc/exec_authority_lab.rs": "b12d9fc84401a022216a42667931c035f92460db690eca1dc55553d288f17ade",
+    "novaOS/tests/abi_elf_archive.py": "59b849fd5a363e3c356f66f13fe9de9eb6b7bc1a6f1bbda11b2bb336b4c4edb1",
+    "novaOS/user/novaauth/autorite_qemu/exec_deux_vm.py": "99d0487969fa5c26af1336b8facd70a7175a2537fe04ec69133cbe508bcef713",
+    "novaOS/user/novaauth/autorite_qemu/recuperation_qemu.py": "2770c56529f389ca1dcc1395c96580b19009539e78fc244f529d56c6a45d9e53",
+    "novaOS/user/novaauth/examples/exec_admission_volume.rs": "282a425f9a9c3bfa3d5cac484a79560574e3ca16198fc35f4588a46344775102",
+    "novaOS/user/novaauth/service/exec_admission_profile.py": "72d9ed686b9dca0c2c1ed9f0031b1fe915e18d3895cac65c569b8eef0683a3fd",
+    "novaOS/user/novaauth/src/distribution.rs": "8670f21f6a0ced2b462ec7b79b622991c86ca1bd73ae403251945e9f005b4c52",
+    "novaOS/user/novaauth/src/policy.rs": "918273e69d836e17154edd0c023814fb8f62aa35fa0c22b46c0c93459a4c6383",
+    "novaOS/user/novaauth/src/recuperation_view.rs": "1bbc914bc1612cbfa913ad2a19da1e6eacd220228840a42a4ed816a2e2100e17",
+    "novaOS/user/novaauth/tests/distribution.rs": "2816b4b9cbec155c4b09cb4296fc093fbe06a8da0f954cd734719b54473b505f",
+    "components/shell/exec_reference_lab.rs": "661d249ee8a25aceb39eeb990d6a63c5675c3aa5d7c586b684aee00698c8bbfd",
+    "components/shell/exec_threads_lab.rs": "07c34fea7a47912e72a708a36f7fc5b455d7568d3d00b2ee14ea308fef82caec",
+    "novaOS/user/novaauth/service/exec_package_read.rs": "cb0aba32a8d9f644d1072e1ec85a692cdf248cb51298661930b723d86d24d5ab",
+    "novaOS/user/novaauth/autorite_qemu/exec_vm_debug.py": "364dea7d424fd1bc55cabf125697dddd1c2cac8c839e12a89192577b264216ed",
+    "novaOS/user/novaauth/autorite_qemu/horloge_pause_qemu.py": "95e5a1c589730b8f9a68e083313b53c419f43491a19eab7281a3b3b13e2640ff",
+    "novaOS/user/novaauth/autorite_qemu/test_horloge_pause_qemu.py": "13f2ccaff4722aac5e2a32e984414b388e6bbba447b63c6bbaa54343641a6a71",
+    "novaOS/user/novaauth/autorite_qemu/test_sonde_reference.py": "6c67f8b8cdc6520b6bd8fa71074c7a1868a4b243ef319e7e4a3bf64da575be46"
+  },
+  "artefacts_prives": [
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-9.iso",
+      "sha256": "f1a97cc9778efc1e96a5f9119f0da472b7060510960c75fca506045e8adbcf3d",
+      "octets": 12503040,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-9.elf",
+      "sha256": "04db89ed107477ff0cf2b531429a1951ff6c8b0c6a67af56f6440243a12a890d",
+      "octets": 8717176,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-9-registre.elf",
+      "sha256": "2a8daab31bee366478c0b3f8051a1fb0b2927b951335219faec663b9c5e87adb",
+      "octets": 610816,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-10.iso",
+      "sha256": "37a9e3482eaf3bad916f8828bb64232773f5c217f06c8152e2769c9cb63bcab3",
+      "octets": 12503040,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-10.elf",
+      "sha256": "79a76073003b238f831c1c2d3079519d67b52713fb1a99df3523056878a34378",
+      "octets": 8717816,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-10-registre.elf",
+      "sha256": "3890b0b58d5773818291fe00be65a502dfd306f5154a659fbcd08fdc71a02402",
+      "octets": 610824,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-11.iso",
+      "sha256": "448ed77f84ba60328e5fbe65cf9d15246e771e273b39ec470e1d46a1dab4a9b6",
+      "octets": 12503040,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-11.elf",
+      "sha256": "45b8d5fdfae56a243b5dd59822f8c5563be9da3f31cdb4724d75e1bd71ea45d7",
+      "octets": 8717744,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-11-registre.elf",
+      "sha256": "3890b0b58d5773818291fe00be65a502dfd306f5154a659fbcd08fdc71a02402",
+      "octets": 610824,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-12.iso",
+      "sha256": "4c658d91a2fbea91413db40fb246678e4db60604a8d46df0fabcd6c40dab4898",
+      "octets": 12503040,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-12.elf",
+      "sha256": "cd6a02aca3e6a3d90946b819f35370a2b9c4fb5d74a56f8938036aa3953536a0",
+      "octets": 8717872,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/aarch64-12-registre.elf",
+      "sha256": "3890b0b58d5773818291fe00be65a502dfd306f5154a659fbcd08fdc71a02402",
+      "octets": 610824,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-9.iso",
+      "sha256": "a9cf9e90c233869f3f0728c3e1f500e3661f1132f28c81c4e8cef306d2cb65b5",
+      "octets": 12603392,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-9.elf",
+      "sha256": "6a45b6390f015c2f2251b9b99c6175399d69486b33a159a562514c7e29f81de8",
+      "octets": 8792600,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-9-registre.elf",
+      "sha256": "061f751c401cc9734c9af09f7ba93d174e384eeaa1e559897839771a058935ce",
+      "octets": 595280,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-10.iso",
+      "sha256": "90fecf50240bd35b61161676bb933673950898b919bfc0d7c2ad2518003f13a5",
+      "octets": 12603392,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-10.elf",
+      "sha256": "a5888a2c08e01f4816fb15024ccc9a7e09ba5b04d07ab0d8675ad8911069dee7",
+      "octets": 8792464,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-10-registre.elf",
+      "sha256": "491ec71ce8677462d9775b6f6ed25ae5394f27442505b5c99bc68cf7223f2502",
+      "octets": 595288,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-11.iso",
+      "sha256": "d2ceae97c058cf6734a2a8d2850fa1e6afc5403ab7cde8ffddd523b42fdae70f",
+      "octets": 12603392,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-11.elf",
+      "sha256": "0f601d2ed58d38ef37448530ea77f00978725ba14b5e6aee2826ab9bcca34b7f",
+      "octets": 8792448,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-11-registre.elf",
+      "sha256": "491ec71ce8677462d9775b6f6ed25ae5394f27442505b5c99bc68cf7223f2502",
+      "octets": 595288,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-12.iso",
+      "sha256": "40a0e64f05fa7ad0a783f6748b7938252b9cc0fdf53436d36d95d22d8e4f5a04",
+      "octets": 12611584,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-12.elf",
+      "sha256": "72be6470782a54046799b0a4c5f3bef8e68c4a86087c52abe26db43aae1e4446",
+      "octets": 8800896,
+      "publication": "empreinte uniquement ; original privé durable"
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/x86_64-12-registre.elf",
+      "sha256": "491ec71ce8677462d9775b6f6ed25ae5394f27442505b5c99bc68cf7223f2502",
+      "octets": 595288,
+      "publication": "empreinte uniquement ; original privé durable"
+    }
+  ],
+  "preuves_durables": {
+    "racine": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-raccord-exec-42128c2",
+    "fichiers": 2087,
+    "inventaire_sha256": "84b0d9fce7bed5dc8fdb96f9597f71c076edfc63dc26bc3e0c7eba03e59eae5f"
+  },
+  "archive": {
+    "fichier": "exec-sonde-rejeu-0240.tar.gz",
+    "sha256": "7ff9aea19f6e81f8db71354f939294b749736406cb7258b7c977b0af0ba0817d",
+    "fichiers": 1018,
+    "verification": "Chaque membre décompressé relu et comparé octet par octet"
+  },
+  "reserves": [
+    "301 cadres instrumentés AArch64 ; pic exact de pile non mesuré isolément",
+    "QEMU uniquement, production/UTM/matériel non qualifiés",
+    "Les deux premiers rejeux x86 placaient la sonde B avant la fin du retrait : conservés et remplacés par les essais -2",
+    "Anciennes expirations de défi et interruptions de transport conservées",
+    "Régressions complètes et autres courses du mandat global à distinguer des quatre recettes de sonde"
+  ],
+  "noyaux_ordinaires": [
+    {
+      "cible": "x86_64-unknown-none",
+      "base": "e34b93332092e1a7fd3c69afdb3e6f2662af0444fac43a51d25f928b6b618a06",
+      "sonde": "e34b93332092e1a7fd3c69afdb3e6f2662af0444fac43a51d25f928b6b618a06",
+      "identiques": true,
+      "marqueurs_sonde_absents": true
+    },
+    {
+      "cible": "aarch64-unknown-none-softfloat",
+      "base": "bb7e7b5dc3de1d4b30707330f2d974f25fbe72d49955307f355114e58cdb0300",
+      "sonde": "bb7e7b5dc3de1d4b30707330f2d974f25fbe72d49955307f355114e58cdb0300",
+      "identiques": true,
+      "marqueurs_sonde_absents": true
+    }
+  ]
+}
