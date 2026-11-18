@@ -7,6 +7,9 @@ use zeroize::Zeroizing;
 
 #[path="../../../../src/snapshot_digest.rs"]
 mod native;
+#[cfg(feature="triplet-guest")]
+#[path="../../cipher_cache.rs"]
+mod cipher_cache;
 
 pub(super) struct Random;
 impl RngCore for Random {
@@ -60,6 +63,8 @@ pub struct Activated {
 pub type Activated=();
 /// Collecte cryptographique réelle. La vue ne sort qu’après reçu et tête fraîche.
 pub fn receive(port:u64,id:&[u8;32])->rt::Result<Activated> {
+    #[cfg(feature="triplet-guest")]
+    cipher_cache::qualify().map_err(|_|rt::REFUSED)?;
     common::marker(b"NAR2 registre avant");
     let mut client=rpc::Client::new(port,*id);
     let result=receive_inner(&mut client,id);
@@ -76,6 +81,9 @@ fn receive_inner(client:&mut rpc::Client,id:&[u8;32])->rt::Result<Activated> {
     let decision=VerifyingKey::from_bytes(include_bytes!(env!("NOVA_DECISION_PUB"))).map_err(|_|rt::REFUSED)?;
     let mut answer=Zeroizing::new([0;MAX]);
     let head=current(client,&decision,&mut answer)?;
+    #[cfg(feature="triplet-guest")]
+    common::marker(b"NAR2 tete courante authentifiee cache-tests=OK");
+    #[cfg(not(feature="triplet-guest"))]
     common::marker(b"NAR2 tete courante authentifiee");
     // Le manifeste est public ; les trois objets restent chiffrés hors serveur.
     let result=checked(client,rpc::BACKUP,&head[72..112],&mut answer)?;
@@ -184,6 +192,8 @@ fn receive_inner(client:&mut rpc::Client,id:&[u8;32])->rt::Result<Activated> {
     let chunks=u32::from_be_bytes(manifest.bytes()[378..382].try_into().unwrap());
     let lengths=core::array::from_fn(|i|u32::from_be_bytes(manifest.bytes()[366+4*i..370+4*i].try_into().unwrap()));
     let mut native=native::SnapshotDigest::new(manifest.head(),lengths).map_err(|_|rt::REFUSED)?;
+    #[cfg(feature="triplet-guest")]
+    let mut cache=cipher_cache::Cache::new(context.digest()).map_err(|_|rt::REFUSED)?;
     let mut total=0usize;
     for index in 0..chunks {
         let mut request=[0;36];request[..32].copy_from_slice(&manifest.digest());request[32..].copy_from_slice(&index.to_be_bytes());
@@ -193,17 +203,29 @@ fn receive_inner(client:&mut rpc::Client,id:&[u8;32])->rt::Result<Activated> {
         let mut clear=Zeroizing::new([0;1024]);clear[..n].copy_from_slice(&result[..n]);
         decoder.open(&mut clear[..n],result[n..].try_into().unwrap()).map_err(|_|rt::REFUSED)?;
         native.push(&clear[..n]).map_err(|_|rt::REFUSED)?;
+        #[cfg(feature="triplet-guest")]
+        cache.insert(&context.digest(),index,result).map_err(|_|rt::REFUSED)?;
         // Aucun contenu en clair n'est renvoyé au relais ni au terminal.
         total=total.checked_add(n).ok_or(rt::LIMIT)?;
     }
     decoder.finish().map_err(|_|rt::REFUSED)?;
     native.finish().map_err(|_|rt::REFUSED)?;
+    #[cfg(not(feature="triplet-guest"))]
     common::marker(b"NAR2 empreinte native triplet conforme tete durable");
     if total==0 {return Err(rt::REFUSED);}
     #[cfg(feature="triplet-guest")]
     {
-        // Une seconde passe vérifie les mêmes fragments immuables avant chaque
-        // préparation. Les écritures P9 n'activent aucun lecteur.
+        // Les ciphertexts vérifiés de cette seule récupération sont bornés à
+        // 3 820 octets / huit fragments. Le surplus est retéléchargé normalement.
+        cache.seal().map_err(|_|rt::REFUSED)?;
+        let used=cache.used();
+        let mut marker=*b"NAR2 empreinte native triplet conforme tete durable cache=0000 structure=0000";
+        for (at,value) in [(58,used),(73,core::mem::size_of::<cipher_cache::Cache>())] {
+            for i in 0..4 {marker[at+i]=b'0'+((value/10usize.pow(3-i as u32))%10) as u8;}
+        }
+        common::marker(&marker);
+        // La tête distante et l'authentification AEAD de chaque fragment sont
+        // vérifiées de nouveau avant toute préparation P9.
         let now=current(client,&decision,&mut answer)?;
         if now[32..64]!=*id || now[72..112]!=head[72..112] {return Err(rt::DENIED);}
         let mut storage=crate::recovery_store::Storage::new(c[8..24].try_into().unwrap())?;
@@ -212,7 +234,10 @@ fn receive_inner(client:&mut rpc::Client,id:&[u8;32])->rt::Result<Activated> {
         let mut table=0usize;let mut offset=0usize;
         for index in 0..chunks {
             let mut request=[0;36];request[..32].copy_from_slice(&manifest.digest());request[32..].copy_from_slice(&index.to_be_bytes());
-            let result=checked(client,rpc::CIPHERTEXT,&request,&mut answer)?;
+            let result=match cache.get(&context.digest(),index).map_err(|_|rt::REFUSED)? {
+                Some(data)=>data,
+                None=>checked(client,rpc::CIPHERTEXT,&request,&mut answer)?,
+            };
             if !(17..=1040).contains(&result.len()) {return Err(rt::REFUSED);}
             let n=result.len()-16;let mut clear=Zeroizing::new([0;1024]);
             clear[..n].copy_from_slice(&result[..n]);
@@ -222,6 +247,7 @@ fn receive_inner(client:&mut rpc::Client,id:&[u8;32])->rt::Result<Activated> {
             if offset==lengths[table] as usize {table+=1;offset=0;}
         }
         decoder.finish().map_err(|_|rt::REFUSED)?;
+        cache.clear();
         storage.seal()?;
         let mut verifier=native::SnapshotDigest::new(manifest.head(),lengths).map_err(|_|rt::REFUSED)?;
         for (table,length) in lengths.into_iter().enumerate() {
@@ -234,7 +260,7 @@ fn receive_inner(client:&mut rpc::Client,id:&[u8;32])->rt::Result<Activated> {
         verifier.finish().map_err(|_|rt::REFUSED)?;
         let now=current(client,&decision,&mut answer)?;
         if now[32..64]!=*id || now[72..112]!=head[72..112] {return Err(rt::DENIED);}
-        common::marker(b"NAR2 preparation P9 relue empreinte conforme aucune activation");
+        common::marker(b"NAR2 preparation P9 relue empreinte conforme aucune activation cache nettoye");
         #[cfg(feature="activation-guest")]
         {
             use crypto::activation::{self,Activation,ACTIVATE,QUERY};
