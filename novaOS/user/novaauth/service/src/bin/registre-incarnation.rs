@@ -1,6 +1,9 @@
 #![no_std]
 #![no_main]
 mod common;
+#[cfg(feature="exec-admission-guest")]
+#[path="common/exec_admission_guest.rs"]
+mod exec_admission_guest;
 #[cfg(feature="vfs-guest")]
 #[path="common/recovery_capture.rs"]
 mod recovery_capture;

@@ -561,3 +561,5 @@ fn refuse_implicit_random(_: &mut [u8]) -> core::result::Result<(), getrandom::E
 }
 #[cfg(target_os = "none")]
 getrandom::register_custom_getrandom!(refuse_implicit_random);
+
+pub mod exec_admission;

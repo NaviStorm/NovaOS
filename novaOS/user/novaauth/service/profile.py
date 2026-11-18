@@ -7,7 +7,8 @@ import runpy
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False):
+def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False):
+    vfs = vfs or exec_admission
     vue = vue or vfs
     activation = activation or vue
     triplet = triplet or activation
@@ -59,6 +60,8 @@ def prepare(destination, policies=False, retired_reply=False, shell=False, selec
             apply(destination, "recuperation-vue.patch")
         if vfs:
             apply(destination, "recuperation-vfs.patch")
+        if exec_admission:
+            runpy.run_path(str(destination / "novaOS/user/novaauth/service/exec_admission_profile.py"))["install"](destination)
         if transport:
             apply(destination, "sonde-transport.patch")
         refresh_documentation_links(destination)
@@ -98,6 +101,7 @@ if __name__=="__main__":
     parser.add_argument("destination",type=Path)
     parser.add_argument("--source-ref", help="objet Git immuable de qualification, HEAD par défaut")
     mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--admission-exec",action="store_true",help="barrière privée des tickets, qualification QEMU uniquement")
     mode.add_argument("--recuperation-vfs",action="store_true",help="effecteur dossiers des clients authentifiés, qualification QEMU")
     mode.add_argument("--recuperation-vue",action="store_true",help="vue relue et consultations avec tête fraîche, qualification QEMU")
     mode.add_argument("--recuperation-activation", action="store_true", help="reçu durable et tête fraîche vérifiés, sans qualification VFS")
@@ -117,4 +121,4 @@ if __name__=="__main__":
     args=parser.parse_args()
     prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp or args.bail,
             args.selection_smp, args.bail,
-            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs)
+            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec)

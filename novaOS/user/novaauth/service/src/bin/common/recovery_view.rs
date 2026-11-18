@@ -20,9 +20,23 @@ pub fn serve(mut recovered:Activated)->rt::Result<()> {
     rt::send_for(rt::config(0),20,&[0],5000)?;
     let port=rt::config(14);if port==0 {return Err(rt::DENIED);}
     let mut sequence=0;
+    #[cfg(feature="exec-admission-guest")]
+    let mut admissions=crate::exec_admission_guest::Pump::new();
+    #[cfg(feature="exec-admission-guest")]
+    let mut admission_error=None;
     #[cfg(feature="vfs-guest")]
     let mut pending:Option<crate::recovery_mutation::Pending>=None;
     loop {
+        #[cfg(feature="exec-admission-guest")]
+        {
+            let error=admissions.poll().err();
+            if error!=admission_error {
+                let code=error.unwrap_or(0);let mut message=*b"NAEXEC registre statut=0000000000000000";
+                let start=message.len()-16;
+                for i in 0..16 {message[start+i]=b"0123456789abcdef"[((code>>(60-4*i))&15) as usize];}
+                common::marker(&message);admission_error=error;
+            }
+        }
         match rt::receive_for(rt::config(1),0) {
             Err(rt::WOULD_BLOCK|rt::TIMED_OUT)=>(),
             #[cfg(feature="vfs-guest")]

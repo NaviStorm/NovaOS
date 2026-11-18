@@ -241,6 +241,8 @@ class Recovery:
     def publish(self, state, op, next_head, proof):
         packet = state.mutation(op, next_head)
         with transaction(self.path) as db:
+            from admission_exec import guard_mutation
+            guard_mutation(db,state.server,state.domain,state.instance)
             if self._current(db, state.server, state.domain) != state:
                 raise Refus("route ou tête retirée")
             if self._decided(db, op):
@@ -343,6 +345,8 @@ class Recovery:
             )
             if self.clock() >= deadline:
                 raise Refus("défi expiré")
+            from admission_exec import guard_activation
+            guard_activation(db,c.server,c.domain,c.old,c.new)
             signature = self.key.sign(RECEIPT + packet)
             db.execute(
                 "INSERT INTO audit VALUES(?,?,?,?,?,?)",

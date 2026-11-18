@@ -273,6 +273,8 @@ class RecoveryAuthority:
             if db.execute("SELECT 1 FROM used WHERE server=? AND domain=? AND instance=?",
                           (context.server, context.domain, context.new)).fetchone():
                 raise Refus("incarnation déjà utilisée")
+            from admission_exec import guard_activation
+            guard_activation(db,context.server,context.domain,context.old,context.new)
             # Retrait durable avant toute admission de la nouvelle incarnation.
             db.execute("UPDATE recovery_operations SET state='revoked' WHERE state IN ('approved','prepared') "
                        "AND substr(context,25,16)=? AND substr(context,41,16)=?",
