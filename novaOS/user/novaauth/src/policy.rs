@@ -9,6 +9,9 @@ pub(super) struct Installation {
     id: Id,
     image: Option<Hash>,
     revision: u64,
+    #[cfg(feature="administration-lab")]
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    administration: Option<u8>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Origin {
@@ -85,6 +88,8 @@ impl State {
                     id: new_id,
                     image: Some(image),
                     revision: generation,
+                    #[cfg(feature="administration-lab")]
+                    administration: None,
                 });
             }
             InstallChange::Update(id, image) if image != [0; 32] => {
@@ -93,6 +98,9 @@ impl State {
                     .iter_mut()
                     .find(|i| i.id == id && i.image.is_some())
                     .ok_or(Fault::Denied)?;
+                // Une image différente ne reçoit pas le canal de l'ancienne.
+                #[cfg(feature="administration-lab")]
+                { i.administration = None; }
                 i.image = Some(image);
                 i.revision = generation;
             }
@@ -326,5 +334,35 @@ impl State {
             return Err(Fault::Denied);
         }
         Ok(())
+    }
+}
+
+#[cfg(feature="administration-lab")]
+impl State {
+    pub(super) fn administrative_scope(&self,owner:Id,image:Image)->Result<u8> {
+        self.authorize_installed_image(owner,image.installation,image.digest)?;
+        self.administrative_scope_optional(owner,image)?.ok_or(Fault::Denied)
+    }
+    pub(super) fn administrative_scope_optional(&self,owner:Id,image:Image)->Result<Option<u8>> {
+        self.authorize_installed_image(owner,image.installation,image.digest)?;
+        let value=self.installation(image.installation)?.administration;
+        if let Some(value)=value {crate::administration::Scope::parse(value)?;}
+        Ok(value)
+    }
+}
+#[cfg(feature="administration-lab")]
+impl<D:Device,A:Authority> Registry<'_,D,A> {
+    /// Port privé du provisionneur de qualification seulement. Ce choix est
+    /// décidé avec le triplet, lié aux octets attestés et invalidé par Update.
+    /// Aucun appel de cette méthode n'est exposé dans les commandes R1.
+    pub fn provision_administrative_image(&mut self,expected:Head,request:Id,
+        owner:Id,image:Image,scope:Option<crate::administration::Scope>)->Result<Head> {
+        let (head,mut state)=self.view()?;
+        if head!=expected {return Err(Fault::Conflict);}
+        state.authorize_installed_image(owner,image.installation,image.digest)?;
+        let item=state.users.iter_mut().find(|u|u.id==owner).ok_or(Fault::Denied)?
+            .installations.iter_mut().find(|i|i.id==image.installation).ok_or(Fault::Denied)?;
+        item.administration=scope.map(|s|s.bits());
+        self.publish_state(head,state,request,head.generation.checked_add(1).ok_or(Fault::Limit)?)
     }
 }

@@ -8,6 +8,12 @@ pub struct EpochBinding {
     pub binding: Binding,
     pub epoch: u64,
 }
+impl core::ops::Deref for EpochBinding {
+    type Target = Binding;
+    fn deref(&self) -> &Binding {
+        &self.binding
+    }
+}
 impl EpochBinding {
     fn bound(self) -> Result<Binding, Error> {
         if self.epoch == 0 {

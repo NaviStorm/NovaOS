@@ -378,3 +378,118 @@ fn prepared_concurrent_plans_do_not_grant_publication_or_replace_current_head() 
             .is_err()
     );
 }
+
+#[test]
+fn attested_channel_never_grants_account_privilege_and_update_requires_reauthorization() {
+    use novaos_identity::{
+        administration::{AdministrativeAction as Act, Scope},
+        policy::{Image, InstallChange},
+    };
+    for sector in [512, 4096] {
+        let mut f = Fixture::new(sector);
+        let (admin_image, alice_image) = {
+            let previous = f.authority.current().unwrap();
+            let mut r = Registry::open(&mut f.fs, &mut f.authority, DOMAIN).unwrap();
+            let h = r
+                .provision_install(previous, [10; 16], f.admin, InstallChange::New([10; 32]))
+                .unwrap();
+            let admin = Image {
+                installation: policy::installed(&h),
+                digest: [10; 32],
+            };
+            let h = r
+                .provision_install(h, [11; 16], f.alice, InstallChange::New([11; 32]))
+                .unwrap();
+            let alice = Image {
+                installation: policy::installed(&h),
+                digest: [11; 32],
+            };
+            let h = r
+                .provision_administrative_image(
+                    h,
+                    [12; 16],
+                    f.admin,
+                    admin,
+                    Some(Scope::parse(15).unwrap()),
+                )
+                .unwrap();
+            r.provision_administrative_image(
+                h,
+                [13; 16],
+                f.alice,
+                alice,
+                Some(Scope::parse(15).unwrap()),
+            )
+            .unwrap();
+            (admin, alice)
+        };
+        let state = f.view();
+        let a = state.resolve_verified_factor([1; 16]).unwrap();
+        let b = state.resolve_verified_factor([2; 16]).unwrap();
+        let all = Scope::parse(15).unwrap();
+        assert!(
+            state
+                .authorize_administrative(a, admin_image, all, Act::Users)
+                .is_ok()
+        );
+        assert!(
+            state
+                .authorize_administrative(b, alice_image, all, Act::SelfRead)
+                .is_ok()
+        );
+        assert!(
+            state
+                .authorize_administrative(b, alice_image, all, Act::Users)
+                .is_err()
+        );
+        assert!(
+            state
+                .authorize_administrative(b, admin_image, all, Act::SelfRead)
+                .is_err()
+        );
+        assert!(
+            state
+                .authorize_administrative(a, admin_image, Scope::parse(1).unwrap(), Act::Users)
+                .is_err()
+        );
+        let changed = Image {
+            digest: [12; 32],
+            ..admin_image
+        };
+        assert!(state.administrative_scope(a, changed).is_err());
+        {
+            let previous = f.authority.current().unwrap();
+            let mut r = Registry::open(&mut f.fs, &mut f.authority, DOMAIN).unwrap();
+            r.provision_install(
+                previous,
+                [14; 16],
+                f.admin,
+                InstallChange::Update(admin_image.installation, changed.digest),
+            )
+            .unwrap();
+        }
+        let state = f.view();
+        let a = state.resolve_verified_factor([1; 16]).unwrap();
+        assert!(state.administrative_scope(a, admin_image).is_err());
+        assert!(state.administrative_scope(a, changed).is_err());
+        {
+            let previous = f.authority.current().unwrap();
+            let mut r = Registry::open(&mut f.fs, &mut f.authority, DOMAIN).unwrap();
+            let h = r
+                .provision_administrative_image(previous, [15; 16], f.admin, changed, Some(all))
+                .unwrap();
+            r.provision_administrative_image(h, [16; 16], f.admin, changed, None)
+                .unwrap();
+        }
+        let state = f.view();
+        let a = state.resolve_verified_factor([1; 16]).unwrap();
+        assert!(
+            state
+                .authorize_administrative(a, changed, all, Act::Users)
+                .is_err()
+        );
+        for bits in [0, 16, 255] {
+            assert!(Scope::parse(bits).is_err());
+        }
+    }
+}

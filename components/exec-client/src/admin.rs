@@ -118,3 +118,83 @@ mod tests {
         );
     }
 }
+
+/// Dialogue privé d'une instance. Une panne empoisonne la conversation : la
+/// commande doit retrouver l'issue par identifiant dans une nouvelle invocation,
+/// jamais réémettre automatiquement une confirmation sur une route ambiguë.
+#[cfg(target_os = "none")]
+pub struct Conversation {
+    endpoint: u64,
+    sequence: u64,
+    usable: bool,
+}
+#[cfg(target_os = "none")]
+impl Conversation {
+    pub fn new(launch: &AdministrativeLaunch<'_>) -> Self {
+        Self {
+            endpoint: launch.endpoint,
+            sequence: 0,
+            usable: true,
+        }
+    }
+    pub fn exchange(&mut self, command: &[u8; 128]) -> nova_cli::runtime::Result<[u8; 128]> {
+        use crate::admin_wire::{self, Direction, Inbox};
+        use nova_cli::runtime as rt;
+        const UNCERTAIN: u64 = 22;
+        if !self.usable {
+            return Err(UNCERTAIN);
+        }
+        crate::admin_command::decode(command).map_err(|_| rt::BAD_ARGUMENT)?;
+        self.sequence = self.sequence.checked_add(1).ok_or(rt::LIMIT)?;
+        let id = self.sequence;
+        let result = (|| {
+            for offset in (0..command.len()).step_by(admin_wire::PAYLOAD) {
+                let frame = admin_wire::frame(id, Direction::Request, command, offset)
+                    .map_err(|_| rt::BAD_ARGUMENT)?;
+                rt::send_for(self.endpoint, id, &frame, 5000)?;
+                if offset + admin_wire::PAYLOAD < command.len() {
+                    let ack = rt::receive_for(self.endpoint, 5000)?;
+                    if ack.kind != 1 || ack.tag != id || ack.len != 8 || ack.payload[..8] != [0; 8]
+                    {
+                        return Err(rt::REFUSED);
+                    }
+                }
+            }
+            let mut inbox = Inbox::new();
+            // La réponse métier a toujours 128 octets dans R1 v1.
+            for _ in 0..2 {
+                let reply = rt::receive_for(self.endpoint, 5000)?;
+                if reply.kind != 1
+                    || reply.tag != id
+                    || reply.len != 128
+                    || u64::from_le_bytes(reply.payload[8..16].try_into().unwrap()) != id
+                {
+                    return Err(rt::REFUSED);
+                }
+                if inbox
+                    .accept(&reply.payload, Direction::Response)
+                    .map_err(|_| rt::REFUSED)?
+                {
+                    let (_, body) = inbox.message().map_err(|_| rt::REFUSED)?;
+                    return body.try_into().map_err(|_| rt::REFUSED);
+                }
+            }
+            Err(rt::REFUSED)
+        })();
+        if result.is_err() {
+            self.usable = false;
+            let _ = rt::call(rt::IPC_CLOSE, self.endpoint, 0, 0);
+            self.endpoint = 0;
+            return Err(UNCERTAIN);
+        }
+        result
+    }
+}
+#[cfg(target_os = "none")]
+impl Drop for Conversation {
+    fn drop(&mut self) {
+        if self.endpoint != 0 {
+            let _ = nova_cli::runtime::call(nova_cli::runtime::IPC_CLOSE, self.endpoint, 0, 0);
+        }
+    }
+}

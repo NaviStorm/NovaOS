@@ -281,3 +281,71 @@ impl RegistryView {
         )
     }
 }
+
+/// Portée applicative du canal, distincte du rôle administratif du titulaire.
+/// Le provisionnement ne modifie aucun droit du compte et ne donne aucun
+/// accès fichier. Une opération exige l'intersection des deux autorisations.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Scope(u8);
+impl Scope {
+    pub const SELF: u8 = 1;
+    pub const DIRECTORY: u8 = 2;
+    pub const USERS: u8 = 4;
+    pub const GROUPS: u8 = 8;
+    pub fn parse(bits: u8) -> Result<Self> {
+        if bits == 0 || bits & !15 != 0 {
+            return Err(Fault::BadInput);
+        }
+        Ok(Self(bits))
+    }
+    pub fn bits(self) -> u8 {
+        self.0
+    }
+}
+#[derive(Clone, Copy)]
+pub enum AdministrativeAction {
+    SelfRead,
+    DirectoryRead,
+    Users,
+    Groups,
+}
+impl RegistryView {
+    /// La portée mémorisée par un canal n'est pas un droit pérenne : relire la
+    /// vue fraîche pour chaque requête, y compris les consultations d'issue.
+    pub fn administrative_scope(&self, grant: Grant, image: crate::policy::Image) -> Result<Scope> {
+        self.authentication_epoch(grant)?;
+        Scope::parse(self.state.administrative_scope(grant.owner, image)?)
+    }
+    pub fn administrative_scope_optional(
+        &self,
+        grant: Grant,
+        image: crate::policy::Image,
+    ) -> Result<Option<Scope>> {
+        self.authentication_epoch(grant)?;
+        self.state
+            .administrative_scope_optional(grant.owner, image)?
+            .map(Scope::parse)
+            .transpose()
+    }
+    pub fn authorize_administrative(
+        &self,
+        grant: Grant,
+        image: crate::policy::Image,
+        issued_scope: Scope,
+        action: AdministrativeAction,
+    ) -> Result<()> {
+        let actual = self.administrative_scope(grant, image)?;
+        let bit = match action {
+            AdministrativeAction::SelfRead => Scope::SELF,
+            AdministrativeAction::DirectoryRead => Scope::DIRECTORY,
+            AdministrativeAction::Users => Scope::USERS,
+            AdministrativeAction::Groups => Scope::GROUPS,
+        };
+        if actual.bits() & issued_scope.bits() & bit == 0
+            || (bit != Scope::SELF && !self.admin_reader(grant)?.admin)
+        {
+            return Err(Fault::Denied);
+        }
+        Ok(())
+    }
+}

@@ -79,6 +79,10 @@ fn decode_arguments(body: &[u8]) -> Result<Vec<&str>, Invalid> {
 
 #[cfg(feature = "administration-qemu")]
 pub mod admin;
+#[cfg(feature = "administration-qemu")]
+pub mod admin_wire;
+#[cfg(feature = "administration-qemu")]
+pub mod admin_command;
 
 #[cfg(target_os = "none")]
 mod io;
