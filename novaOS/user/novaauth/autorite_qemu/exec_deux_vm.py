@@ -12,6 +12,7 @@ from rpc_recuperation import Dispatcher
 from recuperation import digest
 from recuperation_qemu import fixture,run,SERVER,DOMAIN
 from reprise import open_database,Refus
+from auth_records import decisions as auth_decisions
 import admission_exec as execs
 
 # Attendre la ligne complète : la réception série peut couper le dernier nombre.
@@ -142,19 +143,21 @@ def main():
                 # refus frontal : observer d'abord la décision native complète.
                 serial.submit('session reauthentifier' if explicit else 'true');serial.expect(rb'nsh> ',30)
                 trace=bytes(serial.data[start:serial.offset])
-                decisions=re.findall(rb'NXBAIL op=NSHOPEN1 tag=(\d+) decision=(\d+) valide=(\d+) echeance=(\d+) retour=(\d+) fin=(\d+)\r?\n',trace)
-                if not decisions:raise Refus('décision native de connexion absente')
-                decision=list(map(int,decisions[-1]))
+                records=auth_decisions(trace)
+                if len(records)!=1:raise Refus('décision native de connexion absente ou multiple')
+                auth=records[0]
+                decision=[auth['tag'],auth['verification'],int(auth['retour']==0),auth['bail'],auth['retour'],auth['fin']]
+                report.setdefault('chronologies_connexion',[]).append(auth)
                 report.setdefault('authentifications',[]).append({'instance':str(out),'essai':attempt+1,'reauthentification_explicite':explicit,'decision':decision})
                 if decision[4]==0 and decision[2]==1:break
-                if b'NXLOGIN refus defi expire' not in trace:raise Refus('authentification refusée sans expiration du défi')
+                if not (auth.get('expire',False) or auth.get('verification',0)>=auth.get('echeance',2**64-1)):raise Refus('authentification refusée sans expiration du défi')
                 report.setdefault('defis_expires',[]).append({'instance':str(out),'decision':decision})
             else:raise Refus('deux défis explicitement demandés ont expiré')
             status,_=serial.command('true')
             if status:raise Refus('commande témoin après authentification refusée')
         def replay(serial,key,out):
             if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',100)
-            if b'NXBAIL op=NSHOPEN1' in serial.data or b'phase=avant_ticket' in serial.data:
+            if b'NXAUTH ' in serial.data or b'NXBAIL op=NSHOPEN1' in serial.data or b'phase=avant_ticket' in serial.data:
                 raise Refus('authentification ou ticket déjà émis avant la sonde')
             start=len(serial.data)
             serial.submit(f'ticket-reference {key}')

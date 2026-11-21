@@ -134,3 +134,13 @@ def install(root):
 
     # Raccord ajouté après les transformations historiques, sans changer leurs préimages.
     edit('novaOS/user/novaauth/service/src/bin/common/recovery_view.rs','            let folder=','            #[cfg(feature="exec-admission-guest")]\n            if &m.payload[..8]==b"NXRESOL1" {\n                let n=m.payload[56] as usize;let part=m.payload[120] as usize;\n                if n==0 || n>63 || part>1 || m.payload[57+n..120].iter().any(|b|*b!=0) || m.payload[121..]!=[0;7] {return Err(rt::BAD_ARGUMENT);}\n                let fresh=crate::tete::query(rt::config(8),&crate::incarnation::identity())?;\n                if fresh[72..80]!=state.head().generation.to_be_bytes() || fresh[80..112]!=state.head().digest || m.payload[24..56]!=state.head().digest {return Err(rt::REVOKED);}\n                let grant=state.resolve_verified_factor(m.payload[8..24].try_into().unwrap()).map_err(|_|rt::DENIED)?;\n                let key=novaos_identity::distribution::public_key(include_bytes!(env!("NOVA_PACKAGE_PUBLIC"))).map_err(|_|rt::DENIED)?;\n                #[cfg(target_arch="aarch64")] let machine=novaos_identity::distribution::Machine::Aarch64;\n                #[cfg(target_arch="x86_64")] let machine=novaos_identity::distribution::Machine::X86_64;\n                let leaf=core::str::from_utf8(&m.payload[57..57+n]).map_err(|_|rt::BAD_ARGUMENT)?;\n                let descriptor=state.executable(grant,&key,machine,leaf).map_err(|_|rt::DENIED)?;\n                answer[8..].copy_from_slice(&descriptor[part*120..(part+1)*120]);return Ok(());\n            }\n            let folder=')
+
+    from auth_trace_profile import install as auth_trace
+    auth_trace(root)
+
+    # Le port du signataire est pollé dans cette boucle, pas par receive_options.
+    # Sans paire VFS secondaire, attendre huit ticks sur une autre route ajoutait
+    # jusqu'à 32 ms à chaque fragment. Même cadence bornée que la paire existante.
+    edit('novaOS/user/novafs/files.rs',
+        'let timeout = if tmp_busy { 0 } else if pair { 1 } else if rt::config(14) != 0 || rt::config(16) != 0 { 8 } else { 15000 };',
+        'let timeout = if tmp_busy { 0 } else if pair || exec_files_lab::config(465) != 0 { 1 } else if rt::config(14) != 0 || rt::config(16) != 0 { 8 } else { 15000 };')
