@@ -306,6 +306,10 @@ def main():
                     # Accord MOA : trois lancements et plateau après échauffement.
                     report['statuts_B_chauds']=[]
                     for number in (2,3):
+                        # Chaque mesure indépendante commence par une demande de
+                        # nouvelle session, avant le lancement. Ne jamais rejouer
+                        # cut si sa sortie ou son reçu est devenu indéterminé.
+                        ready(t,out=o,explicit=True)
                         code,output=t.command('cut --version')
                         (o/f'cut-version-chaud-{number}.bin').write_bytes(output)
                         if code!=0 or len(rows())!=expected+number-1 or rows()[-1][1]!=1:
