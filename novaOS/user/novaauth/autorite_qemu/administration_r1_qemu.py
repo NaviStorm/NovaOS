@@ -88,4 +88,4 @@ def main():
             return run(case,env,scenario=scenario)
         finally:
             (root/'r1-resultats.json').write_text(json.dumps(report,indent=2)+'\n')
-if __name__=='__main__':main()
+if __name__=='__main__':raise SystemExit(main())

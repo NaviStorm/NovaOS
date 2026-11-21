@@ -67,6 +67,18 @@ def install(root):
          '    lease_end: u64,\n    administrative:Option<administration::Permit>,\n) -> Res<u64> {')
     edit(path, '        deadline,\n    });', '        deadline,\n        administrative,\n    });')
     edit(path, '        v.head,\n    )', '        v.head,\n        v.administrative,\n    )')
+    # Le reçu de création du producteur précède son acquittement durable.
+    # WOULD_BLOCK à IPC_CLOSE ne signifie pas un échec d'admission du lecteur.
+    # Attendre le drainage existant, sans répéter SPAWN ni affaiblir la barrière.
+    edit('components/shell/session_auth_lab.rs',
+         '            rt::value(rt::call(rt::IPC_CLOSE, key, 0, 0))?;\n            ticket = None;',
+         '            exec_threads::close_ticket(key)?;\n            ticket = None;')
+    edit('components/shell/session_auth_lab.rs',
+         '        if let Some(key) = ticket {\n            let _ = rt::call(rt::IPC_CLOSE, key, 0, 0);\n        }',
+         '        let settled = ticket.map(exec_threads::close_ticket).transpose();')
+    edit('components/shell/session_auth_lab.rs',
+         '        let (producer, consumer) = result?;\n        closed?;',
+         '        settled?;\n        let (producer, consumer) = result?;\n        closed?;')
     edit('novaOS/kernel/build.rs', '"--features","exec-admission-guest","--bins"',
          '"--features","administration-guest","--bins"')
     # La route du registre reste celle du vérificateur, sans canal vers NovaFS
