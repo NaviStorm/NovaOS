@@ -184,3 +184,15 @@ impl Channels {
         }
     }
 }
+
+/// Diagnostic borné, une ligne sur la seule tentative explicite de reconnexion.
+/// Étapes 1=fermeture relais, 2=transport abandon paquet, 3=réponse abandon,
+/// 10=clé publique du facteur, 11=lecture de la liaison actuelle. Aucun secret.
+pub(super) fn trace(stage:u64, code:u64) {
+    let mut out=*b"NXADMIN ouverture etape=0000000000000000 statut=0000000000000000";
+    let hex=b"0123456789abcdef";
+    for (start,value) in [(23,stage),(47,code)] {
+        for i in 0..16 {out[start+i]=hex[((value>>((15-i)*4))&15) as usize];}
+    }
+    let _=rt::call(rt::DEBUG_WRITE,out.as_ptr() as u64,out.len() as u64,0);
+}

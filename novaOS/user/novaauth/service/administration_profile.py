@@ -99,6 +99,19 @@ def install(root):
     path = 'novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs'
     edit(path, 'use novaos_auth_session::sessions::Sessions;',
          'use novaos_auth_session::epoch_sessions::{EpochSessions as Sessions,EpochVerifier as Verifier,EpochBinding as Binding};\n#[path="administration_channel.rs"]\nmod administrative;')
+    edit(path, 'struct Login {', 'struct Login {\n    admin_close_step:u64,')
+    edit(path, '            auth_trace:AuthTrace::default(),', '            auth_trace:AuthTrace::default(),\n            admin_close_step:0,')
+    edit(path, '        self.maintain()?;\n        if self.live.is_some()',
+         '        self.maintain().map_err(|e| {administrative::trace(self.admin_close_step,e);e})?;\n        if self.live.is_some()')
+    edit(path, '        let r = self.signer(b"NSHPUB01", [0; 32])?;',
+         '        let r = self.signer(b"NSHPUB01", [0; 32]).map_err(|e| {administrative::trace(10,e);e})?;')
+    edit(path, '        let selected = self.current(reference)?;',
+         '        let selected = self.current(reference).map_err(|e| {administrative::trace(11,e);e})?;')
+    edit(path, '        if self.relay_bound {\n            match self.relay_control',
+         '        self.admin_close_step=1;\n        if self.relay_bound {\n            match self.relay_control')
+    edit(path, '        let result = rpc(rt::config(5), rt::config(6), self.store_seq, &drop)?;',
+         '        self.admin_close_step=2;\n        let result = rpc(rt::config(5), rt::config(6), self.store_seq, &drop)?;\n        self.admin_close_step=3;')
+    edit(path, '        self.last_closed = Some(id);', '        self.last_closed = Some(id);\n        self.admin_close_step=4;')
     edit(path, '        binding(self.store_seq, reference)', '        administrative::binding(self.store_seq, reference)')
     edit(path, '    let mut login = Login::from_launcher();',
          '    let mut login = Login::from_launcher();\n    let mut administrative=administrative::Channels::new();')
