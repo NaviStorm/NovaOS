@@ -138,3 +138,8 @@ Les **235 artefacts privés** (dont ISO/ELF exacts et secrets fictifs de qualifi
 Le [reçu de vérification](validation/novaauth-auth-ciblee-archives.json) détaille les deux archives. Les **1 774 preuves antérieures** et leur archive ont été relues avec empreintes concordantes (`acquis-verifies.json`). Les 1 800 preuves initiales et les branches parallèles restent préservées.
 
 Les pilotes archivés `auth-ciblee-run.py` et `auth-rejeu-deux-vm.py` enregistrent leurs arguments exacts dans les fichiers `*-commande.json`. `build-auth-final.sh` reconstruit les deux architectures dans un export privé ; `artefacts-final.json` associe les six ISO/ELF finaux à leurs SHA-256. Les clés de laboratoire ne sont pas distribuées avec les sources. `auth-etape-C.py` borne les huit rejeux et s'arrête au premier échec ; `auth-bilan.py` et `auth-archive.py` reconstruisent les synthèses et vérifications dans un nouveau répertoire distinct. Le script d'archive refuse d'écraser une archive existante.
+
+
+## Actualisation du 21 novembre 2026
+
+La [qualification globale du candidat aa489ca](novaauth-qualification-globale-v0.24.0.md) complète les 24 scénarios alors manquants. Le verdict bloqué ci-dessus décrit la clôture du mandat ciblé ; le nouveau rapport donne le verdict consolidé et conserve les réserves. Aucune fusion ni clôture de version n’en découle.
