@@ -30,5 +30,19 @@
   "reserves": [
     "301 cadres AArch64 instrumentés",
     "reproductibilité entre environnements"
-  ]
+  ],
+  "additional_components": {
+    "authority_epochs": {
+      "host_tests": 56,
+      "failures": 0,
+      "guest_connected": false,
+      "scope": "ordre durable, drainage par sujet, coexistence des contrats historiques"
+    },
+    "NXADMIN1": {
+      "host_tests": 5,
+      "failures": 0,
+      "kernel_connected": false,
+      "scope": "décodeur expérimental distinct, bornes, droits fichiers absents, arguments exacts"
+    }
+  }
 }

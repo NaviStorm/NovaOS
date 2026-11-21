@@ -42,23 +42,7 @@ impl<'a> Launch<'a> {
             return Err(Invalid::Format);
         }
         let body = page.get(HEADER..HEADER + len).ok_or(Invalid::Format)?;
-        let (&argc, mut rest) = body.split_first().ok_or(Invalid::Format)?;
-        if usize::from(argc) > ARG_COUNT {
-            return Err(Invalid::Limit);
-        }
-        let mut argv = Vec::new();
-        argv.try_reserve_exact(usize::from(argc))
-            .map_err(|_| Invalid::Memory)?;
-        for _ in 0..argc {
-            let (size, more) = rest.split_at_checked(2).ok_or(Invalid::Format)?;
-            let n = usize::from(u16::from_le_bytes(size.try_into().unwrap()));
-            let (arg, more) = more.split_at_checked(n).ok_or(Invalid::Format)?;
-            argv.push(core::str::from_utf8(arg).map_err(|_| Invalid::Format)?);
-            rest = more;
-        }
-        if !rest.is_empty() {
-            return Err(Invalid::Format);
-        }
+        let argv = decode_arguments(body)?;
         Ok(Self {
             argv,
             utf8: flags & 1 != 0,
@@ -71,6 +55,31 @@ impl<'a> Launch<'a> {
         })
     }
 }
+
+fn decode_arguments(body: &[u8]) -> Result<Vec<&str>, Invalid> {
+    let (&argc, mut rest) = body.split_first().ok_or(Invalid::Format)?;
+    if usize::from(argc) > ARG_COUNT {
+        return Err(Invalid::Limit);
+    }
+    let mut argv = Vec::new();
+    argv.try_reserve_exact(usize::from(argc))
+        .map_err(|_| Invalid::Memory)?;
+    for _ in 0..argc {
+        let (size, more) = rest.split_at_checked(2).ok_or(Invalid::Format)?;
+        let n = usize::from(u16::from_le_bytes(size.try_into().unwrap()));
+        let (arg, more) = more.split_at_checked(n).ok_or(Invalid::Format)?;
+        argv.push(core::str::from_utf8(arg).map_err(|_| Invalid::Format)?);
+        rest = more;
+    }
+    if !rest.is_empty() {
+        return Err(Invalid::Format);
+    }
+    Ok(argv)
+}
+
+#[cfg(feature = "administration-qemu")]
+pub mod admin;
+
 #[cfg(target_os = "none")]
 mod io;
 

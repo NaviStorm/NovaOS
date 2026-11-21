@@ -252,12 +252,26 @@ class Recovery:
                 (state.server, state.domain),
             ).fetchone()
             Ed25519PublicKey.from_public_bytes(raw).verify(proof, packet)
-            signature = self.key.sign(HEAD_RECEIPT + packet)
-            db.execute("INSERT INTO mutations VALUES(?,?,?)", (op, packet, signature))
-            db.execute(
-                "UPDATE scope SET generation=?,head=? WHERE server=? AND domain=?",
-                (state.generation + 1, next_head, state.server, state.domain),
-            )
+            from administration_epochs import guard_legacy_publication
+            guard_legacy_publication(db, state.server, state.domain)
+            signature = self._commit_head(db, state, op, next_head)
+        return signature
+
+    def _commit_head(self, db, state, op, next_head):
+        """Private shared writer; the caller verifies its complete signed variant.
+
+        Requires the caller's existing transaction. No second database writer or
+        nested COMMIT: administrative metadata and the head become durable together.
+        """
+        from admission_exec import guard_mutation
+        guard_mutation(db, state.server, state.domain, state.instance)
+        if self._current(db, state.server, state.domain) != state or self._decided(db, op):
+            raise Refus("route, tête ou requête déjà décidée")
+        packet = state.mutation(op, next_head)
+        signature = self.key.sign(HEAD_RECEIPT + packet)
+        db.execute("INSERT INTO mutations VALUES(?,?,?)", (op, packet, signature))
+        db.execute("UPDATE scope SET generation=?,head=? WHERE server=? AND domain=?",
+                   (state.generation + 1, next_head, state.server, state.domain))
         return signature
 
     def mutation_outcome(self, op, fresh):

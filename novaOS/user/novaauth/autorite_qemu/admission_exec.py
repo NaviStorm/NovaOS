@@ -155,6 +155,8 @@ class Admissions:
             if scope[3:] != (request.generation,request.head):
                 raise Refus("génération ou empreinte obsolète")
             guard_mutation(db,request.server,request.domain,request.incarnation)
+            from administration_epochs import guard_admission
+            guard_admission(db, request)
             if db.execute("SELECT 1 FROM exec_admissions WHERE op=? OR "
                 "(server=? AND domain=? AND incarnation=? AND owner=? AND ticket=?)",
                 (request.op,request.server,request.domain,request.incarnation,request.owner,request.ticket)).fetchone():
@@ -168,6 +170,8 @@ class Admissions:
             seq = event(db,"admission",packet)
             db.execute("INSERT INTO exec_admissions VALUES(?,?,?,?,?,?,?,?,0,NULL,NULL)",
                 (request.op,request.server,request.domain,request.incarnation,request.owner,request.ticket,packet,seq))
+            from administration_epochs import link_admission
+            link_admission(db, request)
         # Receipt only leaves the authority after COMMIT has completed.
         return self._receipt(seq, packet)
 
@@ -188,6 +192,8 @@ class Admissions:
                 reservation=event(db,"cancel-before-admission",request.packet())
                 db.execute("INSERT INTO exec_admissions VALUES(?,?,?,?,?,?,?,?,0,NULL,NULL)",
                     (request.op,request.server,request.domain,request.incarnation,request.owner,request.ticket,request.packet(),reservation))
+                from administration_epochs import link_admission
+                link_admission(db, request)
                 row=(request.packet(),PENDING,None,None)
             if row is None or row[0] != request.packet():
                 raise Refus("admission inconnue ou substituée")
