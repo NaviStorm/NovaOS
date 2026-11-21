@@ -6,6 +6,7 @@ license = "MIT"
 publish = false
 
 [features]
+administration-lab = ["recuperation-lab"]
 recuperation-lab = ["distribution-lab"]
 politiques-lab = []
 distribution-lab = ["politiques-lab", "dep:ed25519-dalek"]

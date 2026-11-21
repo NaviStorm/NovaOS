@@ -8,6 +8,8 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 pub mod lab;
+#[cfg(feature = "administration-lab")]
+pub mod administration;
 #[cfg(feature = "recuperation-lab")]
 pub mod recuperation;
 #[cfg(feature = "recuperation-lab")]
@@ -130,6 +132,9 @@ pub struct User {
     pub status: Status,
     pub revision: u64,
     pub admin: bool,
+    #[cfg(feature = "administration-lab")]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    authentication: Option<administration::Authentication>,
     #[cfg(feature = "politiques-lab")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     installations: Vec<policy::Installation>,
@@ -285,6 +290,15 @@ impl State {
                 if u.admin {
                     return Err(Fault::Denied);
                 }
+                #[cfg(feature = "administration-lab")]
+                if matches!(c, Change::Disable(_)) {
+                    if u.status != Status::Active { return Err(Fault::Conflict); }
+                    let auth = u.authentication.as_mut().ok_or(Fault::Denied)?;
+                    if auth.epoch == 0 || auth.retirement.is_some() { return Err(Fault::Denied); }
+                    auth.retirement = Some(administration::Retirement {
+                        epoch: auth.epoch, request, generation: new, previous: h.digest,
+                    });
+                }
                 u.revision = new;
                 u.status = if matches!(c, Change::Disable(_)) {
                     Status::Disabled
@@ -366,6 +380,8 @@ impl State {
                 status: Status::Active,
                 revision: new,
                 admin,
+                #[cfg(feature = "administration-lab")]
+                authentication: Some(administration::Authentication { epoch: new, retirement: None }),
                 #[cfg(feature = "politiques-lab")]
                 installations: Vec::new(),
                 #[cfg(feature = "distribution-lab")]

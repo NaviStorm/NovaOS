@@ -7,6 +7,8 @@ use sha2::{Digest, Sha256};
 
 pub mod admission;
 pub mod sessions;
+#[cfg(feature = "administration-lab")]
+pub mod epoch_sessions;
 
 pub type Id = [u8; 16];
 pub type Digest32 = [u8; 32];

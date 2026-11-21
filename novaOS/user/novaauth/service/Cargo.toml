@@ -8,6 +8,8 @@ publish = false
 [workspace]
 
 [features]
+administration-lab = []
+administration-guest = ["exec-admission-guest", "administration-lab", "novaos-identity/administration-lab"]
 guest = []
 incarnation-guest = ["shell-guest"]
 tete-guest = ["horloge-guest"]

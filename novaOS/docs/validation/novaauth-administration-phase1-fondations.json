@@ -1,0 +1,34 @@
+{
+  "base": "5c7f1bfa313a3859ccc0830660438e76d598acb1",
+  "scope": "Fondations privées R2, non raccordées aux invités ; R1 et R2 autorisés explicitement le 21 novembre 2026.",
+  "host": "Darwin ARM64, Cargo offline locked",
+  "tests": {
+    "identite-regressions-tests.log": {
+      "passed": 16,
+      "failed": 0,
+      "ignored": 1,
+      "sha256": "5a9da794f672d104b4b0ffc67afa655a2f7b066738963ce1f280824f56e6fd65"
+    },
+    "sessions-regressions-tests.log": {
+      "passed": 15,
+      "failed": 0,
+      "ignored": 0,
+      "sha256": "203a79efc46baf66ad92a99731d915aa94571a87e9345168ac6b30616b956fc3"
+    }
+  },
+  "qemu": {
+    "aarch64/P9-512": "non exécuté, raccord incomplet",
+    "aarch64/P9-4096": "non exécuté, raccord incomplet",
+    "x86_64/P9-512": "non exécuté, raccord incomplet",
+    "x86_64/P9-4096": "non exécuté, raccord incomplet"
+  },
+  "not_implemented": [
+    "route NXADMIN1 et commandes",
+    "clôture durable auprès de l’autorité et notification des effecteurs",
+    "recette complète de désactivation/réactivation en invité"
+  ],
+  "reserves": [
+    "301 cadres AArch64 instrumentés",
+    "reproductibilité entre environnements"
+  ]
+}
