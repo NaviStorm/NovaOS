@@ -6,7 +6,7 @@ from contextlib import ExitStack,closing
 from pathlib import Path
 import argparse,copy,json,os,re,shutil,time,threading
 from exec_vm_debug import Debug,qmp,symbol
-from exec_resources import verify as verify_resources
+from exec_resources import verify as verify_resources, retired_family
 from horloge_pause_qemu import Clock
 from rpc_recuperation import Dispatcher
 from recuperation import digest
@@ -401,8 +401,11 @@ def main():
         def restarted(t,c,d,o):
             report['rejeu_A_redemarree']=replay(t,report['reference_A'],o)
             t.expect(rb'NARV registre quarantaine generation non activable|NAR2 registre termine statut=([0-9a-f]{16})',100)
-            closed=rb'NAUTH mesure NAUTH TLS apres roots=\d+ handles=\d+ waits=\d+ pages=\d+ pile=\d+ cadres_ipc_globaux=\d+\r?\n'
-            if not re.search(closed,t.data):t.expect(closed,15)
+            # Le refus fait quitter le superviseur du profil EXEC ; ses services
+            # sont retirés par le noyau. Exiger leurs restitutions natives,
+            # pas un message TLS d'un signataire qui ne peut plus s'exécuter.
+            t.expect(rb'NAEXEC restitue pid=\d+ roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=0 cadres_ipc=\d+ cadres_libres=Ok\(\d+\)\r?\n',15)
+            report['drainage_A_redemarree']=retired_family(bytes(t.data))
             if route(api)!=active or rows()!=prior or b'NAEXEC enfant' in t.data:
                 raise Refus('réactivation ou admission après redémarrage interdit')
             return {'succes':True,'rejeu':report['rejeu_A_redemarree'],'aucune_admission':True,

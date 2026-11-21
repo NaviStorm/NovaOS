@@ -12,7 +12,7 @@ Après perte du reçu d'admission, exiger l'issue terminale native puis le reçu
 
 Après refus explicite d'un défi expiré, autoriser une seule nouvelle commande d'authentification dans la même instance. Aucun renouvellement implicite de session, aucun réemploi du défi ni augmentation des délais TLS (10 s) ou de défi (1,5 s).
 
-Le refus après redémarrage attend aussi la fin du premier dialogue TLS avant arrêt de la VM. Les mesures QEMU du noyau relèvent le shell, le registre et le signataire avant, pendant et après l'opération. Elles n'attribuent aucun droit nouveau.
+Le refus après redémarrage doit aussi démontrer la restitution des services avant arrêt de la VM. Les mesures QEMU du noyau relèvent le shell, le registre et le signataire avant, pendant et après l'opération. Elles n'attribuent aucun droit nouveau.
 
 ## Référence de ressources
 
@@ -31,3 +31,11 @@ Sur le diagnostic x86_64/P9-4096, les allocations vivantes supplémentaires corr
 ## Corrections des traces VFS
 
 Le parcours enrichi émettait dix-sept messages DEBUG depuis le lanceur, pour une limite inchangée de seize : le marqueur de fin était refusé. Le dernier statut et le marqueur de fin sont maintenant regroupés dans un même message inférieur à 256 octets. Le parseur confondait aussi le préfixe « lecture L » avec « lecture L avant P » ; il exige désormais que l'intitulé soit immédiatement suivi de son résultat hexadécimal. Les assertions de lecture, refus et ordre L/P/L restent intégrales.
+
+## Drainage après refus de reprise du profil EXEC
+
+La trace instrumentée du 21 novembre montre END acquitté, le retour de l’opération TLS et l’entrée dans Wire::drop, puis le retrait du superviseur. Contrairement au lanceur VFS, exec_admission_launcher renvoie REFUSED au refus du registre ; service_manager termine et service::retired retire les services de sa famille avec Exit(125). Attendre un marqueur utilisateur du signataire retiré était une erreur de protocole du banc. Une observation diagnostique de 45 secondes ne la résout pas ; NOVA_TICKS continue d’avancer (4 529 puis 5 779 sur cinq secondes), les deux CPU sont dans sched::idle.
+
+Le contrôle corrigé conserve le refus de l’ancienne référence et l’absence d’admission. Il exige en complément les traces noyau du retrait contraint et de la restitution après libération de chaque espace/pile : racines, handles, attentes, pages et threads à zéro pour chaque service retiré, puis aucun endpoint, nœud ni espace utilisateur global. Ces sondes sont ajoutées uniquement par l’export QEMU. Le profil VFS conserve son contrôle distinct de fermeture TLS normale. Les résultats précédents restent des échecs, avec leurs traces ; la réussite du nouveau contrôle reste à qualifier.
+
+L’examen a également trouvé une incohérence indépendante : canal::guard fournit des millisecondes, transmises sans conversion à des attentes IPC en ticks de 4 ms. Elle ne démontre pas la cause des huit échecs initiaux ni celle de ce retrait contraint. Cette anomalie reste à corriger et qualifier séparément, sans augmenter le délai TLS.

@@ -69,3 +69,20 @@ def memory_cycles(raw,count):
             'octets_residents_non_demandes':(end_grow-end_returned)*4096-end_live,
             'limite':'Les octets non demandés incluent espace libre et métadonnées dlmalloc ; ce compteur seul ne prouve pas leur libération physique.'})
     return result
+
+
+def retired_family(raw):
+    family=[dict(zip(('manager','pid','service'),map(int,row))) for row in re.findall(
+        rb'NAEXEC retrait_famille manager=(\d+) pid=(\d+) service=(\d+) statut=125\r?\n',raw)]
+    fields=('pid','roots','handles','waits','pages','pile','threads','endpoints','nodes','espaces','cadres_ipc','cadres_libres')
+    values=[dict(zip(fields,map(int,row))) for row in re.findall(
+        rb'NAEXEC restitue pid=(\d+) roots=(\d+) handles=(\d+) waits=(\d+) pages=(\d+) pile=(\d+) threads=(\d+) endpoints=(\d+) nodes=(\d+) espaces=(\d+) cadres_ipc=(\d+) cadres_libres=Ok\((\d+)\)\r?\n',raw)]
+    if not family or not {22,23}.issubset({p['service'] for p in family}):
+        raise Refus('retrait natif du registre et du signataire non démontré')
+    for p in family:
+        matches=[v for v in values if v['pid']==p['pid']]
+        if len(matches)!=1 or any(matches[0][k] for k in ('roots','handles','waits','pages','pile','threads')):
+            raise Refus('restitution de la famille incomplète')
+    if not values or any(values[-1][k] for k in ('endpoints','nodes','espaces')):
+        raise Refus('ressources globales conservées après retrait de la famille')
+    return {'retrait_contraint':True,'famille':family,'restitutions':values,'drainage_verifie':True}

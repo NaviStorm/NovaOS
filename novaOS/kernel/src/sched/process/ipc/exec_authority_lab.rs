@@ -193,3 +193,16 @@ pub(in crate::sched::process::ipc) fn resources(s:&Core,owner:Pid,label:&str) {
     }
 
 }
+
+// Appel après restitution de la pile noyau et de l'espace utilisateur. Ce
+// module n'est raccordé que dans l'export de qualification exec-admission.
+pub(in crate::sched::process) fn retired_resources(s:&Core,pid:Pid) {
+    let (roots,handles,waits,ipc)=s.ipc.tls_snapshot(pid);
+    let (pages,stack)=s.processes.slots[pid.slot].as_ref().filter(|p|p.pid==pid)
+        .and_then(|p|p.space.as_ref()).map(|v|v.page_counts()).unwrap_or((0,0));
+    let threads=s.slots.iter().flatten().filter(|t|t.owner==Some(pid)).count();
+    let (endpoints,nodes,_,_)=s.ipc.budget_usage(pid);
+    let spaces=s.processes.slots.iter().flatten().filter(|p|p.space.is_some()).count();
+    let free=heap::with_pages(|m|Ok(m.free_pages()));
+    hal::log(format_args!("NAEXEC restitue pid={} roots={roots} handles={handles} waits={waits} pages={pages} pile={stack} threads={threads} endpoints={endpoints} nodes={nodes} espaces={spaces} cadres_ipc={ipc} cadres_libres={free:?}",pid.number));
+}

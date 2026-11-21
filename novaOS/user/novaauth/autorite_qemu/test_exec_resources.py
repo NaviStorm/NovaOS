@@ -1,5 +1,5 @@
 import unittest
-from exec_resources import verify, memory_cycles
+from exec_resources import verify, memory_cycles, retired_family
 from reprise import Refus
 
 def sample(phase,ipc=58,free=1000):
@@ -47,4 +47,11 @@ class Resources(unittest.TestCase):
         raw=sample('avant_ticket')+sample('consommation')+sample('fermeture')
         for old,new in [(b'phase=fermeture owner=5 pid=7 service=22 roots=4 handles=7',b'phase=fermeture owner=5 pid=7 service=22 roots=4 handles=8'),(b'phase=fermeture owner=5 pid=8 service=23 roots=4 handles=6 waits=0 pages=66',b'phase=fermeture owner=5 pid=8 service=23 roots=4 handles=6 waits=0 pages=67')]:
             with self.assertRaises(Refus):verify(raw.replace(old,new))
+    def test_forced_family_retirement_requires_real_kernel_restitution(self):
+        raw=b'NAEXEC retrait_famille manager=2 pid=7 service=22 statut=125\nNAEXEC retrait_famille manager=2 pid=8 service=23 statut=125\n'
+        for pid in (7,8):
+            raw+=f'NAEXEC restitue pid={pid} roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=0 cadres_ipc=0 cadres_libres=Ok(1000)\n'.encode()
+        self.assertTrue(retired_family(raw)['drainage_verifie'])
+        for wrong in (raw.replace(b'handles=0',b'handles=1'),raw.replace(b'pid=8 roots=',b'pid=9 roots='),raw.replace(b'espaces=0',b'espaces=1'),raw.replace(b'statut=125',b'statut=0')):
+            with self.assertRaises(Refus):retired_family(wrong)
 if __name__=='__main__':unittest.main()

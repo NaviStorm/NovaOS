@@ -70,6 +70,15 @@ def install(root):
 
     edit('novaOS/kernel/src/sched/process/ipc/traffic.rs','        s.ipc.close(root);\n        return Ok(0);','        s.ipc.close(root);\n        exec::resource_trace(s,owner,"fermeture");\n        return Ok(0);')
 
+    # Mesures seulement : le refus de reprise termine le superviseur et sa
+    # famille avant que les destructeurs utilisateur puissent tous acquitter.
+    edit(base+'exec.rs','pub(super) use authority::resources as resource_trace;',
+        'pub(super) use authority::resources as resource_trace;\npub(in crate::sched::process) use authority::retired_resources;')
+    edit(base+'service.rs','            stop_process(s, target, Outcome::Exit(125), now);',
+        '            hal::log(format_args!("NAEXEC retrait_famille manager={} pid={} service={} statut=125",pid.number,target.number,child.service_id));\n            stop_process(s, target, Outcome::Exit(125), now);')
+    edit('novaOS/kernel/src/sched/process.rs','        release_instance(instance);',
+        '        release_instance(instance);\n        with(|s| ipc::exec::retired_resources(s,pid));')
+
     # Admission de trois opérations seulement pour le client nsh désigné par
     # le superviseur. Les tables de jonction restent privées au PID.
     edit('novaOS/kernel/src/sched/process/threads.rs',
