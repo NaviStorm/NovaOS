@@ -25,9 +25,10 @@ pub(super) fn binding(tag: u64, reference: [u8; 16]) -> rt::Result<EpochBinding>
     let mut q = [0; 128];
     q[..8].copy_from_slice(b"NA3CHECK");
     q[8..24].copy_from_slice(&reference);
-    let p = port()?;
-    let a = rpc(p, p, tag, &q)?;
+    let p = port().map_err(|e| {trace(20,e);e})?;
+    let a = rpc(p, p, tag, &q).map_err(|e| {trace(21,e);e})?;
     if number(&a) != rt::OK || number(&a[64..]) == 0 {
+        trace(if number(&a)!=0 {22}else{23},number(&a));
         return Err(rt::DENIED);
     }
     Ok(EpochBinding {
@@ -191,7 +192,7 @@ impl Channels {
 pub(super) fn trace(stage:u64, code:u64) {
     let mut out=*b"NXADMIN ouverture etape=0000000000000000 statut=0000000000000000";
     let hex=b"0123456789abcdef";
-    for (start,value) in [(23,stage),(47,code)] {
+    for (start,value) in [(24,stage),(48,code)] {
         for i in 0..16 {out[start+i]=hex[((value>>((15-i)*4))&15) as usize];}
     }
     let _=rt::call(rt::DEBUG_WRITE,out.as_ptr() as u64,out.len() as u64,0);
