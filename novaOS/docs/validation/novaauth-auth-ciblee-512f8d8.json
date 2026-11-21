@@ -1,0 +1,4688 @@
+{
+  "base": "9b7c7a9b1e98c0947e9e5a3d714d35819edb9b4c",
+  "candidat_code": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+  "connexions": [
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/x86_64-4096-cible/invite/resultat.json",
+      "sha256": "b3ee8d95d905235ca7ee42ed1b6192e853968059f56cc3cf0d522931841ccf9f",
+      "chronologies": {
+        "succes": true,
+        "tentatives": [
+          {
+            "defi": "13b194ff23ff3ad918f540ed61132cfd84c0ee25ffac7185c3b27615c4ce686f",
+            "tag": 1,
+            "emission": 5036,
+            "echeance": 6536,
+            "signature": 5040,
+            "verification": 7404,
+            "retour": 5,
+            "bail": 0,
+            "fin": 7404
+          },
+          {
+            "defi": "7a98193bdf733fdb8fb70a921e161f26e7e61b8907c4e9d82138f5095345b3d5",
+            "tag": 2,
+            "emission": 8168,
+            "echeance": 9668,
+            "signature": 8168,
+            "verification": 8920,
+            "retour": 0,
+            "bail": 69672,
+            "fin": 10416
+          },
+          {
+            "defi": "30771c2fce04182801f284dc1a1d44f266e755cc624a289c6afc896e3e3727cc",
+            "tag": 7,
+            "emission": 13536,
+            "echeance": 15036,
+            "signature": 13536,
+            "verification": 14292,
+            "retour": 0,
+            "bail": 75060,
+            "fin": 15832
+          },
+          {
+            "defi": "685906273d213fae195914d8c30e77baa1cde93e36a42ba546254f3d13444a22",
+            "tag": 12,
+            "emission": 19136,
+            "echeance": 20636,
+            "signature": 19136,
+            "verification": 19912,
+            "retour": 0,
+            "bail": 80696,
+            "fin": 21440
+          },
+          {
+            "defi": "efbd0db7f81af63920340b05c8dcdc6b62131bc1157c13a693ac998180de6f1b",
+            "tag": 17,
+            "emission": 24428,
+            "echeance": 25928,
+            "signature": 24428,
+            "verification": 25200,
+            "retour": 0,
+            "bail": 85948,
+            "fin": 26704
+          },
+          {
+            "defi": "4f8cdb1f115a282f54ce2f027f20ca8ca559f9a95c65170e657d8e987287d265",
+            "tag": 22,
+            "emission": 29684,
+            "echeance": 31184,
+            "signature": 29684,
+            "verification": 30440,
+            "retour": 0,
+            "bail": 91200,
+            "fin": 31980
+          },
+          {
+            "defi": "4d4f01211e65f317a48aa5997fe705fea9f033738ac4775d16538addfd41fd32",
+            "tag": 27,
+            "emission": 35128,
+            "echeance": 36628,
+            "signature": 35128,
+            "verification": 35956,
+            "retour": 0,
+            "bail": 96860,
+            "fin": 37724
+          },
+          {
+            "defi": "2ec62a48b0182b9998f9d0de8cf15383b0fa504bad771c96de896669c7e09893",
+            "tag": 32,
+            "emission": 40852,
+            "echeance": 42352,
+            "signature": 40856,
+            "verification": 41604,
+            "retour": 0,
+            "bail": 102384,
+            "fin": 43160
+          },
+          {
+            "defi": "f42203cf48cb6da89795d16003b5e34b9e2314f1df5714a2a78839ffa0afe376",
+            "tag": 37,
+            "emission": 46196,
+            "echeance": 47696,
+            "signature": 46196,
+            "verification": 46924,
+            "retour": 0,
+            "bail": 107664,
+            "fin": 48420
+          },
+          {
+            "defi": "720e8718fcd1c10ec1545bcebdbb084c58686c0a3d32b9af4186e15bd945cfcb",
+            "tag": 42,
+            "emission": 51436,
+            "echeance": 52936,
+            "signature": 51436,
+            "verification": 52176,
+            "retour": 0,
+            "bail": 112936,
+            "fin": 53708
+          }
+        ],
+        "aucun_lancement_demande": true,
+        "injection": {
+          "tentative": 9,
+          "consultations": 2,
+          "injectee": true,
+          "debut_ns": 279343825207458,
+          "fin_ns": 279345430228250
+        },
+        "refus_suivis_de_succes": true
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ]
+      },
+      "pics_racines": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      },
+      "drainage": [
+        true,
+        true
+      ],
+      "limite": "aucun lancement ELF demandé ; collecte ciblée, pas campagne mémoire"
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/aarch64-4096-cible/invite/resultat.json",
+      "sha256": "dda3e4d89eaead8e5dd88e6a85ef10e4b05d87562a85348ccbb978eed0301899",
+      "chronologies": {
+        "succes": true,
+        "tentatives": [
+          {
+            "defi": "394b3ea5ead99ec54adcce890d9f53a3b62cb0a47b76efe3e580318ef4783cd3",
+            "tag": 1,
+            "emission": 4628,
+            "echeance": 6128,
+            "signature": 4632,
+            "verification": 6536,
+            "retour": 5,
+            "bail": 0,
+            "fin": 6536
+          },
+          {
+            "defi": "c833b69e693d9105e0f509ed16b7c2beed89fbc6664a3275ee013f8b886acfd6",
+            "tag": 2,
+            "emission": 7184,
+            "echeance": 8684,
+            "signature": 7184,
+            "verification": 7828,
+            "retour": 0,
+            "bail": 68476,
+            "fin": 9132
+          },
+          {
+            "defi": "d06d5ccdf8eea9c7851480931be10586e56dab023e9d85082d54ab37128c7f3b",
+            "tag": 7,
+            "emission": 11736,
+            "echeance": 13236,
+            "signature": 11736,
+            "verification": 12392,
+            "retour": 0,
+            "bail": 73052,
+            "fin": 13708
+          },
+          {
+            "defi": "db7e437d12115ccc4aa4e51449d0781c4dd4f98c73dca8788f3208194541531e",
+            "tag": 12,
+            "emission": 16348,
+            "echeance": 17848,
+            "signature": 16348,
+            "verification": 17000,
+            "retour": 0,
+            "bail": 77808,
+            "fin": 18476
+          },
+          {
+            "defi": "86dd57b42a2c119cb128857cb4ea52982fd8fc08084d8c19b5485041d60f4d3d",
+            "tag": 17,
+            "emission": 21132,
+            "echeance": 22632,
+            "signature": 21132,
+            "verification": 21784,
+            "retour": 0,
+            "bail": 82448,
+            "fin": 23104
+          },
+          {
+            "defi": "70425cfde159186463c714ca362b00e776c81eec6a2129850bad0caf4050abc5",
+            "tag": 22,
+            "emission": 25816,
+            "echeance": 27316,
+            "signature": 25816,
+            "verification": 26488,
+            "retour": 0,
+            "bail": 87172,
+            "fin": 27864
+          },
+          {
+            "defi": "bc29c371e70e176ac250b17eead1d639f9d0298a0f18feed326832ea55b186bc",
+            "tag": 27,
+            "emission": 30492,
+            "echeance": 31992,
+            "signature": 30492,
+            "verification": 31140,
+            "retour": 0,
+            "bail": 91796,
+            "fin": 32440
+          },
+          {
+            "defi": "0158f7ba806a094f648fa52913371d91d7f2e65cdf4e8d50d5f8d01ab9bba4b6",
+            "tag": 32,
+            "emission": 35040,
+            "echeance": 36540,
+            "signature": 35040,
+            "verification": 35684,
+            "retour": 0,
+            "bail": 96328,
+            "fin": 36984
+          },
+          {
+            "defi": "0982d26b3797321963f987dbac1e91da1c4e4257db1b8c28316f2f1db58b53e7",
+            "tag": 37,
+            "emission": 39600,
+            "echeance": 41100,
+            "signature": 39600,
+            "verification": 40256,
+            "retour": 0,
+            "bail": 100908,
+            "fin": 41568
+          },
+          {
+            "defi": "07ce6bcc4c6cd489d4f1f4d9c6136ac81ccb81f5424d95e941538a08d00c75ba",
+            "tag": 42,
+            "emission": 44208,
+            "echeance": 45708,
+            "signature": 44208,
+            "verification": 44864,
+            "retour": 0,
+            "bail": 105516,
+            "fin": 46168
+          }
+        ],
+        "aucun_lancement_demande": true,
+        "injection": {
+          "tentative": 9,
+          "consultations": 2,
+          "injectee": true,
+          "debut_ns": 279407331123166,
+          "fin_ns": 279408936136291
+        },
+        "refus_suivis_de_succes": true
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ]
+      },
+      "pics_racines": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      },
+      "drainage": [
+        true,
+        true
+      ],
+      "limite": "aucun lancement ELF demandé ; collecte ciblée, pas campagne mémoire"
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/x86_64-512-cible/invite/resultat.json",
+      "sha256": "e91ee8d7e97eea433779de60158e25989c14e71d337e531d70ca7201767eb6a1",
+      "chronologies": {
+        "succes": true,
+        "tentatives": [
+          {
+            "defi": "2b3252304e910fb907254a7228dc41acf6fca6baf5b13568219511b7e9ddd1a9",
+            "tag": 1,
+            "emission": 2560,
+            "echeance": 4060,
+            "signature": 2564,
+            "verification": 4368,
+            "retour": 5,
+            "bail": 0,
+            "fin": 4368
+          },
+          {
+            "defi": "14c462de359b01a9fe96e16668b40682b9496af06e8fd98110ef431b94b38f18",
+            "tag": 2,
+            "emission": 4544,
+            "echeance": 6044,
+            "signature": 4544,
+            "verification": 4728,
+            "retour": 0,
+            "bail": 64908,
+            "fin": 5080
+          },
+          {
+            "defi": "8d694d7142a70a3e795c13adca92784c31937e81a73531e8f118b952d79b2b8e",
+            "tag": 7,
+            "emission": 5784,
+            "echeance": 7284,
+            "signature": 5784,
+            "verification": 5960,
+            "retour": 0,
+            "bail": 66128,
+            "fin": 6312
+          },
+          {
+            "defi": "f28c2860445e05eed5d485a87e9199046837d1c5f803ddfeacddde6c18e273c2",
+            "tag": 12,
+            "emission": 7056,
+            "echeance": 8556,
+            "signature": 7056,
+            "verification": 7228,
+            "retour": 0,
+            "bail": 67396,
+            "fin": 7580
+          },
+          {
+            "defi": "fac0d5c0c0273ffa1bd36e256334b405a92b1cbb696426539bbca5270f55ba37",
+            "tag": 17,
+            "emission": 8320,
+            "echeance": 9820,
+            "signature": 8320,
+            "verification": 8484,
+            "retour": 0,
+            "bail": 68656,
+            "fin": 8824
+          },
+          {
+            "defi": "376e80cb0b12905aa0bcc2c8567da02e7993d85d6a5988abc57db6db3398fa06",
+            "tag": 22,
+            "emission": 9540,
+            "echeance": 11040,
+            "signature": 9540,
+            "verification": 9712,
+            "retour": 0,
+            "bail": 69888,
+            "fin": 10072
+          },
+          {
+            "defi": "cdee2e51f7a760a3a3620146689b46f799cdc761f29e3733d24e83c1a610580d",
+            "tag": 27,
+            "emission": 10816,
+            "echeance": 12316,
+            "signature": 10816,
+            "verification": 10996,
+            "retour": 0,
+            "bail": 71164,
+            "fin": 11336
+          },
+          {
+            "defi": "60e93a13a24bcd6df8f124d7b251ba6b4faabe783355340bbb6ffd1e2e80f35b",
+            "tag": 32,
+            "emission": 12068,
+            "echeance": 13568,
+            "signature": 12068,
+            "verification": 12240,
+            "retour": 0,
+            "bail": 72424,
+            "fin": 12596
+          },
+          {
+            "defi": "e23714a1d7308f56eece1ba269628a9112ecf4b6b83f66f89304db54eb4740d3",
+            "tag": 37,
+            "emission": 13316,
+            "echeance": 14816,
+            "signature": 13316,
+            "verification": 13496,
+            "retour": 0,
+            "bail": 73668,
+            "fin": 13856
+          },
+          {
+            "defi": "d7256cdee2d1a1ba4710ed28afab76b554e13320599fb35e45f559551178bf92",
+            "tag": 42,
+            "emission": 14564,
+            "echeance": 16064,
+            "signature": 14564,
+            "verification": 14736,
+            "retour": 0,
+            "bail": 74912,
+            "fin": 15088
+          }
+        ],
+        "aucun_lancement_demande": true,
+        "injection": {
+          "tentative": 9,
+          "consultations": 2,
+          "injectee": true,
+          "debut_ns": 279466957373125,
+          "fin_ns": 279468560064958
+        },
+        "refus_suivis_de_succes": true
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ]
+      },
+      "pics_racines": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      },
+      "drainage": [
+        true,
+        true
+      ],
+      "limite": "aucun lancement ELF demandé ; collecte ciblée, pas campagne mémoire"
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/aarch64-512-cible-retard22/invite/resultat.json",
+      "sha256": "843b999de5aa2a0fce593dfaf9909bde2eb46d27a0e239a8d8268034c82411a6",
+      "chronologies": {
+        "succes": true,
+        "tentatives": [
+          {
+            "defi": "5f28abdff12370cb8b8962221fdbefcc665500df226f79baa549cb27da87d7c7",
+            "tag": 1,
+            "emission": 2292,
+            "echeance": 3792,
+            "signature": 2292,
+            "verification": 4168,
+            "retour": 5,
+            "bail": 0,
+            "fin": 4168
+          },
+          {
+            "defi": "f56b5ff447e58ff6ea1e2d6235d6a9b7e2ca1c5880af7de8bacd3b2534e945ae",
+            "tag": 2,
+            "emission": 4336,
+            "echeance": 5836,
+            "signature": 4336,
+            "verification": 4500,
+            "retour": 0,
+            "bail": 64668,
+            "fin": 4832
+          },
+          {
+            "defi": "884a90cdbb98bed9fa4b2c83ab599912af36c61222217e86e23a5578fafdcecd",
+            "tag": 7,
+            "emission": 5504,
+            "echeance": 7004,
+            "signature": 5504,
+            "verification": 5668,
+            "retour": 0,
+            "bail": 65832,
+            "fin": 5996
+          },
+          {
+            "defi": "b3b3d2db1fb4531238c00391411ce611784a610f0814d2b0c9b0e06775999b45",
+            "tag": 12,
+            "emission": 6668,
+            "echeance": 8168,
+            "signature": 6668,
+            "verification": 6832,
+            "retour": 0,
+            "bail": 66996,
+            "fin": 7160
+          },
+          {
+            "defi": "ed2a1522814b444d759ab71e17c496d40d23841a11b1c84276494273f3491eca",
+            "tag": 17,
+            "emission": 7832,
+            "echeance": 9332,
+            "signature": 7832,
+            "verification": 7996,
+            "retour": 0,
+            "bail": 68160,
+            "fin": 8320
+          },
+          {
+            "defi": "37e3eb3e2027333b93bc88b406abf77eb3e49b9f02263c506b1cd767629fbcd5",
+            "tag": 22,
+            "emission": 8992,
+            "echeance": 10492,
+            "signature": 8992,
+            "verification": 9156,
+            "retour": 0,
+            "bail": 69320,
+            "fin": 9484
+          },
+          {
+            "defi": "9ef9aed0ae3e614f8076b16885e44e248bd86dae671f022573ecaa8c3962120c",
+            "tag": 27,
+            "emission": 10156,
+            "echeance": 11656,
+            "signature": 10156,
+            "verification": 10320,
+            "retour": 0,
+            "bail": 70484,
+            "fin": 10648
+          },
+          {
+            "defi": "9af12aa30f7e0acdfbd538b5fc4b258bc0223d99d5a9a989120f3b32d494da52",
+            "tag": 32,
+            "emission": 11320,
+            "echeance": 12820,
+            "signature": 11320,
+            "verification": 11484,
+            "retour": 0,
+            "bail": 71648,
+            "fin": 11812
+          },
+          {
+            "defi": "397aee7f37ed8401dc7ebacdf6ba2ae95eb596bdbcfcbe9f1866512af0661db5",
+            "tag": 37,
+            "emission": 12484,
+            "echeance": 13984,
+            "signature": 12484,
+            "verification": 12648,
+            "retour": 0,
+            "bail": 72812,
+            "fin": 12976
+          },
+          {
+            "defi": "8bb0ac701cab957cae475354e89a2760f33dbfa50d02b5904397031b819c7983",
+            "tag": 42,
+            "emission": 13692,
+            "echeance": 15192,
+            "signature": 13692,
+            "verification": 13856,
+            "retour": 0,
+            "bail": 74020,
+            "fin": 14196
+          }
+        ],
+        "aucun_lancement_demande": true,
+        "injection": {
+          "tentative": 9,
+          "consultations": 2,
+          "injectee": true,
+          "debut_ns": 279628095480333,
+          "fin_ns": 279630297178500
+        },
+        "refus_suivis_de_succes": true
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ]
+      },
+      "pics_racines": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      },
+      "drainage": [
+        true,
+        true
+      ],
+      "limite": "aucun lancement ELF demandé ; collecte ciblée, pas campagne mémoire"
+    }
+  ],
+  "deux_vm": [
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "scenario": "nominal",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "scenario": "retarde",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "réussi sur candidat courant, sans cycles mémoire prolongés",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-aarch64-512-campagne-5abb981-1/bilan-deux-vm.json",
+          "sha256": "83e8004e1830e3633e4d6575624452d5df7151c8609668473e49bdaf48710a3a",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "5abb9818313e4608c47d45991ce4a56c11f3ee35",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/retarde-aarch64-512-cible-C/bilan-deux-vm.json",
+      "sha256": "238d5c640b382516d0f714a8a1f00c5f0eb81761fdf58e2d9de214adc2d35ae4",
+      "ressources_B": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59260
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59259
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 13,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59278
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": 0,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      },
+      "ressources_A": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59260
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59259
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 13,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59278
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": false,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "scenario": "concurrent",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/concurrent-aarch64-512-campagne-2622173-1/bilan-deux-vm.json",
+          "sha256": "0baec56fbee436181beb2d376ec42618a16f62687c22bea1e0642621b41d32ba",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "262217378bf13f1c820b39e7f9966bcf3962fee8",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "scenario": "perte-admission",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "réussi sur candidat courant, sans cycles mémoire prolongés",
+      "preuves_historiques": [],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/perte-admission-aarch64-512-cible-C/bilan-deux-vm.json",
+      "sha256": "55acfc39a7fc4cfbcc505a9777530db180db1ba4a3cc4bca3cfa8a5f1957a55c",
+      "ressources_B": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59260
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59259
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59278
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": 0,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      },
+      "ressources_A": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59260
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59259
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59278
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": false,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "scenario": "perte-issue",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "scenario": "course-admission",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "scenario": "course-retrait",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "scenario": "indisponible",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "scenario": "nominal",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "scenario": "retarde",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "réussi sur candidat courant, sans cycles mémoire prolongés",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-aarch64-4096-campagne-5abb981-1/bilan-deux-vm.json",
+          "sha256": "b428244fcf801f66b68d28d6fdb3b6994eafbb0274e0e7586368f9a61c269010",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "5abb9818313e4608c47d45991ce4a56c11f3ee35",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/retarde-aarch64-4096-cible-C/bilan-deux-vm.json",
+      "sha256": "3ab83fc5be31686c55c7f6a706549006ddbe05b1b0668a4542939d0d612115f4",
+      "ressources_B": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59260
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59259
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 13,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59278
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": 0,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      },
+      "ressources_A": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59260
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59259
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59278
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": false,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "scenario": "concurrent",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "scenario": "perte-admission",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "réussi sur candidat courant, sans cycles mémoire prolongés",
+      "preuves_historiques": [],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/perte-admission-aarch64-4096-cible-C/bilan-deux-vm.json",
+      "sha256": "ae0f111bf015132492109dfed05227affa5d5dac4852483bc3011ef1b23602c3",
+      "ressources_B": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59260
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59259
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59278
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": 0,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      },
+      "ressources_A": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59260
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 13,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59259
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59278
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 81,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 125,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 57,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": false,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "scenario": "perte-issue",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/perte-issue-aarch64-4096-campagne-97ce-1/bilan-deux-vm.json",
+          "sha256": "39ec5b65d569c976cc838aa9669ffd6359570093372216e37a198ff5b22009ec",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "97cee19c0d8a4492b89e165482e6c8f01e795937",
+          "commit_binaires": "97cee19c0d8a4492b89e165482e6c8f01e795937"
+        },
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/perte-issue-aarch64-4096-campagne-2622173-1/bilan-deux-vm.json",
+          "sha256": "aee319922a7600fcf7990b967b30a71380481b84d97594de273832a35098c91a",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "262217378bf13f1c820b39e7f9966bcf3962fee8",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "scenario": "course-admission",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "scenario": "course-retrait",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "scenario": "indisponible",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "scenario": "nominal",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/nominal-x86_64-512-campagne-2622173-1/bilan-deux-vm.json",
+          "sha256": "6a051237ff0842b44670153ca9043c47d1489fd66dccdeb76808507bb7e79969",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "262217378bf13f1c820b39e7f9966bcf3962fee8",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "scenario": "retarde",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "réussi sur candidat courant, sans cycles mémoire prolongés",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-x86_64-512-campagne-5abb981-1/bilan-deux-vm.json",
+          "sha256": "f1d223e96e237f31f095e5fd76db723ed344fdc7edae0c3ca8193011cd36a8ad",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "5abb9818313e4608c47d45991ce4a56c11f3ee35",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/retarde-x86_64-512-cible-C/bilan-deux-vm.json",
+      "sha256": "4bed4dc9665287fd9d4e172e9e552c9c3cd1b57d1d8222749482b0d74598288a",
+      "ressources_B": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59753
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59752
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59772
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": 0,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      },
+      "ressources_A": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 13,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59753
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59752
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59772
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": false,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "scenario": "concurrent",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "scenario": "perte-admission",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "réussi sur candidat courant, sans cycles mémoire prolongés",
+      "preuves_historiques": [],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/perte-admission-x86_64-512-cible-C/bilan-deux-vm.json",
+      "sha256": "db3df0c96474b56a511ca54fa9cd402e5ad706e0e52365d037701dc3a55a8e88",
+      "ressources_B": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59753
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59752
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 13,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59772
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": 0,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      },
+      "ressources_A": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59753
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 13,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59752
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59772
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": false,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "scenario": "perte-issue",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "scenario": "course-admission",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "scenario": "course-retrait",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "scenario": "indisponible",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "scenario": "nominal",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "scenario": "retarde",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "réussi sur candidat courant, sans cycles mémoire prolongés",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-x86_64-4096-cible-5abb981/bilan-deux-vm.json",
+          "sha256": "9b9ec8c501857184f996f33c1e1623ef5c83f1f7b68b56714262766675f83459",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "5abb9818313e4608c47d45991ce4a56c11f3ee35",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/retarde-x86_64-4096-cible-C/bilan-deux-vm.json",
+      "sha256": "f93726d336aaa25e6dae7d1aa473f4fb4a308f445f964c39080fc597bf3bcc9f",
+      "ressources_B": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59753
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59752
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59772
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": 0,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      },
+      "ressources_A": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59753
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59752
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59772
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": false,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "scenario": "concurrent",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/concurrent-x86_64-4096-campagne-2622173-1/bilan-deux-vm.json",
+          "sha256": "43a63713049b0903b62f2a8fbeac22355370d71e9715f46a03938611204582ee",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "262217378bf13f1c820b39e7f9966bcf3962fee8",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "scenario": "perte-admission",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "réussi sur candidat courant, sans cycles mémoire prolongés",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/perte-admission-x86_64-4096-campagne-97ce-1/bilan-deux-vm.json",
+          "sha256": "86b0aaaced3ed35ceb55c10247508950eea51eff4949bf08f52ff0f7aaa4c14b",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "97cee19c0d8a4492b89e165482e6c8f01e795937",
+          "commit_binaires": "97cee19c0d8a4492b89e165482e6c8f01e795937"
+        },
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/perte-admission-x86_64-4096-campagne-2622173-1/bilan-deux-vm.json",
+          "sha256": "0b2bc782974c43393089591675478ee1b40dda1d30c1d3c3fe4b2f3ed112b9d6",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "262217378bf13f1c820b39e7f9966bcf3962fee8",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9/perte-admission-x86_64-4096-cible-C/bilan-deux-vm.json",
+      "sha256": "9dc6114f2e95e88668bdb8eb0f12dffad94165ffafd7e967a947ebcd45173eca",
+      "ressources_B": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59753
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 13,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59752
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59772
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": 0,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      },
+      "ressources_A": {
+        "memoire_fin_novafs": [],
+        "memoire_novafs": [],
+        "avant": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 58,
+            "cadres_libres": 59753
+          }
+        ],
+        "pendant": [
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "roots": 3,
+            "handles": 9,
+            "endpoints": 50,
+            "nodes": 104,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59752
+          }
+        ],
+        "apres": [
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "roots": 2,
+            "handles": 8,
+            "endpoints": 49,
+            "nodes": 102,
+            "waits": 14,
+            "processus": 15,
+            "threads": 1,
+            "joins": 0,
+            "cadres_ipc": 59,
+            "cadres_libres": 59772
+          }
+        ],
+        "acteurs": [
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 1,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "avant_ticket",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 58
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 3,
+            "handles": 9,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 8,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "consommation",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 5,
+            "service": 0,
+            "roots": 2,
+            "handles": 8,
+            "waits": 0,
+            "pages": 86,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 7,
+            "service": 22,
+            "roots": 4,
+            "handles": 7,
+            "waits": 1,
+            "pages": 132,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          },
+          {
+            "phase": "fermeture",
+            "owner": 5,
+            "pid": 8,
+            "service": 23,
+            "roots": 4,
+            "handles": 6,
+            "waits": 1,
+            "pages": 65,
+            "pile": 64,
+            "threads": 1,
+            "cadres_ipc": 59
+          }
+        ],
+        "restitution_verifiee": true,
+        "plateau_chaud": false,
+        "reference": "racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées"
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "scenario": "perte-issue",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": [
+        {
+          "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/perte-issue-x86_64-4096-campagne-2622173-1/bilan-deux-vm.json",
+          "sha256": "669e3454263b384d692d09903ac0a8f9a14111cd4c1719003d5c9f3ce3d76d05",
+          "portee": "historique ; ne vaut pas rejeu sur le candidat courant",
+          "commit_banc": "262217378bf13f1c820b39e7f9966bcf3962fee8",
+          "commit_binaires": "262217378bf13f1c820b39e7f9966bcf3962fee8"
+        }
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "scenario": "course-admission",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "scenario": "course-retrait",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "scenario": "indisponible",
+      "commit_banc": "512f8d8ebb7ac1114634967fc4a7c50b3742ec0c",
+      "sources_binaires": "eb4c4cc089d9abd9f3ec45b4c121858b0b461c85",
+      "statut": "non rejoué sur le candidat courant",
+      "preuves_historiques": []
+    }
+  ],
+  "budget_banc_secondes": {
+    "C": 340.675025958,
+    "B": 209.13936495800002,
+    "A": 263.468368457,
+    "C_avec_controles_hotes_ABI": 381.437025958
+  },
+  "tests_hotes": 106,
+  "tests_ABI": 9,
+  "verdict": "Fusion toujours bloquée : campagne globale obligatoire incomplète ; les deux blocages ciblés sont levés dans les profils testés.",
+  "reserve_AArch64_301_cadres": "ouverte, indépendante",
+  "preuves_reutilisees": {
+    "candidat_code": "5abb9818313e4608c47d45991ce4a56c11f3ee35",
+    "memoire": [
+      {
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-aarch64-4096-campagne-5abb981-1/bilan-deux-vm.json",
+        "sha256": "b428244fcf801f66b68d28d6fdb3b6994eafbb0274e0e7586368f9a61c269010",
+        "mesures_fin": [
+          {
+            "cycle": 1,
+            "octets_actifs": 132936,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 80,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 73789,
+            "reutilisations_region": 6,
+            "octets_servis_region": 24176,
+            "octets_actifs_region": 24176,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 336,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 2,
+            "octets_actifs": 132960,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 78899,
+            "reutilisations_region": 1,
+            "octets_servis_region": 24272,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 3,
+            "octets_actifs": 132960,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 84009,
+            "reutilisations_region": 2,
+            "octets_servis_region": 48544,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 4,
+            "octets_actifs": 132936,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 89111,
+            "reutilisations_region": 3,
+            "octets_servis_region": 72816,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 336,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 5,
+            "octets_actifs": 132960,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 94221,
+            "reutilisations_region": 4,
+            "octets_servis_region": 97088,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 6,
+            "octets_actifs": 132960,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 99331,
+            "reutilisations_region": 5,
+            "octets_servis_region": 121360,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          }
+        ],
+        "restitution": true,
+        "cycles": 6
+      },
+      {
+        "architecture": "aarch64",
+        "secteur": 512,
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-aarch64-512-campagne-5abb981-1/bilan-deux-vm.json",
+        "sha256": "83e8004e1830e3633e4d6575624452d5df7151c8609668473e49bdaf48710a3a",
+        "mesures_fin": [
+          {
+            "cycle": 1,
+            "octets_actifs": 132936,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 80,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 73789,
+            "reutilisations_region": 6,
+            "octets_servis_region": 24176,
+            "octets_actifs_region": 24176,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 336,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 2,
+            "octets_actifs": 132960,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 78899,
+            "reutilisations_region": 1,
+            "octets_servis_region": 24272,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 3,
+            "octets_actifs": 132960,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 84009,
+            "reutilisations_region": 2,
+            "octets_servis_region": 48544,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 4,
+            "octets_actifs": 132936,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 89111,
+            "reutilisations_region": 3,
+            "octets_servis_region": 72816,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 336,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 5,
+            "octets_actifs": 132960,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 94221,
+            "reutilisations_region": 4,
+            "octets_servis_region": 97088,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 6,
+            "octets_actifs": 132960,
+            "blocs_actifs": 34,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 99331,
+            "reutilisations_region": 5,
+            "octets_servis_region": 121360,
+            "octets_actifs_region": 0,
+            "cache": 127488,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          }
+        ],
+        "restitution": true,
+        "cycles": 6
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-x86_64-4096-cible-5abb981/bilan-deux-vm.json",
+        "sha256": "9b9ec8c501857184f996f33c1e1623ef5c83f1f7b68b56714262766675f83459",
+        "mesures_fin": [
+          {
+            "cycle": 1,
+            "octets_actifs": 137032,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 80,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 72361,
+            "reutilisations_region": 8,
+            "octets_servis_region": 32384,
+            "octets_actifs_region": 32384,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 336,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 2,
+            "octets_actifs": 137056,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 77469,
+            "reutilisations_region": 1,
+            "octets_servis_region": 32512,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 3,
+            "octets_actifs": 137056,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 82577,
+            "reutilisations_region": 2,
+            "octets_servis_region": 65024,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 4,
+            "octets_actifs": 137032,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 87677,
+            "reutilisations_region": 3,
+            "octets_servis_region": 97536,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 336,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 5,
+            "octets_actifs": 137056,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 92785,
+            "reutilisations_region": 4,
+            "octets_servis_region": 130048,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 6,
+            "octets_actifs": 137056,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 97893,
+            "reutilisations_region": 5,
+            "octets_servis_region": 162560,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          }
+        ],
+        "restitution": true,
+        "cycles": 6
+      },
+      {
+        "architecture": "x86_64",
+        "secteur": 512,
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-x86_64-512-campagne-5abb981-1/bilan-deux-vm.json",
+        "sha256": "f1d223e96e237f31f095e5fd76db723ed344fdc7edae0c3ca8193011cd36a8ad",
+        "mesures_fin": [
+          {
+            "cycle": 1,
+            "octets_actifs": 137032,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 80,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 72361,
+            "reutilisations_region": 8,
+            "octets_servis_region": 32384,
+            "octets_actifs_region": 32384,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 336,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 2,
+            "octets_actifs": 137056,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 77469,
+            "reutilisations_region": 1,
+            "octets_servis_region": 32512,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 3,
+            "octets_actifs": 137056,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 82577,
+            "reutilisations_region": 2,
+            "octets_servis_region": 65024,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 4,
+            "octets_actifs": 137032,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 87677,
+            "reutilisations_region": 3,
+            "octets_servis_region": 97536,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 336,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 5,
+            "octets_actifs": 137056,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 92785,
+            "reutilisations_region": 4,
+            "octets_servis_region": 130048,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          },
+          {
+            "cycle": 6,
+            "octets_actifs": 137056,
+            "blocs_actifs": 35,
+            "cadres_residents_tas": 112,
+            "cadres_restitues_cumules": 0,
+            "allocations_cumulees": 97893,
+            "reutilisations_region": 5,
+            "octets_servis_region": 162560,
+            "octets_actifs_region": 0,
+            "cache": 131584,
+            "budget": 1065472,
+            "vecteur_espace": 360,
+            "vecteur_noeuds": 32,
+            "actifs_hors_cache_et_vecteurs": 5080
+          }
+        ],
+        "restitution": true,
+        "cycles": 6
+      }
+    ],
+    "vfs": [
+      {
+        "profil": [
+          "aarch64",
+          4096
+        ],
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/vfs-aarch64-4096-final-5abb981/bilan.json",
+        "sha256": "38abb052499e798ad731371e9c823cb86c7872fe22de27e3d9b162f962af57ce",
+        "resultat": {
+          "profils": [
+            "aarch64",
+            4096
+          ],
+          "succes": true,
+          "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+          "avant_retrait": {
+            "incarnation": "810da91a84c237bbe4024fe2fac951bc08000000000000800100000000000000",
+            "epoque": 1,
+            "generation": 5,
+            "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+          },
+          "instantane_sha256": "0a1020607364ef44013e077d8ee92b1bbb7e908367f6bb4472b5ed693d5cce29",
+          "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+          "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+          "avant_retrait_rc": 0,
+          "apres_retrait": {
+            "incarnation": "810da91a84c237bbe4024fe2fac951bc08000000000000800100000000000000",
+            "epoque": 1,
+            "generation": 6,
+            "empreinte": "b9d3fb6eab78cff570583cb03c88510361d69cd80ede0fb8ec14749358ab4d65"
+          },
+          "sans_approbation_rc": 0,
+          "rejeu-tete-historique_rc": 0,
+          "autorite-hors-ligne_rc": 0,
+          "reprise_rc": 0,
+          "apres_reprise": {
+            "incarnation": "82fc9bc3ccf14c3b6b14b34e831456f408000000000000800100000000000000",
+            "epoque": 2,
+            "generation": 6,
+            "empreinte": "b9d3fb6eab78cff570583cb03c88510361d69cd80ede0fb8ec14749358ab4d65"
+          }
+        }
+      },
+      {
+        "profil": [
+          "aarch64",
+          512
+        ],
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/vfs-aarch64-512-final-5abb981/bilan.json",
+        "sha256": "47e58b65eb1c7d46f563ef1648f6fc9fad00629a245b645f17edb539e3fc2f2e",
+        "resultat": {
+          "profils": [
+            "aarch64",
+            512
+          ],
+          "succes": true,
+          "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+          "avant_retrait": {
+            "incarnation": "1084c861823405740864bdf16e07d50108000000000000800100000000000000",
+            "epoque": 1,
+            "generation": 5,
+            "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+          },
+          "instantane_sha256": "78843c83388a8017daa265d5a5c64abf013d1c7ba6915db3383c23e62a00c0fc",
+          "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+          "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+          "avant_retrait_rc": 0,
+          "apres_retrait": {
+            "incarnation": "1084c861823405740864bdf16e07d50108000000000000800100000000000000",
+            "epoque": 1,
+            "generation": 6,
+            "empreinte": "2888050c07040f7894ca2b939ee78f665f8d17d247d5397bc4c1df83faa41284"
+          },
+          "sans_approbation_rc": 0,
+          "rejeu-tete-historique_rc": 0,
+          "autorite-hors-ligne_rc": 0,
+          "reprise_rc": 0,
+          "apres_reprise": {
+            "incarnation": "7dd0e47a09527b180b38f0a14ac1125608000000000000800100000000000000",
+            "epoque": 2,
+            "generation": 6,
+            "empreinte": "2888050c07040f7894ca2b939ee78f665f8d17d247d5397bc4c1df83faa41284"
+          }
+        }
+      },
+      {
+        "profil": [
+          "x86_64",
+          4096
+        ],
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/vfs-x86_64-4096-final-5abb981/bilan.json",
+        "sha256": "3b8d368a8aea4255151e5d3df25a8bdeac44488aafef7bc4c60683a552f0d0a4",
+        "resultat": {
+          "profils": [
+            "x86_64",
+            4096
+          ],
+          "succes": true,
+          "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+          "avant_retrait": {
+            "incarnation": "19a29fa34e13ba5fa982df10ad100af808000000000000800100000000000000",
+            "epoque": 1,
+            "generation": 5,
+            "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+          },
+          "instantane_sha256": "7ae8c5552c092573675f80f0af2c4ae90567c49b8427250d28ab34ec7a79f95d",
+          "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+          "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+          "avant_retrait_rc": 0,
+          "apres_retrait": {
+            "incarnation": "19a29fa34e13ba5fa982df10ad100af808000000000000800100000000000000",
+            "epoque": 1,
+            "generation": 6,
+            "empreinte": "7402794b5cf9eaeacc70d669fd9bdb4d1da7533d9bc9f7f8aa4d0e2e6f075dfc"
+          },
+          "sans_approbation_rc": 0,
+          "rejeu-tete-historique_rc": 0,
+          "autorite-hors-ligne_rc": 0,
+          "reprise_rc": 0,
+          "apres_reprise": {
+            "incarnation": "3358688dbf02e9e98f04cde943ea28fc08000000000000800100000000000000",
+            "epoque": 2,
+            "generation": 6,
+            "empreinte": "7402794b5cf9eaeacc70d669fd9bdb4d1da7533d9bc9f7f8aa4d0e2e6f075dfc"
+          }
+        }
+      },
+      {
+        "profil": [
+          "x86_64",
+          512
+        ],
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/vfs-x86_64-512-final-5abb981/bilan.json",
+        "sha256": "b8eb667d380deba9fa55a89ef8696a5ef6827cdcf4b0cb81249a40c656dc3543",
+        "resultat": {
+          "profils": [
+            "x86_64",
+            512
+          ],
+          "succes": true,
+          "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+          "avant_retrait": {
+            "incarnation": "e96193fda3c207cc920859f1d75ff15c08000000000000800100000000000000",
+            "epoque": 1,
+            "generation": 5,
+            "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+          },
+          "instantane_sha256": "fe04db6114515a1d27421eafbc28e3bb148e013736d14fc7caf16af87492fd93",
+          "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+          "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+          "avant_retrait_rc": 0,
+          "apres_retrait": {
+            "incarnation": "e96193fda3c207cc920859f1d75ff15c08000000000000800100000000000000",
+            "epoque": 1,
+            "generation": 6,
+            "empreinte": "9318eb9d9e0c6dd4501a367e2edf7061e396e4a7668c1c18a87bd391a1afac23"
+          },
+          "sans_approbation_rc": 0,
+          "rejeu-tete-historique_rc": 0,
+          "autorite-hors-ligne_rc": 0,
+          "reprise_rc": 0,
+          "apres_reprise": {
+            "incarnation": "b837c569281a54b89626153bda20c6b708000000000000800100000000000000",
+            "epoque": 2,
+            "generation": 6,
+            "empreinte": "9318eb9d9e0c6dd4501a367e2edf7061e396e4a7668c1c18a87bd391a1afac23"
+          }
+        }
+      }
+    ],
+    "elf": [
+      {
+        "architecture": "aarch64",
+        "profil": "sdk-example",
+        "elf_sha256": "db2d14ec8a1f8d1ac22acc331ee4d3d90336a90adc8d50ca057c3129e129c3a8",
+        "noyau_sha256": "346eb090eff2426c4616b61b0c009beca469319548dd138a2bfcb95f1caed164",
+        "journal": "serie-aarch64-sdk-example-2cpu.log",
+        "journal_sha256": "8a1c68977d58938b89b2094cbed3c763533a5a80702f302e9d73d9ad84e4ff34",
+        "profil_novaauth_qemu": true,
+        "qemu": "QEMU emulator version 11.1.3",
+        "resultat": {
+          "vcpus": 2,
+          "niveau": "EL0",
+          "sortie": 0,
+          "restitution": true
+        },
+        "copie_privee": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-levee-blocages-b08ba80/elf-historiques/aarch64/sdk-example",
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/elf-historiques/aarch64/sdk-example/resultat.json"
+      },
+      {
+        "architecture": "aarch64",
+        "profil": "threads-test",
+        "elf_sha256": "fa1640df7589a2700f172acc43197c2904e6e2f833fb748048bc15984575cbd9",
+        "noyau_sha256": "1a2ad84d7b18e0ced0fa3e62ee921fcfd28247f3b28d2e5e982d116d9b59a702",
+        "journal": "serie-aarch64-threads-test-2cpu-archive.log",
+        "journal_sha256": "571fb3de245a48a091de5f55dcf65acf3a2960a940f1db845325ce42fe5952ec",
+        "profil_novaauth_qemu": true,
+        "qemu": "QEMU emulator version 11.1.3",
+        "resultat": {
+          "vcpus": 2,
+          "niveau": "EL0",
+          "cpu_final": 1,
+          "preemptions": [
+            5,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 61023,
+          "cadres_apres": 61023,
+          "blocs": 4,
+          "tcb_apres": 3
+        },
+        "copie_privee": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-levee-blocages-b08ba80/elf-historiques/aarch64/threads-test",
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/elf-historiques/aarch64/threads-test/resultat.json"
+      },
+      {
+        "architecture": "x86_64",
+        "profil": "sdk-example",
+        "elf_sha256": "1ad5ebf8b6a0d80b10d2df826500f39052fdc222fac418640b408b9657d78c6e",
+        "noyau_sha256": "7278f6c522aab3a49fde5e859946e12c3a4329f0ef3e61e96bd58381a65835ac",
+        "journal": "serie-x86_64-sdk-example-2cpu.log",
+        "journal_sha256": "228ad6d92cb6d805baf1b719b9a7a972ca85d5ab70cd8336a827d234ddd087e8",
+        "profil_novaauth_qemu": true,
+        "qemu": "QEMU emulator version 11.1.3",
+        "resultat": {
+          "vcpus": 2,
+          "niveau": "Ring3",
+          "sortie": 0,
+          "restitution": true
+        },
+        "copie_privee": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-levee-blocages-b08ba80/elf-historiques/x86_64/sdk-example",
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/elf-historiques/x86_64/sdk-example/resultat.json"
+      },
+      {
+        "architecture": "x86_64",
+        "profil": "threads-test",
+        "elf_sha256": "6073a78fb2ffa5c716e75ac942932728faa218d614c3dedf6f30c9f067f6b30c",
+        "noyau_sha256": "baa524582f3836b44860431a0f2e07b6bad5d0117daae779133c539c94058734",
+        "journal": "serie-x86_64-threads-test-2cpu-archive.log",
+        "journal_sha256": "3a6f312ed99ab0466ef2f1186d390da81e0fd30458ebc2811db1bf800ae4217f",
+        "profil_novaauth_qemu": true,
+        "qemu": "QEMU emulator version 11.1.3",
+        "resultat": {
+          "vcpus": 2,
+          "niveau": "Ring3",
+          "cpu_final": 1,
+          "preemptions": [
+            5,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 61578,
+          "cadres_apres": 61578,
+          "blocs": 4,
+          "tcb_apres": 3
+        },
+        "copie_privee": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-levee-blocages-b08ba80/elf-historiques/x86_64/threads-test",
+        "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/elf-historiques/x86_64/threads-test/resultat.json"
+      }
+    ],
+    "verdict_fusion": "NON APTE : campagne à deux VM globale incomplète ; expirations de défi et saturation des traces de connexion encore ouvertes.",
+    "reserve_aarch64_301_cadres": "Ouverte ; distincte du plateau NovaFS mesuré.",
+    "controles_abi": {
+      "nombre": 9,
+      "resultat": "réussi",
+      "preuve": "abi-5abb981.log",
+      "sha256": "8ac0288b9e1e49a58911e840e836d2c7bd36dad7acf57d801bdfcdb1072ab4d2"
+    },
+    "tests_hotes": {
+      "nombre": 103,
+      "resultat": "réussi",
+      "preuve": "tests-hotes-baux-explicites.log",
+      "sha256": "7918f42e071e31c2a748beedc1ad070d7d41b58a71d5c115318deb1a6ee854e0"
+    }
+  },
+  "budget_controles_hotes_ABI_secondes": 40.762
+}

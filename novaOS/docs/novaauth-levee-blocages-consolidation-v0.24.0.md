@@ -170,3 +170,12 @@ Les binaires exacts et secrets de laboratoire restent dans
 sources et rapports sont publiables sur la branche dédiée. Les 1 800 preuves
 initiales du candidat b08ba80 restent intactes ; leur archive et leur manifeste
 ont été vérifiés séparément (`verification-preuves-initiales.json`).
+
+## Complément ciblé : défis et visibilité des connexions
+
+Le [bilan ciblé du 21 novembre](novaauth-defis-traces-qualification-v0.24.0.md)
+établit la cause de l'attente privée et corrige la saturation des traces.
+Les quatre recettes de connexion et huit rejeux à deux VM réussissent, sans
+allonger les délais ni répéter les cycles mémoire. Les résultats négatifs
+ci-dessus restent historiques ; la campagne globale demeure incomplète et
+la fusion toujours bloquée. La réserve instrumentée de 301 cadres reste ouverte.
