@@ -12,12 +12,17 @@ fn command(p:&Frame,tag:u64,op:u8,object:u64)->rt::Result<[u8;128]> {
     Ok(r.payload)
 }
 fn report(label:&[u8],reply:&[u8;128])->rt::Result<()> {
+    report_suffix(label,reply,b"")
+}
+fn report_suffix(label:&[u8],reply:&[u8;128],suffix:&[u8])->rt::Result<()> {
     // Seulement les statuts, identités publiques et huit octets synthétiques.
     let mut line=[0;200];line[..label.len()].copy_from_slice(label);
     const HEX:&[u8;16]=b"0123456789abcdef";
     let mut pos=label.len();
     let n=if label.windows(16).any(|x|x==b"authentification") {64} else {24};
     for b in &reply[..n] {line[pos]=HEX[(b>>4) as usize];line[pos+1]=HEX[(b&15) as usize];pos+=2;}
+    if pos+suffix.len()>line.len() {return Err(rt::LIMIT);}
+    line[pos..pos+suffix.len()].copy_from_slice(suffix);pos+=suffix.len();
     log(&line[..pos]);Ok(())
 }
 pub(super) fn launch()->rt::Result<u64> {
@@ -57,7 +62,8 @@ pub(super) fn launch()->rt::Result<u64> {
         rt::send_for(registre[2],21,&capture,5000)?;
         let reply=rt::receive_for(registre[1],15000)?;
         if reply.kind!=1 || reply.tag!=21 || reply.len!=128 {return Err(rt::REFUSED);}
-        report(b"NARV Alice sauvegarde ",&reply.payload)?;
+        report_suffix(b"NARV Alice sauvegarde ",&reply.payload,b" NARV parcours termine")?;
+        return Ok(0);
     }
     log(b"NARV parcours termine");Ok(0)
 }

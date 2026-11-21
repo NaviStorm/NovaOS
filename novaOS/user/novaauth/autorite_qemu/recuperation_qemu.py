@@ -451,7 +451,7 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
         expected=expected and b"NARV VFS lecture rc=0 octets=8" in raw and b"NARV VFS refus octets=0" in raw
         sequence=[b"NARV Alice nouvelle authentification ",b"NARV Alice nouvelle lecture L avant P ",
             b"NARV Alice nouvelle lecture P ",b"NARV Alice nouvelle lecture L "]
-        offsets=[raw.find(marker) for marker in sequence]
+        offsets=[m.start() if (m:=re.search(re.escape(marker)+rb'[0-9a-f]{48}',raw)) else -1 for marker in sequence]
         observed["sequence_meme_session_L_P_L"]=all(i>=0 for i in offsets) and offsets==sorted(set(offsets))
         expected=expected and observed["sequence_meme_session_L_P_L"]
         if args.mutation:

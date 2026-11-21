@@ -54,3 +54,15 @@ class ReceptionSerie(unittest.TestCase):
             self.assertEqual(tuple(map(int,result.groups())),(5,103,10,5644,6210))
 
 if __name__=='__main__':unittest.main()
+
+class VfsSequence(unittest.TestCase):
+    def test_labels_do_not_match_longer_prefix(self):
+        import re
+        markers=[b'NARV Alice nouvelle authentification ',b'NARV Alice nouvelle lecture L avant P ',b'NARV Alice nouvelle lecture P ',b'NARV Alice nouvelle lecture L ']
+        def ordered(raw):
+            offsets=[m.start() if (m:=re.search(re.escape(marker)+rb'[0-9a-f]{48}',raw)) else -1 for marker in markers]
+            return all(i>=0 for i in offsets) and offsets==sorted(set(offsets))
+        def trace(seq):return b'\r\n'.join(m+b'0'*48 for m in seq)
+        self.assertTrue(ordered(trace(markers)))
+        self.assertFalse(ordered(trace(markers[:-1])))
+        self.assertFalse(ordered(trace([markers[0],markers[3],markers[2],markers[1]])))
