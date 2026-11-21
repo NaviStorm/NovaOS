@@ -2,6 +2,22 @@ use crate::runtime as rt;
 pub const TTL_MS: u32 = 1500;
 pub const DOMAIN: [u8; 16] = [7; 16];
 pub fn marker(bytes: &[u8]) {
+    #[cfg(feature="vfs-guest")]
+    {
+        // Une seule occurrence des succès répétitifs du profil. Les erreurs ne
+        // sont jamais filtrées. Préserver le quota DEBUG=16 et réserver les
+        // mesures de fin de capture au lieu d'épuiser le quota en consultations.
+        use core::sync::atomic::{AtomicU64,Ordering};
+        static SEEN:AtomicU64=AtomicU64::new(0);
+        let bit=match bytes {
+            b"NAUTH signataire NOW autorise gestion et arguments refuses 8/8"=>1,
+            b"NAUTH TLS avant"=>2,b"NAUTH TLS actif"=>4,b"NAUTH TLS apres"=>8,
+            b"NAUTH transport ferme"=>16,b"NAUTH tete signature et portee verifiees"=>32,
+            b if b.starts_with(b"NAUTH TLS debut=")=>64,
+            _=>0,
+        };
+        if bit!=0 && SEEN.fetch_or(bit,Ordering::Relaxed)&bit!=0 {return;}
+    }
     rt::call(
         rt::DEBUG_WRITE,
         bytes.as_ptr() as u64,

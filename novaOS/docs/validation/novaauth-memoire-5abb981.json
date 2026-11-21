@@ -1,0 +1,731 @@
+{
+  "candidat_code": "5abb9818313e4608c47d45991ce4a56c11f3ee35",
+  "memoire": [
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-aarch64-4096-campagne-5abb981-1/bilan-deux-vm.json",
+      "sha256": "b428244fcf801f66b68d28d6fdb3b6994eafbb0274e0e7586368f9a61c269010",
+      "mesures_fin": [
+        {
+          "cycle": 1,
+          "octets_actifs": 132936,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 80,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 73789,
+          "reutilisations_region": 6,
+          "octets_servis_region": 24176,
+          "octets_actifs_region": 24176,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 336,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 2,
+          "octets_actifs": 132960,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 78899,
+          "reutilisations_region": 1,
+          "octets_servis_region": 24272,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 3,
+          "octets_actifs": 132960,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 84009,
+          "reutilisations_region": 2,
+          "octets_servis_region": 48544,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 4,
+          "octets_actifs": 132936,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 89111,
+          "reutilisations_region": 3,
+          "octets_servis_region": 72816,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 336,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 5,
+          "octets_actifs": 132960,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 94221,
+          "reutilisations_region": 4,
+          "octets_servis_region": 97088,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 6,
+          "octets_actifs": 132960,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 99331,
+          "reutilisations_region": 5,
+          "octets_servis_region": 121360,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        }
+      ],
+      "restitution": true,
+      "cycles": 6
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-aarch64-512-campagne-5abb981-1/bilan-deux-vm.json",
+      "sha256": "83e8004e1830e3633e4d6575624452d5df7151c8609668473e49bdaf48710a3a",
+      "mesures_fin": [
+        {
+          "cycle": 1,
+          "octets_actifs": 132936,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 80,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 73789,
+          "reutilisations_region": 6,
+          "octets_servis_region": 24176,
+          "octets_actifs_region": 24176,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 336,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 2,
+          "octets_actifs": 132960,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 78899,
+          "reutilisations_region": 1,
+          "octets_servis_region": 24272,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 3,
+          "octets_actifs": 132960,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 84009,
+          "reutilisations_region": 2,
+          "octets_servis_region": 48544,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 4,
+          "octets_actifs": 132936,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 89111,
+          "reutilisations_region": 3,
+          "octets_servis_region": 72816,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 336,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 5,
+          "octets_actifs": 132960,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 94221,
+          "reutilisations_region": 4,
+          "octets_servis_region": 97088,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 6,
+          "octets_actifs": 132960,
+          "blocs_actifs": 34,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 99331,
+          "reutilisations_region": 5,
+          "octets_servis_region": 121360,
+          "octets_actifs_region": 0,
+          "cache": 127488,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        }
+      ],
+      "restitution": true,
+      "cycles": 6
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-x86_64-4096-cible-5abb981/bilan-deux-vm.json",
+      "sha256": "9b9ec8c501857184f996f33c1e1623ef5c83f1f7b68b56714262766675f83459",
+      "mesures_fin": [
+        {
+          "cycle": 1,
+          "octets_actifs": 137032,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 80,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 72361,
+          "reutilisations_region": 8,
+          "octets_servis_region": 32384,
+          "octets_actifs_region": 32384,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 336,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 2,
+          "octets_actifs": 137056,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 77469,
+          "reutilisations_region": 1,
+          "octets_servis_region": 32512,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 3,
+          "octets_actifs": 137056,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 82577,
+          "reutilisations_region": 2,
+          "octets_servis_region": 65024,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 4,
+          "octets_actifs": 137032,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 87677,
+          "reutilisations_region": 3,
+          "octets_servis_region": 97536,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 336,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 5,
+          "octets_actifs": 137056,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 92785,
+          "reutilisations_region": 4,
+          "octets_servis_region": 130048,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 6,
+          "octets_actifs": 137056,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 97893,
+          "reutilisations_region": 5,
+          "octets_servis_region": 162560,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        }
+      ],
+      "restitution": true,
+      "cycles": 6
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/retarde-x86_64-512-campagne-5abb981-1/bilan-deux-vm.json",
+      "sha256": "f1d223e96e237f31f095e5fd76db723ed344fdc7edae0c3ca8193011cd36a8ad",
+      "mesures_fin": [
+        {
+          "cycle": 1,
+          "octets_actifs": 137032,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 80,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 72361,
+          "reutilisations_region": 8,
+          "octets_servis_region": 32384,
+          "octets_actifs_region": 32384,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 336,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 2,
+          "octets_actifs": 137056,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 77469,
+          "reutilisations_region": 1,
+          "octets_servis_region": 32512,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 3,
+          "octets_actifs": 137056,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 82577,
+          "reutilisations_region": 2,
+          "octets_servis_region": 65024,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 4,
+          "octets_actifs": 137032,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 87677,
+          "reutilisations_region": 3,
+          "octets_servis_region": 97536,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 336,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 5,
+          "octets_actifs": 137056,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 92785,
+          "reutilisations_region": 4,
+          "octets_servis_region": 130048,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        },
+        {
+          "cycle": 6,
+          "octets_actifs": 137056,
+          "blocs_actifs": 35,
+          "cadres_residents_tas": 112,
+          "cadres_restitues_cumules": 0,
+          "allocations_cumulees": 97893,
+          "reutilisations_region": 5,
+          "octets_servis_region": 162560,
+          "octets_actifs_region": 0,
+          "cache": 131584,
+          "budget": 1065472,
+          "vecteur_espace": 360,
+          "vecteur_noeuds": 32,
+          "actifs_hors_cache_et_vecteurs": 5080
+        }
+      ],
+      "restitution": true,
+      "cycles": 6
+    }
+  ],
+  "vfs": [
+    {
+      "profil": [
+        "aarch64",
+        4096
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/vfs-aarch64-4096-final-5abb981/bilan.json",
+      "sha256": "38abb052499e798ad731371e9c823cb86c7872fe22de27e3d9b162f962af57ce",
+      "resultat": {
+        "profils": [
+          "aarch64",
+          4096
+        ],
+        "succes": true,
+        "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+        "avant_retrait": {
+          "incarnation": "810da91a84c237bbe4024fe2fac951bc08000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 5,
+          "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+        },
+        "instantane_sha256": "0a1020607364ef44013e077d8ee92b1bbb7e908367f6bb4472b5ed693d5cce29",
+        "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+        "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+        "avant_retrait_rc": 0,
+        "apres_retrait": {
+          "incarnation": "810da91a84c237bbe4024fe2fac951bc08000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 6,
+          "empreinte": "b9d3fb6eab78cff570583cb03c88510361d69cd80ede0fb8ec14749358ab4d65"
+        },
+        "sans_approbation_rc": 0,
+        "rejeu-tete-historique_rc": 0,
+        "autorite-hors-ligne_rc": 0,
+        "reprise_rc": 0,
+        "apres_reprise": {
+          "incarnation": "82fc9bc3ccf14c3b6b14b34e831456f408000000000000800100000000000000",
+          "epoque": 2,
+          "generation": 6,
+          "empreinte": "b9d3fb6eab78cff570583cb03c88510361d69cd80ede0fb8ec14749358ab4d65"
+        }
+      }
+    },
+    {
+      "profil": [
+        "aarch64",
+        512
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/vfs-aarch64-512-final-5abb981/bilan.json",
+      "sha256": "47e58b65eb1c7d46f563ef1648f6fc9fad00629a245b645f17edb539e3fc2f2e",
+      "resultat": {
+        "profils": [
+          "aarch64",
+          512
+        ],
+        "succes": true,
+        "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+        "avant_retrait": {
+          "incarnation": "1084c861823405740864bdf16e07d50108000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 5,
+          "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+        },
+        "instantane_sha256": "78843c83388a8017daa265d5a5c64abf013d1c7ba6915db3383c23e62a00c0fc",
+        "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+        "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+        "avant_retrait_rc": 0,
+        "apres_retrait": {
+          "incarnation": "1084c861823405740864bdf16e07d50108000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 6,
+          "empreinte": "2888050c07040f7894ca2b939ee78f665f8d17d247d5397bc4c1df83faa41284"
+        },
+        "sans_approbation_rc": 0,
+        "rejeu-tete-historique_rc": 0,
+        "autorite-hors-ligne_rc": 0,
+        "reprise_rc": 0,
+        "apres_reprise": {
+          "incarnation": "7dd0e47a09527b180b38f0a14ac1125608000000000000800100000000000000",
+          "epoque": 2,
+          "generation": 6,
+          "empreinte": "2888050c07040f7894ca2b939ee78f665f8d17d247d5397bc4c1df83faa41284"
+        }
+      }
+    },
+    {
+      "profil": [
+        "x86_64",
+        4096
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/vfs-x86_64-4096-final-5abb981/bilan.json",
+      "sha256": "3b8d368a8aea4255151e5d3df25a8bdeac44488aafef7bc4c60683a552f0d0a4",
+      "resultat": {
+        "profils": [
+          "x86_64",
+          4096
+        ],
+        "succes": true,
+        "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+        "avant_retrait": {
+          "incarnation": "19a29fa34e13ba5fa982df10ad100af808000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 5,
+          "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+        },
+        "instantane_sha256": "7ae8c5552c092573675f80f0af2c4ae90567c49b8427250d28ab34ec7a79f95d",
+        "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+        "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+        "avant_retrait_rc": 0,
+        "apres_retrait": {
+          "incarnation": "19a29fa34e13ba5fa982df10ad100af808000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 6,
+          "empreinte": "7402794b5cf9eaeacc70d669fd9bdb4d1da7533d9bc9f7f8aa4d0e2e6f075dfc"
+        },
+        "sans_approbation_rc": 0,
+        "rejeu-tete-historique_rc": 0,
+        "autorite-hors-ligne_rc": 0,
+        "reprise_rc": 0,
+        "apres_reprise": {
+          "incarnation": "3358688dbf02e9e98f04cde943ea28fc08000000000000800100000000000000",
+          "epoque": 2,
+          "generation": 6,
+          "empreinte": "7402794b5cf9eaeacc70d669fd9bdb4d1da7533d9bc9f7f8aa4d0e2e6f075dfc"
+        }
+      }
+    },
+    {
+      "profil": [
+        "x86_64",
+        512
+      ],
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/vfs-x86_64-512-final-5abb981/bilan.json",
+      "sha256": "b8eb667d380deba9fa55a89ef8696a5ef6827cdcf4b0cb81249a40c656dc3543",
+      "resultat": {
+        "profils": [
+          "x86_64",
+          512
+        ],
+        "succes": true,
+        "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+        "avant_retrait": {
+          "incarnation": "e96193fda3c207cc920859f1d75ff15c08000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 5,
+          "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+        },
+        "instantane_sha256": "fe04db6114515a1d27421eafbc28e3bb148e013736d14fc7caf16af87492fd93",
+        "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+        "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+        "avant_retrait_rc": 0,
+        "apres_retrait": {
+          "incarnation": "e96193fda3c207cc920859f1d75ff15c08000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 6,
+          "empreinte": "9318eb9d9e0c6dd4501a367e2edf7061e396e4a7668c1c18a87bd391a1afac23"
+        },
+        "sans_approbation_rc": 0,
+        "rejeu-tete-historique_rc": 0,
+        "autorite-hors-ligne_rc": 0,
+        "reprise_rc": 0,
+        "apres_reprise": {
+          "incarnation": "b837c569281a54b89626153bda20c6b708000000000000800100000000000000",
+          "epoque": 2,
+          "generation": 6,
+          "empreinte": "9318eb9d9e0c6dd4501a367e2edf7061e396e4a7668c1c18a87bd391a1afac23"
+        }
+      }
+    }
+  ],
+  "elf": [
+    {
+      "architecture": "aarch64",
+      "profil": "sdk-example",
+      "elf_sha256": "db2d14ec8a1f8d1ac22acc331ee4d3d90336a90adc8d50ca057c3129e129c3a8",
+      "noyau_sha256": "346eb090eff2426c4616b61b0c009beca469319548dd138a2bfcb95f1caed164",
+      "journal": "serie-aarch64-sdk-example-2cpu.log",
+      "journal_sha256": "8a1c68977d58938b89b2094cbed3c763533a5a80702f302e9d73d9ad84e4ff34",
+      "profil_novaauth_qemu": true,
+      "qemu": "QEMU emulator version 11.1.3",
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "sortie": 0,
+        "restitution": true
+      },
+      "copie_privee": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-levee-blocages-b08ba80/elf-historiques/aarch64/sdk-example",
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/elf-historiques/aarch64/sdk-example/resultat.json"
+    },
+    {
+      "architecture": "aarch64",
+      "profil": "threads-test",
+      "elf_sha256": "fa1640df7589a2700f172acc43197c2904e6e2f833fb748048bc15984575cbd9",
+      "noyau_sha256": "1a2ad84d7b18e0ced0fa3e62ee921fcfd28247f3b28d2e5e982d116d9b59a702",
+      "journal": "serie-aarch64-threads-test-2cpu-archive.log",
+      "journal_sha256": "571fb3de245a48a091de5f55dcf65acf3a2960a940f1db845325ce42fe5952ec",
+      "profil_novaauth_qemu": true,
+      "qemu": "QEMU emulator version 11.1.3",
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61023,
+        "cadres_apres": 61023,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "copie_privee": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-levee-blocages-b08ba80/elf-historiques/aarch64/threads-test",
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/elf-historiques/aarch64/threads-test/resultat.json"
+    },
+    {
+      "architecture": "x86_64",
+      "profil": "sdk-example",
+      "elf_sha256": "1ad5ebf8b6a0d80b10d2df826500f39052fdc222fac418640b408b9657d78c6e",
+      "noyau_sha256": "7278f6c522aab3a49fde5e859946e12c3a4329f0ef3e61e96bd58381a65835ac",
+      "journal": "serie-x86_64-sdk-example-2cpu.log",
+      "journal_sha256": "228ad6d92cb6d805baf1b719b9a7a972ca85d5ab70cd8336a827d234ddd087e8",
+      "profil_novaauth_qemu": true,
+      "qemu": "QEMU emulator version 11.1.3",
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "sortie": 0,
+        "restitution": true
+      },
+      "copie_privee": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-levee-blocages-b08ba80/elf-historiques/x86_64/sdk-example",
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/elf-historiques/x86_64/sdk-example/resultat.json"
+    },
+    {
+      "architecture": "x86_64",
+      "profil": "threads-test",
+      "elf_sha256": "6073a78fb2ffa5c716e75ac942932728faa218d614c3dedf6f30c9f067f6b30c",
+      "noyau_sha256": "baa524582f3836b44860431a0f2e07b6bad5d0117daae779133c539c94058734",
+      "journal": "serie-x86_64-threads-test-2cpu-archive.log",
+      "journal_sha256": "3a6f312ed99ab0466ef2f1186d390da81e0fd30458ebc2811db1bf800ae4217f",
+      "profil_novaauth_qemu": true,
+      "qemu": "QEMU emulator version 11.1.3",
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61578,
+        "cadres_apres": 61578,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "copie_privee": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-levee-blocages-b08ba80/elf-historiques/x86_64/threads-test",
+      "preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/elf-historiques/x86_64/threads-test/resultat.json"
+    }
+  ],
+  "verdict_fusion": "NON APTE : campagne à deux VM globale incomplète ; expirations de défi et saturation des traces de connexion encore ouvertes.",
+  "reserve_aarch64_301_cadres": "Ouverte ; distincte du plateau NovaFS mesuré.",
+  "controles_abi": {
+    "nombre": 9,
+    "resultat": "réussi",
+    "preuve": "abi-5abb981.log",
+    "sha256": "8ac0288b9e1e49a58911e840e836d2c7bd36dad7acf57d801bdfcdb1072ab4d2"
+  },
+  "tests_hotes": {
+    "nombre": 103,
+    "resultat": "réussi",
+    "preuve": "tests-hotes-baux-explicites.log",
+    "sha256": "7918f42e071e31c2a748beedc1ad070d7d41b58a71d5c115318deb1a6ee854e0"
+  },
+  "archives": {
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/qualification-memoire-novafs-5abb981-preuves.tar.gz",
+    "archive_sha256": "c4827a21be87ee01d6bd524e3034f778b45a1f2a40ee3432eda491f5a3f4d9b6",
+    "manifest": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/SHA256SUMS",
+    "manifest_sha256": "09d224b6367c68fca013da1dce4a50b2c7405d41c1af98efeffa7e396d4d8697",
+    "fichiers_preuve": 1774,
+    "membres_verifies": 1775,
+    "octets_archive": 10242950,
+    "verification": "Lecture intégrale des originaux et des membres décompressés, SHA-256 concordants.",
+    "artefacts_prives_fichiers": 602,
+    "artefacts_prives_manifeste_sha256": "ec41916f9008495ea301f8b3597090de9abd0c641294421c494d88566ce7b357"
+  },
+  "diagnostic_defi": {
+    "mesures": [
+      {
+        "trace": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-levee-blocages-b08ba80/perte-admission-x86_64-4096-diagnostic-defi-horloges/VM-B/invite.serial",
+        "sha256": "7be153d11456743361f608fa67fdaae905c0959aab05c8abaa320d66dc352d2a",
+        "creation_ms": 151232,
+        "echeance_ms": 152732,
+        "signature_recue_ms": 151232,
+        "liaison_fraiche_recue_ms": 152736,
+        "verification_liaison_ms": 1504
+      }
+    ],
+    "portee": "Sonde QEMU dans un export privé ; non intégrée au candidat Git. Une observation du segment mesuré, aucune causalité exhaustive attribuée au relais ou à la charge hôte.",
+    "limite_debug": "Le vérificateur atteint 16 messages DEBUG ; NXBAIL du refus suivant est absent. Cela bloque l’oracle de connexion, sans autoriser de session ni de lancement.",
+    "correction": "Aucune modification du délai ou de la consultation fraîche ; réserves conservées."
+  }
+}

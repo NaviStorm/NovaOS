@@ -1,0 +1,28 @@
+[package]
+name = "novaos-recovery"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[dependencies]
+# Activer explicitement l'effacement du StaticSecret utilisé par HPKE.
+x25519-dalek = { version = "=2.0.1", default-features = false, features = ["zeroize"] }
+hpke = { version = "=0.12.0", default-features = false, features = ["x25519"] }
+aes-gcm = { version = "=0.10.3", default-features = false, features = ["aes", "zeroize"] }
+hkdf = { version = "0.12.4", default-features = false }
+sha2 = { version = "0.10.9", default-features = false }
+ed25519-dalek = { version = "=2.2.0", default-features = false, features = ["zeroize"] }
+rand_core = { version = "0.6.4", default-features = false }
+zeroize = { version = "1", default-features = false }
+
+[target.'cfg(target_os = "none")'.dependencies]
+getrandom = { version = "0.2.17", default-features = false, features = ["custom"] }
+
+[dev-dependencies]
+rand_chacha = "0.3.1"
+
+[profile.release]
+overflow-checks = true

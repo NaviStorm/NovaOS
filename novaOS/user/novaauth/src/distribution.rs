@@ -541,3 +541,30 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         }))
     }
 }
+
+/// Décision de résolution sans accès au stockage. Le service doit vérifier la
+/// fraîcheur de la tête avant l'appel ; l'effecteur n'a aucun pouvoir de décision.
+#[cfg(feature="recuperation-lab")]
+impl crate::recuperation_view::View {
+    pub fn executable(&self, grant:Grant, key:&VerifyingKey, machine:Machine, leaf:&str)->super::Result<[u8;240]> {
+        name(leaf.as_bytes()).map_err(map_verify)?;
+        if grant.head!=self.head {return Err(Fault::Conflict);}
+        let owner=self.state.user(grant.owner)?;
+        if owner.status!=Status::Active {return Err(Fault::Denied);}
+        let signer:Hash=Sha256::digest(key.as_bytes()).into();
+        let (p,e)=owner.packages.iter().filter(|p|p.active && p.signer==signer && p.machine==machine as u16)
+            .find_map(|p|p.entries.iter().find(|e|e.name==leaf).map(|e|(p,e))).ok_or(Fault::Denied)?;
+        let principal=e.principal.ok_or(Fault::Denied)?;
+        self.state.authorize_installed_image(grant.owner,principal,e.digest)?;
+        if e.size==0 || e.size>MAX_IMAGE || e.start.checked_add(e.size as u64).is_none() {return Err(Fault::Limit);}
+        let mut out=[0;240];out[..8].copy_from_slice(b"NXRES001");
+        out[8..40].copy_from_slice(&self.head.digest);out[40..56].copy_from_slice(&grant.owner);
+        out[56..72].copy_from_slice(&principal);out[72..80].copy_from_slice(&e.application.ok_or(Fault::Denied)?.to_le_bytes());
+        out[80..96].copy_from_slice(&self.head.volume[0]);out[96..112].copy_from_slice(&self.head.volume[1]);
+        for (at,n) in [(112,self.head.generation),(120,p.object),(128,p.revision),(136,e.start),(144,e.size as u64)] {
+            out[at..at+8].copy_from_slice(&n.to_le_bytes());
+        }
+        out[152..184].copy_from_slice(&e.digest);out[184..200].copy_from_slice(&p.id);out[200..232].copy_from_slice(&p.manifest);
+        out[232..234].copy_from_slice(&(machine as u16).to_le_bytes());Ok(out)
+    }
+}

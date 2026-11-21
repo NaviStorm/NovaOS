@@ -1,0 +1,44 @@
+{
+  "source": "https://raw.githubusercontent.com/cfrg/draft-irtf-cfrg-hpke/master/test-vectors.json",
+  "source_sha256": "61fc662f01996cd06d713dacf5e133167bd309a1f329442d53f1e21a47b3ede6",
+  "vectors": [
+    {
+      "mode": 0,
+      "kem_id": 32,
+      "kdf_id": 1,
+      "aead_id": 65535,
+      "info": "4f6465206f6e2061204772656369616e2055726e",
+      "ikmR": "683ae0da1d22181e74ed2e503ebf82840deb1d5e872cade20f4b458d99783e31",
+      "ikmE": "55bc245ee4efda25d38f2d54d5bb6665291b99f8108a8c4b686c2b14893ea5d9",
+      "skRm": "33d196c830a12f9ac65d6e565a590d80f04ee9b19c83c87f2c170d972a812848",
+      "skEm": "095182b502f1f91f63ba584c7c3ec473d617b8b4c2cec3fad5af7fa6748165ed",
+      "pkRm": "194141ca6c3c3beb4792cd97ba0ea1faff09d98435012345766ee33aae2d7664",
+      "pkEm": "e5e8f9bfff6c2f29791fc351d2c25ce1299aa5eaca78a757c0b4fb4bcd830918",
+      "enc": "e5e8f9bfff6c2f29791fc351d2c25ce1299aa5eaca78a757c0b4fb4bcd830918",
+      "shared_secret": "e81716ce8f73141d4f25ee9098efc968c91e5b8ce52ffff59d64039e82918b66",
+      "key_schedule_context": "009bd09219212a8cf27c6bb5d54998c5240793a70ca0a892234bd5e082bc619b6a3f4c22aa6d9a0424c2b4292fdf43b8257df93c2f6adbf6ddc9c64fee26bdd292",
+      "secret": "04d64e0620aa047e9ab833b0ebcd4ff026cefbe44338fd7d1a93548102ee01af",
+      "key": "",
+      "base_nonce": "",
+      "exporter_secret": "79dc8e0509cf4a3364ca027e5a0138235281611ca910e435e8ed58167c72f79b",
+      "encryptions": [],
+      "exports": [
+        {
+          "exporter_context": "",
+          "L": 32,
+          "exported_value": "7a36221bd56d50fb51ee65edfd98d06a23c4dc87085aa5866cb7087244bd2a36"
+        },
+        {
+          "exporter_context": "00",
+          "L": 32,
+          "exported_value": "d5535b87099c6c3ce80dc112a2671c6ec8e811a2f284f948cec6dd1708ee33f0"
+        },
+        {
+          "exporter_context": "54657374436f6e74657874",
+          "L": 32,
+          "exported_value": "ffaabc85a776136ca0c378e5d084c9140ab552b78f039d2e8775f26efff4c70e"
+        }
+      ]
+    }
+  ]
+}

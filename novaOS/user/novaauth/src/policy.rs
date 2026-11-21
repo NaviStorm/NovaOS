@@ -317,3 +317,14 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         })
     }
 }
+
+#[cfg(feature="recuperation-lab")]
+impl State {
+    pub(super) fn authorize_installed_image(&self,owner:Id,id:Id,digest:Hash)->Result<()> {
+        let user=self.user(owner)?;
+        if user.status!=Status::Active || !user.installations.iter().any(|i|i.id==id && i.image==Some(digest)) {
+            return Err(Fault::Denied);
+        }
+        Ok(())
+    }
+}

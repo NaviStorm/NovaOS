@@ -1,0 +1,22 @@
+[
+  {
+    "racine": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-auth-ciblee-9b7c7a9",
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/qualification-auth-ciblee-512f8d8-privee.tar.gz",
+    "fichiers": 235,
+    "membres_verifies": 236,
+    "archive_sha256": "942ba0b25f2b849f66f3ecfb40de8a39b1a1cc38631e87457186b78504695fd8",
+    "manifeste_sha256": "a4b15862b8e6612752c715fce67014a3c4de249bbea78571a23e1ceb911f16d8",
+    "octets_archive": 37979184,
+    "prive": true
+  },
+  {
+    "racine": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-auth-ciblee-9b7c7a9",
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/qualification-auth-ciblee-512f8d8-preuves.tar.gz",
+    "fichiers": 673,
+    "membres_verifies": 674,
+    "archive_sha256": "f3804cbc008b543473af15466418f64a3a1d22a10e11930c42d21efda2171a5b",
+    "manifeste_sha256": "f46d69c24f6d7fd315c1437f1b88708e1d6e8ca6429c611fff634aa9236a6cc3",
+    "octets_archive": 4163949,
+    "prive": false
+  }
+]

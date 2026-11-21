@@ -1,0 +1,51 @@
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -205,7 +205,7 @@
+         cargo_service.args(["--features", "novaauth-sessions-lab"]);
+         let guest_flags = format!("{flags}\x1f--cfg\x1fchacha20_force_soft\x1f--cfg\x1fpoly1305_force_soft\x1f--cfg\x1faes_force_soft\x1f--cfg\x1fpolyval_force_soft\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
+         let built = Command::new(env::var_os("CARGO").unwrap())
+-            .args(["build","--release","--locked","--offline","--features","recuperation-guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","triplet-guest","--bins","--target",&target])
+             .current_dir(user.join("novaauth/service"))
+             .env("CARGO_TARGET_DIR",&work)
+             .env("CARGO_ENCODED_RUSTFLAGS",&guest_flags)
+--- a/novaOS/user/novafs/Cargo.toml
++++ b/novaOS/user/novafs/Cargo.toml
+@@ -13,7 +13,7 @@
+
+ [features]
+ novaauth-lab = ["dep:novaos-identity"]
+-novaauth-sessions-lab = ["dep:novaos-identity", "novaos-identity/distribution-lab"]
++novaauth-sessions-lab = ["novaos-identity/recuperation-lab", "dep:novaos-identity", "novaos-identity/distribution-lab"]
+ installation = []
+ nvme-lab = []
+
+--- a/novaOS/user/novafs/files.rs
++++ b/novaOS/user/novafs/files.rs
+@@ -6,6 +6,9 @@
+ use novafs::time::{Clock, Timestamp};
+ use novafs::{Device, Engine, Error, Kind, Mode, View, codec::Anchor};
+ use w::Frame;
++
++#[path="../novaauth/service/triplet_effecteur.rs"]
++mod triplet_effecteur;
+
+ struct Civil(AtomicI64);
+
+@@ -791,6 +794,8 @@
+     let mut admission = delegated::Ports::default();
+     let mut selection:Option<selection_pipe_lab::Pending>=None;
+     let mut transport = crate::transport_autorite::Port::default();
++    let mut triplet = novaos_identity::recuperation_port::Port::default();
++    let mut triplet_sequence = 0;
+     loop {
+         let i = lane;
+         if pair {
+@@ -819,6 +824,7 @@
+             }
+         }
+         transport.poll(dev, sector as usize, exec_files_lab::config(465))?;
++        triplet_effecteur::poll(&mut s, &mut triplet, &mut triplet_sequence)?;
+         let tmp_busy = s.serve_private(ports[i].0)?;
+         let timeout = if tmp_busy { 0 } else if pair { 1 } else if rt::config(14) != 0 || rt::config(16) != 0 { 8 } else { 15000 };
+         let m = match rt::receive_options(ports[i].0, timeout, u32::from(cli)) {

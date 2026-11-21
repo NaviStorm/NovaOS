@@ -8,6 +8,16 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 pub mod lab;
+#[cfg(feature = "recuperation-lab")]
+pub mod recuperation;
+#[cfg(feature = "recuperation-lab")]
+pub mod recuperation_store;
+#[cfg(feature = "recuperation-lab")]
+pub mod recuperation_port;
+#[cfg(feature = "recuperation-lab")]
+pub mod recuperation_view;
+#[cfg(feature = "recuperation-lab")]
+pub mod snapshot_digest;
 #[cfg(feature = "distribution-lab")]
 pub mod distribution;
 #[cfg(feature = "politiques-lab")]
@@ -409,7 +419,7 @@ fn digest(h: &Head, parts: &[Vec<u8>; 3]) -> Hash {
 fn slot(h: &Head) -> u64 {
     (h.generation % 2) * SLOT as u64
 }
-fn load<D: Device>(fs: &Engine<D>, h: &Head) -> Result<State> {
+fn read_parts<D: Device>(fs: &Engine<D>, h: &Head) -> Result<[Vec<u8>; 3]> {
     if h.generation == 0 {
         return Err(Fault::NotEnrolled);
     }
@@ -440,6 +450,10 @@ fn load<D: Device>(fs: &Engine<D>, h: &Head) -> Result<State> {
     if snapshot_digest(h, &parts) != h.digest {
         return Err(Fault::StateMismatch);
     }
+    Ok(parts)
+}
+fn load<D: Device>(fs: &Engine<D>, h: &Head) -> Result<State> {
+    let parts = read_parts(fs, h)?;
     Ok(State {
         users: serde_json::from_slice(&parts[0]).map_err(|_| Fault::Corrupt)?,
         groups: serde_json::from_slice(&parts[1]).map_err(|_| Fault::Corrupt)?,

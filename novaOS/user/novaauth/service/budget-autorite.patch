@@ -1,0 +1,127 @@
+diff --git a/novaOS/kernel/src/sched/process/ipc/service.rs b/novaOS/kernel/src/sched/process/ipc/service.rs
+index 724c3237a4bcbe27225a37ef33263189272a74fe..6107059a36db76658f49222c868365cce7c5e0ef 100644
+--- a/novaOS/kernel/src/sched/process/ipc/service.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service.rs
+@@ -251,6 +251,7 @@
+         auth_lab::CLIENT if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/shell-signer.elf")).as_slice(),
+         #[cfg(feature="novaauth-sessions-lab")]
+         shell_auth_lab::RELAY if auth_lab::enabled() && argument==0 => include_bytes!(concat!(env!("OUT_DIR"),"/exec-relay.elf")).as_slice(),
++        22 | 23 if auth_lab::enabled() && argument == 0 => UTILITY,
+         1 | 2 if argument == 0 => UTILITY,
+         9 if argument == 0 => STORAGE,
+         JOURNAL_ID if journal_profile(m.profile) && argument == 0 => JOURNAL,
+@@ -261,7 +262,7 @@
+     };
+     let maximum = service_caps::maximum(id);
+     #[cfg(feature = "novaauth-sessions-lab")]
+-    let maximum = maximum.or_else(|| (auth_lab::enabled() && (id==shell_auth_lab::RELAY || auth_lab::elf(id).is_some())).then_some(0));
++    let maximum = maximum.or_else(|| (auth_lab::enabled() && (matches!(id, 21..=23) || auth_lab::elf(id).is_some())).then_some(0));
+     let maximum = maximum.ok_or(DENIED)?;
+     let caps = match (words[5], words[6]) {
+         (0, 0) => maximum,
+@@ -310,6 +311,20 @@
+         }
+         #[cfg(feature = "novaauth-sessions-lab")]
+         if auth_lab::enabled() { match id { auth_lab::AUTH => auth_lab::connect(s,m,target,id)?, auth_lab::CLIENT => shell_auth_lab::connect(s,m,target)?, shell_auth_lab::RELAY => shell_auth_lab::connect_relay(s,m,target)?, _ => () } }
++        if auth_lab::enabled() && matches!(id, 22 | 23) {
++            let other_id = if id == 22 { auth_lab::AUTH } else { 22 };
++            let peer = s.processes.slots.iter().flatten()
++                .find(|p| p.service_id == other_id && p.service_owner == Some(pid)
++                    && p.space.is_some() && p.outcome.is_none()).ok_or(CLOSED)?.pid;
++            auth_lab::budget_route(s, target, peer, m.fs)?;
++            let (a,b) = s.processes.get(target).space.as_ref().ok_or(CLOSED)?.page_counts();
++            hal::log(format_args!("NAUTH espace service={id} pid={} pages={a} pile={b}",target.number));
++            for p in s.processes.slots.iter().flatten() {
++                let (ep, nodes, handles, waits) = s.ipc.budget_usage(p.pid);
++                hal::log(format_args!("NAUTH phase={id} pid={} service={} roots={} handles={handles} endpoints={ep} nodes={nodes} waits={waits}",
++                    p.pid.number,p.service_id,s.ipc.root_count(p.pid.number)));
++            }
++        }
+         words[1] = receive;
+         words[2] = send;
+         words[4] = target.number;
+diff --git a/novaOS/kernel/src/sched/process/ipc/mod.rs b/novaOS/kernel/src/sched/process/ipc/mod.rs
+index 88e5e1495c6d4cf266de13ffd08f1c9cde3c99fc..795edaf591e319c2c9e02be56b3a3c000593b587 100644
+--- a/novaOS/kernel/src/sched/process/ipc/mod.rs
++++ b/novaOS/kernel/src/sched/process/ipc/mod.rs
+@@ -334,6 +334,8 @@
+         let e = &mut self.locals.get_mut(p.slot).entries[slot];
+         assert_eq!(e.key, 0);
+         *e = Entry { key, node: id };
++        let (ep,n,h,w) = self.budget_usage(p);
++        hal::log(format_args!("NAUTH install pid={} roots={} handles={h} endpoints={ep} nodes={n} waits={w}",p.number,self.root_count(p.number)));
+     }
+     fn unlink(&mut self, id: Reference) {
+         let n = self.nodes.get_mut(id.slot());
+@@ -372,6 +374,11 @@
+                 self.locals.remove(i);
+             }
+         }
++    }
++    fn budget_usage(&self, p: Pid) -> (usize,usize,usize,usize) {
++        (self.ends.ids().count(), self.nodes.ids().count(),
++         self.caps(p).map_or(0, |t| t.entries.iter().filter(|v| v.key!=0).count()),
++         self.waits.ids().count())
+     }
+     fn root_count(&self, owner:u64)->usize {
+         self.ends.ids().filter(|&i|self.ends.get(i).owner==owner).count()
+diff --git a/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs b/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
+index adad997974ed8b7a50bc3cf95baf92dd79757ffc..928e2fbef1edcd5f679982cdb5feb29543649c03 100644
+--- a/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
+@@ -55,6 +55,17 @@
+     };
+     s.ipc.nodes.get_mut(node.id.slot()).rights = 0;
+     Ok((child, fs_key))
++}
++/// Sonde de budget. Les feuilles restent inaccessibles au code utilisateur.
++pub(super) fn budget_route(s: &mut Core, owner: Pid, peer: Pid, fs: Pid) -> Res<()> {
++    conversation(s, owner, owner, peer)?;
++    conversation(s, owner, owner, fs)?;
++    let before = s.ipc.budget_usage(owner);
++    let result = s.ipc.create(owner);
++    let after = s.ipc.budget_usage(owner);
++    hal::log(format_args!("NAUTH saturation pid={} avant={before:?} apres={after:?} statut={:?}", owner.number, result));
++    if result != Err(LIMIT) || after != before {return Err(REFUSED);}
++    Ok(())
+ }
+ pub(super) fn connect(s: &mut Core, m: Session, target: Pid, id: u64) -> Res<()> {
+     if let Some(space) = s.processes.get(target).space.as_ref() {
+diff --git a/novaOS/user/novaauth/service/shell_launcher.rs b/novaOS/user/novaauth/service/shell_launcher.rs
+index 1d01dfae2b48b37d09043412c4894d05ca204beb..468aceb1bcaae3d2b431cce99deb44b2ad6ded81 100644
+--- a/novaOS/user/novaauth/service/shell_launcher.rs
++++ b/novaOS/user/novaauth/service/shell_launcher.rs
+@@ -2,11 +2,12 @@
+ use super::*;
+ pub(super) fn launch() -> rt::Result<u64> {
+     let mut last = 0;
+-    for id in [17, 18, 21] {
++    for id in [17, 18, 21, 22, 23] {
+         let mut frame = [0; 16];
+         frame[0] = id;
+         frame[4] = 1;
+-        last = syscall(proc::START, &mut frame)?;
++        let right = syscall(proc::START, &mut frame)?;
++        if id == 21 { last = right; }
+     }
+     Ok(last)
+ }
+diff --git a/novaOS/user/system_service.rs b/novaOS/user/system_service.rs
+index 3762513c8c8edcfe8cc75540232bbd06f623344c..17e8ba2d16905ec1bc0ed273a8178ee2833f6545 100644
+--- a/novaOS/user/system_service.rs
++++ b/novaOS/user/system_service.rs
+@@ -19,6 +19,14 @@
+     if runtime::config(2) == 0 && matches!(runtime::config(0), 100 | 101) {
+         runtime::exit(node::worker(runtime::config(0)).err().unwrap_or(0));
+     }
++    if matches!(runtime::config(2),22 | 23) {
++        loop {
++            match runtime::receive_for(runtime::config(1), 1000) {
++                Err(runtime::TIMED_OUT) => (),
++                _ => runtime::exit(0),
++            }
++        }
++    }
+     let mut cache = cache_actor::Client::new();
+     runtime::exit(
+         node::serve_extension(

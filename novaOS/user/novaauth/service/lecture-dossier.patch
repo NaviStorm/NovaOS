@@ -1,0 +1,62 @@
+--- a/novaOS/user/novafs/files/auth_directory.rs
++++ b/novaOS/user/novafs/files/auth_directory.rs
+@@ -217,7 +217,7 @@
+         let op = q[0];
+         let needed = match op {
+             1 | 2 => q[1],
+-            3 | 4 | 8 => READ,
++            3 | 4 | 8 | 12 => READ,
+             5 | 6 | 7 => WRITE,
+             9 => 0,
+             _ => return Err(rt::BAD_ARGUMENT),
+@@ -232,6 +232,14 @@
+             1 => Err(rt::DENIED),
+             2 => self.directory.grant(holder, key, needed),
+             3 => Ok(file.size / 8),
++            // Lecture privée du témoin dans le dossier déjà sélectionné et scellé.
++            12 => {
++                if q[1] != 0 || request.checked_add(8).is_none_or(|end| end > file.size) {
++                    return Err(rt::BAD_ARGUMENT);
++                }
++                let bytes = fs.read_access_id(file.id, request, 8).map_err(error)?;
++                Ok(u64::from_le_bytes(bytes.try_into().map_err(|_| w::CORRUPT)?))
++            }
+             4 => {
+                 // La politique du parent protégé s'applique avant tout accès au contenu.
+                 let p = fs.lookup_at(dir.id, "prive").map_err(error)?;
+@@ -375,7 +383,14 @@
+             let mut reply = [0; 128];
+             let status = result.as_ref().err().copied().unwrap_or(rt::OK);
+             reply[..8].copy_from_slice(&status.to_le_bytes());
+-            reply[8..16].copy_from_slice(&result.unwrap_or(0).to_le_bytes());
++            if msg.payload[0] == 12 {
++                if let Ok(bytes) = result {
++                    reply[8..16].copy_from_slice(&8u64.to_le_bytes());
++                    reply[16..24].copy_from_slice(&bytes.to_le_bytes());
++                }
++            } else {
++                reply[8..16].copy_from_slice(&result.unwrap_or(0).to_le_bytes());
++            }
+             reply[120..].copy_from_slice(b"DIRREPLY");
+             rt::send_frame(tx, tag, &reply, 0, false).map_err(|_| w::UNCERTAIN)?;
+             return Ok(());
+--- a/novaOS/user/novaauth/service/policy_launcher.rs
++++ b/novaOS/user/novaauth/service/policy_launcher.rs
+@@ -272,6 +272,17 @@
+             let read = alice.data(app_a, 1, 0, 1, 0, 0)?;
+             check(alice.data(app_a, 8, read, 0, 35, 0)? == 1)?;
+             log(b"NAP fermeture apres publication issue incertaine retrouvee une fois");
++            // Le premier mot contient la mutation 35 confirmée par relecture.
++            let expected = [35u8, 0, 0, 0, 0, 0, 0, 0];
++            let tag = alice.submit(app_a, 12, read, 0, 0)?;
++            let frame = receive(app_a[1], tag, 128)?;
++            check(word(&frame) == 0 && word(&frame[8..]) == 8 &&
++                frame[16..24] == expected && frame[24..120] == [0; 96])?;
++            log(b"NAP octets VFS Alice rc=0 n=8 hex=2300000000000000 comparaison=OK");
++            let tag = bob.submit(app_b, 12, read, 0, 0)?;
++            let frame = receive(app_b[1], tag, 128)?;
++            check(word(&frame) == rt::REVOKED && frame[8..120] == [0; 112])?;
++            log(b"NAP octets VFS Bob handle Alice REVOKED n=0");
+             let write = alice.data(app_a, 10, 0, 2, 0, 0)?;
+             let waiting = alice.submit(app_a, 11, write, 0, 36)?;
+             alice.success(4, 0, 0, 0)?;

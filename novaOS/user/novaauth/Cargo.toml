@@ -6,6 +6,7 @@ license = "MIT"
 publish = false
 
 [features]
+recuperation-lab = ["distribution-lab"]
 politiques-lab = []
 distribution-lab = ["politiques-lab", "dep:ed25519-dalek"]
 
@@ -28,3 +29,19 @@ overflow-checks = true
 [[example]]
 name = "exec_volume"
 required-features = ["distribution-lab"]
+
+[[example]]
+name = "recovery_volume"
+required-features = ["recuperation-lab"]
+
+[[example]]
+name = "recovery_vfs_volume"
+required-features = ["recuperation-lab"]
+
+[[example]]
+name = "recovery_inspect"
+required-features = ["recuperation-lab"]
+
+[[example]]
+name = "exec_admission_volume"
+required-features = ["recuperation-lab"]

@@ -1,0 +1,174 @@
+{
+  "portee": "Banc historique Ledger, témoin préalable à la décision de transport",
+  "manifeste_sha256": "7065a6a1818ea6ea68fd126c81a792bb07650863762f2640db80e34a66b91797",
+  "essais": [
+    {
+      "profil": "aarch64-4096-op18",
+      "commande_invite": 18,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "cycle-autorite.raw": "84988efcdf94bb14cafe9d67ddc06bbf3b9fbf837fd52a984f9f0fba3ee9ad54"
+      },
+      "sha256_iso": "3a475657029cbb0a273e43807c3e0d462cc5ba0352cfd7cddc5ef473db9d7a46",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/aarch64-4096-op18/invite.serial",
+      "sha256_serie": "da403cb92415d4e7b786c4bcfa70b4796c2b508ccf398038eaad0f321bdf0ee7",
+      "marqueur": "NA024 OK sector=4096 heap_delta=0 heap_peak=0 END"
+    },
+    {
+      "profil": "aarch64-4096-op7",
+      "commande_invite": 7,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "alice-autorite.raw": "23d931c01528d1d2fb9215a0d015508ccbcaa01ee660104221ea28d380c9309c"
+      },
+      "sha256_iso": "3a475657029cbb0a273e43807c3e0d462cc5ba0352cfd7cddc5ef473db9d7a46",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/aarch64-4096-op7/invite.serial",
+      "sha256_serie": "c79810e6d6241117b19e1119c205b7467b6ee1a6fc14f05b2f065f60cf0575b7",
+      "marqueur": "NA024 OK sector=4096 heap_delta=65536 heap_peak=65536 END"
+    },
+    {
+      "profil": "aarch64-4096-op9",
+      "commande_invite": 9,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "cycle-autorite.raw": "84988efcdf94bb14cafe9d67ddc06bbf3b9fbf837fd52a984f9f0fba3ee9ad54"
+      },
+      "sha256_iso": "3a475657029cbb0a273e43807c3e0d462cc5ba0352cfd7cddc5ef473db9d7a46",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/aarch64-4096-op9/invite.serial",
+      "sha256_serie": "da403cb92415d4e7b786c4bcfa70b4796c2b508ccf398038eaad0f321bdf0ee7",
+      "marqueur": "NA024 OK sector=4096 heap_delta=0 heap_peak=0 END"
+    },
+    {
+      "profil": "aarch64-512-op18",
+      "commande_invite": 18,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "cycle-autorite.raw": "84988efcdf94bb14cafe9d67ddc06bbf3b9fbf837fd52a984f9f0fba3ee9ad54"
+      },
+      "sha256_iso": "3a475657029cbb0a273e43807c3e0d462cc5ba0352cfd7cddc5ef473db9d7a46",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/aarch64-512-op18/invite.serial",
+      "sha256_serie": "c6d1eafcae539eeed5e43550438109aad7a67f90d6a360e995032fd6f15f71d8",
+      "marqueur": "NA024 OK sector=512 heap_delta=0 heap_peak=0 END"
+    },
+    {
+      "profil": "aarch64-512-op7",
+      "commande_invite": 7,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "alice-autorite.raw": "23d931c01528d1d2fb9215a0d015508ccbcaa01ee660104221ea28d380c9309c"
+      },
+      "sha256_iso": "3a475657029cbb0a273e43807c3e0d462cc5ba0352cfd7cddc5ef473db9d7a46",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/aarch64-512-op7/invite.serial",
+      "sha256_serie": "d01d3b156c13139e1c8f4d55f2f1ee856f0a0bf28c30a03fefaa6ca3427abad2",
+      "marqueur": "NA024 OK sector=512 heap_delta=65536 heap_peak=65536 END"
+    },
+    {
+      "profil": "aarch64-512-op9",
+      "commande_invite": 9,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "cycle-autorite.raw": "84988efcdf94bb14cafe9d67ddc06bbf3b9fbf837fd52a984f9f0fba3ee9ad54"
+      },
+      "sha256_iso": "3a475657029cbb0a273e43807c3e0d462cc5ba0352cfd7cddc5ef473db9d7a46",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/aarch64-512-op9/invite.serial",
+      "sha256_serie": "fd25ac6a71f9fdb75d426b82dcd833a3d96ef4f29b14b336eb411db04dd3a00b",
+      "marqueur": "NA024 OK sector=512 heap_delta=0 heap_peak=0 END"
+    },
+    {
+      "profil": "x86_64-4096-op18",
+      "commande_invite": 18,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "cycle-autorite.raw": "84988efcdf94bb14cafe9d67ddc06bbf3b9fbf837fd52a984f9f0fba3ee9ad54"
+      },
+      "sha256_iso": "f0b45e047731493054cb4265a000fa73f94dc2bc65d5dc3e05c6ff4cdaab7fc6",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/x86_64-4096-op18/invite.serial",
+      "sha256_serie": "dc0b01250332ce1a5977c05b453c83650d829ab2d07c1152cb998e9b4023ba77",
+      "marqueur": "NA024 OK sector=4096 heap_delta=0 heap_peak=0 END"
+    },
+    {
+      "profil": "x86_64-4096-op7",
+      "commande_invite": 7,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "alice-autorite.raw": "23d931c01528d1d2fb9215a0d015508ccbcaa01ee660104221ea28d380c9309c"
+      },
+      "sha256_iso": "f0b45e047731493054cb4265a000fa73f94dc2bc65d5dc3e05c6ff4cdaab7fc6",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/x86_64-4096-op7/invite.serial",
+      "sha256_serie": "26c80c4fe42ad7c2e5d45bfda81f1a90c45a737c537f8d082eebf89b63e85bc4",
+      "marqueur": "NA024 OK sector=4096 heap_delta=65536 heap_peak=65536 END"
+    },
+    {
+      "profil": "x86_64-4096-op9",
+      "commande_invite": 9,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "cycle-autorite.raw": "84988efcdf94bb14cafe9d67ddc06bbf3b9fbf837fd52a984f9f0fba3ee9ad54"
+      },
+      "sha256_iso": "f0b45e047731493054cb4265a000fa73f94dc2bc65d5dc3e05c6ff4cdaab7fc6",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/x86_64-4096-op9/invite.serial",
+      "sha256_serie": "92e087050918ff6797bf93c0d4ba0f8631a00227e99f63cd8a4393048df63531",
+      "marqueur": "NA024 OK sector=4096 heap_delta=0 heap_peak=0 END"
+    },
+    {
+      "profil": "x86_64-512-op18",
+      "commande_invite": 18,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "cycle-autorite.raw": "84988efcdf94bb14cafe9d67ddc06bbf3b9fbf837fd52a984f9f0fba3ee9ad54"
+      },
+      "sha256_iso": "f0b45e047731493054cb4265a000fa73f94dc2bc65d5dc3e05c6ff4cdaab7fc6",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/x86_64-512-op18/invite.serial",
+      "sha256_serie": "ff8f244da4e71f8f6a1836c7982065e9039181419151e9fa78772604c4ef9836",
+      "marqueur": "NA024 OK sector=512 heap_delta=0 heap_peak=0 END"
+    },
+    {
+      "profil": "x86_64-512-op7",
+      "commande_invite": 7,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "alice-autorite.raw": "23d931c01528d1d2fb9215a0d015508ccbcaa01ee660104221ea28d380c9309c"
+      },
+      "sha256_iso": "f0b45e047731493054cb4265a000fa73f94dc2bc65d5dc3e05c6ff4cdaab7fc6",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/x86_64-512-op7/invite.serial",
+      "sha256_serie": "594d3faf7d3ac8c7f86b92ba5077f36b0188604a4a9f7b03dee54860325c1d89",
+      "marqueur": "NA024 OK sector=512 heap_delta=65536 heap_peak=65536 END"
+    },
+    {
+      "profil": "x86_64-512-op9",
+      "commande_invite": 9,
+      "sha256_entrees": {
+        "alice-identites.p9": "df389d30ef2a2bdcb07958d05c55f73adeaeb465e5c5e8bfec613b180bbff827",
+        "cycle-autorite.raw": "84988efcdf94bb14cafe9d67ddc06bbf3b9fbf837fd52a984f9f0fba3ee9ad54"
+      },
+      "sha256_iso": "f0b45e047731493054cb4265a000fa73f94dc2bc65d5dc3e05c6ff4cdaab7fc6",
+      "qemu": "QEMU emulator version 11.1.3",
+      "vcpu": 2,
+      "serie": "invites/x86_64-512-op9/invite.serial",
+      "sha256_serie": "ff8f244da4e71f8f6a1836c7982065e9039181419151e9fa78772604c4ef9836",
+      "marqueur": "NA024 OK sector=512 heap_delta=0 heap_peak=0 END"
+    }
+  ]
+}

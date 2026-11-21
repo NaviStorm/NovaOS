@@ -1,0 +1,3261 @@
+{
+  "version": "NovaOS v0.24.0",
+  "chantier": "Récupération 2-sur-2 QEMU",
+  "date": "2026-11-17",
+  "branche": "codex/novaauth-autorite-0240",
+  "contrat": "cf3d2182c66965742ee54583bffdf84dc474e1ce",
+  "checkpoint_formats": "9508d7263d06831108d05a410ef03fe11a8f5c72",
+  "arbre_invite": "94db2ca9bd77c6fc58c0b47e013010521d03c545",
+  "arbre_verification_finale": "86e98daffdb50856c4bba2412e2963e6c6791c46",
+  "preuve_identite_sources": {
+    "fichier": "identite-sources-finales.json",
+    "sha256": "47685032bff2eab25cf4d7538bc23b0cbe7378a3638815d3efaa8a1eee6dbaaf"
+  },
+  "integration": [
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "bilan": {
+        "profils": [
+          "aarch64",
+          512
+        ],
+        "succes": true,
+        "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+        "avant_retrait": {
+          "incarnation": "926cee890740d03bdf4e3ecf52e46c7808000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 5,
+          "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+        },
+        "instantane_sha256": "030b3c9657bec8cf45a045b0dbbcfe52e29ff723acfe84453d051bd9899a13e6",
+        "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+        "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+        "avant_retrait_rc": 0,
+        "apres_retrait": {
+          "incarnation": "926cee890740d03bdf4e3ecf52e46c7808000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 6,
+          "empreinte": "5ee3776a2eebad36280532c8480bc2db1fb8643c880b56ad872d6179b93c63f7"
+        },
+        "sans_approbation_rc": 0,
+        "rejeu-tete-historique_rc": 0,
+        "autorite-hors-ligne_rc": 0,
+        "reprise_rc": 0,
+        "apres_reprise": {
+          "incarnation": "591aa3f4b5c3d55a9f02882e0a60f29008000000000000800100000000000000",
+          "epoque": 2,
+          "generation": 6,
+          "empreinte": "5ee3776a2eebad36280532c8480bc2db1fb8643c880b56ad872d6179b93c63f7"
+        }
+      },
+      "parcours": [
+        {
+          "parcours": "avant-retrait",
+          "preuve": "qemu-vfs-aarch64-512-v26-final/avant-retrait/resultat.json",
+          "sha256": "5ecb36fdef61b3b37dbf3cc39fdff44ca9808bc25089537c87b1ce6d1cdd0dd1",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d500a"
+            },
+            "Bob P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice fermeture": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture P": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d500a"
+            },
+            "Alice nouvelle lecture L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice retrait": {
+              "statut": 22,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice reconciliation": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice P apres retrait": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L apres retrait": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice sauvegarde": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "633890ba67a251fe0caa9b5c91d6b9ac5949c4b80176382128719c38a1847ef9",
+              "ancienne_session_statut": 0
+            },
+            "Bob authentification": {
+              "statut": 0,
+              "identite": "1fdc185ad119bab992c5062859b5407c",
+              "session": "f5535071246fad31f4a084d122a71287341386d89b0625110b17cd4e4b8c3d77",
+              "ancienne_session_statut": 0
+            },
+            "Alice nouvelle authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "d55665e5591d246ff43570941d9ccd868bc8042b944bc47e7cb7e2afb768f063",
+              "ancienne_session_statut": 5
+            },
+            "Alice authentification apres retrait": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "978e6eb0d5319cdcc549c0b83415a5f719e0e232237b86444b39f4990c293d9c",
+              "ancienne_session_statut": 5
+            }
+          },
+          "mutations_politique": 1,
+          "consultations_mutation": 1,
+          "capture_mutations": 1,
+          "capture_reconciliations": 1,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {
+              "avant": [
+                4,
+                7,
+                0,
+                118,
+                64,
+                44
+              ],
+              "apres": [
+                4,
+                7,
+                0,
+                118,
+                64,
+                44
+              ]
+            },
+            "signataire": {
+              "avant": [
+                4,
+                6,
+                0,
+                54,
+                64,
+                44
+              ],
+              "apres": [
+                4,
+                6,
+                0,
+                54,
+                64,
+                44
+              ]
+            }
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 67904703084,
+          "debut_ms": 200,
+          "fin_ms": 7352
+        },
+        {
+          "parcours": "restauration-sans-approbation",
+          "preuve": "qemu-vfs-aarch64-512-v26-final/restauration-sans-approbation/resultat.json",
+          "sha256": "8e35ab88fb089d32543bba4a17660323103abf4c14360431d3543993a4adb72e",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 8826119708,
+          "debut_ms": 232,
+          "fin_ms": 2344
+        },
+        {
+          "parcours": "rejeu-tete-historique",
+          "preuve": "qemu-vfs-aarch64-512-v26-final/rejeu-tete-historique/resultat.json",
+          "sha256": "4df25dd766cf7c29531a0af3734c7ea70fc420fe4b048b07e040e76cd679bad1",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 7302235292,
+          "debut_ms": 228,
+          "fin_ms": 1152
+        },
+        {
+          "parcours": "autorite-hors-ligne",
+          "preuve": "qemu-vfs-aarch64-512-v26-final/autorite-hors-ligne/resultat.json",
+          "sha256": "bf5fbfd3b18bdcbcec1580e8aa8e6904b44c2d1f72563a1bdbc15cb447294390",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              118,
+              64,
+              40
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": true,
+          "duree_hote_ns": 7185791084,
+          "debut_ms": 224,
+          "fin_ms": 1016
+        },
+        {
+          "parcours": "reprise-approuvee",
+          "preuve": "qemu-vfs-aarch64-512-v26-final/reprise-approuvee/resultat.json",
+          "sha256": "76cd3530ddb91273cef4aa62c85e72549fb30627e48e21787781775fb704d411",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Bob P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice fermeture": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "1057b6658c99ac4adaed84ea27b2c3eca9c2cb87df0223edd82ac535724d8462",
+              "ancienne_session_statut": 0
+            },
+            "Bob authentification": {
+              "statut": 0,
+              "identite": "1fdc185ad119bab992c5062859b5407c",
+              "session": "a808bfe137472d1b9cebece5c2ac5fefe3203c7f7373fb644af6004f36067642",
+              "ancienne_session_statut": 0
+            },
+            "Alice nouvelle authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "95747c11b5355491986aaff3e26fd127fcc6d585db0da40274d8f4f9a1cc4cf5",
+              "ancienne_session_statut": 5
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 39998241583,
+          "debut_ms": 224,
+          "fin_ms": 7336
+        }
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "bilan": {
+        "profils": [
+          "aarch64",
+          4096
+        ],
+        "succes": true,
+        "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+        "avant_retrait": {
+          "incarnation": "b0cd9cdca8d159dac096e1bbd50136df08000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 5,
+          "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+        },
+        "instantane_sha256": "9607e4fe1c44aee0d4b8501bf7015475506d6af708037d48411356b343bf65f6",
+        "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+        "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+        "avant_retrait_rc": 0,
+        "apres_retrait": {
+          "incarnation": "b0cd9cdca8d159dac096e1bbd50136df08000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 6,
+          "empreinte": "50a56c2055073a2db1d79a28a0e069a052a1d069bf617abe92b655d5c19c6a68"
+        },
+        "sans_approbation_rc": 0,
+        "rejeu-tete-historique_rc": 0,
+        "autorite-hors-ligne_rc": 0,
+        "reprise_rc": 0,
+        "apres_reprise": {
+          "incarnation": "ae7edde4e4a789ada5f6f499d4d0808108000000000000800100000000000000",
+          "epoque": 2,
+          "generation": 6,
+          "empreinte": "50a56c2055073a2db1d79a28a0e069a052a1d069bf617abe92b655d5c19c6a68"
+        }
+      },
+      "parcours": [
+        {
+          "parcours": "avant-retrait",
+          "preuve": "qemu-vfs-aarch64-4096-v26-final/avant-retrait/resultat.json",
+          "sha256": "fbeb376e6c61c00dcc0c9311f2931607e9114425b87b095ba6a14e9e24a1ad11",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d500a"
+            },
+            "Bob P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice fermeture": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture P": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d500a"
+            },
+            "Alice nouvelle lecture L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice retrait": {
+              "statut": 22,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice reconciliation": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice P apres retrait": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L apres retrait": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice sauvegarde": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "f1226b37bcaeec15bc3821394f3abbe0691d41c327755e7b12012d2777f13bf1",
+              "ancienne_session_statut": 0
+            },
+            "Bob authentification": {
+              "statut": 0,
+              "identite": "1fdc185ad119bab992c5062859b5407c",
+              "session": "e53f0aec76952cae616cab59e1eb1637cb8a098980ebf2ed4799b1b5cb94ecdf",
+              "ancienne_session_statut": 0
+            },
+            "Alice nouvelle authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "30426981d913d919e515c2c7320550a865a513b48d2a21e709e6204f58f13e91",
+              "ancienne_session_statut": 5
+            },
+            "Alice authentification apres retrait": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "0b8df86f10b77b4b782528756bf2268da832407f4c6dc0835b9e1f9553b8a2bd",
+              "ancienne_session_statut": 5
+            }
+          },
+          "mutations_politique": 1,
+          "consultations_mutation": 1,
+          "capture_mutations": 1,
+          "capture_reconciliations": 1,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {
+              "avant": [
+                4,
+                7,
+                0,
+                118,
+                64,
+                44
+              ],
+              "apres": [
+                4,
+                7,
+                0,
+                118,
+                64,
+                40
+              ]
+            },
+            "signataire": {
+              "avant": [
+                4,
+                6,
+                0,
+                54,
+                64,
+                44
+              ],
+              "apres": [
+                4,
+                6,
+                0,
+                54,
+                64,
+                40
+              ]
+            }
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 81422852834,
+          "debut_ms": 216,
+          "fin_ms": 9056
+        },
+        {
+          "parcours": "restauration-sans-approbation",
+          "preuve": "qemu-vfs-aarch64-4096-v26-final/restauration-sans-approbation/resultat.json",
+          "sha256": "64cfbb769a22883bfa0f59f39920815db95859e094fac6345a615f65974f6b14",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 9609910500,
+          "debut_ms": 240,
+          "fin_ms": 2972
+        },
+        {
+          "parcours": "rejeu-tete-historique",
+          "preuve": "qemu-vfs-aarch64-4096-v26-final/rejeu-tete-historique/resultat.json",
+          "sha256": "fc0527670a9fc0f69e8bfe6b58037ca8c124b711a119231b6ff221060b10033e",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 7685356042,
+          "debut_ms": 236,
+          "fin_ms": 1448
+        },
+        {
+          "parcours": "autorite-hors-ligne",
+          "preuve": "qemu-vfs-aarch64-4096-v26-final/autorite-hors-ligne/resultat.json",
+          "sha256": "ebeeb942818bc32fcf543e0eea0e48ac76c2c9df3695fd83c1a8be9fa82d15c2",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              118,
+              64,
+              40
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": true,
+          "duree_hote_ns": 7474265166,
+          "debut_ms": 236,
+          "fin_ms": 1252
+        },
+        {
+          "parcours": "reprise-approuvee",
+          "preuve": "qemu-vfs-aarch64-4096-v26-final/reprise-approuvee/resultat.json",
+          "sha256": "d80d779ee20365798f5b1e9e5c609726ff07b52e6e5f641b23b322646395fb2f",
+          "iso_sha256": "f4632a3365523e28d40b05196a8e9971804cc70b482ca79a4bbd1748b946ab6a",
+          "registre_sha256": "1db7ca2c79b1e912ec3942e21e0bb74ff332207f955e380e3308b65c62892f2f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Bob P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice fermeture": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "a8d4b1e1511dfb3e7e013f69e5a949b8c03429edcb080c27c5c6c37f8bfcfc09",
+              "ancienne_session_statut": 0
+            },
+            "Bob authentification": {
+              "statut": 0,
+              "identite": "1fdc185ad119bab992c5062859b5407c",
+              "session": "c763bfcf4e31c8a998722b70e40e4a6f339dca3949af07e78baf24509badb285",
+              "ancienne_session_statut": 0
+            },
+            "Alice nouvelle authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "c0c324e06acb35b5765e35a8213a1dfeb1ba75f051d018ed18106886151ec7ab",
+              "ancienne_session_statut": 5
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              54,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              118,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 49465212625,
+          "debut_ms": 244,
+          "fin_ms": 9020
+        }
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "bilan": {
+        "profils": [
+          "x86_64",
+          512
+        ],
+        "succes": true,
+        "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+        "avant_retrait": {
+          "incarnation": "992e54fd738bb1d2b41af86d868d942008000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 5,
+          "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+        },
+        "instantane_sha256": "19711e9d1ec2c15faaea97f8aa57a21d9e2fa87a70032c8569382a91989809fb",
+        "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+        "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+        "avant_retrait_rc": 0,
+        "apres_retrait": {
+          "incarnation": "992e54fd738bb1d2b41af86d868d942008000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 6,
+          "empreinte": "ca36897833ac3ea8d8fb849b88644e73485afc5c879ed607e1f793282f2d8457"
+        },
+        "sans_approbation_rc": 0,
+        "rejeu-tete-historique_rc": 0,
+        "autorite-hors-ligne_rc": 0,
+        "reprise_rc": 0,
+        "apres_reprise": {
+          "incarnation": "8ab261ad3219c1a4e2730eadef0e23f408000000000000800100000000000000",
+          "epoque": 2,
+          "generation": 6,
+          "empreinte": "ca36897833ac3ea8d8fb849b88644e73485afc5c879ed607e1f793282f2d8457"
+        }
+      },
+      "parcours": [
+        {
+          "parcours": "avant-retrait",
+          "preuve": "qemu-vfs-x86_64-512-v26-final/avant-retrait/resultat.json",
+          "sha256": "9073528be0d249f456339a2762fc58dfd43a83959328d10076ef0f7e752e3322",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d500a"
+            },
+            "Bob P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice fermeture": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture P": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d500a"
+            },
+            "Alice nouvelle lecture L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice retrait": {
+              "statut": 22,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice reconciliation": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice P apres retrait": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L apres retrait": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice sauvegarde": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "c701bb732e8887cc9b77e56b94be653a9d2e6d66add0f0de52f2f2fa7875e4f2",
+              "ancienne_session_statut": 0
+            },
+            "Bob authentification": {
+              "statut": 0,
+              "identite": "1fdc185ad119bab992c5062859b5407c",
+              "session": "37870f93f8a0e591bc6eecfd89e71c74470491970ab5e0487bc3d2f01ee55ead",
+              "ancienne_session_statut": 0
+            },
+            "Alice nouvelle authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "3294928fefd1f1f70231e6e91cf9a1f92433c76379c58f1959ce3e450a477ffd",
+              "ancienne_session_statut": 5
+            },
+            "Alice authentification apres retrait": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "653459d2669378c23cf22e8f6b40e466192c95583b8c08f72e8dd5c3c5479f49",
+              "ancienne_session_statut": 5
+            }
+          },
+          "mutations_politique": 1,
+          "consultations_mutation": 1,
+          "capture_mutations": 1,
+          "capture_reconciliations": 1,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {
+              "avant": [
+                4,
+                7,
+                0,
+                124,
+                64,
+                44
+              ],
+              "apres": [
+                4,
+                7,
+                0,
+                124,
+                64,
+                44
+              ]
+            },
+            "signataire": {
+              "avant": [
+                4,
+                6,
+                0,
+                61,
+                64,
+                44
+              ],
+              "apres": [
+                4,
+                6,
+                0,
+                61,
+                64,
+                44
+              ]
+            }
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 51431849000,
+          "debut_ms": 524,
+          "fin_ms": 7764
+        },
+        {
+          "parcours": "restauration-sans-approbation",
+          "preuve": "qemu-vfs-x86_64-512-v26-final/restauration-sans-approbation/resultat.json",
+          "sha256": "eb08c59f78a28623e17b36efc921c8147f63a2d442e8042a4c3af243c78cd4a1",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 4525226042,
+          "debut_ms": 560,
+          "fin_ms": 2696
+        },
+        {
+          "parcours": "rejeu-tete-historique",
+          "preuve": "qemu-vfs-x86_64-512-v26-final/rejeu-tete-historique/resultat.json",
+          "sha256": "beefe29b33602cfd8df0e54379800665fd9de307b25b124520f40b6abbe64a9e",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 3361871417,
+          "debut_ms": 556,
+          "fin_ms": 1480
+        },
+        {
+          "parcours": "autorite-hors-ligne",
+          "preuve": "qemu-vfs-x86_64-512-v26-final/autorite-hors-ligne/resultat.json",
+          "sha256": "eb11f145a4b4cb556e0866fd5cee099c4eb6a6387145e41e6a33d453b1c846ee",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              124,
+              64,
+              40
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": true,
+          "duree_hote_ns": 3237316958,
+          "debut_ms": 560,
+          "fin_ms": 1344
+        },
+        {
+          "parcours": "reprise-approuvee",
+          "preuve": "qemu-vfs-x86_64-512-v26-final/reprise-approuvee/resultat.json",
+          "sha256": "d551639c591cb9ca777930fd663f782e6864ed796d1e42440977976928979714",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Bob P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice fermeture": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "2c539d894f86caf68ebcecffaf13824e2a209e7339aad872d54900f5f04707c1",
+              "ancienne_session_statut": 0
+            },
+            "Bob authentification": {
+              "statut": 0,
+              "identite": "1fdc185ad119bab992c5062859b5407c",
+              "session": "9fe396d70346099ed3a3b17d5ff091a0444f4c1d7b1f655df4e8dbabd5db4ef4",
+              "ancienne_session_statut": 0
+            },
+            "Alice nouvelle authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "009ddc8b151b212456159dd004c8ff76def20dd7a9886ca62b161253cb299430",
+              "ancienne_session_statut": 5
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 30070904875,
+          "debut_ms": 564,
+          "fin_ms": 7760
+        }
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "bilan": {
+        "profils": [
+          "x86_64",
+          4096
+        ],
+        "succes": true,
+        "limites": "QEMU, autorité et deux détenteurs hors périmètre de restauration ; aucun matériel de production",
+        "avant_retrait": {
+          "incarnation": "909b9cd970304b6d22eff20206bb255508000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 5,
+          "empreinte": "cba539214b7cc43c26f4165a0cd474ef6f9b53624695ce6bc46655b80b041b5f"
+        },
+        "instantane_sha256": "61271b7db185d105fa2b0d2482a4485544628a014f7a8ce5427e6a8bc26c84dd",
+        "ancienne_autorite_sha256": "94f2c6c17663446b4de2c1926fa40e5745a149a102adc37f684573e3c4c44ee4",
+        "mode_instantane": "invité suspendu pendant consultation fraîche, avant préparation et publication du retrait",
+        "avant_retrait_rc": 0,
+        "apres_retrait": {
+          "incarnation": "909b9cd970304b6d22eff20206bb255508000000000000800100000000000000",
+          "epoque": 1,
+          "generation": 6,
+          "empreinte": "3058de18b9ee129aa333d823f5aa2c7696f6ca348e5fbd2d0646f27b4bd72e07"
+        },
+        "sans_approbation_rc": 0,
+        "rejeu-tete-historique_rc": 0,
+        "autorite-hors-ligne_rc": 0,
+        "reprise_rc": 0,
+        "apres_reprise": {
+          "incarnation": "db1f5ac1090de1539638008725a4464408000000000000800100000000000000",
+          "epoque": 2,
+          "generation": 6,
+          "empreinte": "3058de18b9ee129aa333d823f5aa2c7696f6ca348e5fbd2d0646f27b4bd72e07"
+        }
+      },
+      "parcours": [
+        {
+          "parcours": "avant-retrait",
+          "preuve": "qemu-vfs-x86_64-4096-v26-final/avant-retrait/resultat.json",
+          "sha256": "800ec4cde84f4b5e789cd489ef98d9b616e082a4f06bfdacb9a0bfcd63f9d716",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d500a"
+            },
+            "Bob P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice fermeture": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture P": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d500a"
+            },
+            "Alice nouvelle lecture L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice retrait": {
+              "statut": 22,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice reconciliation": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice P apres retrait": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L apres retrait": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice sauvegarde": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "095dcd0b556e2485fd5fc0a24733136bff636e99f95b29f75d788ce63d5e77ea",
+              "ancienne_session_statut": 0
+            },
+            "Bob authentification": {
+              "statut": 0,
+              "identite": "1fdc185ad119bab992c5062859b5407c",
+              "session": "4d51fb5a864a555ce7561ac9393f7b10bfa4374aa28322d233c9b23477b17c66",
+              "ancienne_session_statut": 0
+            },
+            "Alice nouvelle authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "98be9bcea6e601a3e3a34418868e8cb1766c01341b21615cf403cce7bfdfc26d",
+              "ancienne_session_statut": 5
+            },
+            "Alice authentification apres retrait": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "b294bcb52e17e8a0916092ee4b507b131d043bd5fa4bf2785c0e49725c4ee00c",
+              "ancienne_session_statut": 5
+            }
+          },
+          "mutations_politique": 1,
+          "consultations_mutation": 1,
+          "capture_mutations": 1,
+          "capture_reconciliations": 1,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {
+              "avant": [
+                4,
+                7,
+                0,
+                124,
+                64,
+                44
+              ],
+              "apres": [
+                4,
+                7,
+                0,
+                124,
+                64,
+                40
+              ]
+            },
+            "signataire": {
+              "avant": [
+                4,
+                6,
+                0,
+                61,
+                64,
+                44
+              ],
+              "apres": [
+                4,
+                6,
+                0,
+                61,
+                64,
+                40
+              ]
+            }
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 65611670500,
+          "debut_ms": 520,
+          "fin_ms": 9444
+        },
+        {
+          "parcours": "restauration-sans-approbation",
+          "preuve": "qemu-vfs-x86_64-4096-v26-final/restauration-sans-approbation/resultat.json",
+          "sha256": "011980e3f222210d425aebedd3bb921522067f37b264b0d6f1cd8e5de40e18aa",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 5274921083,
+          "debut_ms": 564,
+          "fin_ms": 3412
+        },
+        {
+          "parcours": "rejeu-tete-historique",
+          "preuve": "qemu-vfs-x86_64-4096-v26-final/rejeu-tete-historique/resultat.json",
+          "sha256": "14454dd66194ffda1d68130ad7ae6d13c521d8d897c2601ee668f9bb34254a66",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 3699894667,
+          "debut_ms": 564,
+          "fin_ms": 1780
+        },
+        {
+          "parcours": "autorite-hors-ligne",
+          "preuve": "qemu-vfs-x86_64-4096-v26-final/autorite-hors-ligne/resultat.json",
+          "sha256": "583ad6404ad3220db0fdb2a246cd66d819c2ade9ae7221e320111a6dc3387b03",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P quarantaine": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 12,
+              "identite": "00000000000000000000000000000000",
+              "session": "0000000000000000000000000000000000000000000000000000000000000000",
+              "ancienne_session_statut": 0
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              124,
+              64,
+              40
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": true,
+          "duree_hote_ns": 3531481333,
+          "debut_ms": 564,
+          "fin_ms": 1580
+        },
+        {
+          "parcours": "reprise-approuvee",
+          "preuve": "qemu-vfs-x86_64-4096-v26-final/reprise-approuvee/resultat.json",
+          "sha256": "ccd19b7e4f60c9ff200fb0dbd81df2085dcae6ee1fd5d49f6a9998cac1931d53",
+          "iso_sha256": "2de3465fef9db8a32cb8b11ab3d9c477cf4e733ad2de811d48d6a22efd01e5f1",
+          "registre_sha256": "2855793e0660ae5138ddb9f21e0199baa8ae147e3999d32eabb2c863269dae9f",
+          "banc_sha256": "90d27238067f0f455ff3f58628f7e35b4571717a5afede23029b54f399ecfc2b",
+          "lectures_vfs": {
+            "Alice P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Bob P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            },
+            "Alice fermeture": {
+              "statut": 0,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture P": {
+              "statut": 5,
+              "octets": 0,
+              "contenu_hex": "0000000000000000"
+            },
+            "Alice nouvelle lecture L": {
+              "statut": 0,
+              "octets": 8,
+              "contenu_hex": "414c4943452d4c0a"
+            }
+          },
+          "sessions": {
+            "Alice authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "8eed4f2dbd80189081ff78d4bb7400675b7b6dc87560c8c556df089a239925d3",
+              "ancienne_session_statut": 0
+            },
+            "Bob authentification": {
+              "statut": 0,
+              "identite": "1fdc185ad119bab992c5062859b5407c",
+              "session": "4c4eded0f426a65d1956d0d4c91c8f7234d50811b4792c7fd8ac962857b0e2d7",
+              "ancienne_session_statut": 0
+            },
+            "Alice nouvelle authentification": {
+              "statut": 0,
+              "identite": "fdb851f42231a8db4a0a6fc75f9bb46a",
+              "session": "45dc9ada93e6424e406d8b43b5e1ff369d092f90fd4f983db74eba869d5c8e67",
+              "ancienne_session_statut": 5
+            }
+          },
+          "mutations_politique": null,
+          "consultations_mutation": null,
+          "capture_mutations": null,
+          "capture_reconciliations": null,
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              44
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              124,
+              64,
+              44
+            ]
+          },
+          "ressources_capture": {
+            "registre": {},
+            "signataire": {}
+          },
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4
+          },
+          "plafond_respecte": true,
+          "feuille_signataire_retiree": null,
+          "duree_hote_ns": 38271161459,
+          "debut_ms": 560,
+          "fin_ms": 9640
+        }
+      ]
+    }
+  ],
+  "integration_resume": {
+    "profils": 4,
+    "demarrages": 20,
+    "succes": 20,
+    "echecs": 0,
+    "vfs": "Lecture privée avant retrait ; refus avec zéro octet après restauration ; lecture légitime L et refus P après reprise authentifiée"
+  },
+  "qualifications_reutilisees": [
+    {
+      "fichier": "qemu-aarch64-4096-nominal-v6mat/resultat.json",
+      "sha256": "cffbe138436ff0198afbfa934541071b13518dd73527dd99a78fa1488762c65b",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-part-absente-v6mat/resultat.json",
+      "sha256": "9413c9c14564963a0672b288e6556fdcd0baff33b448212dd560ecb445ff0de1",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "part-absente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-part-alteree-v6mat/resultat.json",
+      "sha256": "badf24134fd32d062ebf08a98dec55fed3ca6c3c6cd71c18040efa08077285ed",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "part-alteree",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-recu-perdu-1-v6mat/resultat.json",
+      "sha256": "e1a04e4d2429c520f6fdd47e427b9b89567545d3bd0ab40555f6b4163f979d90",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "recu-perdu-1",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-recu-perdu-2-v6mat/resultat.json",
+      "sha256": "601862fd1f8eb1a60750b0923e2592c46028e775a0b8f133a5afd67aaaec1f6c",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "recu-perdu-2",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-nominal-v6mat/resultat.json",
+      "sha256": "3158b3dc25b4fbf1203d8c4dacd31f30b37f56a217c252c137c8bdc9794976c3",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-part-absente-v6mat/resultat.json",
+      "sha256": "01eedbb0ae691985bfa454f2d86b2b0a8bddc0deff4a8d0839aa6801c4194ff0",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "part-absente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-part-alteree-v6mat/resultat.json",
+      "sha256": "077edce2a67ddaba918f1ee4a8d2381b21f9f68296490aecfbcd71877db2118e",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "part-alteree",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-recu-perdu-1-v6mat/resultat.json",
+      "sha256": "be049f44bd1edc07ca81368f0fba971db75d05b2a50eb6a87b4fa1d15351316f",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "recu-perdu-1",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-recu-perdu-2-v6mat/resultat.json",
+      "sha256": "08e81a98e7de2419df051f0685001037771af31eada71093b1fc403eeb4c69ac",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "recu-perdu-2",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-nominal-v6mat/resultat.json",
+      "sha256": "2563811c5e2501b093f4f7c6c96b0b0076260c0b01379a54cd6a959d9c161824",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-part-absente-v6mat/resultat.json",
+      "sha256": "6a836637c92a814a1d044cbb72ce4971de23a0d88a26cdfae3bd952053890707",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "part-absente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-part-alteree-v6mat/resultat.json",
+      "sha256": "10efe90d8cf9132103c1807682a235b6d13380a6ef8f24eb4adc17493bcaa785",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "part-alteree",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-recu-perdu-1-v6mat/resultat.json",
+      "sha256": "ad132316f70f63182d0f4b32586183ec7c2926053e46acc421689f5d11dc2b23",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "recu-perdu-1",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-recu-perdu-2-v6mat/resultat.json",
+      "sha256": "b2a6e928448453cbb37e41db6dd740d1a91e99e781d7ffa9f5636f3f12d9f26e",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "recu-perdu-2",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-nominal-v6mat/resultat.json",
+      "sha256": "89190f646ef40fad3b9031305a132220d2ced84946e238d44fadbdaa76ea60b3",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-part-absente-v6mat/resultat.json",
+      "sha256": "9e760c5013043b75e9a6207a943d414b564a678186a4e63e84335112c158c8df",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "part-absente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-part-alteree-v6mat/resultat.json",
+      "sha256": "9ddb9f7cb6ab8bc6e1f0c0708e5e30df4c18c41e1b47435616d31efd2ddb2205",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "part-alteree",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-recu-perdu-1-v6mat/resultat.json",
+      "sha256": "901cb746163b87c1853c0e98bd4351e08f5fb83164eb0b160b1bccc3d4997ead",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "recu-perdu-1",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-recu-perdu-2-v6mat/resultat.json",
+      "sha256": "b81c6ef24f201b9d075a7da3c2246c7d162e1f5c783c8f7e201007057b02c7ad",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "recu-perdu-2",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-cle-substituee-v6attaques/resultat.json",
+      "sha256": "24346770b5735b3e46473e86891d886076d214293c10d47e076ef1c30db948ca",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "cle-substituee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-generation-differente-v6attaques/resultat.json",
+      "sha256": "64573594cf8343443bc0bdd433f749f0977875b4975aaa1876b065612d2dab61",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "generation-differente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-non-approuvee-v6attaques/resultat.json",
+      "sha256": "62f79224b0d60916e6b71d3566e42343c8ec2ca0c9abb434959cf1f6b91f976d",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "non-approuvee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-part-expiree-v6attaques/resultat.json",
+      "sha256": "ae51081842cb02c4d75f05cbc4746d0d18c0b9984904b77a280843904e7ac77e",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "part-expiree",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-part-rejouee-v6attaques/resultat.json",
+      "sha256": "623e616a674bf8b45da1d34a7efb99ffbaec01ff0223a40e1ccda4e671e6d83b",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "part-rejouee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-4096-sauvegarde-differente-v6attaques/resultat.json",
+      "sha256": "2726a07f509cadee65a2ad8ee93a0479784d026e7dd1f5eaea8c8ef3c7e26cca",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "sauvegarde-differente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-cle-substituee-v6attaques/resultat.json",
+      "sha256": "ecb48be8f5ead9b3c95e3440c55cc86e835b6398f4c702fe86d7e22f6345deb9",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "cle-substituee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-generation-differente-v6attaques/resultat.json",
+      "sha256": "98469f796e03522477296c95410cac908e22cb84de4cb60c76372552b1dbfaa2",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "generation-differente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-non-approuvee-v6attaques/resultat.json",
+      "sha256": "d2d02df3c3c7f41d9f00fd583e016c62fa04f17b581adab0d5ea76a87a2626e2",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "non-approuvee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-part-expiree-v6attaques/resultat.json",
+      "sha256": "ddfd19ad9b681d2b38a37a52d5924a4e71ebd01e868bf5713389598e3a899ff4",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "part-expiree",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-part-rejouee-v6attaques/resultat.json",
+      "sha256": "69ad0525d83b7653973babca52590b59022facb607d6a80b7f093cf9d4db0fcd",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "part-rejouee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-aarch64-512-sauvegarde-differente-v6attaques/resultat.json",
+      "sha256": "87c77c8e2a02b966b0f315c0e7a46ec3fe9d2e6686d6ab24a8ce35110c9eba50",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "sauvegarde-differente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-cle-substituee-v6attaques/resultat.json",
+      "sha256": "4b118a78833c9b3837c16c0ebc48c1e52b0c6cb65930c081864616f427a39c7c",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "cle-substituee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-generation-differente-v6attaques/resultat.json",
+      "sha256": "66e6c12c6784edd36fa6e5f849e91f30a1e7c7e5680d3d59be2bbf0d76428f11",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "generation-differente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-non-approuvee-v6attaques/resultat.json",
+      "sha256": "4573af33ec2f9e3b213a4152866c1678a5f313e5a34f161f160a529b20e401e9",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "non-approuvee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-part-expiree-v6attaques/resultat.json",
+      "sha256": "b1611187ae8f4b2f03f1ecff78bed220d143c7b7bfaa7bc01ec92c0e7cbf78af",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "part-expiree",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-part-rejouee-v6attaques/resultat.json",
+      "sha256": "c7ca3e4649c1ba7a26dc6bb367955f88bf1e995a453948e61ad70b406d3c5d9b",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "part-rejouee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-4096-sauvegarde-differente-v6attaques/resultat.json",
+      "sha256": "5065f742b8120af8e8155e0147e3d6f0c6c9fa0f9b0181bd3fd0d410d2418215",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "sauvegarde-differente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-cle-substituee-v6attaques/resultat.json",
+      "sha256": "59cd62362197c81ac431097d8144e23869a64c7bf511280877a180d4daf277a9",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "cle-substituee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-generation-differente-v6attaques/resultat.json",
+      "sha256": "6c02b76f795274ab0573355c7a17b7858b625bc693efc0fd1d2b0acf651757df",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "generation-differente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-non-approuvee-v6attaques/resultat.json",
+      "sha256": "c890e05d6ad01fd68a045f5d8ea513d385e2cbb267e8da929709160c1cd3c8ca",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "non-approuvee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-part-expiree-v6attaques/resultat.json",
+      "sha256": "63ffd6e38ecdb3abea60792b3bfd19ea320d73b9baca1aa973f20f8db5f8967d",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "part-expiree",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-part-rejouee-v6attaques/resultat.json",
+      "sha256": "8dd314c0c0c53f0ced1d257053d3955b2758be53e9be42878d45f473f067b2bd",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "part-rejouee",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-x86_64-512-sauvegarde-differente-v6attaques/resultat.json",
+      "sha256": "69221b4c1b5aa98427c46ccc165a80edfde311a7c9636adb44819dcddaac78d9",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "sauvegarde-differente",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-triplet-aarch64-4096-v9/resultat.json",
+      "sha256": "7b269ffbac26a450c117d4149c93c432a40824f707fd7d6e9facc5ca86d7983d",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-triplet-aarch64-512-v9/resultat.json",
+      "sha256": "0c81d2c6e823b4d763eabb4e454944ad5d5ced452e70d041da13c711cf562f44",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-triplet-x86_64-4096-v9/resultat.json",
+      "sha256": "7979a91724920ca959069dfde7f74fc7708265aca884d15942869d95fb4f1b90",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-triplet-x86_64-512-v9/resultat.json",
+      "sha256": "db02e0eb269eda7b0be33da009f54cd23b629583036b2d1df8d65afd5a4ce4c2",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-activation-aarch64-4096-activation-perdue-v10mat/resultat.json",
+      "sha256": "f699c37305fe63a9c4c923209d303b0b52eaeaedd4ba9ba78d3ab6f799ff0c6a",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "activation-perdue",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-activation-aarch64-4096-nominal-v10mat/resultat.json",
+      "sha256": "fca45331f5448021ff87cc22440eb08139939cb9646e0faaf65f90e6b7bae4be",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-activation-aarch64-512-activation-perdue-v10mat/resultat.json",
+      "sha256": "8eab9fe6eb60cc6924b7589aab3369369b8e5dbb779bb83c086a27365e5a0a44",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "activation-perdue",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-activation-aarch64-512-nominal-v10mat/resultat.json",
+      "sha256": "6c5a507c1cbe43edbfbea4bad325586345c2173c62d91d1963401c443476e7c8",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-activation-x86_64-4096-activation-perdue-v10mat/resultat.json",
+      "sha256": "0c6388a7b6302095dc6080e8bdacfe0c797abe47b15edec9952266b11591233a",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "activation-perdue",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-activation-x86_64-4096-nominal-v10mat/resultat.json",
+      "sha256": "8bcbbde937c45b833d2f8cefc0e43bc4682c96730433d49101dd4311357025cd",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-activation-x86_64-512-activation-perdue-v10mat/resultat.json",
+      "sha256": "34cb7acd98af5f34edb1add45efd3193ae3afb22eb481e7000af9babaa28a4f3",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "activation-perdue",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-activation-x86_64-512-nominal-v10mat/resultat.json",
+      "sha256": "dfa5fa86f6ac34d7c268f897cef6adb66aa62a57078413f3ad382dbb90cfb83d",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-vue-aarch64-4096-v12/resultat.json",
+      "sha256": "b06676e3f41a01d93d02afdeaba3f3c9601e4d8031ae59752bbe66412b3befb8",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-vue-aarch64-512-v12/resultat.json",
+      "sha256": "c0e18b22f71eb3e763c8b95c0e1503b6623902e08189c93af60f51dfa70f9634",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-vue-x86_64-4096-v12/resultat.json",
+      "sha256": "0eacdd963ddc23ae6bc59aa1b6144ffebf22177a70926a5cdf1801469f66e9da",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "mode": "nominal",
+      "succes": true
+    },
+    {
+      "fichier": "qemu-vue-x86_64-512-v12/resultat.json",
+      "sha256": "d45aa3aac715d1ed6c61a2d42b6a64997e87b73f286557c0379588cea382f635",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "mode": "nominal",
+      "succes": true
+    }
+  ],
+  "preuve_reutilisation": {
+    "fichier": "reuse-crypto-source6.json",
+    "sha256": "4e133f0871cc9ac0a678bd327d077c14463be709972ee29efaeb2fa68b6e3e6b"
+  },
+  "tests_natifs": [
+    {
+      "fichier": "crypto-final-aarch64-apple-darwin.log",
+      "sha256": "7a9aac9d61ed05d17e3d5e8d2a65981e0a821854eba7e2c45c100145cf644347",
+      "tests": 18,
+      "profil": "Darwin ARM64 natif"
+    },
+    {
+      "fichier": "crypto-final-x86_64-apple-darwin.log",
+      "sha256": "07ebd330462fdde929adc61a971abca588885e5f4d78aeabeaf8775e07c5419b",
+      "tests": 18,
+      "profil": "Darwin x86_64 sous Rosetta"
+    },
+    {
+      "fichier": "identite-final-aarch64-apple-darwin.log",
+      "sha256": "2a95bb4f8c4d6a936ba7a328b9b1f0acc71b0bcda6455975bb1edc85508259d5",
+      "tests": 10,
+      "profil": "Darwin ARM64 natif"
+    },
+    {
+      "fichier": "identite-final-x86_64-apple-darwin.log",
+      "sha256": "aacf151376b3f23d4b72cd3915d8998da46f9c483e121edb1acecb79353ad498",
+      "tests": 10,
+      "profil": "Darwin x86_64 sous Rosetta"
+    },
+    {
+      "fichier": "service-final-aarch64-apple-darwin.log",
+      "sha256": "2237d7a0c2c80613d05f6547eb13b4c087b1e8cc03d3844dd881369404024ee5",
+      "tests": 1,
+      "profil": "Darwin ARM64 natif"
+    },
+    {
+      "fichier": "service-final-x86_64-apple-darwin.log",
+      "sha256": "e6153fe8cfb6bafb0334945a3b0ad7052b1dbfdefb0bcd7da1306f518c53f201",
+      "tests": 1,
+      "profil": "Darwin x86_64 sous Rosetta"
+    },
+    {
+      "fichier": "sessions-final-aarch64-apple-darwin.log",
+      "sha256": "09bc8d5d6aadcb5dcb7980425cd1241c9d99caaf3b2b4d16abbb1561ffab6a53",
+      "tests": 5,
+      "profil": "Darwin ARM64 natif"
+    },
+    {
+      "fichier": "sessions-final-x86_64-apple-darwin.log",
+      "sha256": "af1c364449e26b657efc3be1b613df20fe67303ea967b82e421b35a40a6f7d19",
+      "tests": 5,
+      "profil": "Darwin x86_64 sous Rosetta"
+    },
+    {
+      "fichier": "transport-final-aarch64-apple-darwin.log",
+      "sha256": "5e23464ab3830395d0a3500ad997029843fc731ab42f307d4f533f97496e89fd",
+      "tests": 6,
+      "profil": "Darwin ARM64 natif"
+    },
+    {
+      "fichier": "transport-final-x86_64-apple-darwin.log",
+      "sha256": "47590537ab10e02b53a71d247b6f0d7af50eae2f5b107fa0d09fa450c9dde8c8",
+      "tests": 6,
+      "profil": "Darwin x86_64 sous Rosetta"
+    }
+  ],
+  "tests_protocole_hote": {
+    "nombre": 46,
+    "fichier": "protocole-hote-complet-final.log",
+    "sha256": "fbd3c8d33c345c72d626040d059f72229b4438ef7ba2ec125bf24a57a5365b28"
+  },
+  "abi": {
+    "tests": 9,
+    "selecteurs": 48,
+    "fichier": "abi-finale.log",
+    "sha256": "d92cd69423c744d3fa8255404cf5561384bd48393f19d66dbe4a7a16bf208f12"
+  },
+  "noyaux_ordinaires": {
+    "identiques_octet_pour_octet": true,
+    "comparaison": {
+      "fichier": "comparaison-ordinaire-final.json",
+      "sha256": "66457fbca08fd13849c35b3f4dcf1c28192b4c88184573cca073b357173673f7"
+    },
+    "artefacts": [
+      {
+        "cible": "aarch64-unknown-none-softfloat",
+        "base_sha256": "2b90419842984225d006e21fa1c6a414113a9af88e73073adc3f9f8d4c451f2f",
+        "candidat_sha256": "2b90419842984225d006e21fa1c6a414113a9af88e73073adc3f9f8d4c451f2f"
+      },
+      {
+        "cible": "x86_64-unknown-none",
+        "base_sha256": "17058504e8b16e29dd42e7bac1f191bd3ff196032d35d070212925f07337ddab",
+        "candidat_sha256": "17058504e8b16e29dd42e7bac1f191bd3ff196032d35d070212925f07337ddab"
+      }
+    ]
+  },
+  "elf_historiques": [
+    {
+      "fichier": "historique-aarch64-sdk-example.json",
+      "sha256": "e4d5ca4369cc09895d07d0b3c72aa0e39971f3cebfb9faa54e1bd5c7fe7c5bc8"
+    },
+    {
+      "fichier": "historique-aarch64-threads-test.json",
+      "sha256": "16078c84b27bed25252c222626894d206c15df49932776ff66ffe3a6859b416d"
+    },
+    {
+      "fichier": "historique-x86_64-sdk-example.json",
+      "sha256": "b8184822e2c842475faafff14422ce90a044da750a1c7c11e4a5682cc9321e5d"
+    },
+    {
+      "fichier": "historique-x86_64-threads-test.json",
+      "sha256": "7de0afb60003b373a4b6fe2927313f284a25bab42954331433e310b18fdd2ba5"
+    }
+  ],
+  "inspections_p9": [
+    {
+      "fichier": "qemu-vfs-aarch64-4096-v26-final/inspection-independante.log",
+      "sha256": "743130b3bedf7b981da8f9d4490ec9ab741d1fb693ea165a617e29612a95dc52"
+    },
+    {
+      "fichier": "qemu-vfs-aarch64-512-v26-final/inspection-independante.log",
+      "sha256": "743130b3bedf7b981da8f9d4490ec9ab741d1fb693ea165a617e29612a95dc52"
+    },
+    {
+      "fichier": "qemu-vfs-x86_64-4096-v26-final/inspection-independante.log",
+      "sha256": "743130b3bedf7b981da8f9d4490ec9ab741d1fb693ea165a617e29612a95dc52"
+    },
+    {
+      "fichier": "qemu-vfs-x86_64-512-v26-final/inspection-independante.log",
+      "sha256": "743130b3bedf7b981da8f9d4490ec9ab741d1fb693ea165a617e29612a95dc52"
+    }
+  ],
+  "reserve_memoire": {
+    "statut": "ouverte",
+    "profil": "AArch64 instrumenté historique",
+    "seuil": 2048,
+    "observe": 2349,
+    "depassement": 301,
+    "preuve": {
+      "fichier": "cadres.log",
+      "sha256": "4ff219ac0d8751f697457f12b1c0df1502312b568cb311513c2b1b9e29a14af4"
+    }
+  },
+  "transport": {
+    "pages": 2,
+    "taille_page": 4096,
+    "metadonnees_serialisees": 56,
+    "etat_hors_pages_avec_reouverture": 76,
+    "plafond": 256,
+    "preuve": {
+      "fichier": "mesures-transport-reouverture-final.jsonl",
+      "sha256": "88c2572fcb0f6834a0c020be3f7c7ac305bc412a7193d797826d7c1b509a50de"
+    }
+  },
+  "limites": [
+    "Profil QEMU TCG 2 vCPU 256 Mio ; ni UTM ni matériel physique.",
+    "Autorité et deux détenteurs indépendants des disques restaurés, mais laboratoire sous un même compte hôte.",
+    "Aucune garantie de restauration de l’autorité elle-même ou de résistance à un hôte compromis.",
+    "Fixtures initiales synthétiques ; authentification, lectures VFS, révocation, capture et reprise réellement invitées.",
+    "Arrêts QMP contrôlés après transactions ; aucune qualification de shutdown natif ni de panne électrique.",
+    "Effacement complet physique des secrets non démontré.",
+    "Réserve mémoire globale AArch64 ouverte ; drainage local vérifié.",
+    "Tests de bibliothèques, protocoles hôtes et intégration QEMU distingués, sans généralisation à la production."
+  ],
+  "resultats_negatifs_conserves": true,
+  "erratum": {
+    "fichier": "erratum-empreinte-registre.json",
+    "sha256": "cbf3fe3b0301b55ca6ff37341ed9b6aef5f402601c59227538e0cb6adfa1d802"
+  },
+  "archives": {
+    "racine_locale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-recuperation-v2-cf3d218",
+    "artefacts_prives": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-recuperation-v2",
+    "publication": "Archive de preuves sans ISO, ELF ou clés privées ; manifeste SHA-256 par fichier et relecture des membres décompressés",
+    "fichier": "recuperation-2sur2-v0.24.0.tar.gz",
+    "sha256": "f40955700607eeec24eb9fc20bd71118d776c8a1d22c53e7140b360a0fdc5e2a",
+    "taille_octets": 3626885,
+    "nombre_fichiers": 1800,
+    "manifest_sha256": "78caeeaac27d85155f2d48a05e82df17caf9815d6b2e0253de6206c590ff42d9",
+    "membres_decompresses_verifies": true
+  }
+}

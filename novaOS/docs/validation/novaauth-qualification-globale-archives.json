@@ -1,0 +1,22 @@
+[
+  {
+    "racine": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-globales-auth-aa489ca",
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/qualification-globale-auth-aa489ca-privee.tar.gz",
+    "fichiers": 319,
+    "membres_verifies": 320,
+    "archive_sha256": "1c5e0d784cdbd49ac40afc3388efc5918cea34cfa4c10aade4cd592873b954cf",
+    "manifeste_sha256": "ae51b0d1c7ffb02420aac69efd8e5ac1f7b57f30cb81a6fcfc3b475bbf1f2078",
+    "octets_archive": 37829348,
+    "prive": true
+  },
+  {
+    "racine": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-globales-auth-aa489ca",
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/qualification-globale-auth-aa489ca-preuves.tar.gz",
+    "fichiers": 1231,
+    "membres_verifies": 1232,
+    "archive_sha256": "f0bd9571e0b961f3965070bf8f3c769520dc2600ecf06cbf4b0b9cd90569996b",
+    "manifeste_sha256": "52589a1c783488d93c34191ffab8c7e7071930724d57d3ed125acf35e0e64387",
+    "octets_archive": 9589535,
+    "prive": false
+  }
+]

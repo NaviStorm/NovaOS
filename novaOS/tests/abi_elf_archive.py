@@ -17,6 +17,7 @@ def main():
     parser.add_argument("architecture", choices=TARGETS)
     parser.add_argument("profil", choices=("sdk-example", "threads-test"))
     parser.add_argument("elf", type=Path)
+    parser.add_argument("--novaauth-qemu",action="store_true",help="export privé admission EXEC, avec les mêmes assertions ELF historiques")
     args = parser.parse_args()
     arch, profile = args.architecture, args.profil
     reference = json.loads((ROOT / "docs/validation/rust-sdk-phase2-v0.20.0.json").read_text())
@@ -25,12 +26,15 @@ def main():
     original = args.elf.resolve(strict=True)
     if digest(original) != expected:
         parser.exit(1, "L’ELF fourni diffère de la qualification v0.20.0.\n")
-    out = BUILD / "abi-registre" / arch / profile
+    if args.novaauth_qemu and 'mod authority;' not in (ROOT/'kernel/src/sched/process/ipc/exec.rs').read_text():
+        parser.exit(1,"L'export explicite QEMU admission EXEC est requis.\n")
+    features="thread-probe,novaauth-sessions-lab" if args.novaauth_qemu else "thread-probe"
+    out = BUILD / ("abi-registre-qemu" if args.novaauth_qemu else "abi-registre") / arch / profile
     out.mkdir(parents=True, exist_ok=True)
     target = TARGETS[arch]
     rustc = subprocess.check_output(["rustup", "which", "--toolchain", "stable", "rustc"], text=True).strip()
     subprocess.run([*CARGO, "build", "-p", "novaos", "--release", "--offline", "--locked",
-                    "--target", target, "--features", "thread-probe"], cwd=ROOT, check=True,
+                    "--target", target, "--features", features], cwd=ROOT, check=True,
                    env={**os.environ, "RUSTC": rustc, "CARGO_TARGET_DIR": str(out),
                         "NOVA_THREAD_PROBE_ELF": str(original)})
     kernel = out / target / "release/novaos"
@@ -47,6 +51,7 @@ def main():
     serial = BUILD / f"serie-{arch}-{profile}-2cpu{suffix}.log"
     report = {"architecture": arch, "profil": profile, "elf_sha256": expected,
               "noyau_sha256": digest(kernel), "journal": serial.name, "journal_sha256": digest(serial),
+              "profil_novaauth_qemu":args.novaauth_qemu,
               "qemu": subprocess.check_output([f"qemu-system-{arch}", "--version"],
                                               text=True).splitlines()[0], "resultat": result}
     (out / "resultat.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")

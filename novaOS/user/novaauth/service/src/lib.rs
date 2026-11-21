@@ -214,3 +214,8 @@ impl Verifier {
         })
     }
 }
+
+
+#[cfg(all(test,feature="vue-guest"))]
+#[path="bin/common/view_heap.rs"]
+mod view_heap_test;

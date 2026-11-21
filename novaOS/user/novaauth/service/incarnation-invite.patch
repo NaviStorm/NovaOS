@@ -1,0 +1,71 @@
+--- a/novaOS/kernel/build.rs
++++ b/novaOS/kernel/build.rs
+@@ -196,21 +196,22 @@
+         for name in ["NOVA_RELAY_FAULT","NOVA_PACKAGE_CUT","NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC"] {
+             println!("cargo::rerun-if-env-changed={name}");
+         }
+-        for key in ["NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC"] {
++        for key in ["NOVA_LAB_ALICE","NOVA_PACKAGE_PUBLIC","NOVA_QEMU_SERVER_SEED","NOVA_QEMU_SERVER_PUB"] {
+             if let Some(path)=env::var_os(key) {
++                println!("cargo::rerun-if-env-changed={key}");
+                 println!("cargo::rerun-if-changed={}",std::path::Path::new(&path).display());
+             }
+         }
+         cargo_service.args(["--features", "novaauth-sessions-lab"]);
+         let guest_flags = format!("{flags}\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\"");
+         let built = Command::new(env::var_os("CARGO").unwrap())
+-            .args(["build","--release","--locked","--offline","--features","shell-guest","--bins","--target",&target])
++            .args(["build","--release","--locked","--offline","--features","incarnation-guest","--bins","--target",&target])
+             .current_dir(user.join("novaauth/service"))
+             .env("CARGO_TARGET_DIR",&work)
+             .env("CARGO_ENCODED_RUSTFLAGS",&guest_flags)
+             .status().expect("compilation des deux ELF NovaAuth");
+         assert!(built.success(), "liaison des ELF NovaAuth");
+-        for name in ["auth-verifier","auth-client","shell-signer","exec-relay"] {
++        for name in ["auth-verifier","auth-client","shell-signer","exec-relay","registre-incarnation","signataire-incarnation"] {
+             std::fs::copy(work.join(&target).join("release").join(name),out.join(format!("{name}.elf"))).unwrap();
+         }
+     }
+--- a/novaOS/kernel/src/sched/process/ipc/service.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service.rs
+@@ -251,7 +251,8 @@
+         auth_lab::CLIENT if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/shell-signer.elf")).as_slice(),
+         #[cfg(feature="novaauth-sessions-lab")]
+         shell_auth_lab::RELAY if auth_lab::enabled() && argument==0 => include_bytes!(concat!(env!("OUT_DIR"),"/exec-relay.elf")).as_slice(),
+-        22 | 23 if auth_lab::enabled() && argument == 0 => UTILITY,
++        22 if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/registre-incarnation.elf")),
++        23 if auth_lab::enabled() && argument == 0 => include_bytes!(concat!(env!("OUT_DIR"), "/signataire-incarnation.elf")),
+         1 | 2 if argument == 0 => UTILITY,
+         9 if argument == 0 => STORAGE,
+         JOURNAL_ID if journal_profile(m.profile) && argument == 0 => JOURNAL,
+@@ -316,7 +317,7 @@
+             let peer = s.processes.slots.iter().flatten()
+                 .find(|p| p.service_id == other_id && p.service_owner == Some(pid)
+                     && p.space.is_some() && p.outcome.is_none()).ok_or(CLOSED)?.pid;
+-            auth_lab::budget_route(s, target, peer, m.fs)?;
++            auth_lab::budget_route(s, target, peer, m.fs, id)?;
+             let (a,b) = s.processes.get(target).space.as_ref().ok_or(CLOSED)?.page_counts();
+             hal::log(format_args!("NAUTH espace service={id} pid={} pages={a} pile={b}",target.number));
+             for p in s.processes.slots.iter().flatten() {
+--- a/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
++++ b/novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs
+@@ -56,9 +56,16 @@
+     s.ipc.nodes.get_mut(node.id.slot()).rights = 0;
+     Ok((child, fs_key))
+ }
+-/// Sonde de budget. Les feuilles restent inaccessibles au code utilisateur.
+-pub(super) fn budget_route(s: &mut Core, owner: Pid, peer: Pid, fs: Pid) -> Res<()> {
+-    conversation(s, owner, owner, peer)?;
++/// Profil de reprise. La feuille de possession est remise aux deux seules instances désignées.
++pub(super) fn budget_route(s: &mut Core, owner: Pid, peer: Pid, fs: Pid, service: u64) -> Res<()> {
++    let (own_key, peer_key) = conversation(s, owner, owner, peer)?;
++    if service == 22 {
++        config(s, owner, 10, &identity(s, owner)?);
++    } else if service == 23 {
++        config(s, owner, 10, &identity(s, peer)?);
++        config(s, owner, 8, &[own_key]);
++        config(s, peer, 8, &[peer_key]);
++    }
+     conversation(s, owner, owner, fs)?;
+     let before = s.ipc.budget_usage(owner);
+     let result = s.ipc.create(owner);
