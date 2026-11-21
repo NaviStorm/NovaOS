@@ -1,5 +1,5 @@
 import unittest
-from exec_resources import verify, memory_cycles, retired_family
+from exec_resources import verify, memory_cycles, retired_family, final_memory_cycles
 from reprise import Refus
 
 def sample(phase,ipc=58,free=1000):
@@ -20,6 +20,7 @@ class Resources(unittest.TestCase):
             raw+=sample('avant_ticket',58,free-20)+sample('consommation',59,free-21)+sample('fermeture',59,free)
             values=[100,2,4,0,1,100,2,4,0,2,40,40,1065472,1,32,0,2,64,0]
             raw+=b'NXMEM4 '+b''.join(f'{v:012x} '.encode() for v in values)+b'\r\n'
+            raw+=b'TMP retrait confirme NXFIN4 '+b''.join(f'{v:012x} '.encode() for v in [100,2,4,0,2,2,64,0,40,1065472])+b'\r\n'
             if i==2:self.assertTrue(verify(raw,warm=3)['plateau_chaud'])
         self.assertTrue(verify(raw,warm=6)['plateau_chaud'])
         with self.assertRaises(Refus):verify(raw.replace(b'cadres_libres=Ok(988)',b'cadres_libres=Ok(900)'),warm=6)
@@ -60,4 +61,11 @@ class Resources(unittest.TestCase):
 
         for wrong in (raw.replace(b'handles=0',b'handles=1'),raw.replace(b'pid=8 roots=',b'pid=9 roots='),raw.replace(b'espaces=0',b'espaces=1'),raw.replace(b'statut=125',b'statut=0')):
             with self.assertRaises(Refus):retired_family(wrong)
+    def test_final_memory_must_plateau_after_tmp_cleanup(self):
+        def line(v):return b'TMP retrait confirme NXFIN4 '+b''.join(f'{x:012x} '.encode() for x in v)+b'\n'
+        valid=[100,2,4,0,2,2,64,0,40,1065472]
+        self.assertEqual(len(final_memory_cycles(line(valid)*6,6)),6)
+        for index in (0,1,2,3,7,8,9):
+            changed=valid.copy();changed[index]+=1
+            with self.assertRaises(Refus):final_memory_cycles(line(valid)*5+line(changed),6)
 if __name__=='__main__':unittest.main()

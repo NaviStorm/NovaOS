@@ -43,3 +43,11 @@ L’examen a également trouvé une incohérence indépendante : canal::guard fo
 ## Réutilisation des dernières pages retenues
 
 La sonde QEMU relève désormais les allocations qui recouvrent la dernière plage physique attribuée au tas NovaFS, avant et après chaque chargement. Aucune adresse n’est publiée. À partir du troisième lancement, l’oracle exige simultanément zéro nouvelle attribution physique et une augmentation des allocations et octets servis dans cette plage ; le seul nombre global d’appels malloc ne suffit plus. Les compteurs sont encodés dans NXMEM4 (254 octets, dix-neuf compteurs de 48 bits) ; tout dépassement produit un diagnostic d’erreur et invalide la mesure. Les octets demandés encore vivants dans cette dernière plage sont également comptés, avant/après, afin de distinguer la rétention de pages d’une allocation encore active. Les anciens journaux NXMEM restent conservés comme preuves des essais antérieurs, sans être assimilés à cette mesure renforcée.
+
+## Point final après nettoyage du tmp
+
+Les compteurs NXMEM4 encadrent le chargement de l’ELF, avant sa création effective. Ils ne sont pas présentés comme une mesure après terminaison. Le témoin x86_64/P9-4096 montre 24 octets actifs de différence entre les chargements 2 et 3, sans croissance des cadres ; cet écart doit être observé au même point du cycle de vie avant de conclure au plateau des allocations actives.
+
+Le message existant « TMP retrait confirme » est enrichi par NXFIN4 après la purge P9, sans message DEBUG supplémentaire. Il relève le tas, les allocations actives, la dernière plage réutilisée et le cache. L’oracle conserve toutes les mesures de chargement et exige aussi un plateau exact après nettoyage entre les cycles 2 et 3, puis jusqu’au sixième, pour les octets/blocs actifs, pages attribuées/rendues, charge du cache et allocations actives de la dernière plage. Un écart reste bloquant.
+
+La campagne du candidat 97cee19 a réussi les témoins perte-admission x86_64/P9-4096 et perte-issue AArch64/P9-4096. Elle a été arrêtée explicitement au point sûr avant l’essai suivant (code hôte 77, aucune VM démarrée pour cet appel) pour compléter ce point de mesure. Ces deux succès ne constituent pas la qualification globale du candidat suivant.

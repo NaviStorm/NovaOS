@@ -17,6 +17,14 @@ def install(root):
     heap=heap.replace('unsafe { self.0.lock().free(p, l.size(), l.align()) }', 'unsafe { self.0.lock().free(p, l.size(), l.align()) };\n        LIVE.fetch_sub(l.size(),Ordering::Relaxed);BLOCKS.fetch_sub(1,Ordering::Relaxed);let low=(p as usize).max(LAST_START.load(Ordering::Relaxed));let high=(p as usize).saturating_add(l.size()).min(LAST_END.load(Ordering::Relaxed));if high>low {LAST_LIVE.fetch_sub(high-low,Ordering::Relaxed);}')
     (root/'novaOS/user/novafs/heap_diagnostic.rs').write_text(heap)
     edit('novaOS/user/novafs/main.rs','#[path = "../heap.rs"]','#[path = "heap_diagnostic.rs"]')
+    edit('novaOS/user/novafs/files/temporary.rs',"""        log(if result.is_ok() {
+            b"TMP retrait confirme"
+        } else {
+            b"TMP retrait en quarantaine"
+        });""","""        if result.is_ok() {
+            let cache=self.fs.as_ref().map(|fs| {let c=fs.cache_stats();(c.charged_bytes,c.budget_bytes)});
+            super::package_lab::memory_final(cache);
+        } else {log(b"TMP retrait en quarantaine");}""")
     base='novaOS/kernel/src/sched/process/ipc/'
     path=base+'exec.rs'
     edit(path,'use super::*;','use super::*;\n#[path="exec_authority_lab.rs"]\nmod authority;\npub(super) use authority::intercept as authority_intercept;\npub(super) use authority::resources as resource_trace;')

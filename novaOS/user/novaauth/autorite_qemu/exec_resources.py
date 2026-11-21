@@ -44,7 +44,7 @@ def verify(raw,probe=False,warm=False):
         for field in ('cadres_ipc','cadres_libres','endpoints','nodes','processus','threads','joins'):
             if any(end[field]!=after[1][field] for end in after[2:]):raise Refus('état chaud non stable : '+field)
     memory=memory_cycles(full_raw,warm) if warm else []
-    return {'memoire_novafs':memory,'avant':before,'pendant':[r for r in g if r['phase']=='consommation'],'apres':after,'acteurs':a,'restitution_verifiee':True,'plateau_chaud':warm,
+    return {'memoire_fin_novafs':final_memory_cycles(full_raw,warm) if warm else [],'memoire_novafs':memory,'avant':before,'pendant':[r for r in g if r['phase']=='consommation'],'apres':after,'acteurs':a,'restitution_verifiee':True,'plateau_chaud':warm,
             'reference':'racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées'}
 
 
@@ -98,3 +98,16 @@ def retired_family(raw):
         raise Refus('ressources IPC ou espaces sans propriétaire persistant identifié')
     if any(p['roots']>4 for p in survivors):raise Refus('quota du processus persistant dépassé')
     return {'retrait_contraint':True,'famille':family,'restitutions':values,'persistants':survivors,'drainage_verifie':True}
+
+
+def final_memory_cycles(raw,count):
+    records=[list(int(v,16) for v in m.split()) for m in re.findall(rb'TMP retrait confirme NXFIN4 ((?:[0-9a-f]{12} ){10})\r?\n',raw)]
+    if len(records)!=count:raise Refus('mesures NovaFS après nettoyage TMP incomplètes')
+    # Compteurs d'activité cumulée exclus du plateau, jamais les allocations
+    # vivantes, cadres retenus/restitués ni les charges du cache.
+    for v in records:
+        if v[9]!=1065472 or v[8]>v[9] or v[2]<v[3]:raise Refus('budget mémoire final invalide')
+    for v in records[2:]:
+        if any(v[k]!=records[1][k] for k in (0,1,2,3,7,8,9)):
+            raise Refus('croissance ou variation mémoire après nettoyage TMP')
+    return [dict(cycle=i+1,octets_actifs=v[0],blocs_actifs=v[1],cadres_residents_tas=v[2]-v[3],cadres_restitues_cumules=v[3],allocations_cumulees=v[4],reutilisations_region=v[5],octets_servis_region=v[6],octets_actifs_region=v[7],cache=v[8],budget=v[9]) for i,v in enumerate(records)]

@@ -74,3 +74,17 @@ impl Session<'_, '_> {
         rt::send_for(tx,4,&frame(b"NXLDSEAL"),250)
     }
 }
+
+// Même message que TMP retrait confirme, enrichi sans consommer un droit DEBUG
+// supplémentaire. Émis après purge P9 et libération des allocations temporaires.
+pub(super) fn memory_final(cache:Option<(usize,usize)>) {
+    let Some((charged,budget))=cache else {return;};
+    let mut values=[0usize;10];values[..5].copy_from_slice(&crate::heap::memory_snapshot());
+    values[5..8].copy_from_slice(&crate::heap::memory_reuse());values[8]=charged;values[9]=budget;
+    const PREFIX:&[u8]=b"TMP retrait confirme NXFIN4 ";
+    if values.iter().any(|&v|v>>48!=0) {let message=b"NXFIN4 compteur hors borne";rt::call(rt::DEBUG_WRITE,message.as_ptr() as u64,message.len() as u64,0);return;}
+    let mut line=[b' ';PREFIX.len()+10*13];line[..PREFIX.len()].copy_from_slice(PREFIX);
+    let hex=b"0123456789abcdef";
+    for (column,value) in values.into_iter().enumerate() {for i in 0..12 {line[PREFIX.len()+column*13+i]=hex[(value>>((11-i)*4))&15];}}
+    rt::call(rt::DEBUG_WRITE,line.as_ptr() as u64,line.len() as u64,0);
+}
