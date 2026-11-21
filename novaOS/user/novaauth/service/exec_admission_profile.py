@@ -17,12 +17,16 @@ def install(root):
     heap=heap.replace('unsafe { self.0.lock().free(p, l.size(), l.align()) }', 'unsafe { self.0.lock().free(p, l.size(), l.align()) };\n        LIVE.fetch_sub(l.size(),Ordering::Relaxed);BLOCKS.fetch_sub(1,Ordering::Relaxed);let low=(p as usize).max(LAST_START.load(Ordering::Relaxed));let high=(p as usize).saturating_add(l.size()).min(LAST_END.load(Ordering::Relaxed));if high>low {LAST_LIVE.fetch_sub(high-low,Ordering::Relaxed);}')
     (root/'novaOS/user/novafs/heap_diagnostic.rs').write_text(heap)
     edit('novaOS/user/novafs/main.rs','#[path = "../heap.rs"]','#[path = "heap_diagnostic.rs"]')
+    # Lecture sans allocation des deux vecteurs persistants du moteur, dans
+    # l'export de qualification seulement ; aucune mutation du format P9.
+    edit('novaFS/src/engine.rs','    pub fn cache_stats(&self) -> crate::CacheStats {',
+         '    pub fn diagnostic_alloc_bytes(&self) -> (usize,usize) {(self.alloc.space.0.capacity()*core::mem::size_of::<crate::space::Run>(),self.alloc.nodes.capacity()*core::mem::size_of::<u64>())}\n    pub fn cache_stats(&self) -> crate::CacheStats {')
     edit('novaOS/user/novafs/files/temporary.rs',"""        log(if result.is_ok() {
             b"TMP retrait confirme"
         } else {
             b"TMP retrait en quarantaine"
         });""","""        if result.is_ok() {
-            let cache=self.fs.as_ref().map(|fs| {let c=fs.cache_stats();(c.charged_bytes,c.budget_bytes)});
+            let cache=self.fs.as_ref().map(|fs| {let c=fs.cache_stats();let a=fs.diagnostic_alloc_bytes();(c.charged_bytes,c.budget_bytes,a.0,a.1)});
             super::package_lab::memory_final(cache);
         } else {log(b"TMP retrait en quarantaine");}""")
     base='novaOS/kernel/src/sched/process/ipc/'

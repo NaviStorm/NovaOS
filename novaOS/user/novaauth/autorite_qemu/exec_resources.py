@@ -101,13 +101,19 @@ def retired_family(raw):
 
 
 def final_memory_cycles(raw,count):
-    records=[list(int(v,16) for v in m.split()) for m in re.findall(rb'TMP retrait confirme NXFIN4 ((?:[0-9a-f]{12} ){10})\r?\n',raw)]
+    records=[list(int(v,16) for v in m.split()) for m in re.findall(rb'TMP retrait confirme NXFIN5 ((?:[0-9a-f]{12} ){12})\r?\n',raw)]
     if len(records)!=count:raise Refus('mesures NovaFS après nettoyage TMP incomplètes')
     # Compteurs d'activité cumulée exclus du plateau, jamais les allocations
     # vivantes, cadres retenus/restitués ni les charges du cache.
     for v in records:
         if v[9]!=1065472 or v[8]>v[9] or v[2]<v[3]:raise Refus('budget mémoire final invalide')
-    for v in records[2:]:
-        if any(v[k]!=records[1][k] for k in (0,1,2,3,7,8,9)):
-            raise Refus('croissance ou variation mémoire après nettoyage TMP')
-    return [dict(cycle=i+1,octets_actifs=v[0],blocs_actifs=v[1],cadres_residents_tas=v[2]-v[3],cadres_restitues_cumules=v[3],allocations_cumulees=v[4],reutilisations_region=v[5],octets_servis_region=v[6],octets_actifs_region=v[7],cache=v[8],budget=v[9]) for i,v in enumerate(records)]
+    # Plateau strict entre les lancements 2 et 3. Les cycles suivants peuvent
+    # seulement rendre un intervalle du vecteur d'espace P9, sans dépasser la
+    # référence et sans cacher une variation d'une autre allocation vivante.
+    base=records[1]
+    if any(records[2][k]!=base[k] for k in (0,1,2,3,7,8,9,10,11)):
+        raise Refus('plateau exact deuxième/troisième lancement absent')
+    for v in records[3:]:
+        if any(v[k]!=base[k] for k in (1,2,3,7,8,9,11)) or v[10]>base[10] or v[10]%24 or v[0]-v[10]!=base[0]-base[10]:
+            raise Refus('croissance ou variation mémoire non attribuée après nettoyage TMP')
+    return [dict(cycle=i+1,octets_actifs=v[0],blocs_actifs=v[1],cadres_residents_tas=v[2]-v[3],cadres_restitues_cumules=v[3],allocations_cumulees=v[4],reutilisations_region=v[5],octets_servis_region=v[6],octets_actifs_region=v[7],cache=v[8],budget=v[9],vecteur_espace=v[10],vecteur_noeuds=v[11],actifs_hors_cache_et_vecteurs=v[0]-v[8]-v[10]-v[11]) for i,v in enumerate(records)]
