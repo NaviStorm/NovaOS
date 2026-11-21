@@ -135,14 +135,22 @@ def main():
                 if not any(i==report['incarnation_A'] and state=='RETIREE' for i,state in routes()):
                     raise Refus('rejeu B avant retrait durable de A')
                 report['rejeu_B']=replay(serial,reference,out)
-            start=len(serial.data)
+            for attempt in range(2):
+                start=serial.offset
+                # echo $? exigerait lui-même une authentification après un
+                # refus frontal : observer d'abord la décision native complète.
+                serial.submit('true');serial.expect(rb'nsh> ',30)
+                trace=bytes(serial.data[start:serial.offset])
+                decisions=re.findall(rb'NXBAIL op=NSHOPEN1 tag=(\d+) decision=(\d+) valide=(\d+) echeance=(\d+) retour=(\d+) fin=(\d+)\r?\n',trace)
+                if not decisions:raise Refus('décision native de connexion absente')
+                decision=list(map(int,decisions[-1]))
+                report.setdefault('authentifications',[]).append({'instance':str(out),'essai':attempt+1,'decision':decision})
+                if decision[4]==0 and decision[2]==1:break
+                if b'NXLOGIN refus defi expire' not in trace:raise Refus('authentification refusée sans expiration du défi')
+                report.setdefault('defis_expires',[]).append({'instance':str(out),'decision':decision})
+            else:raise Refus('deux défis explicitement demandés ont expiré')
             status,_=serial.command('true')
-            if status and b'NXLOGIN refus defi expire' in serial.data[start:]:
-                # Nouvelle commande explicite, un seul nouvel essai ; aucune
-                # répétition d'une mutation ni réutilisation du défi expiré.
-                report.setdefault('defis_expires',[]).append({'instance':str(out),'statut':status})
-                status,_=serial.command('true')
-            if status:raise Refus('authentification initiale refusée')
+            if status:raise Refus('commande témoin après authentification refusée')
         def replay(serial,key,out):
             if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',100)
             if b'NXBAIL op=NSHOPEN1' in serial.data or b'phase=avant_ticket' in serial.data:
