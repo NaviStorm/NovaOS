@@ -5,15 +5,15 @@ pub(super) struct Upload {bytes:[u8;240],next:u64}
 // Un seul message par chargement respecte le quota DEBUG historique.
 // Compteurs : octets demandés vivants, blocs vivants, pages attribuées,
 // pages rendues, appels malloc réussis (avant puis après), cache avant/après/budget.
-struct MemoryMeasure {before:[usize;5],cache:[usize;3],reuse:[usize;2]}
+struct MemoryMeasure {before:[usize;5],cache:[usize;3],reuse:[usize;3]}
 impl Drop for MemoryMeasure {
     fn drop(&mut self) {
-        let after=crate::heap::memory_snapshot();let mut values=[0usize;17];
-        values[..5].copy_from_slice(&self.before);values[5..10].copy_from_slice(&after);values[10..13].copy_from_slice(&self.cache);values[13..15].copy_from_slice(&self.reuse);values[15..].copy_from_slice(&crate::heap::memory_reuse());
-        // 17 compteurs de 48 bits : 228 octets, sous DEBUG_MAX=256.
+        let after=crate::heap::memory_snapshot();let mut values=[0usize;19];
+        values[..5].copy_from_slice(&self.before);values[5..10].copy_from_slice(&after);values[10..13].copy_from_slice(&self.cache);values[13..16].copy_from_slice(&self.reuse);values[16..].copy_from_slice(&crate::heap::memory_reuse());
+        // 19 compteurs de 48 bits : 254 octets, sous DEBUG_MAX=256.
         // Un dépassement est explicite ; aucune troncature silencieuse.
-        if values.iter().any(|&v|v>>48!=0) {let message=b"NXMEM3 compteur hors borne";rt::call(rt::DEBUG_WRITE,message.as_ptr() as u64,message.len() as u64,0);return;}
-        let mut line=[b' ';7+17*13];line[..7].copy_from_slice(b"NXMEM3 ");let hex=b"0123456789abcdef";
+        if values.iter().any(|&v|v>>48!=0) {let message=b"NXMEM4 compteur hors borne";rt::call(rt::DEBUG_WRITE,message.as_ptr() as u64,message.len() as u64,0);return;}
+        let mut line=[b' ';7+19*13];line[..7].copy_from_slice(b"NXMEM4 ");let hex=b"0123456789abcdef";
         for (column,value) in values.into_iter().enumerate() {for i in 0..12 {line[7+column*13+i]=hex[(value>>((11-i)*4))&15];}}
         rt::call(rt::DEBUG_WRITE,line.as_ptr() as u64,line.len() as u64,0);
     }

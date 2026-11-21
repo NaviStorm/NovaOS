@@ -18,8 +18,8 @@ class Resources(unittest.TestCase):
         for i in range(6):
             free=1020 if i==0 else 988
             raw+=sample('avant_ticket',58,free-20)+sample('consommation',59,free-21)+sample('fermeture',59,free)
-            values=[100,2,4,0,1,100,2,4,0,2,40,40,1065472,1,32,2,64]
-            raw+=b'NXMEM3 '+b''.join(f'{v:012x} '.encode() for v in values)+b'\r\n'
+            values=[100,2,4,0,1,100,2,4,0,2,40,40,1065472,1,32,0,2,64,0]
+            raw+=b'NXMEM4 '+b''.join(f'{v:012x} '.encode() for v in values)+b'\r\n'
             if i==2:self.assertTrue(verify(raw,warm=3)['plateau_chaud'])
         self.assertTrue(verify(raw,warm=6)['plateau_chaud'])
         with self.assertRaises(Refus):verify(raw.replace(b'cadres_libres=Ok(988)',b'cadres_libres=Ok(900)'),warm=6)
@@ -27,11 +27,11 @@ class Resources(unittest.TestCase):
         changed=raw.rsplit(b'cadres_libres=Ok(988)',1)
         with self.assertRaises(Refus):verify(b'cadres_libres=Ok(987)'.join(changed),warm=6)
     def test_physical_growth_or_unexplained_live_growth_is_rejected(self):
-        valid=[100,2,4,0,1,100,2,4,0,2,40,40,1065472,1,32,2,64]
-        def line(v):return b'NXMEM3 '+b''.join(f'{x:012x} '.encode() for x in v)+b'\n'
+        valid=[100,2,4,0,1,100,2,4,0,2,40,40,1065472,1,32,0,2,64,0]
+        def line(v):return b'NXMEM4 '+b''.join(f'{x:012x} '.encode() for x in v)+b'\n'
         raw=line(valid)*3
         self.assertTrue(memory_cycles(raw,3)[2]['reutilisation_sans_attribution_physique'])
-        for index,value in [(7,5),(5,101),(12,1065473),(15,1),(16,32)]:
+        for index,value in [(7,5),(5,101),(12,1065473),(16,1),(17,32),(18,1)]:
             bad=valid.copy();bad[index]=value
             with self.assertRaises(Refus):memory_cycles(line(valid)*2+line(bad),3)
     def test_missing_actor_or_endpoint_leak_is_rejected(self):

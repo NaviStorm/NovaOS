@@ -49,24 +49,24 @@ def verify(raw,probe=False,warm=False):
 
 
 def memory_cycles(raw,count):
-    records=[list(int(v,16) for v in m.split()) for m in re.findall(rb'NXMEM3 ((?:[0-9a-f]{12} ){17})\r?\n',raw)]
+    records=[list(int(v,16) for v in m.split()) for m in re.findall(rb'NXMEM4 ((?:[0-9a-f]{12} ){19})\r?\n',raw)]
     if len(records)!=count:raise Refus('mesures du tas NovaFS incomplètes')
     result=[]
     for i,v in enumerate(records):
         live,blocks,grow,returned,calls=v[:5]
         end_live,end_blocks,end_grow,end_returned,end_calls=v[5:10]
         cache,end_cache,budget=v[10:13]
-        reused_before,bytes_before,reused_after,bytes_after=v[13:]
+        reused_before,bytes_before,live_region_before,reused_after,bytes_after,live_region_after=v[13:]
         if budget!=1065472 or max(cache,end_cache)>budget:raise Refus('budget cache historique dépassé')
         if end_live-end_cache>live-cache:raise Refus('allocations vivantes hors cache non restituées')
         if end_grow<grow or end_returned<returned or end_calls<=calls:raise Refus('compteurs allocation incohérents')
         reuse=end_grow==grow
-        if i>=2 and (not reuse or reused_after<=reused_before or bytes_after<=bytes_before):raise Refus('réutilisation des dernières pages attribuées sans nouvelle attribution physique non démontrée')
+        if i>=2 and (not reuse or reused_after<=reused_before or bytes_after<=bytes_before or live_region_after>live_region_before):raise Refus('réutilisation des dernières pages attribuées sans nouvelle attribution physique non démontrée')
         result.append({'cycle':i+1,'actifs_demandes_avant':live,'actifs_demandes_apres':end_live,
             'blocs_actifs_avant':blocks,'blocs_actifs_apres':end_blocks,'cache_avant':cache,'cache_apres':end_cache,'budget_cache':budget,
             'cadres_tas_avant':grow-returned,'cadres_tas_apres':end_grow-end_returned,
             'cadres_attribues':end_grow-grow,'cadres_restitues':end_returned-returned,
-            'allocations_servies':end_calls-calls,'reutilisations_derniere_region':reused_after-reused_before if reuse else None,'octets_servis_derniere_region':bytes_after-bytes_before if reuse else None,'reutilisation_sans_attribution_physique':reuse,
+            'allocations_servies':end_calls-calls,'reutilisations_derniere_region':reused_after-reused_before if reuse else None,'octets_servis_derniere_region':bytes_after-bytes_before if reuse else None,'octets_actifs_derniere_region_avant':live_region_before,'octets_actifs_derniere_region_apres':live_region_after,'reutilisation_sans_attribution_physique':reuse,
             'octets_residents_non_demandes':(end_grow-end_returned)*4096-end_live,
             'limite':'Les octets non demandés incluent espace libre et métadonnées dlmalloc ; ce compteur seul ne prouve pas leur libération physique.'})
     return result
