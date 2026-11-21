@@ -5,13 +5,16 @@ pub(super) struct Upload {bytes:[u8;240],next:u64}
 // Un seul message par chargement respecte le quota DEBUG historique.
 // Compteurs : octets demandés vivants, blocs vivants, pages attribuées,
 // pages rendues, appels malloc réussis (avant puis après), cache avant/après/budget.
-struct MemoryMeasure {before:[usize;5],cache:[usize;3]}
+struct MemoryMeasure {before:[usize;5],cache:[usize;3],reuse:[usize;2]}
 impl Drop for MemoryMeasure {
     fn drop(&mut self) {
-        let after=crate::heap::memory_snapshot();let mut values=[0usize;13];
-        values[..5].copy_from_slice(&self.before);values[5..10].copy_from_slice(&after);values[10..].copy_from_slice(&self.cache);
-        let mut line=[b' ';6+13*17];line[..6].copy_from_slice(b"NXMEM ");let hex=b"0123456789abcdef";
-        for (column,value) in values.into_iter().enumerate() {for i in 0..16 {line[6+column*17+i]=hex[(value>>((15-i)*4))&15];}}
+        let after=crate::heap::memory_snapshot();let mut values=[0usize;17];
+        values[..5].copy_from_slice(&self.before);values[5..10].copy_from_slice(&after);values[10..13].copy_from_slice(&self.cache);values[13..15].copy_from_slice(&self.reuse);values[15..].copy_from_slice(&crate::heap::memory_reuse());
+        // 17 compteurs de 48 bits : 228 octets, sous DEBUG_MAX=256.
+        // Un dépassement est explicite ; aucune troncature silencieuse.
+        if values.iter().any(|&v|v>>48!=0) {let message=b"NXMEM3 compteur hors borne";rt::call(rt::DEBUG_WRITE,message.as_ptr() as u64,message.len() as u64,0);return;}
+        let mut line=[b' ';7+17*13];line[..7].copy_from_slice(b"NXMEM3 ");let hex=b"0123456789abcdef";
+        for (column,value) in values.into_iter().enumerate() {for i in 0..12 {line[7+column*13+i]=hex[(value>>((11-i)*4))&15];}}
         rt::call(rt::DEBUG_WRITE,line.as_ptr() as u64,line.len() as u64,0);
     }
 }
@@ -39,7 +42,7 @@ impl Session<'_, '_> {
         }
     }
     fn load_attested(&mut self,q:&Frame,d:&[u8;240])->rt::Result<()> {
-        let mut memory=MemoryMeasure {before:crate::heap::memory_snapshot(),cache:[0;3]};
+        let mut memory=MemoryMeasure {before:crate::heap::memory_snapshot(),reuse:crate::heap::memory_reuse(),cache:[0;3]};
         if &d[..8]!=b"NXRES001" || d[8..40]!=q[56..88] || d[40..56]!=q[8..24] || d[56..72]==[0;16] || d[152..184]==[0;32] || d[234..]!=[0;6] {return Err(rt::DENIED);}
         #[cfg(target_arch="aarch64")] let machine=183u16;
         #[cfg(target_arch="x86_64")] let machine=62u16;
