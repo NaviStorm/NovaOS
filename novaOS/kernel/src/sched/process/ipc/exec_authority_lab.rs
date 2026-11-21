@@ -177,6 +177,12 @@ pub(in crate::sched::process::ipc) fn resources(s:&Core,owner:Pid,label:&str) {
     let joins=s.processes.get(owner).join_rights.len();
     let free=heap::with_pages(|m|Ok(m.free_pages()));
     hal::log(format_args!("NAEXEC ressources phase={label} owner={} roots={} handles={handles} endpoints={endpoints} nodes={nodes} waits={waits} processus={live} threads={threads} joins={joins} cadres_ipc={} cadres_libres={free:?}",owner.number,s.ipc.root_count(owner.number),s.ipc.pages()));
+    // Sonde QEMU de diagnostic : attribuer une variation globale aux espaces
+    // réellement résidents, sans modifier l'allocateur ni normaliser le tas.
+    for p in s.processes.slots.iter().flatten().filter(|p|p.outcome.is_none()) {
+        let (pages,stack)=p.space.as_ref().map(|v|v.page_counts()).unwrap_or((0,0));
+        hal::log(format_args!("NAEXEC resident phase={label} pid={} service={} pages={pages} pile={stack}",p.pid.number,p.service_id));
+    }
     for process in s.processes.slots.iter().flatten().filter(|p|
         p.outcome.is_none() && (p.pid==owner || matches!(p.service_id,22|23))) {
         let pid=process.pid;
