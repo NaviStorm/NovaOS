@@ -15,6 +15,11 @@ fn perform() -> rt::Result<()> {
         ["--concurrent-writer"] => {request[8]=1;mode=2;},
         ["--concurrent-reader"] => {request[8]=1;mode=3;},
         ["--expire"] => {request[8]=1;mode=4;},
+        ["--denied-same-channel"] => {request[8]=1;mode=5;},
+        ["--replay"] => {request[8]=1;mode=6;},
+        ["--invalid-frame"] => {request[8]=1;mode=7;},
+        ["--forged-context"] => {request[8]=1;mode=8;},
+        ["--forged-meta"] => {request[8]=1;mode=9;},
         ["--twice"] => {request[8]=1;repeats=2;},
         ["--user", name] | ["--group", name] => {
             if name.is_empty() || name.len()>32 {return Err(rt::BAD_ARGUMENT);}
@@ -28,6 +33,7 @@ fn perform() -> rt::Result<()> {
         } else {b"admin-sonde [--self|--twice|--user NAME|--group NAME]\nQEMU probe. Native statuses; no mutation.\n"}),
         _ => return Err(rt::BAD_ARGUMENT),
     }
+    if mode>=5 {return refusals(&launch,&request,mode);}
     if matches!(mode, 1..=3) {
         return transport_probe(&launch, &request, mode);
     }
@@ -63,6 +69,54 @@ fn perform() -> rt::Result<()> {
         return Err(203);
     }
     Ok(())
+}
+fn refusals(launch: &AdministrativeLaunch<'_>, request: &[u8;128], mode:u8) -> rt::Result<()> {
+    use nova_exec_client::admin_wire::{self, Direction, Inbox};
+    let key=launch.endpoint();
+    let mut conversation=Conversation::new(launch);
+    if mode==5 {
+        let first=conversation.exchange(request)?;
+        if first[..8]!=[0;8] {return Err(212);}
+        let mut other=*request;other[8]=2;other[32]=2;other[33]=3;other[40..43].copy_from_slice(b"bob");
+        let denied=conversation.exchange(&other)?;
+        if denied[..8]!=rt::DENIED.to_le_bytes() || denied[8..]!=[0;120] {return Err(213);}
+        let again=conversation.exchange(request)?;
+        if first!=again {return Err(214);}
+        let mut result=[0;64];result[8..16].copy_from_slice(&rt::DENIED.to_le_bytes());
+        return launch.streams.write_stdout(&result);
+    }
+    if mode==9 {
+        let status=rt::call(rt::IPC_NOTIFY,key,0,0x4e5841444d455441).status;
+        if status!=rt::DENIED {return Err(215);}
+        let mut answer=[0;64];answer[..8].copy_from_slice(&status.to_le_bytes());
+        launch.streams.write_stdout(&answer)?;return Err(status);
+    }
+    if mode==6 {
+        let first=conversation.exchange(request)?;
+        if first[..8]!=[0;8] {return Err(216);}
+    }
+    let mut command=*request;
+    if mode==8 {command[..8].copy_from_slice(b"NXACTX01");}
+    let mut frame=admin_wire::frame(1,Direction::Request,&command,0).map_err(|_|217u64)?;
+    if mode==7 {frame[23]=1;}
+    rt::send_for(key,1,&frame,5000)?;
+    if mode==8 {
+        let ack=rt::receive_for(key,5000)?;
+        if ack.kind!=1 || ack.tag!=1 || ack.len!=8 || ack.payload[..8]!=[0;8] {return Err(218);}
+        let second=admin_wire::frame(1,Direction::Request,&command,96).map_err(|_|219u64)?;
+        rt::send_for(key,1,&second,5000)?;
+    }
+    let mut inbox=Inbox::new();let mut answer=[0;128];
+    for _ in 0..2 {
+        let m=rt::receive_for(key,5000)?;
+        if m.kind!=1 || m.len!=128 || m.tag!=1 || m.handle!=0 || m.aux!=0 {return Err(220);}
+        if inbox.accept(&m.payload,Direction::Response).map_err(|_|221u64)? {
+            answer.copy_from_slice(inbox.message().map_err(|_|222u64)?.1);
+        }
+    }
+    if answer[..8]!=rt::BAD_ARGUMENT.to_le_bytes() || answer[8..]!=[0;120] {return Err(223);}
+    launch.streams.write_stdout(&answer[..64])?;
+    Err(rt::BAD_ARGUMENT)
 }
 fn transport_probe(
     launch: &AdministrativeLaunch<'_>,
