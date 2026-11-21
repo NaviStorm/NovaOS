@@ -192,13 +192,22 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
         def host():
             try:
                 stream=right
-                for attempt in range(128 if getattr(args,"exec_admission",False) else (64 if args.mutation else (32 if args.vfs else (16 if args.vue else 1)))):
+                historical_limit=128 if getattr(args,"exec_admission",False) else (64 if args.mutation else (32 if args.vfs else (16 if args.vue else 1)))
+                connection_limit=getattr(args,"transport_connection_limit",historical_limit)
+                if type(connection_limit) is not int or not 1<=connection_limit<=256:
+                    raise ValueError("budget de connexions du banc hors borne 1..256")
+                observed["limite_connexions_banc"]=connection_limit
+                observed["connexions_banc"]=0
+                for attempt in range(connection_limit):
                     if stop_host.is_set():break
                     if attempt:
                         stream=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
                         stream.settimeout(10);stream.connect(str(Path(tmp)/"relai.sock"))
                     with stream,ctx.wrap_socket(stream,server_side=True,do_handshake_on_connect=False) as conn:
                         process_connection(conn)
+                        observed["connexions_banc"]+=1
+                else:
+                    observed["limite_connexions_banc_atteinte"]=True
             except Exception as error:
                 if not stop_host.is_set():observed["erreur_tls"]=type(error).__name__+": "+str(error)
         def process_connection(conn):

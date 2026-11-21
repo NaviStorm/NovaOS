@@ -20,6 +20,10 @@ def main():
         p.add_argument('--'+name,type=lambda v:Path(v).resolve(),required=True)
     a=p.parse_args();a.mode='nominal';a.vue=a.activation=a.exec_admission=True
     a.vfs=a.mutation=False;a.lecture_privee='autorisee'
+    # Les consultations fraîches continuent pendant le témoin d'expiration
+    # de 60 s. Ce budget hôte ne change ni les délais TLS invités, ni les quotas.
+    # Garder la borne historique de 128 pour tous les autres bancs.
+    a.transport_connection_limit=256 if a.etendu else 128
     a.legacy_disk=a.genese.with_name('autorite.raw')
     a.sortie.mkdir(parents=True,exist_ok=False);a.secrets.mkdir(parents=True,exist_ok=False,mode=0o700)
     root=a.sortie
