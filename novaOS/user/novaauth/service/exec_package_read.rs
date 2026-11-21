@@ -5,8 +5,8 @@ pub(super) struct Upload {bytes:[u8;240],next:u64}
 struct MemoryMeasure;
 fn memory_measure(phase:u8) {
     let mut line=*b"NXHEAP phase=0 vivants=0000000000000000";line[13]=b'0'+phase;
-    let live=crate::heap::live_bytes();let hex=b"0123456789abcdef";
-    for i in 0..16 {line[21+i]=hex[(live>>((15-i)*4))&15];}
+    let live=crate::heap::live_bytes();let hex=b"0123456789abcdef";let start=line.len()-16;
+    for i in 0..16 {line[start+i]=hex[(live>>((15-i)*4))&15];}
     rt::call(rt::DEBUG_WRITE,line.as_ptr() as u64,line.len() as u64,0);
 }
 fn cache_measure(phase:u8,stats:novafs::CacheStats) {
