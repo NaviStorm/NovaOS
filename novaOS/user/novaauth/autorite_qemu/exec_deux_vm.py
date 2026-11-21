@@ -404,7 +404,7 @@ def main():
             # Le refus fait quitter le superviseur du profil EXEC ; ses services
             # sont retirés par le noyau. Exiger leurs restitutions natives,
             # pas un message TLS d'un signataire qui ne peut plus s'exécuter.
-            t.expect(rb'NAEXEC restitue pid=\d+ roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=0 cadres_ipc=\d+ cadres_libres=Ok\(\d+\)\r?\n',15)
+            t.expect(rb'NAEXEC famille_drainee dernier_pid=\d+\r?\n',15)
             report['drainage_A_redemarree']=retired_family(bytes(t.data))
             if route(api)!=active or rows()!=prior or b'NAEXEC enfant' in t.data:
                 raise Refus('réactivation ou admission après redémarrage interdit')

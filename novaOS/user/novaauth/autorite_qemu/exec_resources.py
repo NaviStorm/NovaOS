@@ -84,6 +84,17 @@ def retired_family(raw):
         matches=[v for v in values if v['pid']==p['pid']]
         if len(matches)!=1 or any(matches[0][k] for k in ('roots','handles','waits','pages','pile','threads')):
             raise Refus('restitution de la famille incomplète')
-    if not values or any(values[-1][k] for k in ('endpoints','nodes','espaces')):
-        raise Refus('ressources globales conservées après retrait de la famille')
-    return {'retrait_contraint':True,'famille':family,'restitutions':values,'drainage_verifie':True}
+    if not values:raise Refus('mesures de restitution absentes')
+    last=values[-1]
+    survivors=[dict(zip(('after','pid','service','roots','handles','waits','pages','pile'),map(int,row))) for row in re.findall(
+        rb'NAEXEC survivant apres_pid=(\d+) pid=(\d+) service=(\d+) roots=(\d+) handles=(\d+) waits=(\d+) pages=(\d+) pile=(\d+)\r?\n',raw)]
+    survivors=[p for p in survivors if p['after']==last['pid']]
+    baseline={(int(pid),int(service)) for pid,service in re.findall(rb'NAEXEC resident phase=consommation pid=(\d+) service=(\d+) pages=\d+ pile=\d+\r?\n',raw)}
+    removed={p['pid'] for p in family}|{p['manager'] for p in family}
+    expected={(pid,service) for pid,service in baseline if pid not in removed}
+    if not baseline or {(p['pid'],p['service']) for p in survivors}!=expected:
+        raise Refus('processus persistants différents de la référence avant refus')
+    if len(survivors)!=last['espaces'] or sum(p['roots'] for p in survivors)!=last['endpoints'] or sum(p['handles'] for p in survivors)!=last['nodes']:
+        raise Refus('ressources IPC ou espaces sans propriétaire persistant identifié')
+    if any(p['roots']>4 for p in survivors):raise Refus('quota du processus persistant dépassé')
+    return {'retrait_contraint':True,'famille':family,'restitutions':values,'persistants':survivors,'drainage_verifie':True}

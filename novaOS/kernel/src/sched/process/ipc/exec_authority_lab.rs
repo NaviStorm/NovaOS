@@ -203,6 +203,15 @@ pub(in crate::sched::process) fn retired_resources(s:&Core,pid:Pid) {
     let threads=s.slots.iter().flatten().filter(|t|t.owner==Some(pid)).count();
     let (endpoints,nodes,_,_)=s.ipc.budget_usage(pid);
     let spaces=s.processes.slots.iter().flatten().filter(|p|p.space.is_some()).count();
+    for p in s.processes.slots.iter().flatten().filter(|p|p.space.is_some()) {
+        let (roots,handles,waits,_)=s.ipc.tls_snapshot(p.pid);
+        let (pages,stack)=p.space.as_ref().unwrap().page_counts();
+        hal::log(format_args!("NAEXEC survivant apres_pid={} pid={} service={} roots={roots} handles={handles} waits={waits} pages={pages} pile={stack}",pid.number,p.pid.number,p.service_id));
+    }
     let free=heap::with_pages(|m|Ok(m.free_pages()));
     hal::log(format_args!("NAEXEC restitue pid={} roots={roots} handles={handles} waits={waits} pages={pages} pile={stack} threads={threads} endpoints={endpoints} nodes={nodes} espaces={spaces} cadres_ipc={ipc} cadres_libres={free:?}",pid.number));
+    if !s.processes.slots.iter().flatten().any(|p|matches!(p.service_id,17|22|23) && p.space.is_some()) {
+        hal::log(format_args!("NAEXEC famille_drainee dernier_pid={}",pid.number));
+    }
+
 }
