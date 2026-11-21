@@ -166,7 +166,7 @@ def main():
             serial.submit(f'ticket-reference {key}')
             serial.expect(rb'NXREFERENCE sonde fermee aucun appel SPAWN',20)
             serial.expect(rb'nsh> ',20)
-            if serial.data[start:].count(b'phase=consommation')!=1:
+            if serial.data[start:].count(b'NAEXEC ressources phase=consommation ')!=1:
                 raise Refus('sonde consommée plus d’une fois')
             return {'reference':key,'statut_natif':native[1],'valeur':native[2],
                 'appels_SPAWN':1,'ressources':verify_resources(trace,probe=True),'ressources_identiques':True,'enfants':0,'seconde_sonde_refusee':True}

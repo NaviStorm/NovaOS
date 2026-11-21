@@ -9,6 +9,10 @@ def sample(phase,ipc=58,free=1000):
     return data
 
 class Resources(unittest.TestCase):
+    def test_actor_measurements_are_not_additional_spawn_calls(self):
+        raw=sample('consommation')+sample('refus_sans_creation')
+        self.assertEqual(raw.count(b'NAEXEC ressources phase=consommation '),1)
+        self.assertEqual(raw.count(b'phase=consommation'),4)
     def test_first_pool_frame_requires_stable_second_launch(self):
         raw=sample('avant_ticket')+sample('consommation')+sample('fermeture',59,1020)
         raw+=sample('avant_ticket',59,1000)+sample('consommation',59,1000)+sample('fermeture',59,1020)
