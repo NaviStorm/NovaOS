@@ -35,6 +35,7 @@ def main():
     mode.add_argument('--deux-vm',action='store_true')
     p.add_argument('--kernel',type=lambda v:Path(v).resolve())
     p.add_argument('--admis-retarde',action='store_true')
+    p.add_argument('--sans-memoire-prolongee',action='store_true',help='rejeu fonctionnel ciblé : un lancement B, aucune qualification du plateau')
     p.add_argument('--course-retrait',choices=['admission-premiere','retrait-premier'])
     p.add_argument('--indisponible-avant-admission',action='store_true')
     p.add_argument('--refus-attendu',choices=['installation','autorite-indisponible'])
@@ -308,7 +309,7 @@ def main():
                     if status!=0 or len(rows())!=expected or states!=wanted:raise Refus('lancement B non confirmé')
                     # Accord MOA : trois lancements et plateau après échauffement.
                     report['statuts_B_chauds']=[]
-                    for number in (2,3):
+                    for number in (() if a.sans_memoire_prolongee else (2,3)):
                         # Chaque mesure indépendante commence par une demande de
                         # nouvelle session, avant le lancement. Ne jamais rejouer
                         # cut si sa sortie ou son reçu est devenu indéterminé.
@@ -318,11 +319,13 @@ def main():
                         if code!=0 or len(rows())!=expected+number-1 or rows()[-1][1]!=1:
                             raise Refus('lancement B chaud non confirmé')
                         report['statuts_B_chauds'].append(code)
-                    report['ressources_B']=verify_resources(bytes(t.data),warm=3)
+                    report['ressources_B']=verify_resources(bytes(t.data),warm=0 if a.sans_memoire_prolongee else 3)
+                    report['memoire_prolongee_executee']=not a.sans_memoire_prolongee
                     def extra_cycles():
                         # Demande explicite, entre transactions, jamais de prolongation
                         # du bail initial. Trois cycles supplémentaires par même nsh.
                         report['cycles_supplementaires']=[]
+                        if a.sans_memoire_prolongee:return
                         for number in (4,5,6):
                             ready(t,out=o,explicit=True)
                             code,output=t.command('cut --version')
@@ -347,7 +350,7 @@ def main():
                     if report['refus_A'][1]!=report['reference_A'] or report['refus_A'][2]!=10 or report['refus_A'][3]>=report['refus_A'][4] or report['enfants_A']!=0:raise Refus('référence, statut de retrait, expiration ou création A interdite')
                     if b'NAUTH incarnation locale retiree' not in serial.data:raise Refus('cause retrait non démontrée')
                     report['admissions_apres_reveil_A']=rows()
-                    if len(rows())!=expected+2:raise Refus('admission supplémentaire après retrait')
+                    if len(rows())!=expected+(0 if a.sans_memoire_prolongee else 2):raise Refus('admission supplémentaire après retrait')
                     extra_cycles();report['succes']=True
                     return {'succes':True,'incarnation':new.hex(),'statut_cut':status,'deux_VM':True}
                 b=copy.copy(a);b.pause_transport=Clock();b.sortie=root/'VM-B';b.genese=root/'instantane.p9';b.legacy_disk=root/'instantane-ancienne-autorite.raw'
