@@ -4,7 +4,7 @@ use ed25519_dalek::{Signer,SigningKey,Signature,VerifyingKey};
 use embedded_tls::TlsError;
 use novaos_recovery::{RecoveryContextV2,framing::{Header,MAX,HEADER,TAG}};
 
-fn bound(until:u64)->rt::Result<u64> {canal::guard(until).map_err(|_|rt::TIMED_OUT)}
+fn bound(until:u64)->rt::Result<u64> {canal::wait_ticks(until).map_err(|_|rt::TIMED_OUT)}
 fn io(_:u64)->TlsError {TlsError::IoError}
 pub fn serve(key:&SigningKey,port:u64,id:&[u8;32],first:rt::ReceiveV1)->rt::Result<()> {
     let mut initial=Some(first);

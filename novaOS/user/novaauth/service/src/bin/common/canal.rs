@@ -153,6 +153,11 @@ fn clock() -> Result<u64, ErrorKind> {
     rt::value(rt::call(instances::SERVICE_PROCESS, process::NOW, 0, 0))
         .map_err(|_| ErrorKind::PermissionDenied)
 }
+#[path = "ipc_deadline.rs"]
+mod ipc_deadline;
+pub(super) fn wait_ticks(until: u64) -> Result<u64, ErrorKind> {
+    ipc_deadline::ticks_until(until, clock()?).ok_or(ErrorKind::TimedOut)
+}
 pub(super) fn guard(until: u64) -> Result<u64, ErrorKind> {
     let now = clock()?;
     until
@@ -203,9 +208,9 @@ impl Wire {
             .until
             .min(clock()?.checked_add(2000).ok_or(ErrorKind::Other)?);
         loop {
-            let send_ms = guard(local)?;
-            let sent = rt::send_for(self.port, tag, &frame, send_ms);
-            let remaining = guard(local)?;
+            let send_ticks = wait_ticks(local)?;
+            let sent = rt::send_for(self.port, tag, &frame, send_ticks);
+            let remaining = wait_ticks(local)?;
             sent.map_err(ipc_error)?;
             let received = rt::receive_for(self.port, remaining);
             guard(local)?;
